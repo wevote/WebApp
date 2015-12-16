@@ -5,12 +5,22 @@ import { Router, Route, IndexRoute }    from 'react-router';
 import Application  		            from 'Application';
 
 /****************************** ROUTE-COMPONENTS ******************************/
+/**
+ * Intro
+ */
 import Intro                            from 'route-components/Intro/Intro';
 import IntroContests                    from 'route-components/Intro/IntroContests';
 import IntroOpinions                    from 'route-components/Intro/IntroOpinions';
 
-import Home                             from 'route-components/Home';
+/**
+ * /settings
+ */
+// import Settings                         from 'route-components/Settings';
+import Location                         from 'route-components/Settings/Location';
 
+/**
+ * /myballot
+ */
 import MyBallot			                from 'route-components/MyBallot/MyBallot';
 import Candidate                        from 'route-components/MyBallot/Candidate';
 import Measure                          from 'route-components/MyBallot/Measure';
@@ -46,18 +56,27 @@ export default class Root extends Component {
 
         return (
             <Router history={history} >
-                {
-                    /*
-                     * This is the intro section of the application.
-                     * First time visitors should be directed here.
-                     */
-                }
-                <Route path="/intro" component={Intro} >
+                {/*
+                  * This is the intro section of the application.
+                  * First time visitors should be directed here.
+                  */}
+                <Route path="/intro" >
+                    <IndexRoute component={Intro} />
                     <Route path="opinions" component={IntroOpinions} />
                     <Route path="contests" component={IntroContests} />
                 </Route>
 
-                <Route path="/location" component={Location} />
+                {/*
+                  * Settings go in this structure...
+                  */}
+                <Route path="/settings" >
+                    <Route path="location" component={Location} />
+                </Route>
+
+                <Route path="/friends" >
+                    <Route path="add" component={AddFriend} />
+                    <Route path="remove" />
+                </Route>
 
                 <Route path="/" component={Application} >
                     <IndexRoute component={MyBallot} />
@@ -72,9 +91,7 @@ export default class Root extends Component {
                     </Route>
 
                     <Route path="requests" component={Requests} />
-                    <Route path="connect" component={Connect} >
-                        <Route path="add" component={AddFriend} />
-                    </Route>
+                    <Route path="connect" component={Connect} />
 
                     <Route path="activity" component={Activity} />
                     <Route path="more" component={More} />

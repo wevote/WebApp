@@ -1,5 +1,4 @@
 body {
-    padding-top: 45px;
     padding-bottom: 70px;
 }
 
@@ -70,4 +69,8 @@ body {
 
 .well-95 {
     width: 95%;
+}
+
+.well-100 {
+    width: 100%;
 }

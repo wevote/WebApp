@@ -14,16 +14,22 @@ export default class IntroBallotContests extends Component {
 	}
 
 	render() {
-        var floatRight = {
-            float: 'right'
+        var float = {
+			right: {
+            	float: 'right'
+			},
+			left: {
+				float: 'left'
+			}
         };
+
 	    return (
-            <div>
-                <div className="container-fluid well well-90">
+            <div className="container-fluid">
+                <div className="well-100">
                     <p>We have found your ballot for this location:</p>
 
                     <div>
-                        <Link to="location" className="font-lightest">
+                        <Link to="/settings/location" className="font-lightest">
                             Oakland, CA (click to change)
                         </Link>
                     </div>
@@ -33,7 +39,7 @@ export default class IntroBallotContests extends Component {
                         Or you can go straight to your full ballot.
                     </p>
 
-                    <span style={floatRight}>
+                    <span style={float.right}>
                         <Link to="ballot">
                             <Button bsStyle="primary">
                                 Show me My Ballot >
@@ -51,7 +57,7 @@ export default class IntroBallotContests extends Component {
                             <InfoIconAction we_vote_id={'wvcand001'} />
                             <br />
                             You will choose one candidate from among three that are running for this office.<br />
-                            <span style={floatRight}><Link to="ballot">
+                            <span style={float.right}><Link to="ballot">
                                 <Button bsStyle="primary" bsSize="xsmall">Go to Candidates ></Button>
                             </Link></span>
                             <br />
@@ -62,7 +68,7 @@ export default class IntroBallotContests extends Component {
                             <InfoIconAction we_vote_id={'wvcand001'} />
                             <br />
                             You will rank your top two choices from among three that are running for this office.<br />
-                            <span style={floatRight}><Link to="ballot">
+                            <span style={float.right}><Link to="ballot">
                                 <Button bsStyle="primary" bsSize="xsmall">Go to Candidates ></Button>
                             </Link></span>
                             <br />
@@ -73,7 +79,7 @@ export default class IntroBallotContests extends Component {
                             <InfoIconAction we_vote_id={'wvcand001'} />
                             <br />
                             You will rank your top three choices from among seven that are running for this office.<br />
-                            <span style={floatRight}><Link to="ballot">
+                            <span style={float.right}><Link to="ballot">
                                 <Button bsStyle="primary" bsSize="xsmall">Go to Candidates ></Button>
                             </Link></span>
                             <br />
@@ -89,7 +95,7 @@ export default class IntroBallotContests extends Component {
                             <InfoIconAction we_vote_id={'wvcand001'} />
                             <br />
                             You will vote Yes or No on this Measure.<br />
-                            <span style={floatRight}><Link to="ballot">
+                            <span style={float.right}><Link to="ballot">
                                 <Button bsStyle="primary" bsSize="xsmall">Go to this Measure ></Button>
                             </Link></span>
                             <br />
@@ -100,7 +106,7 @@ export default class IntroBallotContests extends Component {
                             <InfoIconAction we_vote_id={'wvcand001'} />
                             <br />
                             You will vote Yes or No on this Measure.<br />
-                            <span style={floatRight}><Link to="ballot">
+                            <span style={float.right}><Link to="ballot">
                                 <Button bsStyle="primary" bsSize="xsmall">Go to this Measure ></Button>
                             </Link></span>
                             <br />
@@ -111,15 +117,22 @@ export default class IntroBallotContests extends Component {
                             <InfoIconAction we_vote_id={'wvcand001'} />
                             <br />
                             You will vote Yes or No on this Measure.<br />
-                            <span style={floatRight}><Link to="ballot">
+                            <span style={float.right}><Link to="ballot">
                                 <Button bsStyle="primary" bsSize="xsmall">Go to this Measure ></Button>
                             </Link></span>
                             <br />
                         </li>
                     </ul>
                 </div>
-                <Link to="/myballot">
-                    Show me my ballot!
+				<Link style={float.left} to="/intro/opinions">
+					<Button bsStyle="primary" bsSize="small">
+						Back
+					</Button>
+				</Link>
+                <Link style={float.right} to="/myballot">
+					<Button bsStyle="primary" bsSize="small">
+                    	Show me my ballot!
+					</Button>
                 </Link>
             </div>
 		);

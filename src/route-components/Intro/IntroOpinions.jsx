@@ -14,19 +14,25 @@ export default class IntroOpinionsPage extends React.Component {
 	}
 
 	render() {
-        var floatRight = {
-            float: 'right'
-        };
+		var float = {
+			right: {
+				float: 'right'
+			},
+			left: {
+				float: 'left'
+			}
+		};
+
 	    return (
             <div className="container-fluid">
                 <h1>Here's the idea - Learn from Community</h1>
 
-                <div className="well well-95">
+                <div className="well well-100">
                     <p>&nbsp;</p>
                     <p>You have organizations and friends you trust when it comes time to
                       vote. Follow them so you can see what they endorse on your ballot.</p>
                     <p className="clearfix">Or skip this.
-                        <span style={floatRight}>
+                        <span style={float.right}>
                             <Link to="/intro/contests">
                                 <Button bsStyle="primary" bsSize="small">
                                     Start on My Own >
@@ -49,8 +55,11 @@ export default class IntroOpinionsPage extends React.Component {
                         <OrganizationsToFollowList />
                     </div>
                 </div>
-                <Link to="/intro/contests">
-                    Next
+				<Link style={float.left} to="/intro">
+                    <Button bsStyle="primary" bsSize="small">Back</Button>
+                </Link>
+				<Link style={float.right} to="/intro/contests">
+                    <Button bsStyle="primary" bsSize="small">Next</Button>
                 </Link>
 
             </div>
