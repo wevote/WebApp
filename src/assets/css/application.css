@@ -1,0 +1,73 @@
+body {
+    padding-top: 45px;
+    padding-bottom: 70px;
+}
+
+.navbar-main {
+    background-color: #FFF;
+    padding: 10px;
+}
+
+.container-top10 {
+    padding: 10px 0 0;
+}
+
+.navbar-main > li {
+    padding: 0 30px;
+}
+
+.seperator-top {
+    border-top: 1px solid #c0c0c0;
+}
+
+.left-inner-addon {
+    position: relative;
+}
+
+.left-inner-addon input {
+    padding-left: 38px;
+}
+
+.left-inner-addon i {
+    position: absolute;
+    padding: 10px 12px;
+    pointer-events: none;
+}
+
+.right-inner-addon {
+    position: relative;
+}
+
+.right-inner-addon input {
+    padding-right: 30px;
+}
+
+.right-inner-addon i {
+    position: absolute;
+    right: 0px;
+    padding: 10px 12px;
+    pointer-events: none;
+}
+
+/* App boostrap themes */
+
+.glyphicon {
+    color: #ccc;
+    font-size: 20px;
+}
+
+.glyphicon-small {
+    font-size: 16px;
+}
+
+.icon-search {
+    font-size: 20px;
+}
+
+.well-90 {
+    width: 90%;
+}
+
+.well-95 {
+    width: 95%;
+}
