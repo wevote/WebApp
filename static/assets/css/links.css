@@ -1,0 +1,12 @@
+.linkLight {
+    color: #919191;
+}
+
+.linkLight:hover {
+    text-decoration: none;
+}
+
+.linkSmall {
+    font-size: 12px;
+}
+

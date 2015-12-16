@@ -1,0 +1,8 @@
+.badgeTotal {
+  background-color: red;
+  font-size: 10px;
+  position: absolute;
+  right: 10px;
+  top: -4px;
+  z-index: 10;
+}
