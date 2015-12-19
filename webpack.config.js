@@ -6,7 +6,7 @@ module.exports = {
     resolve: {
         root: [
             path.resolve(__dirname, 'src'),
-            path.resolve(__dirname, 'static', 'assets'),
+            path.resolve(__dirname, 'build'),
             path.resolve(__dirname, 'node_modules')
         ],
         extensions: ['','.js','.jsx']
@@ -18,9 +18,9 @@ module.exports = {
         path.join(__dirname, 'src/index.js')
     ],
     output: {
-        path: path.join(__dirname, 'dist'),
+        path: path.join(__dirname, 'build'),
         filename: 'bundle.js',
-        publicPath: '/static/'
+        publicPath: '/build/'
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
