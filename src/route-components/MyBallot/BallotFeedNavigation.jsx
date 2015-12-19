@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router";
 
-import 'css/navigation.css';
+import 'assets/css/navigation.css';
 import AddressBox from 'components/AddressBox/AddressBox';
 
 function loadAddress() {
@@ -15,14 +15,16 @@ export default class BallotFeedNavigation extends Component {
 		return (
 			<header className="row">
 			    <nav className="navbar navbar-main navbar-fixed-top bottom-separator navHeightAuto">
-			        <section className="container-fluid">
-			              <h4 className="pull-left no-space bold">My Ballot</h4>
-			              <aside className="pull-right">
+            <section className="container-fluid">
+              <div className="navabar-header">
+			              <a className="navbar-brand navbar-link" href="#">My Ballot</a>
+			              <aside className="pull-right margin-top_15">
 			                <Link to="change_location"
-			                      className="font-lightest">Oakland, CA (change)
+			                      className="link-main">Oakland, CA (change)
 			                </Link>
-			              </aside>
-			        </section>
+                    </aside>
+              </div>
+			       </section>
 			    </nav>
 			    <div className="container-fluid bg-light bottom-separator">
 			        <div className="row">

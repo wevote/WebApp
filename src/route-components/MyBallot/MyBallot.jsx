@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
-import 'css/MyBallot.css';
-import 'css/links.css';
 
 import BallotList from './BallotList';
 import BallotFeedNavigation from './BallotFeedNavigation';
