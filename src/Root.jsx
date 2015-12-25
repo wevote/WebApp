@@ -2,7 +2,7 @@ import React, { Component }             from 'react';
 import { Router, Route, IndexRoute }    from 'react-router';
 
 // main Application
-import Application  		                from 'Application';
+import Application  		            from 'Application';
 
 /****************************** ROUTE-COMPONENTS ******************************/
 import Intro                            from 'route-components/Intro/Intro';
@@ -11,7 +11,7 @@ import IntroOpinions                    from 'route-components/Intro/IntroOpinio
 
 import Home                             from 'route-components/Home';
 
-import MyBallot			                    from 'route-components/MyBallot/MyBallot';
+import MyBallot			                from 'route-components/MyBallot/MyBallot';
 import Candidate                        from 'route-components/MyBallot/Candidate';
 import Measure                          from 'route-components/MyBallot/Measure';
 import Opinions                         from 'route-components/MyBallot/Opinions';
@@ -28,7 +28,7 @@ import NotFound                         from 'route-components/NotFound';
 
 import AddFriend                        from 'components/AddFriend';
 
-// import global style libraries
+/****************************** Stylesheets ***********************************/
 import 'font-awesome/css/font-awesome.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'assets/css/fonts.css';
