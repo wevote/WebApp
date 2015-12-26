@@ -38,10 +38,13 @@ import NotFound                         from 'route-components/NotFound';
 
 import AddFriend                        from 'components/AddFriend';
 
-// import global style libraries
+/****************************** Stylesheets ***********************************/
 import 'font-awesome/css/font-awesome.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'css/application.css';
+import 'assets/css/fonts.css';
+import 'assets/css/application.css';
+import 'assets/css/layout.css';
+import 'assets/css/colors.css';
 
 // polyfill
 if (!Object.assign) Object.assign = React.__spread;
