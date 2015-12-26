@@ -59,7 +59,7 @@ export default class Root extends Component {
                 {/*
                   * This is the intro section of the application.
                   * First time visitors should be directed here.
-                  */}
+                  */ }
                 <Route path="/intro" >
                     <IndexRoute component={Intro} />
                     <Route path="opinions" component={IntroOpinions} />
@@ -81,11 +81,10 @@ export default class Root extends Component {
                 <Route path="/" component={Application} >
                     <IndexRoute component={Ballot} />
                     <Route path="ballot" component={Ballot} >
-                        <Route path="/candidate/:id" component={Candidate} >
-                            {/*<Route path="org/:id" component={Organization}/>*/}
-                        </Route>
+                        <Route path="/candidate/:id" component={Candidate} />
+                        {/*<Route path="org/:id" component={Organization}/>*/}
                         <Route path="/measure/:id" component={Measure} />
-                            {/*<Route path="org/:id" component={Organization}/>*/}
+                        {/*<Route path="org/:id" component={Organization}/>*/}
                         <Route path="/opinions" component={Opinions} />
                         {/*<Route path="/office/:id" component={Office} />*/}
                     </Route>
