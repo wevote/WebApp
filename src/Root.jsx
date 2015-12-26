@@ -5,23 +5,18 @@ import { Router, Route, IndexRoute }    from 'react-router';
 import Application  		            from 'Application';
 
 /****************************** ROUTE-COMPONENTS ******************************/
-/**
- * Intro
- */
+/* Intro */
 import Intro                            from 'route-components/Intro/Intro';
 import IntroContests                    from 'route-components/Intro/IntroContests';
 import IntroOpinions                    from 'route-components/Intro/IntroOpinions';
 
-/**
- * /settings
- */
+/* settings */
 // import Settings                         from 'route-components/Settings';
 import Location                         from 'route-components/Settings/Location';
 
-/**
- * /myballot
- */
-import MyBallot			                from 'route-components/MyBallot/MyBallot';
+/* myballot */
+import Ballot			                from 'components/Ballot';
+import BallotStore                      from 'stores/BallotStore';
 import Candidate                        from 'route-components/MyBallot/Candidate';
 import Measure                          from 'route-components/MyBallot/Measure';
 import Opinions                         from 'route-components/MyBallot/Opinions';
@@ -48,6 +43,8 @@ import 'assets/css/colors.css';
 
 // polyfill
 if (!Object.assign) Object.assign = React.__spread;
+
+BallotStore.initialize();
 
 export default class Root extends Component {
     static propTypes = {
@@ -82,8 +79,8 @@ export default class Root extends Component {
                 </Route>
 
                 <Route path="/" component={Application} >
-                    <IndexRoute component={MyBallot} />
-                    <Route path="myballot" component={MyBallot} >
+                    <IndexRoute component={Ballot} />
+                    <Route path="ballot" component={Ballot} >
                         <Route path="/candidate/:id" component={Candidate} >
                             {/*<Route path="org/:id" component={Organization}/>*/}
                         </Route>
