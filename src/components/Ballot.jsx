@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import BallotStore from 'stores/BallotStore';
 
-import 'css/navigation.css';
+import 'assets/css/navigation.css';
 import AddressBox from 'components/AddressBox/AddressBox';
 
 export default class Ballot extends Component {
