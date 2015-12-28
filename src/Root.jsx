@@ -41,8 +41,8 @@ import AddFriend                        from 'routes/AddFriend';
 
 
 new Promise( resolve => resolve('Oakland, CA'))
-    .then(VoterStore.initialize)
-    .then(BallotStore.initialize);
+    .then(VoterStore.initialize.bind(VoterStore))
+    .then(BallotStore.initialize.bind(BallotStore));
 
 
     // initialize the BallotStore when the app begins...
