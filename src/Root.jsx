@@ -6,32 +6,35 @@ import Application  		            from 'Application';
 
 /****************************** ROUTE-COMPONENTS ******************************/
 /* Intro */
-import Intro                            from 'route-components/Intro/Intro';
-import IntroContests                    from 'route-components/Intro/IntroContests';
-import IntroOpinions                    from 'route-components/Intro/IntroOpinions';
+import Intro                            from 'routes/Intro/Intro';
+import IntroContests                    from 'routes/Intro/IntroContests';
+import IntroOpinions                    from 'routes/Intro/IntroOpinions';
 
 /* settings */
-// import Settings                         from 'route-components/Settings';
-import Location                         from 'route-components/Settings/Location';
+// import Settings                         from 'route-routes/Settings';
+import Location                         from 'routes/Settings/Location';
 
 /* myballot */
-import Ballot			                from 'components/Ballot';
 import BallotStore                      from 'stores/BallotStore';
-import Candidate                        from 'route-components/MyBallot/Candidate';
-import Measure                          from 'route-components/MyBallot/Measure';
-import Opinions                         from 'route-components/MyBallot/Opinions';
+import Ballot			                from 'routes/Ballot';
+import Candidate                        from 'components/Ballot/Candidate';
+import Measure                          from 'components/Ballot/Measure';
+import Opinion                          from 'components/Ballot/Opinion';
 
-import Requests                         from 'route-components/Requests';
-import Connect                          from 'route-components/Connect';
-import Activity                         from 'route-components/Activity';
-import More                             from 'route-components/More';
-import NotFound                         from 'route-components/NotFound';
+import Requests                         from 'routes/Requests';
+import Connect                          from 'routes/Connect';
+import Activity                         from 'routes/Activity';
+
+import More                             from 'routes/More';
+import About                            from 'routes/More/About';
+
+import NotFound                         from 'routes/NotFound';
 
 /****************************** Components ************************************/
 //import Office                         from 'components/Office/Office';
 //import Organization                   from 'components/Organization/Organization';
 
-import AddFriend                        from 'components/AddFriend';
+import AddFriend                        from 'routes/AddFriend';
 
 /****************************** Stylesheets ***********************************/
 import 'font-awesome/css/font-awesome.css';
@@ -78,6 +81,8 @@ export default class Root extends Component {
                     <Route path="remove" />
                 </Route>
 
+                <Route path="/about" component={About} />
+
                 <Route path="/" component={Application} >
                     <IndexRoute component={Ballot} />
                     <Route path="ballot" component={Ballot} >
@@ -85,7 +90,7 @@ export default class Root extends Component {
                         {/*<Route path="org/:id" component={Organization}/>*/}
                         <Route path="/measure/:id" component={Measure} />
                         {/*<Route path="org/:id" component={Organization}/>*/}
-                        <Route path="/opinions" component={Opinions} />
+                        <Route path="/opinion" component={Opinion} />
                         {/*<Route path="/office/:id" component={Office} />*/}
                     </Route>
 

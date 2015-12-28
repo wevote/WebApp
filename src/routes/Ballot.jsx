@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+
 import BallotStore from 'stores/BallotStore';
+import BallotItem from 'components/Ballot/BallotItem';
 
 import 'assets/css/navigation.css';
-import AddressBox from 'components/AddressBox/AddressBox';
 
 export default class Ballot extends Component {
     constructor(props) {
@@ -22,14 +23,12 @@ export default class Ballot extends Component {
     }
 
     render () {
-        var items = [];
-        this.state.ballot_items.forEach( item => {
-            items.push(
-                <div className="ballot-item" key={ item.office_we_vote_id }>
-                    { item.office_name }
-                </div>
+        var ballotItems = [];
+        this.state.ballot_items.forEach( item =>
+            ballotItems.push(
+                <BallotItem data={item} key={item.we_vote_id}/>
             )
-        });
+        );
 
         return (
             <div className="ballot">
@@ -59,7 +58,7 @@ export default class Ballot extends Component {
                     </div>
                 </section>
             </header>
-                { items }
+                { ballotItems }
             </div>
         );
     }

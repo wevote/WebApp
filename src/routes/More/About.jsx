@@ -1,7 +1,6 @@
-import React, { Component } from "react";
-import { Link } from "react-router";
-
-import HeaderBackNavigation from "components/navigation/HeaderBackNavigation";
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import { Button } from 'react-bootstrap';
 
 {/* VISUAL DESIGN HERE:  */}
 
@@ -17,7 +16,6 @@ export default class About extends Component {
 	render() {
 	    return (
 			<div>
-				<HeaderBackNavigation link_route={'more'} />
 				<div className="container-fluid well well-90">
 					<h4>About We Vote</h4>
 

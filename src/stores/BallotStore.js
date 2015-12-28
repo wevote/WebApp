@@ -26,6 +26,23 @@ function shallowClone (obj) {
     return target;
 }
 
+function cloneWithCandidates (obj) {
+    let target = {};
+    for (var i in obj) {
+        if (obj.hasOwnProperty(i)) {
+            if (i === 'candidate_list') {
+                target[i] = [];
+                obj[i].forEach(c =>
+                    target[i].push(shallowClone(_candidate_store[c]))
+                )
+            } else {
+                target[i] = obj[i];
+            }
+        }
+    }
+    return target;
+}
+
 function printErr (err) {
     console.error(err);
 }
@@ -85,7 +102,7 @@ function getBallotItemsInfo (callback) {
                     .get(`${config.url}/ballotItemRetrieve/`)
                     .withCredentials()
                     .query({ ballot_item_we_vote_id: item.we_vote_id })
-                    .query({ kind_of_ballot_item: item.type })
+                    .query({ kind_of_ballot_item: item.kind_of_ballot_item })
                     .query({ ballot_item_id: '' })
                     .end( (err, res) => {
                         if (err || !res.body.success)
@@ -115,7 +132,7 @@ function getBallotItemsInfo (callback) {
 }
 
 function addBallotItemToStore (data) {
-    _ballot_store[data.office_we_vote_id] = shallowClone(data);
+    _ballot_store[data.we_vote_id] = shallowClone(data);
     return data;
 }
 
@@ -162,7 +179,7 @@ function addCandidatesToStore(data) {
     store.candidate_list = [];
 
     data.candidate_list.forEach(candidate => {
-        var candidate_id = candidate.candidate_we_vote_id;
+        var candidate_id = candidate.we_vote_id;
         store.candidate_list.push(candidate_id);
         _candidate_store[candidate_id] = shallowClone(candidate);
     });
@@ -213,7 +230,7 @@ const BallotStore = assign({}, EventEmitter.prototype, {
     getOrderedBallotItems: function () {
         var temp = [];
         _ballot_order.forEach(we_vote_id => temp
-            .push(shallowClone(_ballot_store[we_vote_id]))
+            .push(cloneWithCandidates(_ballot_store[we_vote_id]))
         )
         return temp;
     },
@@ -251,7 +268,7 @@ dispatcher.register( action => {
             BallotStore._emitChange();
             break;
         case BallotConstants.BALLOT_ALL_ITEMS_ADDED:
-            BallotStore._emitChange();
+            //BallotStore._emitChange();
             break;
         default:
             console.warn('default');
