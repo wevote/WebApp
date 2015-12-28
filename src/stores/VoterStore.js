@@ -66,8 +66,9 @@ const VoterStore = assign({}, EventEmitter.prototype, {
      * @return {undefined}
      */
     initialize: function (location) {
+        _location = ! _location ? this.changeLocation(location) : _location;
+
         return new Promise( function (resolve, reject) {
-            _location = ! _location ? this.changeLocation(location) : _location;
 
             if (! _device_id )
                 generateDeviceId()
@@ -77,7 +78,7 @@ const VoterStore = assign({}, EventEmitter.prototype, {
             else
                 resolve(_location);
 
-        }).catch(console.error);
+        });
     },
     /**
      * set geographical location of voter

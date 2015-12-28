@@ -40,9 +40,12 @@ import NotFound                         from 'routes/NotFound';
 import AddFriend                        from 'routes/AddFriend';
 
 
-new Promise( resolve => resolve('Oakland, CA'))
+new Promise( function (resolve) {
+        resolve('Oakland, CA')
+    })
     .then(VoterStore.initialize.bind(VoterStore))
-    .then(BallotStore.initialize.bind(BallotStore));
+    .then(BallotStore.initialize.bind(BallotStore))
+    .catch(err => console.error(err));
 
 
     // initialize the BallotStore when the app begins...

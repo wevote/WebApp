@@ -192,13 +192,17 @@ const BallotStore = assign({}, EventEmitter.prototype, {
      * @return {Boolean}
      */
     initialize: function (location) {
-        getBallotItemsFromGoogle(location)
-            .then(getBallotItems)
-            .then(addItemsToStore)
-            .then(setCivicId)
-            .then(getBallotItemsInfo(addBallotItemToStore))
-            .then(getCandidatesById(addCandidatesToStore))
-            .catch(err => console.error(err));
+        return new Promise( resolve => {
+            getBallotItemsFromGoogle(location)
+                .then(getBallotItems)
+                .then(addItemsToStore)
+                .then(setCivicId)
+                .then(getBallotItemsInfo(addBallotItemToStore))
+                .then(getCandidatesById(addCandidatesToStore))
+                .catch(err => console.error(err));
+
+            resolve(location);
+        }).catch(err => console.error(err))
     },
 
     /**
