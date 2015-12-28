@@ -20,9 +20,9 @@ export default class Application extends Component {
 
 	render() {
 		return (
-            <div>
-                { this.props.children }
-                <Navigator />
+        <div>
+          { this.props.children }
+          <Navigator />
 		    </div>
         );
 	}
