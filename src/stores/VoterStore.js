@@ -66,9 +66,8 @@ const VoterStore = assign({}, EventEmitter.prototype, {
      * @return {undefined}
      */
     initialize: function (location) {
-        _location = ! _location ? this.changeLocation(location) : _location;
-
         return new Promise( function (resolve, reject) {
+            _location = ! _location ? this.changeLocation(location) : _location;
 
             if (! _device_id )
                 generateDeviceId()
