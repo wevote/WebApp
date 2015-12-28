@@ -16,7 +16,7 @@ new WebpackDevServer (
     webpack(config),
     webpack_dev_options
 )
-.listen(port, host, (err /*,result*/) => {
-    if (err) console.log(err);
-    console.log('Listening at http://' + host + ':' + port);
-});
+.listen(port, host, err => err ?
+    console.error(err) :
+    console.log('Listening at http://' + host + ':' + port)
+);

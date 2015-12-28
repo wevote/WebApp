@@ -52,7 +52,7 @@ export default class Ballot extends Component {
                         </div>
                         <div className="col-xs-6 col-md-6 text-center">
                             <i className="icon-icon-more-opinions-2-2 icon-light icon-medium"></i>
-                            <Link to="/myballot/opinions"
+                            <Link to="/ballot/opinions"
                                   className="font-darkest fluff-left-narrow">More Opinions
                             </Link>
                         </div>

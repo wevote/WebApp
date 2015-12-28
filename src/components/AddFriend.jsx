@@ -22,7 +22,7 @@ export default class AddFriend extends Component {
 
 	    return (
             <div>
-            	<Link to="/myballot"> &lt;Back to My Ballot"}
+            	<Link to="/ballot"> &lt;Back to My Ballot"}
                 </Link>
             	<div className="container-fluid well well-90">
             		<h2 className="text-center">Add Friends</h2>

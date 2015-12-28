@@ -32,7 +32,7 @@ export default class BallotMeasurePage extends React.Component {
         }
 	    return (
 			<div>
-				<Link to="/myballot" >
+				<Link to="/ballot" >
 				 	&lt; Back to My Ballot
 				</Link>
 				<div className="container-fluid well well-90">

@@ -8,7 +8,7 @@ export default class Navigator extends React.Component {
             <div className="navbar navbar-default navbar-fixed-bottom">
                 <div className="container-fluid container-top10 seperator-top">
                   <div className="row">
-                    <Link to="/myballot">
+                    <Link to="/ballot">
                         <div className="col-xs-2 center-block text-center">
                           <span className="glyphicon glyphicon-list-alt glyphicon-line-adjustment"></span><br />
                           <span className="text-center small">Ballot</span>

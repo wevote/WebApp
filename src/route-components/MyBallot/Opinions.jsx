@@ -19,7 +19,7 @@ export default class Opinions extends Component {
 	render() {
 	    return (
 			<div>
-				<Link to="/myballot">
+				<Link to="/ballot">
 					&lt; Back to my ballot
 				</Link>
 				<div className="container-fluid well well-90">

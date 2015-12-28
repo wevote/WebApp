@@ -18,7 +18,7 @@ export default class Home extends Component {
 		};
 
         if (this.state.device_verified)
-            location.href='myballot';
+            location.href='ballot';
 	}
 
 	static getProps() {

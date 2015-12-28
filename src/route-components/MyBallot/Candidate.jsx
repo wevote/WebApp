@@ -35,7 +35,7 @@ export default class Candidate extends Component {
 
 	    return (
             <div>
-                <Link to="/myballot">
+                <Link to="/ballot">
                     &lt; Back to my ballot
                 </Link>
                 <div className="container-fluid well well-90">

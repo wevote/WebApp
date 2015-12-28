@@ -129,7 +129,7 @@ export default class IntroBallotContests extends Component {
 						Back
 					</Button>
 				</Link>
-                <Link style={float.right} to="/myballot">
+                <Link style={float.right} to="/ballot">
 					<Button bsStyle="primary" bsSize="small">
                     	Show me my ballot!
 					</Button>
