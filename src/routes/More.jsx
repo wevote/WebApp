@@ -24,16 +24,16 @@ export default class More extends Component {
 			        <LanguageSwitchNavigation />
 			        <h4 className="text-left">My Ballot</h4>
 			        <ul className="list-group">
-			            <li className="list-group-item"><Link to="email_ballot">Print, Save or Email Ballot</Link></li>
-			            <li className="list-group-item"><Link to="ask_or_share">Share with Friends</Link></li>
+			            <li className="list-group-item"><Link to="/email_ballot">Print, Save or Email Ballot</Link></li>
+			            <li className="list-group-item"><Link to="/ask_or_share">Share with Friends</Link></li>
 			            <li className="list-group-item"><Link to="/guides">My Voter Guides</Link></li>
-			            <li className="list-group-item"><Link to="/settings/location">My Ballot Location</Link></li>
 			            <li className="list-group-item"><Link to="opinions_followed">Public Opinions I Follow</Link></li>
 			        </ul>
 			        <h4 className="text-left">My Profile Settings</h4>
 			        <ul className="list-group">
 			            <li className="list-group-item"><Link to="/friends">My Friends</Link></li>
 			            <li className="list-group-item"><Link to="/settings">Account Settings</Link></li>
+						<li className="list-group-item"><Link to="/settings/location">My Ballot Location</Link></li>
 			        </ul>
 			        <h4 className="text-left">About</h4>
 			        <ul className="list-group">

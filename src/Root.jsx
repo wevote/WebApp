@@ -11,13 +11,14 @@ import IntroContests                    from 'routes/Intro/IntroContests';
 import IntroOpinions                    from 'routes/Intro/IntroOpinions';
 
 /* settings */
-// import Settings                         from 'route-routes/Settings';
+import SettingsDashboard                from 'routes/Settings/SettingsDashboard';
+import Settings                         from 'routes/Settings/Settings';
 import Location                         from 'routes/Settings/Location';
 
 /* myballot */
 import BallotStore                      from 'stores/BallotStore';
-import Ballot			                from 'routes/Ballot';
-import Candidate                        from 'components/Ballot/Candidate';
+import Ballot			                from 'routes/Ballot/Ballot';
+import Candidate                        from 'routes/Ballot/Candidate';
 import Measure                          from 'components/Ballot/Measure';
 import Opinion                          from 'components/Ballot/Opinion';
 
@@ -72,7 +73,8 @@ export default class Root extends Component {
                 {/*
                   * Settings go in this structure...
                   */}
-                <Route path="/settings" >
+                <Route path="/settings" component={SettingsDashboard}>
+                    <IndexRoute component={Settings} />
                     <Route path="location" component={Location} />
                 </Route>
 
@@ -85,14 +87,13 @@ export default class Root extends Component {
 
                 <Route path="/" component={Application} >
                     <IndexRoute component={Ballot} />
-                    <Route path="ballot" component={Ballot} >
-                        <Route path="/candidate/:id" component={Candidate} />
-                        {/*<Route path="org/:id" component={Organization}/>*/}
-                        <Route path="/measure/:id" component={Measure} />
-                        {/*<Route path="org/:id" component={Organization}/>*/}
-                        <Route path="/opinion" component={Opinion} />
-                        {/*<Route path="/office/:id" component={Office} />*/}
-                    </Route>
+                    <Route path="ballot" component={Ballot} />
+                    <Route path="/candidate/:id" component={Candidate} />
+                    {/*<Route path="org/:id" component={Organization}/>*/}
+                    <Route path="/measure/:id" component={Measure} />
+                    {/*<Route path="org/:id" component={Organization}/>*/}
+                    <Route path="/opinion" component={Opinion} />
+                    {/*<Route path="/office/:id" component={Office} />*/}
 
                     <Route path="requests" component={Requests} />
                     <Route path="connect" component={Connect} />

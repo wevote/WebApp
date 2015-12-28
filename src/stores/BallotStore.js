@@ -230,7 +230,7 @@ const BallotStore = assign({}, EventEmitter.prototype, {
     getOrderedBallotItems: function () {
         var temp = [];
         _ballot_order.forEach(we_vote_id => temp
-            .push(cloneWithCandidates(_ballot_store[we_vote_id]))
+            .push(shallowClone(_ballot_store[we_vote_id]))
         )
         return temp;
     },
@@ -248,8 +248,16 @@ const BallotStore = assign({}, EventEmitter.prototype, {
      * @param  {Number} id candidate's we_vote_id
      * @return {Object}    candidate
      */
-    getCandidateById: function (id) {
-        return shallowClone(_candidate_store[id]);
+    getCandidateByBallotId: function (id) {
+        var temp = [];
+
+        _ballot_store[id].candidate_list.forEach( candidate_id =>
+            temp.push(_candidate_store[candidate_id])
+        )
+
+        console.log(temp);
+        
+        return temp;
     },
 
     /**

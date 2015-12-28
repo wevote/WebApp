@@ -7,20 +7,23 @@ import StarAction from 'components/StarAction';
 
 export default class BallotItem extends Component {
     static propTypes = {
-        data: PropTypes.object.isRequired
+        data: PropTypes.object.isRequired,
+        candidates: PropTypes.array
     }
 
     render() {
         let {
             we_vote_id,
-            ballot_item_display_name,
-            candidate_list
-
+            ballot_item_display_name
         } = this.props.data;
+
+        let {
+            candidates
+        } = this.props;
 
         let candidateList = [];
 
-        candidate_list.forEach( candidate =>
+        candidates.forEach( candidate =>
             candidateList.push(
                 < Candidate
                     data={candidate}

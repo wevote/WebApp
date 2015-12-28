@@ -6,11 +6,13 @@ const url = require('config').url;
 
 let _device_id = cookies.getItem('voter_device_id');
 let _voter_id = cookies.getItem('voter_id');
+let _location = cookies.getItem('location');
 let _position = {};
 
 function newVoter ( ) {
     generateDeviceId()
         .then( createVoterId )
+        .then( setInitialLocation )
         .catch( console.error );
 }
 
@@ -35,6 +37,7 @@ function generateDeviceId () {
 
 function createVoterId (device_id) {
     console.log('creating voter id');
+
     return new Promise ( (resolve, reject) => request
         .get(`${url}/voterCreate/`).withCredentials()
         .end( (err, res) => {
@@ -49,6 +52,15 @@ function createVoterId (device_id) {
             }
         })
     ).catch(console.error);
+}
+
+function setInitialLocation () {
+    console.log('setting initial location...');
+    console.warn(`
+        we will need to configure logic & etc. for setting up a voters
+        location...
+    `);
+    cookies.setItem('location', 'Oakland, CA');
 }
 
 function Voter () {

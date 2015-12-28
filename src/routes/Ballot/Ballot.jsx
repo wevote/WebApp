@@ -26,7 +26,10 @@ export default class Ballot extends Component {
         var ballotItems = [];
         this.state.ballot_items.forEach( item =>
             ballotItems.push(
-                <BallotItem data={item} key={item.we_vote_id}/>
+                <BallotItem
+                    data={item}
+                    candidates={BallotStore.getCandidateByBallotId(item.we_vote_id)}
+                    key={item.we_vote_id} />
             )
         );
 

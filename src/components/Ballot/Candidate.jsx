@@ -28,7 +28,7 @@ export default class Candidate extends Component {
                         <h4 className="bufferNone">
                             <Link
                                 className="linkLight"
-                                to="candidate/{we_vote_id}"
+                                to={"/candidate/" + we_vote_id.replace(/[a-zA-Z]/g,'') }
                                 onlyActiveOnIndex={false}>
                                 { ballot_item_display_name }
                             </Link>
