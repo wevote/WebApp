@@ -47,12 +47,12 @@ function printErr (err) {
     console.error(err);
 }
 
-function getBallotItemsFromGoogle () {
+function getBallotItemsFromGoogle (text_for_map_search) {
     return new Promise((resolve, reject) => request
         .get(`${config.url}/voterBallotItemsRetrieveFromGoogleCivic/`)
         .withCredentials()
         .query(config.test)
-        .query(config.location)
+        .query({ text_for_map_search })
         .end( function (err, res) {
             if (err || !res.body.success)
                 reject(err || res.body.status);
@@ -88,7 +88,6 @@ function addItemsToStore (data) {
 
 function setCivicId (data) {
     _civic_id = data.google_civic_election_id;
-    // BallotActions.CivicIDSet( _civic_id );
     return data;
 }
 
@@ -192,8 +191,8 @@ const BallotStore = assign({}, EventEmitter.prototype, {
      * initialize the ballot store with data
      * @return {Boolean}
      */
-    initialize: function () {
-        getBallotItemsFromGoogle()
+    initialize: function (location) {
+        getBallotItemsFromGoogle(location)
             .then(getBallotItems)
             .then(addItemsToStore)
             .then(setCivicId)
@@ -255,8 +254,6 @@ const BallotStore = assign({}, EventEmitter.prototype, {
             temp.push(_candidate_store[candidate_id])
         )
 
-        console.log(temp);
-        
         return temp;
     },
 

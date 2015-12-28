@@ -1,6 +1,9 @@
 import React, { Component }             from 'react';
 import { Router, Route, IndexRoute }    from 'react-router';
 
+import VoterStore                       from 'stores/VoterStore';
+import BallotStore                      from 'stores/BallotStore';
+
 // main Application
 import Application  		            from 'Application';
 
@@ -16,7 +19,6 @@ import Settings                         from 'routes/Settings/Settings';
 import Location                         from 'routes/Settings/Location';
 
 /* myballot */
-import BallotStore                      from 'stores/BallotStore';
 import Ballot			                from 'routes/Ballot/Ballot';
 import Candidate                        from 'routes/Ballot/Candidate';
 import Measure                          from 'components/Ballot/Measure';
@@ -37,26 +39,24 @@ import NotFound                         from 'routes/NotFound';
 
 import AddFriend                        from 'routes/AddFriend';
 
-/****************************** Stylesheets ***********************************/
-import 'font-awesome/css/font-awesome.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'assets/css/fonts.css';
-import 'assets/css/application.css';
-import 'assets/css/layout.css';
-import 'assets/css/colors.css';
 
-// polyfill
-if (!Object.assign) Object.assign = React.__spread;
+new Promise( resolve => resolve('Oakland, CA'))
+    .then(VoterStore.initialize)
+    .then(BallotStore.initialize);
 
-BallotStore.initialize();
 
-export default class Root extends Component {
+    // initialize the BallotStore when the app begins...
+    // this will eventually have to move to account for intro logic.
+//    BallotStore.initialize
+
+
+class Root extends Component {
     static propTypes = {
         history: React.PropTypes.object.isRequired
     };
 
     render() {
-        const {history} = this.props;
+        const { history } = this.props;
 
         return (
             <Router history={history} >
@@ -88,11 +88,11 @@ export default class Root extends Component {
                 <Route path="/" component={Application} >
                     <IndexRoute component={Ballot} />
                     <Route path="ballot" component={Ballot} />
-                    <Route path="/candidate/:id" component={Candidate} />
+                    <Route path="candidate/:id" component={Candidate} />
                     {/*<Route path="org/:id" component={Organization}/>*/}
-                    <Route path="/measure/:id" component={Measure} />
+                    <Route path="measure/:id" component={Measure} />
                     {/*<Route path="org/:id" component={Organization}/>*/}
-                    <Route path="/opinion" component={Opinion} />
+                    <Route path="opinion" component={Opinion} />
                     {/*<Route path="/office/:id" component={Office} />*/}
 
                     <Route path="requests" component={Requests} />
@@ -108,3 +108,5 @@ export default class Root extends Component {
         );
     }
 };
+
+export default Root;

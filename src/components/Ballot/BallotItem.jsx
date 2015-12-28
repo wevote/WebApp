@@ -34,14 +34,17 @@ export default class BallotItem extends Component {
         return (
             <div
                 id={we_vote_id}
-                className="ballot-item well well-skinny split-top-skinny"
-                >
+                className="ballot-item well well-skinny split-top-skinny">
+
                 { ballot_item_display_name }
+
                 <InfoIconAction />
                 <StarAction />
+
                 <ul className="list-group">
                     { candidateList }
                 </ul>
+
             </div>
         )
     }
