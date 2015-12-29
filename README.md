@@ -1,5 +1,9 @@
 # README for WebApp Installation
 
+## Install WeVoteServer First
+In order to get the data the WebApp needs, please [install WeVoteServer](https://github.com/wevote/WeVoteServer/blob/master/README_API_INSTALL.md)
+
+
 ## Install nodeenv ("Node Env")
 
 Install nodeenv globally. For instructions installing it locally, see: https://github.com/ekalinin/nodeenv
@@ -51,3 +55,8 @@ Retrieve “WebApp” into that folder, so your code ends up here:
 You should be able to visit WebApp here:
 
     http://localhost:3001
+
+
+## After Installation: Working with WebApp Day-to-Day
+
+[Read about working with WebApp on a daily basis](README_WORKING_WITH_WEB_APP.md)
