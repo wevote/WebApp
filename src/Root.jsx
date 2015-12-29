@@ -21,8 +21,8 @@ import Location                         from 'routes/Settings/Location';
 /* myballot */
 import Ballot			                from 'routes/Ballot/Ballot';
 import Candidate                        from 'routes/Ballot/Candidate';
-import Measure                          from 'components/Ballot/Measure';
-import Opinion                          from 'components/Ballot/Opinion';
+// import Measure                          from 'routes/Ballot/Measure';
+// import Opinion                          from 'routes/Ballot/Opinion';
 
 import Requests                         from 'routes/Requests';
 import Connect                          from 'routes/Connect';
@@ -33,25 +33,13 @@ import About                            from 'routes/More/About';
 
 import NotFound                         from 'routes/NotFound';
 
-/****************************** Components ************************************/
-//import Office                         from 'components/Office/Office';
-//import Organization                   from 'components/Organization/Organization';
-
 import AddFriend                        from 'routes/AddFriend';
 
 
-new Promise( function (resolve) {
-        resolve('Oakland, CA')
-    })
+new Promise( function (resolve) { resolve('Oakland, CA') })
     .then(VoterStore.initialize.bind(VoterStore))
     .then(BallotStore.initialize.bind(BallotStore))
     .catch(err => console.error(err));
-
-
-    // initialize the BallotStore when the app begins...
-    // this will eventually have to move to account for intro logic.
-//    BallotStore.initialize
-
 
 class Root extends Component {
     static propTypes = {
@@ -73,9 +61,7 @@ class Root extends Component {
                     <Route path="contests" component={IntroContests} />
                 </Route>
 
-                {/*
-                  * Settings go in this structure...
-                  */}
+                {/* Settings go in this structure... */}
                 <Route path="/settings" component={SettingsDashboard}>
                     <IndexRoute component={Settings} />
                     <Route path="location" component={Location} />
@@ -92,11 +78,14 @@ class Root extends Component {
                     <IndexRoute component={Ballot} />
                     <Route path="ballot" component={Ballot} />
                     <Route path="candidate/:id" component={Candidate} />
-                    {/*<Route path="org/:id" component={Organization}/>*/}
-                    <Route path="measure/:id" component={Measure} />
-                    {/*<Route path="org/:id" component={Organization}/>*/}
-                    <Route path="opinion" component={Opinion} />
-                    {/*<Route path="/office/:id" component={Office} />*/}
+                    {/*
+                        <Route path="org/:id" component={Organization}/>
+                        <Route path="measure/:id" component={Measure} />
+                        <Route path="org/:id" component={Organization}/>
+                        <Route path="opinion" component={Opinion} />
+                        <Route path="/office/:id" component={Office} />
+
+                    */}
 
                     <Route path="requests" component={Requests} />
                     <Route path="connect" component={Connect} />

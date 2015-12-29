@@ -8,14 +8,25 @@ export default class Candidate extends Component {
         data: PropTypes.object.isRequired
     }
 
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+
+    componentDidMount() {
+
+    }
+
+    componentWillUnmount() {
+
+    }
+
     render() {
         let {
             we_vote_id,
             ballot_item_display_name
         }
         = this.props.data;
-
-        console.log(this.props.data);
 
         return (
             <li className="list-group-item">
@@ -28,7 +39,7 @@ export default class Candidate extends Component {
                         <h4 className="bufferNone">
                             <Link
                                 className="linkLight"
-                                to={"/candidate/" + we_vote_id.replace(/[a-zA-Z]/g,'') }
+                                to={"/candidate/" + we_vote_id.split('cand').pop() }
                                 onlyActiveOnIndex={false}>
                                 { ballot_item_display_name }
                             </Link>

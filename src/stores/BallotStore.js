@@ -242,8 +242,8 @@ const BallotStore = assign({}, EventEmitter.prototype, {
      * return list of all candidates
      * @return {Array} array of candidates
      */
-    getCandidates: function () {
-
+    getCandidateById: function (id) {
+        return _candidate_store[id];
     },
 
     /**
