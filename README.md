@@ -1,4 +1,11 @@
-# README for WebApp Installation
+# README for We Vote WebApp
+
+This WebApp repository contains a Node/React/Flux Javascript application. Using data from 
+Google Civic API, Vote Smart, MapLight, TheUnitedStates.io and the Voting Information Project, we give voters a
+social way to interact with ballot data.
+
+You can see our current wireframe mockup for a San Francisco ballot here:
+http://start.wevoteusa.org/
 
 ## Install WeVoteServer First
 In order to get the data the WebApp needs, please [install WeVoteServer](https://github.com/wevote/WeVoteServer/blob/master/README_API_INSTALL.md)
