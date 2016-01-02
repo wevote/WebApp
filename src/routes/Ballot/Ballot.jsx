@@ -4,8 +4,6 @@ import { Link } from 'react-router';
 import BallotStore from 'stores/BallotStore';
 import BallotItem from 'components/Ballot/BallotItem';
 
-import 'assets/css/navigation.css';
-
 export default class Ballot extends Component {
     constructor(props) {
         super(props);

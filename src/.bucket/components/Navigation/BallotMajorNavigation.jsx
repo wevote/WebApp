@@ -1,6 +1,6 @@
 import React from "react";
 import { Router, Link } from "react-router";
-import styles from 'assets/css/utilities.css'
+import styles from 'assets/css/utilities.cs'
 
 export default class BallotMajorNavigation extends React.Component {
   render() {
