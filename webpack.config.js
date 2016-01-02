@@ -1,13 +1,5 @@
 const path = require('path')
 const webpack = require('webpack')
-const autoprefixer = require('autoprefixer')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-
-const sassLoaders = [
-    'css-loader',
-    'postcss-loader',
-    'sass-loader?indentedSyntax=sass&includePaths[]=' + path.resolve(__dirname, './src')
-]
 
 const config = {
     devtool: 'eval',
@@ -17,7 +9,7 @@ const config = {
             path.resolve(__dirname, 'build'),
             path.resolve(__dirname, 'node_modules')
         ],
-        extensions: ['','.js','.jsx','.sass'],
+        extensions: ['','.js','.jsx'],
         moduleDirectories: ['src', 'node_modules']
     },
     entry: [
@@ -33,13 +25,7 @@ const config = {
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.WatchIgnorePlugin([/node_modules/]),
-        new ExtractTextPlugin('[name].css')
-    ],
-    postcss: [
-        autoprefixer({
-            browsers: ['last 2 versions']
-        })
+        new webpack.WatchIgnorePlugin([/node_modules/])
     ],
     module: {
         loaders: [
@@ -62,8 +48,8 @@ const config = {
             {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader' },
             {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader' },
             {
-                test: /\.sass$/,
-                loader: ExtractTextPlugin.extract('style-loader', sassLoaders.join('!'))
+                test: /\.scss$/,
+                loader: 'style!css!sass'
             }
             // {test: /\.md$/, loader: 'html!markdown' },
         ]
