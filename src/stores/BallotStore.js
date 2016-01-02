@@ -10,6 +10,7 @@ const BallotActions = require('../actions/BallotActions');
 const config = require('../config');
 
 const CHANGE_EVENT = 'change';
+const MEASURE = 'MEASURE';
 
 let _civic_id = null;
 let _ballot_store = {};
@@ -140,22 +141,29 @@ function getCandidatesById (callback) {
 
     return function (data) {
         new Promise ( (resolve, reject) => {
-            data.ballot_item_list.forEach( item => new Promise(
-                (_resolve, _reject) => request
+            data.ballot_item_list.forEach( (item, index) => {
+
+                // don't retrieve candidates for measures
+                if ( item.kind_of_ballot_item === MEASURE )
+                    return count ++ ;
+
+                new Promise( (_resolve, _reject) => request
                     .get(`${config.url}/candidatesRetrieve/`)
                     .withCredentials()
                     .query({ office_we_vote_id: item.we_vote_id })
                     .query({ office_id: ''})
                     .end( (err, res) => {
-                        if (err || !res.body.success)
+                        if (err || !res.body.success) {
                             _reject(err || res.body.status);
-                        else
+                        }
+                        else {
                             _resolve(res.body);
+                        }
                     })
                 )
                 .then( function (value) {
                     callback(value);
-                    count++;
+                    count ++;
                     if (count === data.ballot_item_list.length) {
                         BallotActions.AllCandidatesAdded({
                             actionType: BallotConstants.BALLOT_ALL_CANDIDATES_ADDED,
@@ -163,8 +171,10 @@ function getCandidatesById (callback) {
                         })
                     }
                 })
-                .catch(printErr)
-            )
+                .catch( err => {
+                    console.log(err);
+                })
+            })
             resolve(data);
         })
         .catch(printErr);
@@ -253,6 +263,9 @@ const BallotStore = assign({}, EventEmitter.prototype, {
      */
     getCandidateByBallotId: function (id) {
         var temp = [];
+
+        if ( _ballot_store[id].kind_of_ballot_item === MEASURE )
+            return temp;
 
         _ballot_store[id].candidate_list.forEach( candidate_id =>
             temp.push(_candidate_store[candidate_id])
