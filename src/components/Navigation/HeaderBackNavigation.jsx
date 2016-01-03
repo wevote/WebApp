@@ -39,7 +39,7 @@ export default class HeaderBackNavigation extends React.Component {
         }
         return (
 <div className="row">
-    <nav className="navbar navbar-main navbar-fixed-top">
+    <nav className="navbar navbar-main navbar-fixed-top paradeiser">
         <div className="container-fluid">
             {back_to_link}
             <h4 className="text-center">{header_text}</h4>
