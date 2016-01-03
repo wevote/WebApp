@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Link } from "react-router";
+import Headroom from "react-headrooom";
 
 export default class HeaderBackNavigation extends React.Component {
     render() {
@@ -39,12 +40,14 @@ export default class HeaderBackNavigation extends React.Component {
         }
         return (
 <div className="row">
-    <nav className="navbar navbar-main navbar-fixed-top paradeiser">
-        <div className="container-fluid">
-            {back_to_link}
-            <h4 className="text-center">{header_text}</h4>
-        </div>
-    </nav>
+    <Headroom>
+        <nav className="navbar navbar-main navbar-fixed-top paradeiser">
+            <div className="container-fluid">
+                {back_to_link}
+                <h4 className="text-center">{header_text}</h4>
+            </div>
+        </nav>
+    </Headroom>
 </div>
         );
     }
