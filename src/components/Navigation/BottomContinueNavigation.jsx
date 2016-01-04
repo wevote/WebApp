@@ -1,10 +1,19 @@
 "use strict";
 
+import React, { Component, PropTypes } from 'react';
 import { Button, ButtonToolbar } from "react-bootstrap";
-import React from "react";
 import { Router, Link } from "react-router";
 
-export default class BottomContinueNavigation extends React.Component {
+export default class BottomContinueNavigation extends Component {
+    static propTypes = {
+        continue_text: PropTypes.string,
+        link_route_cancel: PropTypes.string,
+        cancel_text: PropTypes.string,
+        link_route_continue: PropTypes.string
+    }
+    constructor(props) {
+        super(props);
+    }
     render() {
         var continue_text;
         if (this.props.continue_text) {
