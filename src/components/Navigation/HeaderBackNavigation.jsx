@@ -1,10 +1,18 @@
 "use strict";
 
-import React from "react";
+import { React, Component } from "react";
 import { Link } from "react-router";
-import Headroom from "react-headrooom";
 
-export default class HeaderBackNavigation extends React.Component {
+export class HeaderBackNavigation extends Component {
+    static propTypes = {
+        back_to_text: React.propTypes.string,
+        link_route: React.propTypes.string,
+        back_to_off: React.propTypes.boolean,
+        header_text: React.propTypes.string
+    }
+    constructor(props) {
+        super(props);
+    }
     render() {
         var back_to_text;
         if (this.props.back_to_text) {
@@ -39,16 +47,14 @@ export default class HeaderBackNavigation extends React.Component {
             header_text = '';
         }
         return (
-<div className="row">
-    <Headroom>
-        <nav className="navbar navbar-main navbar-fixed-top paradeiser">
-            <div className="container-fluid">
-                {back_to_link}
-                <h4 className="text-center">{header_text}</h4>
+            <div className="row">
+                <nav className="navbar navbar-main navbar-fixed-top paradeiser">
+                    <div className="container-fluid">
+                        {back_to_link}
+                        <h4 className="text-center">{header_text}</h4>
+                    </div>
+                </nav>
             </div>
-        </nav>
-    </Headroom>
-</div>
         );
     }
 }
