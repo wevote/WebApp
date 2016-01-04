@@ -1,8 +1,14 @@
-import React from "react";
-import { DropdownButton, MenuItem } from "react-bootstrap";
-import { Link } from "react-router";
+import React, { Component, PropTypes } from 'react';
+import { DropdownButton, MenuItem } from 'react-bootstrap';
+import { Link } from 'react-router';
 
-export default class StarAction extends React.Component {
+export default class StarAction extends Component {
+    static propTypes = {
+        we_vote_id: PropTypes.number
+    }
+    constructor(props) {
+        super(props);
+    }
 	render() {
         var floatRight = {
             float: 'right'
@@ -18,9 +24,9 @@ export default class StarAction extends React.Component {
             </Link>;
         }
 		return (
-<span style={floatRight}>
-    &nbsp;<span className="glyphicon glyphicon-small glyphicon-star-empty"></span>
-</span>
+            <span style={floatRight}>
+                &nbsp;<span className="glyphicon glyphicon-small glyphicon-star-empty"></span>
+            </span>
         );
 	}
 }

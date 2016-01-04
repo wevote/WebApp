@@ -1,10 +1,16 @@
 "use strict";
 
-import React from "react";
-import { Button, ButtonToolbar, Modal } from "react-bootstrap";
-import { Link } from "react-router";
+import React, { Component, PropTypes } from 'react';
+import { Button, ButtonToolbar, Modal } from 'react-bootstrap';
+import { Link } from 'react-router';
 
-export default class MoreInforIconAction extends React.Component {
+export default class MoreInforIconAction extends Component {
+    static propTypes = {
+        we_vote_id: PropTypes.number
+    }
+    constructor(props) {
+        super(props);
+    }
 	render() {
         var floatRight = {
             float: 'right'
@@ -21,9 +27,9 @@ export default class MoreInforIconAction extends React.Component {
             </Link>;
         }
 		return (
-<span>
-    &nbsp;&nbsp;&nbsp;<span className="glyphicon glyphicon-small glyphicon-info-sign"></span>
-</span>
+            <span>
+                <span className="glyphicon glyphicon-small glyphicon-info-sign"></span>
+            </span>
         );
 	}
 }

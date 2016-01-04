@@ -1,8 +1,14 @@
-import React from "react";
-import { DropdownButton, MenuItem } from "react-bootstrap";
-import { Link } from "react-router";
+import React, { Component, PropTypes } from 'react';
+import { DropdownButton, MenuItem } from 'react-bootstrap';
+import { Link } from 'react-router';
 
-export default class LanguageSwitchNavigation extends React.Component {
+export default class LanguageSwitchNavigation extends Component {
+    static propTypes = {
+        language_selected: PropTypes.string
+    }
+    constructor(props) {
+        super(props);
+    }
 	render() {
         var choose_english_html;
         //if (this.props.language_selected == 'english') {

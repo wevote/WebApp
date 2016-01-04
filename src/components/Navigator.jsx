@@ -1,7 +1,7 @@
-import React from "react";
-import { Router, Link } from "react-router";
+import React, { Component } from 'react';
+import { Router, Link } from 'react-router';
 
-export default class Navigator extends React.Component {
+export default class Navigator extends Component {
   render() {
     return (
         <div className="row">

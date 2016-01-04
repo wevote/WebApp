@@ -1,14 +1,14 @@
 "use strict";
 
-import React, {Component } from "react";
+import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
 
 export class HeaderBackNavigation extends Component {
     static propTypes = {
-        back_to_text: React.propTypes.string,
-        link_route: React.propTypes.string,
-        back_to_off: React.propTypes.boolean,
-        header_text: React.propTypes.string
+        back_to_text: PropTypes.string,
+        link_route: PropTypes.string,
+        back_to_off: PropTypes.boolean,
+        header_text: PropTypes.string
     }
     constructor(props) {
         super(props);

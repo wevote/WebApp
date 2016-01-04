@@ -1,10 +1,16 @@
 "use strict";
 
-import React from "react";
-import { Button, ButtonToolbar } from "react-bootstrap";
-import { Link } from "react-router";
+import React, { Component, PropTypes } from 'react';
+import { Button, ButtonToolbar } from 'react-bootstrap';
+import { Link } from 'react-router';
 
-export default class FollowOrIgnoreAction extends React.Component {
+export default class FollowOrIgnoreAction extends Component {
+    static propTypes = {
+        action_text: PropTypes.string
+    }
+    constructor(props) {
+        super(props);
+    }
 	render() {
         var floatRight = {
             float: 'right'
@@ -19,7 +25,7 @@ export default class FollowOrIgnoreAction extends React.Component {
             <span style={floatRight}>
                 <ButtonToolbar>
                     <Button bsStyle="info" bsSize="small">{action_text}</Button>
-                    <Button bsStyle="danger" bsSize="xsmall">Ignore</Button>
+                    <Button bsStyle="danger" bsSize="small">Ignore</Button>
                 </ButtonToolbar>
             </span>
         );
