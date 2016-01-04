@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import Navigator from 'components/Navigator';
 
+import 'stylesheets/main.scss';
+
 export default class Application extends Component {
     static propTypes = {
         children: PropTypes.object

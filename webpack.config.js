@@ -39,18 +39,15 @@ const config = {
                     presets: ['es2015', 'react', 'stage-0']
                 }
             },
-            {test: /\.css$/, loader:'style-loader!css-loader'},
-            {test: /\.json/, loader: 'json-loader'},
-            {test: /\.jpe?g$|\.gif$|\.png$|\.wav$|\.mp3$/, loader: 'url-loader' },
-            {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader' },
-            {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader' },
-            {test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader' },
-            {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader' },
-            {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader' },
-            {
-                test: /\.scss$/,
-                loader: 'style!css!sass'
-            }
+            { test: /\.css$/, loader:'style-loader!css-loader'},
+            { test: /\.json/, loader: 'json-loader'},
+            { test: /\.jpe?g$|\.gif$|\.png$|\.wav$|\.mp3$/, loader: 'url-loader' },
+            { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader' },
+            { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader' },
+            { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader' },
+            { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader' },
+            { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader' },
+            { test: /\.scss$/, loader: 'style!css!sass' }
             // {test: /\.md$/, loader: 'html!markdown' },
         ]
     }

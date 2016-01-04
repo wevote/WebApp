@@ -8,7 +8,9 @@
 
 // 2. Vendors
 @import
-  'vendor/normalize';
+  'vendor/normalize',
+  'vendor/font-awesome/font-awesome.scss',
+  'vendor/bootstrap/bootstrap.scss';
 
 // 3. Base stuff
 @import
