@@ -1,6 +1,6 @@
 "use strict";
 
-import { React, Component } from "react";
+import React, {Component } from "react";
 import { Link } from "react-router";
 
 export class HeaderBackNavigation extends Component {
