@@ -3,11 +3,6 @@ import React, { Component, PropTypes } from 'react';
 import { voterAddressSave } from 'utils/APIS'
 
 export default class AddressBox extends Component {
-    let inputStyle = {
-        border: 'none',
-        outline: 'none'
-    };
-
     static propTypes = {
 
     }
@@ -20,6 +15,10 @@ export default class AddressBox extends Component {
     }
 
     render () {
+        let inputStyle = {
+           border: 'none',
+           outline: 'none'
+        }
         return (
             <div>
                 <input
