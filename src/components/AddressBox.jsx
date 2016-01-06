@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-import './AddressBox.css';
+import 'stylesheets/main.scss';
 
 export default class AddressBox extends Component {
     static propTypes = {

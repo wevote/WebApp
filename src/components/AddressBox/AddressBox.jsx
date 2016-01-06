@@ -2,9 +2,12 @@ import React, { Component, PropTypes } from 'react';
 
 import { voterAddressSave } from 'utils/APIS'
 
-import './AddressBox.css';
-
 export default class AddressBox extends Component {
+    let inputStyle = {
+        border: 'none',
+        outline: 'none'
+    };
+
     static propTypes = {
 
     }
@@ -23,6 +26,7 @@ export default class AddressBox extends Component {
                     className="addressbox"
                     type="text"
                     placeholder="Enter Your Address"
+                    style={inputStyle}
                     value={this.state.address}
                     onChange={this.onChange.bind(this) }
                     onBlur={this.onBlur.bind(this)}
