@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 export default class Settings extends Component {
     static propTypes = {
         children: PropTypes.object
-    }
+    };
 
     render () {
         return (

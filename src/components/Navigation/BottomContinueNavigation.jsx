@@ -10,7 +10,8 @@ export default class BottomContinueNavigation extends Component {
         link_route_cancel: PropTypes.string,
         cancel_text: PropTypes.string,
         link_route_continue: PropTypes.string
-    }
+    };
+    
     constructor(props) {
         super(props);
     }

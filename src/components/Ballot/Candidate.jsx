@@ -6,7 +6,7 @@ import StarAction from 'components/StarAction';
 export default class Candidate extends Component {
     static propTypes = {
         data: PropTypes.object.isRequired
-    }
+    };
 
     constructor(props) {
         super(props);

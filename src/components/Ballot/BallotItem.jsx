@@ -9,7 +9,7 @@ export default class BallotItem extends Component {
     static propTypes = {
         data: PropTypes.object.isRequired,
         candidates: PropTypes.array
-    }
+    };
 
     render() {
         let {

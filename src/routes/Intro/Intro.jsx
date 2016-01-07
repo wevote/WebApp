@@ -7,7 +7,7 @@ import { Link } from 'react-router';
 export default class Intro extends Component {
 	static propTypes = {
 		children: PropTypes.object
-	}
+	};
 
 	constructor(props) {
 		super(props);

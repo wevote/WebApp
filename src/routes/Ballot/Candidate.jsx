@@ -5,7 +5,7 @@ import BallotStore from 'stores/BallotStore';
 export default class Candidate extends Component {
     static propTypes = {
         params: PropTypes.object.isRequired
-    }
+    };
 
     constructor(props) {
         super(props);

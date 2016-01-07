@@ -10,7 +10,7 @@ import OrganizationsToFollowList from 'components/OrganizationsToFollowList';
 export default class Connect extends Component {
     static propTypes = {
 
-    }
+    };
 
     constructor(props) {
 		super(props);

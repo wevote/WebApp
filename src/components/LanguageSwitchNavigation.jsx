@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 export default class LanguageSwitchNavigation extends Component {
     static propTypes = {
         language_selected: PropTypes.string
-    }
+    };
     constructor(props) {
         super(props);
     }

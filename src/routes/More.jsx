@@ -7,7 +7,7 @@ import LanguageSwitchNavigation from "components/LanguageSwitchNavigation";
 export default class More extends Component {
 	static propTypes = {
 		children: PropTypes.object
-	}
+	};
 
 	constructor(props) {
 		super(props);

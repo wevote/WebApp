@@ -7,7 +7,8 @@ import { Link } from 'react-router';
 export default class FollowOrIgnoreAction extends Component {
     static propTypes = {
         action_text: PropTypes.string
-    }
+    };
+    
     constructor(props) {
         super(props);
     }

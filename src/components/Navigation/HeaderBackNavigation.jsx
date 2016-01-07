@@ -9,7 +9,8 @@ export class HeaderBackNavigation extends Component {
         link_route: PropTypes.string,
         back_to_off: PropTypes.boolean,
         header_text: PropTypes.string
-    }
+    };
+    
     constructor(props) {
         super(props);
     }

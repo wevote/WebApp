@@ -5,7 +5,7 @@ import React, { PropTypes, Component } from "react";
 export default class Activity extends Component {
     static propTypes = {
         children: PropTypes.object
-    }
+    };
 
 	constructor(props) {
 		super(props);
