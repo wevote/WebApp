@@ -83,7 +83,7 @@ class Root extends Component {
                     <Route path="remove" />
                 </Route>
 
-                <Route path="/about" component={About} />
+                <Route path="/more/about" component={About} />
 
                 <Route path="/" component={Application} >
 

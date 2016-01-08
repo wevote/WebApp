@@ -17,6 +17,9 @@ Install changes and start web application
     (WebAppEnv) $ npm install
     (WebAppEnv) $ npm start
 
+You should be able to visit WebApp here:
+
+    http://localhost:3001
 
 ## Coding Standards
 
