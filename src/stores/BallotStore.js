@@ -253,6 +253,8 @@ const BallotStore = assign({}, EventEmitter.prototype, {
      * @return {Array} array of candidates
      */
     getCandidateById: function (id) {
+      console.log(id);
+      console.log(_candidate_store);
         return _candidate_store[id];
     },
 
