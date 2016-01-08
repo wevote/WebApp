@@ -10,19 +10,11 @@ export default class Candidate extends Component {
 
     constructor(props) {
         super(props);
-        this.id = `wvtecand${this.props.params.id}`;
-        this.state = {
-          candidate: this.props.ballotStore.getCandidateById(this.id)
-        };
     }
 
-    componentDidMount () {
-      this.props.ballotStore._addChangeListener(this._onChange.bind(this));
-    }
+    componentDidMount () { }
 
-    componentWillUnmount () {
-      this.props.ballotStore._removeChangeListener(this._onChange.bind(this));
-    }
+    componentWillUnmount () { }
 
     render() {
         if (this.state.candidate)
@@ -31,9 +23,5 @@ export default class Candidate extends Component {
           return (<div className="loading-wheel">loading...</div>);
     }
 
-  _onChange () {
-    this.setState({
-      candidate: this.props.ballotStore.getCandidateById(this.id)
-    });
-  }
+  _onChange () { }
 }

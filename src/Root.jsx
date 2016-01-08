@@ -40,17 +40,12 @@ import AddFriend                        from 'routes/AddFriend';
 
 
 new Promise( function (resolve) { resolve('Oakland, CA') })
-    .then(VoterStore.initialize.bind(VoterStore))
-    .then(BallotStore.initialize.bind(BallotStore))
-    .catch(err => console.error(err));
-
-function registerStore (Comp, props) {
-  return <Comp {...props} ballotStore={BallotStore}/>;
-}
+  .then(VoterStore.initialize.bind(VoterStore))
+  .catch(err => console.error(err));
 
 class Root extends Component {
     static propTypes = {
-        history: React.PropTypes.object.isRequired
+      history: React.PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -61,11 +56,13 @@ class Root extends Component {
         const { history } = this.props;
 
         return (
-            <Router history={history} createElement={registerStore}>
-                {/*
+            <Router history={history} >
+                {
+                 /*
                   * This is the intro section of the application.
                   * First time visitors should be directed here.
-                  */ }
+                  */
+                 }
                 <Route path="/intro" >
                     <IndexRoute component={Intro} />
                     <Route path="opinions" component={IntroOpinions} />
@@ -90,7 +87,7 @@ class Root extends Component {
                     <IndexRedirect to='ballot' />
 
                     <Route path="ballot" component={BallotIndex}>
-                      <IndexRoute component={BallotList} />
+                      <IndexRoute component={BallotList} ballot_list={null} />
                       <Route path="/candidate/:id" component={Candidate} />
                     </Route>
                     {/*
@@ -115,7 +112,5 @@ class Root extends Component {
         );
     }
 };
-
-
 
 export default Root;
