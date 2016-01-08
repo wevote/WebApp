@@ -1,5 +1,5 @@
 import React, { Component }             from 'react';
-import { Router, Route, IndexRoute }    from 'react-router';
+import { Router, Route, IndexRoute, IndexRedirect }    from 'react-router';
 
 // Stores
 import VoterStore                       from 'stores/VoterStore';
@@ -87,7 +87,7 @@ class Root extends Component {
 
                 <Route path="/" component={Application} >
 
-                    <IndexRoute component={BallotList} />
+                    <IndexRedirect to='ballot' />
 
                     <Route path="ballot" component={BallotIndex}>
                       <IndexRoute component={BallotList} />

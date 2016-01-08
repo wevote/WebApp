@@ -9,7 +9,7 @@ export default class BallotIndex extends Component {
   };
 
     constructor(props) {
-        super(props);
+      super(props);
     }
 
     render () {
