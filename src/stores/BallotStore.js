@@ -106,9 +106,9 @@ function getBallotItemsInfo (callback) {
                     .query({ ballot_item_id: '' })
                     .end( (err, res) => {
                         if (err || !res.body.success)
-                            _reject(err || res.body.status);
-                        else
-                            _resolve(res.body);
+                          _reject(err || res.body.status);
+
+                        _resolve(res.body);
                     })
                 )
                 .then( function (value) {
@@ -153,14 +153,15 @@ function getCandidatesById (callback) {
                     .query({ office_we_vote_id: item.we_vote_id })
                     .query({ office_id: ''})
                     .end( (err, res) => {
-                        if (err || !res.body.success) {
-                            _reject(err || res.body.status);
-                        }
-                        else {
-                            _resolve(res.body);
-                        }
+                        if (err || !res.body.success)
+                          _reject(err || res.body.status);
+
+                        _resolve(res.body);
+
                     })
                 )
+                .then ( getSupporters )
+                .then ( getOpposition )
                 .then( function (value) {
                     callback(value);
                     count ++;
@@ -172,7 +173,7 @@ function getCandidatesById (callback) {
                     }
                 })
                 .catch( err => {
-                    console.log(err);
+                    console.error(err);
                 })
             })
             resolve(data);
@@ -181,6 +182,52 @@ function getCandidatesById (callback) {
 
         return data;
     }
+}
+
+function getSupporters (value) {
+  let count = 0;
+
+  return new Promise ( function (resolve, reject) {
+    value.candidate_list.forEach( (candidate, id) => {
+      request.get(`${config.url}/positionSupportCountForBallotItem/`)
+        .withCredentials()
+        .query({ candidate_id: candidate.id})
+        .end( (err, res) => {
+            if (err)
+              reject(err);
+
+            value.candidate_list[count ++].supportCount = res.body.count;
+
+            if (count === value.candidate_list.length) {
+              resolve(value);
+            }
+
+        })
+    })
+  }).catch( value );
+}
+
+function getOpposition (value) {
+  let count = 0;
+
+  return new Promise ( function (resolve, reject) {
+    value.candidate_list.forEach( (candidate, id) => {
+      request.get(`${config.url}/positionOpposeCountForBallotItem/`)
+        .withCredentials()
+        .query({ candidate_id: candidate.id })
+        .end( (err, res) => {
+            if (err)
+              reject(err);
+
+            value.candidate_list[count ++].opposeCount = res.body.count;
+
+            if (count === value.candidate_list.length)
+              resolve(value);
+
+
+        })
+    })
+  })
 }
 
 function addCandidatesToStore(data) {
@@ -253,9 +300,7 @@ const BallotStore = assign({}, EventEmitter.prototype, {
      * @return {Array} array of candidates
      */
     getCandidateById: function (id) {
-      console.log(id);
-      console.log(_candidate_store);
-        return _candidate_store[id];
+      return _candidate_store[id];
     },
 
     /**
@@ -271,7 +316,7 @@ const BallotStore = assign({}, EventEmitter.prototype, {
 
         _ballot_store[id].candidate_list.forEach( candidate_id =>
             temp.push(_candidate_store[candidate_id])
-        )
+        );
 
         return temp;
     },

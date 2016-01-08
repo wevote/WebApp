@@ -24,7 +24,9 @@ export default class Candidate extends Component {
     render() {
         let {
             we_vote_id,
-            ballot_item_display_name
+            ballot_item_display_name,
+            supportCount,
+            opposeCount
         }
         = this.props.data;
 
@@ -45,11 +47,11 @@ export default class Candidate extends Component {
                             </Link>
                         </h4>
                         <p className="typeXLarge">
-                            (NUMBER) support
+                            {supportCount} support
                             <span className="small"> (more) </span>
                         </p>
                         <p className="bufferNone">
-                            (NUMBER) oppose
+                            {opposeCount} oppose
                         </p>
                     </div>
                 </div>
