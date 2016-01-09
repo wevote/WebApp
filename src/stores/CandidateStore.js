@@ -53,6 +53,12 @@ function addCandidatesToStore(ballot_id, candidate_list) {
     });
 }
 
+function updateCandidateStore (we_vote_id, newdata) {
+  Object.keys(newdata).forEach( key =>
+    _candidate_store[we_vote_id][key] = newdata[key]
+  );
+}
+
 function getSupporters (value) {
   let count = 0;
 
@@ -66,6 +72,10 @@ function getSupporters (value) {
             reject(err);
 
           value.candidate_list[count ++].supportCount = res.body.count;
+
+          updateCandidateStore( candidate.we_vote_id, {
+            supportCount: res.body.count
+          });
 
           if (count === value.candidate_list.length)
             resolve(value);
@@ -88,6 +98,10 @@ function getOpposition (value) {
             reject(err);
 
           value.candidate_list[count ++].opposeCount = res.body.count;
+
+          updateCandidateStore( candidate.we_vote_id, {
+            opposeCount: res.body.count
+          });
 
           if (count === value.candidate_list.length)
             resolve(value);
@@ -114,7 +128,7 @@ function getCandidateDetailsById (ballot_item_we_vote_id, callback) {
 }
 
 function addCandidateDetailsToStore ( candidate ) {
-  _candidate_store[candidate.we_vote_id] = shallowClone(candidate);
+  updateCandidateStore( candidate.we_vote_id, candidate );
   _candidate_store[candidate.we_vote_id].detailsAdded = true;
 }
 
