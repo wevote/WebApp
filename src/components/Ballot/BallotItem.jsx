@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import CandidateStore from 'stores/CandidateStore';
-import Candidate from 'components/Ballot/CandidateList';
+import CandidateList from 'components/Ballot/CandidateList';
 
 import InfoIconAction from 'components/InfoIconAction';
 import StarAction from 'components/StarAction';
@@ -27,10 +27,18 @@ export default class BallotItem extends Component {
     this.state = {};
   }
 
+  isOffice () {
+    return this.props.kind_of_ballot_item === TYPES.OFFICE;
+  }
+
   componentDidMount () {
-    if ( this.props.kind_of_ballot_item === TYPES.OFFICE ) {
+    if ( this.isOffice() ) {
+      this.state = {
+        candidate_list: []
+      };
+
       CandidateStore.getCandidatesByBallotId(
-        this.props.we_vote_id, this.setCandidates
+        this.props.we_vote_id, this.setCandidates.bind(this)
       );
     }
 
@@ -42,10 +50,34 @@ export default class BallotItem extends Component {
   }
 
   setCandidates (value) {
-    console.log(value);
+    this.setState({
+      candidate_list: value.candidate_list
+    });
+  }
+
+  displayCandidateList () {
+
+    return this.state.candidate_list ?
+        <CandidateList candidate_list={this.state.candidate_list} />
+      : 'loading...';
+
+  }
+
+  displayMeasureCounts () {
+    return (
+      <div>
+        <div className="support">
+          ?? support
+        </div>
+        <div className="oppose">
+          ?? support
+        </div>
+      </div>
+    );
   }
 
   render() {
+
     return (
       <div
         id={ this.props.we_vote_id }
@@ -56,8 +88,11 @@ export default class BallotItem extends Component {
         <InfoIconAction />
         <StarAction />
 
-        <ul className="list-group">
-            { 'candidate list ' + 'or none,...'  }
+        <ul >
+            {
+              this.isOffice() ?
+                this.displayCandidateList() : this.displayMeasureCounts()
+            }
         </ul>
 
       </div>

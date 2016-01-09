@@ -39,7 +39,7 @@ import AddFriend                        from 'routes/AddFriend';
 
 
 
-new Promise( function (resolve) { resolve('Oakland, CA') })
+new Promise( resolve => resolve('Oakland, CA') )
   .then(VoterStore.initialize.bind(VoterStore))
   .catch(err => console.error(err));
 

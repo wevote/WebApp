@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 export default class CandidateDetail extends Component {
   static propTypes = {
-    data: PropTypes.object
+    
   };
 
   render () {
@@ -11,7 +11,7 @@ export default class CandidateDetail extends Component {
       candidate_photo_url,
       id,
       order_on_ballot
-    } = this.props.data;
+    } = this.props;
 
     return (
       <div className="candidate-detail">
