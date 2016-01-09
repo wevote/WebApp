@@ -18,8 +18,6 @@ let _candidate_store = {};
 let _ballot_candidate_map = {};
 
 function addCandidatesToStore(ballot_id, candidate_list) {
-    console.log(ballot_id, candidate_list);
-
     candidate_list.forEach(candidate => {
       _ballot_candidate_map[ballot_id] = _ballot_candidate_map[ballot_id] || [];
       _ballot_candidate_map[ballot_id].push(candidate.we_vote_id);
