@@ -17,15 +17,6 @@ function convertIdToWeVoteId (id) {
 let _candidate_store = {};
 let _ballot_candidate_map = {};
 
-function addCandidatesToStore(ballot_id, candidate_list) {
-    candidate_list.forEach(candidate => {
-      _ballot_candidate_map[ballot_id] = _ballot_candidate_map[ballot_id] || [];
-      _ballot_candidate_map[ballot_id].push(candidate.we_vote_id);
-
-      _candidate_store[candidate.we_vote_id] = shallowClone(candidate);
-    });
-}
-
 function getCandidatesByBallotId (office_we_vote_id, callback) {
     let count = 0;
 
@@ -51,6 +42,15 @@ function getCandidatesByBallotId (office_we_vote_id, callback) {
     .catch( err => {
         console.error(err);
     })
+}
+
+function addCandidatesToStore(ballot_id, candidate_list) {
+    candidate_list.forEach(candidate => {
+      _ballot_candidate_map[ballot_id] = _ballot_candidate_map[ballot_id] || [];
+      _ballot_candidate_map[ballot_id].push(candidate.we_vote_id);
+
+      _candidate_store[candidate.we_vote_id] = shallowClone(candidate);
+    });
 }
 
 function getSupporters (value) {
@@ -97,11 +97,6 @@ function getOpposition (value) {
   );
 }
 
-function addCandidateDetailsToStore ( candidate ) {
-  _candidate_store[candidate.we_vote_id] = shallowClone(candidate);
-  _candidate_store[candidate.we_vote_id].detailsAdded = true;
-}
-
 function getCandidateDetailsById (ballot_item_we_vote_id, callback) {
   request
     .get(`${config.url}/ballotItemRetrieve/`)
@@ -116,6 +111,11 @@ function getCandidateDetailsById (ballot_item_we_vote_id, callback) {
 
       callback(res.body);
     });
+}
+
+function addCandidateDetailsToStore ( candidate ) {
+  _candidate_store[candidate.we_vote_id] = shallowClone(candidate);
+  _candidate_store[candidate.we_vote_id].detailsAdded = true;
 }
 
 const CandidateStore = {

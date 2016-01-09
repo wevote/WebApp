@@ -11,22 +11,22 @@ let _ballot_store = {};
 let _ballot_order = [];
 
 function printErr (err) {
-    console.error(err);
+  console.error(err);
 }
 
 function getBallotItemsFromGoogle (text_for_map_search) {
-    return new Promise((resolve, reject) => request
-        .get(`${config.url}/voterBallotItemsRetrieveFromGoogleCivic/`)
-        .withCredentials()
-        .query(config.test)
-        .query({ text_for_map_search })
-        .end( function (err, res) {
-          if (err || !res.body.success)
-            reject(err || res.body.status);
+  return new Promise((resolve, reject) => request
+    .get(`${config.url}/voterBallotItemsRetrieveFromGoogleCivic/`)
+    .withCredentials()
+    .query(config.test)
+    .query({ text_for_map_search })
+    .end( function (err, res) {
+      if (err || !res.body.success)
+        reject(err || res.body.status);
 
-          resolve(res.body);
-        })
-    );
+      resolve(res.body);
+    })
+  );
 }
 
 function getBallotItems () {
@@ -58,49 +58,49 @@ function setCivicId (data) {
 }
 
 const BallotStore = {
-    /**
-     * initialize the ballot store with data, if no data
-     * and callback with the ordered items
-     * @return {Boolean}
-     */
-    initialize: function (callback) {
-      var getItems = this.getOrderedBallotItems.bind(this);
+  /**
+   * initialize the ballot store with data, if no data
+   * and callback with the ordered items
+   * @return {Boolean}
+   */
+  initialize: function (callback) {
+    var getItems = this.getOrderedBallotItems.bind(this);
 
-      if (!callback || typeof callback !== 'function')
-        throw new Error('initialize must be called with callback');
+    if (!callback || typeof callback !== 'function')
+      throw new Error('initialize must be called with callback');
 
-      if (Object.keys(_ballot_store).length)
-        callback(getItems());
+    if (Object.keys(_ballot_store).length)
+      callback(getItems());
 
-      else
-        getBallotItemsFromGoogle('2201 Wilson Blvd, Arlingon VA, 22201')
-          .then(getBallotItems)
-          .then(addItemsToStore)
-          .then(setCivicId)
-          .then(data => callback(getItems()))
-          .catch(err => console.error(err));
-    },
+    else
+      getBallotItemsFromGoogle('2201 Wilson Blvd, Arlingon VA, 22201')
+        .then(getBallotItems)
+        .then(addItemsToStore)
+        .then(setCivicId)
+        .then(data => callback(getItems()))
+        .catch(err => console.error(err));
+  },
 
-    /**
-     * get ballot ordered key array and ballots
-     * @return {Object} ordered keys and store data
-     */
-    getOrderedBallotItems: function () {
-        var temp = [];
-        _ballot_order.forEach(we_vote_id => temp
-            .push(shallowClone(_ballot_store[we_vote_id]))
-        )
-        return temp;
-    },
+  /**
+   * get ballot ordered key array and ballots
+   * @return {Object} ordered keys and store data
+   */
+  getOrderedBallotItems: function () {
+      var temp = [];
+      _ballot_order.forEach(we_vote_id => temp
+          .push(shallowClone(_ballot_store[we_vote_id]))
+      )
+      return temp;
+  },
 
-    /**
-     * return candidate object by id
-     * @param  {Number} id candidate's we_vote_id
-     * @return {Object}    candidate
-     */
-    getBallotItemById: function (id) {
-        return shallowClone(_ballot_store[id]);
-    }
+  /**
+   * return candidate object by id
+   * @param  {Number} id candidate's we_vote_id
+   * @return {Object}    candidate
+   */
+  getBallotItemById: function (id) {
+      return shallowClone(_ballot_store[id]);
+  }
 };
 
 module.exports = BallotStore;
