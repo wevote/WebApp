@@ -3,6 +3,8 @@ const request = require('superagent');
 
 const config = require('../config');
 
+import { shallowClone } from 'utils/object-utils';
+
 const TYPE = {
   kind_of_ballot_item: 'CANDIDATE'
 };
@@ -15,59 +17,18 @@ function convertIdToWeVoteId (id) {
 let _candidate_store = {};
 let _ballot_candidate_map = {};
 
-function getBallotItemsInfo (callback) {
-    let count = 0;
+function addCandidatesToStore(ballot_id, candidate_list) {
+    console.log(ballot_id, candidate_list);
 
-    return function (data) {
-      new Promise ( (resolve, reject) => {
-        data.ballot_item_list.forEach( item => new Promise(
-          (_resolve, _reject) => request
-            .get(`${config.url}/ballotItemRetrieve/`)
-            .withCredentials()
-            .query({ ballot_item_we_vote_id: item.we_vote_id })
-            .query({ kind_of_ballot_item: 'CANDIDATE'})
-            .query({ ballot_item_id: '' })
-            .end( (err, res) => {
-              if (err || !res.body.success)
-                _reject(err || res.body.status);
+    candidate_list.forEach(candidate => {
+      _ballot_candidate_map[ballot_id] = _ballot_candidate_map[ballot_id] || [];
+      _ballot_candidate_map[ballot_id].push(candidate.we_vote_id);
 
-              _resolve(res.body);
-            })
-          )
-          .then( function (value) {
-            callback(value);
-            count++;
-            if (count === data.ballot_item_list.length) {
-              BallotActions.AllItemsAdded({
-                actionType: BallotConstants.BALLOT_ALL_ITEMS_ADDED,
-                _ballot_store
-              })
-            }
-          })
-          .catch(printErr)
-        )
-        resolve(data);
-      })
-      .catch(printErr);
-
-      return data;
-    }
-}
-
-function addCandidatesToStore(data) {
-    var store = _ballot_store[data.office_we_vote_id];
-    store.candidate_list = [];
-
-    data.candidate_list.forEach(candidate => {
-      var candidate_id = candidate.we_vote_id;
-      store.candidate_list.push(candidate_id);
-      _candidate_store[candidate_id] = shallowClone(candidate);
+      _candidate_store[candidate.we_vote_id] = shallowClone(candidate);
     });
-
-    return data;
 }
 
-function getCandidatesById (office_we_vote_id, callback) {
+function getCandidatesByBallotId (office_we_vote_id, callback) {
     let count = 0;
 
     new Promise( (resolve, reject) => request
@@ -78,6 +39,8 @@ function getCandidatesById (office_we_vote_id, callback) {
       .end( (err, res) => {
         if (err || !res.body.success)
           reject(err);
+
+        addCandidatesToStore(office_we_vote_id, res.body.candidate_list);
 
         resolve(res.body);
       })
@@ -136,6 +99,11 @@ function getOpposition (value) {
   );
 }
 
+function addCandidateDetailsToStore ( candidate ) {
+  _candidate_store[candidate.we_vote_id] = shallowClone(candidate);
+  _candidate_store[candidate.we_vote_id].detailsAdded = true;
+}
+
 function getCandidateDetailsById (ballot_item_we_vote_id, callback) {
   request
     .get(`${config.url}/ballotItemRetrieve/`)
@@ -145,6 +113,8 @@ function getCandidateDetailsById (ballot_item_we_vote_id, callback) {
     .end( (err, res) => {
       if (err)
         throw err;
+
+      addCandidateDetailsToStore(res.body)
 
       callback(res.body);
     });
@@ -164,7 +134,7 @@ const CandidateStore = {
 
     id = convertIdToWeVoteId(id);
 
-    return _candidate_store[id] ?
+    return _candidate_store[id] && _candidate_store[id].detailsAdded ?
       callback(_candidate_store[id]) : getCandidateDetailsById(id, callback);
   },
 
@@ -180,8 +150,14 @@ const CandidateStore = {
     if (typeof callback !== 'function')
       throw new Error('getCandidatesByBallotId takes callback function')
 
-    return _ballot_candidate_map[id] ?
-      callback(_ballot_candidate_map[id]) : getCandidatesById(id, callback);
+    if ( _ballot_candidate_map[id] ) {
+      callback({
+        candidate_list: _ballot_candidate_map[id]
+          .map( we_vote_id => _candidate_store[we_vote_id] )
+      });
+    }
+    else
+      getCandidatesByBallotId(id, callback);
   }
 };
 

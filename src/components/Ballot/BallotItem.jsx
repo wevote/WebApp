@@ -50,6 +50,7 @@ export default class BallotItem extends Component {
   }
 
   setCandidates (value) {
+    console.log(value);
     this.setState({
       candidate_list: value.candidate_list
     });

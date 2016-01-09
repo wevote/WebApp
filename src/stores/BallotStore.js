@@ -4,36 +4,11 @@ const request = require('superagent');
 
 const config = require('../config');
 
+import {shallowClone} from 'utils/object-utils';
+
 let _civic_id = null;
 let _ballot_store = {};
 let _ballot_order = [];
-
-function shallowClone (obj) {
-    let target = {};
-    for (var i in obj) {
-        if (obj.hasOwnProperty(i)) {
-            target[i] = obj[i];
-        }
-    }
-    return target;
-}
-
-function cloneWithCandidates (obj) {
-    let target = {};
-    for (var i in obj) {
-        if (obj.hasOwnProperty(i)) {
-            if (i === 'candidate_list') {
-                target[i] = [];
-                obj[i].forEach(c =>
-                    target[i].push(shallowClone(_candidate_store[c]))
-                )
-            } else {
-                target[i] = obj[i];
-            }
-        }
-    }
-    return target;
-}
 
 function printErr (err) {
     console.error(err);
