@@ -3,6 +3,14 @@ const request = require('superagent');
 
 const config = require('../config');
 
+const TYPE = {
+  kind_of_ballot_item: 'CANDIDATE'
+};
+
+function convertIdToWeVoteId (id) {
+  return `wvtecand${id}`
+}
+
 // super private store holders
 let _candidate_store = {};
 let _ballot_candidate_map = {};
@@ -11,38 +19,38 @@ function getBallotItemsInfo (callback) {
     let count = 0;
 
     return function (data) {
-        new Promise ( (resolve, reject) => {
-            data.ballot_item_list.forEach( item => new Promise(
-                (_resolve, _reject) => request
-                    .get(`${config.url}/ballotItemRetrieve/`)
-                    .withCredentials()
-                    .query({ ballot_item_we_vote_id: item.we_vote_id })
-                    .query({ kind_of_ballot_item: item.kind_of_ballot_item })
-                    .query({ ballot_item_id: '' })
-                    .end( (err, res) => {
-                        if (err || !res.body.success)
-                          _reject(err || res.body.status);
+      new Promise ( (resolve, reject) => {
+        data.ballot_item_list.forEach( item => new Promise(
+          (_resolve, _reject) => request
+            .get(`${config.url}/ballotItemRetrieve/`)
+            .withCredentials()
+            .query({ ballot_item_we_vote_id: item.we_vote_id })
+            .query({ kind_of_ballot_item: 'CANDIDATE'})
+            .query({ ballot_item_id: '' })
+            .end( (err, res) => {
+              if (err || !res.body.success)
+                _reject(err || res.body.status);
 
-                        _resolve(res.body);
-                    })
-                )
-                .then( function (value) {
-                    callback(value);
-                    count++;
-                    if (count === data.ballot_item_list.length) {
-                        BallotActions.AllItemsAdded({
-                            actionType: BallotConstants.BALLOT_ALL_ITEMS_ADDED,
-                            _ballot_store
-                        })
-                    }
-                })
-                .catch(printErr)
-            )
-            resolve(data);
-        })
-        .catch(printErr);
+              _resolve(res.body);
+            })
+          )
+          .then( function (value) {
+            callback(value);
+            count++;
+            if (count === data.ballot_item_list.length) {
+              BallotActions.AllItemsAdded({
+                actionType: BallotConstants.BALLOT_ALL_ITEMS_ADDED,
+                _ballot_store
+              })
+            }
+          })
+          .catch(printErr)
+        )
+        resolve(data);
+      })
+      .catch(printErr);
 
-        return data;
+      return data;
     }
 }
 
@@ -51,9 +59,9 @@ function addCandidatesToStore(data) {
     store.candidate_list = [];
 
     data.candidate_list.forEach(candidate => {
-        var candidate_id = candidate.we_vote_id;
-        store.candidate_list.push(candidate_id);
-        _candidate_store[candidate_id] = shallowClone(candidate);
+      var candidate_id = candidate.we_vote_id;
+      store.candidate_list.push(candidate_id);
+      _candidate_store[candidate_id] = shallowClone(candidate);
     });
 
     return data;
@@ -128,13 +136,36 @@ function getOpposition (value) {
   );
 }
 
+function getCandidateDetailsById (ballot_item_we_vote_id, callback) {
+  request
+    .get(`${config.url}/ballotItemRetrieve/`)
+    .withCredentials()
+    .query({ ballot_item_we_vote_id })
+    .query( TYPE )
+    .end( (err, res) => {
+      if (err)
+        throw err;
+
+      callback(res.body);
+    });
+}
+
 const CandidateStore = {
   /**
    * return list of all candidates
    * @return {Array} array of candidates
    */
-  getCandidateById: function (id) {
-    return _candidate_store[id];
+  getCandidateById: function (id, callback) {
+    if (typeof id !== 'string')
+      throw new Error('getCandidateByBallotId takes string id');
+
+    if (typeof callback !== 'function')
+      throw new Error('getCandidatesByBallotId takes callback function')
+
+    id = convertIdToWeVoteId(id);
+
+    return _candidate_store[id] ?
+      callback(_candidate_store[id]) : getCandidateDetailsById(id, callback);
   },
 
   /**

@@ -10,20 +10,30 @@ export default class Candidate extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      candidate: null
+    };
   }
 
   componentDidMount () {
+    CandidateStore.getCandidateById(
+      this.props.params.id, this.setCandidate.bind(this)
+    );
+  }
 
+  setCandidate (candidate) {
+    this.setState({ candidate });
   }
 
   componentWillUnmount () { }
 
   render() {
     if (this.state.candidate)
-      return <CandidateDetail data={this.state.candidate} />;
+      return <CandidateDetail {...this.state.candidate} />;
     else
-      return (<div className="loading-wheel">loading...</div>);
+      return (
+        <div className="loading-wheel">loading...</div>
+      );
   }
 
   _onChange () { }

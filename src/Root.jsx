@@ -44,73 +44,73 @@ new Promise( resolve => resolve('Oakland, CA') )
   .catch(err => console.error(err));
 
 class Root extends Component {
-    static propTypes = {
-      history: React.PropTypes.object.isRequired
-    };
+  static propTypes = {
+    history: React.PropTypes.object.isRequired
+  };
 
-    constructor(props) {
-      super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    render() {
-        const { history } = this.props;
+  render() {
+    const { history } = this.props;
 
-        return (
-            <Router history={history} >
-                {
-                 /*
-                  * This is the intro section of the application.
-                  * First time visitors should be directed here.
-                  */
-                 }
-                <Route path="/intro" >
-                    <IndexRoute component={Intro} />
-                    <Route path="opinions" component={IntroOpinions} />
-                    <Route path="contests" component={IntroContests} />
-                </Route>
+    return (
+      <Router history={history} >
+        {
+         /*
+          * This is the intro section of the application.
+          * First time visitors should be directed here.
+          */
+         }
+        <Route path="/intro" >
+          <IndexRoute component={Intro} />
+          <Route path="opinions" component={IntroOpinions} />
+          <Route path="contests" component={IntroContests} />
+        </Route>
 
-                {/* Settings go in this structure... */}
-                <Route path="/settings" component={SettingsDashboard}>
-                    <IndexRoute component={Settings} />
-                    <Route path="location" component={Location} />
-                </Route>
+        {/* Settings go in this structure... */}
+        <Route path="/settings" component={SettingsDashboard}>
+          <IndexRoute component={Settings} />
+          <Route path="location" component={Location} />
+        </Route>
 
-                <Route path="/friends" >
-                    <Route path="add" component={AddFriend} />
-                    <Route path="remove" />
-                </Route>
+        <Route path="/friends" >
+          <Route path="add" component={AddFriend} />
+          <Route path="remove" />
+        </Route>
 
-                <Route path="/more/about" component={About} />
+        <Route path="/more/about" component={About} />
 
-                <Route path="/" component={Application} >
+        <Route path="/" component={Application} >
 
-                    <IndexRedirect to='ballot' />
+          <IndexRedirect to='ballot' />
 
-                    <Route path="ballot" component={BallotIndex}>
-                      <IndexRoute component={BallotList} ballot_list={null} />
-                      <Route path="/candidate/:id" component={Candidate} />
-                    </Route>
-                    {/*
-                        <Route path="org/:id" component={Organization}/>
-                        <Route path="measure/:id" component={Measure} />
-                        <Route path="org/:id" component={Organization}/>
-                        <Route path="opinion" component={Opinion} />
-                        <Route path="/office/:id" component={Office} />
+          <Route path="ballot" component={BallotIndex}>
+            <IndexRoute component={BallotList} ballot_list={null} />
+            <Route path="/candidate/:id" component={Candidate} />
+          </Route>
+          {/*
+              <Route path="org/:id" component={Organization}/>
+              <Route path="measure/:id" component={Measure} />
+              <Route path="org/:id" component={Organization}/>
+              <Route path="opinion" component={Opinion} />
+              <Route path="/office/:id" component={Office} />
 
-                    */}
+          */}
 
-                    <Route path="requests" component={Requests} />
-                    <Route path="connect" component={Connect} />
+          <Route path="requests" component={Requests} />
+          <Route path="connect" component={Connect} />
 
-                    <Route path="activity" component={Activity} />
-                    <Route path="more" component={More} />
+          <Route path="activity" component={Activity} />
+          <Route path="more" component={More} />
 
-                    // Any route that is not found -> @return NotFound component
-                    <Route path="*" component={NotFound} />
-                </Route>
-            </Router>
-        );
-    }
+          // Any route that is not found -> @return NotFound component
+          <Route path="*" component={NotFound} />
+        </Route>
+      </Router>
+    );
+  }
 };
 
 export default Root;
