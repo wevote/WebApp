@@ -4,11 +4,15 @@
 
 // Padding
 .fluff-loose--full {
-    padding: 10px;
+    padding: 1.5em;
+}
+
+.fluff-tight--full {
+    padding: .75em;
 }
 
 .fluff-loose--top {
-    padding-top: 10px;
+    padding-top: 1.5em;
 }
 
 // Margin
@@ -27,9 +31,9 @@
 // Border
 
 .separate-bottom {
-    border-bottom: 1px solid #23527C;
+    border-bottom: 1px solid adjust_hue(darken(#f5f5f5, 13), 0);
 }
 
 .separate-top {
-    border-top: 1px solid #23527C;
+    border-top: 1px solid adjust_hue(darken(#f5f5f5, 13), 0);
 }

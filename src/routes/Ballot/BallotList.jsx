@@ -24,15 +24,15 @@ export default class BallotList extends Component {
         <header className="row">
           <section className="separate-bottom fluff-loose--full container-fluid">
             <h4 className="pull-left gutter-left--window bold">
-              My Ballot
+              MY BALLOT
             </h4>
             <aside className="pull-right gutter-right-window gutter-top-small">
-              <Link to="/settings/location"className="font-lightest">
+              <Link to="/settings/location"className="font-lightest text-uppercase">
                 Oakland, CA (change)
               </Link>
             </aside>
           </section>
-          <section className="container-fluid bg-light bottom-separator">
+          <section className="container-fluid ballotList-bg fluff-tight--full separate-bottom">
             <div className="row">
               <div className="col-xs-6 col-md-6 text-center">
                 <i className="icon-icon-add-friends-2-1 icon-light icon-medium">
