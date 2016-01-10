@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import BallotStore from 'stores/BallotStore';
 import BallotItem from 'components/Ballot/BallotItem';
 
-export default class BallotList extends Component {
+export default class Ballot extends Component {
   static propTypes = {
     children: PropTypes.object
   };

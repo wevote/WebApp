@@ -21,7 +21,7 @@ import Location                         from 'routes/Settings/Location';
 
 /* Ballot */
 import BallotIndex			                from 'routes/Ballot/BallotIndex';
-import BallotList                       from 'routes/Ballot/BallotList';
+import Ballot                           from 'routes/Ballot/Ballot';
 import Candidate                        from 'routes/Ballot/Candidate';
 
 /* More */
@@ -87,7 +87,7 @@ class Root extends Component {
           <IndexRedirect to='ballot' />
 
           <Route path="ballot" component={BallotIndex}>
-            <IndexRoute component={BallotList} ballot_list={null} />
+            <IndexRoute component={Ballot} ballot_list={null} />
             <Route path="/candidate/:id" component={Candidate} />
           </Route>
           {/*
