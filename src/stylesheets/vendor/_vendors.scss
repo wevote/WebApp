@@ -1,0 +1,17 @@
+.headroom {
+  background: #fff;
+  transition: transform 200ms linear;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 1;
+
+  &--pinned {
+      transform: translateY(0%);
+  }
+
+  &--unpinned {
+      transform: translateY(-100%);
+  }
+}

@@ -2,6 +2,7 @@
 
 import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
+import Headroom from "react-headroom";
 
 export class HeaderBackNavigation extends Component {
     static propTypes = {
@@ -10,7 +11,7 @@ export class HeaderBackNavigation extends Component {
         back_to_off: PropTypes.boolean,
         header_text: PropTypes.string
     };
-    
+
     constructor(props) {
         super(props);
     }
@@ -48,14 +49,16 @@ export class HeaderBackNavigation extends Component {
             header_text = '';
         }
         return (
-            <div className="row">
-                <nav className="navbar navbar-main navbar-fixed-top paradeiser">
-                    <div className="container-fluid">
-                        {back_to_link}
-                        <h4 className="text-center">{header_text}</h4>
-                    </div>
-                </nav>
-            </div>
+            <Headroom>
+                <div className="row">
+                    <nav className="navbar navbar-main navbar-fixed-top paradeiser">
+                        <div className="container-fluid">
+                            {back_to_link}
+                            <h4 className="text-center">{header_text}</h4>
+                        </div>
+                    </nav>
+                </div>
+            </Headroom>
         );
     }
 }

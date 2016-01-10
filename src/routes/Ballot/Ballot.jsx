@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
+import Headroom from "react-headroom";
 
 import BallotStore from 'stores/BallotStore';
 import BallotItem from 'components/Ballot/BallotItem';
@@ -22,16 +23,18 @@ export default class Ballot extends Component {
     return (
       <div>
         <header className="row">
-          <section className="separate-bottom fluff-loose--full container-fluid">
-            <h4 className="pull-left gutter-left--window bold">
-              MY BALLOT
-            </h4>
-            <aside className="pull-right gutter-right-window gutter-top-small">
-              <Link to="/settings/location"className="font-lightest text-uppercase">
-                Oakland, CA (change)
-              </Link>
-            </aside>
-          </section>
+          <Headroom>
+            <section className="separate-bottom fluff-loose--full container-fluid">
+              <h4 className="pull-left gutter-left--window bold">
+                MY BALLOT
+              </h4>
+              <aside className="pull-right gutter-right-window gutter-top-small">
+                <Link to="/settings/location"className="font-lightest text-uppercase">
+                  Oakland, CA (change)
+                </Link>
+              </aside>
+            </section>
+          </Headroom>
           <section className="container-fluid ballotList-bg fluff-tight--full separate-bottom">
             <div className="row">
               <div className="col-xs-6 col-md-6 text-center">
