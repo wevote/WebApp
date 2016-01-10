@@ -8298,9 +8298,24 @@ html {
 .icon-icon-connect1-3:before {
   content: "h"; }
 
+.icon-xl {
+  font-size: 10em; }
+
+.icon-medium {
+  font-size: 2em; }
+
+.icon-small {
+  font-size: 15px; }
+
+.icon-main {
+  color: #23527C; }
+
 body {
   color: #222;
   font: normal 125%/1.4 "Open Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif; }
+
+.text-uppercase, .initialism {
+  text-transform: uppercase; }
 
 /**
  * Clear inner floats
@@ -8356,5 +8371,52 @@ body {
   padding: 0;
   position: absolute;
   width: 1px; }
+
+/*=============================================================================
+    Anything to do with content, padding, border, margin
+================================--|--========================================*/
+.fluff-loose--full {
+  padding: 1.5em; }
+
+.fluff-tight--full {
+  padding: .75em; }
+
+.fluff-loose--top {
+  padding-top: 1.5em; }
+
+.gutter-left--window {
+  margin-left: 4em; }
+
+.gutter-right-window {
+  margin-right: 4em; }
+
+.gutter-top-small {
+  margin-top: 1em; }
+
+.separate-bottom {
+  border-bottom: 1px solid #d4d4d4; }
+
+.separate-top {
+  border-top: 1px solid #d4d4d4; }
+
+/*=============================================================================
+    This file contains all styles related to the footer of the app
+=============================================================================*/
+.font-footer_icon {
+  font-size: 2em; }
+
+.loading-wheel {
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 9999; }
+
+.ballotList-bg {
+  background: #f8f8f8; }
+
+.font-lightest {
+  color: #d3d3d3; }
 
 /*# sourceMappingURL=main.css.map */
