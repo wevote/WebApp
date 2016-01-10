@@ -9,7 +9,7 @@ export default class Navigator extends Component {
         <div className="row">
             <div className="container-fluid">
                 <div className="navbar navbar-default navbar-fixed-bottom">
-                    <div className="container-fluid fluff-loose_top seperator-top">
+                    <div className="container-fluid fluff-loose--top separate-top">
                       <div className="row">
                         <Link to="/ballot">
                             <div className="col-xs-2 center-block text-center">

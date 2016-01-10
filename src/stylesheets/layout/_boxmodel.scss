@@ -2,10 +2,34 @@
     Anything to do with content, padding, border, margin
 ================================--|--========================================*/
 
-.fluff-loose_full {
+// Padding
+.fluff-loose--full {
     padding: 10px;
 }
 
-.fluff-loose_top {
+.fluff-loose--top {
     padding-top: 10px;
+}
+
+// Margin
+.gutter-left--window {
+    margin-left: 4em;
+}
+
+.gutter-right-window {
+    margin-right: 4em;
+}
+
+.gutter-top-small {
+    margin-top: 1em;
+}
+
+// Border
+
+.separate-bottom {
+    border-bottom: 1px solid #23527C;
+}
+
+.separate-top {
+    border-top: 1px solid #23527C;
 }
