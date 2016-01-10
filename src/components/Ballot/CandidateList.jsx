@@ -24,7 +24,7 @@ export default class CandidateList extends Component {
                   src={candidate.candidate_photo_url}
                   alt="candidate-photo"/> :
 
-              <i className="iconXlarge icon-icon-person-placeholder-6-1 icon-light"/>
+              <i className="icon-xl icon-main icon-icon-person-placeholder-6-1 icon-light"/>
 
             }
           </div>
