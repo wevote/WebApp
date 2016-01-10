@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import { Button, ButtonToolbar } from "react-bootstrap";
 import { Router, Link } from "react-router";
 
-export default class BottomContinueNavigation extends Component {
+class BottomContinueNavigation extends Component {
     static propTypes = {
         continue_text: PropTypes.string,
         link_route_cancel: PropTypes.string,
@@ -62,3 +62,5 @@ export default class BottomContinueNavigation extends Component {
         );
     }
 }
+
+export default BottomContinueNavigation;

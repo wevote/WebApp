@@ -21,12 +21,11 @@
 
 // 4. Layout-related sections
 @import
+  'layout/boxmodel',
   'layout/header',
   'layout/footer';
 
 // 5. Components
-@import
-  'components/buttons';
 
 // 6. Page-specific styles
 @import

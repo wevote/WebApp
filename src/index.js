@@ -4,11 +4,8 @@ import { createHistory } from 'history';
 import Root from 'Root';
 
 /****************************** Stylesheets ***********************************/
-import 'stylesheets/main.scss'
-import 'assets/css/application.css';
-import 'assets/css/layout.css';
-import 'assets/css/colors.css';
-/****************************** *********** ***********************************/
+import './stylesheets/main.scss'
+/******************************************************************************/
 
 // polyfill
 if (!Object.assign) Object.assign = React.__spread;

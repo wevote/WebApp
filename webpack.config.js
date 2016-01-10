@@ -1,5 +1,6 @@
-const path = require('path')
-const webpack = require('webpack')
+const path = require('path');
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const config = {
     devtool: 'eval',
@@ -25,7 +26,8 @@ const config = {
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.WatchIgnorePlugin([/node_modules/])
+        new webpack.WatchIgnorePlugin([/node_modules/]),
+        new ExtractTextPlugin('stylesheets/main.css')
     ],
     module: {
         loaders: [
@@ -47,10 +49,13 @@ const config = {
             { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader' },
             { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader' },
             { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader' },
-            { test: /\.scss$/, loader: 'style!css!sass' }
+            { test: /\.scss$/, loader: ExtractTextPlugin.extract(
+                'style',
+                'css!sass'
+            ) }
             // {test: /\.md$/, loader: 'html!markdown' },
         ]
     }
-}
+};
 
-module.exports = config
+module.exports = config;
