@@ -1,8 +1,7 @@
-import React, { Component }             from 'react';
+import React, { Component, PropTypes }             from 'react';
 import { Router, Route, IndexRoute, IndexRedirect }    from 'react-router';
 
 // Stores
-import VoterStore                       from 'stores/VoterStore';
 import BallotStore                      from 'stores/BallotStore';
 
 // main Application
@@ -21,7 +20,7 @@ import Location                         from 'routes/Settings/Location';
 
 /* Ballot */
 import BallotIndex			                from 'routes/Ballot/BallotIndex';
-import BallotList                       from 'routes/Ballot/BallotList';
+import Ballot                           from 'routes/Ballot/Ballot';
 import Candidate                        from 'routes/Ballot/Candidate';
 
 /* More */
@@ -38,14 +37,10 @@ import NotFound                         from 'routes/NotFound';
 import AddFriend                        from 'routes/AddFriend';
 
 
-
-new Promise( resolve => resolve('Oakland, CA') )
-  .then(VoterStore.initialize.bind(VoterStore))
-  .catch(err => console.error(err));
-
 class Root extends Component {
   static propTypes = {
-    history: React.PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
+    firstVisit: PropTypes.bool.isRequired
   };
 
   constructor(props) {
@@ -63,8 +58,8 @@ class Root extends Component {
           * First time visitors should be directed here.
           */
          }
-        <Route path="/intro" >
-          <IndexRoute component={Intro} />
+
+        <Route path="/intro" component={Intro}>
           <Route path="opinions" component={IntroOpinions} />
           <Route path="contests" component={IntroContests} />
         </Route>
@@ -84,10 +79,13 @@ class Root extends Component {
 
         <Route path="/" component={Application} >
 
-          <IndexRedirect to='ballot' />
+        {
+          this.props.firstVisit ?
+          <IndexRoute component={Intro} /> : <IndexRedirect to='ballot' />
+        }
 
           <Route path="ballot" component={BallotIndex}>
-            <IndexRoute component={BallotList} ballot_list={null} />
+            <IndexRoute component={Ballot} />
             <Route path="/candidate/:id" component={Candidate} />
           </Route>
           {/*

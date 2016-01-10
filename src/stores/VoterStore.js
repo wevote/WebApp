@@ -41,97 +41,108 @@ function createVoterId (device_id) {
     console.log('creating voter id');
 
     return new Promise ( (resolve, reject) => request
-        .get(`${url}/voterCreate/`).withCredentials()
-        .end( (err, res) => {
-            if (err) reject(err);
-            else {
-                var {voter_id} = res.body;
+      .get(`${url}/voterCreate/`).withCredentials()
+      .end( (err, res) => {
+        if (err) reject(err);
+        else {
+          var {voter_id} = res.body;
 
-                _voter_id = voter_id;
-                cookies.setItem('voter_id', voter_id);
+          _voter_id = voter_id;
+          cookies.setItem('voter_id', voter_id);
 
-                resolve(res.body.status);
-            }
-        })
+          resolve(res.body.status);
+        }
+      })
     ).catch(console.error);
 }
 
+/**
+ * guess users location using backend service
+ * @return {Promise}
+ */
+function guessLocation (value) {
+  return new Promise ((resolve,reject) => {
+    _location = 'Oakland, CA';
+    cookies.setItem('location', _location);
+
+  })
+}
+
 const VoterStore = assign({}, EventEmitter.prototype, {
-    get device_id() { return _device_id; },
-    get voter_id() { return _voter_id; },
-    get position() { return _position; },
+  get device_id() { return _device_id; },
+  get voter_id() { return _voter_id; },
+  get position() { return _position; },
 
-    /**
-     * initialize the voter when the application begins
-     * @return {undefined}
-     */
-    initialize: function (location) {
-        _location = ! _location ? this.changeLocation(location) : _location;
+  /**
+   * initialize the voter when the application begins
+   * @return {undefined}
+   */
+  initialize: function (location) {
+    var promise = new Promise(resolve=> resolve());
 
-        return new Promise( function (resolve, reject) {
+    if (! _device_id )
+      promise = promise
+        .then(generateDeviceId)
+        .then(createVoterId);
 
-            if (! _device_id )
-                generateDeviceId()
-                    .then( createVoterId )
-                    .then( value => resolve(_location) )
-                    .catch( reject);
-            else
-                resolve(_location);
+    if (! _location )
+      promise
+        .then(guessLocation);
 
-        });
-    },
-    /**
-     * set geographical location of voter
-     */
-    setGeoLocation() {
-        navigator.geolocation.getCurrentPosition(function (pos) {
-            _position.lat = pos.coords.latitude;
-            _position.long = pos.coords.longitude;
-        });
-    },
+    return promise;
+  },
+  /**
+   * set geographical location of voter
+   */
+  setGeoLocation() {
+    navigator.geolocation.getCurrentPosition(function (pos) {
+      _position.lat = pos.coords.latitude;
+      _position.long = pos.coords.longitude;
+    });
+  },
 
-    changeLocation: function (location) {
-        if (!location) throw new Error('Missing voter location');
+  changeLocation: function (location) {
+    if (!location) throw new Error('Missing voter location');
 
-        console.log('setting initial location...');
-        console.warn(`we will need to configure logic & etc. for setting up a
+    console.log('setting initial location...');
+    console.warn(`we will need to configure logic & etc. for setting up a
 voters location...
-        `);
+    `);
 
-        cookies.setItem('location', location);
-        VoterActions.ChangeLocation(location)
+    cookies.setItem('location', location);
+    VoterActions.ChangeLocation(location)
 
-        return location;
-    },
+    return location;
+  },
 
-    /**
-     * get the Voters location
-     * @return {String} location
-     */
-    getLocation: function () {
-        return _location;
-    },
+  /**
+   * get the Voters location
+   * @return {String} location
+   */
+  getLocation: function () {
+    return _location;
+  },
 
-    /**
-     * @param  {Function} callback
-     */
-    _emitChange: function (callback) {
-        this.emit(CHANGE_EVENT);
-    },
+  /**
+   * @param  {Function} callback
+   */
+  _emitChange: function (callback) {
+    this.emit(CHANGE_EVENT);
+  },
 
-    /**
-     * @param  {Function} callback subscribe to changes
-     */
-    _addChangeListener: function (callback) {
-        this.on(CHANGE_EVENT, callback);
-    },
+  /**
+   * @param  {Function} callback subscribe to changes
+   */
+  _addChangeListener: function (callback) {
+    this.on(CHANGE_EVENT, callback);
+  },
 
-    /**
-     * @param  {Function} callback unsubscribe to changes
-     */
-    _removeChangeListener: function (callback) {
-        this.removeListener(CHANGE_EVENT, callback);
-    },
+  /**
+   * @param  {Function} callback unsubscribe to changes
+   */
+  _removeChangeListener: function (callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  },
 });
 
 dispatcher.register( action => {
