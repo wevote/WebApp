@@ -1,6 +1,6 @@
 # README for We Vote WebApp
 
-This WebApp repository contains a Node/React/Flux Javascript application. Using data from 
+This WebApp repository contains a Node/React/Flux Javascript application. Using data from
 Google Civic API, Vote Smart, MapLight, TheUnitedStates.io and the Voting Information Project, we give voters a
 social way to interact with ballot data.
 
@@ -18,14 +18,14 @@ Install nodeenv globally. For instructions installing it locally, see: https://g
     $ cd ~
     $ sudo pip install nodeenv
 
-Create a place for your WebApp virtual environment to live on your hard drive. We recommend installing it 
+Create a place for your WebApp virtual environment to live on your hard drive. We recommend installing it
 away from the WebApp source code:
 
     $ mkdir /Users/<YOUR NAME HERE>/NodeEnvironments/
     $ cd /Users/<YOUR NAME HERE>/NodeEnvironments/
-    
+
 Now create a new virtual environment in that 'NodeEnvironments' folder. This can take many minutes.
-    
+
     $ nodeenv WebAppEnv
 
 Now activate this new virtual environment:
@@ -57,8 +57,9 @@ Retrieve “WebApp” into that folder, so your code ends up here:
 
     (WebAppEnv) $ cd /Users/<YOUR NAME HERE>/MyProjects/WebApp
     (WebAppEnv) $ npm install
-    (WebAppEnv) $ npm start
-    
+    (WebAppEnv) $ npm start -- in one terminal
+    (WebAppEnv) $ webpack-dev-server --progress --colors -- in another terminal
+
 You should be able to visit WebApp here:
 
     http://localhost:3001
