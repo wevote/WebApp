@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 
 export default class MoreInforIconAction extends Component {
     static propTypes = {
-        we_vote_id: PropTypes.number
+        we_vote_id: PropTypes.string
     };
     constructor(props) {
         super(props);

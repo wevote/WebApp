@@ -54,7 +54,7 @@ export default class IntroBallotContests extends Component {
                     <ul className="list-group">
                         <li className="list-group-item">
                             <Link to="/ballot">US House - District 12</Link>
-                            <InfoIconAction we_vote_id={'wvcand001'} />
+                            <InfoIconAction we_vote_id="wvcand001" />
                             <br />
                             You will choose one candidate from among three that are running for this office.<br />
                             <span style={float.right}><Link to="/ballot">
@@ -65,7 +65,7 @@ export default class IntroBallotContests extends Component {
 
                         <li className="list-group-item">
                             <Link to="/ballot">Governor</Link>
-                            <InfoIconAction we_vote_id={'wvcand001'} />
+                            <InfoIconAction we_vote_id="wvcand001" />
                             <br />
                             You will rank your top two choices from among three that are running for this office.<br />
                             <span style={float.right}><Link to="/ballot">
@@ -76,7 +76,7 @@ export default class IntroBallotContests extends Component {
 
                         <li className="list-group-item">
                             <Link to="/ballot">Mayor</Link>
-                            <InfoIconAction we_vote_id={'wvcand001'} />
+                            <InfoIconAction we_vote_id="wvcand001" />
                             <br />
                             You will rank your top three choices from among seven that are running for this office.<br />
                             <span style={float.right}><Link to="/ballot">
@@ -92,7 +92,7 @@ export default class IntroBallotContests extends Component {
                     <ul className="list-group">
                         <li className="list-group-item">
                             <Link to="/ballot">Measure AA</Link>
-                            <InfoIconAction we_vote_id={'wvcand001'} />
+                            <InfoIconAction we_vote_id="wvcand001" />
                             <br />
                             You will vote Yes or No on this Measure.<br />
                             <span style={float.right}><Link to="/ballot">
@@ -103,7 +103,7 @@ export default class IntroBallotContests extends Component {
 
                         <li className="list-group-item">
                             <Link to="/ballot">Measure BB</Link>
-                            <InfoIconAction we_vote_id={'wvcand001'} />
+                            <InfoIconAction we_vote_id="wvcand001" />
                             <br />
                             You will vote Yes or No on this Measure.<br />
                             <span style={float.right}><Link to="/ballot">
@@ -114,7 +114,7 @@ export default class IntroBallotContests extends Component {
 
                         <li className="list-group-item">
                             <Link to="/ballot">Measure CC</Link>
-                            <InfoIconAction we_vote_id={'wvcand001'} />
+                            <InfoIconAction we_vote_id="wvcand001" />
                             <br />
                             You will vote Yes or No on this Measure.<br />
                             <span style={float.right}><Link to="/ballot">
