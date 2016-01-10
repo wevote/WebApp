@@ -10,7 +10,7 @@ export default class CandidateList extends Component {
 
   mapListToHTML () {
     return this.props.candidate_list.map( candidate => (
-      <li className="list-group-item" key={candidate.we_vote_id}>
+      <section className="list-group-item" key={candidate.we_vote_id}>
         <StarAction we_vote_id={candidate.we_vote_id}/>
         <div className="row">
           <div className="pull-left col-xs-4 col-md-4">
@@ -24,7 +24,7 @@ export default class CandidateList extends Component {
                   src={candidate.candidate_photo_url}
                   alt="candidate-photo"/> :
 
-              <i className="iconXlarge icon-icon-person-placeholder-6-1 icon-light"/>
+              <i className="icon-xl icon-main icon-icon-person-placeholder-6-1 icon-light"/>
 
             }
           </div>
@@ -80,15 +80,15 @@ export default class CandidateList extends Component {
             </div>
           </div>
         </div>
-      </li>
+      </section>
     ));
   }
 
     render () {
       return (
-          <ul className="list-group">
+          <article className="list-group">
             { this.mapListToHTML() }
-          </ul>
+          </article>
       );
     }
 }

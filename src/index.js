@@ -6,11 +6,8 @@ import Root from 'Root';
 import VoterStore from 'stores/VoterStore';
 
 /****************************** Stylesheets ***********************************/
-import 'stylesheets/main.scss'
-import 'assets/css/application.css';
-import 'assets/css/layout.css';
-import 'assets/css/colors.css';
-/****************************** *********** ***********************************/
+import './stylesheets/main.scss'
+/******************************************************************************/
 
 // polyfill
 if (!Object.assign) Object.assign = React.__spread;

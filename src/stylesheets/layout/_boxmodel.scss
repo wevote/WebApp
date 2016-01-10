@@ -1,0 +1,39 @@
+/*=============================================================================
+    Anything to do with content, padding, border, margin
+================================--|--========================================*/
+
+// Padding
+.fluff-loose--full {
+    padding: 1.5em;
+}
+
+.fluff-tight--full {
+    padding: .75em;
+}
+
+.fluff-loose--top {
+    padding-top: 1.5em;
+}
+
+// Margin
+.gutter-left--window {
+    margin-left: 4em;
+}
+
+.gutter-right-window {
+    margin-right: 4em;
+}
+
+.gutter-top-small {
+    margin-top: 1em;
+}
+
+// Border
+
+.separate-bottom {
+    border-bottom: 1px solid adjust_hue(darken(#f5f5f5, 13), 0);
+}
+
+.separate-top {
+    border-top: 1px solid adjust_hue(darken(#f5f5f5, 13), 0);
+}
