@@ -4,6 +4,9 @@ import React, { Component, PropTypes } from 'react';
 import { Button, Input } from 'react-bootstrap';
 import { Link } from 'react-router';
 
+const request = require('superagent');
+const config = require('config');
+
 export default class Intro extends Component {
 	static propTypes = {
 		children: PropTypes.object
@@ -11,6 +14,10 @@ export default class Intro extends Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			voterCount: null,
+			orgCount: null
+		}
 	}
 
 	static getProps() {
@@ -18,7 +25,32 @@ export default class Intro extends Component {
 	}
 
 	componentDidMount() {
-		// TODO
+		this.getVoterCount();
+		this.getOrgCount();
+	}
+
+	getVoterCount () {
+		request
+			.get(`${config.url}/voterCount/`)
+			.end( (err, res) => {
+				if (err) throw err;
+
+				this.setState({
+					voterCount: res.body.voter_count
+				});
+			})
+	}
+
+	getOrgCount () {
+		request
+			.get(`${config.url}/organizationCount/`)
+			.end( (err, res) => {
+				if (err) throw err;
+
+				this.setState({
+					orgCount: res.body.organization_count
+				});
+			})
 	}
 
 	componentWillUnmount() {
@@ -45,7 +77,7 @@ export default class Intro extends Component {
 						</li>
 				      	<li className="list-group-item">
 					  		<span className="glyphicon glyphicon-small glyphicon-ok-sign">
-							</span> &nbsp; (VOTER_COUNT) voters
+							</span> &nbsp; {this.state.voterCount} voters
 						</li>
 				        {/* TODO When we upgrade to react@0.14.0 we can use react-intl@2.0.0-beta-1
 				        <li className="list-group-item"><span className="glyphicon glyphicon-small glyphicon-ok-sign"></span>&nbsp;
@@ -56,7 +88,7 @@ export default class Intro extends Component {
 				    /></li>*/}
 						<li className="list-group-item">
 							<span className="glyphicon glyphicon-small glyphicon-ok-sign">
-							</span>&nbsp; (ORGANIZATION COUNT) not-for-profit organizations
+							</span>&nbsp; {this.state.orgCount} not-for-profit organizations
 						</li>
 						<li className="list-group-item">
 						  	<span className="glyphicon glyphicon-small glyphicon-ok-sign">
