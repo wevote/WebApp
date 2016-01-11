@@ -22,30 +22,26 @@ export default class ItemActionbar extends Component {
   render () {
     return (
       <div className="item-actionbar row">
-        <div className="container-fluid">
-          <div className="left-inner-addon">
-            <span onClick={ this.supportById.bind(this) }>
-              <span className="glyphicon glyphicon-small glyphicon-arrow-up">
-              </span>
-              Support
+          <span className="col-xs-3" onClick={ this.supportById.bind(this) }>
+            <span className="glyphicon glyphicon-small glyphicon-arrow-up">
             </span>
-            <span onClick={ this.unsupportById.bind(this) }>
-              <span className="glyphicon glyphicon-small glyphicon-arrow-down">
-              </span>
-              Oppose
+            &nbsp;Support
+          </span>
+          <span className="col-xs-3" onClick={ this.unsupportById.bind(this) }>
+            <span className="glyphicon glyphicon-small glyphicon-arrow-down">
             </span>
-            <span >
-              <span className="glyphicon glyphicon-small glyphicon-comment">
-              </span>
-              Comment
+            &nbsp;Oppose
+          </span>
+          <span className="col-xs-3" >
+            <span className="glyphicon glyphicon-small glyphicon-comment">
             </span>
-            <span>
-              <span className="glyphicon glyphicon-small glyphicon-share-alt">
-              </span>
-              Ask or Share
+            &nbsp;Comment
+          </span>
+          <span className="col-xs-3" >
+            <span className="glyphicon glyphicon-small glyphicon-share-alt">
             </span>
-          </div>
-        </div>
+            &nbsp;Ask or Share
+          </span>
       </div>
     );
   }
