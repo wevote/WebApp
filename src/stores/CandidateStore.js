@@ -239,4 +239,6 @@ dispatcher.register( action => {
   }
 });
 
+CandidateStore.setMaxListeners(100);
+
 export default CandidateStore;

@@ -59,7 +59,7 @@ export default class BallotItem extends Component {
 
   displayCandidateList () {
 
-    return this.state.candidate_list ?
+    return this.state.candidate_list ? 
         <CandidateList candidate_list={this.state.candidate_list} />
       : (<i className="fa fa-spinner fa-pulse"></i>);
 
@@ -81,12 +81,10 @@ export default class BallotItem extends Component {
 
         <StarAction we_vote_id={this.props.we_vote_id}/>
 
-        <ul >
-            {
-              this.isOffice() ?
-                this.displayCandidateList() : this.displayMeasure()
-            }
-        </ul>
+        {
+          this.isOffice() ?
+            this.displayCandidateList() : this.displayMeasure()
+        }
 
       </div>
     )
