@@ -10,22 +10,22 @@ const MAX_LISTENERS = 100;
  * @return {Store}  DataStore Object
  */
 export function createStore(mixin) {
-    const store = assign({}, EventEmitter.prototype, {
-        emitChange() {
-            this.emit(CHANGE_EVENT);
-        },
+  const store = assign({}, EventEmitter.prototype, {
+    emitChange() {
+      this.emit(CHANGE_EVENT);
+    },
 
-        addChangeListener(callback) {
-            this.on(CHANGE_EVENT, callback);
-        },
+    addChangeListener(callback) {
+      this.on(CHANGE_EVENT, callback);
+    },
 
-        removeChangeListener(callback) {
-            this.removeChangeListener(CHANGE_EVENT, callback);
-        }
+    removeChangeListener(callback) {
+      this.removeListener(CHANGE_EVENT, callback);
+    }
 
-    }, mixin);
+  }, mixin);
 
-    store.setMaxListeners(MAX_LISTENERS);
+  store.setMaxListeners(MAX_LISTENERS);
 
-    return store;
+  return store;
 }

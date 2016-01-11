@@ -33,8 +33,8 @@ export default class Measure extends Component {
   _onChange () {
     BallotStore.getBallotItemById(
       this.props.we_vote_id, ballot_item => this.setState({
-        supportCount: ballot_item.supportCount ++,
-        opposeCount: ballot_item.opposeCount ++
+        supportCount: ballot_item.supportCount,
+        opposeCount: ballot_item.opposeCount
       })
     );
   }
