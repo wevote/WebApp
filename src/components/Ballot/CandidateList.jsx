@@ -14,11 +14,11 @@ export default class CandidateList extends Component {
     );
   }
 
-    render () {
-      return (
-          <article className="list-group">
-            { this.mapListToHTML() }
-          </article>
-      );
-    }
+  render () {
+    return (
+      <article className="list-group">
+        { this.mapListToHTML() }
+      </article>
+    );
+  }
 }

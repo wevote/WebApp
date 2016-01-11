@@ -2,6 +2,7 @@ import EventEmitter from 'events';
 import assign from 'object-assign';
 
 const CHANGE_EVENT = 'change';
+const MAX_LISTENERS = 100;
 
 /**
  * create a store using a spec object as mixin
@@ -24,14 +25,7 @@ export function createStore(mixin) {
 
     }, mixin);
 
+    store.setMaxListeners(MAX_LISTENERS);
+
     return store;
-}
-
-export function mergeIntoStore (store, data) {
-    let key, a;
-
-    for(key in data) {
-        store[key] = data[key];
-    }
-
 }

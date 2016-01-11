@@ -1,13 +1,11 @@
-const assign = require('object-assign');
-const request = require('superagent');
-const EventEmitter = require('events').EventEmitter;
-const dispatcher = require('dispatcher/AppDispatcher');
-const CandidateConstants = require('constants/CandidateConstants');
-const config = require('../config');
-
+import { createStore } from 'utils/createStore';
 import { shallowClone } from 'utils/object-utils';
 
-const CHANGE_EVENT = 'change';
+const dispatcher = require('dispatcher/AppDispatcher');
+const CandidateConstants = require('constants/CandidateConstants');
+
+const request = require('superagent');
+const config = require('../config');
 
 const TYPE = {
   kind_of_ballot_item: 'CANDIDATE'
@@ -148,7 +146,7 @@ function opposeCandidate ( id ) {
   _candidate_store[id].opposeCount ++;
 }
 
-const CandidateStore = assign({}, EventEmitter.prototype, {
+const CandidateStore = createStore({
   /**
    * return list of all candidates
    * @return {Array} array of candidates
@@ -199,46 +197,20 @@ const CandidateStore = assign({}, EventEmitter.prototype, {
     }
     else
       getCandidatesByBallotId(id, callback);
-  },
-
-  /**
-   * @param  {Function} callback
-   */
-  emitChange: function (callback) {
-    this.emit(CHANGE_EVENT);
-  },
-
-  /**
-   * @param  {Function} callback subscribe to changes
-   */
-  addChangeListener: function (callback) {
-    this.on(CHANGE_EVENT, callback);
-  },
-
-  /**
-   * @param  {Function} callback unsubscribe to changes
-   */
-  removeChangeListener: function (callback) {
-    this.removeListener(CHANGE_EVENT, callback);
   }
 });
 
 dispatcher.register( action => {
   switch (action.actionType) {
-    case CandidateConstants.SUPPORT_CANDIDATE:
+    case CandidateConstants.CANDIDATE_SUPPORTED:
       supportCandidate(action.id);
       CandidateStore.emitChange();
       break;
-    case CandidateConstants.OPPOSE_CANDIDATE:
+    case CandidateConstants.CANDIDATE_OPPOSED:
       opposeCandidate(action.id);
       CandidateStore.emitChange();
       break;
-    default:
-      console.debug('default', action);
-      break;
   }
 });
-
-CandidateStore.setMaxListeners(100);
 
 export default CandidateStore;

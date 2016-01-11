@@ -59,20 +59,21 @@ export default class BallotItem extends Component {
 
   displayCandidateList () {
 
-    return this.state.candidate_list ? 
-        <CandidateList candidate_list={this.state.candidate_list} />
+    return this.state.candidate_list ?
+      <CandidateList candidate_list={this.state.candidate_list} />
       : (<i className="fa fa-spinner fa-pulse"></i>);
 
   }
 
   displayMeasure () {
-    return <Measure we_vote_id={this.props.we_vote_id} />
+    return <Measure {...this.props} />
   }
 
   render() {
 
     return (
       <div className="ballot-item well well-skinny split-top-skinny">
+
         <InfoIconAction />
 
         <div className="display-name">

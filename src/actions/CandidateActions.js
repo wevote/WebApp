@@ -4,14 +4,14 @@ const CandidateConstants = require('constants/CandidateConstants');
 const CandidateActions = {
   support: function (id) {
     dispatcher.dispatch({
-      actionType: CandidateConstants.SUPPORT_CANDIDATE,
+      actionType: CandidateConstants.CANDIDATE_SUPPORTED,
       id: id
     });
   },
 
   oppose: function (id) {
     dispatcher.dispatch({
-      actionType: CandidateConstants.OPPOSE_CANDIDATE,
+      actionType: CandidateConstants.CANDIDATE_OPPOSED,
       id: id
     })
   }
