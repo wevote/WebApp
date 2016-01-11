@@ -1,10 +1,22 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 export default class Measure extends Component {
-    render() {
-        return (
-            <div>
-            </div>
-        );
-    }
+  static propTypes = {
+    we_vote_id: PropTypes.string.isRequired
+  }
+  constructor (props) {
+    super(props);
+    this.state = {};
+  }
+
+  componentDidMount () {
+
+  }
+
+  render() {
+      return (
+          <div>
+          </div>
+      );
+  }
 }
