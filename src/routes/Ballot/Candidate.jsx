@@ -29,9 +29,9 @@ export default class Candidate extends Component {
   componentWillUnmount () { }
 
   render() {
-    var content = this.state.candidate ?
-    <CandidateDetail {...this.state.candidate} /> :
-    (<div className="loading-wheel">loading...</div>);
+    var details = this.state.candidate ?
+      <CandidateDetail {...this.state.candidate} /> :
+      (<i className="fa fa-spinner fa-pulse"></i>);
 
 
 
@@ -55,7 +55,8 @@ export default class Candidate extends Component {
           </div>
         </header>
 
-        { content }
+        { details }
+
       </div>
 
     );

@@ -61,7 +61,7 @@ export default class BallotItem extends Component {
 
     return this.state.candidate_list ?
         <CandidateList candidate_list={this.state.candidate_list} />
-      : 'loading...';
+      : (<i className="fa fa-spinner fa-pulse"></i>);
 
   }
 
