@@ -17,7 +17,7 @@ export default class Candidate extends Component {
   }
 
   componentDidMount () {
-    CandidateStore.getCandidateById(
+    CandidateStore.getCandidateDetailsById(
       this.props.params.id, this.setCandidate.bind(this)
     );
   }

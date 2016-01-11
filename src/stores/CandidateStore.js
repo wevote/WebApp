@@ -1,21 +1,29 @@
 const assign = require('object-assign');
 const request = require('superagent');
-
+const EventEmitter = require('events').EventEmitter;
+const dispatcher = require('dispatcher/AppDispatcher');
+const CandidateConstants = require('constants/CandidateConstants');
 const config = require('../config');
 
 import { shallowClone } from 'utils/object-utils';
+
+const CHANGE_EVENT = 'change';
 
 const TYPE = {
   kind_of_ballot_item: 'CANDIDATE'
 };
 
-function convertIdToWeVoteId (id) {
-  return `wvtecand${id}`
-}
-
 // super private store holders
+// ## NO DIRECT ACCESS ##
 let _candidate_store = {};
 let _ballot_candidate_map = {};
+
+function convertIdToWeVoteId (id) {
+  if( id.match(/wvtecand/) )
+    return id;
+  else
+    return `wvtecand${id}`
+}
 
 function getCandidatesByBallotId (office_we_vote_id, callback) {
     let count = 0;
@@ -132,7 +140,15 @@ function addCandidateDetailsToStore ( candidate ) {
   _candidate_store[candidate.we_vote_id].detailsAdded = true;
 }
 
-const CandidateStore = {
+function supportCandidate ( id ) {
+  _candidate_store[id].supportCount ++;
+}
+
+function opposeCandidate ( id ) {
+  _candidate_store[id].opposeCount ++;
+}
+
+const CandidateStore = assign({}, EventEmitter.prototype, {
   /**
    * return list of all candidates
    * @return {Array} array of candidates
@@ -146,7 +162,20 @@ const CandidateStore = {
 
     id = convertIdToWeVoteId(id);
 
-    return _candidate_store[id] && _candidate_store[id].detailsAdded ?
+    return _candidate_store[id] ?
+      callback(_candidate_store[id]) : null;
+  },
+
+  getCandidateDetailsById: function (id, callback) {
+    if (typeof id !== 'string')
+      throw new Error('getCandidateByBallotId takes string id');
+
+    if (typeof callback !== 'function')
+      throw new Error('getCandidatesByBallotId takes callback function')
+
+    id = convertIdToWeVoteId(id);
+
+    return _candidate_store[id] && _candidate_store.detailsAdded ?
       callback(_candidate_store[id]) : getCandidateDetailsById(id, callback);
   },
 
@@ -170,7 +199,44 @@ const CandidateStore = {
     }
     else
       getCandidatesByBallotId(id, callback);
+  },
+
+  /**
+   * @param  {Function} callback
+   */
+  emitChange: function (callback) {
+    this.emit(CHANGE_EVENT);
+  },
+
+  /**
+   * @param  {Function} callback subscribe to changes
+   */
+  addChangeListener: function (callback) {
+    this.on(CHANGE_EVENT, callback);
+  },
+
+  /**
+   * @param  {Function} callback unsubscribe to changes
+   */
+  removeChangeListener: function (callback) {
+    this.removeListener(CHANGE_EVENT, callback);
   }
-};
+});
+
+dispatcher.register( action => {
+  switch (action.actionType) {
+    case CandidateConstants.SUPPORT_CANDIDATE:
+      supportCandidate(action.id);
+      CandidateStore.emitChange();
+      break;
+    case CandidateConstants.OPPOSE_CANDIDATE:
+      opposeCandidate(action.id);
+      CandidateStore.emitChange();
+      break;
+    default:
+      console.debug('default', action);
+      break;
+  }
+});
 
 export default CandidateStore;
