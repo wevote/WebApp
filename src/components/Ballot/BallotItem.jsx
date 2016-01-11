@@ -73,12 +73,12 @@ export default class BallotItem extends Component {
 
     return (
       <div className="ballot-item well well-skinny split-top-skinny">
+        <InfoIconAction />
 
         <div className="display-name">
           { this.props.ballot_item_display_name }
         </div>
 
-        <InfoIconAction />
         <StarAction we_vote_id={this.props.we_vote_id}/>
 
         <ul >
