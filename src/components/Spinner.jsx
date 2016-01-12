@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 class Spinner extends Component {
+    
     constructor(props) {
         super(props);
     }
