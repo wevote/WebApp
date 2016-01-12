@@ -2,6 +2,7 @@ import EventEmitter from 'events';
 import assign from 'object-assign';
 
 const CHANGE_EVENT = 'change';
+const MAX_LISTENERS = 100;
 
 /**
  * create a store using a spec object as mixin
@@ -9,29 +10,22 @@ const CHANGE_EVENT = 'change';
  * @return {Store}  DataStore Object
  */
 export function createStore(mixin) {
-    const store = assign({}, EventEmitter.prototype, {
-        emitChange() {
-            this.emit(CHANGE_EVENT);
-        },
+  const store = assign({}, EventEmitter.prototype, {
+    emitChange() {
+      this.emit(CHANGE_EVENT);
+    },
 
-        addChangeListener(callback) {
-            this.on(CHANGE_EVENT, callback);
-        },
+    addChangeListener(callback) {
+      this.on(CHANGE_EVENT, callback);
+    },
 
-        removeChangeListener(callback) {
-            this.removeChangeListener(CHANGE_EVENT, callback);
-        }
-
-    }, mixin);
-
-    return store;
-}
-
-export function mergeIntoStore (store, data) {
-    let key, a;
-
-    for(key in data) {
-        store[key] = data[key];
+    removeChangeListener(callback) {
+      this.removeListener(CHANGE_EVENT, callback);
     }
 
+  }, mixin);
+
+  store.setMaxListeners(MAX_LISTENERS);
+
+  return store;
 }

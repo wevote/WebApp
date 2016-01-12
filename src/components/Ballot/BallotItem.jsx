@@ -3,6 +3,8 @@ import React, { Component, PropTypes } from 'react';
 import CandidateStore from 'stores/CandidateStore';
 import CandidateList from 'components/Ballot/CandidateList';
 
+import Measure from 'components/Ballot/Measure';
+
 import InfoIconAction from 'components/InfoIconAction';
 import StarAction from 'components/StarAction';
 
@@ -58,42 +60,32 @@ export default class BallotItem extends Component {
   displayCandidateList () {
 
     return this.state.candidate_list ?
-        <CandidateList candidate_list={this.state.candidate_list} />
-      : 'loading...';
+      <CandidateList candidate_list={this.state.candidate_list} />
+      : (<i className="fa fa-spinner fa-pulse"></i>);
 
   }
 
-  displayMeasureCounts () {
-    return (
-      <div>
-        <div className="support">
-          ?? support
-        </div>
-        <div className="oppose">
-          ?? support
-        </div>
-      </div>
-    );
+  displayMeasure () {
+    return <Measure {...this.props} />
   }
 
   render() {
 
     return (
-      <div
-        id={ this.props.we_vote_id }
-        className="ballot-item well well-skinny split-top-skinny">
-
-        { this.props.ballot_item_display_name }
+      <div className="ballot-item well well-skinny split-top-skinny">
 
         <InfoIconAction />
-        <StarAction />
 
-        <ul >
-            {
-              this.isOffice() ?
-                this.displayCandidateList() : this.displayMeasureCounts()
-            }
-        </ul>
+        <div className="display-name">
+          { this.props.ballot_item_display_name }
+        </div>
+
+        <StarAction we_vote_id={this.props.we_vote_id}/>
+
+        {
+          this.isOffice() ?
+            this.displayCandidateList() : this.displayMeasure()
+        }
 
       </div>
     )

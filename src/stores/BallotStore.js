@@ -1,14 +1,18 @@
-'use strict';
-const assign = require('object-assign');
-const request = require('superagent');
-
-const config = require('../config');
-
+import { createStore } from 'utils/createStore';
 import {shallowClone} from 'utils/object-utils';
+
+const AppDispatcher = require('dispatcher/AppDispatcher');
+const BallotConstants = require('constants/BallotConstants');
+
+const request = require('superagent');
+const config = require('../config');
 
 let _civic_id = null;
 let _ballot_store = {};
 let _ballot_order = [];
+let _measure_map = [];
+
+const MEASURE = 'MEASURE';
 
 function printErr (err) {
   console.error(err);
@@ -47,6 +51,7 @@ function addItemsToStore (data) {
   data.ballot_item_list.forEach( item => {
     _ballot_store[item.we_vote_id] = shallowClone(item);
     _ballot_order.push(item.we_vote_id);
+    item.kind_of_ballot_item === MEASURE ? _measure_map.push(item.we_vote_id) : '';
   });
 
   return data;
@@ -57,7 +62,53 @@ function setCivicId (data) {
   return data;
 }
 
-const BallotStore = {
+function findMeasureSupport (data) {
+  var count = 0;
+
+  return new Promise ( (resolve, reject) => _measure_map
+    .forEach( measure_id => request
+      .get(`${config.url}/positionSupportCountForBallotItem/`)
+      .withCredentials()
+      .query({ measure_id: _ballot_store[measure_id].id })
+      .end( function (err, res) {
+        if (err || !res.body.success) throw err || res.body;
+
+        _ballot_store[measure_id].supportCount = res.body.count;
+
+        count ++;
+
+        if (count === _measure_map.length)
+          resolve(data);
+
+      })
+    )
+  );
+}
+
+function findMeasureOppose ( data ) {
+  var count = 0;
+
+  return new Promise ( (resolve, reject) => _measure_map
+    .forEach( measure_id => request
+      .get(`${config.url}/positionOpposeCountForBallotItem/`)
+      .withCredentials()
+      .query({ measure_id: _ballot_store[measure_id].id })
+      .end( function (err, res) {
+        if (err || !res.body.success) throw err || res.body;
+
+        _ballot_store[measure_id].opposeCount = res.body.count;
+
+        count ++;
+
+        if (count === _measure_map.length)
+          resolve(data);
+
+      })
+    )
+  );
+}
+
+const BallotStore = createStore({
   /**
    * initialize the ballot store with data, if no data
    * and callback with the ordered items
@@ -77,6 +128,8 @@ const BallotStore = {
         .then(getBallotItems)
         .then(addItemsToStore)
         .then(setCivicId)
+        .then(findMeasureSupport)
+        .then(findMeasureOppose)
         .then(data => callback(getItems()))
         .catch(err => console.error(err));
   },
@@ -98,9 +151,30 @@ const BallotStore = {
    * @param  {Number} id candidate's we_vote_id
    * @return {Object}    candidate
    */
-  getBallotItemById: function (id) {
-      return shallowClone(_ballot_store[id]);
+  getBallotItemById: function (id, callback) {
+     callback(shallowClone(_ballot_store[id]));
   }
-};
+});
 
-module.exports = BallotStore;
+function opposeBallotItem (id) {
+  _ballot_store[id].opposeCount ++;
+}
+
+function supportBallotItem (id) {
+  _ballot_store[id].supportCount ++;
+}
+
+AppDispatcher.register( action => {
+  switch (action.actionType) {
+    case BallotConstants.BALLOT_SUPPORTED:
+      supportBallotItem(action.id);
+      BallotStore.emitChange();
+      break;
+    case BallotConstants.BALLOT_OPPOSED:
+      opposeBallotItem(action.id);
+      BallotStore.emitChange();
+      break;
+  }
+})
+
+export default BallotStore;

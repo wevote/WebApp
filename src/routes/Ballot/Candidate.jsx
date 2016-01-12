@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 
 import CandidateDetail from 'components/Ballot/CandidateDetail';
 import CandidateStore from 'stores/CandidateStore';
@@ -16,7 +17,7 @@ export default class Candidate extends Component {
   }
 
   componentDidMount () {
-    CandidateStore.getCandidateById(
+    CandidateStore.getCandidateDetailsById(
       this.props.params.id, this.setCandidate.bind(this)
     );
   }
@@ -28,12 +29,38 @@ export default class Candidate extends Component {
   componentWillUnmount () { }
 
   render() {
-    if (this.state.candidate)
-      return <CandidateDetail {...this.state.candidate} />;
-    else
-      return (
-        <div className="loading-wheel">loading...</div>
-      );
+    var details = this.state.candidate ?
+      <CandidateDetail {...this.state.candidate} /> :
+      (<i className="fa fa-spinner fa-pulse"></i>);
+
+
+
+    {/* Trying to mirror from invisionApp design */}
+    return (
+      <div className='candidate-detail-route'>
+        <header className="row">
+          <div className="col-xs-6 col-md-6 text-center">
+            <Link to='/ballot'>
+              &lt; Back to My Ballot
+            </Link>
+          </div>
+          <div className="col-xs-6 col-md-6 text-center">
+            <i className="icon-icon-more-opinions-2-2 icon-light icon-medium">
+            </i>
+            <Link
+              to="/ballot/opinions"
+              className="font-darkest fluff-left-narrow">
+                More Opinions
+            </Link>
+          </div>
+        </header>
+
+        { details }
+
+      </div>
+
+    );
+
   }
 
   _onChange () { }
