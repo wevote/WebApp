@@ -1,7 +1,9 @@
 .item-actionbar {
   border-top: 1px solid #DDD;
   padding:10px 5px;
-}
-.item-actionbar span.action {
-  width:25%;
+
+  .action {
+    width: 25%;
+  }
+
 }

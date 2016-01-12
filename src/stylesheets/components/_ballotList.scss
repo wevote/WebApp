@@ -1,14 +1,18 @@
 .ballot-list {
   padding-bottom:70px;
+
+  .display-name {
+    display: inline-block;
+    font-size: 20px;
+  }
+
+  .list-group-item {
+    margin-bottom: 15px;
+    padding-bottom: 0;
+  }
+  
 }
-.ballot-list .display-name {
-  display: inline-block;
-  font-size: 20px;
-}
-.ballot-list .list-group-item {
-  padding-bottom:0;
-  margin-bottom:15px;
-}
+
 .ballotList-bg {
     background: adjust_hue(lighten(#f5f5f5, 1), 0);
 }
