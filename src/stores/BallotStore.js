@@ -69,7 +69,8 @@ function findMeasureSupport (data) {
     .forEach( measure_id => request
       .get(`${config.url}/positionSupportCountForBallotItem/`)
       .withCredentials()
-      .query({ measure_id: _ballot_store[measure_id].id })
+      .query({ ballot_item_id: _ballot_store[measure_id].id })
+      .query({ kind_of_ballot_item: _ballot_store[measure_id].kind_of_ballot_item })
       .end( function (err, res) {
         if (err || !res.body.success) throw err || res.body;
 
@@ -92,7 +93,8 @@ function findMeasureOppose ( data ) {
     .forEach( measure_id => request
       .get(`${config.url}/positionOpposeCountForBallotItem/`)
       .withCredentials()
-      .query({ measure_id: _ballot_store[measure_id].id })
+      .query({ ballot_item_id: _ballot_store[measure_id].id })
+      .query({ kind_of_ballot_item: _ballot_store[measure_id].kind_of_ballot_item })
       .end( function (err, res) {
         if (err || !res.body.success) throw err || res.body;
 

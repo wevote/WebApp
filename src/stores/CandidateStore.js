@@ -72,7 +72,8 @@ function getSupporters (value) {
     .candidate_list.forEach( candidate => request
       .get(`${config.url}/positionSupportCountForBallotItem/`)
         .withCredentials()
-        .query({ candidate_id: candidate.id})
+        .query({ ballot_item_id: candidate.id })
+        .query( TYPE )
         .end( (err, res) => {
           if (err)
             reject(err);
@@ -98,7 +99,8 @@ function getOpposition (value) {
     .candidate_list.forEach( candidate => request
       .get(`${config.url}/positionOpposeCountForBallotItem/`)
         .withCredentials()
-        .query({ candidate_id: candidate.id })
+        .query({ ballot_item_id: candidate.id })
+        .query( TYPE )
         .end( (err, res) => {
           if (err)
             reject(err);
