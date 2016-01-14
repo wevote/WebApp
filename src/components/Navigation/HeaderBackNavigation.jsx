@@ -4,7 +4,7 @@ import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
 import Headroom from "react-headroom";
 
-export class HeaderBackNavigation extends Component {
+export default class HeaderBackNavigation extends Component {
     static propTypes = {
         back_to_text: PropTypes.string,
         link_route: PropTypes.string,
@@ -26,7 +26,7 @@ export class HeaderBackNavigation extends Component {
         if (this.props.link_route) {
             link_route = this.props.link_route;
         } else {
-            link_route = 'ballot';
+            link_route = '/ballot';
         }
         var back_to_on;
         if (this.props.back_to_off) {

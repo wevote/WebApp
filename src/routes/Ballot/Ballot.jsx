@@ -26,11 +26,11 @@ export default class Ballot extends Component {
           <Headroom>
             <section className="separate-bottom fluff-loose--full container-fluid">
               <h4 className="pull-left gutter-left--window bold">
-                MY BALLOT
+                My Ballot
               </h4>
               <aside className="pull-right gutter-right-window gutter-top-small">
-                <Link to="/settings/location"className="font-lightest text-uppercase">
-                  Oakland, CA (change)
+                <Link to="/settings/location"className="font-lightest">
+                  Oakland, CA
                 </Link>
               </aside>
             </section>

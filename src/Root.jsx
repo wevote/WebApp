@@ -5,7 +5,7 @@ import { Router, Route, IndexRoute, IndexRedirect }    from 'react-router';
 import BallotStore                      from 'stores/BallotStore';
 
 // main Application
-import Application  		                from 'Application';
+import Application  		            from 'Application';
 
 /****************************** ROUTE-COMPONENTS ******************************/
 /* Intro */
@@ -18,10 +18,13 @@ import SettingsDashboard                from 'routes/Settings/SettingsDashboard'
 import Settings                         from 'routes/Settings/Settings';
 import Location                         from 'routes/Settings/Location';
 
-/* Ballot */
-import BallotIndex			                from 'routes/Ballot/BallotIndex';
+/* Pages that use Ballot Navigation */
+import BallotIndex			            from 'routes/Ballot/BallotIndex';
 import Ballot                           from 'routes/Ballot/Ballot';
 import Candidate                        from 'routes/Ballot/Candidate';
+
+/* Ballot Off-shoot Pages */
+import BallotOpinions                   from 'routes/Ballot/BallotOpinions';
 
 /* More */
 import More                             from 'routes/More';
@@ -60,19 +63,22 @@ class Root extends Component {
          }
 
         <Route path="/intro" component={Intro}>
-          <Route path="opinions" component={IntroOpinions} />
-          <Route path="contests" component={IntroContests} />
+          <Route path="/intro/opinions" component={IntroOpinions} />
+          <Route path="/intro/contests" component={IntroContests} />
         </Route>
 
         {/* Settings go in this structure... */}
         <Route path="/settings" component={SettingsDashboard}>
           <IndexRoute component={Settings} />
-          <Route path="location" component={Location} />
+          <Route path="/settings/location" component={Location} />  /* Complete path on one line for searching */
         </Route>
 
+        {/* Ballot Off-shoot Pages */}
+        <Route path="/ballot/opinions" component={BallotOpinions} />
+
         <Route path="/friends" >
-          <Route path="add" component={AddFriend} />
-          <Route path="remove" />
+          <Route path="/friends/add" component={AddFriend} />
+          <Route path="/friends/remove" />
         </Route>
 
         <Route path="/more/about" component={About} />
@@ -106,6 +112,7 @@ class Root extends Component {
           // Any route that is not found -> @return NotFound component
           <Route path="*" component={NotFound} />
         </Route>
+        {/* Routes should not be placed down here */}
       </Router>
     );
   }
