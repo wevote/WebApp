@@ -1,10 +1,9 @@
 import React, { PropTypes, Component } from "react";
-
 import { Link } from "react-router";
 
 import LanguageSwitchNavigation from "components/LanguageSwitchNavigation";
 
-export default class More extends Component {
+export default class MoreMenu extends Component {
 	static propTypes = {
 		children: PropTypes.object
 	};
@@ -17,7 +16,6 @@ export default class More extends Component {
 		return {};
 	}
 
-	/* DALE 2015-01-13 I believe we will want to deprecate this file in favor of /src/components/MoreMenu.jsx */
 	render() {
 	    return (
 			<div>
