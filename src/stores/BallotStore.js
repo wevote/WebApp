@@ -47,7 +47,7 @@ function getBallotItems () {
   )
 }
 
-function addItemsToStore (data) {
+function addItemsToBallotStore (data) {
   data.ballot_item_list.forEach( item => {
     _ballot_store[item.we_vote_id] = shallowClone(item);
     _ballot_order.push(item.we_vote_id);
@@ -62,19 +62,20 @@ function setCivicId (data) {
   return data;
 }
 
+// Cycle through all measures known about locally, and request the current support count
 function findMeasureSupport (data) {
   var count = 0;
 
   return new Promise ( (resolve, reject) => _measure_map
-    .forEach( measure_id => request
+    .forEach( measure_we_vote_id => request
       .get(`${config.url}/positionSupportCountForBallotItem/`)
       .withCredentials()
-      .query({ ballot_item_id: _ballot_store[measure_id].id })
-      .query({ kind_of_ballot_item: _ballot_store[measure_id].kind_of_ballot_item })
+      .query({ ballot_item_id: _ballot_store[measure_we_vote_id].id })
+      .query({ kind_of_ballot_item: _ballot_store[measure_we_vote_id].kind_of_ballot_item })
       .end( function (err, res) {
         if (err || !res.body.success) throw err || res.body;
 
-        _ballot_store[measure_id].supportCount = res.body.count;
+        _ballot_store[measure_we_vote_id].supportCount = res.body.count;
 
         count ++;
 
@@ -86,19 +87,21 @@ function findMeasureSupport (data) {
   );
 }
 
+// Cycle through all measures known about locally, and request the current oppose count
 function findMeasureOppose ( data ) {
   var count = 0;
 
   return new Promise ( (resolve, reject) => _measure_map
-    .forEach( measure_id => request
+    .forEach( measure_we_vote_id => request
       .get(`${config.url}/positionOpposeCountForBallotItem/`)
       .withCredentials()
-      .query({ ballot_item_id: _ballot_store[measure_id].id })
-      .query({ kind_of_ballot_item: _ballot_store[measure_id].kind_of_ballot_item })
+      .query({ ballot_item_id: _ballot_store[measure_we_vote_id].id })
+      .query({ kind_of_ballot_item: _ballot_store[measure_we_vote_id].kind_of_ballot_item })
       .end( function (err, res) {
         if (err || !res.body.success) throw err || res.body;
 
-        _ballot_store[measure_id].opposeCount = res.body.count;
+        _ballot_store[measure_we_vote_id].opposeCount = res.body.count;
+        printErr(measure_we_vote_id + ": local id is " + _ballot_store[measure_we_vote_id].id);
 
         count ++;
 
@@ -128,7 +131,7 @@ const BallotStore = createStore({
     else
       getBallotItemsFromGoogle('2201 Wilson Blvd, Arlingon VA, 22201')
         .then(getBallotItems)
-        .then(addItemsToStore)
+        .then(addItemsToBallotStore)
         .then(setCivicId)
         .then(findMeasureSupport)
         .then(findMeasureOppose)
@@ -153,27 +156,29 @@ const BallotStore = createStore({
    * @param  {Number} id candidate's we_vote_id
    * @return {Object}    candidate
    */
-  getBallotItemById: function (id, callback) {
-     callback(shallowClone(_ballot_store[id]));
+  getBallotItemById: function (we_vote_id, callback) {
+     callback(shallowClone(_ballot_store[we_vote_id]));
   }
 });
 
-function opposeBallotItem (id) {
-  _ballot_store[id].opposeCount ++;
+function opposeBallotItem (we_vote_id) {
+  if (typeof _ballot_store[we_vote_id] !== 'undefined')
+    _ballot_store[we_vote_id].opposeCount ++;
 }
 
-function supportBallotItem (id) {
-  _ballot_store[id].supportCount ++;
+function supportBallotItem (we_vote_id) {
+  if (typeof _ballot_store[we_vote_id] !== 'undefined')
+    _ballot_store[we_vote_id].supportCount ++;
 }
 
 AppDispatcher.register( action => {
   switch (action.actionType) {
     case BallotConstants.BALLOT_SUPPORTED:
-      supportBallotItem(action.id);
+      supportBallotItem(action.we_vote_id);
       BallotStore.emitChange();
       break;
     case BallotConstants.BALLOT_OPPOSED:
-      opposeBallotItem(action.id);
+      opposeBallotItem(action.we_vote_id);
       BallotStore.emitChange();
       break;
   }

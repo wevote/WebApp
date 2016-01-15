@@ -3,17 +3,17 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var BallotConstants = require('../constants/BallotConstants');
 
 module.exports = {
-  support: function (id) {
+  support: function (we_vote_id) {
     AppDispatcher.dispatch({
       actionType: BallotConstants.BALLOT_SUPPORTED,
-      id
+      we_vote_id
     });
   },
 
-  oppose: function (id) {
+  oppose: function (we_vote_id) {
     AppDispatcher.dispatch({
       actionType: BallotConstants.BALLOT_OPPOSED,
-      id
+      we_vote_id
     });
   }
 };
