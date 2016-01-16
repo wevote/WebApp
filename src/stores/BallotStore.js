@@ -174,13 +174,54 @@ function findVoterStarStatus ( data ) {
 }
 
 function toggleStarOn (we_vote_id) {
-    console.log('toggleStarOn: ' + we_vote_id);
+  console.log('toggleStarOn: ' + we_vote_id);
+  return new Promise((resolve, reject) => request
+    .get(`${config.url}/voterStarOnSave/`)
+    .withCredentials()
+    .query({ ballot_item_id: _ballot_store[we_vote_id].id })
+    .query({ kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item })
+    .end( function (err, res) {
+      if (res.body.success) {
+        _ballot_store[we_vote_id].VoterStarred = "Yes";
+      }
+      else if (err)
+        reject(err || res.body.status);
+
+      resolve(res.body);
+    })
+  );
 }
 
 function toggleStarOff (we_vote_id) {
-    console.log('toggleStarOff: ' + we_vote_id);
+  console.log('toggleStarOff: ' + we_vote_id);
+  return new Promise((resolve, reject) => request
+    .get(`${config.url}/voterStarOffSave/`)
+    .withCredentials()
+    .query({ ballot_item_id: _ballot_store[we_vote_id].id })
+    .query({ kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item })
+    .end( function (err, res) {
+      if (res.body.success) {
+        _ballot_store[we_vote_id].VoterStarred = "No";
+      }
+      else if (err)
+        reject(err || res.body.status);
+
+      resolve(res.body);
+    })
+  );
 }
 
+function opposeBallotItem (we_vote_id) {
+  if (typeof _ballot_store[we_vote_id] !== 'undefined')
+    _ballot_store[we_vote_id].opposeCount ++;
+}
+
+function supportBallotItem (we_vote_id) {
+  // TODO: Instead of incrementing this locally, request the support & oppose count via API?
+  //  Or do it locally for speed, but then immediately request the count for just this ballot item
+  if (typeof _ballot_store[we_vote_id] !== 'undefined')
+    _ballot_store[we_vote_id].supportCount ++;
+}
 
 
 const BallotStore = createStore({
@@ -241,26 +282,14 @@ const BallotStore = createStore({
   },
 
   /**
-   * return candidate object by id
-   * @param  {Number} id candidate's we_vote_id
-   * @return {Object}    candidate
+   * return ballot item object by we_vote_id
+   * @param  {String} we_vote_id candidate's we_vote_id
+   * @return {Object} office or measure
    */
-  getBallotItemById: function (we_vote_id, callback) {
+  getBallotItemByWeVoteId: function (we_vote_id, callback) {
      callback(shallowClone(_ballot_store[we_vote_id]));
   }
 });
-
-function opposeBallotItem (we_vote_id) {
-  if (typeof _ballot_store[we_vote_id] !== 'undefined')
-    _ballot_store[we_vote_id].opposeCount ++;
-}
-
-function supportBallotItem (we_vote_id) {
-  // TODO: Instead of incrementing this locally, request the support & oppose count via API?
-  //  Or do it locally for speed, but then immediately request the count for just this ballot item
-  if (typeof _ballot_store[we_vote_id] !== 'undefined')
-    _ballot_store[we_vote_id].supportCount ++;
-}
 
 AppDispatcher.register( action => {
   switch (action.actionType) {

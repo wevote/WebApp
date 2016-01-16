@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import BallotActions from 'actions/BallotActions';
+import BallotStore from 'stores/BallotStore';
 import CandidateStore from 'stores/CandidateStore';
 import CandidateList from 'components/Ballot/CandidateList';
 
@@ -29,7 +30,8 @@ export default class BallotItem extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {};
+
+    this.state = {}
   }
 
   isOffice () {
@@ -39,7 +41,8 @@ export default class BallotItem extends Component {
   componentDidMount () {
     if ( this.isOffice() ) {
       this.state = {
-        candidate_list: []
+        candidate_list: [],
+        VoterStarred: this.props.VoterStarred
       };
 
       CandidateStore.getCandidatesByBallotId(
@@ -50,8 +53,10 @@ export default class BallotItem extends Component {
     else
       this.state = {
         supportCount: null,
-        opposeCount: null
+        opposeCount: null,
+        VoterStarred: this.props.VoterStarred
       };
+    BallotStore.addChangeListener(this._onChange.bind(this));
   }
 
   setCandidates (value) {
@@ -72,6 +77,18 @@ export default class BallotItem extends Component {
     return <Measure {...this.props} />
   }
 
+  componentWillUnmount() {
+    BallotStore.removeChangeListener(this._onChange.bind(this));
+  }
+
+  _onChange () {
+    BallotStore.getBallotItemByWeVoteId(
+      this.props.we_vote_id, ballot_item => this.setState({
+        VoterStarred: ballot_item.VoterStarred,
+      })
+    );
+  }
+
   render() {
 
     return (
@@ -81,7 +98,7 @@ export default class BallotItem extends Component {
           { this.props.ballot_item_display_name }
         </div>
 
-        <StarAction we_vote_id={this.props.we_vote_id} action={BallotActions} VoterStarred={this.props.VoterStarred}/>
+        <StarAction action={BallotActions} we_vote_id={this.props.we_vote_id} VoterStarred={this.state.VoterStarred}/>
 
         {
           this.isOffice() ?

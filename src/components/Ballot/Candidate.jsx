@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
+import BallotActions from 'actions/BallotActions';
 import CandidateStore from 'stores/CandidateStore';
 import CandidateActions from 'actions/CandidateActions';
 
@@ -15,7 +16,8 @@ export default class Candidate extends Component {
     opposeCount: PropTypes.number,
     order_on_ballot: PropTypes.string,
     supportCount: PropTypes.number,
-    we_vote_id: PropTypes.string
+    we_vote_id: PropTypes.string,
+    VoterStarred: PropTypes.string
   };
 
   constructor(props) {
@@ -62,7 +64,7 @@ export default class Candidate extends Component {
 
     return (
       <section className="list-group-item">
-        <StarAction we_vote_id={we_vote_id}/>
+        <StarAction action={BallotActions} we_vote_id={we_vote_id} VoterStarred={this.props.VoterStarred}/>
         <div className="row" style={{ paddingBottom: '10px' }}>
           <div
             className="col-xs-4"
