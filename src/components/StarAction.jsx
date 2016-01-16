@@ -20,7 +20,8 @@ export default class StarAction extends Component {
     };
   }
 
-  toggleStar () {
+  toggleStar (evt) {
+    evt.stopPropagation();
     if (this.state.VoterStarred == "Yes")
       this.props.action.starOff(this.props.we_vote_id);
     else
