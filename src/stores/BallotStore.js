@@ -104,7 +104,7 @@ function findMeasureOpposeCounts ( data ) {
 
         // Add the number of organizations and people in this person's network that oppose this particular measure
         _ballot_store[measure_we_vote_id].opposeCount = res.body.count;
-        printErr(measure_we_vote_id + ": local id is " + _ballot_store[measure_we_vote_id].id);
+        console.log(measure_we_vote_id + ": local id is " + _ballot_store[measure_we_vote_id].id);
 
         measure_count ++;
 
@@ -160,7 +160,7 @@ function findVoterStarStatus ( data ) {
           // Has the voter starred this particular ballot item?
           // is_starred is coming from API, and VoterStarred is the local variable name
           _ballot_store[we_vote_id].VoterStarred = res.body.is_starred ? "Yes": "No";
-          printErr(we_vote_id + ": VoterStarred is " + _ballot_store[we_vote_id].VoterStarred);
+          console.log(we_vote_id + ": VoterStarred is " + _ballot_store[we_vote_id].VoterStarred);
         }
         else if (err) throw err || res.body;
 
