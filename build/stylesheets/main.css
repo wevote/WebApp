@@ -362,8 +362,8 @@ th {
  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
-  src: url("/fonts/fontawesome-webfont.eot?v=4.5.0");
-  src: url("/fonts/fontawesome-webfont.eot?#iefix&v=4.5.0") format("embedded-opentype"), url("/fonts/fontawesome-webfont.woff2?v=4.5.0") format("woff2"), url("/fonts/fontawesome-webfont.woff?v=4.5.0") format("woff"), url("/fonts/fontawesome-webfont.ttf?v=4.5.0") format("truetype"), url("/fonts/fontawesome-webfont.svg?v=4.5.0#fontawesomeregular") format("svg");
+  src: url("vendor/font-awesome/fonts/fontawesome-webfont.eot?v=4.5.0");
+  src: url("vendor/font-awesome/fonts/fontawesome-webfont.eot?#iefix&v=4.5.0") format("embedded-opentype"), url("vendor/font-awesome/fonts/fontawesome-webfont.woff2?v=4.5.0") format("woff2"), url("vendor/font-awesome/fonts/fontawesome-webfont.woff?v=4.5.0") format("woff"), url("vendor/font-awesome/fonts/fontawesome-webfont.ttf?v=4.5.0") format("truetype"), url("vendor/font-awesome/fonts/fontawesome-webfont.svg?v=4.5.0#fontawesomeregular") format("svg");
   font-weight: normal;
   font-style: normal; }
 .fa {
@@ -8314,6 +8314,9 @@ html {
 .icon-xl {
   font-size: 10em; }
 
+.icon-lg {
+  font-size: 8em; }
+
 .icon-medium {
   font-size: 2em; }
 
@@ -8398,17 +8401,14 @@ body {
   padding-top: 1.5em; }
 
 .gutter-left--window {
-  margin-left: 4em; }
-
-.gutter-right-window {
-  margin-right: 4em; }
-
-.gutter-top-small {
+  margin-left: 1em; }
+.gutter-right--window {
+  margin-right: 1em; }
+.gutter-top--small {
   margin-top: 1em; }
 
 .separate-bottom {
   border-bottom: 1px solid #d4d4d4; }
-
 .separate-top {
   border-top: 1px solid #d4d4d4; }
 
@@ -8426,8 +8426,94 @@ body {
   top: 0;
   z-index: 9999; }
 
+.spinner {
+  -webkit-animation: rotator 1.4s linear infinite;
+  animation: rotator 1.4s linear infinite; }
+
+@-webkit-keyframes rotator {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(270deg);
+    transform: rotate(270deg); } }
+@keyframes rotator {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(270deg);
+    transform: rotate(270deg); } }
+.path {
+  stroke-dasharray: 187;
+  stroke-dashoffset: 0;
+  -webkit-transform-origin: center;
+  -ms-transform-origin: center;
+  transform-origin: center;
+  -webkit-animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+  animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite; }
+
+@-webkit-keyframes colors {
+  0% {
+    stroke: #4285F4; }
+  25% {
+    stroke: #DE3E35; }
+  50% {
+    stroke: #F7C223; }
+  75% {
+    stroke: #1B9A59; }
+  100% {
+    stroke: #4285F4; } }
+@keyframes colors {
+  0% {
+    stroke: #4285F4; }
+  25% {
+    stroke: #DE3E35; }
+  50% {
+    stroke: #F7C223; }
+  75% {
+    stroke: #1B9A59; }
+  100% {
+    stroke: #4285F4; } }
+@-webkit-keyframes dash {
+  0% {
+    stroke-dashoffset: 187; }
+  50% {
+    stroke-dashoffset: 46.75;
+    -webkit-transform: rotate(135deg);
+    transform: rotate(135deg); }
+  100% {
+    stroke-dashoffset: 187;
+    -webkit-transform: rotate(450deg);
+    transform: rotate(450deg); } }
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 187; }
+  50% {
+    stroke-dashoffset: 46.75;
+    -webkit-transform: rotate(135deg);
+    transform: rotate(135deg); }
+  100% {
+    stroke-dashoffset: 187;
+    -webkit-transform: rotate(450deg);
+    transform: rotate(450deg); } }
+.ballot-list {
+  padding-bottom: 70px; }
+  .ballot-list .display-name {
+    display: inline-block;
+    font-size: 20px; }
+  .ballot-list .list-group-item {
+    margin-bottom: 15px;
+    padding-bottom: 0; }
+
 .ballotList-bg {
   background: #f8f8f8; }
+
+.item-actionbar {
+  border-top: 1px solid #DDD;
+  padding: 10px 5px; }
+  .item-actionbar .action {
+    width: 25%; }
 
 .font-lightest {
   color: #d3d3d3; }

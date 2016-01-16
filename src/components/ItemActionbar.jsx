@@ -53,17 +53,17 @@ export default class ItemActionbar extends Component {
   render () {
     return (
       <div className="item-actionbar row">
-          <span className="col-xs-3" onClick={ this.toggleSupport.bind(this) }>
+          <span className="col-xs-4" onClick={ this.toggleSupport.bind(this) }>
             <span className="glyphicon glyphicon-small glyphicon-arrow-up">
             </span>
             &nbsp;Support {this.state.voterSupports}
           </span>
-          <span className="col-xs-3" onClick={ this.toggleOppose.bind(this) }>
+          <span className="col-xs-4" onClick={ this.toggleOppose.bind(this) }>
             <span className="glyphicon glyphicon-small glyphicon-arrow-down">
             </span>
             &nbsp;Oppose {this.state.voterOpposes}
           </span>
-          <span className="col-xs-3" >
+          <span className="col-xs-4" >
             <span className="glyphicon glyphicon-small glyphicon-share-alt">
             </span>
             &nbsp;Share
