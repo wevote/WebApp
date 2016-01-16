@@ -8497,6 +8497,13 @@ body {
     stroke-dashoffset: 187;
     -webkit-transform: rotate(450deg);
     transform: rotate(450deg); } }
+.badgeTotal {
+  font-size: 11px;
+  left: 13px;
+  padding: 3px;
+  position: absolute;
+  top: -7px; }
+
 .ballot-list {
   padding-bottom: 70px; }
   .ballot-list .display-name {
