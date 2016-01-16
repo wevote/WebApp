@@ -19,7 +19,7 @@ export default class MoreMenu extends Component {
 	render() {
 	    return (
 			<div>
-			    <div className="container-fluid well well-90">
+			    <div className="device-menu--large container-fluid well well-90">
 			        <LanguageSwitchNavigation />
 			        <h4 className="text-left">My Ballot</h4>
 			        <ul className="list-group">

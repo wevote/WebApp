@@ -1,0 +1,30 @@
+.device {
+    &-menu {
+        &--large {
+            display: none;
+        }
+    }
+    &-ballot {
+        &--large {
+            float: none;
+            width: 100%;
+        }
+    }
+}
+@media all and (min-width : 768px ) {
+    .device {
+        &-menu {
+            &--large {
+                display: inline-block;
+                float: left;
+                width: 25%;
+            }
+        }
+        &-ballot {
+            &--large {
+                float: right;
+                width: 70%;
+            }
+        }
+    }
+}

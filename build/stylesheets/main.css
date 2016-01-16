@@ -8518,4 +8518,19 @@ body {
 .font-lightest {
   color: #d3d3d3; }
 
+.device-menu--large {
+  display: none; }
+.device-ballot--large {
+  float: none;
+  width: 100%; }
+
+@media all and (min-width: 768px) {
+  .device-menu--large {
+    display: inline-block;
+    float: left;
+    width: 25%; }
+  .device-ballot--large {
+    float: right;
+    width: 70%; } }
+
 /*# sourceMappingURL=main.css.map */

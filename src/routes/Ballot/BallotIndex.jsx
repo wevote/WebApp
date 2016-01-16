@@ -8,7 +8,7 @@ export default class BallotIndex extends Component {
 
   render () {
     return (
-      <div className="ballot">
+      <div className="ballot device-ballot--large">
 
         { this.props.children }
 
