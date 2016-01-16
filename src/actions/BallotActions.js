@@ -15,5 +15,19 @@ module.exports = {
       actionType: BallotConstants.BALLOT_OPPOSED,
       we_vote_id
     });
+  },
+
+  starOn: function (we_vote_id) {
+    AppDispatcher.dispatch({
+      actionType: BallotConstants.STAR_ON,
+      we_vote_id
+    });
+  },
+
+  starOff: function (we_vote_id) {
+    AppDispatcher.dispatch({
+      actionType: BallotConstants.STAR_OFF,
+      we_vote_id
+    });
   }
 };

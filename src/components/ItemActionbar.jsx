@@ -4,7 +4,9 @@ import { Link } from 'react-router';
 export default class ItemActionbar extends Component {
   static propTypes = {
     we_vote_id: PropTypes.string.isRequired,
-    action: PropTypes.object.isRequired
+    action: PropTypes.object.isRequired,
+    voterSupports: PropTypes.string, // Is "support" selected?
+    voterOpposes: PropTypes.string // Is "oppose" selected?
   };
 
   constructor (props) {
@@ -25,22 +27,17 @@ export default class ItemActionbar extends Component {
           <span className="col-xs-3" onClick={ this.supportById.bind(this) }>
             <span className="glyphicon glyphicon-small glyphicon-arrow-up">
             </span>
-            &nbsp;Support
+            &nbsp;Support {this.props.voterSupports}
           </span>
           <span className="col-xs-3" onClick={ this.unsupportById.bind(this) }>
             <span className="glyphicon glyphicon-small glyphicon-arrow-down">
             </span>
-            &nbsp;Oppose
-          </span>
-          <span className="col-xs-3" >
-            <span className="glyphicon glyphicon-small glyphicon-comment">
-            </span>
-            &nbsp;Comment
+            &nbsp;Oppose {this.props.voterOpposes}
           </span>
           <span className="col-xs-3" >
             <span className="glyphicon glyphicon-small glyphicon-share-alt">
             </span>
-            &nbsp;Ask or Share
+            &nbsp;Share
           </span>
       </div>
     );

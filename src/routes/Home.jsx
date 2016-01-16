@@ -34,7 +34,7 @@ export default class Home extends Component {
      * verify the device id of the the active user
      * @return {undefined}
      */
-    _assign_device_id() {
+    _assign_voter_device_id() {
         deviceIdGenerate(function (err, res) {
             if (res.ok) {
                 console.log(res.body);

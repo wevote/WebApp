@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-
+import BallotActions from 'actions/BallotActions';
 import CandidateStore from 'stores/CandidateStore';
 import CandidateList from 'components/Ballot/CandidateList';
 
@@ -21,7 +21,10 @@ export default class BallotItem extends Component {
     id: PropTypes.string,
     kind_of_ballot_item: PropTypes.string,
     local_ballot_order: PropTypes.number,
-    we_vote_id: PropTypes.string
+    we_vote_id: PropTypes.string,
+    is_support: PropTypes.string,
+    is_oppose: PropTypes.string,
+    VoterStarred: PropTypes.string
   };
 
   constructor (props) {
@@ -74,13 +77,11 @@ export default class BallotItem extends Component {
     return (
       <div className="ballot-item well well-skinny split-top-skinny">
 
-        <InfoIconAction />
-
         <div className="display-name">
           { this.props.ballot_item_display_name }
         </div>
 
-        <StarAction we_vote_id={this.props.we_vote_id}/>
+        <StarAction we_vote_id={this.props.we_vote_id} action={BallotActions} VoterStarred={this.props.VoterStarred}/>
 
         {
           this.isOffice() ?

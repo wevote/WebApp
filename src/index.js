@@ -12,7 +12,7 @@ import './stylesheets/main.scss'
 // polyfill
 if (!Object.assign) Object.assign = React.__spread;
 
-const firstVisit = VoterStore.device_id ? false : true;
+const firstVisit = VoterStore.voter_device_id ? false : true;
 
 VoterStore
   .initialize()

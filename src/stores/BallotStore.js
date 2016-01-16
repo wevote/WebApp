@@ -10,7 +10,8 @@ const config = require('../config');
 let _civic_id = null;
 let _ballot_store = {};
 let _ballot_order = [];
-let _measure_map = [];
+let _measure_map = []; // A summary of all measures (list of we_vote_id's)
+let _ballot_item_we_vote_id_list = []; // A summary of all ballot items (list of we_vote_id's)
 
 const MEASURE = 'MEASURE';
 
@@ -52,6 +53,7 @@ function addItemsToBallotStore (data) {
     _ballot_store[item.we_vote_id] = shallowClone(item);
     _ballot_order.push(item.we_vote_id);
     item.kind_of_ballot_item === MEASURE ? _measure_map.push(item.we_vote_id) : '';
+    _ballot_item_we_vote_id_list.push(item.we_vote_id);
   });
 
   return data;
@@ -63,7 +65,7 @@ function setCivicId (data) {
 }
 
 // Cycle through all measures known about locally, and request the current support count
-function findMeasureSupport (data) {
+function findMeasureSupportCounts (data) {
   var count = 0;
 
   return new Promise ( (resolve, reject) => _measure_map
@@ -88,8 +90,8 @@ function findMeasureSupport (data) {
 }
 
 // Cycle through all measures known about locally, and request the current oppose count
-function findMeasureOppose ( data ) {
-  var count = 0;
+function findMeasureOpposeCounts ( data ) {
+  var measure_count = 0;
 
   return new Promise ( (resolve, reject) => _measure_map
     .forEach( measure_we_vote_id => request
@@ -100,18 +102,86 @@ function findMeasureOppose ( data ) {
       .end( function (err, res) {
         if (err || !res.body.success) throw err || res.body;
 
+        // Add the number of organizations and people in this person's network that oppose this particular measure
         _ballot_store[measure_we_vote_id].opposeCount = res.body.count;
         printErr(measure_we_vote_id + ": local id is " + _ballot_store[measure_we_vote_id].id);
 
-        count ++;
+        measure_count ++;
 
-        if (count === _measure_map.length)
+        if (measure_count === _measure_map.length)
           resolve(data);
 
       })
     )
   );
 }
+
+// Cycle through all ballot_items, and request the voter's current stance
+function findVoterPositions ( data ) {
+  var ballot_items_count = 0;
+
+  return new Promise ( (resolve, reject) => _ballot_item_we_vote_id_list
+    .forEach( we_vote_id => request
+      .get(`${config.url}/voterPositionRetrieve/`)
+      .withCredentials()
+      .query({ ballot_item_we_vote_id: we_vote_id })
+      .query({ kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item })
+      .end( function (err, res) {
+        if (res.body.success) {
+          // Does the voter support or oppose this particular ballot item?
+          _ballot_store[we_vote_id].voterSupports = res.body.is_support ? "Yes": "No";
+          _ballot_store[we_vote_id].voterOpposes = res.body.is_oppose ? "Yes": "No";
+          printErr(we_vote_id + ": voterSupports is " + _ballot_store[we_vote_id].voterSupports);
+          printErr(we_vote_id + ": voterOpposes is " + _ballot_store[we_vote_id].voterOpposes);
+        }
+        else if (err) throw err || res.body;
+
+        ballot_items_count ++;
+
+        if (ballot_items_count === _ballot_item_we_vote_id_list.length)
+          resolve(data);
+      })
+    )
+  );
+}
+
+// Cycle through all ballot_items, and ask if the voter set a star or not?
+function findVoterStarStatus ( data ) {
+  var ballot_items_count = 0;
+
+  return new Promise ( (resolve, reject) => _ballot_item_we_vote_id_list
+    .forEach( we_vote_id => request
+      .get(`${config.url}/voterStarStatusRetrieve/`)
+      .withCredentials()
+      .query({ ballot_item_id: _ballot_store[we_vote_id].id })
+      .query({ kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item })
+      .end( function (err, res) {
+        if (res.body.success) {
+          // Has the voter starred this particular ballot item?
+          // is_starred is coming from API, and VoterStarred is the local variable name
+          _ballot_store[we_vote_id].VoterStarred = res.body.is_starred ? "Yes": "No";
+          printErr(we_vote_id + ": VoterStarred is " + _ballot_store[we_vote_id].VoterStarred);
+        }
+        else if (err) throw err || res.body;
+
+        ballot_items_count ++;
+
+        if (ballot_items_count === _ballot_item_we_vote_id_list.length)
+          resolve(data);
+      })
+    )
+  );
+}
+
+function toggleStarOn (we_vote_id) {
+    console.log('toggleStarOn: ' + we_vote_id);
+}
+
+function toggleStarOff (we_vote_id) {
+    console.log('toggleStarOff: ' + we_vote_id);
+}
+
+
 
 const BallotStore = createStore({
   /**
@@ -125,16 +195,35 @@ const BallotStore = createStore({
     if (!callback || typeof callback !== 'function')
       throw new Error('initialize must be called with callback');
 
+    // Do we have the Ballot data stored in the browser?
     if (Object.keys(_ballot_store).length)
       callback(getItems());
 
     else
+      // If here, we don't have any ballot items stored in the browser
+      // TODO Update logic to see if there are ballot items in the We Vote DB
+
+      // TODO If ballot items in We Vote DB...
+      //getBallotItems()
+      //  .then(addItemsToBallotStore)
+      //  .then(setCivicId)
+      //  .then(findMeasureSupportCounts)
+      //  .then(findMeasureOpposeCounts)
+      //  .then(data => callback(getItems()))
+      //  .catch(err => console.error(err));
+      //findVoterPositions()
+      //  .catch(err => console.error(err))
+
+      // TODO If no ballot items in We Vote DB, reach out to google and get fresh ballot
+      // VoterStore.getLocation()
       getBallotItemsFromGoogle('2201 Wilson Blvd, Arlingon VA, 22201')
         .then(getBallotItems)
         .then(addItemsToBallotStore)
-        .then(setCivicId)
-        .then(findMeasureSupport)
-        .then(findMeasureOppose)
+        .then(setCivicId) // setCivicId returns google_civic_election_id, which must be passed
+        .then(findMeasureSupportCounts)
+        .then(findMeasureOpposeCounts)
+        .then(findVoterPositions)
+        .then(findVoterStarStatus)
         .then(data => callback(getItems()))
         .catch(err => console.error(err));
   },
@@ -167,6 +256,8 @@ function opposeBallotItem (we_vote_id) {
 }
 
 function supportBallotItem (we_vote_id) {
+  // TODO: Instead of incrementing this locally, request the support & oppose count via API?
+  //  Or do it locally for speed, but then immediately request the count for just this ballot item
   if (typeof _ballot_store[we_vote_id] !== 'undefined')
     _ballot_store[we_vote_id].supportCount ++;
 }
@@ -179,6 +270,14 @@ AppDispatcher.register( action => {
       break;
     case BallotConstants.BALLOT_OPPOSED:
       opposeBallotItem(action.we_vote_id);
+      BallotStore.emitChange();
+      break;
+    case BallotConstants.STAR_ON:
+      toggleStarOn(action.we_vote_id);
+      BallotStore.emitChange();
+      break;
+    case BallotConstants.STAR_OFF:
+      toggleStarOff(action.we_vote_id);
       BallotStore.emitChange();
       break;
   }

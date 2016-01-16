@@ -13,12 +13,11 @@ const url = require('config').url;
 const CHANGE_EVENT = 'change';
 const CHANGE_LOCATION = 'change_location';
 
-let _device_id = cookies.getItem('voter_device_id');
-let _voter_id = cookies.getItem('voter_id');
+let _voter_device_id = cookies.getItem('voter_device_id');
 let _location = cookies.getItem('location');
 let _position = {};
 
-function generateDeviceId () {
+function generateVoterDeviceId () {
     console.log('generating device id...');
 
     return new Promise ( (resolve, reject) => request
@@ -28,8 +27,8 @@ function generateDeviceId () {
             else {
                 var {voter_device_id} = res.body;
 
-                _device_id = voter_device_id;
-                cookies.setItem('voter_device_id', voter_device_id);
+                _voter_device_id = voter_device_id;
+                cookies.setItem('voter_device_id', voter_device_id, Infinity); // Set to never expire
 
                 resolve(voter_device_id);
             }
@@ -37,7 +36,7 @@ function generateDeviceId () {
     ).catch(console.error);
 }
 
-function createVoterId (device_id) {
+function createVoter () {
     console.log('creating voter id');
 
     return new Promise ( (resolve, reject) => request
@@ -45,11 +44,6 @@ function createVoterId (device_id) {
       .end( (err, res) => {
         if (err) reject(err);
         else {
-          var {voter_id} = res.body;
-
-          _voter_id = voter_id;
-          cookies.setItem('voter_id', voter_id);
-
           resolve(res.body.status);
         }
       })
@@ -69,8 +63,7 @@ function guessLocation (value) {
 }
 
 const VoterStore = assign({}, EventEmitter.prototype, {
-  get device_id() { return _device_id; },
-  get voter_id() { return _voter_id; },
+  get voter_device_id() { return _voter_device_id; },
   get position() { return _position; },
 
   /**
@@ -80,10 +73,10 @@ const VoterStore = assign({}, EventEmitter.prototype, {
   initialize: function (location) {
     var promise = new Promise(resolve=> resolve());
 
-    if (! _device_id )
+    if (! _voter_device_id )
       promise = promise
-        .then(generateDeviceId)
-        .then(createVoterId);
+        .then(generateVoterDeviceId)
+        .then(createVoter);
 
     if (! _location )
       promise

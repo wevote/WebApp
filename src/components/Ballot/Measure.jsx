@@ -9,7 +9,9 @@ export default class Measure extends Component {
   static propTypes = {
     we_vote_id: PropTypes.string.isRequired,
     supportCount: PropTypes.number.isRequired,
-    opposeCount: PropTypes.number.isRequired
+    opposeCount: PropTypes.number.isRequired,
+    voterSupports: PropTypes.string,
+    voterOpposes: PropTypes.string
   }
 
   constructor (props) {
@@ -17,7 +19,7 @@ export default class Measure extends Component {
 
     this.state = {
       supportCount: this.props.supportCount,
-      opposeCount: this.props.opposeCount
+      opposeCount: this.props.opposeCount,
     };
 
   }
@@ -34,7 +36,7 @@ export default class Measure extends Component {
     BallotStore.getBallotItemById(
       this.props.we_vote_id, ballot_item => this.setState({
         supportCount: ballot_item.supportCount,
-        opposeCount: ballot_item.opposeCount
+        opposeCount: ballot_item.opposeCount,
       })
     );
   }
@@ -49,7 +51,8 @@ export default class Measure extends Component {
         <p className="bufferNone">
           { this.state.opposeCount } oppose
         </p>
-        <ItemActionbar we_vote_id={this.props.we_vote_id} action={BallotActions}/>
+        <ItemActionbar we_vote_id={this.props.we_vote_id} action={BallotActions}
+                       voterSupports={this.props.voterSupports} voterOpposes={this.props.voterOpposes}/>
       </div>
     );
   }

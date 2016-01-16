@@ -6,27 +6,37 @@ const floatRight = { float: 'right' };
 
 export default class StarAction extends Component {
   static propTypes = {
-    we_vote_id: PropTypes.string
+    we_vote_id: PropTypes.string.isRequired,
+    action: PropTypes.object.isRequired,
+    VoterStarred: PropTypes.string
   };
 
   constructor(props) {
     super(props);
   }
 
-  toggleSupport (e) {
-    console.log(`${this.props.we_vote_id}`);
+  toggleStar () {
+    if (this.props.VoterStarred == "Yes")
+      this.props.action.starOff(this.props.we_vote_id);
+    else
+      this.props.action.starOn(this.props.we_vote_id);
   }
 
 	render() {
-    return (
-      <span
-        className="star-action"
-        onClick={this.toggleSupport.bind(this)}
-        style={floatRight}>
-        &nbsp;
-        <span className="glyphicon glyphicon-small glyphicon-star-empty">
-        </span>
-      </span>
-    );
+        var star_icon;
+        if (this.props.VoterStarred == "Yes") {
+            star_icon = <span className="glyphicon glyphicon-small glyphicon-star"></span>;
+        } else {
+            star_icon = <span className="glyphicon glyphicon-small glyphicon-star-empty"></span>;
+        }
+        return (
+          <span
+            className="star-action"
+            onClick={this.toggleStar.bind(this)}
+            style={floatRight}>
+            &nbsp;
+            {star_icon}
+          </span>
+        );
 	}
 }
