@@ -358,6 +358,9 @@ const BallotStore = createStore({
         getBallotItems,
         findMeasureSupportCounts,
         findMeasureOpposeCounts,
+        function (resolve) {
+          resolve(getItems());
+        },
         callback
       ]);
   },
