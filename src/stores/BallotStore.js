@@ -173,8 +173,8 @@ function findVoterStarStatus ( data ) {
   );
 }
 
-function toggleStarOn (we_vote_id) {
-  console.log('toggleStarOn: ' + we_vote_id);
+function starOnToAPI (we_vote_id) {
+  console.log('starOnToAPI: ' + we_vote_id);
   return new Promise((resolve, reject) => request
     .get(`${config.url}/voterStarOnSave/`)
     .withCredentials()
@@ -192,8 +192,8 @@ function toggleStarOn (we_vote_id) {
   );
 }
 
-function toggleStarOff (we_vote_id) {
-  console.log('toggleStarOff: ' + we_vote_id);
+function starOffToAPI (we_vote_id) {
+  console.log('starOffToAPI: ' + we_vote_id);
   return new Promise((resolve, reject) => request
     .get(`${config.url}/voterStarOffSave/`)
     .withCredentials()
@@ -212,13 +212,13 @@ function toggleStarOff (we_vote_id) {
 }
 
 // A voter wants to show his or her support for a ballot item
-function supportBallotItem (we_vote_id) {
+function supportOnToAPI (we_vote_id) {
   // TODO: Instead of incrementing this locally, request the support & oppose count via API?
   //  Or do it locally for speed, but then immediately request the count for just this ballot item
   if (typeof _ballot_store[we_vote_id] !== 'undefined')
     _ballot_store[we_vote_id].supportCount ++;
 
-  console.log('supportBallotItem: ' + we_vote_id);
+  console.log('supportOnToAPI: ' + we_vote_id);
   return new Promise((resolve, reject) => request
     .get(`${config.url}/voterSupportingSave/`)
     .withCredentials()
@@ -240,13 +240,13 @@ function supportBallotItem (we_vote_id) {
 }
 
 // A voter wants to rescind his or her support for a ballot item (Doesn't necessarily mean they oppose the ballot item)
-function supportBallotItemOff (we_vote_id) {
+function supportOffToAPI (we_vote_id) {
   // TODO: Instead of incrementing this locally, request the support & oppose count via API?
   //  Or do it locally for speed, but then immediately request the count for just this ballot item
   if (typeof _ballot_store[we_vote_id] !== 'undefined')
     _ballot_store[we_vote_id].supportCount --;
 
-  console.log('supportBallotItemOff: ' + we_vote_id);
+  console.log('supportOffToAPI: ' + we_vote_id);
   return new Promise((resolve, reject) => request
     .get(`${config.url}/voterStopSupportingSave/`)
     .withCredentials()
@@ -267,11 +267,11 @@ function supportBallotItemOff (we_vote_id) {
 }
 
 // A voter wants to show his or her opposition to a ballot item
-function opposeBallotItem (we_vote_id) {
+function opposeOnToAPI (we_vote_id) {
   if (typeof _ballot_store[we_vote_id] !== 'undefined')
     _ballot_store[we_vote_id].opposeCount ++;
 
-  console.log('opposeBallotItem: ' + we_vote_id);
+  console.log('opposeOnToAPI: ' + we_vote_id);
   return new Promise((resolve, reject) => request
     .get(`${config.url}/voterOpposingSave/`)
     .withCredentials()
@@ -293,11 +293,11 @@ function opposeBallotItem (we_vote_id) {
 }
 
 // A voter wants to rescind his or her opposition for a ballot item (Doesn't necessarily mean they support)
-function opposeBallotItemOff (we_vote_id) {
+function opposeOffToAPI (we_vote_id) {
   if (typeof _ballot_store[we_vote_id] !== 'undefined')
     _ballot_store[we_vote_id].opposeCount --;
 
-  console.log('opposeBallotItemOff: ' + we_vote_id);
+  console.log('opposeOffToAPI: ' + we_vote_id);
   return new Promise((resolve, reject) => request
     .get(`${config.url}/voterStopOpposingSave/`)
     .withCredentials()
@@ -387,28 +387,28 @@ const BallotStore = createStore({
 
 AppDispatcher.register( action => {
   switch (action.actionType) {
-    case BallotConstants.BALLOT_SUPPORT_ON:  // supportBallotItem
-      supportBallotItem(action.we_vote_id);
+    case BallotConstants.BALLOT_SUPPORT_ON:  // supportOnToAPI
+      supportOnToAPI(action.we_vote_id);
       BallotStore.emitChange();
       break;
-    case BallotConstants.BALLOT_SUPPORT_OFF:  // supportBallotItemOff
-      supportBallotItemOff(action.we_vote_id);
+    case BallotConstants.BALLOT_SUPPORT_OFF:  // supportOffToAPI
+      supportOffToAPI(action.we_vote_id);
       BallotStore.emitChange();
       break;
-    case BallotConstants.BALLOT_OPPOSE_ON:  // opposeBallotItem
-      opposeBallotItem(action.we_vote_id);
+    case BallotConstants.BALLOT_OPPOSE_ON:  // opposeOnToAPI
+      opposeOnToAPI(action.we_vote_id);
       BallotStore.emitChange();
       break;
-    case BallotConstants.BALLOT_OPPOSE_OFF:  // opposeBallotItemOff
-      opposeBallotItemOff(action.we_vote_id);
+    case BallotConstants.BALLOT_OPPOSE_OFF:  // opposeOffToAPI
+      opposeOffToAPI(action.we_vote_id);
       BallotStore.emitChange();
       break;
-    case BallotConstants.STAR_ON:  // toggleStarOn
-      toggleStarOn(action.we_vote_id);
+    case BallotConstants.STAR_ON:  // starOnToAPI
+      starOnToAPI(action.we_vote_id);
       BallotStore.emitChange();
       break;
-    case BallotConstants.STAR_OFF:  // toggleStarOff
-      toggleStarOff(action.we_vote_id);
+    case BallotConstants.STAR_OFF:  // starOffToAPI
+      starOffToAPI(action.we_vote_id);
       BallotStore.emitChange();
       break;
   }

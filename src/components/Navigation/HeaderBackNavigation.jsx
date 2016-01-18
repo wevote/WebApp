@@ -8,7 +8,7 @@ export default class HeaderBackNavigation extends Component {
     static propTypes = {
         back_to_text: PropTypes.string,
         link_route: PropTypes.string,
-        back_to_off: PropTypes.boolean,
+        back_to_off: PropTypes.bool,
         header_text: PropTypes.string
     };
 
