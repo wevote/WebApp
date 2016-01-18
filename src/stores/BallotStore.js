@@ -323,7 +323,7 @@ const BallotStore = createStore({
 
     // Do we have the Ballot data stored in the browser?
     if (Object.keys(_ballot_store).length)
-      callback(getItems());
+      return callback.bind(getItems())();
 
     else
       // If here, we don't have any ballot items stored in the browser
