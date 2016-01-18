@@ -12,7 +12,7 @@ export default class Measure extends Component {
     opposeCount: PropTypes.number.isRequired,
     voterSupports: PropTypes.string,
     voterOpposes: PropTypes.string
-  }
+  };
 
   constructor (props) {
     super(props);
