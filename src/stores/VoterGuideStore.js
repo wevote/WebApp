@@ -1,0 +1,248 @@
+import { createStore } from 'utils/createStore';
+import {shallowClone} from 'utils/object-utils';
+
+const AppDispatcher = require('dispatcher/AppDispatcher');
+const VoterGuideConstants = require('constants/VoterGuideConstants');
+
+const request = require('superagent');
+const config = require('../config');
+
+let _organization_store = {};
+let _organization_list = []; // A summary of all organizations (list of organization we_vote_id's)
+let _voter_guide_store = {};
+let _voter_guide_list = []; // A summary of all voter_guides (list of organization we_vote_id's)
+let _voter_guides_to_follow_order = [];
+let _voter_guides_to_follow_list = []; // A summary of all voter guides to follow (list of voter guide we_vote_id's)
+let _voter_guides_to_ignore_list = []; // A summary of voter guides to follow (list of voter guide we_vote_id's)
+let _voter_guides_followed_order = [];
+let _voter_guides_followed_list = []; // A summary of voter guides already followed (list of voter guide we_vote_id's)
+
+const MEASURE = 'MEASURE';
+
+function printErr (err) {
+  console.error(err);
+}
+
+function retrieveVoterGuidesToFollowList () {
+  return new Promise( (resolve, reject) => request
+    .get(`${config.url}/voterGuidesToFollowRetrieve/`)
+    .withCredentials()
+    //.query(config.test)
+    .query({ ballot_item_we_vote_id: 'wv01cand2897' })
+    .query({ kind_of_ballot_item: 'CANDIDATE' })
+    .query({ google_civic_election_id: 0 })
+    .end( function (err, res) {
+      if (err || !res.body.success)
+        reject(err || res.body.status);
+
+      resolve(res.body);
+    })
+  )
+}
+
+function addVoterGuidesToFollowToVoterGuideStore (data) {
+  data.voter_guides.forEach( item => {
+    _voter_guide_store[item.we_vote_id] = shallowClone(item);
+    _voter_guides_to_follow_order.push(item.we_vote_id);
+    _voter_guides_to_follow_list.push(item.we_vote_id);
+    _organization_list.push(item.organization_we_vote_id); // To be retrieved in retrieveOrganizations
+  });
+
+  return data;
+}
+
+function retrieveVoterGuidesFollowedList () {
+  return new Promise( (resolve, reject) => request
+    .get(`${config.url}/voterGuidesFollowedRetrieve/`) // TODO DALE API TO BE CREATED 2016-01-18
+    .withCredentials()
+    .query(config.test)
+    .end( function (err, res) {
+      if (err || !res.body.success)
+        reject(err || res.body.status);
+
+      resolve(res.body);
+    })
+  )
+}
+
+function addVoterGuidesFollowedToVoterGuideStore (data) {
+  data.voter_guides.forEach( item => {
+    _voter_guide_store[item.we_vote_id] = shallowClone(item);
+    _voter_guides_followed_order.push(item.we_vote_id);
+    _voter_guides_followed_list.push(item.we_vote_id);
+    _organization_list.push(item.organization_we_vote_id); // To be retrieved in retrieveOrganizations
+  });
+
+  return data;
+}
+
+// Cycle through the list of organizations that we know we need, and request the organization information
+function retrieveOrganizations (data) {
+  var organizations_count = 0;
+
+  return new Promise ( (resolve, reject) => _organization_list
+    .forEach( we_vote_id => request
+      .get(`${config.url}/organizationRetrieve/`)
+      .withCredentials()
+      .query({ organization_we_vote_id: we_vote_id })
+      .end( function (err, res) {
+        if (res.body.success) {
+          _organization_store[res.body.organization_we_vote_id] = shallowClone(res.body);
+        }
+        else if (err) throw err || res.body;
+
+        organizations_count ++;
+
+        if (organizations_count === _organization_list.length)
+          resolve(data);
+      })
+    )
+  );
+}
+
+function followOrganization (we_vote_id) {
+  console.log('followOrganization: ' + we_vote_id);
+  return new Promise((resolve, reject) => request
+    .get(`${config.url}/organizationFollow/`)
+    .withCredentials()
+    .query({ organization_id: _organization_store[we_vote_id].id })
+    .end( function (err, res) {
+      if (res.body.success) {
+        _organization_store[we_vote_id].OrganizationFollowed = "Yes";
+        _organization_store[we_vote_id].OrganizationIgnored = "No";
+      }
+      else if (err)
+        reject(err || res.body.status);
+
+      resolve(res.body);
+    })
+  );
+}
+
+function ignoreOrganization (we_vote_id) {
+  console.log('toggleStarOn: ' + we_vote_id);
+  return new Promise((resolve, reject) => request
+    .get(`${config.url}/organizationFollowIgnore/`)
+    .withCredentials()
+    .query({ organization_id: _organization_store[we_vote_id].id })
+    .end( function (err, res) {
+      if (res.body.success) {
+        _organization_store[we_vote_id].OrganizationFollowed = "No";
+        _organization_store[we_vote_id].OrganizationIgnored = "Yes";
+      }
+      else if (err)
+        reject(err || res.body.status);
+
+      resolve(res.body);
+    })
+  );
+}
+
+function stopFollowingOrganization (we_vote_id) {
+  console.log('stopFollowingOrganization: ' + we_vote_id);
+  return new Promise((resolve, reject) => request
+    .get(`${config.url}/organizationStopFollowing/`)
+    .withCredentials()
+    .query({ organization_id: _organization_store[we_vote_id].id })
+    .end( function (err, res) {
+      if (res.body.success) {
+        _organization_store[we_vote_id].OrganizationFollowed = "No";
+      }
+      else if (err)
+        reject(err || res.body.status);
+
+      resolve(res.body);
+    })
+  );
+}
+
+const VoterGuideStore = createStore({
+  /**
+   * initialize the voter guide store with data, if no data
+   * and callback with the ordered items
+   * @return {Boolean}
+   */
+  initialize: function (callback) {
+    var getItems = this.getOrderedVoterGuides.bind(this);
+
+    if (!callback || typeof callback !== 'function')
+      throw new Error('initialize must be called with callback');
+
+    // Do we have Voter Guide data stored in the browser?
+    if (Object.keys(_voter_guide_store).length)
+      callback(getItems());
+
+    else
+      // If here, we don't have any ballot items stored in the browser
+
+      retrieveVoterGuidesToFollowList()
+        .then(addVoterGuidesToFollowToVoterGuideStore) // Uses data retrieved with retrieveVoterGuidesToFollowList
+        //.then(retrieveVoterGuidesFollowedList)
+        //.then(addVoterGuidesFollowedToVoterGuideStore) // Uses data retrieved with retrieveVoterGuidesFollowedList
+        .then(retrieveOrganizations)
+        .then(data => callback(getItems()))
+        .catch(err => console.error(err));
+  },
+
+  /**
+   * start with _voter_guides_to_follow_order, and create a new ordered array with the we_vote_id as the key,
+   *  and the voter_guide as the value
+   * @return {Object} ordered keys and store data
+   */
+  getOrderedVoterGuides: function () {
+      var temp = [];
+      _voter_guides_to_follow_order.forEach(we_vote_id => temp
+          .push(shallowClone(_voter_guide_store[we_vote_id]))
+      )
+      return temp;
+  },
+
+  /**
+   * return organization object by we_vote_id
+   * @param  {String} we_vote_id for organization
+   * @return {Object} office or measure
+   */
+  getOrganizationByWeVoteId: function (we_vote_id, callback) {
+     callback(shallowClone(_organization_store[we_vote_id]));
+  },
+
+  /**
+   * return voter_guide object by we_vote_id
+   * @param  {String} we_vote_id for voter guide
+   * @return {Object} office or measure
+   */
+  getVoterGuideByWeVoteId: function (we_vote_id, callback) {
+     callback(shallowClone(_voter_guide_store[we_vote_id]));
+  }
+});
+
+AppDispatcher.register( action => {
+  switch (action.actionType) {
+    case VoterGuideConstants.VOTER_GUIDES_TO_FOLLOW:      // retrieveVoterGuidesToFollowList
+      retrieveVoterGuidesToFollowList(action.we_vote_id); // API call: voterGuidesToFollowRetrieve
+      VoterGuideStore.emitChange();
+      break;
+    case VoterGuideConstants.VOTER_GUIDES_FOLLOWED:       // retrieveVoterGuidesFollowedList
+      retrieveVoterGuidesFollowedList(action.we_vote_id); // API call: voterGuidesFollowedRetrieve
+      VoterGuideStore.emitChange();
+      break;
+    case VoterGuideConstants.RETRIEVE_ORGANIZATIONS:      // retrieveOrganizations
+      retrieveOrganizations(action.we_vote_id);           // API call: organizationRetrieve
+      VoterGuideStore.emitChange();
+      break;
+    case VoterGuideConstants.FOLLOW_ORGANIZATION:         // followOrganization
+      followOrganization(action.we_vote_id);              // API call: organizationFollow
+      VoterGuideStore.emitChange();
+      break;
+    case VoterGuideConstants.IGNORE_ORGANIZATION:         // ignoreOrganization
+      ignoreOrganization(action.we_vote_id);              // API call: organizationFollowIgnore
+      VoterGuideStore.emitChange();
+      break;
+    case VoterGuideConstants.STOP_FOLLOWING_ORGANIZATION: // stopFollowingOrganization
+      stopFollowingOrganization(action.we_vote_id);       // API call: organizationStopFollowing
+      VoterGuideStore.emitChange();
+      break;
+  }
+})
+
+export default VoterGuideStore;
