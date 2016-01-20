@@ -1,3 +1,4 @@
+import BallotStore from 'stores/BallotStore';
 import { createStore } from 'utils/createStore';
 import {shallowClone} from 'utils/object-utils';
 
@@ -27,10 +28,10 @@ function retrieveVoterGuidesToFollowList () {
   return new Promise( (resolve, reject) => request
     .get(`${config.url}/voterGuidesToFollowRetrieve/`)
     .withCredentials()
-    //.query(config.test)
-    .query({ ballot_item_we_vote_id: 'wv01cand2897' })
-    .query({ kind_of_ballot_item: 'CANDIDATE' })
-    .query({ google_civic_election_id: 0 })
+    .query(config.test)
+    //.query({ ballot_item_we_vote_id: 'wv01cand2968' })
+    //.query({ kind_of_ballot_item: 'CANDIDATE' })
+    .query({ google_civic_election_id: BallotStore.getCivicId() })
     .end( function (err, res) {
       if (err || !res.body.success)
         reject(err || res.body.status);
@@ -101,11 +102,11 @@ function retrieveOrganizations (data) {
 }
 
 function followOrganization (we_vote_id) {
-  console.log('followOrganization: ' + we_vote_id);
+  console.log('followOrganization: ' + we_vote_id + ', id: ' + _organization_store[we_vote_id].organization_id);
   return new Promise((resolve, reject) => request
     .get(`${config.url}/organizationFollow/`)
     .withCredentials()
-    .query({ organization_id: _organization_store[we_vote_id].id })
+    .query({ organization_id: _organization_store[we_vote_id].organization_id })
     .end( function (err, res) {
       if (res.body.success) {
         _organization_store[we_vote_id].OrganizationFollowed = "Yes";
@@ -158,11 +159,38 @@ function stopFollowingOrganization (we_vote_id) {
 
 const VoterGuideStore = createStore({
   /**
-   * initialize the voter guide store with data, if no data
+   * initialize the voter guide store with "guides to follow" data, if no data
    * and callback with the ordered items
    * @return {Boolean}
    */
   initialize: function (callback) {
+    var getItems = this.getOrderedVoterGuides.bind(this);
+
+    if (!callback || typeof callback !== 'function')
+      throw new Error('initialize must be called with callback');
+
+    // Do we have Voter Guide data stored in the browser?
+    if (Object.keys(_voter_guide_store).length)
+      callback(getItems());
+
+    else
+      // If here, we don't have any ballot items stored in the browser
+
+      retrieveVoterGuidesToFollowList()
+        .then(addVoterGuidesToFollowToVoterGuideStore) // Uses data retrieved with retrieveVoterGuidesToFollowList
+        //.then(retrieveVoterGuidesFollowedList)
+        //.then(addVoterGuidesFollowedToVoterGuideStore) // Uses data retrieved with retrieveVoterGuidesFollowedList
+        .then(retrieveOrganizations)
+        .then(data => callback(getItems()))
+        .catch(err => console.error(err));
+  },
+
+  /**
+   * initialize the voter guide store with "guides to follow" data, if no data
+   * and callback with the ordered items
+   * @return {Boolean}
+   */
+  initializeGuidesToFollow: function (callback) {
     var getItems = this.getOrderedVoterGuides.bind(this);
 
     if (!callback || typeof callback !== 'function')

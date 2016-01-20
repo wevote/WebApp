@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import FollowOrIgnore from "components/FollowOrIgnore";
 import VoterGuideActions from 'actions/VoterGuideActions';
 import VoterGuideStore from 'stores/VoterGuideStore';
 
@@ -49,9 +50,11 @@ export default class VoterGuideItem extends Component {
       <div className="ballot-item well well-skinny split-top-skinny">
 
         <div className="display-name">
-          <img src={this.props.voter_guide_image_url} width="100px" />
+          <img src={this.props.voter_guide_image_url} width="75px" />&nbsp;
           { this.props.voter_guide_display_name }
         </div>
+        <FollowOrIgnore action={VoterGuideActions} organization_we_vote_id={this.props.organization_we_vote_id}
+                        OrganizationFollowed={this.props.OrganizationFollowed} />
 
       </div>
     )

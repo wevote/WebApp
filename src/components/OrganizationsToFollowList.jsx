@@ -4,7 +4,8 @@ import React, { Component } from "react";
 import { Button, ButtonToolbar } from "react-bootstrap";
 import { Link } from "react-router";
 
-import FollowOrIgnoreAction from "components/FollowOrIgnoreAction";
+import FollowOrIgnore from "components/FollowOrIgnore";
+import VoterGuideActions from 'actions/VoterGuideActions';
 
 export default class OrganizationsToFollowList extends Component {
 	render() {
@@ -16,7 +17,7 @@ export default class OrganizationsToFollowList extends Component {
 							<i className="icon-icon-org-placeholder-6-2 icon-light"></i>{/* TODO icon-org-placeholder */}
 						</Link>
         			</div>
-        			<FollowOrIgnoreAction />
+        			<FollowOrIgnore action={VoterGuideActions} />
         			<div className="pull-right col-xs-7 col-md-8">
           				<div>
 				            <Link to="org_endorsements" params={{id: 2, org_id: 27}} >
@@ -34,7 +35,7 @@ export default class OrganizationsToFollowList extends Component {
 							<i className="icon-icon-org-placeholder-6-2 icon-light"></i>{/* TODO icon-org-placeholder */}
 						</Link>
 		        	</div>
-	        		<FollowOrIgnoreAction />
+	        		<FollowOrIgnore action={VoterGuideActions} />
 	        		<div className="pull-right col-xs-7 col-md-8">
 	          			<div>
 				            <Link to="org_endorsements" params={{id: 2, org_id: 27}}>

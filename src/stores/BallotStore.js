@@ -115,7 +115,7 @@ function findMeasureOpposeCounts ( resolve, reject ) {
 function findVoterPositions ( resolve, reject ) {
   var ballot_items_count = 0;
 
-  ballot_item_we_vote_id_list.forEach( we_vote_id => request
+  _ballot_item_we_vote_id_list.forEach( we_vote_id => request
       .get(`${config.url}/voterPositionRetrieve/`)
       .withCredentials()
       .query({ ballot_item_we_vote_id: we_vote_id })
@@ -155,7 +155,7 @@ function findVoterStarStatus ( resolve, reject ) {
           _ballot_store[we_vote_id].VoterStarred = res.body.is_starred ? "Yes": "No";
           console.log(we_vote_id + ": VoterStarred is " + _ballot_store[we_vote_id].VoterStarred);
         }
-
+ 
         ballot_items_count ++;
 
         if (ballot_items_count === _ballot_item_we_vote_id_list.length)
@@ -353,11 +353,13 @@ const BallotStore = createStore({
       //   .then(data => callback(getItems()))
       //   .catch(err => console.error(err));
 
+      //  getBallotItemsFromGoogle,
       factory([
-        getBallotItemsFromGoogle,
         getBallotItems,
         findMeasureSupportCounts,
         findMeasureOpposeCounts,
+        findVoterPositions,
+        findVoterStarStatus,
         function (resolve) {
           resolve(getItems());
         },
@@ -384,7 +386,15 @@ const BallotStore = createStore({
    */
   getBallotItemByWeVoteId: function (we_vote_id, callback) {
      callback(shallowClone(_ballot_store[we_vote_id]));
-  }
+  },
+  
+  /**
+   * return google_civic_election_id
+   * @return {String} google_civic_election_id
+   */
+  getCivicId: function () {
+     return _civic_id;
+  },
 });
 
 AppDispatcher.register( action => {
