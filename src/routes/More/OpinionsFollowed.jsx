@@ -20,8 +20,7 @@ export default class OpinionsFollowed extends Component {
   }
 
   componentDidMount () {
-    //VoterGuideStore.initialize( voter_guide_list => this.setState({ voter_guide_list }));
-    VoterGuideStore.initializeGuidesToFollow( voter_guide_followed_list => this.setState({ voter_guide_followed_list }));
+    VoterGuideStore.initializeGuidesFollowed( voter_guide_followed_list => this.setState({ voter_guide_followed_list }));
   }
     
   render() {

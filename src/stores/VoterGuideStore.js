@@ -36,42 +36,45 @@ function retrieveVoterGuidesToFollowList () {
       if (err || !res.body.success)
         reject(err || res.body.status);
 
+      console.log('retrieveVoterGuidesToFollowList SUCCESS');
       resolve(res.body);
     })
   )
 }
 
 function addVoterGuidesToFollowToVoterGuideStore (data) {
+  console.log('ENTERING addVoterGuidesToFollowToVoterGuideStore');
   data.voter_guides.forEach( item => {
     _voter_guide_store[item.we_vote_id] = shallowClone(item);
     _voter_guides_to_follow_order.push(item.we_vote_id);
     _voter_guides_to_follow_list.push(item.we_vote_id);
     _organization_list.push(item.organization_we_vote_id); // To be retrieved in retrieveOrganizations
   });
+  console.log('addVoterGuidesToFollowToVoterGuideStore SUCCESS');
 
   return data;
 }
 
 function retrieveVoterGuidesFollowedList () {
   return new Promise( (resolve, reject) => request
-    .get(`${config.url}/voterGuidesFollowedRetrieve/`) // TODO DALE API TO BE CREATED 2016-01-18
+    .get(`${config.url}/voterGuidesFollowedRetrieve/`)
     .withCredentials()
-    .query(config.test)
     .end( function (err, res) {
       if (err || !res.body.success)
         reject(err || res.body.status);
-
+      console.log("Reached out to retrieveVoterGuidesFollowedList");
       resolve(res.body);
     })
   )
 }
 
 function addVoterGuidesFollowedToVoterGuideStore (data) {
+  console.log("ENTERING addVoterGuidesFollowedToVoterGuideStore");
   data.voter_guides.forEach( item => {
     _voter_guide_store[item.we_vote_id] = shallowClone(item);
     _voter_guides_followed_order.push(item.we_vote_id);
     _voter_guides_followed_list.push(item.we_vote_id);
-    _organization_list.push(item.organization_we_vote_id); // To be retrieved in retrieveOrganizations
+    //_organization_list.push(item.organization_we_vote_id); // To be retrieved in retrieveOrganizations
   });
 
   return data;
@@ -94,11 +97,35 @@ function retrieveOrganizations (data) {
 
         organizations_count ++;
 
-        if (organizations_count === _organization_list.length)
+        if (organizations_count === _organization_list.length) {
+          console.log('retrieveOrganizations FOUND ALL');
           resolve(data);
+        }
       })
     )
   );
+}
+
+function retrieveOrganizationsFollowedList () {
+  return new Promise( (resolve, reject) => request
+    .get(`${config.url}/organizationsFollowedRetrieve/`)
+    .withCredentials()
+    .end( function (err, res) {
+      if (err || !res.body.success)
+        reject(err || res.body.status);
+
+      resolve(res.body);
+    })
+  )
+}
+
+function addOrganizationsFollowedToStore (data) {
+  data.organization_list.forEach( item => {
+    _organization_store[item.we_vote_id] = shallowClone(item);
+    _organization_list.push(item.organization_we_vote_id);
+  });
+
+  return data;
 }
 
 function followOrganization (we_vote_id) {
@@ -170,7 +197,7 @@ const VoterGuideStore = createStore({
       throw new Error('initialize must be called with callback');
 
     // Do we have Voter Guide data stored in the browser?
-    if (Object.keys(_voter_guide_store).length)
+    if (Object.keys(_voter_guides_to_follow_list).length)
       callback(getItems());
 
     else
@@ -178,8 +205,6 @@ const VoterGuideStore = createStore({
 
       retrieveVoterGuidesToFollowList()
         .then(addVoterGuidesToFollowToVoterGuideStore) // Uses data retrieved with retrieveVoterGuidesToFollowList
-        //.then(retrieveVoterGuidesFollowedList)
-        //.then(addVoterGuidesFollowedToVoterGuideStore) // Uses data retrieved with retrieveVoterGuidesFollowedList
         .then(retrieveOrganizations)
         .then(data => callback(getItems()))
         .catch(err => console.error(err));
@@ -190,25 +215,26 @@ const VoterGuideStore = createStore({
    * and callback with the ordered items
    * @return {Boolean}
    */
-  initializeGuidesToFollow: function (callback) {
-    var getItems = this.getOrderedVoterGuides.bind(this);
+  initializeGuidesFollowed: function (callback) {
+    console.log("ENTERED initializeGuidesFollowed");
+    var getFollowedItems = this.getOrderedVoterGuidesFollowed.bind(this);
 
     if (!callback || typeof callback !== 'function')
       throw new Error('initialize must be called with callback');
 
     // Do we have Voter Guide data stored in the browser?
-    if (Object.keys(_voter_guide_store).length)
-      callback(getItems());
+    if (Object.keys(_voter_guides_followed_list).length) {
+      console.log("(_voter_guides_followed_list).length): " + Object.keys(_voter_guides_followed_list).length);
+      callback(getFollowedItems());
+    }
 
     else
-      // If here, we don't have any ballot items stored in the browser
-
-      retrieveVoterGuidesToFollowList()
-        .then(addVoterGuidesToFollowToVoterGuideStore) // Uses data retrieved with retrieveVoterGuidesToFollowList
-        //.then(retrieveVoterGuidesFollowedList)
-        //.then(addVoterGuidesFollowedToVoterGuideStore) // Uses data retrieved with retrieveVoterGuidesFollowedList
-        .then(retrieveOrganizations)
-        .then(data => callback(getItems()))
+      // If here, we don't have any voter guides that have been followed that have been stored in the browser
+      retrieveVoterGuidesFollowedList()
+        .then(addVoterGuidesFollowedToVoterGuideStore)
+        .then(retrieveOrganizationsFollowedList)
+        .then(addOrganizationsFollowedToStore) // Uses data from retrieveOrganizationsFollowedList
+        .then(data => callback(getFollowedItems()))
         .catch(err => console.error(err));
   },
 
@@ -220,6 +246,19 @@ const VoterGuideStore = createStore({
   getOrderedVoterGuides: function () {
       var temp = [];
       _voter_guides_to_follow_order.forEach(we_vote_id => temp
+          .push(shallowClone(_voter_guide_store[we_vote_id]))
+      )
+      return temp;
+  },
+
+  /**
+   * start with _voter_guides_to_follow_order, and create a new ordered array with the we_vote_id as the key,
+   *  and the voter_guide as the value
+   * @return {Object} ordered keys and store data
+   */
+  getOrderedVoterGuidesFollowed: function () {
+      var temp = [];
+      _voter_guides_followed_order.forEach(we_vote_id => temp
           .push(shallowClone(_voter_guide_store[we_vote_id]))
       )
       return temp;
