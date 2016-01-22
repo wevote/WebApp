@@ -54,7 +54,7 @@ export default class VoterGuideItem extends Component {
           { this.props.voter_guide_display_name }
         </div>
         <FollowOrIgnore action={VoterGuideActions} organization_we_vote_id={this.props.organization_we_vote_id}
-                        OrganizationFollowed={this.props.OrganizationFollowed} />
+                        OrganizationFollowed={this.state.OrganizationFollowed} />
 
       </div>
     )

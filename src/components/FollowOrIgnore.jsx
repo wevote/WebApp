@@ -29,6 +29,11 @@ export default class FollowOrIgnore extends Component {
       this.props.action.followOrg(this.props.organization_we_vote_id);
   }
 
+  ignoreOrgLocal (evt) {
+    evt.stopPropagation();
+    this.props.action.ignoreOrg(this.props.organization_we_vote_id);
+  }
+
   componentDidMount () {
     VoterGuideStore.addChangeListener(this._onChange.bind(this));
   }
@@ -38,9 +43,9 @@ export default class FollowOrIgnore extends Component {
   }
 
   _onChange () {
-    VoterGuideStore.getBallotItemByWeVoteId(
-      this.props.we_vote_id, ballot_item => this.setState({
-        VoterStarred: ballot_item.VoterStarred,
+    VoterGuideStore.getVoterGuideByWeVoteId(
+      this.props.we_vote_id, voter_guide => this.setState({
+        OrganizationFollowed: voter_guide.OrganizationFollowed,
       })
     );
   }
@@ -59,11 +64,15 @@ export default class FollowOrIgnore extends Component {
                 action_text = 'Follow';
             }
         }
+        var ignore_code;
+        if (this.state.OrganizationFollowed != "Yes") {
+            ignore_code = <Button bsStyle="danger" bsSize="small" onClick={this.ignoreOrgLocal.bind(this)}>Ignore</Button>
+        }
 		return (
             <span style={floatRight}>
                 <ButtonToolbar>
                     <Button bsStyle="info" bsSize="small" onClick={this.toggleFollow.bind(this)}>{action_text}</Button>
-                    <Button bsStyle="danger" bsSize="small">Ignore</Button>
+                    {ignore_code}
                 </ButtonToolbar>
             </span>
         );

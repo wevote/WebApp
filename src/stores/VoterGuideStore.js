@@ -24,13 +24,13 @@ function printErr (err) {
   console.error(err);
 }
 
+//.query({ ballot_item_we_vote_id: 'wv01cand2968' })
+//.query({ kind_of_ballot_item: 'CANDIDATE' })
 function retrieveVoterGuidesToFollowList () {
   return new Promise( (resolve, reject) => request
     .get(`${config.url}/voterGuidesToFollowRetrieve/`)
     .withCredentials()
     .query(config.test)
-    //.query({ ballot_item_we_vote_id: 'wv01cand2968' })
-    //.query({ kind_of_ballot_item: 'CANDIDATE' })
     .query({ google_civic_election_id: BallotStore.getCivicId() })
     .end( function (err, res) {
       if (err || !res.body.success)
@@ -74,7 +74,6 @@ function addVoterGuidesFollowedToVoterGuideStore (data) {
     _voter_guide_store[item.we_vote_id] = shallowClone(item);
     _voter_guides_followed_order.push(item.we_vote_id);
     _voter_guides_followed_list.push(item.we_vote_id);
-    //_organization_list.push(item.organization_we_vote_id); // To be retrieved in retrieveOrganizations
   });
 
   return data;
@@ -121,7 +120,7 @@ function retrieveOrganizationsFollowedList () {
 
 function addOrganizationsFollowedToStore (data) {
   data.organization_list.forEach( item => {
-    _organization_store[item.we_vote_id] = shallowClone(item);
+    _organization_store[item.organization_we_vote_id] = shallowClone(item);
     _organization_list.push(item.organization_we_vote_id);
   });
 
@@ -148,11 +147,11 @@ function followOrganization (we_vote_id) {
 }
 
 function ignoreOrganization (we_vote_id) {
-  console.log('toggleStarOn: ' + we_vote_id);
+  console.log('ignoreOrganization: ' + we_vote_id);
   return new Promise((resolve, reject) => request
     .get(`${config.url}/organizationFollowIgnore/`)
     .withCredentials()
-    .query({ organization_id: _organization_store[we_vote_id].id })
+    .query({ organization_id: _organization_store[we_vote_id].organization_id })
     .end( function (err, res) {
       if (res.body.success) {
         _organization_store[we_vote_id].OrganizationFollowed = "No";
