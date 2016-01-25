@@ -27,8 +27,11 @@ export default class Ballot extends Component {
       <div>
         <header className="row">
           <Headroom>
-            <section className="separate-bottom fluff-loose--full container-fluid">
+            <section className="separate-bottom container-fluid">
               <h4 className="pull-left gutter-left--window bold">
+              <Link to="/more">
+                <span className="glyphicon glyphicon-menu-hamburger glyphicon-line-adjustment device-icon--large"></span>
+              </Link>
                 My Ballot
               </h4>
               <aside className="pull-right gutter-right--window gutter-top--small">

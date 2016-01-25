@@ -10,13 +10,16 @@
             width: 100%;
         }
     }
-    &-footer {
-        &--large {
-            display: none;
+}
+
+@media all and (max-width : 480px) {
+    .device {
+        &-menu {
         }
     }
 }
-@media all and (min-width : 768px ) {
+
+@media all and (min-width : 480px) {
     .device {
         &-menu {
             &--large {
@@ -25,7 +28,7 @@
                 min-width: 30%;
                 position: absolute;
                 top: 135px;
-                width: 30%;
+                white-space: nowrap;
             }
         }
         &-footer {
@@ -37,13 +40,17 @@
                 left: auto;
                 right: 100px;
                 top: 0;
-                width: 30%;
 
                 .separate-top {
                     border-top: none;
                 }
             }
 
+        }
+        &-icon {
+            &--large {
+                display: none;
+            }
         }
     }
     .ballot {
