@@ -1,5 +1,5 @@
 module.exports = {
-    url: 'http://localhost:8000/apis/v1',
+    url: 'http://localhost:8000/apis/v1/',
     DEBUG_MODE: true,
 
     // Use 1 or 0 as opposed to true or false

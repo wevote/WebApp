@@ -17,14 +17,10 @@ const firstVisit = VoterStore.voter_device_id ? false : true;
 
 
 
-VoterStore
-  .initialize()
-  .then(() => ReactDOM.render(
+ReactDOM.render(
         <Root
           history={createHistory()}
           firstVisit={firstVisit}/>,
 
         document.getElementById('app')
     )
-  )
-  .catch(err => console.error('unable to initialize voter'))

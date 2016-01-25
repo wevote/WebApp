@@ -6,9 +6,11 @@
   "main": "server.js",
   "license": "MIT",
   "dependencies": {
+    "component-ajax": "0.0.2",
     "keymirror": "^0.1.1",
     "object-assign": "^4.0.1",
-    "superagent": "^1.5.0"
+    "superagent": "^1.5.0",
+    "type": "0.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^6.0.3",

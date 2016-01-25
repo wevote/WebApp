@@ -18,6 +18,7 @@ export default class Ballot extends Component {
   componentDidMount () {
     var self = this;
     BallotStore.initialize( function (resolve, reject) {
+        console.log(this);
       self.setState({ ballot_list: this });
     });
   }
