@@ -10,20 +10,53 @@
             width: 100%;
         }
     }
+    &-footer {
+        &--large {
+            display: none;
+        }
+    }
 }
 @media all and (min-width : 768px ) {
     .device {
         &-menu {
             &--large {
                 display: inline-block;
-                float: left;
-                width: 25%;
+                left: 0;
+                min-width: 30%;
+                position: absolute;
+                top: 135px;
+                width: 30%;
             }
         }
-        &-ballot {
+        &-footer {
             &--large {
-                float: right;
-                width: 70%;
+                background: transparent;
+                border-color: #fff;
+                display: inline-block;
+                height: 75px;
+                left: auto;
+                right: 100px;
+                top: 0;
+                width: 30%;
+
+                .separate-top {
+                    border-top: none;
+                }
+            }
+
+        }
+    }
+    .ballot {
+        &-list {
+            float: right;
+            width: 65%;
+        }
+    }
+
+    .font {
+        &-footer {
+            &_icon {
+                font-size: 1.25em;
             }
         }
     }

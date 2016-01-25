@@ -4,7 +4,8 @@
 @import
   'utils/variables',
   'utils/functions',
-  'utils/mixins';
+  'utils/mixins',
+  'utils/app';
 
 // 2. Vendors
 @import
@@ -44,3 +45,5 @@
 // 8. Media Queries
 @import
   'layout/mediaquery';
+
+// 9. Trumps - !important

@@ -46,7 +46,7 @@ export default class Ballot extends Component {
               </i>
               <Link
                 to="/friends/add"
-                className="font-darkest fluff-left-narrow">
+                className="font-darkest fluff-left-narrow utils-align--super">
                   Add Friends
               </Link>
             </div>
@@ -55,7 +55,7 @@ export default class Ballot extends Component {
               </i>
               <Link
                 to="/ballot/opinions"
-                className="font-darkest fluff-left-narrow">
+                className="font-darkest fluff-left-narrow utils-align--super">
                   More Opinions
               </Link>
             </div>

@@ -8,7 +8,7 @@ export default class Navigator extends Component {
     return (
         <div className="row">
             <div className="container-fluid">
-                <div className="navbar navbar-default navbar-fixed-bottom">
+                <div className="navbar navbar-default navbar-fixed-bottom device-footer--large">
                     <div className="container-fluid fluff-loose--top separate-top">
                       <div className="row">
                         <Link to="/ballot">
