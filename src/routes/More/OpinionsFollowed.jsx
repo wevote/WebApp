@@ -22,7 +22,7 @@ export default class OpinionsFollowed extends Component {
   componentDidMount () {
     VoterGuideStore.initializeGuidesFollowed( voter_guide_followed_list => this.setState({ voter_guide_followed_list }));
   }
-    
+
   render() {
     return (
 <div>
@@ -37,7 +37,11 @@ export default class OpinionsFollowed extends Component {
         this.state.voter_guide_followed_list ?
         this.state.voter_guide_followed_list.map( item =>
           <VoterGuideItem key={item.we_vote_id} {...item} />
-        ) : (<i className="fa fa-spinner fa-pulse"></i>)
+        ) : (<div className="box-loader">
+              <i className="fa fa-spinner fa-pulse"></i>
+              <p>Loading ... One Moment</p>
+              </div>
+            )
       }
     </div>
   </div>
