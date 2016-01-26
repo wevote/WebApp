@@ -14,8 +14,6 @@
 
 @media all and (max-width : 480px) {
     .device {
-        &-menu {
-        }
     }
 }
 
@@ -49,6 +47,11 @@
         }
         &-icon {
             &--large {
+                display: none;
+            }
+        }
+        &-small {
+            &--hide {
                 display: none;
             }
         }

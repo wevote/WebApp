@@ -14,26 +14,26 @@ export default class Navigator extends Component {
                         <Link to="/ballot">
                             <div className="col-xs-3 center-block text-center">
                               <span className="glyphicon glyphicon-list-alt glyphicon-line-adjustment font-footer_icon"></span><br />
-                              <span className="text-center small">Ballot</span>
+                              <span className="text-center small device-small--hide">Ballot</span>
                             </div>
                         </Link>
                         <Link to="/requests">
                             <div className="col-xs-3 center-block text-center">
                               <span className="glyphicon glyphicon-inbox glyphicon-line-adjustment font-footer_icon">
                               <span className="badgeTotal badge">10</span></span><br />
-                              <span className="text-center small">Requests</span>
+                              <span className="text-center small device-small--hide">Requests</span>
                             </div>
                         </Link>
                         <Link to="/connect">
                             <div className="col-xs-3 center-block text-center">
                               <span className="glyphicon icon-icon-connect-1-3 font-footer_icon"></span><br />
-                              <span className="text-center small">Connect</span>
+                              <span className="text-center small device-small--hide">Connect</span>
                             </div>
                         </Link>
                         <Link to="/activity">
                             <div className="col-xs-3 center-block text-center">
                               <span className="glyphicon icon-icon-activity-1-4 font-footer_icon"></span><br />
-                              <span className="text-center small">Activity</span>
+                              <span className="text-center small device-small--hide">Activity</span>
                             </div>
                         </Link>
                       </div>

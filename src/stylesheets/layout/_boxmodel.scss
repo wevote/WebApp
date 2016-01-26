@@ -14,6 +14,11 @@
 .fluff-loose--top {
     padding-top: 1.5em;
 }
+@media all and (min-width: 480px) {
+    .fluff-loose--top {
+        padding-top: .8em;
+    }
+}
 
 // Margin
 .gutter {
