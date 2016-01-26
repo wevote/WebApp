@@ -12,12 +12,8 @@
     }
 }
 
-@media all and (max-width : 480px) {
-    .device {
-    }
-}
 
-@media all and (min-width : 480px) {
+@media all and (min-width : 479px) {
     .device {
         &-menu {
             &--large {
@@ -26,7 +22,7 @@
                 min-width: 30%;
                 position: absolute;
                 top: 96px;
-                white-space: nowrap;
+                width: 30%;
             }
         }
         &-footer {
