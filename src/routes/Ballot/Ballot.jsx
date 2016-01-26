@@ -5,6 +5,8 @@ import Headroom from "react-headroom";
 import BallotStore from 'stores/BallotStore';
 import BallotItem from 'components/Ballot/BallotItem';
 
+var count = 0;
+
 export default class Ballot extends Component {
   static propTypes = {
     children: PropTypes.object
@@ -16,11 +18,7 @@ export default class Ballot extends Component {
   }
 
   componentDidMount () {
-    var self = this;
-    BallotStore.initialize( function (resolve, reject) {
-        console.log(this);
-      self.setState({ ballot_list: this });
-    });
+    BallotStore.initialize( (ballot_list) => this.setState({ ballot_list }) );
   }
 
   render () {

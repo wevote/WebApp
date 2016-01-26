@@ -15,12 +15,7 @@ if (!Object.assign) Object.assign = React.__spread;
 
 const firstVisit = VoterStore.voter_device_id ? false : true;
 
-
-
 ReactDOM.render(
-        <Root
-          history={createHistory()}
-          firstVisit={firstVisit}/>,
-
-        document.getElementById('app')
-    )
+    <Root history={createHistory()} firstVisit={firstVisit}/>,
+    document.getElementById('app')
+)
