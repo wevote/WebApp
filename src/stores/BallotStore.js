@@ -237,7 +237,7 @@ const BallotStore = createStore({
                               .push (
                                 BallotAPIWorker
                                   .positionOpposeCountForBallotItem (
-                                    candidate.we_vote_id, CANDIDATE
+                                    candidate.id, CANDIDATE
                                   )
                                   .then( (res) =>
                                     _ballot_store [
@@ -250,7 +250,7 @@ const BallotStore = createStore({
                               .push (
                                 BallotAPIWorker
                                   .positionSupportCountForBallotItem (
-                                    candidate.we_vote_id, CANDIDATE
+                                    candidate.id, CANDIDATE
                                   )
                                   .then( (res) =>
                                     _ballot_store [

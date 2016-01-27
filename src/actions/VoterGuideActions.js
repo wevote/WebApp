@@ -41,7 +41,7 @@ module.exports = {
     });
   },
 
-  stopFollowingOrg: function (we_vote_id) {  // STAR_OFF, stopFollowingOrganization
+  stopFollowingOrg: function (we_vote_id) {  // STOP_FOLLOWING_ORGANIZATION, stopFollowingOrganization
     AppDispatcher.dispatch({
       actionType: VoterGuideConstants.STOP_FOLLOWING_ORGANIZATION,
       we_vote_id
