@@ -5,8 +5,6 @@ import Headroom from "react-headroom";
 import BallotStore from 'stores/BallotStore';
 import BallotItem from 'components/Ballot/BallotItem';
 
-var count = 0;
-
 export default class Ballot extends Component {
   static propTypes = {
     children: PropTypes.object
@@ -22,6 +20,8 @@ export default class Ballot extends Component {
   }
 
   render () {
+    var { ballot_list } = this.state;
+
     return (
       <div>
         <header className="row">
@@ -65,14 +65,15 @@ export default class Ballot extends Component {
         </section>
         <div className="ballot-list">
           {
-            this.state.ballot_list ?
-            this.state.ballot_list.map( item =>
-              <BallotItem key={item.we_vote_id} {...item} />
-            ) : (<div className="box-loader">
+            ballot_list ? ballot_list
+              .map( item =>
+                <BallotItem key={item.we_vote_id} {...item} />
+              ) : (
+                <div className="box-loader">
                   <i className="fa fa-spinner fa-pulse"></i>
                   <p>Loading ... One Moment</p>
-                  </div>
-                )
+                </div>
+              )
           }
         </div>
       </div>

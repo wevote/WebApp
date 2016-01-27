@@ -9,8 +9,7 @@ import service from 'utils/service';
 
 let _civic_id = null;
 let _ballot_store = {};
-let _candidate_store = {};
-let _ballot_order = [];
+let _ballot_order_ids = [];
 
 const MEASURE = 'MEASURE';
 const CANDIDATE = 'CANDIDATE';
@@ -18,7 +17,6 @@ const CANDIDATE = 'CANDIDATE';
 function addItemsToBallotStore (ballot_item_list) {
   ballot_item_list.forEach( ballot_item => {
     _ballot_store[ballot_item.we_vote_id] = shallowClone(ballot_item);
-    _ballot_order.push(ballot_item.we_vote_id);
   });
 }
 
@@ -186,10 +184,12 @@ const BallotStore = createStore({
             res.ballot_item_list
           );
 
-          console.log( 'BallotStore:', _ballot_store );
-          console.log( 'BallotOrder:', _ballot_order );
+          _ballot_order_ids = res.ballot_item_list.map( (ballot) => ballot.we_vote_id );
 
-          _ballot_order.forEach( we_vote_id => {
+          console.log( 'BallotStore:', _ballot_store );
+          console.log( 'BallotOrder:', _ballot_order_ids );
+
+          _ballot_order_ids.forEach( we_vote_id => {
 
             console.log('is', we_vote_id, 'measure?', ballotItemIsMeasure(we_vote_id));
 
@@ -215,14 +215,14 @@ const BallotStore = createStore({
                     .then( (response) => {
                       var cand_list = _ballot_store [
                         response.office_we_vote_id
-                      ] . candidate_list = {};
+                      ] . candidate_list = [];
 
                       response
                         .candidate_list
-                          .forEach( function (candidate) {
-                            cand_list[
-                              candidate.we_vote_id
-                            ] = shallowClone(candidate);
+                          .forEach( (candidate) => {
+                            var { we_vote_id: candidate_id } = candidate;
+                            cand_list . push (candidate_id);
+                            _ballot_store [ candidate_id ] = shallowClone( candidate );
 
 
                             promiseQueue
@@ -233,8 +233,6 @@ const BallotStore = createStore({
                                   )
                                   .then( (res) =>
                                     _ballot_store [
-                                      response.we_vote_id
-                                    ] [
                                       candidate.we_vote_id
                                     ] . opposeCount = res.count
                                   )
@@ -246,13 +244,11 @@ const BallotStore = createStore({
                                   .positionSupportCountForBallotItem (
                                     candidate.we_vote_id, CANDIDATE
                                   )
-                                .then( (res) =>
-                                  _ballot_store [
-                                    response.we_vote_id
-                                  ] [
-                                    candidate.we_vote_id
-                                  ] . supportCount = res.count
-                                )
+                                  .then( (res) =>
+                                    _ballot_store [
+                                      candidate.we_vote_id
+                                    ] . supportCount = res.count
+                                  )
                               );
                           });
                     })
@@ -260,6 +256,7 @@ const BallotStore = createStore({
             }
           });
 
+          // this function polls requests for complete status.
           new Promise ( (resolve) => {
             var counted = [];
             var count = 0;
@@ -269,29 +266,26 @@ const BallotStore = createStore({
               res.ballot_item_list.forEach( (item) => {
                 var { we_vote_id } = item;
 
-                item = _ballot_store [
-                  we_vote_id
-                ];
+                item = _ballot_store [we_vote_id];
 
                 if ( ballotItemIsMeasure(we_vote_id) && counted.indexOf(we_vote_id) < 0 ) {
                   count += 2;
                   counted.push(we_vote_id);
-                }
-                else
+                } else
                   if ( item.candidate_list && counted.indexOf(we_vote_id) < 0 ) {
                     count += 1 + item.candidate_list.length * 2;
                     counted.push(we_vote_id);
                   }
               });
 
-              if (count === promiseQueue.length) {
+              if (count === promiseQueue.length && promiseQueue.length !== 0) {
                 clearInterval(interval);
-                callback(getOrderedBallotItems());
-                resolve();
+                resolve(getOrderedBallotItems());
               }
 
-            }, 1);
-          });
+            }, 1000);
+
+          }).then(callback);
         });
     }
   },
@@ -302,9 +296,14 @@ const BallotStore = createStore({
    */
   getOrderedBallotItems: function () {
       var temp = [];
-      _ballot_order.forEach(we_vote_id => temp
-          .push(shallowClone(_ballot_store[we_vote_id]))
-      );
+      _ballot_order_ids
+        .forEach( (id) =>
+          temp
+            .push(
+              shallowClone( _ballot_store[id] )
+            )
+        );
+
       return temp;
   },
 
@@ -313,8 +312,18 @@ const BallotStore = createStore({
    * @param  {String} we_vote_id for office or measure
    * @return {Object} office or measure
    */
-  getBallotItemByWeVoteId: function (we_vote_id, callback) {
-     callback(shallowClone(_ballot_store[we_vote_id]));
+  getCandidateById: function (ballot_id, cand_id) {
+    return _ballot_store [
+        ballot_id
+      ] . candidate_list.indexOf(cand_id) > -1
+
+    ? shallowClone( _ballot_store[cand_id] ) : undefined;
+  },
+
+  getCandidatesForBallot: function (ballot_id) {
+    return _ballot_store [
+      ballot_id
+    ].candidate_list.map( id => this.getCandidateById(ballot_id, id) ) || undefined;
   },
 
   /**

@@ -22,45 +22,21 @@ export default class Candidate extends Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      supportCount: this.props.supportCount,
-      opposeCount: this.props.opposeCount
-    };
   }
 
-  componentDidMount() {
-    CandidateStore.addChangeListener(this._onChange.bind(this));
-  }
-
-  componentWillUnmount() {
-    CandidateStore.removeChangeListener(this._onChange.bind(this));
-  }
-
-  _updateCandidate (candidate) {
-    this.setState({
-      opposeCount: candidate.opposeCount,
-      supportCount: candidate.supportCount
-    });
-  }
-
-  _onChange () {
-    CandidateStore.getCandidateById(
-      this.props.we_vote_id, this._updateCandidate.bind(this)
-    );
-  }
+  componentDidMount() {}
+  componentWillUnmount() {}
+  _updateCandidate () {}
+  _onChange () {}
 
   render() {
     let {
       we_vote_id,
       ballot_item_display_name,
-      candidate_photo_url
+      candidate_photo_url,
+      opposeCount,
+      supportCount
     } = this.props;
-
-    let {
-      supportCount,
-      opposeCount
-    } = this.state;
 
     return (
       <section className="list-group-item">
@@ -94,7 +70,7 @@ export default class Candidate extends Component {
               </Link>
             </h4>
             <h5>
-              {supportCount} support
+              { supportCount } support
               <span className="small"> (more) </span>
             </h5>
             <h6 className="bufferNone">

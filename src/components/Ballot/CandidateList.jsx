@@ -5,19 +5,17 @@ import Candidate from 'components/Ballot/Candidate';
 
 export default class CandidateList extends Component {
   static propTypes = {
-    candidate_list: PropTypes.array
+    children: PropTypes.array.isRequired
   };
 
-  mapListToHTML () {
-    return this.props.candidate_list.map( candidate =>
-      <Candidate key={candidate.we_vote_id} {...candidate} />
-    );
+  constructor(props) {
+    super(props);
   }
 
   render () {
     return (
       <article className="list-group">
-        { this.mapListToHTML() }
+        { this.props.children.map( (child) => <Candidate key={child.we_vote_id} {...child} />) }
       </article>
     );
   }
