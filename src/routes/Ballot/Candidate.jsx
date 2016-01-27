@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
 import CandidateDetail from 'components/Ballot/CandidateDetail';
-import CandidateStore from 'stores/CandidateStore';
 
 export default class Candidate extends Component {
   static propTypes = {
@@ -16,11 +15,7 @@ export default class Candidate extends Component {
     };
   }
 
-  componentDidMount () {
-    CandidateStore.getCandidateDetailsById(
-      this.props.params.id, this.setCandidate.bind(this)
-    );
-  }
+  componentDidMount () { }
 
   setCandidate (candidate) {
     this.setState({ candidate });

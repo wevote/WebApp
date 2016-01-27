@@ -5,7 +5,6 @@ import BallotStore from 'stores/BallotStore';
 export default class ItemActionbar extends Component {
   static propTypes = {
     we_vote_id: PropTypes.string.isRequired,
-    action: PropTypes.object.isRequired,
     voterSupports: PropTypes.string, // Is "support" selected?
     voterOpposes: PropTypes.string // Is "oppose" selected?
   };

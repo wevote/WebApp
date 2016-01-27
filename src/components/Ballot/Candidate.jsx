@@ -1,12 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
-import BallotActions from 'actions/BallotActions';
-import CandidateStore from 'stores/CandidateStore';
-import CandidateActions from 'actions/CandidateActions';
-
 import StarAction from 'components/StarAction';
-import ItemActionbar from 'components/ItemActionbar'
+import ItemActionbar from 'components/ItemActionbar';
 
 export default class Candidate extends Component {
   static propTypes = {
@@ -81,7 +77,7 @@ export default class Candidate extends Component {
             </h6>
           </div>
         </div>
-        <ItemActionbar action={CandidateActions} we_vote_id={we_vote_id} />
+        <ItemActionbar we_vote_id={we_vote_id} />
       </section>
     );
   }

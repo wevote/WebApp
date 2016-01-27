@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
 import CandidateStore from 'stores/CandidateStore';
-import CandidateActions from 'actions/CandidateActions';
 
 import StarAction from "components/StarAction";
 import InfoIconAction from "components/InfoIconAction";
@@ -21,8 +20,6 @@ export default class Office extends Component {
         super(props);
 
         let { we_vote_id } = this.props;
-
-        CandidateActions.loadByOfficeId(we_vote_id);
     }
 
     render() {

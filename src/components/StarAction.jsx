@@ -48,7 +48,7 @@ export default class StarAction extends Component {
             onClick={this.toggleStar.bind(this)}
             style={floatRight}>
             &nbsp;
-            {star_icon} {this.state.is_starred || 'no'}
+            {star_icon} {this.state.is_starred ? 'yes' : 'no' }
           </span>
         );
 	}
