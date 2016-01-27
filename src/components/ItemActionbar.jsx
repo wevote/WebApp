@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
 import BallotStore from 'stores/BallotStore';
 
 export default class ItemActionbar extends Component {
