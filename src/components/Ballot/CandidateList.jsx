@@ -1,6 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
-
 import Candidate from 'components/Ballot/Candidate';
 
 export default class CandidateList extends Component {

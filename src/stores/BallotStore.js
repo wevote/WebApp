@@ -6,8 +6,6 @@ const BallotConstants = require('constants/BallotConstants');
 
 import service from 'utils/service';
 
-
-let _civic_id = null;
 let _ballot_store = {};
 let _ballot_order_ids = [];
 
@@ -193,18 +191,26 @@ const BallotStore = createStore({
 
             console.log('is', we_vote_id, 'measure?', ballotItemIsMeasure(we_vote_id));
 
+            promiseQueue
+              .push(
+                BallotAPIWorker
+                  .voterStarStatusRetrieve(we_vote_id)
+                  .then ( (res) => _ballot_store[we_vote_id].is_starred = res.is_starred )
+            );
+
             if ( ballotItemIsMeasure(we_vote_id) ) {
               promiseQueue
-                .push(
+                .push (
                   BallotAPIWorker
                     .positionOpposeCountForBallotItem( we_vote_id )
-                );
+              );
 
               promiseQueue
-                .push(
+                .push (
                   BallotAPIWorker
                     .positionSupportCountForBallotItem( we_vote_id )
-                );
+              );
+
             } else {
 
               promiseQueue
@@ -236,7 +242,7 @@ const BallotStore = createStore({
                                       candidate.we_vote_id
                                     ] . opposeCount = res.count
                                   )
-                                );
+                            );
 
                             promiseQueue
                               .push (
@@ -249,7 +255,17 @@ const BallotStore = createStore({
                                       candidate.we_vote_id
                                     ] . supportCount = res.count
                                   )
-                              );
+                            );
+
+                            promiseQueue
+                              .push(
+                                BallotAPIWorker
+                                  .voterStarStatusRetrieve(candidate.we_vote_id)
+                                  .then ( (res) => _ballot_store [
+                                      candidate.we_vote_id
+                                    ] . is_starred = res.is_starred
+                                  )
+                            );
                           });
                     })
                 );
@@ -269,11 +285,11 @@ const BallotStore = createStore({
                 item = _ballot_store [we_vote_id];
 
                 if ( ballotItemIsMeasure(we_vote_id) && counted.indexOf(we_vote_id) < 0 ) {
-                  count += 2;
+                  count += 3;
                   counted.push(we_vote_id);
                 } else
                   if ( item.candidate_list && counted.indexOf(we_vote_id) < 0 ) {
-                    count += 1 + item.candidate_list.length * 2;
+                    count += 2 + item.candidate_list.length * 3;
                     counted.push(we_vote_id);
                   }
               });
@@ -324,41 +340,34 @@ const BallotStore = createStore({
     return _ballot_store [
       ballot_id
     ].candidate_list.map( id => this.getCandidateById(ballot_id, id) ) || undefined;
-  },
+  }
 
-  /**
-   * return google_civic_election_id
-   * @return {String} google_civic_election_id
-   */
-  getCivicId: function () {
-     return _civic_id;
-  },
 });
 
 AppDispatcher.register( action => {
   switch (action.actionType) {
-    case BallotConstants.BALLOT_SUPPORT_ON:  // supportOnToAPI
-      supportOnToAPI(action.we_vote_id);
+    case BallotConstants.VOTER_SUPPORTING_SAVE:
+      BallotAPIWorker.voterSupportingSave(action.we_vote_id);
       BallotStore.emitChange();
       break;
-    case BallotConstants.BALLOT_SUPPORT_OFF:  // supportOffToAPI
-      supportOffToAPI(action.we_vote_id);
+    case BallotConstants.VOTER_STOP_SUPPORTING_SAVE:
+      BallotAPIWorker.voterStopSupportingSave(action.we_vote_id);
       BallotStore.emitChange();
       break;
-    case BallotConstants.BALLOT_OPPOSE_ON:  // opposeOnToAPI
-      opposeOnToAPI(action.we_vote_id);
+    case BallotConstants.VOTER_OPPOSING_SAVE:
+      BallotAPIWorker.voterOpposingSave(action.we_vote_id);
       BallotStore.emitChange();
       break;
-    case BallotConstants.BALLOT_OPPOSE_OFF:  // opposeOffToAPI
-      opposeOffToAPI(action.we_vote_id);
+    case BallotConstants.VOTER_STOP_OPPOSING_SAVE:
+      BallotAPIWorker.voterStopOpposingSave(action.we_vote_id);
       BallotStore.emitChange();
       break;
-    case BallotConstants.STAR_ON:  // starOnToAPI
-      starOnToAPI(action.we_vote_id);
+    case BallotConstants.VOTER_STAR_ON_SAVE:
+      BallotAPIWorker.voterStarOnSave(action.we_vote_id);
       BallotStore.emitChange();
       break;
-    case BallotConstants.STAR_OFF:  // starOffToAPI
-      starOffToAPI(action.we_vote_id);
+    case BallotConstants.VOTER_STAR_OFF_SAVE:
+      BallotAPIWorker.voterStarOffSave(action.we_vote_id);
       BallotStore.emitChange();
       break;
   }

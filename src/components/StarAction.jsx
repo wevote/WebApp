@@ -1,31 +1,28 @@
 import React, { Component, PropTypes } from 'react';
 import BallotStore from 'stores/BallotStore';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
-import { Link } from 'react-router';
 
 const floatRight = { float: 'right' };
 
 export default class StarAction extends Component {
   static propTypes = {
     we_vote_id: PropTypes.string.isRequired,
-    action: PropTypes.object.isRequired,
-    VoterStarred: PropTypes.string
+    is_starred: PropTypes.bool.isRequired
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      VoterStarred: this.props.VoterStarred,
+      is_starred: this.props.is_starred,
     };
   }
 
-  toggleStar (evt) {
-    evt.stopPropagation();
-    if (this.state.VoterStarred == "Yes")
-      this.props.action.starOff(this.props.we_vote_id);
-    else
-      this.props.action.starOn(this.props.we_vote_id);
+  toggleStar () {
+    // evt.stopPropagation();
+    // if (this.state.VoterStarred == "Yes")
+    //   this.props.action.starOff(this.props.we_vote_id);
+    // else
+    //   this.props.action.starOn(this.props.we_vote_id);
   }
 
   componentDidMount () {
@@ -36,13 +33,7 @@ export default class StarAction extends Component {
     BallotStore.removeChangeListener(this._onChange.bind(this));
   }
 
-  _onChange () {
-    BallotStore.getBallotItemByWeVoteId(
-      this.props.we_vote_id, ballot_item => this.setState({
-        VoterStarred: ballot_item.VoterStarred,
-      })
-    );
-  }
+  _onChange () {}
 
 	render() {
         var star_icon;
@@ -57,7 +48,7 @@ export default class StarAction extends Component {
             onClick={this.toggleStar.bind(this)}
             style={floatRight}>
             &nbsp;
-            {star_icon} {this.state.VoterStarred}
+            {star_icon} {this.state.is_starred || 'no'}
           </span>
         );
 	}

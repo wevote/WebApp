@@ -5,7 +5,6 @@ import CandidateList from 'components/Ballot/CandidateList';
 
 import Measure from 'components/Ballot/Measure';
 
-import InfoIconAction from 'components/InfoIconAction';
 import StarAction from 'components/StarAction';
 
 const TYPES = require('keymirror')({
@@ -25,12 +24,12 @@ export default class BallotItem extends Component {
     we_vote_id: PropTypes.string,
     is_support: PropTypes.string,
     is_oppose: PropTypes.string,
-    VoterStarred: PropTypes.string
+    is_starred: PropTypes.bool
   };
 
   constructor (props) {
     super(props);
-    this.state = {};
+    console.log(props);
   }
 
   componentWillUnmount() {}
@@ -58,7 +57,9 @@ export default class BallotItem extends Component {
           { this.props.ballot_item_display_name }
         </div>
 
-        <StarAction action={BallotActions} we_vote_id={this.props.we_vote_id} VoterStarred={this.state.VoterStarred}/>
+        <StarAction
+          we_vote_id={ this.props.we_vote_id }
+          is_starred={ this.props.is_starred } />
 
         { this.isMeasure() ? <Measure {...this.props} /> : <CandidateList children={this.getCandidates()}/> }
 

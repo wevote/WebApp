@@ -17,7 +17,7 @@ export default class Candidate extends Component {
     order_on_ballot: PropTypes.string,
     supportCount: PropTypes.number,
     we_vote_id: PropTypes.string,
-    VoterStarred: PropTypes.string
+    is_starred: PropTypes.bool
   };
 
   constructor(props) {
@@ -40,7 +40,10 @@ export default class Candidate extends Component {
 
     return (
       <section className="list-group-item">
-        <StarAction action={BallotActions} we_vote_id={we_vote_id} VoterStarred={this.props.VoterStarred}/>
+        <StarAction
+          we_vote_id={we_vote_id}
+          is_starred={this.props.is_starred || false } />
+
         <div className="row" style={{ paddingBottom: '10px' }}>
           <div
             className="col-xs-4"
