@@ -324,6 +324,15 @@ const BallotStore = createStore({
   },
 
   /**
+   * get the star state of a ballot item by its id
+   * @param  {String} id ballot items we_vote_id
+   * @return {Boolean}    is the item starred or not
+   */
+  getStarState: function (id) {
+    return _ballot_store[id].is_starred;
+  },
+
+  /**
    * return ballot item object by we_vote_id
    * @param  {String} we_vote_id for office or measure
    * @return {Object} office or measure
@@ -344,31 +353,52 @@ const BallotStore = createStore({
 
 });
 
+ /**
+ * toggle the star state of a ballot item by its id and return the state
+ * @param  {string} we_vote_id identifier for lookup in stored
+ * @return {Boolean} starred or not starred
+ */
+function toggleStarState(we_vote_id) {
+  var item = _ballot_store[we_vote_id];
+  item.is_starred = ! item.is_starred;
+  console.log(_ballot_store[we_vote_id]);
+  return true;
+}
+
 AppDispatcher.register( action => {
+  var { we_vote_id: id } = action;
+
   switch (action.actionType) {
     case BallotConstants.VOTER_SUPPORTING_SAVE:
-      BallotAPIWorker.voterSupportingSave(action.we_vote_id);
-      BallotStore.emitChange();
+      BallotAPIWorker
+        .voterSupportingSave(
+          id, () => BallotStore.emitChange()
+      );
       break;
     case BallotConstants.VOTER_STOP_SUPPORTING_SAVE:
-      BallotAPIWorker.voterStopSupportingSave(action.we_vote_id);
+      BallotAPIWorker.voterStopSupportingSave(id);
       BallotStore.emitChange();
       break;
     case BallotConstants.VOTER_OPPOSING_SAVE:
-      BallotAPIWorker.voterOpposingSave(action.we_vote_id);
+      BallotAPIWorker.voterOpposingSave(id);
       BallotStore.emitChange();
       break;
     case BallotConstants.VOTER_STOP_OPPOSING_SAVE:
-      BallotAPIWorker.voterStopOpposingSave(action.we_vote_id);
+      BallotAPIWorker.voterStopOpposingSave(id);
       BallotStore.emitChange();
       break;
     case BallotConstants.VOTER_STAR_ON_SAVE:
-      BallotAPIWorker.voterStarOnSave(action.we_vote_id);
-      BallotStore.emitChange();
+      BallotAPIWorker
+        .voterStarOnSave(
+          id, () => toggleStarState(id) && BallotStore.emitChange()
+      );
       break;
     case BallotConstants.VOTER_STAR_OFF_SAVE:
-      BallotAPIWorker.voterStarOffSave(action.we_vote_id);
-      BallotStore.emitChange();
+      BallotAPIWorker
+        .voterStarOffSave(
+          id, () => BallotStore.emitChange()
+      );
+    ;
       break;
   }
 })

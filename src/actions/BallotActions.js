@@ -1,46 +1,46 @@
 'use strict';
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var BallotConstants = require('../constants/BallotConstants');
+var AppDispatcher = require('dispatcher/AppDispatcher');
+var BallotConstants = require('constants/BallotConstants');
 
 // In the stores, there are AppDispatcher blocks that listen for these actionType constants (ex/ BALLOT_SUPPORT_ON)
 //  When action calls one of these functions, we are telling the code in the AppDispatcher block to run
 module.exports = {
-  supportOn: function (we_vote_id) {  // BALLOT_SUPPORT_ON, supportOnToAPI
+  voterSupportingSave: function (we_vote_id) {
     AppDispatcher.dispatch({
-      actionType: BallotConstants.BALLOT_SUPPORT_ON,
+      actionType: BallotConstants.VOTER_SUPPORTING_SAVE,
       we_vote_id
     });
   },
 
-  supportOff: function (we_vote_id) {  // BALLOT_SUPPORT_OFF, supportOffToAPI
+  voterStopSupportingSave: function (we_vote_id) {
     AppDispatcher.dispatch({
-      actionType: BallotConstants.BALLOT_SUPPORT_OFF,
+      actionType: BallotConstants.VOTER_STOP_SUPPORTING_SAVE,
       we_vote_id
     });
   },
 
-  opposeOn: function (we_vote_id) {  // BALLOT_OPPOSE_ON, opposeOnToAPI
+  voterOpposingSave: function (we_vote_id) {
     AppDispatcher.dispatch({
-      actionType: BallotConstants.BALLOT_OPPOSE_ON,
+      actionType: BallotConstants.VOTER_OPPOSING_SAVE,
       we_vote_id
     });
   },
 
-  opposeOff: function (we_vote_id) {  // BALLOT_OPPOSE_OFF, opposeOffToAPI
+  voterStopOpposingSave: function (we_vote_id) {  // BALLOT_OPPOSE_OFF, opposeOffToAPI
     AppDispatcher.dispatch({
-      actionType: BallotConstants.BALLOT_OPPOSE_OFF,
+      actionType: BallotConstants.VOTER_STOP_OPPOSING_SAVE,
       we_vote_id
     });
   },
 
-  starOn: function (we_vote_id) {  // STAR_ON, starOnToAPI
+  voterStarOnSave: function (we_vote_id) {  // STAR_ON, starOnToAPI
     AppDispatcher.dispatch({
-      actionType: BallotConstants.STAR_ON,
+      actionType: BallotConstants.VOTER_STAR_ON_SAVE,
       we_vote_id
     });
   },
 
-  starOff: function (we_vote_id) {  // STAR_OFF, starOffToAPI
+  voterStarOffSave: function (we_vote_id) {  // STAR_OFF, starOffToAPI
     AppDispatcher.dispatch({
       actionType: BallotConstants.STAR_OFF,
       we_vote_id

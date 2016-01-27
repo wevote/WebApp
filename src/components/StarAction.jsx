@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import BallotStore from 'stores/BallotStore';
+import BallotActions from 'actions/BallotActions';
 
 const floatRight = { float: 'right' };
 
@@ -17,12 +18,15 @@ export default class StarAction extends Component {
     };
   }
 
-  toggleStar () {
-    // evt.stopPropagation();
-    // if (this.state.VoterStarred == "Yes")
-    //   this.props.action.starOff(this.props.we_vote_id);
-    // else
-    //   this.props.action.starOn(this.props.we_vote_id);
+  starClick () {
+    var { we_vote_id, is_starred: starred } = this.props;
+
+    if ( starred )
+      BallotActions
+        .voterStarOffSave(we_vote_id);
+    else
+      BallotActions
+        .voterStarOnSave(we_vote_id);
   }
 
   componentDidMount () {
@@ -33,7 +37,11 @@ export default class StarAction extends Component {
     BallotStore.removeChangeListener(this._onChange.bind(this));
   }
 
-  _onChange () {}
+  _onChange () {
+    this.setState({
+      is_starred: BallotStore.getStarState(this.props.we_vote_id)
+    });
+  }
 
 	render() {
         var star_icon;
@@ -45,7 +53,7 @@ export default class StarAction extends Component {
         return (
           <span
             className="star-action"
-            onClick={this.toggleStar.bind(this)}
+            onClick={this.starClick.bind(this)}
             style={floatRight}>
             &nbsp;
             {star_icon} {this.state.is_starred ? 'yes' : 'no' }

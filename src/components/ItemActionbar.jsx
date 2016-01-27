@@ -26,12 +26,12 @@ export default class ItemActionbar extends Component {
   }
 
   _onChange () {
-    BallotStore.getBallotItemByWeVoteId(
-      this.props.we_vote_id, ballot_item => this.setState({
-        voterSupports: ballot_item.voterSupports,
-        voterOpposes: ballot_item.voterOpposes,
-      })
-    );
+    // BallotStore.getBallotItemByWeVoteId(
+    //   this.props.we_vote_id, ballot_item => this.setState({
+    //     voterSupports: ballot_item.voterSupports,
+    //     voterOpposes: ballot_item.voterOpposes,
+    //   })
+    // );
   }
 
   toggleSupport () {

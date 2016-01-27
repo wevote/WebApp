@@ -31,9 +31,6 @@ export default class Candidate extends Component {
             <p>Loading ... One Moment</p>
             </div>);
 
-
-
-    {/* Trying to mirror from invisionApp design */}
     return (
       <div className='candidate-detail-route'>
         <header className="row">
