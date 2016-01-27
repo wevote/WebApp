@@ -172,7 +172,7 @@ const BallotStore = createStore({
 
     // Do we have the Ballot data stored in the browser?
     if (Object.keys(_ballot_store).length)
-      return callback.call(getOrderedBallotItems());
+      return callback(getOrderedBallotItems());
 
     else {
 
