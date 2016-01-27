@@ -68,7 +68,11 @@ export default class Ballot extends Component {
             this.state.ballot_list ?
             this.state.ballot_list.map( item =>
               <BallotItem key={item.we_vote_id} {...item} />
-            ) : (<i className="fa fa-spinner fa-pulse"></i>)
+            ) : (<div className="box-loader">
+                  <i className="fa fa-spinner fa-pulse"></i>
+                  <p>Loading ... One Moment</p>
+                  </div>
+                )
           }
         </div>
       </div>

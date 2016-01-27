@@ -68,7 +68,11 @@ export default class BallotItem extends Component {
 
     return this.state.candidate_list ?
       <CandidateList candidate_list={this.state.candidate_list} />
-      : (<i className="fa fa-spinner fa-pulse"></i>);
+      : (<div className="box-loader">
+          <i className="fa fa-spinner fa-pulse"></i>
+          <p>Loading ... One Moment</p>
+          </div>
+        );
 
   }
 
@@ -91,7 +95,7 @@ export default class BallotItem extends Component {
   render() {
 
     return (
-      <div className="ballot-item well well-skinny split-top-skinny">
+      <div className="ballot-item well well-skinny gutter-top--small">
 
         <div className="display-name">
           { this.props.ballot_item_display_name }

@@ -31,7 +31,10 @@ export default class Candidate extends Component {
   render() {
     var details = this.state.candidate ?
       <CandidateDetail {...this.state.candidate} /> :
-      (<i className="fa fa-spinner fa-pulse"></i>);
+      (<div className="box-loader">
+            <i className="fa fa-spinner fa-pulse"></i>
+            <p>Loading ... One Moment</p>
+            </div>);
 
 
 

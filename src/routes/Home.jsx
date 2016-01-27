@@ -68,9 +68,10 @@ export default class Home extends Component {
 	render() {
         console.log(this.state);
         let view = this.state.device_verified ? (
-            <div className="center">
-                <i className="fa fa-spinner fa-spin fa-3x"></i>
-            </div>
+			<div className="box-loader">
+				<i className="fa fa-spinner fa-pulse"></i>
+				<p>Loading ... One Moment</p>
+			</div>
         ) : (
 			<div className="container-fluid well well-90">
 			    <h2 className="text-center">We Vote Social Voter Guide</h2>
