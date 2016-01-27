@@ -31,7 +31,7 @@ export default class Intro extends Component {
 
 	getVoterCount () {
 		request
-			.get(`${config.url}/voterCount/`)
+			.get(`${config.url}voterCount/`)
 			.end( (err, res) => {
 				if (err) throw err;
 
@@ -43,7 +43,7 @@ export default class Intro extends Component {
 
 	getOrgCount () {
 		request
-			.get(`${config.url}/organizationCount/`)
+			.get(`${config.url}organizationCount/`)
 			.end( (err, res) => {
 				if (err) throw err;
 

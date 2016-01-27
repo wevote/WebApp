@@ -8,6 +8,7 @@ import service from 'utils/service';
 
 let _ballot_store = {};
 let _ballot_order_ids = [];
+let _google_civic_election_id = null;
 
 const MEASURE = 'MEASURE';
 const CANDIDATE = 'CANDIDATE';
@@ -183,6 +184,7 @@ const BallotStore = createStore({
           );
 
           _ballot_order_ids = res.ballot_item_list.map( (ballot) => ballot.we_vote_id );
+          _google_civic_election_id = res.google_civic_election_id;
 
           console.log( 'BallotStore:', _ballot_store );
           console.log( 'BallotOrder:', _ballot_order_ids );
@@ -349,8 +351,15 @@ const BallotStore = createStore({
     return _ballot_store [
       ballot_id
     ].candidate_list.map( id => this.getCandidateById(ballot_id, id) ) || undefined;
-  }
+  },
 
+  /**
+   * return google_civic_election_id
+   * @return {String} google_civic_election_id
+   */
+  getGoogleCivicElectionId: function () {
+     return _google_civic_election_id;
+  }
 });
 
  /**
