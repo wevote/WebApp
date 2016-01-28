@@ -1,35 +1,27 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
+import BallotStore from 'stores/BallotStore';
 import CandidateDetail from 'components/Ballot/CandidateDetail';
 
 export default class Candidate extends Component {
   static propTypes = {
+    history: PropTypes.func.isRequired,
     params: PropTypes.object.isRequired,
   };
 
   constructor(props) {
     super(props);
-    this.state = {
-      candidate: null
-    };
   }
-
-  componentDidMount () { }
-
-  setCandidate (candidate) {
-    this.setState({ candidate });
-  }
-
-  componentWillUnmount () { }
 
   render() {
-    var details = this.state.candidate ?
-      <CandidateDetail {...this.state.candidate} /> :
-      (<div className="box-loader">
-            <i className="fa fa-spinner fa-pulse"></i>
-            <p>Loading ... One Moment</p>
-            </div>);
+    var candidate = BallotStore
+      .getCandidateByIdOnly(`wv0icand${this.props.params.id}`);
+
+
+    // no candidate exists... go to ballot
+    if (Object.keys(candidate).length === 0)
+      this.props.history.replace('/ballot')
 
     return (
       <div className='candidate-detail-route'>
@@ -50,7 +42,7 @@ export default class Candidate extends Component {
           </div>
         </header>
 
-        { details }
+        <CandidateDetail {...candidate} />
 
       </div>
 

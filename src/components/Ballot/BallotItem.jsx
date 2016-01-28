@@ -27,12 +27,7 @@ export default class BallotItem extends Component {
 
   constructor (props) {
     super(props);
-    console.log(props);
   }
-
-  componentWillUnmount() {}
-
-  componentDidMount () {}
 
   isOffice () {
     return this.props.kind_of_ballot_item === TYPES.OFFICE;

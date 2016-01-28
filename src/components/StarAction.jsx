@@ -34,6 +34,7 @@ export default class StarAction extends Component {
   }
 
   componentWillUnmount() {
+    console.log('unmount startaction');
     BallotStore.removeChangeListener(this._onChange.bind(this));
   }
 

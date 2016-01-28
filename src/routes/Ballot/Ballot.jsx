@@ -56,7 +56,7 @@ export default class Ballot extends Component {
               <i className="icon-icon-more-opinions-2-2 icon-light icon-medium">
               </i>
               <Link
-                to="/ballot/opinions"
+                to="/opinions"
                 className="font-darkest fluff-left-narrow utils-align--super">
                   More Opinions
               </Link>

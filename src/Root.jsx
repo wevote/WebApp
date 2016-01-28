@@ -19,12 +19,12 @@ import Settings                         from 'routes/Settings/Settings';
 import Location                         from 'routes/Settings/Location';
 
 /* Pages that use Ballot Navigation */
-import BallotIndex			            from 'routes/Ballot/BallotIndex';
+import BallotIndex			                from 'routes/Ballot/BallotIndex';
 import Ballot                           from 'routes/Ballot/Ballot';
 import Candidate                        from 'routes/Ballot/Candidate';
 
 /* Ballot Off-shoot Pages */
-import BallotOpinions                   from 'routes/Ballot/BallotOpinions';
+import Opinions                         from 'routes/Opinions';
 
 /* More */
 import More                             from 'routes/More';
@@ -75,11 +75,11 @@ class Root extends Component {
         </Route>
 
         {/* Ballot Off-shoot Pages */}
-        <Route path="/ballot/opinions" component={BallotOpinions} />
+        <Route path="/opinions" component={Opinions} />
 
         <Route path="/friends" >
-          <Route path="/friends/add" component={AddFriend} />
-          <Route path="/friends/remove" />
+          <Route path="add" component={AddFriend} />
+          <Route path="remove" />
         </Route>
 
         <Route path="/more/about" component={About} />

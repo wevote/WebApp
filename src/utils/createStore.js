@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 import assign from 'object-assign';
 
 const CHANGE_EVENT = 'change';
-const MAX_LISTENERS = 100;
+const MAX_LISTENERS = 300;
 
 /**
  * create a store using a spec object as mixin

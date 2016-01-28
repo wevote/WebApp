@@ -20,11 +20,6 @@ export default class Candidate extends Component {
     super(props);
   }
 
-  componentDidMount() {}
-  componentWillUnmount() {}
-  _updateCandidate () {}
-  _onChange () {}
-
   render() {
     let {
       we_vote_id,
