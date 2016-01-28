@@ -45,19 +45,13 @@ export default class StarAction extends Component {
   }
 
 	render() {
-        var star_icon;
-        if (this.state.VoterStarred == "Yes") {
-            star_icon = <span className="glyphicon glyphicon-small glyphicon-star"></span>;
-        } else {
-            star_icon = <span className="glyphicon glyphicon-small glyphicon-star-empty"></span>;
-        }
         return (
           <span
             className="star-action"
             onClick={this.starClick.bind(this)}
             style={floatRight}>
             &nbsp;
-            {star_icon} {this.state.is_starred ? 'yes' : 'no' }
+            {this.state.is_starred ? <span className="glyphicon glyphicon-small glyphicon-star"></span> : <span className="glyphicon glyphicon-small glyphicon-star-empty"></span> }
           </span>
         );
 	}
