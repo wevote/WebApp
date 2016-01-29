@@ -13,16 +13,15 @@
 }
 
 
-@media all and (min-width : 479px) {
+@media all and (min-width : 660px) {
     .device {
         &-menu {
             &--large {
                 display: inline-block;
                 left: 0;
-                min-width: 30%;
                 position: absolute;
                 top: 109px;
-                width: 30%;
+                width: 220px;
             }
         }
         &-footer {

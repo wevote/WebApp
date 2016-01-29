@@ -24,8 +24,8 @@ export default class Opinions extends Component {
     return (
 <div>
   <HeaderBackNavigation back_to_text={"< Back to My Ballot"} />
-  <div className="container-fluid well well-90">
-    <h2 className="text-center">More Opinions I Can Follow</h2>
+  <div className="container-fluid">
+    <h4 className="pull-left">More Opinions I Can Follow</h4>
       <input type="text" name="search_opinions" className="form-control"
            placeholder="Search by name or twitter handle." /><br />
 

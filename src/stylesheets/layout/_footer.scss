@@ -1,7 +1,11 @@
 /*=============================================================================
     This file contains all styles related to the footer of the app
 =============================================================================*/
-
+@media all and (min-width : 661px) {
+    .navbar-fixed-bottom {
+        position: absolute;
+    }
+}
 .font-footer_icon {
     font-size: 2em;
 }
