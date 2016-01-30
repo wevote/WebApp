@@ -1,26 +1,17 @@
-var webpack = require('webpack');
-var WebpackDevServer = require('webpack-dev-server');
-var config = require('./webpack.config');
-var port = 3001;
-var host = 'localhost';
+const browserify = require('browserify');
 
-var webpack_dev_options = {
-    publicPath: config.output.publicPath,
-    hot: true,
-    historyApiFallback: true,
-    progress: true,
-    quiet: false,
-    noInfo: false,
-    stats: {
-        colors: true
-    }
-};
+browserify()
+  .transform(require('babelify'));
 
-var server = new WebpackDevServer ( webpack(config),
-    webpack_dev_options
-);
 
-server.listen(port, host, err => err ?
-    console.error(err) :
-    console.log('Listening at http://' + host + ':' + port)
-);
+const express = require('express');
+const app = express();
+
+const webroot = '/build';
+const port = 8080;
+
+app
+  .use( express.static(__dirname + webroot) )
+  .listen(port, () =>
+    console.log('express server running at http://localhost:%d', port)
+  );
