@@ -1,6 +1,6 @@
 import React from "react";
 
-const Spinner => () => {
+const Spinner = () => {
 
   <svg className="spinner"
       width="50px"
