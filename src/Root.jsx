@@ -29,6 +29,7 @@ import Opinions                         from 'routes/Opinions';
 /* More */
 import More                             from 'routes/More';
 import About                            from 'routes/More/About';
+import EmailBallot                      from 'routes/More/EmailBallot';
 import OpinionsFollowed                 from 'routes/More/OpinionsFollowed';
 
 
@@ -84,6 +85,8 @@ class Root extends Component {
 
         <Route path="/more/about" component={About} />
         <Route path="/more/opinions/followed" component={OpinionsFollowed} />
+
+        <Route path="/email_ballot" component={EmailBallot} />
 
         <Route path="/" component={Application} >
 
