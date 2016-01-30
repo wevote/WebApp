@@ -57,8 +57,7 @@ Retrieve “WebApp” into that folder, so your code ends up here:
 
     (WebAppEnv) $ cd /Users/<YOUR NAME HERE>/MyProjects/WebApp
     (WebAppEnv) $ npm install
-    (WebAppEnv) $ npm start -- in one terminal
-    (WebAppEnv) $ webpack-dev-server --progress --colors -- in another terminal
+    (WebAppEnv) $ npm start
 
 You should be able to visit WebApp here:
 
