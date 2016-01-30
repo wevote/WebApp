@@ -1,4 +1,4 @@
-import Constants from '../constants/Constants';
+import FacebookConstants from '../constants/FacebookConstants';
 import FacebookDispatcher from '../dispatcher/FacebookDispatcher';
 import {EventEmitter} from 'events';
 
@@ -77,23 +77,23 @@ class FacebookStore extends EventEmitter {
 const facebookStore = new FacebookStore();
 
 facebookStore.dispatchToken = FacebookDispatcher.register((action) => {
-    if (action.actionType == Constants.FACEBOOK_INITIALIZED) {
+    if (action.actionType == FacebookConstants.FACEBOOK_INITIALIZED) {
         facebookStore.setFacebookAuthData(action.data);
     }
 
-    if (action.actionType == Constants.FACEBOOK_LOGGED_IN) {
+    if (action.actionType == FacebookConstants.FACEBOOK_LOGGED_IN) {
         facebookStore.setFacebookAuthData(action.data);
     }
 
-    if (action.actionType == Constants.FACEBOOK_LOGGED_OUT) {
+    if (action.actionType == FacebookConstants.FACEBOOK_LOGGED_OUT) {
         facebookStore.setFacebookAuthData(action.data);
     }
 
-    if (action.actionType == Constants.FACEBOOK_GETTING_PICTURE) {
+    if (action.actionType == FacebookConstants.FACEBOOK_GETTING_PICTURE) {
         facebookStore.setFacebookPictureData(action.actionType, action.data)
     }
 
-    if (action.actionType == Constants.FACEBOOK_RECEIVED_PICTURE) {
+    if (action.actionType == FacebookConstants.FACEBOOK_RECEIVED_PICTURE) {
         facebookStore.setFacebookPictureData(action.actionType, action.data)
     }
 })

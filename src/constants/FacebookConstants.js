@@ -1,6 +1,6 @@
 import keyMirror from 'keymirror';
 
-const Constants = {
+const FacebookConstants = {
     FACEBOOK_INITIALIZED: null,
     FACEBOOK_LOGIN_CHANGE: null,
     FACEBOOK_GETTING_PICTURE: null,
@@ -10,4 +10,4 @@ const Constants = {
     IMAGE_UPLOADED: null,
 }
 
-module.exports = keyMirror(Constants)
+module.exports = keyMirror(FacebookConstants)

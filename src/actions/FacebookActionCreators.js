@@ -1,5 +1,5 @@
 import FacebookDispatcher from '../dispatcher/FacebookDispatcher';
-import Constants from '../constants/Constants'
+import FacebookConstants from '../constants/FacebookConstants'
 
 //const APP_ID = '1097389196952441'; // DaleMcGrew Facebook App Id
 const APP_ID = '868492333200013'; // wevote-dev
@@ -28,7 +28,7 @@ const FacebookActionCreators = {
     getLoginStatus: function() {
         window.FB.getLoginStatus((response) => {
             FacebookDispatcher.dispatch({
-                actionType: Constants.FACEBOOK_INITIALIZED,
+                actionType: FacebookConstants.FACEBOOK_INITIALIZED,
                 data: response
             })
         });
@@ -38,7 +38,7 @@ const FacebookActionCreators = {
         window.FB.login((response) => {
             if (response.status === 'connected') {
                 FacebookDispatcher.dispatch({
-                    actionType: Constants.FACEBOOK_LOGGED_IN,
+                    actionType: FacebookConstants.FACEBOOK_LOGGED_IN,
                     data: response
                 })
             }
@@ -48,7 +48,7 @@ const FacebookActionCreators = {
     logout: () => {
         window.FB.logout((response) => {
             FacebookDispatcher.dispatch({
-                actionType: Constants.FACEBOOK_LOGGED_OUT,
+                actionType: FacebookConstants.FACEBOOK_LOGGED_OUT,
                 data: response
             })
         })
@@ -56,13 +56,13 @@ const FacebookActionCreators = {
 
     getFacebookProfilePicture: (userId) => {
         FacebookDispatcher.dispatch({
-            actionType: Constants.FACEBOOK_GETTING_PICTURE,
+            actionType: FacebookConstants.FACEBOOK_GETTING_PICTURE,
             data: null
         })
         
         window.FB.api(`/${userId}/picture?type=large`, (response) => {
             FacebookDispatcher.dispatch({
-                actionType: Constants.FACEBOOK_RECEIVED_PICTURE,
+                actionType: FacebookConstants.FACEBOOK_RECEIVED_PICTURE,
                 data: response
             })
         })

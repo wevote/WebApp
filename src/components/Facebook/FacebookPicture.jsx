@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Constants from '../../constants/Constants';
+import FacebookConstants from '../../constants/FacebookConstants';
 
 export default class FacebookPicture extends React.Component {
     constructor(props) {
@@ -10,11 +10,11 @@ export default class FacebookPicture extends React.Component {
     get facebookStatus() {
         let msg;
 
-        if (this.props.facebookPictureStatus === Constants.FACEBOOK_GETTING_PICTURE) {
+        if (this.props.facebookPictureStatus === FacebookConstants.FACEBOOK_GETTING_PICTURE) {
             msg = 'Downloading picture...'
         }
 
-        if (this.props.facebookPictureStatus === Constants.FACEBOOK_RECEIVED_PICTURE) {
+        if (this.props.facebookPictureStatus === FacebookConstants.FACEBOOK_RECEIVED_PICTURE) {
             msg = 'Received picture!'
         }
 
