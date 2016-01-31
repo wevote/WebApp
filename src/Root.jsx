@@ -28,9 +28,10 @@ import Opinions                         from 'routes/Opinions';
 
 /* More */
 import More                             from 'routes/More';
-import About                            from 'routes/More/About';
 import EmailBallot                      from 'routes/More/EmailBallot';
 import OpinionsFollowed                 from 'routes/More/OpinionsFollowed';
+import About                            from 'routes/More/About';
+import Privacy                          from 'routes/More/Privacy';
 
 
 // import Measure                          from 'routes/Ballot/Measure';
@@ -83,10 +84,10 @@ class Root extends Component {
           <Route path="remove" />
         </Route>
 
+        <Route path="/more/email_ballot" component={EmailBallot} />
         <Route path="/more/about" component={About} />
         <Route path="/more/opinions/followed" component={OpinionsFollowed} />
-
-        <Route path="/email_ballot" component={EmailBallot} />
+        <Route path="/more/privacy" component={Privacy} />
 
         <Route path="/" component={Application} >
 
@@ -97,7 +98,7 @@ class Root extends Component {
 
           <Route path="ballot" component={BallotIndex}>
             <IndexRoute component={Ballot} />
-            <Route path="/candidate/:id" component={Candidate} />
+            <Route path="/candidate/:we_vote_id" component={Candidate} />
           </Route>
           {/*
               <Route path="org/:id" component={Organization}/>

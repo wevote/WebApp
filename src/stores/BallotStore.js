@@ -366,9 +366,9 @@ const BallotStore = createStore({
     return _ballot_store[id].is_starred;
   },
 
-  getCandidateByIdOnly: function (cand_id) {
+  getCandidateByWeVoteId: function (cand_we_vote_id) {
     return shallowClone (
-      _ballot_store [ cand_id ]
+      _ballot_store [ cand_we_vote_id ]
     ) || null;
   },
 

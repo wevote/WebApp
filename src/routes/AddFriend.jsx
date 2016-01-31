@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-
 import { Button, ButtonToolbar, Input } from 'react-bootstrap';
-
-import HeaderBackNavigation from 'components/Navigation/HeaderBackNavigation';
 import BottomContinueNavigation from 'components/Navigation/BottomContinueNavigation';
 
 export default class AddFriend extends Component {
@@ -22,8 +19,6 @@ export default class AddFriend extends Component {
 
 	    return (
             <div>
-            	<Link to="/ballot"> &lt; Back to My Ballot
-                </Link>
             	<div className="container-fluid well well-90">
             		<h2 className="text-center">Add Friends</h2>
             		<div>
@@ -36,9 +31,7 @@ export default class AddFriend extends Component {
             				We never sell email addresses.</span><br />
             		</div>
             	</div>
-                <Link to="addbyaddress">
-                    Next
-                </Link>
+				<BottomContinueNavigation />
             </div>
 		);
 	}

@@ -1,4 +1,3 @@
-import HeaderBackNavigation from "components/Navigation/HeaderBackNavigation";
 import React, {Component, PropTypes } from "react";
 
 import VoterGuideStore from 'stores/VoterGuideStore';
@@ -23,7 +22,6 @@ export default class Opinions extends Component {
   render() {
     return (
 <div>
-  <HeaderBackNavigation back_to_text={"< Back to My Ballot"} />
   <div className="container-fluid">
     <h4 className="pull-left">More Opinions I Can Follow</h4>
       <input type="text" name="search_opinions" className="form-control"

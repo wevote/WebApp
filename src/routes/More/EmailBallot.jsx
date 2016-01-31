@@ -35,7 +35,7 @@ export default class EmailBallot extends Component {
 			OR<br />
 			<br />
 			<Link to="add_friends_confirmed">
-				<Button bsStyle="primary">Sign in with Facebook</Button><br />
+				<span><Button bsStyle="primary">Sign in with Facebook</Button><br /></span>
 				<Button bsStyle="primary">Sign in with Twitter</Button>
 			</Link><br />
 		</div>

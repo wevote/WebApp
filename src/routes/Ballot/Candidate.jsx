@@ -16,7 +16,7 @@ export default class Candidate extends Component {
 
   render() {
     var candidate = BallotStore
-      .getCandidateByIdOnly(`wv0icand${this.props.params.id}`);
+      .getCandidateByWeVoteId(`${this.props.params.we_vote_id}`);
 
 
     // no candidate exists... go to ballot

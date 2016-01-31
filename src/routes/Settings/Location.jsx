@@ -1,4 +1,3 @@
-import HeaderBackNavigation from 'components/Navigation/HeaderBackNavigation';
 import React, { Component, PropTypes } from 'react';
 import { Button, ButtonToolbar } from 'react-bootstrap';
 
@@ -10,7 +9,6 @@ export default class Location extends Component {
     render() {
         return (
             <div>
-                <HeaderBackNavigation />  {/* TODO DALE Discuss with Nick */}
             	<div className="container-fluid well well-90">
             		<h2 className="text-center">Change Location</h2>
             		<div>
