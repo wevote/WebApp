@@ -1,0 +1,49 @@
+// @charset 'UTF-8';
+
+// 1. Configuration and helpers
+@import
+  './utils/_variables.scss',
+  './utils/_functions.scss',
+  './utils/_mixins.scss',
+  './utils/_app.scss';
+
+// 2. Vendors
+// @import
+//   './vendor/_normalize.scss',
+//   // './vendor/font-awesome/font-awesome.scss',
+//   // './vendor/bootstrap/bootstrap.scss',
+//   './vendor/_vendors.scss';
+//
+// // 3. Base stuff
+// @import
+//   './base/_base.scss',
+//   // './base/_fonts.scss',
+//   // './base/_typography.scss',
+//   './base/_helpers.scss';
+//
+// // 4. Layout-related sections
+// @import
+//   './layout/_boxmodel.scss',
+//   './layout/_header.scss',
+//   './layout/_footer.scss',
+//   './layout/_root.scss';
+//
+// // 5. Components
+// @import
+//   './components/_badges.scss',
+//   './components/_ballotList.scss',
+//   './components/_itemActionbar.scss';
+//
+// // 6. Page-specific styles
+// @import
+//   './pages/_home.scss';
+//
+// // 7. Themes
+// @import
+//   './themes/default.scss';
+//
+// // 8. Media Queries
+// @import
+//   './layout/mediaquery.scss';
+//
+// // 9. Trumps - !important
