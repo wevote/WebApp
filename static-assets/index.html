@@ -1,0 +1,31 @@
+<!doctype html>
+<html manifest="application.appcache">
+  <head>
+    <meta charset="uft-8">
+    <title>Test</title>
+  </head>
+  <body>
+  <script>
+  // proof of concept for offline first
+  if (window.applicationCache) {
+    console.log('this is working in the browser');
+  }
+
+
+  // check the console and turn wifi on and off to see
+  function checkConnectionStatus () {
+    if (navigator.onLine) {
+      console.log('Online');
+    } else {
+      console.log('Offline');
+    }
+  }
+
+  // event listeners
+  window.addEventListener('online', checkConnectionStatus, true);
+  window.addEventListener('offline', checkConnectionStatus, true);
+
+  loadDemo();
+  </script>
+  </body>
+</html>
