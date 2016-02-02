@@ -1,6 +1,7 @@
 import FacebookConstants from '../constants/FacebookConstants';
 import FacebookDispatcher from '../dispatcher/FacebookDispatcher';
 import {EventEmitter} from 'events';
+import service from 'utils/service';
 
 const FACEBOOK_CHANGE_EVENT = 'FACEBOOK_CHANGE_EVENT';
 
@@ -60,6 +61,15 @@ class FacebookStore extends EventEmitter {
         this.emitChange();
     }
 
+    saveFacebookPictureData(data) {
+        if (data) {
+          FacebookAPIWorker
+            .voterFacebookPhotoSave(
+              data.data.url, () => this.emit(FACEBOOK_CHANGE_EVENT)
+          );
+        }
+    }
+
     emitChange() {
         this.emit(FACEBOOK_CHANGE_EVENT);
     }
@@ -72,6 +82,17 @@ class FacebookStore extends EventEmitter {
         this.removeListener(FACEBOOK_CHANGE_EVENT, callback);
     }
 }
+
+const FacebookAPIWorker = {
+  voterFacebookPhotoSave: function (photo_url, success ) {
+    return service.get({
+      endpoint: 'voterPhotoSave',
+      query: {
+        facebook_profile_image_url: photo_url
+      }, success
+    });
+  }
+};
 
 // initialize the store as a singleton
 const facebookStore = new FacebookStore();
@@ -94,7 +115,8 @@ facebookStore.dispatchToken = FacebookDispatcher.register((action) => {
     }
 
     if (action.actionType == FacebookConstants.FACEBOOK_RECEIVED_PICTURE) {
-        facebookStore.setFacebookPictureData(action.actionType, action.data)
+        facebookStore.setFacebookPictureData(action.actionType, action.data);
+        facebookStore.saveFacebookPictureData(action.data);
     }
 })
 

@@ -67,12 +67,12 @@ const BallotAPIWorker = {
     });
   },
 
-  voterPositionRetrieve: function (we_vote_id, success ){
+  voterPositionRetrieve: function ( ballot_item_we_vote_id, success )  {
     return service.get({
       endpoint: 'voterPositionRetrieve',
       query: {
-         ballot_item_we_vote_id: we_vote_id,
-         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+        ballot_item_we_vote_id: ballot_item_we_vote_id,
+        kind_of_ballot_item: _ballot_store[ballot_item_we_vote_id].kind_of_ballot_item
       }, success
     });
   },
@@ -80,16 +80,6 @@ const BallotAPIWorker = {
   voterStarStatusRetrieve: function ( we_vote_id, success ) {
     return service.get({
       endpoint: 'voterStarStatusRetrieve',
-      query: {
-        ballot_item_id: _ballot_store[we_vote_id].id,
-        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success
-    });
-  },
-
-  voterStopOpposingSave: function (we_vote_id, success ) {
-    return service.get({
-      endpoint: 'voterStopOpposingSave',
       query: {
         ballot_item_id: _ballot_store[we_vote_id].id,
         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
@@ -155,16 +145,6 @@ const BallotAPIWorker = {
         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
       }, success
     });
-  },
-
-  voterPositionRetrieve: function ( ballot_item_we_vote_id, success )  {
-    return service.get({
-      endpoint: 'voterPositionRetrieve',
-      query: {
-        ballot_item_we_vote_id,
-        kind_of_ballot_item: _ballot_store[ballot_item_we_vote_id].kind_of_ballot_item
-      }, success
-    });
   }
 };
 
@@ -206,7 +186,7 @@ const BallotStore = createStore({
             console.log('is', we_vote_id, 'measure?', ballotItemIsMeasure(we_vote_id));
 
             promiseQueue
-              .push(
+              .push (
                 BallotAPIWorker
                   .voterStarStatusRetrieve(we_vote_id)
                   .then ( (res) => _ballot_store[we_vote_id].is_starred = res.is_starred )
@@ -448,7 +428,6 @@ AppDispatcher.register( action => {
         .voterStarOffSave(
           we_vote_id, () => toggleStarState(we_vote_id) && BallotStore.emitChange()
       );
-    ;
       break;
   }
 });

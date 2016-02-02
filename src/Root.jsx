@@ -28,6 +28,7 @@ import Opinions                         from 'routes/Opinions';
 
 /* More */
 import More                             from 'routes/More';
+import SignIn                           from 'routes/More/SignIn';
 import EmailBallot                      from 'routes/More/EmailBallot';
 import OpinionsFollowed                 from 'routes/More/OpinionsFollowed';
 import About                            from 'routes/More/About';
@@ -84,6 +85,8 @@ class Root extends Component {
           <Route path="remove" />
         </Route>
 
+        {/* More Menu Pages */}
+        <Route path="/more/sign_in" component={SignIn} />
         <Route path="/more/email_ballot" component={EmailBallot} />
         <Route path="/more/about" component={About} />
         <Route path="/more/opinions/followed" component={OpinionsFollowed} />

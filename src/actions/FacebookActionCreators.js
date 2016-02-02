@@ -1,13 +1,12 @@
+const config = require('../config');
 import FacebookDispatcher from '../dispatcher/FacebookDispatcher';
 import FacebookConstants from '../constants/FacebookConstants'
 
-//const APP_ID = '1097389196952441'; // DaleMcGrew Facebook App Id
-const APP_ID = '868492333200013'; // wevote-dev
 const FacebookActionCreators = {
     initFacebook: function() {
         window.fbAsyncInit = function() {
             FB.init({
-              appId      : APP_ID,
+              appId      : config.FACEBOOK_APP_ID,
               xfbml      : true,
               version    : 'v2.5'
             });
@@ -37,10 +36,15 @@ const FacebookActionCreators = {
     login: () => {
         window.FB.login((response) => {
             if (response.status === 'connected') {
+                // Logged into We Vote and Facebook
                 FacebookDispatcher.dispatch({
                     actionType: FacebookConstants.FACEBOOK_LOGGED_IN,
                     data: response
                 })
+            } else if (response.status === 'not_authorized') {
+                // The person is logged into Facebook, but not We Vote
+            } else {
+                // The person is not logged into Facebook
             }
         });
     },

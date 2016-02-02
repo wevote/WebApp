@@ -1,10 +1,16 @@
-'use strict'
+import { createStore } from 'utils/createStore';
+import { shallowClone } from 'utils/object-utils';
+
 const assign = require('object-assign');
 const request = require('superagent');
 const cookies = require('utils/cookies');
 
-const VoterActions = require('actions/VoterActions');
+const AppDispatcher = require('dispatcher/AppDispatcher');
 const VoterConstants = require('constants/VoterConstants');
+
+import service from 'utils/service';
+
+const VoterActions = require('actions/VoterActions');
 const EventEmitter = require('events').EventEmitter;
 const dispatcher = require('dispatcher/AppDispatcher');
 
@@ -13,77 +19,175 @@ const url = require('config').url;
 const CHANGE_EVENT = 'change';
 const CHANGE_LOCATION = 'change_location';
 
-let _voter_device_id = cookies.getItem('voter_device_id');
 let _location = cookies.getItem('location');
 let _position = {};
+let _voter_device_id = cookies.getItem('voter_device_id');
+let _voter_photo_url = '';
+let _voter_store = {};
+let _voter_ids = [];
+let _voter = {};
 
-function generateVoterDeviceId () {
+function addVoterToVoterStore (voter_incoming) {
+  console.log("voter_incoming: " + voter_incoming.we_vote_id);
+  _voter_store[voter_incoming.we_vote_id] = shallowClone(voter_incoming);
+}
+
+const VoterAPIWorker = {
+  generateVoterDeviceId: function ( results ) {
     console.log('generating device id...');
 
-    return new Promise ( (resolve, reject) => request
-        .get(`${url}/deviceIdGenerate/`).withCredentials()
-        .end( function (err, res) {
-            if (err) reject(err);
-            else {
-                var {voter_device_id} = res.body;
+    return service.get({
+      endpoint: 'deviceIdGenerate',
+      results
+    });
+  },
 
-                _voter_device_id = voter_device_id;
-                cookies.setItem('voter_device_id', voter_device_id, Infinity); // Set to never expire
-
-                resolve(voter_device_id);
-            }
-        })
-    ).catch(console.error);
-}
-
-function createVoter () {
+  createVoter: function ( results ) {
     console.log('creating voter id');
 
-    return new Promise ( (resolve, reject) => request
-      .get(`${url}/voterCreate/`).withCredentials()
-      .end( (err, res) => {
-        if (err) reject(err);
-        else {
-          resolve(res.body.status);
-        }
-      })
-    ).catch(console.error);
-}
+    return service.get({
+      endpoint: 'voterCreate',
+      results
+    });
+  },
 
-/**
- * guess users location using backend service
- * @return {Promise}
- */
-function guessLocation (value) {
-  return new Promise ((resolve,reject) => {
-    _location = 'Oakland, CA';
-    cookies.setItem('location', _location);
+  voterLocationRetrieveFromIP: function ( results ) {
+    console.log('retrieve location from IP');
 
-  })
-}
+    return service.get({
+      endpoint: 'voterLocationRetrieveFromIP',
+      results
+    });
+  },
 
-const VoterStore = assign({}, EventEmitter.prototype, {
-  get voter_device_id() { return _voter_device_id; },
+  voterRetrieve: function ( results ) {
+    return service.get({
+      endpoint: 'voterRetrieve',
+      results
+    });
+  }
+};
+
+const VoterStore = createStore({
   get position() { return _position; },
+  get voter_device_id() { return _voter_device_id; },
+  get voter_photo_url() { return _voter_photo_url; },
 
   /**
-   * initialize the voter when the application begins
-   * @return {undefined}
+   * initialize the voter store with data, if no data
+   * and callback with the voter items
+   * @return {Boolean}
    */
-  initialize: function (location) {
-    var promise = new Promise(resolve=> resolve());
+  initialize: function (callback) {
+    var voterPromiseQueue = [];
+    var getVoterList = this.getVoterList.bind(this);
 
-    if (! _voter_device_id )
-      promise = promise
-        .then(generateVoterDeviceId)
-        .then(createVoter);
+    if (!callback || typeof callback !== 'function')
+      throw new Error('VoterStore: initialize must be called with callback');
 
-    if (! _location )
-      promise
-        .then(guessLocation);
+    // Do we have the Voter data stored in the browser?
+    if (Object.keys(_voter_store).length)
+      return callback(getVoterList());
 
-    return promise;
+    else {
+
+        if ( ! _voter_device_id ) {
+        voterPromiseQueue
+          .push (
+            VoterAPIWorker
+                .generateVoterDeviceId()
+                .then ( (response) => {
+                  _voter_device_id = response.voter_device_id;
+
+                  cookies.setItem('voter_device_id', _voter_device_id, Infinity); // Set to never expire
+                })
+          );
+
+        voterPromiseQueue
+          .push (
+            VoterAPIWorker
+                .createVoter()
+          );
+        }
+
+        if (! _location ) {
+          voterPromiseQueue
+            .push (
+              VoterAPIWorker
+                .voterLocationRetrieveFromIP()
+                  .then ( (response) => {
+                    _location = response.voter_location;
+
+                    cookies.setItem('location', _location);
+                  })
+              );
+        }
+
+        if (! _voter_photo_url ) {
+            console.log('No voter_photo_url');
+
+            voterPromiseQueue
+                .push(
+                VoterAPIWorker
+                  .voterRetrieve()
+                  .then((response) => {
+                    addVoterToVoterStore(response);
+
+                    _voter_ids.push( response.we_vote_id );
+
+                    // this function polls requests for complete status.
+                    new Promise((resolve) => {
+                        var counted = [];
+                        var count = 0;
+
+                        var interval = setInterval(() => {
+
+                            var { we_vote_id } = response;
+
+                            _voter = _voter_store [we_vote_id];
+                            console.log('_voter set.');
+                            if ( _voter ) {
+                                console.log('_voter photo: ' + _voter.facebook_profile_image_url_https);
+                                _voter_photo_url = _voter.voter_photo_url;
+                                console.log('_voter_photo_url: ' + _voter_photo_url);
+                            }
+
+                            if (counted.indexOf(we_vote_id) < 0) {
+                                count += 1;  // TODO Why was this 4?
+                                counted.push(we_vote_id);
+                            }
+
+                            if (count === voterPromiseQueue.length && voterPromiseQueue.length !== 0) {
+                                clearInterval(interval);
+                                Promise.all(voterPromiseQueue).then(resolve);
+                            }
+
+                        }, 1000);
+
+                    }).then(() => callback(getVoterList()));
+                })
+            );
+        }
+    }
   },
+
+  /**
+   * get ballot ordered key array and ballots
+   * @return {Object} ordered keys and store data
+   */
+  getVoterList: function () {
+      var temp = [];
+      _voter_ids
+        .forEach( (id) =>
+          temp
+            .push(
+              shallowClone( _voter_store[id] )
+            )
+        );
+
+      return temp;
+  },
+
   /**
    * set geographical location of voter
    */
@@ -135,17 +239,27 @@ voters location...
    */
   _removeChangeListener: function (callback) {
     this.removeListener(CHANGE_EVENT, callback);
-  },
+  }
 });
 
-dispatcher.register( action => {
-    switch(action.actionType) {
-        case VoterConstants.VOTER_LOCATION_SET:
-            VoterStore._emitChange();
-            break;
-        default:
-            break;
-    }
-})
+AppDispatcher.register( action => {
+
+  switch (action.actionType) {
+    case VoterConstants.VOTER_RETRIEVE:
+      VoterAPIWorker
+        .voterRetrieve(
+          () => VoterStore.emitChange()
+      );
+      break;
+    case VoterConstants.VOTER_LOCATION_RETRIEVE:
+      VoterAPIWorker
+        .voterLocationRetrieveFromIP(
+          () => VoterStore.emitChange()
+      );
+      break;
+    default:
+      break;
+  }
+});
 
 export default VoterStore;

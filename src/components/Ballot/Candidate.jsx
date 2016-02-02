@@ -63,9 +63,9 @@ export default class Candidate extends Component {
                       { ballot_item_display_name }
                 </h4>
                 <h3>
-                  <span>{ supportCount } support</span>
-                  &nbsp;&nbsp;&nbsp;
-                  <span>{ opposeCount } oppose</span>
+                  &nbsp;<span>{ supportCount }&nbsp;support</span>
+                  &nbsp;&nbsp;
+                  &nbsp;<span>{ opposeCount }&nbsp;oppose</span>
                 </h3>
             </Link>
           </div>

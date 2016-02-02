@@ -9,5 +9,9 @@ module.exports = {
 
     location: {
         text_for_map_search: '2201 Wilson Blvd, Arlington VA 22201'
-    }
+    },
+
+    // const APP_ID = '1097389196952441'; // DaleMcGrew Facebook App Id, https://wevote.me
+    // const APP_ID = '868492333200013'; // wevote-dev, http://localhost:3001
+    FACEBOOK_APP_ID: '868492333200013'
 };

@@ -43,6 +43,7 @@ class Main extends React.Component {
                 {!this.state.loggedIn ? <FacebookLogin /> : null}
                 {this.state.loggedIn ? <FacebookLogout /> : null}
                 <p>Facebook logged in: {this.state.loggedIn ? 'true' : 'false'}</p>
+                <p>Facebook access token: {this.state.accessToken}</p>
                 <p>User ID is: {this.state.userId}</p>
                 {this.state.userId ? <FacebookDownloadPicture userId={this.state.userId} /> : null}
                 
