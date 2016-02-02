@@ -1,3 +1,4 @@
+const web_app_config = require('../config');
 import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
 import LanguageSwitchNavigation from "components/LanguageSwitchNavigation";
@@ -34,7 +35,8 @@ export default class MoreMenu extends Component {
 			        <ul className="list-group">
 			            <li className="list-group-item"><Link to="/more/about">About We Vote</Link></li>
 			            <li className="list-group-item"><Link to="/more/privacy">Terms &amp; Policies</Link></li>
-			            <li className="list-group-item"><a href="http://localhost:8000/admin/" target="_blank">Admin</a></li>
+			            <li className="list-group-item"><a href={ web_app_config.WE_VOTE_SERVER_ADMIN_ROOT_URL }
+														   target="_blank">Admin</a></li>
 			        </ul>
 			        <h4 className="text-left"></h4>
 			        <ul className="list-group">

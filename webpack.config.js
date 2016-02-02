@@ -2,8 +2,12 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+const WEB_APP_SERVER = "http://localhost:3001";
+
 const config = {
     devtool: 'eval',
+    web_app_server_host: 'localhost',
+    web_app_server_port: '3001',
     resolve: {
         root: [
             path.resolve(__dirname, 'src'),
@@ -15,7 +19,7 @@ const config = {
     },
     entry: [
         'webpack/hot/dev-server',
-        'webpack-dev-server/client?http://localhost:3001',
+        'webpack-dev-server/client?' + WEB_APP_SERVER,
         'babel-polyfill',
         path.join(__dirname, 'src/index')
     ],

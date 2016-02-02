@@ -1,4 +1,4 @@
-const config = require('../config');
+const web_app_config = require('../config');
 import FacebookDispatcher from '../dispatcher/FacebookDispatcher';
 import FacebookConstants from '../constants/FacebookConstants'
 
@@ -6,7 +6,7 @@ const FacebookActionCreators = {
     initFacebook: function() {
         window.fbAsyncInit = function() {
             FB.init({
-              appId      : config.FACEBOOK_APP_ID,
+              appId      : web_app_config.FACEBOOK_APP_ID,
               xfbml      : true,
               version    : 'v2.5'
             });
