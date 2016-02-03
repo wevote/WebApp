@@ -1,5 +1,9 @@
+<<<<<<< HEAD:src/js/routes/Opinions.jsx
 import {Component, PropTypes } from 'react';
 import HeaderBackNavigation from '../Components/Navigation/HeaderBackNavigation';
+=======
+import React, {Component, PropTypes } from "react";
+>>>>>>> origin/develop:src/routes/Opinions.jsx
 
 import VoterGuideStore from '../stores/VoterGuideStore';
 import VoterGuideItem from '../components/VoterGuide/VoterGuideItem';
@@ -23,7 +27,6 @@ export default class Opinions extends Component {
   render() {
     return (
 <div>
-  <HeaderBackNavigation back_to_text={"< Back to My Ballot"} />
   <div className="container-fluid">
     <h4 className="pull-left">More Opinions I Can Follow</h4>
       <input type="text" name="search_opinions" className="form-control"

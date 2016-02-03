@@ -38,7 +38,7 @@
 		"react/self-closing-comp": 2,
 		"react/wrap-multilines": 0,
     "jsx-quotes": 1,
-    "quotes": 1
+    "quotes": 0
 	},
 	"plugins": [
 		"react"

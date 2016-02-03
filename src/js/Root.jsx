@@ -24,9 +24,19 @@ import Candidate                        from './routes/Ballot/Candidate';
 import Opinions                         from './routes/Opinions';
 
 /* More */
+<<<<<<< HEAD:src/js/Root.jsx
 import More                             from './routes/More';
 import About                            from './routes/More/About';
 import OpinionsFollowed                 from './routes/More/OpinionsFollowed';
+=======
+import More                             from 'routes/More';
+import SignIn                           from 'routes/More/SignIn';
+import EmailBallot                      from 'routes/More/EmailBallot';
+import OpinionsFollowed                 from 'routes/More/OpinionsFollowed';
+import About                            from 'routes/More/About';
+import Privacy                          from 'routes/More/Privacy';
+
+>>>>>>> origin/develop:src/Root.jsx
 
 // import Measure                          from 'routes/Ballot/Measure';
 // import Opinion                          from 'routes/Ballot/Opinion';
@@ -78,8 +88,12 @@ class Root extends Component {
           <Route path="remove" />
         </Route>
 
+        {/* More Menu Pages */}
+        <Route path="/more/sign_in" component={SignIn} />
+        <Route path="/more/email_ballot" component={EmailBallot} />
         <Route path="/more/about" component={About} />
         <Route path="/more/opinions/followed" component={OpinionsFollowed} />
+        <Route path="/more/privacy" component={Privacy} />
 
         <Route path="/" component={Application} >
 
@@ -90,7 +104,7 @@ class Root extends Component {
 
           <Route path="ballot" component={BallotIndex}>
             <IndexRoute component={Ballot} />
-            <Route path="/candidate/:id" component={Candidate} />
+            <Route path="/candidate/:we_vote_id" component={Candidate} />
           </Route>
           {/*
               <Route path="org/:id" component={Organization}/>

@@ -23,7 +23,6 @@ export default class OpinionsFollowed extends Component {
   render() {
     return (
 <div>
-  <HeaderBackNavigation back_to_text={"< Back to More Menu"} />
   <div className="container-fluid well well-90">
     <h2 className="text-center">Opinions I Follow</h2>
       <input type="text" name="search_opinions" className="form-control"

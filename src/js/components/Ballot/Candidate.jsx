@@ -55,21 +55,19 @@ export default class Candidate extends Component {
             }
           </div>
           <div className="col-xs-8">
-            <h4 className="bufferNone">
-              <Link
+            <Link
                   className="linkLight"
-                  to={"/candidate/" + we_vote_id.split('cand').pop() }
+                  to={"/candidate/" + we_vote_id }
                   onlyActiveOnIndex={false}>
-                  { ballot_item_display_name }
-              </Link>
-            </h4>
-            <h5>
-              { supportCount } support
-              <span className="small"> (more) </span>
-            </h5>
-            <h6 className="bufferNone">
-              { opposeCount } oppose
-            </h6>
+                <h4 className="bufferNone">
+                      { ballot_item_display_name }
+                </h4>
+                <h3>
+                  &nbsp;<span>{ supportCount }&nbsp;support</span>
+                  &nbsp;&nbsp;
+                  &nbsp;<span>{ opposeCount }&nbsp;oppose</span>
+                </h3>
+            </Link>
           </div>
         </div>
         <ItemActionbar we_vote_id={we_vote_id} />

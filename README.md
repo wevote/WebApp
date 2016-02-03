@@ -66,6 +66,17 @@ You should be able to visit WebApp here:
     http://localhost:3001
 
 
+## Configuring WebApp URL and WeVoteServer URL
+
+You can change the WebApp url from "http://localhost:3001" to a live URL here:
+
+    WebApp/webpack.config.js
+    
+You can change the WeVoteServer API server url from "http://localhost:8000" here:
+
+    WebApp/src/config.js
+
+
 ## After Installation: Working with WebApp Day-to-Day
 
 [Read about working with WebApp on a daily basis](README_WORKING_WITH_WEB_APP.md)

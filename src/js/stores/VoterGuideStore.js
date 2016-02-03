@@ -6,7 +6,7 @@ const AppDispatcher = require('../dispatcher/AppDispatcher');
 const VoterGuideConstants = require('../constants/VoterGuideConstants');
 
 const request = require('superagent');
-const config = require('../config');
+const web_app_config = require('../config');
 
 let _organization_store = {};
 let _organization_list = []; // A summary of all organizations (list of organization we_vote_id's)
@@ -28,9 +28,9 @@ function printErr (err) {
 //.query({ kind_of_ballot_item: 'CANDIDATE' })
 function retrieveVoterGuidesToFollowList () {
   return new Promise( (resolve, reject) => request
-    .get(`${config.url}voterGuidesToFollowRetrieve/`)
+    .get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}voterGuidesToFollowRetrieve/`)
     .withCredentials()
-    .query(config.test)
+    .query(web_app_config.test)
     .query({ google_civic_election_id: BallotStore.getGoogleCivicElectionId() })
     .end( function (err, res) {
       if (err || !res.body.success)
@@ -57,7 +57,7 @@ function addVoterGuidesToFollowToVoterGuideStore (data) {
 
 function retrieveVoterGuidesFollowedList () {
   return new Promise( (resolve, reject) => request
-    .get(`${config.url}voterGuidesFollowedRetrieve/`)
+    .get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}voterGuidesFollowedRetrieve/`)
     .withCredentials()
     .end( function (err, res) {
       if (err || !res.body.success)
@@ -85,7 +85,7 @@ function retrieveOrganizations (data) {
 
   return new Promise ( (resolve, reject) => _organization_list
     .forEach( we_vote_id => request
-      .get(`${config.url}organizationRetrieve/`)
+      .get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}organizationRetrieve/`)
       .withCredentials()
       .query({ organization_we_vote_id: we_vote_id })
       .end( function (err, res) {
@@ -107,7 +107,7 @@ function retrieveOrganizations (data) {
 
 function retrieveOrganizationsFollowedList () {
   return new Promise( (resolve, reject) => request
-    .get(`${config.url}organizationsFollowedRetrieve/`)
+    .get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}organizationsFollowedRetrieve/`)
     .withCredentials()
     .end( function (err, res) {
       if (err || !res.body.success)
@@ -130,7 +130,7 @@ function addOrganizationsFollowedToStore (data) {
 function followOrganization (we_vote_id) {
   console.log('followOrganization: ' + we_vote_id + ', id: ' + _organization_store[we_vote_id].organization_id);
   return new Promise((resolve, reject) => request
-    .get(`${config.url}organizationFollow/`)
+    .get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}organizationFollow/`)
     .withCredentials()
     .query({ organization_id: _organization_store[we_vote_id].organization_id })
     .end( function (err, res) {
@@ -149,7 +149,7 @@ function followOrganization (we_vote_id) {
 function ignoreOrganization (we_vote_id) {
   console.log('ignoreOrganization: ' + we_vote_id);
   return new Promise((resolve, reject) => request
-    .get(`${config.url}organizationFollowIgnore/`)
+    .get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}organizationFollowIgnore/`)
     .withCredentials()
     .query({ organization_id: _organization_store[we_vote_id].organization_id })
     .end( function (err, res) {
@@ -168,7 +168,7 @@ function ignoreOrganization (we_vote_id) {
 function stopFollowingOrganization (we_vote_id) {
   console.log('stopFollowingOrganization: ' + we_vote_id);
   return new Promise((resolve, reject) => request
-    .get(`${config.url}organizationStopFollowing/`)
+    .get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}organizationStopFollowing/`)
     .withCredentials()
     .query({ organization_id: _organization_store[we_vote_id].id })
     .end( function (err, res) {

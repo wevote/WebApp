@@ -1,4 +1,8 @@
+<<<<<<< HEAD:src/js/routes/Settings/Location.jsx
 import { Component } from 'react';
+=======
+import React, { Component, PropTypes } from 'react';
+>>>>>>> origin/develop:src/routes/Settings/Location.jsx
 import { Button, ButtonToolbar } from 'react-bootstrap';
 import HeaderBackNavigation from '../../components/Navigation/HeaderBackNavigation';
 
@@ -10,7 +14,6 @@ export default class Location extends Component {
     render() {
         return (
             <div>
-                <HeaderBackNavigation />  {/* TODO DALE Discuss with Nick */}
             	<div className="container-fluid well well-90">
             		<h2 className="text-center">Change Location</h2>
             		<div>

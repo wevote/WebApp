@@ -39,11 +39,6 @@ export default class Connect extends Component {
 						   placeholder="Search by name or twitter handle." />
 			        <Link to="add_friends_message"><Button bsStyle="primary">Select from those I Follow on Twitter &gt;</Button></Link>
 					<OrganizationsToFollowList />
-
-					<h4 className="text-left">Create Voter Guide</h4>
-			        <p>To share your opinions publicly, create a voter guide.</p>
-			        <Link to="guides_voter"><Button bsStyle="primary">Create Public Voter Guide &gt;</Button></Link>
-			        <br />
 			        <br />
 				</div>
 			</div>

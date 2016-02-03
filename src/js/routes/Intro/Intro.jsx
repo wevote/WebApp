@@ -5,7 +5,11 @@ import { Button, Input } from 'react-bootstrap';
 import { Link } from 'react-router';
 
 const request = require('superagent');
+<<<<<<< HEAD:src/js/routes/Intro/Intro.jsx
 const config = require('../../config');
+=======
+const web_app_config = require('config');
+>>>>>>> origin/develop:src/routes/Intro/Intro.jsx
 
 export default class Intro extends Component {
 	static propTypes = {
@@ -31,7 +35,7 @@ export default class Intro extends Component {
 
 	getVoterCount () {
 		request
-			.get(`${config.url}voterCount/`)
+			.get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}voterCount/`)
 			.end( (err, res) => {
 				if (err) throw err;
 
@@ -43,7 +47,7 @@ export default class Intro extends Component {
 
 	getOrgCount () {
 		request
-			.get(`${config.url}organizationCount/`)
+			.get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}organizationCount/`)
 			.end( (err, res) => {
 				if (err) throw err;
 

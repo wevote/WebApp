@@ -11,21 +11,25 @@ import assign from 'object-assign';
 import * as request from 'superagent';
 
 const url = require('url');
+<<<<<<< HEAD:src/js/utils/service.js
 const config = require('../config');
+=======
+const web_app_config = require('config');
+>>>>>>> origin/develop:src/utils/service.js
 
 const defaults = {
   dataType: 'json',
-  url: config.url,
+  WE_VOTE_SERVER_API_ROOT_URL: web_app_config.WE_VOTE_SERVER_API_ROOT_URL,
 };
 
 const service = {};
 
 service.get = function (options) {
   var opts = assign(defaults, options);
-  opts.url = url.resolve(opts.url, opts.endpoint);
+  opts.WE_VOTE_SERVER_API_ROOT_URL = url.resolve(opts.WE_VOTE_SERVER_API_ROOT_URL, opts.endpoint);
 
   return new Promise( (resolve, reject) => request
-    .get(opts.url)
+    .get(opts.WE_VOTE_SERVER_API_ROOT_URL)
     .accept(opts.dataType)
     .query(opts.query)
     .withCredentials()

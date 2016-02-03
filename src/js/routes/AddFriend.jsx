@@ -1,7 +1,12 @@
 import { Component } from 'react';
 import { Link } from 'react-router';
+<<<<<<< HEAD:src/js/routes/AddFriend.jsx
 import { Input } from 'react-bootstrap';
 
+=======
+import { Button, ButtonToolbar, Input } from 'react-bootstrap';
+import BottomContinueNavigation from 'components/Navigation/BottomContinueNavigation';
+>>>>>>> origin/develop:src/routes/AddFriend.jsx
 
 export default class AddFriend extends Component {
 	constructor(props) {
@@ -15,8 +20,6 @@ export default class AddFriend extends Component {
 	render() {
 	    return (
             <div>
-            	<Link to="/ballot"> &lt; Back to My Ballot
-                </Link>
             	<div className="container-fluid well well-90">
             		<h2 className="text-center">Add Friends</h2>
             		<div>
@@ -29,9 +32,7 @@ export default class AddFriend extends Component {
             				We never sell email addresses.</span><br />
             		</div>
             	</div>
-                <Link to="addbyaddress">
-                    Next
-                </Link>
+				<BottomContinueNavigation />
             </div>
 		);
 	}
