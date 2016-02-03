@@ -11,11 +11,7 @@ import assign from 'object-assign';
 import * as request from 'superagent';
 
 const url = require('url');
-<<<<<<< HEAD:src/js/utils/service.js
-const config = require('../config');
-=======
-const web_app_config = require('config');
->>>>>>> origin/develop:src/utils/service.js
+const web_app_config = require('../config');
 
 const defaults = {
   dataType: 'json',

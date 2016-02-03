@@ -24,19 +24,13 @@ import Candidate                        from './routes/Ballot/Candidate';
 import Opinions                         from './routes/Opinions';
 
 /* More */
-<<<<<<< HEAD:src/js/Root.jsx
 import More                             from './routes/More';
 import About                            from './routes/More/About';
 import OpinionsFollowed                 from './routes/More/OpinionsFollowed';
-=======
-import More                             from 'routes/More';
-import SignIn                           from 'routes/More/SignIn';
-import EmailBallot                      from 'routes/More/EmailBallot';
-import OpinionsFollowed                 from 'routes/More/OpinionsFollowed';
-import About                            from 'routes/More/About';
-import Privacy                          from 'routes/More/Privacy';
+import SignIn                           from './routes/More/SignIn';
+import EmailBallot                      from './routes/More/EmailBallot';
+import Privacy                          from './routes/More/Privacy';
 
->>>>>>> origin/develop:src/Root.jsx
 
 // import Measure                          from 'routes/Ballot/Measure';
 // import Opinion                          from 'routes/Ballot/Opinion';

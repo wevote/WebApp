@@ -1,12 +1,8 @@
 import { Component } from 'react';
 import { Link } from 'react-router';
-<<<<<<< HEAD:src/js/routes/AddFriend.jsx
 import { Input } from 'react-bootstrap';
 
-=======
-import { Button, ButtonToolbar, Input } from 'react-bootstrap';
-import BottomContinueNavigation from 'components/Navigation/BottomContinueNavigation';
->>>>>>> origin/develop:src/routes/AddFriend.jsx
+import BottomContinueNavigation from '../components/Navigation/BottomContinueNavigation';
 
 export default class AddFriend extends Component {
 	constructor(props) {

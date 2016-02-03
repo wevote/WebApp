@@ -1,14 +1,8 @@
-<<<<<<< HEAD:src/js/routes/More.jsx
 import { PropTypes, Component } from "react";
 import { Link } from "react-router";
 
 import LanguageSwitchNavigation from "../components/LanguageSwitchNavigation";
-=======
 const web_app_config = require('../config');
-import React, { PropTypes, Component } from "react";
-import { Link } from "react-router";
-import LanguageSwitchNavigation from "components/LanguageSwitchNavigation";
->>>>>>> origin/develop:src/routes/More.jsx
 
 export default class More extends Component {
 	static propTypes = {

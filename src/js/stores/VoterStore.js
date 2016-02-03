@@ -1,21 +1,16 @@
-import { createStore } from 'utils/createStore';
-import { shallowClone } from 'utils/object-utils';
+import { createStore } from '../utils/createStore';
+import { shallowClone } from '../utils/object-utils';
 
 const assign = require('object-assign');
 const request = require('superagent');
 const cookies = require('../utils/cookies');
 
-<<<<<<< HEAD:src/js/stores/VoterStore.js
 const VoterActions = require('../actions/VoterActions');
 const VoterConstants = require('../constants/VoterConstants');
-=======
-const AppDispatcher = require('dispatcher/AppDispatcher');
-const VoterConstants = require('constants/VoterConstants');
+const AppDispatcher = require('../dispatcher/AppDispatcher');
 
-import service from 'utils/service';
+import service from '../utils/service';
 
-const VoterActions = require('actions/VoterActions');
->>>>>>> origin/develop:src/stores/VoterStore.js
 const EventEmitter = require('events').EventEmitter;
 const dispatcher = require('../dispatcher/AppDispatcher');
 

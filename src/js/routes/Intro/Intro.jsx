@@ -5,11 +5,7 @@ import { Button, Input } from 'react-bootstrap';
 import { Link } from 'react-router';
 
 const request = require('superagent');
-<<<<<<< HEAD:src/js/routes/Intro/Intro.jsx
-const config = require('../../config');
-=======
-const web_app_config = require('config');
->>>>>>> origin/develop:src/routes/Intro/Intro.jsx
+const web_app_config = require('../../config');
 
 export default class Intro extends Component {
 	static propTypes = {

@@ -1,11 +1,6 @@
 'use strict';
-<<<<<<< HEAD:src/js/actions/VoterActions.js
-var dispatcher = require('../dispatcher/AppDispatcher');
+var AppDispatcher = require('../dispatcher/AppDispatcher');
 var VoterConstants = require('../constants/VoterConstants');
-=======
-var AppDispatcher = require('dispatcher/AppDispatcher');
-var VoterConstants = require('constants/VoterConstants');
->>>>>>> origin/develop:src/actions/VoterActions.js
 
 module.exports = {
   ChangeLocation: function (location) {  // VOTER_LOCATION_RETRIEVE

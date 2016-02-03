@@ -2,14 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import Headroom from "react-headroom";
 
-<<<<<<< HEAD:src/js/routes/Ballot/Ballot.jsx
 import BallotStore from '../../stores/BallotStore';
 import BallotItem from '../../components/Ballot/BallotItem';
-=======
-import BallotStore from 'stores/BallotStore';
-import BallotItem from 'components/Ballot/BallotItem';
-import VoterStore from 'stores/VoterStore';
->>>>>>> origin/develop:src/routes/Ballot/Ballot.jsx
 
 export default class Ballot extends Component {
   static propTypes = {

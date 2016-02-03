@@ -43450,7 +43450,7 @@ Application.propTypes = {
 };
 exports.default = Application;
 
-},{"./components/MoreMenu":490,"./components/Navigator":492,"react":465}],476:[function(require,module,exports){
+},{"./components/MoreMenu":498,"./components/Navigator":501,"react":465}],476:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -43633,6 +43633,18 @@ var _OpinionsFollowed = require('./routes/More/OpinionsFollowed');
 
 var _OpinionsFollowed2 = _interopRequireDefault(_OpinionsFollowed);
 
+var _SignIn = require('./routes/More/SignIn');
+
+var _SignIn2 = _interopRequireDefault(_SignIn);
+
+var _EmailBallot = require('./routes/More/EmailBallot');
+
+var _EmailBallot2 = _interopRequireDefault(_EmailBallot);
+
+var _Privacy = require('./routes/More/Privacy');
+
+var _Privacy2 = _interopRequireDefault(_Privacy);
+
 var _Requests = require('./routes/Requests');
 
 var _Requests2 = _interopRequireDefault(_Requests);
@@ -43714,8 +43726,11 @@ var Root = function (_Component) {
           _react2.default.createElement(_reactRouter.Route, { path: 'add', component: _AddFriend2.default }),
           _react2.default.createElement(_reactRouter.Route, { path: 'remove' })
         ),
+        _react2.default.createElement(_reactRouter.Route, { path: '/more/sign_in', component: _SignIn2.default }),
+        _react2.default.createElement(_reactRouter.Route, { path: '/more/email_ballot', component: _EmailBallot2.default }),
         _react2.default.createElement(_reactRouter.Route, { path: '/more/about', component: _About2.default }),
         _react2.default.createElement(_reactRouter.Route, { path: '/more/opinions/followed', component: _OpinionsFollowed2.default }),
+        _react2.default.createElement(_reactRouter.Route, { path: '/more/privacy', component: _Privacy2.default }),
         _react2.default.createElement(
           _reactRouter.Route,
           { path: '/', component: _Application2.default },
@@ -43724,7 +43739,7 @@ var Root = function (_Component) {
             _reactRouter.Route,
             { path: 'ballot', component: _BallotIndex2.default },
             _react2.default.createElement(_reactRouter.IndexRoute, { component: _Ballot2.default }),
-            _react2.default.createElement(_reactRouter.Route, { path: '/candidate/:id', component: _Candidate2.default })
+            _react2.default.createElement(_reactRouter.Route, { path: '/candidate/:we_vote_id', component: _Candidate2.default })
           ),
           _react2.default.createElement(_reactRouter.Route, { path: 'requests', component: _Requests2.default }),
           _react2.default.createElement(_reactRouter.Route, { path: 'connect', component: _Connect2.default }),
@@ -43748,7 +43763,7 @@ Root.propTypes = {
 
 exports.default = Root;
 
-},{"./Application":475,"./routes/Activity":502,"./routes/AddFriend":503,"./routes/Ballot/Ballot":504,"./routes/Ballot/BallotIndex":505,"./routes/Ballot/Candidate":506,"./routes/Connect":507,"./routes/Intro/Intro":508,"./routes/Intro/IntroContests":509,"./routes/Intro/IntroOpinions":510,"./routes/More":511,"./routes/More/About":512,"./routes/More/OpinionsFollowed":513,"./routes/NotFound":514,"./routes/Opinions":515,"./routes/Requests":516,"./routes/Settings/Location":517,"./routes/Settings/Settings":518,"./routes/Settings/SettingsDashboard":519,"react":465,"react-router":303}],478:[function(require,module,exports){
+},{"./Application":475,"./routes/Activity":513,"./routes/AddFriend":514,"./routes/Ballot/Ballot":515,"./routes/Ballot/BallotIndex":516,"./routes/Ballot/Candidate":517,"./routes/Connect":518,"./routes/Intro/Intro":519,"./routes/Intro/IntroContests":520,"./routes/Intro/IntroOpinions":521,"./routes/More":522,"./routes/More/About":523,"./routes/More/EmailBallot":524,"./routes/More/OpinionsFollowed":525,"./routes/More/Privacy":526,"./routes/More/SignIn":527,"./routes/NotFound":528,"./routes/Opinions":529,"./routes/Requests":530,"./routes/Settings/Location":531,"./routes/Settings/Settings":532,"./routes/Settings/SettingsDashboard":533,"react":465,"react-router":303}],478:[function(require,module,exports){
 'use strict';
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
@@ -43806,22 +43821,120 @@ module.exports = {
   }
 };
 
-},{"../constants/BallotConstants":497,"../dispatcher/AppDispatcher":500}],479:[function(require,module,exports){
+},{"../constants/BallotConstants":506,"../dispatcher/AppDispatcher":510}],479:[function(require,module,exports){
 'use strict';
 
-var dispatcher = require('../dispatcher/AppDispatcher');
-var VoterConstants = require('../constants/VoterConstants');
+var _FacebookDispatcher = require('../dispatcher/FacebookDispatcher');
 
-module.exports = {
-    ChangeLocation: function ChangeLocation(location) {
-        return dispatcher.dispatch({
-            actionType: VoterConstants.VOTER_LOCATION_SET,
-            location: location
+var _FacebookDispatcher2 = _interopRequireDefault(_FacebookDispatcher);
+
+var _FacebookConstants = require('../constants/FacebookConstants');
+
+var _FacebookConstants2 = _interopRequireDefault(_FacebookConstants);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var web_app_config = require('../config');
+
+var FacebookActionCreators = {
+    initFacebook: function initFacebook() {
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: web_app_config.FACEBOOK_APP_ID,
+                xfbml: true,
+                version: 'v2.5'
+            });
+
+            // after initialization, get the login status
+            FacebookActionCreators.getLoginStatus();
+        }, function (d, s, id) {
+            var js,
+                fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk');
+    },
+
+    getLoginStatus: function getLoginStatus() {
+        window.FB.getLoginStatus(function (response) {
+            _FacebookDispatcher2.default.dispatch({
+                actionType: _FacebookConstants2.default.FACEBOOK_INITIALIZED,
+                data: response
+            });
+        });
+    },
+
+    login: function login() {
+        window.FB.login(function (response) {
+            if (response.status === 'connected') {
+                // Logged into We Vote and Facebook
+                _FacebookDispatcher2.default.dispatch({
+                    actionType: _FacebookConstants2.default.FACEBOOK_LOGGED_IN,
+                    data: response
+                });
+            } else if (response.status === 'not_authorized') {
+                // The person is logged into Facebook, but not We Vote
+            } else {
+                    // The person is not logged into Facebook
+                }
+        });
+    },
+
+    logout: function logout() {
+        window.FB.logout(function (response) {
+            _FacebookDispatcher2.default.dispatch({
+                actionType: _FacebookConstants2.default.FACEBOOK_LOGGED_OUT,
+                data: response
+            });
+        });
+    },
+
+    getFacebookProfilePicture: function getFacebookProfilePicture(userId) {
+        _FacebookDispatcher2.default.dispatch({
+            actionType: _FacebookConstants2.default.FACEBOOK_GETTING_PICTURE,
+            data: null
+        });
+
+        window.FB.api('/' + userId + '/picture?type=large', function (response) {
+            _FacebookDispatcher2.default.dispatch({
+                actionType: _FacebookConstants2.default.FACEBOOK_RECEIVED_PICTURE,
+                data: response
+            });
         });
     }
 };
 
-},{"../constants/VoterConstants":498,"../dispatcher/AppDispatcher":500}],480:[function(require,module,exports){
+module.exports = FacebookActionCreators;
+
+},{"../config":505,"../constants/FacebookConstants":507,"../dispatcher/FacebookDispatcher":511}],480:[function(require,module,exports){
+'use strict';
+
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var VoterConstants = require('../constants/VoterConstants');
+
+module.exports = {
+  ChangeLocation: function ChangeLocation(location) {
+    // VOTER_LOCATION_RETRIEVE
+    AppDispatcher.dispatch({
+      actionType: VoterConstants.VOTER_LOCATION_RETRIEVE,
+      location: location
+    });
+  },
+
+  voterRetrieve: function voterRetrieve(we_vote_id) {
+    // VOTER_RETRIEVE
+    AppDispatcher.dispatch({
+      actionType: VoterConstants.VOTER_RETRIEVE,
+      we_vote_id: we_vote_id
+    });
+  }
+};
+
+},{"../constants/VoterConstants":508,"../dispatcher/AppDispatcher":510}],481:[function(require,module,exports){
 'use strict';
 
 var _AppDispatcher = require('../dispatcher/AppDispatcher');
@@ -43887,7 +44000,7 @@ module.exports = {
   }
 };
 
-},{"../constants/VoterGuideConstants":499,"../dispatcher/AppDispatcher":500}],481:[function(require,module,exports){
+},{"../constants/VoterGuideConstants":509,"../dispatcher/AppDispatcher":510}],482:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -43995,7 +44108,7 @@ BallotItem.propTypes = {
 };
 exports.default = BallotItem;
 
-},{"../../actions/BallotActions":478,"../../components/Ballot/CandidateList":484,"../../components/Ballot/Measure":485,"../../components/StarAction":494,"../../stores/BallotStore":520,"keymirror":95,"react":465}],482:[function(require,module,exports){
+},{"../../actions/BallotActions":478,"../../components/Ballot/CandidateList":485,"../../components/Ballot/Measure":486,"../../components/StarAction":503,"../../stores/BallotStore":534,"keymirror":95,"react":465}],483:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -44069,33 +44182,34 @@ var Candidate = function (_Component) {
             'div',
             { className: 'col-xs-8' },
             _react2.default.createElement(
-              'h4',
-              { className: 'bufferNone' },
+              _reactRouter.Link,
+              {
+                className: 'linkLight',
+                to: "/candidate/" + we_vote_id,
+                onlyActiveOnIndex: false },
               _react2.default.createElement(
-                _reactRouter.Link,
-                {
-                  className: 'linkLight',
-                  to: "/candidate/" + we_vote_id.split('cand').pop(),
-                  onlyActiveOnIndex: false },
+                'h4',
+                { className: 'bufferNone' },
                 ballot_item_display_name
-              )
-            ),
-            _react2.default.createElement(
-              'h5',
-              null,
-              supportCount,
-              ' support',
+              ),
               _react2.default.createElement(
-                'span',
-                { className: 'small' },
-                ' (more) '
+                'h3',
+                null,
+                ' ',
+                _react2.default.createElement(
+                  'span',
+                  null,
+                  supportCount,
+                  ' support'
+                ),
+                '    ',
+                _react2.default.createElement(
+                  'span',
+                  null,
+                  opposeCount,
+                  ' oppose'
+                )
               )
-            ),
-            _react2.default.createElement(
-              'h6',
-              { className: 'bufferNone' },
-              opposeCount,
-              ' oppose'
             )
           )
         ),
@@ -44119,7 +44233,7 @@ Candidate.propTypes = {
 };
 exports.default = Candidate;
 
-},{"../../components/ItemActionbar":488,"../../components/StarAction":494,"react":465,"react-router":303}],483:[function(require,module,exports){
+},{"../../components/ItemActionbar":496,"../../components/StarAction":503,"react":465,"react-router":303}],484:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -44307,7 +44421,7 @@ CandidateDetail.propTypes = {
 };
 exports.default = CandidateDetail;
 
-},{"react":465}],484:[function(require,module,exports){
+},{"react":465}],485:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -44364,7 +44478,7 @@ CandidateList.propTypes = {
 };
 exports.default = CandidateList;
 
-},{"../../components/Ballot/Candidate":482,"react":465}],485:[function(require,module,exports){
+},{"../../components/Ballot/Candidate":483,"react":465}],486:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -44476,7 +44590,507 @@ Measure.propTypes = {
 };
 exports.default = Measure;
 
-},{"../../actions/BallotActions":478,"../../components/ItemActionbar":488,"../../stores/BallotStore":520,"react":465}],486:[function(require,module,exports){
+},{"../../actions/BallotActions":478,"../../components/ItemActionbar":496,"../../stores/BallotStore":534,"react":465}],487:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _FacebookActionCreators = require('../../actions/FacebookActionCreators');
+
+var _FacebookActionCreators2 = _interopRequireDefault(_FacebookActionCreators);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FacebookDisconnect = function (_React$Component) {
+    _inherits(FacebookDisconnect, _React$Component);
+
+    function FacebookDisconnect(props) {
+        _classCallCheck(this, FacebookDisconnect);
+
+        return _possibleConstructorReturn(this, Object.getPrototypeOf(FacebookDisconnect).call(this, props));
+    }
+    // TODO ROB: Please install stylesheets from: https://lipis.github.io/bootstrap-social/
+
+    _createClass(FacebookDisconnect, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'span',
+                null,
+                _react2.default.createElement(
+                    'a',
+                    { className: 'btn btn-block btn-social btn-facebook', onClick: this.didClickFacebookLogoutButton },
+                    _react2.default.createElement('span', { className: 'fa fa-facebook' }),
+                    'Disconnect from Facebook'
+                )
+            );
+        }
+    }, {
+        key: 'didClickFacebookLogoutButton',
+        value: function didClickFacebookLogoutButton(e) {
+            _FacebookActionCreators2.default.logout();
+        }
+    }]);
+
+    return FacebookDisconnect;
+}(_react2.default.Component);
+
+exports.default = FacebookDisconnect;
+
+},{"../../actions/FacebookActionCreators":479,"react":465}],488:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _FacebookActionCreators = require('../../actions/FacebookActionCreators');
+
+var _FacebookActionCreators2 = _interopRequireDefault(_FacebookActionCreators);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FacebookDownloadPicture = function (_React$Component) {
+    _inherits(FacebookDownloadPicture, _React$Component);
+
+    function FacebookDownloadPicture(props) {
+        _classCallCheck(this, FacebookDownloadPicture);
+
+        return _possibleConstructorReturn(this, Object.getPrototypeOf(FacebookDownloadPicture).call(this, props));
+    }
+
+    _createClass(FacebookDownloadPicture, [{
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'h5',
+                    null,
+                    'Download Picture:'
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { ref: 'downloadPictureButton', onClick: function onClick() {
+                            return _this2.didClickDownloadPicture();
+                        } },
+                    'Download FB Picture'
+                )
+            );
+        }
+    }, {
+        key: 'didClickDownloadPicture',
+        value: function didClickDownloadPicture() {
+            _FacebookActionCreators2.default.getFacebookProfilePicture(this.props.userId);
+        }
+    }]);
+
+    return FacebookDownloadPicture;
+}(_react2.default.Component);
+
+exports.default = FacebookDownloadPicture;
+
+},{"../../actions/FacebookActionCreators":479,"react":465}],489:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _FacebookActionCreators = require('../../actions/FacebookActionCreators');
+
+var _FacebookActionCreators2 = _interopRequireDefault(_FacebookActionCreators);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FacebookLogin = function (_React$Component) {
+    _inherits(FacebookLogin, _React$Component);
+
+    function FacebookLogin(props) {
+        _classCallCheck(this, FacebookLogin);
+
+        return _possibleConstructorReturn(this, Object.getPrototypeOf(FacebookLogin).call(this, props));
+    }
+
+    _createClass(FacebookLogin, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'button',
+                { ref: 'loginButton', onClick: this.didClickFacebookLoginButton },
+                'Sign Into Facebook'
+            );
+        }
+    }, {
+        key: 'didClickFacebookLoginButton',
+        value: function didClickFacebookLoginButton(e) {
+            _FacebookActionCreators2.default.login();
+        }
+    }]);
+
+    return FacebookLogin;
+}(_react2.default.Component);
+
+exports.default = FacebookLogin;
+
+},{"../../actions/FacebookActionCreators":479,"react":465}],490:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _FacebookActionCreators = require('../../actions/FacebookActionCreators');
+
+var _FacebookActionCreators2 = _interopRequireDefault(_FacebookActionCreators);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FacebookLogout = function (_React$Component) {
+    _inherits(FacebookLogout, _React$Component);
+
+    function FacebookLogout(props) {
+        _classCallCheck(this, FacebookLogout);
+
+        return _possibleConstructorReturn(this, Object.getPrototypeOf(FacebookLogout).call(this, props));
+    }
+
+    _createClass(FacebookLogout, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'button',
+                { ref: 'logoutButton', onClick: this.didClickFacebookLogoutButton },
+                'Sign Out of Facebook'
+            );
+        }
+    }, {
+        key: 'didClickFacebookLogoutButton',
+        value: function didClickFacebookLogoutButton(e) {
+            _FacebookActionCreators2.default.logout();
+        }
+    }]);
+
+    return FacebookLogout;
+}(_react2.default.Component);
+
+exports.default = FacebookLogout;
+
+},{"../../actions/FacebookActionCreators":479,"react":465}],491:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _FacebookConstants = require('../../constants/FacebookConstants');
+
+var _FacebookConstants2 = _interopRequireDefault(_FacebookConstants);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FacebookPicture = function (_React$Component) {
+    _inherits(FacebookPicture, _React$Component);
+
+    function FacebookPicture(props) {
+        _classCallCheck(this, FacebookPicture);
+
+        return _possibleConstructorReturn(this, Object.getPrototypeOf(FacebookPicture).call(this, props));
+    }
+
+    _createClass(FacebookPicture, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                this.facebookStatus,
+                this.facebookPicture
+            );
+        }
+    }, {
+        key: 'facebookStatus',
+        get: function get() {
+            var msg = undefined;
+
+            if (this.props.facebookPictureStatus === _FacebookConstants2.default.FACEBOOK_GETTING_PICTURE) {
+                msg = 'Downloading picture...';
+            }
+
+            if (this.props.facebookPictureStatus === _FacebookConstants2.default.FACEBOOK_RECEIVED_PICTURE) {
+                msg = 'Received picture!';
+            }
+
+            return _react2.default.createElement(
+                'h3',
+                null,
+                msg
+            );
+        }
+    }, {
+        key: 'facebookPicture',
+        get: function get() {
+            if (this.props.facebookPictureUrl) {
+                return _react2.default.createElement('img', { src: this.props.facebookPictureUrl });
+            }
+        }
+    }]);
+
+    return FacebookPicture;
+}(_react2.default.Component);
+
+exports.default = FacebookPicture;
+
+},{"../../constants/FacebookConstants":507,"react":465}],492:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _FacebookActionCreators = require('../../actions/FacebookActionCreators');
+
+var _FacebookActionCreators2 = _interopRequireDefault(_FacebookActionCreators);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FacebookSignIn = function (_React$Component) {
+    _inherits(FacebookSignIn, _React$Component);
+
+    function FacebookSignIn(props) {
+        _classCallCheck(this, FacebookSignIn);
+
+        return _possibleConstructorReturn(this, Object.getPrototypeOf(FacebookSignIn).call(this, props));
+    }
+    // TODO ROB: Please install stylesheets from: https://lipis.github.io/bootstrap-social/
+
+    _createClass(FacebookSignIn, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'a',
+                { className: 'btn btn-block btn-social btn-facebook', onClick: this.didClickFacebookLoginButton },
+                _react2.default.createElement('span', { className: 'fa fa-facebook' }),
+                'Sign in with Facebook'
+            );
+        }
+    }, {
+        key: 'didClickFacebookLoginButton',
+        value: function didClickFacebookLoginButton(e) {
+            _FacebookActionCreators2.default.login();
+        }
+    }]);
+
+    return FacebookSignIn;
+}(_react2.default.Component);
+
+exports.default = FacebookSignIn;
+
+},{"../../actions/FacebookActionCreators":479,"react":465}],493:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _FacebookActionCreators = require('../../actions/FacebookActionCreators');
+
+var _FacebookActionCreators2 = _interopRequireDefault(_FacebookActionCreators);
+
+var _FacebookStore = require('../../stores/FacebookStore');
+
+var _FacebookStore2 = _interopRequireDefault(_FacebookStore);
+
+var _FacebookLogin = require('../../components/Facebook/FacebookLogin');
+
+var _FacebookLogin2 = _interopRequireDefault(_FacebookLogin);
+
+var _FacebookLogout = require('../../components/Facebook/FacebookLogout');
+
+var _FacebookLogout2 = _interopRequireDefault(_FacebookLogout);
+
+var _FacebookDownloadPicture = require('../../components/Facebook/FacebookDownloadPicture');
+
+var _FacebookDownloadPicture2 = _interopRequireDefault(_FacebookDownloadPicture);
+
+var _FacebookPicture = require('../../components/Facebook/FacebookPicture');
+
+var _FacebookPicture2 = _interopRequireDefault(_FacebookPicture);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Main = function (_React$Component) {
+    _inherits(Main, _React$Component);
+
+    function Main(props) {
+        _classCallCheck(this, Main);
+
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Main).call(this));
+
+        _this.state = _this.getFacebookState();
+        return _this;
+    }
+
+    _createClass(Main, [{
+        key: 'getFacebookState',
+        value: function getFacebookState() {
+            return {
+                accessToken: _FacebookStore2.default.accessToken,
+                loggedIn: _FacebookStore2.default.loggedIn,
+                userId: _FacebookStore2.default.userId,
+                facebookPictureStatus: _FacebookStore2.default.facebookPictureStatus,
+                facebookPictureUrl: _FacebookStore2.default.facebookPictureUrl
+            };
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            _FacebookActionCreators2.default.initFacebook();
+            _FacebookStore2.default.addChangeListener(function () {
+                return _this2._onFacebookChange();
+            });
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            _FacebookStore2.default.removeChangeListener(this._onFacebookChange);
+        }
+    }, {
+        key: '_onFacebookChange',
+        value: function _onFacebookChange() {
+            this.setState(this.getFacebookState());
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                !this.state.loggedIn ? _react2.default.createElement(_FacebookLogin2.default, null) : null,
+                this.state.loggedIn ? _react2.default.createElement(_FacebookLogout2.default, null) : null,
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    'Facebook logged in: ',
+                    this.state.loggedIn ? 'true' : 'false'
+                ),
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    'Facebook access token: ',
+                    this.state.accessToken
+                ),
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    'User ID is: ',
+                    this.state.userId
+                ),
+                this.state.userId ? _react2.default.createElement(_FacebookDownloadPicture2.default, { userId: this.state.userId }) : null,
+                _react2.default.createElement(_FacebookPicture2.default, {
+                    facebookPictureStatus: this.state.facebookPictureStatus,
+                    facebookPictureUrl: this.state.facebookPictureUrl })
+            );
+        }
+    }]);
+
+    return Main;
+}(_react2.default.Component);
+
+exports.default = Main;
+
+},{"../../actions/FacebookActionCreators":479,"../../components/Facebook/FacebookDownloadPicture":488,"../../components/Facebook/FacebookLogin":489,"../../components/Facebook/FacebookLogout":490,"../../components/Facebook/FacebookPicture":491,"../../stores/FacebookStore":535,"react":465}],494:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -44602,7 +45216,7 @@ FollowOrIgnore.propTypes = {
 };
 exports.default = FollowOrIgnore;
 
-},{"../stores/VoterGuideStore":521,"react":465,"react-bootstrap":246}],487:[function(require,module,exports){
+},{"../stores/VoterGuideStore":536,"react":465,"react-bootstrap":246}],495:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -44651,7 +45265,7 @@ InfoIconAction.propTypes = {
 };
 exports.default = InfoIconAction;
 
-},{"react":465}],488:[function(require,module,exports){
+},{"react":465}],496:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -44762,7 +45376,7 @@ ItemActionbar.propTypes = {
   voterOpposes: _react.PropTypes.string };
 exports.default = ItemActionbar;
 
-},{"../stores/BallotStore":520,"react":465}],489:[function(require,module,exports){
+},{"../stores/BallotStore":534,"react":465}],497:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -44797,69 +45411,59 @@ var LanguageSwitchNavigation = function (_Component) {
     _createClass(LanguageSwitchNavigation, [{
         key: 'render',
         value: function render() {
-            var choose_english_html;
-            //if (this.props.language_selected == 'english') {
-            choose_english_html = '';{} /* Do not show option */
-            //} else {
-            //    choose_english_html = <Link to="home">English</Link>;
-            //}
-
-            var choose_chinese_html;
-            if (this.props.language_selected == 'chinese') {
-                choose_chinese_html = '';{/* Do not show option */}
-            } else {
-                    choose_chinese_html = _react2.default.createElement(
-                        _reactRouter.Link,
-                        { to: 'home' },
-                        '中国'
-                    );
-                }
-
-            var choose_spanish_html;
-            if (this.props.language_selected == 'spanish') {
-                choose_spanish_html = '';{/* Do not show option */}
-            } else {
-                    choose_spanish_html = _react2.default.createElement(
-                        _reactRouter.Link,
-                        { to: 'home' },
-                        'Español'
-                    );
-                }
-
-            var choose_tagalog_html;
-            if (this.props.language_selected == 'tagalog') {
-                choose_tagalog_html = '';{/* Do not show option */}
-            } else {
-                    choose_tagalog_html = _react2.default.createElement(
-                        _reactRouter.Link,
-                        { to: 'home' },
-                        'Tagalog'
-                    );
-                }
-
-            var choose_vietnamese_html;
-            if (this.props.language_selected == 'vietnamese') {
-                choose_vietnamese_html = '';{/* Do not show option */}
-            } else {
-                    choose_vietnamese_html = _react2.default.createElement(
-                        _reactRouter.Link,
-                        { to: 'home' },
-                        'tiếng Việt'
-                    );
-                }
             return _react2.default.createElement(
                 'span',
                 null,
-                choose_chinese_html,
-                '   ',
-                choose_english_html,
-                '   ',
-                choose_spanish_html,
-                '   ',
-                choose_tagalog_html,
-                '   ',
-                choose_vietnamese_html,
-                '   '
+                this.props.language_selected == 'chinese' ? _react2.default.createElement('span', null) : _react2.default.createElement(
+                    'span',
+                    null,
+                    _react2.default.createElement(
+                        _reactRouter.Link,
+                        { to: 'home' },
+                        '中国'
+                    ),
+                    _react2.default.createElement('br', null)
+                ),
+                this.props.language_selected == null ? _react2.default.createElement('span', null) : _react2.default.createElement(
+                    'span',
+                    null,
+                    _react2.default.createElement(
+                        _reactRouter.Link,
+                        { to: 'home' },
+                        'English'
+                    ),
+                    _react2.default.createElement('br', null)
+                ),
+                this.props.language_selected == 'spanish' ? _react2.default.createElement('span', null) : _react2.default.createElement(
+                    'span',
+                    null,
+                    _react2.default.createElement(
+                        _reactRouter.Link,
+                        { to: 'home' },
+                        'Español'
+                    ),
+                    _react2.default.createElement('br', null)
+                ),
+                this.props.language_selected == 'tagalog' ? _react2.default.createElement('span', null) : _react2.default.createElement(
+                    'span',
+                    null,
+                    _react2.default.createElement(
+                        _reactRouter.Link,
+                        { to: 'home' },
+                        'Tagalog'
+                    ),
+                    _react2.default.createElement('br', null)
+                ),
+                this.props.language_selected == 'vietnamese' ? _react2.default.createElement('span', null) : _react2.default.createElement(
+                    'span',
+                    null,
+                    _react2.default.createElement(
+                        _reactRouter.Link,
+                        { to: 'home' },
+                        'tiếng Việt'
+                    ),
+                    _react2.default.createElement('br', null)
+                )
             );
         }
     }]);
@@ -44872,7 +45476,7 @@ LanguageSwitchNavigation.propTypes = {
 };
 exports.default = LanguageSwitchNavigation;
 
-},{"react":465,"react-router":303}],490:[function(require,module,exports){
+},{"react":465,"react-router":303}],498:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -44899,6 +45503,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var web_app_config = require('../config');
+
 var MoreMenu = function (_Component) {
 	_inherits(MoreMenu, _Component);
 
@@ -44917,12 +45523,6 @@ var MoreMenu = function (_Component) {
 				_react2.default.createElement(
 					"div",
 					{ className: "device-menu--large container-fluid well well-90" },
-					_react2.default.createElement(_LanguageSwitchNavigation2.default, null),
-					_react2.default.createElement(
-						"h4",
-						{ className: "text-left" },
-						"My Ballot"
-					),
 					_react2.default.createElement(
 						"ul",
 						{ className: "list-group" },
@@ -44931,26 +45531,22 @@ var MoreMenu = function (_Component) {
 							{ className: "list-group-item" },
 							_react2.default.createElement(
 								_reactRouter.Link,
-								{ to: "/email_ballot" },
+								{ to: "/more/sign_in" },
+								"Sign In"
+							)
+						)
+					),
+					_react2.default.createElement("h4", { className: "text-left" }),
+					_react2.default.createElement(
+						"ul",
+						{ className: "list-group" },
+						_react2.default.createElement(
+							"li",
+							{ className: "list-group-item" },
+							_react2.default.createElement(
+								_reactRouter.Link,
+								{ to: "/more/email_ballot" },
 								"Print, Save or Email Ballot"
-							)
-						),
-						_react2.default.createElement(
-							"li",
-							{ className: "list-group-item" },
-							_react2.default.createElement(
-								_reactRouter.Link,
-								{ to: "/ask_or_share" },
-								"Share with Friends"
-							)
-						),
-						_react2.default.createElement(
-							"li",
-							{ className: "list-group-item" },
-							_react2.default.createElement(
-								_reactRouter.Link,
-								{ to: "/guides" },
-								"My Voter Guides"
 							)
 						),
 						_react2.default.createElement(
@@ -44960,33 +45556,6 @@ var MoreMenu = function (_Component) {
 								_reactRouter.Link,
 								{ to: "/more/opinions/followed" },
 								"Opinions I Follow"
-							)
-						)
-					),
-					_react2.default.createElement(
-						"h4",
-						{ className: "text-left" },
-						"My Profile Settings"
-					),
-					_react2.default.createElement(
-						"ul",
-						{ className: "list-group" },
-						_react2.default.createElement(
-							"li",
-							{ className: "list-group-item" },
-							_react2.default.createElement(
-								_reactRouter.Link,
-								{ to: "/friends" },
-								"My Friends"
-							)
-						),
-						_react2.default.createElement(
-							"li",
-							{ className: "list-group-item" },
-							_react2.default.createElement(
-								_reactRouter.Link,
-								{ to: "/settings" },
-								"Account Settings"
 							)
 						),
 						_react2.default.createElement(
@@ -44999,11 +45568,7 @@ var MoreMenu = function (_Component) {
 							)
 						)
 					),
-					_react2.default.createElement(
-						"h4",
-						{ className: "text-left" },
-						"About"
-					),
+					_react2.default.createElement("h4", { className: "text-left" }),
 					_react2.default.createElement(
 						"ul",
 						{ className: "list-group" },
@@ -45021,26 +45586,8 @@ var MoreMenu = function (_Component) {
 							{ className: "list-group-item" },
 							_react2.default.createElement(
 								_reactRouter.Link,
-								{ to: "/more/donate" },
-								"Donate"
-							)
-						),
-						_react2.default.createElement(
-							"li",
-							{ className: "list-group-item" },
-							_react2.default.createElement(
-								_reactRouter.Link,
-								{ to: "/more/volunteer" },
-								"Volunteer"
-							)
-						),
-						_react2.default.createElement(
-							"li",
-							{ className: "list-group-item" },
-							_react2.default.createElement(
-								_reactRouter.Link,
-								{ to: "/privacy" },
-								"Terms and Policies"
+								{ to: "/more/privacy" },
+								"Terms & Policies"
 							)
 						),
 						_react2.default.createElement(
@@ -45048,9 +45595,42 @@ var MoreMenu = function (_Component) {
 							{ className: "list-group-item" },
 							_react2.default.createElement(
 								"a",
-								{ href: "http://localhost:8000/admin/", target: "_blank" },
+								{ href: web_app_config.WE_VOTE_SERVER_ADMIN_ROOT_URL,
+									target: "_blank" },
 								"Admin"
 							)
+						)
+					),
+					_react2.default.createElement("h4", { className: "text-left" }),
+					_react2.default.createElement(
+						"ul",
+						{ className: "list-group" },
+						_react2.default.createElement(
+							"li",
+							{ className: "list-group-item" },
+							_react2.default.createElement(
+								_reactRouter.Link,
+								{ to: "/settings" },
+								"Account Settings"
+							)
+						),
+						_react2.default.createElement(
+							"li",
+							{ className: "list-group-item" },
+							_react2.default.createElement(
+								_reactRouter.Link,
+								{ to: "/signout" },
+								"Sign Out"
+							)
+						)
+					),
+					_react2.default.createElement(
+						"ul",
+						{ className: "list-group" },
+						_react2.default.createElement(
+							"li",
+							{ className: "list-group-item" },
+							_react2.default.createElement(_LanguageSwitchNavigation2.default, null)
 						)
 					)
 				)
@@ -45071,9 +45651,122 @@ MoreMenu.propTypes = {
 };
 exports.default = MoreMenu;
 
-},{"../components/LanguageSwitchNavigation":489,"react":465,"react-router":303}],491:[function(require,module,exports){
+},{"../components/LanguageSwitchNavigation":497,"../config":505,"react":465,"react-router":303}],499:[function(require,module,exports){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BottomContinueNavigation = function (_Component) {
+    _inherits(BottomContinueNavigation, _Component);
+
+    function BottomContinueNavigation(props) {
+        _classCallCheck(this, BottomContinueNavigation);
+
+        return _possibleConstructorReturn(this, Object.getPrototypeOf(BottomContinueNavigation).call(this, props));
+    }
+
+    _createClass(BottomContinueNavigation, [{
+        key: 'render',
+        value: function render() {
+            var continue_text;
+            if (this.props.continue_text) {
+                continue_text = this.props.continue_text;
+            } else {
+                continue_text = 'Continue >';
+            }
+            var link_route_cancel;
+            if (this.props.link_route_cancel) {
+                link_route_cancel = this.props.link_route_cancel;
+            } else {
+                link_route_cancel = 'ballot';
+            }
+            var cancel_button;
+            if (this.props.cancel_text) {
+                cancel_button = _react2.default.createElement(
+                    Link,
+                    { to: link_route_cancel },
+                    _react2.default.createElement(
+                        Button,
+                        { bsStyle: 'default' },
+                        this.props.cancel_text
+                    )
+                );
+            } else {
+                cancel_button = '';
+            }
+            var link_route_continue;
+            if (this.props.link_route_continue) {
+                link_route_continue = this.props.link_route_continue;
+            } else {
+                link_route_continue = 'ballot';
+            }
+            var alignCenter = {
+                margin: 'auto',
+                width: '100%'
+            };
+            return _react2.default.createElement(
+                'div',
+                { className: 'row' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'navbar navbar-default navbar-fixed-bottom' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'container-fluid container-top10 seperator-top' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'row' },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'col-xs-2 center-block text-center', style: alignCenter },
+                                cancel_button,
+                                _react2.default.createElement(
+                                    Link,
+                                    { to: link_route_continue, params: this.props.params },
+                                    _react2.default.createElement(
+                                        Button,
+                                        { bsStyle: 'primary' },
+                                        continue_text
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return BottomContinueNavigation;
+}(_react.Component);
+
+BottomContinueNavigation.propTypes = {
+    continue_text: _react.PropTypes.string,
+    link_route_cancel: _react.PropTypes.string,
+    cancel_text: _react.PropTypes.string,
+    link_route_continue: _react.PropTypes.string
+};
+exports.default = BottomContinueNavigation;
+
+},{"react":465}],500:[function(require,module,exports){
 arguments[4][476][0].apply(exports,arguments)
-},{"dup":476,"react":465,"react-headroom":258,"react-router":303}],492:[function(require,module,exports){
+},{"dup":476,"react":465,"react-headroom":258,"react-router":303}],501:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -45210,7 +45903,7 @@ var Navigator = function (_Component) {
 
 exports.default = Navigator;
 
-},{"react":465,"react-router":303}],493:[function(require,module,exports){
+},{"react":465,"react-router":303}],502:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -45341,7 +46034,7 @@ var OrganizationsToFollowList = function (_Component) {
 
 exports.default = OrganizationsToFollowList;
 
-},{"../actions/VoterGuideActions":480,"../components/FollowOrIgnore":486,"react":465,"react-router":303}],494:[function(require,module,exports){
+},{"../actions/VoterGuideActions":481,"../components/FollowOrIgnore":494,"react":465,"react-router":303}],503:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -45437,7 +46130,7 @@ StarAction.propTypes = {
 };
 exports.default = StarAction;
 
-},{"../actions/BallotActions":478,"../stores/BallotStore":520,"react":465}],495:[function(require,module,exports){
+},{"../actions/BallotActions":478,"../stores/BallotStore":534,"react":465}],504:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -45545,11 +46238,13 @@ VoterGuideItem.propTypes = {
 };
 exports.default = VoterGuideItem;
 
-},{"../../actions/VoterGuideActions":480,"../../components/FollowOrIgnore":486,"../../stores/VoterGuideStore":521,"react":465}],496:[function(require,module,exports){
+},{"../../actions/VoterGuideActions":481,"../../components/FollowOrIgnore":494,"../../stores/VoterGuideStore":536,"react":465}],505:[function(require,module,exports){
 'use strict';
 
+// Note that we import these values into 'web_app_config' (so we can search for it)
 module.exports = {
-    url: 'http://localhost:8000/apis/v1/',
+    WE_VOTE_SERVER_ADMIN_ROOT_URL: 'http://localhost:8000/admin/',
+    WE_VOTE_SERVER_API_ROOT_URL: 'http://localhost:8000/apis/v1/',
     DEBUG_MODE: true,
 
     // Use 1 or 0 as opposed to true or false
@@ -45559,10 +46254,14 @@ module.exports = {
 
     location: {
         text_for_map_search: '2201 Wilson Blvd, Arlington VA 22201'
-    }
+    },
+
+    // const APP_ID = '1097389196952441'; // DaleMcGrew Facebook App Id, https://wevote.me
+    // const APP_ID = '868492333200013'; // wevote-dev, http://localhost:3001
+    FACEBOOK_APP_ID: '868492333200013'
 };
 
-},{}],497:[function(require,module,exports){
+},{}],506:[function(require,module,exports){
 'use strict';
 
 // Ballot Constants
@@ -45575,16 +46274,38 @@ module.exports = require('keymirror')({
   VOTER_STAR_OFF_SAVE: null
 });
 
-},{"keymirror":95}],498:[function(require,module,exports){
+},{"keymirror":95}],507:[function(require,module,exports){
+'use strict';
+
+var _keymirror = require('keymirror');
+
+var _keymirror2 = _interopRequireDefault(_keymirror);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var FacebookConstants = {
+    FACEBOOK_INITIALIZED: null,
+    FACEBOOK_LOGIN_CHANGE: null,
+    FACEBOOK_GETTING_PICTURE: null,
+    FACEBOOK_RECEIVED_PICTURE: null,
+    FACEBOOK_LOGGED_IN: null,
+    FACEBOOK_LOGGED_OUT: null,
+    IMAGE_UPLOADED: null
+};
+
+module.exports = (0, _keymirror2.default)(FacebookConstants);
+
+},{"keymirror":95}],508:[function(require,module,exports){
 'use strict';
 
 var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
-    VOTER_LOCATION_SET: null
+    VOTER_LOCATION_RETRIEVE: null,
+    VOTER_RETRIEVE: null
 });
 
-},{"keymirror":95}],499:[function(require,module,exports){
+},{"keymirror":95}],509:[function(require,module,exports){
 'use strict';
 
 var keyMirror = require('keymirror');
@@ -45598,13 +46319,22 @@ module.exports = keyMirror({
     STOP_FOLLOWING_ORGANIZATION: null
 });
 
-},{"keymirror":95}],500:[function(require,module,exports){
+},{"keymirror":95}],510:[function(require,module,exports){
 'use strict';
 
 var Dispatcher = require('flux').Dispatcher;
 module.exports = new Dispatcher();
 
-},{"flux":70}],501:[function(require,module,exports){
+},{"flux":70}],511:[function(require,module,exports){
+'use strict';
+
+var _flux = require('flux');
+
+var FacebookDispatcher = new _flux.Dispatcher();
+
+module.exports = FacebookDispatcher;
+
+},{"flux":70}],512:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -45640,7 +46370,7 @@ var firstVisit = _VoterStore2.default.voter_device_id ? false : true;
 
 _reactDom2.default.render(_react2.default.createElement(_Root2.default, { history: (0, _history.createHistory)(), firstVisit: firstVisit }), document.getElementById('app'));
 
-},{"./Root":477,"./stores/VoterStore":522,"history":87,"react":465,"react-dom":257}],502:[function(require,module,exports){
+},{"./Root":477,"./stores/VoterStore":537,"history":87,"react":465,"react-dom":257}],513:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -45696,7 +46426,7 @@ Activity.propTypes = {
 };
 exports.default = Activity;
 
-},{"react":465}],503:[function(require,module,exports){
+},{"react":465}],514:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -45710,6 +46440,12 @@ var _react = require('react');
 var _reactRouter = require('react-router');
 
 var _reactBootstrap = require('react-bootstrap');
+
+var _BottomContinueNavigation = require('../components/Navigation/BottomContinueNavigation');
+
+var _BottomContinueNavigation2 = _interopRequireDefault(_BottomContinueNavigation);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -45732,11 +46468,6 @@ var AddFriend = function (_Component) {
       return React.createElement(
         'div',
         null,
-        React.createElement(
-          _reactRouter.Link,
-          { to: '/ballot' },
-          ' < Back to My Ballot'
-        ),
         React.createElement(
           'div',
           { className: 'container-fluid well well-90' },
@@ -45772,11 +46503,7 @@ var AddFriend = function (_Component) {
             React.createElement('br', null)
           )
         ),
-        React.createElement(
-          _reactRouter.Link,
-          { to: 'addbyaddress' },
-          'Next'
-        )
+        React.createElement(_BottomContinueNavigation2.default, null)
       );
     }
   }], [{
@@ -45791,7 +46518,7 @@ var AddFriend = function (_Component) {
 
 exports.default = AddFriend;
 
-},{"react":465,"react-bootstrap":246,"react-router":303}],504:[function(require,module,exports){
+},{"../components/Navigation/BottomContinueNavigation":499,"react":465,"react-bootstrap":246,"react-router":303}],515:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -45847,6 +46574,9 @@ var Ballot = function (_Component) {
 
       _BallotStore2.default.initialize(function (ballot_list) {
         return _this2.setState({ ballot_list: ballot_list });
+      });
+      VoterStore.initialize(function (voter_list) {
+        return _this2.setState({ voter_list: voter_list });
       });
     }
   }, {
@@ -45949,7 +46679,7 @@ Ballot.propTypes = {
 exports.default = Ballot;
 ;
 
-},{"../../components/Ballot/BallotItem":481,"../../stores/BallotStore":520,"react":465,"react-headroom":258,"react-router":303}],505:[function(require,module,exports){
+},{"../../components/Ballot/BallotItem":482,"../../stores/BallotStore":534,"react":465,"react-headroom":258,"react-router":303}],516:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -45999,7 +46729,7 @@ BallotIndex.propTypes = {
 exports.default = BallotIndex;
 ;
 
-},{"react":465}],506:[function(require,module,exports){
+},{"react":465}],517:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -46042,7 +46772,7 @@ var Candidate = function (_Component) {
   _createClass(Candidate, [{
     key: 'render',
     value: function render() {
-      var candidate = _BallotStore2.default.getCandidateByIdOnly('wv0icand' + this.props.params.id);
+      var candidate = _BallotStore2.default.getCandidateByWeVoteId('' + this.props.params.we_vote_id);
 
       // no candidate exists... go to ballot
       if (Object.keys(candidate).length === 0) this.props.history.replace('/ballot');
@@ -46092,7 +46822,7 @@ Candidate.propTypes = {
 };
 exports.default = Candidate;
 
-},{"../../components/Ballot/CandidateDetail":483,"../../stores/BallotStore":520,"react":465,"react-router":303}],507:[function(require,module,exports){
+},{"../../components/Ballot/CandidateDetail":484,"../../stores/BallotStore":534,"react":465,"react-router":303}],518:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -46186,26 +46916,6 @@ var Connect = function (_Component) {
 						)
 					),
 					_react2.default.createElement(_OrganizationsToFollowList2.default, null),
-					_react2.default.createElement(
-						'h4',
-						{ className: 'text-left' },
-						'Create Voter Guide'
-					),
-					_react2.default.createElement(
-						'p',
-						null,
-						'To share your opinions publicly, create a voter guide.'
-					),
-					_react2.default.createElement(
-						_reactRouter.Link,
-						{ to: 'guides_voter' },
-						_react2.default.createElement(
-							_reactBootstrap.Button,
-							{ bsStyle: 'primary' },
-							'Create Public Voter Guide >'
-						)
-					),
-					_react2.default.createElement('br', null),
 					_react2.default.createElement('br', null)
 				)
 			);
@@ -46223,7 +46933,7 @@ var Connect = function (_Component) {
 Connect.propTypes = {};
 exports.default = Connect;
 
-},{"../components/OrganizationsToFollowList":493,"react":465,"react-bootstrap":246,"react-router":303}],508:[function(require,module,exports){
+},{"../components/OrganizationsToFollowList":502,"react":465,"react-bootstrap":246,"react-router":303}],519:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -46249,7 +46959,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var request = require('superagent');
-var config = require('../../config');
+var web_app_config = require('../../config');
 
 var Intro = function (_Component) {
 	_inherits(Intro, _Component);
@@ -46277,7 +46987,7 @@ var Intro = function (_Component) {
 		value: function getVoterCount() {
 			var _this2 = this;
 
-			request.get(config.url + 'voterCount/').end(function (err, res) {
+			request.get(web_app_config.WE_VOTE_SERVER_API_ROOT_URL + 'voterCount/').end(function (err, res) {
 				if (err) throw err;
 
 				_this2.setState({
@@ -46290,7 +47000,7 @@ var Intro = function (_Component) {
 		value: function getOrgCount() {
 			var _this3 = this;
 
-			request.get(config.url + 'organizationCount/').end(function (err, res) {
+			request.get(web_app_config.WE_VOTE_SERVER_API_ROOT_URL + 'organizationCount/').end(function (err, res) {
 				if (err) throw err;
 
 				_this3.setState({
@@ -46414,7 +47124,7 @@ Intro.propTypes = {
 };
 exports.default = Intro;
 
-},{"../../config":496,"react":465,"react-bootstrap":246,"react-router":303,"superagent":468}],509:[function(require,module,exports){
+},{"../../config":505,"react":465,"react-bootstrap":246,"react-router":303,"superagent":468}],520:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -46728,7 +47438,7 @@ var IntroBallotContests = function (_Component) {
 
 exports.default = IntroBallotContests;
 
-},{"../../components/InfoIconAction":487,"react":465,"react-bootstrap":246,"react-router":303}],510:[function(require,module,exports){
+},{"../../components/InfoIconAction":495,"react":465,"react-bootstrap":246,"react-router":303}],521:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -46868,7 +47578,7 @@ var IntroOpinionsPage = function (_Component) {
 
 exports.default = IntroOpinionsPage;
 
-},{"../../components/OrganizationsToFollowList":493,"react":465,"react-bootstrap":246,"react-router":303}],511:[function(require,module,exports){
+},{"../../components/OrganizationsToFollowList":502,"react":465,"react-bootstrap":246,"react-router":303}],522:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -46893,6 +47603,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var web_app_config = require('../config');
+
 var More = function (_Component) {
 	_inherits(More, _Component);
 
@@ -46913,12 +47625,7 @@ var More = function (_Component) {
 				React.createElement(
 					"div",
 					{ className: "container-fluid well well-90" },
-					React.createElement(_LanguageSwitchNavigation2.default, null),
-					React.createElement(
-						"h4",
-						{ className: "text-left" },
-						"My Ballot"
-					),
+					React.createElement("h4", { className: "text-left" }),
 					React.createElement(
 						"ul",
 						{ className: "list-group" },
@@ -46927,26 +47634,8 @@ var More = function (_Component) {
 							{ className: "list-group-item" },
 							React.createElement(
 								_reactRouter.Link,
-								{ to: "/email_ballot" },
+								{ to: "/more/email_ballot" },
 								"Print, Save or Email Ballot"
-							)
-						),
-						React.createElement(
-							"li",
-							{ className: "list-group-item" },
-							React.createElement(
-								_reactRouter.Link,
-								{ to: "/ask_or_share" },
-								"Share with Friends"
-							)
-						),
-						React.createElement(
-							"li",
-							{ className: "list-group-item" },
-							React.createElement(
-								_reactRouter.Link,
-								{ to: "/guides" },
-								"My Voter Guides"
 							)
 						),
 						React.createElement(
@@ -46959,32 +47648,10 @@ var More = function (_Component) {
 							)
 						)
 					),
-					React.createElement(
-						"h4",
-						{ className: "text-left" },
-						"My Profile Settings"
-					),
+					React.createElement("h4", { className: "text-left" }),
 					React.createElement(
 						"ul",
 						{ className: "list-group" },
-						React.createElement(
-							"li",
-							{ className: "list-group-item" },
-							React.createElement(
-								_reactRouter.Link,
-								{ to: "/friends" },
-								"My Friends"
-							)
-						),
-						React.createElement(
-							"li",
-							{ className: "list-group-item" },
-							React.createElement(
-								_reactRouter.Link,
-								{ to: "/settings" },
-								"Account Settings"
-							)
-						),
 						React.createElement(
 							"li",
 							{ className: "list-group-item" },
@@ -46995,11 +47662,7 @@ var More = function (_Component) {
 							)
 						)
 					),
-					React.createElement(
-						"h4",
-						{ className: "text-left" },
-						"About"
-					),
+					React.createElement("h4", { className: "text-left" }),
 					React.createElement(
 						"ul",
 						{ className: "list-group" },
@@ -47017,25 +47680,7 @@ var More = function (_Component) {
 							{ className: "list-group-item" },
 							React.createElement(
 								_reactRouter.Link,
-								{ to: "/more/donate" },
-								"Donate"
-							)
-						),
-						React.createElement(
-							"li",
-							{ className: "list-group-item" },
-							React.createElement(
-								_reactRouter.Link,
-								{ to: "/more/volunteer" },
-								"Volunteer"
-							)
-						),
-						React.createElement(
-							"li",
-							{ className: "list-group-item" },
-							React.createElement(
-								_reactRouter.Link,
-								{ to: "/privacy" },
+								{ to: "/more/privacy" },
 								"Terms and Policies"
 							)
 						),
@@ -47044,11 +47689,13 @@ var More = function (_Component) {
 							{ className: "list-group-item" },
 							React.createElement(
 								"a",
-								{ href: "http://localhost:8000/admin/", target: "_blank" },
+								{ href: web_app_config.WE_VOTE_SERVER_ADMIN_ROOT_URL,
+									target: "_blank" },
 								"Admin"
 							)
 						)
-					)
+					),
+					React.createElement(_LanguageSwitchNavigation2.default, null)
 				)
 			);
 		}
@@ -47067,7 +47714,7 @@ More.propTypes = {
 };
 exports.default = More;
 
-},{"../components/LanguageSwitchNavigation":489,"react":465,"react-router":303}],512:[function(require,module,exports){
+},{"../components/LanguageSwitchNavigation":497,"../config":505,"react":465,"react-router":303}],523:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -47080,9 +47727,9 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = require('react-router');
-
 var _reactBootstrap = require('react-bootstrap');
+
+var _reactRouter = require('react-router');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47092,7 +47739,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-{/* VISUAL DESIGN HERE:  */}
+{/* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/90192590 */}
 
 var About = function (_Component) {
 	_inherits(About, _Component);
@@ -47170,7 +47817,132 @@ var About = function (_Component) {
 
 exports.default = About;
 
-},{"react":465,"react-bootstrap":246,"react-router":303}],513:[function(require,module,exports){
+},{"react":465,"react-bootstrap":246,"react-router":303}],524:[function(require,module,exports){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = require("react-bootstrap");
+
+var _reactRouter = require("react-router");
+
+var _Main = require("../../components/Facebook/Main");
+
+var _Main2 = _interopRequireDefault(_Main);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+{/* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/89479656 */}
+
+var EmailBallot = function (_Component) {
+	_inherits(EmailBallot, _Component);
+
+	function EmailBallot(props) {
+		_classCallCheck(this, EmailBallot);
+
+		return _possibleConstructorReturn(this, Object.getPrototypeOf(EmailBallot).call(this, props));
+	}
+
+	_createClass(EmailBallot, [{
+		key: "render",
+		value: function render() {
+			return _react2.default.createElement(
+				"div",
+				null,
+				_react2.default.createElement(
+					"div",
+					{ className: "container-fluid well well-90" },
+					_react2.default.createElement(
+						"h2",
+						{ className: "text-center" },
+						"Print, Save or Email Ballot"
+					),
+					_react2.default.createElement(
+						"div",
+						null,
+						_react2.default.createElement(
+							"label",
+							{ htmlFor: "last-name" },
+							"Email your ballot to yourself so you can print or save"
+						),
+						_react2.default.createElement("br", null),
+						_react2.default.createElement(_reactBootstrap.Input, { type: "text", addonBefore: "@", name: "email_address", className: "form-control",
+							placeholder: "Enter your email address" }),
+						"Email your ballot to yourself so you can print it, or come back to it later. We will never sell your email address. See ",
+						_react2.default.createElement(
+							_reactRouter.Link,
+							{ to: "privacy" },
+							"privacy policy"
+						),
+						".",
+						_react2.default.createElement("br", null),
+						_react2.default.createElement(
+							_reactRouter.Link,
+							{ to: "add_friends_confirmed" },
+							_react2.default.createElement(
+								_reactBootstrap.Button,
+								{ bsStyle: "primary" },
+								"Send"
+							)
+						),
+						_react2.default.createElement("br", null),
+						_react2.default.createElement("br", null),
+						_react2.default.createElement("br", null),
+						"OR",
+						_react2.default.createElement("br", null),
+						_react2.default.createElement("br", null),
+						_react2.default.createElement(
+							_reactRouter.Link,
+							{ to: "add_friends_confirmed" },
+							_react2.default.createElement(
+								"span",
+								null,
+								_react2.default.createElement(
+									_reactBootstrap.Button,
+									{ bsStyle: "primary" },
+									"Sign in with Facebook"
+								),
+								_react2.default.createElement("br", null)
+							),
+							_react2.default.createElement(
+								_reactBootstrap.Button,
+								{ bsStyle: "primary" },
+								"Sign in with Twitter"
+							)
+						),
+						_react2.default.createElement("br", null)
+					)
+				),
+				_react2.default.createElement(_Main2.default, null)
+			);
+		}
+	}], [{
+		key: "getProps",
+		value: function getProps() {
+			return {};
+		}
+	}]);
+
+	return EmailBallot;
+}(_react.Component);
+
+exports.default = EmailBallot;
+
+},{"../../components/Facebook/Main":493,"react":465,"react-bootstrap":246,"react-router":303}],525:[function(require,module,exports){
 "use strict";
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -47234,7 +48006,6 @@ var OpinionsFollowed = function (_Component) {
       return _react2.default.createElement(
         "div",
         null,
-        _react2.default.createElement(_HeaderBackNavigation2.default, { back_to_text: "< Back to More Menu" }),
         _react2.default.createElement(
           "div",
           { className: "container-fluid well well-90" },
@@ -47275,11 +48046,241 @@ OpinionsFollowed.propTypes = {
 };
 exports.default = OpinionsFollowed;
 
-},{"../../components/Navigation/HeaderBackNavigation":491,"../../components/VoterGuide/VoterGuideItem":495,"../../stores/VoterGuideStore":521,"react":465}],514:[function(require,module,exports){
+},{"../../components/Navigation/HeaderBackNavigation":500,"../../components/VoterGuide/VoterGuideItem":504,"../../stores/VoterGuideStore":536,"react":465}],526:[function(require,module,exports){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = require("react-bootstrap");
+
+var _reactRouter = require("react-router");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+{/* VISUAL DESIGN HERE:  */}
+
+var Privacy = function (_React$Component) {
+	_inherits(Privacy, _React$Component);
+
+	function Privacy(props) {
+		_classCallCheck(this, Privacy);
+
+		return _possibleConstructorReturn(this, Object.getPrototypeOf(Privacy).call(this, props));
+	}
+
+	_createClass(Privacy, [{
+		key: "render",
+		value: function render() {
+			return _react2.default.createElement(
+				"div",
+				null,
+				_react2.default.createElement(
+					"div",
+					{ className: "container-fluid well well-90" },
+					_react2.default.createElement(
+						"h2",
+						{ className: "text-center" },
+						"Terms and Policies"
+					),
+					"Coming soon."
+				)
+			);
+		}
+	}], [{
+		key: "getProps",
+		value: function getProps() {
+			return {};
+		}
+	}]);
+
+	return Privacy;
+}(_react2.default.Component);
+
+exports.default = Privacy;
+
+},{"react":465,"react-bootstrap":246,"react-router":303}],527:[function(require,module,exports){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = require("react-bootstrap");
+
+var _reactRouter = require("react-router");
+
+var _FacebookActionCreators = require("../../actions/FacebookActionCreators");
+
+var _FacebookActionCreators2 = _interopRequireDefault(_FacebookActionCreators);
+
+var _FacebookStore = require("../../stores/FacebookStore");
+
+var _FacebookStore2 = _interopRequireDefault(_FacebookStore);
+
+var _FacebookDisconnect = require("../../components/Facebook/FacebookDisconnect");
+
+var _FacebookDisconnect2 = _interopRequireDefault(_FacebookDisconnect);
+
+var _FacebookLogin = require("../../components/Facebook/FacebookLogin");
+
+var _FacebookLogin2 = _interopRequireDefault(_FacebookLogin);
+
+var _FacebookLogout = require("../../components/Facebook/FacebookLogout");
+
+var _FacebookLogout2 = _interopRequireDefault(_FacebookLogout);
+
+var _FacebookDownloadPicture = require("../../components/Facebook/FacebookDownloadPicture");
+
+var _FacebookDownloadPicture2 = _interopRequireDefault(_FacebookDownloadPicture);
+
+var _FacebookPicture = require("../../components/Facebook/FacebookPicture");
+
+var _FacebookPicture2 = _interopRequireDefault(_FacebookPicture);
+
+var _FacebookSignIn = require("../../components/Facebook/FacebookSignIn");
+
+var _FacebookSignIn2 = _interopRequireDefault(_FacebookSignIn);
+
+var _Main = require("../../components/Facebook/Main");
+
+var _Main2 = _interopRequireDefault(_Main);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+{/* VISUAL DESIGN HERE: ??? */}
+
+var SignIn = function (_Component) {
+	_inherits(SignIn, _Component);
+
+	function SignIn(props) {
+		_classCallCheck(this, SignIn);
+
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SignIn).call(this, props));
+
+		_this.state = _this.getFacebookState();
+		return _this;
+	}
+
+	_createClass(SignIn, [{
+		key: "getFacebookState",
+		value: function getFacebookState() {
+			return {
+				accessToken: _FacebookStore2.default.accessToken,
+				facebookIsLoggedIn: _FacebookStore2.default.loggedIn,
+				userId: _FacebookStore2.default.userId,
+				facebookPictureStatus: _FacebookStore2.default.facebookPictureStatus,
+				facebookPictureUrl: _FacebookStore2.default.facebookPictureUrl
+			};
+		}
+	}, {
+		key: "componentDidMount",
+		value: function componentDidMount() {
+			var _this2 = this;
+
+			_FacebookActionCreators2.default.initFacebook();
+			_FacebookStore2.default.addChangeListener(function () {
+				return _this2._onFacebookChange();
+			});
+		}
+	}, {
+		key: "componentWillUnmount",
+		value: function componentWillUnmount() {
+			_FacebookStore2.default.removeChangeListener(this._onFacebookChange);
+		}
+	}, {
+		key: "_onFacebookChange",
+		value: function _onFacebookChange() {
+			this.setState(this.getFacebookState());
+		}
+	}, {
+		key: "render",
+		value: function render() {
+			return _react2.default.createElement(
+				"div",
+				null,
+				_react2.default.createElement(
+					"div",
+					{ className: "container-fluid well well-90" },
+					_react2.default.createElement(
+						"h2",
+						{ className: "text-center" },
+						"Sign In"
+					),
+					_react2.default.createElement(
+						"div",
+						{ className: "text-center" },
+						!this.state.facebookIsLoggedIn ? _react2.default.createElement(_FacebookSignIn2.default, null) : null,
+						_react2.default.createElement("br", null),
+						_react2.default.createElement(
+							_reactRouter.Link,
+							{ to: "add_friends_confirmed" },
+							_react2.default.createElement(
+								_reactBootstrap.Button,
+								{ bsStyle: "primary" },
+								"Sign in with Twitter"
+							)
+						),
+						_react2.default.createElement("br", null)
+					),
+					_react2.default.createElement("br", null),
+					_react2.default.createElement("br", null),
+					_react2.default.createElement(
+						"div",
+						{ className: "text-center" },
+						this.state.facebookIsLoggedIn ? _react2.default.createElement(
+							"span",
+							null,
+							"Signed into Facebook ",
+							_react2.default.createElement("br", null)
+						) : null
+					)
+				),
+				_react2.default.createElement(_Main2.default, null)
+			);
+		}
+	}], [{
+		key: "getProps",
+		value: function getProps() {
+			return {};
+		}
+	}]);
+
+	return SignIn;
+}(_react.Component);
+
+exports.default = SignIn;
+
+},{"../../actions/FacebookActionCreators":479,"../../components/Facebook/FacebookDisconnect":487,"../../components/Facebook/FacebookDownloadPicture":488,"../../components/Facebook/FacebookLogin":489,"../../components/Facebook/FacebookLogout":490,"../../components/Facebook/FacebookPicture":491,"../../components/Facebook/FacebookSignIn":492,"../../components/Facebook/Main":493,"../../stores/FacebookStore":535,"react":465,"react-bootstrap":246,"react-router":303}],528:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-		value: true
+	value: true
 });
 
 var _react = require("react");
@@ -47289,25 +48290,25 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var NotFound = function NotFound() {
-		return _react2.default.createElement(
-				"div",
-				null,
-				_react2.default.createElement(
-						"h2",
-						null,
-						"Not found"
-				),
-				_react2.default.createElement(
-						"p",
-						null,
-						"The page you requested was not found."
-				)
-		);
+	_react2.default.createElement(
+		"div",
+		null,
+		_react2.default.createElement(
+			"h2",
+			null,
+			"Not found"
+		),
+		_react2.default.createElement(
+			"p",
+			null,
+			"The page you requested was not found."
+		)
+	);
 };
 
 exports.default = NotFound;
 
-},{"react":465}],515:[function(require,module,exports){
+},{"react":465}],529:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -47369,7 +48370,6 @@ var Opinions = function (_Component) {
       return React.createElement(
         'div',
         null,
-        React.createElement(_HeaderBackNavigation2.default, { back_to_text: "< Back to My Ballot" }),
         React.createElement(
           'div',
           { className: 'container-fluid' },
@@ -47411,7 +48411,7 @@ Opinions.propTypes = {
 };
 exports.default = Opinions;
 
-},{"../Components/Navigation/HeaderBackNavigation":476,"../components/VoterGuide/VoterGuideItem":495,"../stores/VoterGuideStore":521,"react":465}],516:[function(require,module,exports){
+},{"../Components/Navigation/HeaderBackNavigation":476,"../components/VoterGuide/VoterGuideItem":504,"../stores/VoterGuideStore":536,"react":465}],530:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -47508,7 +48508,7 @@ var RequestsPage = function (_Component) {
 
 exports.default = RequestsPage;
 
-},{"../actions/VoterGuideActions":480,"../components/FollowOrIgnore":486,"react":465}],517:[function(require,module,exports){
+},{"../actions/VoterGuideActions":481,"../components/FollowOrIgnore":494,"react":465}],531:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -47548,8 +48548,6 @@ var Location = function (_Component) {
             return React.createElement(
                 'div',
                 null,
-                React.createElement(_HeaderBackNavigation2.default, null),
-                '  ',
                 React.createElement(
                     'div',
                     { className: 'container-fluid well well-90' },
@@ -47591,7 +48589,7 @@ var Location = function (_Component) {
 
 exports.default = Location;
 
-},{"../../components/Navigation/HeaderBackNavigation":491,"react":465,"react-bootstrap":246}],518:[function(require,module,exports){
+},{"../../components/Navigation/HeaderBackNavigation":500,"react":465,"react-bootstrap":246}],532:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -47642,7 +48640,7 @@ Settings.propTypes = {
 };
 exports.default = Settings;
 
-},{"react":465,"react-router":303}],519:[function(require,module,exports){
+},{"react":465,"react-router":303}],533:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -47687,7 +48685,7 @@ SettingsDashboard.propTypes = {
 };
 exports.default = SettingsDashboard;
 
-},{"react":465}],520:[function(require,module,exports){
+},{"react":465}],534:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -47768,12 +48766,12 @@ var BallotAPIWorker = {
     });
   },
 
-  voterPositionRetrieve: function voterPositionRetrieve(we_vote_id, success) {
+  voterPositionRetrieve: function voterPositionRetrieve(ballot_item_we_vote_id, success) {
     return _service2.default.get({
       endpoint: 'voterPositionRetrieve',
       query: {
-        ballot_item_we_vote_id: we_vote_id,
-        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+        ballot_item_we_vote_id: ballot_item_we_vote_id,
+        kind_of_ballot_item: _ballot_store[ballot_item_we_vote_id].kind_of_ballot_item
       }, success: success
     });
   },
@@ -47781,16 +48779,6 @@ var BallotAPIWorker = {
   voterStarStatusRetrieve: function voterStarStatusRetrieve(we_vote_id, success) {
     return _service2.default.get({
       endpoint: 'voterStarStatusRetrieve',
-      query: {
-        ballot_item_id: _ballot_store[we_vote_id].id,
-        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success: success
-    });
-  },
-
-  voterStopOpposingSave: function voterStopOpposingSave(we_vote_id, success) {
-    return _service2.default.get({
-      endpoint: 'voterStopOpposingSave',
       query: {
         ballot_item_id: _ballot_store[we_vote_id].id,
         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
@@ -47854,16 +48842,6 @@ var BallotAPIWorker = {
       query: {
         ballot_item_id: _ballot_store[we_vote_id].id,
         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success: success
-    });
-  },
-
-  voterPositionRetrieve: function voterPositionRetrieve(ballot_item_we_vote_id, success) {
-    return _service2.default.get({
-      endpoint: 'voterPositionRetrieve',
-      query: {
-        ballot_item_we_vote_id: ballot_item_we_vote_id,
-        kind_of_ballot_item: _ballot_store[ballot_item_we_vote_id].kind_of_ballot_item
       }, success: success
     });
   }
@@ -47999,8 +48977,8 @@ var BallotStore = (0, _createStore.createStore)({
     return _ballot_store[id].is_starred;
   },
 
-  getCandidateByIdOnly: function getCandidateByIdOnly(cand_id) {
-    return (0, _objectUtils.shallowClone)(_ballot_store[cand_id]) || null;
+  getCandidateByWeVoteId: function getCandidateByWeVoteId(cand_we_vote_id) {
+    return (0, _objectUtils.shallowClone)(_ballot_store[cand_we_vote_id]) || null;
   },
 
   /**
@@ -48074,14 +49052,180 @@ AppDispatcher.register(function (action) {
       BallotAPIWorker.voterStarOffSave(we_vote_id, function () {
         return toggleStarState(we_vote_id) && BallotStore.emitChange();
       });
-      ;
       break;
   }
 });
 
 exports.default = BallotStore;
 
-},{"../constants/BallotConstants":497,"../dispatcher/AppDispatcher":500,"../utils/createStore":524,"../utils/object-utils":525,"../utils/service":526}],521:[function(require,module,exports){
+},{"../constants/BallotConstants":506,"../dispatcher/AppDispatcher":510,"../utils/createStore":539,"../utils/object-utils":540,"../utils/service":541}],535:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _FacebookConstants = require('../constants/FacebookConstants');
+
+var _FacebookConstants2 = _interopRequireDefault(_FacebookConstants);
+
+var _FacebookDispatcher = require('../dispatcher/FacebookDispatcher');
+
+var _FacebookDispatcher2 = _interopRequireDefault(_FacebookDispatcher);
+
+var _events = require('events');
+
+var _service = require('../utils/service');
+
+var _service2 = _interopRequireDefault(_service);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FACEBOOK_CHANGE_EVENT = 'FACEBOOK_CHANGE_EVENT';
+
+var FacebookStore = function (_EventEmitter) {
+    _inherits(FacebookStore, _EventEmitter);
+
+    function FacebookStore() {
+        _classCallCheck(this, FacebookStore);
+
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FacebookStore).call(this));
+
+        _this.facebookAuthData = {};
+        _this.faebookPictureData = {};
+        return _this;
+    }
+
+    _createClass(FacebookStore, [{
+        key: 'setFacebookAuthData',
+        value: function setFacebookAuthData(data) {
+            this.facebookAuthData = data;
+            this.emitChange();
+        }
+    }, {
+        key: 'setFacebookPictureData',
+        value: function setFacebookPictureData(type, data) {
+            this.facebookPictureStatus = type;
+
+            if (data) {
+                this.facebookPictureData = data.data;
+            } else {
+                this.facebookPictureData = {};
+            }
+
+            this.emitChange();
+        }
+    }, {
+        key: 'saveFacebookPictureData',
+        value: function saveFacebookPictureData(data) {
+            var _this2 = this;
+
+            if (data) {
+                FacebookAPIWorker.voterFacebookPhotoSave(data.data.url, function () {
+                    return _this2.emit(FACEBOOK_CHANGE_EVENT);
+                });
+            }
+        }
+    }, {
+        key: 'emitChange',
+        value: function emitChange() {
+            this.emit(FACEBOOK_CHANGE_EVENT);
+        }
+    }, {
+        key: 'addChangeListener',
+        value: function addChangeListener(callback) {
+            this.on(FACEBOOK_CHANGE_EVENT, callback);
+        }
+    }, {
+        key: 'removeChangeListener',
+        value: function removeChangeListener(callback) {
+            this.removeListener(FACEBOOK_CHANGE_EVENT, callback);
+        }
+    }, {
+        key: 'loggedIn',
+        get: function get() {
+            if (!this.facebookAuthData) {
+                return;
+            }
+
+            return this.facebookAuthData.status == 'connected';
+        }
+    }, {
+        key: 'userId',
+        get: function get() {
+            if (!this.facebookAuthData || !this.facebookAuthData.authResponse) {
+                return;
+            }
+
+            return this.facebookAuthData.authResponse.userID;
+        }
+    }, {
+        key: 'accessToken',
+        get: function get() {
+            if (!this.facebookAuthData || !this.facebookAuthData.authResponse) {
+                return;
+            }
+
+            return this.facebookAuthData.authResponse.accessToken;
+        }
+    }, {
+        key: 'facebookPictureUrl',
+        get: function get() {
+            if (!this.facebookPictureData || !this.facebookPictureData.url) {
+                return;
+            }
+
+            return this.facebookPictureData.url;
+        }
+    }]);
+
+    return FacebookStore;
+}(_events.EventEmitter);
+
+var FacebookAPIWorker = {
+    voterFacebookPhotoSave: function voterFacebookPhotoSave(photo_url, success) {
+        return _service2.default.get({
+            endpoint: 'voterPhotoSave',
+            query: {
+                facebook_profile_image_url: photo_url
+            }, success: success
+        });
+    }
+};
+
+// initialize the store as a singleton
+var facebookStore = new FacebookStore();
+
+facebookStore.dispatchToken = _FacebookDispatcher2.default.register(function (action) {
+    if (action.actionType == _FacebookConstants2.default.FACEBOOK_INITIALIZED) {
+        facebookStore.setFacebookAuthData(action.data);
+    }
+
+    if (action.actionType == _FacebookConstants2.default.FACEBOOK_LOGGED_IN) {
+        facebookStore.setFacebookAuthData(action.data);
+    }
+
+    if (action.actionType == _FacebookConstants2.default.FACEBOOK_LOGGED_OUT) {
+        facebookStore.setFacebookAuthData(action.data);
+    }
+
+    if (action.actionType == _FacebookConstants2.default.FACEBOOK_GETTING_PICTURE) {
+        facebookStore.setFacebookPictureData(action.actionType, action.data);
+    }
+
+    if (action.actionType == _FacebookConstants2.default.FACEBOOK_RECEIVED_PICTURE) {
+        facebookStore.setFacebookPictureData(action.actionType, action.data);
+        facebookStore.saveFacebookPictureData(action.data);
+    }
+});
+
+module.exports = facebookStore;
+
+},{"../constants/FacebookConstants":507,"../dispatcher/FacebookDispatcher":511,"../utils/service":541,"events":68}],536:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -48102,7 +49246,7 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var VoterGuideConstants = require('../constants/VoterGuideConstants');
 
 var request = require('superagent');
-var config = require('../config');
+var web_app_config = require('../config');
 
 var _organization_store = {};
 var _organization_list = []; // A summary of all organizations (list of organization we_vote_id's)
@@ -48124,7 +49268,7 @@ function printErr(err) {
 //.query({ kind_of_ballot_item: 'CANDIDATE' })
 function retrieveVoterGuidesToFollowList() {
   return new Promise(function (resolve, reject) {
-    return request.get(config.url + 'voterGuidesToFollowRetrieve/').withCredentials().query(config.test).query({ google_civic_election_id: _BallotStore2.default.getGoogleCivicElectionId() }).end(function (err, res) {
+    return request.get(web_app_config.WE_VOTE_SERVER_API_ROOT_URL + 'voterGuidesToFollowRetrieve/').withCredentials().query(web_app_config.test).query({ google_civic_election_id: _BallotStore2.default.getGoogleCivicElectionId() }).end(function (err, res) {
       if (err || !res.body.success) reject(err || res.body.status);
 
       console.log('retrieveVoterGuidesToFollowList SUCCESS');
@@ -48148,7 +49292,7 @@ function addVoterGuidesToFollowToVoterGuideStore(data) {
 
 function retrieveVoterGuidesFollowedList() {
   return new Promise(function (resolve, reject) {
-    return request.get(config.url + 'voterGuidesFollowedRetrieve/').withCredentials().end(function (err, res) {
+    return request.get(web_app_config.WE_VOTE_SERVER_API_ROOT_URL + 'voterGuidesFollowedRetrieve/').withCredentials().end(function (err, res) {
       if (err || !res.body.success) reject(err || res.body.status);
       console.log("Reached out to retrieveVoterGuidesFollowedList");
       resolve(res.body);
@@ -48173,7 +49317,7 @@ function retrieveOrganizations(data) {
 
   return new Promise(function (resolve, reject) {
     return _organization_list.forEach(function (we_vote_id) {
-      return request.get(config.url + 'organizationRetrieve/').withCredentials().query({ organization_we_vote_id: we_vote_id }).end(function (err, res) {
+      return request.get(web_app_config.WE_VOTE_SERVER_API_ROOT_URL + 'organizationRetrieve/').withCredentials().query({ organization_we_vote_id: we_vote_id }).end(function (err, res) {
         if (res.body.success) {
           _organization_store[res.body.organization_we_vote_id] = (0, _objectUtils.shallowClone)(res.body);
         } else if (err) throw err || res.body;
@@ -48191,7 +49335,7 @@ function retrieveOrganizations(data) {
 
 function retrieveOrganizationsFollowedList() {
   return new Promise(function (resolve, reject) {
-    return request.get(config.url + 'organizationsFollowedRetrieve/').withCredentials().end(function (err, res) {
+    return request.get(web_app_config.WE_VOTE_SERVER_API_ROOT_URL + 'organizationsFollowedRetrieve/').withCredentials().end(function (err, res) {
       if (err || !res.body.success) reject(err || res.body.status);
 
       resolve(res.body);
@@ -48211,7 +49355,7 @@ function addOrganizationsFollowedToStore(data) {
 function followOrganization(we_vote_id) {
   console.log('followOrganization: ' + we_vote_id + ', id: ' + _organization_store[we_vote_id].organization_id);
   return new Promise(function (resolve, reject) {
-    return request.get(config.url + 'organizationFollow/').withCredentials().query({ organization_id: _organization_store[we_vote_id].organization_id }).end(function (err, res) {
+    return request.get(web_app_config.WE_VOTE_SERVER_API_ROOT_URL + 'organizationFollow/').withCredentials().query({ organization_id: _organization_store[we_vote_id].organization_id }).end(function (err, res) {
       if (res.body.success) {
         _organization_store[we_vote_id].OrganizationFollowed = "Yes";
         _organization_store[we_vote_id].OrganizationIgnored = "No";
@@ -48225,7 +49369,7 @@ function followOrganization(we_vote_id) {
 function ignoreOrganization(we_vote_id) {
   console.log('ignoreOrganization: ' + we_vote_id);
   return new Promise(function (resolve, reject) {
-    return request.get(config.url + 'organizationFollowIgnore/').withCredentials().query({ organization_id: _organization_store[we_vote_id].organization_id }).end(function (err, res) {
+    return request.get(web_app_config.WE_VOTE_SERVER_API_ROOT_URL + 'organizationFollowIgnore/').withCredentials().query({ organization_id: _organization_store[we_vote_id].organization_id }).end(function (err, res) {
       if (res.body.success) {
         _organization_store[we_vote_id].OrganizationFollowed = "No";
         _organization_store[we_vote_id].OrganizationIgnored = "Yes";
@@ -48239,7 +49383,7 @@ function ignoreOrganization(we_vote_id) {
 function stopFollowingOrganization(we_vote_id) {
   console.log('stopFollowingOrganization: ' + we_vote_id);
   return new Promise(function (resolve, reject) {
-    return request.get(config.url + 'organizationStopFollowing/').withCredentials().query({ organization_id: _organization_store[we_vote_id].id }).end(function (err, res) {
+    return request.get(web_app_config.WE_VOTE_SERVER_API_ROOT_URL + 'organizationStopFollowing/').withCredentials().query({ organization_id: _organization_store[we_vote_id].id }).end(function (err, res) {
       if (res.body.success) {
         _organization_store[we_vote_id].OrganizationFollowed = "No";
       } else if (err) reject(err || res.body.status);
@@ -48379,18 +49523,31 @@ AppDispatcher.register(function (action) {
 
 exports.default = VoterGuideStore;
 
-},{"../config":496,"../constants/VoterGuideConstants":499,"../dispatcher/AppDispatcher":500,"../stores/BallotStore":520,"../utils/createStore":524,"../utils/object-utils":525,"superagent":468}],522:[function(require,module,exports){
+},{"../config":505,"../constants/VoterGuideConstants":509,"../dispatcher/AppDispatcher":510,"../stores/BallotStore":534,"../utils/createStore":539,"../utils/object-utils":540,"superagent":468}],537:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _createStore = require('../utils/createStore');
+
+var _objectUtils = require('../utils/object-utils');
+
+var _service = require('../utils/service');
+
+var _service2 = _interopRequireDefault(_service);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var assign = require('object-assign');
 var request = require('superagent');
 var cookies = require('../utils/cookies');
 
 var VoterActions = require('../actions/VoterActions');
 var VoterConstants = require('../constants/VoterConstants');
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+
 var EventEmitter = require('events').EventEmitter;
 var dispatcher = require('../dispatcher/AppDispatcher');
 
@@ -48399,73 +49556,153 @@ var url = require('../config').url;
 var CHANGE_EVENT = 'change';
 var CHANGE_LOCATION = 'change_location';
 
-var _voter_device_id = cookies.getItem('voter_device_id');
 var _location = cookies.getItem('location');
 var _position = {};
+var _voter_device_id = cookies.getItem('voter_device_id');
+var _voter_photo_url = '';
+var _voter_store = {};
+var _voter_ids = [];
+var _voter = {};
 
-function generateVoterDeviceId() {
-  console.log('generating device id...');
+function addVoterToVoterStore(voter_incoming) {
+  console.log("voter_incoming: " + voter_incoming.we_vote_id);
+  _voter_store[voter_incoming.we_vote_id] = (0, _objectUtils.shallowClone)(voter_incoming);
+}
 
-  return new Promise(function (resolve, reject) {
-    return request.get(url + '/deviceIdGenerate/').withCredentials().end(function (err, res) {
-      if (err) reject(err);else {
-        var voter_device_id = res.body.voter_device_id;
+var VoterAPIWorker = {
+  generateVoterDeviceId: function generateVoterDeviceId(results) {
+    console.log('generating device id...');
 
-        _voter_device_id = voter_device_id;
-        cookies.setItem('voter_device_id', voter_device_id, Infinity); // Set to never expire
-
-        resolve(voter_device_id);
-      }
+    return _service2.default.get({
+      endpoint: 'deviceIdGenerate',
+      results: results
     });
-  }).catch(console.error);
-}
-
-function createVoter() {
-  console.log('creating voter id');
-
-  return new Promise(function (resolve, reject) {
-    return request.get(url + '/voterCreate/').withCredentials().end(function (err, res) {
-      if (err) reject(err);else {
-        resolve(res.body.status);
-      }
-    });
-  }).catch(console.error);
-}
-
-/**
- * guess users location using backend service
- * @return {Promise}
- */
-function guessLocation(value) {
-  return new Promise(function (resolve, reject) {
-    _location = 'Oakland, CA';
-    cookies.setItem('location', _location);
-  });
-}
-
-var VoterStore = assign({}, EventEmitter.prototype, {
-  get voter_device_id() {
-    return _voter_device_id;
   },
+
+  createVoter: function createVoter(results) {
+    console.log('creating voter id');
+
+    return _service2.default.get({
+      endpoint: 'voterCreate',
+      results: results
+    });
+  },
+
+  voterLocationRetrieveFromIP: function voterLocationRetrieveFromIP(results) {
+    console.log('retrieve location from IP');
+
+    return _service2.default.get({
+      endpoint: 'voterLocationRetrieveFromIP',
+      results: results
+    });
+  },
+
+  voterRetrieve: function voterRetrieve(results) {
+    return _service2.default.get({
+      endpoint: 'voterRetrieve',
+      results: results
+    });
+  }
+};
+
+var VoterStore = (0, _createStore.createStore)({
   get position() {
     return _position;
   },
+  get voter_device_id() {
+    return _voter_device_id;
+  },
+  get voter_photo_url() {
+    return _voter_photo_url;
+  },
 
   /**
-   * initialize the voter when the application begins
-   * @return {undefined}
+   * initialize the voter store with data, if no data
+   * and callback with the voter items
+   * @return {Boolean}
    */
-  initialize: function initialize(location) {
-    var promise = new Promise(function (resolve) {
-      return resolve();
+  initialize: function initialize(callback) {
+    var voterPromiseQueue = [];
+    var getVoterList = this.getVoterList.bind(this);
+
+    if (!callback || typeof callback !== 'function') throw new Error('VoterStore: initialize must be called with callback');
+
+    // Do we have the Voter data stored in the browser?
+    if (Object.keys(_voter_store).length) return callback(getVoterList());else {
+
+      if (!_voter_device_id) {
+        voterPromiseQueue.push(VoterAPIWorker.generateVoterDeviceId().then(function (response) {
+          _voter_device_id = response.voter_device_id;
+
+          cookies.setItem('voter_device_id', _voter_device_id, Infinity); // Set to never expire
+        }));
+
+        voterPromiseQueue.push(VoterAPIWorker.createVoter());
+      }
+
+      if (!_location) {
+        voterPromiseQueue.push(VoterAPIWorker.voterLocationRetrieveFromIP().then(function (response) {
+          _location = response.voter_location;
+
+          cookies.setItem('location', _location);
+        }));
+      }
+
+      if (!_voter_photo_url) {
+        console.log('No voter_photo_url');
+
+        voterPromiseQueue.push(VoterAPIWorker.voterRetrieve().then(function (response) {
+          addVoterToVoterStore(response);
+
+          _voter_ids.push(response.we_vote_id);
+
+          // this function polls requests for complete status.
+          new Promise(function (resolve) {
+            var counted = [];
+            var count = 0;
+
+            var interval = setInterval(function () {
+              var we_vote_id = response.we_vote_id;
+
+              _voter = _voter_store[we_vote_id];
+              console.log('_voter set.');
+              if (_voter) {
+                console.log('_voter photo: ' + _voter.facebook_profile_image_url_https);
+                _voter_photo_url = _voter.voter_photo_url;
+                console.log('_voter_photo_url: ' + _voter_photo_url);
+              }
+
+              if (counted.indexOf(we_vote_id) < 0) {
+                count += 1; // TODO Why was this 4?
+                counted.push(we_vote_id);
+              }
+
+              if (count === voterPromiseQueue.length && voterPromiseQueue.length !== 0) {
+                clearInterval(interval);
+                Promise.all(voterPromiseQueue).then(resolve);
+              }
+            }, 1000);
+          }).then(function () {
+            return callback(getVoterList());
+          });
+        }));
+      }
+    }
+  },
+
+  /**
+   * get ballot ordered key array and ballots
+   * @return {Object} ordered keys and store data
+   */
+  getVoterList: function getVoterList() {
+    var temp = [];
+    _voter_ids.forEach(function (id) {
+      return temp.push((0, _objectUtils.shallowClone)(_voter_store[id]));
     });
 
-    if (!_voter_device_id) promise = promise.then(generateVoterDeviceId).then(createVoter);
-
-    if (!_location) promise.then(guessLocation);
-
-    return promise;
+    return temp;
   },
+
   /**
    * set geographical location of voter
    */
@@ -48518,10 +49755,18 @@ var VoterStore = assign({}, EventEmitter.prototype, {
   }
 });
 
-dispatcher.register(function (action) {
+AppDispatcher.register(function (action) {
+
   switch (action.actionType) {
-    case VoterConstants.VOTER_LOCATION_SET:
-      VoterStore._emitChange();
+    case VoterConstants.VOTER_RETRIEVE:
+      VoterAPIWorker.voterRetrieve(function () {
+        return VoterStore.emitChange();
+      });
+      break;
+    case VoterConstants.VOTER_LOCATION_RETRIEVE:
+      VoterAPIWorker.voterLocationRetrieveFromIP(function () {
+        return VoterStore.emitChange();
+      });
       break;
     default:
       break;
@@ -48530,7 +49775,7 @@ dispatcher.register(function (action) {
 
 exports.default = VoterStore;
 
-},{"../actions/VoterActions":479,"../config":496,"../constants/VoterConstants":498,"../dispatcher/AppDispatcher":500,"../utils/cookies":523,"events":68,"object-assign":165,"superagent":468}],523:[function(require,module,exports){
+},{"../actions/VoterActions":480,"../config":505,"../constants/VoterConstants":508,"../dispatcher/AppDispatcher":510,"../utils/cookies":538,"../utils/createStore":539,"../utils/object-utils":540,"../utils/service":541,"events":68,"object-assign":165,"superagent":468}],538:[function(require,module,exports){
 "use strict";
 
 /*\
@@ -48610,7 +49855,7 @@ module.exports = {
     }
 };
 
-},{}],524:[function(require,module,exports){
+},{}],539:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -48654,7 +49899,7 @@ function createStore(mixin) {
   return store;
 }
 
-},{"events":68,"object-assign":165}],525:[function(require,module,exports){
+},{"events":68,"object-assign":165}],540:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -48689,7 +49934,7 @@ function cloneWithCandidates(obj) {
     return target;
 }
 
-},{}],526:[function(require,module,exports){
+},{}],541:[function(require,module,exports){
 /**
  * The idea of this APIS.js file is to abstract away the details
  * of many repetitive service calls that we will be using.
@@ -48717,21 +49962,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var DEBUG = false;
 
 var url = require('url');
-var config = require('../config');
+var web_app_config = require('../config');
 
 var defaults = {
   dataType: 'json',
-  url: config.url
+  WE_VOTE_SERVER_API_ROOT_URL: web_app_config.WE_VOTE_SERVER_API_ROOT_URL
 };
 
 var service = {};
 
 service.get = function (options) {
   var opts = (0, _objectAssign2.default)(defaults, options);
-  opts.url = url.resolve(opts.url, opts.endpoint);
+  opts.WE_VOTE_SERVER_API_ROOT_URL = url.resolve(opts.WE_VOTE_SERVER_API_ROOT_URL, opts.endpoint);
 
   return new Promise(function (resolve, reject) {
-    return request.get(opts.url).accept(opts.dataType).query(opts.query).withCredentials().end(function (err, res) {
+    return request.get(opts.WE_VOTE_SERVER_API_ROOT_URL).accept(opts.dataType).query(opts.query).withCredentials().end(function (err, res) {
       if (err || !res.body.status) {
         if (opts.error instanceof Function === true) opts.error(err || res.body);else console.error(err || res.body);
 
@@ -48747,6 +49992,6 @@ service.get = function (options) {
 
 exports.default = service;
 
-},{"../config":496,"object-assign":165,"superagent":468,"url":472}]},{},[501]);
+},{"../config":505,"object-assign":165,"superagent":468,"url":472}]},{},[512]);
 
 //# sourceMappingURL=bundle.js.map

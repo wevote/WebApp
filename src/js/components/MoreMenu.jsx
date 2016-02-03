@@ -1,14 +1,8 @@
 const web_app_config = require('../config');
 import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
-<<<<<<< HEAD:src/js/components/MoreMenu.jsx
 
 import LanguageSwitchNavigation from "../components/LanguageSwitchNavigation";
-=======
-import LanguageSwitchNavigation from "components/LanguageSwitchNavigation";
-import VoterStore from 'stores/VoterStore';
-const voterPhotoURL = VoterStore.voter_photo_url;
->>>>>>> origin/develop:src/components/MoreMenu.jsx
 
 export default class MoreMenu extends Component {
 	static propTypes = {

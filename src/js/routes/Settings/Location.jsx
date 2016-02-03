@@ -1,8 +1,4 @@
-<<<<<<< HEAD:src/js/routes/Settings/Location.jsx
 import { Component } from 'react';
-=======
-import React, { Component, PropTypes } from 'react';
->>>>>>> origin/develop:src/routes/Settings/Location.jsx
 import { Button, ButtonToolbar } from 'react-bootstrap';
 import HeaderBackNavigation from '../../components/Navigation/HeaderBackNavigation';
 

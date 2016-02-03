@@ -1,7 +1,7 @@
 import FacebookConstants from '../constants/FacebookConstants';
 import FacebookDispatcher from '../dispatcher/FacebookDispatcher';
 import {EventEmitter} from 'events';
-import service from 'utils/service';
+import service from '../utils/service';
 
 const FACEBOOK_CHANGE_EVENT = 'FACEBOOK_CHANGE_EVENT';
 
@@ -53,7 +53,7 @@ class FacebookStore extends EventEmitter {
         this.facebookPictureStatus = type;
 
         if (data) {
-            this.facebookPictureData = data.data 
+            this.facebookPictureData = data.data
         } else {
             this.facebookPictureData = {};
         }

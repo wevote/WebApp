@@ -29,8 +29,7 @@ gulp.task('browserify', function () {
 
 gulp.task('server', function () {
   browserSync.init({
-    server: './build',
-    open: false
+    server: './build'
   });
 })
 
