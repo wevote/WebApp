@@ -1,4 +1,4 @@
-import { PropTypes, Component } from "react";
+import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
 
 import LanguageSwitchNavigation from "../components/LanguageSwitchNavigation";

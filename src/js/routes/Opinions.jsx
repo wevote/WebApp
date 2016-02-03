@@ -1,4 +1,4 @@
-import {Component, PropTypes } from 'react';
+import React, {Component, PropTypes } from 'react';
 import HeaderBackNavigation from '../Components/Navigation/HeaderBackNavigation';
 
 import VoterGuideStore from '../stores/VoterGuideStore';

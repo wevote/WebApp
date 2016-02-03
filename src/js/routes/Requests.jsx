@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 
 import FollowOrIgnore from '../components/FollowOrIgnore';
 import VoterGuideActions from '../actions/VoterGuideActions';

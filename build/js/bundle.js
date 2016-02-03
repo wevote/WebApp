@@ -46381,6 +46381,10 @@ Object.defineProperty(exports, "__esModule", {
 
 var _react = require("react");
 
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -46401,10 +46405,10 @@ var Activity = function (_Component) {
 	_createClass(Activity, [{
 		key: "render",
 		value: function render() {
-			return React.createElement(
+			return _react2.default.createElement(
 				"div",
 				null,
-				React.createElement(
+				_react2.default.createElement(
 					"div",
 					{ className: "container-fluid well well-90" },
 					"Activity Feed Coming Soon"
@@ -46437,6 +46441,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _react = require('react');
 
+var _react2 = _interopRequireDefault(_react);
+
 var _reactRouter = require('react-router');
 
 var _reactBootstrap = require('react-bootstrap');
@@ -46465,45 +46471,45 @@ var AddFriend = function (_Component) {
   _createClass(AddFriend, [{
     key: 'render',
     value: function render() {
-      return React.createElement(
+      return _react2.default.createElement(
         'div',
         null,
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'container-fluid well well-90' },
-          React.createElement(
+          _react2.default.createElement(
             'h2',
             { className: 'text-center' },
             'Add Friends'
           ),
-          React.createElement(
+          _react2.default.createElement(
             'div',
             null,
-            React.createElement(
+            _react2.default.createElement(
               'label',
               { htmlFor: 'last-name' },
               'Include a Message ',
-              React.createElement(
+              _react2.default.createElement(
                 'span',
                 { className: 'small' },
                 '(Optional)'
               )
             ),
-            React.createElement('br', null),
-            React.createElement('input', { type: 'text', name: 'add_friends_message', className: 'form-control',
+            _react2.default.createElement('br', null),
+            _react2.default.createElement('input', { type: 'text', name: 'add_friends_message', className: 'form-control',
               defaultValue: 'Please join me in preparing for the upcoming election.' }),
-            React.createElement('br', null),
-            React.createElement(_reactBootstrap.Input, { type: 'text', addonBefore: '@', name: 'email_address', className: 'form-control',
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(_reactBootstrap.Input, { type: 'text', addonBefore: '@', name: 'email_address', className: 'form-control',
               placeholder: 'Enter email address(es) of friend(s) here' }),
-            React.createElement(
+            _react2.default.createElement(
               'span',
               null,
               'These friends will see what you support, oppose, and which opinions you follow. We never sell email addresses.'
             ),
-            React.createElement('br', null)
+            _react2.default.createElement('br', null)
           )
         ),
-        React.createElement(_BottomContinueNavigation2.default, null)
+        _react2.default.createElement(_BottomContinueNavigation2.default, null)
       );
     }
   }], [{
@@ -47589,6 +47595,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _react = require("react");
 
+var _react2 = _interopRequireDefault(_react);
+
 var _reactRouter = require("react-router");
 
 var _LanguageSwitchNavigation = require("../components/LanguageSwitchNavigation");
@@ -47619,75 +47627,75 @@ var More = function (_Component) {
 
 		/* DALE 2015-01-13 I believe we will want to deprecate this file in favor of /src/components/MoreMenu.jsx */
 		value: function render() {
-			return React.createElement(
+			return _react2.default.createElement(
 				"div",
 				null,
-				React.createElement(
+				_react2.default.createElement(
 					"div",
 					{ className: "container-fluid well well-90" },
-					React.createElement("h4", { className: "text-left" }),
-					React.createElement(
+					_react2.default.createElement("h4", { className: "text-left" }),
+					_react2.default.createElement(
 						"ul",
 						{ className: "list-group" },
-						React.createElement(
+						_react2.default.createElement(
 							"li",
 							{ className: "list-group-item" },
-							React.createElement(
+							_react2.default.createElement(
 								_reactRouter.Link,
 								{ to: "/more/email_ballot" },
 								"Print, Save or Email Ballot"
 							)
 						),
-						React.createElement(
+						_react2.default.createElement(
 							"li",
 							{ className: "list-group-item" },
-							React.createElement(
+							_react2.default.createElement(
 								_reactRouter.Link,
 								{ to: "/more/opinions/followed" },
 								"Opinions I Follow"
 							)
 						)
 					),
-					React.createElement("h4", { className: "text-left" }),
-					React.createElement(
+					_react2.default.createElement("h4", { className: "text-left" }),
+					_react2.default.createElement(
 						"ul",
 						{ className: "list-group" },
-						React.createElement(
+						_react2.default.createElement(
 							"li",
 							{ className: "list-group-item" },
-							React.createElement(
+							_react2.default.createElement(
 								_reactRouter.Link,
 								{ to: "/settings/location" },
 								"My Ballot Location"
 							)
 						)
 					),
-					React.createElement("h4", { className: "text-left" }),
-					React.createElement(
+					_react2.default.createElement("h4", { className: "text-left" }),
+					_react2.default.createElement(
 						"ul",
 						{ className: "list-group" },
-						React.createElement(
+						_react2.default.createElement(
 							"li",
 							{ className: "list-group-item" },
-							React.createElement(
+							_react2.default.createElement(
 								_reactRouter.Link,
 								{ to: "/more/about" },
 								"About We Vote"
 							)
 						),
-						React.createElement(
+						_react2.default.createElement(
 							"li",
 							{ className: "list-group-item" },
-							React.createElement(
+							_react2.default.createElement(
 								_reactRouter.Link,
 								{ to: "/more/privacy" },
 								"Terms and Policies"
 							)
 						),
-						React.createElement(
+						_react2.default.createElement(
 							"li",
 							{ className: "list-group-item" },
-							React.createElement(
+							_react2.default.createElement(
 								"a",
 								{ href: web_app_config.WE_VOTE_SERVER_ADMIN_ROOT_URL,
 									target: "_blank" },
@@ -47695,7 +47703,7 @@ var More = function (_Component) {
 							)
 						)
 					),
-					React.createElement(_LanguageSwitchNavigation2.default, null)
+					_react2.default.createElement(_LanguageSwitchNavigation2.default, null)
 				)
 			);
 		}
@@ -48321,6 +48329,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _react = require('react');
 
+var _react2 = _interopRequireDefault(_react);
+
 var _HeaderBackNavigation = require('../Components/Navigation/HeaderBackNavigation');
 
 var _HeaderBackNavigation2 = _interopRequireDefault(_HeaderBackNavigation);
@@ -48367,31 +48377,31 @@ var Opinions = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      return React.createElement(
+      return _react2.default.createElement(
         'div',
         null,
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'container-fluid' },
-          React.createElement(
+          _react2.default.createElement(
             'h4',
             { className: 'pull-left' },
             'More Opinions I Can Follow'
           ),
-          React.createElement('input', { type: 'text', name: 'search_opinions', className: 'form-control',
+          _react2.default.createElement('input', { type: 'text', name: 'search_opinions', className: 'form-control',
             placeholder: 'Search by name or twitter handle.' }),
-          React.createElement('br', null),
+          _react2.default.createElement('br', null),
           'These organizations and public figures have opinions about items on your ballot. Click the \'Follow\' button to pay attention to them.',
-          React.createElement(
+          _react2.default.createElement(
             'div',
             { className: 'voter-guide-list' },
             this.state.voter_guide_list ? this.state.voter_guide_list.map(function (item) {
-              return React.createElement(_VoterGuideItem2.default, _extends({ key: item.we_vote_id }, item));
-            }) : React.createElement(
+              return _react2.default.createElement(_VoterGuideItem2.default, _extends({ key: item.we_vote_id }, item));
+            }) : _react2.default.createElement(
               'div',
               { className: 'box-loader' },
-              React.createElement('i', { className: 'fa fa-spinner fa-pulse' }),
-              React.createElement(
+              _react2.default.createElement('i', { className: 'fa fa-spinner fa-pulse' }),
+              _react2.default.createElement(
                 'p',
                 null,
                 'Loading ... One Moment'
@@ -48422,6 +48432,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _react = require('react');
 
+var _react2 = _interopRequireDefault(_react);
+
 var _FollowOrIgnore = require('../components/FollowOrIgnore');
 
 var _FollowOrIgnore2 = _interopRequireDefault(_FollowOrIgnore);
@@ -48450,46 +48462,46 @@ var RequestsPage = function (_Component) {
 	_createClass(RequestsPage, [{
 		key: 'render',
 		value: function render() {
-			return React.createElement(
+			return _react2.default.createElement(
 				'section',
 				null,
-				React.createElement(
+				_react2.default.createElement(
 					'div',
 					{ className: 'container-fluid well well-90' },
-					React.createElement(
+					_react2.default.createElement(
 						'h4',
 						{ className: 'text-left' },
 						'Friend Requests'
 					),
-					React.createElement(
+					_react2.default.createElement(
 						'ul',
 						{ className: 'list-group' },
-						React.createElement(
+						_react2.default.createElement(
 							'li',
 							{ className: 'list-group-item' },
-							React.createElement(_FollowOrIgnore2.default, { action: _VoterGuideActions2.default, action_text: "Add Friend" }),
-							React.createElement('i', { className: 'icon-icon-add-friends-2-1 icon-light icon-medium' }),
+							_react2.default.createElement(_FollowOrIgnore2.default, { action: _VoterGuideActions2.default, action_text: "Add Friend" }),
+							_react2.default.createElement('i', { className: 'icon-icon-add-friends-2-1 icon-light icon-medium' }),
 							'Janet Smith'
 						),
-						React.createElement(
+						_react2.default.createElement(
 							'li',
 							{ className: 'list-group-item' },
-							React.createElement(_FollowOrIgnore2.default, { action: _VoterGuideActions2.default, action_text: "Add Friend" }),
-							React.createElement('i', { className: 'icon-icon-add-friends-2-1 icon-light icon-medium' }),
+							_react2.default.createElement(_FollowOrIgnore2.default, { action: _VoterGuideActions2.default, action_text: "Add Friend" }),
+							_react2.default.createElement('i', { className: 'icon-icon-add-friends-2-1 icon-light icon-medium' }),
 							'Will Rogers'
 						),
-						React.createElement(
+						_react2.default.createElement(
 							'li',
 							{ className: 'list-group-item' },
-							React.createElement(_FollowOrIgnore2.default, { action: _VoterGuideActions2.default, action_text: "Add Friend" }),
-							React.createElement('i', { className: 'icon-icon-add-friends-2-1 icon-light icon-medium' }),
+							_react2.default.createElement(_FollowOrIgnore2.default, { action: _VoterGuideActions2.default, action_text: "Add Friend" }),
+							_react2.default.createElement('i', { className: 'icon-icon-add-friends-2-1 icon-light icon-medium' }),
 							'Andrea Moed'
 						),
-						React.createElement(
+						_react2.default.createElement(
 							'li',
 							{ className: 'list-group-item' },
-							React.createElement(_FollowOrIgnore2.default, { action: _VoterGuideActions2.default, action_text: "Add Friend" }),
-							React.createElement('i', { className: 'icon-icon-add-friends-2-1 icon-light icon-medium' }),
+							_react2.default.createElement(_FollowOrIgnore2.default, { action: _VoterGuideActions2.default, action_text: "Add Friend" }),
+							_react2.default.createElement('i', { className: 'icon-icon-add-friends-2-1 icon-light icon-medium' }),
 							'Amy Muller'
 						)
 					)
@@ -48519,6 +48531,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _react = require('react');
 
+var _react2 = _interopRequireDefault(_react);
+
 var _reactBootstrap = require('react-bootstrap');
 
 var _HeaderBackNavigation = require('../../components/Navigation/HeaderBackNavigation');
@@ -48545,33 +48559,33 @@ var Location = function (_Component) {
     _createClass(Location, [{
         key: 'render',
         value: function render() {
-            return React.createElement(
+            return _react2.default.createElement(
                 'div',
                 null,
-                React.createElement(
+                _react2.default.createElement(
                     'div',
                     { className: 'container-fluid well well-90' },
-                    React.createElement(
+                    _react2.default.createElement(
                         'h2',
                         { className: 'text-center' },
                         'Change Location'
                     ),
-                    React.createElement(
+                    _react2.default.createElement(
                         'div',
                         null,
-                        React.createElement(
+                        _react2.default.createElement(
                             'span',
                             { className: 'small' },
                             'Please enter the address (or just the city) where you registered to vote. The more location information you can provide, the more ballot information will be visible.'
                         ),
-                        React.createElement('input', { type: 'text', name: 'address', className: 'form-control', defaultValue: 'Oakland, CA' }),
-                        React.createElement(
+                        _react2.default.createElement('input', { type: 'text', name: 'address', className: 'form-control', defaultValue: 'Oakland, CA' }),
+                        _react2.default.createElement(
                             'span',
                             null,
-                            React.createElement(
+                            _react2.default.createElement(
                                 _reactBootstrap.ButtonToolbar,
                                 null,
-                                React.createElement(
+                                _react2.default.createElement(
                                     _reactBootstrap.Button,
                                     { bsStyle: 'primary' },
                                     'Save Location'
@@ -48651,6 +48665,10 @@ Object.defineProperty(exports, "__esModule", {
 
 var _react = require("react");
 
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -48669,7 +48687,7 @@ var SettingsDashboard = function (_Component) {
     _createClass(SettingsDashboard, [{
         key: "render",
         value: function render() {
-            return React.createElement(
+            return _react2.default.createElement(
                 "div",
                 { className: "settings-dashboard" },
                 this.props.children

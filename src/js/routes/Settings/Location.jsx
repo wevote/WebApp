@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { Button, ButtonToolbar } from 'react-bootstrap';
 import HeaderBackNavigation from '../../components/Navigation/HeaderBackNavigation';
 

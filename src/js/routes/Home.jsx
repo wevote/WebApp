@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { Button, Input } from 'react-bootstrap';
 import { Link } from 'react-router';
 
