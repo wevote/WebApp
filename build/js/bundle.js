@@ -48614,7 +48614,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _react = require('react');
 
+var _react2 = _interopRequireDefault(_react);
+
 var _reactRouter = require('react-router');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -48634,10 +48638,10 @@ var Settings = function (_Component) {
     _createClass(Settings, [{
         key: 'render',
         value: function render() {
-            return React.createElement(
+            return _react2.default.createElement(
                 'li',
                 { className: 'list-group settings center' },
-                React.createElement(
+                _react2.default.createElement(
                     _reactRouter.Link,
                     { className: 'group-item', to: '/settings/location' },
                     ' Location '
