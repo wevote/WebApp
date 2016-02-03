@@ -32,11 +32,6 @@ gulp.task('server', function () {
     server: './build',
     open: false
   });
-
-  // return nodemon({
-  //   script: 'server.js',
-  //   watch: ['server.js']
-  // })
 })
 
 gulp.task('sass', function () {
