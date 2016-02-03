@@ -7,6 +7,7 @@ var babelify = require('babelify')
 var source = require('vinyl-source-stream')
 var buffer = require('vinyl-buffer')
 var sourcemaps = require('gulp-sourcemaps')
+var server = require('./server');
 
 gulp.task('browserify', function () {
   return browserify({
@@ -29,7 +30,7 @@ gulp.task('browserify', function () {
 
 gulp.task('server', function () {
   browserSync.init({
-    server: './build'
+    proxy: 'localhost:3003'
   });
 })
 

@@ -28,6 +28,7 @@
     "browserify": "^13.0.0",
     "eslint": "^1.10.2",
     "eslint-plugin-react": "^3.16.1",
+    "express": "^4.13.4",
     "flux": "^2.1.1",
     "font-awesome": "^4.5.0",
     "gulp": "^3.9.0",
