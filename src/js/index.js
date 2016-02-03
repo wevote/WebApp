@@ -5,8 +5,10 @@ import Root from './Root';
 
 import VoterStore from './stores/VoterStore';
 
+console.log('hello');
+
 /****************************** Stylesheets ***********************************/
-import '../sass/main.scss'
+// import '../sass/main.scss'
 /******************************************************************************/
 
 // polyfill
