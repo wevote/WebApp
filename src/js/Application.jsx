@@ -26,7 +26,7 @@ export default class Application extends Component {
           { this.props.children }
           <MoreMenu />
           <Navigator />
-		</div>
-        );
+		    </div>
+    );
 	}
 }

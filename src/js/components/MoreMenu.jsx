@@ -4,7 +4,7 @@ import { Link } from "react-router";
 
 import LanguageSwitchNavigation from "../components/LanguageSwitchNavigation";
 
-export default class MoreMenu extends Component {
+class MoreMenu extends Component {
 	static propTypes = {
 		children: PropTypes.object
 	};
@@ -42,13 +42,15 @@ export default class MoreMenu extends Component {
 			            <li className="list-group-item"><Link to="/settings">Account Settings</Link></li>
 			            <li className="list-group-item"><Link to="/signout">Sign Out</Link></li>
 			        </ul>
-					<ul className="list-group">
-			            <li className="list-group-item">
+					   <ul className="list-group">
+			           <li className="list-group-item">
 			        		<LanguageSwitchNavigation />
-						</li>
+						    </li>
 			        </ul>
 			    </div>
 			</div>
 		);
 	}
 }
+
+module.exports = MoreMenu;
