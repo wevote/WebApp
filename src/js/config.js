@@ -10,7 +10,7 @@ module.exports = {
     },
 
     location: {
-        text_for_map_search: '2201 Wilson Blvd, Arlington VA 22201'
+        text_for_map_search: 'Manhattan, New York, NY'
     },
 
     // const APP_ID = '1097389196952441'; // DaleMcGrew Facebook App Id, https://wevote.me
