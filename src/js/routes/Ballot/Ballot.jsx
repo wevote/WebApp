@@ -4,7 +4,6 @@ import Headroom from "react-headroom";
 
 import BallotStore from '../../stores/BallotStore';
 import BallotItem from '../../components/Ballot/BallotItem';
-import VoterStore from '../../stores/VoterStore';
 
 export default class Ballot extends Component {
   static propTypes = {
@@ -18,7 +17,6 @@ export default class Ballot extends Component {
 
   componentDidMount () {
     BallotStore.initialize( (ballot_list) => this.setState({ ballot_list }) );
-    VoterStore.initialize( (voter_list) => this.setState({ voter_list }) );
   }
 
   render () {

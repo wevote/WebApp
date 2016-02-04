@@ -5,6 +5,8 @@ import Root from './Root';
 
 import VoterStore from './stores/VoterStore';
 
+console.log('Entering WebApp/src/js/index.js');
+
 // polyfill
 if (!Object.assign) Object.assign = React.__spread;
 

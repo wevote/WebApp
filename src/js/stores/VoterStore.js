@@ -79,6 +79,7 @@ const VoterStore = createStore({
    * @return {Boolean}
    */
   initialize: function (callback) {
+    console.log("VoterStore.initialize")
     var voterPromiseQueue = [];
     var getVoterList = this.getVoterList.bind(this);
 
@@ -186,6 +187,16 @@ const VoterStore = createStore({
         );
 
       return temp;
+  },
+
+  getVoter: function () {
+      console.log("VoterStore getVoter");
+      return _voter;
+  },
+
+  getVoterPhotoURL: function () {
+      console.log("VoterStore getVoterPhotoURL");
+      return _voter_photo_url;
   },
 
   /**

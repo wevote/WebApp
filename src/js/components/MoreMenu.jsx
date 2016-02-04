@@ -1,23 +1,31 @@
 const web_app_config = require('../config');
 import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
-
 import LanguageSwitchNavigation from "../components/LanguageSwitchNavigation";
+import VoterStore from '../stores/VoterStore';
 
-class MoreMenu extends Component {
-	static propTypes = {
-		children: PropTypes.object
-	};
+export default class MoreMenu extends Component {
+  static propTypes = {
+   	email: PropTypes.string,
+   	first_name: PropTypes.string,
+    signed_in_personal: PropTypes.bool,
+   	voter_photo_url: PropTypes.string
+  };
 
-	constructor(props) {
-		super(props);
-	}
+  constructor(props) {
+	super(props);
+   	this.state = {};
+  }
+  componentDidMount () {
+    //console.log("MoreMenu componentDidMount")
+  }
 
-	static getProps() {
-		return {};
-	}
+  static getProps() {
+	return {};
+  }
 
-	render() {
+  render() {
+
 	    return (
 			<div>
 			    <div className="device-menu--large container-fluid well well-90">
@@ -52,5 +60,3 @@ class MoreMenu extends Component {
 		);
 	}
 }
-
-module.exports = MoreMenu;

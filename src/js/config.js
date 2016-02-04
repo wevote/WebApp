@@ -13,7 +13,6 @@ module.exports = {
         text_for_map_search: 'Manhattan, New York, NY'
     },
 
-    // const APP_ID = '1097389196952441'; // DaleMcGrew Facebook App Id, https://wevote.me
-    // const APP_ID = '868492333200013'; // wevote-dev, http://localhost:3000
-    FACEBOOK_APP_ID: '868492333200013'
+    // FACEBOOK_APP_ID: '1097389196952441' // DaleMcGrew Facebook App Id, https://wevote.me
+    FACEBOOK_APP_ID: '868492333200013'  // wevote-dev, http://localhost:3000
 };

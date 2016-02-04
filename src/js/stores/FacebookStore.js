@@ -7,7 +7,7 @@ const FACEBOOK_CHANGE_EVENT = 'FACEBOOK_CHANGE_EVENT';
 
 class FacebookStore extends EventEmitter {
     constructor() {
-        super()
+        super();
         this.facebookAuthData = {};
         this.faebookPictureData = {};
     }
@@ -70,6 +70,15 @@ class FacebookStore extends EventEmitter {
         }
     }
 
+    saveFacebookAuthData() {
+        if (this.facebookAuthData) {
+          FacebookAPIWorker
+            .facebookSignIn(
+              this.facebookAuthData.authResponse.userID, false, () => this.emit(FACEBOOK_CHANGE_EVENT)
+          );
+        }
+    }
+
     emitChange() {
         this.emit(FACEBOOK_CHANGE_EVENT);
     }
@@ -88,7 +97,17 @@ const FacebookAPIWorker = {
     return service.get({
       endpoint: 'voterPhotoSave',
       query: {
-        facebook_profile_image_url: photo_url
+        facebook_profile_image_url_https: photo_url
+      }, success
+    });
+  },
+
+  facebookSignIn: function (facebook_id, facebook_email, success ) {
+    return service.get({
+      endpoint: 'facebookSignIn',
+      query: {
+        facebook_id: facebook_id,
+        facebook_email: facebook_email
       }, success
     });
   }
@@ -103,7 +122,9 @@ facebookStore.dispatchToken = FacebookDispatcher.register((action) => {
     }
 
     if (action.actionType == FacebookConstants.FACEBOOK_LOGGED_IN) {
+        console.log("FACEBOOK_LOGGED_IN");
         facebookStore.setFacebookAuthData(action.data);
+        facebookStore.saveFacebookAuthData();
     }
 
     if (action.actionType == FacebookConstants.FACEBOOK_LOGGED_OUT) {
@@ -115,8 +136,10 @@ facebookStore.dispatchToken = FacebookDispatcher.register((action) => {
     }
 
     if (action.actionType == FacebookConstants.FACEBOOK_RECEIVED_PICTURE) {
+        console.log("FACEBOOK_RECEIVED_PICTURE");
         facebookStore.setFacebookPictureData(action.actionType, action.data);
         facebookStore.saveFacebookPictureData(action.data);
+        facebookStore.saveFacebookAuthData();
     }
 })
 
