@@ -4,11 +4,11 @@
 
 @font-face {
   font-family: "app-fonts";
-  src:url("/src/stylesheets/base/fonts/app-fonts.eot");
-  src:url("/src/stylesheets/base/fonts/app-fonts.eot?#iefix") format("embedded-opentype"),
-    url("/src/stylesheets/base/fonts/app-fonts.woff") format("woff"),
-    url("/src/stylesheets/base/fonts/app-fonts.ttf") format("truetype"),
-    url("/src/stylesheets/base/fonts/app-fonts.svg#app-fonts") format("svg");
+  src:url("../fonts/app-fonts.eot");
+  src:url("../fonts/app-fonts.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/app-fonts.woff") format("woff"),
+    url("../fonts/app-fonts.ttf") format("truetype"),
+    url("../fonts/app-fonts.svg#app-fonts") format("svg");
     font-weight: normal;
     font-style: normal;
 }

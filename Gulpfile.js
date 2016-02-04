@@ -43,7 +43,7 @@ gulp.task('sass', function () {
 })
 
 gulp.task('copy', function () {
-  gulp.src('./src/fonts/**')
+  gulp.src('./src/sass/base/fonts/**')
     .pipe(gulp.dest('./build/fonts'))
 
   gulp.src('./src/index.html')
