@@ -1,6 +1,10 @@
 # README for We Vote WebApp
 
-[![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=master)](https://travis-ci.org/wevote/WebApp)
+[![Build
+Status](https://travis-ci.org/wevote/WebApp.svg?branch=master)](https://travis-ci.org/wevote/WebApp)
+| 
+[![Coverage
+Status](https://coveralls.io/repos/github/wevote/WebApp/badge.svg?branch=develop)](https://coveralls.io/github/wevote/WebApp?branch=develop)
 
 This WebApp repository contains a Node/React/Flux Javascript application. Using data from
 Google Civic API, Vote Smart, MapLight, TheUnitedStates.io and the Voting Information Project, we give voters a
