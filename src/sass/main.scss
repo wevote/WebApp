@@ -2,48 +2,49 @@
 
 // 1. Configuration and helpers
 @import
-  './utils/_variables.scss',
-  './utils/_functions.scss',
-  './utils/_mixins.scss',
-  './utils/_app.scss';
+  './utils/_variables',
+  './utils/_functions',
+  './utils/_mixins',
+  './utils/_app';
 
 // 2. Vendors
 @import
-  './vendor/_normalize.scss',
-  // './vendor/font-awesome/font-awesome.scss',
-  // './vendor/bootstrap/bootstrap.scss',
-  './vendor/_vendors.scss';
+  './vendor/_normalize',
+  // './vendor/font-awesome/font-awesome',
+  // './vendor/bootstrap/bootstrap',
+  './vendor/_vendors';
 
 // 3. Base stuff
 @import
-  './base/_base.scss',
-  // './base/_fonts.scss',
-  // './base/_typography.scss',
-  './base/_helpers.scss';
+  './base/_base',
+  // './base/_fonts',
+  // './base/_typography',
+  './base/_helpers';
 
 // 4. Layout-related sections
 @import
-  './layout/_boxmodel.scss',
-  './layout/_header.scss',
-  './layout/_footer.scss',
-  './layout/_root.scss';
+  './layout/_boxmodel',
+  './layout/_header',
+  './layout/_footer',
+  './layout/_root',
+  './layout/_lists';
 
 // 5. Components
 @import
-  './components/_badges.scss',
-  './components/_ballotList.scss',
-  './components/_itemActionbar.scss';
+  './components/_badges',
+  './components/_ballotList',
+  './components/_itemActionbar';
 
 // 6. Page-specific styles
 @import
-  './pages/_home.scss';
+  './pages/_home';
 
 // 7. Themes
 @import
-  './themes/default.scss';
+  './themes/default';
 
 // 8. Media Queries
 @import
-  './layout/mediaquery.scss';
+  './layout/mediaquery';
 
 // 9. Trumps - !important
