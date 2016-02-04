@@ -36,6 +36,7 @@
     "flux": "^2.1.1",
     "font-awesome": "^4.5.0",
     "gulp": "^3.9.0",
+    "gulp-cli": "^1.2.0",
     "gulp-sass": "^2.1.1",
     "history": "^1.13.1",
     "jest-cli": "*",
@@ -54,7 +55,8 @@
   },
   "repository": "https://github.com/wevote/webapp.git",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "gulp"
   },
   "jest": {
     "moduleFileExtensions": [
