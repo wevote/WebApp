@@ -30,7 +30,7 @@ export default class Candidate extends Component {
     } = this.props;
 
     return (
-      <section className="list-group-item">
+      <section className="candidate list-group-item">
         <StarAction
           we_vote_id={we_vote_id}
           is_starred={this.props.is_starred || false } />
@@ -46,7 +46,7 @@ export default class Candidate extends Component {
 
                 <img
                   className="img-circle"
-                  style={{display:'block', width:'100px'}}
+                  style={{display:'block', paddingTop: '10px', width:'100px'}}
                   src={candidate_photo_url}
                   alt="candidate-photo"/> :
 
@@ -55,19 +55,23 @@ export default class Candidate extends Component {
             }
           </div>
           <div className="col-xs-8">
-            <Link
-                  className="linkLight"
-                  to={"/candidate/" + we_vote_id }
-                  onlyActiveOnIndex={false}>
-                <h4 className="bufferNone">
+            <h4 className="bufferNone">
+              <Link className="linkLight"
+                    to={"/candidate/" + we_vote_id }
+                    onlyActiveOnIndex={false}>
                       { ballot_item_display_name }
-                </h4>
-                <h3>
-                  &nbsp;<span>{ supportCount }&nbsp;support</span>
-                  &nbsp;&nbsp;
-                  &nbsp;<span>{ opposeCount }&nbsp;oppose</span>
-                </h3>
-            </Link>
+              </Link>
+            </h4>
+            <ul className="list-style--none">
+              <li className="list-inline support">
+                <span>{ supportCount }</span>&nbsp;
+                <span>support</span>
+              </li>
+              <li className="list-inline oppose">
+                <span>{ opposeCount }</span>&nbsp;
+                <span>oppose</span>
+              </li>
+            </ul>
           </div>
         </div>
         <ItemActionbar we_vote_id={we_vote_id} />

@@ -1,0 +1,13 @@
+// scoped variables
+$largeFont: 2em;
+.candidate {
+  .oppose {
+    font-size: $largeFont;
+    font-weight: 700;
+  }
+  .support {
+    font-size: $largeFont;
+    font-weight: 700;
+    padding-right: 1em;
+  }
+}

@@ -1,0 +1,12 @@
+.list {
+  &-style {
+    &--none {
+      list-style: none;
+      margin: 0;
+      padding: 5px;
+    }
+  }
+  &-inline {
+    display: inline;
+  }
+}
