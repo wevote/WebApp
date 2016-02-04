@@ -1,6 +1,6 @@
 # README for We Vote WebApp
 
-[![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=master)](https://travis-ci.org/wevote/WebApp)
+[![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=develop)](https://travis-ci.org/wevote/WebApp)
 
     npm -g install gulp-cli      // try sudo if it does not work
     npm install
