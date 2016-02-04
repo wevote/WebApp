@@ -42,9 +42,24 @@ gulp.task('sass', function () {
   .pipe(browserSync.stream());
 })
 
-gulp.task('build', ['browserify', 'sass'])
+gulp.task('copy', function () {
+  gulp.src('./src/fonts/**')
+    .pipe(gulp.dest('./build/fonts'))
+
+  gulp.src('./src/index.html')
+    .pipe(gulp.dest('./build'))
+
+  return gulp.src('./src/css/**/*.css')
+    .pipe(gulp.dest('./build/css'));
+})
+
+gulp.task('build', ['copy', 'browserify', 'sass'])
 
 gulp.task('watch', ['build'], function () {
+  gulp.watch(['./src/index.html'], function () {
+    return gulp.src('./src/index.html')
+      .pipe(gulp.dest('./build'));
+  });
   gulp.watch(['./src/sass/**/*.scss'], ['sass'])
   gulp.watch(['./src/js/**/*.js*'], ['browserify'])
 })

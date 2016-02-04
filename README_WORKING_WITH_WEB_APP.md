@@ -19,7 +19,7 @@ Install changes and start web application
 
 You should be able to visit WebApp here:
 
-    http://localhost:3001
+    http://localhost:3000
 
 ## Coding Standards
 

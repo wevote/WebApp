@@ -14,7 +14,8 @@ You can see our current wireframe mockup for a San Francisco ballot here:
 http://start.wevoteusa.org/
 
 ## Install WeVoteServer First
-In order to get the data the WebApp needs, please [install WeVoteServer](https://github.com/wevote/WeVoteServer/blob/master/README_API_INSTALL.md)
+In order to get the data the WebApp needs, please 
+[install WeVoteServer](https://github.com/wevote/WeVoteServer/blob/master/README_API_INSTALL.md)
 
 
 ## Install nodeenv ("Node Env")
@@ -62,8 +63,9 @@ Retrieve “WebApp” into that folder, so your code ends up here:
 ## Install and start web application
 
     (WebAppEnv) $ cd /Users/<YOUR NAME HERE>/MyProjects/WebApp
+    (WebAppEnv) $ npm -g install gulp-cli      // try sudo if it does not work
     (WebAppEnv) $ npm install
-    (WebAppEnv) $ npm start
+    (WebAppEnv) $ gulp
 
 You should be able to visit WebApp here:
 

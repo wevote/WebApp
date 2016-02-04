@@ -1,6 +1,9 @@
 # This .gitignore file partially built from https://github.com/github/gitignore
 # and https://github.com/github/gitignore/blob/master/Node.gitignore
 
+# Ignore build files
+build
+
 # Logs
 ###################
 logs
