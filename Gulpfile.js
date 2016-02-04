@@ -42,24 +42,30 @@ gulp.task('sass', function () {
   .pipe(browserSync.stream());
 })
 
-gulp.task('copy', function () {
+gulp.task('copy-fonts', function () {
   gulp.src('./src/sass/base/fonts/**')
     .pipe(gulp.dest('./build/fonts'))
-
-  gulp.src('./src/index.html')
-    .pipe(gulp.dest('./build'))
-
-  return gulp.src('./src/css/**/*.css')
-    .pipe(gulp.dest('./build/css'));
+    .pipe(browserSync.stream());
 })
 
-gulp.task('build', ['copy', 'browserify', 'sass'])
+gulp.task('copy-index', function () {
+  gulp.src('./src/index.html')
+    .pipe(gulp.dest('./build'))
+    .pipe(browserSync.stream());
+});
+
+gulp.task('copy-css', function () {
+  return gulp.src('./src/css/**/*.css')
+    .pipe(gulp.dest('./build/css'))
+    .pipe(browserSync.stream());
+})
+
+gulp.task('build', ['copy-fonts', 'copy-index', 'copy-css', 'browserify', 'sass'])
 
 gulp.task('watch', ['build'], function () {
-  gulp.watch(['./src/index.html'], function () {
-    return gulp.src('./src/index.html')
-      .pipe(gulp.dest('./build'));
-  });
+  gulp.watch(['./src/index.html'], ['copy-index']);
+  gulp.watch(['./src/sass/base/base/fonts/**'], ['copy-fonts']);
+  gulp.watch(['./src/css/**/*.css'], ['copy-css']);
   gulp.watch(['./src/sass/**/*.scss'], ['sass'])
   gulp.watch(['./src/js/**/*.js*'], ['browserify'])
 })
