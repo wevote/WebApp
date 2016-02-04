@@ -2,5 +2,6 @@ language: node_js
 node_js:
   - "4.1"
   - "4.0"
+sudo: false
 notifications:
   slack: wevote:Ngu6uKzt4qRAvhrCPPoTIIVM
