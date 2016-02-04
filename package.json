@@ -29,15 +29,14 @@
     "bootstrap": "^3.3.6",
     "browser-sync": "^2.11.1",
     "browserify": "^13.0.0",
+    "del": "^2.2.0",
     "eslint": "^1.10.2",
     "eslint-plugin-react": "^3.16.1",
     "express": "^4.13.4",
     "flux": "^2.1.1",
     "font-awesome": "^4.5.0",
     "gulp": "^3.9.0",
-    "gulp-nodemon": "^2.0.6",
     "gulp-sass": "^2.1.1",
-    "gulp-sourcemaps": "^1.6.0",
     "history": "^1.13.1",
     "jest-cli": "*",
     "react-addons-test-utils": "~0.14.0",
@@ -51,7 +50,6 @@
     "react-router": "^1.0.0",
     "react-router-bootstrap": "^0.16.0",
     "react-select": "^0.5.4",
-    "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   },
   "repository": "https://github.com/wevote/webapp.git",
@@ -59,7 +57,10 @@
     "test": "jest"
   },
   "jest": {
-    "moduleFileExtensions": ["js", "jsx"],
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
     "scriptPreprocessor": "./node_modules/babel-jest",
     "unmockedModulePathPatterns": [
       "./node_modules/react",
