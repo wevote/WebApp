@@ -37,18 +37,40 @@ export default class Application extends Component {
         var { voter_list } = this.state;
 
 		return (
-        <div>
-          { this.props.children }
-          {
-            voter_list ? voter_list
-              .map( item =>
-                <MoreMenu key={item.we_vote_id} {...item} />
-              ) : (
-                <MoreMenu />
-              )
-          }
-          <Navigator />
+        <div className="app-base">
+          <div className="row">
+            <div className="container-fluid">
+              {/* This would be the placement of the header */}
+              {/* The header would not be in any other component */}
+            </div>
+          </div>
+          <div className="row">
+            <div className="container-fluid">
+              {/* This would be where the secondary menu would be used */}
+              {/* This can be hidden using state */}
+            </div>
+          </div>
+          <div className="row">
+            <div className="container-fluid">
+              <div className="col-lg-4">
+                {/* MoreMenu would go here */}
+              </div>
+              <div className="col-lg-8">
+                {/* this.props.children */}
+              </div>
+            </div>
+          </div>
+            { this.props.children }
+            {
+              voter_list ? voter_list
+                .map( item =>
+                  <MoreMenu key={item.we_vote_id} {...item} />
+                ) : (
+                  <MoreMenu />
+                )
+            }
+            <Navigator />
         </div>
-        );
+    );
 	}
 }
