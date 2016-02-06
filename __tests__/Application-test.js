@@ -9,10 +9,7 @@ const MoreMenu = require('../src/js/components/MoreMenu');
 
 describe('Application ', () => {
 
-    var div = TestUtils.renderIntoDocument(<MoreMenu/>);
-    var list = TestUtils.scryRenderedDOMComponentsWithTag(div);
-
-    it('should have a list for sign in', () => {
+    xit('should have a list for sign in', () => {
 
     });
 
