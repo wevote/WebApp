@@ -10,15 +10,12 @@
 // 2. Vendors
 @import
   './vendor/_normalize',
-  // './vendor/font-awesome/font-awesome',
-  // './vendor/bootstrap/bootstrap',
   './vendor/_vendors';
 
 // 3. Base stuff
 @import
   './base/_base',
   './base/_fonts',
-  // './base/_typography',
   './base/_helpers';
 
 // 4. Layout-related sections
@@ -49,3 +46,5 @@
   './layout/mediaquery';
 
 // 9. Trumps - !important
+@import
+  './utils/trumps.scss';
