@@ -11,7 +11,6 @@ import FacebookPicture from '../../components/Facebook/FacebookPicture';
 import FacebookSignIn from '../../components/Facebook/FacebookSignIn';
 import Main from '../../components/Facebook/Main';
 
-{/* VISUAL DESIGN HERE: ??? */}
 
 export default class SignIn extends Component {
 	constructor(props) {
@@ -48,26 +47,28 @@ export default class SignIn extends Component {
 
 	render() {
 	    return (
-<div>
-	<div className="container-fluid well well-90">
-		<h2 className="text-center">Sign In</h2>
-		<div className="text-center">
-			{!this.state.facebookIsLoggedIn ? <FacebookSignIn /> : null}
-			{/* this.state.facebookIsLoggedIn ? <FacebookDisconnect /> : null */}
-			<br />
-
-			<Link to="add_friends_confirmed">
-				<Button bsStyle="primary">Sign in with Twitter</Button>
-			</Link><br />
-		</div>
-		<br />
-		<br />
-		<div className="text-center">
-			{this.state.facebookIsLoggedIn ? <span>Signed into Facebook <br /></span> : null}
-		</div>
-	</div>
-	<Main />
-</div>
+        <div className="modal fade" id="signinModal" tabIndex="-1" role="dialog">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 className="model-title">Sign in</h4>
+              </div>
+              <div className="modal-body">
+                  {!this.state.facebookIsLoggedIn ? <FacebookSignIn /> : null}
+                  {/* this.state.facebookIsLoggedIn ? <FacebookDisconnect /> : null */}
+                  <Link to="add_friends_confirmed" className="btn btn-block btn-social btn-lg btn-twitter">
+                      <i className="fa fa-twitter"></i>Sign in with Twitter
+                  </Link>
+                  <Link to="add_friends_confirmed" className="btn btn-block btn-social btn-lg btn-google">
+                      <i className="fa fa-google"></i>Sign in with Google
+                  </Link>
+              </div>
+            </div>
+          </div>
+        </div>
 		);
 	}
 }
