@@ -3,7 +3,6 @@ import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
 import LanguageSwitchNavigation from "../components/LanguageSwitchNavigation";
 import VoterStore from '../stores/VoterStore';
-import Signin from '../routes/More/SignIn';
 
 export default class MoreMenu extends Component {
   static propTypes = {
@@ -31,7 +30,7 @@ export default class MoreMenu extends Component {
 			<div>
 			    <div className="device-menu--large container-fluid well well-90">
 			        <ul className="list-group">
-			            <li className="list-group-item"><button type="button" className="btn btn-default" data-toggle="modal" data-target="#signinModal" style={{width: '100%'}}>Sign In</button></li>
+			            <li className="list-group-item"><Link to="/more/sign_in">Sign In</Link></li>
 			        </ul>
 			        <h4 className="text-left"></h4>
 			        <ul className="list-group">
@@ -57,7 +56,6 @@ export default class MoreMenu extends Component {
 						    </li>
 			        </ul>
 			    </div>
-        <Signin />
 			</div>
 		);
 	}
