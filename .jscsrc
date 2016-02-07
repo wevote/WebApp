@@ -1,7 +1,5 @@
 {
     "preset": "airbnb",
-    "requireSemicolons": null,
-    "validateQuoteMarks": "'",
-    "validateIndentation": "\t",
-    "excludeFiles": ["node_modules"]
+    "validateQuoteMarks": null,
+    "excludeFiles": ["build/**", "node_modules"]
 }
