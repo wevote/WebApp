@@ -61,3 +61,12 @@
         }
     }
 }
+
+@media all and (min-width : 960px) {
+  #app {
+    border-right: 1px solid #d4d4d4;
+    border-left: 1px solid #d4d4d4;
+    margin: 0 auto;
+    width: 960px;
+  }
+}

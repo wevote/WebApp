@@ -2,6 +2,10 @@
     Anything to do with content, padding, border, margin
 ================================--|--========================================*/
 // Box
+#app {
+  position: relative;
+}
+
 .box-loader {
     max-width: 220px;
     text-align: center;

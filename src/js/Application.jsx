@@ -39,18 +39,18 @@ export default class Application extends Component {
 
 		return (
         <div className="app-base">
-          <div className="row">
-            <div className="container-fluid">
+          <div className="container-fluid">
+            <div className="row">
               <Header />
             </div>
           </div>
-          <div className="row">
-            <div className="container-fluid">
+          <div className="container-fluid">
+            <div className="row">
               <SubHeader />
             </div>
           </div>
-          <div className="row">
-            <div className="container-fluid">
+          <div className="container-fluid">
+            <div className="row">
               <div className="col-lg-4">
                 {
                   voter_list ? voter_list
