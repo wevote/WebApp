@@ -8,6 +8,11 @@
 }
 
 // Bootstrap overrides
+.container-fluid {
+  padding-right: 0;
+  padding-left: 0;
+}
+
 .glyphicon-menu-hamburger:before {
   padding-right: 10px;
 }
