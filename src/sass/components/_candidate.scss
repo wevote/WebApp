@@ -1,13 +1,37 @@
 // scoped variables
+$smallFont: 1.3em;
+$mediumFont: 1.6em;
 $largeFont: 2em;
 .candidate {
   .oppose {
+  }
+  .oppose-emphasis-small {
+    font-size: $smallFont;
+    font-weight: 300;
+  }
+  .oppose-emphasis-medium {
+    color: red;
+    font-size: $mediumFont;
+    font-weight: 500;
+  }
+  .oppose-emphasis-large {
+    color: red;
     font-size: $largeFont;
     font-weight: 700;
   }
   .support {
+    padding-right: 1em;
+  }
+  .support-emphasis-small {
+    font-size: $smallFont;
+    font-weight: 300;
+  }
+  .support-emphasis-medium {
+    font-size: $mediumFont;
+    font-weight: 500;
+  }
+  .support-emphasis-large {
     font-size: $largeFont;
     font-weight: 700;
-    padding-right: 1em;
   }
 }

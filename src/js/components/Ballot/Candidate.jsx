@@ -29,6 +29,23 @@ export default class Candidate extends Component {
       supportCount
     } = this.props;
 
+    var oppose_emphasis = "oppose-emphasis-small";
+    if (opposeCount >= 2) {
+      oppose_emphasis = "oppose-emphasis-medium";
+    }
+
+    var support_emphasis = "support-emphasis-small";
+    if (supportCount == 1) {
+      support_emphasis = "support-emphasis-medium";
+    } else if (supportCount > 1) {
+      if ((supportCount - opposeCount) > 0) {
+        support_emphasis = "support-emphasis-large";
+      } else {
+        // if there isn't more support than opposition, then tone down the emphasis to medium
+        support_emphasis = "support-emphasis-medium";
+      }
+    }
+
     return (
       <section className="candidate list-group-item">
         <StarAction
@@ -64,12 +81,16 @@ export default class Candidate extends Component {
             </h4>
             <ul className="list-style--none">
               <li className="list-inline support">
-                <span>{ supportCount }</span>&nbsp;
-                <span>support</span>
+                <span className={ support_emphasis }>
+                  <span>{ supportCount }</span>&nbsp;
+                  <span>support</span>
+                </span>
               </li>
               <li className="list-inline oppose">
-                <span>{ opposeCount }</span>&nbsp;
-                <span>oppose</span>
+                <span className={ oppose_emphasis }>
+                  <span>{ opposeCount }</span>&nbsp;
+                  <span>oppose</span>
+                </span>
               </li>
             </ul>
           </div>
