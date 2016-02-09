@@ -16,7 +16,10 @@ gulp.task('browserify', function () {
     transform: [babelify]
   })
   .bundle()
-  .on('error', function(err) { console.error(err.toString()) })
+  .on('error', function(err) {
+    console.error(err.toString())
+    this.emit('end')
+  })
   .pipe(source('bundle.js'))
   .pipe(gulp.dest('./build/js'))
   .pipe(browserSync.stream());
