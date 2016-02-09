@@ -53,18 +53,22 @@ export default class SignIn extends Component {
             <h2 className="text-center">Sign In</h2>
             <div className="text-center">
               {!this.state.facebookIsLoggedIn ? <FacebookSignIn /> : null}
-              {/* this.state.facebookIsLoggedIn ? <FacebookDisconnect /> : null */}
-              <Link to="add_friends_confirmed" className="btn btn-block btn-social btn-lg btn-twitter">
+              {this.props.signed_in_personal ? <span>this.props.signed_in_personal</span> : <span>NOT this.props.signed_in_personal</span>}
+              <div>
+                <Link to="add_friends_confirmed" className="btn btn-social btn-lg btn-twitter">
                   <i className="fa fa-twitter"></i>Sign in with Twitter
-              </Link>
-              <Link to="add_friends_confirmed" className="btn btn-block btn-social btn-lg btn-google">
+                </Link>
+              </div>
+              <div>
+                <Link to="add_friends_confirmed" className="btn btn-social btn-lg btn-google">
                   <i className="fa fa-google"></i>Sign in with Google
-              </Link>
+                </Link>
+              </div>
             </div>
             <br />
             <br />
             <div className="text-center">
-              {this.state.facebookIsLoggedIn ? <span>Signed into Facebook <br /></span> : null}
+              {this.state.facebookIsLoggedIn ? <FacebookDisconnect /> : null}
             </div>
           </div>
           <Main />
