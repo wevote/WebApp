@@ -133,9 +133,7 @@ const VoterStore = createStore({
                 VoterAPIWorker
                   .voterRetrieve()
                   .then((response) => {
-                    addVoterToVoterStore(response);
-
-                    _voter_ids.push( response.we_vote_id );
+                    _voter = assign({}, response);
 
                     // this function polls requests for complete status.
                     new Promise((resolve) => {
@@ -174,11 +172,7 @@ const VoterStore = createStore({
   },
 
   getVoterObject: function () {
-      console.log("VoterStore getVoterObject");
-      for (var key in _voter_store) {
-          _voter = _voter_store[key];
-      }
-      return _voter;
+      return assign({}, _voter);
   },
 
   /**
@@ -187,7 +181,7 @@ const VoterStore = createStore({
    */
   getVoterSignedInState: function () {
     console.log("VoterStore getVoterSignedInState, _voter_store: " + _voter_store);
-    return _voter_store.signed_in_personal;
+    return _voter.signed_in_personal;
   },
 
   getVoterPhotoURL: function () {
