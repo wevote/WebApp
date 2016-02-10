@@ -1,5 +1,6 @@
 import FacebookConstants from '../constants/FacebookConstants';
 import FacebookDispatcher from '../dispatcher/FacebookDispatcher';
+import VoterStore from '../stores/VoterStore';
 import {EventEmitter} from 'events';
 import service from '../utils/service';
 
@@ -140,6 +141,7 @@ facebookStore.dispatchToken = FacebookDispatcher.register((action) => {
         facebookStore.setFacebookPictureData(action.actionType, action.data);
         facebookStore.saveFacebookPictureData(action.data);
         facebookStore.saveFacebookAuthData();
+        // VoterStore.updateVoterData(); // This would be nice to get working
     }
 })
 

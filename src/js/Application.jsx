@@ -7,35 +7,27 @@ import SubHeader from './components/SubHeader';
 
 export default class Application extends Component {
     static propTypes = {
-        children: PropTypes.object,
+        children: PropTypes.object
     };
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            voter_object: {}
+        };
     }
 
     componentDidMount() {
         console.log("About to initialize VoterStore");
-        VoterStore.initialize( (voter_list) => this.setState({ voter_list }) );
-
-        // NOTE: This doesn't return voter_photo_url because at the time checked it hasn't finished retrieving yet
-        //var voter_photo_url = VoterStore.getVoterPhotoURL();
-        //console.log("Application.jsx, voter_photo_url: " + voter_photo_url);
-        //var local_voter =  VoterStore.getVoter();
-        //this.setProps({ first_name: local_voter.first_name });
-
-        //var local_voter =  VoterStore.getVoter();
-        //console.log("local_voter.first_name: " + local_voter.first_name);
-        //this.setState({ first_name: local_voter.first_name });
-    }
-
-    componentWillUnmount() {
-        // TODO
+        VoterStore.initialize((voter_object) => {
+            console.log(voter_object, 'voter_object is your object')
+            this.setState({voter_object});
+        });
     }
 
 	render() {
-        var { voter_list } = this.state;
+        var { voter_object } = this.state;
+        console.log('In Application render(), voter_object: ', voter_object);
 
 		return (
         <div className="app-base">
@@ -53,12 +45,12 @@ export default class Application extends Component {
             <div className="row">
               <div className="col-lg-4">
                 {
-                  voter_list ? voter_list
-                    .map( item =>
-                      <MoreMenu key={item.we_vote_id} {...item} />
-                    ) : (
-                      <MoreMenu />
-                    )
+                    voter_object ?
+                    <div>
+                        <MoreMenu {...voter_object} />
+                    </div>
+                    :
+                    <span></span>
                 }
               </div>
               <div className="col-lg-8">

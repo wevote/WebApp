@@ -19,6 +19,7 @@ const url = require('../config').url;
 const CHANGE_EVENT = 'change';
 const CHANGE_LOCATION = 'change_location';
 
+
 let _location = cookies.getItem('location');
 let _position = {};
 let _voter_device_id = cookies.getItem('voter_device_id');
@@ -81,14 +82,14 @@ const VoterStore = createStore({
   initialize: function (callback) {
     console.log("VoterStore.initialize")
     var voterPromiseQueue = [];
-    var getVoterList = this.getVoterList.bind(this);
+    var getVoterObject = this.getVoterObject.bind(this);
 
     if (!callback || typeof callback !== 'function')
       throw new Error('VoterStore: initialize must be called with callback');
 
     // Do we have the Voter data stored in the browser?
     if (Object.keys(_voter_store).length)
-      return callback(getVoterList());
+      return callback(getVoterObject());
 
     else {
 
@@ -165,33 +166,28 @@ const VoterStore = createStore({
 
                         }, 1000);
 
-                    }).then(() => callback(getVoterList()));
+                    }).then(() => callback(getVoterObject()));
                 })
             );
         }
     }
   },
 
-  /**
-   * get ballot ordered key array and ballots
-   * @return {Object} ordered keys and store data
-   */
-  getVoterList: function () {
-      var temp = [];
-      _voter_ids
-        .forEach( (id) =>
-          temp
-            .push(
-              shallowClone( _voter_store[id] )
-            )
-        );
-
-      return temp;
+  getVoterObject: function () {
+      console.log("VoterStore getVoterObject");
+      for (var key in _voter_store) {
+          _voter = _voter_store[key];
+      }
+      return _voter;
   },
 
-  getVoter: function () {
-      console.log("VoterStore getVoter");
-      return _voter;
+  /**
+   * get the signed in state of the voter
+   * @return {Boolean}    is the item signed in or not
+   */
+  getVoterSignedInState: function () {
+    console.log("VoterStore getVoterSignedInState, _voter_store: " + _voter_store);
+    return _voter_store.signed_in_personal;
   },
 
   getVoterPhotoURL: function () {
@@ -213,8 +209,7 @@ const VoterStore = createStore({
     if (!location) throw new Error('Missing voter location');
 
     console.log('setting initial location...');
-    console.warn(`we will need to configure logic & etc. for setting up a
-voters location...
+    console.warn(`we will need to configure logic & etc. for setting up a voters location...
     `);
 
     cookies.setItem('location', location);
@@ -232,9 +227,8 @@ voters location...
   },
 
   /**
-   * @param  {Function} callback
    */
-  _emitChange: function (callback) {
+  emitChange: function () {
     this.emit(CHANGE_EVENT);
   },
 
@@ -256,15 +250,15 @@ voters location...
 AppDispatcher.register( action => {
 
   switch (action.actionType) {
-    case VoterConstants.VOTER_RETRIEVE:
-      VoterAPIWorker
-        .voterRetrieve(
-          () => VoterStore.emitChange()
-      );
-      break;
     case VoterConstants.VOTER_LOCATION_RETRIEVE:
       VoterAPIWorker
         .voterLocationRetrieveFromIP(
+          () => VoterStore.emitChange()
+      );
+      break;
+    case VoterConstants.VOTER_RETRIEVE:
+      VoterAPIWorker
+        .voterRetrieve(
           () => VoterStore.emitChange()
       );
       break;
