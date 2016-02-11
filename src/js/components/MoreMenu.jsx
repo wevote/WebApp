@@ -1,8 +1,8 @@
-const web_app_config = require('../config');
+const web_app_config = require("../config");
 import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
 import LanguageSwitchNavigation from "../components/LanguageSwitchNavigation";
-import VoterStore from '../stores/VoterStore';
+import VoterStore from "../stores/VoterStore";
 
 export default class MoreMenu extends Component {
   static propTypes = {
@@ -17,13 +17,13 @@ export default class MoreMenu extends Component {
   }
 
   render() {
-	var voter_image = '';
+	var voter_image = "";
 	if (this.props.voter_photo_url) {
 		voter_image = <img
 			src={this.props.voter_photo_url}
 			className="img-circle"
-			width='25px'
-			height='25px' />
+			width="25px"
+			height="25px" />
 	}
 
 	return (

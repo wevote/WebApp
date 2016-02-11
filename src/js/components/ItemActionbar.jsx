@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from 'react';
-import BallotActions from '../actions/BallotActions';
-import BallotStore from '../stores/BallotStore';
+import React, { Component, PropTypes } from "react";
+import BallotActions from "../actions/BallotActions";
+import BallotStore from "../stores/BallotStore";
 
 export default class ItemActionbar extends Component {
   static propTypes = {

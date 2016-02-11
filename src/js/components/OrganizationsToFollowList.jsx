@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import { Link } from "react-router";
 
 import FollowOrIgnore from "../components/FollowOrIgnore";
-import VoterGuideActions from '../actions/VoterGuideActions';
+import VoterGuideActions from "../actions/VoterGuideActions";
 
 export default class OrganizationsToFollowList extends Component {
 	render() {
