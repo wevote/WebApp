@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
+import BallotActions from '../../actions/BallotActions';
 import StarAction from '../../components/StarAction';
 import ItemActionbar from '../../components/ItemActionbar';
 
@@ -13,7 +14,9 @@ export default class Candidate extends Component {
     order_on_ballot: PropTypes.string,
     supportCount: PropTypes.number,
     we_vote_id: PropTypes.string,
-    is_starred: PropTypes.bool
+    is_starred: PropTypes.bool,
+    is_support: PropTypes.bool,
+    is_oppose: PropTypes.bool
   };
 
   constructor(props) {
@@ -26,7 +29,9 @@ export default class Candidate extends Component {
       ballot_item_display_name,
       candidate_photo_url,
       opposeCount,
-      supportCount
+      supportCount,
+      is_support,
+      is_oppose
     } = this.props;
 
     var oppose_emphasis = "oppose-emphasis-small";
@@ -95,7 +100,7 @@ export default class Candidate extends Component {
             </ul>
           </div>
         </div>
-        <ItemActionbar we_vote_id={we_vote_id} />
+        <ItemActionbar we_vote_id={we_vote_id} action={BallotActions} is_support={is_support} is_oppose={is_oppose} />
       </section>
     );
   }

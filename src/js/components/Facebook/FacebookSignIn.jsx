@@ -1,5 +1,8 @@
 import React from 'react';
 import FacebookActionCreators from '../../actions/FacebookActionCreators';
+import VoterStore from '../../stores/VoterStore';
+
+const VoterActions = require('../../actions/VoterActions');
 
 class FacebookSignIn extends React.Component {
     constructor(props) {
@@ -13,8 +16,9 @@ class FacebookSignIn extends React.Component {
         );
     }
 
-    idClickFacebookLoginButton(e) {
-        FacebookActionCreators.login()
+    didClickFacebookLoginButton(e) {
+        console.log("didClickFacebookLoginButton");
+        FacebookActionCreators.login();
     }
 }
 

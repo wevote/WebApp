@@ -34,6 +34,7 @@ const FacebookActionCreators = {
     },
 
     login: () => {
+      try {
         window.FB.login((response) => {
             if (response.status === 'connected') {
                 // Logged into We Vote and Facebook
@@ -47,6 +48,9 @@ const FacebookActionCreators = {
                 // The person is not logged into Facebook
             }
         });
+      } catch (e) {
+        // If FB already logged in, carry on
+      }
     },
 
     logout: () => {
@@ -55,6 +59,14 @@ const FacebookActionCreators = {
                 actionType: FacebookConstants.FACEBOOK_LOGGED_OUT,
                 data: response
             })
+        })
+    },
+
+    disconnectFromFacebook: () => {
+        // Removing connection between We Vote and Facebook
+        FacebookDispatcher.dispatch({
+            actionType: FacebookConstants.FACEBOOK_SIGN_IN_DISCONNECT,
+            data: true
         })
     },
 

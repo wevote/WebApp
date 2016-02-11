@@ -1,19 +1,20 @@
 import React, { Component, PropTypes } from 'react';
+import BallotActions from '../actions/BallotActions';
 import BallotStore from '../stores/BallotStore';
 
 export default class ItemActionbar extends Component {
   static propTypes = {
     we_vote_id: PropTypes.string.isRequired,
-    voterSupports: PropTypes.string, // Is "support" selected?
-    voterOpposes: PropTypes.string // Is "oppose" selected?
+    is_support: PropTypes.bool,
+    is_oppose: PropTypes.bool
   };
 
   constructor (props) {
     super(props);
 
     this.state = {
-      voterSupports: this.props.voterSupports,
-      voterOpposes: this.props.voterOpposes,
+      is_support: this.props.is_support,
+      is_oppose: this.props.is_oppose
     };
   }
 
@@ -26,40 +27,60 @@ export default class ItemActionbar extends Component {
   }
 
   _onChange () {
-    // BallotStore.getBallotItemByWeVoteId(
-    //   this.props.we_vote_id, ballot_item => this.setState({
-    //     voterSupports: ballot_item.voterSupports,
-    //     voterOpposes: ballot_item.voterOpposes,
-    //   })
-    // );
+     BallotStore.getBallotItemByWeVoteId(
+       this.props.we_vote_id, ballot_item => this.setState({
+         is_support: ballot_item.is_support,
+         is_oppose: ballot_item.is_oppose
+       })
+     );
   }
 
   toggleSupport () {
-    if (this.state.voterSupports == "Yes")
-      this.props.action.supportOff(this.props.we_vote_id);
+    if (this.props.is_support)
+      BallotActions.voterStopSupportingSave(this.props.we_vote_id);
     else
-      this.props.action.supportOn(this.props.we_vote_id);
+      BallotActions.voterSupportingSave(this.props.we_vote_id);
   }
 
   toggleOppose () {
-    if (this.state.voterOpposes == "Yes")
-      this.props.action.opposeOff(this.props.we_vote_id);
+    if (this.props.is_oppose)
+      BallotActions.voterStopOpposingSave(this.props.we_vote_id);
     else
-      this.props.action.opposeOn(this.props.we_vote_id);
+      BallotActions.voterOpposingSave(this.props.we_vote_id);
   }
 
   render () {
     return (
       <div className="item-actionbar row">
           <span className="col-xs-4" onClick={ this.toggleSupport.bind(this) }>
-            <span className="glyphicon glyphicon-small glyphicon-arrow-up">
-            </span>
-            &nbsp;Support {this.state.voterSupports}
+            {this.state.is_support ?
+                <span>
+                  <span className="glyphicon glyphicon-small glyphicon-arrow-up">
+                  </span>
+                  <strong> Supports</strong>
+                </span>
+              :
+                <span>
+                  <span className="glyphicon glyphicon-small glyphicon-arrow-up">
+                  </span>
+                  Support
+                </span>
+            }
           </span>
           <span className="col-xs-4" onClick={ this.toggleOppose.bind(this) }>
-            <span className="glyphicon glyphicon-small glyphicon-arrow-down">
-            </span>
-            &nbsp;Oppose {this.state.voterOpposes}
+            {this.state.is_oppose ?
+                <span>
+                  <span className="glyphicon glyphicon-small glyphicon-arrow-down">
+                  </span>
+                  <strong> Opposes</strong>
+                </span>
+              :
+                <span>
+                  <span className="glyphicon glyphicon-small glyphicon-arrow-down">
+                  </span>
+                  Oppose
+                </span>
+            }
           </span>
           <span className="col-xs-4" >
             <span className="glyphicon glyphicon-small glyphicon-share-alt">
