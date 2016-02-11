@@ -68,7 +68,7 @@ gulp.task('watch', ['build'], function () {
   gulp.watch(['./src/sass/base/base/fonts/**'], ['copy-fonts']);
   gulp.watch(['./src/css/**/*.css'], ['copy-css']);
   gulp.watch(['./src/sass/**/*.scss'], ['sass'])
-  gulp.watch(['./src/js/**/*.js*'], ['browserify'])
+  gulp.watch(['./src/js/**/*.js?(x)'], ['browserify'])
 })
 
 gulp.task('default', [
