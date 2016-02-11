@@ -15,6 +15,8 @@ const MEASURE = 'MEASURE';
 function addItemsToBallotStore (ballot_item_list) {
   ballot_item_list.forEach( ballot_item => {
     _ballot_store[ballot_item.we_vote_id] = shallowClone(ballot_item);
+    _ballot_store[ballot_item.we_vote_id].opposeCount = 0;
+    _ballot_store[ballot_item.we_vote_id].supportCount = 0;
   });
 }
 
@@ -108,6 +110,7 @@ const BallotAPIWorker = {
   },
 
   voterSupportingSave: function (we_vote_id, success ) {
+    console.log('voterSupportingSave, we_vote_id:, ', we_vote_id);
     return service.get({
       endpoint: 'voterSupportingSave',
       query: {
@@ -118,6 +121,7 @@ const BallotAPIWorker = {
   },
 
   voterStopSupportingSave: function (we_vote_id, success ) {
+    console.log('voterStopSupportingSave, we_vote_id:, ', we_vote_id);
     return service.get({
       endpoint: 'voterStopSupportingSave',
       query: {
@@ -128,7 +132,7 @@ const BallotAPIWorker = {
   },
 
   voterOpposingSave: function (we_vote_id, success ) {
-    console.log('voterOpposingSave, we_vote_id:, ', we_vote_id, ' _ballot_store: ', _ballot_store)
+    console.log('voterOpposingSave, we_vote_id:, ', we_vote_id);
     return service.get({
       endpoint: 'voterOpposingSave',
       query: {
@@ -139,6 +143,7 @@ const BallotAPIWorker = {
   },
 
   voterStopOpposingSave: function (we_vote_id, success ) {
+    console.log('voterStopOpposingSave, we_vote_id:, ', we_vote_id);
     return service.get({
       endpoint: 'voterStopOpposingSave',
       query: {
@@ -227,18 +232,17 @@ const BallotStore = createStore({
                       response
                         .candidate_list
                           .forEach( (candidate) => {
-                            var { we_vote_id: candidate_id } = candidate;
-                            cand_list . push (candidate_id);
-                            _ballot_store [ candidate_id ] = shallowClone( candidate );
-
+                            var { we_vote_id: candidate_we_vote_id } = candidate;
+                            cand_list . push (candidate_we_vote_id);
+                            _ballot_store [ candidate_we_vote_id ] = shallowClone( candidate );
 
                             promiseQueue
                               .push (
                                 BallotAPIWorker
-                                  .positionOpposeCountForBallotItem (candidate_id)
+                                  .positionOpposeCountForBallotItem (candidate_we_vote_id)
                                   .then( (res) =>
                                     _ballot_store [
-                                      candidate_id
+                                      candidate_we_vote_id
                                     ] . opposeCount = res.count
                                   )
                             );
@@ -246,10 +250,10 @@ const BallotStore = createStore({
                             promiseQueue
                               .push (
                                 BallotAPIWorker
-                                  .positionSupportCountForBallotItem (candidate_id)
+                                  .positionSupportCountForBallotItem (candidate_we_vote_id)
                                   .then( (res) =>
                                     _ballot_store [
-                                      candidate_id
+                                      candidate_we_vote_id
                                     ] . supportCount = res.count
                                   )
                             );
@@ -257,10 +261,10 @@ const BallotStore = createStore({
                             promiseQueue
                               .push(
                                 BallotAPIWorker
-                                  .voterStarStatusRetrieve(candidate_id)
+                                  .voterStarStatusRetrieve(candidate_we_vote_id)
                                   .then ( (res) =>
                                     _ballot_store [
-                                      candidate_id
+                                      candidate_we_vote_id
                                     ] . is_starred = res.is_starred
                                   )
                             );
@@ -268,14 +272,14 @@ const BallotStore = createStore({
                             promiseQueue
                               .push(
                                 BallotAPIWorker
-                                  .voterPositionRetrieve(candidate_id)
+                                  .voterPositionRetrieve(candidate_we_vote_id)
                                   .then ( (res) => {
                                     _ballot_store [
-                                      candidate_id
+                                      candidate_we_vote_id
                                     ] . is_oppose = res.is_oppose;
 
                                     _ballot_store [
-                                      candidate_id
+                                      candidate_we_vote_id
                                     ] . is_support = res.is_support;
                                   })
                             );
@@ -341,9 +345,45 @@ const BallotStore = createStore({
   },
 
   /**
-   * get the star state of a ballot item by its id
-   * @param  {String} id ballot items we_vote_id
-   * @return {Boolean}    is the item starred or not
+   * get the number of orgs and friends that the Voter follows who support this ballot item
+   * @param  {String} we_vote_id ballot items we_vote_id
+   * @return {Boolean} is the item starred or not?
+   */
+  getSupportCount: function (we_vote_id) {
+    return _ballot_store[we_vote_id].supportCount;
+  },
+
+  /**
+   * get the number of orgs and friends that the Voter follows who oppose this ballot item
+   * @param  {String} we_vote_id ballot items we_vote_id
+   * @return {Boolean} is the item starred or not?
+   */
+  getOpposeCount: function (we_vote_id) {
+    return _ballot_store[we_vote_id].opposeCount;
+  },
+
+  /**
+   * get the ballot item by its we_vote_id, and return whether the voter opposes or not
+   * @param  {String} we_vote_id for the ballot item
+   * @return {Boolean} is the item supported by the voter or not?
+   */
+  getIsSupportState: function (we_vote_id) {
+    return _ballot_store[we_vote_id].is_support;
+  },
+
+  /**
+   * get the ballot item by its we_vote_id, and return whether the voter opposes or not
+   * @param  {String} we_vote_id for the ballot item
+   * @return {Boolean} is the item opposed by voter or not?
+   */
+  getIsOpposeState: function (we_vote_id) {
+    return _ballot_store[we_vote_id].is_oppose;
+  },
+
+  /**
+   * get the ballot item by its we_vote_id, and return whether the voter has starred it or not
+   * @param  {String} we_vote_id for the ballot item
+   * @return {Boolean} is the item opposed by voter or not?
    */
   getStarState: function (we_vote_id) {
     return _ballot_store[we_vote_id].is_starred;
@@ -402,22 +442,62 @@ function toggleStarState(we_vote_id) {
 }
 
  /**
- * toggle the support state of a ballot item by its we_vote_id
+ * toggle the support state of a ballot item to on by its we_vote_id
  */
-function setLocalSupportState(we_vote_id, is_supporting) {
+function setLocalSupportOnState(we_vote_id) {
   var item = _ballot_store[we_vote_id];
-  item.is_support = is_supporting;
-  //console.log(_ballot_store[we_vote_id]);
+  //console.log('setLocalSupportOnState BEFORE, is_support:', item.is_support, ', supportCount', item.supportCount);
+  if (item.is_support != true) {
+    // Cheat and increase the counter without hitting the API
+    item.supportCount += 1;
+  }
+  item.is_support = true;
+  //console.log('setLocalSupportOnState AFTER, is_support:', item.is_support, ', supportCount', item.supportCount);
   return true;
 }
 
  /**
- * toggle the oppose state of a ballot item by its we_vote_id
+ * toggle the support state of a ballot item to off by its we_vote_id
  */
-function setLocalOpposeState(we_vote_id, is_opposing) {
+function setLocalSupportOffState(we_vote_id) {
   var item = _ballot_store[we_vote_id];
-  item.is_oppose = is_opposing;
-  //console.log(_ballot_store[we_vote_id]);
+  //console.log('setLocalSupportOffState BEFORE, is_support:', item.is_support, ', supportCount', item.supportCount);
+  if (item.is_support == true) {
+    // Cheat and decrease the counter without hitting the API
+    item.supportCount -= 1;
+  }
+  item.is_support = false;
+  //console.log('setLocalSupportOffState AFTER, is_support:', item.is_support, ', supportCount', item.supportCount);
+  return true;
+}
+
+ /**
+ * toggle the oppose state of a ballot item to On by its we_vote_id
+ */
+function setLocalOpposeOnState(we_vote_id) {
+  var item = _ballot_store[we_vote_id];
+  //console.log('setLocalOpposeOnState BEFORE, is_oppose:', item.is_oppose, ', opposeCount', item.opposeCount);
+  if (item.is_oppose != true) {
+    // Cheat and increase the counter without hitting the API
+    item.opposeCount += 1;
+  }
+  item.is_oppose = true;
+  //console.log('setLocalOpposeOnState AFTER, is_oppose:', item.is_oppose, ', opposeCount', item.opposeCount);
+  return true;
+}
+
+ /**
+ * toggle the oppose state of a ballot item to Off by its we_vote_id
+ */
+function setLocalOpposeOffState(we_vote_id) {
+  var item = _ballot_store[we_vote_id];
+  //console.log('setLocalOpposeOffState BEFORE, is_oppose:', item.is_oppose, ', opposeCount', item.opposeCount);
+  if (item.is_oppose == true) {
+    // Cheat and decrease the counter without hitting the API
+    item.opposeCount -= 1;
+  }
+  item.is_oppose = false;
+  //console.log('setLocalOpposeOffState AFTER, is_oppose:', item.is_oppose, ', opposeCount', item.opposeCount);
   return true;
 }
 
@@ -426,36 +506,43 @@ AppDispatcher.register( action => {
 
   switch (action.actionType) {
     case BallotConstants.VOTER_SUPPORTING_SAVE:
-      BallotAPIWorker
-        .voterSupportingSave(
-          we_vote_id, () => setLocalSupportState(we_vote_id, true) && setLocalOpposeState(we_vote_id, false) && BallotStore.emitChange()
+      BallotAPIWorker.voterSupportingSave(
+          we_vote_id, () => setLocalSupportOnState(we_vote_id)
+            && setLocalOpposeOffState(we_vote_id)
+            && BallotStore.emitChange()
       );
       break;
     case BallotConstants.VOTER_STOP_SUPPORTING_SAVE:
       BallotAPIWorker.voterStopSupportingSave(
-          we_vote_id, () => setLocalSupportState(we_vote_id, false) && BallotStore.emitChange()
+          we_vote_id, () => setLocalSupportOffState(we_vote_id)
+            && BallotStore.emitChange()
       );
       break;
     case BallotConstants.VOTER_OPPOSING_SAVE:
       BallotAPIWorker.voterOpposingSave(
-        we_vote_id, () => setLocalOpposeState(we_vote_id, true) && setLocalSupportState(we_vote_id, false) && BallotStore.emitChange()
+        we_vote_id, () => setLocalOpposeOnState(we_vote_id)
+          && setLocalSupportOffState(we_vote_id)
+          && BallotStore.emitChange()
       );
       break;
     case BallotConstants.VOTER_STOP_OPPOSING_SAVE:
       BallotAPIWorker.voterStopOpposingSave(
-        we_vote_id, () => setLocalOpposeState(we_vote_id, false) && BallotStore.emitChange()
+          we_vote_id, () => setLocalOpposeOffState(we_vote_id)
+            && BallotStore.emitChange()
       );
       break;
     case BallotConstants.VOTER_STAR_ON_SAVE:
       BallotAPIWorker
         .voterStarOnSave(
-          we_vote_id, () => toggleStarState(we_vote_id) && BallotStore.emitChange()
+          we_vote_id, () => toggleStarState(we_vote_id)
+            && BallotStore.emitChange()
       );
       break;
     case BallotConstants.VOTER_STAR_OFF_SAVE:
       BallotAPIWorker
         .voterStarOffSave(
-          we_vote_id, () => toggleStarState(we_vote_id) && BallotStore.emitChange()
+          we_vote_id, () => toggleStarState(we_vote_id)
+            && BallotStore.emitChange()
       );
       break;
   }

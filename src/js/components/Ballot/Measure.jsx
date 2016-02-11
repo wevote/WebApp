@@ -10,8 +10,8 @@ export default class Measure extends Component {
     we_vote_id: PropTypes.string.isRequired,
     supportCount: PropTypes.number.isRequired,
     opposeCount: PropTypes.number.isRequired,
-    voterSupports: PropTypes.string,
-    voterOpposes: PropTypes.string
+    is_support: PropTypes.bool,
+    is_oppose: PropTypes.bool
   };
 
   constructor (props) {
@@ -52,7 +52,7 @@ export default class Measure extends Component {
           { this.state.opposeCount } oppose
         </p>
         <ItemActionbar we_vote_id={this.props.we_vote_id} action={BallotActions}
-                       voterSupports={this.props.voterSupports} voterOpposes={this.props.voterOpposes}/>
+                       is_support={this.props.is_support} is_oppose={this.props.is_oppose}/>
       </div>
     );
   }

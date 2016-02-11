@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
 import BallotActions from '../../actions/BallotActions';
+import BallotStore from "../../stores/BallotStore";
 import StarAction from '../../components/StarAction';
 import ItemActionbar from '../../components/ItemActionbar';
 
@@ -19,8 +20,28 @@ export default class Candidate extends Component {
     is_oppose: PropTypes.bool
   };
 
-  constructor(props) {
+  constructor (props) {
     super(props);
+
+    this.state = {
+      opposeCount: this.props.opposeCount,
+      supportCount: this.props.supportCount
+    };
+  }
+
+  componentDidMount () {
+    BallotStore.addChangeListener(this._onChange.bind(this));
+  }
+
+  componentWillUnmount () {
+    BallotStore.removeChangeListener(this._onChange.bind(this));
+  }
+
+  _onChange () {
+    this.setState({
+      opposeCount: BallotStore.getOpposeCount(this.props.we_vote_id),
+      supportCount: BallotStore.getSupportCount(this.props.we_vote_id)
+    });
   }
 
   render() {
@@ -28,22 +49,20 @@ export default class Candidate extends Component {
       we_vote_id,
       ballot_item_display_name,
       candidate_photo_url,
-      opposeCount,
-      supportCount,
       is_support,
       is_oppose
     } = this.props;
 
     var oppose_emphasis = "oppose-emphasis-small";
-    if (opposeCount >= 2) {
+    if (this.state.opposeCount >= 2) {
       oppose_emphasis = "oppose-emphasis-medium";
     }
 
     var support_emphasis = "support-emphasis-small";
-    if (supportCount == 1) {
+    if (this.state.supportCount == 1) {
       support_emphasis = "support-emphasis-medium";
-    } else if (supportCount > 1) {
-      if ((supportCount - opposeCount) > 0) {
+    } else if (this.state.supportCount > 1) {
+      if ((this.state.supportCount - this.state.opposeCount) > 0) {
         support_emphasis = "support-emphasis-large";
       } else {
         // if there isn't more support than opposition, then tone down the emphasis to medium
@@ -87,13 +106,13 @@ export default class Candidate extends Component {
             <ul className="list-style--none">
               <li className="list-inline support">
                 <span className={ support_emphasis }>
-                  <span>{ supportCount }</span>&nbsp;
+                  <span>{ this.state.supportCount }</span>&nbsp;
                   <span>support</span>
                 </span>
               </li>
               <li className="list-inline oppose">
                 <span className={ oppose_emphasis }>
-                  <span>{ opposeCount }</span>&nbsp;
+                  <span>{ this.state.opposeCount }</span>&nbsp;
                   <span>oppose</span>
                 </span>
               </li>
