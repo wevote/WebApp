@@ -80,6 +80,13 @@ class FacebookStore extends EventEmitter {
         }
     }
 
+    disconnectFromFacebook() {
+      FacebookAPIWorker
+        .facebookDisconnect(
+          () => this.emit(FACEBOOK_CHANGE_EVENT)
+      );
+    }
+
     emitChange() {
         this.emit(FACEBOOK_CHANGE_EVENT);
     }
@@ -111,6 +118,18 @@ const FacebookAPIWorker = {
         facebook_email: facebook_email
       }, success
     });
+  },
+
+  /**
+   * Disconnect facebook from this account by removing the facebook_id from the db
+   * @param  {String}   voter_device_id will be passed
+   * @return {Boolean}  Was the disconnection successful?
+   */
+  facebookDisconnect: function (success ) {
+    return service.get({
+      endpoint: 'facebookDisconnect',
+      data: success
+    });
   }
 };
 
@@ -126,10 +145,55 @@ facebookStore.dispatchToken = FacebookDispatcher.register((action) => {
         console.log("FACEBOOK_LOGGED_IN");
         facebookStore.setFacebookAuthData(action.data);
         facebookStore.saveFacebookAuthData();
+
+        function sleep(milliseconds) {
+          var start = new Date().getTime();
+          for (var i = 0; i < 1e7; i++) {
+            if ((new Date().getTime() - start) > milliseconds){
+              break;
+            }
+          }
+        }
+
+        sleep(3000);
+        console.log("FACEBOOK_LOGGED_IN: Trying to retrieve fresh voter data");
+        var voter = VoterStore.getVoterObject();
+        console.log('Before ', voter);
+        VoterStore.voterRetrieveFresh((voter_object) => {
+          console.log('facebookStore : FACEBOOK_INITIALIZED', voter_object);
+        });
+
+        sleep(3000);
+        var voter = VoterStore.getVoterObject();
+        console.log('After ', voter);
     }
 
     if (action.actionType == FacebookConstants.FACEBOOK_LOGGED_OUT) {
         facebookStore.setFacebookAuthData(action.data);
+    }
+
+    if (action.actionType == FacebookConstants.FACEBOOK_SIGN_IN_DISCONNECT) {
+        console.log("FACEBOOK_SIGN_IN_DISCONNECT");
+        facebookStore.disconnectFromFacebook();
+
+        function sleep(milliseconds) {
+          var start = new Date().getTime();
+          for (var i = 0; i < 1e7; i++) {
+            if ((new Date().getTime() - start) > milliseconds){
+              break;
+            }
+          }
+        }
+
+        sleep(3000);
+        console.log("FACEBOOK_SIGN_IN_DISCONNECT: Trying to retrieve fresh voter data");
+        var voter = VoterStore.getVoterObject();
+        console.log('Before ', voter);
+        VoterStore.voterRetrieveFresh(voter.we_vote_id);
+
+        sleep(3000);
+        var voter = VoterStore.getVoterObject();
+        console.log('After ', voter);
     }
 
     if (action.actionType == FacebookConstants.FACEBOOK_GETTING_PICTURE) {

@@ -19,7 +19,7 @@ export default class BallotItem extends Component {
     google_civic_election_id: PropTypes.string,
     id: PropTypes.string,
     local_ballot_order: PropTypes.number,
-    we_vote_id: PropTypes.string,
+    we_vote_id: PropTypes.string, // Either an office or measure we_vote_id
     is_support: PropTypes.string,
     is_oppose: PropTypes.string,
     is_starred: PropTypes.bool

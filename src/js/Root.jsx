@@ -44,7 +44,8 @@ import AddFriend                        from './routes/AddFriend';
 class Root extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
-    firstVisit: PropTypes.bool.isRequired
+    firstVisit: PropTypes.bool.isRequired,
+    //voter_object: PropTypes.object
   };
 
   constructor(props) {
@@ -53,7 +54,9 @@ class Root extends Component {
 
   render() {
     const { history } = this.props;
+    //var { voter_object } = this.props;
 
+    // Add to <Router?   voter_object={voter_object}
     return (
       <Router history={history} >
         {
@@ -62,7 +65,6 @@ class Root extends Component {
           * First time visitors should be directed here.
           */
          }
-
         <Route path="/intro" component={Intro}>
           <Route path="/intro/opinions" component={IntroOpinions} />
           <Route path="/intro/contests" component={IntroContests} />

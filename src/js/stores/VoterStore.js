@@ -1,37 +1,23 @@
 import { createStore } from '../utils/createStore';
 import { shallowClone } from '../utils/object-utils';
-
-const assign = require('object-assign');
-const request = require('superagent');
-const cookies = require('../utils/cookies');
-
-const VoterActions = require('../actions/VoterActions');
-const VoterConstants = require('../constants/VoterConstants');
-const AppDispatcher = require('../dispatcher/AppDispatcher');
-
 import service from '../utils/service';
 
-const EventEmitter = require('events').EventEmitter;
-const dispatcher = require('../dispatcher/AppDispatcher');
-
-const url = require('../config').url;
-
+const AppDispatcher = require('../dispatcher/AppDispatcher');
+const assign = require('object-assign');
 const CHANGE_EVENT = 'change';
 const CHANGE_LOCATION = 'change_location';
-
+const cookies = require('../utils/cookies');
+const EventEmitter = require('events').EventEmitter;
+const url = require('../config').url;
+const VoterActions = require('../actions/VoterActions');
+const VoterConstants = require('../constants/VoterConstants');
 
 let _location = cookies.getItem('location');
 let _position = {};
 let _voter_device_id = cookies.getItem('voter_device_id');
 let _voter_photo_url = '';
-let _voter_store = {};
 let _voter_ids = [];
 let _voter = {};
-
-function addVoterToVoterStore (voter_incoming) {
-  console.log("voter_incoming: " + voter_incoming.we_vote_id);
-  _voter_store[voter_incoming.we_vote_id] = shallowClone(voter_incoming);
-}
 
 const VoterAPIWorker = {
   generateVoterDeviceId: function ( results ) {
@@ -80,7 +66,7 @@ const VoterStore = createStore({
    * @return {Boolean}
    */
   initialize: function (callback) {
-    console.log("VoterStore.initialize")
+    console.log("VoterStore.initialize");
     var voterPromiseQueue = [];
     var getVoterObject = this.getVoterObject.bind(this);
 
@@ -88,7 +74,7 @@ const VoterStore = createStore({
       throw new Error('VoterStore: initialize must be called with callback');
 
     // Do we have the Voter data stored in the browser?
-    if (Object.keys(_voter_store).length)
+    if (Object.keys(_voter).length)
       return callback(getVoterObject());
 
     else {
@@ -126,13 +112,15 @@ const VoterStore = createStore({
         }
 
         if (! _voter_photo_url ) {
-            console.log('No voter_photo_url');
 
             voterPromiseQueue
                 .push(
                 VoterAPIWorker
                   .voterRetrieve()
                   .then((response) => {
+                    //addVoterToVoterStore(response);
+
+                    //_voter_ids.push( response.we_vote_id );
                     _voter = assign({}, response);
 
                     // this function polls requests for complete status.
@@ -144,12 +132,10 @@ const VoterStore = createStore({
 
                             var { we_vote_id } = response;
 
-                            _voter = _voter_store [we_vote_id];
-                            console.log('_voter set.');
+                            //_voter = _voter_store [we_vote_id];
+                            // TODO: Deprecate this?
                             if ( _voter ) {
-                                console.log('_voter photo: ' + _voter.facebook_profile_image_url_https);
                                 _voter_photo_url = _voter.voter_photo_url;
-                                console.log('_voter_photo_url: ' + _voter_photo_url);
                             }
 
                             if (counted.indexOf(we_vote_id) < 0) {
@@ -172,6 +158,11 @@ const VoterStore = createStore({
   },
 
   getVoterObject: function () {
+      //console.log("VoterStore getVoterObject");
+      //for (var key in _voter_store) {
+      //    _voter = _voter_store[key];
+      //}
+      //return _voter;
       return assign({}, _voter);
   },
 
@@ -180,7 +171,7 @@ const VoterStore = createStore({
    * @return {Boolean}    is the item signed in or not
    */
   getVoterSignedInState: function () {
-    console.log("VoterStore getVoterSignedInState, _voter_store: " + _voter_store);
+    //console.log("VoterStore getVoterSignedInState, _voter_store: " + _voter_store);
     return _voter.signed_in_personal;
   },
 
@@ -207,7 +198,7 @@ const VoterStore = createStore({
     `);
 
     cookies.setItem('location', location);
-    VoterActions.ChangeLocation(location)
+    VoterActions.ChangeLocation(location);
 
     return location;
   },
@@ -218,6 +209,50 @@ const VoterStore = createStore({
    */
   getLocation: function () {
     return _location;
+  },
+
+  voterRetrieveFresh: function (callback) {
+    console.log('voterRetrieveFresh ');
+    var voterPromiseQueue = [];
+    var getVoterObject = this.getVoterObject.bind(this);
+
+    if (!callback || typeof callback !== 'function')
+      throw new Error('VoterStore: voterRetrieveFresh must be called with callback');
+
+    voterPromiseQueue
+        .push(
+        VoterAPIWorker
+          .voterRetrieve()
+          .then((response) => {
+            //addVoterToVoterStore(response);
+            //
+            //_voter_ids.push( response.we_vote_id );
+            _voter = assign({}, response);
+
+            // this function polls requests for complete status.
+            new Promise((resolve) => {
+                var counted = [];
+                var count = 0;
+
+                var interval = setInterval(() => {
+
+                    var { we_vote_id } = response;
+
+                    if (counted.indexOf(we_vote_id) < 0) {
+                        count += 1;
+                        counted.push(we_vote_id);
+                    }
+
+                    if (count === voterPromiseQueue.length && voterPromiseQueue.length !== 0) {
+                        clearInterval(interval);
+                        Promise.all(voterPromiseQueue).then(resolve);
+                    }
+
+                }, 1000);
+
+            }).then(() => callback(getVoterObject()));
+        })
+    );
   },
 
   /**
@@ -244,13 +279,13 @@ const VoterStore = createStore({
 AppDispatcher.register( action => {
 
   switch (action.actionType) {
-    case VoterConstants.VOTER_LOCATION_RETRIEVE:
+    case VoterConstants.VOTER_LOCATION_RETRIEVE: // ChangeLocation
       VoterAPIWorker
         .voterLocationRetrieveFromIP(
           () => VoterStore.emitChange()
       );
       break;
-    case VoterConstants.VOTER_RETRIEVE:
+    case VoterConstants.VOTER_RETRIEVE: // voterRetrieve
       VoterAPIWorker
         .voterRetrieve(
           () => VoterStore.emitChange()

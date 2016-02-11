@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from 'react';
-import BallotStore from '../stores/BallotStore';
-import BallotActions from '../actions/BallotActions';
+import React, { Component, PropTypes } from "react";
+import BallotStore from "../stores/BallotStore";
+import BallotActions from "../actions/BallotActions";
 
-const floatRight = { float: 'right' };
+const floatRight = { float: "right" };
 
 export default class StarAction extends Component {
   static propTypes = {
@@ -30,12 +30,12 @@ export default class StarAction extends Component {
   }
 
   componentDidMount () {
-    console.log('DidMount star action, is_starred: ' + this.state.is_starred);
+    //console.log("DidMount star action, is_starred: " + this.state.is_starred);
     BallotStore.addChangeListener(this._onChange.bind(this));
   }
 
   componentWillUnmount() {
-    console.log('WillUnmount star action, is_starred: ' + this.state.is_starred);
+    //console.log("WillUnmount star action, is_starred: " + this.state.is_starred);
     BallotStore.removeChangeListener(this._onChange.bind(this));
   }
 

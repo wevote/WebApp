@@ -1,8 +1,8 @@
 "use strict";
 
-import React, { Component, PropTypes } from 'react';
-import { Button, ButtonToolbar } from 'react-bootstrap';
-import VoterGuideStore from '../stores/VoterGuideStore';
+import React, { Component, PropTypes } from "react";
+import { Button, ButtonToolbar } from "react-bootstrap";
+import VoterGuideStore from "../stores/VoterGuideStore";
 
 export default class FollowOrIgnore extends Component {
     static propTypes = {
@@ -51,16 +51,16 @@ export default class FollowOrIgnore extends Component {
 
     render() {
         var floatRight = {
-            float: 'right'
+            float: "right"
         };
         var action_text;
         if (this.props.action_text) {
             action_text = this.props.action_text;
         } else {
             if (this.state.OrganizationFollowed == "Yes") {
-                action_text = 'Followed';
+                action_text = "Followed";
             } else {
-                action_text = 'Follow';
+                action_text = "Follow";
             }
         }
         var ignore_code;

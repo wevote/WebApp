@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-// import 'stylesheets/main.scss';
+// import "stylesheets/main.scss";
 
 export default class AddressBox extends Component {
     static propTypes = {
@@ -9,7 +9,7 @@ export default class AddressBox extends Component {
     render () {
         return (
             <div>
-                <input type='text' placeholder='Enter Your Address' />
+                <input type="text" placeholder="Enter Your Address" />
             </div>
         );
     }

@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router';
+import React, { Component } from "react";
+import { Link } from "react-router";
 
-// import 'stylesheets/main.scss';
+// import "stylesheets/main.scss";
 
 export default class Navigator extends Component {
   render() {

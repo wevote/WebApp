@@ -1,19 +1,20 @@
-import React, { Component, PropTypes } from 'react';
-import BallotStore from '../stores/BallotStore';
+import React, { Component, PropTypes } from "react";
+import BallotActions from "../actions/BallotActions";
+import BallotStore from "../stores/BallotStore";
 
 export default class ItemActionbar extends Component {
   static propTypes = {
     we_vote_id: PropTypes.string.isRequired,
-    voterSupports: PropTypes.string, // Is "support" selected?
-    voterOpposes: PropTypes.string // Is "oppose" selected?
+    is_support: PropTypes.bool,
+    is_oppose: PropTypes.bool
   };
 
   constructor (props) {
     super(props);
 
     this.state = {
-      voterSupports: this.props.voterSupports,
-      voterOpposes: this.props.voterOpposes,
+      is_support: this.props.is_support,
+      is_oppose: this.props.is_oppose
     };
   }
 
@@ -26,46 +27,70 @@ export default class ItemActionbar extends Component {
   }
 
   _onChange () {
-    // BallotStore.getBallotItemByWeVoteId(
-    //   this.props.we_vote_id, ballot_item => this.setState({
-    //     voterSupports: ballot_item.voterSupports,
-    //     voterOpposes: ballot_item.voterOpposes,
-    //   })
-    // );
+    this.setState({
+      is_support: BallotStore.getIsSupportState(this.props.we_vote_id),
+      is_oppose: BallotStore.getIsOpposeState(this.props.we_vote_id)
+    });
   }
 
-  toggleSupport () {
-    if (this.state.voterSupports == "Yes")
-      this.props.action.supportOff(this.props.we_vote_id);
-    else
-      this.props.action.supportOn(this.props.we_vote_id);
+  supportItem () {
+    BallotActions.voterSupportingSave(this.props.we_vote_id);
   }
 
-  toggleOppose () {
-    if (this.state.voterOpposes == "Yes")
-      this.props.action.opposeOff(this.props.we_vote_id);
-    else
-      this.props.action.opposeOn(this.props.we_vote_id);
+  stopSupportingItem () {
+    BallotActions.voterStopSupportingSave(this.props.we_vote_id);
+  }
+
+  opposeItem () {
+    BallotActions.voterOpposingSave(this.props.we_vote_id);
+  }
+
+  stopOpposingItem () {
+    BallotActions.voterStopOpposingSave(this.props.we_vote_id);
   }
 
   render () {
     return (
       <div className="item-actionbar row">
-          <span className="col-xs-4" onClick={ this.toggleSupport.bind(this) }>
-            <span className="glyphicon glyphicon-small glyphicon-arrow-up">
+        {this.state.is_support ?
+          <span className="col-xs-4" onClick={ this.stopSupportingItem.bind(this) }>
+            <span>
+              <span className="glyphicon glyphicon-small glyphicon-arrow-up">
+              </span>
+              <strong> Support</strong>
             </span>
-            &nbsp;Support {this.state.voterSupports}
           </span>
-          <span className="col-xs-4" onClick={ this.toggleOppose.bind(this) }>
-            <span className="glyphicon glyphicon-small glyphicon-arrow-down">
+         :
+          <span className="col-xs-4" onClick={ this.supportItem.bind(this) }>
+            <span>
+              <span className="glyphicon glyphicon-small glyphicon-arrow-up">
+              </span>
+              Support
             </span>
-            &nbsp;Oppose {this.state.voterOpposes}
           </span>
-          <span className="col-xs-4" >
-            <span className="glyphicon glyphicon-small glyphicon-share-alt">
+        }
+        {this.state.is_oppose ?
+          <span className="col-xs-4" onClick={ this.stopOpposingItem.bind(this) }>
+            <span>
+              <span className="glyphicon glyphicon-small glyphicon-arrow-down">
+              </span>
+              <strong> Oppose</strong>
             </span>
-            &nbsp;Share
           </span>
+          :
+          <span className="col-xs-4" onClick={ this.opposeItem.bind(this) }>
+            <span>
+              <span className="glyphicon glyphicon-small glyphicon-arrow-down">
+              </span>
+              Oppose
+            </span>
+          </span>
+        }
+        <span className="col-xs-4" >
+          <span className="glyphicon glyphicon-small glyphicon-share-alt">
+          </span>
+          &nbsp;Share
+        </span>
       </div>
     );
   }
