@@ -37,7 +37,7 @@ gulp.task('sass', function () {
   .pipe(sass())
   .pipe(gulp.dest('./build/css'))
   .pipe(browserSync.stream());
-})
+}) 
 
 gulp.task('clean:build', function () {
   return del.sync(['./build/**'])
