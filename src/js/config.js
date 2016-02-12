@@ -16,5 +16,6 @@ module.exports = {
     },
 
     // FACEBOOK_APP_ID: '1097389196952441' // DaleMcGrew Facebook App Id, https://wevote.me
-    FACEBOOK_APP_ID: '868492333200013'  // wevote-dev, http://localhost:3000
+    FACEBOOK_APP_ID: '1104012436290117' // We Vote - Test App
+    // FACEBOOK_APP_ID: '868492333200013'  // wevote-dev, http://localhost:3000
 };

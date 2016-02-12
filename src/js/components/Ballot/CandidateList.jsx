@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import Candidate from '../../components/Ballot/Candidate';
+import CandidateItem from '../../components/Ballot/CandidateItem';
 
 export default class CandidateList extends Component {
   static propTypes = {
@@ -13,7 +13,7 @@ export default class CandidateList extends Component {
   render () {
     return (
       <article className="list-group">
-        { this.props.children.map( (child) => <Candidate key={child.we_vote_id} {...child} />) }
+        { this.props.children.map( (child) => <CandidateItem key={child.we_vote_id} {...child} />) }
       </article>
     );
   }

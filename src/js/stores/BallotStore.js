@@ -217,14 +217,14 @@ const BallotStore = createStore({
                     .voterPositionRetrieve( we_vote_id )
               );
 
-            } else {
+            } else { // Ballot item is Office
 
               promiseQueue
                 .push(
 
                   BallotAPIWorker
                     .candidatesRetrieve ( we_vote_id )
-                    .then( (response) => {
+                      .then( (response) => {
                       var cand_list = _ballot_store [
                         response.office_we_vote_id
                       ] . candidate_list = [];

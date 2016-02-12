@@ -16,7 +16,7 @@ import Settings                         from './routes/Settings/Settings';
 import Location                         from './routes/Settings/Location';
 
 /* Pages that use Ballot Navigation */
-import BallotIndex			                from './routes/Ballot/BallotIndex';
+import BallotIndex			            from './routes/Ballot/BallotIndex';
 import Ballot                           from './routes/Ballot/Ballot';
 import Candidate                        from './routes/Ballot/Candidate';
 
