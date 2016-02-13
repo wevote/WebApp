@@ -225,6 +225,7 @@ const BallotStore = createStore({
                   BallotAPIWorker
                     .candidatesRetrieve ( we_vote_id )
                       .then( (response) => {
+                      var office_display_name = _ballot_store[response.office_we_vote_id]['ballot_item_display_name'];
                       var cand_list = _ballot_store [
                         response.office_we_vote_id
                       ] . candidate_list = [];
@@ -235,6 +236,7 @@ const BallotStore = createStore({
                             var { we_vote_id: candidate_we_vote_id } = candidate;
                             cand_list . push (candidate_we_vote_id);
                             _ballot_store [ candidate_we_vote_id ] = shallowClone( candidate );
+                            _ballot_store [ candidate_we_vote_id ].office_display_name = office_display_name;
 
                             promiseQueue
                               .push (
