@@ -54,7 +54,7 @@ export default class ItemActionbar extends Component {
       <div className="item-actionbar row">
         {this.state.is_support ?
           <span className="col-xs-4" onClick={ this.stopSupportingItem.bind(this) }>
-            <span>
+            <span className="inline-phone">
               <span className="glyphicon glyphicon-small glyphicon-arrow-up">
               </span>
               <strong> Support</strong>
@@ -62,7 +62,7 @@ export default class ItemActionbar extends Component {
           </span>
          :
           <span className="col-xs-4" onClick={ this.supportItem.bind(this) }>
-            <span>
+            <span className="inline-phone">
               <span className="glyphicon glyphicon-small glyphicon-arrow-up">
               </span>
               Support
@@ -71,7 +71,7 @@ export default class ItemActionbar extends Component {
         }
         {this.state.is_oppose ?
           <span className="col-xs-4" onClick={ this.stopOpposingItem.bind(this) }>
-            <span>
+            <span className="inline-phone">
               <span className="glyphicon glyphicon-small glyphicon-arrow-down">
               </span>
               <strong> Oppose</strong>
@@ -79,7 +79,7 @@ export default class ItemActionbar extends Component {
           </span>
           :
           <span className="col-xs-4" onClick={ this.opposeItem.bind(this) }>
-            <span>
+            <span className="inline-phone">
               <span className="glyphicon glyphicon-small glyphicon-arrow-down">
               </span>
               Oppose
@@ -87,9 +87,11 @@ export default class ItemActionbar extends Component {
           </span>
         }
         <span className="col-xs-4" >
-          <span className="glyphicon glyphicon-small glyphicon-share-alt">
+          <span className="inline-phone">
+            <span className="glyphicon glyphicon-small glyphicon-share-alt">
+            </span>
+            &nbsp;Share
           </span>
-          &nbsp;Share
         </span>
       </div>
     );
