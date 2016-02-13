@@ -19,24 +19,24 @@ Instead of direct check-ins to this repository, we use pull requests. Here is an
   “WebApp” does not conflict with the cloned folder from https://github.com/wevote/WebApp
 3. Add the repository you forked as the upstream repository
   * To keep your fork synced with wevote/WebApp, use these the command line commands:
-  
-    cd /Users/<Your Home Directory>/<Your Projects Folder>/PersonalGitForks/WebApp
-    git remote add upstream git@github.com:wevote/WebApp.git
-    
+```
+cd /Users/<Your Home Directory>/<Your Projects Folder>/PersonalGitForks/WebApp
+git remote add upstream git@github.com:wevote/WebApp.git
+```
   * Confirm with "git remote -v"
-  
+```
     $ git remote -v
     origin	https://github.com/DaleMcGrew/WebApp.git (fetch)
     origin	https://github.com/DaleMcGrew/WebApp.git (push)
     upstream	git@github.com:wevote/WebApp.git (fetch)
     upstream	git@github.com:wevote/WebApp.git (push)
-
+```
   * For detailed instructions, see: [Step 3: Configure Git to sync your fork](https://help.github.com/articles/fork-a-repo/)
-    
 4. To keep your personal fork synchronized with wevote/WebApp
+```
     git fetch upstream
-    
-Once you do this, you can `git remote -a` to see what repositories you have available to you.
+```
+  * Once you do this, you can `git remote -a` to see what repositories you have available to you.
   * For detailed instructions, see: [Syncing a fork](https://help.github.com/articles/syncing-a-fork/)
   * If you get an error like "Permission denied (publickey)" see: [Error permission denied public key](https://help.github.com/articles/error-permission-denied-publickey/)
   * http://stackoverflow.com/questions/12940626/github-error-message-permission-denied-publickey
