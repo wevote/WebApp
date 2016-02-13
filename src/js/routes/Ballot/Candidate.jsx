@@ -97,7 +97,7 @@ export default class Candidate extends Component {
             </div>
           </div>
           <div className="col-xs-8">
-            <div>Running for US House - District 12</div>
+            <div>{ candidate.office_display_name }</div>
             <ItemActionBar2 we_vote_id={candidate.we_vote_id}
                            is_support={candidate.is_support} is_oppose={candidate.is_oppose}
                            supportCount={candidate.supportCount} opposeCount={candidate.opposeCount} />
