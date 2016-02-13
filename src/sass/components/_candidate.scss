@@ -5,33 +5,25 @@ $largeFont: 2em;
 .candidate {
   .oppose {
   }
-  .oppose-emphasis-small {
+  .oppose-emphasis-small, .support-emphasis-small {
     font-size: $smallFont;
     font-weight: 300;
+    @media all and (max-width: 480px) {
+      font-size: 1em;
+    }
   }
-  .oppose-emphasis-medium {
-    color: red;
+  .oppose-emphasis-medium, .support-emphasis-large {
+    color: rgba(215, 73, 55, 1);
+  }
+  .oppose-emphasis-medium, .support-emphasis-medium {
     font-size: $mediumFont;
     font-weight: 500;
   }
-  .oppose-emphasis-large {
-    color: red;
+  .oppose-emphasis-large, .support-emphasis-large {
     font-size: $largeFont;
     font-weight: 700;
   }
   .support {
     padding-right: 1em;
-  }
-  .support-emphasis-small {
-    font-size: $smallFont;
-    font-weight: 300;
-  }
-  .support-emphasis-medium {
-    font-size: $mediumFont;
-    font-weight: 500;
-  }
-  .support-emphasis-large {
-    font-size: $largeFont;
-    font-weight: 700;
   }
 }

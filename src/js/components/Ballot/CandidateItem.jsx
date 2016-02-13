@@ -78,7 +78,7 @@ export default class Candidate extends Component {
 
         <div className="row" style={{ paddingBottom: '10px' }}>
           <div
-            className="col-xs-4"
+            className="col-xs-6"
             style={candidate_photo_url ? {} : {height:'95px'}}>
 
             {/* adding inline style to img until Rob can style... */}
@@ -95,7 +95,7 @@ export default class Candidate extends Component {
 
             }
           </div>
-          <div className="col-xs-8">
+          <div className="col-xs-6">
             <h4 className="bufferNone">
               <Link className="linkLight"
                     to={"/candidate/" + we_vote_id }
