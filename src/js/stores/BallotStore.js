@@ -5,12 +5,12 @@ import { shallowClone } from '../utils/object-utils';
 const AppDispatcher = require('../dispatcher/AppDispatcher');
 const BallotConstants = require('../constants/BallotConstants');
 
-
 let _ballot_store = {};
 let _ballot_order_ids = [];
 let _google_civic_election_id = null;
 
 const MEASURE = 'MEASURE';
+var BALLOT_CHANGE_EVENT = 'BALLOT_CHANGE_EVENT';
 
 function addItemsToBallotStore (ballot_item_list) {
   ballot_item_list.forEach( ballot_item => {
@@ -45,6 +45,19 @@ const BallotAPIWorker = {
     return service.get({
       endpoint: 'voterBallotItemsRetrieve',
       success
+    });
+  },
+
+  positionListForBallotItem : function( we_vote_id, success_func) {
+    return service.get({
+      endpoint: 'positionListForBallotItem',
+      query: {
+         ballot_item_id: _ballot_store[we_vote_id].id,
+         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+      },
+      success: function(res){
+        success_func(res);
+      }
     });
   },
 
@@ -346,6 +359,32 @@ const BallotStore = createStore({
       return temp;
   },
 
+ //  emitChange: function () {
+ //    this.emit(BALLOT_CHANGE_EVENT);
+ //  },
+ //
+ //  addChangeListener: function(callback) {
+ //    console.log("Change listener added");
+ //    this.on(BALLOT_CHANGE_EVENT, callback);
+ //  },
+ //
+ //  removeChangeListener: function(callback) {
+ //    console.log("Change listener removed!");
+ //   this.removeListener(BALLOT_CHANGE_EVENT, callback);
+ // },
+
+  getCandidatePositionsByWeVoteId: function(candidate_we_vote_id){
+    BallotAPIWorker.positionListForBallotItem(candidate_we_vote_id, function(res){
+      var we_vote_id = candidate_we_vote_id;
+      _ballot_store[we_vote_id].position_list = res.position_list;
+      BallotStore.emitChange();
+    }.bind(this))
+  },
+
+  getOrganization: function(candidate_we_vote_id, organization_we_vote_id){
+    return _ballot_store[candidate_we_vote_id].position_list.organization_we_vote_id;
+  },
+
   /**
    * get the number of orgs and friends that the Voter follows who support this ballot item
    * @param  {String} we_vote_id ballot items we_vote_id
@@ -505,8 +544,12 @@ function setLocalOpposeOffState(we_vote_id) {
 
 AppDispatcher.register( action => {
   var { we_vote_id } = action;
+    switch (action.actionType) {
 
-  switch (action.actionType) {
+    case BallotConstants.DOWNLOAD_ORGANIZATIONS:
+      BallotStore.getCandidatePositionsByWeVoteId(we_vote_id);
+    break;
+
     case BallotConstants.VOTER_SUPPORTING_SAVE:
       BallotAPIWorker.voterSupportingSave(
           we_vote_id, () => setLocalSupportOnState(we_vote_id)
@@ -514,6 +557,7 @@ AppDispatcher.register( action => {
             && BallotStore.emitChange()
       );
       break;
+
     case BallotConstants.VOTER_STOP_SUPPORTING_SAVE:
       BallotAPIWorker.voterStopSupportingSave(
           we_vote_id, () => setLocalSupportOffState(we_vote_id)

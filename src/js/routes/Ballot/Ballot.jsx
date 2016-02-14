@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 
 import BallotStore from '../../stores/BallotStore';
 import BallotItem from '../../components/Ballot/BallotItem';
+import BallotActions from '../../actions/BallotActions';
 
 export default class Ballot extends Component {
   static propTypes = {
