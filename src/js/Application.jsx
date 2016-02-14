@@ -43,7 +43,7 @@ export default class Application extends Component {
       </div>
       <div className="container-fluid">
         <div className="row">
-          <div className="col-lg-4">
+          <div className="col-xs-4 col-sm-4 col-md-4 no-show">
             {
                 voter_object ?
                 <div>
@@ -53,7 +53,7 @@ export default class Application extends Component {
                 <span></span>
             }
           </div>
-          <div className="col-lg-8">
+          <div className="col-xs-8 col-sm-8 col-md-8">
             { this.props.children }
           </div>
         </div>

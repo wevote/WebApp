@@ -6,4 +6,10 @@
     width: 25%;
   }
 
+  @media all and (max-width: 480px) {
+    .inline-phone {
+      font-size: .9em;
+    }
+  }
+
 }

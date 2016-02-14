@@ -3,9 +3,6 @@
 [![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=develop)](https://travis-ci.org/wevote/WebApp) | 
 [![Coverage Status](https://coveralls.io/repos/github/wevote/WebApp/badge.svg?branch=master)](https://coveralls.io/github/wevote/WebApp?branch=develop)
 
-    npm install
-    npm start 
-
 This WebApp repository contains a Node/React/Flux Javascript application. Using data from
 Google Civic API, Vote Smart, MapLight, TheUnitedStates.io and the Voting Information Project, we give voters a
 social way to interact with ballot data.
@@ -75,3 +72,8 @@ You should be able to visit WebApp here:
 ## After Installation: Working with WebApp Day-to-Day
 
 [Read about working with WebApp on a daily basis](README_WORKING_WITH_WEB_APP.md)
+
+## SemVer
+
+We follow [SemVer](http://semver.org/) for our releases. Please read if you plan
+to tag for any releases.

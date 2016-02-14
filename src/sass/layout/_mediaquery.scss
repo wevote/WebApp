@@ -62,6 +62,15 @@
     }
 }
 
+@media all and (max-width: 695px) {
+  .no-show {
+    display: none;
+  }
+  .col-xs-8 {
+    width: 100%;
+  }
+}
+
 @media all and (min-width : 960px) {
   #app {
     border-right: 1px solid #d4d4d4;
