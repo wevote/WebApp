@@ -1,4 +1,4 @@
-import service from '../utils/service';
+import { get } from '../utils/service';
 import { createStore } from '../utils/createStore';
 import { shallowClone } from '../utils/object-utils';
 
@@ -25,6 +25,133 @@ function ballotItemIsMeasure (we_vote_id) {
 }
 
 const BallotAPIWorker = {
+  voterBallotItemsRetrieveFromGoogleCivic: function (text_for_map_search, success ) {
+    return get({
+      endpoint: 'voterBallotItemsRetrieveFromGoogleCivic',
+      query: { text_for_map_search }, success
+    });
+  },
+
+  candidatesRetrieve: function (office_we_vote_id, success ) {
+    return get({
+      endpoint: 'candidatesRetrieve',
+      query: { office_we_vote_id },
+      success
+    });
+  },
+
+  // get the ballot items
+  voterBallotItemsRetrieve: function ( success ) {
+    return get({
+      endpoint: 'voterBallotItemsRetrieve',
+      success
+    });
+  },
+
+  positionOpposeCountForBallotItem: function (we_vote_id, success ) {
+    return get({
+      endpoint: 'positionOpposeCountForBallotItem',
+      query: {
+         ballot_item_id: _ballot_store[we_vote_id].id,
+         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+      }, success
+    });
+  },
+
+  // get measure support an opposition
+  positionSupportCountForBallotItem: function (we_vote_id, success ) {
+    return get({
+      endpoint: 'positionSupportCountForBallotItem',
+      query: {
+         ballot_item_id: _ballot_store[we_vote_id].id,
+         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+      }, success
+    });
+  },
+
+  voterPositionRetrieve: function ( ballot_item_we_vote_id, success )  {
+    return get({
+      endpoint: 'voterPositionRetrieve',
+      query: {
+        ballot_item_we_vote_id: ballot_item_we_vote_id,
+        kind_of_ballot_item: _ballot_store[ballot_item_we_vote_id].kind_of_ballot_item
+      }, success
+    });
+  },
+
+  voterStarStatusRetrieve: function ( we_vote_id, success ) {
+    return get({
+      endpoint: 'voterStarStatusRetrieve',
+      query: {
+        ballot_item_id: _ballot_store[we_vote_id].id,
+        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+      }, success
+    });
+  },
+
+  voterStarOnSave: function (we_vote_id, success ) {
+    return get({
+      endpoint: 'voterStarOnSave',
+      query: {
+        ballot_item_id: _ballot_store[we_vote_id].id,
+        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+      }, success
+    });
+  },
+
+  voterStarOffSave: function (we_vote_id, success ) {
+    return get({
+      endpoint: 'voterStarOffSave',
+      query: {
+        ballot_item_id: _ballot_store[we_vote_id].id,
+        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+      }, success
+    });
+  },
+
+  voterSupportingSave: function (we_vote_id, success ) {
+    console.log('voterSupportingSave, we_vote_id:, ', we_vote_id);
+    return get({
+      endpoint: 'voterSupportingSave',
+      query: {
+        ballot_item_id: _ballot_store[we_vote_id].id,
+        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+      }, success
+    });
+  },
+
+  voterStopSupportingSave: function (we_vote_id, success ) {
+    console.log('voterStopSupportingSave, we_vote_id:, ', we_vote_id);
+    return get({
+      endpoint: 'voterStopSupportingSave',
+      query: {
+        ballot_item_id: _ballot_store[we_vote_id].id,
+        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+      }, success
+    });
+  },
+
+  voterOpposingSave: function (we_vote_id, success ) {
+    console.log('voterOpposingSave, we_vote_id:, ', we_vote_id);
+    return get({
+      endpoint: 'voterOpposingSave',
+      query: {
+        ballot_item_id: _ballot_store[we_vote_id].id,
+        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+      }, success
+    });
+  },
+
+  voterStopOpposingSave: function (we_vote_id, success ) {
+    console.log('voterStopOpposingSave, we_vote_id:, ', we_vote_id);
+    return get({
+      endpoint: 'voterStopOpposingSave',
+      query: {
+        ballot_item_id: _ballot_store[we_vote_id].id,
+        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+      }, success
+    });
+  }
 };
 
 const BallotStore = createStore({
@@ -98,7 +225,6 @@ const BallotStore = createStore({
                   BallotAPIWorker
                     .candidatesRetrieve ( we_vote_id )
                       .then( (response) => {
-                      var office_display_name = _ballot_store[response.office_we_vote_id]['ballot_item_display_name'];
                       var cand_list = _ballot_store [
                         response.office_we_vote_id
                       ] . candidate_list = [];
@@ -109,7 +235,6 @@ const BallotStore = createStore({
                             var { we_vote_id: candidate_we_vote_id } = candidate;
                             cand_list . push (candidate_we_vote_id);
                             _ballot_store [ candidate_we_vote_id ] = shallowClone( candidate );
-                            _ballot_store [ candidate_we_vote_id ].office_display_name = office_display_name;
 
                             promiseQueue
                               .push (

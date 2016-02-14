@@ -19,9 +19,7 @@ const defaults = {
   query: {}
 };
 
-const service = {};
-
-function get (options) {
+export function get (options) {
   var opts = assign(defaults, options);
   opts.WE_VOTE_SERVER_API_ROOT_URL = url.resolve(opts.WE_VOTE_SERVER_API_ROOT_URL, opts.endpoint);
 
@@ -49,7 +47,7 @@ function get (options) {
       }
     })
   );
-};
+}
 
 export function voterBallotItemsRetrieveFromGoogleCivic (text_for_map_search, success ) {
   return get({
@@ -61,8 +59,7 @@ export function voterBallotItemsRetrieveFromGoogleCivic (text_for_map_search, su
 export function candidatesRetrieve (office_we_vote_id, success ) {
   return get({
     endpoint: 'candidatesRetrieve',
-    query: { office_we_vote_id },
-    success
+    query: { office_we_vote_id }, success
   });
 }
 

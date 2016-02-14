@@ -1,5 +1,5 @@
 import assign from 'object-assign';
-import service from '../utils/service';
+import { deviceIdGenerate, voterLocationRetrieveFromIP } from '../utils/service';
 import { createStore } from '../utils/createStore';
 
 import AppDispatcher from '../dispatcher/AppDispatcher';
@@ -13,9 +13,19 @@ let _voter_device_id = cookies.getItem('voter_device_id');
 let _location = cookies.getItem('location');
 let _voter = {};
 
-const VoterAPIWorker = {
+function error (err) {
+  console.error('WVError:', err.message);
+}
 
-};
+function setVoterDeviceId (id) {
+  _voter_device_id = id;
+  cookies.setItem('voter_device_id', id, Infinity)
+}
+
+function setVoterLocation (location) {
+  _location = location;
+  cookies.setItem('location', location, Infinity);
+}
 
 const VoterStore = createStore({
 
@@ -24,63 +34,23 @@ const VoterStore = createStore({
    * and callback with the voter items
    * @return {Boolean}
    */
-  initialize: function (callback) {
-    console.log("VoterStore.initialize");
-    var voterPromiseQueue = [];
-    var getVoterObject = this.getVoterObject.bind(this);
-
+  getDeviceId: function (callback) {
     if (!callback || typeof callback !== 'function')
-      throw new Error('VoterStore: initialize must be called with callback');
+      throw new Error('VoterStore: getDeviceId must be called with callback');
 
-    // Do we have the Voter data stored in the browser?
-    if (Object.keys(_voter).length)
-      return callback(getVoterObject());
+    if ( !_voter_device_id ) deviceIdGenerate()
+        .then ( res => {
+          var {voter_device_id: id} = res;
+          setVoterDeviceId(id);
+          callback(true, id);
+        })
+        .catch( error );
 
-    else {
-      if ( ! _voter_device_id ) {
-        VoterAPIWorker
-          .deviceIdGenerate( (res, a) => {
-            console.log(res, a);
-            debugger;
-          })
-          .then ( (response) => {
-            debugger;
-            _voter_device_id = response.voter_device_id;
+    else callback( false, _voter_device_id );
+  },
 
-            cookies.setItem('voter_device_id', _voter_device_id, Infinity); // Set to never expire
-          })
-          .catch( (err) => {
-            debugger;
-            console.log(err);
-          })
-        }
-      //
-      //   VoterAPIWorker
-      //     .createVoter()
-      // }
-      //
-      // if (! _location ) {
-      //   VoterAPIWorker
-      //     .voterLocationRetrieveFromIP()
-      //       .then ( (response) => {
-      //         _location = response.voter_location;
-      //
-      //         cookies.setItem('location', _location);
-      //       })
-      // }
-      //
-      // if (! _voter_photo_url ) {
-      //
-      //   VoterAPIWorker
-      //     .voterRetrieve()
-      //     .then((response) => {
-      //       //addVoterToVoterStore(response);
-      //
-      //       //_voter_ids.push( response.we_vote_id );
-      //       _voter = assign({}, response);
-      //   })
-      // }
-    }
+  signInStatus: function (callback) {
+    callback(assign({}, _voter))
   },
 
   getVoterObject: function () {
@@ -101,9 +71,10 @@ const VoterStore = createStore({
     return _voter.signed_in_personal;
   },
 
-  getVoterPhotoURL: function () {
+  getVoterPhotoURL: function (callback) {
       console.log("VoterStore getVoterPhotoURL");
-      return _voter_photo_url;
+      if ( _voter_photo_url ) callback(_voter_photo_url);
+      else callback(new Error('missing voter photo url'));
   },
 
   /**
@@ -129,12 +100,23 @@ const VoterStore = createStore({
     return location;
   },
 
+  saveLocation: function (location) {
+    cookies.setItem('location', location);
+    VoterActions.ChangeLocation(location);
+  },
+
   /**
    * get the Voters location
    * @return {String} location
    */
-  getLocation: function () {
-    return _location;
+  getLocation: function (callback) {
+    if (_location) callback(_location)
+    else voterLocationRetrieveFromIP()
+      .then( response => {
+        var { voter_location: location } = response;
+        setVoterLocation(location);
+        callback(location);
+      });
   }
 });
 
@@ -142,10 +124,7 @@ AppDispatcher.register( action => {
 
   switch (action.actionType) {
     case VoterConstants.VOTER_CHANGE_LOCATION: // ChangeLocation
-      VoterAPIWorker
-        .voterLocationRetrieveFromIP(
-          () => VoterStore.emitChange()
-      );
+      VoterStore.emitChange();
       break;
     default:
       break;
