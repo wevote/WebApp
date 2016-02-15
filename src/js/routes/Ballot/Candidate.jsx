@@ -41,6 +41,7 @@ export default class Candidate extends Component {
     }
 
     return (
+    <section className="candidate">
       <div className='candidate-detail-route'>
         {/*
         <header className="row">
@@ -97,13 +98,15 @@ export default class Candidate extends Component {
             </div>
           </div>
           <div className="col-xs-8">
-            <div>{ candidate.office_display_name }</div>
+            <div>Running for <span className="running-for-office-emphasis">{ candidate.office_display_name }</span></div>
             <ItemActionBar2 we_vote_id={candidate.we_vote_id}
                            is_support={candidate.is_support} is_oppose={candidate.is_oppose}
                            supportCount={candidate.supportCount} opposeCount={candidate.opposeCount} />
           </div>
         </div>
         <div className="container-fluid well well-90">
+          {/* Post privately box */}
+          {/*
           <ul className="list-group">
               <li className="list-group-item">
                   <div>
@@ -112,12 +115,15 @@ export default class Candidate extends Component {
                   </div>
               </li>
           </ul>
+          */}
           <ul className="list-group">
+
+            {/* One organization's Position on this Candidate */}
             <li className="list-group-item">
                 <div className="row">
                   <div className="pull-left col-xs-2 col-md-4">
                       <Link to="ballot_candidate_one_org_position" params={{id: 2, org_id: 27}}>
-                        <i className={"icon-icon-org-placeholder-6-2 icon-light"}></i>
+                        <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"></i>
                       </Link>
                   </div>
                   <div className="pull-right col-xs-10  col-md-8">
@@ -131,22 +137,18 @@ export default class Candidate extends Component {
                 </div>
                 <div className="row">
                     Integer ut bibendum ex. Suspendisse eleifend mi accumsan, euismod enim at, malesuada nibh.
-                    Duis a eros fringilla, dictum leo vitae, vulputate mi. Nunc vitae neque nec erat fermentum... (more)
+                    Duis a eros fringilla, dictum leo vitae, vulputate mi. Nunc vitae neque nec erat fermentum.
                 </div>
+                {/* Likes coming in a later version
                 <br />
                 23 Likes<br />
-            </li>
-            <li className="list-group-item">
-                <span className="glyphicon glyphicon-small glyphicon-tower"></span>&nbsp;Another Organization<br />{/* TODO icon-org-placeholder */}
-                <span>opposes</span> <span>Yesterday at 2:34 PM</span><br />
-                Integer ut bibendum ex. Suspendisse eleifend mi accumsan, euismod enim at, malesuada nibh.
-                Duis a eros fringilla, dictum leo vitae, vulputate mi. Nunc vitae neque nec erat fermentum... (more)<br />
-                5 Likes<br />
+                */}
             </li>
           </ul>
         </div>
 
       </div>
+    </section>
     );
 
   }

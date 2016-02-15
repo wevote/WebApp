@@ -29,7 +29,7 @@ export default class Connect extends Component {
 				<div className="container-fluid well well-90">
 					<h4 className="text-left">Add Friends</h4>
 			        <span style={floatRight}>
-			            <Link to="/connect/add"><Button bsStyle="primary">Next &gt;</Button></Link>
+			            <Link to="/friends/add"><Button bsStyle="primary">Next &gt;</Button></Link>
 			        </span>
 			        <p>Friends can see what you support and oppose. We never sell emails.<br />
 			        <br /></p>

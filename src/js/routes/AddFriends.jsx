@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { Input } from 'react-bootstrap';
-
 import BottomContinueNavigation from '../components/Navigation/BottomContinueNavigation';
 
-export default class AddFriend extends Component {
+{/* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/89479679 */}
+
+export default class AddFriends extends Component {
 	constructor(props) {
 		super(props);
 	}
