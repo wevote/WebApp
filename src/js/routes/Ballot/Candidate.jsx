@@ -12,7 +12,10 @@ import StarAction from '../../components/StarAction';
 export default class Candidate extends Component {
   static propTypes = {
     //history: PropTypes.func.isRequired,
+    history: PropTypes.string,
+    oppose_on: PropTypes.boolean,
     params: PropTypes.object.isRequired,
+    support_on: PropTypes.boolean
   };
 
   constructor(props) {
@@ -41,8 +44,8 @@ export default class Candidate extends Component {
     }
 
     return (
-    <section className="candidate">
-      <div className='candidate-detail-route'>
+    <section className="candidate well well-90 gutter-top--small">
+      <div className="candidate-detail-route list-group-item">
         {/*
         <header className="row">
           <div className="col-xs-6 col-md-6 text-center">
@@ -97,14 +100,16 @@ export default class Candidate extends Component {
                 Courtesy of Ballotpedia.org */}
             </div>
           </div>
-          <div className="col-xs-8">
-            <div>Running for <span className="running-for-office-emphasis">{ candidate.office_display_name }</span></div>
-            <ItemActionBar2 we_vote_id={candidate.we_vote_id}
-                           is_support={candidate.is_support} is_oppose={candidate.is_oppose}
-                           supportCount={candidate.supportCount} opposeCount={candidate.opposeCount} />
+          <div className="row" style={{ "paddingBottom": "10" }}>
+            <div className="col-xs-8">
+              <div>Running for <span className="running-for-office-emphasis">{ candidate.office_display_name }</span></div>
+            </div>
           </div>
+          <ItemActionBar2 we_vote_id={candidate.we_vote_id}
+                         is_support={candidate.is_support} is_oppose={candidate.is_oppose}
+                          supportCount={candidate.supportCount} opposeCount={candidate.opposeCount} />
         </div>
-        <div className="container-fluid well well-90">
+        <div className="container-fluid well-90">
           {/* Post privately box */}
           {/*
           <ul className="list-group">
