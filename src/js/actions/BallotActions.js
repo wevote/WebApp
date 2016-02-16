@@ -21,20 +21,6 @@ module.exports = {
     });
   },
 
-  voterSupportingSave: function (we_vote_id) {  // VOTER_SUPPORTING_SAVE
-    AppDispatcher.dispatch({
-      actionType: BallotConstants.VOTER_SUPPORTING_SAVE,
-      we_vote_id
-    });
-  },
-
-  voterSupportingSave: function (we_vote_id) {  // VOTER_SUPPORTING_SAVE
-    AppDispatcher.dispatch({
-      actionType: BallotConstants.VOTER_SUPPORTING_SAVE,
-      we_vote_id
-    });
-  },
-
   voterStopSupportingSave: function (we_vote_id) {  // VOTER_STOP_SUPPORTING_SAVE
     AppDispatcher.dispatch({
       actionType: BallotConstants.VOTER_STOP_SUPPORTING_SAVE,
