@@ -38,7 +38,7 @@ import Requests                         from './routes/Requests';
 import Connect                          from './routes/Connect';
 import Activity                         from './routes/Activity';
 import NotFound                         from './routes/NotFound';
-import AddFriend                        from './routes/AddFriend';
+import AddFriends                       from './routes/AddFriends';
 
 
 class Root extends Component {
@@ -80,7 +80,7 @@ class Root extends Component {
         <Route path="/opinions" component={Opinions} />
 
         <Route path="/friends" >
-          <Route path="add" component={AddFriend} />
+          <Route path="add" component={AddFriends} />
           <Route path="remove" />
         </Route>
 
