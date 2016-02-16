@@ -6,7 +6,7 @@ var PositionConstants = require('../constants/PositionConstants');
 //  When action calls one of these functions, we are telling the code in the AppDispatcher block to run
 module.exports = {
 
-  positionRetrieved: function( we_vote_id, payload) {
+  positionRetrieved: function (we_vote_id, payload) {
     AppDispatcher.dispatch({
       actionType: PositionConstants.POSITION_RETRIEVED,
       payload: payload,

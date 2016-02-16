@@ -11,7 +11,6 @@ let _ballot_order_ids = [];
 let _google_civic_election_id = null;
 
 const MEASURE = 'MEASURE';
-var BALLOT_CHANGE_EVENT = 'BALLOT_CHANGE_EVENT';
 
 function addItemsToBallotStore (ballot_item_list) {
   ballot_item_list.forEach( ballot_item => {
@@ -357,20 +356,6 @@ const BallotStore = createStore({
 
       return temp;
   },
-
-  emitChange: function () {
-    this.emit(BALLOT_CHANGE_EVENT);
-  },
-
-  addChangeListener: function(callback) {
-    // console.log("Change listener added");
-    this.on(BALLOT_CHANGE_EVENT, callback);
-  },
-
-  removeChangeListener: function(callback) {
-    // console.log("Change listener removed!");
-   this.removeListener(BALLOT_CHANGE_EVENT, callback);
- },
 
   fetchCandidatePositionsByWeVoteId: function(candidate_we_vote_id){
     BallotAPIWorker.positionListForBallotItem(candidate_we_vote_id,

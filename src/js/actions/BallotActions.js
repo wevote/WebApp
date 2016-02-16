@@ -6,7 +6,7 @@ var BallotConstants = require('../constants/BallotConstants');
 //  When action calls one of these functions, we are telling the code in the AppDispatcher block to run
 module.exports = {
 
-  positionsRetrieved: function( we_vote_id, payload) {
+  positionsRetrieved: function (we_vote_id, payload) {
     AppDispatcher.dispatch({
       actionType: BallotConstants.POSITIONS_RETRIEVED,
       payload: payload,

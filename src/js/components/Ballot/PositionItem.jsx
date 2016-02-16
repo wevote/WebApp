@@ -28,7 +28,7 @@ export default class PositionItem extends Component {
     console.log(this.state.position);
   }
 
-  render() {
+  render () {
     var position = this.state.position;
     var supportText = position.is_oppose ? "Opposes" : "Supports";
     return (

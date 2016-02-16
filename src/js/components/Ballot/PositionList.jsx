@@ -7,26 +7,26 @@ export default class PositionList extends Component {
     we_vote_id: PropTypes.string.isRequired
   };
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = { position_list: [] };
   }
     // no candidate exists... go to ballot
-  componentDidMount(){
+  componentDidMount (){
     BallotStore.fetchCandidatePositionsByWeVoteId(this.props.we_vote_id)
     BallotStore.addChangeListener(this._onChange.bind(this));
   }
 
-  componentWillUnmount(){
+  componentWillUnmount (){
     BallotStore.removeChangeListener(this._onChange.bind(this));
   }
 
-  _onChange(){
+  _onChange (){
     this.setState({ position_list: BallotStore.getCandidateByWeVoteId(this.props.we_vote_id).position_list });
     console.log(this.state.position_list);
   }
 
-  render() {
+  render () {
     return (
       <ul className="list-group">
         { this.state.position_list.map( item =>

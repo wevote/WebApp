@@ -12,8 +12,6 @@ function printErr (err) {
   console.error(err);
 }
 
-const POSITION_CHANGE_EVENT = 'POSITION_CHANGE_EVENT';
-
 const PositionAPIWorker = {
 
   positionRetrieve: function (we_vote_id, success) {
@@ -30,21 +28,7 @@ const PositionAPIWorker = {
 
 const PositionStore = createStore({
 
-  emitChange: function () {
-    this.emit(POSITION_CHANGE_EVENT);
-  },
-
-  addChangeListener: function(callback) {
-    // console.log("Change listener added");
-    this.on(POSITION_CHANGE_EVENT, callback);
-  },
-
-  removeChangeListener: function(callback) {
-    // console.log("Change listener removed!");
-   this.removeListener(POSITION_CHANGE_EVENT, callback);
- },
-
-retrievePositionByWeVoteId: function(we_vote_id){
+retrievePositionByWeVoteId: function (we_vote_id){
   PositionAPIWorker.positionRetrieve(we_vote_id,
     function(res){
       PositionActions.positionRetrieved(we_vote_id, res);
@@ -53,13 +37,13 @@ retrievePositionByWeVoteId: function(we_vote_id){
     });
 },
 
-getLocalPositionByWeVoteId: function(we_vote_id){
+getLocalPositionByWeVoteId: function (we_vote_id){
   return shallowClone(_position_store[we_vote_id]);
 }
 
 });
 
-function setLocalPosition(we_vote_id, position) {
+function setLocalPosition (we_vote_id, position) {
   _position_store[we_vote_id] = position;
   return true;
 }
