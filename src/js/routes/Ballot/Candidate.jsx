@@ -70,7 +70,7 @@ export default class Candidate extends Component {
           is_starred={candidate.is_starred} />
         <div className="row" style={{ paddingBottom: '10px' }}>
           <div
-            className="col-xs-4"
+            className="col-xs-6"
             style={candidate.candidate_photo_url ? {} : {height:'95px'}}>
 
             {
@@ -86,7 +86,7 @@ export default class Candidate extends Component {
 
             }
           </div>
-          <div className="col-xs-8">
+          <div className="col-xs-6">
             <h4 className="bufferNone">
               <Link className="linkLight"
                     to={"/candidate/" + candidate.we_vote_id }
@@ -94,21 +94,12 @@ export default class Candidate extends Component {
                       { candidate.ballot_item_display_name }
               </Link>
             </h4>
-            <div>
-                {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur posuere vulputate massa ut efficitur.
-                Duis a eros fringilla, dictum leo vitae, vulputate mi. Nunc vitae neque nec erat fermentum... (more)<br />
-                Courtesy of Ballotpedia.org */}
-            </div>
+            <p>Running for <span className="running-for-office-emphasis">{ candidate.office_display_name }</span></p>
           </div>
-          <div className="row" style={{ "paddingBottom": "10" }}>
-            <div className="col-xs-8">
-              <div>Running for <span className="running-for-office-emphasis">{ candidate.office_display_name }</span></div>
-            </div>
-          </div>
-          <ItemActionBar2 we_vote_id={candidate.we_vote_id}
-                         is_support={candidate.is_support} is_oppose={candidate.is_oppose}
-                          supportCount={candidate.supportCount} opposeCount={candidate.opposeCount} />
         </div>
+        <ItemActionBar2 we_vote_id={candidate.we_vote_id}
+                       is_support={candidate.is_support} is_oppose={candidate.is_oppose}
+                        supportCount={candidate.supportCount} opposeCount={candidate.opposeCount} />
         <div className="container-fluid well-90">
           {/* Post privately box */}
           {/*
@@ -126,12 +117,12 @@ export default class Candidate extends Component {
             {/* One organization's Position on this Candidate */}
             <li className="list-group-item">
                 <div className="row">
-                  <div className="pull-left col-xs-2 col-md-4">
-                      <Link to="ballot_candidate_one_org_position" params={{id: 2, org_id: 27}}>
+                  <div className="col-xs-3 col-md-2">
+                      <Link to="ballot_candidate_one_org_position" params={{id: 2, org_id: 27}} className="transparent">
                         <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"></i>
                       </Link>
                   </div>
-                  <div className="pull-right col-xs-10  col-md-8">
+                  <div className="col-xs-9 col-md-10">
                       <h4 className="">
                           <Link className="" to="ballot_candidate_one_org_position" params={{id: 2, org_id: 27}}>
                               Organization Name<br />{/* TODO icon-org-placeholder */}
