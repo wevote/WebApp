@@ -1,3 +1,18 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Contents
+
+- [Contributing to wevote/WebApp](#contributing-to-wevotewebapp)
+  - [Pull Requests](#pull-requests)
+    - [Setting up your repository for work](#setting-up-your-repository-for-work)
+    - [Some useful tips and tricks](#some-useful-tips-and-tricks)
+    - [Git completion](#git-completion)
+    - [Prompt](#prompt)
+      - [How to get a change from someone’s repository into your repo before it’s pushed to master](#how-to-get-a-change-from-someone%E2%80%99s-repository-into-your-repo-before-it%E2%80%99s-pushed-to-master)
+      - [How to get rid of garbage files that shouldn’t be in git](#how-to-get-rid-of-garbage-files-that-shouldn%E2%80%99t-be-in-git)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Contributing to wevote/WebApp
 
 Thank you for your interest in the We Vote WebApp project. Please let us know if we can help you get started.
