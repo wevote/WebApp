@@ -2,12 +2,20 @@ import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import Headroom from "react-headroom";
 
+import VoterStore from '../stores/VoterStore';
+
 export default class Header extends Component {
   constructor(props) {
     super(props);
+    this.state = {};
+  }
+
+  componentDidMount() {
+    VoterStore.getLocation( location => this.setState({ location }))
   }
 
   render () {
+    var {location} = this.state;
     return (
       <header className="row">
         <Headroom>
@@ -20,7 +28,7 @@ export default class Header extends Component {
             </h4>
             <aside className="pull-right gutter-right--window gutter-top--small">
               <Link to="/settings/location"className="font-lightest">
-                Oakland, CA
+                { location }
               </Link>
             </aside>
           </section>

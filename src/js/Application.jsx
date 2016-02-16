@@ -8,26 +8,26 @@ import VoterStore from './stores/VoterStore';
 export default class Application extends Component {
   static propTypes = {
     children: PropTypes.object,
-    voter_object: PropTypes.object
+    voter: PropTypes.object
   };
 
   constructor(props) {
     super(props);
     this.state = {
-        voter_object: {}
+        voter: {}
     };
   }
 
   componentDidMount() {
     console.log("Application: About to initialize VoterStore");
-    VoterStore.initialize((voter_object) => {
-        //console.log(voter_object, 'voter_object is your object')
-        this.setState({voter_object});
+    VoterStore.signInStatus((voter) => {
+        //console.log(voter, 'voter is your object')
+        this.setState({voter});
     });
   }
 
   render() {
-    var { voter_object } = this.state;
+    var { voter } = this.state;
 
     return (
     <div className="app-base">
@@ -45,9 +45,9 @@ export default class Application extends Component {
         <div className="row">
           <div className="col-xs-4 col-sm-4 col-md-4 no-show">
             {
-                voter_object ?
+                voter ?
                 <div>
-                    <MoreMenu {...voter_object} />
+                    <MoreMenu {...voter} />
                 </div>
                 :
                 <span></span>
