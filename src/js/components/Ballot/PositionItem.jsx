@@ -10,12 +10,10 @@ export default class PositionItem extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { position: {} };
+    this.state = { position: {}, organization: {} };
   }
 
   componentDidMount () {
-    console.log("Position Item Component Mounted with wevoteid:")
-    console.log(this.props.position_we_vote_id);
     PositionStore.retrievePositionByWeVoteId(this.props.position_we_vote_id);
     PositionStore.addChangeListener(this._onChange.bind(this));
   }
@@ -26,12 +24,11 @@ export default class PositionItem extends Component {
 
   _onChange () {
     this.setState({ position: PositionStore.getLocalPositionByWeVoteId(this.props.position_we_vote_id) });
-    console.log("This Position Item:")
+    console.log("Position:")
     console.log(this.state.position);
   }
 
   render() {
-    // console.log(this.state.position);
     var position = this.state.position;
     var supportText = position.is_oppose ? "Opposes" : "Supports";
     return (
@@ -47,7 +44,7 @@ export default class PositionItem extends Component {
                       <h4 className="">
                           <Link className="" to="ballot_candidate_one_org_position"
                           params={{id: position.speaker_id, org_id: position.speaker_we_vote_id}}>
-                            { position.speaker_label }
+                            { this.props.speaker_label }
                           </Link>
                       </h4>
                       <p className="">{supportText} <span className="small">Yesterday at 7:18 PM</span></p>

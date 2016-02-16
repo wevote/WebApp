@@ -23,13 +23,14 @@ export default class PositionList extends Component {
 
   _onChange(){
     this.setState({ position_list: BallotStore.getCandidateByWeVoteId(this.props.we_vote_id).position_list });
+    console.log(this.state.position_list);
   }
 
   render() {
     return (
       <ul className="list-group">
         { this.state.position_list.map( item =>
-            <PositionItem key={item.position_we_vote_id} position_we_vote_id={item.position_we_vote_id} /> )
+            <PositionItem key={item.position_we_vote_id} position_we_vote_id={item.position_we_vote_id} speaker_label={item.speaker_label}/> )
         }
       </ul>
     );

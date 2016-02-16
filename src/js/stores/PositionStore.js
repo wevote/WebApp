@@ -60,7 +60,7 @@ getLocalPositionByWeVoteId: function(we_vote_id){
 });
 
 function setLocalPosition(we_vote_id, position) {
-  _ballot_store[we_vote_id] = position;
+  _position_store[we_vote_id] = position;
   return true;
 }
 
@@ -69,13 +69,12 @@ AppDispatcher.register( action => {
     switch (action.actionType) {
 
     case PositionConstants.POSITION_RETRIEVED:
-    console.log("Action Payload:");
-    console.log(action.payload);
       setLocalPosition(action.we_vote_id, action.payload )
       && PositionStore.emitChange();
     break;
 
   }
+
 });
 
 export default PositionStore;

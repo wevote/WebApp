@@ -19,6 +19,15 @@ export default class Candidate extends Component {
     this.state = { candidate: {} };
   }
 
+  componentWillMount(){
+    // Redirects to root if candidate isn't fetched yet; TODO: just fetch params to enable sending links to candidate page.
+    var candidate = BallotStore.getCandidateByWeVoteId(this.props.params.we_vote_id);
+    if (Object.keys(candidate).length === 0)
+      {
+        this.props.history.replace('/ballot');
+      }
+  }
+
   componentDidMount(){
     this.setState({ candidate: BallotStore.getCandidateByWeVoteId(this.props.params.we_vote_id) });
   }
