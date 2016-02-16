@@ -4,6 +4,7 @@ import { shallowClone } from '../utils/object-utils';
 
 const AppDispatcher = require('../dispatcher/AppDispatcher');
 const BallotConstants = require('../constants/BallotConstants');
+const BallotActions = require('../actions/BallotActions');
 
 let _ballot_store = {};
 let _ballot_order_ids = [];
@@ -48,16 +49,14 @@ const BallotAPIWorker = {
     });
   },
 
-  positionListForBallotItem : function( we_vote_id, success_func) {
+  positionListForBallotItem : function( we_vote_id, success) {
     return service.get({
       endpoint: 'positionListForBallotItem',
       query: {
          ballot_item_id: _ballot_store[we_vote_id].id,
          kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
       },
-      success: function(res){
-        success_func(res);
-      }
+      success
     });
   },
 
@@ -359,30 +358,25 @@ const BallotStore = createStore({
       return temp;
   },
 
- //  emitChange: function () {
- //    this.emit(BALLOT_CHANGE_EVENT);
- //  },
- //
- //  addChangeListener: function(callback) {
- //    console.log("Change listener added");
- //    this.on(BALLOT_CHANGE_EVENT, callback);
- //  },
- //
- //  removeChangeListener: function(callback) {
- //    console.log("Change listener removed!");
- //   this.removeListener(BALLOT_CHANGE_EVENT, callback);
- // },
-
-  getCandidatePositionsByWeVoteId: function(candidate_we_vote_id){
-    BallotAPIWorker.positionListForBallotItem(candidate_we_vote_id, function(res){
-      var we_vote_id = candidate_we_vote_id;
-      _ballot_store[we_vote_id].position_list = res.position_list;
-      BallotStore.emitChange();
-    }.bind(this))
+  emitChange: function () {
+    this.emit(BALLOT_CHANGE_EVENT);
   },
 
-  getOrganization: function(candidate_we_vote_id, organization_we_vote_id){
-    return _ballot_store[candidate_we_vote_id].position_list.organization_we_vote_id;
+  addChangeListener: function(callback) {
+    // console.log("Change listener added");
+    this.on(BALLOT_CHANGE_EVENT, callback);
+  },
+
+  removeChangeListener: function(callback) {
+    // console.log("Change listener removed!");
+   this.removeListener(BALLOT_CHANGE_EVENT, callback);
+ },
+
+  fetchCandidatePositionsByWeVoteId: function(candidate_we_vote_id){
+    BallotAPIWorker.positionListForBallotItem(candidate_we_vote_id,
+      function(res){
+        BallotActions.positionsRetrieved(candidate_we_vote_id, res);
+      });
   },
 
   /**
@@ -470,6 +464,11 @@ const BallotStore = createStore({
   }
 });
 
+function setLocalPositionsList(we_vote_id, position_list) {
+  _ballot_store[we_vote_id].position_list = position_list;
+  return true;
+}
+
  /**
  * toggle the star state of a ballot item by its we_vote_id
  * @param  {string} we_vote_id identifier for lookup in stored
@@ -546,8 +545,9 @@ AppDispatcher.register( action => {
   var { we_vote_id } = action;
     switch (action.actionType) {
 
-    case BallotConstants.DOWNLOAD_ORGANIZATIONS:
-      BallotStore.getCandidatePositionsByWeVoteId(we_vote_id);
+    case BallotConstants.POSITIONS_RETRIEVED:
+      setLocalPositionsList(action.we_vote_id, action.payload.position_list)
+      && BallotStore.emitChange();
     break;
 
     case BallotConstants.VOTER_SUPPORTING_SAVE:

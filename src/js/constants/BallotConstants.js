@@ -6,6 +6,5 @@ module.exports = require('keymirror')({
   VOTER_STOP_OPPOSING_SAVE: null,
   VOTER_STAR_ON_SAVE: null,
   VOTER_STAR_OFF_SAVE: null,
-  VOTER_STAR_OFF_SAVE: null,
-  DOWNLOAD_ORGANIZATIONS: null
+  POSITIONS_RETRIEVED: null
 });

@@ -2,10 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import { Button, ButtonToolbar, DropdownButton, Input, MenuItem, Navbar } from "react-bootstrap";
 import { Link } from 'react-router';
 
-import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import CandidateDetail from '../../components/Ballot/CandidateDetail';
-import OrganizationItem from '../../components/Ballot/OrganizationItem';
+import PositionList from '../../components/Ballot/PositionList';
 import ItemActionbar from '../../components/ItemActionbar';
 import ItemActionBar2 from '../../components/ItemActionBar2';
 import StarAction from '../../components/StarAction';
@@ -17,38 +16,25 @@ export default class Candidate extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { candidate: BallotStore.getCandidateByWeVoteId(this.props.params.we_vote_id) };
+    this.state = { candidate: {} };
   }
-    // no candidate exists... go to ballot
+
   componentDidMount(){
-    if (Object.keys(this.state.candidate).length === 0){
-      this.props.history.replace('/ballot');
-    }
-    console.log('Candidate Component Mounted!')
-    BallotActions.downloadOrganizations(this.props.params.we_vote_id);
-    BallotStore.addChangeListener(this._onChange.bind(this));
-  }
-
-  componentWillUnmount(){
-    BallotStore.removeChangeListener(this._onChange.bind(this));
-  }
-
-  _onChange(){
-    console.log('onChange!');
-    var we_vote_id = this.props.params.we_vote_id;
-    this.setState({ candidate: BallotStore.getCandidateByWeVoteId(we_vote_id) });
+    this.setState({ candidate: BallotStore.getCandidateByWeVoteId(this.props.params.we_vote_id) });
   }
 
   render() {
-    var candidate = BallotStore.getCandidateByWeVoteId(`${this.props.params.we_vote_id}`);
-    if (!candidate){return (<div></div>);}
-    // var candidate = this.state.candidate;
-    console.log("Candidate Object:");
-    console.log(candidate);
-    var position_list = candidate ? candidate.position_list : undefined;
+    // if (Object.keys(this.state.candidate).length === 0){
+    //   this.props.history.replace('/ballot');
+    // };
+    var candidate = this.state.candidate;
+    var we_vote_id = this.props.params.we_vote_id;
+    if (!candidate.we_vote_id){
+      return ( <div></div> );
+    };
 
-    if (Object.keys(candidate).length === 0){
-      this.props.history.replace('/ballot');}
+    // if (Object.keys(candidate).length === 0){
+    //   this.props.history.replace('/ballot');}
 
     var support_item;
     if (this.props.support_on) {
@@ -134,14 +120,7 @@ export default class Candidate extends Component {
             </li>
         </ul>
 
-        <ul className="list-group">
-          { (position_list) ? position_list.map( item =>
-                <OrganizationItem key={item.id}
-                                  candidate_we_vote_id={candidate.we_vote_id}
-                                  {...item} />
-            ) : (<div></div>)
-          }
-        </ul>
+        <PositionList we_vote_id={we_vote_id} />
       </div>
 
     </div>

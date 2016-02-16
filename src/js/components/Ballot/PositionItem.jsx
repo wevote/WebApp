@@ -1,33 +1,39 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import BallotActions from '../../actions/BallotActions';
-import BallotStore from '../../stores/BallotStore';
+import PositionActions from '../../actions/PositionActions';
+import PositionStore from '../../stores/PositionStore';
 
-export default class OrganizationItem extends Component {
+export default class PositionItem extends Component {
   static propTypes = {
     position_we_vote_id: PropTypes.string.isRequired,
   };
 
   constructor (props) {
     super(props);
-    this.state = { organization: this.props};
+    this.state = { position: {} };
   }
 
   componentDidMount () {
-    BallotStore.addChangeListener(this._onChange.bind(this));
+    console.log("Position Item Component Mounted with wevoteid:")
+    console.log(this.props.position_we_vote_id);
+    PositionStore.retrievePositionByWeVoteId(this.props.position_we_vote_id);
+    PositionStore.addChangeListener(this._onChange.bind(this));
   }
 
   componentWillUnmount () {
-    BallotStore.removeChangeListener(this._onChange.bind(this));
+    PositionStore.removeChangeListener(this._onChange.bind(this));
   }
 
   _onChange () {
-    // this.setState({ organization: BallotStore.getOrganization(this.props.candidate_we_vote_id, this.props.item.position_we_vote_id) });
+    this.setState({ position: PositionStore.getLocalPositionByWeVoteId(this.props.position_we_vote_id) });
+    console.log("This Position Item:")
+    console.log(this.state.position);
   }
 
   render() {
-    var organization = this.state.organization;
-    var supportText = organization.is_oppose ? "Opposes" : "Supports";
+    // console.log(this.state.position);
+    var position = this.state.position;
+    var supportText = position.is_oppose ? "Opposes" : "Supports";
     return (
         <div>
         <li className="list-group-item">
@@ -40,16 +46,15 @@ export default class OrganizationItem extends Component {
                   <div className="pull-right col-xs-10  col-md-8">
                       <h4 className="">
                           <Link className="" to="ballot_candidate_one_org_position"
-                          params={{id: organization.speaker_id, org_id: organization.speaker_we_vote_id}}>
-                            { organization.speaker_label }
+                          params={{id: position.speaker_id, org_id: position.speaker_we_vote_id}}>
+                            { position.speaker_label }
                           </Link>
                       </h4>
                       <p className="">{supportText} <span className="small">Yesterday at 7:18 PM</span></p>
                   </div>
                 </div>
                 <div className="row">
-                    Integer ut bibendum ex. Suspendisse eleifend mi accumsan, euismod enim at, malesuada nibh.
-                    Duis a eros fringilla, dictum leo vitae, vulputate mi. Nunc vitae neque nec erat fermentum... (more)
+                    {position.statement_text}
                 </div>
                 <br />
                 23 Likes<br />
