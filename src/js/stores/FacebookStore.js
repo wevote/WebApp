@@ -133,6 +133,13 @@ const FacebookAPIWorker = {
   }
 };
 
+function sleep (milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if (new Date().getTime() - start > milliseconds) break;
+  }
+}
+
 // initialize the store as a singleton
 const facebookStore = new FacebookStore();
 
@@ -145,15 +152,6 @@ facebookStore.dispatchToken = FacebookDispatcher.register((action) => {
         console.log("FACEBOOK_LOGGED_IN");
         facebookStore.setFacebookAuthData(action.data);
         facebookStore.saveFacebookAuthData();
-
-        function sleep(milliseconds) {
-          var start = new Date().getTime();
-          for (var i = 0; i < 1e7; i++) {
-            if ((new Date().getTime() - start) > milliseconds){
-              break;
-            }
-          }
-        }
 
         sleep(3000);
         console.log("FACEBOOK_LOGGED_IN: Trying to retrieve fresh voter data");
@@ -176,14 +174,6 @@ facebookStore.dispatchToken = FacebookDispatcher.register((action) => {
         console.log("FACEBOOK_SIGN_IN_DISCONNECT");
         facebookStore.disconnectFromFacebook();
 
-        function sleep(milliseconds) {
-          var start = new Date().getTime();
-          for (var i = 0; i < 1e7; i++) {
-            if ((new Date().getTime() - start) > milliseconds){
-              break;
-            }
-          }
-        }
 
         sleep(3000);
         console.log("FACEBOOK_SIGN_IN_DISCONNECT: Trying to retrieve fresh voter data");

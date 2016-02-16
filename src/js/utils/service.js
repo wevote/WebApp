@@ -53,8 +53,7 @@ export function get (options) {
           opts.error(err || res.body);
 
         reject(err);
-      }
-      else {
+      } else {
         if (opts.success instanceof Function === true)
           opts.success(res.body);
         else if (DEBUG)
@@ -80,8 +79,7 @@ export function $post (options) {
           opts.error(err || res.body);
 
         reject(err);
-      }
-      else {
+      } else {
         if (opts.success instanceof Function === true)
           opts.success(res.body);
         else if (DEBUG)
