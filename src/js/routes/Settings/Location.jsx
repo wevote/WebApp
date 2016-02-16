@@ -10,7 +10,9 @@ export default class Location extends Component {
   }
 
   componentDidMount() {
-    VoterStore.getLocation( location => this.setState({ location }))
+    VoterStore.getLocation( location => {
+      this.setState({ location });
+    })
   }
 
   updateLocation (e) {
@@ -20,8 +22,13 @@ export default class Location extends Component {
   }
 
   saveLocation (e) {
-    VoterStore.saveLocation ( this.state.location );
-    location.href="/ballot"
+    var { location } = this.state;
+    VoterStore.saveLocation ( location,  (err, location) => {
+      if (err) return console.error(err);
+
+      window.location.href="/ballot"
+
+    });
   }
 
   render() {

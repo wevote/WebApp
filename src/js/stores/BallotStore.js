@@ -12,6 +12,10 @@ let _google_civic_election_id = null;
 
 const MEASURE = 'MEASURE';
 
+function defaultSuccess (res) {
+  console.warn(res);
+}
+
 function addItemsToBallotStore (ballot_item_list) {
   ballot_item_list.forEach( ballot_item => {
     _ballot_store[ballot_item.we_vote_id] = shallowClone(ballot_item);
@@ -28,24 +32,19 @@ const BallotAPIWorker = {
   voterBallotItemsRetrieveFromGoogleCivic: function (text_for_map_search, success ) {
     return get({
       endpoint: 'voterBallotItemsRetrieveFromGoogleCivic',
-      query: { text_for_map_search }, success
+      query: { text_for_map_search }, success: success || defaultSuccess
     });
   },
 
   candidatesRetrieve: function (office_we_vote_id, success ) {
-    return get({
-      endpoint: 'candidatesRetrieve',
-      query: { office_we_vote_id },
-      success
-    });
+    return get({ endpoint: 'candidatesRetrieve', query: { office_we_vote_id },
+    success: success || defaultSuccess });
   },
 
   // get the ballot items
   voterBallotItemsRetrieve: function ( success ) {
-    return get({
-      endpoint: 'voterBallotItemsRetrieve',
-      success
-    });
+    return get({ endpoint: 'voterBallotItemsRetrieve',
+    success: success || defaultSuccess });
   },
 
   positionOpposeCountForBallotItem: function (we_vote_id, success ) {
@@ -54,7 +53,7 @@ const BallotAPIWorker = {
       query: {
          ballot_item_id: _ballot_store[we_vote_id].id,
          kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success
+      }, success: success || defaultSuccess
     });
   },
 
@@ -65,7 +64,7 @@ const BallotAPIWorker = {
       query: {
          ballot_item_id: _ballot_store[we_vote_id].id,
          kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success
+      }, success: success || defaultSuccess
     });
   },
 
@@ -75,7 +74,7 @@ const BallotAPIWorker = {
       query: {
         ballot_item_we_vote_id: ballot_item_we_vote_id,
         kind_of_ballot_item: _ballot_store[ballot_item_we_vote_id].kind_of_ballot_item
-      }, success
+      }, success: success || defaultSuccess
     });
   },
 
@@ -85,7 +84,7 @@ const BallotAPIWorker = {
       query: {
         ballot_item_id: _ballot_store[we_vote_id].id,
         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success
+      }, success: success || defaultSuccess
     });
   },
 
@@ -95,7 +94,7 @@ const BallotAPIWorker = {
       query: {
         ballot_item_id: _ballot_store[we_vote_id].id,
         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success
+      }, success: success || defaultSuccess
     });
   },
 
@@ -105,7 +104,7 @@ const BallotAPIWorker = {
       query: {
         ballot_item_id: _ballot_store[we_vote_id].id,
         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success
+      }, success: success || defaultSuccess
     });
   },
 
@@ -116,7 +115,7 @@ const BallotAPIWorker = {
       query: {
         ballot_item_id: _ballot_store[we_vote_id].id,
         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success
+      }, success: success || defaultSuccess
     });
   },
 
@@ -127,7 +126,7 @@ const BallotAPIWorker = {
       query: {
         ballot_item_id: _ballot_store[we_vote_id].id,
         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success
+      }, success: success || defaultSuccess
     });
   },
 
@@ -138,7 +137,7 @@ const BallotAPIWorker = {
       query: {
         ballot_item_id: _ballot_store[we_vote_id].id,
         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success
+      }, success: success || defaultSuccess
     });
   },
 
@@ -149,7 +148,7 @@ const BallotAPIWorker = {
       query: {
         ballot_item_id: _ballot_store[we_vote_id].id,
         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success
+      }, success: success || defaultSuccess
     });
   }
 };
