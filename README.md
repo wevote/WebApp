@@ -15,7 +15,6 @@
 
 # README for We Vote WebApp
 
-<<<<<<< HEAD
 [![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=develop)](https://travis-ci.org/wevote/WebApp) | 
 
 This WebApp repository contains a Node/React/Flux Javascript application. Using data from
