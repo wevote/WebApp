@@ -2,7 +2,7 @@
 
 ![WeVoteUS](wevotelogo.png) 
 
-[![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=develop)](https://travis-ci.org/wevote/WebApp) | 
+[![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=develop)](https://travis-ci.org/wevote/WebApp)
 
 This WebApp repository contains a Node/React/Flux Javascript application. Using data from
 Google Civic API, Vote Smart, MapLight, TheUnitedStates.io and the Voting Information Project, we give voters a
@@ -13,6 +13,7 @@ http://start.wevoteusa.org/
 
 ## Contributing
 Please read our [Contributing guidelines](docs/contributing/index.md) before you start contributing to the project.
+For best practices, please read [how to fork and create pull requests](CONTRIBUTING.md).
 
 ## Install nodeenv ("Node Env")
 
