@@ -40,6 +40,7 @@ export default class StarAction extends Component {
   }
 
   _onChange () {
+    console.log("StarActiononChange");
     this.setState({
       is_starred: BallotStore.getStarState(this.props.we_vote_id)
     });

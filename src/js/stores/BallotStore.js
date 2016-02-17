@@ -4,7 +4,7 @@ import { shallowClone } from '../utils/object-utils';
 
 const AppDispatcher = require('../dispatcher/AppDispatcher');
 const BallotConstants = require('../constants/BallotConstants');
-
+const BallotActions = require('../actions/BallotActions');
 
 let _ballot_store = {};
 let _ballot_order_ids = [];
@@ -45,6 +45,17 @@ const BallotAPIWorker = {
   voterBallotItemsRetrieve: function ( success ) {
     return get({ endpoint: 'voterBallotItemsRetrieve',
     success: success || defaultSuccess });
+  },
+
+  positionListForBallotItem : function( we_vote_id, success) {
+    return service.get({
+      endpoint: 'positionListForBallotItem',
+      query: {
+         ballot_item_id: _ballot_store[we_vote_id].id,
+         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+      },
+      success
+    });
   },
 
   positionOpposeCountForBallotItem: function (we_vote_id, success ) {
@@ -224,6 +235,7 @@ const BallotStore = createStore({
                   BallotAPIWorker
                     .candidatesRetrieve ( we_vote_id )
                       .then( (response) => {
+                      var office_display_name = _ballot_store[response.office_we_vote_id]['ballot_item_display_name'];
                       var cand_list = _ballot_store [
                         response.office_we_vote_id
                       ] . candidate_list = [];
@@ -234,6 +246,7 @@ const BallotStore = createStore({
                             var { we_vote_id: candidate_we_vote_id } = candidate;
                             cand_list . push (candidate_we_vote_id);
                             _ballot_store [ candidate_we_vote_id ] = shallowClone( candidate );
+                            _ballot_store [ candidate_we_vote_id ].office_display_name = office_display_name;
 
                             promiseQueue
                               .push (
@@ -343,6 +356,13 @@ const BallotStore = createStore({
       return temp;
   },
 
+  fetchCandidatePositionsByWeVoteId: function(candidate_we_vote_id){
+    BallotAPIWorker.positionListForBallotItem(candidate_we_vote_id,
+      function(res){
+        BallotActions.positionsRetrieved(candidate_we_vote_id, res);
+      });
+  },
+
   /**
    * get the number of orgs and friends that the Voter follows who support this ballot item
    * @param  {String} we_vote_id ballot items we_vote_id
@@ -428,6 +448,11 @@ const BallotStore = createStore({
   }
 });
 
+function setLocalPositionsList(we_vote_id, position_list) {
+  _ballot_store[we_vote_id].position_list = position_list;
+  return true;
+}
+
  /**
  * toggle the star state of a ballot item by its we_vote_id
  * @param  {string} we_vote_id identifier for lookup in stored
@@ -502,8 +527,13 @@ function setLocalOpposeOffState(we_vote_id) {
 
 AppDispatcher.register( action => {
   var { we_vote_id } = action;
+    switch (action.actionType) {
 
-  switch (action.actionType) {
+    case BallotConstants.POSITIONS_RETRIEVED:
+      setLocalPositionsList(action.we_vote_id, action.payload.position_list)
+      && BallotStore.emitChange();
+    break;
+
     case BallotConstants.VOTER_SUPPORTING_SAVE:
       BallotAPIWorker.voterSupportingSave(
           we_vote_id, () => setLocalSupportOnState(we_vote_id)
@@ -511,6 +541,7 @@ AppDispatcher.register( action => {
             && BallotStore.emitChange()
       );
       break;
+
     case BallotConstants.VOTER_STOP_SUPPORTING_SAVE:
       BallotAPIWorker.voterStopSupportingSave(
           we_vote_id, () => setLocalSupportOffState(we_vote_id)
