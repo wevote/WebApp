@@ -12,7 +12,7 @@ You can see our current wireframe mockup for a San Francisco ballot here:
 http://start.wevoteusa.org/
 
 ## Contributing
-Please read our [Contributing guidelines](docs/contributing/index.md) before you start contributing to the project.
+Please read our [Contributing guidelines](docs/contributing/index.md) before you start contributing to the project.  
 For best practices, please read [how to fork and create pull requests](CONTRIBUTING.md).
 
 ## Install nodeenv ("Node Env")
