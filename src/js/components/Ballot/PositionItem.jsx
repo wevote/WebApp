@@ -33,29 +33,31 @@ export default class PositionItem extends Component {
     var supportText = position.is_oppose ? "Opposes" : "Supports";
     return (
         <div>
+        {/* One organization's Position on this Candidate */}
         <li className="list-group-item">
-                <div className="row">
-                  <div className="pull-left col-xs-2 col-md-4">
-                      <Link to="ballot_candidate_one_org_position" params={{id: 2, org_id: 27}}>
-                        <i className={"icon-icon-org-placeholder-6-2 icon-light"}></i>
+            <div className="row">
+              <div className="col-xs-3 col-md-2">
+                  <Link to="ballot_candidate_one_org_position" params={{id: 2, org_id: 27}} className="transparent">
+                    <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"></i>
+                  </Link>
+              </div>
+              <div className="col-xs-9 col-md-10">
+                  <h4 className="">
+                      <Link className="" to="ballot_candidate_one_org_position" params={{id: position.speaker_id, org_id: position.speaker_we_vote_id}}>
+                            { this.props.speaker_label }<br />{/* TODO icon-org-placeholder */}
                       </Link>
-                  </div>
-                  <div className="pull-right col-xs-10  col-md-8">
-                      <h4 className="">
-                          <Link className="" to="ballot_candidate_one_org_position"
-                          params={{id: position.speaker_id, org_id: position.speaker_we_vote_id}}>
-                            { this.props.speaker_label }
-                          </Link>
-                      </h4>
-                      <p className="">{supportText} <span className="small">Yesterday at 7:18 PM</span></p>
-                  </div>
-                </div>
-                <div className="row">
-                    {position.statement_text}
-                </div>
-                <br />
-                23 Likes<br />
-            </li>
+                  </h4>
+                  <p className="">supports <span className="small">Yesterday at 7:18 PM</span></p>
+              </div>
+            </div>
+            <div className="row">
+                {position.statement_text}
+            </div>
+            {/* Likes coming in a later version
+            <br />
+            23 Likes<br />
+            */}
+        </li>
         </div>
     );
   }

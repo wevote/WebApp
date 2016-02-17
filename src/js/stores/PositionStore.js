@@ -6,6 +6,7 @@ const AppDispatcher = require('../dispatcher/AppDispatcher');
 const PositionConstants = require('../constants/PositionConstants');
 const PositionActions = require('../actions/PositionActions');
 
+const POSITION_CHANGE_EVENT = 'POSITION_CHANGE_EVENT';
 var _position_store = {}; // All positions that have been fetched (by we_vote_ids)
 
 function printErr (err) {
@@ -36,6 +37,20 @@ retrievePositionByWeVoteId: function (we_vote_id){
       console.log(res);
     });
 },
+
+emitChange: function (){
+  this.emit(POSITION_CHANGE_EVENT);
+},
+
+addChangeListener: function(callback) {
+     // console.log("Change listener added");
+     this.on(POSITION_CHANGE_EVENT, callback);
+   },
+
+   removeChangeListener: function(callback) {
+     // console.log("Change listener removed!");
+    this.removeListener(POSITION_CHANGE_EVENT, callback);
+  },
 
 getLocalPositionByWeVoteId: function (we_vote_id){
   return shallowClone(_position_store[we_vote_id]);
