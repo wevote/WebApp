@@ -1,81 +1,139 @@
-import assign from 'object-assign';
-import {
-  $ajax, $post, deviceIdGenerate, voterLocationRetrieveFromIP
-} from '../utils/service';
-import { createStore } from '../utils/createStore';
+import assign from "object-assign";
+import { $ajax } from "../utils/service";
+import { createStore } from "../utils/createStore";
 
-import AppDispatcher from '../dispatcher/AppDispatcher';
-import VoterActions from '../actions/VoterActions';
-import VoterConstants from '../constants/VoterConstants';
+import AppDispatcher from "../dispatcher/AppDispatcher";
+import VoterActions from "../actions/VoterActions";
+import VoterConstants from "../constants/VoterConstants";
 
-const cookies = require('../utils/cookies');
-const CHANGE_EVENT = 'change';
+const cookies = require("../utils/cookies");
 
-let _voter_device_id = cookies.getItem('voter_device_id');
-let _location = cookies.getItem('location');
+let _voter_device_id = cookies.getItem("voter_device_id");
+let _location = cookies.getItem("location");
+let _voter_id = cookies.getItem("voter_id");
 let _voter = {};
 
-function error (err) {
-  console.error('WVError:', err.message);
+function _setVoterId (id) {
+  _voter_id = id;
+  cookies.setItem("voter_id", id, Infinity);
 }
 
-function setDeviceId (id) {
+function _setDeviceId (id) {
   _voter_device_id = id;
-  cookies.setItem('voter_device_id', id, Infinity)
+  cookies.setItem("voter_device_id", id, Infinity);
 }
 
-function setLocation (location) {
+function _setLocation (location) {
   _location = location;
-  cookies.setItem('location', location, Infinity);
-}
-
-function _getLocation () {
-  return _location || null;
+  cookies.setItem("location", location, Infinity);
 }
 
 const VoterStore = createStore({
 
   hasDeviceId: function () {
-    if (_voter_device_id) return true;
-    else return false;
+    return _voter_device_id ? true : false;
   },
+
+  hasVoterId: function () {
+    return _voter_id ? true : false;
+  },
+
+  hasLocation: function () {
+    return _location ? true : false;
+  },
+
+  /**
+   * get the RAW JSON object from api.wevoteusa and merge
+   * it with other calculated values object
+   * @param {Function} callback (err, voter-object)
+   */
+  getVoterObject: function (callback) {
+    _voter = assign({}, {
+      voter_id: _voter_id,
+      voter_device_id: _voter_device_id,
+      location: _location
+    });
+
+    if ( _voter.status === "VOTER_FOUND")
+      return callback(null, assign({}, _voter));
+
+    return $ajax({
+      endpoint: "voterRetrieve",
+      success: (res) => {
+        _voter = assign({}, _voter, res);
+        callback(null, assign({}, _voter));
+      },
+      error: (err) => {
+        callback(err);
+      }
+    });
+
+  },
+
   /**
    * initialize the voter store with data, if no data
    * and callback with the voter items
-   * @return {Boolean}
+   * @param {Function} callback (err, device_id)
    */
   getDeviceId: function (callback) {
-    if (!callback || typeof callback !== 'function')
-      throw new Error('VoterStore: getDeviceId must be called with callback');
+    if (callback instanceof Function === false)
+      throw new Error("VoterStore: getDeviceId must be called with callback");
 
-    if (this.hasDeviceId()) callback(null, false, _voter_device_id);
+    if (_voter_device_id) return callback(null, _voter_device_id);
 
-    else $ajax({
+    return $ajax({
       endpoint: "deviceIdGenerate",
       success: (res) => {
         var { voter_device_id: id } = res;
 
-        setDeviceId(id);
+        _setDeviceId(id);
         callback(null, true, id);
       },
       error: (err) => {
         callback(err, true, null);
       }
     });
+
+  },
+
+  /**
+   * create a voter using voterCreate endpoint from api.wevoteusa
+   * @param {Function} callback (err, voter_id)
+   */
+  createVoter: function (callback) {
+    if (callback instanceof Function === false)
+      throw new Error("VoterStore: getDeviceId must be called with callback");
+
+    if (_voter_id) return callback(null, _voter_id);
+
+    return $ajax({
+      endpoint: "voterCreate",
+      success: (res) => {
+        var {voter_id} = res;
+        _setVoterId(voter_id);
+        callback(null, voter_id);
+      },
+      error: (err) => callback(err)
+    });
+
   },
 
   /**
    * get the Voters location
-   * @return {String} location
+   * @param {Function} callback function (error, location)
    */
   getLocation: function (callback) {
-    if (_location) callback(null, _location)
-    else $ajax({
+    if (callback instanceof Function === false)
+      throw new Error("VoterStore: getDeviceId must be called with callback");
+
+    if (_location) return callback(null, _location);
+
+    return $ajax({
       endpoint: "voterAddressRetrieve",
       success: (res) => {
         var { text_for_map_search: location } = res;
 
-        setLocation(location);
+        _setLocation(location);
         callback(null, location);
       },
       error: (err) => callback(err)
@@ -84,39 +142,30 @@ const VoterStore = createStore({
   },
 
   /**
-   * save the voter's location to override API IP guess
+   * save the voter"s location to override API IP guess
    * @param {String} location
    * @param {Function} callback function that accepts (err,location)
    */
   saveLocation: function (location, callback) {
-    if (typeof location !== "string") throw new Error('missing location to save');
-    if (callback instanceof Function === false) throw new Error('missing callback function');
+    if (typeof location !== "string") throw new Error("missing location to save");
+    if (callback instanceof Function === false) throw new Error("missing callback function");
 
     $ajax({
-      type: 'POST',
+      type: "POST",
       data: { text_for_map_search: location },
-      endpoint: 'voterAddressSave',
+      endpoint: "voterAddressSave",
       success: (res) => {
-        var { text_for_map_search: location } = res;
+        var { text_for_map_search: savedLocation } = res;
 
-        setLocation(location);
-        callback(null, location);
+        _setLocation(savedLocation);
+        callback(null, savedLocation);
       },
       error: (err) => callback(err, null)
-    })
+    });
   },
 
   signInStatus: function (callback) {
-    callback(assign({}, _voter))
-  },
-
-  getVoterObject: function () {
-      //console.log("VoterStore getVoterObject");
-      //for (var key in _voter_store) {
-      //    _voter = _voter_store[key];
-      //}
-      //return _voter;
-      return assign({}, _voter);
+    callback(assign({}, _voter));
   },
 
   /**
@@ -129,15 +178,17 @@ const VoterStore = createStore({
   },
 
   getVoterPhotoURL: function (callback) {
-      console.log("VoterStore getVoterPhotoURL");
-      if ( _voter_photo_url ) callback(_voter_photo_url);
-      else callback(new Error('missing voter photo url'));
+    console.log("VoterStore getVoterPhotoURL");
+    if ( _voter_photo_url ) callback(_voter_photo_url);
+    else callback(new Error("missing voter photo url"));
   },
 
   /**
    * set geographical location of voter
    */
-  setGeoLocation() {
+  setGeoLocation () {
+    var _position = {};
+
     navigator.geolocation.getCurrentPosition(function (pos) {
       _position.lat = pos.coords.latitude;
       _position.long = pos.coords.longitude;
@@ -145,13 +196,13 @@ const VoterStore = createStore({
   },
 
   changeLocation: function (location) {
-    if (!location) throw new Error('Missing voter location');
+    if (!location) throw new Error("Missing voter location");
 
-    console.log('setting initial location...');
+    console.log("setting initial location...");
     console.warn(`we will need to configure logic & etc. for setting up a voters location...
     `);
 
-    cookies.setItem('location', location);
+    cookies.setItem("location", location);
     VoterActions.ChangeLocation(location);
 
     return location;

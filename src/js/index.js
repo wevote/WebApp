@@ -1,38 +1,96 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { createHistory } from 'history';
-import Root from './Root';
-import VoterStore from './stores/VoterStore';
+import React from "react";
+import Router from "react-router";
+import ReactDOM from "react-dom";
+import { createHistory } from "history";
+
+import VoterStore from "./stores/VoterStore";
+import routes from "./Root";
 
 // polyfill
 if (!Object.assign) Object.assign = React.__spread;
 
-VoterStore.getDeviceId( (err, firstVisit, id) => {
-  if (err) console.error(err);
+// wrapping for privacy
+(function () {
 
-  VoterStore.getLocation( (err, location) => {
-    if (err) console.error(err);
+  function handleVoterError (err) {
+    console.error("Error initializing voter object", err);
+  }
 
-    console.log(location);
-    render(firstVisit);
-
-  });
-
-});
-
-function render(firstVisit) {
-  ReactDOM.render(
-      <Root history={createHistory()} firstVisit={firstVisit} />,
-      document.getElementById('app')
-  )
-}
-
-//console.log("index.js: About to initialize VoterStore");
-//VoterStore.initialize((voter_object) => {
-//    ReactDOM.render(
-//        <Root history={createHistory()} firstVisit={firstVisit} voter_object={voter_object} />,
-//        document.getElementById('app')
-//    );
-//});
+  function renderApp (firstVisit, voter) {
+    ReactDOM.render(
+      <Router history={createHistory()}>
+        { routes(firstVisit, voter) }
+      </Router>, document.getElementById("app")
+    );
+  }
 
 
+  if (VoterStore.hasDeviceId() && VoterStore.hasVoterId() && VoterStore.hasLocation()) {
+
+    VoterStore.getVoterObject( (err, voter) => { //noop - base case, all cookies are set
+      if (err) handleVoterError(err);
+
+      renderApp(false, voter);
+
+    });
+
+  } else if (VoterStore.hasDeviceId() && VoterStore.hasVoterId() && !VoterStore.hasLocation()) {
+
+    VoterStore.getLocation( (err) => {
+      if (err) handleVoterError(err);
+
+      VoterStore.getVoterObject( (_err, voter) => {
+        if (_err) handleVoterError(_err);
+
+        renderApp(false, voter);
+
+      });
+
+    });
+
+  } else if (VoterStore.hasDeviceId() && !VoterStore.hasVoterId() && !VoterStore.hasLocation()) {
+
+    VoterStore.createVoter( (err) => {
+      if (err) handleVoterError(err);
+
+      VoterStore.getLocation( (error) => {
+        if (error) handleVoterError(error);
+
+        VoterStore.getVoterObject( (_err, voter) => {
+          if (_err) handleVoterError(_err);
+
+          renderApp(true, voter);
+
+        });
+
+      });
+
+    });
+
+  } else {
+
+    VoterStore.getDeviceId( (err) => {
+      if (err) handleVoterError(err);
+
+      VoterStore.createVoter( (err) => {
+        if (err) handleVoterError(err);
+
+        VoterStore.getLocation( (err) => {
+          if (err) handleVoterError(err);
+
+          VoterStore.getVoterObject( (err, voter) => {
+            if (err) handleVoterError(err);
+
+            renderApp(true, voter)
+
+          });
+
+        });
+
+      });
+
+    });
+
+  }
+
+}())
