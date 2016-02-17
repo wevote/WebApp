@@ -23,10 +23,15 @@ export default class OpinionsFollowed extends Component {
   render() {
     return (
 <div>
-  <div className="container-fluid well well-90">
+  <div className="container-fluid well container-fluid--paddingxl gutter-top--small">
     <h2 className="text-center">Opinions I Follow</h2>
-      <input type="text" name="search_opinions" className="form-control"
-           placeholder="Search by name or twitter handle." /><br />
+    <div className="input-group-lg">
+      <input type="text"
+              name="search_opinions" 
+              className="form-control"
+              placeholder="Search by name or twitter handle." 
+      />
+    </div>
 
     <div className="voter-guide-list">
       {
