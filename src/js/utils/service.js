@@ -6,38 +6,54 @@
 
 'use strict';
 const DEBUG = false;
-
-import assign from 'object-assign';
-import * as request from 'superagent';
-
 const url = require('url');
-const web_app_config = require('../config');
+
+const assign = require('object-assign');
+const ajax = require('../vendor/jquery.js').ajax;
+const webAppConfig = require('../config');
+const cookies = require('./cookies');
 
 const defaults = {
   dataType: 'json',
-  WE_VOTE_SERVER_API_ROOT_URL: web_app_config.WE_VOTE_SERVER_API_ROOT_URL,
-  query: {}
+  baseUrl: webAppConfig.WE_VOTE_SERVER_API_ROOT_URL,
+  url: webAppConfig.WE_VOTE_SERVER_API_ROOT_URL,
+  query: {},
+  type: 'GET',
+  data: {
+    voter_device_id: cookies.getItem('voter_device_id')
+  },
+  success: (res) => console.warn('Success function not defined:', res),
+  error: (err) => console.error(err.message)
 };
+
+export function $ajax (options) {
+  if (!options.endpoint) throw new Error('$ajax missing endpoint option');
+
+  options.data = assign({}, defaults.data, options.data || {});
+  options.crossDomain = true;
+  options.success = options.success || defaults.success;
+  options.error = options.error || defaults.error;
+  options.url = url.resolve(defaults.baseUrl, options.endpoint);
+
+  return ajax(options);
+}
 
 export function get (options) {
   var opts = assign(defaults, options);
-  opts.WE_VOTE_SERVER_API_ROOT_URL = url.resolve(opts.WE_VOTE_SERVER_API_ROOT_URL, opts.endpoint);
 
-  return new Promise( (resolve, reject) => request
-    .get(opts.WE_VOTE_SERVER_API_ROOT_URL)
+  opts.url = url.resolve(opts.baseUrl, opts.endpoint);
+
+  return new Promise( (resolve, reject) => new request.Request('GET', opts.url)
     .accept(opts.dataType)
     .query(opts.query)
     .withCredentials()
     .end((err, res) => {
-      if (err || !res.body.status) {
+      if (err) {
         if (opts.error instanceof Function === true)
           opts.error(err || res.body);
-        else
-          console.error(err || res.body);
 
-        reject(err || res.body);
-      }
-      else {
+        reject(err);
+      } else {
         if (opts.success instanceof Function === true)
           opts.success(res.body);
         else if (DEBUG)
@@ -46,8 +62,35 @@ export function get (options) {
         resolve(res.body);
       }
     })
-  );
+  )
 }
+
+export function $post (options) {
+  var opts = assign(defaults, options);
+  opts.url = url.resolve(opts.baseUrl, opts.endpoint) + '/';
+
+  return new Promise( (resolve, reject) => new request.Request('POST', opts.url)
+    .accept(opts.dataType)
+    .withCredentials()
+    .send(opts.send)
+    .end((err, res) => {
+      if (err) {
+        if (opts.error instanceof Function === true)
+          opts.error(err || res.body);
+
+        reject(err);
+      } else {
+        if (opts.success instanceof Function === true)
+          opts.success(res.body);
+        else if (DEBUG)
+          console.warn(res.body);
+
+        resolve(res.body);
+      }
+    })
+  )
+}
+
 
 export function voterBallotItemsRetrieveFromGoogleCivic (text_for_map_search, success ) {
   return get({
@@ -112,7 +155,7 @@ export function voterStarOffSave (id, kind_of_ballot_item, success ) {
 }
 
 export function voterSupportingSave (id, kind_of_ballot_item, success ) {
-  console.log('voterSupportingSave, we_vote_id:, ', we_vote_id);
+  console.log('utils/service.js, calling voterSupportingSave, we_vote_id:, ', we_vote_id);
 
   return get({
     endpoint: 'voterSupportingSave',
@@ -121,7 +164,7 @@ export function voterSupportingSave (id, kind_of_ballot_item, success ) {
 }
 
 export function voterStopSupportingSave (id, kind_of_ballot_item, success ) {
-  console.log('voterStopSupportingSave, we_vote_id:, ', we_vote_id);
+  console.log('utils/service.js, calling voterStopSupportingSave, we_vote_id:, ', we_vote_id);
 
   return get({
     endpoint: 'voterStopSupportingSave',
@@ -130,7 +173,7 @@ export function voterStopSupportingSave (id, kind_of_ballot_item, success ) {
 }
 
 export function voterOpposingSave (id, kind_of_ballot_item, success ) {
-  console.log('voterOpposingSave, we_vote_id:, ', we_vote_id);
+  console.log('utils/service.js, calling voterOpposingSave, we_vote_id:, ', we_vote_id);
 
   return get({
     endpoint: 'voterOpposingSave',
@@ -139,7 +182,7 @@ export function voterOpposingSave (id, kind_of_ballot_item, success ) {
 }
 
 export function voterStopOpposingSave (id, kind_of_ballot_item, success ) {
-  console.log('voterStopOpposingSave, we_vote_id:, ', we_vote_id);
+  console.log('utils/service.js, calling oterStopOpposingSave, we_vote_id:, ', we_vote_id);
 
   return get({
     endpoint: 'voterStopOpposingSave',
@@ -148,23 +191,24 @@ export function voterStopOpposingSave (id, kind_of_ballot_item, success ) {
 }
 
 export function deviceIdGenerate (success) {
-  console.log('generating device id...');
+  console.log('utils/service.js, calling deviceIdGenerate Endpoint');
 
   return get({ endpoint: 'deviceIdGenerate', success });
 }
 
 export function createVoter (success) {
-  console.log('creating voter id');
+  console.log('utils/service.js, calling createVoter Endpoint');
 
   return get({ endpoint: 'voterCreate', success });
 }
 
 export function voterLocationRetrieveFromIP (success) {
-  console.log('retrieve location from IP');
+  console.log('utils/service.js, calling voterLocationRetrieveFromIP Endpoint');
 
   return get({ endpoint: 'voterLocationRetrieveFromIP', success });
 }
 
 export function voterRetrieve (success) {
+  console.log("utils/service.js, calling voterRetrieve Endpoint");
   return get({ endpoint: 'voterRetrieve', success });
 }

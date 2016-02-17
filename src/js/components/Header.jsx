@@ -11,11 +11,14 @@ export default class Header extends Component {
   }
 
   componentDidMount() {
-    VoterStore.getLocation( location => this.setState({ location }))
+    VoterStore.getLocation( (err, location) => {
+      this.setState({ location })
+    })
   }
 
   render () {
     var {location} = this.state;
+    
     return (
       <header className="row">
         <Headroom>

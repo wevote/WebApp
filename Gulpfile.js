@@ -27,7 +27,8 @@ gulp.task('browserify', function () {
 
 gulp.task('server', function () {
   browserSync.init({
-    proxy: 'localhost:3003'
+    proxy: 'localhost:3003',
+    open: false
   });
 })
 
@@ -37,7 +38,7 @@ gulp.task('sass', function () {
   .pipe(sass())
   .pipe(gulp.dest('./build/css'))
   .pipe(browserSync.stream());
-}) 
+})
 
 gulp.task('clean:build', function () {
   return del.sync(['./build/**'])

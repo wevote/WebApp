@@ -1,5 +1,7 @@
 import assign from 'object-assign';
-import { deviceIdGenerate, voterLocationRetrieveFromIP } from '../utils/service';
+import {
+  $ajax, $post, deviceIdGenerate, voterLocationRetrieveFromIP
+} from '../utils/service';
 import { createStore } from '../utils/createStore';
 
 import AppDispatcher from '../dispatcher/AppDispatcher';
@@ -17,36 +19,92 @@ function error (err) {
   console.error('WVError:', err.message);
 }
 
-function setVoterDeviceId (id) {
+function setDeviceId (id) {
   _voter_device_id = id;
   cookies.setItem('voter_device_id', id, Infinity)
 }
 
-function setVoterLocation (location) {
+function setLocation (location) {
   _location = location;
   cookies.setItem('location', location, Infinity);
 }
 
+function _getLocation () {
+  return _location || null;
+}
+
 const VoterStore = createStore({
 
+  hasDeviceId: function () {
+    if (_voter_device_id) return true;
+    else return false;
+  },
   /**
    * initialize the voter store with data, if no data
    * and callback with the voter items
    * @return {Boolean}
    */
   getDeviceId: function (callback) {
+    console.log("ENTERING getDeviceId");
     if (!callback || typeof callback !== 'function')
       throw new Error('VoterStore: getDeviceId must be called with callback');
 
-    if ( !_voter_device_id ) deviceIdGenerate()
-        .then ( res => {
-          var {voter_device_id: id} = res;
-          setVoterDeviceId(id);
-          callback(true, id);
-        })
-        .catch( error );
+    if (this.hasDeviceId()) callback(null, false, _voter_device_id);
 
-    else callback( false, _voter_device_id );
+    else $ajax({
+      endpoint: "deviceIdGenerate",
+      success: (res) => {
+        var { voter_device_id: id } = res;
+
+        setDeviceId(id);
+        callback(null, true, id);
+      },
+      error: (err) => {
+        callback(err, true, null);
+      }
+    });
+  },
+
+  /**
+   * get the Voters location
+   * @return {String} location
+   */
+  getLocation: function (callback) {
+    if (_location) callback(null, _location)
+    else $ajax({
+      endpoint: "voterAddressRetrieve",
+      success: (res) => {
+        var { text_for_map_search: location } = res;
+
+        setLocation(location);
+        callback(null, location);
+      },
+      error: (err) => callback(err)
+    });
+
+  },
+
+  /**
+   * save the voter's location to override API IP guess
+   * @param {String} location
+   * @param {Function} callback function that accepts (err,location)
+   */
+  saveLocation: function (location, callback) {
+    if (typeof location !== "string") throw new Error('missing location to save');
+    if (callback instanceof Function === false) throw new Error('missing callback function');
+
+    $ajax({
+      type: 'GET',
+      data: { text_for_map_search: location },
+      endpoint: 'voterAddressSave',
+      success: (res) => {
+        var { text_for_map_search: location } = res;
+
+        setLocation(location);
+        callback(null, location);
+      },
+      error: (err) => callback(err, null)
+    })
   },
 
   signInStatus: function (callback) {
@@ -98,25 +156,6 @@ const VoterStore = createStore({
     VoterActions.ChangeLocation(location);
 
     return location;
-  },
-
-  saveLocation: function (location) {
-    cookies.setItem('location', location);
-    VoterActions.ChangeLocation(location);
-  },
-
-  /**
-   * get the Voters location
-   * @return {String} location
-   */
-  getLocation: function (callback) {
-    if (_location) callback(_location)
-    else voterLocationRetrieveFromIP()
-      .then( response => {
-        var { voter_location: location } = response;
-        setVoterLocation(location);
-        callback(location);
-      });
   }
 });
 

@@ -22,6 +22,7 @@ import Candidate                        from './routes/Ballot/Candidate';
 
 /* Ballot Off-shoot Pages */
 import Opinions                         from './routes/Opinions';
+import GuidePositionList                from './routes/Guide/PositionList'; // A list of all positions from one guide
 
 /* More */
 import More                             from './routes/More';
@@ -32,8 +33,8 @@ import EmailBallot                      from './routes/More/EmailBallot';
 import Privacy                          from './routes/More/Privacy';
 
 
-// import Measure                          from 'routes/Ballot/Measure';
-// import Opinion                          from 'routes/Ballot/Opinion';
+// import Measure                       from 'routes/Ballot/Measure';
+// import Opinion                       from 'routes/Ballot/Opinion';
 import Requests                         from './routes/Requests';
 import Connect                          from './routes/Connect';
 import Activity                         from './routes/Activity';
@@ -90,6 +91,9 @@ class Root extends Component {
         <Route path="/more/about" component={About} />
         <Route path="/more/opinions/followed" component={OpinionsFollowed} />
         <Route path="/more/privacy" component={Privacy} />
+
+        {/* Voter Guide Pages */}
+        <Route path="/guidepositions/:we_vote_id" component={GuidePositionList} />
 
         <Route path="/" component={Application} >
 
