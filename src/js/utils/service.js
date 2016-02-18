@@ -47,7 +47,7 @@ export function get (options) {
 
   opts.url = url.resolve(opts.baseUrl, opts.endpoint);
   // We add voter_device_id to all endpoint calls
-  opts.query["voter_device_id"] = cookies.getItem("voter_device_id");
+  opts.query.voter_device_id = cookies.getItem("voter_device_id");
 
   return new Promise( (resolve, reject) => new request.Request("GET", opts.url)
     .accept(opts.dataType)
