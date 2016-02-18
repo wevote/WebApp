@@ -6,5 +6,7 @@ module.exports = require('keymirror')({
   VOTER_STOP_OPPOSING_SAVE: null,
   VOTER_STAR_ON_SAVE: null,
   VOTER_STAR_OFF_SAVE: null,
-  POSITIONS_RETRIEVED: null
+  POSITIONS_RETRIEVED: null,
+  CANDIDATE_RETRIEVED: null,
+  STAR_STATUS_RETRIEVED: null
 });

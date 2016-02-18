@@ -27,6 +27,11 @@ export default class PositionList extends Component {
   }
 
   render () {
+    if (!this.state.position_list){
+      return (
+        <div></div>
+      );
+    }
     return (
       <ul className="list-group">
         { this.state.position_list.map( item =>

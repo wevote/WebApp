@@ -1,4 +1,5 @@
 import { get } from '../utils/service';
+// import service from '../utils/service';
 import { createStore } from '../utils/createStore';
 import { shallowClone } from '../utils/object-utils';
 
@@ -41,6 +42,14 @@ const BallotAPIWorker = {
     success: success || defaultSuccess });
   },
 
+  candidateRetrieve: function (we_vote_id, success ) {
+    return get({
+      endpoint: 'candidateRetrieve',
+      query: { candidate_we_vote_id: we_vote_id },
+      success: success
+    });
+  },
+
   // get the ballot items
   voterBallotItemsRetrieve: function ( success ) {
     return get({ endpoint: 'voterBallotItemsRetrieve',
@@ -48,7 +57,7 @@ const BallotAPIWorker = {
   },
 
   positionListForBallotItem : function( we_vote_id, success) {
-    return service.get({
+    return get({
       endpoint: 'positionListForBallotItem',
       query: {
          ballot_item_id: _ballot_store[we_vote_id].id,
@@ -93,8 +102,8 @@ const BallotAPIWorker = {
     return get({
       endpoint: 'voterStarStatusRetrieve',
       query: {
-        ballot_item_id: _ballot_store[we_vote_id].id,
-        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+        ballot_item_we_vote_id: we_vote_id,
+        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item || 'CANDIDATE'
       }, success: success || defaultSuccess
     });
   },
@@ -408,6 +417,38 @@ const BallotStore = createStore({
     return _ballot_store[we_vote_id].is_starred;
   },
 
+  getOrFetchCandidateByWeVoteId: function (candidate_we_vote_id) {
+    var candidate = this.getCandidateByWeVoteId(candidate_we_vote_id);
+    if (candidate && candidate.is_oppose) { return candidate; } //candidate already retrieved
+    _ballot_store[candidate_we_vote_id] = {};
+    _ballot_store[candidate_we_vote_id].kind_of_ballot_item = 'CANDIDATE';
+
+    BallotAPIWorker.candidateRetrieve(candidate_we_vote_id, function(res){
+      BallotActions.candidateRetrieved(res);
+      BallotStore.fetchCandidateDetails(candidate_we_vote_id);
+    });
+
+    return _ballot_store[candidate_we_vote_id];
+  },
+
+  fetchCandidateDetails: function(candidate_we_vote_id){
+    BallotAPIWorker.voterStarStatusRetrieve(candidate_we_vote_id, function(res){
+        BallotActions.starStatusRetrieved(res, candidate_we_vote_id);
+    });
+
+    BallotStore.fetchCandidatePositionsByWeVoteId(candidate_we_vote_id);
+
+    BallotAPIWorker.positionOpposeCountForBallotItem (candidate_we_vote_id, function(res){
+      _ballot_store[candidate_we_vote_id].opposeCount = res.count;
+      BallotStore.emitChange();
+    });
+
+    BallotAPIWorker.positionSupportCountForBallotItem (candidate_we_vote_id, function(res){
+      _ballot_store [candidate_we_vote_id].supportCount = res.count;
+      BallotStore.emitChange();
+    });
+  },
+
   getCandidateByWeVoteId: function (candidate_we_vote_id) {
     return shallowClone (
       _ballot_store [ candidate_we_vote_id ]
@@ -453,6 +494,11 @@ function setLocalPositionsList(we_vote_id, position_list) {
   return true;
 }
 
+function addCandidateToStore (res) {
+  _ballot_store[res.we_vote_id] = res;
+  return true;
+}
+
  /**
  * toggle the star state of a ballot item by its we_vote_id
  * @param  {string} we_vote_id identifier for lookup in stored
@@ -462,6 +508,13 @@ function toggleStarState(we_vote_id) {
   var item = _ballot_store[we_vote_id];
   item.is_starred = ! item.is_starred;
   //console.log(_ballot_store[we_vote_id]);
+  return true;
+}
+
+function setStarState(we_vote_id, status) {
+  if (status){
+    _ballot_store[we_vote_id].is_starred = status;
+  }
   return true;
 }
 
@@ -525,9 +578,27 @@ function setLocalOpposeOffState(we_vote_id) {
   return true;
 }
 
-AppDispatcher.register( action => {
-  var { we_vote_id } = action;
+
+BallotStore.dispatchToken = AppDispatcher.register( action => {
+    var { we_vote_id } = action;
     switch (action.actionType) {
+
+    case BallotConstants.CANDIDATE_RETRIEVED:
+      console.log('action:');
+      console.log(action);
+      addCandidateToStore(action.payload)
+      && BallotStore.emitChange();
+    break;
+
+    case BallotConstants.STAR_STATUS_RETRIEVED:
+      // AppDispatcher.waitFor([BallotStore.dispatchToken]);
+      console.log("REGISTERING");
+      console.log(action);
+      console.log("Ballot Store:");
+      console.log(_ballot_store[action.we_vote_id]);
+      setStarState(action.we_vote_id, action.payload.is_starred)
+      && BallotStore.emitChange();
+    break;
 
     case BallotConstants.POSITIONS_RETRIEVED:
       setLocalPositionsList(action.we_vote_id, action.payload.position_list)

@@ -14,6 +14,24 @@ module.exports = {
     });
   },
 
+  starStatusRetrieved: function (payload, we_vote_id) {
+    console.log("action payload:");
+    console.log(payload);
+    AppDispatcher.dispatch({
+      actionType: BallotConstants.STAR_STATUS_RETRIEVED,
+      payload: payload,
+      we_vote_id: we_vote_id
+    });
+  },
+
+  candidateRetrieved: function (payload) {
+    AppDispatcher.dispatch({
+      actionType: BallotConstants.CANDIDATE_RETRIEVED,
+      payload: payload,
+      we_vote_id: payload.we_vote_id
+    });
+  },
+
   voterSupportingSave: function (we_vote_id) {  // VOTER_SUPPORTING_SAVE
     AppDispatcher.dispatch({
       actionType: BallotConstants.VOTER_SUPPORTING_SAVE,

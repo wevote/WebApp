@@ -12,34 +12,50 @@ import StarAction from '../../components/StarAction';
 export default class Candidate extends Component {
   static propTypes = {
     //history: PropTypes.func.isRequired,
-    history: PropTypes.string,
-    oppose_on: PropTypes.boolean,
-    params: PropTypes.object.isRequired,
-    support_on: PropTypes.boolean
+    // history: PropTypes.string,
+    // oppose_on: PropTypes.boolean,
+    params: PropTypes.object.isRequired
+    // support_on: PropTypes.boolean
   };
 
   constructor(props) {
+    console.log(props);
     super(props);
     this.state = { candidate: {} };
   }
 
   componentWillMount(){
     // Redirects to root if candidate isn't fetched yet; TODO: just fetch params to enable sending links to candidate page.
-    var candidate = BallotStore.getCandidateByWeVoteId(this.props.params.we_vote_id);
-    if (Object.keys(candidate).length === 0)
-      {
-        this.props.history.replace('/ballot');
-      }
+    // var candidate = BallotStore.getCandidateByWeVoteId(this.props.params.we_vote_id);
+    // if (Object.keys(candidate).length === 0)
+    //   {
+    //     this.props.history.replace('/ballot');
+    //   }
+
+  }
+
+  componentWillUnmount () {
+    BallotStore.removeChangeListener(this._onChange.bind(this));
   }
 
   componentDidMount(){
+    BallotStore.addChangeListener(this._onChange.bind(this));
+    var candidate = BallotStore.getOrFetchCandidateByWeVoteId(this.props.params.we_vote_id);
+    if (candidate) {
+      this.setState({ candidate: candidate });
+    }
+  }
+
+  _onChange(){
     this.setState({ candidate: BallotStore.getCandidateByWeVoteId(this.props.params.we_vote_id) });
+    console.log('on_Change!');
+    console.log(this.state.candidate);
   }
 
   render() {
     var candidate = this.state.candidate;
     var we_vote_id = this.props.params.we_vote_id;
-    if (!candidate.we_vote_id){
+    if (!candidate || !candidate.we_vote_id){
       return ( <div></div> );
     };
     // var candidate = BallotStore.getCandidateByWeVoteId(`${this.props.params.we_vote_id}`);
@@ -128,7 +144,9 @@ export default class Candidate extends Component {
               </li>
           </ul>
           */}
-          <PositionList we_vote_id={we_vote_id} />
+          {
+            <PositionList we_vote_id={we_vote_id} />
+          }
         </div>
 
       </div>
