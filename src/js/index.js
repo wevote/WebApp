@@ -81,7 +81,7 @@ if (!Object.assign) Object.assign = React.__spread;
           VoterStore.getVoterObject( (err, voter) => {
             if (err) handleVoterError(err);
 
-            renderApp(true, voter)
+            renderApp(true, voter);
 
           });
 
@@ -93,4 +93,4 @@ if (!Object.assign) Object.assign = React.__spread;
 
   }
 
-}())
+}());

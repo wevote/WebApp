@@ -1,6 +1,6 @@
-'use strict';
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var VoterConstants = require('../constants/VoterConstants');
+"use strict";
+var AppDispatcher = require("../dispatcher/AppDispatcher");
+var VoterConstants = require("../constants/VoterConstants");
 
 module.exports = {
   ChangeLocation: function (location) {  // VOTER_LOCATION_RETRIEVE

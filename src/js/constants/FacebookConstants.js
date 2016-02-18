@@ -1,4 +1,4 @@
-import keyMirror from 'keymirror';
+import keyMirror from "keymirror";
 
 const FacebookConstants = {
     FACEBOOK_INITIALIZED: null,
@@ -9,6 +9,6 @@ const FacebookConstants = {
     FACEBOOK_LOGGED_OUT: null,
     FACEBOOK_SIGN_IN_DISCONNECT: null,
     IMAGE_UPLOADED: null,
-}
+};
 
-module.exports = keyMirror(FacebookConstants)
+module.exports = keyMirror(FacebookConstants);

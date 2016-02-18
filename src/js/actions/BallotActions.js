@@ -1,6 +1,6 @@
-'use strict';
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var BallotConstants = require('../constants/BallotConstants');
+"use strict";
+var AppDispatcher = require("../dispatcher/AppDispatcher");
+var BallotConstants = require("../constants/BallotConstants");
 
 // In the stores, there are AppDispatcher blocks that listen for these actionType constants (ex/ VOTER_SUPPORTING_SAVE)
 //  When action calls one of these functions, we are telling the code in the AppDispatcher block to run
