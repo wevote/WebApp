@@ -1,6 +1,9 @@
-import React, { Component, PropTypes } from "react";
-import BallotStore from "../../stores/BallotStore";
-import BallotItem from "../../components/Ballot/BallotItem";
+import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
+
+import BallotStore from '../../stores/BallotStore';
+import BallotItem from '../../components/Ballot/BallotItem';
+import BallotActions from '../../actions/BallotActions';
 
 export default class Ballot extends Component {
   static propTypes = {
@@ -19,7 +22,7 @@ export default class Ballot extends Component {
   render () {
     var { ballot_list } = this.state;
 
-    return <div className="ballot-list">
+    return (<div className="ballot-list">
       {
         ballot_list ? ballot_list
           .map( item =>
@@ -31,6 +34,6 @@ export default class Ballot extends Component {
             </div>
           )
       }
-    </div>;
+    </div>);
   }
 }

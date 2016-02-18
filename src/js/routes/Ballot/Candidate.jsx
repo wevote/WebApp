@@ -2,32 +2,46 @@ import React, { Component, PropTypes } from 'react';
 import { Button, ButtonToolbar, DropdownButton, Input, MenuItem, Navbar } from "react-bootstrap";
 import { Link } from 'react-router';
 
-import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import CandidateDetail from '../../components/Ballot/CandidateDetail';
+import PositionList from '../../components/Ballot/PositionList';
 import ItemActionbar from '../../components/ItemActionbar';
 import ItemActionBar2 from '../../components/ItemActionBar2';
 import StarAction from '../../components/StarAction';
 
 export default class Candidate extends Component {
   static propTypes = {
-    //history: PropTypes.func.isRequired,
-    history: PropTypes.string,
-    oppose_on: PropTypes.boolean,
-    params: PropTypes.object.isRequired,
-    support_on: PropTypes.boolean
+    params: PropTypes.object.isRequired
   };
 
   constructor(props) {
     super(props);
+    this.state = { candidate: {} };
+  }
+
+  componentWillUnmount() {
+    BallotStore.removeChangeListener(this.changeListener);
+  }
+
+  componentDidMount(){
+
+    BallotStore.addChangeListener(this._onChange.bind(this));
+    var candidate = BallotStore.getOrFetchCandidateByWeVoteId(this.props.params.we_vote_id);
+    if (candidate) {
+      this.setState({ candidate: candidate });
+    }
+  }
+
+  _onChange(){
+    this.setState({ candidate: BallotStore.getCandidateByWeVoteId(this.props.params.we_vote_id) });
   }
 
   render() {
-    var candidate = BallotStore.getCandidateByWeVoteId(`${this.props.params.we_vote_id}`);
-
-    // no candidate exists... go to ballot
-    if (Object.keys(candidate).length === 0)
-      this.props.history.replace('/ballot');
+    var candidate = this.state.candidate;
+    var we_vote_id = this.props.params.we_vote_id;
+    if (!candidate || !candidate.we_vote_id){
+      return ( <div></div> );
+    };
 
     var support_item;
     if (this.props.support_on) {
@@ -67,10 +81,13 @@ export default class Candidate extends Component {
           </div>
         </header>
         */}
-
-        <StarAction
+{candidate.hasOwnProperty('is_starred') ?
+          <StarAction
           we_vote_id={candidate.we_vote_id}
           is_starred={candidate.is_starred} />
+        :
+        <div></div>}
+
         <div className="row" style={{ paddingBottom: '10px' }}>
           <div
             className="col-xs-6"
@@ -78,15 +95,12 @@ export default class Candidate extends Component {
 
             {
               candidate.candidate_photo_url ?
-
                 <img
                   className="img-circle"
                   style={{display:'block', paddingTop: '10px', width:'100px'}}
                   src={candidate.candidate_photo_url}
                   alt="candidate-photo"/> :
-
               <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light"/>
-
             }
           </div>
           <div className="col-xs-6">
@@ -115,36 +129,9 @@ export default class Candidate extends Component {
               </li>
           </ul>
           */}
-          <ul className="list-group">
-
-            {/* One organization's Position on this Candidate */}
-            <li className="list-group-item">
-                <div className="row">
-                  <div className="col-xs-3 col-md-2">
-                      <Link to="ballot_candidate_one_org_position" params={{id: 2, org_id: 27}} className="transparent">
-                        <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"></i>
-                      </Link>
-                  </div>
-                  <div className="col-xs-9 col-md-10">
-                      <h4 className="">
-                        <Link className="linkLight"
-                            to={"/guidepositions/" + organization_we_vote_id }>
-                              Organization Name<br />{/* TODO icon-org-placeholder */}
-                          </Link>
-                      </h4>
-                      <p className="">supports <span className="small">Yesterday at 7:18 PM</span></p>
-                  </div>
-                </div>
-                <div className="row">
-                    Integer ut bibendum ex. Suspendisse eleifend mi accumsan, euismod enim at, malesuada nibh.
-                    Duis a eros fringilla, dictum leo vitae, vulputate mi. Nunc vitae neque nec erat fermentum.
-                </div>
-                {/* Likes coming in a later version
-                <br />
-                23 Likes<br />
-                */}
-            </li>
-          </ul>
+          {
+            <PositionList we_vote_id={we_vote_id} />
+          }
         </div>
 
       </div>
