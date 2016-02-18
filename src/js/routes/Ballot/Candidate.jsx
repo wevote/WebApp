@@ -43,6 +43,9 @@ export default class Candidate extends Component {
         oppose_item = <Link to="ballot">3 <span className="glyphicon glyphicon-small glyphicon-arrow-down"></span></Link>;
     }
 
+    var organization_we_vote_id;
+    organization_we_vote_id = "wv02org1111";
+
     return (
     <section className="candidate well well-90 gutter-top--small">
       <div className="candidate-detail-route list-group-item">
@@ -124,7 +127,8 @@ export default class Candidate extends Component {
                   </div>
                   <div className="col-xs-9 col-md-10">
                       <h4 className="">
-                          <Link className="" to="ballot_candidate_one_org_position" params={{id: 2, org_id: 27}}>
+                        <Link className="linkLight"
+                            to={"/guidepositions/" + organization_we_vote_id }>
                               Organization Name<br />{/* TODO icon-org-placeholder */}
                           </Link>
                       </h4>

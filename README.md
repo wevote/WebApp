@@ -1,21 +1,8 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-## Contents
-
-- [README for We Vote WebApp](#readme-for-we-vote-webapp)
-  - [Contributing](#contributing)
-  - [Install WeVoteServer First](#install-wevoteserver-first)
-  - [Install nodeenv ("Node Env")](#install-nodeenv-node-env)
-  - [Clone https://github.com/wevote/WebApp](#clone-httpsgithubcomwevotewebapp)
-  - [Install and start web application](#install-and-start-web-application)
-  - [After Installation: Working with WebApp Day-to-Day](#after-installation-working-with-webapp-day-to-day)
-  - [Versions](#versions)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 # README for We Vote WebApp
 
-[![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=develop)](https://travis-ci.org/wevote/WebApp) | 
+![WeVoteUS](wevotelogo.png) 
+
+[![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=develop)](https://travis-ci.org/wevote/WebApp)
 
 This WebApp repository contains a Node/React/Flux Javascript application. Using data from
 Google Civic API, Vote Smart, MapLight, TheUnitedStates.io and the Voting Information Project, we give voters a
@@ -25,12 +12,8 @@ You can see our current wireframe mockup for a San Francisco ballot here:
 http://start.wevoteusa.org/
 
 ## Contributing
-Please read our [Contributing guidelines](docs/contributing/index.md) before you start contributing to the project.
-
-## Install WeVoteServer First
-In order to get the data the WebApp needs, please 
-[install WeVoteServer](https://github.com/wevote/WeVoteServer/blob/master/README_API_INSTALL.md)
-
+Please read our [Contributing guidelines](docs/contributing/index.md) before you start contributing to the project.  
+For best practices, please read [how to fork and create pull requests](CONTRIBUTING.md).
 
 ## Install nodeenv ("Node Env")
 
@@ -61,9 +44,16 @@ Confirm the versions of your main packages are >= to these versions:
 
     (WebAppEnv) $ npm -v
     3.3.12
+    
+## Overview of Process
 
+1. Fork the repository to your GitHub repo.
+2. Clone your repository to your local machine
+3. **Always** start from the develop branch
+4. When working on features or hotfixes, created a new branch and push those for pull requests - [See contributing for more](CONTRIBUTING.md)
+5. Request a pull request. If there is an issue that the pull request is tried to, include the number of the issue in your description.
 
-## Clone https://github.com/wevote/WebApp
+## Set up your environment
 
 Create a place to put all of the code from Github:
 
@@ -72,7 +62,6 @@ Create a place to put all of the code from Github:
 Retrieve “WebApp” into that folder, so your code ends up here:
 
     /Users/<YOUR NAME HERE>/MyProjects/WebApp
-
 
 ## Install and start web application
 
@@ -85,11 +74,16 @@ You should be able to visit WebApp here:
 
     http://localhost:3000
 
+## Using We Vote API server Locally
+
+The default configuration connections to our live API server at: https://api.wevoteusa.org 
+If you would like to install the We Vote API server locally, start by reading the instructions[install WeVoteServer](https://github.com/wevote/WeVoteServer/blob/master/README_API_INSTALL.md)
 
 ## After Installation: Working with WebApp Day-to-Day
 
 [Read about working with WebApp on a daily basis](README_WORKING_WITH_WEB_APP.md)
 
-## Versions
+## SemVer
 
-Please read about how we version the app vs releases - [versions vs releases](docs/contributing/versions/index.md)
+We follow [SemVer](http://semver.org/) for our releases. Please read if you plan
+to tag for any releases.
