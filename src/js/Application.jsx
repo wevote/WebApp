@@ -22,6 +22,7 @@ export default class Application extends Component {
     console.log("Application: About to initialize VoterStore");
     VoterStore.signInStatus((voter) => {
         console.log(voter, 'voter is your object')
+              console.log(voter)
         this.setState({voter});
     });
   }

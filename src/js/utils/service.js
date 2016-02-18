@@ -12,6 +12,7 @@ const assign = require('object-assign');
 const ajax = require('../vendor/jquery.js').ajax;
 const webAppConfig = require('../config');
 const cookies = require('./cookies');
+import * as request from "superagent";
 
 const defaults = {
   dataType: 'json',

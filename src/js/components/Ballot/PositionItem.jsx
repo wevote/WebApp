@@ -24,7 +24,7 @@ export default class PositionItem extends Component {
 
   _onChange () {
     this.setState({ position: PositionStore.getLocalPositionByWeVoteId(this.props.position_we_vote_id) });
-    console.log("Position:")
+    console.log("Position:");
     console.log(this.state.position);
   }
 

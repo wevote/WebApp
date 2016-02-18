@@ -24,6 +24,15 @@ module.exports = {
     });
   },
 
+  candidateItemRetrieved: function (payload, parameter, we_vote_id){
+    AppDispatcher.dispatch({
+      actionType: BallotConstants.CANDIDATE_DETAIL_RETRIEVED,
+      payload: payload,
+      parameter: parameter,
+      we_vote_id: we_vote_id
+    });
+  },
+
   candidateRetrieved: function (payload) {
     AppDispatcher.dispatch({
       actionType: BallotConstants.CANDIDATE_RETRIEVED,

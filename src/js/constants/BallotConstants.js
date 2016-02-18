@@ -8,5 +8,6 @@ module.exports = require('keymirror')({
   VOTER_STAR_OFF_SAVE: null,
   POSITIONS_RETRIEVED: null,
   CANDIDATE_RETRIEVED: null,
-  STAR_STATUS_RETRIEVED: null
+  STAR_STATUS_RETRIEVED: null,
+  CANDIDATE_DETAIL_RETRIEVED: null
 });

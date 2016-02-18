@@ -1,5 +1,4 @@
 import { get } from '../utils/service';
-// import service from '../utils/service';
 import { createStore } from '../utils/createStore';
 import { shallowClone } from '../utils/object-utils';
 
@@ -46,6 +45,14 @@ const BallotAPIWorker = {
     return get({
       endpoint: 'candidateRetrieve',
       query: { candidate_we_vote_id: we_vote_id },
+      success: success
+    });
+  },
+
+  officeRetrieve: function (we_vote_id, success ) {
+    return get({
+      endpoint: 'officeRetrieve',
+      query: { office_we_vote_id: we_vote_id },
       success: success
     });
   },
@@ -372,6 +379,16 @@ const BallotStore = createStore({
       });
   },
 
+  fetchCandidateOfficeByWeVoteId: function(candidate_we_vote_id){
+    var we_vote_id = _ballot_store[candidate_we_vote_id].contest_office_we_vote_id;
+    BallotAPIWorker.officeRetrieve(we_vote_id,
+      function(res){
+        console.log("fetchCandidateResponse");
+        console.log(res);
+        BallotActions.candidateItemRetrieved(candidate_we_vote_id, 'office_display_name', res);
+      });
+  },
+
   /**
    * get the number of orgs and friends that the Voter follows who support this ballot item
    * @param  {String} we_vote_id ballot items we_vote_id
@@ -437,6 +454,7 @@ const BallotStore = createStore({
     });
 
     BallotStore.fetchCandidatePositionsByWeVoteId(candidate_we_vote_id);
+    BallotStore.fetchCandidateOfficeByWeVoteId(candidate_we_vote_id);
 
     BallotAPIWorker.positionOpposeCountForBallotItem (candidate_we_vote_id, function(res){
       _ballot_store[candidate_we_vote_id].opposeCount = res.count;
@@ -491,6 +509,11 @@ const BallotStore = createStore({
 
 function setLocalPositionsList(we_vote_id, position_list) {
   _ballot_store[we_vote_id].position_list = position_list;
+  return true;
+}
+
+function setCandidateDetail(we_vote_id, parameter, value) {
+  _ballot_store[we_vote_id][parameter] = value;
   return true;
 }
 
@@ -583,19 +606,17 @@ BallotStore.dispatchToken = AppDispatcher.register( action => {
     var { we_vote_id } = action;
     switch (action.actionType) {
 
+    case BallotConstants.CANDIDATE_DETAIL_RETRIEVED:
+      setCandidateDetail(action.payload.we_vote_id, action.payload.parameter, action.payload) &&
+      BallotStore.emitChange();
+    break;
+
     case BallotConstants.CANDIDATE_RETRIEVED:
-      console.log('action:');
-      console.log(action);
       addCandidateToStore(action.payload)
       && BallotStore.emitChange();
     break;
 
     case BallotConstants.STAR_STATUS_RETRIEVED:
-      // AppDispatcher.waitFor([BallotStore.dispatchToken]);
-      console.log("REGISTERING");
-      console.log(action);
-      console.log("Ballot Store:");
-      console.log(_ballot_store[action.we_vote_id]);
       setStarState(action.we_vote_id, action.payload.is_starred)
       && BallotStore.emitChange();
     break;

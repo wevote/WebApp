@@ -19,7 +19,6 @@ export default class Candidate extends Component {
   };
 
   constructor(props) {
-    console.log(props);
     super(props);
     this.state = { candidate: {} };
   }
@@ -58,8 +57,6 @@ export default class Candidate extends Component {
     if (!candidate || !candidate.we_vote_id){
       return ( <div></div> );
     };
-    // var candidate = BallotStore.getCandidateByWeVoteId(`${this.props.params.we_vote_id}`);
-
 
     var support_item;
     if (this.props.support_on) {

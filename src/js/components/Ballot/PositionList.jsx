@@ -11,7 +11,7 @@ export default class PositionList extends Component {
     super(props);
     this.state = { position_list: [] };
   }
-    // no candidate exists... go to ballot
+
   componentDidMount (){
     BallotStore.fetchCandidatePositionsByWeVoteId(this.props.we_vote_id)
     BallotStore.addChangeListener(this._onChange.bind(this));
@@ -35,7 +35,9 @@ export default class PositionList extends Component {
     return (
       <ul className="list-group">
         { this.state.position_list.map( item =>
-            <PositionItem key={item.position_we_vote_id} position_we_vote_id={item.position_we_vote_id} speaker_label={item.speaker_label}/> )
+            <PositionItem key={item.position_we_vote_id}
+            position_we_vote_id={item.position_we_vote_id}
+            speaker_label={item.speaker_label}/> )
         }
       </ul>
     );
