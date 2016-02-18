@@ -38,7 +38,7 @@ export default class Application extends Component {
       <div className="container-fluid">
         <div className="row">
           <div className="col-xs-4 col-sm-4 col-md-4 no-show">
-            { is_signed_in ? <MoreMenu {...voter} /> : <span></span> }
+            { is_signed_in ? <MoreMenu {...voter} /> : <MoreMenu /> }
           </div>
           <div className="col-xs-8 col-sm-8 col-md-8">
             { this.props.children }

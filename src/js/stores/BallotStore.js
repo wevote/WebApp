@@ -13,7 +13,7 @@ let _google_civic_election_id = null;
 const MEASURE = 'MEASURE';
 
 function defaultSuccess (res) {
-  console.warn(res);
+  // console.warn(res);
 }
 
 function addItemsToBallotStore (ballot_item_list) {

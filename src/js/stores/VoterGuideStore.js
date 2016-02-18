@@ -1,10 +1,12 @@
 import BallotStore from '../stores/BallotStore';
 import { createStore } from '../utils/createStore';
+import { get } from '../utils/service';
 import {shallowClone} from '../utils/object-utils';
 
 const AppDispatcher = require('../dispatcher/AppDispatcher');
 const VoterGuideConstants = require('../constants/VoterGuideConstants');
 
+const cookies = require("../utils/cookies");
 const request = require('superagent');
 const web_app_config = require('../config');
 
@@ -32,6 +34,7 @@ function retrieveVoterGuidesToFollowList () {
     .withCredentials()
     .query(web_app_config.test)
     .query({ google_civic_election_id: BallotStore.getGoogleCivicElectionId() })
+    .query({ voter_device_id: cookies.getItem("voter_device_id") })
     .end( function (err, res) {
       if (err || !res.body.success)
         reject(err || res.body.status);
@@ -59,6 +62,7 @@ function retrieveVoterGuidesFollowedList () {
   return new Promise( (resolve, reject) => request
     .get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}voterGuidesFollowedRetrieve/`)
     .withCredentials()
+    .query({ voter_device_id: cookies.getItem("voter_device_id") })
     .end( function (err, res) {
       if (err || !res.body.success)
         reject(err || res.body.status);
@@ -88,6 +92,7 @@ function retrieveOrganizations (data) {
       .get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}organizationRetrieve/`)
       .withCredentials()
       .query({ organization_we_vote_id: we_vote_id })
+      .query({ voter_device_id: cookies.getItem("voter_device_id") })
       .end( function (err, res) {
         if (res.body.success) {
           _organization_store[res.body.organization_we_vote_id] = shallowClone(res.body);
@@ -109,6 +114,7 @@ function retrieveOrganizationsFollowedList () {
   return new Promise( (resolve, reject) => request
     .get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}organizationsFollowedRetrieve/`)
     .withCredentials()
+    .query({ voter_device_id: cookies.getItem("voter_device_id") })
     .end( function (err, res) {
       if (err || !res.body.success)
         reject(err || res.body.status);
@@ -132,6 +138,7 @@ function followOrganization (we_vote_id) {
   return new Promise((resolve, reject) => request
     .get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}organizationFollow/`)
     .withCredentials()
+    .query({ voter_device_id: cookies.getItem("voter_device_id") })
     .query({ organization_id: _organization_store[we_vote_id].organization_id })
     .end( function (err, res) {
       if (res.body.success) {
@@ -151,6 +158,7 @@ function ignoreOrganization (we_vote_id) {
   return new Promise((resolve, reject) => request
     .get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}organizationFollowIgnore/`)
     .withCredentials()
+    .query({ voter_device_id: cookies.getItem("voter_device_id") })
     .query({ organization_id: _organization_store[we_vote_id].organization_id })
     .end( function (err, res) {
       if (res.body.success) {
@@ -170,6 +178,7 @@ function stopFollowingOrganization (we_vote_id) {
   return new Promise((resolve, reject) => request
     .get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}organizationStopFollowing/`)
     .withCredentials()
+    .query({ voter_device_id: cookies.getItem("voter_device_id") })
     .query({ organization_id: _organization_store[we_vote_id].id })
     .end( function (err, res) {
       if (res.body.success) {
@@ -182,6 +191,16 @@ function stopFollowingOrganization (we_vote_id) {
     })
   );
 }
+
+// Refactor to this structure?
+//const VoterGuideAPIWorker = {
+//  voterBallotItemsRetrieveFromGoogleCivic: function (text_for_map_search, success) {
+//    return get({
+//      endpoint: 'voterBallotItemsRetrieveFromGoogleCivic',
+//      query: {text_for_map_search}, success: success || defaultSuccess
+//    });
+//  }
+//};
 
 const VoterGuideStore = createStore({
   /**
