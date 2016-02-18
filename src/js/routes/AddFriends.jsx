@@ -17,7 +17,7 @@ export default class AddFriends extends Component {
 	render() {
 	    return (
             <div>
-            	<div className="container-fluid well well-90">
+            	<div className="container-fluid well container-fluid--paddingxl gutter-top--small">
             		<h2 className="text-center">Add Friends</h2>
             		<div>
             			<label htmlFor="last-name">Include a Message <span className="small">(Optional)</span></label><br />

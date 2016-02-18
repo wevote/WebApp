@@ -60,7 +60,7 @@ export default class Intro extends Component {
 
 	render() {
 		return (
-			<div>
+			<div className="gutter-top--small">
 			{ this.props.children ||
 				<div className="container-fluid well well-90">
 					<h2 className="text-center">We Vote Social Voter Guide</h2>

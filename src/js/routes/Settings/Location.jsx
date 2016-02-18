@@ -36,7 +36,7 @@ export default class Location extends Component {
 
     return (
       <div>
-      	<div className="container-fluid well well-90">
+      	<div className="container-fluid well container-fluid--paddingxl gutter-top--small">
       		<h2 className="text-center">
             Change Location
           </h2>
@@ -47,15 +47,17 @@ export default class Location extends Component {
         			be visible.
             </span>
 
-            <input
-              type="text"
-              onChange={this.updateLocation.bind(this)}
-              name="address"
-              value={location}
-              className="form-control"
-              defaultValue="Oakland, CA" />
+            <div className="input-group-lg">
+              <input
+                type="text"
+                onChange={this.updateLocation.bind(this)}
+                name="address"
+                value={location}
+                className="form-control"
+                defaultValue="Oakland, CA" />
+            </div>
 
-            <ButtonToolbar>
+            <ButtonToolbar style={{"marginTop": "10", "marginBottom": "10"}}>
                 <Button
                   onClick={this.saveLocation.bind(this)}
                   bsStyle="primary">Save Location</Button>
