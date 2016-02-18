@@ -86,7 +86,7 @@ function addVoterGuidesFollowedToVoterGuideStore (data) {
 function retrieveOrganizations (data) {
   var organizations_count = 0;
 
-  return new Promise ( (resolve, reject) => _organization_list
+  return new Promise( (resolve, reject) => _organization_list
     .forEach(we_vote_id => request
       .get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}organizationRetrieve/`)
       .withCredentials()
