@@ -46,6 +46,8 @@ export function get (options) {
   var opts = assign(defaults, options);
 
   opts.url = url.resolve(opts.baseUrl, opts.endpoint);
+  // We add voter_device_id to all endpoint calls
+  opts.query["voter_device_id"] = cookies.getItem("voter_device_id");
 
   return new Promise( (resolve, reject) => new request.Request("GET", opts.url)
     .accept(opts.dataType)
@@ -112,7 +114,9 @@ export function candidatesRetrieve (office_we_vote_id, success ) {
 
 // get the ballot items
 export function voterBallotItemsRetrieve (success) {
-  return get({ endpoint: "voterBallotItemsRetrieve", success });
+  return get({
+    endpoint: "voterBallotItemsRetrieve",
+    success });
 }
 
 export function positionOpposeCountForBallotItem (id, kind_of_ballot_item, success ) {

@@ -22,6 +22,7 @@ import Candidate from "./routes/Ballot/Candidate";
 
 /* Ballot Off-shoot Pages */
 import Opinions from "./routes/Opinions";
+import GuidePositionList from './routes/Guide/PositionList'; // A list of all positions from one guide
 
 /* More */
 import More from "./routes/More";
@@ -72,6 +73,9 @@ const routes = (firstVisit, voter) =>
     <Route path="/more/about" component={About} />
     <Route path="/more/opinions/followed" component={OpinionsFollowed} />
     <Route path="/more/privacy" component={Privacy} />
+
+    {/* Voter Guide Pages */}
+    <Route path="/guidepositions/:we_vote_id" component={GuidePositionList} />
 
     { firstVisit ? <IndexRoute component={Intro} /> : <IndexRedirect to="ballot" /> }
 
