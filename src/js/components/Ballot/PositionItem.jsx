@@ -14,12 +14,13 @@ export default class PositionItem extends Component {
   }
 
   componentDidMount () {
+    this.changeListener = this._onChange.bind(this);
     PositionStore.retrievePositionByWeVoteId(this.props.position_we_vote_id);
-    PositionStore.addChangeListener(this._onChange.bind(this));
+    PositionStore.addChangeListener(this.changeListener);
   }
 
   componentWillUnmount () {
-    PositionStore.removeChangeListener(this._onChange.bind(this));
+    PositionStore.removeChangeListener(this.changeListener);
   }
 
   _onChange () {

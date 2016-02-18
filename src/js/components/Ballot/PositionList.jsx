@@ -14,11 +14,12 @@ export default class PositionList extends Component {
 
   componentDidMount (){
     BallotStore.fetchCandidatePositions(this.props.we_vote_id);
-    BallotStore.addChangeListener(this._onChange.bind(this));
+    this.changeListener = this._onChange.bind(this);
+    BallotStore.addChangeListener(this.changeListener);
   }
 
   componentWillUnmount (){
-    BallotStore.removeChangeListener(this._onChange.bind(this));
+    BallotStore.removeChangeListener(this.changeListener);
   }
 
   _onChange (){

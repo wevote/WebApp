@@ -112,13 +112,14 @@ const BallotAPIWorker = {
    return get({
      endpoint: 'voterStarStatusRetrieve',
      query: {
-       ballot_item_we_vote_id: we_vote_id,
+       ballot_item_id: _ballot_store[we_vote_id].id,
        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
      }, success: success || defaultSuccess
    });
  },
 
  voterStarOnSave: function (we_vote_id, success ) {
+    console.log('voterStarOnSave, we_vote_id:, ', we_vote_id);
    return get({
      endpoint: 'voterStarOnSave',
      query: {
@@ -129,6 +130,7 @@ const BallotAPIWorker = {
  },
 
  voterStarOffSave: function (we_vote_id, success ) {
+    console.log('voterStarOffSave, we_vote_id:, ', we_vote_id);
    return get({
      endpoint: 'voterStarOffSave',
      query: {
@@ -250,7 +252,7 @@ const BallotStore = createStore({
                   BallotAPIWorker
                     .candidatesRetrieve ( we_vote_id )
                       .then( (response) => {
-                      var office_display_name = _ballot_store[response.office_we_vote_id]['ballot_item_display_name'];
+                      var office_display_name = _ballot_store[response.office_we_vote_id].ballot_item_display_name;
                       var cand_list = _ballot_store [
                         response.office_we_vote_id
                       ] . candidate_list = [];
@@ -388,7 +390,7 @@ const BallotStore = createStore({
   },
 
   fetchCandidateStarStatus: function ( we_vote_id){
-    BallotAPIWorker.voterStarStatusRetrieve(we_vote_id).then( res =>{
+    BallotAPIWorker.voterStarStatusRetrieve(we_vote_id).then( (res) =>{
       BallotActions.candidateItemRetrieved(we_vote_id, 'is_starred', 'is_starred', res);
     });
   },
@@ -534,6 +536,7 @@ function addCandidateToStore (res) {
 function toggleStarState(we_vote_id) {
   var item = _ballot_store[we_vote_id];
   item.is_starred = ! item.is_starred;
+  console.log(item.is_starred)
   return true;
 }
 
