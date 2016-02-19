@@ -7,6 +7,7 @@ const FacebookConstants = {
     FACEBOOK_RECEIVED_PICTURE: null,
     FACEBOOK_LOGGED_IN: null,
     FACEBOOK_LOGGED_OUT: null,
+    //FACEBOOK_SIGN_IN_CONNECT: null,  // Dale exploring need for this
     FACEBOOK_SIGN_IN_DISCONNECT: null,
     IMAGE_UPLOADED: null,
 };

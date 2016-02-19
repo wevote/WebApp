@@ -16,18 +16,6 @@ function defaultSuccess (res) {
   console.warn(res);
 }
 
-function addItemsToBallotStore (ballot_item_list) {
-  ballot_item_list.forEach( ballot_item => {
-    _ballot_store[ballot_item.we_vote_id] = shallowClone(ballot_item);
-    _ballot_store[ballot_item.we_vote_id].opposeCount = 0;
-    _ballot_store[ballot_item.we_vote_id].supportCount = 0;
-  });
-}
-
-function ballotItemIsMeasure (we_vote_id) {
-  return _ballot_store[we_vote_id].kind_of_ballot_item === MEASURE;
-}
-
 const BallotAPIWorker = {
 
  voterBallotItemsRetrieveFromGoogleCivic: function (text_for_map_search, success ) {
@@ -518,6 +506,19 @@ const BallotStore = createStore({
 });
 
 
+// These methods are used by the AppDispatcher code to change variables in the store
+function addItemsToBallotStore (ballot_item_list) {
+  ballot_item_list.forEach( ballot_item => {
+    _ballot_store[ballot_item.we_vote_id] = shallowClone(ballot_item);
+    _ballot_store[ballot_item.we_vote_id].opposeCount = 0;
+    _ballot_store[ballot_item.we_vote_id].supportCount = 0;
+  });
+}
+
+function ballotItemIsMeasure (we_vote_id) {
+  return _ballot_store[we_vote_id].kind_of_ballot_item === MEASURE;
+}
+
 function setCandidateDetail (we_vote_id, parameter, alias, payload) {
   _ballot_store[we_vote_id][parameter] = payload[alias];
   return true;
@@ -601,10 +602,10 @@ function setLocalOpposeOffState (we_vote_id) {
   return true;
 }
 
-
+// This block is reacting to actions triggered in BallotActions.js. We update store variables, and then emitChange
 BallotStore.dispatchToken = AppDispatcher.register( action => {
-    var { we_vote_id } = action;
-    switch (action.actionType) {
+  var { we_vote_id } = action;
+  switch (action.actionType) {
 
     case BallotConstants.CANDIDATE_DETAIL_RETRIEVED:
       setCandidateDetail(action.we_vote_id, action.parameter, action.parameter_alias, action.payload);
@@ -656,6 +657,8 @@ BallotStore.dispatchToken = AppDispatcher.register( action => {
           we_vote_id, () => toggleStarState(we_vote_id) &&
             BallotStore.emitChange()
       );
+      break;
+    default:
       break;
   }
 });

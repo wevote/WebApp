@@ -60,6 +60,14 @@ const FacebookActionCreators = {
             });
         });
     },
+    // Dale considering the need for this here
+    //connectWithFacebook: () => {
+    //    // Add connection between We Vote and Facebook
+    //    FacebookDispatcher.dispatch({
+    //        actionType: FacebookConstants.FACEBOOK_SIGN_IN_CONNECT,
+    //        data: true
+    //    });
+    //},
 
     disconnectFromFacebook: () => {
         // Removing connection between We Vote and Facebook

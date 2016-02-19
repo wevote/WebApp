@@ -13,21 +13,6 @@ let _location = cookies.getItem("location");
 let _voter_id = cookies.getItem("voter_id");
 let _voter = {};
 
-function _setVoterId (id) {
-  _voter_id = id;
-  cookies.setItem("voter_id", id, Infinity);
-}
-
-function _setDeviceId (id) {
-  _voter_device_id = id;
-  cookies.setItem("voter_device_id", id, Infinity);
-}
-
-function _setLocation (location) {
-  _location = location;
-  cookies.setItem("location", location, Infinity);
-}
-
 const VoterStore = createStore({
 
   hasDeviceId: function () {
@@ -67,6 +52,31 @@ const VoterStore = createStore({
         callback(err);
       }
     });
+  },
+
+  /**
+   * get a refreshed version of the RAW JSON object from api.wevoteusa and merge
+   * it with other calculated values object
+   * @param {Function} callback (err, voter-object)
+   */
+  retrieveFreshVoterObject: function (callback) {
+    return $ajax({
+      endpoint: "voterRetrieve",
+      success: (res) => {
+        _voter = assign({}, _voter, res);
+        callback(null, assign({}, _voter));
+      },
+      error: (err) => {
+        callback(err);
+      }
+    });
+  },
+
+  /**
+   * get the RAW JSON object cached in the local _voter variable
+   */
+  getCachedVoterObject: function () {
+    return _voter;
   },
 
   /**
@@ -208,12 +218,42 @@ const VoterStore = createStore({
   }
 });
 
-AppDispatcher.register( action => {
 
+// These methods are used by the AppDispatcher code to change variables in the store
+function _setLocalVoterInStore (voter) {
+  _voter = voter;
+}
+
+function _setVoterId (id) {
+  _voter_id = id;
+  cookies.setItem("voter_id", id, Infinity);
+}
+
+function _setDeviceId (id) {
+  _voter_device_id = id;
+  cookies.setItem("voter_device_id", id, Infinity);
+}
+
+function _setLocation (location) {
+  _location = location;
+  cookies.setItem("location", location, Infinity);
+}
+
+// This block is reacting to actions triggered in BallotActions.js. We update store variables, and then emitChange
+VoterStore.dispatchToken = AppDispatcher.register( action => {
   switch (action.actionType) {
-    case VoterConstants.VOTER_CHANGE_LOCATION: // ChangeLocation
+    case VoterConstants.VOTER_CHANGE_LOCATION: // _setLocation
+      // Update the variable value in the store
+      _setLocation(action.location);
       VoterStore.emitChange();
       break;
+
+    case VoterConstants.VOTER_RETRIEVE: // _setLocation
+      // Update the variable value in the store
+      _setLocalVoterInStore(action.voter);
+      VoterStore.emitChange();
+      break;
+
     default:
       break;
   }

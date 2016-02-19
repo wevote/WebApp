@@ -22,7 +22,7 @@ module.exports = {
   //   });
   // },
 
-  candidateItemRetrieved: function (we_vote_id, parameter, parameter_alias, payload){
+  candidateItemRetrieved: function (we_vote_id, parameter, parameter_alias, payload) {  // CANDIDATE_DETAIL_RETRIEVED
     AppDispatcher.dispatch({
       actionType: BallotConstants.CANDIDATE_DETAIL_RETRIEVED,
       payload: payload,
@@ -32,7 +32,7 @@ module.exports = {
     });
   },
 
-  candidateRetrieved: function (payload) {
+  candidateRetrieved: function (payload) {  // CANDIDATE_RETRIEVED
     AppDispatcher.dispatch({
       actionType: BallotConstants.CANDIDATE_RETRIEVED,
       payload: payload,
