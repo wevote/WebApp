@@ -1,6 +1,6 @@
-'use strict';
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var PositionConstants = require('../constants/PositionConstants');
+"use strict";
+var AppDispatcher = require("../dispatcher/AppDispatcher");
+var PositionConstants = require("../constants/PositionConstants");
 
 module.exports = {
 

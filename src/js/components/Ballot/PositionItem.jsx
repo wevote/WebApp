@@ -42,9 +42,7 @@ export default class PositionItem extends Component {
               </div>
               <div className="col-xs-9 col-md-10">
                   <h4 className="">
-                      <Link className="" to="ballot_candidate_one_org_position" params={{id: position.speaker_id, org_id: position.speaker_we_vote_id}}>
-                            { this.props.speaker_label }<br />{/* TODO icon-org-placeholder */}
-                      </Link>
+                      { this.props.speaker_label }<br />
                   </h4>
                   <p className="">{supportText} <span className="small">Yesterday at 7:18 PM</span></p>
               </div>

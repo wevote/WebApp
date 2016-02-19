@@ -2,9 +2,9 @@ import { get } from "../utils/service";
 import { createStore } from "../utils/createStore";
 import { shallowClone } from "../utils/object-utils";
 
-const AppDispatcher = require('../dispatcher/AppDispatcher');
-const BallotConstants = require('../constants/BallotConstants');
-const BallotActions = require('../actions/BallotActions');
+const AppDispatcher = require("../dispatcher/AppDispatcher");
+const BallotConstants = require("../constants/BallotConstants");
+const BallotActions = require("../actions/BallotActions");
 
 let _ballot_store = {};
 let _ballot_order_ids = [];
@@ -13,7 +13,7 @@ let _google_civic_election_id = null;
 const MEASURE = "MEASURE";
 
 function defaultSuccess (res) {
-  // console.warn(res);
+  console.warn(res);
 }
 
 function addItemsToBallotStore (ballot_item_list) {
@@ -32,14 +32,14 @@ const BallotAPIWorker = {
 
  voterBallotItemsRetrieveFromGoogleCivic: function (text_for_map_search, success ) {
    return get({
-     endpoint: 'voterBallotItemsRetrieveFromGoogleCivic',
+     endpoint: "voterBallotItemsRetrieveFromGoogleCivic",
      query: { text_for_map_search }, success: success || defaultSuccess
    });
  },
 
  candidatesRetrieve: function (office_we_vote_id, success ) {
    return get({
-     endpoint: 'candidatesRetrieve',
+     endpoint: "candidatesRetrieve",
      query: { office_we_vote_id: office_we_vote_id },
      success: success || defaultSuccess
    });
@@ -47,7 +47,7 @@ const BallotAPIWorker = {
 
  candidateRetrieve: function (we_vote_id, success ) {
    return get({
-     endpoint: 'candidateRetrieve',
+     endpoint: "candidateRetrieve",
      query: { candidate_we_vote_id: we_vote_id },
      success: success
    });
@@ -55,7 +55,7 @@ const BallotAPIWorker = {
 
  officeRetrieve: function (we_vote_id, success ) {
    return get({
-     endpoint: 'officeRetrieve',
+     endpoint: "officeRetrieve",
      query: { office_we_vote_id: we_vote_id },
      success: success
    });
@@ -63,13 +63,13 @@ const BallotAPIWorker = {
 
  // get the ballot items
  voterBallotItemsRetrieve: function ( success ) {
-   return get({ endpoint: 'voterBallotItemsRetrieve',
+   return get({ endpoint: "voterBallotItemsRetrieve",
    success: success || defaultSuccess });
  },
 
- positionListForBallotItem : function( id, kind_of_ballot_item, success) {
+ positionListForBallotItem: function (id, kind_of_ballot_item, success) {
    return get({
-     endpoint: 'positionListForBallotItem',
+     endpoint: "positionListForBallotItem",
      query: {
         ballot_item_id: id,
         kind_of_ballot_item: kind_of_ballot_item
@@ -80,7 +80,7 @@ const BallotAPIWorker = {
 
  positionOpposeCountForBallotItem: function (we_vote_id, success ) {
    return get({
-     endpoint: 'positionOpposeCountForBallotItem',
+     endpoint: "positionOpposeCountForBallotItem",
      query: {
         ballot_item_id: _ballot_store[we_vote_id].id,
         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
@@ -91,7 +91,7 @@ const BallotAPIWorker = {
  // get measure support an opposition
  positionSupportCountForBallotItem: function (we_vote_id, success ) {
    return get({
-     endpoint: 'positionSupportCountForBallotItem',
+     endpoint: "positionSupportCountForBallotItem",
      query: {
         ballot_item_id: _ballot_store[we_vote_id].id,
         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
@@ -99,9 +99,9 @@ const BallotAPIWorker = {
    });
  },
 
- voterPositionRetrieve: function ( ballot_item_we_vote_id, success )  {
+ voterPositionRetrieve: function ( ballot_item_we_vote_id, success ) {
    return get({
-     endpoint: 'voterPositionRetrieve',
+     endpoint: "voterPositionRetrieve",
      query: {
        ballot_item_we_vote_id: ballot_item_we_vote_id,
        kind_of_ballot_item: _ballot_store[ballot_item_we_vote_id].kind_of_ballot_item
@@ -111,7 +111,7 @@ const BallotAPIWorker = {
 
  voterStarStatusRetrieve: function ( we_vote_id, success ) {
    return get({
-     endpoint: 'voterStarStatusRetrieve',
+     endpoint: "voterStarStatusRetrieve",
      query: {
        ballot_item_id: _ballot_store[we_vote_id].id,
        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
@@ -120,9 +120,9 @@ const BallotAPIWorker = {
  },
 
  voterStarOnSave: function (we_vote_id, success ) {
-    console.log('voterStarOnSave, we_vote_id:, ', we_vote_id);
+    console.log("voterStarOnSave, we_vote_id:, ", we_vote_id);
    return get({
-     endpoint: 'voterStarOnSave',
+     endpoint: "voterStarOnSave",
      query: {
        ballot_item_id: _ballot_store[we_vote_id].id,
        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
@@ -131,9 +131,9 @@ const BallotAPIWorker = {
  },
 
  voterStarOffSave: function (we_vote_id, success ) {
-    console.log('voterStarOffSave, we_vote_id:, ', we_vote_id);
+    console.log("voterStarOffSave, we_vote_id:, ", we_vote_id);
    return get({
-     endpoint: 'voterStarOffSave',
+     endpoint: "voterStarOffSave",
      query: {
        ballot_item_id: _ballot_store[we_vote_id].id,
        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
@@ -142,9 +142,9 @@ const BallotAPIWorker = {
  },
 
  voterSupportingSave: function (we_vote_id, success ) {
-   console.log('voterSupportingSave, we_vote_id:, ', we_vote_id);
+   console.log("voterSupportingSave, we_vote_id:, ", we_vote_id);
    return get({
-     endpoint: 'voterSupportingSave',
+     endpoint: "voterSupportingSave",
      query: {
        ballot_item_id: _ballot_store[we_vote_id].id,
        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
@@ -153,9 +153,9 @@ const BallotAPIWorker = {
  },
 
  voterStopSupportingSave: function (we_vote_id, success ) {
-   console.log('voterStopSupportingSave, we_vote_id:, ', we_vote_id);
+   console.log("voterStopSupportingSave, we_vote_id:, ", we_vote_id);
    return get({
-     endpoint: 'voterStopSupportingSave',
+     endpoint: "voterStopSupportingSave",
      query: {
        ballot_item_id: _ballot_store[we_vote_id].id,
        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
@@ -164,9 +164,9 @@ const BallotAPIWorker = {
  },
 
  voterOpposingSave: function (we_vote_id, success ) {
-   console.log('voterOpposingSave, we_vote_id:, ', we_vote_id);
+   console.log("voterOpposingSave, we_vote_id:, ", we_vote_id);
    return get({
-     endpoint: 'voterOpposingSave',
+     endpoint: "voterOpposingSave",
      query: {
        ballot_item_id: _ballot_store[we_vote_id].id,
        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
@@ -175,9 +175,9 @@ const BallotAPIWorker = {
  },
 
  voterStopOpposingSave: function (we_vote_id, success ) {
-   console.log('voterStopOpposingSave, we_vote_id:, ', we_vote_id);
+   console.log("voterStopOpposingSave, we_vote_id:, ", we_vote_id);
    return get({
-     endpoint: 'voterStopOpposingSave',
+     endpoint: "voterStopOpposingSave",
      query: {
        ballot_item_id: _ballot_store[we_vote_id].id,
        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
@@ -364,9 +364,9 @@ const BallotStore = createStore({
       return candidate;
     }
     _ballot_store[candidate_we_vote_id] = {};
-    _ballot_store[candidate_we_vote_id].kind_of_ballot_item = 'CANDIDATE';
+    _ballot_store[candidate_we_vote_id].kind_of_ballot_item = "CANDIDATE";
 
-    BallotAPIWorker.candidateRetrieve(candidate_we_vote_id, function(res){
+    BallotAPIWorker.candidateRetrieve(candidate_we_vote_id, function (res){
       BallotActions.candidateRetrieved(res);
       BallotStore.fetchCandidateDetails(candidate_we_vote_id);
     });
@@ -374,7 +374,7 @@ const BallotStore = createStore({
     return _ballot_store[candidate_we_vote_id];
   },
 
-  fetchCandidateDetails: function(we_vote_id){
+  fetchCandidateDetails: function (we_vote_id){
     this.fetchCandidateStarStatus(we_vote_id);
     this.fetchCandidatePositions(we_vote_id);
     this.fetchCandidateOffice(we_vote_id);
@@ -386,33 +386,33 @@ const BallotStore = createStore({
   fetchCandidatePositions: function (we_vote_id){
     BallotAPIWorker.positionListForBallotItem(
       _ballot_store[we_vote_id].id,
-      _ballot_store[we_vote_id].kind_of_ballot_item).then( res  =>{
-        BallotActions.candidateItemRetrieved(we_vote_id, 'position_list', 'position_list', res);
+      _ballot_store[we_vote_id].kind_of_ballot_item).then( res => {
+        BallotActions.candidateItemRetrieved(we_vote_id, "position_list", "position_list", res);
       });
   },
 
   fetchCandidateStarStatus: function ( we_vote_id){
     BallotAPIWorker.voterStarStatusRetrieve(we_vote_id).then( (res) =>{
-      BallotActions.candidateItemRetrieved(we_vote_id, 'is_starred', 'is_starred', res);
+      BallotActions.candidateItemRetrieved(we_vote_id, "is_starred", "is_starred", res);
     });
   },
 
   fetchCandidateOffice: function (we_vote_id){
     var office_we_vote_id = _ballot_store[we_vote_id].contest_office_we_vote_id;
     BallotAPIWorker.officeRetrieve(office_we_vote_id).then( res => {
-      BallotActions.candidateItemRetrieved(we_vote_id, 'office_display_name', 'ballot_item_display_name', res);
+      BallotActions.candidateItemRetrieved(we_vote_id, "office_display_name", "ballot_item_display_name", res);
     });
   },
 
   fetchCandidateOpposeCount: function (we_vote_id){
-    BallotAPIWorker.positionOpposeCountForBallotItem (we_vote_id).then( res => {
-      BallotActions.candidateItemRetrieved(we_vote_id, 'opposeCount', 'count', res);
+    BallotAPIWorker.positionOpposeCountForBallotItem(we_vote_id).then( res => {
+      BallotActions.candidateItemRetrieved(we_vote_id, "opposeCount", "count", res);
     });
   },
 
-  fetchCandidateSupportCount: function(we_vote_id){
-    BallotAPIWorker.positionSupportCountForBallotItem (we_vote_id).then( res => {
-      BallotActions.candidateItemRetrieved(we_vote_id, 'supportCount', 'count', res);
+  fetchCandidateSupportCount: function (we_vote_id){
+    BallotAPIWorker.positionSupportCountForBallotItem(we_vote_id).then( res => {
+      BallotActions.candidateItemRetrieved(we_vote_id, "supportCount", "count", res);
     });
   },
 
@@ -498,9 +498,8 @@ const BallotStore = createStore({
   getCandidateById: function (office_we_vote_id, candidate_we_vote_id) {
     return _ballot_store [
         office_we_vote_id
-      ] . candidate_list.indexOf(candidate_we_vote_id) > -1
-
-    ? shallowClone( _ballot_store[candidate_we_vote_id] ) : undefined;
+      ] . candidate_list.indexOf(candidate_we_vote_id) > -1 ?
+      shallowClone( _ballot_store[candidate_we_vote_id] ) : undefined;
   },
 
   getCandidatesForBallot: function (office_we_vote_id) {
@@ -519,14 +518,14 @@ const BallotStore = createStore({
 });
 
 
-function setCandidateDetail(we_vote_id, parameter, alias, payload) {
+function setCandidateDetail (we_vote_id, parameter, alias, payload) {
   _ballot_store[we_vote_id][parameter] = payload[alias];
   return true;
 }
 
 function addCandidateToStore (res) {
   _ballot_store[res.we_vote_id] = res;
-  _ballot_store[res.we_vote_id].kind_of_ballot_item = 'CANDIDATE';
+  _ballot_store[res.we_vote_id].kind_of_ballot_item = "CANDIDATE";
   return true;
 }
 
@@ -538,14 +537,14 @@ function addCandidateToStore (res) {
 function toggleStarState (we_vote_id) {
   var item = _ballot_store[we_vote_id];
   item.is_starred = ! item.is_starred;
-  console.log(item.is_starred)
+  console.log(item.is_starred);
   return true;
 }
 
  /**
  * toggle the support state of a ballot item to on by its we_vote_id
  */
-function setLocalSupportOnState(we_vote_id) {
+function setLocalSupportOnState (we_vote_id) {
   var item = _ballot_store[we_vote_id];
   //console.log("setLocalSupportOnState BEFORE, is_support:", item.is_support, ", supportCount", item.supportCount);
   if (item.is_support !== true) {
@@ -608,13 +607,13 @@ BallotStore.dispatchToken = AppDispatcher.register( action => {
     switch (action.actionType) {
 
     case BallotConstants.CANDIDATE_DETAIL_RETRIEVED:
-      setCandidateDetail(action.we_vote_id, action.parameter, action.parameter_alias, action.payload) &&
+      setCandidateDetail(action.we_vote_id, action.parameter, action.parameter_alias, action.payload);
       BallotStore.emitChange();
     break;
 
     case BallotConstants.CANDIDATE_RETRIEVED:
-      addCandidateToStore(action.payload)
-      && BallotStore.emitChange();
+      addCandidateToStore(action.payload);
+      BallotStore.emitChange();
     break;
 
     case BallotConstants.VOTER_SUPPORTING_SAVE:
