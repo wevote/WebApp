@@ -1,4 +1,4 @@
-const keyMirror = require('keymirror');
+const keyMirror = require("keymirror");
 
 module.exports = keyMirror({
     VOTER_LOCATION_RETRIEVE: null,

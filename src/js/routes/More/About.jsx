@@ -66,6 +66,7 @@ export default class About extends Component {
               Kim Anderson - San Francisco, CA<br />
               Adam Barry - San Francisco, CA<br />
               Raphael Merx - San Francisco, CA<br />
+              Jesse Aldridge - San Francisco, CA<br />
               Josh Levinger - Oakland, CA<br />
               Leslie Castellanos - San Francisco, CA<br />
               Jennifer Holmes - Pacifica, CA<br />

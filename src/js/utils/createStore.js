@@ -1,7 +1,7 @@
-import EventEmitter from 'events';
-import assign from 'object-assign';
+import EventEmitter from "events";
+import assign from "object-assign";
 
-const CHANGE_EVENT = 'change';
+const CHANGE_EVENT = "change";
 const MAX_LISTENERS = 300;
 
 /**
@@ -9,17 +9,17 @@ const MAX_LISTENERS = 300;
  * @param  {Object} spec object to mixin
  * @return {Store}  DataStore Object
  */
-export function createStore(mixin) {
+export function createStore (mixin) {
   const store = assign({}, EventEmitter.prototype, {
-    emitChange() {
+    emitChange () {
       this.emit(CHANGE_EVENT);
     },
 
-    addChangeListener(callback) {
+    addChangeListener (callback) {
       this.on(CHANGE_EVENT, callback);
     },
 
-    removeChangeListener(callback) {
+    removeChangeListener (callback) {
       this.removeListener(CHANGE_EVENT, callback);
     }
 

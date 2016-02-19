@@ -67,7 +67,6 @@ const VoterStore = createStore({
         callback(err);
       }
     });
-
   },
 
   /**
@@ -151,7 +150,7 @@ const VoterStore = createStore({
     if (callback instanceof Function === false) throw new Error("missing callback function");
 
     $ajax({
-      type: "POST",
+      type: "GET",
       data: { text_for_map_search: location },
       endpoint: "voterAddressSave",
       success: (res) => {
