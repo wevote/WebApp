@@ -2,9 +2,9 @@ import { get } from "../utils/service";
 import { createStore } from "../utils/createStore";
 import { shallowClone } from "../utils/object-utils";
 
-const AppDispatcher = require("../dispatcher/AppDispatcher");
-const BallotConstants = require("../constants/BallotConstants");
-
+const AppDispatcher = require('../dispatcher/AppDispatcher');
+const BallotConstants = require('../constants/BallotConstants');
+const BallotActions = require('../actions/BallotActions');
 
 let _ballot_store = {};
 let _ballot_order_ids = [];
@@ -29,128 +29,162 @@ function ballotItemIsMeasure (we_vote_id) {
 }
 
 const BallotAPIWorker = {
-  voterBallotItemsRetrieveFromGoogleCivic: function (text_for_map_search, success ) {
-    return get({
-      endpoint: "voterBallotItemsRetrieveFromGoogleCivic",
-      query: { text_for_map_search }, success: success || defaultSuccess
-    });
-  },
 
-  candidatesRetrieve: function (office_we_vote_id, success ) {
-    return get({ endpoint: "candidatesRetrieve", query: { office_we_vote_id },
-    success: success || defaultSuccess });
-  },
+ voterBallotItemsRetrieveFromGoogleCivic: function (text_for_map_search, success ) {
+   return get({
+     endpoint: 'voterBallotItemsRetrieveFromGoogleCivic',
+     query: { text_for_map_search }, success: success || defaultSuccess
+   });
+ },
 
-  // get the ballot items
-  voterBallotItemsRetrieve: function ( success ) {
-    return get({ endpoint: "voterBallotItemsRetrieve",
-    success: success || defaultSuccess });
-  },
+ candidatesRetrieve: function (office_we_vote_id, success ) {
+   return get({
+     endpoint: 'candidatesRetrieve',
+     query: { office_we_vote_id: office_we_vote_id },
+     success: success || defaultSuccess
+   });
+ },
 
-  positionOpposeCountForBallotItem: function (we_vote_id, success ) {
-    return get({
-      endpoint: "positionOpposeCountForBallotItem",
-      query: {
-         ballot_item_id: _ballot_store[we_vote_id].id,
-         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success: success || defaultSuccess
-    });
-  },
+ candidateRetrieve: function (we_vote_id, success ) {
+   return get({
+     endpoint: 'candidateRetrieve',
+     query: { candidate_we_vote_id: we_vote_id },
+     success: success
+   });
+ },
 
-  // get measure support an opposition
-  positionSupportCountForBallotItem: function (we_vote_id, success) {
-    return get({
-      endpoint: "positionSupportCountForBallotItem",
-      query: {
-         ballot_item_id: _ballot_store[we_vote_id].id,
-         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success: success || defaultSuccess
-    });
-  },
+ officeRetrieve: function (we_vote_id, success ) {
+   return get({
+     endpoint: 'officeRetrieve',
+     query: { office_we_vote_id: we_vote_id },
+     success: success
+   });
+ },
 
-  voterPositionRetrieve: function (ballot_item_we_vote_id, success) {
-    return get({
-      endpoint: "voterPositionRetrieve",
-      query: {
-        ballot_item_we_vote_id: ballot_item_we_vote_id,
-        kind_of_ballot_item: _ballot_store[ballot_item_we_vote_id].kind_of_ballot_item
-      }, success: success || defaultSuccess
-    });
-  },
+ // get the ballot items
+ voterBallotItemsRetrieve: function ( success ) {
+   return get({ endpoint: 'voterBallotItemsRetrieve',
+   success: success || defaultSuccess });
+ },
 
-  voterStarStatusRetrieve: function (we_vote_id, success) {
-    return get({
-      endpoint: "voterStarStatusRetrieve",
-      query: {
+ positionListForBallotItem : function( id, kind_of_ballot_item, success) {
+   return get({
+     endpoint: 'positionListForBallotItem',
+     query: {
+        ballot_item_id: id,
+        kind_of_ballot_item: kind_of_ballot_item
+     },
+     success: success || defaultSuccess
+   });
+ },
+
+ positionOpposeCountForBallotItem: function (we_vote_id, success ) {
+   return get({
+     endpoint: 'positionOpposeCountForBallotItem',
+     query: {
         ballot_item_id: _ballot_store[we_vote_id].id,
         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success: success || defaultSuccess
-    });
-  },
+     }, success: success || defaultSuccess
+   });
+ },
 
-  voterStarOnSave: function (we_vote_id, success) {
-    return get({
-      endpoint: "voterStarOnSave",
-      query: {
+ // get measure support an opposition
+ positionSupportCountForBallotItem: function (we_vote_id, success ) {
+   return get({
+     endpoint: 'positionSupportCountForBallotItem',
+     query: {
         ballot_item_id: _ballot_store[we_vote_id].id,
         kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success: success || defaultSuccess
-    });
-  },
+     }, success: success || defaultSuccess
+   });
+ },
 
-  voterStarOffSave: function (we_vote_id, success) {
-    return get({
-      endpoint: "voterStarOffSave",
-      query: {
-        ballot_item_id: _ballot_store[we_vote_id].id,
-        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success: success || defaultSuccess
-    });
-  },
+ voterPositionRetrieve: function ( ballot_item_we_vote_id, success )  {
+   return get({
+     endpoint: 'voterPositionRetrieve',
+     query: {
+       ballot_item_we_vote_id: ballot_item_we_vote_id,
+       kind_of_ballot_item: _ballot_store[ballot_item_we_vote_id].kind_of_ballot_item
+     }, success: success || defaultSuccess
+   });
+ },
 
-  voterSupportingSave: function (we_vote_id, success) {
-    console.log("voterSupportingSave, we_vote_id:, ", we_vote_id);
-    return get({
-      endpoint: "voterSupportingSave",
-      query: {
-        ballot_item_id: _ballot_store[we_vote_id].id,
-        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success: success || defaultSuccess
-    });
-  },
+ voterStarStatusRetrieve: function ( we_vote_id, success ) {
+   return get({
+     endpoint: 'voterStarStatusRetrieve',
+     query: {
+       ballot_item_id: _ballot_store[we_vote_id].id,
+       kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+     }, success: success || defaultSuccess
+   });
+ },
 
-  voterStopSupportingSave: function (we_vote_id, success ) {
-    console.log("voterStopSupportingSave, we_vote_id:, ", we_vote_id);
-    return get({
-      endpoint: "voterStopSupportingSave",
-      query: {
-        ballot_item_id: _ballot_store[we_vote_id].id,
-        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success: success || defaultSuccess
-    });
-  },
+ voterStarOnSave: function (we_vote_id, success ) {
+    console.log('voterStarOnSave, we_vote_id:, ', we_vote_id);
+   return get({
+     endpoint: 'voterStarOnSave',
+     query: {
+       ballot_item_id: _ballot_store[we_vote_id].id,
+       kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+     }, success: success || defaultSuccess
+   });
+ },
 
-  voterOpposingSave: function (we_vote_id, success ) {
-    console.log("voterOpposingSave, we_vote_id:, ", we_vote_id);
-    return get({
-      endpoint: "voterOpposingSave",
-      query: {
-        ballot_item_id: _ballot_store[we_vote_id].id,
-        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success: success || defaultSuccess
-    });
-  },
+ voterStarOffSave: function (we_vote_id, success ) {
+    console.log('voterStarOffSave, we_vote_id:, ', we_vote_id);
+   return get({
+     endpoint: 'voterStarOffSave',
+     query: {
+       ballot_item_id: _ballot_store[we_vote_id].id,
+       kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+     }, success: success || defaultSuccess
+   });
+ },
 
-  voterStopOpposingSave: function (we_vote_id, success ) {
-    console.log("voterStopOpposingSave, we_vote_id:, ", we_vote_id);
-    return get({
-      endpoint: "voterStopOpposingSave",
-      query: {
-        ballot_item_id: _ballot_store[we_vote_id].id,
-        kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
-      }, success: success || defaultSuccess
-    });
-  }
+ voterSupportingSave: function (we_vote_id, success ) {
+   console.log('voterSupportingSave, we_vote_id:, ', we_vote_id);
+   return get({
+     endpoint: 'voterSupportingSave',
+     query: {
+       ballot_item_id: _ballot_store[we_vote_id].id,
+       kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+     }, success: success || defaultSuccess
+   });
+ },
+
+ voterStopSupportingSave: function (we_vote_id, success ) {
+   console.log('voterStopSupportingSave, we_vote_id:, ', we_vote_id);
+   return get({
+     endpoint: 'voterStopSupportingSave',
+     query: {
+       ballot_item_id: _ballot_store[we_vote_id].id,
+       kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+     }, success: success || defaultSuccess
+   });
+ },
+
+ voterOpposingSave: function (we_vote_id, success ) {
+   console.log('voterOpposingSave, we_vote_id:, ', we_vote_id);
+   return get({
+     endpoint: 'voterOpposingSave',
+     query: {
+       ballot_item_id: _ballot_store[we_vote_id].id,
+       kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+     }, success: success || defaultSuccess
+   });
+ },
+
+ voterStopOpposingSave: function (we_vote_id, success ) {
+   console.log('voterStopOpposingSave, we_vote_id:, ', we_vote_id);
+   return get({
+     endpoint: 'voterStopOpposingSave',
+     query: {
+       ballot_item_id: _ballot_store[we_vote_id].id,
+       kind_of_ballot_item: _ballot_store[we_vote_id].kind_of_ballot_item
+     }, success: success || defaultSuccess
+   });
+ }
+
 };
 
 const BallotStore = createStore({
@@ -159,6 +193,7 @@ const BallotStore = createStore({
    * and callback with the ordered items
    * @return {Boolean}
    */
+
   initialize: function (callback) {
     var promiseQueue = [];
     var getOrderedBallotItems = this.getOrderedBallotItems.bind(this);
@@ -183,12 +218,7 @@ const BallotStore = createStore({
           _ballot_order_ids = res.ballot_item_list.map( (ballot) => ballot.we_vote_id );
           _google_civic_election_id = res.google_civic_election_id;
 
-          console.log( "BallotStore:", _ballot_store );
-          console.log( "BallotOrder:", _ballot_order_ids );
-
           _ballot_order_ids.forEach( we_vote_id => {
-
-            console.log("is", we_vote_id, "measure?", ballotItemIsMeasure(we_vote_id));
 
             promiseQueue
               .push(
@@ -224,6 +254,7 @@ const BallotStore = createStore({
                   BallotAPIWorker
                     .candidatesRetrieve( we_vote_id )
                       .then( (response) => {
+                      var office_display_name = _ballot_store[response.office_we_vote_id].ballot_item_display_name;
                       var cand_list = _ballot_store [
                         response.office_we_vote_id
                       ] . candidate_list = [];
@@ -234,6 +265,7 @@ const BallotStore = createStore({
                             var { we_vote_id: candidate_we_vote_id } = candidate;
                             cand_list . push(candidate_we_vote_id);
                             _ballot_store [ candidate_we_vote_id ] = shallowClone( candidate );
+                            _ballot_store [ candidate_we_vote_id ].office_display_name = office_display_name;
 
                             promiseQueue
                               .push(
@@ -324,6 +356,64 @@ const BallotStore = createStore({
           }).then(() => callback(getOrderedBallotItems()));
         });
     }
+  },
+
+  getOrFetchCandidateByWeVoteId: function (candidate_we_vote_id) {
+    var candidate = this.getCandidateByWeVoteId(candidate_we_vote_id);
+    if (candidate && candidate.is_oppose && candidate.position_list) { //candidate already retrieved
+      return candidate;
+    }
+    _ballot_store[candidate_we_vote_id] = {};
+    _ballot_store[candidate_we_vote_id].kind_of_ballot_item = 'CANDIDATE';
+
+    BallotAPIWorker.candidateRetrieve(candidate_we_vote_id, function(res){
+      BallotActions.candidateRetrieved(res);
+      BallotStore.fetchCandidateDetails(candidate_we_vote_id);
+    });
+
+    return _ballot_store[candidate_we_vote_id];
+  },
+
+  fetchCandidateDetails: function(we_vote_id){
+    this.fetchCandidateStarStatus(we_vote_id);
+    this.fetchCandidatePositions(we_vote_id);
+    this.fetchCandidateOffice(we_vote_id);
+    this.fetchCandidateOpposeCount(we_vote_id);
+    this.fetchCandidateSupportCount(we_vote_id);
+    this.fetchCandidateOpposeCount(we_vote_id);
+  },
+
+  fetchCandidatePositions: function (we_vote_id){
+    BallotAPIWorker.positionListForBallotItem(
+      _ballot_store[we_vote_id].id,
+      _ballot_store[we_vote_id].kind_of_ballot_item).then( res  =>{
+        BallotActions.candidateItemRetrieved(we_vote_id, 'position_list', 'position_list', res);
+      });
+  },
+
+  fetchCandidateStarStatus: function ( we_vote_id){
+    BallotAPIWorker.voterStarStatusRetrieve(we_vote_id).then( (res) =>{
+      BallotActions.candidateItemRetrieved(we_vote_id, 'is_starred', 'is_starred', res);
+    });
+  },
+
+  fetchCandidateOffice: function (we_vote_id){
+    var office_we_vote_id = _ballot_store[we_vote_id].contest_office_we_vote_id;
+    BallotAPIWorker.officeRetrieve(office_we_vote_id).then( res => {
+      BallotActions.candidateItemRetrieved(we_vote_id, 'office_display_name', 'ballot_item_display_name', res);
+    });
+  },
+
+  fetchCandidateOpposeCount: function (we_vote_id){
+    BallotAPIWorker.positionOpposeCountForBallotItem (we_vote_id).then( res => {
+      BallotActions.candidateItemRetrieved(we_vote_id, 'opposeCount', 'count', res);
+    });
+  },
+
+  fetchCandidateSupportCount: function(we_vote_id){
+    BallotAPIWorker.positionSupportCountForBallotItem (we_vote_id).then( res => {
+      BallotActions.candidateItemRetrieved(we_vote_id, 'supportCount', 'count', res);
+    });
   },
 
   /**
@@ -428,6 +518,18 @@ const BallotStore = createStore({
   }
 });
 
+
+function setCandidateDetail(we_vote_id, parameter, alias, payload) {
+  _ballot_store[we_vote_id][parameter] = payload[alias];
+  return true;
+}
+
+function addCandidateToStore (res) {
+  _ballot_store[res.we_vote_id] = res;
+  _ballot_store[res.we_vote_id].kind_of_ballot_item = 'CANDIDATE';
+  return true;
+}
+
  /**
  * toggle the star state of a ballot item by its we_vote_id
  * @param  {string} we_vote_id identifier for lookup in stored
@@ -436,7 +538,7 @@ const BallotStore = createStore({
 function toggleStarState (we_vote_id) {
   var item = _ballot_store[we_vote_id];
   item.is_starred = ! item.is_starred;
-  //console.log(_ballot_store[we_vote_id]);
+  console.log(item.is_starred)
   return true;
 }
 
@@ -500,10 +602,21 @@ function setLocalOpposeOffState (we_vote_id) {
   return true;
 }
 
-AppDispatcher.register( action => {
-  var { we_vote_id } = action;
 
-  switch (action.actionType) {
+BallotStore.dispatchToken = AppDispatcher.register( action => {
+    var { we_vote_id } = action;
+    switch (action.actionType) {
+
+    case BallotConstants.CANDIDATE_DETAIL_RETRIEVED:
+      setCandidateDetail(action.we_vote_id, action.parameter, action.parameter_alias, action.payload) &&
+      BallotStore.emitChange();
+    break;
+
+    case BallotConstants.CANDIDATE_RETRIEVED:
+      addCandidateToStore(action.payload)
+      && BallotStore.emitChange();
+    break;
+
     case BallotConstants.VOTER_SUPPORTING_SAVE:
       BallotAPIWorker.voterSupportingSave(
           we_vote_id, () => setLocalSupportOnState(we_vote_id) &&
@@ -511,6 +624,7 @@ AppDispatcher.register( action => {
             BallotStore.emitChange()
       );
       break;
+
     case BallotConstants.VOTER_STOP_SUPPORTING_SAVE:
       BallotAPIWorker.voterStopSupportingSave(
           we_vote_id, () => setLocalSupportOffState(we_vote_id) &&

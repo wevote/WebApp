@@ -23,11 +23,12 @@ export default class ItemActionBar2 extends Component {
   }
 
   componentDidMount () {
-    BallotStore.addChangeListener(this._onChange.bind(this));
+    this.changeListener = this._onChange.bind(this);
+    BallotStore.addChangeListener(this.changeListener);
   }
 
   componentWillUnmount () {
-    BallotStore.removeChangeListener(this._onChange.bind(this));
+    BallotStore.removeChangeListener(this.changeListener);
   }
 
   _onChange () {
