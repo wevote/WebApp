@@ -43,23 +43,6 @@ export default class Candidate extends Component {
       return ( <div></div> );
     };
 
-    var support_item;
-    if (this.props.support_on) {
-        support_item = <Link to="ballot">7 <span className="glyphicon glyphicon-small glyphicon-arrow-up"></span></Link>;
-    } else {
-        support_item = <Link to="ballot">7 <span className="glyphicon glyphicon-small glyphicon-arrow-up"></span></Link>;
-    }
-
-    var oppose_item;
-    if (this.props.oppose_on) {
-        oppose_item = <Link to="ballot">3 <span className="glyphicon glyphicon-small glyphicon-arrow-down"></span></Link>;
-    } else {
-        oppose_item = <Link to="ballot">3 <span className="glyphicon glyphicon-small glyphicon-arrow-down"></span></Link>;
-    }
-
-    var organization_we_vote_id;
-    organization_we_vote_id = "wv02org1111";
-
     return (
     <section className="candidate well well-90 gutter-top--small">
       <div className="candidate-detail-route list-group-item">
@@ -81,7 +64,7 @@ export default class Candidate extends Component {
           </div>
         </header>
         */}
-{candidate.hasOwnProperty('is_starred') ?
+        {candidate.hasOwnProperty('is_starred') ?
           <StarAction
           we_vote_id={candidate.we_vote_id}
           is_starred={candidate.is_starred} />
@@ -105,11 +88,7 @@ export default class Candidate extends Component {
           </div>
           <div className="col-xs-6">
             <h4 className="bufferNone">
-              <Link className="linkLight"
-                    to={"/candidate/" + candidate.we_vote_id }
-                    onlyActiveOnIndex={false}>
-                      { candidate.ballot_item_display_name }
-              </Link>
+                { candidate.ballot_item_display_name }
             </h4>
             <p>Running for <span className="running-for-office-emphasis">{ candidate.office_display_name }</span></p>
           </div>
