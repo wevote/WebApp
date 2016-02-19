@@ -1,9 +1,9 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from "react";
 
-import BallotActions from '../../actions/BallotActions';
-import BallotStore from '../../stores/BallotStore';
+import BallotActions from "../../actions/BallotActions";
+import BallotStore from "../../stores/BallotStore";
 
-import ItemActionbar from '../../components/ItemActionbar';
+import ItemActionbar from "../../components/ItemActionbar";
 
 export default class Measure extends Component {
   static propTypes = {
@@ -41,9 +41,8 @@ export default class Measure extends Component {
     );
   }
 
-  render() {
-    return (
-      <div>
+  render () {
+    return <div>
         <p className="typeXLarge">
           { this.state.supportCount } support
           <span className="small"> (more) </span>
@@ -53,7 +52,6 @@ export default class Measure extends Component {
         </p>
         <ItemActionbar we_vote_id={this.props.we_vote_id} action={BallotActions}
                        is_support={this.props.is_support} is_oppose={this.props.is_oppose}/>
-      </div>
-    );
+      </div>;
   }
 }
