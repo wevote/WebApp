@@ -51,6 +51,7 @@
     "moment": "^2.11.2",
     "moment-timezone": "^0.5.0",
     "node-libs-browser": "^0.5.2",
+    "pre-commit": "^1.1.2",
     "react-addons-linked-state-mixin": "^0.14.3",
     "react-addons-test-utils": "~0.14.0",
     "react-bootstrap": "^0.28.1",
@@ -74,6 +75,10 @@
     "start": "gulp",
     "deps": "npm run deps:missing && npm run deps:extra",
     "deps:missing": "dependency-check package.json",
-    "deps:extra": "dependency-check package.json --extra --no-dev --ignore",   "build:doc": "doctoc --github --title \"## Contents\" ./"
-  }
+    "deps:extra": "dependency-check package.json --extra --no-dev --ignore",
+    "build:doc": "doctoc --github --title \"## Contents\" ./"
+  },
+  "pre-commit": [
+    "test" 
+  ]
 }
