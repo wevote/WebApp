@@ -15,13 +15,13 @@ export default class About extends Component {
   render() {
     return (
       <div>
-        <div className="container-fluid well well-90">
-          <h4>About We Vote</h4>
+        <div className="container-fluid well gutter-top--small fluff-full1">
+          <h3 className="text-center">About We Vote</h3>
           <p>
               We Vote USA is nonprofit and nonpartisan. For more information, please visit www.WeVoteUSA.org.
           </p>
 
-          <h4>Acknowledgements</h4>
+          <h3 className="text-center">Acknowledgements</h3>
 
           <p>We are grateful for these organizations that are critical to our work.<br />
               <br />
@@ -39,7 +39,8 @@ export default class About extends Component {
           </p>
           <p>
               Special thanks to our team of volunteers.
-              Thank you everyone! (This is a list of volunteers who have contributed 10 or more hours, in rough order of hours contributed.)<br />
+              Thank you everyone! (This is a list of volunteers who have contributed 10 or more hours, in rough order of hours contributed.)</p>
+          <p>
               Dale McGrew - Oakland, CA<br />
               Jenifer Fernandez Ancona - Oakland, CA<br />
               Rob Simpson - Vienna, VA<br />
