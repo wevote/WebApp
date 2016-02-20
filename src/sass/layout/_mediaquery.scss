@@ -3,11 +3,47 @@
         &--large {
             display: none;
         }
+        &--mobile {
+            display: none;
+        }
     }
     &-ballot {
         &--large {
             float: none;
             width: 100%;
+        }
+    }
+}
+.icon {
+    &-hamburger {
+        &--mobile {
+            display: none;
+        }
+    }
+}
+
+@media all and (max-width : 695px) {
+    .visible {
+        display: inline-block;
+    }
+    .device {
+        &-menu {
+            &--mobile {
+                position: fixed;
+                left: 0;
+                top: 43px;
+                transform: translate3d(-10px, 0, 0);
+                -webkit-transform: translate3d(-10px, 0, 0);
+                width: 90%;
+                z-index: 2;
+            }
+        }
+    }
+    .icon {
+        &-hamburger {
+            &--mobile {
+                display: inline-block;
+            }
         }
     }
 }
