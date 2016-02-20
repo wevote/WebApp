@@ -22,33 +22,29 @@ export default class Opinions extends Component {
 
   render() {
     return (
-<div>
-  <div className="container-fluid">
-    <h4 className="pull-left">More Opinions I Can Follow</h4>
-    {/*
-      <input type="text" name="search_opinions" className="form-control"
-           placeholder="Search by name or twitter handle." />
-    */}
-    <br />
-    <br />
-    <div>
-      These organizations and public figures have opinions about items on your
-                ballot. Click the 'Follow' button to pay attention to them.
+      <div>
+        <div className="container-fluid well gutter-top--small fluff-full1">
+          <h3 className="text-center">More Opinions I Can Follow</h3>
+          {/*
+            <input type="text" name="search_opinions" className="form-control"
+                 placeholder="Search by name or twitter handle." />
+          */}
+          <p>These organizations and public figures have opinions about items on your
+                      ballot. Click the 'Follow' button to pay attention to them.</p>
 
-      <div className="voter-guide-list">
-        {
-          this.state.voter_guide_list ?
-          this.state.voter_guide_list.map( item =>
-            <VoterGuideItem key={item.we_vote_id} {...item} />
-          ) : (<div className="box-loader">
-                <i className="fa fa-spinner fa-pulse"></i>
-                <p>Loading ... One Moment</p>
-                </div>)
-        }
+            <div className="voter-guide-list">
+              {
+                this.state.voter_guide_list ?
+                this.state.voter_guide_list.map( item =>
+                  <VoterGuideItem key={item.we_vote_id} {...item} />
+                ) : (<div className="box-loader">
+                      <i className="fa fa-spinner fa-pulse"></i>
+                      <p>Loading ... One Moment</p>
+                      </div>)
+              }
+            </div>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
     );
   }
 }

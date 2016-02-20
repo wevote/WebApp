@@ -29,7 +29,7 @@
                 display: inline-block;
                 height: 45px;
                 left: auto;
-                right: 100px;
+                right: 175px;
                 top: 0;
 
                 .separate-top {
@@ -77,5 +77,11 @@
     border-left: 1px solid #d4d4d4;
     margin: 0 auto;
     width: 960px;
+  }
+
+  .headroom--pinned {
+    margin: 0 auto;
+    max-width: 958px;
+    width: 958px;
   }
 }
