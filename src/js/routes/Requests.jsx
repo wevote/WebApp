@@ -16,25 +16,30 @@ export default class RequestsPage extends Component {
 	    return (
 			<section>
 	        	<div className="container-fluid well well-90">
+					<h2 className="text-center">Friend Requests<br />
+						Coming Soon</h2>
+					<p>Friends will be able to reach out to you so you can collaborate on how to vote.</p>
+					{/*
 					<h4 className="text-left">Friend Requests</h4>
                     <ul className="list-group">
                         <li className="list-group-item">
 		                    <FollowOrIgnore action={VoterGuideActions} action_text={"Add Friend"} />
-							<i className="icon-icon-add-friends-2-1 icon-light icon-medium"></i>{/* TODO icon-person-placeholder */}
+							<i className="icon-icon-add-friends-2-1 icon-light icon-medium"></i>
 							Janet Smith</li>
                         <li className="list-group-item">
 		                    <FollowOrIgnore action={VoterGuideActions} action_text={"Add Friend"} />
-							<i className="icon-icon-add-friends-2-1 icon-light icon-medium"></i>{/* TODO icon-person-placeholder */}
+							<i className="icon-icon-add-friends-2-1 icon-light icon-medium"></i>
 							Will Rogers</li>
                         <li className="list-group-item">
 		                    <FollowOrIgnore action={VoterGuideActions} action_text={"Add Friend"} />
-							<i className="icon-icon-add-friends-2-1 icon-light icon-medium"></i>{/* TODO icon-person-placeholder */}
+							<i className="icon-icon-add-friends-2-1 icon-light icon-medium"></i>
 							Andrea Moed</li>
                         <li className="list-group-item">
 		                    <FollowOrIgnore action={VoterGuideActions} action_text={"Add Friend"} />
-							<i className="icon-icon-add-friends-2-1 icon-light icon-medium"></i>{/* TODO icon-person-placeholder */}
+							<i className="icon-icon-add-friends-2-1 icon-light icon-medium"></i>
 							Amy Muller</li>
                     </ul>
+					*/}
 				</div>
 			</section>
 		);

@@ -35,11 +35,19 @@ export default class Connect extends Component {
 			        <br /></p>
 
 					<h4 className="text-left">Follow More Opinions</h4>
+			        <span style={floatRight}>
+			            <Link to="/opinions"><Button bsStyle="primary">Next &gt;</Button></Link>
+			        </span>
+			        <p>Find voter guides you can follow. These voter guides have been created by nonprofits, public figures, your friends, and more.<br />
+			        <br /></p>
+
+					{/*
 					<input type="text" name="search_opinions" className="form-control"
 						   placeholder="Search by name or twitter handle." />
 			        <Link to="add_friends_message"><Button bsStyle="primary">Select from those I Follow on Twitter &gt;</Button></Link>
 					<OrganizationsToFollowList />
 			        <br />
+			        */}
 				</div>
 			</div>
 		);
