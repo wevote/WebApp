@@ -1,7 +1,6 @@
-import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
-import PositionActions from '../../actions/PositionActions';
-import PositionStore from '../../stores/PositionStore';
+import React, { Component, PropTypes } from "react";
+import { Link } from "react-router";
+import PositionStore from "../../stores/PositionStore";
 
 export default class PositionItem extends Component {
   static propTypes = {
@@ -10,7 +9,7 @@ export default class PositionItem extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { position: {}  };
+    this.state = { position: {} };
   }
 
   componentDidMount () {
@@ -30,32 +29,30 @@ export default class PositionItem extends Component {
   render () {
     var position = this.state.position;
     var supportText = position.is_oppose ? "Opposes" : "Supports";
-    return (
-        <div>
-        {/* One organization's Position on this Candidate */}
-        <li className="list-group-item">
-            <div className="row">
-              <div className="col-xs-3 col-md-2">
-                  <Link to="ballot_candidate_one_org_position" params={{id: 2, org_id: 27}} className="transparent">
-                    <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"></i>
-                  </Link>
-              </div>
-              <div className="col-xs-9 col-md-10">
-                  <h4 className="">
-                      { this.props.speaker_label }<br />
-                  </h4>
-                  <p className="">{supportText} <span className="small">Yesterday at 7:18 PM</span></p>
-              </div>
+    return <div>
+      {/* One organization"s Position on this Candidate */}
+      <li className="list-group-item">
+          <div className="row">
+            <div className="col-xs-3 col-md-2">
+                <Link to="ballot_candidate_one_org_position" params={{id: 2, org_id: 27}} className="transparent">
+                  <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"></i>
+                </Link>
             </div>
-            <div className="row">
-                {position.statement_text}
+            <div className="col-xs-9 col-md-10">
+                <h4 className="">
+                    { this.props.speaker_label }<br />
+                </h4>
+                <p className="">{supportText} <span className="small">Yesterday at 7:18 PM</span></p>
             </div>
-            {/* Likes coming in a later version
-            <br />
-            23 Likes<br />
-            */}
-        </li>
-        </div>
-    );
+          </div>
+          <div className="row">
+              {position.statement_text}
+          </div>
+          {/* Likes coming in a later version
+          <br />
+          23 Likes<br />
+          */}
+      </li>
+      </div>;
   }
 }

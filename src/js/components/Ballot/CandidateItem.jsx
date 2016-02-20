@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+import React, { Component, PropTypes } from "react";
+import { Link } from "react-router";
 
-import BallotActions from '../../actions/BallotActions';
+import BallotActions from "../../actions/BallotActions";
 import BallotStore from "../../stores/BallotStore";
-import StarAction from '../../components/StarAction';
-import ItemActionbar from '../../components/ItemActionbar';
+import StarAction from "../../components/StarAction";
+import ItemActionbar from "../../components/ItemActionbar";
 
 export default class Candidate extends Component {
   static propTypes = {
@@ -34,7 +34,7 @@ export default class Candidate extends Component {
     BallotStore.addChangeListener(this.changeListener);
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     BallotStore.removeChangeListener(this.changeListener);
   }
 
@@ -45,7 +45,7 @@ export default class Candidate extends Component {
     });
   }
 
-  render() {
+  render () {
     let {
       we_vote_id,
       ballot_item_display_name,
@@ -60,27 +60,26 @@ export default class Candidate extends Component {
     }
 
     var support_emphasis = "support-emphasis-small";
-    if (this.state.supportCount == 1) {
+    if (this.state.supportCount === 1) {
       support_emphasis = "support-emphasis-medium";
     } else if (this.state.supportCount > 1) {
-      if ((this.state.supportCount - this.state.opposeCount) > 0) {
+      if (this.state.supportCount - this.state.opposeCount > 0) {
         support_emphasis = "support-emphasis-large";
       } else {
-        // if there isn't more support than opposition, then tone down the emphasis to medium
+        // if there isn"t more support than opposition, then tone down the emphasis to medium
         support_emphasis = "support-emphasis-medium";
       }
     }
 
-    return (
-      <section className="candidate list-group-item">
+    return <section className="candidate list-group-item">
         <StarAction
           we_vote_id={we_vote_id}
           is_starred={this.props.is_starred || false } />
 
-        <div className="row" style={{ paddingBottom: '10px' }}>
+        <div className="row" style={{ paddingBottom: "10px" }}>
           <div
             className="col-xs-6"
-            style={candidate_photo_url ? {} : {height:'95px'}}>
+            style={candidate_photo_url ? {} : {height: "95px"}}>
 
             {/* adding inline style to img until Rob can style... */}
             {
@@ -88,7 +87,7 @@ export default class Candidate extends Component {
 
                 <img
                   className="img-circle"
-                  style={{display:'block', paddingTop: '10px', width:'100px'}}
+                  style={{display: "block", paddingTop: "10px", width: "100px"}}
                   src={candidate_photo_url}
                   alt="candidate-photo"/> :
 
@@ -121,7 +120,6 @@ export default class Candidate extends Component {
           </div>
         </div>
         <ItemActionbar we_vote_id={we_vote_id} action={BallotActions} is_support={is_support} is_oppose={is_oppose} />
-      </section>
-    );
+      </section>;
   }
 }
