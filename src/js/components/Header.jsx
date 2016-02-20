@@ -29,7 +29,7 @@ export default class Header extends Component {
           </Link>
             My Ballot
           </h4>
-          <aside className="pull-right gutter-right--window gutter-top--small">
+          <aside className="header-address pull-right gutter-right--window gutter-top--small">
             <Link to="/settings/location"className="font-lightest">
               {location}
             </Link>
