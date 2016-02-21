@@ -50,7 +50,7 @@ export default class VoterGuideItem extends Component {
       <div className="ballot-item well well-skinny well-bg--light split-top-skinny clearfix">
 
         <div className="display-name pull-left">
-          <img className="img-circle"
+          <img className="img-square"
                 src={this.props.voter_guide_image_url} 
                 width="75px" 
           />
