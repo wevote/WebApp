@@ -39,6 +39,11 @@ export default class Header extends Component {
     }
   }
 
+  hide () {
+    this.setState({visible: false});
+    document.querySelector(".container-main").style.opacity = 1;
+  }
+
   render () {
     var { location, visible } = this.state;
     var { voter_photo_url: url, signed_in_personal: signedIn } = this.props;
@@ -69,7 +74,7 @@ export default class Header extends Component {
             <span>
               <ul className="list-group">
                 <li className="list-group-item">
-                  <Link to="/more/sign_in">
+                  <Link onClick={this.hide.bind(this)} to="/more/sign_in">
                     Sign In
                   </Link>
                 </li>
@@ -80,17 +85,17 @@ export default class Header extends Component {
           <ul className="list-group">
             {/*<li className="list-group-item"><Link to="/more/email_ballot">Print or Email Ballot</Link></li>*/}
             <li className="list-group-item">
-              <Link to="/more/opinions/followed">
+              <Link onClick={this.hide.bind(this)} to="/more/opinions/followed">
                 Opinions I'm Following
               </Link>
             </li>
             <li className="list-group-item">
-              <Link to="/settings/location">
+              <Link onClick={this.hide.bind(this)} to="/settings/location">
                 My Ballot Location
               </Link>
             </li>
             <li className="list-group-item">
-              <Link to="/more/sign_in">
+              <Link onClick={this.hide.bind(this)} to="/more/sign_in">
                 Account Settings
               </Link>
             </li>
@@ -105,7 +110,7 @@ export default class Header extends Component {
           <h4 className="text-left"></h4>
           <ul className="list-group">
             <li className="list-group-item">
-              <Link to="/more/about">
+              <Link onClick={this.hide.bind(this)} to="/more/about">
                 About <strong>We Vote</strong>
               </Link>
             </li>
@@ -120,7 +125,7 @@ export default class Header extends Component {
 
             { signedIn ?
               <li className="list-group-item">
-                <Link to="/signout">
+                <Link onClick={this.hide.bind(this)} to="/signout">
                   Sign Out
                 </Link>
               </li> : <span></span> }
