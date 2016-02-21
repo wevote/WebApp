@@ -12,8 +12,6 @@ import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 import Main from "../../components/Facebook/Main";
 import VoterStore from "../../stores/VoterStore";
 
-{/* VISUAL DESIGN: tbd */}
-
 export default class SignIn extends Component {
   static propTypes = {
     children: PropTypes.object

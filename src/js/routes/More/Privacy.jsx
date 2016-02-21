@@ -2,8 +2,6 @@ import React from "react";
 import { Button, ButtonToolbar } from "react-bootstrap";
 import { Link } from "react-router";
 
-{/* VISUAL DESIGN HERE:  */}
-
 export default class Privacy extends React.Component {
 	constructor(props) {
 		super(props);
@@ -14,13 +12,13 @@ export default class Privacy extends React.Component {
 	}
 
 	render() {
-	    return (
-<div>
-	<div className="container-fluid well well-90">
-		<h2 className="text-center">Terms and Policies</h2>
-        Coming soon.
-    </div>
-</div>
+		return (
+			<div>
+				<div className="container-fluid well well-90">
+					<h2 className="text-center">Terms and Policies</h2>
+					Coming soon.
+				</div>
+			</div>
 		);
 	}
 }

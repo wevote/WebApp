@@ -1,10 +1,8 @@
 import React, {Component, PropTypes } from "react";
 import HeaderBackNavigation from "../../components/Navigation/HeaderBackNavigation";
 
-import VoterGuideStore from '../../stores/VoterGuideStore';
-import VoterGuideItem from '../../components/VoterGuide/VoterGuideItem';
-
-{/* VISUAL DESIGN HERE: https://invis.io/8F53FDX9G */}
+import VoterGuideStore from "../../stores/VoterGuideStore";
+import VoterGuideItem from "../../components/VoterGuide/VoterGuideItem";
 
 export default class OpinionsFollowed extends Component {
   static propTypes = {
@@ -24,7 +22,7 @@ export default class OpinionsFollowed extends Component {
     return (
 <div>
   <div className="container-fluid well gutter-top--small fluff-full1">
-    <h3 className="text-center">Opinions I'm Following</h3>
+    <h3 className="text-center">Opinions I"m Following</h3>
     {/*
       <input type="text" name="search_opinions" className="form-control"
            placeholder="Search by name or twitter handle." /><br />
