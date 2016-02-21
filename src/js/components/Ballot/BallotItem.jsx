@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import BallotActions from "../../actions/BallotActions";
 import BallotStore from "../../stores/BallotStore";
 import CandidateList from "../../components/Ballot/CandidateList";
 import Measure from "../../components/Ballot/Measure";
