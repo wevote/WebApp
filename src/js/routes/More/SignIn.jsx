@@ -85,8 +85,8 @@ export default class SignIn extends Component {
 
     return (
     <div className="">
-      <div className="container-fluid well well-90">
-        <h2 className="text-center">{voter.signed_in_personal ? <span>My Account</span> : <span>Sign In</span>}</h2>
+      <div className="container-fluid well gutter-top--small fluff-full1">
+        <h3 className="text-center">{voter.signed_in_personal ? <span>My Account</span> : <span>Sign In</span>}</h3>
         <div className="text-center">
           {voter.signed_in_facebook ? <span></span> : <FacebookSignIn />}
           {/*

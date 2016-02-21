@@ -3,11 +3,47 @@
         &--large {
             display: none;
         }
+        &--mobile {
+            display: none;
+        }
     }
     &-ballot {
         &--large {
             float: none;
             width: 100%;
+        }
+    }
+}
+.icon {
+    &-hamburger {
+        &--mobile {
+            display: none;
+        }
+    }
+}
+
+@media all and (max-width : 695px) {
+    .visible {
+        display: inline-block;
+    }
+    .device {
+        &-menu {
+            &--mobile {
+                position: fixed;
+                left: 0;
+                top: 43px;
+                transform: translate3d(-10px, 0, 0);
+                -webkit-transform: translate3d(-10px, 0, 0);
+                width: 90%;
+                z-index: 2;
+            }
+        }
+    }
+    .icon {
+        &-hamburger {
+            &--mobile {
+                display: inline-block;
+            }
         }
     }
 }
@@ -29,7 +65,7 @@
                 display: inline-block;
                 height: 45px;
                 left: auto;
-                right: 100px;
+                right: 0;
                 top: 0;
 
                 .separate-top {
@@ -77,5 +113,11 @@
     border-left: 1px solid #d4d4d4;
     margin: 0 auto;
     width: 960px;
+  }
+
+  .headroom--pinned {
+    margin: 0 auto;
+    max-width: 958px;
+    width: 958px;
   }
 }

@@ -26,20 +26,28 @@ export default class Connect extends Component {
         };
 	    return (
 			<div>
-				<div className="container-fluid well well-90">
+				<div className="container-fluid well gutter-top--small fluff-full1">
 					<h4 className="text-left">Add Friends</h4>
 			        <span style={floatRight}>
-			            <Link to="/friends/add"><Button bsStyle="primary">Next &gt;</Button></Link>
+			            <Link to="/friends/add"><Button bsStyle="primary">Next &#x21AC;</Button></Link>
 			        </span>
 			        <p>Friends can see what you support and oppose. We never sell emails.<br />
 			        <br /></p>
 
 					<h4 className="text-left">Follow More Opinions</h4>
+			        <span style={floatRight}>
+			            <Link to="/opinions"><Button bsStyle="primary">Next &#x21AC;</Button></Link>
+			        </span>
+			        <p>Find voter guides you can follow. These voter guides have been created by nonprofits, public figures, your friends, and more.<br />
+			        <br /></p>
+
+					{/*
 					<input type="text" name="search_opinions" className="form-control"
 						   placeholder="Search by name or twitter handle." />
-			        <Link to="add_friends_message"><Button bsStyle="primary">Select from those I Follow on Twitter &gt;</Button></Link>
+			        <Link to="add_friends_message"><Button bsStyle="primary">Select from those I Follow on Twitter &#x21AC;</Button></Link>
 					<OrganizationsToFollowList />
 			        <br />
+			        */}
 				</div>
 			</div>
 		);

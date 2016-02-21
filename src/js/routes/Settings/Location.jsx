@@ -35,10 +35,10 @@ export default class Location extends Component {
     var { location } = this.state;
 
     return <div>
-      <div className="container-fluid well well-90">
-        <h2 className="text-center">
+      <div className="container-fluid well gutter-top--small fluff-full1">
+        <h3 className="text-center">
           Change Location
-        </h2>
+        </h3>
         <div>
           <span className="small">
             Please enter the address (or just the city) where you registered to
@@ -52,14 +52,17 @@ export default class Location extends Component {
             name="address"
             value={location}
             className="form-control"
-            defaultValue="Oakland, CA" />
+            defaultValue="Oakland, CA" 
+          />
 
-          <ButtonToolbar>
-              <Button
-                onClick={this.saveLocation.bind(this)}
-                bsStyle="primary">Save Location</Button>
+          <div className="gutter-top--small">
+            <ButtonToolbar>
+                <Button
+                  onClick={this.saveLocation.bind(this)}
+                  bsStyle="primary">Save Location</Button>
 
-          </ButtonToolbar>
+            </ButtonToolbar>
+          </div>
         </div>
       </div>
     </div>;

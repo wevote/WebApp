@@ -47,10 +47,14 @@ export default class VoterGuideItem extends Component {
   render() {
 
     return (
-      <div className="ballot-item well well-skinny split-top-skinny clearfix">
+      <div className="ballot-item well well-skinny well-bg--light split-top-skinny clearfix">
 
-        <div className="display-name">
-          <img src={this.props.voter_guide_image_url} width="75px" />&nbsp;
+        <div className="display-name pull-left">
+          <img className="img-circle"
+                src={this.props.voter_guide_image_url} 
+                width="75px" 
+          />
+          &nbsp;
           { this.props.voter_guide_display_name }
         </div>
         <FollowOrIgnore action={VoterGuideActions} organization_we_vote_id={this.props.organization_we_vote_id}

@@ -17,7 +17,11 @@ export default class AddFriends extends Component {
 	render() {
 	    return (
             <div>
-            	<div className="container-fluid well well-90">
+            	<div className="container-fluid well gutter-top--small fluff-full1">
+					<h3 className="text-center">Add Friends</h3>
+					<h4 className="text-center">Coming Soon</h4>
+					<p>You will be able to ask your friends for their opinions on how to vote.</p>
+					{/* Still to be implemented
             		<h2 className="text-center">Add Friends</h2>
             		<div>
             			<label htmlFor="last-name">Include a Message <span className="small">(Optional)</span></label><br />
@@ -28,8 +32,11 @@ export default class AddFriends extends Component {
             			<span>These friends will see what you support, oppose, and which opinions you follow.
             				We never sell email addresses.</span><br />
             		</div>
+            		*/}
             	</div>
+				{/* Still to be implemented
 				<BottomContinueNavigation />
+				*/}
             </div>
 		);
 	}
