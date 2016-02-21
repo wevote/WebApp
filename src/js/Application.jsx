@@ -9,14 +9,14 @@ export default class Application extends Component {
   static propTypes = {
     children: PropTypes.element,
     route: PropTypes.object,
+    location: PropTypes.object
   };
 
   constructor(props) {
-	super(props);
+    super(props);
 
     this.state = {
-        voter: {
-        }
+      voter: { }
     };
   }
 
@@ -46,13 +46,14 @@ export default class Application extends Component {
   }
 
   render () {
+    var { location: { pathname }} = this.props;
     var { voter } = this.state;
     // console.log("In Application.jsx render, voter: ", voter)
 
     return <div className="app-base">
       <div className="container-fluid">
         <div className="row">
-          <Header />
+          <Header/>
         </div>
       </div>
       <div className="container-fluid">
@@ -70,7 +71,7 @@ export default class Application extends Component {
           </div>
         </div>
       </div>
-        <Navigator />
+        <Navigator pathname={pathname} />
     </div>;
   }
 }
