@@ -35,14 +35,19 @@ export default class PositionItem extends Component {
           <div className="row">
             <div className="col-xs-3 col-md-2">
                 <Link to="ballot_candidate_one_org_position" params={{id: 2, org_id: 27}} className="transparent">
-                  <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"></i>
+                    { this.props.speaker_image_url_https
+                    ? <span><img className="img-square"
+                            src={this.props.speaker_image_url_https}
+                            width="50px"
+                      /></span>
+                    : <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"></i> }
                 </Link>
             </div>
             <div className="col-xs-9 col-md-10">
                 <h4 className="">
-                    { this.props.speaker_label }<br />
+                    { this.props.speaker_display_name }<br />
                 </h4>
-                <p className="">{supportText} <span className="small">Yesterday at 7:18 PM</span></p>
+                <p className="">{supportText} <span className="small">{ this.props.last_updated }</span></p>
             </div>
           </div>
           <div className="row">

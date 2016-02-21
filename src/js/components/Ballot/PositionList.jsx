@@ -34,7 +34,9 @@ export default class PositionList extends Component {
       { this.state.position_list.map( item =>
           <PositionItem key={item.position_we_vote_id}
           position_we_vote_id={item.position_we_vote_id}
-          speaker_label={item.speaker_label}/> )
+          speaker_display_name={item.speaker_display_name}
+          speaker_image_url_https={item.speaker_image_url_https}
+          last_updated={item.last_updated}/> )
       }
     </ul>;
   }
