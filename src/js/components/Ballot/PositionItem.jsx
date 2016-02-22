@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import PositionStore from "../../stores/PositionStore";
-import Formatter from "../../utils/formatter";
+const moment = require('moment');
 
 export default class PositionItem extends Component {
   static propTypes = {
@@ -30,7 +30,8 @@ export default class PositionItem extends Component {
   render () {
     var position = this.state.position;
     var supportText = position.is_oppose ? "Opposes" : "Supports";
-    var dateText = Formatter.formatDate(this.props.last_updated);
+    var dateStr = this.props.last_updated;
+    var dateText = moment(dateStr).startOf('day').fromNow();
 
     return <div>
       {/* One organization"s Position on this Candidate */}
