@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import PositionStore from "../../stores/PositionStore";
+import Formatter from "../../utils/formatter";
 
 export default class PositionItem extends Component {
   static propTypes = {
@@ -29,6 +30,8 @@ export default class PositionItem extends Component {
   render () {
     var position = this.state.position;
     var supportText = position.is_oppose ? "Opposes" : "Supports";
+    var dateText = Formatter.formatDate(this.props.last_updated);
+
     return <div>
       {/* One organization"s Position on this Candidate */}
       <li className="list-group-item">
@@ -47,7 +50,7 @@ export default class PositionItem extends Component {
                 <h4 className="">
                     { this.props.speaker_display_name }<br />
                 </h4>
-                <p className="">{supportText} <span className="small">{ this.props.last_updated }</span></p>
+                <p className="">{supportText} <span className="small">{ dateText }</span></p>
             </div>
           </div>
           <div className="row">
