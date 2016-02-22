@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import PositionStore from "../../stores/PositionStore";
+const moment = require('moment');
 
 export default class PositionItem extends Component {
   static propTypes = {
@@ -40,6 +41,9 @@ export default class PositionItem extends Component {
       var supportText = "Supports";
     }
 
+    var dateStr = this.props.last_updated;
+    var dateText = moment(dateStr).startOf('day').fromNow();
+
     return <div>
       {/* One organization"s Position on this Candidate */}
       <li className="list-group-item">
@@ -58,7 +62,7 @@ export default class PositionItem extends Component {
                 <h4 className="">
                     { this.props.speaker_display_name }<br />
                 </h4>
-                <p className="">{supportText} {this.props.candidate_display_name} <span className="small">{ this.props.last_updated }</span></p>
+                <p className="">{supportText} {this.props.candidate_display_name} <span className="small">{ dateText }</span></p>
             </div>
           </div>
           <div className="row">
