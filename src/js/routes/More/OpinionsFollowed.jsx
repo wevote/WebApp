@@ -17,7 +17,13 @@ export default class OpinionsFollowed extends Component {
   }
 
   componentDidMount () {
-    VoterGuideStore.initializeGuidesFollowed( voter_guide_followed_list => this.setState({ voter_guide_followed_list }));
+    VoterGuideStore.initializeGuidesFollowed( function(voter_guide_followed_list) {
+      if (voter_guide_followed_list !== undefined && voter_guide_followed_list.length > 0){
+        this.setState({ voter_guide_followed_list });
+      } else {
+        this.props.history.push('/opinions');
+      }
+    }.bind(this));
   }
 
   render() {

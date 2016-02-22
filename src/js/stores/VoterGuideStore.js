@@ -63,10 +63,13 @@ function retrieveVoterGuidesFollowedList () {
     .withCredentials()
     .query({ voter_device_id: cookies.getItem("voter_device_id") })
     .end( function (err, res) {
-      if (err || !res.body.success)
-        reject(err || res.body.status);
+      if (err || !res.body.success){
+        reject(res.body);
+        // reject(err || res.body.status);
       console.log("Reached out to retrieveVoterGuidesFollowedList");
-      resolve(res.body);
+      } else {
+        resolve(res.body);
+      }
     })
   );
 }
@@ -224,7 +227,7 @@ const VoterGuideStore = createStore({
         .then(addVoterGuidesToFollowToVoterGuideStore) // Uses data retrieved with retrieveVoterGuidesToFollowList
         .then(retrieveOrganizations)
         .then(data => callback(getItems()))
-        .catch(err => console.error(err));
+        .catch(err => callback(err));
   },
 
   /**
@@ -252,7 +255,7 @@ const VoterGuideStore = createStore({
         .then(retrieveOrganizationsFollowedList)
         .then(addOrganizationsFollowedToStore) // Uses data from retrieveOrganizationsFollowedList
         .then(data => callback(getFollowedItems()))
-        .catch(err => console.error(err));
+        .catch(err => callback(err));
   },
 
   /**
