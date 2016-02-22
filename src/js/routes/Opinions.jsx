@@ -1,10 +1,9 @@
-import React, {Component, PropTypes } from 'react';
-import HeaderBackNavigation from '../Components/Navigation/HeaderBackNavigation';
+import React, {Component, PropTypes } from "react";
+import HeaderBackNavigation from "../Components/Navigation/HeaderBackNavigation";
 
-import VoterGuideStore from '../stores/VoterGuideStore';
-import VoterGuideItem from '../components/VoterGuide/VoterGuideItem';
+import VoterGuideStore from "../stores/VoterGuideStore";
+import VoterGuideItem from "../components/VoterGuide/VoterGuideItem";
 
-{/* VISUAL DESIGN HERE: https://invis.io/TR4A1NYAQ */}
 
 export default class Opinions extends Component {
   static propTypes = {
@@ -30,7 +29,7 @@ export default class Opinions extends Component {
                  placeholder="Search by name or twitter handle." />
           */}
           <p>These organizations and public figures have opinions about items on your
-                      ballot. Click the 'Follow' button to pay attention to them.</p>
+                      ballot. Click the "Follow" button to pay attention to them.</p>
 
             <div className="voter-guide-list">
               {

@@ -1,13 +1,13 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from "react";
 import { Button, ButtonToolbar, DropdownButton, Input, MenuItem, Navbar } from "react-bootstrap";
-import { Link } from 'react-router';
+import { Link } from "react-router";
 
-import BallotStore from '../../stores/BallotStore';
-import CandidateDetail from '../../components/Ballot/CandidateDetail';
-import PositionList from '../../components/Ballot/PositionList';
-import ItemActionbar from '../../components/ItemActionbar';
-import ItemActionBar2 from '../../components/ItemActionBar2';
-import StarAction from '../../components/StarAction';
+import BallotStore from "../../stores/BallotStore";
+import CandidateDetail from "../../components/Ballot/CandidateDetail";
+import PositionList from "../../components/Ballot/PositionList";
+import ItemActionbar from "../../components/ItemActionbar";
+import ItemActionBar2 from "../../components/ItemActionBar2";
+import StarAction from "../../components/StarAction";
 
 export default class Candidate extends Component {
   static propTypes = {
@@ -49,7 +49,7 @@ export default class Candidate extends Component {
         {/*
         <header className="row">
           <div className="col-xs-6 col-md-6 text-center">
-            <Link to='/ballot'>
+            <Link to="/ballot">
               &lt; Back to My Ballot
             </Link>
           </div>
@@ -64,23 +64,23 @@ export default class Candidate extends Component {
           </div>
         </header>
         */}
-        {candidate.hasOwnProperty('is_starred') ?
+        {candidate.hasOwnProperty("is_starred") ?
           <StarAction
           we_vote_id={candidate.we_vote_id}
           is_starred={candidate.is_starred} />
         :
         <div></div>}
 
-        <div className="row" style={{ paddingBottom: '10px' }}>
+        <div className="row" style={{ paddingBottom: "10px" }}>
           <div
             className="col-xs-6"
-            style={candidate.candidate_photo_url ? {} : {height:'95px'}}>
+            style={candidate.candidate_photo_url ? {} : {height:"95px"}}>
 
             {
               candidate.candidate_photo_url ?
                 <img
                   className="img-circle"
-                  style={{display:'block', paddingTop: '10px', width:'100px'}}
+                  style={{display:"block", paddingTop: "10px", width:"100px"}}
                   src={candidate.candidate_photo_url}
                   alt="candidate-photo"/> :
               <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light"/>

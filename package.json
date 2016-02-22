@@ -71,7 +71,7 @@
   "repository": "https://github.com/wevote/webapp.git",
   "scripts": {
     "lint": "eslint src",
-    "test": "eslint src",
+    "test": "eslint --format stylish --ext .jsx --ext .js src/js",
     "start": "gulp",
     "deps": "npm run deps:missing && npm run deps:extra",
     "deps:missing": "dependency-check package.json",

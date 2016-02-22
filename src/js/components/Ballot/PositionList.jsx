@@ -9,7 +9,9 @@ export default class PositionList extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { position_list: [] };
+    this.state = { 
+      position_list: [] 
+    };
   }
 
   componentDidMount (){
