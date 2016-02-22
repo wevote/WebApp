@@ -9,8 +9,8 @@ export default class PositionList extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { 
-      position_list: [] 
+    this.state = {
+      position_list: []
     };
   }
 
@@ -38,7 +38,9 @@ export default class PositionList extends Component {
           position_we_vote_id={item.position_we_vote_id}
           speaker_display_name={item.speaker_display_name}
           speaker_image_url_https={item.speaker_image_url_https}
-          last_updated={item.last_updated}/> )
+          last_updated={item.last_updated}
+          candidate_display_name={this.props.candidate_display_name}
+          /> )
       }
     </ul>;
   }

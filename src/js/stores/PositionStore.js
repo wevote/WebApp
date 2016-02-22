@@ -27,8 +27,8 @@ const PositionStore = createStore({
 retrievePositionByWeVoteId: function (we_vote_id){
   PositionAPIWorker.positionRetrieve(we_vote_id,
     function (res){
-      PositionActions.positionRetrieved(we_vote_id, res);
-    });
+      PositionActions.positionRetrieved(res);
+    }.bind(this));
 },
 
 getLocalPositionByWeVoteId: function (we_vote_id){

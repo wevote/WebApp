@@ -23,12 +23,23 @@ export default class PositionItem extends Component {
   }
 
   _onChange () {
-    this.setState({ position: PositionStore.getLocalPositionByWeVoteId(this.props.position_we_vote_id) });
+    var position = PositionStore.getLocalPositionByWeVoteId(this.props.position_we_vote_id);
+    this.setState({ position: position });
+    console.log(this.state.position);
   }
 
   render () {
     var position = this.state.position;
-    var supportText = position.is_oppose ? "Opposes" : "Supports";
+    if (position.hasOwnProperty('is_oppose') && position.hasOwnProperty('is_support') && position.is_oppose === position.is_support){
+      console.log("Both positions true:", this.props.position_we_vote_id)
+      var supportText = "Unknown";
+    }
+    else if (position.is_oppose){
+      var supportText = "Opposes";
+    } else if (position.is_support){
+      var supportText = "Supports";
+    }
+
     return <div>
       {/* One organization"s Position on this Candidate */}
       <li className="list-group-item">
@@ -47,7 +58,7 @@ export default class PositionItem extends Component {
                 <h4 className="">
                     { this.props.speaker_display_name }<br />
                 </h4>
-                <p className="">{supportText} <span className="small">{ this.props.last_updated }</span></p>
+                <p className="">{supportText} {this.props.candidate_display_name} <span className="small">{ this.props.last_updated }</span></p>
             </div>
           </div>
           <div className="row">
