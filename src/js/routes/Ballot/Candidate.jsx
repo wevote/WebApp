@@ -109,7 +109,7 @@ export default class Candidate extends Component {
           </ul>
           */}
           {
-            <PositionList we_vote_id={we_vote_id} />
+            <PositionList we_vote_id={we_vote_id} candidate_display_name={candidate.ballot_item_display_name}/>
           }
         </div>
 
