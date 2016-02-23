@@ -13,9 +13,9 @@ export default class RequestsPage extends Component {
 	}
 
 	render() {
-	    return (
+		return (
 			<section>
-	        	<div className="container-fluid well gutter-top--small fluff-full1">
+				<div className="container-fluid well gutter-top--small fluff-full1">
 					<h3 className="text-center">Friend Requests</h3>
 					<h4 className="text-center">Coming Soon</h4>
 					<p>Friends will be able to reach out to you so you can collaborate on how to vote.</p>

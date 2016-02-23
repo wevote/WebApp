@@ -1,10 +1,8 @@
 import React, {Component, PropTypes } from "react";
 import HeaderBackNavigation from "../../components/Navigation/HeaderBackNavigation";
 
-import VoterGuideStore from '../../stores/VoterGuideStore';
-import VoterGuideItem from '../../components/VoterGuide/VoterGuideItem';
-
-{/* VISUAL DESIGN HERE: https://invis.io/8F53FDX9G */}
+import VoterGuideStore from "../../stores/VoterGuideStore";
+import VoterGuideItem from "../../components/VoterGuide/VoterGuideItem";
 
 export default class OpinionsFollowed extends Component {
   static propTypes = {
@@ -17,14 +15,20 @@ export default class OpinionsFollowed extends Component {
   }
 
   componentDidMount () {
-    VoterGuideStore.initializeGuidesFollowed( voter_guide_followed_list => this.setState({ voter_guide_followed_list }));
+    VoterGuideStore.initializeGuidesFollowed( function(voter_guide_followed_list) {
+      if (voter_guide_followed_list !== undefined && voter_guide_followed_list.length > 0){
+        this.setState({ voter_guide_followed_list });
+      } else {
+        this.props.history.push('/opinions');
+      }
+    }.bind(this));
   }
 
   render() {
     return (
 <div>
   <div className="container-fluid well gutter-top--small fluff-full1">
-    <h3 className="text-center">Opinions I'm Following</h3>
+    <h3 className="text-center">Opinions I"m Following</h3>
     {/*
       <input type="text" name="search_opinions" className="form-control"
            placeholder="Search by name or twitter handle." /><br />

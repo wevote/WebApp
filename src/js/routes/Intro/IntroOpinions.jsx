@@ -23,7 +23,7 @@ export default class IntroOpinionsPage extends Component {
 			}
 		};
 
-	    return (
+        return (
             <div className="container-fluid">
                 <h1>Here's the idea - Learn from Community</h1>
 

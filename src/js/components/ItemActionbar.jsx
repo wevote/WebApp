@@ -63,6 +63,7 @@ export default class ItemActionbar extends Component {
     const opposeOff = this.stopOpposingItem.bind(this);
 
     const itemActionBar =
+
       <div className="item-actionbar row">
         <span className="col-xs-4" onClick={ is_support ? supportOff : supportOn }>
           <span className="inline-phone">
@@ -78,6 +79,7 @@ export default class ItemActionbar extends Component {
             <span style={ is_oppose ? bold : {} }> Oppose</span>
           </span>
         </span>
+        {/* Share coming in a later version
         <span className="col-xs-4" >
           <span className="inline-phone">
             <span className="glyphicon glyphicon-small glyphicon-share-alt">
@@ -85,6 +87,7 @@ export default class ItemActionbar extends Component {
             &nbsp;Share
           </span>
         </span>
+        */}
       </div>;
 
     return itemActionBar;

@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "keymirror": "^0.1.1",
+    "moment": "^2.11.2",
     "object-assign": "^4.0.1",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
@@ -65,13 +66,14 @@
     "react-router-bootstrap": "^0.16.0",
     "react-select": "^0.9.1",
     "react-tap-event-plugin": "^0.2.1",
+    "tape": "^4.4.0",
     "vinyl-source-stream": "^1.1.0",
     "yargs": "^3.31.0"
   },
   "repository": "https://github.com/wevote/webapp.git",
   "scripts": {
-    "lint": "eslint src",
-    "test": "eslint src",
+    "lint": "eslint --format stylish --ext .jsx --ext .js src/js",
+    "test": "babel-node tests/*.js | faucet",
     "start": "gulp",
     "deps": "npm run deps:missing && npm run deps:extra",
     "deps:missing": "dependency-check package.json",
@@ -79,6 +81,7 @@
     "build:doc": "doctoc --github --title \"## Contents\" ./"
   },
   "pre-commit": [
-    "test" 
+    "test",
+    "lint"
   ]
 }

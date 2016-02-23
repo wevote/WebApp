@@ -4,11 +4,11 @@ var PositionConstants = require("../constants/PositionConstants");
 
 module.exports = {
 
-  positionRetrieved: function (we_vote_id, payload) {
+  positionRetrieved: function (payload) {
     AppDispatcher.dispatch({
       actionType: PositionConstants.POSITION_RETRIEVED,
       payload: payload,
-      we_vote_id: we_vote_id
+      we_vote_id: payload.position_we_vote_id
     });
   },
 
