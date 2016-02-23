@@ -53,7 +53,7 @@ export default class Header extends Component {
     //   image = <img src={url} className="img-circle" width="25px" height="25px" />;
 
     const header =
-      <header className="row">
+      <header className="header row">
         <Headroom>
           <section className="separate-bottom container-fluid">
             <h4 className="pull-left gutter-left--window bold">
