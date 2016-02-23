@@ -1,6 +1,8 @@
 import React, {Component, PropTypes } from "react";
 import { $ajax } from "../utils/service";
 
+import LoadingWheel from "../components/LoadingWheel";
+
 import BallotStore from "../stores/BallotStore";
 import GuideList from "../components/VoterGuide/GuideList";
 
@@ -56,7 +58,6 @@ export default class Opinions extends Component {
     const EMPTY_TEXT = "You do not have a ballot yet!";
     const { guideList, electionId } = this;
 
-
     let opinions;
 
     if ( !electionId )
@@ -65,10 +66,7 @@ export default class Opinions extends Component {
     else
       if (loading)
         opinions =
-          <div className="box-loader">
-            <i className="fa fa-spinner fa-pulse"></i>
-            <p>Loading ... One Moment</p>
-          </div>;
+          LoadingWheel;
 
       else if (error)
         opinions = "Error loading your organizations";

@@ -12,7 +12,8 @@ export default class GuideList extends Component {
   }
 
   render () {
-    const orgs = this.props.organizations.map( org => {
+
+    let orgs = this.props.organizations.map( (org, i) => {
 
       var {
         organization_we_vote_id: id,
@@ -21,7 +22,11 @@ export default class GuideList extends Component {
         twitter_followers_count: followers
       } = org;
 
-      return <Organization id={id} displayName={displayName} followers={followers} imageUrl={imageUrl} />;
+      // Key can be id once issue #85 is resolved on server
+      // https://github.com/wevote/WeVoteServer/issues/85
+      const key = id + "-" + i;
+
+      return <Organization id={id} key={key} displayName={displayName} followers={followers} imageUrl={imageUrl} />;
 
     });
 
