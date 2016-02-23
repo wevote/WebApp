@@ -3,6 +3,8 @@ import { Button, ButtonToolbar, Input } from "react-bootstrap";
 import { Link } from "react-router";
 import Main from '../../components/Facebook/Main';
 
+{/* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/89479656 */}
+
 export default class EmailBallot extends Component {
 	constructor(props) {
 		super(props);

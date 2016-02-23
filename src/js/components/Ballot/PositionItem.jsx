@@ -36,7 +36,7 @@ export default class PositionItem extends Component {
 
     if (position.hasOwnProperty("is_oppose") && position.hasOwnProperty("is_support") && position.is_oppose === position.is_support){
       console.log("Both positions true:", this.props.position_we_vote_id);
-      supportText = "Unknown";
+      supportText = "Information about";
     } else if (position.is_oppose) {
       supportText = "Opposes";
     } else if (position.is_support) {

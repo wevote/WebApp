@@ -41,7 +41,7 @@ export default class MoreMenu extends Component {
 					}
 				<ul className="list-group">
 					{/*<li className="list-group-item"><Link to="/more/email_ballot">Print or Email Ballot</Link></li>*/}
-					<li className="list-group-item"><Link to="/more/opinions/followed">Opinions I"m Following</Link></li>
+					<li className="list-group-item"><Link to="/more/opinions/followed">Opinions I'm Following</Link></li>
 					<li className="list-group-item"><Link to="/settings/location">My Ballot Location</Link></li>
 					<li className="list-group-item"><Link to="/more/sign_in">Account Settings</Link></li>
 				</ul>
