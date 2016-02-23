@@ -123,13 +123,14 @@ export default class Header extends Component {
               </a>
             </li>
 
+            {/* To be implemented in a coming release
             { signedIn ?
               <li className="list-group-item">
                 <Link onClick={this.hide.bind(this)} to="/signout">
                   Sign Out
                 </Link>
               </li> : <span></span> }
-
+            */}
           </ul>
         </div>
       </header>;

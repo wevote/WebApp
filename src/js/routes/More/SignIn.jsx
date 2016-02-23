@@ -105,7 +105,7 @@ export default class SignIn extends Component {
         <div className="text-center">
           {voter.signed_in_facebook ? <FacebookDisconnect /> : null}
         </div>
-        {/* FOR DEBUGGING
+        {/* FOR DEBUGGING */}
         <div className="text-center">
           signed_in_personal: {voter.signed_in_personal ? <span>True</span> : null}<br />
           signed_in_facebook: {voter.signed_in_facebook ? <span>True</span> : null}<br />
@@ -116,11 +116,11 @@ export default class SignIn extends Component {
           first_name: {voter.first_name ? <span>{voter.first_name}</span> : null}<br />
           facebook_id: {voter.facebook_id ? <span>{voter.facebook_id}</span> : null}<br />
         </div>
-        */}
+
       </div>
-      {/* FOR DEBUGGING
+      {/* FOR DEBUGGING */}
       <Main />
-      */}
+
     </div>
     );
   }
