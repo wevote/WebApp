@@ -9,7 +9,7 @@ import ItemActionbar from "../../components/ItemActionbar";
 import ItemActionBar2 from "../../components/ItemActionBar2";
 import StarAction from "../../components/StarAction";
 
-{/* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/94226088 */}
+/* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/94226088 */
 
 export default class GuidePositionList extends Component {
   static propTypes = {
