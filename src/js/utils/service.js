@@ -22,9 +22,9 @@ const defaults = {
   query: {},
   type: "GET",
   data: function () {
-    return {
+    return cookies.getItem("voter_device_id") ? {
       voter_device_id: cookies.getItem("voter_device_id")
-    };
+    } : {};
   },
   success: (res) => console.warn("Success function not defined:", res),
   error: (err) => console.error(err.message)

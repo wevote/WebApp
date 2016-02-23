@@ -1,6 +1,6 @@
 import BallotStore from "../stores/BallotStore";
 import { createStore } from "../utils/createStore";
-import {shallowClone} from "../utils/object-utils";
+import { shallowClone } from "../utils/object-utils";
 
 const AppDispatcher = require("../dispatcher/AppDispatcher");
 const VoterGuideConstants = require("../constants/VoterGuideConstants");
@@ -19,11 +19,6 @@ let _voter_guides_to_follow_list = []; // A summary of all voter guides to follo
 let _voter_guides_followed_order = [];
 let _voter_guides_followed_list = []; // A summary of voter guides already followed (list of voter guide we_vote_id's)
 
-const MEASURE = "MEASURE";
-
-function printErr (err) {
-  console.error(err);
-}
 
 //.query({ ballot_item_we_vote_id: "wv01cand2968" })
 //.query({ kind_of_ballot_item: "CANDIDATE" })
@@ -193,16 +188,6 @@ function stopFollowingOrganization (we_vote_id) {
     })
   );
 }
-
-// Refactor to this structure?
-//const VoterGuideAPIWorker = {
-//  voterBallotItemsRetrieveFromGoogleCivic: function (text_for_map_search, success) {
-//    return get({
-//      endpoint: "voterBallotItemsRetrieveFromGoogleCivic",
-//      query: {text_for_map_search}, success: success || defaultSuccess
-//    });
-//  }
-//};
 
 const VoterGuideStore = createStore({
   /**
