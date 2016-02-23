@@ -28,11 +28,12 @@ export default class VoterGuideItem extends Component {
       OrganizationFollowed: null,
       OrganizationIgnored: null
     };
-    VoterGuideStore.addChangeListener(this._onChange.bind(this));
+    this.changeListener = this._onChange.bind(this);
+    VoterGuideStore.addChangeListener(this.changeListener);
   }
 
   componentWillUnmount() {
-    VoterGuideStore.removeChangeListener(this._onChange.bind(this));
+    VoterGuideStore.removeChangeListener(this.changeListener);
   }
 
   _onChange () {
@@ -51,8 +52,8 @@ export default class VoterGuideItem extends Component {
 
         <div className="display-name pull-left">
           <img className="img-square"
-                src={this.props.voter_guide_image_url} 
-                width="75px" 
+                src={this.props.voter_guide_image_url}
+                width="75px"
           />
           &nbsp;
           { this.props.voter_guide_display_name }

@@ -25,11 +25,12 @@ class Main extends React.Component {
 
     componentDidMount () {
         FacebookActionCreators.initFacebook();
-        FacebookStore.addChangeListener(() => this._onFacebookChange());
+        this.changeListener = this._onFacebookChange();
+        FacebookStore.addChangeListener(this.changeListener);
     }
 
     componentWillUnmount () {
-        FacebookStore.removeChangeListener(this._onFacebookChange);
+        FacebookStore.removeChangeListener(this.changeListener)
       }
 
     _onFacebookChange () {
