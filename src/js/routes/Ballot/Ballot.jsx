@@ -1,12 +1,13 @@
-import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+import React, { Component, PropTypes } from "react";
+import LoadingWheel from "../../components/LoadingWheel";
 
-import BallotStore from '../../stores/BallotStore';
-import BallotItem from '../../components/Ballot/BallotItem';
-import BallotActions from '../../actions/BallotActions';
+import BallotStore from "../../stores/BallotStore";
+import BallotItem from "../../components/Ballot/BallotItem";
+
 
 export default class Ballot extends Component {
   static propTypes = {
+    history: PropTypes.array,
     children: PropTypes.object
   };
 
@@ -16,30 +17,27 @@ export default class Ballot extends Component {
   }
 
   componentDidMount () {
-    BallotStore.initialize( function(ballot_list){
-      if (ballot_list.length === 0){
-        this.props.history.push('settings/location');
-      } else {
-        this.setState({ballot_list});
-      }
-    }.bind(this));
+    BallotStore.initialize( (ballot_list) => {
+
+      if (ballot_list.length === 0)
+        this.props.history.push("settings/location");
+
+      else
+        this.setState({ ballot_list });
+
+    });
   }
 
   render () {
     var { ballot_list } = this.state;
 
-    return (<div className="ballot-list">
-      {
-        ballot_list ? ballot_list
-          .map( item =>
-            <BallotItem key={item.we_vote_id} {...item} />
-          ) : (
-            <div className="box-loader">
-              <i className="fa fa-spinner fa-pulse"></i>
-              <p>Loading ... One Moment</p>
-            </div>
-          )
-      }
-    </div>);
+    const ballot =
+      <div className="ballot-list">
+        { ballot_list ? ballot_list.map( item =>
+          <BallotItem key={item.we_vote_id} {...item} />
+        ) : LoadingWheel }
+      </div>;
+
+    return ballot;
   }
 }

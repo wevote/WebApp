@@ -10,18 +10,19 @@ import GuideList from "../components/VoterGuide/GuideList";
 
 export default class Opinions extends Component {
   static propTypes = {
+    history: PropTypes.array,
     children: PropTypes.object
   };
 
   constructor (props) {
     super(props);
 
-    this.state = {
-      loading: true,
-      error: false
-    };
+    this.state = { loading: true, error: false };
 
     this.electionId = BallotStore.getGoogleCivicElectionId();
+
+    if ( !this.electionId )
+      this.props.history.push("/ballot");
 
   }
 
@@ -43,11 +44,7 @@ export default class Opinions extends Component {
 
         error: (err) => {
           console.error(err);
-
-          this.setState({
-            loading: false,
-            error: true
-          });
+          this.setState({ loading: false, error: true });
         }
       });
     // VoterGuideStore.initialize( voter_guide_list => this.setState({ voter_guide_list }));
