@@ -41,17 +41,18 @@ export default class SignIn extends Component {
     });
 
     FacebookActionCreators.initFacebook();
-    FacebookStore.addChangeListener(() => this._onFacebookChange());
-
+    this.changeListener = this._onFacebookChange.bind(this);
+    FacebookStore.addChangeListener(this.changeListener);
+    this.voterListener = this._onVoterStoreChange.bind(this);
     // console.log("SignIn componentDidMount VoterStore.addChangeListener");
-    VoterStore.addChangeListener(this._onVoterStoreChange.bind(this));
+    VoterStore.addChangeListener(this.voterListener);
   }
 
   componentWillUnmount () {
-    FacebookStore.removeChangeListener(this._onFacebookChange);
+    FacebookStore.removeChangeListener(this.changeListener);
 
     // console.log("SignIn componentWillUnmount VoterStore.removeChangeListener");
-    VoterStore.removeChangeListener(this._onVoterStoreChange.bind(this));
+    VoterStore.removeChangeListener(this.voterListener);
   }
 
   _onVoterStoreChange () {
