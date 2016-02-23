@@ -1,8 +1,10 @@
 import React, {Component, PropTypes } from "react";
-import VoterGuideStore from "../stores/VoterGuideStore";
-import VoterGuideItem from "../components/VoterGuide/VoterGuideItem";
+import { $ajax } from "../utils/service";
 
-{/* VISUAL DESIGN HERE: https://invis.io/TR4A1NYAQ */}
+import BallotStore from "../stores/BallotStore";
+import GuideList from "../components/VoterGuide/GuideList";
+
+/* VISUAL DESIGN HERE: https://invis.io/TR4A1NYAQ */
 
 export default class Opinions extends Component {
   static propTypes = {
@@ -11,21 +13,74 @@ export default class Opinions extends Component {
 
   constructor (props) {
     super(props);
+
     this.state = {
-      loading: true
+      loading: true,
+      error: false
     };
+
+    this.electionId = BallotStore.getGoogleCivicElectionId();
+
   }
 
   componentDidMount () {
-    VoterGuideStore.initialize( voter_guide_list => this.setState({ voter_guide_list }));
+
+    if (! this.electionId )
+      this.setState({ loading: false, error: false });
+
+    else
+      $ajax({
+        endpoint: "voterGuidesToFollowRetrieve",
+        data: { "google_civic_election_id": this.electionId },
+
+        success: (res) => {
+          this.guideList = res.voter_guides;
+          this.setState({ loading: false });
+          console.log(res);
+        },
+
+        error: (err) => {
+          console.error(err);
+
+          this.setState({
+            loading: false,
+            error: true
+          });
+        }
+      });
+    // VoterGuideStore.initialize( voter_guide_list => this.setState({ voter_guide_list }));
   }
 
   render () {
-    const { voter_guide_list } = this.state;
+    const { loading, error } = this.state;
+    const EMPTY_TEXT = "You do not have a ballot yet!";
+    const { guideList, electionId } = this;
 
-    console.log(voter_guide_list);
 
-    const opinions =
+    let opinions;
+
+    if ( !electionId )
+      opinions = EMPTY_TEXT;
+
+    else
+      if (loading)
+        opinions =
+          <div className="box-loader">
+            <i className="fa fa-spinner fa-pulse"></i>
+            <p>Loading ... One Moment</p>
+          </div>;
+
+      else if (error)
+        opinions = "Error loading your organizations";
+
+      else if (guideList.length > 0)
+        opinions = <GuideList id={electionId} organizations={guideList} />;
+
+
+      else
+        opinions = EMPTY_TEXT;
+
+    const content =
       <div>
         <div className="container-fluid well gutter-top--small fluff-full1">
           <h3 className="text-center">More Opinions I Can Follow</h3>
@@ -34,22 +89,15 @@ export default class Opinions extends Component {
                  placeholder="Search by name or twitter handle." />
           */}
           <p>
-            These organizations and public figures have opinions about items on your
-                      ballot. Click the "Follow" button to pay attention to them.
+            These organizations and public figures have opinions about items on
+            your ballot. Click the "Follow" button to pay attention to them.
           </p>
 
-          <div className="voter-guide-list">
-            { voter_guide_list ? voter_guide_list
-                .map( item => <VoterGuideItem key={item.we_vote_id} {...item} /> ) :
-                <div className="box-loader">
-                  <i className="fa fa-spinner fa-pulse"></i>
-                  <p>Loading ... One Moment</p>
-                </div>
-            }
-          </div>
+          {opinions}
+
         </div>
       </div>;
 
-    return opinions;
+    return content;
   }
 }
