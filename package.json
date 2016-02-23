@@ -73,7 +73,7 @@
   "repository": "https://github.com/wevote/webapp.git",
   "scripts": {
     "lint": "eslint --format stylish --ext .jsx --ext .js src/js",
-    "test": "babel-node tests/*.js | faucet",
+    "test": "npm run lint",
     "start": "gulp",
     "deps": "npm run deps:missing && npm run deps:extra",
     "deps:missing": "dependency-check package.json",

@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import PositionStore from "../../stores/PositionStore";
-const moment = require('moment');
+const moment = require("moment");
 
 export default class PositionItem extends Component {
   static propTypes = {
     position_we_vote_id: PropTypes.string.isRequired,
+    last_updated: PropTypes.string
   };
 
   constructor (props) {
@@ -31,18 +32,19 @@ export default class PositionItem extends Component {
 
   render () {
     var position = this.state.position;
-    if (position.hasOwnProperty('is_oppose') && position.hasOwnProperty('is_support') && position.is_oppose === position.is_support){
-      console.log("Both positions true:", this.props.position_we_vote_id)
-      var supportText = "Unknown";
-    }
-    else if (position.is_oppose){
-      var supportText = "Opposes";
-    } else if (position.is_support){
-      var supportText = "Supports";
+    var supportText;
+
+    if (position.hasOwnProperty("is_oppose") && position.hasOwnProperty("is_support") && position.is_oppose === position.is_support){
+      console.log("Both positions true:", this.props.position_we_vote_id);
+      supportText = "Unknown";
+    } else if (position.is_oppose) {
+      supportText = "Opposes";
+    } else if (position.is_support) {
+      supportText = "Supports";
     }
 
     var dateStr = this.props.last_updated;
-    var dateText = moment(dateStr).startOf('day').fromNow();
+    var dateText = moment(dateStr).startOf("day").fromNow();
 
     return <div>
       {/* One organization"s Position on this Candidate */}
