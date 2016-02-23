@@ -25,6 +25,7 @@ export default class Candidate extends Component {
 
   componentDidMount(){
     this.changeListener = this._onChange.bind(this);
+    BallotStore.initialize(function(){console.log("Initialized ballot in background")});
     BallotStore.addChangeListener(this.changeListener);
     var candidate = BallotStore.getOrFetchCandidateByWeVoteId(this.props.params.we_vote_id);
     if (candidate) {
