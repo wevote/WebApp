@@ -4,6 +4,7 @@ import HeaderBackNavigation from "../Components/Navigation/HeaderBackNavigation"
 import VoterGuideStore from "../stores/VoterGuideStore";
 import VoterGuideItem from "../components/VoterGuide/VoterGuideItem";
 
+{/* VISUAL DESIGN HERE: https://invis.io/TR4A1NYAQ */}
 
 export default class Opinions extends Component {
   static propTypes = {
