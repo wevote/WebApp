@@ -1,31 +1,32 @@
 import React, { Component } from "react";
-import { Button, ButtonToolbar, Input } from "react-bootstrap";
+import { Button, Input } from "react-bootstrap";
 import { Link } from "react-router";
-import Main from '../../components/Facebook/Main';
+import Main from "../../components/Facebook/Main";
 
-{/* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/89479656 */}
+/* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/89479656 */
 
 export default class EmailBallot extends Component {
-	constructor(props) {
+	constructor (props) {
 		super(props);
 	}
 
-	static getProps() {
+	static getProps () {
 		return {};
 	}
 
-	render() {
-		return (
+	render () {
+
+		const emailBallot =
 			<div>
 				<div className="container-fluid well well-90">
 					<h2 className="text-center">Print, Save or Email Ballot</h2>
 					<div>
 						<label htmlFor="last-name">Email your ballot to yourself so you can print or save</label><br />
-						<Input type="text" 
-								addonBefore="@" 
-								name="email_address" 
+						<Input type="text"
+								addonBefore="@"
+								name="email_address"
 								className="form-control"
-								placeholder="Enter your email address" 
+								placeholder="Enter your email address"
 						/>
 						Email your ballot to yourself so you can print it, or come back
 						to it later. We will never sell your email address.
@@ -47,7 +48,8 @@ export default class EmailBallot extends Component {
 					</div>
 				</div>
 				<Main />
-			</div>
-		);
+			</div>;
+
+		return emailBallot;
 	}
 }

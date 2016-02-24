@@ -8,7 +8,6 @@ const _guide_store = {};
 
 const GuideStore = createStore({
   addOrganization: function (org) {
-    console.log(org);
     _guide_store[org.organization_we_vote_id] = org;
   },
 
