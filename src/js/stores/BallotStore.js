@@ -199,6 +199,8 @@ const BallotStore = createStore({
         .voterBallotItemsRetrieve()
         .then( (res) => {
 
+          _google_civic_election_id = res.google_civic_election_id;
+
           addItemsToBallotStore(
             res.ballot_item_list
           );

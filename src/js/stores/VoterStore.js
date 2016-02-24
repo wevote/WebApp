@@ -15,6 +15,10 @@ let _voter = {};
 
 const VoterStore = createStore({
 
+  deviceId: function () {
+    return _voter_device_id;
+  },
+
   hasDeviceId: function () {
     return _voter_device_id ? true : false;
   },

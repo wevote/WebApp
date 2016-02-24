@@ -23,6 +23,7 @@ let _voter_guides_followed_list = []; // A summary of voter guides already follo
 //.query({ ballot_item_we_vote_id: "wv01cand2968" })
 //.query({ kind_of_ballot_item: "CANDIDATE" })
 function retrieveVoterGuidesToFollowList () {
+  console.log(BallotStore.getGoogleCivicElectionId());
   return new Promise( (resolve, reject) => request
     .get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}voterGuidesToFollowRetrieve/`)
     .withCredentials()

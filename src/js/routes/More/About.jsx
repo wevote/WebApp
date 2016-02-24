@@ -1,20 +1,19 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router';
+import React, { Component } from "react";
+import { Link } from "react-router";
 
-{/* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/90192590 */}
+/* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/90192590 */
 
 export default class About extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
   }
 
-  static getProps() {
+  static getProps () {
     return {};
   }
 
-  render() {
-    return (
-      <div>
+  render () {
+    return <div>
         <div className="container-fluid well gutter-top--small fluff-full1">
           <h3 className="text-center">About We Vote</h3>
           <p>
@@ -85,7 +84,6 @@ export default class About extends Component {
           </p>
 
         </div>
-      </div>
-    );
+      </div>;
   }
 }

@@ -1,0 +1,20 @@
+.organization img {
+  margin-top:19px;
+}
+.org-ignore-enter {
+  opacity: 0.01;
+}
+
+.org-ignore-enter.org-ignore-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.org-ignore-leave {
+  opacity: 1;
+}
+
+.org-ignore-leave.org-ignore-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
