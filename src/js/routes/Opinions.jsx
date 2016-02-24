@@ -10,26 +10,20 @@ import GuideList from "../components/VoterGuide/GuideList";
 
 export default class Opinions extends Component {
   static propTypes = {
-    history: PropTypes.array,
+    history: PropTypes.object,
     children: PropTypes.object
   };
 
   constructor (props) {
     super(props);
-
     this.state = { loading: true, error: false };
-
     this.electionId = BallotStore.getGoogleCivicElectionId();
-
-    if ( !this.electionId )
-      this.props.history.push("/ballot");
-
   }
 
   componentDidMount () {
 
     if (! this.electionId )
-      this.setState({ loading: false, error: false });
+      this.props.history.push("/ballot");
 
     else
       $ajax({
@@ -47,49 +41,44 @@ export default class Opinions extends Component {
           this.setState({ loading: false, error: true });
         }
       });
-    // VoterGuideStore.initialize( voter_guide_list => this.setState({ voter_guide_list }));
+
   }
 
   render () {
-    const { loading, error } = this.state;
     const EMPTY_TEXT = "You do not have a ballot yet!";
+
+    const { loading, error } = this.state;
     const { guideList, electionId } = this;
 
-    let opinions;
+    let guides;
 
     if ( !electionId )
-      opinions = EMPTY_TEXT;
+      guides = EMPTY_TEXT;
 
     else
       if (loading)
-        opinions =
+        guides =
           LoadingWheel;
 
       else if (error)
-        opinions = "Error loading your organizations";
+        guides = "Error loading your organizations";
 
-      else if (guideList.length > 0)
-        opinions = <GuideList id={electionId} organizations={guideList} />;
+      else if (guideList instanceof Array && guideList.length > 0)
+        guides = <GuideList id={electionId} organizations={guideList} />;
 
 
       else
-        opinions = EMPTY_TEXT;
+        guides = EMPTY_TEXT;
 
     const content =
-      <div>
+      <div className="opinion-view">
         <div className="container-fluid well gutter-top--small fluff-full1">
           <h3 className="text-center">More Opinions I Can Follow</h3>
-          {/*
-            <input type="text" name="search_opinions" className="form-control"
-                 placeholder="Search by name or twitter handle." />
-          */}
           <p>
             These organizations and public figures have opinions about items on
             your ballot. Click the "Follow" button to pay attention to them.
           </p>
-
-          {opinions}
-
+          {guides}
         </div>
       </div>;
 

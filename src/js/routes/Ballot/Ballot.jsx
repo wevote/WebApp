@@ -7,7 +7,7 @@ import BallotItem from "../../components/Ballot/BallotItem";
 
 export default class Ballot extends Component {
   static propTypes = {
-    history: PropTypes.array,
+    history: PropTypes.object,
     children: PropTypes.object
   };
 
