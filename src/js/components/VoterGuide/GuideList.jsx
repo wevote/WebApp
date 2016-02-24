@@ -3,6 +3,7 @@ import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import Organization from "./Organization";
 
 import GuideStore from "../../stores/GuideStore";
+import GuideActions from "../../actions/GuideActions";
 
 export default class GuideList extends Component {
 
@@ -37,15 +38,38 @@ export default class GuideList extends Component {
 
   }
 
+  componentDidMount () {
+    GuideStore.addChangeListener(this.storeChange.bind(this));
+  }
+
+  componentWillUnmount () {
+    GuideStore.removeChangeListener(this.storeChange.bind(this));
+  }
+
+  storeChange () {
+    this.setState({ orgList: GuideStore.toArray() });
+  }
+
   /**
    * when a user clicks ignore, make the org disappear
    * @param {Integer} i index in array of the item clicked
    */
   handleIgnore (i) {
-    console.log(i);
-    var newOrgList = this.state.orgList.slice();
-    newOrgList.splice(i, 1);
-    this.setState({ orgList: newOrgList });
+
+    var {
+      organization_we_vote_id: id
+    } = this.state.orgList.slice().splice(i, 1)[0];
+
+    GuideActions.ignore(id);
+
+  }
+
+  handleFollow (i) {
+    var {
+      organization_we_vote_id: id
+    } = this.state.orgList.slice().splice(i, 1)[0];
+
+    GuideActions.follow(id);
   }
 
   render () {
@@ -65,7 +89,7 @@ export default class GuideList extends Component {
 
       const organization =
         <Organization id={id} key={key} displayName={displayName} followers={followers} imageUrl={imageUrl} >
-          <button className="btn btn-primary follow">
+          <button className="btn btn-primary follow" onClick={this.handleFollow.bind(this, i)}>
             Follow
           </button>
           <button className="btn btn-default ignore" onClick={this.handleIgnore.bind(this, i)}>
