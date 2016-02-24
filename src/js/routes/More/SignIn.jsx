@@ -12,8 +12,6 @@ import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 import Main from "../../components/Facebook/Main";
 import VoterStore from "../../stores/VoterStore";
 
-{/* VISUAL DESIGN: tbd */}
-
 export default class SignIn extends Component {
   static propTypes = {
     children: PropTypes.object
@@ -43,17 +41,18 @@ export default class SignIn extends Component {
     });
 
     FacebookActionCreators.initFacebook();
-    FacebookStore.addChangeListener(() => this._onFacebookChange());
-
+    this.changeListener = this._onFacebookChange.bind(this);
+    FacebookStore.addChangeListener(this.changeListener);
+    this.voterListener = this._onVoterStoreChange.bind(this);
     // console.log("SignIn componentDidMount VoterStore.addChangeListener");
-    VoterStore.addChangeListener(this._onVoterStoreChange.bind(this));
+    VoterStore.addChangeListener(this.voterListener);
   }
 
   componentWillUnmount () {
-    FacebookStore.removeChangeListener(this._onFacebookChange);
+    FacebookStore.removeChangeListener(this.changeListener);
 
     // console.log("SignIn componentWillUnmount VoterStore.removeChangeListener");
-    VoterStore.removeChangeListener(this._onVoterStoreChange.bind(this));
+    VoterStore.removeChangeListener(this.voterListener);
   }
 
   _onVoterStoreChange () {
@@ -107,7 +106,7 @@ export default class SignIn extends Component {
         <div className="text-center">
           {voter.signed_in_facebook ? <FacebookDisconnect /> : null}
         </div>
-        {/* FOR DEBUGGING
+        {/* FOR DEBUGGING */}
         <div className="text-center">
           signed_in_personal: {voter.signed_in_personal ? <span>True</span> : null}<br />
           signed_in_facebook: {voter.signed_in_facebook ? <span>True</span> : null}<br />
@@ -118,11 +117,11 @@ export default class SignIn extends Component {
           first_name: {voter.first_name ? <span>{voter.first_name}</span> : null}<br />
           facebook_id: {voter.facebook_id ? <span>{voter.facebook_id}</span> : null}<br />
         </div>
-        */}
+
       </div>
-      {/* FOR DEBUGGING
+      {/* FOR DEBUGGING */}
       <Main />
-      */}
+
     </div>
     );
   }

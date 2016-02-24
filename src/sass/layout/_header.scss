@@ -4,6 +4,21 @@
 
 .header {
     &-address {
+        color: #D8D8D8;
         margin-right: 200px;
+        overflow: hidden;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 50%;
     }
+}
+
+@media all and (max-width : 659px) {
+	.header {
+		&-address {
+			margin-right: 10px;
+			text-align: right;
+		}
+	}
 }

@@ -34,7 +34,7 @@ export default class StarAction extends Component {
     BallotStore.addChangeListener(this.changeListener);
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     BallotStore.removeChangeListener(this.changeListener);
   }
 
@@ -44,15 +44,13 @@ export default class StarAction extends Component {
     });
   }
 
-	render() {
-        return (
-          <span
-            className="star-action"
-            onClick={this.starClick.bind(this)}
-            style={floatRight}>
-            &nbsp;
-            {this.state.is_starred ? <span className="glyphicon glyphicon-small glyphicon-star"></span> : <span className="glyphicon glyphicon-small glyphicon-star-empty"></span> }
-          </span>
-        );
+	render () {
+    return <span
+        className="star-action"
+        onClick={this.starClick.bind(this)}
+        style={floatRight}>
+        &nbsp;
+        {this.state.is_starred ? <span className="star-action glyphicon glyphicon-small glyphicon-star"></span> : <span className="star-action glyphicon glyphicon-small glyphicon-star-empty"></span> }
+      </span>;
 	}
 }

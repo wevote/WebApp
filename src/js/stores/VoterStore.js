@@ -15,6 +15,10 @@ let _voter = {};
 
 const VoterStore = createStore({
 
+  deviceId: function () {
+    return _voter_device_id;
+  },
+
   hasDeviceId: function () {
     return _voter_device_id ? true : false;
   },
@@ -158,6 +162,7 @@ const VoterStore = createStore({
   saveLocation: function (location, callback) {
     if (typeof location !== "string") throw new Error("missing location to save");
     if (callback instanceof Function === false) throw new Error("missing callback function");
+    var that = this;
 
     $ajax({
       type: "GET",
@@ -165,9 +170,14 @@ const VoterStore = createStore({
       endpoint: "voterAddressSave",
       success: (res) => {
         var { text_for_map_search: savedLocation } = res;
+        cookies.setItem('location', savedLocation);
 
-        _setLocation(savedLocation);
-        callback(null, savedLocation);
+        if (res.success){ // Successfully saved address and found Google Civic Election ID
+          callback(true, savedLocation);
+        } else if (res.status.indexOf("GOOGLE_CIVIC_API_ERROR") != -1){ // Saved Address but couldn't find election ID
+          console.log("No election for the address");
+          callback(false, savedLocation);
+        }
       },
       error: (err) => callback(err, null)
     });

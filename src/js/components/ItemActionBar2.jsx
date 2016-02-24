@@ -93,11 +93,13 @@ export default class ItemActionBar2 extends Component {
             </span>
           </span>
         }
+        {/* Share coming in a later version
         <span className="col-xs-4" >
           <span className="glyphicon glyphicon-small glyphicon-share-alt">
           </span>
           &nbsp;Share
         </span>
+        */}
       </div>
     );
   }

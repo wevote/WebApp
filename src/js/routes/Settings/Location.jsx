@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, ButtonToolbar } from "react-bootstrap";
 import HeaderBackNavigation from "../../components/Navigation/HeaderBackNavigation";
 import VoterStore from "../../stores/VoterStore";
+import BallotStore from "../../stores/BallotStore";
 
 export default class Location extends Component {
   constructor (props) {
@@ -23,10 +24,14 @@ export default class Location extends Component {
 
   saveLocation () {
     var { location } = this.state;
-    VoterStore.saveLocation( location, (err) => {
-      if (err) return console.error(err);
-
-      window.location.href = "/ballot";
+    VoterStore.saveLocation( location, (res) => {
+      if (res){
+        this.props.history.push('/ballot');
+      } else {
+        BallotStore.initialize(function(){}); // reinitialize ballot in case old ballot items from old addresses are stored.
+        this.props.history.push('/ballot/empty');
+      }
+    }, (err) =>{
 
     });
   }
@@ -52,7 +57,7 @@ export default class Location extends Component {
             name="address"
             value={location}
             className="form-control"
-            defaultValue="Oakland, CA" 
+            defaultValue="Oakland, CA"
           />
 
           <div className="gutter-top--small">

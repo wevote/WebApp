@@ -16,14 +16,14 @@ export default class IntroBallotContests extends Component {
 	render() {
         var float = {
 			right: {
-            	float: 'right'
+                float: 'right'
 			},
 			left: {
-				float: 'left'
+                float: 'left'
 			}
         };
 
-	    return (
+        return (
             <div className="container-fluid">
                 <div className="well-100">
                     <p>We have found your ballot for this location:</p>
@@ -131,7 +131,7 @@ export default class IntroBallotContests extends Component {
 				</Link>
                 <Link style={float.right} to="/ballot">
 					<Button bsStyle="primary" bsSize="small">
-                    	Show me my ballot!
+                        Show me my ballot!
 					</Button>
                 </Link>
             </div>

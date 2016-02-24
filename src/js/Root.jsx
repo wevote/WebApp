@@ -19,6 +19,7 @@ import Location from "./routes/Settings/Location";
 import BallotIndex from "./routes/Ballot/BallotIndex";
 import Ballot from "./routes/Ballot/Ballot";
 import Candidate from "./routes/Ballot/Candidate";
+import EmptyBallot from "./routes/Ballot/EmptyBallot";
 
 /* Ballot Off-shoot Pages */
 import Opinions from "./routes/Opinions";
@@ -83,6 +84,8 @@ const routes = (firstVisit, voter) =>
       <IndexRoute component={Ballot} />
       <Route path="/candidate/:we_vote_id" component={Candidate} />
     </Route>
+
+    <Route path="ballot/empty" component={EmptyBallot} />
       {/*
           <Route path="org/:id" component={Organization}/>
           <Route path="measure/:id" component={Measure} />

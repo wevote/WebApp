@@ -34,11 +34,12 @@ export default class FollowOrIgnore extends Component {
   }
 
   componentDidMount () {
-    VoterGuideStore.addChangeListener(this._onChange.bind(this));
+    this.changeListener = this._onChange.bind(this);
+    VoterGuideStore.addChangeListener(this.changeListener);
   }
 
   componentWillUnmount() {
-    VoterGuideStore.removeChangeListener(this._onChange.bind(this));
+    VoterGuideStore.removeChangeListener(this.changeListener);
   }
 
   _onChange () {

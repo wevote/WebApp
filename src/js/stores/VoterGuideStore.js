@@ -1,6 +1,6 @@
 import BallotStore from "../stores/BallotStore";
 import { createStore } from "../utils/createStore";
-import {shallowClone} from "../utils/object-utils";
+import { shallowClone } from "../utils/object-utils";
 
 const AppDispatcher = require("../dispatcher/AppDispatcher");
 const VoterGuideConstants = require("../constants/VoterGuideConstants");
@@ -19,15 +19,11 @@ let _voter_guides_to_follow_list = []; // A summary of all voter guides to follo
 let _voter_guides_followed_order = [];
 let _voter_guides_followed_list = []; // A summary of voter guides already followed (list of voter guide we_vote_id's)
 
-const MEASURE = "MEASURE";
-
-function printErr (err) {
-  console.error(err);
-}
 
 //.query({ ballot_item_we_vote_id: "wv01cand2968" })
 //.query({ kind_of_ballot_item: "CANDIDATE" })
 function retrieveVoterGuidesToFollowList () {
+  console.log(BallotStore.getGoogleCivicElectionId());
   return new Promise( (resolve, reject) => request
     .get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}voterGuidesToFollowRetrieve/`)
     .withCredentials()
@@ -63,10 +59,13 @@ function retrieveVoterGuidesFollowedList () {
     .withCredentials()
     .query({ voter_device_id: cookies.getItem("voter_device_id") })
     .end( function (err, res) {
-      if (err || !res.body.success)
-        reject(err || res.body.status);
+      if (err || !res.body.success){
+        reject(res.body);
+        // reject(err || res.body.status);
       console.log("Reached out to retrieveVoterGuidesFollowedList");
-      resolve(res.body);
+      } else {
+        resolve(res.body);
+      }
     })
   );
 }
@@ -191,16 +190,6 @@ function stopFollowingOrganization (we_vote_id) {
   );
 }
 
-// Refactor to this structure?
-//const VoterGuideAPIWorker = {
-//  voterBallotItemsRetrieveFromGoogleCivic: function (text_for_map_search, success) {
-//    return get({
-//      endpoint: "voterBallotItemsRetrieveFromGoogleCivic",
-//      query: {text_for_map_search}, success: success || defaultSuccess
-//    });
-//  }
-//};
-
 const VoterGuideStore = createStore({
   /**
    * initialize the voter guide store with "guides to follow" data, if no data
@@ -224,7 +213,7 @@ const VoterGuideStore = createStore({
         .then(addVoterGuidesToFollowToVoterGuideStore) // Uses data retrieved with retrieveVoterGuidesToFollowList
         .then(retrieveOrganizations)
         .then(data => callback(getItems()))
-        .catch(err => console.error(err));
+        .catch(err => callback(err));
   },
 
   /**
@@ -252,7 +241,7 @@ const VoterGuideStore = createStore({
         .then(retrieveOrganizationsFollowedList)
         .then(addOrganizationsFollowedToStore) // Uses data from retrieveOrganizationsFollowedList
         .then(data => callback(getFollowedItems()))
-        .catch(err => console.error(err));
+        .catch(err => callback(err));
   },
 
   /**

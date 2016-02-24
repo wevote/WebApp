@@ -199,6 +199,8 @@ const BallotStore = createStore({
         .voterBallotItemsRetrieve()
         .then( (res) => {
 
+          _google_civic_election_id = res.google_civic_election_id;
+
           addItemsToBallotStore(
             res.ballot_item_list
           );
@@ -309,6 +311,12 @@ const BallotStore = createStore({
                 );
             }
           });
+
+          //check for no results, then return empty array rather than creating promises from queue
+          if (res.ballot_item_list.length === 0 ){
+            callback(getOrderedBallotItems());
+            return;
+          }
 
           // this function polls requests for complete status.
           new Promise( (resolve) => {
