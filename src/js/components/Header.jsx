@@ -94,11 +94,14 @@ export default class Header extends Component {
                 My Ballot Location
               </Link>
             </li>
-            <li className="list-group-item">
-              <Link onClick={this.hide.bind(this)} to="/more/sign_in">
-                Account Settings
-              </Link>
-            </li>
+            { signedIn ?
+                <li className="list-group-item">
+                  <Link onClick={this.hide.bind(this)} to="/more/sign_in">
+                    Account Settings
+                  </Link>
+                </li>
+                : <span></span>
+            }
           </ul>
           {/*
           <ul className="list-group">

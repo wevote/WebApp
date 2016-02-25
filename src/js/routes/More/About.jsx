@@ -33,8 +33,8 @@ export default class About extends Component {
               Twitter - Data<br />
               Vote Smart - Data<br />
               Voting Information Project, Pew Charitable Trusts - Data<br />
-              Wikipedia - Data<br />
-              We Vote Education - Data
+              We Vote Education - Data<br />
+              Wikipedia - Data
           </p>
           <p>
               Special thanks to our team of volunteers.
@@ -42,13 +42,14 @@ export default class About extends Component {
           <p>
               Dale McGrew - Oakland, CA<br />
               Jenifer Fernandez Ancona - Oakland, CA<br />
-              Rob Simpson - Vienna, VA<br />
+              Rob Simpson - Warrenton, VA<br />
               Nicolas Fiorini - Arlington, VA<br />
               Niko Barry - Berkeley, CA<br />
               Joe Evans - Santa Cruz, CA<br />
               Mary O'Connor - Sebastopol, CA<br />
               Marissa Luna - Lansing, MI<br />
               Aaron Borden - San Francisco, CA<br />
+              Lisa Cho - San Francisco, CA<br />
               Judy Johnson - Oakland, CA<br />
               Robin Braverman - Walnut Creek, CA<br />
               Mike McConnell - San Francisco, CA<br />
