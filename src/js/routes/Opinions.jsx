@@ -74,6 +74,10 @@ export default class Opinions extends Component {
       <div className="opinion-view">
         <div className="container-fluid well gutter-top--small fluff-full1">
           <h3 className="text-center">More Opinions I Can Follow</h3>
+          {/*
+            <input type="text" name="search_opinions" className="form-control"
+                 placeholder="Search by name or twitter handle." />
+          */}
           <p>
             These organizations and public figures have opinions about items on
             your ballot. Click the "Follow" button to pay attention to them.
