@@ -42,7 +42,7 @@ export default class IntroBallotContests extends Component {
                     <span style={float.right}>
                         <Link to="/ballot">
                             <Button bsStyle="primary">
-                                Show me My Ballot >
+                                Show me the ballot >
                             </Button>
                         </Link>
                     </span>

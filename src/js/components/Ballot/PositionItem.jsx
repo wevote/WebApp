@@ -36,17 +36,17 @@ export default class PositionItem extends Component {
 
     if (position.hasOwnProperty("is_oppose") && position.hasOwnProperty("is_support") && position.is_oppose === position.is_support){
       console.log("Both positions true:", this.props.position_we_vote_id);
-      supportText = "Information about";
+      supportText = "rates";
     } else if (position.is_oppose) {
-      supportText = "Opposes";
+      supportText = "rates";
     } else if (position.is_support) {
-      supportText = "Supports";
+      supportText = "rates";
     }
 
     var dateStr = this.props.last_updated;
     var dateText = moment(dateStr).startOf("day").fromNow();
 
-    return <div>
+    return <div className="position-item">
       {/* One organization"s Position on this Candidate */}
       <li className="list-group-item">
           <div className="row">
@@ -69,6 +69,7 @@ export default class PositionItem extends Component {
           </div>
           <div className="row">
               {position.statement_text}
+              <span className="position-source"> (source: VoteSmart.org)</span>
           </div>
           {/* Likes coming in a later version
           <br />

@@ -18,6 +18,7 @@ export default class About extends Component {
           <h3 className="text-center">About We Vote</h3>
           <p>
               We Vote USA is nonprofit and nonpartisan. For more information, please visit www.WeVoteUSA.org.
+              This is a demonstration version and has not been launched to the general public yet.
           </p>
 
           <h3 className="text-center">Acknowledgements</h3>
@@ -38,7 +39,7 @@ export default class About extends Component {
           </p>
           <p>
               Special thanks to our team of volunteers.
-              Thank you everyone! (This is a list of volunteers who have contributed 10 or more hours, in rough order of hours contributed.)</p>
+              You are the best! (This is a list of volunteers who have contributed 10 or more hours, in rough order of hours contributed.)</p>
           <p>
               Dale McGrew - Oakland, CA<br />
               Jenifer Fernandez Ancona - Oakland, CA<br />
