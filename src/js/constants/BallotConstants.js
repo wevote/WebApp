@@ -1,5 +1,6 @@
 // Ballot Constants
 module.exports = require("keymirror")({
+  BALLOT_ITEMS_ADDED: null,
   VOTER_SUPPORTING_SAVE: null,
   VOTER_STOP_SUPPORTING_SAVE: null,
   VOTER_OPPOSING_SAVE: null,

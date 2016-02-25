@@ -7,8 +7,8 @@ const VALID_TYPES = [ "OFFICE", "CANDIDATE", "MEASURE" ];
 
 export default class Star extends Component {
   static propTypes = {
-    key: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired
+    key: PropTypes.string,
+    type: PropTypes.string
   };
 
   constructor (props) {
@@ -62,7 +62,7 @@ export default class Star extends Component {
     var className = "star-action " + (active ? activeIcon : inactiveIcon);
 
     const star = !loading ?
-      <span className={className} onClick={this.starClick.bind(this)} style={floatRight} /> :
+      <span className={className} style={floatRight} /> :
       <span className="star-loading"></span>;
 
     return star;
