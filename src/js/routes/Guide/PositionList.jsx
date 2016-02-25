@@ -1,12 +1,7 @@
 import React, { Component, PropTypes } from "react";
-import { Button, ButtonToolbar, DropdownButton, Input, MenuItem, Navbar } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { Link } from "react-router";
 
-import BallotActions from "../../actions/BallotActions";
-import BallotStore from "../../stores/BallotStore";
-import CandidateDetail from "../../components/Ballot/CandidateDetail";
-import ItemActionbar from "../../components/ItemActionbar";
-import ItemActionBar2 from "../../components/ItemActionBar2";
 import StarAction from "../../components/StarAction";
 
 /* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/94226088 */
@@ -18,8 +13,8 @@ export default class GuidePositionList extends Component {
     //support_on: PropTypes.boolean
   };
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super (props);
   }
 
   render() {
@@ -27,8 +22,7 @@ export default class GuidePositionList extends Component {
       float: "right"
     };
 
-    return (
-      <div>
+    return <div>
         <div className="container-fluid well well-90">
           <ul className="list-group">
             <li className="list-group-item">
@@ -67,7 +61,6 @@ export default class GuidePositionList extends Component {
           </ul>
         </div>
           {/*<CopyLinkNavigation button_text={"Copy Link to Voter Guide"} />*/}
-      </div>
-    );
+      </div>;
   }
 }

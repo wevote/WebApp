@@ -62,7 +62,7 @@ export default class Location extends Component {
           <br />
           <br />
           <div className="medium">
-            See We Vote in action! Copy this test address into "My Ballot Location":
+            See We Vote in action! Copy and paste this address above:
           </div>
           <h4>
             2208 Ebb Tide Rd, Virginia Beach, VA 23451
