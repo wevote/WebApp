@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from "react";
 
 export default class CandidateDetail extends Component {
   // some of these PropTypes can

@@ -1,4 +1,4 @@
-const keyMirror = require('keymirror');
+const keyMirror = require("keymirror");
 
 module.exports = keyMirror({
     CANDIDATE_OPPOSED: null,

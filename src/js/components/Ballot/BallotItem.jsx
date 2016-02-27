@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from 'react';
-import BallotActions from '../../actions/BallotActions';
-import BallotStore from '../../stores/BallotStore';
-import CandidateList from '../../components/Ballot/CandidateList';
-import Measure from '../../components/Ballot/Measure';
-import StarAction from '../../components/StarAction';
+import React, { Component, PropTypes } from "react";
+import BallotActions from "../../actions/BallotActions";
+import BallotStore from "../../stores/BallotStore";
+import CandidateList from "../../components/Ballot/CandidateList";
+import Measure from "../../components/Ballot/Measure";
+import StarAction from "../../components/StarAction";
 
-const TYPES = require('keymirror')({
+const TYPES = require("keymirror")({
   OFFICE: null,
   MEASURE: null
 });
@@ -41,10 +41,9 @@ export default class BallotItem extends Component {
     return BallotStore.getCandidatesForBallot(this.props.we_vote_id);
   }
 
-  render() {
+  render () {
 
-    return (
-      <div className="ballot-item well well-skinny gutter-top--small">
+    return <div className="ballot-item well well-skinny gutter-top--small">
 
         <div className="display-name">
           { this.props.ballot_item_display_name }
@@ -57,7 +56,6 @@ export default class BallotItem extends Component {
         { this.isMeasure() ? <Measure {...this.props} /> : <CandidateList children={this.getCandidates()}/> }
 
 
-      </div>
-    );
+      </div>;
   }
 }

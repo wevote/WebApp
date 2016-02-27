@@ -1,3 +1,13 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Contents
+
+- [Working with WebApp](#working-with-webapp)
+  - [Coding Standards](#coding-standards)
+  - [Checking In Code](#checking-in-code)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Working with WebApp
 
 If you are returning to work on WebApp and other developers have made changes, follow these steps.

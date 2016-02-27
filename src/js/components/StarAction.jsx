@@ -30,13 +30,12 @@ export default class StarAction extends Component {
   }
 
   componentDidMount () {
-    //console.log("DidMount star action, is_starred: " + this.state.is_starred);
-    BallotStore.addChangeListener(this._onChange.bind(this));
+    this.changeListener = this._onChange.bind(this);
+    BallotStore.addChangeListener(this.changeListener);
   }
 
-  componentWillUnmount() {
-    //console.log("WillUnmount star action, is_starred: " + this.state.is_starred);
-    BallotStore.removeChangeListener(this._onChange.bind(this));
+  componentWillUnmount () {
+    BallotStore.removeChangeListener(this.changeListener);
   }
 
   _onChange () {
@@ -45,15 +44,13 @@ export default class StarAction extends Component {
     });
   }
 
-	render() {
-        return (
-          <span
-            className="star-action"
-            onClick={this.starClick.bind(this)}
-            style={floatRight}>
-            &nbsp;
-            {this.state.is_starred ? <span className="glyphicon glyphicon-small glyphicon-star"></span> : <span className="glyphicon glyphicon-small glyphicon-star-empty"></span> }
-          </span>
-        );
+	render () {
+    return <span
+        className="star-action"
+        onClick={this.starClick.bind(this)}
+        style={floatRight}>
+        &nbsp;
+        {this.state.is_starred ? <span className="star-action glyphicon glyphicon-small glyphicon-star"></span> : <span className="star-action glyphicon glyphicon-small glyphicon-star-empty"></span> }
+      </span>;
 	}
 }

@@ -1,4 +1,4 @@
-const keyMirror = require('keymirror');
+const keyMirror = require("keymirror");
 module.exports = keyMirror({
     // Voter guide and Organization Constants
     VOTER_GUIDES_TO_FOLLOW: null,

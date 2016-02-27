@@ -19,11 +19,12 @@ export default class ItemActionbar extends Component {
   }
 
   componentDidMount () {
-    BallotStore.addChangeListener(this._onChange.bind(this));
+    this.changeListener = this._onChange.bind(this);
+    BallotStore.addChangeListener(this.changeListener);
   }
 
   componentWillUnmount () {
-    BallotStore.removeChangeListener(this._onChange.bind(this));
+    BallotStore.removeChangeListener(this.changeListener);
   }
 
   _onChange () {
@@ -50,48 +51,45 @@ export default class ItemActionbar extends Component {
   }
 
   render () {
-    return (
+    const bold = { fontWeight: "bold" };
+    const { is_support, is_oppose } = this.state;
+
+    // support toggle functions
+    const supportOn = this.supportItem.bind(this);
+    const supportOff = this.stopSupportingItem.bind(this);
+
+    // oppose toggle functions
+    const opposeOn = this.opposeItem.bind(this);
+    const opposeOff = this.stopOpposingItem.bind(this);
+
+    const itemActionBar =
+
       <div className="item-actionbar row">
-        {this.state.is_support ?
-          <span className="col-xs-4" onClick={ this.stopSupportingItem.bind(this) }>
-            <span>
-              <span className="glyphicon glyphicon-small glyphicon-arrow-up">
-              </span>
-              <strong> Support</strong>
+        <span className="col-xs-4" onClick={ is_support ? supportOff : supportOn }>
+          <span className={ is_support ? "inline-phone support-emphasis" : "inline-phone" }>
+            <span className="glyphicon glyphicon-small glyphicon-arrow-up">
             </span>
+            <span style={ is_support ? bold : {} }> Support</span>
           </span>
-         :
-          <span className="col-xs-4" onClick={ this.supportItem.bind(this) }>
-            <span>
-              <span className="glyphicon glyphicon-small glyphicon-arrow-up">
-              </span>
-              Support
-            </span>
-          </span>
-        }
-        {this.state.is_oppose ?
-          <span className="col-xs-4" onClick={ this.stopOpposingItem.bind(this) }>
-            <span>
-              <span className="glyphicon glyphicon-small glyphicon-arrow-down">
-              </span>
-              <strong> Oppose</strong>
-            </span>
-          </span>
-          :
-          <span className="col-xs-4" onClick={ this.opposeItem.bind(this) }>
-            <span>
-              <span className="glyphicon glyphicon-small glyphicon-arrow-down">
-              </span>
-              Oppose
-            </span>
-          </span>
-        }
-        <span className="col-xs-4" >
-          <span className="glyphicon glyphicon-small glyphicon-share-alt">
-          </span>
-          &nbsp;Share
         </span>
-      </div>
-    );
+        <span className="col-xs-4" onClick={ is_oppose ? opposeOff : opposeOn }>
+          <span className={ is_oppose ? "inline-phone oppose-emphasis" : "inline-phone" }>
+            <span className="glyphicon glyphicon-small glyphicon-arrow-down">
+            </span>
+            <span style={ is_oppose ? bold : {} }> Oppose</span>
+          </span>
+        </span>
+        {/* Share coming in a later version
+        <span className="col-xs-4" >
+          <span className="inline-phone">
+            <span className="glyphicon glyphicon-small glyphicon-share-alt">
+            </span>
+            &nbsp;Share
+          </span>
+        </span>
+        */}
+      </div>;
+
+    return itemActionBar;
   }
 }
