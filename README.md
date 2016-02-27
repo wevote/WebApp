@@ -112,3 +112,5 @@ If you would like to install the We Vote API server locally, start by reading th
 
 We follow [SemVer](http://semver.org/) for our releases. Please read if you plan
 to tag for any releases.
+
+Welcome aboard!!
