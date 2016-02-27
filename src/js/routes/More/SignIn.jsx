@@ -1,61 +1,71 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { Button, ButtonToolbar, Input } from "react-bootstrap";
 import { Link } from "react-router";
-import FacebookActionCreators from '../../actions/FacebookActionCreators';
-import FacebookStore from '../../stores/FacebookStore';
-import FacebookDisconnect from '../../components/Facebook/FacebookDisconnect';
-import FacebookLogin from '../../components/Facebook/FacebookLogin';
-import FacebookLogout from '../../components/Facebook/FacebookLogout';
-import FacebookDownloadPicture from '../../components/Facebook/FacebookDownloadPicture';
-import FacebookPicture from '../../components/Facebook/FacebookPicture';
-import FacebookSignIn from '../../components/Facebook/FacebookSignIn';
-import Main from '../../components/Facebook/Main';
-import VoterStore from '../../stores/VoterStore';
-
-{/* VISUAL DESIGN: tbd */}
+import FacebookActionCreators from "../../actions/FacebookActionCreators";
+import FacebookStore from "../../stores/FacebookStore";
+import FacebookDisconnect from "../../components/Facebook/FacebookDisconnect";
+import FacebookLogin from "../../components/Facebook/FacebookLogin";
+import FacebookLogout from "../../components/Facebook/FacebookLogout";
+import FacebookDownloadPicture from "../../components/Facebook/FacebookDownloadPicture";
+import FacebookPicture from "../../components/Facebook/FacebookPicture";
+import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
+import Main from "../../components/Facebook/Main";
+import VoterStore from "../../stores/VoterStore";
 
 export default class SignIn extends Component {
+  static propTypes = {
+    children: PropTypes.object
+  };
+
   constructor(props) {
 	super(props);
 
     this.state = {
-        voter_object: {
+        voter: {
         }
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.setState(this.getFacebookState());
     //console.log("SignIn, About to initialize VoterStore");
-    VoterStore.initialize((voter_object) => {
-      //console.log('SignIn: ', voter_object, 'voter_object is your object')
-      this.setState({voter_object});
-    });
-    FacebookActionCreators.initFacebook();
-    FacebookStore.addChangeListener(() => this._onFacebookChange());
+    VoterStore.getLocation( (err) => {
+      if (err) console.error("FacebookStore.js, Error initializing voter object", err);
 
-    console.log('SignIn componentDidMount VoterStore.addChangeListener');
-    VoterStore.addChangeListener(this._onVoterStoreChange.bind(this));
+      VoterStore.getVoterObject( (_err, voter) => {
+        if (_err) console.error("FacebookStore.js, Error initializing voter object", err);
+
+        this.setState({voter});
+        // console.log("SignIn: ", voter, "voter is your object")
+      });
+    });
+
+    FacebookActionCreators.initFacebook();
+    this.changeListener = this._onFacebookChange.bind(this);
+    FacebookStore.addChangeListener(this.changeListener);
+    this.voterListener = this._onVoterStoreChange.bind(this);
+    // console.log("SignIn componentDidMount VoterStore.addChangeListener");
+    VoterStore.addChangeListener(this.voterListener);
   }
 
-  componentWillUnmount() {
-    FacebookStore.removeChangeListener(this._onFacebookChange);
+  componentWillUnmount () {
+    FacebookStore.removeChangeListener(this.changeListener);
 
-    console.log('SignIn componentWillUnmount VoterStore.removeChangeListener');
-    VoterStore.removeChangeListener(this._onVoterStoreChange.bind(this));
+    // console.log("SignIn componentWillUnmount VoterStore.removeChangeListener");
+    VoterStore.removeChangeListener(this.voterListener);
   }
 
   _onVoterStoreChange () {
     this.setState({
-      voter_object: VoterStore.getVoterObject()
+      voter: VoterStore.getCachedVoterObject()
     });
   }
 
-  _onFacebookChange() {
+  _onFacebookChange () {
     this.setState(this.getFacebookState());
   }
 
-  getFacebookState() {
+  getFacebookState () {
     return {
       accessToken: FacebookStore.accessToken,
       facebookIsLoggedIn: FacebookStore.loggedIn,
@@ -70,14 +80,14 @@ export default class SignIn extends Component {
   }
 
   render() {
-    var { voter_object } = this.state;
+    var { voter } = this.state;
 
     return (
     <div className="">
-      <div className="container-fluid well well-90">
-        <h2 className="text-center">{voter_object.signed_in_personal ? <span>My Account</span> : <span>Sign In</span>}</h2>
+      <div className="container-fluid well gutter-top--small fluff-full1">
+        <h3 className="text-center">{voter.signed_in_personal ? <span>My Account</span> : <span>Sign In</span>}</h3>
         <div className="text-center">
-          {voter_object.signed_in_facebook ? <span></span> : <FacebookSignIn />}
+          {voter.signed_in_facebook ? <span></span> : <FacebookSignIn />}
           {/*
           <div>
             <Link to="add_friends_confirmed" className="btn btn-social btn-lg btn-twitter">
@@ -94,20 +104,24 @@ export default class SignIn extends Component {
         <br />
         <br />
         <div className="text-center">
-          {voter_object.signed_in_facebook ? <FacebookDisconnect /> : null}
+          {voter.signed_in_facebook ? <FacebookDisconnect /> : null}
         </div>
+        {/* FOR DEBUGGING */}
         <div className="text-center">
-          signed_in_personal: {voter_object.signed_in_personal ? <span>True</span> : null}<br />
-          signed_in_facebook: {voter_object.signed_in_facebook ? <span>True</span> : null}<br />
-          signed_in_twitter: {voter_object.signed_in_twitter ? <span>True</span> : null}<br />
-          we_vote_id: {voter_object.we_vote_id ? <span>{voter_object.we_vote_id}</span> : null}<br />
-          email: {voter_object.email ? <span>{voter_object.email}</span> : null}<br />
-          facebook_email: {voter_object.facebook_email ? <span>{voter_object.facebook_email}</span> : null}<br />
-          first_name: {voter_object.first_name ? <span>{voter_object.first_name}</span> : null}<br />
-          facebook_id: {voter_object.facebook_id ? <span>{voter_object.facebook_id}</span> : null}<br />
+          signed_in_personal: {voter.signed_in_personal ? <span>True</span> : null}<br />
+          signed_in_facebook: {voter.signed_in_facebook ? <span>True</span> : null}<br />
+          signed_in_twitter: {voter.signed_in_twitter ? <span>True</span> : null}<br />
+          we_vote_id: {voter.we_vote_id ? <span>{voter.we_vote_id}</span> : null}<br />
+          email: {voter.email ? <span>{voter.email}</span> : null}<br />
+          facebook_email: {voter.facebook_email ? <span>{voter.facebook_email}</span> : null}<br />
+          first_name: {voter.first_name ? <span>{voter.first_name}</span> : null}<br />
+          facebook_id: {voter.facebook_id ? <span>{voter.facebook_id}</span> : null}<br />
         </div>
+
       </div>
+      {/* FOR DEBUGGING */}
       <Main />
+
     </div>
     );
   }

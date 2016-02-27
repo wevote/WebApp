@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import shallowEqual from 'react-pure-render/shallowEqual';
 
 export default function connectToStores(stores, getState) {

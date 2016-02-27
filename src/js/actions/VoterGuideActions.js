@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-import AppDispatcher from '../dispatcher/AppDispatcher';
-import VoterGuideConstants from '../constants/VoterGuideConstants';
+import AppDispatcher from "../dispatcher/AppDispatcher";
+import VoterGuideConstants from "../constants/VoterGuideConstants";
 
 // In the stores, there are AppDispatcher blocks that listen for these actionType constants (ex/ BALLOT_SUPPORT_ON)
 //  When action calls one of these functions, we are telling the code in the AppDispatcher block to run

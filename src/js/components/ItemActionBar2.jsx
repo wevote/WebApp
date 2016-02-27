@@ -23,11 +23,12 @@ export default class ItemActionBar2 extends Component {
   }
 
   componentDidMount () {
-    BallotStore.addChangeListener(this._onChange.bind(this));
+    this.changeListener = this._onChange.bind(this);
+    BallotStore.addChangeListener(this.changeListener);
   }
 
   componentWillUnmount () {
-    BallotStore.removeChangeListener(this._onChange.bind(this));
+    BallotStore.removeChangeListener(this.changeListener);
   }
 
   _onChange () {
@@ -60,8 +61,8 @@ export default class ItemActionBar2 extends Component {
       <div className="item-actionbar2 row">
         {this.state.is_support ?
           <span className="col-xs-4" onClick={ this.stopSupportingItem.bind(this) }>
-            <span>
-              {this.state.supportCount} support
+            <span className="support-emphasis">
+              {this.state.supportCount} positive
               <span className="glyphicon glyphicon-small glyphicon-arrow-up">
               </span>
             </span>
@@ -69,7 +70,7 @@ export default class ItemActionBar2 extends Component {
          :
           <span className="col-xs-4" onClick={ this.supportItem.bind(this) }>
             <span>
-              {this.state.supportCount} support
+              {this.state.supportCount} positive
               <span className="glyphicon glyphicon-small glyphicon-arrow-up">
               </span>
             </span>
@@ -77,8 +78,8 @@ export default class ItemActionBar2 extends Component {
         }
         {this.state.is_oppose ?
           <span className="col-xs-4" onClick={ this.stopOpposingItem.bind(this) }>
-            <span>
-              {this.state.opposeCount} oppose
+            <span className="oppose-emphasis">
+              {this.state.opposeCount} negative
               <span className="glyphicon glyphicon-small glyphicon-arrow-down">
               </span>
             </span>
@@ -86,17 +87,19 @@ export default class ItemActionBar2 extends Component {
           :
           <span className="col-xs-4" onClick={ this.opposeItem.bind(this) }>
             <span>
-              {this.state.opposeCount} oppose
+              {this.state.opposeCount} negative
               <span className="glyphicon glyphicon-small glyphicon-arrow-down">
               </span>
             </span>
           </span>
         }
+        {/* Share coming in a later version
         <span className="col-xs-4" >
           <span className="glyphicon glyphicon-small glyphicon-share-alt">
           </span>
           &nbsp;Share
         </span>
+        */}
       </div>
     );
   }

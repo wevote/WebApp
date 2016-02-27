@@ -1,6 +1,8 @@
 "use strict";
 
 import React, { Component, PropTypes } from 'react';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router';
 
 class BottomContinueNavigation extends Component {
     static propTypes = {
