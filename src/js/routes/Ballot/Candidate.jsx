@@ -80,8 +80,7 @@ export default class Candidate extends Component {
                        is_support={candidate.is_support} is_oppose={candidate.is_oppose}
                         supportCount={candidate.supportCount} opposeCount={candidate.opposeCount} />
         <div className="container-fluid well-90">
-          {/* Post privately box */}
-          {/*
+          {/* TODO Post privately box functionality to be implemented */}
           <ul className="list-group">
               <li className="list-group-item">
                   <div>
@@ -90,7 +89,6 @@ export default class Candidate extends Component {
                   </div>
               </li>
           </ul>
-          */}
           {
             <PositionList we_vote_id={we_vote_id} candidate_display_name={candidate.ballot_item_display_name}/>
           }

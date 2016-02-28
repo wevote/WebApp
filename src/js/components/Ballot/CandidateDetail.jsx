@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from "react";
 
+/* This has been replaced by /src/js/routes/Ballot/Candidate.jsx
+ * TODO: Remove this file before Version 1.0 release */
 export default class CandidateDetail extends Component {
   // some of these PropTypes can
   // eventually be removed, most likely..
