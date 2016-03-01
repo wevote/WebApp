@@ -1,30 +1,29 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router';
-import { Button } from 'react-bootstrap';
+import React, { Component } from "react";
+import { Link } from "react-router";
+import { Button } from "react-bootstrap";
 
-import InfoIconAction from '../../components/InfoIconAction';
+import InfoIconAction from "../../components/InfoIconAction";
 
 export default class IntroBallotContests extends Component {
-	constructor(props) {
+	constructor (props) {
 		super(props);
 	}
 
-	static getProps() {
+	static getProps () {
 		return {};
 	}
 
-	render() {
+	render () {
         var float = {
 			right: {
-                float: 'right'
+                float: "right"
 			},
 			left: {
-                float: 'left'
+                float: "left"
 			}
         };
 
-        return (
-            <div className="container-fluid">
+        return <div className="container-fluid">
                 <div className="well-100">
                     <p>We have found your ballot for this location:</p>
 
@@ -134,7 +133,6 @@ export default class IntroBallotContests extends Component {
                         Show me my ballot!
 					</Button>
                 </Link>
-            </div>
-		);
+            </div>;
 	}
 }

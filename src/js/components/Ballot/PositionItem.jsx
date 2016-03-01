@@ -36,11 +36,11 @@ export default class PositionItem extends Component {
 
     if (position.hasOwnProperty("is_oppose") && position.hasOwnProperty("is_support") && position.is_oppose === position.is_support){
       console.log("Both positions true:", this.props.position_we_vote_id);
-      supportText = "rates";
+      supportText = "rated";
     } else if (position.is_oppose) {
-      supportText = "rates";
+      supportText = "rated";
     } else if (position.is_support) {
-      supportText = "rates";
+      supportText = "rated";
     }
 
     var dateStr = this.props.last_updated;

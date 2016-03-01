@@ -22,8 +22,9 @@ import Candidate from "./routes/Ballot/Candidate";
 import EmptyBallot from "./routes/Ballot/EmptyBallot";
 
 /* Ballot Off-shoot Pages */
-import Opinions from "./routes/Opinions";
-import GuidePositionList from './routes/Guide/PositionList'; // A list of all positions from one guide
+import Opinions from "./routes/Opinions"; // More opinions about anything on the ballot
+import OpinionsAboutItem from "./routes/Ballot/OpinionsAboutItem"; // More opinions about one particular ballot item (candidate or measure)
+import GuidePositionList from "./routes/Guide/PositionList"; // A list of all positions from one guide
 
 /* More */
 import More from "./routes/More";
@@ -33,8 +34,6 @@ import SignIn from "./routes/More/SignIn";
 import EmailBallot from "./routes/More/EmailBallot";
 import Privacy from "./routes/More/Privacy";
 
-// import Measure                          from "routes/Ballot/Measure";
-// import Opinion                          from "routes/Ballot/Opinion";
 import Requests from "./routes/Requests";
 import Connect from "./routes/Connect";
 import Activity from "./routes/Activity";
@@ -83,6 +82,7 @@ const routes = (firstVisit, voter) =>
     <Route path="ballot" component={BallotIndex}>
       <IndexRoute component={Ballot} />
       <Route path="/candidate/:we_vote_id" component={Candidate} />
+      <Route path="/opinions/:we_vote_id" component={OpinionsAboutItem} />
     </Route>
 
     <Route path="ballot/empty" component={EmptyBallot} />
