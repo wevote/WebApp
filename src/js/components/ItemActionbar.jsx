@@ -66,14 +66,14 @@ export default class ItemActionbar extends Component {
 
       <div className="item-actionbar row">
         <span className="col-xs-4" onClick={ is_support ? supportOff : supportOn }>
-          <span className="inline-phone">
+          <span className={ is_support ? "inline-phone support-emphasis" : "inline-phone" }>
             <span className="glyphicon glyphicon-small glyphicon-arrow-up">
             </span>
             <span style={ is_support ? bold : {} }> Support</span>
           </span>
         </span>
         <span className="col-xs-4" onClick={ is_oppose ? opposeOff : opposeOn }>
-          <span className="inline-phone">
+          <span className={ is_oppose ? "inline-phone oppose-emphasis" : "inline-phone" }>
             <span className="glyphicon glyphicon-small glyphicon-arrow-down">
             </span>
             <span style={ is_oppose ? bold : {} }> Oppose</span>

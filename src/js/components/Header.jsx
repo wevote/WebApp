@@ -59,7 +59,8 @@ export default class Header extends Component {
             <h4 className="pull-left gutter-left--window bold">
               <span onClick={this.show.bind(this)} className="glyphicon glyphicon-menu-hamburger glyphicon-line-adjustment device-icon--large">
               </span>
-              My Ballot
+              My Voter Guide
+              <span className="header-version"> demo version</span>
             </h4>
             <aside className="header-address pull-right gutter-right--window gutter-top--small">
               <Link to="/settings/location" className="font-lightest">
@@ -83,7 +84,11 @@ export default class Header extends Component {
             </span>
           }
           <ul className="list-group">
-            {/*<li className="list-group-item"><Link to="/more/email_ballot">Print or Email Ballot</Link></li>*/}
+            <li className="list-group-item">
+              <Link onClick={this.hide.bind(this)} to="/ballot">
+                My Voter Guide
+              </Link>
+            </li>
             <li className="list-group-item">
               <Link onClick={this.hide.bind(this)} to="/more/opinions/followed">
                 Opinions I'm Following
@@ -94,11 +99,15 @@ export default class Header extends Component {
                 My Ballot Location
               </Link>
             </li>
-            <li className="list-group-item">
-              <Link onClick={this.hide.bind(this)} to="/more/sign_in">
-                Account Settings
-              </Link>
-            </li>
+            { signedIn ?
+                <li className="list-group-item">
+                  <Link onClick={this.hide.bind(this)} to="/more/sign_in">
+                    Account Settings
+                  </Link>
+                </li>
+                : <span></span>
+            }
+            {/*<li className="list-group-item"><Link to="/more/email_ballot">Print or Email Ballot</Link></li>*/}
           </ul>
           {/*
           <ul className="list-group">

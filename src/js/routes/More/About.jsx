@@ -18,6 +18,7 @@ export default class About extends Component {
           <h3 className="text-center">About We Vote</h3>
           <p>
               We Vote USA is nonprofit and nonpartisan. For more information, please visit www.WeVoteUSA.org.
+              This is a demonstration version and has not been launched to the general public yet.
           </p>
 
           <h3 className="text-center">Acknowledgements</h3>
@@ -33,22 +34,23 @@ export default class About extends Component {
               Twitter - Data<br />
               Vote Smart - Data<br />
               Voting Information Project, Pew Charitable Trusts - Data<br />
-              Wikipedia - Data<br />
-              We Vote Education - Data
+              We Vote Education - Data<br />
+              Wikipedia - Data
           </p>
           <p>
               Special thanks to our team of volunteers.
-              Thank you everyone! (This is a list of volunteers who have contributed 10 or more hours, in rough order of hours contributed.)</p>
+              You are the best! (This is a list of volunteers who have contributed 10 or more hours, in rough order of hours contributed.)</p>
           <p>
               Dale McGrew - Oakland, CA<br />
               Jenifer Fernandez Ancona - Oakland, CA<br />
-              Rob Simpson - Vienna, VA<br />
+              Rob Simpson - Warrenton, VA<br />
               Nicolas Fiorini - Arlington, VA<br />
               Niko Barry - Berkeley, CA<br />
               Joe Evans - Santa Cruz, CA<br />
               Mary O'Connor - Sebastopol, CA<br />
               Marissa Luna - Lansing, MI<br />
               Aaron Borden - San Francisco, CA<br />
+              Lisa Cho - San Francisco, CA<br />
               Judy Johnson - Oakland, CA<br />
               Robin Braverman - Walnut Creek, CA<br />
               Mike McConnell - San Francisco, CA<br />

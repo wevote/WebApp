@@ -1,5 +1,5 @@
 // scoped variables
-$smallFont: 1.3em;
+$smallFont: 1.0em;
 $mediumFont: 1.6em;
 $largeFont: 2em;
 .candidate {
@@ -12,15 +12,18 @@ $largeFont: 2em;
       font-size: 1em;
     }
   }
-  .oppose-emphasis-medium, .support-emphasis-large {
+  .support-emphasis-large {
+    color: rgba(63,191,63, 1);
+  }
+  .oppose-emphasis-medium {
     color: rgba(215, 73, 55, 1);
   }
   .oppose-emphasis-medium, .support-emphasis-medium {
-    font-size: $mediumFont;
+    font-size: $smallFont;
     font-weight: 500;
   }
   .oppose-emphasis-large, .support-emphasis-large {
-    font-size: $largeFont;
+    font-size: $smallFont;
     font-weight: 700;
   }
   .support {
@@ -29,5 +32,9 @@ $largeFont: 2em;
   .running-for-office-emphasis {
     font-size: 1.3em;
     font-weight: 500;
+  }
+  .link-text-to-more-info {
+    font-size: 0.8em;
+    font-weight: 100;
   }
 }

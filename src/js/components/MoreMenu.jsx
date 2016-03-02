@@ -1,8 +1,7 @@
 const web_app_config = require("../config");
 import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
-import LanguageSwitchNavigation from "../components/LanguageSwitchNavigation";
-import VoterStore from "../stores/VoterStore";
+//import LanguageSwitchNavigation from "../components/LanguageSwitchNavigation";
 
 export default class MoreMenu extends Component {
   static propTypes = {
@@ -12,27 +11,16 @@ export default class MoreMenu extends Component {
 	signed_in_personal: PropTypes.bool
   };
 
-  constructor(props) {
+  constructor (props) {
 	super(props);
   }
 
-  render() {
-	var voter_image = "";
-	if (this.props.voter_photo_url) {
-		voter_image = <img
-			src={this.props.voter_photo_url}
-			className="img-circle"
-			width="25px"
-			height="25px" />
-	}
-
-	return (
-		<div>
+  render () {
+	return <div>
 			<div className="device-menu--large container-fluid well well-90">
 				{this.props.signed_in_personal ?
 					<span></span>
-					:
-					<span>
+					: <span>
 						<ul className="list-group">
 							<li className="list-group-item"><Link to="/more/sign_in">Sign In</Link></li>
 						</ul>
@@ -40,10 +28,13 @@ export default class MoreMenu extends Component {
 					</span>
 					}
 				<ul className="list-group">
-					{/*<li className="list-group-item"><Link to="/more/email_ballot">Print or Email Ballot</Link></li>*/}
+					<li className="list-group-item"><Link to="/ballot">My Voter Guide</Link></li>
 					<li className="list-group-item"><Link to="/more/opinions/followed">Opinions I'm Following</Link></li>
 					<li className="list-group-item"><Link to="/settings/location">My Ballot Location</Link></li>
-					<li className="list-group-item"><Link to="/more/sign_in">Account Settings</Link></li>
+					{this.props.signed_in_personal ?
+						<li className="list-group-item"><Link to="/more/sign_in">Account Settings</Link></li> : <span></span>
+					}
+					{/*<li className="list-group-item"><Link to="/more/email_ballot">Print or Email Ballot</Link></li>*/}
 				</ul>
 				{/*
 				<ul className="list-group">
@@ -68,7 +59,6 @@ export default class MoreMenu extends Component {
 					*/}
 				</ul>
 			</div>
-		</div>
-	)
+		</div>;
   }
 }

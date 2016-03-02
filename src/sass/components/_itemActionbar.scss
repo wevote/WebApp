@@ -8,6 +8,12 @@
   .action {
     width: 25%;
   }
+  .support-emphasis {
+    color: rgba(63,191,63, 1);
+  }
+  .oppose-emphasis {
+    color: rgba(215, 73, 55, 1);
+  }
 
   @media all and (max-width: 480px) {
     .inline-phone {

@@ -57,8 +57,16 @@ export default class Location extends Component {
             name="address"
             value={location}
             className="form-control"
-            defaultValue="Oakland, CA"
+            defaultValue=""
           />
+          <br />
+          <br />
+          <div className="medium">
+            See We Vote in action! Copy this test address into "My Ballot Location":
+          </div>
+          <h4>
+            2208 Ebb Tide Rd, Virginia Beach, VA 23451
+          </h4>
 
           <div className="gutter-top--small">
             <ButtonToolbar>
