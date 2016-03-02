@@ -1,19 +1,14 @@
 /**
- * The idea of this APIS.js file is to abstract away the details
- * of many repetitive service calls that we will be using.
+ * The idea of the service.js file is to abstract away the
+ * details of many repetitive service calls that we will be using.
  * @author Nick Fiorini <nf071590@gmail.com>
  */
 "use strict";
-
-const DEBUG = false;
 const url = require("url");
-
 const assign = require("object-assign");
 const ajax = require("../vendor/jquery.js").ajax;
 const webAppConfig = require("../config");
 const cookies = require("./cookies");
-
-import * as request from "superagent";
 
 const defaults = {
   dataType: "json",
@@ -33,40 +28,11 @@ const defaults = {
 export function $ajax (options) {
   if (!options.endpoint) throw new Error("$ajax missing endpoint option");
 
-  options.data = assign({}, defaults.data(), options.data || {});
-  options.crossDomain = true;
-  options.success = options.success || defaults.success;
-  options.error = options.error || defaults.error;
   options.url = url.resolve(defaults.baseUrl, options.endpoint) + "/";
+  options.data = assign({}, defaults.data(), options.data || {});
+  options.error = options.error || defaults.error;
+  options.success = options.success || defaults.success;
+  options.crossDomain = true;
 
   return ajax(options);
-}
-
-export function get (options) {
-  var opts = assign(defaults, options);
-
-  opts.url = url.resolve(opts.baseUrl, opts.endpoint);
-  // We add voter_device_id to all endpoint calls
-  opts.query.voter_device_id = cookies.getItem("voter_device_id");
-
-  return new Promise( (resolve, reject) => new request.Request("GET", opts.url)
-    .accept(opts.dataType)
-    .query(opts.query)
-    .withCredentials()
-    .end((err, res) => {
-      if (err) {
-        if (opts.error instanceof Function === true)
-          opts.error(err || res.body);
-
-        reject(err);
-      } else {
-        if (opts.success instanceof Function === true)
-          opts.success(res.body);
-        else if (DEBUG)
-          console.warn(res.body);
-
-        resolve(res.body);
-      }
-    })
-  );
 }
