@@ -6,10 +6,6 @@ export default class CandidateList extends Component {
     children: PropTypes.array.isRequired
   };
 
-  constructor (props) {
-    super(props);
-  }
-
   render () {
     return <article className="list-group">
         { this.props.children.map( (child) => <CandidateItem key={child.we_vote_id} {...child} />) }

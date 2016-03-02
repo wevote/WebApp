@@ -4,7 +4,7 @@ import { Link } from "react-router";
 
 import BallotActions from "../../actions/BallotActions";
 import BallotStore from "../../stores/BallotStore";
-import CandidateDetail from "../../components/Ballot/CandidateDetail";
+// import CandidateDetail from "../../components/Ballot/CandidateDetail";
 import ItemActionbar from "../../components/ItemActionbar";
 import ItemActionBar2 from "../../components/ItemActionBar2";
 import StarAction from "../../components/StarAction";

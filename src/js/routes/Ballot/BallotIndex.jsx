@@ -6,12 +6,8 @@ export default class BallotIndex extends Component {
   };
 
   render () {
-    return (
-      <div className="ballot device-ballot--large">
-
-        { this.props.children }
-
-      </div>
-    );
+    return <div className="ballot device-ballot--large">
+            { this.props.children }
+          </div>;
   }
-};
+}

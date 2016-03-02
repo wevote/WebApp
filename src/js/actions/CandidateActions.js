@@ -1,19 +1,14 @@
-import CandidateConstants from "../constants/CandidateConstants";
-const AppDispatcher = require("../dispatcher/AppDispatcher");
+var Dispatcher = require("../dispatcher/Dispatcher");
 
+var CandidateActions = (function (_Dispatcher) {
+  function _CandidateActions () { }
 
-const CandidateActions = {
+  _CandidateActions.prototype.retrieve = function retrieve (we_vote_id) {
+    _Dispatcher.loadEndpoint("candidateRetrieve", { candidate_we_vote_id: we_vote_id} );
+    _Dispatcher.loadEndpoint("positionListForBallotItem", { ballot_item_we_vote_id: we_vote_id, kind_of_ballot_item: "CANDIDATE"} );
+  };
 
-  /**
-   * @param {String} id we_vote_id of candidate to add to the store
-   * @param {Object} item candidate as plain javascript object
-   */
-  addItemById: function (id, item) {
-    AppDispatcher.dispatch({
-      actionType: CandidateConstants.CANDIDATE_ADDED, id, item
-    });
+  return new _CandidateActions();
+}(Dispatcher));
 
-  }
-};
-
-export default CandidateActions;
+module.exports = CandidateActions;

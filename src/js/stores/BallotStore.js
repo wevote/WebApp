@@ -6,7 +6,11 @@ class BallotStore extends FluxMapStore {
     return this.getState().get(this.__civicId);
   }
 
-  get civicId () {
+  // get civicId () {
+  //   return this.__civicId;
+  // }
+
+  getGoogleCivicElectionId (){
     return this.__civicId;
   }
 
