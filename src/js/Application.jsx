@@ -21,6 +21,7 @@ export default class Application extends Component {
   }
 
   componentDidMount () {
+    this.token = VoterStore.addChangeListener(this._onChange.bind(this));
     // console.log("Application.jsx, About to initialize VoterStore");
     VoterStore.getLocation( (err) => {
       if (err) console.error("Application.jsx, Error initializing voter object", err);
@@ -31,15 +32,16 @@ export default class Application extends Component {
       });
     });
     // console.log("Application.jsx componentDidMount VoterStore.addChangeListener");
-    VoterStore.addChangeListener(this._onVoterStoreChange.bind(this));
+
   }
 
   componentWillUnmount () {
     // console.log("Application.jsx componentWillUnmount VoterStore.removeChangeListener");
     VoterStore.removeChangeListener(this._onVoterStoreChange.bind(this));
+    // this.token.remove();
   }
 
-  _onVoterStoreChange () {
+  _onChange () {
     this.setState({
       voter: VoterStore.getCachedVoterObject()
     });

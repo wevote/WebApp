@@ -11,8 +11,8 @@ export default class CandidateList extends Component {
   }
 
   render () {
-    return <article className="list-group">
+    return (<article className="list-group">
         { this.props.children.map( (child) => <CandidateItem key={child.we_vote_id} {...child} />) }
-      </article>;
+      </article>);
   }
 }

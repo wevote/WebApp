@@ -1,57 +1,28 @@
-import { get } from "../utils/service";
-import { createStore } from "../utils/createStore";
-import { shallowClone } from "../utils/object-utils";
+var Dispatcher = require("../dispatcher/Dispatcher");
+var FluxMapStore = require("flux/lib/FluxMapStore");
 
-const AppDispatcher = require("../dispatcher/AppDispatcher");
-const PositionConstants = require("../constants/PositionConstants");
-const PositionActions = require("../actions/PositionActions");
+class PositionStore extends FluxMapStore {
 
-var _position_store = {}; // All positions that have been fetched (by we_vote_ids)
+  reduce (state, action) {
 
-const PositionAPIWorker = {
+    if (action.res.success === false)
+      return state;
 
-  positionRetrieve: function (we_vote_id, success) {
-    return get({
-      endpoint: "positionRetrieve",
-      query: {
-         position_we_vote_id: we_vote_id,
-      },
-      success: success
-    });
-  }
+    switch (action.type) {
+      case "posiitonListForBallotItem":
+        console.log('positionList in positionStore', action.res);
+        return res;
 
-};
-
-const PositionStore = createStore({
-
-retrievePositionByWeVoteId: function (we_vote_id){
-  PositionAPIWorker.positionRetrieve(we_vote_id,
-    function (res){
-      PositionActions.positionRetrieved(res);
-    }.bind(this));
-},
-
-getLocalPositionByWeVoteId: function (we_vote_id){
-  return shallowClone(_position_store[we_vote_id]);
-}
-
-});
-
-function setLocalPosition (we_vote_id, position) {
-  _position_store[we_vote_id] = position;
-  return true;
-}
-
-AppDispatcher.register(action => {
-    switch (action.actionType) {
-
-    case PositionConstants.POSITION_RETRIEVED:
-      setLocalPosition(action.we_vote_id, action.payload );
-      PositionStore.emitChange();
-    break;
+      case "error-positionRetrieve":
+        console.log(action);
+        return;
+        
+      default:
+        return state;
+    }
 
   }
 
-});
+}
 
-export default PositionStore;
+module.exports = new PositionStore(Dispatcher);

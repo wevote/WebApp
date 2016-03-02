@@ -1,47 +1,34 @@
-import OfficeConstants from "../constants/OfficeConstants";
-import { createStore } from "../utils/createStore";
-import { shallowClone } from "../utils/object-utils";
-const AppDispatcher = require("../dispatcher/AppDispatcher");
+var Dispatcher = require("../dispatcher/Dispatcher");
+var CandidateStore = require("../stores/CandidateStore");
+var OfficeActions = require("../actions/OfficeActions");
+var FluxMapStore = require("flux/lib/FluxMapStore");
+const assign = require("object-assign");
 
+class OfficeStore extends FluxMapStore {
 
-const _offices = {};
+  reduce (state, action) {
 
-function addItemById (id, item) {
-  _offices[id] = shallowClone(item);
+    if (action.res.success === false)
+      return state;
+
+    switch (action.type) {
+
+      case "officeRetrieve":
+        var key = action.res.we_vote_id;
+        var office = action.res || {};
+        this.__we_vote_id = key;
+        return state.set(key, office);
+
+      case "error-officeRetrieve":
+        console.log(action);
+        return;
+        
+      default:
+        return state;
+    }
+
+  }
+
 }
 
-/**
- * Store for holding all Office related data
- */
-const OfficeStore = createStore({
-
-  /**
-   * @param {String} id of office to send in the ADDED event
-   */
-  emitItem: function (id) {
-    this.emit("ADDED", _offices[id]);
-  },
-
-  /**
-   * @return {Object} Office items hash
-   */
-  getItems: function () {
-    return shallowClone(_offices);
-  }
-
-});
-
-OfficeStore.dispatchToken = AppDispatcher.register( (action) => {
-  switch (action.actionType) {
-
-    case OfficeConstants.OFFICE_ADDED:
-      addItemById(action.id, action.item);
-      OfficeStore.emitItem(action.id);
-      break;
-
-    default:
-      break;
-  }
-});
-
-export default OfficeStore;
+module.exports = new OfficeStore(Dispatcher);

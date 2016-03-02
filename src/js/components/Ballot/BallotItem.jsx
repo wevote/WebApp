@@ -10,19 +10,6 @@ const TYPES = require("keymirror")({
 });
 
 export default class BallotItem extends Component {
-  static propTypes = {
-    candidate_list: PropTypes.array,
-    kind_of_ballot_item: PropTypes.string,
-    ballot_item_display_name: PropTypes.string,
-    google_ballot_placement: PropTypes.number,
-    google_civic_election_id: PropTypes.string,
-    id: PropTypes.string,
-    local_ballot_order: PropTypes.number,
-    we_vote_id: PropTypes.string, // Either an office or measure we_vote_id
-    is_support: PropTypes.string,
-    is_oppose: PropTypes.string,
-    is_starred: PropTypes.bool
-  };
 
   constructor (props) {
     super(props);
@@ -36,13 +23,9 @@ export default class BallotItem extends Component {
     return this.props.kind_of_ballot_item === TYPES.MEASURE;
   }
 
-  getCandidates () {
-    return BallotStore.getCandidatesForBallot(this.props.we_vote_id);
-  }
-
   render () {
 
-    return <div className="ballot-item well well-skinny gutter-top--small">
+    return (<div className="ballot-item well well-skinny gutter-top--small">
 
         <div className="display-name">
           { this.props.ballot_item_display_name }
@@ -52,9 +35,8 @@ export default class BallotItem extends Component {
           we_vote_id={ this.props.we_vote_id }
           is_starred={ this.props.is_starred } />
 
-        { this.isMeasure() ? <Measure {...this.props} /> : <CandidateList children={this.getCandidates()}/> }
+        { this.isMeasure() ? <Measure {...this.props} /> : <CandidateList children={this.props.candidate_list}/> }
 
-
-      </div>;
+      </div>);
   }
 }

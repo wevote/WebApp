@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
-import PositionStore from "../../stores/PositionStore";
 const moment = require("moment");
 
 export default class PositionItem extends Component {
@@ -11,37 +10,10 @@ export default class PositionItem extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { position: {} };
-  }
-
-  componentDidMount () {
-    this.changeListener = this._onChange.bind(this);
-    PositionStore.retrievePositionByWeVoteId(this.props.position_we_vote_id);
-    PositionStore.addChangeListener(this.changeListener);
-  }
-
-  componentWillUnmount () {
-    PositionStore.removeChangeListener(this.changeListener);
-  }
-
-  _onChange () {
-    var position = PositionStore.getLocalPositionByWeVoteId(this.props.position_we_vote_id);
-    this.setState({ position: position });
-    console.log(this.state.position);
   }
 
   render () {
-    var position = this.state.position;
-    var supportText;
-
-    if (position.hasOwnProperty("is_oppose") && position.hasOwnProperty("is_support") && position.is_oppose === position.is_support){
-      console.log("Both positions true:", this.props.position_we_vote_id);
-      supportText = "rates";
-    } else if (position.is_oppose) {
-      supportText = "rates";
-    } else if (position.is_support) {
-      supportText = "rates";
-    }
+    var position = this.props;
 
     var dateStr = this.props.last_updated;
     var dateText = moment(dateStr).startOf("day").fromNow();
@@ -64,7 +36,15 @@ export default class PositionItem extends Component {
                 <h4 className="">
                     { this.props.speaker_display_name }<br />
                 </h4>
-                <p className="">{supportText} {this.props.candidate_display_name} <span className="small">{ dateText }</span></p>
+                <p className="">rates {this.props.candidate_display_name}
+                { position.vote_smart_rating
+                        ? <span> {position.vote_smart_rating}%</span>
+                        : <span></span> }
+                { position.vote_smart_time_span
+                    ? <span> in {position.vote_smart_time_span}</span>
+                    : <span className="small">{ dateText }</span>
+                  }
+                </p>
             </div>
           </div>
           <div className="row">
