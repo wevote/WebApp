@@ -30,12 +30,11 @@ export default class Candidate extends Component {
   }
 
   componentDidMount () {
-    this.changeListener = this._onChange.bind(this);
-    BallotStore.addChangeListener(this.changeListener);
+    this.token = BallotStore.addListener(this._onChange.bind(this));
   }
 
   componentWillUnmount () {
-    BallotStore.removeChangeListener(this.changeListener);
+    this.token.remove();
   }
 
   _onChange () {
@@ -73,8 +72,7 @@ export default class Candidate extends Component {
 
     return <section className="candidate list-group-item">
         <StarAction
-          we_vote_id={we_vote_id}
-          is_starred={this.props.is_starred || false } />
+          we_vote_id={we_vote_id} />
 
         <Link className="linkLight"
               to={"/candidate/" + we_vote_id }

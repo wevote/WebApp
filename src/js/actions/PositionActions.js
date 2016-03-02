@@ -1,15 +1,13 @@
-"use strict";
-var AppDispatcher = require("../dispatcher/AppDispatcher");
-var PositionConstants = require("../constants/PositionConstants");
+var Dispatcher = require("../dispatcher/Dispatcher");
 
-module.exports = {
+var PositionActions = (function (_Dispatcher) {
+  function _PositionActions () { }
 
-  positionRetrieved: function (payload) {
-    AppDispatcher.dispatch({
-      actionType: PositionConstants.POSITION_RETRIEVED,
-      payload: payload,
-      we_vote_id: payload.position_we_vote_id
-    });
-  },
+  _PositionActions.prototype.retrieve = function retrieve (we_vote_id) {
+    // _Dispatcher.loadEndpoint("positionListForBallotItem", { ballot_item_we_vote_id: we_vote_id} );
+  };
 
-};
+  return new _PositionActions();
+}(Dispatcher));
+
+module.exports = PositionActions;

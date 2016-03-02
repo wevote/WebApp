@@ -1,17 +1,13 @@
-import OfficeConstants from "../constants/OfficeConstants";
-const AppDispatcher = require("../dispatcher/AppDispatcher");
+var Dispatcher = require("../dispatcher/Dispatcher");
 
+var OfficeActions = (function (_Dispatcher) {
+  function _OfficeActions () { }
 
-const OfficeActions = {
-  /**
-   * @param {String} id we_vote_id of ballot item
-   * @param {Object} item ballot item as javascript object
-   */
-  addItemById: function (id, item) {
-    AppDispatcher.dispatch({
-      actionType: OfficeConstants.OFFICE_ADDED, id, item
-    });
-  }
-};
+  _OfficeActions.prototype.retrieve = function retrieve (we_vote_id) {
+    _Dispatcher.loadEndpoint("officeRetrieve", { office_we_vote_id: we_vote_id } );
+  };
 
-export default OfficeActions;
+  return new _OfficeActions();
+}(Dispatcher));
+
+module.exports = OfficeActions;

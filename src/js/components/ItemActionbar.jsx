@@ -18,21 +18,21 @@ export default class ItemActionbar extends Component {
     };
   }
 
-  componentDidMount () {
-    this.changeListener = this._onChange.bind(this);
-    BallotStore.addChangeListener(this.changeListener);
-  }
-
-  componentWillUnmount () {
-    BallotStore.removeChangeListener(this.changeListener);
-  }
-
-  _onChange () {
-    this.setState({
-      is_support: BallotStore.getIsSupportState(this.props.we_vote_id),
-      is_oppose: BallotStore.getIsOpposeState(this.props.we_vote_id)
-    });
-  }
+  // componentDidMount () {
+  //   this.changeListener = this._onChange.bind(this);
+  //   BallotStore.addChangeListener(this.changeListener);
+  // }
+  //
+  // componentWillUnmount () {
+  //   BallotStore.removeChangeListener(this.changeListener);
+  // }
+  //
+  // _onChange () {
+  //   this.setState({
+  //     is_support: BallotStore.getIsSupportState(this.props.we_vote_id),
+  //     is_oppose: BallotStore.getIsOpposeState(this.props.we_vote_id)
+  //   });
+  // }
 
   supportItem () {
     BallotActions.voterSupportingSave(this.props.we_vote_id);
