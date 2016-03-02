@@ -10,7 +10,7 @@ export default class StarAction extends Component {
     is_starred: PropTypes.bool.isRequired
   };
 
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.state = {

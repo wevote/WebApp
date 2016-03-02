@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Button, ButtonToolbar } from "react-bootstrap";
+import BallotStore from "../../stores/BallotStore";
 import HeaderBackNavigation from "../../components/Navigation/HeaderBackNavigation";
 import VoterStore from "../../stores/VoterStore";
-import BallotStore from "../../stores/BallotStore";
 
 export default class Location extends Component {
   constructor (props) {

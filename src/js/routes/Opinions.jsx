@@ -61,7 +61,7 @@ export default class Opinions extends Component {
           LoadingWheel;
 
       else if (error)
-        guides = "Error loading your organizations";
+        guides = "Error loading organizations";
 
       else if (guideList instanceof Array && guideList.length > 0)
         guides = <GuideList id={electionId} organizations={guideList} />;

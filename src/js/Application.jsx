@@ -12,7 +12,7 @@ export default class Application extends Component {
     location: PropTypes.object
   };
 
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.state = {
@@ -48,6 +48,7 @@ export default class Application extends Component {
   render () {
     var { location: { pathname }} = this.props;
     var { voter } = this.state;
+    var ballotItemWeVoteId = ""; /* TODO Dale: Store the ballot item that is "on stage" in Ballot store? (wv02cand3) */
     // console.log("In Application.jsx render, voter: ", voter)
 
     return <div className="app-base">
@@ -58,7 +59,7 @@ export default class Application extends Component {
       </div>
       <div className="container-fluid">
         <div className="row">
-          <SubHeader />
+          <SubHeader pathname={pathname} ballotItemWeVoteId={ballotItemWeVoteId} />
         </div>
       </div>
       <div className="container-fluid">

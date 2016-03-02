@@ -39,7 +39,6 @@ export default class Candidate extends Component {
 
   render() {
     var candidate = this.state.candidate;
-    var we_vote_id = this.props.params.we_vote_id;
     if (!candidate || !candidate.we_vote_id){
       return ( <div></div> );
     };
@@ -90,7 +89,7 @@ export default class Candidate extends Component {
               </li>
           </ul>
           {
-            <PositionList we_vote_id={we_vote_id} candidate_display_name={candidate.ballot_item_display_name}/>
+            <PositionList we_vote_id={candidate.we_vote_id} candidate_display_name={candidate.ballot_item_display_name}/>
           }
         </div>
 
