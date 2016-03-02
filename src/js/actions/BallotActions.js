@@ -8,6 +8,7 @@ var BallotActions = (function (_Dispatcher) {
   };
 
   return new _BallotActions();
+
 }(Dispatcher));
 
 module.exports = BallotActions;
