@@ -1,6 +1,6 @@
-var Dispatcher = require("../dispatcher/Dispatcher");
+const Dispatcher = require("../dispatcher/Dispatcher");
 
-var BallotActions = (function (_Dispatcher) {
+const BallotActions = (function (_Dispatcher) {
   function _BallotActions () { }
 
   _BallotActions.prototype.init = function init () {

@@ -25,7 +25,7 @@ const defaults = {
   error: (err) => console.error(err.message)
 };
 
-export function $ajax (options) {
+module.exports = function $ajax (options) {
   if (!options.endpoint) throw new Error("$ajax missing endpoint option");
 
   options.url = url.resolve(defaults.baseUrl, options.endpoint) + "/";
@@ -35,4 +35,4 @@ export function $ajax (options) {
   options.crossDomain = true;
 
   return ajax(options);
-}
+};
