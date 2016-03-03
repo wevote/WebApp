@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Button, ButtonToolbar } from "react-bootstrap";
+import BallotActions from "../../actions/BallotActions";
 import HeaderBackNavigation from "../../components/Navigation/HeaderBackNavigation";
 import VoterStore from "../../stores/VoterStore";
-import BallotStore from "../../stores/BallotStore";
 
 export default class Location extends Component {
   constructor (props) {
@@ -28,7 +28,7 @@ export default class Location extends Component {
       if (res){
         this.props.history.push('/ballot');
       } else {
-        BallotStore.initialize(function(){}); // reinitialize ballot in case old ballot items from old addresses are stored.
+        BallotActions.init(); // reinitialize ballot in case old ballot items from old addresses are stored.
         this.props.history.push('/ballot/empty');
       }
     }, (err) =>{
@@ -62,7 +62,7 @@ export default class Location extends Component {
           <br />
           <br />
           <div className="medium">
-            See We Vote in action! Copy this test address into "My Ballot Location":
+            See We Vote in action! Copy and paste this address above:
           </div>
           <h4>
             2208 Ebb Tide Rd, Virginia Beach, VA 23451

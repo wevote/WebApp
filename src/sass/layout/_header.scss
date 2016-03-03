@@ -10,7 +10,17 @@
         text-align: center;
         text-overflow: ellipsis;
         white-space: nowrap;
-        width: 50%;
+        width: 30%;
+    }
+}
+
+.header {
+    &-version {
+        color: rgba(171,171,171, 1);
+        font-size: 0.7em;
+        font-weight: 200;
+        overflow: hidden;
+        white-space: nowrap;
     }
 }
 

@@ -14,7 +14,6 @@ export default class Ballot extends Component {
 
   componentDidMount () {
     BallotActions.init();
-
     this.token = BallotStore.addListener(this._onChange.bind(this));
   }
 

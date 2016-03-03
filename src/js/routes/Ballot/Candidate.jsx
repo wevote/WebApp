@@ -86,7 +86,7 @@ export default class Candidate extends Component {
         {<ItemActionBar2 we_vote_id={we_vote_id} type="CANDIDATE"
                        />}
         <div className="container-fluid well-90">
-          {/* Post privately box */}
+          {/* TODO Post privately box functionality to be implemented */}
           {/*
           <ul className="list-group">
               <li className="list-group-item">

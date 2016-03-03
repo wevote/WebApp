@@ -59,6 +59,10 @@ export default class VoterGuideItem extends Component {
       twitterFollowers = <span><br /><span>{twitterFollowersCount} followers on Twitter</span></span>;
     }
 
+    /* This was refactored into /src/js/components/VoterGuide/GuideList.jsx for "More Opinions" page.
+     * Since the migration of the existing styles was not done with total fidelity, we need to leave this
+     * file in place until the migration (or reintegration back into this file) can be completed.
+     * TODO: Complete migration of this functionality */
     return (
       <div className="ballot-item well well-skinny well-bg--light split-top-skinny clearfix">
 

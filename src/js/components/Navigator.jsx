@@ -28,7 +28,7 @@ const links = {
       <Link to="/requests" className={ "navicon" + (active ? " active-icon" : "")}>
         <div className="col-xs-3 center-block text-center">
           <span className={icon} title="Requests">
-            <span className="badgeTotal badge">10</span>
+            <span className="badgeTotal badge">0</span>
           </span>
           <br/>
           <span className="text-center small device-small--hide">

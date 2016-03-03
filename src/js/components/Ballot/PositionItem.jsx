@@ -13,7 +13,6 @@ export default class PositionItem extends Component {
 
   render () {
     var position = this.props;
-
     var dateStr = this.props.last_updated;
     var dateText = moment(dateStr).startOf("day").fromNow();
 
@@ -36,19 +35,20 @@ export default class PositionItem extends Component {
                     { this.props.speaker_display_name }<br />
                 </h4>
                 <p className="">rates {this.props.candidate_display_name}
-                { position.vote_smart_rating ?
-                        <span> {position.vote_smart_rating}%</span> :
-                        <span></span> }
-                { position.vote_smart_time_span ?
-                    <span> in {position.vote_smart_time_span}</span> :
-                    <span className="small">{ dateText }</span>
-                  }
-                </p>
+                  { position.vote_smart_rating
+                      ? <span> {position.vote_smart_rating}%</span>
+                      : <span></span> }
+                  { position.vote_smart_time_span
+                      ? <span> in {position.vote_smart_time_span}</span>
+                      : <span className="small">{ dateText }</span> }
+                    </p>
             </div>
           </div>
           <div className="row">
               {position.statement_text}
-              <span className="position-source"> (source: VoteSmart.org)</span>
+              { position.vote_smart_rating
+                  ? <span className="position-source"> (source: VoteSmart.org)</span>
+                  : <span></span> }
           </div>
           {/* Likes coming in a later version
           <br />
