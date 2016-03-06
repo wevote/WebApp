@@ -1,43 +1,42 @@
-import React, { Component, PropTypes } from "react";
-import LoadingWheel from "../../components/LoadingWheel";
+import React, { Component } from "react";
 
 import BallotStore from "../../stores/BallotStore";
+import BallotActions from "../../actions/BallotActions";
 import BallotItem from "../../components/Ballot/BallotItem";
 
-
 export default class Ballot extends Component {
-  static propTypes = {
-    history: PropTypes.object,
-    children: PropTypes.object
-  };
-
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      ballot: []
+    };
   }
 
   componentDidMount () {
-    BallotStore.initialize( (ballot_list) => {
+    BallotActions.init();
+    this.token = BallotStore.addListener(this._onChange.bind(this));
+  }
 
-      if (ballot_list.length === 0)
-        this.props.history.push("settings/location");
+  componentWillUnmount (){
+    this.token.remove();
+  }
 
-      else
-        this.setState({ ballot_list });
-
-    });
+  _onChange (){
+    this.setState({ ballot: BallotStore.ballot });
   }
 
   render () {
-    var { ballot_list } = this.state;
 
     const ballot =
-      <div className="ballot-list">
-        { ballot_list ? ballot_list.map( item =>
+      <div className="ballot">
+        {
+          this.state.ballot.map( (item) =>
           <BallotItem key={item.we_vote_id} {...item} />
-        ) : LoadingWheel }
+          )
+        }
       </div>;
 
     return ballot;
   }
+
 }

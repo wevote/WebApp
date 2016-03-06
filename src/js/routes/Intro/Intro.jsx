@@ -2,7 +2,7 @@
 import React, { Component, PropTypes } from "react";
 
 import { Button, ButtonToolbar } from "react-bootstrap";
-import BallotStore from "../../stores/BallotStore";
+import BallotActions from "../../actions/BallotActions";
 const request = require("superagent");
 import VoterStore from "../../stores/VoterStore";
 const web_app_config = require("../../config");
@@ -79,7 +79,7 @@ export default class Intro extends Component {
 		/* Whether we succeed or fail, we want to go to the next step in the introduction process */
         this.props.history.push("/intro/opinions");
       } else {
-        BallotStore.initialize(function (){}); // reinitialize ballot in case old ballot items from old addresses are stored.
+        BallotActions.init(); // reinitialize ballot in case old ballot items from old addresses are stored.
         this.props.history.push("/intro/opinions");
       }
     }, (err) =>{

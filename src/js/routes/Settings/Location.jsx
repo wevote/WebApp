@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button, ButtonToolbar } from "react-bootstrap";
-import BallotStore from "../../stores/BallotStore";
+import BallotActions from "../../actions/BallotActions";
 import HeaderBackNavigation from "../../components/Navigation/HeaderBackNavigation";
 import VoterStore from "../../stores/VoterStore";
 
@@ -28,7 +28,7 @@ export default class Location extends Component {
       if (res){
         this.props.history.push('/ballot');
       } else {
-        BallotStore.initialize(function(){}); // reinitialize ballot in case old ballot items from old addresses are stored.
+        BallotActions.init(); // reinitialize ballot in case old ballot items from old addresses are stored.
         this.props.history.push('/ballot/empty');
       }
     }, (err) =>{
