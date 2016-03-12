@@ -22,8 +22,10 @@ export default class Location extends Component {
     });
   }
 
-  saveLocation () {
+  saveLocation (e) {
+    e.preventDefault();
     var { location } = this.state;
+    console.log("Saving location", location);
     VoterStore.saveLocation( location, (res) => {
       if (res){
         this.props.history.push('/ballot');
@@ -32,7 +34,7 @@ export default class Location extends Component {
         this.props.history.push('/ballot/empty');
       }
     }, (err) =>{
-
+      console.log(err);
     });
   }
 
@@ -50,7 +52,7 @@ export default class Location extends Component {
             vote. The more location information you can provide, the more ballot information will
             be visible.
           </span>
-
+          <form onSubmit={this.saveLocation.bind(this)}>
           <input
             type="text"
             onChange={this.updateLocation.bind(this)}
@@ -59,6 +61,7 @@ export default class Location extends Component {
             className="form-control"
             defaultValue=""
           />
+          </form>
           <br />
           <br />
           <div className="medium">
@@ -70,10 +73,10 @@ export default class Location extends Component {
 
           <div className="gutter-top--small">
             <ButtonToolbar>
-                <Button
+                <button
                   onClick={this.saveLocation.bind(this)}
-                  bsStyle="primary">Save Location</Button>
-
+                  bsStyle="primary">
+                  Save Location</button>
             </ButtonToolbar>
           </div>
         </div>
