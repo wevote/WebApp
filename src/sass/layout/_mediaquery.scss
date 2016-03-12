@@ -115,9 +115,13 @@
     width: 960px;
   }
 
-  .headroom--pinned {
+  .headroom--pinned, .headroom--unpinned {
     margin: 0 auto;
     max-width: 958px;
     width: 958px;
+  }
+
+  .headroom--unpinned {
+    transform: translateY(0px) !important;
   }
 }
