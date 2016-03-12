@@ -20,11 +20,18 @@ export default class Header extends Component {
   }
 
   componentDidMount () {
+    this._onChange();
+    this.listener = VoterStore.addChangeListener(this._onChange.bind(this));
+  }
+
+  componentWillUnmount (){
+    this.listener.remove();
+  }
+
+  _onChange (){
     VoterStore.getLocation( (err, location) => {
       if (err) console.error(err);
-
       this.setState({ location });
-
     });
   }
 

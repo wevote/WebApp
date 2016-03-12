@@ -170,14 +170,9 @@ const VoterStore = createStore({
       endpoint: "voterAddressSave",
       success: (res) => {
         var { text_for_map_search: savedLocation } = res;
-        cookies.setItem('location', savedLocation);
-
-        if (res.success){ // Successfully saved address and found Google Civic Election ID
-          callback(true, savedLocation);
-        } else if (res.status.indexOf("GOOGLE_CIVIC_API_ERROR") != -1){ // Saved Address but couldn't find election ID
-          console.log("No election for the address");
-          callback(false, savedLocation);
-        }
+        _setLocation(savedLocation);
+        that.emitChange();
+        callback(savedLocation);
       },
       error: (err) => callback(err, null)
     });

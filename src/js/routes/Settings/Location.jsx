@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { Button, ButtonToolbar } from "react-bootstrap";
-import BallotActions from "../../actions/BallotActions";
-import HeaderBackNavigation from "../../components/Navigation/HeaderBackNavigation";
+import { ButtonToolbar } from "react-bootstrap";
 import VoterStore from "../../stores/VoterStore";
 
 export default class Location extends Component {
@@ -26,16 +24,10 @@ export default class Location extends Component {
     e.preventDefault();
     var { location } = this.state;
     console.log("Saving location", location);
-    VoterStore.saveLocation( location, (res) => {
-      if (res){
-        this.props.history.push('/ballot');
-      } else {
-        BallotActions.init(); // reinitialize ballot in case old ballot items from old addresses are stored.
-        this.props.history.push('/ballot/empty');
-      }
-    }, (err) =>{
-      console.log(err);
-    });
+    VoterStore.saveLocation( location,
+        (res) => { this.props.history.push("/ballot"); },
+        (err) =>{ console.log(err);}
+      );
   }
 
   render () {
