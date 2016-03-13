@@ -32,7 +32,7 @@ export default class Header extends Component {
     VoterStore.getLocation( (err, location) => {
       if (err) console.error(err);
       this.setState({ location });
-    });
+    })
   }
 
   show () {
