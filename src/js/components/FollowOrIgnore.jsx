@@ -68,7 +68,8 @@ export default class FollowOrIgnore extends Component {
         if (this.state.OrganizationFollowed != "Yes") {
             ignore_code = <Button bsStyle="danger" bsSize="small" onClick={this.ignoreOrgLocal.bind(this)}>Ignore</Button>
         }
-		return (
+      
+      return (
             <span style={floatRight}>
                 <ButtonToolbar>
                     <Button bsStyle="info" bsSize="small" onClick={this.toggleFollow.bind(this)}>{action_text}</Button>

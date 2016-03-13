@@ -56,7 +56,7 @@ export default class VoterGuideItem extends Component {
     var twitterFollowers;
     var twitterFollowersCount = numberWithCommas(this.props.twitter_followers_count);
     if (this.props.twitter_followers_count) {
-      twitterFollowers = <span><br /><span>{twitterFollowersCount} followers on Twitter</span></span>;
+      twitterFollowers = <span className="fa fa-twitter">{twitterFollowersCount}</span>;
     }
 
     /* This was refactored into /src/js/components/VoterGuide/GuideList.jsx for "More Opinions" page.
@@ -66,18 +66,22 @@ export default class VoterGuideItem extends Component {
     return (
       <div className="ballot-item well well-skinny well-bg--light split-top-skinny clearfix">
 
-        <div className="display-name pull-left">
+        <div className="hidden-xs col-sm-2">
           <img className="img-square"
                 src={this.props.voter_guide_image_url}
                 width="75px"
           />
-          &nbsp;
+        </div>
+        <div className="col-xs-6 col-sm-6 display-name">
           { this.props.voter_guide_display_name }
+        </div>
+        <div className="col-xs-6 col-sm-4 utils-paddingright0">
+          <FollowOrIgnore action={VoterGuideActions} organization_we_vote_id={this.props.organization_we_vote_id}
+                        OrganizationFollowed={this.state.OrganizationFollowed} />
+        </div>
+        <div className="hidden-xs social-box">
           {twitterFollowers}
         </div>
-        <FollowOrIgnore action={VoterGuideActions} organization_we_vote_id={this.props.organization_we_vote_id}
-                        OrganizationFollowed={this.state.OrganizationFollowed} />
-
       </div>
     )
   }

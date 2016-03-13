@@ -4,6 +4,11 @@
             vertical-align: super;
         }
     }
+    &-padding {
+      &right0 {
+        padding-right: 0 !important;
+      }
+    }
 }
 
 .transparent, .transparent:hover {
