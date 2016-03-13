@@ -17,11 +17,12 @@ export default class Header extends Component {
     this.state = {
       visible: false
     };
-  }
+  };
 
   componentDidMount () {
     this._onChange();
     this.listener = VoterStore.addChangeListener(this._onChange.bind(this));
+    document.body.addEventListener("click", this.pageClick.bind(this), false);
   }
 
   componentWillUnmount (){
@@ -34,6 +35,11 @@ export default class Header extends Component {
       this.setState({ location });
     });
   }
+
+  pageClick () {
+    this.hide();
+  }
+  
 
   show () {
     var mainContainer = document.querySelector(".container-main");
