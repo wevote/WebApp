@@ -7,6 +7,10 @@ html {
     box-sizing: border-box;
 }
 
+div {
+  position: relative;
+}
+
 #app {
   height: 100%;
 }

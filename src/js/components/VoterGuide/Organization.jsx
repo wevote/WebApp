@@ -29,15 +29,20 @@ export default class Organization extends Component {
     } = this.props;
 
     const org =
-      <div className="organization col-sm-12">
-        <div className="thumbnail">
-          <img src={imageUrl} alt={displayName + ".jpg"} />
-          <div className="caption">
-            <h3>{displayName}</h3>
-            <p>{numberWithCommas(followers)} Twitter Followers</p>
-            <p style={ {textAlign: "right"}}>
+      <div className="row">
+        <div className="organization well well-skinny well-bg--light split-top-skinny clearfix">
+          <div className="hidden-xs col-sm-2">
+            <img src={imageUrl} alt={displayName + ".jpg"} />
+          </div>
+          <div className="col-xs-6 col-sm-6 display-name">
+            {displayName}
+          </div>
+          <div className="col-xs-6 col-sm-4 utils-paddingright0"
+                style={ {textAlign: "right"} }>
               {this.props.children}
-            </p>
+          </div>
+          <div className="hidden-xs social-box">
+              {numberWithCommas(followers)}
           </div>
         </div>
       </div>;
