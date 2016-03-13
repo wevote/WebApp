@@ -1,6 +1,11 @@
-.organization img {
-  margin-top:19px;
+.organization {
+  position: relative;
+
+  img {
+    margin-top: 19px;
+  }
 }
+
 .org-ignore-enter {
   opacity: 0.01;
 }
