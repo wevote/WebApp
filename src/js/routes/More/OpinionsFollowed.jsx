@@ -1,8 +1,8 @@
 import React, {Component, PropTypes } from "react";
-
-import VoterGuideStore from "../../stores/VoterGuideStore";
+import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import GuideStore from "../../stores/GuideStore";
+import GuideActions from "../../actions/GuideActions";
 import VoterGuideItem from "../../components/VoterGuide/VoterGuideItem";
-
 import LoadingWheel from "../../components/LoadingWheel";
 
 /* VISUAL DESIGN HERE: https://invis.io/8F53FDX9G */
@@ -18,13 +18,23 @@ export default class OpinionsFollowed extends Component {
   }
 
   componentDidMount () {
-    VoterGuideStore.initializeGuidesFollowed( function (voter_guide_followed_list) {
-      if (voter_guide_followed_list !== undefined && voter_guide_followed_list.length > 0){
-        this.setState({ voter_guide_followed_list });
-      } else {
-        this.props.history.push("/opinions");
-      }
-    }.bind(this));
+    this.listener = GuideStore.addListener(this._onChange.bind(this));
+    GuideActions.retrieveGuidesFollowed();
+  }
+
+  componentWillUnmount (){
+    this.listener.remove();
+  }
+
+  _onChange (){
+    var list = GuideStore.followedList();
+
+    if (list !== undefined && list.length > 0){
+      this.setState({ voter_guide_followed_list: GuideStore.followedList() });
+    } else {
+      this.props.history.push("/opinions");
+    }
+
   }
 
   render () {
@@ -36,13 +46,14 @@ export default class OpinionsFollowed extends Component {
            placeholder="Search by name or twitter handle." /><br />
     */}
     <div className="voter-guide-list">
+    <ReactCSSTransitionGroup transitionName="org-ignore" transitionEnterTimeout={400} transitionLeaveTimeout={200}>
       {
         this.state.voter_guide_followed_list ?
         this.state.voter_guide_followed_list.map( item =>
           <VoterGuideItem key={item.we_vote_id} {...item} />
         ) : LoadingWheel
-
       }
+      </ReactCSSTransitionGroup>
     </div>
   </div>
 </div>;

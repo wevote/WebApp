@@ -1,9 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from "react";
 import FollowOrIgnore from "../../components/FollowOrIgnore";
-import VoterGuideActions from '../../actions/VoterGuideActions';
-import VoterGuideStore from '../../stores/VoterGuideStore';
 
-function numberWithCommas(x) {
+function numberWithCommas (x) {
     var parts = x.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return parts.join(".");
@@ -24,35 +22,7 @@ export default class VoterGuideItem extends Component {
     OrganizationIgnored: PropTypes.string
   };
 
-  constructor (props) {
-    super(props);
-
-    this.state = {}
-  }
-
-  componentDidMount () {
-    this.state = {
-      OrganizationFollowed: null,
-      OrganizationIgnored: null
-    };
-    this.changeListener = this._onChange.bind(this);
-    VoterGuideStore.addChangeListener(this.changeListener);
-  }
-
-  componentWillUnmount() {
-    VoterGuideStore.removeChangeListener(this.changeListener);
-  }
-
-  _onChange () {
-    VoterGuideStore.getVoterGuideByWeVoteId(
-      this.props.we_vote_id, voter_guide_item => this.setState({
-        OrganizationFollowed: voter_guide_item.OrganizationFollowed,
-        OrganizationIgnored: voter_guide_item.OrganizationIgnored
-      })
-    );
-  }
-
-  render() {
+  render () {
     var twitterFollowers;
     var twitterFollowersCount = numberWithCommas(this.props.twitter_followers_count);
     if (this.props.twitter_followers_count) {
@@ -76,13 +46,12 @@ export default class VoterGuideItem extends Component {
           { this.props.voter_guide_display_name }
         </div>
         <div className="col-xs-6 col-sm-4 utils-paddingright0">
-          <FollowOrIgnore action={VoterGuideActions} organization_we_vote_id={this.props.organization_we_vote_id}
-                        OrganizationFollowed={this.state.OrganizationFollowed} />
+          <FollowOrIgnore organization_we_vote_id={this.props.organization_we_vote_id} />
         </div>
         <div className="hidden-xs social-box">
           {twitterFollowers}
         </div>
       </div>
-    )
+    );
   }
 }

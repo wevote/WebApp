@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import FollowOrIgnore from '../components/FollowOrIgnore';
-import VoterGuideActions from '../actions/VoterGuideActions';
 
 export default class RequestsPage extends Component {
 	constructor(props) {

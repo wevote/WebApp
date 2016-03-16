@@ -1,9 +1,9 @@
 import React, {Component, PropTypes } from "react";
-import { $ajax } from "../utils/service";
-
 import LoadingWheel from "../components/LoadingWheel";
 
 import BallotStore from "../stores/BallotStore";
+import GuideActions from "../actions/GuideActions";
+import GuideStore from "../stores/GuideStore";
 import GuideList from "../components/VoterGuide/GuideList";
 
 /* VISUAL DESIGN HERE: https://invis.io/TR4A1NYAQ */
@@ -21,34 +21,28 @@ export default class Opinions extends Component {
   }
 
   componentDidMount () {
+    this.listener = GuideStore.addListener(this._onChange.bind(this));
 
     if (! this.electionId )
       this.props.history.push("/ballot");
 
     else
-      $ajax({
-        endpoint: "voterGuidesToFollowRetrieve",
-        data: { "google_civic_election_id": this.electionId },
+      GuideActions.retrieveGuidesToFollow(this.electionId);
+  }
 
-        success: (res) => {
-          this.guideList = res.voter_guides;
-          this.setState({ loading: false });
-          console.log(res);
-        },
+  _onChange (){
+    this.setState({ loading: false, error: false, guideList: GuideStore.toFollowList() });
+  }
 
-        error: (err) => {
-          console.error(err);
-          this.setState({ loading: false, error: true });
-        }
-      });
-
+  componentWillUnmount (){
+    this.listener.remove();
   }
 
   render () {
     const EMPTY_TEXT = "You do not have a ballot yet!";
 
-    const { loading, error } = this.state;
-    const { guideList, electionId } = this;
+    const { loading, error, guideList } = this.state;
+    const { electionId } = this;
 
     let guides;
 
@@ -65,7 +59,6 @@ export default class Opinions extends Component {
 
       else if (guideList instanceof Array && guideList.length > 0)
         guides = <GuideList id={electionId} organizations={guideList} />;
-
 
       else
         guides = EMPTY_TEXT;
