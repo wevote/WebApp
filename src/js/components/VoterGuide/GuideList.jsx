@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import Organization from "./Organization";
-
-import GuideStore from "../../stores/GuideStore";
 import GuideActions from "../../actions/GuideActions";
 
 export default class GuideList extends Component {
@@ -11,88 +9,33 @@ export default class GuideList extends Component {
     organizations: PropTypes.array
   };
 
-  constructor (props) {
-    super(props);
-
-    var { organizations: orgs } = this.props;
-
-    /**
-     * this is being done because of issue #85...
-     * https://github.com/wevote/WeVoteServer/issues/85
-
-     * READ:
-     *   -- GuideStore is naturally unique per item key
-     *   -- so... store data and then convert it to an array
-
-     * SEE BELOW:
-     *  GuideStore.addOrganization
-     * then ->
-     *  GuideStore.toArray()
-
-     * this is inefficient but it needs to be done to create unique
-     * organizations in the list because the backend is not unique.
-     */
-
-    orgs.forEach(GuideStore.addOrganization);
-    this.state = { orgList: GuideStore.toArray() };
-
-  }
-
-  componentDidMount () {
-    GuideStore.addChangeListener(this.storeChange.bind(this));
-  }
-
-  componentWillUnmount () {
-    GuideStore.removeChangeListener(this.storeChange.bind(this));
-  }
-
-  storeChange () {
-    this.setState({ orgList: GuideStore.toArray() });
-  }
-
   /**
-   * when a user clicks ignore, make the org disappear
-   * @param {Integer} i index in array of the item clicked
+   * when a user clicks ignore or follow, make the org disappear
    */
-  handleIgnore (i) {
-
-    var {
-      organization_we_vote_id: id
-    } = this.state.orgList.slice().splice(i, 1)[0];
-
+  handleIgnore (id) {
     GuideActions.ignore(id);
-
   }
 
-  handleFollow (i) {
-    var {
-      organization_we_vote_id: id
-    } = this.state.orgList.slice().splice(i, 1)[0];
-
+  handleFollow (id) {
     GuideActions.follow(id);
   }
 
   render () {
 
-    let orgs = this.state.orgList.map( (org, i) => {
-
-      var {
-        organization_we_vote_id: id,
-        voter_guide_display_name: displayName,
-        voter_guide_image_url: imageUrl,
-        twitter_followers_count: followers
-      } = org;
-
-      // Key can be id once issue #85 is resolved on server
-      // https://github.com/wevote/WeVoteServer/issues/85
-      const key = id + "-" + i;
+    let orgs = this.props.organizations.map( (org, i) => {
 
       const organization =
-        <Organization id={id} key={key} displayName={displayName} followers={followers} imageUrl={imageUrl} >
-          <button className="btn btn-primary follow" onClick={this.handleFollow.bind(this, i)}>
+        <Organization id={org.organization_we_vote_id}
+                      key={org.organization_we_vote_id}
+                      displayName={org.voter_guide_display_name}
+                      followers={org.twitter_followers_count}
+                      imageUrl={org.voter_guide_image_url} >
+          <button className="btn btn-primary follow"
+                  onClick={this.handleFollow.bind(this, org.organization_we_vote_id)}>
             Follow
           </button>
-          <button className="btn btn-default ignore" onClick={this.handleIgnore.bind(this, i)}>
+          <button className="btn btn-default ignore"
+                  onClick={this.handleIgnore.bind(this, org.organization_we_vote_id)}>
             Ignore
           </button>
         </Organization>;

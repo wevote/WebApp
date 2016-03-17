@@ -1,24 +1,29 @@
-import AppDispatcher from "../dispatcher/AppDispatcher";
-import GuideConstants from "../constants/GuideConstants";
+var Dispatcher = require("../dispatcher/Dispatcher");
 
-const GuideActions = {
-  /**
-   * @param {String} id to ignore
-   */
-  ignore: function (id) {
-    AppDispatcher.dispatch({
-      actionType: GuideConstants.ORG_IGNORE, id
-    });
-  },
+var GuideActions = (function (_Dispatcher) {
+  function _GuideActions () { }
 
-  /**
-   * @param {String} id to follow
-   */
-  follow: function (id) {
-    AppDispatcher.dispatch({
-      actionType: GuideConstants.ORG_FOLLOW, id
-    });
-  }
-};
+  _GuideActions.prototype.ignore = function ignore (we_vote_id) {
+    _Dispatcher.loadEndpoint("organizationFollowIgnore", { organization_we_vote_id: we_vote_id} );
+  };
 
-export default GuideActions;
+  _GuideActions.prototype.follow = function follow (we_vote_id) {
+    _Dispatcher.loadEndpoint("organizationFollow", { organization_we_vote_id: we_vote_id} );
+  };
+
+  _GuideActions.prototype.stopFollowing = function stopFollowing (we_vote_id) {
+    _Dispatcher.loadEndpoint("organizationStopFollowing", { organization_we_vote_id: we_vote_id} );
+  };
+
+  _GuideActions.prototype.retrieveGuidesToFollow = function retrieveGuidesToFollow (election_id){
+    _Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", { google_civic_election_id: election_id });
+  };
+
+  _GuideActions.prototype.retrieveGuidesFollowed = function retrieveGuidesFollowed (){
+    _Dispatcher.loadEndpoint("voterGuidesFollowedRetrieve");
+  };
+
+  return new _GuideActions();
+}(Dispatcher));
+
+module.exports = GuideActions;
