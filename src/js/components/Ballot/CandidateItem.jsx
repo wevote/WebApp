@@ -50,7 +50,7 @@ export default class Candidate extends Component {
               <h4 className="bufferNone">
                 { ballot_item_display_name } <span className="link-text-to-more-info">(more)</span>
               </h4>
-              <span className="link-text-to-opinions">Summary of opinions you follow: </span>
+              <span className="link-text-to-opinions">Opinions you follow: </span>
               <ItemSupportOpposeCounts we_vote_id={we_vote_id} type="CANDIDATE" />
             </div>
           </div>
