@@ -57,7 +57,7 @@ export default class Candidate extends Component {
           we_vote_id={candidate.we_vote_id} type="CANDIDATE"/>
         }
 
-        <div className="row" style={{ paddingBottom: "10px" }}>
+        <div className="row" style={{ paddingBottom: "2rem" }}>
           <div
             className="col-xs-6"
             style={candidate.candidate_photo_url ? {} : {height: "95px"}}>
