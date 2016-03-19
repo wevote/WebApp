@@ -27,7 +27,7 @@ export default class Candidate extends Component {
               to={"/candidate/" + we_vote_id }
               onlyActiveOnIndex={false}>
           {/* Note: We want a click anywhere in this div to take you to the candidate page */}
-          <div className="row" style={{ paddingBottom: "10px" }}>
+          <div className="row" style={{ paddingBottom: "2rem" }}>
             <div
               className="col-xs-6"
               style={candidate_photo_url ? {} : {height: "95px"}}>

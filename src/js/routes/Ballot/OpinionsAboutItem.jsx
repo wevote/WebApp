@@ -101,7 +101,7 @@ export default class OpinionsAboutItem extends Component {
         <Link className="linkLight"
               to={"/candidate/" + candidate.we_vote_id }
               onlyActiveOnIndex={false}>
-          <div className="row" style={{ paddingBottom: "10px" }}>
+          <div className="row" style={{ paddingBottom: "2rem" }}>
             <div
               className="col-xs-6"
               style={candidate.candidate_photo_url ? {} : { height: "45px" }}>
