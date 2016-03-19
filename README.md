@@ -1,6 +1,6 @@
 # We Vote WebApp
 
-[![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=develop)](https://travis-ci.org/wevote/WebApp)
+[![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=develop)](https://travis-ci.org/wevote/WebApp) [![Coverage Status](https://coveralls.io/repos/github/wevote/WebApp/badge.svg?branch=master)](https://coveralls.io/github/wevote/WebApp?branch=master)
 
 ![WeVoteUS](unclesamewevote.jpg)
 
