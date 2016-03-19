@@ -18,6 +18,10 @@
 Thank you for your interest in the We Vote WebApp project. Please let us know if we can help you get started.
  (contact info: https://github.com/wevote)
 
+To get started, [sign
+the Contributor License Agreement](a
+href="https://www.clahub.com/agreements/wevote/WebApp")
+
 This README outlines the proper ways to contribute to the project. 
 (Feb 13, 2016 Update: This process is still a work-in-progress.)
 
