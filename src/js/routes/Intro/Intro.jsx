@@ -96,7 +96,7 @@ export default class Intro extends Component {
 
     return <div>
       { this.props.children ||
-        <div className="container-fluid well well-90">
+        <div className="container-fluid well well-90 gutter-top--small fluff-full1">
           <h2 className="text-center">We Vote Social Voter Guide</h2>
             <label htmlFor="address">
               My Ballot Location.
