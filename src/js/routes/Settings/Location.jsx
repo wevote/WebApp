@@ -54,14 +54,6 @@ export default class Location extends Component {
             defaultValue=""
           />
           </form>
-          <br />
-          <br />
-          <div className="medium">
-            See We Vote in action! Copy and paste this address above:
-          </div>
-          <h4>
-            2208 Ebb Tide Rd, Virginia Beach, VA 23451
-          </h4>
 
           <div className="gutter-top--small">
             <ButtonToolbar>
@@ -71,6 +63,19 @@ export default class Location extends Component {
                   Save Location</button>
             </ButtonToolbar>
           </div>
+
+          <br />
+          <br />
+          <div className="medium">
+            See We Vote in action! Copy and paste this address above:
+          </div>
+          <h4>
+            Charlotte, NC 28205
+          </h4>
+          or
+          <h4>
+            Columbus, OH 43202
+          </h4>
         </div>
       </div>
     </div>;

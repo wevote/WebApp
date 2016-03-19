@@ -45,12 +45,12 @@ export default class About extends Component {
               Jenifer Fernandez Ancona - Oakland, CA<br />
               Rob Simpson - Warrenton, VA<br />
               Nicolas Fiorini - Arlington, VA<br />
+              Lisa Cho - San Francisco, CA<br />
               Niko Barry - Berkeley, CA<br />
               Joe Evans - Santa Cruz, CA<br />
               Mary O'Connor - Sebastopol, CA<br />
               Marissa Luna - Lansing, MI<br />
               Aaron Borden - San Francisco, CA<br />
-              Lisa Cho - San Francisco, CA<br />
               Judy Johnson - Oakland, CA<br />
               Robin Braverman - Walnut Creek, CA<br />
               Mike McConnell - San Francisco, CA<br />

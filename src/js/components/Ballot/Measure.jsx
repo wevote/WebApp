@@ -16,7 +16,7 @@ export default class Measure extends Component {
               <div className="row" style={{ paddingBottom: "10px" }}>
                   <div className="col-xs-6"></div>
                   <div className="col-xs-6">
-                    <span className="link-text-to-opinions">Summary of opinions you follow: </span>
+                    <span className="link-text-to-opinions">Opinions you follow: </span>
                       <ItemSupportOpposeCounts we_vote_id={we_vote_id} type={type} />
                   </div>
               </div>
