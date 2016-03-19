@@ -14,10 +14,10 @@ class GuideStore extends FluxMapStore {
 
 /* Given a list of ids, retrieve the complete data with all attributes and return as array */
     getOrgsFromArr (arr) {
-      var state = this.getState();
-      var orgs = [];
+      const state = this.getState();
+      let orgs = [];
       // voterGuidesFollowedRetrieve API returns more than one voter guide per organization some times.
-      var uniq_arr = arr.filter( (value, index, self) => { return self.indexOf(value) === index; });
+      let uniq_arr = arr.filter( (value, index, self) => { return self.indexOf(value) === index; });
       uniq_arr.forEach( id => {
         orgs.push( state.data[id] );
       });
@@ -33,9 +33,9 @@ class GuideStore extends FluxMapStore {
     }
 
   reduce (state, action) {
-    var voter_guides;
-    var data;
-    var id;
+    let voter_guides;
+    let data;
+    let id;
 
     switch (action.type) {
 

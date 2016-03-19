@@ -23,8 +23,8 @@ export default class VoterGuideItem extends Component {
   };
 
   render () {
-    var twitterFollowers;
-    var twitterFollowersCount = numberWithCommas(this.props.twitter_followers_count);
+    let twitterFollowers;
+    const twitterFollowersCount = numberWithCommas(this.props.twitter_followers_count);
     if (this.props.twitter_followers_count) {
       twitterFollowers = <span className="fa fa-twitter">{twitterFollowersCount}</span>;
     }

@@ -1,21 +1,15 @@
-var Dispatcher = require("../dispatcher/Dispatcher");
+import Dispatcher from "../dispatcher/Dispatcher";
 
-var StarActions = (function (_Dispatcher) {
-  function _StarActions () { }
+module.exports = {
+  retrieve: function (we_vote_id, type) {
+    Dispatcher.loadEndpoint("voterStarStatusRetrieve", { ballot_item_we_vote_id: we_vote_id, kind_of_ballot_item: type });
+  },
 
-  _StarActions.prototype.retrieve = function retrieve (we_vote_id, type) {
-    _Dispatcher.loadEndpoint("voterStarStatusRetrieve", { ballot_item_we_vote_id: we_vote_id, kind_of_ballot_item: type });
-  };
+  voterStarOnSave: function (we_vote_id, type) {
+    Dispatcher.loadEndpoint("voterStarOnSave", { ballot_item_we_vote_id: we_vote_id, kind_of_ballot_item: type });
+  },
 
-  _StarActions.prototype.voterStarOnSave = function voterStarOnSave (we_vote_id, type) {
-    _Dispatcher.loadEndpoint("voterStarOnSave", { ballot_item_we_vote_id: we_vote_id, kind_of_ballot_item: type });
-  };
-
-  _StarActions.prototype.voterStarOffSave = function voterStarOffSave (we_vote_id, type) {
-    _Dispatcher.loadEndpoint("voterStarOffSave", { ballot_item_we_vote_id: we_vote_id, kind_of_ballot_item: type });
-  };
-
-  return new _StarActions();
-}(Dispatcher));
-
-module.exports = StarActions;
+  voterStarOffSave: function (we_vote_id, type) {
+    Dispatcher.loadEndpoint("voterStarOffSave", { ballot_item_we_vote_id: we_vote_id, kind_of_ballot_item: type });
+  }
+};

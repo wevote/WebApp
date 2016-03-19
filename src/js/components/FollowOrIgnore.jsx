@@ -9,12 +9,11 @@ export default class FollowOrIgnore extends Component {
     };
 
     render () {
-      var ignoreFunc = GuideActions.ignore.bind(this, this.props.organization_we_vote_id);
-      var stopFollowingFunc = GuideActions.stopFollowing.bind(this, this.props.organization_we_vote_id);
-
-        var floatRight = {
-            float: "right"
-        };
+      const ignoreFunc = GuideActions.ignore.bind(this, this.props.organization_we_vote_id);
+      const stopFollowingFunc = GuideActions.stopFollowing.bind(this, this.props.organization_we_vote_id);
+      const floatRight = {
+          float: "right"
+      };
 
       return (
             <span style={floatRight}>
