@@ -3,5 +3,7 @@ node_js:
   - "4.1"
   - "4.0"
 sudo: false
+script:
+  npm run lint
 notifications:
   slack: wevote:Ngu6uKzt4qRAvhrCPPoTIIVM
