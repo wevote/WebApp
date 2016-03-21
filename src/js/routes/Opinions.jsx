@@ -23,9 +23,10 @@ export default class Opinions extends Component {
   componentDidMount () {
     this.listener = GuideStore.addListener(this._onChange.bind(this));
 
-    if (! this.electionId )
-      this.props.history.push("/ballot");
-
+    if (! this.electionId ) {
+      var emptyElection = 0;
+      GuideActions.retrieveGuidesToFollow(emptyElection);
+    }
     else
       GuideActions.retrieveGuidesToFollow(this.electionId);
   }
@@ -39,7 +40,8 @@ export default class Opinions extends Component {
   }
 
   render () {
-    const EMPTY_TEXT = "You do not have a ballot yet!";
+    const NO_BALLOT_TEXT = "Enter your Ballot location so we can find voter guides to follow.";
+    const NO_VOTER_GUIDES_TEXT = "We could not find any voter guides for this election.";
 
     const { loading, error, guideList } = this.state;
     const { electionId } = this;
@@ -47,7 +49,7 @@ export default class Opinions extends Component {
     let guides;
 
     if ( !electionId )
-      guides = EMPTY_TEXT;
+      guides = NO_BALLOT_TEXT;
 
     else
       if (loading)
@@ -58,23 +60,23 @@ export default class Opinions extends Component {
         guides = "Error loading organizations";
 
       else if (guideList instanceof Array && guideList.length > 0)
-        guides = <GuideList id={electionId} organizations={guideList} />;
+        guides = <div>
+          <p>
+            These organizations and public figures have opinions about items on
+            your ballot. Click the "Follow" button to pay attention to them.
+          </p>
+          <input type="text" name="search_opinions" className="form-control"
+               placeholder="Search by name or twitter handle." />
+          <GuideList id={electionId} organizations={guideList} />
+        </div>;
 
       else
-        guides = EMPTY_TEXT;
+        guides = NO_VOTER_GUIDES_TEXT;
 
     const content =
       <div className="opinion-view">
         <div className="container-fluid well gutter-top--small fluff-full1">
           <h3 className="text-center">More Opinions I Can Follow</h3>
-          {/*
-            <input type="text" name="search_opinions" className="form-control"
-                 placeholder="Search by name or twitter handle." />
-          */}
-          <p>
-            These organizations and public figures have opinions about items on
-            your ballot. Click the "Follow" button to pay attention to them.
-          </p>
           {guides}
         </div>
       </div>;
