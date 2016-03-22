@@ -13,7 +13,7 @@ module.exports = {
     },
 
     location: {
-        text_for_map_search: "2208 Ebb Tide Rd, Virginia Beach, VA 23451"
+        text_for_map_search: ""
     },
 
     // FACEBOOK_APP_ID: "1097389196952441" // DaleMcGrew Facebook App Id, https://wevote.me
