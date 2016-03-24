@@ -1,10 +1,11 @@
-import React, {Component, PropTypes } from "react";
-import LoadingWheel from "../components/LoadingWheel";
-
 import BallotStore from "../stores/BallotStore";
+import { Button } from "react-bootstrap";
 import GuideActions from "../actions/GuideActions";
 import GuideStore from "../stores/GuideStore";
 import GuideList from "../components/VoterGuide/GuideList";
+import { Link } from "react-router";
+import LoadingWheel from "../components/LoadingWheel";
+import React, {Component, PropTypes } from "react";
 
 /* VISUAL DESIGN HERE: https://invis.io/TR4A1NYAQ */
 
@@ -40,16 +41,24 @@ export default class Opinions extends Component {
   }
 
   render () {
-    const NO_BALLOT_TEXT = "Enter your Ballot location so we can find voter guides to follow.";
+    const NO_BALLOT_TEXT = "Enter your address so we can find voter guides to follow.";
     const NO_VOTER_GUIDES_TEXT = "We could not find any voter guides for this election.";
 
     const { loading, error, guideList } = this.state;
     const { electionId } = this;
 
     let guides;
+    var floatRight = {
+        float: "right"
+    };
 
     if ( !electionId )
-      guides = NO_BALLOT_TEXT;
+      guides = <div>
+          <span style={floatRight}>
+              <Link to="/settings/location"><Button bsStyle="primary">Enter my address &#x21AC;</Button></Link>
+          </span>
+          <p>{ NO_BALLOT_TEXT }</p>
+        </div>;
 
     else
       if (loading)
@@ -63,7 +72,7 @@ export default class Opinions extends Component {
         guides = <div>
           <p>
             These organizations and public figures have opinions about items on
-            your ballot. Click the "Follow" button to pay attention to them.
+            your ballot. They are ordered by number of Twitter followers.
           </p>
           <input type="text" name="search_opinions" className="form-control"
                placeholder="Search by name or twitter handle." />

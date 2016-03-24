@@ -17,6 +17,13 @@ module.exports = {
     Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", { google_civic_election_id: election_id });
   },
 
+  retrieveGuidesToFollowByBallotItem: function (ballot_item_we_vote_id, kind_of_ballot_item) {
+    console.log("In GuideActions, retrieveGuidesToFollowByBallotItem: ", ballot_item_we_vote_id);
+    Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", {
+      ballot_item_we_vote_id: ballot_item_we_vote_id, kind_of_ballot_item: kind_of_ballot_item
+    });
+  },
+
   retrieveGuidesFollowed: function () {
     Dispatcher.loadEndpoint("voterGuidesFollowedRetrieve");
   }
