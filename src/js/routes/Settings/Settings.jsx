@@ -1,5 +1,5 @@
-import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+import React, { Component, PropTypes } from "react";
+import { Link } from "react-router";
 
 export default class Settings extends Component {
     static propTypes = {
@@ -7,10 +7,8 @@ export default class Settings extends Component {
     };
 
     render () {
-        return (
-            <li className="list-group settings center">
+        return <li className="list-group settings center">
                 <Link className="group-item" to="/settings/location"> Location </Link>
-            </li>
-        );
+            </li>;
     }
 }

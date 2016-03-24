@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React from "react";
 import ItemSupportOppose from "./ItemSupportOppose";
 
 export default class ItemActionBar extends ItemSupportOppose {

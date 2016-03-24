@@ -7,15 +7,13 @@ export default class InfoIconAction extends Component {
       we_vote_id: PropTypes.string
   };
 
-  constructor(props) {
+  constructor (props) {
     super(props);
   }
 
-	render() {
-		return (
-      <span>
+	render () {
+		return <span>
         <span className="glyphicon glyphicon-small glyphicon-info-sign"></span>
-      </span>
-    );
+      </span>;
 	}
 }

@@ -7,9 +7,8 @@ import FollowOrIgnore from "../components/FollowOrIgnore";
 import VoterGuideActions from "../actions/VoterGuideActions";
 
 export default class OrganizationsToFollowList extends Component {
-	render() {
-		return (
-			<div>
+	render () {
+		return <div>
 				<div className="row">
 					<div className="pull-left col-xs-1 col-md-4">
 						<Link to="org_endorsements" params={{org_id: 27}}>
@@ -46,7 +45,6 @@ export default class OrganizationsToFollowList extends Component {
 						</span>
 					</div>
 				</div>
-			</div>
-		);
+			</div>;
 	}
 }

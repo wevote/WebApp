@@ -49,8 +49,7 @@ export default class Candidate extends Component {
       return <div></div>;
     }
 
-    return (
-    <section className="candidate well well-90 gutter-top--small">
+    return <section className="candidate well well-90 gutter-top--small">
       <div className="candidate-detail-route list-group-item">
         {
           <StarAction
@@ -106,8 +105,7 @@ export default class Candidate extends Component {
         </div>
 
       </div>
-    </section>
-    );
+    </section>;
 
   }
 }

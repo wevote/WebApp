@@ -15,7 +15,7 @@ const Spinner = () => {
               cy="33"
               r="30">
       </circle>
-  </svg>
+  </svg>;
 };
 
 export default Spinner;

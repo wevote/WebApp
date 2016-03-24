@@ -9,6 +9,7 @@ import LoadingWheel from "../../components/LoadingWheel";
 
 export default class OpinionsFollowed extends Component {
   static propTypes = {
+    history: PropTypes.object,
     children: PropTypes.object
   };
 

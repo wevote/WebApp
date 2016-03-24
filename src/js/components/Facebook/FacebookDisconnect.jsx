@@ -1,24 +1,22 @@
-import React from 'react';
-import FacebookActionCreators from '../../actions/FacebookActionCreators';
+import React from "react";
+import FacebookActionCreators from "../../actions/FacebookActionCreators";
 
 class FacebookDisconnect extends React.Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
     }
 
-    didClickDisconnectFromFacebookButton(e) {
+    didClickDisconnectFromFacebookButton (e) {
         console.log("didClickDisconnectFromFacebookButton");
         FacebookActionCreators.disconnectFromFacebook();
     }
 
-    render() {
-        return (
-            <span>
+    render () {
+        return <span>
                 <a className="btn btn-social btn-lg btn-facebook" onClick={this.didClickDisconnectFromFacebookButton}>
                     <i className="fa fa-facebook"></i>Disconnect from Facebook
                 </a>
-            </span>
-        );
+            </span>;
     }
 }
 

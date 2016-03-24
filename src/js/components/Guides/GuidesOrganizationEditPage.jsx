@@ -1,24 +1,22 @@
-import axios from "axios";
 import HeaderBackNavigation from "components/navigation/HeaderBackNavigation";
 import React from "react";
-import { Button, ButtonToolbar, Input, Navbar } from "react-bootstrap";
+import { Button, Input } from "react-bootstrap";
 import { Link } from "react-router";
 
 export default class GuidesOrganizationEditPagePage extends React.Component {
-	constructor(props) {
+	constructor (props) {
 		super(props);
 	}
 
-	static getProps() {
+	static getProps () {
 		return {};
 	}
 
-	render() {
+	render () {
 		var floatRight = {
 			float: "right"
 		};
-		return (
-			<div>
+		return <div>
 				<HeaderBackNavigation header_text={"Edit Voter Guide"} back_to_text={"< Back to Guides"} link_route={"guides_voter"} />
 				<div className="container-fluid well well-90">
 					<Link to="guides_organization_add_existing_link" />
@@ -36,7 +34,6 @@ export default class GuidesOrganizationEditPagePage extends React.Component {
 					<br />
 					<br />
 				</div>
-			</div>
-		);
+			</div>;
 	}
 }

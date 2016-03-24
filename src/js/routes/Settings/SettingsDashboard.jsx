@@ -1,4 +1,4 @@
-import React,{ Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from "react";
 
 export default class SettingsDashboard extends Component {
     static propTypes = {
@@ -6,10 +6,8 @@ export default class SettingsDashboard extends Component {
     };
 
     render () {
-        return (
-            <div className="settings-dashboard">
+        return <div className="settings-dashboard">
                 { this.props.children }
-            </div>
-        );
+            </div>;
     }
 }

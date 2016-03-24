@@ -1,24 +1,22 @@
-import axios from "axios";
 import HeaderBackNavigation from "components/navigation/HeaderBackNavigation";
 import React from "react";
-import { Alert, Button, ButtonToolbar, Input, ProgressBar } from "react-bootstrap";
+import { Button, ButtonToolbar, Input, ProgressBar } from "react-bootstrap";
 import { Link } from "react-router";
 
 export default class GuidesConfirmOwnershipPage extends React.Component {
-	constructor(props) {
+	constructor (props) {
 		super(props);
 	}
 
-	static getProps() {
+	static getProps () {
 		return {};
 	}
 
-	render() {
+	render () {
 		var floatRight = {
 			float: "right"
 		};
-		return (
-			<div>
+		return <div>
 				<HeaderBackNavigation header_text={"Create Voter Guide"} back_to_text={"< Back"} link_route={"guides_organization_add_results"} />
 				<div className="container-fluid well well-90">
 					<h4>Confirm You Speak for this Organization</h4>
@@ -50,7 +48,6 @@ export default class GuidesConfirmOwnershipPage extends React.Component {
 					<br />
 					<br />
 				</div>
-			</div>
-		);
+			</div>;
 	}
 }

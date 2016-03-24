@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import { Component, PropTypes } from "react";
 import SupportActions from "../actions/SupportActions";
 import SupportStore from "../stores/SupportStore";
 

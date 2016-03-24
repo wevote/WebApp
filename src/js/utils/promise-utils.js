@@ -1,5 +1,5 @@
 export function factory ( promiseFactory ) {
-  if  (promiseFactory instanceof Array !== true) throw new Error("wrong type");
+  if (promiseFactory instanceof Array !== true) throw new Error("wrong type");
 
   var firstPromiseFn = promiseFactory.shift();
 
