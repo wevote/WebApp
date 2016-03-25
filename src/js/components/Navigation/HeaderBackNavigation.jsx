@@ -9,24 +9,25 @@ export default class HeaderBackNavigation extends Component {
         back_to_text: PropTypes.string,
         link_route: PropTypes.string,
         back_to_off: PropTypes.bool,
-        header_text: PropTypes.string
+        header_text: PropTypes.string,
+        params: PropTypes.object.isRequired
     };
 
-    constructor(props) {
+    constructor (props) {
         super(props);
     }
-    render() {
+    render () {
         var back_to_text;
         if (this.props.back_to_text) {
             back_to_text = this.props.back_to_text;
         } else {
-            back_to_text = '< Back';
+            back_to_text = "< Back";
         }
         var link_route;
         if (this.props.link_route) {
             link_route = this.props.link_route;
         } else {
-            link_route = '/ballot';
+            link_route = "/ballot";
         }
         var back_to_on;
         if (this.props.back_to_off) {
@@ -46,10 +47,9 @@ export default class HeaderBackNavigation extends Component {
         if (this.props.header_text) {
             header_text = this.props.header_text;
         } else {
-            header_text = '';
+            header_text = "";
         }
-        return (
-            <Headroom>
+        return <Headroom>
                 <div className="row">
                     <nav className="navbar navbar-main navbar-fixed-top paradeiser">
                         <div className="container-fluid">
@@ -58,7 +58,6 @@ export default class HeaderBackNavigation extends Component {
                         </div>
                     </nav>
                 </div>
-            </Headroom>
-        );
+            </Headroom>;
     }
 }

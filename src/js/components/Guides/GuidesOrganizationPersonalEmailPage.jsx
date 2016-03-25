@@ -1,22 +1,20 @@
-import axios from "axios";
 import BottomContinueNavigation from "components/navigation/BottomContinueNavigation";
 import HeaderBackNavigation from "components/navigation/HeaderBackNavigation";
 import React from "react";
-import { Button, ButtonToolbar, Input, ProgressBar } from "react-bootstrap";
+import { Input, ProgressBar } from "react-bootstrap";
 import { Link } from "react-router";
 
 export default class GuidesOrganizationPersonalEmailPage extends React.Component {
-	constructor(props) {
+	constructor (props) {
 		super(props);
 	}
 
-	static getProps() {
+	static getProps () {
 		return {};
 	}
 
-	render() {
-		return (
-			<div>
+	render () {
+		return <div>
 				<HeaderBackNavigation header_text={"Create Voter Guide"} back_to_text={"< Back"} link_route={"guides_organization_add_existing_link"} />
 				<div className="container-fluid well well-90">
 					<h4>Verify Email</h4>
@@ -34,7 +32,6 @@ export default class GuidesOrganizationPersonalEmailPage extends React.Component
 					</form>
 				</div>
 				<BottomContinueNavigation link_route_continue={"guides_organization_email_verify"} continue_text={"Continue >"} link_route_cancel={"guides_voter"} cancel_text={"cancel"} />
-			</div>
-		);
+			</div>;
 	}
 }

@@ -7,6 +7,8 @@ import StarAction from "../../components/StarAction";
 
 export default class GuidePositionList extends Component {
   static propTypes = {
+    history: PropTypes.object,
+    children: PropTypes.object
     //oppose_on: PropTypes.boolean,
     //params: PropTypes.object.isRequired,
     //support_on: PropTypes.boolean

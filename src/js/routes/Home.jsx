@@ -6,7 +6,7 @@ import * as cookies from "../utils/cookies";
 
 
 export default class Home extends Component {
-	constructor(props) {
+	constructor (props) {
 		super(props);
 		this.state = {
             device_verified: cookies.getItem("voter_device_id") ? true : false,
@@ -15,62 +15,23 @@ export default class Home extends Component {
 		};
 
         if (this.state.device_verified)
-            location.href="ballot";
+            location.href = "ballot";
 	}
 
-	static getProps() {
+	static getProps () {
 		return {};
 	}
 
-	componentDidMount() {
-        // this._assign_device_id();
-        // this._getVoterLocation();
+	componentDidMount () {
 	}
 
-    /**
-     * verify the device id of the the active user
-     * @return {undefined}
-     */
-    _assign_voter_device_id() {
-        deviceIdGenerate(function (err, res) {
-            if (res.ok) {
-                console.log(res.body);
-                cookies.setItem("voter_device_id", res.body.voter_device_id);
-            }
-            else console.log(err);
-        });
-    }
-
-    /**
-     * get the location of the active user
-     * @return {undefined}
-     */
-    _getVoterLocation() {
-
-    }
-
-	getVoterCount() {
-        this.setState({
-             voter_count: "1001am"
-        });
-	}
-
-    getOrganizationCount() {
-        this.setState({
-            organization_count: "a lot"
-        });
-
-    }
-
-	render() {
+	render () {
         console.log(this.state);
-        let view = this.state.device_verified ? (
+        let view = this.state.device_verified ?
 			<div className="box-loader">
 				<i className="fa fa-spinner fa-pulse"></i>
 				<p>Loading ... One Moment</p>
-			</div>
-        ) :
-        (
+			</div> :
         <div className="container-fluid well well-90 gutter-top--small">
           <h2 className="text-center">We Vote Social Voter Guide</h2>
           <ul className="list-group">
@@ -93,8 +54,7 @@ export default class Home extends Component {
         </Link>
         <br />
         <br />
-        </div>
-		);
+        </div>;
 
 		return view;
 	}

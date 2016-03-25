@@ -1,40 +1,40 @@
-import React, { Component } from 'react';
-import shallowEqual from 'react-pure-render/shallowEqual';
+import React, { Component } from "react";
+import shallowEqual from "react-pure-render/shallowEqual";
 
-export default function connectToStores(stores, getState) {
+export default function connectToStores (stores, getState) {
     return function (DecoractedComponent) {
 
         return class StoreConnector extends Component {
-            constructor(props) {
+            constructor (props) {
                 super(props);
                 this.handleStoresChanged = this.handleStoresChanged.bind(this);
 
                 this.state = getState(props);
             }
 
-            componentWillMount() {
+            componentWillMount () {
                 stores.forEach(store =>
                     store.addChangeListener(this.handleStoresChanged)
                 );
             }
 
-            componentWillReceiveProps(nextProps) {
+            componentWillReceiveProps (nextProps) {
                 if (!shallowEqual(nextProps, this.props)) {
                     this.setState(getState(nextProps));
                 }
             }
 
-            componentWillUnmount() {
+            componentWillUnmount () {
                 stores.forEach(store =>
                     store.removeChangeListener(this.handleStoresChanged)
                 );
             }
 
-            handleStoresChanged() {
+            handleStoresChanged () {
                 this.setState(getState(this.props));
             }
 
-            render() {
+            render () {
                 return <DecoractedComponent {...this.props} {...this.state} />;
             }
         };

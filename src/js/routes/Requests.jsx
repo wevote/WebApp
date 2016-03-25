@@ -1,19 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import FollowOrIgnore from '../components/FollowOrIgnore';
+// import FollowOrIgnore from "../components/FollowOrIgnore";
 
 export default class RequestsPage extends Component {
-	constructor(props) {
+	constructor (props) {
 		super(props);
 	}
 
-	static getProps() {
+	static getProps () {
 		return {};
 	}
 
-	render() {
-		return (
-			<section>
+	render () {
+		return <section>
 				<div className="container-fluid well gutter-top--small fluff-full1">
 					<h3 className="text-center">Friend Requests</h3>
 					<h4 className="text-center">Coming Soon</h4>
@@ -40,7 +39,6 @@ export default class RequestsPage extends Component {
                     </ul>
 					*/}
 				</div>
-			</section>
-		);
+			</section>;
 	}
 }

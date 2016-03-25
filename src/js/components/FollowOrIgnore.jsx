@@ -15,13 +15,11 @@ export default class FollowOrIgnore extends Component {
           float: "right"
       };
 
-      return (
-            <span style={floatRight}>
+      return <span style={floatRight}>
                 <ButtonToolbar>
                     <Button bsStyle="info" bsSize="small" onClick={stopFollowingFunc}>Following</Button>
                     <Button bsStyle="danger" bsSize="small" onClick={ignoreFunc}>Ignore</Button>
                 </ButtonToolbar>
-            </span>
-        );
+            </span>;
 	}
 }

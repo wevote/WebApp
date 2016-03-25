@@ -1,22 +1,24 @@
-import React from 'react';
+import React, { PropTypes } from "react";
 
-import FacebookActionCreators from '../../actions/FacebookActionCreators';
+import FacebookActionCreators from "../../actions/FacebookActionCreators";
 
 class FacebookDownloadPicture extends React.Component {
-    constructor(props) {
+  static propTypes = {
+    userId: PropTypes.string
+  };
+
+    constructor (props) {
         super(props);
     }
 
-    render() {
-        return (
-            <div>
+    render () {
+        return <div>
                 <h5>Download Picture:</h5>
                 <button ref="downloadPictureButton" onClick={() => this.didClickDownloadPicture()}>Download FB Picture</button>
-            </div>
-        )
+            </div>;
     }
 
-    didClickDownloadPicture() {
+    didClickDownloadPicture () {
         FacebookActionCreators.getFacebookProfilePicture(this.props.userId);
     }
 }

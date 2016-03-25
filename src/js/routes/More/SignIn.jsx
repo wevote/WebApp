@@ -1,13 +1,8 @@
 import React, { Component, PropTypes } from "react";
-import { Button, ButtonToolbar, Input } from "react-bootstrap";
-import { Link } from "react-router";
+// import { Link } from "react-router";
 import FacebookActionCreators from "../../actions/FacebookActionCreators";
 import FacebookStore from "../../stores/FacebookStore";
 import FacebookDisconnect from "../../components/Facebook/FacebookDisconnect";
-import FacebookLogin from "../../components/Facebook/FacebookLogin";
-import FacebookLogout from "../../components/Facebook/FacebookLogout";
-import FacebookDownloadPicture from "../../components/Facebook/FacebookDownloadPicture";
-import FacebookPicture from "../../components/Facebook/FacebookPicture";
 import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 import Main from "../../components/Facebook/Main";
 import VoterStore from "../../stores/VoterStore";
@@ -17,7 +12,7 @@ export default class SignIn extends Component {
     children: PropTypes.object
   };
 
-  constructor(props) {
+  constructor (props) {
 	super(props);
 
     this.state = {
@@ -72,18 +67,17 @@ export default class SignIn extends Component {
       userId: FacebookStore.userId,
       facebookPictureStatus: FacebookStore.facebookPictureStatus,
       facebookPictureUrl: FacebookStore.facebookPictureUrl
-    }
+    };
   }
 
-  static getProps() {
+  static getProps () {
 	return {};
   }
 
-  render() {
+  render () {
     var { voter } = this.state;
 
-    return (
-    <div className="">
+    return <div className="">
       <div className="container-fluid well gutter-top--small fluff-full1">
         <h3 className="text-center">{voter.signed_in_personal ? <span>My Account</span> : <span>Sign In</span>}</h3>
         <div className="text-center">
@@ -122,7 +116,6 @@ export default class SignIn extends Component {
       {/* FOR DEBUGGING */}
       <Main />
 
-    </div>
-    );
+    </div>;
   }
 }

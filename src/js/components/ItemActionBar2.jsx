@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React from "react";
 import ItemSupportOppose from "./ItemSupportOppose";
 
 export default class ItemActionBar2 extends ItemSupportOppose {
@@ -13,8 +13,7 @@ export default class ItemActionBar2 extends ItemSupportOppose {
       return <div></div>;
     }
 
-    return (
-      <div className="item-actionbar2 row">
+    return <div className="item-actionbar2 row">
         {is_support ?
           <span className="col-xs-4" onClick={ this.stopSupportingItem.bind(this) }>
             <span className="support-emphasis">
@@ -55,7 +54,6 @@ export default class ItemActionBar2 extends ItemSupportOppose {
           &nbsp;Share
         </span>
         */}
-      </div>
-    );
+      </div>;
   }
 }

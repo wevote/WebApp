@@ -1,6 +1,5 @@
 import React from "react";
 import FacebookActionCreators from "../../actions/FacebookActionCreators";
-import VoterActions from "../../actions/VoterActions";
 
 class FacebookSignIn extends React.Component {
   constructor (props) {
