@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router";
 
 /* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/90192590 */
 
@@ -75,6 +74,9 @@ export default class About extends Component {
               Miguel Elasmar - Sarasota, FL<br />
               Nicole Shanahan - Palo Alto, CA<br />
               Steve Whetstone - San Francisco, CA<br />
+              Jeff French - Oakland, CA<br />
+              Harsha Dronamraju - San Francisco, CA<br />
+              Nitin Garg - San Francisco, CA<br />
               Marcus Busby - San Francisco, CA<br />
               lulu - New York, NY<br />
               Chris Griffith - Santa Cruz, CA<br />

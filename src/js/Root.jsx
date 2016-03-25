@@ -27,7 +27,6 @@ import OpinionsAboutItem from "./routes/Ballot/OpinionsAboutItem"; // More opini
 import GuidePositionList from "./routes/Guide/PositionList"; // A list of all positions from one guide
 
 /* More */
-import More from "./routes/More";
 import About from "./routes/More/About";
 import OpinionsFollowed from "./routes/More/OpinionsFollowed";
 import SignIn from "./routes/More/SignIn";
@@ -75,7 +74,7 @@ const routes = (firstVisit, voter) =>
     <Route path="/more/privacy" component={Privacy} />
 
     {/* Voter Guide Pages */}
-    <Route path="/guidepositions/:we_vote_id" component={GuidePositionList} />
+    <Route path="/voterguide/:we_vote_id" component={GuidePositionList} />
 
     { firstVisit ? <IndexRoute component={Intro} /> : <IndexRedirect to="ballot" /> }
 
@@ -99,7 +98,6 @@ const routes = (firstVisit, voter) =>
     <Route path="connect" component={Connect} />
 
     <Route path="activity" component={Activity} />
-    <Route path="more" component={More} />
 
     // Any route that is not found -> @return NotFound component
     <Route path="*" component={NotFound} />

@@ -21,6 +21,7 @@ const links = {
     return jsx;
   },
 
+  /* className="badgeTotal badge">0</span> TODO badge should only show if positive number */
   requests: function (active) {
     var icon = "glyphicon glyphicon-inbox glyphicon-line-adjustment font-footer_icon";
 
@@ -28,7 +29,6 @@ const links = {
       <Link to="/requests" className={ "navicon" + (active ? " active-icon" : "")}>
         <div className="col-xs-3 center-block text-center">
           <span className={icon} title="Requests">
-            <span className="badgeTotal badge">0</span>
           </span>
           <br/>
           <span className="text-center small device-small--hide">
