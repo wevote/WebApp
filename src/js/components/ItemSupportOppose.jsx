@@ -10,7 +10,7 @@ export default class ItemSupportOppose extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {transitioning: false};
   }
 
   componentDidMount () {
@@ -27,22 +27,30 @@ export default class ItemSupportOppose extends Component {
   }
 
   _onChange () {
-    this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
+    this.setState({ supportProps: SupportStore.get(this.props.we_vote_id), transitioning: false });
   }
 
   supportItem () {
+    if (this.state.transitioning){ return; }
     SupportActions.voterSupportingSave(this.props.we_vote_id, this.props.type);
+    this.setState({transitioning: true});
   }
 
   stopSupportingItem () {
+    if (this.state.transitioning){ return; }
     SupportActions.voterStopSupportingSave(this.props.we_vote_id, this.props.type);
+    this.setState({transitioning: true});
   }
 
   opposeItem () {
+    if (this.state.transitioning){ return; }
     SupportActions.voterOpposingSave(this.props.we_vote_id, this.props.type);
+    this.setState({transitioning: true});
   }
 
   stopOpposingItem () {
+    if (this.state.transitioning){ return; }
     SupportActions.voterStopOpposingSave(this.props.we_vote_id, this.props.type);
+    this.setState({transitioning: true});
   }
 }
