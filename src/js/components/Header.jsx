@@ -1,4 +1,3 @@
-const web_app_config = require("../config");
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import Headroom from "react-headroom";
@@ -17,7 +16,7 @@ export default class Header extends Component {
     this.state = {
       visible: false
     };
-  };
+  }
 
   componentDidMount () {
     this._onChange();
@@ -33,13 +32,12 @@ export default class Header extends Component {
     VoterStore.getLocation( (err, location) => {
       if (err) console.error(err);
       this.setState({ location });
-    })
+    });
   }
 
   pageClick () {
     this.hide();
   }
-  
 
   show () {
     var mainContainer = document.querySelector(".container-main");
@@ -59,11 +57,7 @@ export default class Header extends Component {
 
   render () {
     var { location, visible } = this.state;
-    var { voter_photo_url: url, signed_in_personal: signedIn } = this.props;
-    // var image;
-    //
-    // if (url)
-    //   image = <img src={url} className="img-circle" width="25px" height="25px" />;
+    var { signed_in_personal: signedIn } = this.props;
 
     const header =
       <header className="header row">
@@ -82,77 +76,88 @@ export default class Header extends Component {
             </aside>
           </section>
         </Headroom>
-      {/* The menu has to be reproduced for mobile */}
+      {/* The components/MoreMenu code has to be reproduced here for mobile */}
         <div className={(visible ? "visible" : "hidden") + " device-menu--mobile container-fluid well well-90"}>
+          {/* Please keep these styles up-to-date since we need to turn this on soon
           { signedIn ? <span></span> :
             <span>
               <ul className="list-group">
                 <li className="list-group-item">
                   <Link onClick={this.hide.bind(this)} to="/more/sign_in">
+                    <div>
                     Sign In
+                    </div>
                   </Link>
                 </li>
               </ul>
               <h4 className="text-left"></h4>
             </span>
           }
+          */}
           <ul className="list-group">
             <li className="list-group-item">
               <Link onClick={this.hide.bind(this)} to="/ballot">
+                <div>
                 My Voter Guide
+                </div>
               </Link>
             </li>
             <li className="list-group-item">
               <Link onClick={this.hide.bind(this)} to="/more/opinions/followed">
+                <div>
                 Opinions I'm Following
+                </div>
+              </Link>
+            </li>
+            <li className="list-group-item">
+              <Link onClick={this.hide.bind(this)} to="/ballot">
+                <div>
+                What I Support
+                </div>
+              </Link>
+            </li>
+            <li className="list-group-item">
+              <Link onClick={this.hide.bind(this)} to="/ballot">
+                <div>
+                What I've Starred
+                </div>
               </Link>
             </li>
             <li className="list-group-item">
               <Link onClick={this.hide.bind(this)} to="/settings/location">
-                My Ballot Location
+                <div>
+                My Address
+                </div>
               </Link>
             </li>
             { signedIn ?
                 <li className="list-group-item">
                   <Link onClick={this.hide.bind(this)} to="/more/sign_in">
+                    <div>
                     Account Settings
+                    </div>
                   </Link>
-                </li>
-                : <span></span>
+                </li> :
+                <span></span>
             }
-            {/*<li className="list-group-item"><Link to="/more/email_ballot">Print or Email Ballot</Link></li>*/}
           </ul>
-          {/*
-          <ul className="list-group">
-             <li className="list-group-item">
-              <LanguageSwitchNavigation />
-             </li>
-          </ul>
-          */}
           <h4 className="text-left"></h4>
           <ul className="list-group">
             <li className="list-group-item">
               <Link onClick={this.hide.bind(this)} to="/more/about">
+                <div>
                 About <strong>We Vote</strong>
+                </div>
               </Link>
             </li>
-
-            {/*<li className="list-group-item"><Link to="/more/privacy">Terms &amp; Policies</Link></li>*/}
-
-            <li className="list-group-item">
-              <a href={ web_app_config.WE_VOTE_SERVER_ADMIN_ROOT_URL } target="_blank">
-                Admin
-              </a>
-            </li>
-
-            {/* To be implemented in a coming release
             { signedIn ?
               <li className="list-group-item">
                 <Link onClick={this.hide.bind(this)} to="/signout">
+                  <div>
                   Sign Out
+                  </div>
                 </Link>
               </li> : <span></span> }
-            */}
           </ul>
         </div>
       </header>;

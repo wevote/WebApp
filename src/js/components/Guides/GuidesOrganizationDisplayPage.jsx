@@ -1,28 +1,26 @@
 import AskOrShareAction from "components/base/AskOrShareAction";
-import axios from "axios";
 import CopyLinkNavigation from "components/navigation/CopyLinkNavigation";
 import InfoIconAction from "components/base/InfoIconAction";
 import HeaderBackNavigation from "components/navigation/HeaderBackNavigation";
 import React from "react";
-import { Button, ButtonToolbar, Input, Navbar } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { Link } from "react-router";
 import StarAction from "components/base/StarAction";
 
 export default class GuidesOrganizationDisplayPagePage extends React.Component {
-	constructor(props) {
+	constructor (props) {
 		super(props);
 	}
 
-	static getProps() {
+	static getProps () {
 		return {};
 	}
 
-	render() {
+	render () {
 		var floatRight = {
 			float: "right"
 		};
-		return (
-			<div>
+		return <div>
 				<HeaderBackNavigation header_text={""} back_to_text={"< Back"} link_route={"guides_voter"} />
 				<div className="container-fluid well well-90">
 					<ul className="list-group">
@@ -97,7 +95,6 @@ export default class GuidesOrganizationDisplayPagePage extends React.Component {
 					</ul>
 				</div>
 				<CopyLinkNavigation button_text={"Copy Link to Voter Guide"} />
-			</div>
-		);
+			</div>;
 	}
 }

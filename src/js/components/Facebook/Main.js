@@ -30,7 +30,7 @@ class Main extends React.Component {
     }
 
     componentWillUnmount () {
-        FacebookStore.removeChangeListener(this.changeListener)
+        FacebookStore.removeChangeListener(this.changeListener);
       }
 
     _onFacebookChange () {
@@ -39,8 +39,7 @@ class Main extends React.Component {
 
 
     render () {
-        return (
-            <div>
+        return <div>
                 {!this.state.loggedIn ? <FacebookLogin /> : null}
                 {this.state.loggedIn ? <FacebookLogout /> : null}
                 <p>Facebook logged in: {this.state.loggedIn ? "true" : "false"}</p>
@@ -50,9 +49,7 @@ class Main extends React.Component {
                 <FacebookPicture
                     facebookPictureStatus={this.state.facebookPictureStatus}
                     facebookPictureUrl={this.state.facebookPictureUrl} />
-            </div>
-
-        );
+            </div>;
     }
 }
 

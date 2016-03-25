@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+import React, { Component } from "react";
 
 export default class EmptyBallot extends Component {
   static propTypes = {
@@ -10,8 +9,7 @@ export default class EmptyBallot extends Component {
   }
 
   render () {
-    return (
-      <div>
+    return <div>
         <div className="container-fluid well gutter-top--small fluff-full1">
           <h3 className="text-center">
             Your Ballot Is Not Ready Yet
@@ -29,7 +27,6 @@ export default class EmptyBallot extends Component {
             2208 Ebb Tide Rd, Virginia Beach, VA 23451
           </h4>
         </div>
-      </div>
-    );
+      </div>;
   }
 }

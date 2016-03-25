@@ -35,7 +35,7 @@ module.exports = {
   },
 
   ignoreOrg: function (we_vote_id) {  // IGNORE_ORGANIZATION, ignoreOrganization
-    console.log("ignoreOrg: "+ we_vote_id);
+    console.log("ignoreOrg: " + we_vote_id);
     AppDispatcher.dispatch({
       actionType: VoterGuideConstants.IGNORE_ORGANIZATION,
       we_vote_id

@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React from "react";
 import ItemSupportOppose from "./ItemSupportOppose";
 
 export default class ItemSupportOpposeCounts extends ItemSupportOppose {
@@ -30,8 +30,7 @@ export default class ItemSupportOpposeCounts extends ItemSupportOppose {
       }
     }
 
-    return (
-      <ul className="list-style--none">
+    return <ul className="list-style--none">
         <li className="list-inline support">
           <span className={ support_emphasis }>
             <span>{support_count}</span>&nbsp;
@@ -44,7 +43,6 @@ export default class ItemSupportOpposeCounts extends ItemSupportOppose {
             <span>negative</span>
           </span>
         </li>
-      </ul>
-    );
+      </ul>;
   }
 }

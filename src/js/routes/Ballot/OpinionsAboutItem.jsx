@@ -1,9 +1,14 @@
 import React, {Component, PropTypes } from "react";
+import { Button } from "react-bootstrap";
 import { Link } from "react-router";
-import { $ajax } from "../../utils/service";
 import BallotStore from "../../stores/BallotStore";
+import CandidateActions from "../../actions/CandidateActions";
+import CandidateStore from "../../stores/CandidateStore";
+import GuideActions from "../../actions/GuideActions";
 import GuideList from "../../components/VoterGuide/GuideList";
+import GuideStore from "../../stores/GuideStore";
 import LoadingWheel from "../../components/LoadingWheel";
+import OfficeStore from "../../stores/OfficeStore";
 
 /* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/89479667 */
 
@@ -16,67 +21,75 @@ export default class OpinionsAboutItem extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { candidate: {}, loading: true, error: false };
-    this.ballotItemWeVoteId = this.props.params.we_vote_id; /* Bernie: wv02cand3, Ben Carson: wv02cand5 */
+    this.state = { candidate: {}, office: {}, loading: true, error: false };
+    this.ballotItemWeVoteId = this.props.params.we_vote_id;
     this.kindOfBallotItem = "CANDIDATE"; /* TODO: Convert from hard coded to dynamic between CANDIDATE and MEASURE */
+    this.electionId = BallotStore.getGoogleCivicElectionId();
   }
 
   componentDidMount () {
-
+    console.log("ENTERING componentDidMount in OpinionsAboutItem");
     if (! this.ballotItemWeVoteId )
-      this.props.history.push("/ballot");
+      this.props.history.push("/opinions");
+    console.log("Looking for this ballotItemWeVoteId: ", this.ballotItemWeVoteId);
 
-    else
-      $ajax({
-        endpoint: "voterGuidesToFollowRetrieve",
-        data: {
-          "ballot_item_we_vote_id": this.ballotItemWeVoteId,
-          "kind_of_ballot_item": this.kindOfBallotItem
-        },
+    this.candidateToken = CandidateStore.addListener(this._onChange.bind(this));
+    this.officeToken = OfficeStore.addListener(this._onChange.bind(this));
 
-        success: (res) => {
-          this.guideList = res.voter_guides;
-          this.setState({ loading: false });
-          console.log(res);
-        },
+    console.log("this.props.params.we_vote_id: ", this.props.params.we_vote_id);
+    CandidateActions.retrieve(this.props.params.we_vote_id);
 
-        error: (err) => {
-          console.error(err);
-          this.setState({ loading: false, error: true });
-        }
-      });
-
-    this.changeListener = this._onChange.bind(this);
-    BallotStore.addChangeListener(this.changeListener);
-    var candidate = BallotStore.getOrFetchCandidateByWeVoteId(this.props.params.we_vote_id);
-    if (candidate) {
-      this.setState({ candidate: candidate });
-    }
+    this.listener = GuideStore.addListener(this._onChange.bind(this));
+    GuideActions.retrieveGuidesToFollowByBallotItem(this.ballotItemWeVoteId, this.kindOfBallotItem);
   }
 
   _onChange (){
-    this.setState({ candidate: BallotStore.getCandidateByWeVoteId(this.props.params.we_vote_id) });
+    var candidate = CandidateStore.get(this.ballotItemWeVoteId) || {};
+    if (candidate) {
+      this.setState({ candidate: candidate });
+
+      if (candidate.contest_office_we_vote_id){
+        this.setState({ office: OfficeStore.get(candidate.contest_office_we_vote_id) || {} });
+      }
+    }
+    this.setState({ loading: false, error: false, guideList: GuideStore.toFollowList() });
   }
 
-  componentWillUnmount () {
-    BallotStore.removeChangeListener(this.changeListener);
+  componentWillUnmount (){
+    this.listener.remove();
+    this.candidateToken.remove();
+    this.officeToken.remove();
   }
 
   render () {
-    var candidate = this.state.candidate;
-    if (!candidate || !candidate.we_vote_id){
-      return <div></div>;
-    }
-
-    const EMPTY_TEXT = "There are no more opinions to follow about this candidate or measure.";
-
+    var { candidate, office } = this.state;
     const { loading, error } = this.state;
+    const { electionId } = this;
     const { guideList, ballotItemWeVoteId } = this;
+    const NO_BALLOT_ITEM_TEXT = "We could not find this candidate or measure.";
+    const NO_BALLOT_TEXT = "Enter your address so we can find voter guides to follow.";
+    const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to follow about this candidate or measure.";
 
     let guides;
 
-    if ( !ballotItemWeVoteId )
-      guides = EMPTY_TEXT;
+    if (!candidate || !candidate.we_vote_id){
+      console.log("candidate info not found, candidate.we_vote_id: ", candidate.we_vote_id);
+      return <div>The ballot item could not be found.</div>;
+    }
+    var floatRight = {
+        float: "right"
+    };
+
+    if ( !electionId )
+      guides = <div>
+          <span style={floatRight}>
+              <Link to="/settings/location"><Button bsStyle="primary">Enter my address &#x21AC;</Button></Link>
+          </span>
+          <p>{ NO_BALLOT_TEXT }</p>
+        </div>;
+
+    else if ( !ballotItemWeVoteId )
+      guides = NO_BALLOT_ITEM_TEXT;
 
     else
       if (loading)
@@ -86,12 +99,12 @@ export default class OpinionsAboutItem extends Component {
       else if (error)
         guides = "Error loading organizations";
 
-      else if (guideList instanceof Array && guideList.length > 0)
-        guides = <GuideList ballot_item_we_vote_id={ballotItemWeVoteId} organizations={guideList} />;
-
-
+      else if (guideList instanceof Array && guideList.length > 0) {
+        console.log("guideList found, electionId: ", electionId, " ballotWeVoteId: ", this.ballotItemWeVoteId);
+        guides = <GuideList id={electionId} ballot_item_we_vote_id={ballotItemWeVoteId} organizations={guideList}/>;
+      }
       else
-        guides = EMPTY_TEXT;
+        guides = NO_VOTER_GUIDES_TEXT;
 
     const content =
       <div className="opinion-view">
@@ -120,7 +133,11 @@ export default class OpinionsAboutItem extends Component {
               <h4 className="bufferNone">
                   about { candidate.ballot_item_display_name }
               </h4>
-              <p>Running for <span className="running-for-office-emphasis">{ candidate.office_display_name }</span></p>
+              {
+                office.ballot_item_display_name ?
+                  <p>Running for <span className="running-for-office-emphasis">{ office.ballot_item_display_name }</span></p> :
+                  <p></p>
+              }
             </div>
           </div>
         </Link>
@@ -129,7 +146,7 @@ export default class OpinionsAboutItem extends Component {
                placeholder="Search by name or twitter handle." />
           <p>
             These organizations and public figures have opinions about this ballot item.
-            Click the "Follow" button to pay attention to them.
+            They are ordered by number of Twitter followers.
           </p>
           {guides}
         </div>
