@@ -1,22 +1,16 @@
-"use strict";
-var AppDispatcher = require("../dispatcher/AppDispatcher");
-var VoterConstants = require("../constants/VoterConstants");
+import Dispatcher from "../dispatcher/Dispatcher";
 
-// In the stores, there are AppDispatcher blocks that listen for these actionType constants (ex/ VOTER_SUPPORTING_SAVE)
-//  When action calls one of these functions, we are telling the code in the AppDispatcher block to run
 module.exports = {
-  ChangeLocation: function (location) {  // VOTER_LOCATION_RETRIEVE
-    AppDispatcher.dispatch({
-      actionType: VoterConstants.VOTER_LOCATION_RETRIEVE,
-      location
-    });
+
+  retrieveVoter: function () {
+    Dispatcher.loadEndpoint("voterRetrieve");
   },
 
-  voterRetrieve: function (we_vote_id) {  // VOTER_RETRIEVE
-    AppDispatcher.dispatch({
-      actionType: VoterConstants.VOTER_RETRIEVE,
-      we_vote_id
-    });
+  retrieveAddress: function (id){
+    Dispatcher.loadEndpoint("voterAddressRetrieve", { voter_device_id: id});
+  },
 
+  saveAddress: function (text){
+    Dispatcher.loadEndpoint("voterAddressSave", { text_for_map_search: text });
   }
 };

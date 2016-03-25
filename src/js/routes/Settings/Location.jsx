@@ -1,45 +1,9 @@
 import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
-import { ButtonToolbar } from "react-bootstrap";
-import VoterStore from "../../stores/VoterStore";
+import AddressBox from "../../components/AddressBox";
 
 export default class Location extends Component {
-  static propTypes = {
-    children: PropTypes.object,
-    history: PropTypes.object
-  };
-
-  constructor (props) {
-      super(props);
-      this.state = {};
-  }
-
-  componentDidMount () {
-    VoterStore.getLocation( (err, location) => {
-      this.setState({ location });
-    });
-    ReactDOM.findDOMNode(this.refs.updateLocationInput).focus();  /* Put the focus at the end of the text in address box */
-  }
-
-  updateLocation (e) {
-    this.setState({
-      location: e.target.value
-    });
-  }
-
-  saveLocation (e) {
-    e.preventDefault();
-    var { location } = this.state;
-    console.log("Saving location", location);
-    VoterStore.saveLocation( location,
-        (res) => { this.props.history.push("/ballot"); },
-        (err) =>{ console.log(err);}
-      );
-  }
 
   render () {
-    var { location } = this.state;
-
     return <div>
       <div className="container-fluid well gutter-top--small fluff-full1">
         <h3 className="text-center">
@@ -47,28 +11,11 @@ export default class Location extends Component {
         </h3>
         <div>
           <span className="small">
-
+            Please enter the address (or just the city) where you registered to
+            vote. The more location information you can provide, the more ballot information will
+            be visible.
           </span>
-          <form onSubmit={this.saveLocation.bind(this)}>
-          <input
-            type="text"
-            onChange={this.updateLocation.bind(this)}
-            name="address"
-            value={location}
-            className="form-control"
-            defaultValue=""
-            ref="updateLocationInput"
-          />
-          </form>
-
-          <div className="gutter-top--small">
-            <ButtonToolbar>
-                <button
-                  onClick={this.saveLocation.bind(this)}
-                  bsStyle="primary">
-                  Click Here to Save</button>
-            </ButtonToolbar>
-          </div>
+          <AddressBox {...this.props} saveUrl="/ballot" />
         </div>
       </div>
       <div className="container-fluid well gutter-top--small fluff-full1">

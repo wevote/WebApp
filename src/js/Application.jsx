@@ -4,6 +4,7 @@ import MoreMenu from "./components/MoreMenu";
 import Header from "./components/Header";
 import SubHeader from "./components/SubHeader";
 import VoterStore from "./stores/VoterStore";
+import VoterActions from "./actions/VoterActions";
 
 export default class Application extends Component {
   static propTypes = {
@@ -21,42 +22,31 @@ export default class Application extends Component {
   }
 
   componentDidMount () {
-    this.token = VoterStore.addChangeListener(this._onChange.bind(this));
-    // console.log("Application.jsx, About to initialize VoterStore");
-    VoterStore.getLocation( (err) => {
-      if (err) console.error("Application.jsx, Error initializing voter object", err);
-      VoterStore.getVoterObject( (_err, voter) => {
-        if (_err) console.error("Application.jsx, Error initializing voter object", err);
-        this.setState({voter});
-        // console.log("Application.jsx, voter_object: ", voter)
-      });
-    });
-    // console.log("Application.jsx componentDidMount VoterStore.addChangeListener");
-
+    let voter_device_id = VoterStore.voterDeviceId();
+    VoterActions.retrieveVoter(voter_device_id);
+    this.token = VoterStore.addListener(this._onChange.bind(this));
   }
 
   componentWillUnmount () {
-    // console.log("Application.jsx componentWillUnmount VoterStore.removeChangeListener");
-    VoterStore.removeChangeListener(this._onVoterStoreChange.bind(this));
-    // this.token.remove();
+    this.token.remove();
   }
 
   _onChange () {
     this.setState({
-      voter: VoterStore.getCachedVoterObject()
+      voter: VoterStore.voter(),
+      location: VoterStore.getAddress()
     });
   }
 
   render () {
     var { location: { pathname }} = this.props;
-    var { voter } = this.state;
+    var { voter, location } = this.state;
     var ballotItemWeVoteId = ""; /* TODO Dale: Store the ballot item that is "on stage" in Ballot store? (wv02cand3) */
-    // console.log("In Application.jsx render, voter: ", voter)
 
     return <div className="app-base">
       <div className="container-fluid">
         <div className="row">
-          <Header/>
+          <Header location={location}/>
         </div>
       </div>
       <div className="container-fluid">

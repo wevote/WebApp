@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import Headroom from "react-headroom";
-import VoterStore from "../stores/VoterStore";
 
 export default class Header extends Component {
   static propTypes = {
     email: PropTypes.string,
+    location: PropTypes.string,
     first_name: PropTypes.string,
     voter_photo_url: PropTypes.string,
     signed_in_personal: PropTypes.bool
@@ -19,20 +19,11 @@ export default class Header extends Component {
   }
 
   componentDidMount () {
-    this._onChange();
-    this.listener = VoterStore.addChangeListener(this._onChange.bind(this));
     document.body.addEventListener("click", this.pageClick.bind(this), false);
   }
 
   componentWillUnmount (){
     this.listener.remove();
-  }
-
-  _onChange (){
-    VoterStore.getLocation( (err, location) => {
-      if (err) console.error(err);
-      this.setState({ location });
-    });
   }
 
   pageClick () {
@@ -56,7 +47,8 @@ export default class Header extends Component {
   }
 
   render () {
-    var { location, visible } = this.state;
+    var { visible } = this.state;
+    let location = this.props.location;
     var { signed_in_personal: signedIn } = this.props;
 
     const header =
