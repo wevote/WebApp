@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, IndexRoute, IndexRedirect } from "react-router";
+import cookies from "./utils/cookies";
 
 // main Application
 import Application from "./Application";
@@ -39,14 +40,16 @@ import Activity from "./routes/Activity";
 import NotFound from "./routes/NotFound";
 import AddFriends from "./routes/AddFriends";
 
-const routes = (firstVisit, voter) =>
-  <Route path="/" component={Application} voter={voter} firstVisit={firstVisit}>
-    {
-     /*
-      * This is the intro section of the application.
-      * First time visitors should be directed here.
-      */
-     }
+
+const firstVisit = !cookies.getItem("voter_device_id");
+
+const routes = () =>
+  <Route path="/" component={Application}>
+    <Route component={Intro} />
+    { firstVisit ?
+      <IndexRedirect to="intro" /> :
+      <IndexRedirect to="ballot" /> }
+
     <Route path="/intro" component={Intro}>
       <Route path="/intro/opinions" component={IntroOpinions} />
       <Route path="/intro/contests" component={IntroContests} />
@@ -60,7 +63,6 @@ const routes = (firstVisit, voter) =>
 
     {/* Ballot Off-shoot Pages */}
     <Route path="/opinions" component={Opinions} />
-
     <Route path="/friends" >
       <Route path="add" component={AddFriends} />
       <Route path="remove" />
@@ -76,10 +78,8 @@ const routes = (firstVisit, voter) =>
     {/* Voter Guide Pages */}
     <Route path="/voterguide/:we_vote_id" component={GuidePositionList} />
 
-    { firstVisit ? <IndexRoute component={Intro} /> : <IndexRedirect to="ballot" /> }
-
     <Route path="ballot" component={BallotIndex}>
-      <IndexRoute component={Ballot} />
+      <IndexRoute component={Ballot}/>
       <Route path="/candidate/:we_vote_id" component={Candidate} />
       <Route path="/opinions/:we_vote_id" component={OpinionsAboutItem} />
     </Route>

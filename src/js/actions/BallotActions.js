@@ -1,7 +1,9 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
 module.exports = {
-  init: function () {
+
+  retrieve: function () {
     Dispatcher.loadEndpoint("voterBallotItemsRetrieve", { use_test_election: false });
   }
+
 };

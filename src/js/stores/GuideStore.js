@@ -1,5 +1,7 @@
 var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
+import GuideActions from "../actions/GuideActions";
+
 class GuideStore extends FluxMapStore {
 
 /* The store keeps nested attributes of voter guides in data, whereas the followed, ignoring, to_follow are just lists of ids.*/
@@ -38,6 +40,12 @@ class GuideStore extends FluxMapStore {
     let id;
 
     switch (action.type) {
+
+      case "voterAddressSave": // refresh guides when you change address
+        id = action.res.google_civic_election_id;
+        GuideActions.retrieveGuidesToFollow(id);
+        GuideActions.retrieveGuidesFollowed(id);
+        return state;
 
       case "voterGuidesToFollowRetrieve":
         voter_guides = action.res.voter_guides;

@@ -17,7 +17,7 @@ export default class Opinions extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { loading: true, error: false };
+    this.state = { loading: false, error: false, guideList: GuideStore.toFollowList() };
     this.electionId = BallotStore.getGoogleCivicElectionId();
   }
 
@@ -27,12 +27,12 @@ export default class Opinions extends Component {
     if (! this.electionId ) {
       var emptyElection = 0;
       GuideActions.retrieveGuidesToFollow(emptyElection);
-    }
-    else
+    } else {
       GuideActions.retrieveGuidesToFollow(this.electionId);
+    }
   }
 
-  _onChange (){
+  _onChange () {
     this.setState({ loading: false, error: false, guideList: GuideStore.toFollowList() });
   }
 
@@ -43,6 +43,7 @@ export default class Opinions extends Component {
   render () {
     const NO_BALLOT_TEXT = "Enter your address so we can find voter guides to follow.";
     const NO_VOTER_GUIDES_TEXT = "We could not find any voter guides for this election.";
+    const EMPTY_TEXT = "No Opinions found on this ballot";
 
     const { loading, error, guideList } = this.state;
     const { electionId } = this;
@@ -60,6 +61,8 @@ export default class Opinions extends Component {
           <p>{ NO_BALLOT_TEXT }</p>
         </div>;
 
+    if ( guideList && guideList.length === 0 )
+      guides = EMPTY_TEXT;
     else
       if (loading)
         guides =

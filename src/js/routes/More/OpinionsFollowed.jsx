@@ -15,7 +15,7 @@ export default class OpinionsFollowed extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {voter_guide_followed_list: GuideStore.followedList()};
   }
 
   componentDidMount () {
@@ -35,7 +35,6 @@ export default class OpinionsFollowed extends Component {
     } else {
       this.props.history.push("/opinions");
     }
-
   }
 
   render () {

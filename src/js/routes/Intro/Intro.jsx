@@ -1,11 +1,9 @@
 "use strict";
 import React, { Component, PropTypes } from "react";
 
-import { Button, ButtonToolbar } from "react-bootstrap";
-import BallotActions from "../../actions/BallotActions";
 const request = require("superagent");
-import VoterStore from "../../stores/VoterStore";
 const web_app_config = require("../../config");
+import AddressBox from "../../components/AddressBox";
 
 function numberWithCommas (num) {
   if (num) {
@@ -37,9 +35,6 @@ export default class Intro extends Component {
   componentDidMount () {
     this.getVoterCount();
     this.getOrgCount();
-    VoterStore.getLocation( (err, location) => {
-      this.setState({ location });
-    });
   }
 
   getVoterCount () {
@@ -66,30 +61,8 @@ export default class Intro extends Component {
       });
   }
 
-  updateLocation (e) {
-    this.setState({
-      location: e.target.value
-    });
-  }
-
-  saveLocation () {
-    var { location } = this.state;
-    VoterStore.saveLocation( location, (res) => {
-      if (res){
-		/* Whether we succeed or fail, we want to go to the next step in the introduction process */
-        this.props.history.push("/intro/opinions");
-      } else {
-        BallotActions.init(); // reinitialize ballot in case old ballot items from old addresses are stored.
-        this.props.history.push("/intro/opinions");
-      }
-    }, (err) =>{
-
-    });
-  }
-
   render () {
     const {
-      location,
       orgCount,
       voterCount,
     } = this.state;
@@ -104,22 +77,7 @@ export default class Intro extends Component {
             <span className="small">
               This is our best guess - feel free to change.
             </span>
-            <input
-              type="text"
-              onChange={this.updateLocation.bind(this)}
-              name="address"
-              value={location}
-              className="form-control"
-              defaultValue=""
-            />
-            <div className="gutter-top--small">
-              <ButtonToolbar>
-                <Button
-                  onClick={this.saveLocation.bind(this)}
-                  bsStyle="primary">Go</Button>
-
-              </ButtonToolbar>
-            </div>
+            <AddressBox {...this.props} saveUrl="/intro/opinions" />
             <br/>
             <ul className="list-group">
               <li className="list-group-item">Research ballot items</li>
