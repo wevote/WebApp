@@ -1,8 +1,14 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
+import ReactDOM from "react-dom";
 import { ButtonToolbar } from "react-bootstrap";
 import VoterStore from "../../stores/VoterStore";
 
 export default class Location extends Component {
+  static propTypes = {
+    children: PropTypes.object,
+    history: PropTypes.object
+  };
+
   constructor (props) {
       super(props);
       this.state = {};
@@ -12,6 +18,7 @@ export default class Location extends Component {
     VoterStore.getLocation( (err, location) => {
       this.setState({ location });
     });
+    ReactDOM.findDOMNode(this.refs.updateLocationInput).focus();  /* Put the focus at the end of the text in address box */
   }
 
   updateLocation (e) {
@@ -36,13 +43,11 @@ export default class Location extends Component {
     return <div>
       <div className="container-fluid well gutter-top--small fluff-full1">
         <h3 className="text-center">
-          Change Location
+          Enter address where you are registered to vote
         </h3>
         <div>
           <span className="small">
-            Please enter the address (or just the city) where you registered to
-            vote. The more location information you can provide, the more ballot information will
-            be visible.
+
           </span>
           <form onSubmit={this.saveLocation.bind(this)}>
           <input
@@ -52,6 +57,7 @@ export default class Location extends Component {
             value={location}
             className="form-control"
             defaultValue=""
+            ref="updateLocationInput"
           />
           </form>
 
@@ -60,14 +66,17 @@ export default class Location extends Component {
                 <button
                   onClick={this.saveLocation.bind(this)}
                   bsStyle="primary">
-                  Save Location</button>
+                  Click Here to Save</button>
             </ButtonToolbar>
           </div>
-
-          <br />
-          <br />
+        </div>
+      </div>
+      <div className="container-fluid well gutter-top--small fluff-full1">
+        <div>
           <div className="medium">
-            See We Vote in action! Copy and paste this address above:
+            March 2016: This site is a demo version of We Vote.
+            If you would like to see a recent live ballot, copy and paste
+            one of these addresses and paste them in the box above.
           </div>
           <h4>
             Charlotte, NC 28205

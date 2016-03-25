@@ -31,7 +31,8 @@ Especially if you have commit access to an Angular repository
 
 1.don't make changes to master, always start a new branch.  
 2.don’t merge. It messes up the commit history.  
-3.don’t pull upstream without a rebase (see above). git fetch and then rebase
+3.don’t pull upstream without 
+a rebase (see above). git fetch and then rebase
   instead (or equivalently, `git pull upstream master --rebase`).   
 4.don’t use `git commit -a`. You could silently commit something regrettable. Use -p instead.
 
