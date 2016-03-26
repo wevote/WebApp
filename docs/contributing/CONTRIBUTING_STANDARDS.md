@@ -1,3 +1,15 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Contents
+
+- [Coding Standards and Best Practices](#coding-standards-and-best-practices)
+  - [Coding Standards](#coding-standards)
+  - [If there's no issue, please create one](#if-theres-no-issue-please-create-one)
+  - [Let us Know you're working on the issue](#let-us-know-youre-working-on-the-issue)
+  - [](#)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Coding Standards and Best Practices
 
 ## Coding Standards

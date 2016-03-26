@@ -1,4 +1,7 @@
 # We Vote Process for Approving Pull Requests
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
 We have a team of engineers who can approve pull requests for WebApp (Nick Fiorini, Rob Simpson, Lisa Cho, Dale McGrew). A few notes about our process:
 
 * Give thumbs up before approving to confirm that you followed this verification process.
@@ -19,7 +22,7 @@ Add the contributor's repository as a remote repo. Here are the core contributor
     git fetch dalemcgrew
     Find the branch that the person is submitting:
     git branch -a
-    
+
 TODO: Figure out how to pull a remote branch to your local
 
 ---

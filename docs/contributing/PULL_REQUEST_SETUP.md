@@ -1,3 +1,14 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Contents
+
+- [Before Your First Pull Request](#before-your-first-pull-request)
+  - [Get Your Command Line Ready](#get-your-command-line-ready)
+  - [Connect Your Personal Fork To wevote/WebApp](#connect-your-personal-fork-to-wevotewebapp)
+  - [](#)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Before Your First Pull Request
 
 Thank you for your interest in the We Vote WebApp project. Please let us know if we can help you get started.

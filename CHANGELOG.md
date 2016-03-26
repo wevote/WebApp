@@ -3,6 +3,7 @@
 ## Contents
 
 - [WeVoteUSA Web App Change Log](#wevoteusa-web-app-change-log)
+  - [V0.5.0](#v050)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
