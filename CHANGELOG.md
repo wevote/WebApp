@@ -3,13 +3,39 @@
 ## Contents
 
 - [WeVoteUSA Web App Change Log](#wevoteusa-web-app-change-log)
+  - [0.8.0](#080)
+  - [0.5.0](#050)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 #WeVoteUSA Web App Change Log
 
 All notable changes to this project will be documented here.
-##V0.5.0
+##0.8.0
+<li> <a href="http://github.com/jerel/project/commit/55c833400146eb4e3bffa7931bb7a6b9a66c64b1">view commit &bull;</a> Contributing license agreement for those who contribute - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/688751999be74880da9498ebb74f2066bcc6c05e">view commit &bull;</a> My opinions followed stop following and ignore buttons work and refactored voterguidestore - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/16ae05b80f178f2fa0e31cb73b6e07e6d6e6f746">view commit &bull;</a> added back position on organization box to relative - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/8f5b8403aa6a78a1ae8e96aeb9b7a9079cb05835">view commit &bull;</a> #116 - fix DOM to reduce height of each box - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/23a8aa460cdea0136bf2342d2520ae2ec20cf9a9">view commit &bull;</a> #124 - Add ability to hide menu when clicking outside of menu - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/bd6b921572f739946dca36f656468fce9bd7e9f9">view commit &bull;</a> #123 - Have the header seen at all times on desktop - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/f71623b36a9001e6b8150650fa627ef20254d8e1">view commit &bull;</a> #116 - Reduce vertical space and change bootstrap classes - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/68faac6efc24f46ce5914c32ddb39013cffddf19">view commit &bull;</a> Refresh header on address change - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/7d39c241b5e1288772ab32d661f125826740a8f8">view commit &bull;</a> Call change address on keyboard enter as well as submit buttom - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/0a3df24c43fa94d038733ad6ee4e7f52e331deff">view commit &bull;</a> Changelog for release 0.5.0 - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/bdd5a97cc4d3501fe2aa5443ee07db763c9af4aa">view commit &bull;</a> Refactor ballot, candidates, measures, star views and support views - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/3896030793ee9b565f46946af1539fd8bd421bc2">view commit &bull;</a> Added "More Opinions" page (OpinionsAboutItem.jsx) that filters for one ballot item - related to WebApp Issue #8 (still in progress). Updated Intro page and IntroOpinions pages for smoother UX testing. Some eslint and spacing clean up. Some UX language changes. - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/ed518d0e6b3d2bcdacfc74c11d0539aa61f005a4">view commit &bull;</a> Testing a check in to my Personal fork - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/54efb5e183388302cab1ca3ea47ed67a16bd029c">view commit &bull;</a> Added language that clarifies Vote Smart ratings. Changed some commented code per discussion about code comments in Issue #92. This is a check in of code modified before switch to Pull Request system. - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/0deb15ec373fedb9e2f5636724f26812924b1379">view commit &bull;</a> Checking in first file to DaleMcGrew/WebApp (3rd time) - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/641b2e629b04efcf647080a91bbe94244099602f">view commit &bull;</a> Checking in first file to DaleMcGrew/WebApp (2nd time) - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/bab5c222eec3904e39c7f5328af3a71ab4720abf">view commit &bull;</a> Checking in first file to DaleMcGrew/WebApp - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/7f705c394a9c9022814dd8a6e89b099f4d213c21">view commit &bull;</a> Flux dispatch prototype - nick fiorini</li>
+<li> <a href="http://github.com/jerel/project/commit/f7cd2d21ab9d14516a04cb599acf36f28c8f8bb1">view commit &bull;</a> merging opinions branch - nick fiorini</li>
+<li> <a href="http://github.com/jerel/project/commit/1c772c0c2163913e6fb5969fc2485d18d0ba651e">view commit &bull;</a> cleanup to requests - nick fiorini</li>
+<li> <a href="http://github.com/jerel/project/commit/900a9969bf1e2b4690295a6247540cf8520f2c45">view commit &bull;</a> merge - nick fiorini</li>
+<li> <a href="http://github.com/jerel/project/commit/ef7b326bdb6affa9d380df161e6ce4649c69b426">view commit &bull;</a> new prototype for items - nick fiorini</li>
+
+##0.5.0
 <ul>
 <li> <a href="http://github.com/wevote/WebApp/commit/09a0dd2ce7ebc34228f6bfc59c5bc00e40b0b8c0">view commit &bull;</a> Update README.md</li>
 <li> <a href="http://github.com/wevote/WebApp/commit/65daad4e7df7958f9d8a0ab7e4a38567daea0fe7">view commit &bull;</a> update README for coverage of develop branch</li>

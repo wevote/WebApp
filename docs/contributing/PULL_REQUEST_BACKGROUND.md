@@ -1,3 +1,13 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Contents
+
+- [What the Heck is a Pull Request?](#what-the-heck-is-a-pull-request)
+  - [Code staging areas:](#code-staging-areas)
+  - [](#)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # What the Heck is a Pull Request?
 
 A video series describing pull requests:

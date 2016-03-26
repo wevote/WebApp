@@ -1,3 +1,14 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Contents
+
+- [Issues and Reporting Bugs](#issues-and-reporting-bugs)
+  - [Reporting bugs](#reporting-bugs)
+  - [Example Issue from Another Project](#example-issue-from-another-project)
+  - [](#)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Issues and Reporting Bugs
 
 

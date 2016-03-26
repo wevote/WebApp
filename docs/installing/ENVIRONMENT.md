@@ -1,3 +1,14 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Contents
+
+- [Preparing the Environment on Your Machine](#preparing-the-environment-on-your-machine)
+  - [Install nodeenv ("Node Env")](#install-nodeenv-node-env)
+  - [Set up your environment](#set-up-your-environment)
+  - [](#)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Preparing the Environment on Your Machine
 
 ## Install nodeenv ("Node Env")

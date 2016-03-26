@@ -2,9 +2,8 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 ## Contents
 
-- [Working with WebApp](#working-with-webapp)
-  - [Coding Standards](#coding-standards)
-  - [Checking In Code](#checking-in-code)
+- [Working with WebApp Day-to-Day](#working-with-webapp-day-to-day)
+  - [](#)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
