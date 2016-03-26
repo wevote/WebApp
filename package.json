@@ -12,6 +12,16 @@
       "stage-0"
     ]
   },
+  "scripts": {
+    "lint": "eslint --format stylish --ext .jsx --ext .js src/js",
+    "test": "npm run lint",
+    "start": "gulp",
+    "prod": "NODE_ENV=production gulp",
+    "deps": "npm run deps:missing && npm run deps:extra",
+    "deps:missing": "dependency-check package.json",
+    "deps:extra": "dependency-check package.json --extra --no-dev --ignore",
+    "build:doc": "doctoc --github --title \"## Contents\" ./"
+  },
   "dependencies": {
     "keymirror": "^0.1.1",
     "moment": "^2.11.2",
@@ -73,15 +83,6 @@
     "yargs": "^3.31.0"
   },
   "repository": "https://github.com/wevote/webapp.git",
-  "scripts": {
-    "lint": "eslint --format stylish --ext .jsx --ext .js src/js",
-    "test": "npm run lint",
-    "start": "gulp",
-    "deps": "npm run deps:missing && npm run deps:extra",
-    "deps:missing": "dependency-check package.json",
-    "deps:extra": "dependency-check package.json --extra --no-dev --ignore",
-    "build:doc": "doctoc --github --title \"## Contents\" ./"
-  },
   "pre-commit": [
     "test",
     "lint"
