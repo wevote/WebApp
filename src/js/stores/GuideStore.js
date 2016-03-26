@@ -7,6 +7,7 @@ class GuideStore extends FluxMapStore {
 /* The store keeps nested attributes of voter guides in data, whereas the followed, ignoring, to_follow are just lists of ids.*/
     getInitialState () {
       return {
+        ballot_has_guides: true,
         following: [],
         ignoring: [],
         to_follow: [],
@@ -26,6 +27,10 @@ class GuideStore extends FluxMapStore {
       return orgs;
     }
 
+    ballotHasGuides (){
+      return this.getState().ballot_has_guides;
+    }
+
     toFollowList () {
       return this.getOrgsFromArr(this.getState().to_follow);
     }
@@ -41,14 +46,25 @@ class GuideStore extends FluxMapStore {
 
     switch (action.type) {
 
-      case "voterAddressSave": // refresh guides when you change address
+      case "voterAddressSave": // fallthrough
+
+      case "voterAddressRetrieve": // refresh guides when you change address
         id = action.res.google_civic_election_id;
+        console.log("refreshing guides! id:", id);
         GuideActions.retrieveGuidesToFollow(id);
         GuideActions.retrieveGuidesFollowed(id);
         return state;
 
       case "voterGuidesToFollowRetrieve":
         voter_guides = action.res.voter_guides;
+        id = action.res.google_civic_election_id;
+        // If no voter guides found on election, retrieve results for all elections
+        if (voter_guides.length === 0 && id !== 0){
+          console.log("No guides found for ballot, retrieving guides not on ballot");
+          GuideActions.retrieveGuidesToFollow(0);
+          return state;
+        }
+
         data = state.data;
         var to_follow = [];
         voter_guides.forEach( item => {
@@ -57,6 +73,7 @@ class GuideStore extends FluxMapStore {
         });
         return {
           ...state,
+          ballot_has_guides: id === 0 ? false : true,
           to_follow: to_follow,
           data: data
         };

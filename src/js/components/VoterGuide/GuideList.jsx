@@ -22,7 +22,7 @@ export default class GuideList extends Component {
 
   render () {
 
-    let orgs = this.props.organizations.map( (org, i) => {
+    let orgs = this.props.organizations.map( (org) => {
 
       const organization =
         <Organization id={org.organization_we_vote_id}

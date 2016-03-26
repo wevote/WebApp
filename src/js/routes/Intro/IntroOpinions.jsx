@@ -1,8 +1,9 @@
-import React, { Component, PropTypes } from "react";
-import { Link } from "react-router";
 import { Button } from "react-bootstrap";
-
-import OrganizationsToFollowList from "../../components/OrganizationsToFollowList";
+import GuideStore from "../../stores/GuideStore";
+import VoterStore from "../../stores/VoterStore";
+import GuideList from "../../components/VoterGuide/GuideList";
+import { Link } from "react-router";
+import React, {Component, PropTypes } from "react";
 
 export default class IntroOpinionsPage extends Component {
   static propTypes = {
@@ -10,15 +11,29 @@ export default class IntroOpinionsPage extends Component {
     children: PropTypes.object
   };
 
-  constructor (props) {
+  constructor (props){
     super(props);
+    this.state = {guideList: [], ballot_has_guides: null};
   }
 
-  static getProps () {
-    return {};
+  componentDidMount () {
+    this._onChange();
+    this.listener = GuideStore.addListener(this._onChange.bind(this));
+  }
+
+  _onChange () {
+    this.setState({ guideList: GuideStore.toFollowList(),
+                  ballot_has_guides: GuideStore.ballotHasGuides(),
+                  address: VoterStore.getAddress() });
+  }
+
+  componentWillUnmount (){
+    this.listener.remove();
   }
 
   render () {
+    let { guideList, ballot_has_guides } = this.state;
+    console.log(ballot_has_guides);
     var float = {
       right: {
         float: "right"
@@ -55,7 +70,9 @@ export default class IntroOpinionsPage extends Component {
                     placeholder="Search by name or twitter handle."
                 />
                 <br/>
-                <OrganizationsToFollowList />
+                {ballot_has_guides ? <p></p> :
+                  <p>There are no organizations with opinions on your ballot. Here are some popular organizations</p>}
+                {guideList ? <GuideList organizations={guideList} /> : <div></div> }
             </div>
         </div>
     <Link style={float.left} to="/intro">

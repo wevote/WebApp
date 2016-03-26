@@ -14,7 +14,8 @@ module.exports = {
   },
 
   retrieveGuidesToFollow: function (election_id) {
-    Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", { google_civic_election_id: election_id });
+    Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", { google_civic_election_id: election_id,
+      maximum_number_to_retrieve: 15 });
   },
 
   retrieveGuidesToFollowByBallotItem: function (ballot_item_we_vote_id, kind_of_ballot_item) {
