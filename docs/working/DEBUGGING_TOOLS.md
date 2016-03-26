@@ -1,3 +1,16 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Contents
+
+- [Debugging Tools and Tips](#debugging-tools-and-tips)
+  - [Viewing server logs](#viewing-server-logs)
+    - [Get an SSH key](#get-an-ssh-key)
+    - [Get authorized and log in:](#get-authorized-and-log-in)
+    - [Viewing Server Logs](#viewing-server-logs)
+  - [](#)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Debugging Tools and Tips
 
 ## Viewing server logs

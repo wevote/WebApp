@@ -1,3 +1,15 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Contents
+
+- [WeVoteUSA Code of Conduct](#wevoteusa-code-of-conduct)
+  - [#WeVoteUSA Code of Conduct](#wevoteusa-code-of-conduct)
+  - [Conduct](#conduct)
+  - [](#)
+  - [Moderation](#moderation)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 #WeVoteUSA Code of Conduct
 ---
 ##Conduct

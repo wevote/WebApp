@@ -1,3 +1,12 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Contents
+
+- [Troubleshooting Pull Request Problems](#troubleshooting-pull-request-problems)
+  - [](#)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Troubleshooting Pull Request Problems
 
 Note: if there’s a conflicting commit in the history of your master branch, you

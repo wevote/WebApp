@@ -1,3 +1,14 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Contents
+
+- [Bringing Code to Your Machine](#bringing-code-to-your-machine)
+  - [Setting up your repository for work](#setting-up-your-repository-for-work)
+    - [Clone the repo](#clone-the-repo)
+  - [](#)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Bringing Code to Your Machine
 
 ## Setting up your repository for work

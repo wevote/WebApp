@@ -1,3 +1,15 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Contents
+
+- [We Vote WebApp - README Home](#we-vote-webapp---readme-home)
+- [Installing WebApp](#installing-webapp)
+- [Working with WebApp](#working-with-webapp)
+- [Contributing to the Project](#contributing-to-the-project)
+- [How to Submit Code / Pull Requests](#how-to-submit-code--pull-requests)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # We Vote WebApp - README Home
 
 [![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=develop)](https://travis-ci.org/wevote/WebApp) [![Coverage Status](https://coveralls.io/repos/github/wevote/WebApp/badge.svg?branch=master)](https://coveralls.io/github/wevote/WebApp?branch=master) [![Build status](https://ci.appveyor.com/api/projects/status/g7dvmiax01d9ydjr?svg=true)](https://ci.appveyor.com/project/pertrai1/webapp)

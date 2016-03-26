@@ -1,3 +1,25 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Contents
+
+- [Creating a Pull Request](#creating-a-pull-request)
+  - [Get Your Command Line Ready](#get-your-command-line-ready)
+  - [Preparing to Create a Branch](#preparing-to-create-a-branch)
+  - [How to Create a Branch in Your Personal Fork](#how-to-create-a-branch-in-your-personal-fork)
+  - [How to Merge in “develop” Branch Changes While you are Working](#how-to-merge-in-%E2%80%9Cdevelop%E2%80%9D-branch-changes-while-you-are-working)
+  - [Test Before Creating Pull Request](#test-before-creating-pull-request)
+  - [Commit:](#commit)
+    - [Commit Hints](#commit-hints)
+    - [For large changes spanning many commits / Pull Requests](#for-large-changes-spanning-many-commits--pull-requests)
+    - [PR Merge Exception](#pr-merge-exception)
+  - [How to Put Your Changes on your Personal Fork on the github servers](#how-to-put-your-changes-on-your-personal-fork-on-the-github-servers)
+  - [Submitting your Pull Request](#submitting-your-pull-request)
+  - [SemVer](#semver)
+  - [I Have Submitted a Pull Request, Now What?](#i-have-submitted-a-pull-request-now-what)
+  - [](#)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Creating a Pull Request
 
 If you have never created a pull request, please read “[What the Heck is a Pull Request?](PULL_REQUEST_BACKGROUND.md)
