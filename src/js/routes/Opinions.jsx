@@ -1,10 +1,8 @@
-import BallotStore from "../stores/BallotStore";
 import { Button } from "react-bootstrap";
-import GuideActions from "../actions/GuideActions";
 import GuideStore from "../stores/GuideStore";
+import VoterStore from "../stores/VoterStore";
 import GuideList from "../components/VoterGuide/GuideList";
 import { Link } from "react-router";
-import LoadingWheel from "../components/LoadingWheel";
 import React, {Component, PropTypes } from "react";
 
 /* VISUAL DESIGN HERE: https://invis.io/TR4A1NYAQ */
@@ -15,25 +13,20 @@ export default class Opinions extends Component {
     children: PropTypes.object
   };
 
-  constructor (props) {
+  constructor (props){
     super(props);
-    this.state = { loading: false, error: false, guideList: GuideStore.toFollowList() };
-    this.electionId = BallotStore.getGoogleCivicElectionId();
+    this.state = {guideList: [], ballot_has_guides: null};
   }
 
   componentDidMount () {
+    this._onChange();
     this.listener = GuideStore.addListener(this._onChange.bind(this));
-
-    if (! this.electionId ) {
-      var emptyElection = 0;
-      GuideActions.retrieveGuidesToFollow(emptyElection);
-    } else {
-      GuideActions.retrieveGuidesToFollow(this.electionId);
-    }
   }
 
   _onChange () {
-    this.setState({ loading: false, error: false, guideList: GuideStore.toFollowList() });
+    this.setState({ guideList: GuideStore.toFollowList(),
+                  ballot_has_guides: GuideStore.ballotHasGuides(),
+                  address: VoterStore.getAddress() });
   }
 
   componentWillUnmount (){
@@ -41,37 +34,22 @@ export default class Opinions extends Component {
   }
 
   render () {
-    const NO_BALLOT_TEXT = "Enter your address so we can find voter guides to follow.";
-    const NO_VOTER_GUIDES_TEXT = "We could not find any voter guides for this election.";
-    const EMPTY_TEXT = "No Opinions found on this ballot";
-
-    const { loading, error, guideList } = this.state;
-    const { electionId } = this;
+    const { ballot_has_guides, guideList, address } = this.state;
 
     let guides;
     var floatRight = {
         float: "right"
     };
 
-    if ( !electionId )
+    if ( address === "" ){
       guides = <div>
           <span style={floatRight}>
               <Link to="/settings/location"><Button bsStyle="primary">Enter my address &#x21AC;</Button></Link>
           </span>
-          <p>{ NO_BALLOT_TEXT }</p>
+          <p>Enter your address so we can find voter guides to follow.</p>
         </div>;
 
-    if ( guideList && guideList.length === 0 )
-      guides = EMPTY_TEXT;
-    else
-      if (loading)
-        guides =
-          LoadingWheel;
-
-      else if (error)
-        guides = "Error loading organizations";
-
-      else if (guideList instanceof Array && guideList.length > 0)
+    } else {
         guides = <div>
           <p>
             These organizations and public figures have opinions about items on
@@ -79,11 +57,13 @@ export default class Opinions extends Component {
           </p>
           <input type="text" name="search_opinions" className="form-control"
                placeholder="Search by name or twitter handle." />
-          <GuideList id={electionId} organizations={guideList} />
+          { ballot_has_guides ?
+            <p></p> :
+            <p>There are no organizations with opinions on your ballot. Here are some popular organizations</p>
+          }
+        <GuideList organizations={guideList}/>
         </div>;
-
-      else
-        guides = NO_VOTER_GUIDES_TEXT;
+      }
 
     const content =
       <div className="opinion-view">
