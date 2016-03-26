@@ -4,6 +4,10 @@
 # Ignore build files
 build
 
+# TernJS
+###################
+.tern-project
+
 # Logs
 ###################
 logs
