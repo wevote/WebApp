@@ -1,4 +1,5 @@
 import { Button } from "react-bootstrap";
+import SearchBox from "../../components/SearchBox";
 import GuideStore from "../../stores/GuideStore";
 import VoterStore from "../../stores/VoterStore";
 import GuideList from "../../components/VoterGuide/GuideList";
@@ -63,12 +64,7 @@ export default class IntroOpinionsPage extends Component {
                     Follow Like-Minded Organizations
                 </label>
                 <br/>
-                <input
-                    type="text"
-                    name="search_opinions"
-                    className="form-control"
-                    placeholder="Search by name or twitter handle."
-                />
+                <SearchBox />
                 <br/>
                 {ballot_has_guides ? <p></p> :
                   <p>There are no organizations with opinions on your ballot. Here are some popular organizations</p>}

@@ -41,8 +41,6 @@ export default class OpinionsFollowed extends Component {
     return <div>
   <div className="container-fluid well gutter-top--small fluff-full1">
     <h3 className="text-center">Opinions I'm Following</h3>
-    <input type="text" name="search_opinions" className="form-control"
-         placeholder="Search by name or twitter handle." /><br />
     <div className="voter-guide-list">
     <ReactCSSTransitionGroup transitionName="org-ignore" transitionEnterTimeout={400} transitionLeaveTimeout={200}>
       {

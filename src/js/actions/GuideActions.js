@@ -13,9 +13,9 @@ module.exports = {
     Dispatcher.loadEndpoint("organizationStopFollowing", { organization_we_vote_id: we_vote_id} );
   },
 
-  retrieveGuidesToFollow: function (election_id) {
+  retrieveGuidesToFollow: function (election_id, str) {
     Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", { google_civic_election_id: election_id,
-      maximum_number_to_retrieve: 15 });
+      maximum_number_to_retrieve: 15, search_string: str || "" });
   },
 
   retrieveGuidesToFollowByBallotItem: function (ballot_item_we_vote_id, kind_of_ballot_item) {
