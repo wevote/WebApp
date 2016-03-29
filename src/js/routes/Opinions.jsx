@@ -1,5 +1,6 @@
 import { Button } from "react-bootstrap";
 import GuideStore from "../stores/GuideStore";
+import SearchBox from "../components/SearchBox";
 import VoterStore from "../stores/VoterStore";
 import GuideList from "../components/VoterGuide/GuideList";
 import { Link } from "react-router";
@@ -35,7 +36,6 @@ export default class Opinions extends Component {
 
   render () {
     const { ballot_has_guides, guideList, address } = this.state;
-
     let guides;
     var floatRight = {
         float: "right"
@@ -55,8 +55,7 @@ export default class Opinions extends Component {
             These organizations and public figures have opinions about items on
             your ballot. They are ordered by number of Twitter followers.
           </p>
-          <input type="text" name="search_opinions" className="form-control"
-               placeholder="Search by name or twitter handle." />
+          <SearchBox />
           { ballot_has_guides ?
             <p></p> :
             <p>There are no organizations with opinions on your ballot. Here are some popular organizations</p>

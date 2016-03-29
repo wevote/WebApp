@@ -57,9 +57,12 @@ class GuideStore extends FluxMapStore {
 
       case "voterGuidesToFollowRetrieve":
         voter_guides = action.res.voter_guides;
-        id = action.res.google_civic_election_id;
-        // If no voter guides found on election, retrieve results for all elections
-        if (voter_guides.length === 0 && id !== 0){
+        let is_empty = voter_guides.length === 0;
+        let is_search = action.res.search_string !== "";
+        let is_this_ballot = action.res.google_civic_election_id !== 0;
+
+        // If no voter guides found , and it's not a search query, retrieve results for all elections
+        if (is_empty && is_this_ballot && !is_search ){
           console.log("No guides found for ballot, retrieving guides not on ballot");
           GuideActions.retrieveGuidesToFollow(0);
           return state;
@@ -73,7 +76,7 @@ class GuideStore extends FluxMapStore {
         });
         return {
           ...state,
-          ballot_has_guides: id === 0 ? false : true,
+          ballot_has_guides: is_search || is_this_ballot,
           to_follow: to_follow,
           data: data
         };
