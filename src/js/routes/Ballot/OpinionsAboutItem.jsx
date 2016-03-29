@@ -28,15 +28,12 @@ export default class OpinionsAboutItem extends Component {
   }
 
   componentDidMount () {
-    console.log("ENTERING componentDidMount in OpinionsAboutItem");
     if (! this.ballotItemWeVoteId )
       this.props.history.push("/opinions");
-    console.log("Looking for this ballotItemWeVoteId: ", this.ballotItemWeVoteId);
 
     this.candidateToken = CandidateStore.addListener(this._onChange.bind(this));
     this.officeToken = OfficeStore.addListener(this._onChange.bind(this));
 
-    console.log("this.props.params.we_vote_id: ", this.props.params.we_vote_id);
     CandidateActions.retrieve(this.props.params.we_vote_id);
 
     this.listener = GuideStore.addListener(this._onChange.bind(this));
@@ -65,7 +62,7 @@ export default class OpinionsAboutItem extends Component {
     var { candidate, office } = this.state;
     const { loading, error } = this.state;
     const { electionId } = this;
-    const { guideList, ballotItemWeVoteId } = this;
+    const { guideList, ballotItemWeVoteId } = this.state;
     const NO_BALLOT_ITEM_TEXT = "We could not find this candidate or measure.";
     const NO_BALLOT_TEXT = "Enter your address so we can find voter guides to follow.";
     const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to follow about this candidate or measure.";
@@ -73,14 +70,28 @@ export default class OpinionsAboutItem extends Component {
     let guides;
 
     if (!candidate || !candidate.we_vote_id){
-      console.log("candidate info not found, candidate.we_vote_id: ", candidate.we_vote_id);
+      // console.log("candidate info not found, candidate.we_vote_id: ", candidate.we_vote_id);
       return <div>The ballot item could not be found.</div>;
     }
     var floatRight = {
         float: "right"
     };
 
-    if ( !electionId )
+    if (electionId || ballotItemWeVoteId )
+      if (loading)
+        guides =
+          LoadingWheel;
+
+      else if (error)
+        guides = "Error loading organizations";
+
+      else if (guideList instanceof Array && guideList.length > 0) {
+        // console.log("guideList found, electionId: ", electionId, " ballotWeVoteId: ", this.ballotItemWeVoteId);
+        guides = <GuideList id={electionId} ballotItemWeVoteId={ballotItemWeVoteId} organizations={guideList}/>;
+      }
+      else
+        guides = NO_VOTER_GUIDES_TEXT;
+    else if ( !electionId )
       guides = <div>
           <span style={floatRight}>
               <Link to="/settings/location"><Button bsStyle="primary">Enter my address &#x21AC;</Button></Link>
@@ -91,23 +102,10 @@ export default class OpinionsAboutItem extends Component {
     else if ( !ballotItemWeVoteId )
       guides = NO_BALLOT_ITEM_TEXT;
 
-    else
-      if (loading)
-        guides =
-          LoadingWheel;
-
-      else if (error)
-        guides = "Error loading organizations";
-
-      else if (guideList instanceof Array && guideList.length > 0) {
-        console.log("guideList found, electionId: ", electionId, " ballotWeVoteId: ", this.ballotItemWeVoteId);
-        guides = <GuideList id={electionId} ballot_item_we_vote_id={ballotItemWeVoteId} organizations={guideList}/>;
-      }
-      else
-        guides = NO_VOTER_GUIDES_TEXT;
 
     const content =
-      <div className="opinion-view">
+      <section className="candidate">
+        <div className="opinion-view">
         <div className="container-fluid well gutter-top--small fluff-full1">
           <h3 className="text-center">More Opinions I Can Follow</h3>
 
@@ -116,7 +114,7 @@ export default class OpinionsAboutItem extends Component {
               onlyActiveOnIndex={false}>
           <div className="row" style={{ paddingBottom: "2rem" }}>
             <div
-              className="col-xs-6"
+              className="col-xs-4"
               style={candidate.candidate_photo_url ? {} : { height: "45px" }}>
 
               {
@@ -129,9 +127,14 @@ export default class OpinionsAboutItem extends Component {
                 <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light"/>
               }
             </div>
-            <div className="col-xs-6">
+            <div className="col-xs-8">
               <h4 className="bufferNone">
                   about { candidate.ballot_item_display_name }
+                  {
+                    candidate.party ?
+                      <span className="link-text-candidate-party"><br />{ candidate.party }</span> :
+                      <span></span>
+                  }
               </h4>
               {
                 office.ballot_item_display_name ?
@@ -150,7 +153,8 @@ export default class OpinionsAboutItem extends Component {
           </p>
           {guides}
         </div>
-      </div>;
+      </div>
+    </section>;
 
     return content;
   }
