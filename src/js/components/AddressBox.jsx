@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { ButtonToolbar } from "react-bootstrap";
+import { Button, ButtonToolbar } from "react-bootstrap";
 import VoterStore from "../stores/VoterStore";
 import LoadingWheel from "../components/LoadingWheel";
 import VoterActions from "../actions/VoterActions";
@@ -56,27 +56,33 @@ export default class AddressBox extends Component {
     if (loading){
       return LoadingWheel;
     }
+    var floatRight = {
+        float: "right"
+    };
     return (
-        <div>
-            <form onSubmit={this.saveLocation.bind(this)}>
-            <input
-              type="text"
-              onChange={this.updateLocation.bind(this)}
-              name="address"
-              value={location}
-              className="form-control"
-              defaultValue=""
-            />
-            </form>
+      <div>
+        <form onSubmit={this.saveLocation.bind(this)}>
+        <input
+          type="text"
+          onChange={this.updateLocation.bind(this)}
+          name="address"
+          value={location}
+          className="form-control"
+          defaultValue=""
+          placeholder="Enter address where you are registered to vote"
+        />
+        </form>
 
-            <div className="gutter-top--small">
-              <ButtonToolbar>
-                  <button
-                    onClick={this.saveLocation.bind(this)}
-                    bsStyle="primary">
-                    Save Location</button>
-              </ButtonToolbar>
-            </div>
+        <div className="gutter-top--small">
+          <ButtonToolbar>
+            <span style={floatRight}>
+              <Button
+                onClick={this.saveLocation.bind(this)}
+                bsStyle="primary">
+                Save Location</Button>
+            </span>
+          </ButtonToolbar>
+        </div>
       </div>);
   }
 }
