@@ -149,8 +149,7 @@ export default class OpinionsAboutItem extends Component {
           <input type="text" name="search_opinions" className="form-control"
                placeholder="Search by name or twitter handle." />
           <p>
-            These organizations and public figures have opinions about this ballot item.
-            They are ordered by number of Twitter followers.
+            Find opinions about items on ballot (ordered by Twitter followers).
           </p>
           {guides}
         </div>

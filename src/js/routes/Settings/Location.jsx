@@ -10,11 +10,6 @@ export default class Location extends Component {
           Enter address where you are registered to vote
         </h3>
         <div>
-          <span className="small">
-            Please enter the address (or just the city) where you registered to
-            vote. The more location information you can provide, the more ballot information will
-            be visible.
-          </span>
           <AddressBox {...this.props} saveUrl="/ballot" />
         </div>
       </div>

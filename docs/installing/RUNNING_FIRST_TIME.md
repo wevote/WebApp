@@ -13,9 +13,9 @@
 
 Please make sure you have read:
 
-* [Preparing the Environment on Your Machine](docs/installing/ENVIRONMENT.md)
+* [Preparing the Environment on Your Machine](ENVIRONMENT.md)
 
-* [Bringing Code to Your Machine](docs/installing/CLONING_CODE.md)
+* [Bringing Code to Your Machine](CLONING_CODE.md)
 
 ## Install and start web application
 
@@ -23,6 +23,7 @@ Please make sure you have read:
     (WebAppEnv) $ npm -g install gulp-cli      // try sudo if it does not work
     (WebAppEnv) $ npm install
     (WebAppEnv) $ gulp
+    (WebAppEnv) $ npm rebuild node-sass
 
 You should be able to visit WebApp here:
 

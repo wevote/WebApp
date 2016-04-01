@@ -59,7 +59,7 @@ export default class Header extends Component {
               <span onClick={this.show.bind(this)} className="glyphicon glyphicon-menu-hamburger glyphicon-line-adjustment device-icon--large">
               </span>
               My Voter Guide
-              <span className="header-version"> demo version</span>
+              <span className="header-version"> demo</span>
             </h4>
             <aside className="header-address pull-right gutter-right--window gutter-top--small">
               <Link to="/settings/location" className="font-lightest">

@@ -52,8 +52,7 @@ export default class Opinions extends Component {
     } else {
         guides = <div>
           <p>
-            These organizations and public figures have opinions about items on
-            your ballot. They are ordered by number of Twitter followers.
+            Find opinions about items on ballot (ordered by Twitter followers).
           </p>
           <SearchBox />
           { ballot_has_guides ?
