@@ -1,4 +1,5 @@
 import React, {Component } from "react";
+import ReactDOM from "react-dom";
 import GuideActions from "../actions/GuideActions";
 import VoterStore from "../stores/VoterStore";
 
@@ -10,7 +11,7 @@ export default class SearchBox extends Component {
   }
 
   componentDidMount (){
-    React.findDOMNode(this.refs.search).focus();
+    ReactDOM.findDOMNode(this.refs.search).focus();
   }
 
   componentWillUnmount (){
