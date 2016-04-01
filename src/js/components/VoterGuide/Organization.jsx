@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { Link } from "react-router";
 
 function numberWithCommas (num) {
   var parts = num.toString().split(".");
@@ -29,15 +30,19 @@ export default class Organization extends Component {
 
     const {
       displayName,
-      imageUrl,
       followers,
+      id,
+      imageUrl,
     } = this.props;
+
+    var voter_guide_we_vote_id_link = "/voterguide/" + id;
 
     const image = this.state.error ?
       <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"/> :
       <img src={imageUrl} onError={this.brokenLink.bind(this)} alt={displayName + ".jpg"} />;
 
     const org =
+      <Link to={voter_guide_we_vote_id_link}>
       <div className="row">
         <div className="organization well well-skinny well-bg--light split-top-skinny clearfix">
           <div className="hidden-xs col-sm-2">
@@ -54,7 +59,8 @@ export default class Organization extends Component {
               {numberWithCommas(followers)}
           </div>
         </div>
-      </div>;
+      </div>
+      </Link>;
 
     return org;
   }

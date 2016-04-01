@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { Link } from "react-router";
 import FollowOrIgnore from "../../components/FollowOrIgnore";
 
 function numberWithCommas (x) {
@@ -28,6 +29,7 @@ export default class VoterGuideItem extends Component {
     if (this.props.twitter_followers_count) {
       twitterFollowers = <span className="fa fa-twitter">{twitterFollowersCount}</span>;
     }
+    var voter_guide_we_vote_id_link = "/voterguide/" + this.props.organization_we_vote_id;
 
     /* This was refactored into /src/js/components/VoterGuide/GuideList.jsx for "More Opinions" page.
      * Since the migration of the existing styles was not done with total fidelity, we need to leave this
@@ -36,6 +38,7 @@ export default class VoterGuideItem extends Component {
     return (
       <div className="ballot-item well well-skinny well-bg--light split-top-skinny clearfix">
 
+      <Link to={voter_guide_we_vote_id_link}>
         <div className="hidden-xs col-sm-2">
           <img className="img-square"
                 src={this.props.voter_guide_image_url}
@@ -45,6 +48,7 @@ export default class VoterGuideItem extends Component {
         <div className="col-xs-6 col-sm-6 display-name">
           { this.props.voter_guide_display_name }
         </div>
+      </Link>
         <div className="col-xs-6 col-sm-4 utils-paddingright0">
           <FollowOrIgnore organization_we_vote_id={this.props.organization_we_vote_id} />
         </div>

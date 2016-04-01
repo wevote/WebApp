@@ -17,7 +17,9 @@ export default class OrganizationPositionItem extends Component {
     return (
       <li className="list-group-item">
           <StarAction we_vote_id={ballot_item_we_vote_id} type={kind_of_ballot_item} />
-          <Link to="ballot_candidate_one_org_position" params={{id: 2, org_id: 27}} />
+        <Link className="linkLight"
+              to={"/candidate/" + ballot_item_we_vote_id }
+              onlyActiveOnIndex={false}>
           {/*<i className="icon-icon-add-friends-2-1 icon-light icon-medium" />*/}
           {
             ballot_item_image_url_https ?
@@ -36,6 +38,7 @@ export default class OrganizationPositionItem extends Component {
             Integer ut bibendum ex. Suspendisse eleifend mi accumsan, euismod enim at, malesuada nibh.
             Duis a eros fringilla, dictum leo vitae, vulputate mi. Nunc vitae neque nec erat fermentum... (more)
           <br />*/}
+        </Link>
         </li>
     );
   }
