@@ -1,12 +1,12 @@
 let Dispatcher = require("../dispatcher/Dispatcher");
 let FluxMapStore = require("flux/lib/FluxMapStore");
 import BallotActions from "../actions/BallotActions";
+import VoterStore from "../stores/VoterStore";
 const assign = require("object-assign");
 
 class BallotStore extends FluxMapStore {
   getInitialState () {
     return {
-      _civicId: null,
       ballots: {}
     };
   }
@@ -17,16 +17,12 @@ class BallotStore extends FluxMapStore {
 
   get ballot () {
     console.log(this.getState().ballots);
-    let civicId = this.getGoogleCivicElectionId();
+    let civicId = VoterStore.election_id();
     if (!civicId){
       return undefined;
     } else {
       return this.getState().ballots[civicId];
     }
-  }
-
-  getGoogleCivicElectionId (){
-    return this.getState()._civicId;
   }
 
   reduce (state, action) {
@@ -50,7 +46,6 @@ class BallotStore extends FluxMapStore {
 
         return {
           ...state,
-          _civicId: key,
           ballot_found: action.res.ballot_found,
           ballots: assign({}, state.ballots, newBallot )
         };
@@ -62,7 +57,6 @@ class BallotStore extends FluxMapStore {
 
         return {
           ...state,
-          _civicId: key,
           ballot_found: action.res.ballot_found,
           ballots: assign({}, state.ballots, newBallot )
         };

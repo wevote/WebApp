@@ -16,6 +16,10 @@ class VoterStore extends FluxMapStore {
     return this.getState().voter;
   }
 
+  election_id (){
+    return this.getState().address.google_civic_election_id;
+  }
+
   getAddress (){
     return this.getState().address.text_for_map_search;
   }
@@ -52,7 +56,8 @@ class VoterStore extends FluxMapStore {
       case "voterAddressSave":
         return {
           ...state,
-          address: { text_for_map_search: action.res.text_for_map_search}
+          address: { text_for_map_search: action.res.text_for_map_search,
+                    google_civic_election_id: action.res.google_civic_election_id }
         };
 
       case "error-voterRetrieve" || "error-voterAddressRetrieve" || "error-voterAddressSave":

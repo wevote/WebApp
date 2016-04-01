@@ -18,6 +18,11 @@ export default class Organization extends Component {
 
   constructor (props) {
     super(props);
+    this.state = { error: false };
+  }
+
+  brokenLink (){
+    this.setState({error: true});
   }
 
   render () {
@@ -28,11 +33,15 @@ export default class Organization extends Component {
       followers,
     } = this.props;
 
+    const image = this.state.error ?
+      <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"/> :
+      <img src={imageUrl} onError={this.brokenLink.bind(this)} alt={displayName + ".jpg"} />;
+
     const org =
       <div className="row">
         <div className="organization well well-skinny well-bg--light split-top-skinny clearfix">
           <div className="hidden-xs col-sm-2">
-            <img src={imageUrl} alt={displayName + ".jpg"} />
+            {image}
           </div>
           <div className="col-xs-6 col-sm-6 display-name">
             {displayName}

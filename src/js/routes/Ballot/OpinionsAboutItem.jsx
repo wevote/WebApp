@@ -1,6 +1,7 @@
 import React, {Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router";
+import VoterStore from "../../stores/VoterStore";
 import BallotStore from "../../stores/BallotStore";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
@@ -24,7 +25,7 @@ export default class OpinionsAboutItem extends Component {
     this.state = { candidate: {}, office: {}, loading: true, error: false };
     this.ballotItemWeVoteId = this.props.params.we_vote_id;
     this.kindOfBallotItem = "CANDIDATE"; /* TODO: Convert from hard coded to dynamic between CANDIDATE and MEASURE */
-    this.electionId = BallotStore.getGoogleCivicElectionId();
+    this.electionId = VoterStore.election_id();
   }
 
   componentDidMount () {
