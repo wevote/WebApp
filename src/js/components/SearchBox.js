@@ -1,6 +1,7 @@
 import React, {Component } from "react";
+import ReactDOM from "react-dom";
 import GuideActions from "../actions/GuideActions";
-import BallotStore from "../stores/BallotStore";
+import VoterStore from "../stores/VoterStore";
 
 export default class SearchBox extends Component {
 
@@ -10,12 +11,12 @@ export default class SearchBox extends Component {
   }
 
   componentDidMount (){
-    React.findDOMNode(this.refs.search).focus();
+    ReactDOM.findDOMNode(this.refs.search).focus();
   }
 
   componentWillUnmount (){
     //Clear search results when navigating away
-    let id = BallotStore.getGoogleCivicElectionId();
+    let id = VoterStore.election_id();
     GuideActions.retrieveGuidesToFollow(id);
   }
 
@@ -24,7 +25,7 @@ export default class SearchBox extends Component {
     this.setState({ query: query });
     // Search for orgs based on query regardless of whether they have opinions on your ballot (election_id is 0)
     // If you blank out the query string, return normal results for this election
-    let id = query === "" ? BallotStore.getGoogleCivicElectionId() : 0;
+    let id = query === "" ? VoterStore.election_id() : 0;
     GuideActions.retrieveGuidesToFollow(id, query);
   }
 

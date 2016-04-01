@@ -43,6 +43,10 @@ export default class Application extends Component {
     var { voter, location } = this.state;
     var ballotItemWeVoteId = ""; /* TODO Dale: Store the ballot item that is "on stage" in Ballot store? (wv02cand3) */
 
+    if (!voter || !location) {
+      return <div></div>;
+    }
+
     return <div className="app-base">
       <div className="container-fluid">
         <div className="row">
