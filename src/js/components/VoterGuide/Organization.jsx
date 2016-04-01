@@ -42,15 +42,16 @@ export default class Organization extends Component {
       <img src={imageUrl} onError={this.brokenLink.bind(this)} alt={displayName + ".jpg"} />;
 
     const org =
-      <Link to={voter_guide_we_vote_id_link}>
       <div className="row">
         <div className="organization well well-skinny well-bg--light split-top-skinny clearfix">
-          <div className="hidden-xs col-sm-2">
-            {image}
-          </div>
-          <div className="col-xs-6 col-sm-6 display-name">
-            {displayName}
-          </div>
+          <Link to={voter_guide_we_vote_id_link}>
+            <div className="hidden-xs col-sm-2">
+              {image}
+            </div>
+            <div className="col-xs-6 col-sm-6 display-name">
+              {displayName}
+            </div>
+          </Link>
           <div className="col-xs-6 col-sm-4 utils-paddingright0"
                 style={ {textAlign: "right"} }>
               {this.props.children}
@@ -59,8 +60,7 @@ export default class Organization extends Component {
               {numberWithCommas(followers)}
           </div>
         </div>
-      </div>
-      </Link>;
+      </div>;
 
     return org;
   }
