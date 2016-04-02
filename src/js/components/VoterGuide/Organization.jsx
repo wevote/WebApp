@@ -38,21 +38,23 @@ export default class Organization extends Component {
     var voter_guide_we_vote_id_link = "/voterguide/" + id;
 
     const image = this.state.error ?
-      <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"/> :
-      <img src={imageUrl} onError={this.brokenLink.bind(this)} alt={displayName + ".jpg"} />;
+      <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color utils-img-contain-glyph" /> :
+      <img className="utils-img-contain" src={imageUrl} onError={this.brokenLink.bind(this)} alt={displayName + ".jpg"} />;
 
     const org =
       <div className="row">
         <div className="organization well well-skinny well-bg--light split-top-skinny clearfix">
-          <Link to={voter_guide_we_vote_id_link}>
-            <div className="hidden-xs col-sm-2">
+          <div className="col-xs-2">
+            <Link to={voter_guide_we_vote_id_link}>
               {image}
-            </div>
-            <div className="col-xs-6 col-sm-6 display-name">
+            </Link>
+          </div>
+          <div className="col-xs-8 col-sm-6 display-name">
+            <Link to={voter_guide_we_vote_id_link}>
               {displayName}
-            </div>
-          </Link>
-          <div className="col-xs-6 col-sm-4 utils-paddingright0"
+            </Link>
+          </div>
+          <div className="col-xs-2 col-sm-4 utils-paddingright0"
                 style={ {textAlign: "right"} }>
               {this.props.children}
           </div>
