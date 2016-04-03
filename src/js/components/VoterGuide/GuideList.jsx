@@ -30,11 +30,19 @@ export default class GuideList extends Component {
                       displayName={org.voter_guide_display_name}
                       followers={org.twitter_followers_count}
                       imageUrl={org.voter_guide_image_url} >
-          <button className="btn btn-primary follow"
+          <button className="btn btn-primary btn-sm follow hidden-xs"
                   onClick={this.handleFollow.bind(this, org.organization_we_vote_id)}>
             Follow
           </button>
-          <button className="btn btn-default ignore"
+          <button className="btn btn-primary btn-xs follow visible-xs-block utils-margin_bottom5"
+                  onClick={this.handleFollow.bind(this, org.organization_we_vote_id)}>
+            Follow
+          </button>
+          <button className="btn btn-default btn-sm hidden-xs"
+                  onClick={this.handleIgnore.bind(this, org.organization_we_vote_id)}>
+            Ignore
+          </button>
+          <button className="btn btn-default btn-xs visible-xs-block"
                   onClick={this.handleIgnore.bind(this, org.organization_we_vote_id)}>
             Ignore
           </button>

@@ -9,6 +9,19 @@
         padding-right: 0 !important;
       }
     }
+    &-margin {
+      &_bottom5 {
+        margin-bottom: 5px;
+      }
+    }
+    &-img {
+      &-contain {
+        max-width: 100%;
+        &-glyph {
+          font-size: 3em !important;
+        }
+      }
+    }
 }
 
 .transparent, .transparent:hover {
