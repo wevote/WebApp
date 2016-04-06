@@ -15,11 +15,7 @@ export default class ItemSupportOppose extends Component {
 
   componentDidMount () {
     this.listener = SupportStore.addListener(this._onChange.bind(this));
-    if (!SupportStore.isRetrieved(this.props.we_vote_id)){
-      SupportActions.retrieve(this.props.we_vote_id, this.props.type);
-    } else {
-      this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
-    }
+    this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
   }
 
   componentWillUnmount () {
