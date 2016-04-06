@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import BallotStore from "../../stores/BallotStore";
+import SupportStore from "../../stores/SupportStore";
+import SupportActions from "../../actions/SupportActions";
 import LoadingWheel from "../../components/LoadingWheel";
 import BallotItem from "../../components/Ballot/BallotItem";
 
@@ -13,20 +15,24 @@ export default class Ballot extends Component {
 
   componentDidMount () {
     if (BallotStore.ballot_found === false){ // No ballot found
-      this.props.history.push("settings/location")
+      this.props.history.push("settings/location");
     }
+      SupportActions.retrieveAll();
+      SupportActions.retrieveAllCounts();
+      this.supportToken = SupportStore.addListener(this._onChange.bind(this));
       this.token = BallotStore.addListener(this._onChange.bind(this));
   }
 
   componentWillUnmount (){
     this.token.remove();
+    this.supportToken.remove();
   }
 
   _onChange (){
     if (BallotStore.ballot_found && BallotStore.ballot.length === 0){ // Ballot is found but ballot is empty
       this.props.history.push("ballot/empty");
-    } else if (BallotStore.ballot){
-      this.setState({ ballot: BallotStore.ballot });
+    } else if (BallotStore.ballot && SupportStore.supportList){
+      this.setState({ballot: BallotStore.ballot});
     }
   }
 

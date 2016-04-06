@@ -4,112 +4,107 @@ const assign = require("object-assign");
 
 class SupportStore extends FluxMapStore {
 
-  isRetrieved (we_vote_id){
-    var props = ["is_oppose", "is_support", "support_count", "oppose_count"];
-    var item = this.get(we_vote_id);
-    if (!item){
-      return false;
+  get (we_vote_id) {
+    if (!(this.supportList && this.opposeList && this.supportCounts && this.opposeCounts )){
+      return undefined;
     }
-    var result = true;
-    props.forEach( (prop) => {
-      if (!item.hasOwnProperty(prop)){
-        result = false;
-      }
-    });
-    return result;
+   return {
+     is_support: this.supportList[we_vote_id] || false,
+     is_oppose: this.opposeList[we_vote_id] || false,
+     support_count: this.supportCounts[we_vote_id],
+     oppose_count: this.opposeCounts[we_vote_id]
+   };
   }
 
-  /**
-  * toggle the support state of a ballot item to On by its we_vote_id
-  */
-setLocalSupportOnState (we_vote_id) {
-    var item = this.get(we_vote_id);
-    var obj = {is_support: true, is_oppose: false, support_count: item.support_count + 1 };
-    if (item.is_oppose === true){
-      obj.oppose_count = item.oppose_count - 1;
-    }
-    return obj;
- }
- /**
- * toggle the support state of a ballot item to Off by its we_vote_id
- */
-setLocalSupportOffState (we_vote_id) {
-   var item = this.get(we_vote_id);
-   var obj = {is_support: false};
-   if (item.is_support === true) {
-     obj.support_count = item.support_count - 1;
-   }
-   return obj;
- }
+  get supportList (){
+    return this.getState().voter_supports;
+  }
 
-  /**
-  * toggle the oppose state of a ballot item to On by its we_vote_id
-  */
-setLocalOpposeOnState (we_vote_id) {
-   var item = this.get(we_vote_id);
-   var obj = {is_oppose: true, is_support: false, oppose_count: item.oppose_count + 1};
-   if (item.is_support === true){
-     obj.support_count = item.support_count - 1;
-   }
-   return obj;
- }
+  get opposeList (){
+    return this.getState().voter_opposes;
+  }
 
-  /**
-  * toggle the oppose state of a ballot item to Off by its we_vote_id
-  */
- setLocalOpposeOffState (we_vote_id) {
-   var item = this.get(we_vote_id);
-   var obj = {is_oppose: false};
-   if (item.is_oppose === true) {
-     obj.oppose_count = item.oppose_count - 1;
-   }
-   return obj;
- }
+  get supportCounts (){
+    return this.getState().support_counts;
+  }
+
+  get opposeCounts (){
+    return this.getState().oppose_counts;
+  }
+
+  listWithChangedCount (list, we_vote_id, amount) {
+    return assign({}, list, { [we_vote_id]: list[we_vote_id] + amount });
+  }
+
+/* Turn action into a dictionary/object format with we_vote_id as key for fast lookup */
+  parseListToHash (property, list){
+    let hash_map = {};
+    list.forEach(el => {
+      hash_map[el.ballot_item_we_vote_id] = el[property];
+    });
+    return hash_map;
+  }
 
   reduce (state, action) {
 
-    if (action.res.success === false)
-      return state;
-
-    var we_vote_id = action.res.ballot_item_we_vote_id;
-    var oldState = state.get(we_vote_id) || {};
-    var newProps;
+    let we_vote_id = action.res.ballot_item_we_vote_id;
 
     switch (action.type) {
 
-      case "voterPositionRetrieve":
-        we_vote_id = action.res.candidate_we_vote_id || action.res.measure_we_vote_id; // TODO when API standardizes to ballot_item_we_vote_id
-        return state.set(we_vote_id, assign({}, oldState,
-          { is_support: action.res.is_support, is_oppose: action.res.is_oppose} ));
+      case "voterAllPositionsRetrieve":
+        return {
+          ...state,
+          voter_supports: this.parseListToHash("is_support", action.res.position_list),
+          voter_opposes: this.parseListToHash("is_oppose", action.res.position_list)
+        };
 
-      case "positionSupportCountForBallotItem":
-        return state.set(we_vote_id, assign({}, oldState, {support_count: action.res.count } ));
-
-      case "positionOpposeCountForBallotItem":
-        return state.set(we_vote_id, assign({}, oldState, {oppose_count: action.res.count }));
+      case "positionsCountForAllBallotItems":
+        return {
+          ...state,
+          oppose_counts: this.parseListToHash("oppose_count", action.res.ballot_item_list),
+          support_counts: this.parseListToHash("support_count", action.res.ballot_item_list)
+        };
 
       case "voterOpposingSave":
-        newProps = this.setLocalOpposeOnState(we_vote_id);
-        return state.set(we_vote_id, assign({}, oldState, newProps ));
+        return {
+          ...state,
+          voter_supports: assign({}, state.voter_supports, { [we_vote_id]: false }),
+          voter_opposes: assign({}, state.voter_opposes, { [we_vote_id]: true }),
+          support_counts: state.voter_supports[we_vote_id] ?
+                        this.listWithChangedCount(state.support_counts, we_vote_id, -1 ) :
+                        state.support_counts,
+          oppose_counts: this.listWithChangedCount(state.oppose_counts, we_vote_id, 1)
+        };
 
       case "voterStopOpposingSave":
-        newProps = this.setLocalOpposeOffState(we_vote_id);
-        return state.set(we_vote_id, assign({}, oldState, newProps ));
+        return {
+          ...state,
+          voter_opposes: assign({}, state.voter_oppose, { [we_vote_id]: false }),
+          oppose_counts: this.listWithChangedCount(state.oppose_counts, we_vote_id, -1)
+        };
 
       case "voterSupportingSave":
-        newProps = this.setLocalSupportOnState(we_vote_id);
-        return state.set(we_vote_id, assign({}, oldState, newProps ));
+        return {
+          ...state,
+          voter_supports: assign({}, state.voter_supports, { [we_vote_id]: true }),
+          voter_opposes: assign({}, state.voter_opposes, { [we_vote_id]: false }),
+          support_counts: this.listWithChangedCount(state.support_counts, we_vote_id, 1),
+          oppose_counts: state.voter_opposes[we_vote_id] ?
+                        this.listWithChangedCount(state.oppose_counts, we_vote_id, -1) :
+                        state.oppose_counts,
+        };
 
       case "voterStopSupportingSave":
-        newProps = this.setLocalSupportOffState(we_vote_id);
-        return state.set(we_vote_id, assign({}, oldState, newProps ));
+        return {
+          ...state,
+          voter_supports: assign({}, state.voter_supports, { [we_vote_id]: false }),
+          support_counts: this.listWithChangedCount(state.support_counts, we_vote_id, -1)
+        };
 
       default:
         return state;
     }
-
   }
-
 }
 
 module.exports = new SupportStore(Dispatcher);
