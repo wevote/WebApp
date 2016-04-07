@@ -30,7 +30,7 @@ export default class MoreMenu extends Component {
       <ul className="list-group">
         <li className="list-group-item"><Link to="/ballot"><div>My Voter Guide</div></Link></li>
         <li className="list-group-item"><Link to="/more/opinions/followed"><div>Opinions I'm Following</div></Link></li>
-        <li className="list-group-item"><Link to="/ballot"><div>What I Support</div></Link></li>
+        <li className="list-group-item"><Link to={{ pathname: "/ballot", query: { filterSupport: true } }}><div>What I Support</div></Link></li>
         <li className="list-group-item"><Link to="/ballot"><div>What I've Starred</div></Link></li>
         <li className="list-group-item"><Link to="/settings/location"><div>My Address</div></Link></li>
         {this.props.signed_in_personal ?
