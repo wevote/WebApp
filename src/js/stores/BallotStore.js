@@ -25,6 +25,22 @@ class BallotStore extends FluxMapStore {
     }
   }
 
+  get ballot_remaining_choices (){
+    let ballot = this.ballot;
+    if (!ballot) { return undefined; }
+
+    return ballot.filter( ballot_item => {
+      let {kind_of_ballot_item, we_vote_id, candidate_list } = ballot_item;
+      if (kind_of_ballot_item === "OFFICE"){ // OFFICE - you are undecided if you haven't supported anyone
+        return candidate_list.filter(candidate =>{
+          return SupportStore.supportList[candidate.we_vote_id];
+        }).length === 0;
+      } else { //MEASURES - you haven't decided if you neither support nor oppose
+        return !SupportStore.supportList[we_vote_id] && !SupportStore.opposeList[we_vote_id];
+      }
+    });
+  }
+
   get ballot_supported () {
     let ballot = this.ballot;
     if (!ballot) { return undefined; }
