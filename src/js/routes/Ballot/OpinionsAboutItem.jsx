@@ -2,7 +2,6 @@ import React, {Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router";
 import VoterStore from "../../stores/VoterStore";
-import BallotStore from "../../stores/BallotStore";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
 import GuideActions from "../../actions/GuideActions";
@@ -50,7 +49,7 @@ export default class OpinionsAboutItem extends Component {
         this.setState({ office: OfficeStore.get(candidate.contest_office_we_vote_id) || {} });
       }
     }
-    this.setState({ loading: false, error: false, guideList: GuideStore.toFollowList() });
+    this.setState({ loading: false, error: false, guideList: GuideStore.toFollowListForCand() });
   }
 
   componentWillUnmount (){
