@@ -11,6 +11,7 @@ class GuideStore extends FluxMapStore {
         following: [],
         ignoring: [],
         to_follow: [],
+        to_follow_for_cand: [],
         data: {}
       };
     }
@@ -33,6 +34,10 @@ class GuideStore extends FluxMapStore {
 
     toFollowList () {
       return this.getOrgsFromArr(this.getState().to_follow);
+    }
+
+    toFollowListForCand (){
+      return this.getOrgsFromArr(this.getState().to_follow_for_cand);
     }
 
     followedList (){
@@ -60,6 +65,7 @@ class GuideStore extends FluxMapStore {
         let is_empty = voter_guides.length === 0;
         let is_search = action.res.search_string !== "";
         let is_this_ballot = action.res.google_civic_election_id !== 0;
+        let is_candidate_opinions = action.res.ballot_item_we_vote_id !== "";
 
         // If no voter guides found , and it's not a search query, retrieve results for all elections
         if (is_empty && is_this_ballot && !is_search ){
@@ -69,15 +75,16 @@ class GuideStore extends FluxMapStore {
         }
 
         data = state.data;
-        var to_follow = [];
+        var orgs = [];
         voter_guides.forEach( item => {
           data[item.organization_we_vote_id] = item;
-          to_follow.push(item.organization_we_vote_id);
+          orgs.push(item.organization_we_vote_id);
         });
         return {
           ...state,
           ballot_has_guides: is_search || is_this_ballot,
-          to_follow: to_follow,
+          to_follow: is_candidate_opinions ? state.to_follow : orgs,
+          to_follow_for_cand: is_candidate_opinions ? orgs : state.to_follow_for_cand,
           data: data
         };
 

@@ -30,7 +30,7 @@ export default class Ballot extends Component {
   }
 
   _onChange (){
-    if (BallotStore.ballot_found && BallotStore.ballot.length === 0){ // Ballot is found but ballot is empty
+    if (BallotStore.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0){ // Ballot is found but ballot is empty
       this.props.history.push("ballot/empty");
     }
     this.setState({loading: false});
