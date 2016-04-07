@@ -38,7 +38,15 @@ export default class Ballot extends Component {
 
   render () {
     let query = this.props.location.query;
-    let ballot = query && query.filterSupport ? BallotStore.ballot_supported : BallotStore.ballot;
+    let ballot;
+    if (query && query.filterSupport){
+      ballot = BallotStore.ballot_supported;
+    } else if (query && query.filterRemaining){
+      ballot = BallotStore.ballot_remaining_choices;
+    } else {
+      ballot = BallotStore.ballot;
+    }
+    // let ballot = query && query.filterSupport ? BallotStore.ballot_supported : BallotStore.ballot;
 
     return (
       <div className="ballot">

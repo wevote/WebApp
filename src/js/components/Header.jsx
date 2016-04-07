@@ -109,9 +109,9 @@ export default class Header extends Component {
             </Link>
             </li>
             <li className="list-group-item">
-              <Link onClick={this.hide.bind(this)} to="/ballot">
+              <Link onClick={this.hide.bind(this)} to={{ pathname: "/ballot", query: { filterRemaining: true } }}>
                 <div>
-                What I've Starred
+                Choices Remaining
                 </div>
               </Link>
             </li>
