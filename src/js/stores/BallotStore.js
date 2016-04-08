@@ -6,30 +6,36 @@ import SupportStore from "../stores/SupportStore";
 const assign = require("object-assign");
 
 class BallotStore extends FluxMapStore {
-  getInitialState () {
-    return {
-      ballots: {}
-    };
+
+  isLoaded (){
+    let civicId = VoterStore.election_id();
+    return this.getState().ballots && this.getState().ballots[civicId] && SupportStore.supportList ? true : false;
+  }
+
+  get ballot_properties (){
+    if (!this.isLoaded()){ return undefined; }
+    let civicId = VoterStore.election_id();
+    let props = assign({}, this.getState().ballots[civicId] );
+    props.ballot_item_list = null;
+    return props;
   }
 
   get ballot_found (){
-    return this.getState().ballot_found;
+    if (!this.isLoaded()){ return undefined; }
+    let civicId = VoterStore.election_id();
+    return this.getState().ballots[civicId].ballot_found;
   }
 
   get ballot () {
+    if (!this.isLoaded()){ return undefined; }
     let civicId = VoterStore.election_id();
-    if (!civicId){
-      return undefined;
-    } else {
-      return this.getState().ballots[civicId];
-    }
+    return this.getState().ballots[civicId].ballot_item_list;
   }
 
   get ballot_remaining_choices (){
-    let ballot = this.ballot;
-    if (!ballot || !SupportStore.supportList ) { return undefined; }
+    if (!this.isLoaded()){ return undefined; }
 
-    return ballot.filter( ballot_item => {
+    return this.ballot.filter( ballot_item => {
       let {kind_of_ballot_item, we_vote_id, candidate_list } = ballot_item;
       if (kind_of_ballot_item === "OFFICE"){ // OFFICE - you are undecided if you haven't supported anyone
         return candidate_list.filter(candidate =>{
@@ -42,8 +48,7 @@ class BallotStore extends FluxMapStore {
   }
 
   get ballot_supported () {
-    let ballot = this.ballot;
-    if (!ballot || !SupportStore.supportList ) { return undefined; }
+    if (!this.isLoaded()){ return undefined; }
 
     return this.ballot_filtered_unsupported_candidates().filter( ballot_item => {
       if (ballot_item.kind_of_ballot_item === "OFFICE"){ //Offices
@@ -75,7 +80,7 @@ class BallotStore extends FluxMapStore {
     if (action.res.success === false)
       return state;
 
-    let key, ballot;
+    let key;
     let newBallot = {};
 
     switch (action.type) {
@@ -86,23 +91,19 @@ class BallotStore extends FluxMapStore {
 
       case "voterBallotItemsRetrieve":
         key = action.res.google_civic_election_id;
-        ballot = action.res.ballot_item_list || [];
-        newBallot[key] = ballot;
+        newBallot[key] = action.res;
 
         return {
           ...state,
-          ballot_found: action.res.ballot_found,
           ballots: assign({}, state.ballots, newBallot )
         };
 
       case "voterAddressSave":
         key = action.res.google_civic_election_id;
-        ballot = action.res.ballot_item_list || [];
-        newBallot[key] = ballot;
+        newBallot[key] = action.res;
 
         return {
           ...state,
-          ballot_found: action.res.ballot_found,
           ballots: assign({}, state.ballots, newBallot )
         };
 

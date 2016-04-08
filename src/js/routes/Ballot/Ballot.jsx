@@ -4,6 +4,8 @@ import SupportStore from "../../stores/SupportStore";
 import SupportActions from "../../actions/SupportActions";
 import LoadingWheel from "../../components/LoadingWheel";
 import BallotItem from "../../components/Ballot/BallotItem";
+import { Link } from "react-router";
+import { Button } from "react-bootstrap";
 
 export default class Ballot extends Component {
   static propTypes = {
@@ -17,7 +19,7 @@ export default class Ballot extends Component {
   }
 
   componentDidMount () {
-    if (BallotStore.ballot_found === false){ // No ballot found
+    if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
       this.props.history.push("settings/location");
     }
       SupportActions.retrieveAll();
@@ -30,32 +32,52 @@ export default class Ballot extends Component {
   }
 
   _onChange (){
-    if (BallotStore.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0){ // Ballot is found but ballot is empty
+    if (BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0){ // Ballot is found but ballot is empty
       this.props.history.push("ballot/empty");
     }
     this.setState({loading: false});
   }
 
   render () {
+    if (this.state.loading) {
+      return LoadingWheel;
+    }
+
+    let ballot = BallotStore.ballot;
+    var empty_msg = "";
     let query = this.props.location.query;
-    let ballot;
+    let ballot_props = BallotStore.ballot_properties;
+    let ballot_caveat = ballot_props.ballot_caveat;
+
     if (query && query.filterSupport){
       ballot = BallotStore.ballot_supported;
+      empty_msg = "You haven't supported any candidates or measures yet.";
     } else if (query && query.filterRemaining){
       ballot = BallotStore.ballot_remaining_choices;
-    } else {
-      ballot = BallotStore.ballot;
+      empty_msg = "No remaining choices. You supported a candidate or measure for each ballot item.";
     }
-    // let ballot = query && query.filterSupport ? BallotStore.ballot_supported : BallotStore.ballot;
+
+    const emptyBallot = ballot.length === 0 ?
+      <div className="container-fluid well gutter-top--small fluff-full1">
+        <h3 className="text-center">{empty_msg}</h3>
+        <span>
+          <Link to="/ballot">
+              <Button bsStyle="primary">View Full Ballot</Button>
+          </Link>
+        </span>
+      </div> :
+      <div></div>;
 
     return (
       <div className="ballot">
-        { ballot ?
-          ballot.map( (item) =>
+        <div className="alert alert-info alert-dismissible" role="alert">
+          <button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          {ballot_caveat}
+        </div>
+        {emptyBallot}
+        { ballot.map( (item) =>
           <BallotItem key={item.we_vote_id} {...item} />
-        ) :
-        LoadingWheel
-        }
+        ) }
       </div>
     );
   }
