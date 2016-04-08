@@ -6,6 +6,7 @@ import SubHeader from "./components/SubHeader";
 import VoterStore from "./stores/VoterStore";
 import StarActions from "./actions/StarActions";
 import VoterActions from "./actions/VoterActions";
+import LoadingWheel from "./components/LoadingWheel";
 
 export default class Application extends Component {
   static propTypes = {
@@ -16,10 +17,7 @@ export default class Application extends Component {
 
   constructor (props) {
     super(props);
-
-    this.state = {
-      voter: { }
-    };
+    this.state = {};
   }
 
   componentDidMount () {
@@ -45,8 +43,8 @@ export default class Application extends Component {
     var { voter, location } = this.state;
     var ballotItemWeVoteId = ""; /* TODO Dale: Store the ballot item that is "on stage" in Ballot store? (wv02cand3) */
 
-    if (!voter || !location) {
-      return <div></div>;
+    if (voter === undefined || location === undefined ) {
+      return LoadingWheel;
     }
 
     return <div className="app-base">
