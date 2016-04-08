@@ -27,7 +27,7 @@ class BallotStore extends FluxMapStore {
 
   get ballot_remaining_choices (){
     let ballot = this.ballot;
-    if (!ballot) { return undefined; }
+    if (!ballot || !SupportStore.supportList ) { return undefined; }
 
     return ballot.filter( ballot_item => {
       let {kind_of_ballot_item, we_vote_id, candidate_list } = ballot_item;
@@ -43,7 +43,7 @@ class BallotStore extends FluxMapStore {
 
   get ballot_supported () {
     let ballot = this.ballot;
-    if (!ballot) { return undefined; }
+    if (!ballot || !SupportStore.supportList ) { return undefined; }
 
     return this.ballot_filtered_unsupported_candidates().filter( ballot_item => {
       if (ballot_item.kind_of_ballot_item === "OFFICE"){ //Offices

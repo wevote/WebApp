@@ -21,20 +21,11 @@ export default class StarAction extends Component {
 
   componentDidMount (){
     this.token = StarStore.addListener(this._onChange.bind(this));
-    var is_starred = StarStore.get(this.props.we_vote_id);
-    if (is_starred === undefined){
-      StarActions.retrieve(this.props.we_vote_id, this.props.type);
-    } else {
-      this.setState({is_starred: is_starred});
-    }
+    this._onChange();
   }
 
   _onChange (){
-    var is_starred = StarStore.get(this.props.we_vote_id);
-
-    if (is_starred !== undefined){
-      this.setState({ is_starred: is_starred });
-    }
+    this.setState({ is_starred: StarStore.get(this.props.we_vote_id) || false});
   }
 
   starClick () {
@@ -49,7 +40,7 @@ export default class StarAction extends Component {
 
 	render () {
     if (this.state.is_starred === undefined){
-      return <span></span>;
+      return <span className="star-action"></span>;
     }
     return <span className="star-action"
               onClick={this.starClick.bind(this)}

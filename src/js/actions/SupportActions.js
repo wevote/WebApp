@@ -11,12 +11,10 @@ module.exports = {
   },
 
   voterOpposingSave: function (we_vote_id, type) {
-    console.log("opposing save action");
     Dispatcher.loadEndpoint("voterOpposingSave", {ballot_item_we_vote_id: we_vote_id, kind_of_ballot_item: type});
   },
 
   voterStopOpposingSave: function (we_vote_id, type) {
-        console.log("stop opposing save action");
     Dispatcher.loadEndpoint("voterStopOpposingSave", {ballot_item_we_vote_id: we_vote_id, kind_of_ballot_item: type});
   },
 

@@ -14,8 +14,12 @@ class StarStore extends FluxMapStore {
 
     switch (action.type) {
 
-      case "voterStarStatusRetrieve":
-        return state.set(key, action.res.is_starred);
+      case "voterAllStarsStatusRetrieve":
+        let newState = {};
+        action.res.star_list.forEach(el =>{
+          newState[el.ballot_item_we_vote_id] = el.star_on;
+        });
+        return state.merge(newState);
 
       case "voterStarOnSave":
         return state.set(key, true);
