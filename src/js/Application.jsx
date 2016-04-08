@@ -4,6 +4,7 @@ import MoreMenu from "./components/MoreMenu";
 import Header from "./components/Header";
 import SubHeader from "./components/SubHeader";
 import VoterStore from "./stores/VoterStore";
+import StarActions from "./actions/StarActions";
 import VoterActions from "./actions/VoterActions";
 
 export default class Application extends Component {
@@ -24,6 +25,7 @@ export default class Application extends Component {
   componentDidMount () {
     let voter_device_id = VoterStore.voterDeviceId();
     VoterActions.retrieveVoter(voter_device_id);
+    StarActions.retrieveAll();
     this.token = VoterStore.addListener(this._onChange.bind(this));
   }
 
