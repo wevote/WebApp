@@ -1,8 +1,13 @@
 // ----------------------------------------------------------------------------
 // This file contains all styles related to the header of the app
 // ----------------------------------------------------------------------------
+.active-link {
+  font-weight: 600;
+  background-color: #d9edf7;
+}
 
 .header {
+
     &-address {
         color: #D8D8D8;
         margin-right: 200px;
