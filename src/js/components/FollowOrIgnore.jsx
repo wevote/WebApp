@@ -18,5 +18,5 @@ export default class FollowOrIgnore extends Component {
                 <Button bsStyle="danger" bsSize="xsmall" className="hidden-xs" onClick={ignoreFunc}>Ignore</Button>
                 <Button bsStyle="danger" bsSize="xsmall" className="visible-xs-block" onClick={ignoreFunc}>Ignore</Button>
             </ButtonToolbar>
-	}
+    }
 }
