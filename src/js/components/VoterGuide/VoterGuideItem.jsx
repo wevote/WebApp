@@ -27,7 +27,7 @@ export default class VoterGuideItem extends Component {
     let twitterFollowers;
     const twitterFollowersCount = numberWithCommas(this.props.twitter_followers_count);
     if (this.props.twitter_followers_count) {
-      twitterFollowers = <span className="fa fa-twitter">{twitterFollowersCount}</span>;
+      twitterFollowers = twitterFollowersCount;
     }
     var voter_guide_we_vote_id_link = "/voterguide/" + this.props.organization_we_vote_id;
 
@@ -35,27 +35,29 @@ export default class VoterGuideItem extends Component {
      * Since the migration of the existing styles was not done with total fidelity, we need to leave this
      * file in place until the migration (or reintegration back into this file) can be completed.
      * TODO: Complete migration of this functionality */
-    return (
-      <div className="ballot-item well well-skinny well-bg--light split-top-skinny clearfix">
-
-      <Link to={voter_guide_we_vote_id_link}>
-        <div className="hidden-xs col-sm-2">
-          <img className="img-square"
-                src={this.props.voter_guide_image_url}
-                width="75px"
-          />
+	return (
+		<div className="row">
+			<div className="ballot-item well well-skinny well-bg--light split-top-skinny clearfix">
+				<div className="col-xs-2 col-sm-2">
+					<Link to="">
+						<img className="utils-img-contain"
+							src={this.props.voter_guide_image_url}/>
+					</Link>
+				</div>
+				<div className="col-xs-8 col-sm-6">
+					<Link to="">
+						{this.props.voter_guide_display_name}
+					</Link>
+				</div>
+				<div className="col-xs-2 col-sm-4 utils-paddingright0"
+					style={ {textAlign: "right"} }>
+					<FollowOrIgnore organization_we_vote_id={this.props.organization_we_vote_id} />
+				</div>
+				<div className="hidden-xs social-box fa fa-twitter">
+					{ twitterFollowers }
+				</div>
+			</div>
         </div>
-        <div className="col-xs-6 col-sm-6 display-name">
-          { this.props.voter_guide_display_name }
-        </div>
-      </Link>
-        <div className="col-xs-6 col-sm-4 utils-paddingright0">
-          <FollowOrIgnore organization_we_vote_id={this.props.organization_we_vote_id} />
-        </div>
-        <div className="hidden-xs social-box">
-          {twitterFollowers}
-        </div>
-      </div>
     );
   }
 }
