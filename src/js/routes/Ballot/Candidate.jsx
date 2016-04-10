@@ -72,16 +72,16 @@ export default class Candidate extends Component {
         <div className="row" style={{ paddingBottom: "2rem" }}>
           <div
             className="col-xs-4"
-            style={candidate.candidate_photo_url ? {} : {height: "95px"}}>
+            style={candidate.candidate_photo_url ? {} : {paddingTop: "2em"}}>
 
             {
               candidate.candidate_photo_url ?
                 <img
-                  className="img-circle"
-                  style={{ display: "block", paddingTop: "10px", width: "100px"}}
+                  className="img-circle utils-img-contain"
+                  style={{ display: "block", paddingTop: "2em"}}
                   src={candidate.candidate_photo_url}
                   alt="candidate-photo"/> :
-              <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light"/>
+              <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light utils-img-contain-glyph"/>
             }
           </div>
           <div className="col-xs-8">

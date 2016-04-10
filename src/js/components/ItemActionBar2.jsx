@@ -15,7 +15,9 @@ export default class ItemActionBar2 extends ItemSupportOppose {
 
     return <div className="item-actionbar2 row">
         {is_support ?
-          <span className="col-xs-4" onClick={ this.stopSupportingItem.bind(this) }>
+			<span className="col-xs-4"
+				  style={{whiteSpace: "nowrap"}}
+				  onClick={ this.stopSupportingItem.bind(this) }>
             <span className="support-emphasis">
               {support_count} positive
               <span className="glyphicon glyphicon-small glyphicon-arrow-up">
@@ -31,7 +33,9 @@ export default class ItemActionBar2 extends ItemSupportOppose {
           </span>
         }
         {is_oppose ?
-          <span className="col-xs-4" onClick={ this.stopOpposingItem.bind(this) }>
+			<span className="col-xs-4" 
+				  style={{whiteSpace: "nowrap"}}
+				  onClick={ this.stopOpposingItem.bind(this) }>
             <span className="oppose-emphasis">
               {oppose_count} negative
               <span className="glyphicon glyphicon-small glyphicon-arrow-down">

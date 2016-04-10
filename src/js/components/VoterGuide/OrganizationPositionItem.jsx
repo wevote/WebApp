@@ -24,8 +24,8 @@ export default class OrganizationPositionItem extends Component {
           {
             ballot_item_image_url_https ?
               <img
-                className="img-circle"
-                style={{display: "block", paddingTop: "10px", width: "100px"}}
+                className="img-circle utils-img-contain"
+                style={{display: "block", paddingTop: "10px"}}
                 src={ballot_item_image_url_https}
                 alt="candidate-photo"/> :
             <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light"/>

@@ -10,3 +10,9 @@
     display: inline;
   }
 }
+
+@media all and (max-width: 480px) {
+    .list-style--none {
+        white-space: nowrap;
+    }
+}

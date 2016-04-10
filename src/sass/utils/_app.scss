@@ -18,7 +18,9 @@
       &-contain {
         max-width: 100%;
         &-glyph {
-          font-size: 3em !important;
+            @media all and (max-width: 480px) {
+                font-size: 3em !important;
+            }
         }
       }
     }
