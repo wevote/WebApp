@@ -25,14 +25,18 @@ export default class ItemActionBar extends ItemSupportOppose {
     const itemActionBar =
 
       <div className="item-actionbar row">
-        <span className="col-xs-4" onClick={ is_support ? supportOff : supportOn }>
+		  <span className="col-xs-4" 
+			    style={{whiteSpace: "nowrap"}}
+			    onClick={ is_support ? supportOff : supportOn }>
           <span className={ is_support ? "inline-phone support-emphasis" : "inline-phone" }>
             <span className="glyphicon glyphicon-small glyphicon-arrow-up">
             </span>
             <span style={ is_support ? bold : {} }> Support</span>
           </span>
         </span>
-        <span className="col-xs-4" onClick={ is_oppose ? opposeOff : opposeOn }>
+		<span className="col-xs-4" 
+			  style={{whiteSpace: "nowrap"}}
+			  onClick={ is_oppose ? opposeOff : opposeOn }>
           <span className={ is_oppose ? "inline-phone oppose-emphasis" : "inline-phone" }>
             <span className="glyphicon glyphicon-small glyphicon-arrow-down">
             </span>

@@ -22,7 +22,7 @@ export default class PositionItem extends Component {
       <li className="list-group-item">
         <Link to={speaker_we_vote_id_link}>
           <div className="row">
-            <div className="col-xs-3 col-md-2">
+            <div className="col-xs-4 col-md-2">
                 { this.props.speaker_image_url_https ?
                  <span><img className="img-square"
                         src={this.props.speaker_image_url_https}
@@ -30,7 +30,7 @@ export default class PositionItem extends Component {
                   /></span> :
                 <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"></i> }
             </div>
-            <div className="col-xs-9 col-md-10">
+            <div className="col-xs-8 col-md-10">
                 <h4 className="">
                     { this.props.speaker_display_name }<br />
                 </h4>

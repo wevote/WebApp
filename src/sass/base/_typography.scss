@@ -10,3 +10,9 @@ body {
 .text-uppercase {
     text-transform: uppercase;
 }
+
+@media all and (max-width: 480px) {
+    .link-text-to-opinions {
+        font-size: .85em;
+    }
+}
