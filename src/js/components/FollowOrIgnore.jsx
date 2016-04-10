@@ -11,15 +11,12 @@ export default class FollowOrIgnore extends Component {
     render () {
       const ignoreFunc = GuideActions.ignore.bind(this, this.props.organization_we_vote_id);
       const stopFollowingFunc = GuideActions.stopFollowing.bind(this, this.props.organization_we_vote_id);
-      const floatRight = {
-          float: "right"
-      };
 
-      return <span style={floatRight}>
-                <ButtonToolbar>
-                    <Button bsStyle="info" bsSize="small" onClick={stopFollowingFunc}>Following</Button>
-                    <Button bsStyle="danger" bsSize="small" onClick={ignoreFunc}>Ignore</Button>
-                </ButtonToolbar>
-            </span>;
+      return <ButtonToolbar>
+                <Button bsStyle="info" bsSize="xsmall" className="hidden-xs" onClick={stopFollowingFunc}>Following</Button>
+                <Button bsStyle="info" bsSize="xsmall" className="visible-xs-block utils-margin_bottom5" onClick={stopFollowingFunc}>Following</Button>
+                <Button bsStyle="danger" bsSize="xsmall" className="hidden-xs" onClick={ignoreFunc}>Ignore</Button>
+                <Button bsStyle="danger" bsSize="xsmall" className="visible-xs-block" onClick={ignoreFunc}>Ignore</Button>
+            </ButtonToolbar>
 	}
 }
