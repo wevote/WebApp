@@ -72,7 +72,7 @@ export default class Intro extends Component {
         <div className="container-fluid well well-90 gutter-top--small fluff-full1">
           <h2 className="text-center">We Vote</h2>
             <label htmlFor="address">
-              My Ballot Location.&nbsp;
+              My Address.&nbsp;
             </label>
             <span className="small">
               This is our best guess - feel free to change.

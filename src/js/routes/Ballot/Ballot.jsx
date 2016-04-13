@@ -37,7 +37,7 @@ export default class Ballot extends Component {
   }
 
   _onChange (){
-    if (BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0){ // Ballot is found but ballot is empty
+    if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0){ // Ballot is found but ballot is empty
       this.props.history.push("ballot/empty");
     } else if (this.state.first_load){ // Only load new ballot on page mount or receiving props
       let type = this.props.location.query ? this.props.location.query.type : "all";
@@ -60,11 +60,11 @@ export default class Ballot extends Component {
   getTitle (){
     switch (this.state.type) {
       case "filterRemaining":
-        return "Remaining Choices";
+        return "Choices Remaining";
       case "filterSupport":
         return "What I Support";
       default :
-        return "My Ballot";
+        return "All Ballot Items";
     }
   }
 
@@ -85,18 +85,44 @@ export default class Ballot extends Component {
     }
     let ballot = this.state.ballot;
     let ballot_props = BallotStore.ballot_properties;
-    let ballot_caveat = ballot_props.ballot_caveat;
+    let ballot_length = 0;
+    if (ballot != null && ballot.length != null) {
+      ballot_length = ballot.length;
+    }
+    let ballot_caveat = "";
+    if (ballot_props != null) {
+      ballot_caveat = ballot_props.ballot_caveat;
+    }
 
-    const emptyBallot = ballot.length === 0 ?
-      <div className="container-fluid well gutter-top--small fluff-full1">
-        <h3 className="text-center">{this.emptyMsg()}</h3>
+    var missing_address = false;
+    if (this.props.location != null) {
+      missing_address = true;
+    }
+
+    const emptyBallotButton = missing_address ?
+        <span>
+          <Link to="/settings/location">
+              <Button bsStyle="primary">Enter a Different Address</Button>
+          </Link>
+        </span> :
         <span>
           <Link to="/ballot">
               <Button bsStyle="primary">View Full Ballot</Button>
           </Link>
-        </span>
+        </span>;
+
+    const emptyBallot = ballot_length === 0 ?
+      <div className="container-fluid well gutter-top--small fluff-full1">
+        <h3 className="text-center">{this.emptyMsg()}</h3>
+        {emptyBallotButton}
       </div> :
       <div></div>;
+
+    const ballotItems = ballot != null ?
+      ballot.map( (item) =>
+          <BallotItem key={item.we_vote_id} {...item} />
+        ) :
+      <span></span>;
 
     return (
       <div className="ballot">
@@ -106,9 +132,7 @@ export default class Ballot extends Component {
           {ballot_caveat}
         </div>
         {emptyBallot}
-        { ballot.map( (item) =>
-          <BallotItem key={item.we_vote_id} {...item} />
-        ) }
+        {ballotItems}
       </div>
     );
   }

@@ -47,14 +47,14 @@ export default class Candidate extends Component {
             </div>
             <div className="col-xs-8">
               <h4 className="bufferNone">
-                <span style={{fontSize: "80%"}}>{ ballot_item_display_name }</span> <span className="link-text-to-more-info">(more)</span>
+                <span style={{fontSize: "80%"}}>{ ballot_item_display_name }</span>
                 {
                   party ?
-                    <span className="link-text-candidate-party"><br />{ party }</span> :
+                    <span className="link-text-candidate-party">, { party }</span> :
                     <span></span>
                 }
+                <span className="link-text-to-more-info"> (more)</span>
               </h4>
-              <span className="link-text-to-opinions">Opinions you follow: </span>
               <ItemSupportOpposeCounts we_vote_id={we_vote_id} type="CANDIDATE" />
             </div>
           </div>

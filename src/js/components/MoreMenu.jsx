@@ -34,7 +34,7 @@ export default class MoreMenu extends Component {
         }
       */}
       <ul className="list-group">
-        {this.menuLink("/ballot", "My Voter Guide")}
+        {this.menuLink("/ballot", "All Ballot Items")}
         {this.menuLink("/more/opinions/followed", "Opinions I'm Following")}
         {this.menuLink("/ballot?type=filterSupport", "What I Support")}
         {this.menuLink("/ballot?type=filterRemaining", "Choices Remaining")}

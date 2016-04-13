@@ -89,7 +89,7 @@ export default class Candidate extends Component {
               { candidate.ballot_item_display_name }
               {
                 candidate.party ?
-                    <span className="link-text-candidate-party"><br />{ candidate.party }</span> :
+                    <span className="link-text-candidate-party">, { candidate.party }</span> :
                     <span></span>
               }
             </h4>

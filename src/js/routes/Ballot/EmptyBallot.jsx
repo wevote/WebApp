@@ -21,7 +21,7 @@ export default class EmptyBallot extends Component {
           <br />
           <br />
           <div className="medium">
-            See We Vote in action! Copy this test address into "My Ballot Location":
+            See We Vote in action! Copy this test address into "My Address":
           </div>
           <h4>
             2208 Ebb Tide Rd, Virginia Beach, VA 23451
