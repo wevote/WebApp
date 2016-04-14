@@ -65,7 +65,10 @@ export default class GuidePositionList extends Component {
                 <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"></i> }
                 {organization_name}<br />{/* TODO icon-org-placeholder */}
               </h3>
-              @{organization_twitter_handle}&nbsp;&nbsp;&nbsp;See <a href={organization_website}>Website</a><br />
+              { organization_twitter_handle ?
+               <span>@{organization_twitter_handle}&nbsp;&nbsp;&nbsp;</span> :
+               <span></span> }
+              See <a href={organization_website} target="_blank">Website</a><br />
               {/*5 of your friends follow Organization Name<br />*/}
               {numberWithCommas(twitter_followers_count)} people follow<br />
               {/*

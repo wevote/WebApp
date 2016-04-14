@@ -79,7 +79,7 @@ export default class AddressBox extends Component {
               <Button
                 onClick={this.saveLocation.bind(this)}
                 bsStyle="primary">
-                Save Location</Button>
+                Save My Address</Button>
             </span>
           </ButtonToolbar>
         </div>

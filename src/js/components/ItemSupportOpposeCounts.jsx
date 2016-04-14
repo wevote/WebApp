@@ -10,7 +10,12 @@ export default class ItemSupportOpposeCounts extends ItemSupportOppose {
 
     var {support_count, oppose_count, is_support, is_oppose } = this.state.supportProps;
     if (support_count === undefined || oppose_count === undefined || is_support === undefined || is_oppose === undefined){
-      return <div></div>;
+      return <span></span>;
+    }
+
+    if (support_count == 0 && oppose_count == 0){
+      // Do not show this code if there aren't any opinions you follow
+      return <span></span>;
     }
 
     var oppose_emphasis = "oppose-emphasis-small";
@@ -30,7 +35,9 @@ export default class ItemSupportOpposeCounts extends ItemSupportOppose {
       }
     }
 
-    return <ul className="list-style--none">
+    return <span>
+      <span className="link-text-to-opinions">Opinions you follow: </span>
+      <ul className="list-style--none">
         <li className="list-inline support">
           <span className={ support_emphasis }>
             <span>{support_count}</span>&nbsp;
@@ -43,6 +50,7 @@ export default class ItemSupportOpposeCounts extends ItemSupportOppose {
             <span>negative</span>
           </span>
         </li>
-      </ul>;
+      </ul>
+    </span>;
   }
 }

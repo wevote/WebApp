@@ -44,7 +44,8 @@ export default class StarAction extends Component {
     }
     return <span className="star-action"
               onClick={this.starClick.bind(this)}
-              style={floatRight}>
+              style={floatRight}
+              title="Bookmark for later">
             &nbsp;
             {this.state.is_starred ?
               <span className="star-action glyphicon glyphicon-small glyphicon-star"></span> :

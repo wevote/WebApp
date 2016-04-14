@@ -58,7 +58,9 @@ export default class Header extends Component {
             <h4 className="pull-left gutter-left--window bold">
               <span onClick={this.show.bind(this)} className="glyphicon glyphicon-menu-hamburger glyphicon-line-adjustment device-icon--large">
               </span>
-              My Voter Guide
+              <Link to="/ballot">
+                My Voter Guide
+              </Link>
               <span className="header-version"> demo</span>
             </h4>
             <aside className="header-address pull-right gutter-right--window gutter-top--small">
@@ -90,7 +92,7 @@ export default class Header extends Component {
             <li className="list-group-item">
               <Link onClick={this.hide.bind(this)} to="/ballot">
                 <div>
-                My Voter Guide
+                All Ballot Items
                 </div>
               </Link>
             </li>
