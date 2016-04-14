@@ -4,6 +4,7 @@ import OrganizationActions from "../../actions/OrganizationActions";
 import LoadingWheel from "../../components/LoadingWheel";
 import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
+import Image from "../../components/Image";
 
 /* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/94226088 */
 function numberWithCommas (x) {
@@ -57,11 +58,9 @@ export default class GuidePositionList extends Component {
               <h3>
                 <span style={floatRight}><Button bsStyle="info" bsSize="xsmall">Following</Button></span>
                 { organization_photo_url ?
-                 <span><img className="img-square"
-                        src={organization_photo_url}
-                        alt={organization_photo_url + ".jpg"}
-                        width="50px"
-                  /></span> :
+                 <span>
+                 <Image imageUrl={organization_photo_url} class="img-square" />
+                  </span> :
                 <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"></i> }
                 {organization_name}<br />{/* TODO icon-org-placeholder */}
               </h3>
