@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import FollowOrIgnore from "../../components/FollowOrIgnore";
+import Image from "../../components/Image";
 
 function numberWithCommas (x) {
     var parts = x.toString().split(".");
@@ -39,17 +40,16 @@ export default class VoterGuideItem extends Component {
           <div className="row">
               <div className="ballot-item well well-skinny well-bg--light split-top-skinny clearfix">
                   <div className="col-xs-2 col-sm-2">
-                      <Link to="">
-                          <img className="utils-img-contain" 
-                               src={this.props.voter_guide_image_url}/>
+                      <Link to={voter_guide_we_vote_id_link}>
+                      <Image imageUrl={this.props.voter_guide_image_url} />
                       </Link>
                   </div>
                   <div className="col-xs-8 col-sm-6">
-                      <Link to="">
+                      <Link to={voter_guide_we_vote_id_link}>
                           {this.props.voter_guide_display_name}
                       </Link>
                   </div>
-                  <div className="col-xs-2 col-sm-4 utils-paddingright0" 
+                  <div className="col-xs-2 col-sm-4 utils-paddingright0"
                        style={ {textAlign: "right"} }>
                       <FollowOrIgnore organization_we_vote_id={this.props.organization_we_vote_id} />
                   </div>
