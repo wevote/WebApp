@@ -7,6 +7,7 @@ import VoterStore from "./stores/VoterStore";
 import StarActions from "./actions/StarActions";
 import VoterActions from "./actions/VoterActions";
 import LoadingWheel from "./components/LoadingWheel";
+import Headroom from "react-headroom";
 
 export default class Application extends Component {
   static propTypes = {
@@ -48,16 +49,18 @@ export default class Application extends Component {
     }
 
     return <div className="app-base">
-      <div className="container-fluid">
-        <div className="row">
-          <Header location={location}/>
+      <Headroom>
+        <div className="container-fluid">
+          <div className="row">
+            <Header location={location}/>
+          </div>
         </div>
+        <div className="container-fluid">
+          <div className="row">
+            <SubHeader pathname={pathname} ballotItemWeVoteId={ballotItemWeVoteId} />
+          </div>
       </div>
-      <div className="container-fluid">
-        <div className="row">
-          <SubHeader pathname={pathname} ballotItemWeVoteId={ballotItemWeVoteId} />
-        </div>
-      </div>
+      </Headroom>
       <div className="container-fluid">
         <div className="row">
           <div className="col-xs-4 col-sm-4 col-md-4 no-show">

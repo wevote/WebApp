@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
-import Headroom from "react-headroom";
 
 export default class Header extends Component {
   static propTypes = {
@@ -53,7 +52,6 @@ export default class Header extends Component {
 
     const header =
       <header className="header row">
-        <Headroom>
           <section className="separate-bottom container-fluid">
             <h4 className="pull-left gutter-left--window bold">
               <span onClick={this.show.bind(this)} className="glyphicon glyphicon-menu-hamburger glyphicon-line-adjustment device-icon--large">
@@ -69,7 +67,6 @@ export default class Header extends Component {
               </Link>
             </aside>
           </section>
-        </Headroom>
       {/* The components/MoreMenu code has to be reproduced here for mobile */}
         <div className={(visible ? "visible" : "hidden") + " device-menu--mobile container-fluid well well-90"}>
           {/* Please keep these styles up-to-date since we need to turn this on soon
