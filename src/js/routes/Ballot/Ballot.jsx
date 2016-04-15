@@ -57,6 +57,17 @@ export default class Ballot extends Component {
     }
   }
 
+  getFilterType (){
+    switch (this.state.type) {
+      case "filterRemaining":
+        return "filterRemaining";
+      case "filterSupport":
+        return "filterSupport";
+      default :
+        return "none";
+    }
+  }
+
   getTitle (){
     switch (this.state.type) {
       case "filterRemaining":
@@ -95,19 +106,19 @@ export default class Ballot extends Component {
     }
 
     var missing_address = false;
-    if (this.props.location != null) {
+    if (this.props.location == null) {
       missing_address = true;
     }
 
-    const emptyBallotButton = missing_address ?
-        <span>
-          <Link to="/settings/location">
-              <Button bsStyle="primary">Enter a Different Address</Button>
-          </Link>
-        </span> :
+    const emptyBallotButton = this.getFilterType() != "none" && !missing_address ?
         <span>
           <Link to="/ballot">
               <Button bsStyle="primary">View Full Ballot</Button>
+          </Link>
+        </span> :
+        <span>
+          <Link to="/settings/location">
+              <Button bsStyle="primary">Enter a Different Address</Button>
           </Link>
         </span>;
 

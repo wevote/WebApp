@@ -43,13 +43,15 @@ export default class About extends Component {
               Dale McGrew - Oakland, CA<br />
               Jenifer Fernandez Ancona - Oakland, CA<br />
               Rob Simpson - Warrenton, VA<br />
-              Nicolas Fiorini - Arlington, VA<br />
               Lisa Cho - San Francisco, CA<br />
-              Niko Barry - Berkeley, CA<br />
+              Nicolas Fiorini - Arlington, VA<br />
               Joe Evans - Santa Cruz, CA<br />
+              Niko Barry - Berkeley, CA<br />
               Mary O'Connor - Sebastopol, CA<br />
               Marissa Luna - Lansing, MI<br />
               Aaron Borden - San Francisco, CA<br />
+              Adam Barry - San Francisco, CA<br />
+              Jeff French - Oakland, CA<br />
               Judy Johnson - Oakland, CA<br />
               Robin Braverman - Walnut Creek, CA<br />
               Mike McConnell - San Francisco, CA<br />
@@ -63,10 +65,9 @@ export default class About extends Component {
               Courtney Gonzales - Benicia, CA<br />
               Jenna Haywood - Berkeley, CA<br />
               Tom Furlong - Menlo Park, CA<br />
+              Raphael Merx - San Francisco, CA<br />
               Susan Clark - Oakland, CA<br />
               Kim Anderson - San Francisco, CA<br />
-              Adam Barry - San Francisco, CA<br />
-              Raphael Merx - San Francisco, CA<br />
               Jesse Aldridge - San Francisco, CA<br />
               Josh Levinger - Oakland, CA<br />
               Leslie Castellanos - San Francisco, CA<br />
@@ -74,8 +75,8 @@ export default class About extends Component {
               Miguel Elasmar - Sarasota, FL<br />
               Nicole Shanahan - Palo Alto, CA<br />
               Steve Whetstone - San Francisco, CA<br />
-              Jeff French - Oakland, CA<br />
               Harsha Dronamraju - San Francisco, CA<br />
+              Brian Bordley - Berkeley, CA<br />
               Nitin Garg - San Francisco, CA<br />
               Marcus Busby - San Francisco, CA<br />
               lulu - New York, NY<br />
