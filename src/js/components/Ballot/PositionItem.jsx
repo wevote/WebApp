@@ -18,23 +18,23 @@ export default class PositionItem extends Component {
     var dateText = moment(dateStr).startOf("day").fromNow();
     var speaker_we_vote_id_link = "/voterguide/" + position.speaker_we_vote_id;
 
-    var image_placeholder = "";
+    let image_placeholder = "";
     if (this.props.speaker_type == "O") {
         image_placeholder = <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"></i>
     } else if (this.props.speaker_type == "V") {
         image_placeholder = <i className="icon-org-lg icon-icon-person-placeholder-6-1 icon-org-resting-color"></i>
     }
 
-    var position_description = <span></span>;
+    let position_description = <span></span>;
     if (position.vote_smart_rating) {
-        var position_description = <p className="">
+        position_description = <p className="">
           <span>rates {this.props.candidate_display_name} {position.vote_smart_rating}%</span>
           { position.vote_smart_time_span ?
             <span> in {position.vote_smart_time_span}</span> :
             <span className="small">{ dateText }</span> }
           </p>;
     } else if (position.speaker_type == "V") {
-        var position_description = <p className="">
+        position_description = <p className="">
           <span>{this.props.candidate_display_name}</span>
           <span className="small"> { dateText }</span>
           </p>;
