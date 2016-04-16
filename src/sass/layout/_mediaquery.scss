@@ -48,8 +48,19 @@
     }
 }
 
+@media all and (max-width: 661px) {
+    .device {
+        &-headericons--large {
+            display: none;
+        }
+    }
+}
+
 
 @media all and (min-width : 660px) {
+    .navbar-fixed-bottom {
+        display: none;
+    }
     .device {
         &-menu {
             &--large {
@@ -58,13 +69,14 @@
                 width: 220px;
             }
         }
-        &-footer {
+        &-headericons {
             &--large {
                 background: transparent;
                 border-color: #fff;
                 display: inline-block;
                 height: 45px;
                 left: auto;
+                position: fixed;
                 right: 0;
                 top: 0;
 
