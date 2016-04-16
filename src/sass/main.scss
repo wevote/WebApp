@@ -27,7 +27,11 @@
   './layout/_root',
   './layout/_lists';
 
-// 5. Components
+// 5. Elements
+@import
+  './elements/_buttons';
+
+// 6. Components
 @import
   './components/_badges',
   './components/_ballotList',
@@ -41,18 +45,18 @@
   './components/_header',
   './components/_opinions';
 
-// 6. Page-specific styles
+// 7. Page-specific styles
 @import
   './pages/_home';
 
-// 7. Themes
+// 8. Themes
 @import
   './themes/default';
 
-// 8. Media Queries
+// 9. Media Queries
 @import
   './layout/mediaquery';
 
-// 9. Trumps - !important
+// 10. Trumps - !important
 @import
   './utils/trumps.scss';

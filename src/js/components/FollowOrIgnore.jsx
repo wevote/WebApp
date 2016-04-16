@@ -13,10 +13,10 @@ export default class FollowOrIgnore extends Component {
       const stopFollowingFunc = GuideActions.stopFollowing.bind(this, this.props.organization_we_vote_id);
 
       return <ButtonToolbar>
-                <Button bsStyle="info" bsSize="xsmall" className="hidden-xs" onClick={stopFollowingFunc}>Following</Button>
-                <Button bsStyle="info" bsSize="xsmall" className="visible-xs-block utils-margin_bottom5" onClick={stopFollowingFunc}>Following</Button>
-                <Button bsStyle="danger" bsSize="xsmall" className="hidden-xs" onClick={ignoreFunc}>Ignore</Button>
-                <Button bsStyle="danger" bsSize="xsmall" className="visible-xs-block" onClick={ignoreFunc}>Ignore</Button>
-            </ButtonToolbar>
+            <Button bsStyle="info" bsSize="xsmall" className="btn-action hidden-xs" onClick={stopFollowingFunc} data-hover="Unfollow"><span>Following</span></Button>
+            <Button bsStyle="info" bsSize="xsmall" className="btn-action visible-xs-block utils-margin_bottom5" onClick={stopFollowingFunc} data-hover="Unfollow"><span>Following</span></Button>
+            <Button bsStyle="danger" bsSize="xsmall" className="hidden-xs" onClick={ignoreFunc}>Ignore</Button>
+            <Button bsStyle="danger" bsSize="xsmall" className="visible-xs-block" onClick={ignoreFunc}>Ignore</Button>
+        </ButtonToolbar>
     }
 }

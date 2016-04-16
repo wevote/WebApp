@@ -1,0 +1,15 @@
+.btn {
+	&-action {
+		&:hover {
+			background-color: #d9534f !important;
+			border-color: #d9534f !important;
+			 span {
+				display:none;
+			}
+			&:before {
+				content: attr(data-hover);
+				width: 100%;
+			}
+		}
+	}
+}
