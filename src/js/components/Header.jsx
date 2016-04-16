@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
+import HeaderIcons from "./Navigation/HeaderIcons";
 
 export default class Header extends Component {
   static propTypes = {
@@ -61,11 +62,12 @@ export default class Header extends Component {
               </Link>
               <span className="header-version"> demo</span>
             </h4>
-            <aside className="header-address pull-right gutter-right--window gutter-top--small">
+            <div className="header-address pull-right gutter-right--window gutter-top--small">
               <Link to="/settings/location" className="font-lightest">
                 {location}
               </Link>
-            </aside>
+            </div>
+            <HeaderIcons />
           </section>
       {/* The components/MoreMenu code has to be reproduced here for mobile */}
         <div className={(visible ? "visible" : "hidden") + " device-menu--mobile container-fluid well well-90"}>

@@ -87,7 +87,7 @@ export default class Navigator extends Component {
     const navigator =
       <div className="navigator row">
         <div className="container-fluid">
-          <div className="navbar navbar-default navbar-fixed-bottom">
+          <div className="device-headericons--large">
             <div className="container-fluid fluff-loose--top separate-top">
               <div className="row">
                 {ballot(pathname === "/ballot")}
