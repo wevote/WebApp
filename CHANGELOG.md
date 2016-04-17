@@ -3,6 +3,7 @@
 ## Contents
 
 - [WeVoteUSA Web App Change Log](#wevoteusa-web-app-change-log)
+  - [0.8.9](#089)
   - [0.8.0](#080)
   - [0.5.0](#050)
 
@@ -11,6 +12,60 @@
 #WeVoteUSA Web App Change Log
 
 All notable changes to this project will be documented here.
+##0.8.9
+<li> <a href="http://github.com/jerel/project/commit/bd8c9a5bbfd1f3ecee6004bdadd7be876f5e382d">view commit &bull;</a> Update PositionItem.jsx - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/ecaec55d583d8435635287a5d14d5f3582d8dc5e">view commit &bull;</a> Header icons stay in place in desktop mode - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/623bb441f4d0c68d816f1bfefda7083f3e0498b8">view commit &bull;</a> Button change from Following to Unfollow and change color - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/94c2730b2ab8ec036b46e61c8164617d5727ee2a">view commit &bull;</a> Updated components/Ballot/PositionItem.jsx to support individual voter opinions. - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/feb7df888805e759aac04f0457e24d44a68690c5">view commit &bull;</a> Fixed glitch with Ballot filtering introduced, relating to missing address. Updated the project About page to give credit based on time volunteered. - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/2a6cf28405b9be5554b9c4e72c06f0f2e96079b3">view commit &bull;</a> Fix links - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/4371bd16212011dee4ed3cccbed5db684225dd1a">view commit &bull;</a> Make submenu slidedown - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/9cee2a67464ada30d27fc7295d8d293dc38ae153">view commit &bull;</a> Added political party to Candidate card on Ballot list. Changed some site text, including navigation text to be consistent. Fixed some Javascript errors on Ballot route. Updated site title. - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/1c622d18caf58aa35f20f560c42ea408b936d624">view commit &bull;</a> Clean up linting errors for CI build - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/9539118c789f9b40d14459c9f626580c643fdeb2">view commit &bull;</a> fix android footer keyboard issue - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/eab998d6917fe7b2367889a03c14ce467c25315d">view commit &bull;</a> The queries for the change in sizes are added so that the app will fit inside of smaller devices - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/35f7cf3d624754f6ecd10c97dbf35ce989704519">view commit &bull;</a> At this time there will need to be refactoring of the ButtonToolbar in order for all buttons to be consistent accross the app. Until that can happen, the larger display will continue to have the smaller buttons on this view. - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/efc561ab8cd6ce8ebf5b1c6c9b0a0505bdb6ed0a">view commit &bull;</a> At Status - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/b88d3e51bc6a7c3123afa590c4772ac7ea04e492">view commit &bull;</a> Prevent ballot items from immediately disappearing from filtered ballots, add titles - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/f962870790f2b70e8900abbb4f0ae9cdddf095bc">view commit &bull;</a> Add ballot caveat and properties to ballot - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/d7287ef7269c3c8b5246b7cf036502a24f501742">view commit &bull;</a> Fix hard refresh issues - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/c7f7bb9908bb3814c8347997bd80f0f6633d6dc0">view commit &bull;</a> Replace multiple API calls with single starAllStatusRetrieve - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/e31b94fe422368b9ceb4c05af85db74e469fe2e9">view commit &bull;</a> Fix bug - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/af54cedcd59833f4369409b2c1f6a087a35c93b0">view commit &bull;</a> Add Choices remaining ballot - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/1a36ecb491e0668d0fb9ce983b7b4759b86ee92a">view commit &bull;</a> Add support ballot - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/05bb50719f1b24f4b715e4ebf8b96ba3eeb088f2">view commit &bull;</a> Use new API endpoints for fetching multiple support/oppose count and voter support/oppose statuses - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/34c93411a03511ea304963b9fbe832e9aadfa537">view commit &bull;</a> Note that this is static at this time until there is a better idea of what the other site is that will be created. If this is good enough, close this ticket and open another, or move this into another milestone when that site will be created. - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/e622fc1d63c9c002e7b540e3548e814fb5f97fc9">view commit &bull;</a> #116 - Reduce vertical display of voter guide boxes - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/bbbd9ac5c25de5b685293c3ff925187b3672587e">view commit &bull;</a> Fixed Link: limited scope so the "Follow"/"Ignore" buttons aren't affected. - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/bf5f4bb53a83df149fba45c821ed8e98b9911931">view commit &bull;</a> Added links to among voter guides, candidates and orgs so you can navigate easily. Changed (removed) some site text based on voter testing. Fixed some broken README links. - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/7ea334f0700782051ae03277c2699f02eb5c344e">view commit &bull;</a> Add organization page - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/108828aac9f647b19e849a20c1dbe71545d24dba">view commit &bull;</a> Forgot one change - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/b880e5509ae39a0349188df70804799e3965b34d">view commit &bull;</a> Fixing broken image links, bootstrap-map-css warning, address not found on page reload - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/81c3a9a21196e45af62071615a6845d3e113e55c">view commit &bull;</a> Worked on issues #8 & #133. Added political party display on Candidate page. Modified Address edit field. Deleted deprecated Home.jsx file. Added "Find Opinions" button at the bottom of the candidate page. - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/fec7e83fce188a183e530823307f0e5d92c07c12">view commit &bull;</a> Add search box to IntroOpinions and Opinions - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/39a51b5f8e604572abe07254238c376ef37e37fe">view commit &bull;</a> Removing deprecated files - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/ad14011d8549f3796d3b0da310bf93eaa41a898e">view commit &bull;</a> add ternjs for repo ignoring - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/1057345ec130b2d7a95d46ebf092b9902c8ee2d4">view commit &bull;</a> Fix IntroOpinions page - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/e3d9c07867ee47db4bd9a378259841a62ff37c51">view commit &bull;</a> adding a production task, `npm run prod` that avoids browsersync and watching files for changes. also added a timestamp to the browsersync prefix and updated the server task to a module that takes production flag as input. - nick fiorini</li>
+<li> <a href="http://github.com/jerel/project/commit/9d366f4b3e733d8409d15f7c684766cc20786310">view commit &bull;</a> update changelog with 0.8.0 commits - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/c4706720d6cfb90badd970290dec8457b22bfb69">view commit &bull;</a> Restructured our documentation so it is easier for new developers to get started, and easier for current developers to zero-in on the specific information they need. I tried *really* hard to make sure I didn't delete any existing documentation. My apologies in advance if I removed any documentation (without moving it to a new place). There is still more clean-up of this documentation to be done, but I think it can be done incrementally, and by multiple people. PS. Can someone help create the table of contents for these pages with doctoc? - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/1f790e29b6441708cd8556a266d831b966fe86ba">view commit &bull;</a> Refactor voter store and initial loading of data, redirect user when ballot is empty, remove cookies, preload opinions - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/64517f4ed47d8a5a077d667039859381a4b4ae7b">view commit &bull;</a> Handle rapid clicks on support/oppose items - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/6228dc6d5e0adab442295fedfcac453e2c08b09c">view commit &bull;</a> Serious Karma-points checkin. :) Fixed code so we have nearly 200 fewer eslint errors when you run ‘npm test’. - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/29a53de19e1c4947aba519154690edda9d657354">view commit &bull;</a> Made the area a voter can touch much bigger for Links in org Positions on Candidate page, and navigation items. Removed some code we won't use for several versions. Commented out sign in, but left code because several of us may need to use the code soon for testing. Added link to Candidate-specific "More Opinions" page, and built out OpinionsAboutItem.jsx page. (Debugging help needed from Lisa.) Made edits to Location page where we edit address, including adding Focus to the form box on componentDidMount. Removed old "More menu" page. Did some ESLint clean up. - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/e887cfbb5abbd68b9d8c2385c0cbb5d8db2bf4bb">view commit &bull;</a> Added search box to More Opinions to Follow page -- ready to get working. Changed the way we react to missing data. Removed test address from config.js file. - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/7f24175cc4145dabff34f65bec70541fe24e81ee">view commit &bull;</a> Update .travis.yml - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/def69d75cf8f4957e8ceb93bf86173c7b039cee6">view commit &bull;</a> Fixed browser sync to sync remote devices - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/4d82aac1bda6b5213c2c0b57fe156175d92a566b">view commit &bull;</a> Fix let vs var and refactor actions format - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/9309817be874205fe53a36d3d85f6f249202ad83">view commit &bull;</a> Link colors inline with the new style guide - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/405f97bdd3b6256659506331d7f3d27706cb9782">view commit &bull;</a> Container for candidates more padding for icons - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/df0a5858b282f1f587d8c954d8fb719590b7d6af">view commit &bull;</a> Margin and padding give space to container - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/d14ee0e14a95bf2b4045b1ebbcf122e2c80b6f2d">view commit &bull;</a> Update README.md - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/68c17dbacbb6f3ef158393cad3500747e6765925">view commit &bull;</a> Update README.md - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/7a241e9c1e5179fa64cf58b7f29f35b304532c27">view commit &bull;</a> Update CONTRIBUTING.md - Rob Simpson</li>
+<li> <a href="http://github.com/jerel/project/commit/8ad7e2a74a95af5edc64f330347311639fb91794">view commit &bull;</a> Update BallotActions.js - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/6d1bb7b24e8c5c05c4b22ced69b33e8ccf802099">view commit &bull;</a> Now that we can return actual ballots reliably, turned off the "use_test_election" that had been built into voterBallotItemsRetrieve calls. Other assorted visual updates. - Dale John McGrew</li>
+
 ##0.8.0
 <li> <a href="http://github.com/jerel/project/commit/55c833400146eb4e3bffa7931bb7a6b9a66c64b1">view commit &bull;</a> Contributing license agreement for those who contribute - Rob Simpson</li>
 <li> <a href="http://github.com/jerel/project/commit/688751999be74880da9498ebb74f2066bcc6c05e">view commit &bull;</a> My opinions followed stop following and ignore buttons work and refactored voterguidestore - Lisa Cho</li>
