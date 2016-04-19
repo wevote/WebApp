@@ -97,20 +97,20 @@ export default class Ballot extends Component {
     let ballot = this.state.ballot;
     let ballot_props = BallotStore.ballot_properties;
     let ballot_length = 0;
-    if (ballot != null && ballot.length != null) {
+    if (ballot !== null && ballot.length !== null) {
       ballot_length = ballot.length;
     }
     let ballot_caveat = "";
-    if (ballot_props != null) {
+    if (ballot_props !== null) {
       ballot_caveat = ballot_props.ballot_caveat;
     }
 
     var missing_address = false;
-    if (this.props.location == null) {
+    if (this.props.location === null) {
       missing_address = true;
     }
 
-    const emptyBallotButton = this.getFilterType() != "none" && !missing_address ?
+    const emptyBallotButton = this.getFilterType() !== "none" && !missing_address ?
         <span>
           <Link to="/ballot">
               <Button bsStyle="primary">View Full Ballot</Button>
@@ -129,7 +129,7 @@ export default class Ballot extends Component {
       </div> :
       <div></div>;
 
-    const ballotItems = ballot != null ?
+    const ballotItems = ballot !== null ?
       ballot.map( (item) =>
           <BallotItem key={item.we_vote_id} {...item} />
         ) :

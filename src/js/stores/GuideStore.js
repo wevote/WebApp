@@ -44,6 +44,10 @@ class GuideStore extends FluxMapStore {
       return this.getOrgsFromArr(this.getState().following);
     }
 
+    isFollowing (we_vote_id){
+      return this.getState().following.filter( el => { return el === we_vote_id; }).length > 0;
+    }
+
   reduce (state, action) {
     let voter_guides;
     let data;
