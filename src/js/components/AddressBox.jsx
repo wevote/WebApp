@@ -59,8 +59,7 @@ export default class AddressBox extends Component {
     var floatRight = {
         float: "right"
     };
-    return (
-      <div>
+    return <div>
         <form onSubmit={this.saveLocation.bind(this)}>
         <input
           type="text"
@@ -83,6 +82,6 @@ export default class AddressBox extends Component {
             </span>
           </ButtonToolbar>
         </div>
-      </div>);
+      </div>;
   }
 }

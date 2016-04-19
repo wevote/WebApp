@@ -36,11 +36,11 @@ export default class Candidate extends Component {
 
               {/* adding inline style to img until Rob can style... */}
               {
-                candidate_photo_url ? 
+                candidate_photo_url ?
                     <img className="img-circle utils-img-contain"
                          style={{display: "block", paddingTop: "2em"}}
                          src={candidate_photo_url}
-                         alt="candidate-photo"/> : 
+                         alt="candidate-photo"/> :
                     <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light utils-img-contain-glyph"/>
               }
 

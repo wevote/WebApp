@@ -14,6 +14,7 @@ export default class Organization extends Component {
     key: PropTypes.string,
     imageUrl: PropTypes.string,
     displayName: PropTypes.string,
+    twitterDescription: PropTypes.string,
     followers: PropTypes.number,
     children: PropTypes.array
   };
@@ -21,11 +22,22 @@ export default class Organization extends Component {
   render () {
 
     const {
-      displayName,
       followers,
       id,
       imageUrl,
     } = this.props;
+
+    // If the displayName is in the twitterDescription, remove it from twitterDescription
+    let displayName = this.props.displayName ? this.props.displayName : "";
+    let twitterDescription = this.props.twitterDescription ? this.props.twitterDescription : "";
+    let twitterDescriptionMinusName;
+    if (twitterDescription.startsWith(displayName)) {
+      twitterDescriptionMinusName = twitterDescription.substr(displayName.length);
+    } else if (twitterDescription.startsWith("The " + displayName)) {
+      twitterDescriptionMinusName = twitterDescription.substr(displayName.length + 4);
+    } else {
+      twitterDescriptionMinusName = ". " + twitterDescription;
+    }
 
     var voter_guide_we_vote_id_link = "/voterguide/" + id;
 
@@ -39,7 +51,9 @@ export default class Organization extends Component {
           </div>
           <div className="col-xs-8 col-sm-6 display-name">
             <Link to={voter_guide_we_vote_id_link}>
-              {displayName}
+              <strong>{displayName}</strong>
+              { twitterDescriptionMinusName ? <span>{twitterDescriptionMinusName}</span> :
+                  <span></span>}
             </Link>
           </div>
           <div className="col-xs-2 col-sm-4 utils-paddingright0"

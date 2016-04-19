@@ -43,23 +43,38 @@ export default class GuidePositionList extends Component {
       return <div>{LoadingWheel}</div>;
     }
 
-    const {organization_twitter_handle, twitter_followers_count,
+    const {organization_twitter_handle, twitter_description, twitter_followers_count,
       organization_photo_url, organization_website,
       organization_name, position_list} = this.state.organization;
+
+    // If the displayName is in the twitterDescription, remove it from twitterDescription
+    let displayName = organization_name ? organization_name : "";
+    let twitterDescription = twitter_description ? twitter_description : "";
+    let twitterDescriptionMinusName;
+    if (twitterDescription.startsWith(displayName)) {
+      twitterDescriptionMinusName = twitterDescription.substr(displayName.length);
+    } else if (twitterDescription.startsWith("The " + displayName)) {
+      twitterDescriptionMinusName = twitterDescription.substr(displayName.length + 4);
+    } else {
+      twitterDescriptionMinusName = ". " + twitterDescription;
+    }
 
     return <div>
         <div className="container-fluid well well-90">
           <ul className="list-group">
             <li className="list-group-item">
-              <h3>
+              <h4>
                 <SupportToggle we_vote_id={this.props.params.we_vote_id} />
                 { organization_photo_url ?
                  <span>
                  <Image imageUrl={organization_photo_url} class="img-square" />
                   </span> :
                 <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"></i> }
-                {organization_name}<br />{/* TODO icon-org-placeholder */}
-              </h3>
+                {displayName}
+                { twitterDescriptionMinusName ? <span>{twitterDescriptionMinusName}</span> :
+                    <span></span>}
+                <br />{/* TODO icon-org-placeholder */}
+              </h4>
               { organization_twitter_handle ?
                <span>@{organization_twitter_handle}&nbsp;&nbsp;&nbsp;</span> :
                <span></span> }

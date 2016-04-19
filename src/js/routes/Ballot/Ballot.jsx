@@ -135,8 +135,7 @@ export default class Ballot extends Component {
         ) :
       <span></span>;
 
-    return (
-      <div className="ballot">
+    return <div className="ballot">
       <h4 className="text-center">{this.getTitle()}</h4>
         <div className="alert alert-info alert-dismissible" role="alert">
           <button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -144,8 +143,7 @@ export default class Ballot extends Component {
         </div>
         {emptyBallot}
         {ballotItems}
-      </div>
-    );
+      </div>;
   }
 
 }

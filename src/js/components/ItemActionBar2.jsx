@@ -23,8 +23,8 @@ export default class ItemActionBar2 extends ItemSupportOppose {
                         {support_count} positive
                         <span className="glyphicon glyphicon-small glyphicon-arrow-up"></span>
                     </span>
-                </span> : 
-                <span className="col-xs-4" 
+                </span> :
+                <span className="col-xs-4"
                       onClick={ this.supportItem.bind(this) }>
                     {support_count} positive
                     <span className="glyphicon glyphicon-small glyphicon-arrow-up"></span>
