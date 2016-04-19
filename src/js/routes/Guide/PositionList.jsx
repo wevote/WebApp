@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from "react";
-import { Button } from "react-bootstrap";
 import OrganizationActions from "../../actions/OrganizationActions";
 import LoadingWheel from "../../components/LoadingWheel";
 import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
+import SupportToggle from "../../components/SupportToggle";
 import Image from "../../components/Image";
 
 /* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/94226088 */
@@ -39,10 +39,6 @@ export default class GuidePositionList extends Component {
   }
 
   render () {
-    const floatRight = {
-      float: "right"
-    };
-
     if (!this.state.organization){
       return <div>{LoadingWheel}</div>;
     }
@@ -56,7 +52,7 @@ export default class GuidePositionList extends Component {
           <ul className="list-group">
             <li className="list-group-item">
               <h3>
-                <span style={floatRight}><Button bsStyle="info" bsSize="xsmall">Following</Button></span>
+                <SupportToggle we_vote_id={this.props.params.we_vote_id} />
                 { organization_photo_url ?
                  <span>
                  <Image imageUrl={organization_photo_url} class="img-square" />
