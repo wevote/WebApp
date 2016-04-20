@@ -13,7 +13,7 @@ export default class ItemSupportOpposeCounts extends ItemSupportOppose {
       return <span></span>;
     }
 
-    if (support_count == 0 && oppose_count == 0){
+    if (support_count === 0 && oppose_count === 0){
       // Do not show this code if there aren't any opinions you follow
       return <span></span>;
     }

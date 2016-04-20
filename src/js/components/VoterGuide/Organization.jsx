@@ -1,12 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import Image from "../../components/Image";
-
-function numberWithCommas (num) {
-  var parts = num.toString().split(".");
-  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  return parts.join(".");
-}
+import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
 
 export default class Organization extends Component {
   static propTypes = {
@@ -14,6 +9,7 @@ export default class Organization extends Component {
     key: PropTypes.string,
     imageUrl: PropTypes.string,
     displayName: PropTypes.string,
+    twitterDescription: PropTypes.string,
     followers: PropTypes.number,
     children: PropTypes.array
   };
@@ -21,11 +17,15 @@ export default class Organization extends Component {
   render () {
 
     const {
-      displayName,
       followers,
       id,
       imageUrl,
     } = this.props;
+
+    let displayName = this.props.displayName ? this.props.displayName : "";
+    let twitterDescription = this.props.twitterDescription ? this.props.twitterDescription : "";
+    // If the displayName is in the twitterDescription, remove it from twitterDescription
+    let twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
 
     var voter_guide_we_vote_id_link = "/voterguide/" + id;
 
@@ -39,16 +39,20 @@ export default class Organization extends Component {
           </div>
           <div className="col-xs-8 col-sm-6 display-name">
             <Link to={voter_guide_we_vote_id_link}>
-              {displayName}
+              <strong>{displayName}</strong>
+              { twitterDescriptionMinusName ? <span>{twitterDescriptionMinusName}</span> :
+                  <span></span>}
             </Link>
           </div>
           <div className="col-xs-2 col-sm-4 utils-paddingright0"
                 style={ {textAlign: "right"} }>
               {this.props.children}
           </div>
-          <div className="hidden-xs social-box">
+          {followers ?
+            <div className="hidden-xs social-box fa fa-twitter">
               {numberWithCommas(followers)}
-          </div>
+            </div> :
+            <span></span>}
         </div>
       </div>;
 

@@ -14,8 +14,7 @@ export default class OrganizationPositionItem extends Component {
       ballot_item_we_vote_id,
       ballot_item_image_url_https } = this.props.position;
 
-    return (
-      <li className="list-group-item">
+    return <li className="list-group-item">
           <StarAction we_vote_id={ballot_item_we_vote_id} type={kind_of_ballot_item} />
         <Link className="linkLight"
               to={"/candidate/" + ballot_item_we_vote_id }
@@ -39,7 +38,6 @@ export default class OrganizationPositionItem extends Component {
             Duis a eros fringilla, dictum leo vitae, vulputate mi. Nunc vitae neque nec erat fermentum... (more)
           <br />*/}
         </Link>
-        </li>
-    );
+        </li>;
   }
 }

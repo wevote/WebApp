@@ -1,13 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
-import FollowOrIgnore from "../../components/FollowOrIgnore";
 import Image from "../../components/Image";
-
-function numberWithCommas (x) {
-    var parts = x.toString().split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return parts.join(".");
-}
+import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
 
 export default class VoterGuideItem extends Component {
   static propTypes = {
@@ -18,6 +12,7 @@ export default class VoterGuideItem extends Component {
     voter_guide_owner_type: PropTypes.string,
     organization_we_vote_id: PropTypes.string,
     public_figure_we_vote_id: PropTypes.string,
+    twitter_description: PropTypes.string,
     twitter_followers_count: PropTypes.number,
     last_updated: PropTypes.string,
     OrganizationFollowed: PropTypes.string,
@@ -25,6 +20,11 @@ export default class VoterGuideItem extends Component {
   };
 
   render () {
+    // If the displayName is in the twitterDescription, remove it from twitterDescription
+    let displayName = this.props.voter_guide_display_name ? this.props.voter_guide_display_name : "";
+    let twitterDescription = this.props.twitter_description ? this.props.twitter_description : "";
+    let twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
+
     let twitterFollowers;
     const twitterFollowersCount = numberWithCommas(this.props.twitter_followers_count);
     if (this.props.twitter_followers_count) {
@@ -36,28 +36,26 @@ export default class VoterGuideItem extends Component {
      * Since the migration of the existing styles was not done with total fidelity, we need to leave this
      * file in place until the migration (or reintegration back into this file) can be completed.
      * TODO: Complete migration of this functionality */
-      return (
-          <div className="row">
+      return <div className="row">
               <div className="ballot-item well well-skinny well-bg--light split-top-skinny clearfix">
                   <div className="col-xs-2 col-sm-2">
                       <Link to={voter_guide_we_vote_id_link}>
                       <Image imageUrl={this.props.voter_guide_image_url} />
                       </Link>
                   </div>
-                  <div className="col-xs-8 col-sm-6">
+                  <div className="col-xs-10 col-sm-8">
                       <Link to={voter_guide_we_vote_id_link}>
-                          {this.props.voter_guide_display_name}
+                          <strong>{displayName}</strong>
+                          { twitterDescriptionMinusName ? <span>{twitterDescriptionMinusName}</span> :
+                              <span></span>}
                       </Link>
                   </div>
-                  <div className="col-xs-2 col-sm-4 utils-paddingright0"
-                       style={ {textAlign: "right"} }>
-                      <FollowOrIgnore organization_we_vote_id={this.props.organization_we_vote_id} />
-                  </div>
-                  <div className="hidden-xs social-box fa fa-twitter">
-                      { twitterFollowers }
-                  </div>
+                  {twitterFollowers ?
+                      <div className="hidden-xs social-box fa fa-twitter">
+                          { twitterFollowers }
+                      </div> :
+                      <span></span>}
               </div>
-        </div>
-    );
+        </div>;
   }
 }

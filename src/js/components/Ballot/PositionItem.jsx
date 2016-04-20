@@ -19,10 +19,10 @@ export default class PositionItem extends Component {
     var speaker_we_vote_id_link = "/voterguide/" + position.speaker_we_vote_id;
 
     let image_placeholder = "";
-    if (this.props.speaker_type == "O") {
-        image_placeholder = <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"></i>
-    } else if (this.props.speaker_type == "V") {
-        image_placeholder = <i className="icon-org-lg icon-icon-person-placeholder-6-1 icon-org-resting-color"></i>
+    if (this.props.speaker_type === "O") {
+        image_placeholder = <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"></i>;
+    } else if (this.props.speaker_type === "V") {
+        image_placeholder = <i className="icon-org-lg icon-icon-person-placeholder-6-1 icon-org-resting-color"></i>;
     }
 
     let position_description = <span></span>;
@@ -33,7 +33,7 @@ export default class PositionItem extends Component {
             <span> in {position.vote_smart_time_span}</span> :
             <span className="small">{ dateText }</span> }
           </p>;
-    } else if (position.speaker_type == "V") {
+    } else if (position.speaker_type === "V") {
         position_description = <p className="">
           <span>{this.props.candidate_display_name}</span>
           <span className="small"> { dateText }</span>
@@ -56,7 +56,7 @@ export default class PositionItem extends Component {
             <div className="col-xs-8 col-md-10">
                 <h4 className="">
                     { this.props.speaker_display_name }
-                    { position.is_support && !position.vote_smart_rating  ? <span>
+                    { position.is_support && !position.vote_smart_rating ? <span>
                         &nbsp;support</span> : <span></span> }
                     { position.is_oppose && !position.vote_smart_rating ? <span>
                         &nbsp;oppose</span> : <span></span> }

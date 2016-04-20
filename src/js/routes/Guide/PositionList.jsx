@@ -5,13 +5,9 @@ import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
 import SupportToggle from "../../components/SupportToggle";
 import Image from "../../components/Image";
+import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
 
 /* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/94226088 */
-function numberWithCommas (x) {
-    var parts = x.toString().split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return parts.join(".");
-}
 
 export default class GuidePositionList extends Component {
   static propTypes = {
@@ -43,29 +39,42 @@ export default class GuidePositionList extends Component {
       return <div>{LoadingWheel}</div>;
     }
 
-    const {organization_twitter_handle, twitter_followers_count,
+    const {organization_twitter_handle, twitter_description, twitter_followers_count,
       organization_photo_url, organization_website,
       organization_name, position_list} = this.state.organization;
+
+    // If the displayName is in the twitterDescription, remove it from twitterDescription
+    let displayName = organization_name ? organization_name : "";
+    let twitterDescription = twitter_description ? twitter_description : "";
+    let twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
 
     return <div>
         <div className="container-fluid well well-90">
           <ul className="list-group">
             <li className="list-group-item">
-              <h3>
+              <h4>
                 <SupportToggle we_vote_id={this.props.params.we_vote_id} />
                 { organization_photo_url ?
                  <span>
                  <Image imageUrl={organization_photo_url} class="img-square" />
                   </span> :
                 <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"></i> }
-                {organization_name}<br />{/* TODO icon-org-placeholder */}
-              </h3>
+                {displayName}
+                { twitterDescriptionMinusName ? <span>{twitterDescriptionMinusName}</span> :
+                    <span></span>}
+                <br />{/* TODO icon-org-placeholder */}
+              </h4>
               { organization_twitter_handle ?
                <span>@{organization_twitter_handle}&nbsp;&nbsp;&nbsp;</span> :
                <span></span> }
+              {twitter_followers_count ?
+                <div className="hidden-xs social-box fa fa-twitter">
+                  {numberWithCommas(twitter_followers_count)}
+                </div> :
+                <span></span>}
+
               See <a href={organization_website} target="_blank">Website</a><br />
               {/*5 of your friends follow Organization Name<br />*/}
-              {numberWithCommas(twitter_followers_count)} people follow<br />
               {/*
               <strong>2016 General Election, November 2nd</strong>
               <br />

@@ -13,7 +13,7 @@ export default class MoreMenu extends Component {
     let search = window.location.search ? window.location.search : "";
     let currentUrl = window.location.pathname + search;
 
-    return <li className={url === currentUrl? "active-link list-group-item" : "list-group-item"}>
+    return <li className={url === currentUrl ? "active-link list-group-item" : "list-group-item"}>
         <Link to={url}><div>{label}</div></Link>
       </li>;
   }

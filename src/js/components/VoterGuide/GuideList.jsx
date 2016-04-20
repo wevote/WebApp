@@ -28,6 +28,7 @@ export default class GuideList extends Component {
         <Organization id={org.organization_we_vote_id}
                       key={org.organization_we_vote_id}
                       displayName={org.voter_guide_display_name}
+                      twitterDescription={org.twitter_description}
                       followers={org.twitter_followers_count}
                       imageUrl={org.voter_guide_image_url} >
           <button className="btn btn-primary btn-sm follow hidden-xs"

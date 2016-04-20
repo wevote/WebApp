@@ -46,11 +46,13 @@ export default class Candidate extends Component {
     var we_vote_id = this.props.params.we_vote_id;
     var position_list_length = 0;
     var moreOpinionsLink = "";
+    var twitterDescription = "";
     if (candidate) {
       if (candidate.position_list) {
         position_list_length = candidate.position_list.length;
         moreOpinionsLink = "/opinions/" + candidate.we_vote_id;
       }
+      twitterDescription = candidate.twitter_description;
     }
     // If there aren't any positions, use this language:
     var find_more_positions_button_text = "Find Opinions About " + candidate.ballot_item_display_name;
@@ -93,6 +95,8 @@ export default class Candidate extends Component {
                     <span></span>
               }
             </h4>
+            { twitterDescription ? <span>{twitterDescription}<br /></span> :
+                <span></span>}
             {
               office.ballot_item_display_name ?
                 <p>Running for <span className="running-for-office-emphasis">{ office.ballot_item_display_name }</span></p> :
