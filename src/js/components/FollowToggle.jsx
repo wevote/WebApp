@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import GuideStore from "../stores/GuideStore";
 import GuideActions from "../actions/GuideActions";
 
-export default class SupportToggle extends Component {
+export default class FollowToggle extends Component {
   static propTypes = {
     we_vote_id: PropTypes.string.isRequired,
   };
@@ -26,16 +26,22 @@ export default class SupportToggle extends Component {
     let we_vote_id = this.props.we_vote_id;
     let is_following = this.state.is_following;
 
-    // toggle functions
-    const followOn = GuideActions.follow.bind(this, we_vote_id);
-    const followOff = GuideActions.stopFollowing.bind(this, we_vote_id);
+    const followFunc = GuideActions.follow.bind(this, we_vote_id);
+    const stopFollowingFunc = GuideActions.stopFollowing.bind(this, we_vote_id);
     const floatRight = { float: "right"};
 
     const jsx = <span style={floatRight}>
-          <Button onClick={ is_following ? followOff : followOn } bsStyle="info" bsSize="xsmall">
-            {is_following ? "Following" : "Follow"}
-          </Button>
-        </span>;
+      {is_following ?
+        <Button bsStyle="info"
+                bsSize="xsmall"
+                className="btn-action utils-margin_bottom5"
+                onClick={stopFollowingFunc}
+                data-hover="Unfollow">
+                <span>Following</span>
+        </Button> :
+        <Button bsStyle="info" bsSize="xsmall" onClick={followFunc}><span>Follow</span></Button>
+      }
+      </span>;
     return jsx;
   }
 }

@@ -112,6 +112,7 @@ class GuideStore extends FluxMapStore {
           ...state,
           following: state.following.concat(id),
           to_follow: state.to_follow.filter( el => { return el !== id; }),
+          to_follow_for_cand: state.to_follow_for_cand.filter(el => {return el !== id; }),
           ignoring: state.ignoring.filter( el => { return el !== id; })
         };
 
@@ -129,6 +130,7 @@ class GuideStore extends FluxMapStore {
           ...state,
           ignoring: state.ignoring.concat(id),
           to_follow: state.to_follow.filter( el => { return el !== id; }),
+          to_follow_for_cand: state.to_follow_for_cand.filter( el => { return el !== id; }),
           following: state.following.filter( el => { return el !== id; })
         };
 

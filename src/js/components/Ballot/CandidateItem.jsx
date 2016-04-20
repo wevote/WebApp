@@ -13,7 +13,7 @@ export default class Candidate extends Component {
     party: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired,
     twitter_description: PropTypes.string,
-    twitter_followers_count: PropTypes.integer,
+    twitter_followers_count: PropTypes.number,
   };
 
   render () {
