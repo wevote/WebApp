@@ -4,15 +4,7 @@ import React, { Component, PropTypes } from "react";
 const request = require("superagent");
 const web_app_config = require("../../config");
 import AddressBox from "../../components/AddressBox";
-
-function numberWithCommas (num) {
-  if (num) {
-    var parts = num.toString().split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return parts.join(".");
-  }
-  return "";
-}
+import { numberWithCommas } from "../../utils/textFormat";
 
 export default class Intro extends Component {
   static propTypes = {

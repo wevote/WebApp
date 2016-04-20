@@ -1,12 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import Image from "../../components/Image";
-
-function numberWithCommas (x) {
-    var parts = x.toString().split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return parts.join(".");
-}
+import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
 
 export default class VoterGuideItem extends Component {
   static propTypes = {
@@ -28,14 +23,7 @@ export default class VoterGuideItem extends Component {
     // If the displayName is in the twitterDescription, remove it from twitterDescription
     let displayName = this.props.voter_guide_display_name ? this.props.voter_guide_display_name : "";
     let twitterDescription = this.props.twitter_description ? this.props.twitter_description : "";
-    let twitterDescriptionMinusName;
-    if (twitterDescription.startsWith(displayName)) {
-      twitterDescriptionMinusName = twitterDescription.substr(displayName.length);
-    } else if (twitterDescription.startsWith("The " + displayName)) {
-      twitterDescriptionMinusName = twitterDescription.substr(displayName.length + 4);
-    } else {
-      twitterDescriptionMinusName = ". " + twitterDescription;
-    }
+    let twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
 
     let twitterFollowers;
     const twitterFollowersCount = numberWithCommas(this.props.twitter_followers_count);
@@ -62,9 +50,11 @@ export default class VoterGuideItem extends Component {
                               <span></span>}
                       </Link>
                   </div>
-                  <div className="hidden-xs social-box fa fa-twitter">
-                      { twitterFollowers }
-                  </div>
+                  {twitterFollowers ?
+                      <div className="hidden-xs social-box fa fa-twitter">
+                          { twitterFollowers }
+                      </div> :
+                      <span></span>}
               </div>
         </div>;
   }

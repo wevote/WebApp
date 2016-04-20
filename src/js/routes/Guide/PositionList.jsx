@@ -5,13 +5,9 @@ import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
 import SupportToggle from "../../components/SupportToggle";
 import Image from "../../components/Image";
+import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
 
 /* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/94226088 */
-function numberWithCommas (x) {
-    var parts = x.toString().split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return parts.join(".");
-}
 
 export default class GuidePositionList extends Component {
   static propTypes = {
@@ -50,14 +46,7 @@ export default class GuidePositionList extends Component {
     // If the displayName is in the twitterDescription, remove it from twitterDescription
     let displayName = organization_name ? organization_name : "";
     let twitterDescription = twitter_description ? twitter_description : "";
-    let twitterDescriptionMinusName;
-    if (twitterDescription.startsWith(displayName)) {
-      twitterDescriptionMinusName = twitterDescription.substr(displayName.length);
-    } else if (twitterDescription.startsWith("The " + displayName)) {
-      twitterDescriptionMinusName = twitterDescription.substr(displayName.length + 4);
-    } else {
-      twitterDescriptionMinusName = ". " + twitterDescription;
-    }
+    let twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
 
     return <div>
         <div className="container-fluid well well-90">
@@ -78,9 +67,14 @@ export default class GuidePositionList extends Component {
               { organization_twitter_handle ?
                <span>@{organization_twitter_handle}&nbsp;&nbsp;&nbsp;</span> :
                <span></span> }
+              {twitter_followers_count ?
+                <div className="hidden-xs social-box fa fa-twitter">
+                  {numberWithCommas(twitter_followers_count)}
+                </div> :
+                <span></span>}
+
               See <a href={organization_website} target="_blank">Website</a><br />
               {/*5 of your friends follow Organization Name<br />*/}
-              {numberWithCommas(twitter_followers_count)} people follow<br />
               {/*
               <strong>2016 General Election, November 2nd</strong>
               <br />

@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import StarAction from "../../components/StarAction";
 import ItemActionBar from "../../components/ItemActionbar";
 import ItemSupportOpposeCounts from "../../components/ItemSupportOpposeCounts";
+import { numberWithCommas } from "../../utils/textFormat";
 
 export default class Candidate extends Component {
   static propTypes = {
@@ -11,6 +12,8 @@ export default class Candidate extends Component {
     candidate_photo_url: PropTypes.string.isRequired,
     party: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired,
+    twitter_description: PropTypes.string,
+    twitter_followers_count: PropTypes.integer,
   };
 
   render () {
@@ -19,7 +22,12 @@ export default class Candidate extends Component {
       candidate_photo_url,
       party,
       we_vote_id,
+      twitter_description,
+      twitter_followers_count,
     } = this.props;
+
+    let displayName = ballot_item_display_name ? ballot_item_display_name : "";
+    let twitterDescription = twitter_description ? twitter_description : "";
 
     return <section className="candidate list-group-item">
         <StarAction
@@ -47,7 +55,7 @@ export default class Candidate extends Component {
             </div>
             <div className="col-xs-8">
               <h4 className="bufferNone">
-                <span style={{fontSize: "80%"}}>{ ballot_item_display_name }</span>
+                <span style={{fontSize: "80%"}}>{ displayName }</span>
                 {
                   party ?
                     <span className="link-text-candidate-party">, { party }</span> :
@@ -55,6 +63,14 @@ export default class Candidate extends Component {
                 }
                 <span className="link-text-to-more-info"> (more)</span>
               </h4>
+              { twitterDescription ? <span>{twitterDescription}<br /></span> :
+                  <span></span>}
+              {twitter_followers_count ?
+                <div className="hidden-xs social-box fa fa-twitter">
+                  {numberWithCommas(twitter_followers_count)}
+                </div> :
+                <span></span>}
+
               <ItemSupportOpposeCounts we_vote_id={we_vote_id} type="CANDIDATE" />
             </div>
           </div>
