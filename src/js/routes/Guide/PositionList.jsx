@@ -3,7 +3,7 @@ import OrganizationActions from "../../actions/OrganizationActions";
 import LoadingWheel from "../../components/LoadingWheel";
 import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
-import SupportToggle from "../../components/SupportToggle";
+import FollowToggle from "../../components/FollowToggle";
 import Image from "../../components/Image";
 import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
 
@@ -53,7 +53,7 @@ export default class GuidePositionList extends Component {
           <ul className="list-group">
             <li className="list-group-item">
               <h4>
-                <SupportToggle we_vote_id={this.props.params.we_vote_id} />
+                <FollowToggle we_vote_id={this.props.params.we_vote_id} />
                 { organization_photo_url ?
                  <span>
                  <Image imageUrl={organization_photo_url} class="img-square" />
