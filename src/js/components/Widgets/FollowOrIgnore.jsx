@@ -1,7 +1,7 @@
 "use strict";
 import React, { Component, PropTypes } from "react";
 import { Button, ButtonToolbar } from "react-bootstrap";
-import GuideActions from "../actions/GuideActions";
+import GuideActions from "../../actions/GuideActions";
 
 export default class FollowOrIgnore extends Component {
     static propTypes = {

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
-import StarStore from "../stores/StarStore";
-import StarActions from "../actions/StarActions";
+import StarStore from "../../stores/StarStore";
+import StarActions from "../../actions/StarActions";
 
 const floatRight = { float: "right" };
 

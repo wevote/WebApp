@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-// import FollowOrIgnore from "../components/FollowOrIgnore";
+// import FollowOrIgnore from "../components/Widgets/FollowOrIgnore";
 
 export default class RequestsPage extends Component {
 	constructor (props) {

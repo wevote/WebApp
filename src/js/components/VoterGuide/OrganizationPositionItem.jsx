@@ -1,4 +1,4 @@
-import StarAction from "../../components/StarAction";
+import StarAction from "../../components/Widgets/StarAction";
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 

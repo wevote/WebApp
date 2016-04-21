@@ -1,6 +1,6 @@
 import { Component, PropTypes } from "react";
-import SupportActions from "../actions/SupportActions";
-import SupportStore from "../stores/SupportStore";
+import SupportActions from "../../actions/SupportActions";
+import SupportStore from "../../stores/SupportStore";
 
 export default class ItemSupportOppose extends Component {
   static propTypes = {
