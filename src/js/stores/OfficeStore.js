@@ -5,7 +5,8 @@ class OfficeStore extends FluxMapStore {
 
   reduce (state, action) {
 
-    if (action.res.success === false)
+    if (typeof action.res === "undefined" ||
+        action.res.success === false)
       return state;
 
     switch (action.type) {

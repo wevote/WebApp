@@ -47,8 +47,12 @@ class SupportStore extends FluxMapStore {
   }
 
   reduce (state, action) {
-
-    let we_vote_id = action.res.ballot_item_we_vote_id;
+    let we_vote_id = "";
+    if (typeof action.res !== "undefined" &&
+        typeof action.res.ballot_item_we_vote_id !== "undefined" &&
+        action.res.ballot_item_we_vote_id !== null) {
+      we_vote_id = action.res.ballot_item_we_vote_id;
+    }
 
     switch (action.type) {
 
