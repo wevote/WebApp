@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import GuideStore from "../stores/GuideStore";
-import GuideActions from "../actions/GuideActions";
+import GuideStore from "../../stores/GuideStore";
+import GuideActions from "../../actions/GuideActions";
 
 export default class FollowToggle extends Component {
   static propTypes = {

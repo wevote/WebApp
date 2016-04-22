@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 
-import StarAction from "../../components/StarAction";
-import ItemActionBar from "../../components/ItemActionbar";
-import ItemSupportOpposeCounts from "../../components/ItemSupportOpposeCounts";
+import StarAction from "../../components/Widgets/StarAction";
+import ItemActionBar from "../../components/Widgets/ItemActionbar";
+import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
 import { numberWithCommas } from "../../utils/textFormat";
 
 export default class Candidate extends Component {

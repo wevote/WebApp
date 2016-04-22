@@ -3,7 +3,7 @@ import OrganizationActions from "../../actions/OrganizationActions";
 import LoadingWheel from "../../components/LoadingWheel";
 import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
-import FollowToggle from "../../components/FollowToggle";
+import FollowToggle from "../../components/Widgets/FollowToggle";
 import Image from "../../components/Image";
 import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
 

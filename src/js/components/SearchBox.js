@@ -1,5 +1,4 @@
 import React, {Component } from "react";
-import ReactDOM from "react-dom";
 import GuideActions from "../actions/GuideActions";
 import VoterStore from "../stores/VoterStore";
 
@@ -8,10 +7,6 @@ export default class SearchBox extends Component {
   constructor (props){
     super(props);
     this.state = {};
-  }
-
-  componentDidMount (){
-    ReactDOM.findDOMNode(this.refs.search).focus();
   }
 
   componentWillUnmount (){
@@ -31,7 +26,7 @@ export default class SearchBox extends Component {
 
   render () {
     return <input type="text"
-                ref="search"
+                autoFocus
                 className="form-control"
                 onChange={this.updateResults.bind(this)}
                 value={this.state.query}

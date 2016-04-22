@@ -5,8 +5,8 @@ import CandidateStore from "../../stores/CandidateStore";
 import OfficeStore from "../../stores/OfficeStore";
 import CandidateActions from "../../actions/CandidateActions";
 import PositionList from "../../components/Ballot/PositionList";
-import ItemActionBar2 from "../../components/ItemActionBar2";
-import StarAction from "../../components/StarAction";
+import ItemActionBar2 from "../../components/Widgets/ItemActionBar2";
+import StarAction from "../../components/Widgets/StarAction";
 
 export default class Candidate extends Component {
   static propTypes = {

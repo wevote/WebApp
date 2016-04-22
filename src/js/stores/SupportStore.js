@@ -1,6 +1,7 @@
 var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
 const assign = require("object-assign");
+import SupportActions from "../actions/SupportActions";
 
 class SupportStore extends FluxMapStore {
 
@@ -50,6 +51,12 @@ class SupportStore extends FluxMapStore {
     let we_vote_id = action.res.ballot_item_we_vote_id;
 
     switch (action.type) {
+
+      case "voterAddressRetrieve":
+        let id = action.res.google_civic_election_id;
+        SupportActions.retrieveAll();
+        SupportActions.retrieveAllCounts(id);
+        return state;
 
       case "voterAllPositionsRetrieve":
         return {

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import CandidateList from "../../components/Ballot/CandidateList";
 import Measure from "../../components/Ballot/Measure";
-import StarAction from "../../components/StarAction";
+import StarAction from "../../components/Widgets/StarAction";
 
 const TYPES = require("keymirror")({
   OFFICE: null,
