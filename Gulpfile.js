@@ -1,30 +1,51 @@
 // dependencies
 const gulp = require("gulp");
 const sass = require("gulp-sass");
+const uglify = require("gulp-uglify");
 const browserSync = require("browser-sync").create();
 const browserify = require("browserify");
 const babelify = require("babelify");
 const source = require("vinyl-source-stream");
+const buffer = require("vinyl-buffer");
 const del = require("del");
 const server = require("./server");
+const closureCompiler = require("gulp-closure-compiler");
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 
 gulp.task("browserify", function () {
-  return browserify({
+  const ops = {
+    debug: !PRODUCTION,
     entries: "js/index.js",
     extensions: [".js", ".jsx"],
     basedir: "./src",
     transform: [babelify]
-  })
-  .bundle()
-  .on("error", function (err) {
-    console.error(err.toString());
+  };
+
+  function err (e){
+    console.error(e.toString());
     this.emit("end");
-  })
-  .pipe(source("bundle.js"))
-  .pipe(gulp.dest("./build/js"))
-  .pipe(browserSync.stream());
+  }
+
+  return PRODUCTION ?
+
+  // production build with minification
+  browserify(ops)
+    .bundle()
+    .on("error", err)
+    .pipe(source("bundle.js"))
+    .pipe(buffer())
+    .pipe(uglify({ preserveComments: false, mangle: false }))
+    .pipe(gulp.dest("./build/js")) :
+
+  // development build... no minification
+  browserify(ops)
+    .bundle()
+    .on("error", err)
+    .pipe(source("bundle.js"))
+    .pipe(gulp.dest("./build/js"))
+    .pipe(browserSync.stream());
+
 });
 
 gulp.task("server", PRODUCTION ? () => server(PRODUCTION) : function () {
