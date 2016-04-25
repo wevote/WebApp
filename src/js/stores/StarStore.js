@@ -5,10 +5,9 @@ class StarStore extends FluxMapStore {
 
   reduce (state, action) {
 
-    if (action.res.success === false){
-      console.log(action);
+    // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
+    if (!action.res || !action.res.success)
       return state;
-    }
 
     var key = action.res.ballot_item_we_vote_id;
 

@@ -5,7 +5,8 @@ class OfficeStore extends FluxMapStore {
 
   reduce (state, action) {
 
-    if (action.res.success === false)
+    // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
+    if (!action.res || !action.res.success)
       return state;
 
     switch (action.type) {

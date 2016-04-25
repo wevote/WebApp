@@ -97,11 +97,11 @@ export default class Ballot extends Component {
     let ballot = this.state.ballot;
     let ballot_props = BallotStore.ballot_properties;
     let ballot_length = 0;
-    if (ballot !== null && ballot.length !== null) {
+    if (ballot && ballot.length) {
       ballot_length = ballot.length;
     }
     let ballot_caveat = "";
-    if (ballot_props !== null) {
+    if (ballot_props && ballot_props.ballot_caveat) {
       ballot_caveat = ballot_props.ballot_caveat;
     }
 
@@ -129,7 +129,7 @@ export default class Ballot extends Component {
       </div> :
       <div></div>;
 
-    const ballotItems = ballot !== null ?
+    const ballotItems = ballot ?
       ballot.map( (item) =>
           <BallotItem key={item.we_vote_id} {...item} />
         ) :

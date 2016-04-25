@@ -47,8 +47,14 @@ class SupportStore extends FluxMapStore {
   }
 
   reduce (state, action) {
+    // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
+    if (!action.res || !action.res.success)
+      return state;
 
-    let we_vote_id = action.res.ballot_item_we_vote_id;
+    let we_vote_id = "";
+    if (action.res.ballot_item_we_vote_id) {
+      we_vote_id = action.res.ballot_item_we_vote_id;
+    }
 
     switch (action.type) {
 
