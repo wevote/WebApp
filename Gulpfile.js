@@ -9,7 +9,6 @@ const source = require("vinyl-source-stream");
 const buffer = require("vinyl-buffer");
 const del = require("del");
 const server = require("./server");
-const closureCompiler = require("gulp-closure-compiler");
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 
