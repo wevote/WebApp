@@ -9,6 +9,7 @@ const source = require("vinyl-source-stream");
 const buffer = require("vinyl-buffer");
 const del = require("del");
 const server = require("./server");
+const closureCompiler = require("gulp-closure-compiler");
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 
@@ -33,9 +34,9 @@ gulp.task("browserify", function () {
     .bundle()
     .on("error", err)
     .pipe(source("bundle.js"))
-    .pipe(gulp.dest("./build/js"))
     .pipe(buffer())
-    .pipe(uglify()) :
+    .pipe(uglify({ preserveComments: false, mangle: false }))
+    .pipe(gulp.dest("./build/js")) :
 
   // development build... no minification
   browserify(ops)
