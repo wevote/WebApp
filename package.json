@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "description": "We Vote USA front end application",
   "private": true,
-  "main": "server.js",
+  "main": "index.js",
   "license": "MIT",
   "babel": {
     "presets": [

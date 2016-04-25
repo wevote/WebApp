@@ -2,7 +2,7 @@
 const express = require("express");
 const app = express();
 
-module.exports = function (PROD) {
+function server (PROD) {
   const port = PROD ? 3000 : 3003;
   const opts = { redirect: true };
   const hostname = PROD ? "wevote.me" : "localhost";
@@ -13,4 +13,7 @@ module.exports = function (PROD) {
       console.log("INFO: " + "express server started", new Date());
       console.log("INFO: " + `Server is at http://${hostname}:${port}`);
   });
-};
+}
+
+module.exports = server;
+

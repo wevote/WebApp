@@ -9,7 +9,6 @@ const source = require("vinyl-source-stream");
 const buffer = require("vinyl-buffer");
 const del = require("del");
 const server = require("./server");
-const closureCompiler = require("gulp-closure-compiler");
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 
@@ -48,7 +47,7 @@ gulp.task("browserify", function () {
 
 });
 
-gulp.task("server", PRODUCTION ? () => server(PRODUCTION) : function () {
+gulp.task("server", PRODUCTION ? () => {} : function () {
   server();
   // only start browserSync when this is development
   browserSync.init({
