@@ -2,6 +2,7 @@ import { $ajax } from "../utils/service";
 import FacebookConstants from "../constants/FacebookConstants";
 import FacebookDispatcher from "../dispatcher/FacebookDispatcher";
 import VoterStore from "../stores/VoterStore";
+import VoterActions from "../actions/VoterActions";
 import {EventEmitter} from "events";
 import service from "../utils/service";
 
@@ -144,18 +145,7 @@ class FacebookStore extends EventEmitter {
             // console.log("Call to FacebookAPIWorker.facebookSignIn has completed");
             this.emit(FACEBOOK_CHANGE_EVENT);
             // Once we have connected to Facebook, grab a fresh version of the voter
-            VoterStore.getLocation( (err) => {
-              if (err) handleVoterError(err);
-              VoterStore.retrieveFreshVoterObject( (_err, voter_object) => {
-                if (_err) {
-                  handleVoterError(_err);
-                } else {
-                  // console.log("facebookStore.connectWithFacebook, voter: ", voter_object);
-                  // Finally, update all components listening for changes in Voter Store
-                  VoterStore.emitChange();
-                }
-              });
-            });
+            VoterActions.retrieveVoter();
           }
         );
       }
@@ -195,13 +185,6 @@ class FacebookStore extends EventEmitter {
     removeChangeListener (callback) {
         this.removeListener(FACEBOOK_CHANGE_EVENT, callback);
     }
-}
-
-function sleep (milliseconds) {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-    if (new Date().getTime() - start > milliseconds) break;
-  }
 }
 
 function handleVoterError (err) {

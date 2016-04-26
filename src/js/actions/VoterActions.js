@@ -2,6 +2,10 @@ import Dispatcher from "../dispatcher/Dispatcher";
 
 module.exports = {
 
+  signOut: function (){
+    Dispatcher.loadEndpoint("voterSignOut", {sign_out_all_devices: true});
+  },
+
   retrieveVoter: function () {
     Dispatcher.loadEndpoint("voterRetrieve");
   },

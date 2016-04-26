@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
+import FacebookActionCreators from "../actions/FacebookActionCreators";
 
 export default class MoreMenu extends Component {
   static propTypes = {
@@ -19,6 +20,7 @@ export default class MoreMenu extends Component {
   }
 
   render () {
+    const logOut = FacebookActionCreators.appLogout;
 
   return <div>
     <div className="device-menu--large container-fluid well well-90">
@@ -40,14 +42,15 @@ export default class MoreMenu extends Component {
         {this.menuLink("/ballot?type=filterRemaining", "Choices Remaining")}
         {this.menuLink("/settings/location", "My Address")}
         {this.props.signed_in_personal ?
-          <li className="list-group-item"><Link to="/more/sign_in"><div>Account Settings</div></Link></li> : <span></span>
+          this.menuLink("/more/sign_in", "Account Settings") :
+          this.menuLink("/more/sign_in", "Sign In")
         }
       </ul>
       <h4 className="text-left"></h4>
       <ul className="list-group">
       {this.menuLink("/more/about", "About We Vote")}
         {this.props.signed_in_personal ?
-          <li className="list-group-item"><Link to="/signout">Sign Out</Link></li> :
+          <li onClick={logOut} className="list-group-item"><a>Sign Out</a></li> :
           <span></span>
         }
       </ul>

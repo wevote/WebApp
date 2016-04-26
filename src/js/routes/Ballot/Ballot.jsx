@@ -137,10 +137,13 @@ export default class Ballot extends Component {
 
     return <div className="ballot">
       <h4 className="text-center">{this.getTitle()}</h4>
+      {ballot_caveat !== "" ?
         <div className="alert alert-info alert-dismissible" role="alert">
           <button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           {ballot_caveat}
-        </div>
+        </div> :
+        <div></div>
+      }
         {emptyBallot}
         {ballotItems}
       </div>;
