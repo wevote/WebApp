@@ -118,11 +118,11 @@ export default class Header extends Component {
           <h4 className="text-left"></h4>
           <ul className="list-group">
             <li className="list-group-item">
-              <div onClick={this.hide.bind(this)} to="/more/about">
+              <Link onClick={this.hide.bind(this)} to="/more/about">
                 <div>
                 About <strong>We Vote</strong>
                 </div>
-              </div>
+              </Link>
             </li>
             { signed_in_personal ?
               <li className="list-group-item">
