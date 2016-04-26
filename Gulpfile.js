@@ -1,3 +1,5 @@
+const PRODUCTION = process.env.NODE_ENV === "production";
+
 // dependencies
 const gulp = require("gulp");
 const sass = require("gulp-sass");
@@ -9,8 +11,6 @@ const source = require("vinyl-source-stream");
 const buffer = require("vinyl-buffer");
 const del = require("del");
 const server = require("./server");
-
-const PRODUCTION = process.env.NODE_ENV === "production";
 
 gulp.task("browserify", function () {
   const ops = {
@@ -27,27 +27,28 @@ gulp.task("browserify", function () {
   }
 
   return PRODUCTION ?
+    // production build with minification
+    browserify(ops)
+      .bundle()
+      .on("error", err)
+      .pipe(source("bundle.js"))
+      .pipe(buffer())
+      .pipe(uglify({ preserveComments: false, mangle: false }))
+      .pipe(gulp.dest("./build/js")) :
 
-  // production build with minification
-  browserify(ops)
-    .bundle()
-    .on("error", err)
-    .pipe(source("bundle.js"))
-    .pipe(buffer())
-    .pipe(uglify({ preserveComments: false, mangle: false }))
-    .pipe(gulp.dest("./build/js")) :
-
-  // development build... no minification
-  browserify(ops)
-    .bundle()
-    .on("error", err)
-    .pipe(source("bundle.js"))
-    .pipe(gulp.dest("./build/js"))
-    .pipe(browserSync.stream());
+    // development build... no minification
+    browserify(ops)
+      .bundle()
+      .on("error", err)
+      .pipe(source("bundle.js"))
+      .pipe(gulp.dest("./build/js"))
+      .pipe(browserSync.stream());
 
 });
 
-gulp.task("server", PRODUCTION ? () => {} : function () {
+// if production task then have this task call an empty funtion...
+// do nothing; no-op
+gulp.task("server", PRODUCTION ? () => server(true) : function () {
   server();
   // only start browserSync when this is development
   browserSync.init({
@@ -74,6 +75,10 @@ gulp.task("clean:build", function () {
   return del.sync(["./build/**"]);
 });
 
+gulp.task("clean:logs", function () {
+  return del.sycn(["./*.log"]);
+});
+
 gulp.task("copy-fonts", function () {
   gulp.src("./src/sass/base/fonts/**")
     .pipe(gulp.dest("./build/fonts"))
@@ -94,7 +99,7 @@ gulp.task("copy-css", function () {
 
 gulp.task("build", ["copy-fonts", "copy-index", "copy-css", "browserify", "sass"]);
 
-gulp.task("watch", ["build"], PRODUCTION ? ()=>{} : function () {
+gulp.task("watch", ["build"], function () {
   gulp.watch(["./src/index.html"], ["copy-index"]);
   gulp.watch(["./src/sass/base/base/fonts/**"], ["copy-fonts"]);
   gulp.watch(["./src/css/**/*.css"], ["copy-css"]);
