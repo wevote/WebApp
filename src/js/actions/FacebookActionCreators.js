@@ -1,11 +1,20 @@
 const web_app_config = require("../config");
 import FacebookDispatcher from "../dispatcher/FacebookDispatcher";
+import VoterActions from "../actions/VoterActions";
 import FacebookConstants from "../constants/FacebookConstants";
+const cookies = require("../utils/cookies");
 
 const FacebookActionCreators = {
+
+  appLogout: function (){
+    cookies.removeItem("voter_device_id");
+    VoterActions.signOut();
+    VoterActions.retrieveVoter();
+  },
+
     initFacebook: function () {
         window.fbAsyncInit = function () {
-            FB.init({
+            window.FB.init({
               appId: web_app_config.FACEBOOK_APP_ID,
               xfbml: true,
               version: "v2.5"
@@ -60,6 +69,7 @@ const FacebookActionCreators = {
             });
         });
     },
+
     // Dale considering the need for this here
     //connectWithFacebook: () => {
     //    // Add connection between We Vote and Facebook
