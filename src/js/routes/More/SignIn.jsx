@@ -16,14 +16,13 @@ export default class SignIn extends Component {
   componentDidMount () {
     this._onVoterStoreChange();
     FacebookActionCreators.initFacebook();
-    this.changeListener = this._onFacebookChange.bind(this);
-    FacebookStore.addChangeListener(this.changeListener);
+    this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
     this.listener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     this.listener.remove();
-    FacebookStore.removeChangeListener(this.changeListener);
+    this.facebookListener.remove();
   }
 
   _onVoterStoreChange () {

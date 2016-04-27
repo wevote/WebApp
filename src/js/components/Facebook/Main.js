@@ -19,21 +19,20 @@ class Main extends React.Component {
             loggedIn: FacebookStore.loggedIn,
             userId: FacebookStore.userId,
             facebookPictureStatus: FacebookStore.facebookPictureStatus,
-            facebookPictureUrl: FacebookStore.facebookPictureUrl
+            facebookPictureUrl: FacebookStore.facebookPictureData
         };
     }
 
     componentDidMount () {
         FacebookActionCreators.initFacebook();
-        this.changeListener = this._onFacebookChange.bind(this);
-        FacebookStore.addChangeListener(this.changeListener);
+        this.listener = FacebookStore.addListener(this._onChange.bind(this));
     }
 
     componentWillUnmount () {
-        FacebookStore.removeChangeListener(this.changeListener);
-      }
+      this.listener.remove();
+    }
 
-    _onFacebookChange () {
+    _onChange () {
         this.setState(this.getFacebookState());
     }
 
