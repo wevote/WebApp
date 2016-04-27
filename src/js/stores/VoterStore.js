@@ -29,7 +29,7 @@ class VoterStore extends FluxMapStore {
   }
 
   setVoterDeviceIdCookie (id){
-    cookies.setItem("voter_device_id", id, Infinity);
+    cookies.setItem("voter_device_id", id, Infinity, "/");
   }
 
   reduce (state, action) {
