@@ -72,30 +72,33 @@ export default class Header extends Component {
         <div className={(visible ? "visible" : "hidden") + " device-menu--mobile container-fluid well well-90"}>}
           <ul className="list-group">
             <li className="list-group-item">
+              <Link onClick={this.hide.bind(this)} to={{ pathname: "/ballot", query: { type: "filterRemaining" } }}>
+                <div>
+                Choices Remaining
+                </div>
+              </Link>
+            </li>
+            <li className="list-group-item">
+              <Link onClick={this.hide.bind(this)} to={{ pathname: "/ballot", query: { type: "filterSupport" } }}>
+                <div>
+                  What I Support
+                </div>
+              </Link>
+            </li>
+            <li className="list-group-item">
               <Link onClick={this.hide.bind(this)} to="/ballot">
                 <div>
                 All Ballot Items
                 </div>
               </Link>
             </li>
+          </ul>
+          <h4 className="text-left"></h4>
+          <ul className="list-group">
             <li className="list-group-item">
               <Link onClick={this.hide.bind(this)} to="/more/opinions/followed">
                 <div>
-                Opinions I'm Following
-                </div>
-              </Link>
-            </li>
-            <li className="list-group-item">
-            <Link onClick={this.hide.bind(this)} to={{ pathname: "/ballot", query: { type: "filterSupport" } }}>
-              <div>
-                What I Support
-              </div>
-            </Link>
-            </li>
-            <li className="list-group-item">
-              <Link onClick={this.hide.bind(this)} to={{ pathname: "/ballot", query: { type: "filterRemaining" } }}>
-                <div>
-                Choices Remaining
+                What I'm Following
                 </div>
               </Link>
             </li>
@@ -106,14 +109,21 @@ export default class Header extends Component {
                 </div>
               </Link>
             </li>
-                <li className="list-group-item">
-                  <Link onClick={this.hide.bind(this)} to="/more/sign_in">
-                    <div>
-                    {signed_in_personal ? "Account Settings" : "Sign In"}
-                    </div>
-                  </Link>
-                </li> :
-                <span></span>
+            { signed_in_personal ?
+              <li className="list-group-item">
+                <div onClick={logOut}>
+                  <a>
+                  Sign Out
+                  </a>
+                </div>
+              </li> :
+              <li className="list-group-item">
+                    <Link onClick={this.hide.bind(this)} to="/more/sign_in">
+                      <div>
+                      Sign In
+                      </div>
+                    </Link>
+                  </li> }
           </ul>
           <h4 className="text-left"></h4>
           <ul className="list-group">
@@ -124,14 +134,6 @@ export default class Header extends Component {
                 </div>
               </Link>
             </li>
-            { signed_in_personal ?
-              <li className="list-group-item">
-                <div onClick={logOut}>
-                  <a>
-                  Sign Out
-                  </a>
-                </div>
-              </li> : <span></span> }
           </ul>
         </div>
       </header>;
