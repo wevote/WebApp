@@ -9,7 +9,6 @@ const DEBUG = false;
 const url = require("url");
 
 const assign = require("object-assign");
-const ajax = require("../vendor/jquery.js").ajax;
 const webAppConfig = require("../config");
 const cookies = require("./cookies");
 
@@ -39,7 +38,7 @@ export function $ajax (options) {
   options.error = options.error || defaults.error;
   options.url = url.resolve(defaults.baseUrl, options.endpoint) + "/";
 
-  return ajax(options);
+  return window.$.ajax(options);
 }
 
 export function get (options) {

@@ -12,8 +12,7 @@ class FacebookSignIn extends React.Component {
   }
 
   didClickFacebookLoginButton () {
-    console.log("didClickFacebookLoginButton");
-    FacebookActionCreators.login(); // We call FacebookActionCreators.connectWithFacebook() within login()
+    FacebookActionCreators.login();
   }
 }
 
