@@ -1,5 +1,5 @@
 import React from "react";
-import FacebookActionCreators from "../../actions/FacebookActionCreators";
+import FacebookActions from "../../actions/FacebookActions";
 
 class FacebookDisconnect extends React.Component {
     constructor (props) {
@@ -8,7 +8,7 @@ class FacebookDisconnect extends React.Component {
 
     didClickDisconnectFromFacebookButton (e) {
         console.log("didClickDisconnectFromFacebookButton");
-        FacebookActionCreators.disconnectFromFacebook();
+        FacebookActions.disconnectFromFacebook();
     }
 
     render () {

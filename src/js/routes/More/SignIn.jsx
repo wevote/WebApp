@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import FacebookActionCreators from "../../actions/FacebookActionCreators";
+import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
 import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 import Main from "../../components/Facebook/Main";
@@ -15,7 +15,7 @@ export default class SignIn extends Component {
 
   componentDidMount () {
     this._onVoterStoreChange();
-    FacebookActionCreators.initFacebook();
+    FacebookActions.initFacebook();
     this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
     this.listener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
@@ -44,7 +44,6 @@ export default class SignIn extends Component {
   }
 
   render () {
-    console.log(this.state);
     var { voter} = this.state;
     if (!voter){
       return LoadingWheel;
@@ -55,7 +54,7 @@ export default class SignIn extends Component {
         <h3 className="text-center">{voter.signed_in_personal ? <span>My Account</span> : <span>Sign In</span>}</h3>
         <div className="text-center">
           {voter.signed_in_facebook ?
-            <span><a className="btn btn-social btn-lg btn-facebook" onClick={FacebookActionCreators.appLogout}>
+            <span><a className="btn btn-social btn-lg btn-facebook" onClick={FacebookActions.appLogout}>
             <i className="fa fa-facebook"></i>Sign Out</a></span> : <FacebookSignIn />
           }
           {/*

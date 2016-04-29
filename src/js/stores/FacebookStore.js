@@ -1,6 +1,6 @@
 var FluxMapStore = require("flux/lib/FluxMapStore");
 import FacebookConstants from "../constants/FacebookConstants";
-import FacebookActionCreators from "../actions/FacebookActionCreators";
+import FacebookActions from "../actions/FacebookActions";
 import Dispatcher from "../dispatcher/Dispatcher";
 import VoterActions from "../actions/VoterActions";
 
@@ -53,15 +53,16 @@ class FacebookStore extends FluxMapStore {
           return state;
 
         case FacebookConstants.FACEBOOK_LOGGED_IN:
-        console.log("loggedin");
-          FacebookActionCreators.getFacebookEmail();
+          FacebookActions.getFacebookEmail();
           return {
             ...state,
             authData: action.data
           };
 
         case FacebookConstants.FACEBOOK_RECEIVED_EMAIL:
-          FacebookActionCreators.facebookSignIn(this.facebookAuthData.authResponse.userID, action.data.email);
+        //TODO: this is hackish to save the email by using facebookSignIn because will cause re-fetching voter.
+        //swap out with updateVoter endpoint once created.
+          FacebookActions.facebookSignIn(this.facebookAuthData.authResponse.userID, action.data.email);
           return {
             ...state,
             emailData: action.data
@@ -79,7 +80,7 @@ class FacebookStore extends FluxMapStore {
           return state;
 
         case FacebookConstants.FACEBOOK_RECEIVED_PICTURE:
-            FacebookActionCreators.savePhoto(action.data.data.url);
+            FacebookActions.savePhoto(action.data.data.url);
             return state;
 
         default:

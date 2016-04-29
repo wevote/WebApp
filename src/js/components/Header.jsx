@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import HeaderIcons from "./Navigation/HeaderIcons";
-import FacebookActionCreators from "../actions/FacebookActionCreators";
+import FacebookActions from "../actions/FacebookActions";
 
 export default class Header extends Component {
   static propTypes = {
@@ -48,7 +48,7 @@ export default class Header extends Component {
     var { visible } = this.state;
     let location = this.props.location;
     var { signed_in_personal } = this.props.voter;
-    const logOut = FacebookActionCreators.appLogout;
+    const logOut = FacebookActions.appLogout;
 
     const header =
       <header className="header row">

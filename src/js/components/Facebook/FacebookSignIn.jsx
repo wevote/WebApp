@@ -1,5 +1,5 @@
 import React from "react";
-import FacebookActionCreators from "../../actions/FacebookActionCreators";
+import FacebookActions from "../../actions/FacebookActions";
 
 class FacebookSignIn extends React.Component {
   constructor (props) {
@@ -12,7 +12,7 @@ class FacebookSignIn extends React.Component {
   }
 
   didClickFacebookLoginButton () {
-    FacebookActionCreators.login();
+    FacebookActions.login();
   }
 }
 
