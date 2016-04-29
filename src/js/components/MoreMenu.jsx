@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
+import FacebookActions from "../actions/FacebookActions";
 
 export default class MoreMenu extends Component {
   static propTypes = {
@@ -19,6 +20,7 @@ export default class MoreMenu extends Component {
   }
 
   render () {
+    const logOut = FacebookActions.appLogout;
 
   return <div>
     <div className="device-menu--large container-fluid well well-90">
@@ -34,22 +36,22 @@ export default class MoreMenu extends Component {
         }
       */}
       <ul className="list-group">
-        {this.menuLink("/ballot", "All Ballot Items")}
-        {this.menuLink("/more/opinions/followed", "Opinions I'm Following")}
-        {this.menuLink("/ballot?type=filterSupport", "What I Support")}
         {this.menuLink("/ballot?type=filterRemaining", "Choices Remaining")}
+        {this.menuLink("/ballot?type=filterSupport", "What I Support")}
+        {this.menuLink("/ballot", "All Ballot Items")}
+      </ul>
+      <h4 className="text-left"></h4>
+      <ul className="list-group">
+        {this.menuLink("/more/opinions/followed", "What I'm Following")}
         {this.menuLink("/settings/location", "My Address")}
         {this.props.signed_in_personal ?
-          <li className="list-group-item"><Link to="/more/sign_in"><div>Account Settings</div></Link></li> : <span></span>
+          <li onClick={logOut} className="list-group-item"><a>Sign Out</a></li> :
+          this.menuLink("/more/sign_in", "Sign In")
         }
       </ul>
       <h4 className="text-left"></h4>
       <ul className="list-group">
       {this.menuLink("/more/about", "About We Vote")}
-        {this.props.signed_in_personal ?
-          <li className="list-group-item"><Link to="/signout">Sign Out</Link></li> :
-          <span></span>
-        }
       </ul>
     </div>
     </div>;

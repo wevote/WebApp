@@ -1,14 +1,12 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import HeaderIcons from "./Navigation/HeaderIcons";
+import FacebookActions from "../actions/FacebookActions";
 
 export default class Header extends Component {
   static propTypes = {
-    email: PropTypes.string,
     location: PropTypes.string,
-    first_name: PropTypes.string,
-    voter_photo_url: PropTypes.string,
-    signed_in_personal: PropTypes.bool
+    voter: PropTypes.object
   };
 
   constructor (props) {
@@ -49,7 +47,8 @@ export default class Header extends Component {
   render () {
     var { visible } = this.state;
     let location = this.props.location;
-    var { signed_in_personal: signedIn } = this.props;
+    var { signed_in_personal } = this.props.voter;
+    const logOut = FacebookActions.appLogout;
 
     const header =
       <header className="header row">
@@ -70,24 +69,22 @@ export default class Header extends Component {
             <HeaderIcons />
           </section>
       {/* The components/MoreMenu code has to be reproduced here for mobile */}
-        <div className={(visible ? "visible" : "hidden") + " device-menu--mobile container-fluid well well-90"}>
-          {/* Please keep these styles up-to-date since we need to turn this on soon
-          { signedIn ? <span></span> :
-            <span>
-              <ul className="list-group">
-                <li className="list-group-item">
-                  <Link onClick={this.hide.bind(this)} to="/more/sign_in">
-                    <div>
-                    Sign In
-                    </div>
-                  </Link>
-                </li>
-              </ul>
-              <h4 className="text-left"></h4>
-            </span>
-          }
-          */}
+        <div className={(visible ? "visible" : "hidden") + " device-menu--mobile container-fluid well well-90"}>}
           <ul className="list-group">
+            <li className="list-group-item">
+              <Link onClick={this.hide.bind(this)} to={{ pathname: "/ballot", query: { type: "filterRemaining" } }}>
+                <div>
+                Choices Remaining
+                </div>
+              </Link>
+            </li>
+            <li className="list-group-item">
+              <Link onClick={this.hide.bind(this)} to={{ pathname: "/ballot", query: { type: "filterSupport" } }}>
+                <div>
+                  What I Support
+                </div>
+              </Link>
+            </li>
             <li className="list-group-item">
               <Link onClick={this.hide.bind(this)} to="/ballot">
                 <div>
@@ -95,24 +92,13 @@ export default class Header extends Component {
                 </div>
               </Link>
             </li>
+          </ul>
+          <h4 className="text-left"></h4>
+          <ul className="list-group">
             <li className="list-group-item">
               <Link onClick={this.hide.bind(this)} to="/more/opinions/followed">
                 <div>
-                Opinions I'm Following
-                </div>
-              </Link>
-            </li>
-            <li className="list-group-item">
-            <Link onClick={this.hide.bind(this)} to={{ pathname: "/ballot", query: { type: "filterSupport" } }}>
-              <div>
-                What I Support
-              </div>
-            </Link>
-            </li>
-            <li className="list-group-item">
-              <Link onClick={this.hide.bind(this)} to={{ pathname: "/ballot", query: { type: "filterRemaining" } }}>
-                <div>
-                Choices Remaining
+                What I'm Following
                 </div>
               </Link>
             </li>
@@ -123,16 +109,21 @@ export default class Header extends Component {
                 </div>
               </Link>
             </li>
-            { signedIn ?
-                <li className="list-group-item">
-                  <Link onClick={this.hide.bind(this)} to="/more/sign_in">
-                    <div>
-                    Account Settings
-                    </div>
-                  </Link>
-                </li> :
-                <span></span>
-            }
+            { signed_in_personal ?
+              <li className="list-group-item">
+                <div onClick={logOut}>
+                  <a>
+                  Sign Out
+                  </a>
+                </div>
+              </li> :
+              <li className="list-group-item">
+                    <Link onClick={this.hide.bind(this)} to="/more/sign_in">
+                      <div>
+                      Sign In
+                      </div>
+                    </Link>
+                  </li> }
           </ul>
           <h4 className="text-left"></h4>
           <ul className="list-group">
@@ -143,14 +134,6 @@ export default class Header extends Component {
                 </div>
               </Link>
             </li>
-            { signedIn ?
-              <li className="list-group-item">
-                <Link onClick={this.hide.bind(this)} to="/signout">
-                  <div>
-                  Sign Out
-                  </div>
-                </Link>
-              </li> : <span></span> }
           </ul>
         </div>
       </header>;

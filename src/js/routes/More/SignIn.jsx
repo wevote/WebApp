@@ -1,63 +1,36 @@
-import React, { Component, PropTypes } from "react";
-// import { Link } from "react-router";
-import FacebookActionCreators from "../../actions/FacebookActionCreators";
+import React, { Component } from "react";
+import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
-import FacebookDisconnect from "../../components/Facebook/FacebookDisconnect";
 import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 import Main from "../../components/Facebook/Main";
+import LoadingWheel from "../../components/LoadingWheel";
 import VoterStore from "../../stores/VoterStore";
 
 export default class SignIn extends Component {
-  static propTypes = {
-    children: PropTypes.object
-  };
 
   constructor (props) {
-	super(props);
-
-    this.state = {
-        voter: {
-        }
-    };
+    super(props);
+    this.state = {};
   }
 
   componentDidMount () {
-    this.setState(this.getFacebookState());
-    //console.log("SignIn, About to initialize VoterStore");
-    VoterStore.getLocation( (err) => {
-      if (err) console.error("FacebookStore.js, Error initializing voter object", err);
-
-      VoterStore.getVoterObject( (_err, voter) => {
-        if (_err) console.error("FacebookStore.js, Error initializing voter object", err);
-
-        this.setState({voter});
-        // console.log("SignIn: ", voter, "voter is your object")
-      });
-    });
-
-    FacebookActionCreators.initFacebook();
-    this.changeListener = this._onFacebookChange.bind(this);
-    FacebookStore.addChangeListener(this.changeListener);
-    this.voterListener = this._onVoterStoreChange.bind(this);
-    // console.log("SignIn componentDidMount VoterStore.addChangeListener");
-    VoterStore.addChangeListener(this.voterListener);
+    this._onVoterStoreChange();
+    FacebookActions.initFacebook();
+    this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
+    this.listener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
-    FacebookStore.removeChangeListener(this.changeListener);
-
-    // console.log("SignIn componentWillUnmount VoterStore.removeChangeListener");
-    VoterStore.removeChangeListener(this.voterListener);
+    this.listener.remove();
+    this.facebookListener.remove();
   }
 
   _onVoterStoreChange () {
-    this.setState({
-      voter: VoterStore.getCachedVoterObject()
-    });
+    this.setState({ voter: VoterStore.voter() });
   }
 
   _onFacebookChange () {
-    this.setState(this.getFacebookState());
+    this.setState({ fb_state: this.getFacebookState() });
   }
 
   getFacebookState () {
@@ -70,18 +43,20 @@ export default class SignIn extends Component {
     };
   }
 
-  static getProps () {
-	return {};
-  }
-
   render () {
-    var { voter } = this.state;
+    var { voter} = this.state;
+    if (!voter){
+      return LoadingWheel;
+    }
 
     return <div className="">
       <div className="container-fluid well gutter-top--small fluff-full1">
         <h3 className="text-center">{voter.signed_in_personal ? <span>My Account</span> : <span>Sign In</span>}</h3>
         <div className="text-center">
-          {voter.signed_in_facebook ? <span></span> : <FacebookSignIn />}
+          {voter.signed_in_facebook ?
+            <span><a className="btn btn-social btn-lg btn-facebook" onClick={FacebookActions.appLogout}>
+            <i className="fa fa-facebook"></i>Sign Out</a></span> : <FacebookSignIn />
+          }
           {/*
           <div>
             <Link to="add_friends_confirmed" className="btn btn-social btn-lg btn-twitter">
@@ -97,9 +72,12 @@ export default class SignIn extends Component {
         </div>
         <br />
         <br />
+        {/*
         <div className="text-center">
           {voter.signed_in_facebook ? <FacebookDisconnect /> : null}
         </div>
+        */}
+
         {/* FOR DEBUGGING */}
         <div className="text-center">
           signed_in_personal: {voter.signed_in_personal ? <span>True</span> : null}<br />

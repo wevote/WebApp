@@ -1,6 +1,6 @@
 import React, { PropTypes } from "react";
 
-import FacebookActionCreators from "../../actions/FacebookActionCreators";
+import FacebookActions from "../../actions/FacebookActions";
 
 class FacebookDownloadPicture extends React.Component {
   static propTypes = {
@@ -19,7 +19,7 @@ class FacebookDownloadPicture extends React.Component {
     }
 
     didClickDownloadPicture () {
-        FacebookActionCreators.getFacebookProfilePicture(this.props.userId);
+        FacebookActions.getFacebookProfilePicture(this.props.userId);
     }
 }
 

@@ -52,7 +52,7 @@ export default class Application extends Component {
       <Headroom>
         <div className="container-fluid">
           <div className="row">
-            <Header location={location}/>
+            <Header location={location} voter={voter}/>
           </div>
         </div>
         <div className="container-fluid">
