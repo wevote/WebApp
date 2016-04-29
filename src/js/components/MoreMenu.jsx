@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
-import FacebookActionCreators from "../actions/FacebookActionCreators";
+import FacebookActions from "../actions/FacebookActions";
 
 export default class MoreMenu extends Component {
   static propTypes = {
@@ -20,7 +20,7 @@ export default class MoreMenu extends Component {
   }
 
   render () {
-    const logOut = FacebookActionCreators.appLogout;
+    const logOut = FacebookActions.appLogout;
 
   return <div>
     <div className="device-menu--large container-fluid well well-90">

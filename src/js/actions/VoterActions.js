@@ -3,7 +3,7 @@ import Dispatcher from "../dispatcher/Dispatcher";
 module.exports = {
 
   signOut: function (){
-    Dispatcher.loadEndpoint("voterSignOut", {sign_out_all_devices: true});
+    Dispatcher.loadEndpoint("voterSignOut", {sign_out_all_devices: false});
   },
 
   retrieveVoter: function () {

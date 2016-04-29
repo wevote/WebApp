@@ -4,9 +4,6 @@ import FacebookConstants from "../../constants/FacebookConstants";
 
 export default class FacebookPicture extends React.Component {
     static propTypes = {
-      history: PropTypes.object,
-      children: PropTypes.object,
-      params: PropTypes.object.isRequired,
       facebookPictureStatus: PropTypes.string,
       facebookPictureUrl: PropTypes.string
     };

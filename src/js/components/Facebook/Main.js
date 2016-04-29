@@ -1,15 +1,13 @@
 import React from "react";
-
-import FacebookActionCreators from "../../actions/FacebookActionCreators";
+import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
-import FacebookLogin from "../../components/Facebook/FacebookLogin";
-import FacebookLogout from "../../components/Facebook/FacebookLogout";
 import FacebookDownloadPicture from "../../components/Facebook/FacebookDownloadPicture";
 import FacebookPicture from "../../components/Facebook/FacebookPicture";
+import VoterStore from "../../stores/VoterStore";
 
 class Main extends React.Component {
     constructor (props) {
-        super();
+        super(props);
         this.state = this.getFacebookState();
     }
 
@@ -19,33 +17,34 @@ class Main extends React.Component {
             loggedIn: FacebookStore.loggedIn,
             userId: FacebookStore.userId,
             facebookPictureStatus: FacebookStore.facebookPictureStatus,
-            facebookPictureUrl: FacebookStore.facebookPictureUrl
+            facebookPictureUrl: VoterStore.getPhoto()
         };
     }
 
     componentDidMount () {
-        FacebookActionCreators.initFacebook();
-        this.changeListener = this._onFacebookChange.bind(this);
-        FacebookStore.addChangeListener(this.changeListener);
+        FacebookActions.initFacebook();
+        this.listener = FacebookStore.addListener(this._onChange.bind(this));
+        this.voterListener = VoterStore.addListener(this._onChange.bind(this));
     }
 
     componentWillUnmount () {
-        FacebookStore.removeChangeListener(this.changeListener);
-      }
+      this.listener.remove();
+      this.voterListener.remove();
+    }
 
-    _onFacebookChange () {
+    _onChange () {
         this.setState(this.getFacebookState());
     }
 
-
     render () {
         return <div>
-                {!this.state.loggedIn ? <FacebookLogin /> : null}
-                {this.state.loggedIn ? <FacebookLogout /> : null}
                 <p>Facebook logged in: {this.state.loggedIn ? "true" : "false"}</p>
                 <p>Facebook access token: {this.state.accessToken}</p>
                 <p>User ID is: {this.state.userId}</p>
-                {this.state.userId ? <FacebookDownloadPicture userId={this.state.userId} /> : null}
+                {this.state.userId ?
+                  <FacebookDownloadPicture userId={this.state.userId} /> :
+                  <div></div>
+                }
                 <FacebookPicture
                     facebookPictureStatus={this.state.facebookPictureStatus}
                     facebookPictureUrl={this.state.facebookPictureUrl} />

@@ -24,6 +24,10 @@ class VoterStore extends FluxMapStore {
     return this.getState().address.text_for_map_search;
   }
 
+  getPhoto (){
+    return this.getState().voter.facebook_profile_image_url_https;
+  }
+
   voterDeviceId () {
     return this.getState().voter.voter_device_id || cookies.getItem("voter_device_id");
   }
@@ -58,6 +62,12 @@ class VoterStore extends FluxMapStore {
           ...state,
           address: { text_for_map_search: action.res.text_for_map_search,
                     google_civic_election_id: action.res.google_civic_election_id }
+        };
+
+      case "voterPhotoSave":
+        return {
+          ...state,
+          voter: {...state.voter, facebook_profile_image_url_https: action.res.facebook_profile_image_url_https}
         };
 
       case "error-voterRetrieve" || "error-voterAddressRetrieve" || "error-voterAddressSave":
