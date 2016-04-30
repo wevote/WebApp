@@ -1,6 +1,6 @@
 {
   "name": "wevoteusa",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "We Vote USA front end application",
   "private": true,
   "main": "server.js",
