@@ -13,9 +13,8 @@ export default class ItemActionBar2 extends ItemSupportOppose {
       return <div></div>;
     }
 
-    return <div className="item-actionbar2 row">
-        {
-            is_support ?
+    return (<div className="item-actionbar2 row">
+              { is_support ?
                 <span className="col-xs-4"
                       style={{whiteSpace: "nowrap"}}
                       onClick={ this.stopSupportingItem.bind(this) }>
@@ -47,13 +46,11 @@ export default class ItemActionBar2 extends ItemSupportOppose {
                     </span>
                 </span>
         }
-        {/* Share coming in a later version
-        <span className="col-xs-4" >
-          <span className="glyphicon glyphicon-small glyphicon-share-alt">
-          </span>
-          &nbsp;Share
+        <span className="col-xs-4" onClick={this.share.bind(this)} >
+          <a className="glyphicon glyphicon-small glyphicon-share-alt">
+            Share
+          </a>
         </span>
-        */}
-      </div>;
+        </div>);
   }
 }

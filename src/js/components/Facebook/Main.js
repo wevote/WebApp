@@ -1,5 +1,4 @@
 import React from "react";
-import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
 import FacebookDownloadPicture from "../../components/Facebook/FacebookDownloadPicture";
 import FacebookPicture from "../../components/Facebook/FacebookPicture";
@@ -22,7 +21,6 @@ class Main extends React.Component {
     }
 
     componentDidMount () {
-        FacebookActions.initFacebook();
         this.listener = FacebookStore.addListener(this._onChange.bind(this));
         this.voterListener = VoterStore.addListener(this._onChange.bind(this));
     }

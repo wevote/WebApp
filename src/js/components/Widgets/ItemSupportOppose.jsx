@@ -26,6 +26,16 @@ export default class ItemSupportOppose extends Component {
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id), transitioning: false });
   }
 
+  share (){
+    const url = "www.wevote.me/candidate/" + this.props.we_vote_id;
+    window.FB.ui({
+      display: "popup",
+      method: "share",
+      href: url,
+      redirect_uri: url
+    }, function (response){});
+  }
+
   supportItem () {
     if (this.state.transitioning){ return; }
     SupportActions.voterSupportingSave(this.props.we_vote_id, this.props.type);

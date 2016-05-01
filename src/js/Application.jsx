@@ -8,6 +8,7 @@ import StarActions from "./actions/StarActions";
 import VoterActions from "./actions/VoterActions";
 import LoadingWheel from "./components/LoadingWheel";
 import Headroom from "react-headroom";
+const web_app_config = require("./config");
 
 export default class Application extends Component {
   static propTypes = {
@@ -19,6 +20,25 @@ export default class Application extends Component {
   constructor (props) {
     super(props);
     this.state = {};
+    this.initFacebook();
+  }
+
+  initFacebook (){
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId      : web_app_config.FACEBOOK_APP_ID,
+        xfbml      : true,
+        version    : "v2.6"
+      });
+    };
+
+    (function (d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "//connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, "script", "facebook-jssdk"));
   }
 
   componentDidMount () {
