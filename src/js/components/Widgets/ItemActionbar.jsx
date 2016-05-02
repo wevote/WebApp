@@ -42,15 +42,11 @@ export default class ItemActionBar extends ItemSupportOppose {
             <span style={ is_oppose ? bold : {} }> Oppose</span>
           </span>
         </span>
-        {/* Share coming in a later version
-        <span className="col-xs-4" >
-          <span className="inline-phone">
-            <span className="glyphicon glyphicon-small glyphicon-share-alt">
-            </span>
-            &nbsp;Share
-          </span>
+        <span className="col-xs-4" onClick={this.share.bind(this)} >
+          <a className="glyphicon glyphicon-small glyphicon-share-alt">
+            Share
+          </a>
         </span>
-        */}
       </div>;
 
     return itemActionBar;
