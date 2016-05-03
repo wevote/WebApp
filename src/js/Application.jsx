@@ -65,7 +65,11 @@ export default class Application extends Component {
     var ballotItemWeVoteId = ""; /* TODO Dale: Store the ballot item that is "on stage" in Ballot store? (wv02cand3) */
 
     if (voter === undefined || location === undefined ) {
-      return LoadingWheel;
+      return <div id="loading">
+                <div class="">
+                  <h1>WEVOTE</h1>
+                </div>
+              </div>;
     }
 
     return <div className="app-base">
