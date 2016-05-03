@@ -85,6 +85,7 @@ export default class SignIn extends Component {
           we_vote_id: {voter.we_vote_id ? <span>{voter.we_vote_id}</span> : null}<br />
           email: {voter.email ? <span>{voter.email}</span> : null}<br />
           facebook_email: {voter.facebook_email ? <span>{voter.facebook_email}</span> : null}<br />
+          facebook_profile_image_url_https: {voter.facebook_profile_image_url_https ? <span>{voter.facebook_profile_image_url_https}</span> : null}<br />
           first_name: {voter.first_name ? <span>{voter.first_name}</span> : null}<br />
           facebook_id: {voter.facebook_id ? <span>{voter.facebook_id}</span> : null}<br />
         </div>

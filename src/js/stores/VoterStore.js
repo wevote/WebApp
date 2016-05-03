@@ -1,6 +1,8 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 import FluxMapStore from "flux/lib/FluxMapStore";
 import VoterActions from "../actions/VoterActions";
+import FacebookActions from "../actions/FacebookActions";
+import FacebookStore from "../stores/FacebookStore";
 const cookies = require("../utils/cookies");
 
 class VoterStore extends FluxMapStore {
@@ -44,11 +46,15 @@ class VoterStore extends FluxMapStore {
         let voter_device_id = action.res.voter_device_id;
         this.setVoterDeviceIdCookie(voter_device_id);
         VoterActions.retrieveAddress(voter_device_id);
-        let voter = action.res;
-        console.log("voter retrieved");
+        const url = action.res.facebook_profile_image_url_https;
+        if (action.res.signed_in_facebook && (url === null || url === "")){
+          const userId = FacebookStore.userId;
+          FacebookActions.getFacebookProfilePicture(userId);
+        }
+
         return {
           ...state,
-          voter: voter
+          voter: action.res
       };
 
       case "voterAddressRetrieve":
@@ -68,6 +74,17 @@ class VoterStore extends FluxMapStore {
         return {
           ...state,
           voter: {...state.voter, facebook_profile_image_url_https: action.res.facebook_profile_image_url_https}
+        };
+
+      case "voterUpdate":
+        const {first_name, last_name, email} = action.res;
+        return {
+          ...state,
+          voter: {...state.voter,
+            first_name: first_name ? first_name : state.voter.first_name,
+            last_name: last_name ? last_name : state.voter.last_name,
+            facebook_email: email ? email : state.voter.email,
+          }
         };
 
       case "error-voterRetrieve" || "error-voterAddressRetrieve" || "error-voterAddressSave":

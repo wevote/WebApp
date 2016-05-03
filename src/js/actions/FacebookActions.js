@@ -66,10 +66,10 @@ module.exports = {
       });
   },
 
-  getFacebookEmail: function (){
-    window.FB.api("/me?fields=id,email", (response) => {
+  getFacebookData: function (){
+    window.FB.api("/me?fields=id,email,first_name,middle_name,last_name", (response) => {
         Dispatcher.dispatch({
-            type: FacebookConstants.FACEBOOK_RECEIVED_EMAIL,
+            type: FacebookConstants.FACEBOOK_RECEIVED_DATA,
             data: response
         });
     });

@@ -10,6 +10,15 @@ module.exports = {
     Dispatcher.loadEndpoint("voterRetrieve");
   },
 
+  updateVoter: function (data){
+    let attrs = {facebook_email: data.email || false,
+                    first_name: data.first_name || false,
+                    middle_name: data.middle_name || false,
+                    last_name: data.last_name || false,
+                    twitter_profile_image_url_https: false};
+    Dispatcher.loadEndpoint("voterUpdate", attrs );
+  },
+
   retrieveAddress: function (id){
     Dispatcher.loadEndpoint("voterAddressRetrieve", { voter_device_id: id});
   },
