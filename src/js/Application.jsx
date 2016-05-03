@@ -6,7 +6,6 @@ import SubHeader from "./components/SubHeader";
 import VoterStore from "./stores/VoterStore";
 import StarActions from "./actions/StarActions";
 import VoterActions from "./actions/VoterActions";
-import LoadingWheel from "./components/LoadingWheel";
 import Headroom from "react-headroom";
 const web_app_config = require("./config");
 
@@ -25,10 +24,10 @@ export default class Application extends Component {
 
   initFacebook (){
     window.fbAsyncInit = function () {
-      FB.init({
-        appId      : web_app_config.FACEBOOK_APP_ID,
-        xfbml      : true,
-        version    : "v2.6"
+      window.FB.init({
+        appId: web_app_config.FACEBOOK_APP_ID,
+        xfbml: true,
+        version: "v2.6"
       });
     };
 
@@ -66,7 +65,7 @@ export default class Application extends Component {
 
     if (voter === undefined || location === undefined ) {
       return <div id="loading">
-                <div class="">
+                <div>
                   <h1>WEVOTE</h1>
                 </div>
               </div>;
