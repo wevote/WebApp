@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import AddressBox from "../../components/AddressBox";
 
 export default class Location extends Component {

@@ -58,12 +58,14 @@ module.exports = {
   },
 
   getFacebookProfilePicture: function (userId) {
-      window.FB.api(`/${userId}/picture?type=large`, (response) => {
-          Dispatcher.dispatch({
-              type: FacebookConstants.FACEBOOK_RECEIVED_PICTURE,
-              data: response
+      if (window.FB) {
+          window.FB.api(`/${userId}/picture?type=large`, (response) => {
+              Dispatcher.dispatch({
+                  type: FacebookConstants.FACEBOOK_RECEIVED_PICTURE,
+                  data: response
+              });
           });
-      });
+      }
   },
 
   getFacebookData: function (){

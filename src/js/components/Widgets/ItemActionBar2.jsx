@@ -13,7 +13,7 @@ export default class ItemActionBar2 extends ItemSupportOppose {
       return <div></div>;
     }
 
-    return (<div className="item-actionbar2 row">
+    return <div className="item-actionbar2 row">
               { is_support ?
                 <span className="col-xs-4"
                       style={{whiteSpace: "nowrap"}}
@@ -51,6 +51,6 @@ export default class ItemActionBar2 extends ItemSupportOppose {
             Share
           </a>
         </span>
-        </div>);
+        </div>;
   }
 }

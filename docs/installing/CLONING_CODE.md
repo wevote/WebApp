@@ -26,9 +26,9 @@
 
 5.Create ssh keys: `ssh-keygen -t rsa -C "youremail@somedomain.com"`  
 
-6.`ssh-add ~/.ssh/id_rsa`  
+6.`ssh-add ~/.ssh/id_rsa` OR `ssh-add ~/.ssh/github_rsa`
 
-7.`pbcopy < ~/.ssh/id_rsa.pub`  
+7.`pbcopy < ~/.ssh/id_rsa.pub` OR `pbcopy < ~/.ssh/id_rsa.pub`
 
 8.Go paste your keys into Github, under SSH Keys for your account.  
 

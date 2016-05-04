@@ -24,17 +24,6 @@ export default class MoreMenu extends Component {
 
   return <div>
     <div className="device-menu--large container-fluid well well-90">
-      {/* Please keep these styles up-to-date since we need to turn this on soon
-      {this.props.signed_in_personal ?
-        <span></span>
-        : <span>
-          <ul className="list-group">
-            <li className="list-group-item"><Link to="/more/sign_in"><div>Sign In</div></Link></li>
-          </ul>
-          <h4 className="text-left"></h4>
-        </span>
-        }
-      */}
       <ul className="list-group">
         {this.menuLink("/ballot?type=filterRemaining", "Choices Remaining")}
         {this.menuLink("/ballot?type=filterSupport", "What I Support")}
