@@ -32,7 +32,8 @@ export default class Application extends Component {
     };
 
     (function (d, s, id){
-       var js, fjs = d.getElementsByTagName(s)[0];
+       var js;
+       var fjs = d.getElementsByTagName(s)[0];
        if (d.getElementById(id)) {return;}
        js = d.createElement(s); js.id = id;
        js.src = "//connect.facebook.net/en_US/sdk.js";
@@ -66,7 +67,7 @@ export default class Application extends Component {
     if (voter === undefined || location === undefined ) {
       return <div id="loading">
                 <div>
-                  <h1>WEVOTE</h1>
+                  <h1>We Vote</h1>
                 </div>
               </div>;
     }

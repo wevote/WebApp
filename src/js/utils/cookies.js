@@ -34,15 +34,17 @@ module.exports = {
 
         if (vEnd) {
             switch (vEnd.constructor) {
-            case Number:
-                sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
-                break;
-            case String:
-                sExpires = "; expires=" + vEnd;
-                break;
-            case Date:
-                sExpires = "; expires=" + vEnd.toUTCString();
-                break;
+                case Number:
+                    sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+                    break;
+                case String:
+                    sExpires = "; expires=" + vEnd;
+                    break;
+                case Date:
+                    sExpires = "; expires=" + vEnd.toUTCString();
+                    break;
+                default:
+                    break;
             }
         }
         document.cookie = encodeURIComponent(sKey) + "=" + encodeURIComponent(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
@@ -58,7 +60,8 @@ module.exports = {
         return (new RegExp("(?:^|;\\s*)" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
     },
     keys: function () {
-        var nLen, nIdx;
+        var nLen;
+        var nIdx;
         var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
         for (nLen = aKeys.length, nIdx = 0; nIdx < nLen; nIdx++) { aKeys[nIdx] = decodeURIComponent(aKeys[nIdx]); }
         return aKeys;

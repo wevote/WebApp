@@ -40,7 +40,14 @@ export default class PositionItem extends Component {
           </p>;
     }
 
-    return <div className="position-item">
+    var show_position = true;
+    // For now, do not show the voter's position. We will show a voter's position when can have comments.
+    if (position.speaker_type === "V")
+        show_position = false;
+
+    var nothing_to_display = <span></span>;
+
+    var one_position_on_this_candidate = <div className="position-item">
       {/* One Position on this Candidate */}
       <li className="list-group-item">
         <Link to={speaker_we_vote_id_link}>
@@ -78,5 +85,11 @@ export default class PositionItem extends Component {
           */}
       </li>
       </div>;
+
+      if (show_position) {
+          return one_position_on_this_candidate;
+      } else {
+          return nothing_to_display;
+      }
   }
 }
