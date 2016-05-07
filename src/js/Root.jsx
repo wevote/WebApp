@@ -24,7 +24,6 @@ import EmptyBallot from "./routes/Ballot/EmptyBallot";
 
 /* Ballot Off-shoot Pages */
 import Opinions from "./routes/Opinions"; // More opinions about anything on the ballot
-import OpinionsAboutItem from "./routes/Ballot/OpinionsAboutItem"; // More opinions about one particular ballot item (candidate or measure)
 import GuidePositionList from "./routes/Guide/PositionList"; // A list of all positions from one guide
 
 /* More */
@@ -81,7 +80,6 @@ const routes = () =>
     <Route path="ballot" component={BallotIndex}>
       <IndexRoute component={Ballot}/>
       <Route path="/candidate/:we_vote_id" component={Candidate} />
-      <Route path="/opinions/:we_vote_id" component={OpinionsAboutItem} />
     </Route>
 
     <Route path="ballot/empty" component={EmptyBallot} />

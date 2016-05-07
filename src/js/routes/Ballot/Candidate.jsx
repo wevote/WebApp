@@ -1,11 +1,13 @@
 import React, { Component, PropTypes } from "react";
-import { Button, ButtonToolbar } from "react-bootstrap";
-import { Link } from "react-router";
 import CandidateStore from "../../stores/CandidateStore";
 import OfficeStore from "../../stores/OfficeStore";
+import GuideStore from "../../stores/GuideStore";
+import GuideActions from "../../actions/GuideActions";
+import VoterStore from "../../stores/VoterStore";
 import CandidateActions from "../../actions/CandidateActions";
 import PositionList from "../../components/Ballot/PositionList";
 import ItemActionBar2 from "../../components/Widgets/ItemActionBar2";
+import GuideList from "../../components/VoterGuide/GuideList";
 import StarAction from "../../components/Widgets/StarAction";
 
 export default class Candidate extends Component {
@@ -15,6 +17,7 @@ export default class Candidate extends Component {
 
   constructor (props) {
     super(props);
+    this.we_vote_id = this.props.params.we_vote_id;
     this.state = {candidate: {}, office: {} };
   }
 
@@ -27,42 +30,31 @@ export default class Candidate extends Component {
     this.candidateToken = CandidateStore.addListener(this._onChange.bind(this));
     this.officeToken = OfficeStore.addListener(this._onChange.bind(this));
 
-    CandidateActions.retrieve(this.props.params.we_vote_id);
+    CandidateActions.retrieve(this.we_vote_id);
+
+    this.listener = GuideStore.addListener(this._onChange.bind(this));
+    GuideActions.retrieveGuidesToFollowByBallotItem(this.we_vote_id, "CANDIDATE");
   }
 
   _onChange (){
-    var we_vote_id = this.props.params.we_vote_id;
-    var candidate = CandidateStore.get(we_vote_id) || {};
-
-    this.setState({ candidate: candidate });
+    var candidate = CandidateStore.get(this.we_vote_id) || {};
+    this.setState({ candidate: candidate, guideList: GuideStore.toFollowListForCand() });
 
     if (candidate.contest_office_we_vote_id){
       this.setState({ office: OfficeStore.get(candidate.contest_office_we_vote_id) || {} });
     }
+
   }
 
   render () {
-    var { candidate, office } = this.state;
-    var we_vote_id = this.props.params.we_vote_id;
-    var position_list_length = 0;
-    var moreOpinionsLink = "";
-    var twitterDescription = "";
-    if (candidate) {
-      if (candidate.position_list) {
-        position_list_length = candidate.position_list.length;
-        moreOpinionsLink = "/opinions/" + candidate.we_vote_id;
-      }
-      twitterDescription = candidate.twitter_description;
-    }
-    // If there aren't any positions, use this language:
-    var find_more_positions_button_text = "Find Opinions About " + candidate.ballot_item_display_name;
-    if (position_list_length > 0) {
-      find_more_positions_button_text = "Find More Opinions";
-    }
+    const electionId = VoterStore.election_id();
+    const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to follow about this candidate or measure.";
+    var { candidate, office, guideList } = this.state;
 
     if (!candidate.ballot_item_display_name){
       return <div></div>;
     }
+    const twitterDescription = candidate.twitter_description || "";
 
     return <section className="candidate well well-90 gutter-top--small">
       <div className="candidate-detail-route list-group-item">
@@ -104,7 +96,7 @@ export default class Candidate extends Component {
             }
           </div>
         </div>
-        {<ItemActionBar2 we_vote_id={we_vote_id} type="CANDIDATE"
+        {<ItemActionBar2 we_vote_id={this.we_vote_id} type="CANDIDATE"
                        />}
         <div className="container-fluid well-90">
           {/* TODO Post privately box functionality to be implemented */}
@@ -123,16 +115,13 @@ export default class Candidate extends Component {
               <PositionList
               position_list={candidate.position_list}
               candidate_display_name={candidate.ballot_item_display_name} />
-                <div className="gutter-top--small">
-                  <ButtonToolbar>
-                    <Link to={moreOpinionsLink}>
-                      <Button bsStyle="primary">
-                        { find_more_positions_button_text }</Button>
-                      </Link>
-                  </ButtonToolbar>
-                </div>
             </div> :
             <div></div> }
+            <h5>{"More Opinions About " + candidate.ballot_item_display_name}</h5>
+            {guideList.length === 0 ?
+              <div>{NO_VOTER_GUIDES_TEXT}</div> :
+              <GuideList id={electionId} ballotItemWeVoteId={this.we_vote_id} organizations={guideList}/>
+            }
         </div>
       </div>
     </section>;
