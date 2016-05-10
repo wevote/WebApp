@@ -39,14 +39,13 @@ export default class Candidate extends Component {
           {/* Note: We want a click anywhere in this div to take you to the candidate page */}
           <div className="row" style={{ paddingBottom: "2em" }}>
             <div
-              className="col-xs-4"
-              style={candidate_photo_url ? {} : {paddingTop: "2em"}}>
+              className="col-xs-4">
 
               {/* adding inline style to img until Rob can style... */}
               {
                 candidate_photo_url ?
                     <img className="img-circle utils-img-contain"
-                         style={{display: "block", paddingTop: "2em"}}
+                         style={{display: "block"}}
                          src={candidate_photo_url}
                          alt="candidate-photo"/> :
                     <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light utils-img-contain-glyph"/>

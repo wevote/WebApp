@@ -91,7 +91,7 @@ export default class Application extends Component {
           <div className="col-xs-4 col-sm-4 col-md-4 no-show">
             { voter.signed_in_personal ? <MoreMenu {...voter} /> : <MoreMenu /> }
           </div>
-          <div className="col-xs-8-container col-sm-8 col-md-8 container-main">
+          <div className="col-xs-8-container col-xs-8 container-main">
             { this.props.children }
           </div>
         </div>

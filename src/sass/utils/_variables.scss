@@ -2,6 +2,10 @@
 // This file contains all application-wide Sass variables.
 // ----------------------------------------------------------------------------
 
+/// Heading font family
+/// @type List
+$heading-font-stack: 'Roboto Slab', serif;
+
 /// Regular font family
 /// @type List
 $text-font-stack: 'Open Sans', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif !default;
