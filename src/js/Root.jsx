@@ -97,7 +97,7 @@ const routes = () =>
     <Route path="activity" component={Activity} />
 
     // Any route that is not found -> @return NotFound component
-    <Route path="*" component={NotFound} />
+    <Route path=":twitter_handle" component={NotFound} />
   </Route>;
 
 

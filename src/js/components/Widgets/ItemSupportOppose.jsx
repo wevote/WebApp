@@ -1,6 +1,7 @@
 import { Component, PropTypes } from "react";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
+const web_app_config = require("../../config");
 
 export default class ItemSupportOppose extends Component {
   static propTypes = {
@@ -27,7 +28,7 @@ export default class ItemSupportOppose extends Component {
   }
 
   share (){
-    const url = "www.wevote.me/candidate/" + this.props.we_vote_id;
+    const url = web_app_config.WE_VOTE_HOSTNAME + "/candidate/" + this.props.we_vote_id;
     window.FB.ui({
       display: "popup",
       method: "share",
