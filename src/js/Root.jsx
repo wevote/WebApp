@@ -89,7 +89,6 @@ const routes = () =>
           <Route path="org/:id" component={Organization}/>
           <Route path="opinion" component={Opinion} />
           <Route path="/office/:id" component={Office} />
-
       */}
 
     <Route path="requests" component={Requests} />
