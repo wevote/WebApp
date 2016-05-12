@@ -68,6 +68,7 @@ export default class Application extends Component {
       return <div id="loading">
                 <div>
                   <h1>We Vote</h1>
+                  <p>Loading...</p>
                 </div>
               </div>;
     }
