@@ -3,6 +3,7 @@
 ## Contents
 
 - [WeVoteUSA Web App Change Log](#wevoteusa-web-app-change-log)
+  - [1.0.0](#100)
   - [0.8.9](#089)
   - [0.8.0](#080)
   - [0.5.0](#050)
@@ -12,6 +13,29 @@
 #WeVoteUSA Web App Change Log
 
 All notable changes to this project will be documented here.
+##1.0.0
+<li> <a href="http://github.com/jerel/project/commit/be5c63208f8ce8eaf029a8bf5c38a0eca9c0abf3">view commit &bull;</a> Rename facebookactioncreators - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/28f8da734a8c7ed1868b388576c8188cdfc9e7d4">view commit &bull;</a> Refactor - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/761ed11979f6f3f632f291bd198144b142e71af3">view commit &bull;</a> Iterated on Navigation elements and changed some language per design discussions. - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/15aa967041e6017226dd3e5fca480252abfca2e8">view commit &bull;</a> remove duplicated jquery loading - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/d5f9a382f61239425022fc31b4ba7cf36b1cc21f">view commit &bull;</a> Fix for Issue #233 "Two voter_device_id cookies created" - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/884db7579f3fd25cacf80ffa68b9d6a108ac1225">view commit &bull;</a> Fix link - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/59816bd53038e2779cb3c6bb5d50bb713a333a52">view commit &bull;</a> Turn back on Facebook login and add logout, remove message box when there is no ballot caveat - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/68587b42c3c8f03831e2b5c15818cfc32ef6300d">view commit &bull;</a> Fixed some Javascript errors around undefined variables. Fixed one more "npm test" warning. Made javascript modifications per Lisa's suggestions. Added measure_subtitle. - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/d44d4de516048f5d96a7f1adb4f2653c08c65f36">view commit &bull;</a> removing unnecessary dependency - Nick Fiorini</li>
+<li> <a href="http://github.com/jerel/project/commit/907af0b337a4f136824c3363f0e130fcc9fa78f1">view commit &bull;</a> Update package.json - Nick Fiorini</li>
+<li> <a href="http://github.com/jerel/project/commit/199ef380f0b487db87fc078f6bc5f29610ae0d67">view commit &bull;</a> updating minification process to reduce the bundle size down to 1.3mb - nick fiorini</li>
+<li> <a href="http://github.com/jerel/project/commit/66dd7396d53490743548be89c684da966ca92618">view commit &bull;</a> adding uglification proccess to production build, reducing the bundle output by ~%50, 5.5mb -> 2mb - nick fiorini</li>
+<li> <a href="http://github.com/jerel/project/commit/b268b1a36ab21e898e719a2fbd32ca06c9adea1e">view commit &bull;</a> Fixed some Javascript errors around undefined variables. Fixed one more "npm test" warning. Made javascript modifications per Lisa's suggestions. Added measure_subtitle. - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/4b9655ec1536d571984d2bd32966d41821935062">view commit &bull;</a> Fixed some Javascript errors around undefined variables. Fixed one more "npm test" warning. - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/191365ac640efb91db3ac65dcf3cac084f65a0e0">view commit &bull;</a> Fix candidate reload bug, organize widget files - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/276a6c3d0a419476e03a4e89315f16a1aa1783ec">view commit &bull;</a> Add hover to button, bug fixes - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/a60a1d8263d643963a02b42f434e6069381a35f0">view commit &bull;</a> Added twitter_description to candidate card and candidate detail page. Moved functions "numberWithCommas" and "removeTwitterNameFromDescription" to utils/textFormat.js. Fixed "toString" error Lisa found. - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/0da6d1c062e62d49b90e2851e51ed55ee5a548ad">view commit &bull;</a> Fixed some eslint errors from running "npm test". Added Twitter Description to organization display. - Dale John McGrew</li>
+<li> <a href="http://github.com/jerel/project/commit/9bcdd6a83e7bc09f78701026db3fbce78d9cb28e">view commit &bull;</a> Connect support toggle button on organization page - Lisa Cho</li>
+<li> <a href="http://github.com/jerel/project/commit/b272d2058fb5f8049cc30c6d64ce2da44cf6540a">view commit &bull;</a> Added 0.8.9 to changelog - Rob Simpson</li>
+
+
 ##0.8.9
 <li> <a href="http://github.com/jerel/project/commit/bd8c9a5bbfd1f3ecee6004bdadd7be876f5e382d">view commit &bull;</a> Update PositionItem.jsx - Dale John McGrew</li>
 <li> <a href="http://github.com/jerel/project/commit/ecaec55d583d8435635287a5d14d5f3582d8dc5e">view commit &bull;</a> Header icons stay in place in desktop mode - Rob Simpson</li>
