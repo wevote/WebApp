@@ -4,7 +4,7 @@
             display: none;
         }
         &--mobile {
-            display: none;
+            visibility: hidden;
         }
     }
     &-ballot {
@@ -29,13 +29,8 @@
     .device {
         &-menu {
             &--mobile {
-                position: fixed;
-                left: 0;
-                top: 43px;
-                transform: translate3d(-10px, 0, 0);
-                -webkit-transform: translate3d(-10px, 0, 0);
-                width: 220px;
-                z-index: 2;
+                display: block;
+                visibility: inherit;
             }
         }
     }
