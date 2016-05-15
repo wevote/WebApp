@@ -14,6 +14,10 @@ $text-font-stack: 'Open Sans', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvet
 /// @type List
 $code-font-stack: 'Courier New', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Monaco', monospace !default;
 
+
+
+/// Colors
+
 /// Copy text color
 /// @type Color
 $text-color: #222 !default;
@@ -22,17 +26,25 @@ $text-color: #222 !default;
 /// @type Color
 $brand-color: #E50050 !default;
 
-/// Light grey
+/// Pale gray
 /// @type Color
-$light-grey: #EDEDED !default;
+$pale-gray: #f8f8f8 !default;
 
-/// Medium grey
+/// Lighter gray
 /// @type Color
-$mid-grey: #999 !default;
+$lighter-gray: #eee !default;
 
-/// Dark grey
+/// Light gray
 /// @type Color
-$dark-grey: #444 !default;
+$light-gray: #ccc !default;
+
+/// Medium gray
+/// @type Color
+$mid-gray: #999 !default;
+
+/// Dark gray
+/// @type Color
+$dark-gray: #444 !default;
 
 /// Container's maximum width
 /// Below that is 100%

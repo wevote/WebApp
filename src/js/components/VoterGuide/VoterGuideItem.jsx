@@ -46,8 +46,10 @@ export default class VoterGuideItem extends Component {
                   <div className="col-xs-10 col-sm-8">
                       <Link to={voter_guide_we_vote_id_link}>
                           <strong>{displayName}</strong>
-                          { twitterDescriptionMinusName ? <span>{twitterDescriptionMinusName}</span> :
-                              <span></span>}
+                          <p className="position-item__short-bio">
+                            { twitterDescriptionMinusName ? <span>{twitterDescriptionMinusName}</span> :
+                                null }
+                          </p>
                       </Link>
                   </div>
                   {twitterFollowers ?

@@ -10,7 +10,8 @@
 // 2. Vendors
 @import
   './vendor/_normalize',
-  './vendor/_vendors';
+  './vendor/_vendors',
+  './utils/bootstrap-overrides';
 
 // 3. Base stuff
 @import
