@@ -71,7 +71,7 @@ export default class PositionItem extends Component {
             /> :
           image_placeholder }
         <div className="position-item__content">
-            <h4 className="position-item__name">
+            <h4 className="position-item__display-name">
               <Link to={speaker_we_vote_id_link}>
                 { this.props.speaker_display_name }
               </Link>
@@ -86,7 +86,7 @@ export default class PositionItem extends Component {
         <br />
         23 Likes<br />
         */}
-      </li>
+      </li>;
 
       if (show_position) {
           return one_position_on_this_candidate;

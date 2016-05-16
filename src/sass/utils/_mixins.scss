@@ -49,8 +49,9 @@
 }
 
 
-// Micro Clearfix
-// http://nicolasgallagher.com/micro-clearfix-hack
+/// Micro Clearfix
+/// @link http://nicolasgallagher.com/micro-clearfix-hack
+
 @mixin micro-clearfix() {
   // & {
   //   *zoom: 1;
@@ -66,8 +67,10 @@
 }
 
 
-// OOCSS Media Object
-// https://gist.github.com/zachharkey/5224086
+/// OOCSS Media Object
+/// @link https://gist.github.com/zachharkey/5224086
+/// @requires $micro-clearfix
+
 @mixin media-object($container: '.media-object', $img: '.media-object__img', $bd: '.media-object__content', $margin: 10px, $position: left, $formatting-context: 'overflow') {
   #{unquote($container)} { 
     @include micro-clearfix; 

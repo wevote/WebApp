@@ -54,7 +54,7 @@ export default class GuideList extends Component {
     });
 
     const guideList =
-      <div className="guidelist row">
+      <div className="guidelist">
         <ReactCSSTransitionGroup transitionName="org-ignore" transitionEnterTimeout={400} transitionLeaveTimeout={200}>
           {orgs}
         </ReactCSSTransitionGroup>

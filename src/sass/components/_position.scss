@@ -3,20 +3,14 @@
 @include media-object('.position-item', '.position-item__avatar', '.position-item__content');
 
 .position-item {
-  position: relative;
-  display: block;
-  padding: 15px;
-  margin: -1px -15px 0;
-  background-color: $pale-gray;
-  border-top: 1px solid $lighter-gray;
-  border-bottom: 1px solid $lighter-gray;
+  @include list-item-card;
 }
 
 .position-item__avatar {
-  border-radius: 2px;
+  @include list-item-avatar;
 }
 
-.position-item__name {
+.position-item__display-name {
   margin-bottom: .2em;
 }
 
@@ -25,6 +19,8 @@
   font-size: 0.9em;
   font-weight: 200;
 }
+
+
 
 
 
@@ -56,4 +52,9 @@
 
 .position-rating__negative-rating-icon {
   background-image: url('/images/global/icons/down-arrow-color-icon.png');
+}
+
+.position-rating__candidate-name {
+  font-family: $heading-font-stack;
+  font-size: 18px;
 }

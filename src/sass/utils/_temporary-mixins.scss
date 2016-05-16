@@ -1,0 +1,20 @@
+// Temporary mixins to unify styles until they are refactored.
+// Nothing here should remain indefinitely
+
+
+// Styling for list items such as .position-item and .organization-item
+@mixin list-item-card() {
+  position: relative;
+  display: block;
+  padding: 15px;
+  margin-top: -1px;
+  background-color: $pale-gray;
+  border-top: 1px solid $lighter-gray;
+  border-bottom: 1px solid $lighter-gray;
+}
+
+// Styling for basic avatar icons
+@mixin list-item-avatar {
+  border-radius: 2px;
+  max-width: 50px;
+}

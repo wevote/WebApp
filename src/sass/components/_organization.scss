@@ -1,12 +1,25 @@
-.organization {
-  margin-bottom: 5px;
-  padding: 10px;
-  position: relative;
+// Organization Item, (Org 'Card')
 
-  img {
-    margin-top: 19px;
-  }
+@include media-object('.organization-item', '.organization-item__avatar', '.organization-item__content');
+
+.organization-item {
+  @include list-item-card;
 }
+
+.organization-item__avatar {
+  @include list-item-avatar;
+}
+
+.organization-item__additional {
+}
+.organization-item__follow-buttons {
+  display: inline-block;
+  > * {
+    margin-right: 5px;
+  }
+  // position to the right of text, then collapse underneath with less space
+}
+
 
 .org-ignore-enter {
   opacity: 0.01;
