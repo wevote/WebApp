@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import HeaderIcons from "./Navigation/HeaderIcons";
 import FacebookActions from "../actions/FacebookActions";
 
-var Menu = require("react-burger-menu").slide;
+const Menu = require("react-burger-menu").slide;
 
 export default class Header extends Component {
   static propTypes = {
@@ -16,21 +16,13 @@ export default class Header extends Component {
     this.state = {};
   }
 
-  componentDidMount () {
-    document.body.addEventListener("click", this.pageClick.bind(this), false);
-  }
+  componentDidMount () {}
 
-  componentWillUnmount (){
-    this.listener.remove();
-  }
-
-  pageClick () {
-    this.hide();
-  }
+  componentWillUnmount () {}
 
   hide () {
-    var menuWrapper = document.querySelector(".bm-menu-wrap");
-    menuWrapper.style.transform = "translate3d(-100%, 0px, 0px)";
+    const menuButton = document.querySelector(".bm-burger-button > button");
+    menuButton.click();
   }
 
   render () {
