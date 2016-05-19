@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
+import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
 const moment = require("moment");
 
 export default class PositionItem extends Component {
@@ -35,19 +36,8 @@ export default class PositionItem extends Component {
         </span>
       </p>;
     } else if (position.vote_smart_rating) {
-        position_description = <div className="position-rating">
-          <PositionRatingIcon rating = {position.vote_smart_rating} />
-          <div className="position-rating__text">
-            <span className="position-rating__percentage" data-percentage={position.vote_smart_rating}>{position.vote_smart_rating}% </span> rating
-            <span className="position-rating__timestamp">
-              { position.vote_smart_time_span ?
-                <span> in {position.vote_smart_time_span} </span> :
-                <span>{ dateText } </span>
-              }
-            </span>
-            { position.vote_smart_rating ? <span className="position-item__position-source">(source: VoteSmart.org)</span> : null }
-          </div>
-        </div>;
+        position_description =
+          <PositionRatingSnippet rating = {position.vote_smart_rating} rating_time_span = {position.vote_smart_time_span} />;
     } else if (position.speaker_type === "V") {
         position_description = <p className="">
           <span>{this.props.candidate_display_name}</span>
