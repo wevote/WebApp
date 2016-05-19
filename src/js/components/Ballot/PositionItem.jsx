@@ -61,16 +61,16 @@ export default class PositionItem extends Component {
             /> :
           image_placeholder }
         <div className="position-item__content">
-            <h4 className="position-item__display-name">
-              <Link to={speaker_we_vote_id_link}>
-                { this.props.speaker_display_name }
-              </Link>
-              { position.is_support && !position.vote_smart_rating ? <span>
-                  &nbsp;support</span> : null }
-              { position.is_oppose && !position.vote_smart_rating ? <span>
-                  &nbsp;oppose</span> : <span></span> }
-            </h4>
-              { position_description }
+          <h4 className="position-item__display-name">
+            <Link to={speaker_we_vote_id_link}>
+              { this.props.speaker_display_name }
+            </Link>
+            { position.is_support && !position.vote_smart_rating ? <span>
+                &nbsp;support</span> : null }
+            { position.is_oppose && !position.vote_smart_rating ? <span>
+                &nbsp;oppose</span> : <span></span> }
+          </h4>
+            { position_description }
         </div>
         {/* Likes coming in a later version
         <br />

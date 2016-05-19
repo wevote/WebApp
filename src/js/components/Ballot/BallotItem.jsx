@@ -21,7 +21,7 @@ export default class BallotItem extends Component {
   }
 
   render () {
-    return <div className="ballot-item gutter-top--small">
+    return <div className="ballot-section gutter-top--small">
 
         <span className="display-name h2">
           { this.props.ballot_item_display_name }

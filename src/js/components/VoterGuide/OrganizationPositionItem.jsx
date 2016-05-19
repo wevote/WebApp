@@ -26,7 +26,7 @@ export default class OrganizationPositionItem extends Component {
               className="position-item__avatar"
               src={ballot_item_image_url_https}
               alt="candidate-photo"/> :
-            <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light"/>
+            <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light position-item__avatar"/>
           }
         </Link>
         <div className="position-item__content">

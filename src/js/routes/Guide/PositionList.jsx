@@ -52,18 +52,16 @@ export default class GuidePositionList extends Component {
         <div className="container-fluid well well-90">
           <ul className="list-group">
             <li className="list-group-item">
-              <h4>
                 <FollowToggle we_vote_id={this.props.params.we_vote_id} />
                 { organization_photo_url ?
                  <span>
                  <Image imageUrl={organization_photo_url} class="img-square" />
                   </span> :
                 <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"></i> }
-                {displayName}
-                { twitterDescriptionMinusName ? <span>{twitterDescriptionMinusName}</span> :
-                    <span></span>}
+                <div className="h4 page__display-name">{displayName}</div>
+                { twitterDescriptionMinusName ? <p className="page__short-bio">{twitterDescriptionMinusName}</p> :
+                    null}
                 <br />{/* TODO icon-org-placeholder */}
-              </h4>
               { organization_twitter_handle ?
                <span>@{organization_twitter_handle}&nbsp;&nbsp;&nbsp;</span> :
                <span></span> }

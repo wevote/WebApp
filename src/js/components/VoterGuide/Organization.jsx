@@ -37,18 +37,20 @@ export default class Organization extends Component {
           </Link>
         </div>
         <div className="organization-item__content">
-          <Link to={voter_guide_we_vote_id_link}>
-            <h4 className="organization-item__display-name">{displayName}</h4>
-          </Link>
-          { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> :
-            null}
+          <div className="position-item__summary">
+            <Link to={voter_guide_we_vote_id_link}>
+              <h4 className="organization-item__display-name">{displayName}</h4>
+            </Link>
+            { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> :
+              null}
+            </div>
           <div className="organization-item__additional">
             <div className="organization-item__follow-buttons">
               {this.props.children}
             </div>
             {followers ?
               <span className="twitter-followers__badge">
-                <span className="hidden-xs fa fa-twitter twitter-followers__icon"></span>
+                <span className="fa fa-twitter twitter-followers__icon"></span>
                 {numberWithCommas(followers)}
               </span> :
               null}

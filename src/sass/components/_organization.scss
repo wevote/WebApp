@@ -10,14 +10,42 @@
   @include list-item-avatar;
 }
 
+.organization-item__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  @include respond-to('medium') {
+    flex-direction: row;
+  }
+}
+
+.organization-item__summary {
+
+}
+
 .organization-item__additional {
+  display: flex;
+  @include respond-to('medium') {
+    flex-direction: column;
+    padding-left: 1em;
+    text-align: right;
+  }
 }
 .organization-item__follow-buttons {
-  display: inline-block;
-  > * {
-    margin-right: 5px;
+  display: flex;
+  align-items: flex-end;
+  .btn {
+    margin: 0 5px 0 0;
   }
-  // position to the right of text, then collapse underneath with less space
+  .btn:last-child {
+    margin: 0;
+  }
+  @include respond-to('medium') {
+    flex-direction: column;
+    .btn {
+      margin: 0 0 5px;
+    }
+  }
 }
 
 
