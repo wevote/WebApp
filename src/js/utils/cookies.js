@@ -35,7 +35,7 @@ module.exports = {
         if (vEnd) {
             switch (vEnd.constructor) {
                 case Number:
-                    sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+                    sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 2200 23:59:59 GMT" : "; max-age=" + vEnd;
                     break;
                 case String:
                     sExpires = "; expires=" + vEnd;
