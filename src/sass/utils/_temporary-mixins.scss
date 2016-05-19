@@ -5,7 +5,6 @@
 // Styling for list items such as .position-item and .organization-item
 @mixin list-item-card() {
   position: relative;
-  display: block;
   padding: 15px;
   margin-top: -1px;
   background-color: $pale-gray;
