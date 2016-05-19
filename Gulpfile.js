@@ -92,12 +92,19 @@ gulp.task("copy-css", function () {
     .pipe(browserSync.stream());
 });
 
-gulp.task("build", ["copy-fonts", "copy-index", "copy-css", "browserify", "sass"]);
+gulp.task("copy-img", function () {
+  return gulp.src("./src/img/**/*")
+    .pipe(gulp.dest("./build/img"))
+    .pipe(browserSync.stream());
+});
+
+gulp.task("build", ["copy-fonts", "copy-index", "copy-css", "copy-img", "browserify", "sass"]);
 
 gulp.task("watch", ["build"], PRODUCTION ? ()=>{} : function () {
   gulp.watch(["./src/index.html"], ["copy-index"]);
   gulp.watch(["./src/sass/base/base/fonts/**"], ["copy-fonts"]);
   gulp.watch(["./src/css/**/*.css"], ["copy-css"]);
+  gulp.watch(["./src/img/**/*"], ["copy-img"]);
   gulp.watch(["./src/sass/**/*.scss"], ["sass"]);
   gulp.watch(["./src/js/**/*.js?(x)"], ["browserify"]);
 });

@@ -36,7 +36,7 @@ export default class PositionItem extends Component {
       </p>;
     } else if (position.vote_smart_rating) {
         position_description = <div className="position-rating">
-          {/* Rating Icon */}
+          <PositionRatingIcon rating = {position.vote_smart_rating} />
           <div className="position-rating__text">
             <span className="position-rating__percentage" data-percentage={position.vote_smart_rating}>{position.vote_smart_rating}% </span> rating
             <span className="position-rating__timestamp">
