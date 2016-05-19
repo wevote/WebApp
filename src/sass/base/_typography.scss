@@ -2,9 +2,16 @@
 // Basic typography style for copy text
 // ----------------------------------------------------------------------------
 
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: $heading-font-stack;
+}
+
 body {
     color: $text-color;
-    font: normal 125% / 1.4 $text-font-stack;
+    font-family: $text-font-stack;
+    font-size: 125%;
+    line-height: 1.4;
 }
 
 .text-uppercase {

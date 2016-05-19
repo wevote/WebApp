@@ -56,7 +56,7 @@ export default class Candidate extends Component {
     }
     const twitterDescription = candidate.twitter_description || "";
 
-    return <section className="candidate well well-90 gutter-top--small">
+    return <section className="candidate gutter-top--small">
       <div className="candidate-detail-route list-group-item">
         {
           <StarAction
@@ -64,15 +64,12 @@ export default class Candidate extends Component {
         }
 
         <div className="row" style={{ paddingBottom: "2rem" }}>
-          <div
-            className="col-xs-4"
-            style={candidate.candidate_photo_url ? {} : {paddingTop: "2em"}}>
-
+          <div className="col-xs-4">
             {
               candidate.candidate_photo_url ?
                 <img
                   className="img-circle utils-img-contain"
-                  style={{ display: "block", paddingTop: "2em"}}
+                  style={{ display: "block"}}
                   src={candidate.candidate_photo_url}
                   alt="candidate-photo"/> :
               <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light utils-img-contain-glyph"/>

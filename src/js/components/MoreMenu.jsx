@@ -23,7 +23,7 @@ export default class MoreMenu extends Component {
     const logOut = FacebookActions.appLogout;
 
   return <div>
-    <div className="device-menu--large container-fluid well well-90">
+    <div className="device-menu--large container-fluid">
       <ul className="list-group">
         {this.menuLink("/ballot?type=filterRemaining", "Choices Remaining")}
         {this.menuLink("/ballot?type=filterSupport", "What I Support")}

@@ -47,3 +47,51 @@
     @content;
   }
 }
+
+
+// Micro Clearfix
+// http://nicolasgallagher.com/micro-clearfix-hack
+@mixin micro-clearfix() {
+  // & {
+  //   *zoom: 1;
+  // }
+  &:before,
+  &:after {
+    content: "";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+
+// OOCSS Media Object
+// https://gist.github.com/zachharkey/5224086
+@mixin media-object($container: '.media-object', $img: '.media-object__img', $bd: '.media-object__content', $margin: 10px, $position: left, $formatting-context: 'overflow') {
+  #{unquote($container)} { 
+    @include micro-clearfix; 
+  }
+  #{unquote($bd)} {
+    @if $formatting-context == 'overflow' {
+      overflow: hidden;
+    } @else {
+      display: table-cell;
+      width: 10000px;
+      *width: auto;
+      *zoom: 1;
+    }
+  }
+  #{unquote($img)} {
+    float: $position;
+    img { display:block; }
+    @if $margin > 0 {
+      @if $position == left {
+        margin-right: $margin;
+      } else {
+        margin-left: $margin;
+      }
+    }
+  }
+}
+

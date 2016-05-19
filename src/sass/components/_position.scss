@@ -1,7 +1,59 @@
+// Position Item
+
+@include media-object('.position-item', '.position-item__avatar', '.position-item__content');
+
 .position-item {
-  .position-source {
-    color: rgba(171,171,171, 1);
-    font-size: 0.9em;
-    font-weight: 200;
-  }
+  position: relative;
+  display: block;
+  padding: 15px;
+  margin: -1px -15px 0;
+  background-color: $pale-gray;
+  border-top: 1px solid $lighter-gray;
+  border-bottom: 1px solid $lighter-gray;
+}
+
+.position-item__avatar {
+  border-radius: 2px;
+}
+
+.position-item__name {
+  margin-bottom: .2em;
+}
+
+.position-item__position-source {
+  color: rgba(171,171,171, 1);
+  font-size: 0.9em;
+  font-weight: 200;
+}
+
+
+
+// Position Ratings
+
+.position-rating__percentage {
+  font-family: $heading-font-stack;
+  font-size: 18px;
+}
+
+.position-rating__source {
+  color: $mid-gray;
+}
+
+@include media-object('.position-rating', '.position-rating__icon', '.position-rating__text', $margin: 5px)
+.position-rating__icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+.position-rating__positive-rating-icon {
+  background-image: url('/images/global/icons/up-arrow-color-icon.png');
+}
+
+.position-rating__mixed-rating-icon {
+  background-image: url('/images/global/icons/mixed-rating-icon.png');
+}
+
+.position-rating__negative-rating-icon {
+  background-image: url('/images/global/icons/down-arrow-color-icon.png');
 }
