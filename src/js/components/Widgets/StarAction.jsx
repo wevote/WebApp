@@ -40,16 +40,15 @@ export default class StarAction extends Component {
 
 	render () {
     if (this.state.is_starred === undefined){
-      return <span className="star-action"></span>;
+      return <span className="star-action-btn"></span>;
     }
     return <span className="star-action"
               onClick={this.starClick.bind(this)}
-              style={floatRight}
               title="Bookmark for later">
             &nbsp;
             {this.state.is_starred ?
-              <span className="star-action glyphicon glyphicon-small glyphicon-star"></span> :
-              <span className="star-action glyphicon glyphicon-small glyphicon-star-empty"></span> }
+              <span className="star-action-btn glyphicon glyphicon-small glyphicon-star"></span> :
+              <span className="star-action-btn glyphicon glyphicon-small glyphicon-star-empty"></span> }
             </span>;
 	}
 }

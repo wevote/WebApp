@@ -11,26 +11,13 @@
 }
 
 .organization-item__content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  @include respond-to('medium') {
-    flex-direction: row;
-  }
-}
-
-.organization-item__summary {
-
+  @include list-item-content;
 }
 
 .organization-item__additional {
-  display: flex;
-  @include respond-to('medium') {
-    flex-direction: column;
-    padding-left: 1em;
-    text-align: right;
-  }
+  @include list-item-additional;
 }
+
 .organization-item__follow-buttons {
   display: flex;
   align-items: flex-end;

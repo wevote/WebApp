@@ -43,19 +43,24 @@ export default class VoterGuideItem extends Component {
         </Link>
       </div>
       <div className="ballot-item__content">
-        <Link to={voter_guide_we_vote_id_link}>
-          <h4 className="ballot-item__display-name">{displayName}</h4>
-        </Link>
-        <p className="ballot-item__short-bio">
-          { twitterDescriptionMinusName ? <span>{twitterDescriptionMinusName}</span> :
-              null }
-        </p>
+        <div className="ballot-item__summary">
+          <Link to={voter_guide_we_vote_id_link}>
+            <h4 className="ballot-item__display-name">{displayName}</h4>
+          </Link>
+          <p className="ballot-item__short-bio">
+            { twitterDescriptionMinusName ? <span>{twitterDescriptionMinusName}</span> :
+                null }
+          </p>
+        </div>
+        <div className="ballot-item__additional">
+          {twitterFollowers ?
+            <span className="twitter-followers__badge">
+              <span className="fa fa-twitter twitter-followers__icon"></span>
+              {numberWithCommas(twitterFollowers)}
+            </span> :
+            null}
+        </div>
       </div>
-      {twitterFollowers ?
-        <div className="hidden-xs social-box fa fa-twitter">
-          { twitterFollowers }
-          </div> :
-          null}
     </div>;
   }
 }

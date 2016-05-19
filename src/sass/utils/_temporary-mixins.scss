@@ -17,3 +17,24 @@
   border-radius: 2px;
   max-width: 50px;
 }
+
+// content container for the list item
+@mixin list-item-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  @include respond-to('medium') {
+    flex-direction: row;
+  }
+}
+
+
+// container for org 'follow' buttons and twitter count
+@mixin list-item-additional {
+  display: flex;
+  @include respond-to('medium') {
+    flex-direction: column;
+    padding-left: 1em;
+    text-align: right;
+  }
+}

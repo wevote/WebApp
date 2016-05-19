@@ -29,3 +29,11 @@
 .ballot-item__avatar {
   @include list-item-avatar;
 }
+
+.ballot-item__content {
+  @include list-item-content;
+}
+
+.ballot-item__additional {
+  @include list-item-additional;
+}
