@@ -30,6 +30,7 @@ export default class About extends Component {
               DLA Piper - Legal<br />
               Facebook - Data<br />
               Google Civic - Data<br />
+              Microsoft - For supporting Code for San Francisco<br />
               Twitter - Data<br />
               Vote Smart - Data<br />
               Voting Information Project, Pew Charitable Trusts - Data<br />
@@ -46,12 +47,14 @@ export default class About extends Component {
               Lisa Cho - San Francisco, CA<br />
               Nicolas Fiorini - Arlington, VA<br />
               Joe Evans - Santa Cruz, CA<br />
-              Niko Barry - Berkeley, CA<br />
+              Jeff French - Oakland, CA<br />
+              Adam Barry - San Francisco, CA<br />
               Mary O'Connor - Sebastopol, CA<br />
+              Harsha Dronamraju - San Francisco, CA<br />
+              Nitin Garg - San Francisco, CA<br />
+              Niko Barry - Berkeley, CA<br />
               Marissa Luna - Lansing, MI<br />
               Aaron Borden - San Francisco, CA<br />
-              Adam Barry - San Francisco, CA<br />
-              Jeff French - Oakland, CA<br />
               Judy Johnson - Oakland, CA<br />
               Robin Braverman - Walnut Creek, CA<br />
               Mike McConnell - San Francisco, CA<br />
@@ -75,9 +78,7 @@ export default class About extends Component {
               Miguel Elasmar - Sarasota, FL<br />
               Nicole Shanahan - Palo Alto, CA<br />
               Steve Whetstone - San Francisco, CA<br />
-              Harsha Dronamraju - San Francisco, CA<br />
               Brian Bordley - Berkeley, CA<br />
-              Nitin Garg - San Francisco, CA<br />
               Marcus Busby - San Francisco, CA<br />
               lulu - New York, NY<br />
               Chris Griffith - Santa Cruz, CA<br />
