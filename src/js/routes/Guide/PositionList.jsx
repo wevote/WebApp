@@ -63,15 +63,16 @@ export default class GuidePositionList extends Component {
                     null}
                 <br />{/* TODO icon-org-placeholder */}
               { organization_twitter_handle ?
-               <span>@{organization_twitter_handle}&nbsp;&nbsp;&nbsp;</span> :
+               <span>@{organization_twitter_handle}&nbsp;&nbsp;</span> :
                <span></span> }
               {twitter_followers_count ?
-                <div className="hidden-xs social-box fa fa-twitter">
+                <span className="twitter-followers__badge">
+                  <span className="fa fa-twitter twitter-followers__icon"></span>
                   {numberWithCommas(twitter_followers_count)}
-                </div> :
-                <span></span>}
-
-              See <a href={organization_website} target="_blank">Website</a><br />
+                </span> :
+                null}
+              &nbsp;&nbsp;
+              <a href={organization_website} target="_blank">Website</a><br />
               {/*5 of your friends follow Organization Name<br />*/}
               {/*
               <strong>2016 General Election, November 2nd</strong>
