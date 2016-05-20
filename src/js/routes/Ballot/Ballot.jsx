@@ -45,6 +45,25 @@ export default class Ballot extends Component {
     }
   }
 
+  componentDidUpdate (){
+    this.hashLinkScroll();
+  }
+
+  //Needed to scroll to anchor tags based on hash in url(as done for bookmarks)
+  hashLinkScroll () {
+    const { hash } = window.location;
+    if (hash !== "") {
+      // Push onto callback queue so it runs after the DOM is updated,
+      // this is required when navigating from a different page so that
+      // the element is rendered on the page before trying to getElementById.
+      setTimeout(() => {
+        var id = hash.replace("#", "");
+        const element = document.getElementById(id);
+        if (element) element.scrollIntoView();
+      }, 0);
+    }
+  }
+
   getBallot (props){
     let type = props.location.query ? props.location.query.type : "all";
     switch (type) {
