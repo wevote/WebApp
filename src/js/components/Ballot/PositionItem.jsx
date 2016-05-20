@@ -4,19 +4,22 @@ const moment = require("moment");
 
 export default class PositionItem extends Component {
   static propTypes = {
-    position_we_vote_id: PropTypes.string.isRequired,
-    last_updated: PropTypes.string,
-    speaker_type: PropTypes.string,
-    speaker_image_url_https: PropTypes.string,
     candidate_display_name: PropTypes.string.isRequired,
-    speaker_display_name: PropTypes.string.isRequired
+    last_updated: PropTypes.string,
+    position_we_vote_id: PropTypes.string.isRequired,
+    speaker_type: PropTypes.string,
+    speaker_display_name: PropTypes.string.isRequired,
+    speaker_image_url_https: PropTypes.string,
+    speaker_twitter_handle: PropTypes.string
   };
 
   render () {
     var position = this.props;
     var dateStr = this.props.last_updated;
     var dateText = moment(dateStr).startOf("day").fromNow();
-    var speaker_we_vote_id_link = "/voterguide/" + position.speaker_we_vote_id;
+    // TODO TwitterHandle
+    // var speaker_link = position.speaker_twitter_handle ? "/" + position.speaker_twitter_handle : "/voterguide/" + position.speaker_we_vote_id;
+    var speaker_link = "/voterguide/" + position.speaker_we_vote_id;
 
     let image_placeholder = "";
     if (this.props.speaker_type === "O") {
@@ -72,7 +75,7 @@ export default class PositionItem extends Component {
           image_placeholder }
         <div className="position-item__content">
             <h4 className="position-item__name">
-              <Link to={speaker_we_vote_id_link}>
+              <Link to={speaker_link}>
                 { this.props.speaker_display_name }
               </Link>
               { position.is_support && !position.vote_smart_rating ? <span>

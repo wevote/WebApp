@@ -12,12 +12,17 @@ export default class OrganizationPositionItem extends Component {
       kind_of_ballot_item,
       vote_smart_rating,
       ballot_item_we_vote_id,
-      ballot_item_image_url_https } = this.props.position;
+      ballot_item_image_url_https,
+      ballot_item_twitter_handle } = this.props.position;
+
+    // TODO TwitterHandle
+    // let candidateUrl = ballot_item_twitter_handle ? "/" + ballot_item_twitter_handle : "/candidate/" + ballot_item_we_vote_id;
+    let candidateUrl = "/candidate/" + ballot_item_we_vote_id;
 
     return <li className="list-group-item">
           <StarAction we_vote_id={ballot_item_we_vote_id} type={kind_of_ballot_item} />
         <Link className="linkLight"
-              to={"/candidate/" + ballot_item_we_vote_id }
+              to={ candidateUrl }
               onlyActiveOnIndex={false}>
           {/*<i className="icon-icon-add-friends-2-1 icon-light icon-medium" />*/}
           {

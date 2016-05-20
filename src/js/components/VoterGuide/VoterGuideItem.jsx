@@ -14,6 +14,7 @@ export default class VoterGuideItem extends Component {
     public_figure_we_vote_id: PropTypes.string,
     twitter_description: PropTypes.string,
     twitter_followers_count: PropTypes.number,
+    twitter_handle: PropTypes.string,
     last_updated: PropTypes.string,
     OrganizationFollowed: PropTypes.string,
     OrganizationIgnored: PropTypes.string
@@ -30,7 +31,9 @@ export default class VoterGuideItem extends Component {
     if (this.props.twitter_followers_count) {
       twitterFollowers = twitterFollowersCount;
     }
-    var voter_guide_we_vote_id_link = "/voterguide/" + this.props.organization_we_vote_id;
+    // TODO TwitterHandle
+    // var voter_guide_link = this.props.twitter_handle ? "/" + this.props.twitter_handle : "/voterguide/" + this.props.organization_we_vote_id;
+    var voter_guide_link = "/voterguide/" + this.props.organization_we_vote_id;
 
     /* This was refactored into /src/js/components/VoterGuide/GuideList.jsx for "More Opinions" page.
      * Since the migration of the existing styles was not done with total fidelity, we need to leave this
@@ -39,12 +42,12 @@ export default class VoterGuideItem extends Component {
       return <div className="row">
               <div className="ballot-item well well-skinny well-bg--light split-top-skinny clearfix">
                   <div className="col-xs-2 col-sm-2">
-                      <Link to={voter_guide_we_vote_id_link}>
+                      <Link to={voter_guide_link}>
                       <Image imageUrl={this.props.voter_guide_image_url} />
                       </Link>
                   </div>
                   <div className="col-xs-10 col-sm-8">
-                      <Link to={voter_guide_we_vote_id_link}>
+                      <Link to={voter_guide_link}>
                           <strong>{displayName}</strong>
                           <p className="position-item__short-bio">
                             { twitterDescriptionMinusName ? <span>{twitterDescriptionMinusName}</span> :
