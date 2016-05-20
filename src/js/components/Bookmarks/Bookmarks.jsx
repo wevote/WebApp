@@ -30,13 +30,15 @@ export default class Bookmarks extends Component {
       return LoadingWheel;
     }
     return (
-      <div className="ballot-item gutter-top--small">
+      <div>
       <h4>Bookmarks</h4>
+      <ul>
     {
       this.state.bookmarks.map(bookmark =>{
         return <BookmarkItem key={bookmark.ballot_item_display_name} bookmark={bookmark} />;
       })
     }
+    </ul>
       </div>);
   }
 }

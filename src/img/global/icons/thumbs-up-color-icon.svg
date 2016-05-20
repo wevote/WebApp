@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.8.1 (29687) - http://www.bohemiancoding.com/sketch -->
+    <title>thumbs-up-color-icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="20" height="20" rx="10"></rect>
+    </defs>
+    <g id="Assets" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Thumbs-Up---Circle">
+            <g id="Endorsement-icon">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Circle" fill="#76D00B" xlink:href="#path-1"></use>
+                <path d="M4,14.8181818 L6.36363636,14.8181818 L6.36363636,7.72727273 L4,7.72727273 L4,14.8181818 L4,14.8181818 Z M17,8.31818182 C17,7.66818182 16.4681818,7.13636364 15.8181818,7.13636364 L12.0895455,7.13636364 L12.6509091,4.43590909 L12.6686364,4.24681818 C12.6686364,4.00454545 12.5681818,3.78 12.4086364,3.62045455 L11.7822727,3 L7.89409091,6.89409091 C7.67545455,7.10681818 7.54545455,7.40227273 7.54545455,7.72727273 L7.54545455,13.6363636 C7.54545455,14.2863636 8.07727273,14.8181818 8.72727273,14.8181818 L14.0454545,14.8181818 C14.5359091,14.8181818 14.9554545,14.5227273 15.1327273,14.0972727 L16.9172727,9.93136364 C16.9704545,9.79545455 17,9.65363636 17,9.5 L17,8.37136364 L16.9940909,8.36545455 L17,8.31818182 L17,8.31818182 Z" id="Thumbs-Up-icon" fill="#FFFFFF" mask="url(#mask-2)"></path>
+            </g>
+        </g>
+    </g>
+</svg>

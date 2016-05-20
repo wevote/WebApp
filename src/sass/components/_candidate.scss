@@ -1,8 +1,9 @@
-// scoped variables
-$smallFont: 1.0em;
-$mediumFont: 1.6em;
-$largeFont: 2em;
+
 .candidate {
+  // scoped variables
+  $smallFont: 1.0em;
+  $mediumFont: 1.6em;
+  $largeFont: 2em;
   .oppose {
   }
   .oppose-emphasis-small, .support-emphasis-small {

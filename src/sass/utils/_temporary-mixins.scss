@@ -1,0 +1,40 @@
+// Temporary mixins to unify styles until they are refactored.
+// Nothing here should remain indefinitely
+
+
+// Styling for list items such as .position-item and .organization-item
+@mixin list-item-card() {
+  position: relative;
+  padding: 15px;
+  margin-top: -1px;
+  background-color: $pale-gray;
+  border-top: 1px solid $lighter-gray;
+  border-bottom: 1px solid $lighter-gray;
+}
+
+// Styling for basic avatar icons
+@mixin list-item-avatar {
+  border-radius: 2px;
+  max-width: 50px;
+}
+
+// content container for the list item
+@mixin list-item-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  @include respond-to('medium') {
+    flex-direction: row;
+  }
+}
+
+
+// container for org 'follow' buttons and twitter count
+@mixin list-item-additional {
+  display: flex;
+  @include respond-to('medium') {
+    flex-direction: column;
+    padding-left: 1em;
+    text-align: right;
+  }
+}

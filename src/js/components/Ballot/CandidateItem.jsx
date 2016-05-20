@@ -38,8 +38,7 @@ export default class Candidate extends Component {
               onlyActiveOnIndex={false}>
           {/* Note: We want a click anywhere in this div to take you to the candidate page */}
           <div className="row" style={{ paddingBottom: "2em" }}>
-            <div
-              className="col-xs-4">
+            <div className="col-xs-4">
 
               {/* adding inline style to img until Rob can style... */}
               {
@@ -50,7 +49,12 @@ export default class Candidate extends Component {
                          alt="candidate-photo"/> :
                     <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light utils-img-contain-glyph"/>
               }
-
+              {twitter_followers_count ?
+                <span className="twitter-followers__badge candidate-item__twitter-badge">
+                  <span className="fa fa-twitter twitter-followers__icon"></span>
+                  {numberWithCommas(twitter_followers_count)}
+                </span> :
+                null}
             </div>
             <div className="col-xs-8">
               <h4 className="bufferNone">
@@ -58,17 +62,12 @@ export default class Candidate extends Component {
                 {
                   party ?
                     <span className="link-text-candidate-party">, { party }</span> :
-                    <span></span>
+                    null
                 }
                 <span className="link-text-to-more-info"> (more)</span>
               </h4>
               { twitterDescription ? <span>{twitterDescription}<br /></span> :
-                  <span></span>}
-              {twitter_followers_count ?
-                <div className="hidden-xs social-box fa fa-twitter">
-                  {numberWithCommas(twitter_followers_count)}
-                </div> :
-                <span></span>}
+                  null}
 
               <ItemSupportOpposeCounts we_vote_id={we_vote_id} type="CANDIDATE" />
             </div>

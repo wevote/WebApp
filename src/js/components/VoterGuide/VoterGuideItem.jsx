@@ -33,31 +33,34 @@ export default class VoterGuideItem extends Component {
     var voter_guide_we_vote_id_link = "/voterguide/" + this.props.organization_we_vote_id;
 
     /* This was refactored into /src/js/components/VoterGuide/GuideList.jsx for "More Opinions" page.
-     * Since the migration of the existing styles was not done with total fidelity, we need to leave this
-     * file in place until the migration (or reintegration back into this file) can be completed.
-     * TODO: Complete migration of this functionality */
-      return <div className="row">
-              <div className="ballot-item well well-skinny well-bg--light split-top-skinny clearfix">
-                  <div className="col-xs-2 col-sm-2">
-                      <Link to={voter_guide_we_vote_id_link}>
-                      <Image imageUrl={this.props.voter_guide_image_url} />
-                      </Link>
-                  </div>
-                  <div className="col-xs-10 col-sm-8">
-                      <Link to={voter_guide_we_vote_id_link}>
-                          <strong>{displayName}</strong>
-                          <p className="position-item__short-bio">
-                            { twitterDescriptionMinusName ? <span>{twitterDescriptionMinusName}</span> :
-                                null }
-                          </p>
-                      </Link>
-                  </div>
-                  {twitterFollowers ?
-                      <div className="hidden-xs social-box fa fa-twitter">
-                          { twitterFollowers }
-                      </div> :
-                      <span></span>}
-              </div>
-        </div>;
+    * Since the migration of the existing styles was not done with total fidelity, we need to leave this
+    * file in place until the migration (or reintegration back into this file) can be completed.
+    * TODO: Complete migration of this functionality */
+    return <div className="ballot-item">
+      <div className="ballot-item__avatar">
+        <Link to={voter_guide_we_vote_id_link}>
+          <Image imageUrl={this.props.voter_guide_image_url} />
+        </Link>
+      </div>
+      <div className="ballot-item__content">
+        <div className="ballot-item__summary">
+          <Link to={voter_guide_we_vote_id_link}>
+            <h4 className="ballot-item__display-name">{displayName}</h4>
+          </Link>
+          <p className="ballot-item__short-bio">
+            { twitterDescriptionMinusName ? <span>{twitterDescriptionMinusName}</span> :
+                null }
+          </p>
+        </div>
+        <div className="ballot-item__additional">
+          {twitterFollowers ? 
+            <span className="twitter-followers__badge">
+              <span className="fa fa-twitter twitter-followers__icon"></span>
+              {numberWithCommas(twitterFollowers)}
+            </span> :
+            null}
+        </div>
+      </div>
+    </div>;
   }
 }
