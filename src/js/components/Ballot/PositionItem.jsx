@@ -27,14 +27,18 @@ export default class PositionItem extends Component {
     }
 
     let position_description = null;
-    if (!position.vote_smart_rating && (position.is_support || position.is_oppose)) {
-      position_description = <p className="">
-        { position.is_support ? "[support icon]" : "[oppose icon]" }
-        <span className="position-item__position-label">
-          { position.is_support ? "Supports" : "Opposes" }
-          {this.props.candidate_display_name}
-        </span>
-      </p>;
+    if (position.is_support || position.is_oppose) {
+      position_description = <div className="explicit-position">
+        { position.is_support ? <img src="/img/global/icons/thumbs-up-color-icon.svg" width="20" height="20" className="explicit-position__icon" alt="Supports" /> : <img src="/img/global/icons/thumbs-down-color-icon.svg" width="20" height="20" className="explicit-position__icon" alt="Opposes" /> }
+        <p className="explicit-position__text">
+          <span className="explicit-position__position-label">
+            { position.is_support ? "Supports" : "Opposes" }
+          </span>
+          <span> {this.props.candidate_display_name}</span>
+        {/* if there's an external source for the explicit position/endorsement, show it */}
+        <span className="explicit-position__source"> (Source: Some reputable organization)</span>
+        </p>
+      </div>;
     } else if (position.vote_smart_rating) {
         position_description =
           <PositionRatingSnippet rating = {position.vote_smart_rating} rating_time_span = {position.vote_smart_time_span} />;
@@ -50,7 +54,7 @@ export default class PositionItem extends Component {
     if (position.speaker_type === "V")
         show_position = false;
 
-    var nothing_to_display = <span></span>;
+    var nothing_to_display = null;
 
     var one_position_on_this_candidate = <li className="position-item">
       {/* One Position on this Candidate */}
@@ -65,10 +69,6 @@ export default class PositionItem extends Component {
             <Link to={speaker_we_vote_id_link}>
               { this.props.speaker_display_name }
             </Link>
-            { position.is_support && !position.vote_smart_rating ? <span>
-                &nbsp;support</span> : null }
-            { position.is_oppose && !position.vote_smart_rating ? <span>
-                &nbsp;oppose</span> : <span></span> }
           </h4>
             { position_description }
         </div>

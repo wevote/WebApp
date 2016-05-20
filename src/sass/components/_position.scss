@@ -14,14 +14,27 @@
   margin-bottom: .2em;
 }
 
-.position-item__position-source {
-  color: rgba(171,171,171, 1);
-  font-size: 0.9em;
-  font-weight: 200;
+
+// Explicit Positions
+
+@include media-object('.explicit-position', '.explicit-position__icon', '.explicit-position__text', $margin: 5px);
+
+.explicit-position__icon {
+  margin-top: 2px;
 }
 
+.explicit-position__text {
+  padding-top: .2em;
+  color: $dark-gray;
+}
 
+.explicit-position__position-label {
+  font-weight: bold;
+}
 
+.explicit-position__source {
+  color: $mid-gray;
+}
 
 
 // Position Ratings
@@ -38,7 +51,6 @@
 @include media-object('.position-rating', '.position-rating__icon', '.position-rating__text', $margin: 5px)
 .position-rating__icon {
   margin-top: 2px;
-  margin-right: 5px;
 }
 
 

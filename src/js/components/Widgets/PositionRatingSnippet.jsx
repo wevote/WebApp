@@ -31,7 +31,7 @@ export default class PositionRatingSnippet extends Component {
           <span className="position-rating__percentage" data-percentage={rating}>{rating}% </span> rating
           { rating_time_span ? <span className="position-rating__timestamp"> in {rating_time_span}</span> :
             null }
-          { rating ? <span className="position-item__position-source"> (source: VoteSmart.org)</span> : null }
+          { rating ? <span className="position-rating__source"> (source: VoteSmart.org)</span> : null }
         </div>
       </div>;
   }

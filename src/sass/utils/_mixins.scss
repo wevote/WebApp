@@ -71,7 +71,7 @@
 /// @link https://gist.github.com/zachharkey/5224086
 /// @requires $micro-clearfix
 
-@mixin media-object($container: '.media-object', $img: '.media-object__img', $bd: '.media-object__body', $margin: 10px, $position: left, $formatting-context: 'overflow', $flex: true) {
+@mixin media-object($container: '.media-object', $img: '.media-object__img', $bd: '.media-object__body', $margin: 10px, $position: 'left', $formatting-context: 'overflow', $flex: true) {
   @if $flex == true {
     #{unquote($container)} {
       display: flex;
@@ -101,7 +101,7 @@
       float: $position;
       img { display:block; }
       @if $margin > 0 {
-        @if $position == left {
+        @if $position == 'left' {
           margin-right: $margin;
         } else {
           margin-left: $margin;
