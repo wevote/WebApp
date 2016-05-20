@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
+import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
 const moment = require("moment");
 
 export default class PositionItem extends Component {
@@ -26,28 +27,21 @@ export default class PositionItem extends Component {
     }
 
     let position_description = null;
-    if (!position.vote_smart_rating && (position.is_support || position.is_oppose)) {
-      position_description = <p className="">
-        { position.is_support ? "[support icon]" : "[oppose icon]" }
-        <span className="position-item__position-label">
-          { position.is_support ? "Supports" : "Opposes" }
-          {this.props.candidate_display_name}
-        </span>
-      </p>;
+    if (position.is_support || position.is_oppose) {
+      position_description = <div className="explicit-position">
+        { position.is_support ? <img src="/img/global/icons/thumbs-up-color-icon.svg" width="20" height="20" className="explicit-position__icon" alt="Supports" /> : <img src="/img/global/icons/thumbs-down-color-icon.svg" width="20" height="20" className="explicit-position__icon" alt="Opposes" /> }
+        <p className="explicit-position__text">
+          <span className="explicit-position__position-label">
+            { position.is_support ? "Supports" : "Opposes" }
+          </span>
+          <span> {this.props.candidate_display_name}</span>
+        {/* if there's an external source for the explicit position/endorsement, show it */}
+        <span className="explicit-position__source"> (Source: Some reputable organization)</span>
+        </p>
+      </div>;
     } else if (position.vote_smart_rating) {
-        position_description = <div className="position-rating">
-          {/* Rating Icon */}
-          <div className="position-rating__text">
-            <span className="position-rating__percentage" data-percentage={position.vote_smart_rating}>{position.vote_smart_rating}% </span> rating
-            <span className="position-rating__timestamp">
-              { position.vote_smart_time_span ?
-                <span> in {position.vote_smart_time_span} </span> :
-                <span>{ dateText } </span>
-              }
-            </span>
-            { position.vote_smart_rating ? <span className="position-item__position-source">(source: VoteSmart.org)</span> : null }
-          </div>
-        </div>;
+        position_description =
+          <PositionRatingSnippet rating = {position.vote_smart_rating} rating_time_span = {position.vote_smart_time_span} />;
     } else if (position.speaker_type === "V") {
         position_description = <p className="">
           <span>{this.props.candidate_display_name}</span>
@@ -60,7 +54,7 @@ export default class PositionItem extends Component {
     if (position.speaker_type === "V")
         show_position = false;
 
-    var nothing_to_display = <span></span>;
+    var nothing_to_display = null;
 
     var one_position_on_this_candidate = <li className="position-item">
       {/* One Position on this Candidate */}
@@ -71,22 +65,18 @@ export default class PositionItem extends Component {
             /> :
           image_placeholder }
         <div className="position-item__content">
-            <h4 className="position-item__name">
-              <Link to={speaker_we_vote_id_link}>
-                { this.props.speaker_display_name }
-              </Link>
-              { position.is_support && !position.vote_smart_rating ? <span>
-                  &nbsp;support</span> : null }
-              { position.is_oppose && !position.vote_smart_rating ? <span>
-                  &nbsp;oppose</span> : <span></span> }
-            </h4>
-              { position_description }
+          <h4 className="position-item__display-name">
+            <Link to={speaker_we_vote_id_link}>
+              { this.props.speaker_display_name }
+            </Link>
+          </h4>
+            { position_description }
         </div>
         {/* Likes coming in a later version
         <br />
         23 Likes<br />
         */}
-      </li>
+      </li>;
 
       if (show_position) {
           return one_position_on_this_candidate;

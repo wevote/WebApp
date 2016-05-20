@@ -30,33 +30,33 @@ export default class Organization extends Component {
     var voter_guide_we_vote_id_link = "/voterguide/" + id;
 
     const org =
-      <div className="row">
-        <div className="organization well well-skinny well-bg--light split-top-skinny clearfix">
-          <div className="col-xs-2">
+      <div className="organization-item">
+        <div className="organization-item__avatar">
+          <Link to={voter_guide_we_vote_id_link}>
+            <Image imageUrl={imageUrl} />
+          </Link>
+        </div>
+        <div className="organization-item__content">
+          <div className="position-item__summary">
             <Link to={voter_guide_we_vote_id_link}>
-              <Image imageUrl={imageUrl} />
+              <h4 className="organization-item__display-name">{displayName}</h4>
             </Link>
-          </div>
-          <div className="col-xs-8 col-sm-6 display-name">
-            <Link to={voter_guide_we_vote_id_link}>
-              <strong>{displayName}</strong>
-              { twitterDescriptionMinusName ? <span>{twitterDescriptionMinusName}</span> :
-                  <span></span>}
-            </Link>
-          </div>
-          <div className="col-xs-2 col-sm-4 utils-paddingright0"
-                style={ {textAlign: "right"} }>
+            { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> :
+              null}
+            </div>
+          <div className="organization-item__additional">
+            <div className="organization-item__follow-buttons">
               {this.props.children}
+            </div>
+            {followers ?
+              <span className="twitter-followers__badge">
+                <span className="fa fa-twitter twitter-followers__icon"></span>
+                {numberWithCommas(followers)}
+              </span> :
+              null}
           </div>
-          {followers ?
-            <div className="hidden-xs social-box fa fa-twitter">
-              {numberWithCommas(followers)}
-            </div> :
-            <span></span>}
         </div>
       </div>;
-
     return org;
   }
-
 }

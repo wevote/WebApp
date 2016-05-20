@@ -52,28 +52,27 @@ export default class GuidePositionList extends Component {
         <div className="container-fluid well well-90">
           <ul className="list-group">
             <li className="list-group-item">
-              <h4>
                 <FollowToggle we_vote_id={this.props.params.we_vote_id} />
                 { organization_photo_url ?
                  <span>
                  <Image imageUrl={organization_photo_url} class="img-square" />
                   </span> :
                 <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"></i> }
-                {displayName}
-                { twitterDescriptionMinusName ? <span>{twitterDescriptionMinusName}</span> :
-                    <span></span>}
+                <div className="h4 page__display-name">{displayName}</div>
+                { twitterDescriptionMinusName ? <p className="page__short-bio">{twitterDescriptionMinusName}</p> :
+                    null}
                 <br />{/* TODO icon-org-placeholder */}
-              </h4>
               { organization_twitter_handle ?
-               <span>@{organization_twitter_handle}&nbsp;&nbsp;&nbsp;</span> :
+               <span>@{organization_twitter_handle}&nbsp;&nbsp;</span> :
                <span></span> }
               {twitter_followers_count ?
-                <div className="hidden-xs social-box fa fa-twitter">
+                <span className="twitter-followers__badge">
+                  <span className="fa fa-twitter twitter-followers__icon"></span>
                   {numberWithCommas(twitter_followers_count)}
-                </div> :
-                <span></span>}
-
-              See <a href={organization_website} target="_blank">Website</a><br />
+                </span> :
+                null}
+              &nbsp;&nbsp;
+              <a href={organization_website} target="_blank">Website</a><br />
               {/*5 of your friends follow Organization Name<br />*/}
               {/*
               <strong>2016 General Election, November 2nd</strong>

@@ -39,7 +39,7 @@ export default class OpinionsFollowed extends Component {
 
   render () {
     return <div>
-  <div className="container-fluid well gutter-top--small fluff-full1">
+  <div className="container-fluid opinions-followed__container">
     <h3 className="text-center">What I'm Following</h3>
     <div className="voter-guide-list">
     <ReactCSSTransitionGroup transitionName="org-ignore" transitionEnterTimeout={400} transitionLeaveTimeout={200}>

@@ -31,19 +31,11 @@ export default class GuideList extends Component {
                       twitterDescription={org.twitter_description}
                       followers={org.twitter_followers_count}
                       imageUrl={org.voter_guide_image_url} >
-          <button className="btn btn-primary btn-sm follow hidden-xs"
+          <button className="btn btn-primary btn-sm follow"
                   onClick={this.handleFollow.bind(this, org.organization_we_vote_id)}>
             Follow
           </button>
-          <button className="btn btn-primary btn-xs follow visible-xs-block utils-margin_bottom5"
-                  onClick={this.handleFollow.bind(this, org.organization_we_vote_id)}>
-            Follow
-          </button>
-          <button className="btn btn-default btn-sm hidden-xs"
-                  onClick={this.handleIgnore.bind(this, org.organization_we_vote_id)}>
-            Ignore
-          </button>
-          <button className="btn btn-default btn-xs visible-xs-block"
+          <button className="btn btn-default btn-sm"
                   onClick={this.handleIgnore.bind(this, org.organization_we_vote_id)}>
             Ignore
           </button>
@@ -54,7 +46,7 @@ export default class GuideList extends Component {
     });
 
     const guideList =
-      <div className="guidelist row">
+      <div className="guidelist">
         <ReactCSSTransitionGroup transitionName="org-ignore" transitionEnterTimeout={400} transitionLeaveTimeout={200}>
           {orgs}
         </ReactCSSTransitionGroup>
