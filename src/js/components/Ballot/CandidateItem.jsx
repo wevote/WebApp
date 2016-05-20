@@ -14,6 +14,7 @@ export default class Candidate extends Component {
     we_vote_id: PropTypes.string.isRequired,
     twitter_description: PropTypes.string,
     twitter_followers_count: PropTypes.number,
+    twitter_handle: PropTypes.string
   };
 
   render () {
@@ -24,17 +25,21 @@ export default class Candidate extends Component {
       we_vote_id,
       twitter_description,
       twitter_followers_count,
+      twitter_handle,
     } = this.props;
 
     let displayName = ballot_item_display_name ? ballot_item_display_name : "";
     let twitterDescription = twitter_description ? twitter_description : "";
+    // TODO TwitterHandle
+    //let candidateUrl = twitter_handle ? "/" + twitter_handle : "/candidate/" + we_vote_id;
+    let candidateUrl = "/candidate/" + we_vote_id;
 
     return <section className="candidate list-group-item">
         <StarAction
           we_vote_id={we_vote_id} type="CANDIDATE"/>
 
         <Link className="linkLight"
-              to={"/candidate/" + we_vote_id }
+              to={ candidateUrl }
               onlyActiveOnIndex={false}>
           {/* Note: We want a click anywhere in this div to take you to the candidate page */}
           <div className="row" style={{ paddingBottom: "2em" }}>

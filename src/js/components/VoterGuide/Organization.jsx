@@ -10,6 +10,7 @@ export default class Organization extends Component {
     imageUrl: PropTypes.string,
     displayName: PropTypes.string,
     twitterDescription: PropTypes.string,
+    twitter_handle: PropTypes.string,
     followers: PropTypes.number,
     children: PropTypes.array
   };
@@ -27,18 +28,20 @@ export default class Organization extends Component {
     // If the displayName is in the twitterDescription, remove it from twitterDescription
     let twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
 
-    var voter_guide_we_vote_id_link = "/voterguide/" + id;
+    var voter_guide_link = "/voterguide/" + id;
+    // TODO TwitterHandle
+    // var voter_guide_link = this.props.twitter_handle ? "/" + this.props.twitter_handle : "/voterguide/" + id;
 
     const org =
       <div className="row">
         <div className="organization well well-skinny well-bg--light split-top-skinny clearfix">
           <div className="col-xs-2">
-            <Link to={voter_guide_we_vote_id_link}>
+            <Link to={voter_guide_link}>
               <Image imageUrl={imageUrl} />
             </Link>
           </div>
           <div className="col-xs-8 col-sm-6 display-name">
-            <Link to={voter_guide_we_vote_id_link}>
+            <Link to={voter_guide_link}>
               <strong>{displayName}</strong>
               { twitterDescriptionMinusName ? <span>{twitterDescriptionMinusName}</span> :
                   <span></span>}
