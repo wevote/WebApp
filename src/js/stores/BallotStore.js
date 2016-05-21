@@ -2,6 +2,7 @@ let Dispatcher = require("../dispatcher/Dispatcher");
 let FluxMapStore = require("flux/lib/FluxMapStore");
 import BallotActions from "../actions/BallotActions";
 import VoterStore from "../stores/VoterStore";
+import StarStore from "../stores/StarStore";
 import SupportStore from "../stores/SupportStore";
 const assign = require("object-assign");
 
@@ -30,6 +31,26 @@ class BallotStore extends FluxMapStore {
     if (!this.isLoaded()){ return undefined; }
     let civicId = VoterStore.election_id();
     return this.getState().ballots[civicId].ballot_item_list;
+  }
+
+  get bookmarks (){
+    let civicId = VoterStore.election_id();
+    if (!this.getState().ballots || !this.getState().ballots[civicId] ){ return undefined; }
+    let ballot = this.getState().ballots[civicId].ballot_item_list;
+
+    let bookmarks = [];
+    ballot.forEach( ballot_item => {
+      if (StarStore.get(ballot_item.we_vote_id)){ // item is bookmarked
+        bookmarks.push(ballot_item);
+      }
+      ballot_item.candidate_list.forEach( cand =>{
+        if (StarStore.get(cand.we_vote_id)){
+          bookmarks.push(cand);
+        }
+      });
+    });
+
+    return bookmarks;
   }
 
   get ballot_remaining_choices (){

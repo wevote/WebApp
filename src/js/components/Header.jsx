@@ -73,6 +73,13 @@ export default class Header extends Component {
                   </div>
                 </Link>
               </li>
+              <li className="list-group-item">
+                <Link onClick={this.hide.bind(this)} to="/bookmarks">
+                  <div>
+                  Bookmarks
+                  </div>
+                </Link>
+              </li>
             </ul>
             <h4 className="text-left"></h4>
             <ul className="list-group">

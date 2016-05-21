@@ -19,6 +19,7 @@ import Location from "./routes/Settings/Location";
 /* Pages that use Ballot Navigation */
 import BallotIndex from "./routes/Ballot/BallotIndex";
 import Ballot from "./routes/Ballot/Ballot";
+import Bookmarks from "./components/Bookmarks/Bookmarks";
 import Candidate from "./routes/Ballot/Candidate";
 import EmptyBallot from "./routes/Ballot/EmptyBallot";
 
@@ -81,6 +82,8 @@ const routes = () =>
       <IndexRoute component={Ballot}/>
       <Route path="/candidate/:we_vote_id" component={Candidate} />
     </Route>
+
+    <Route path="bookmarks" component={Bookmarks} />
 
     <Route path="ballot/empty" component={EmptyBallot} />
       {/*
