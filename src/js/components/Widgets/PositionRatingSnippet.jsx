@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 
 export default class PositionRatingSnippet extends Component {
   static propTypes = {
-    rating: PropTypes.number.isRequired,
+    rating: PropTypes.string.isRequired,
     rating_time_span: PropTypes.string.isRequired
   };
 

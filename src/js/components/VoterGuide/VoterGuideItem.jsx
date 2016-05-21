@@ -16,7 +16,7 @@ export default class VoterGuideItem extends Component {
     twitter_followers_count: PropTypes.number,
     last_updated: PropTypes.string,
     OrganizationFollowed: PropTypes.string,
-    OrganizationIgnored: PropTypes.string
+    OrganizationIgnored: PropTypes.string,
   };
 
   render () {
