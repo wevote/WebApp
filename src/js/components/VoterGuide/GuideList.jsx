@@ -24,13 +24,9 @@ export default class GuideList extends Component {
 
     let orgs = this.props.organizations.map( (org) => {
 
-      const organization =
-        <Organization id={org.organization_we_vote_id}
-                      key={org.organization_we_vote_id}
-                      displayName={org.voter_guide_display_name}
-                      twitterDescription={org.twitter_description}
-                      followers={org.twitter_followers_count}
-                      imageUrl={org.voter_guide_image_url} >
+    return <Organization key={org.organization_we_vote_id}
+                      {...org}
+            >
           <button className="btn btn-primary btn-sm follow"
                   onClick={this.handleFollow.bind(this, org.organization_we_vote_id)}>
             Follow
@@ -40,19 +36,13 @@ export default class GuideList extends Component {
             Ignore
           </button>
         </Organization>;
-
-      return organization;
-
     });
 
-    const guideList =
-      <div className="guidelist">
+    return <div className="guidelist">
         <ReactCSSTransitionGroup transitionName="org-ignore" transitionEnterTimeout={400} transitionLeaveTimeout={200}>
           {orgs}
         </ReactCSSTransitionGroup>
       </div>;
-
-    return guideList;
   }
 
 }

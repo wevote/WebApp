@@ -11,19 +11,7 @@ export default class SubHeader extends Component {
   }
 
   render () {
-    var { props: { pathname, ballotItemWeVoteId } } = this;
-    /* Switch between A) a link (moreOpinionsLink) to a list of opinions about any item on the ballot, or
-     * B) a link to a list of opinions just about one ballot item. */
-    var moreOpinionsLink;
-    function getStringAfterSlash (str) {
-      return str.split("/")[2];
-    }
-    ballotItemWeVoteId = getStringAfterSlash(pathname); /* figure out ballotItemWeVoteId here until we can pass it in */
-    if (pathname === "/candidate/" + ballotItemWeVoteId) {
-      moreOpinionsLink = "/opinions/" + ballotItemWeVoteId;
-    } else {
-      moreOpinionsLink = "/opinions";
-    }
+    var moreOpinionsLink = "/opinions";
     return <section className="container-fluid ballotList-bg fluff-tight--full separate-bottom">
           <div className="row">
             <Link

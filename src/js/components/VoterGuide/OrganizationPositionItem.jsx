@@ -49,8 +49,8 @@ export default class OrganizationPositionItem extends Component {
                 <span> {this.props.candidate_display_name}</span>
               </div>
             </div>);
-          } else if (vote_smart_rating) { */}
-          <PositionRatingSnippet rating = {vote_smart_rating} />
+          } else if (vote_smart_rating) */}
+          <PositionRatingSnippet rating = {vote_smart_rating} rating_time_span = {vote_smart_time_span} />
 
         </div>
         {/*Running for {office_display_name}
@@ -58,6 +58,6 @@ export default class OrganizationPositionItem extends Component {
           Integer ut bibendum ex. Suspendisse eleifend mi accumsan, euismod enim at, malesuada nibh.
           Duis a eros fringilla, dictum leo vitae, vulputate mi. Nunc vitae neque nec erat fermentum... (more)
         <br />*/}
-      </li>;
+      </ li>;
   }
 }

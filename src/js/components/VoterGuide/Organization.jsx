@@ -5,58 +5,67 @@ import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/
 
 export default class Organization extends Component {
   static propTypes = {
-    id: PropTypes.string,
     key: PropTypes.string,
-    imageUrl: PropTypes.string,
-    displayName: PropTypes.string,
-    twitterDescription: PropTypes.string,
-    followers: PropTypes.number,
-    children: PropTypes.array
+    organization_we_vote_id: PropTypes.string,
+    voter_guide_image_url: PropTypes.string,
+    voter_guide_display_name: PropTypes.string,
+    twitter_description: PropTypes.string,
+    twitter_followers_count: PropTypes.number,
+    children: PropTypes.array,
+    is_support: PropTypes.bool,
+    is_positive_rating: PropTypes.bool,
+    is_oppose: PropTypes.bool,
+    is_negative_rating: PropTypes.bool,
+    vote_smart_rating: PropTypes.string
   };
 
   render () {
 
     const {
-      followers,
-      id,
-      imageUrl,
+      twitter_followers_count,
+      organization_we_vote_id,
+      voter_guide_image_url,
+      is_support,
+      is_positive_rating,
+      is_oppose,
+      is_negative_rating,
+      vote_smart_rating,
     } = this.props;
 
-    let displayName = this.props.displayName ? this.props.displayName : "";
-    let twitterDescription = this.props.twitterDescription ? this.props.twitterDescription : "";
-    // If the displayName is in the twitterDescription, remove it from twitterDescription
-    let twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
+    let voter_guide_display_name = this.props.voter_guide_display_name ? this.props.voter_guide_display_name : "";
+    let twitterDescription = this.props.twitter_description ? this.props.twitter_description : "";
+    // If the voter_guide_display_name is in the twitter_description, remove it
+    let twitterDescriptionMinusName = removeTwitterNameFromDescription(voter_guide_display_name, twitterDescription);
 
-    var voter_guide_we_vote_id_link = "/voterguide/" + id;
+    var voter_guide_we_vote_id_link = "/voterguide/" + organization_we_vote_id;
 
-    const org =
-      <div className="organization-item">
+    return <div className="organization-item">
         <div className="organization-item__avatar">
           <Link to={voter_guide_we_vote_id_link}>
-            <Image imageUrl={imageUrl} />
+            <Image imageUrl={voter_guide_image_url} />
           </Link>
         </div>
         <div className="organization-item__content">
           <div className="position-item__summary">
             <Link to={voter_guide_we_vote_id_link}>
-              <h4 className="organization-item__display-name">{displayName}</h4>
+              <h4 className="organization-item__display-name">{voter_guide_display_name}</h4>
             </Link>
             { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> :
               null}
-            </div>
+
+          </div>
           <div className="organization-item__additional">
             <div className="organization-item__follow-buttons">
               {this.props.children}
             </div>
-            {followers ?
+            {twitter_followers_count ?
               <span className="twitter-followers__badge">
                 <span className="fa fa-twitter twitter-followers__icon"></span>
-                {numberWithCommas(followers)}
+                {numberWithCommas(twitter_followers_count)}
               </span> :
               null}
           </div>
         </div>
       </div>;
-    return org;
   }
 }
