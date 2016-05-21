@@ -4,7 +4,6 @@ import ItemSupportOppose from "./ItemSupportOppose";
 export default class ItemActionBar extends ItemSupportOppose {
 
   render () {
-    const bold = { fontWeight: "bold" };
     if (this.state.supportProps === undefined){
       return <div></div>;
     }
@@ -14,39 +13,22 @@ export default class ItemActionBar extends ItemSupportOppose {
       return <div></div>;
     }
 
-    // support toggle functions
-    const supportOn = this.supportItem.bind(this);
-    const supportOff = this.stopSupportingItem.bind(this);
-
-    // oppose toggle functions
-    const opposeOn = this.opposeItem.bind(this);
-    const opposeOff = this.stopOpposingItem.bind(this);
-
+    const removePosition = is_support ? this.stopSupportingItem.bind(this) : this.stopOpposingItem.bind(this);
+    const positionText = is_support ? "Supports" : "Opposes";
     const itemActionBar =
-        <div className="item-actionbar row">
-          <span className="col-xs-4"
-                style={{whiteSpace: "nowrap"}}
-                onClick={ is_support ? supportOff : supportOn }>
-          <span className={ is_support ? "inline-phone support-emphasis" : "inline-phone" }>
-            <span className="glyphicon glyphicon-small glyphicon-arrow-up">
-            </span>
-            <span style={ is_support ? bold : {} }> Support</span>
-          </span>
-        </span>
-          <span className="col-xs-4"
-                style={{whiteSpace: "nowrap"}}
-                onClick={ is_oppose ? opposeOff : opposeOn }>
-          <span className={ is_oppose ? "inline-phone oppose-emphasis" : "inline-phone" }>
-            <span className="glyphicon glyphicon-small glyphicon-arrow-down">
-            </span>
-            <span style={ is_oppose ? bold : {} }> Oppose</span>
-          </span>
-        </span>
-        <span className="col-xs-4" onClick={this.share.bind(this)} >
-          <a className="glyphicon glyphicon-small glyphicon-share-alt">
-            Share
-          </a>
-        </span>
+      <div className="candidate-card__actions">
+      { //Show the position voter has taken
+        (is_oppose || is_support ) ?
+        <button className="position-btn">{positionText}
+          <a onClick={removePosition}>Remove Position</a>
+        </button> :
+        // Voter hasn't supported or opposed, show both options
+        <div>
+          <button className="support-btn" onClick={this.supportItem.bind(this)}>Support</button>
+          <button className="oppose-btn" onClick={this.opposeItem.bind(this)}>Oppose</button>
+        </div>
+      }
+        <button className="share-btn" onClick={this.share.bind(this)} >Share</button>
       </div>;
 
     return itemActionBar;

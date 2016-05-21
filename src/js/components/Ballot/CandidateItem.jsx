@@ -14,6 +14,7 @@ export default class Candidate extends Component {
     we_vote_id: PropTypes.string.isRequired,
     twitter_description: PropTypes.string,
     twitter_followers_count: PropTypes.number,
+    office_name: PropTypes.string
   };
 
   render () {
@@ -24,56 +25,52 @@ export default class Candidate extends Component {
       we_vote_id,
       twitter_description,
       twitter_followers_count,
+      office_name
     } = this.props;
 
-    let displayName = ballot_item_display_name ? ballot_item_display_name : "";
-    let twitterDescription = twitter_description ? twitter_description : "";
+    const displayName = ballot_item_display_name ? ballot_item_display_name : "";
+    const twitterDescription = twitter_description ? twitter_description : "";
+    const url = "/candidate/" + we_vote_id;
 
-    return <section className="candidate list-group-item">
-        <StarAction
-          we_vote_id={we_vote_id} type="CANDIDATE"/>
-
-        <Link className="linkLight"
-              to={"/candidate/" + we_vote_id }
-              onlyActiveOnIndex={false}>
-          {/* Note: We want a click anywhere in this div to take you to the candidate page */}
-          <div className="row" style={{ paddingBottom: "2em" }}>
-            <div className="col-xs-4">
-
-              {/* adding inline style to img until Rob can style... */}
-              {
-                candidate_photo_url ?
-                    <img className="img-circle utils-img-contain"
-                         style={{display: "block"}}
-                         src={candidate_photo_url}
-                         alt="candidate-photo"/> :
-                    <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light utils-img-contain-glyph"/>
-              }
-              {twitter_followers_count ?
-                <span className="twitter-followers__badge candidate-item__twitter-badge">
-                  <span className="fa fa-twitter twitter-followers__icon"></span>
-                  {numberWithCommas(twitter_followers_count)}
-                </span> :
-                null}
-            </div>
-            <div className="col-xs-8">
-              <h4 className="bufferNone">
-                <span style={{fontSize: "80%"}}>{ displayName }</span>
-                {
-                  party ?
-                    <span className="link-text-candidate-party">, { party }</span> :
-                    null
-                }
-                <span className="link-text-to-more-info"> (more)</span>
-              </h4>
-              { twitterDescription ? <span>{twitterDescription}<br /></span> :
-                  null}
-
-              <ItemSupportOpposeCounts we_vote_id={we_vote_id} type="CANDIDATE" />
-            </div>
-          </div>
-          </Link>
+    return <div className="candidate-card">
+    {candidate_photo_url ?
+          <img className="candidate-card__photo"
+               src={candidate_photo_url}
+               alt="candidate-photo"/> :
+          <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light utils-img-contain-glyph"/>}
+    {/* todo: Support Oppose Icon here if position is selected */}
+    {twitter_followers_count ?
+      <span className="twitter-count">
+        {numberWithCommas(twitter_followers_count)}
+      </span> :
+      null}
+      <div className="candidate-card__content">
+        <h2 className="candidate-card__name">
+          <Link to={url}>{displayName}</Link>
+        </h2>
+        <StarAction we_vote_id={we_vote_id} type="CANDIDATE"/>
+        <p className="candidate-card__candidacy">
+          { party ?
+            <span className="candidate-card__political-party">
+              {party + " candidate for "}
+            </span> :
+            "Candidate for "
+          }
+            <span className="candidate-card__office">
+              { office_name }
+            </span>
+          </p>
+        <p className="candidate-card__description">
+          { twitterDescription ?
+            <span>{twitterDescription}
+              <Link to={url}>(read more)</Link>
+            </span> :
+            null
+          }
+        </p>
+        <ItemSupportOpposeCounts we_vote_id={we_vote_id} type="CANDIDATE" />
         <ItemActionBar we_vote_id={we_vote_id} type="CANDIDATE"/>
-      </section>;
+      </div>
+      </div>;
   }
 }
