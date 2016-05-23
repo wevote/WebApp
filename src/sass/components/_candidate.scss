@@ -1,45 +1,87 @@
+// Candidate Card
 
-.candidate {
-  // scoped variables
-  $smallFont: 1.0em;
-  $mediumFont: 1.6em;
-  $largeFont: 2em;
-  .oppose {
-  }
-  .oppose-emphasis-small, .support-emphasis-small {
-    font-size: $smallFont;
-    font-weight: 300;
-    @media all and (max-width: 480px) {
-      font-size: 1em;
-    }
-  }
-  .support-emphasis-large {
-    color: rgba(63,191,63, 1);
-  }
-  .oppose-emphasis-medium {
-    color: rgba(215, 73, 55, 1);
-  }
-  .oppose-emphasis-medium, .support-emphasis-medium {
-    font-size: $smallFont;
-    font-weight: 500;
-  }
-  .oppose-emphasis-large, .support-emphasis-large {
-    font-size: $smallFont;
-    font-weight: 700;
-  }
-  .support {
-    padding-right: 1em;
-  }
-  .running-for-office-emphasis {
-    font-size: 1.3em;
-    font-weight: 500;
-  }
-  .link-text-to-more-info {
-    font-size: 0.8em;
-    font-weight: 100;
-  }
-  .link-text-candidate-party {
-    font-size: 0.6em;
-    font-weight: 400;
-  }
+@include media-object(".candidate-card__media-object", ".candidate-card__media-object-anchor", ".candidate-card__media-object-content");
+
+.candidate-card__container {
+  @include card-container();
+  margin-bottom: 1em;
 }
+
+.candidate-card {
+  position: relative;
+  padding: 20px;
+  font-size: 14px; // remove once global defaults are set
+}
+
+.candidate-card__media-object-anchor {
+  width: 50px;
+  display: flex;
+  flex-direction: column;
+}
+.candidate-card__photo {
+  max-width: 50px;
+  border-radius: 10em;
+}
+
+.candidate-card__display-name {
+  font-size: 18px;
+}
+
+.candidate-card__candidacy {
+  color: $dark-gray;
+}
+
+.candidate-card__political-party,
+.candidate-card__office {
+  font-weight: bold;
+  color: $darker-gray;
+}
+
+
+
+// Old candidate styles - review for deletion
+
+// .candidate {
+//   // scoped variables
+//   $smallFont: 1.0em;
+//   $mediumFont: 1.6em;
+//   $largeFont: 2em;
+//   .oppose {
+//   }
+//   .oppose-emphasis-small, .support-emphasis-small {
+//     font-size: $smallFont;
+//     font-weight: 300;
+//     @media all and (max-width: 480px) {
+//       font-size: 1em;
+//     }
+//   }
+//   .support-emphasis-large {
+//     color: rgba(63,191,63, 1);
+//   }
+//   .oppose-emphasis-medium {
+//     color: rgba(215, 73, 55, 1);
+//   }
+//   .oppose-emphasis-medium, .support-emphasis-medium {
+//     font-size: $smallFont;
+//     font-weight: 500;
+//   }
+//   .oppose-emphasis-large, .support-emphasis-large {
+//     font-size: $smallFont;
+//     font-weight: 700;
+//   }
+//   .support {
+//     padding-right: 1em;
+//   }
+//   .running-for-office-emphasis {
+//     font-size: 1.3em;
+//     font-weight: 500;
+//   }
+//   .link-text-to-more-info {
+//     font-size: 0.8em;
+//     font-weight: 100;
+//   }
+//   .link-text-candidate-party {
+//     font-size: 0.6em;
+//     font-weight: 400;
+//   }
+// }
