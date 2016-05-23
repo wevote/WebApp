@@ -78,7 +78,9 @@ export default class Candidate extends Component {
               <ItemSupportOpposeCounts we_vote_id={we_vote_id} type="CANDIDATE" />
             </div> {/* END .candidate-card__media-object-content */}
           </div> {/* END .candidate-card__media-object */}
-          <ItemActionBar we_vote_id={we_vote_id} type="CANDIDATE" />
+          <div className="candidate-card__actions">
+            <ItemActionBar we_vote_id={we_vote_id} type="CANDIDATE" />
+          </div>
         </div> {/* END .candidate-card__content */}
       </div>
     </div>;
