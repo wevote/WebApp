@@ -10,7 +10,7 @@ export default class CandidateList extends Component {
   render () {
     return <article className="list-group">
         { this.props.children.map( (child) =>
-          <CandidateItem key={child.we_vote_id} office_name={this.props.office_name} {...child} />)
+          <CandidateItem key={child.we_vote_id} isListItem office_name={this.props.office_name} {...child} />)
         }
       </article>;
   }

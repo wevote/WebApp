@@ -1,19 +1,21 @@
-import React from "react";
-import ItemSupportOppose from "./ItemSupportOppose";
+import React, { Component, PropTypes } from "react";
 
-export default class ItemSupportOpposeCounts extends ItemSupportOppose {
+export default class ItemSupportOpposeCounts extends Component {
+  static propTypes = {
+    supportProps: PropTypes.object
+  };
 
   percentageMajority (){
-    const {support_count, oppose_count} = this.state.supportProps;
+    const {support_count, oppose_count} = this.props.supportProps;
     return Math.round(100 * Math.max(support_count, oppose_count) / (support_count + oppose_count));
   }
 
   render () {
-    if (this.state.supportProps === undefined){
+    if (this.props.supportProps === undefined){
       return null;
     }
 
-    var {support_count, oppose_count, is_support, is_oppose } = this.state.supportProps;
+    var {support_count, oppose_count, is_support, is_oppose } = this.props.supportProps;
     if (support_count === undefined || oppose_count === undefined || is_support === undefined || is_oppose === undefined){
       return null;
     }

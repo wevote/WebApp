@@ -6,9 +6,8 @@ import GuideActions from "../../actions/GuideActions";
 import VoterStore from "../../stores/VoterStore";
 import CandidateActions from "../../actions/CandidateActions";
 import PositionList from "../../components/Ballot/PositionList";
-import ItemActionBar from "../../components/Widgets/ItemActionBar";
+import CandidateItem from "../../components/Ballot/CandidateItem";
 import GuideList from "../../components/VoterGuide/GuideList";
-import StarAction from "../../components/Widgets/StarAction";
 
 export default class Candidate extends Component {
   static propTypes = {
@@ -24,6 +23,7 @@ export default class Candidate extends Component {
   componentWillUnmount () {
     this.candidateToken.remove();
     this.officeToken.remove();
+    this.listener.remove();
   }
 
   componentDidMount (){
@@ -54,73 +54,24 @@ export default class Candidate extends Component {
     if (!candidate.ballot_item_display_name){
       return <div></div>;
     }
-    const twitterDescription = candidate.twitter_description || "";
 
     return <section className="candidate gutter-top--small">
-      <div className="candidate-detail-route list-group-item">
-        {
-          <StarAction
-          we_vote_id={candidate.we_vote_id} type="CANDIDATE"/>
-        }
-
-        <div className="row" style={{ paddingBottom: "2rem" }}>
-          <div className="col-xs-4">
-            {
-              candidate.candidate_photo_url ?
-                <img
-                  className="img-circle utils-img-contain"
-                  style={{ display: "block"}}
-                  src={candidate.candidate_photo_url}
-                  alt="candidate-photo"/> :
-              <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light utils-img-contain-glyph"/>
-            }
-          </div>
-          <div className="col-xs-8">
-            <h4 className="bufferNone">
-              { candidate.ballot_item_display_name }
-              {
-                candidate.party ?
-                    <span className="link-text-candidate-party">, { candidate.party }</span> :
-                    <span></span>
+            <CandidateItem {...candidate} office_name={office.ballot_item_display_name}/>
+            <div className="container-fluid well-90">
+              { candidate.position_list ?
+                <div>
+                  <PositionList
+                  position_list={candidate.position_list}
+                  candidate_display_name={candidate.ballot_item_display_name} />
+                </div> :
+                <div></div>
               }
-            </h4>
-            { twitterDescription ? <span>{twitterDescription}<br /></span> :
-                <span></span>}
-            {
-              office.ballot_item_display_name ?
-                <p>Running for <span className="running-for-office-emphasis">{ office.ballot_item_display_name }</span></p> :
-                <p></p>
-            }
-          </div>
-        </div>
-        {<ItemActionBar we_vote_id={this.we_vote_id} type="CANDIDATE"
-                       />}
-        <div className="container-fluid well-90">
-          {/* TODO Post privately box functionality to be implemented */}
-          {/*
-          <ul className="list-group">
-              <li className="list-group-item">
-                  <div>
-                      <input type="text" name="address" className="form-control" defaultValue="What do you think?" />
-                      <Link to="ballot_candidate" params={{id: 2}}><Button bsSize="small">Post Privately</Button></Link>
-                  </div>
-              </li>
-          </ul>
-          */}
-          { candidate.position_list ?
-            <div>
-              <PositionList
-              position_list={candidate.position_list}
-              candidate_display_name={candidate.ballot_item_display_name} />
-            </div> :
-            <div></div> }
-            <h5>{"More Opinions About " + candidate.ballot_item_display_name}</h5>
-            {guideList.length === 0 ?
-              <div>{NO_VOTER_GUIDES_TEXT}</div> :
-              <GuideList id={electionId} ballotItemWeVoteId={this.we_vote_id} organizations={guideList}/>
-            }
-        </div>
-      </div>
+                <h5>{"More Opinions About " + candidate.ballot_item_display_name}</h5>
+                {guideList.length === 0 ?
+                  <div>{NO_VOTER_GUIDES_TEXT}</div> :
+                  <GuideList id={electionId} ballotItemWeVoteId={this.we_vote_id} organizations={guideList}/>
+                }
+            </div>
     </section>;
 
   }
