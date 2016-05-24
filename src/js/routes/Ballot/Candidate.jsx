@@ -6,7 +6,7 @@ import GuideActions from "../../actions/GuideActions";
 import VoterStore from "../../stores/VoterStore";
 import CandidateActions from "../../actions/CandidateActions";
 import PositionList from "../../components/Ballot/PositionList";
-import ItemActionBar2 from "../../components/Widgets/ItemActionBar2";
+import ItemActionBar from "../../components/Widgets/ItemActionBar";
 import GuideList from "../../components/VoterGuide/GuideList";
 import StarAction from "../../components/Widgets/StarAction";
 
@@ -93,7 +93,7 @@ export default class Candidate extends Component {
             }
           </div>
         </div>
-        {<ItemActionBar2 we_vote_id={this.we_vote_id} type="CANDIDATE"
+        {<ItemActionBar we_vote_id={this.we_vote_id} type="CANDIDATE"
                        />}
         <div className="container-fluid well-90">
           {/* TODO Post privately box functionality to be implemented */}

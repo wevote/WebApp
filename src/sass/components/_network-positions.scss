@@ -1,0 +1,59 @@
+// Network Positions bar
+
+.network-positions {
+  display: flex;
+}
+
+.network-positions {
+  $bar-height: 10px;
+  $icon-height: 20px;
+  $green: #76D00B;
+  $red: #FF4921;
+  position: relative;
+
+  &__bar-well {
+    display: block;
+    position: relative;
+    margin-top: ($icon-height - $bar-height) / 2;
+    margin-right: 5px;
+    margin-left: 5px;
+    flex-grow: 5;
+    height: $bar-height;
+    border-radius: 3em;
+    background-color: $light-gray;
+    overflow: hidden;
+  }
+
+  &__bar-label {
+    position: absolute;
+    margin-top: $icon-height;
+    width: 100%;
+    text-align: center;
+    color: $mid-gray;
+  }
+
+  &__bar {
+    position: absolute;
+    display: block;
+    height: $bar-height;
+    width: 0;
+    transition: width .2s ease-out;
+    box-sizing: content-box;
+  }
+
+  &__bar--support {
+    left: 0;
+    background-color: $green;
+    background: linear-gradient(to bottom, $green, darken($green, 5%));
+    border-right: 2px solid #fff;
+  }
+
+  &__bar--oppose {
+    right: 0;
+    background-color: $red;
+    background: linear-gradient(to bottom, $red, darken($red, 5%));
+    border-left: 2px solid #fff;
+  }
+
+}
+

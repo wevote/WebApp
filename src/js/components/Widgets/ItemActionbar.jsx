@@ -14,23 +14,24 @@ export default class ItemActionBar extends ItemSupportOppose {
     }
 
     const removePosition = is_support ? this.stopSupportingItem.bind(this) : this.stopOpposingItem.bind(this);
-    const positionText = is_support ? "Supports" : "Opposes";
+    const positionText = is_support ? "I Support" : "I Oppose";
     const itemActionBar =
-      <div className="candidate-card__actions">
-      { //Show the position voter has taken
-        (is_oppose || is_support ) ?
-        <button className="position-btn">{positionText}
-          <a onClick={removePosition}>Remove Position</a>
-        </button> :
-        // Voter hasn't supported or opposed, show both options
-        <div>
-          <button className="support-btn" onClick={this.supportItem.bind(this)}>Support</button>
-          <button className="oppose-btn" onClick={this.opposeItem.bind(this)}>Oppose</button>
+      <div className="item-actionbar">
+        <div className="dropdown">
+          { //Show the position voter has taken
+            (is_oppose || is_support ) ?
+            <button className="item-actionbar__btn item-actionbar__btn--position">{positionText}
+              <a onClick={removePosition}>Remove Position</a>
+            </button> :
+            // Voter hasn't supported or opposed, show both options
+            <div>
+              <button className="item-actionbar__btn item-actionbar__btn--support" onClick={this.supportItem.bind(this)}>Support</button>
+              <button className="item-actionbar__btn item-actionbar__btn--oppose" onClick={this.opposeItem.bind(this)}>Oppose</button>
+            </div>
+          }
         </div>
-      }
-        <button className="share-btn" onClick={this.share.bind(this)} >Share</button>
+        <button className={(!is_oppose && !is_support ) ? "item-actionbar__btn item-actionbar__btn--share hidden-xs" : "item-actionbar__btn item-actionbar__btn--share"} onClick={this.share.bind(this)} >Share</button>
       </div>;
-
     return itemActionBar;
   }
 }

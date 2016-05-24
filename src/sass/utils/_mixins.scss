@@ -111,3 +111,11 @@
   }
 }
 
+
+/// Hide Text
+
+@mixin hide-text {  
+  text-indent: -10000em;
+  overflow: hidden;
+  white-space: nowrap;
+}
