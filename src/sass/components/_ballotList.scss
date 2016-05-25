@@ -1,5 +1,10 @@
 .ballot-section {
   position: relative;
+
+  &__display-name {
+    font-size: 24px;
+    color: $dark-gray;
+  }
 }
 
 .ballot-list {

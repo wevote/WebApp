@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import StarAction from "../../components/Widgets/StarAction";
 import ItemActionBar from "../../components/Widgets/ItemActionbar";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
+import SupportStore from "../../stores/SupportStore";
 import { numberWithCommas } from "../../utils/textFormat";
 
 export default class Candidate extends Component {
@@ -14,7 +15,27 @@ export default class Candidate extends Component {
     we_vote_id: PropTypes.string.isRequired,
     twitter_description: PropTypes.string,
     twitter_followers_count: PropTypes.number,
+    office_name: PropTypes.string,
+    isListItem: PropTypes.bool
   };
+
+  constructor (props) {
+    super(props);
+    this.state = {transitioning: false};
+  }
+
+  componentDidMount () {
+    this.listener = SupportStore.addListener(this._onChange.bind(this));
+    this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
+  }
+
+  componentWillUnmount () {
+    this.listener.remove();
+  }
+
+  _onChange () {
+    this.setState({ supportProps: SupportStore.get(this.props.we_vote_id), transitioning: false });
+  }
 
   render () {
     let {
@@ -24,56 +45,70 @@ export default class Candidate extends Component {
       we_vote_id,
       twitter_description,
       twitter_followers_count,
+      office_name,
     } = this.props;
+    const { supportProps, transitioning } = this.state;
+    const url = "/candidate/" + we_vote_id;
 
-    let displayName = ballot_item_display_name ? ballot_item_display_name : "";
-    let twitterDescription = twitter_description ? twitter_description : "";
-
-    return <section className="candidate list-group-item">
-        <StarAction
-          we_vote_id={we_vote_id} type="CANDIDATE"/>
-
-        <Link className="linkLight"
-              to={"/candidate/" + we_vote_id }
-              onlyActiveOnIndex={false}>
-          {/* Note: We want a click anywhere in this div to take you to the candidate page */}
-          <div className="row" style={{ paddingBottom: "2em" }}>
-            <div className="col-xs-4">
-
-              {/* adding inline style to img until Rob can style... */}
-              {
-                candidate_photo_url ?
-                    <img className="img-circle utils-img-contain"
-                         style={{display: "block"}}
+    return <div className="candidate-card__container">
+      <div className="candidate-card">
+        <div className="candidate-card__content">
+          <div className="candidate-card__media-object">
+            <div className="candidate-card__media-object-anchor">
+              {candidate_photo_url ?
+                    <img className="candidate-card__photo"
                          src={candidate_photo_url}
                          alt="candidate-photo"/> :
-                    <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light utils-img-contain-glyph"/>
+                    <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light utils-img-contain-glyph"/>}
+              {
+                supportProps && supportProps.is_support ?
+                <img src="/img/global/icons/thumbs-up-color-icon.svg" width="20" height="20" /> : null
+              }
+              {
+                supportProps && supportProps.is_oppose ?
+                <img src="/img/global/icons/thumbs-down-color-icon.svg" width="20" height="20" /> : null
               }
               {twitter_followers_count ?
-                <span className="twitter-followers__badge candidate-item__twitter-badge">
+                <span className="twitter-followers__badge">
                   <span className="fa fa-twitter twitter-followers__icon"></span>
                   {numberWithCommas(twitter_followers_count)}
                 </span> :
                 null}
             </div>
-            <div className="col-xs-8">
-              <h4 className="bufferNone">
-                <span style={{fontSize: "80%"}}>{ displayName }</span>
-                {
-                  party ?
-                    <span className="link-text-candidate-party">, { party }</span> :
-                    null
-                }
-                <span className="link-text-to-more-info"> (more)</span>
-              </h4>
-              { twitterDescription ? <span>{twitterDescription}<br /></span> :
-                  null}
 
-              <ItemSupportOpposeCounts we_vote_id={we_vote_id} type="CANDIDATE" />
-            </div>
+            <div className="candidate-card__media-object-content">
+              <h2 className="candidate-card__display-name">
+                <Link to={url}>{ballot_item_display_name}</Link>
+              </h2>
+              <StarAction we_vote_id={we_vote_id} type="CANDIDATE"/>
+              <p className="candidate-card__candidacy">
+                { party ?
+                  <span><span className="candidate-card__political-party">
+                    {party}
+                  </span><span> candidate for </span></span> :
+                  "Candidate for "
+                }
+                <span className="candidate-card__office">
+                  { office_name }
+                </span>
+              </p>
+              <p className="candidate-card__description">
+                  <span>
+                    { twitter_description }
+                    { this.props.isListItem ?
+                      <Link to={url}>read more</Link> :
+                      null
+                    }
+                  </span>
+              </p>
+              <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps} transitioning={transitioning} type="CANDIDATE" />
+            </div> {/* END .candidate-card__media-object-content */}
+          </div> {/* END .candidate-card__media-object */}
+          <div className="candidate-card__actions">
+            <ItemActionBar we_vote_id={we_vote_id} supportProps={supportProps} transitioniing={transitioning} type="CANDIDATE" />
           </div>
-          </Link>
-        <ItemActionBar we_vote_id={we_vote_id} type="CANDIDATE"/>
-      </section>;
+        </div> {/* END .candidate-card__content */}
+      </div>
+    </div>;
   }
 }
