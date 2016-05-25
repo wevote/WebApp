@@ -51,27 +51,31 @@ export default class ItemActionBar extends Component {
 
     var {support_count, oppose_count, is_support, is_oppose } = this.props.supportProps;
     if (support_count === undefined || oppose_count === undefined || is_support === undefined || is_oppose === undefined){
-      return <div></div>;
+      return null;
     }
 
     const removePosition = is_support ? this.stopSupportingItem.bind(this) : this.stopOpposingItem.bind(this);
     const positionText = is_support ? "I Support" : "I Oppose";
     const itemActionBar =
       <div className="item-actionbar">
-        <div className="dropdown">
-          { //Show the position voter has taken
-            (is_oppose || is_support ) ?
-            <button className="item-actionbar__btn item-actionbar__btn--position">{positionText}
-              <a onClick={removePosition}>Remove Position</a>
-            </button> :
-            // Voter hasn't supported or opposed, show both options
-            <div>
-              <button className="item-actionbar__btn item-actionbar__btn--support" onClick={this.supportItem.bind(this)}>Support</button>
-              <button className="item-actionbar__btn item-actionbar__btn--oppose" onClick={this.opposeItem.bind(this)}>Oppose</button>
-            </div>
-          }
-        </div>
-        <button className={(!is_oppose && !is_support ) ? "item-actionbar__btn item-actionbar__btn--share hidden-xs" : "item-actionbar__btn item-actionbar__btn--share"} onClick={this.share.bind(this)} >Share</button>
+        { //Show the position voter has taken
+          (is_oppose || is_support ) ?
+          <div className="">
+            <button className="item-actionbar__btn item-actionbar__btn--position btn btn-default">{positionText} <span className="caret"></span>
+              <ul className="">
+                <li>
+                  <a onClick={removePosition}>Remove Position</a>
+                </li>
+              </ul>
+            </button> 
+          </div> :
+          // Voter hasn't supported or opposed, show both options
+          <div>
+            <button className="item-actionbar__btn item-actionbar__btn--support btn btn-default" onClick={this.supportItem.bind(this)}>Support</button>
+            <button className="item-actionbar__btn item-actionbar__btn--oppose btn btn-default" onClick={this.opposeItem.bind(this)}>Oppose</button>
+          </div>
+        }
+        <button className={(!is_oppose && !is_support ) ? "item-actionbar__btn item-actionbar__btn--share btn btn-default hidden-xs" : "item-actionbar__btn item-actionbar__btn--share btn btn-default"} onClick={this.share.bind(this)} >Share</button>
       </div>;
     return itemActionBar;
   }

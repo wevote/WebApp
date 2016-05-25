@@ -52,62 +52,63 @@ export default class Candidate extends Component {
 
     return <div className="candidate-card__container">
       <div className="candidate-card">
-        <div className="candidate-card__content">
-          <div className="candidate-card__media-object">
-            <div className="candidate-card__media-object-anchor">
-              {candidate_photo_url ?
-                    <img className="candidate-card__photo"
-                         src={candidate_photo_url}
-                         alt="candidate-photo"/> :
-                    <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light utils-img-contain-glyph"/>}
-              {
-                supportProps && supportProps.is_support ?
-                <img src="/img/global/icons/thumbs-up-color-icon.svg" width="20" height="20" /> : null
-              }
-              {
-                supportProps && supportProps.is_oppose ?
-                <img src="/img/global/icons/thumbs-down-color-icon.svg" width="20" height="20" /> : null
-              }
-              {twitter_followers_count ?
-                <span className="twitter-followers__badge">
-                  <span className="fa fa-twitter twitter-followers__icon"></span>
-                  {numberWithCommas(twitter_followers_count)}
-                </span> :
-                null}
-            </div>
-
-            <div className="candidate-card__media-object-content">
-              <h2 className="candidate-card__display-name">
-                <Link to={url}>{ballot_item_display_name}</Link>
-              </h2>
-              <StarAction we_vote_id={we_vote_id} type="CANDIDATE"/>
-              <p className="candidate-card__candidacy">
-                { party ?
-                  <span><span className="candidate-card__political-party">
-                    {party}
-                  </span><span> candidate for </span></span> :
-                  "Candidate for "
-                }
-                <span className="candidate-card__office">
-                  { office_name }
-                </span>
-              </p>
-              <p className="candidate-card__description">
-                  <span>
-                    { twitter_description }
-                    { this.props.isListItem ?
-                      <Link to={url}>read more</Link> :
-                      null
-                    }
-                  </span>
-              </p>
-              <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps} transitioning={transitioning} type="CANDIDATE" />
-            </div> {/* END .candidate-card__media-object-content */}
-          </div> {/* END .candidate-card__media-object */}
-          <div className="candidate-card__actions">
-            <ItemActionBar we_vote_id={we_vote_id} supportProps={supportProps} transitioniing={transitioning} type="CANDIDATE" />
+        <div className="candidate-card__media-object">
+          <div className="candidate-card__media-object-anchor">
+            {candidate_photo_url ?
+                  <img className="candidate-card__photo"
+                       src={candidate_photo_url}
+                       alt="candidate-photo"/> :
+                  <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light utils-img-contain-glyph"/>}
+            {twitter_followers_count ?
+              <span className="twitter-followers__badge">
+                <span className="fa fa-twitter twitter-followers__icon"></span>
+                {numberWithCommas(twitter_followers_count)}
+              </span> :
+              null}
           </div>
-        </div> {/* END .candidate-card__content */}
+
+          <div className="candidate-card__media-object-content">
+            {
+              supportProps && supportProps.is_support ?
+              <img src="/img/global/icons/thumbs-up-color-icon.svg" className="candidate-card__position-icon" width="20" height="20" /> : null
+            }
+            {
+              supportProps && supportProps.is_oppose ?
+              <img src="/img/global/icons/thumbs-down-color-icon.svg" className="candidate-card__position-icon" width="20" height="20" /> : null
+            }
+            <h2 className="candidate-card__display-name">
+              { this.props.isListItem ?
+                <Link to={url}>{ballot_item_display_name}</Link> :
+                ballot_item_display_name
+              }
+            </h2>
+            <StarAction we_vote_id={we_vote_id} type="CANDIDATE"/>
+            <p className="candidate-card__candidacy">
+              { party ?
+                <span><span className="candidate-card__political-party">
+                  {party}
+                </span><span> candidate for </span></span> :
+                "Candidate for "
+              }
+              <span className="candidate-card__office">
+                { office_name }
+              </span>
+            </p>
+            <p className="candidate-card__description">
+                <span>
+                  { twitter_description }
+                  { this.props.isListItem ?
+                    <Link to={url}>read more</Link> :
+                    null
+                  }
+                </span>
+            </p>
+            <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps} transitioning={transitioning} type="CANDIDATE" />
+          </div> {/* END .candidate-card__media-object-content */}
+        </div> {/* END .candidate-card__media-object */}
+        <div className="candidate-card__actions">
+          <ItemActionBar we_vote_id={we_vote_id} supportProps={supportProps} transitioniing={transitioning} type="CANDIDATE" />
+        </div>
       </div>
     </div>;
   }

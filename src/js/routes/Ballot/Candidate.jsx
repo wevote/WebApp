@@ -52,7 +52,7 @@ export default class Candidate extends Component {
     var { candidate, office, guideList } = this.state;
 
     if (!candidate.ballot_item_display_name){
-      return <div></div>;
+      return null;
     }
 
     return <section className="candidate gutter-top--small">
@@ -64,7 +64,7 @@ export default class Candidate extends Component {
                   position_list={candidate.position_list}
                   candidate_display_name={candidate.ballot_item_display_name} />
                 </div> :
-                <div></div>
+                null
               }
                 <h5>{"More Opinions About " + candidate.ballot_item_display_name}</h5>
                 {guideList.length === 0 ?

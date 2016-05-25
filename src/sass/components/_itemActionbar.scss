@@ -8,16 +8,8 @@
   padding-top: 10px;
   
   &__btn {
-    border: none;
-    background: transparent;
-    padding: 8px 10px;
-    font-weight: bold;
+    // currently uses Bootstrap .btn styling
     margin-right: 8px;
-    color: $dark-gray;
-    border-radius: 2px;
-    &:hover {
-      background-color: $light-gray;
-    }
   }
 
 }

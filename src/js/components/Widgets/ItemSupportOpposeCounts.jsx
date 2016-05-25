@@ -29,12 +29,14 @@ export default class ItemSupportOpposeCounts extends Component {
       width: this.percentageMajority() + "%"
     };
 
+    var isMajoritySupport = support_count >= oppose_count ? true : false;
+
     return <div className="network-positions">
         <div className="network-positions__bar-label">
           Positions in your network
         </div>
         <div className="network-positions__support">
-          <img src="/img/global/icons/up-arrow-gray-icon.svg" className="network-positions__support-icon" width="20" height="20" />
+          <img src={isMajoritySupport ? "/img/global/icons/up-arrow-color-icon.svg" : "/img/global/icons/up-arrow-gray-icon.svg"} className="network-positions__support-icon" width="20" height="20" />
           <div className="network-positions__count">
             {support_count}
             <span className="sr-only"> Support</span>
@@ -42,7 +44,7 @@ export default class ItemSupportOpposeCounts extends Component {
         </div>
         <div className="network-positions__bar-well">
           {
-            support_count > oppose_count ?
+            support_count >= oppose_count ?
             <div className="network-positions__bar network-positions__bar--majority network-positions__bar--support" style={barStyle}>
               <span className="sr-only">{this.percentageMajority()}% Supports</span>
             </div> :
@@ -53,7 +55,7 @@ export default class ItemSupportOpposeCounts extends Component {
         </div>
 
         <div className="network-positions__oppose">
-          <img src="/img/global/icons/down-arrow-gray-icon.svg" className="network-positions__oppose-icon" width="20" height="20" />
+          <img src={!isMajoritySupport ? "/img/global/icons/down-arrow-color-icon.svg" : "/img/global/icons/down-arrow-gray-icon.svg"} className="network-positions__oppose-icon" width="20" height="20" />
           <div className="network-positions__count">
             {oppose_count}
             <span className="sr-only"> Oppose</span>
