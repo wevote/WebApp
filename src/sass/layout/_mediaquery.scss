@@ -57,14 +57,13 @@
         display: none;
     }
     .device {
-        &-menu {
+        &-menu { // device-menu
             &--large {
-                display: inline-block;
+                display: block;
                 margin-top: 10px;
-                width: 220px;
             }
         }
-        &-headericons {
+        &-headericons { // device-headericons
             &--large {
                 background: transparent;
                 border-color: #fff;
