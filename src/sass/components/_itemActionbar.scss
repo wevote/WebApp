@@ -1,24 +1,15 @@
 .item-actionbar .inline-phone:hover {
   cursor: pointer;
 }
-.item-actionbar, .item-actionbar2 {
+.item-actionbar {
+  display: flex;
   border-top: 1px solid #DDD;
-  padding:10px 5px;
-
-  .action {
-    width: 25%;
-  }
-  .support-emphasis {
-    color: rgba(63,191,63, 1);
-  }
-  .oppose-emphasis {
-    color: rgba(215, 73, 55, 1);
-  }
-
-  @media all and (max-width: 480px) {
-    .inline-phone {
-      font-size: .9em;
-    }
+  margin-top: 1em;
+  padding-top: 10px;
+  
+  &__btn {
+    // currently uses Bootstrap .btn styling
+    margin-right: 8px;
   }
 
 }
