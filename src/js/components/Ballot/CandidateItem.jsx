@@ -5,7 +5,9 @@ import StarAction from "../../components/Widgets/StarAction";
 import ItemActionBar from "../../components/Widgets/ItemActionbar";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
 import SupportStore from "../../stores/SupportStore";
-import { numberWithCommas } from "../../utils/textFormat";
+import {abbreviateNumber} from "../../utils/textFormat";
+import {numberWithCommas} from "../../utils/textFormat";
+
 
 export default class Candidate extends Component {
   static propTypes = {
@@ -62,7 +64,7 @@ export default class Candidate extends Component {
             {twitter_followers_count ?
               <span className="twitter-followers__badge">
                 <span className="fa fa-twitter twitter-followers__icon"></span>
-                {numberWithCommas(twitter_followers_count)}
+                <span title={numberWithCommas(twitter_followers_count)}>{abbreviateNumber(twitter_followers_count)}</span>
               </span> :
               null}
           </div>
@@ -94,15 +96,16 @@ export default class Candidate extends Component {
                 { office_name }
               </span>
             </p>
-            <p className="candidate-card__description">
-                <span>
-                  { twitter_description }
+            { twitter_description ? 
+              <p className="candidate-card__description">
+                  {twitter_description} 
                   { this.props.isListItem ?
-                    <Link to={url}>read more</Link> :
+                    <Link to={url}>Read more</Link> :
                     null
-                  }
-                </span>
-            </p>
+                  } 
+              </p> :
+              null
+            }
             <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps} transitioning={transitioning} type="CANDIDATE" />
           </div> {/* END .candidate-card__media-object-content */}
         </div> {/* END .candidate-card__media-object */}

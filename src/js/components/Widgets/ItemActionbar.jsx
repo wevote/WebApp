@@ -59,7 +59,7 @@ export default class ItemActionBar extends Component {
     const itemActionBar =
       <div className="item-actionbar">
         { //Show the position voter has taken
-          (is_oppose || is_support ) ?
+          is_oppose || is_support ?
           <div className="">
             <button className="item-actionbar__btn item-actionbar__btn--position btn btn-default">{positionText} <span className="caret"></span>
               <ul className="">
@@ -75,7 +75,7 @@ export default class ItemActionBar extends Component {
             <button className="item-actionbar__btn item-actionbar__btn--oppose btn btn-default" onClick={this.opposeItem.bind(this)}>Oppose</button>
           </div>
         }
-        <button className={(!is_oppose && !is_support ) ? "item-actionbar__btn item-actionbar__btn--share btn btn-default hidden-xs" : "item-actionbar__btn item-actionbar__btn--share btn btn-default"} onClick={this.share.bind(this)} >Share</button>
+        <button className={!is_oppose && !is_support ? "item-actionbar__btn item-actionbar__btn--share btn btn-default hidden-xs" : "item-actionbar__btn item-actionbar__btn--share btn btn-default"} onClick={this.share.bind(this)} >Share</button>
       </div>;
     return itemActionBar;
   }

@@ -1,4 +1,4 @@
-// Network Positions bar
+// Network Positions bar (ItemSupportOpposeCounts)
 
 .network-positions {
   display: flex;
@@ -6,7 +6,7 @@
 
 .network-positions {
   $bar-height: 10px;
-  $icon-height: 20px;
+  $icon-size: 20px;
   $green: #76D00B;
   $red: #FF4921;
   position: relative;
@@ -14,7 +14,7 @@
   &__bar-well {
     display: block;
     position: relative;
-    margin-top: ($icon-height - $bar-height) / 2;
+    margin-top: ($icon-size - $bar-height) / 2;
     margin-right: 5px;
     margin-left: 5px;
     flex-grow: 5;
@@ -26,7 +26,7 @@
 
   &__bar-label {
     position: absolute;
-    margin-top: $icon-height;
+    margin-top: $icon-size;
     width: 100%;
     text-align: center;
     color: $mid-gray;
@@ -39,6 +39,18 @@
     width: 0;
     transition: width .2s ease-out;
     box-sizing: content-box;
+  }
+
+  &__support,
+  &__oppose {
+    overflow: visible;
+    width: $icon-size;
+  }
+
+  &__count {
+    text-align: center;
+    padding-top: 3px;
+    color: $dark-gray;
   }
 
   &__bar--support {

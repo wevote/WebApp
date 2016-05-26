@@ -2,69 +2,74 @@
 
 @include media-object(".candidate-card__media-object", ".candidate-card__media-object-anchor", ".candidate-card__media-object-content");
 
-.candidate-card__container {
-  @include card-container();
-  margin-bottom: 1em;
-}
-
 .candidate-card {
   position: relative;
   padding: 15px 15px 10px;
   font-size: 14px; // remove once global defaults are set
-}
 
-.candidate-card__media-object-anchor {
-  width: 50px;
-  display: flex;
-  flex-direction: column;
-  @media (min-width: 480px) {
-    width: 80px;
+  &__container {
+    @include card-container();
+    margin-bottom: 1em;
   }
-}
-.candidate-card__photo {
-  max-width: 50px;
-  @media (min-width: 480px) {
-    max-width: 80px;
+
+  &__media-object-anchor {
+    width: 50px;
+    display: flex;
+    flex-direction: column;
+    @media (min-width: 480px) {
+      width: 80px;
+    }
   }
-  border-radius: 10em;
-}
+  &__photo {
+    max-width: 50px;
+    @media (min-width: 480px) {
+      max-width: 80px;
+    }
+    border-radius: 10em;
+  }
 
-.candidate-card__media-object-content {
-  position: relative;
-}
+  .twitter-followers__badge {
+    text-align: center;
+    margin-left: -.5em; // for visual centering
+  }
 
-.candidate-card__position-icon {
-  @media (max-width: 479px) {
+  &__media-object-content {
+    position: relative;
+  }
+
+  &__position-icon {
+    @media (max-width: 479px) {
+      display: inline-block;
+      margin-right: 5px;
+      vertical-align: top;
+    }
+    @media (min-width: 480px) {
+      position: absolute;
+      left: -30px;
+    }
+  }
+
+  &__display-name {
     display: inline-block;
-    margin-right: 5px;
-    vertical-align: top;
+    font-size: 18px;
+    @media (min-width: 480px) {
+      font-size: 24px;
+    }
   }
-  @media (min-width: 480px) {
-    position: absolute;
-    left: -30px;
+
+  &__candidacy {
+    color: $dark-gray;
   }
-}
 
-.candidate-card__display-name {
-  display: inline-block;
-  font-size: 18px;
-  @media (min-width: 480px) {
-    font-size: 24px;
+  &__political-party,
+  &__office {
+    font-weight: bold;
+    color: $darker-gray;
   }
-}
 
-.candidate-card__candidacy {
-  color: $dark-gray;
-}
-
-.candidate-card__political-party,
-.candidate-card__office {
-  font-weight: bold;
-  color: $darker-gray;
-}
-
-.candidate-card__description {
-  color: $dark-gray;
+  &__description {
+    color: $dark-gray;
+  }
 }
 
 
