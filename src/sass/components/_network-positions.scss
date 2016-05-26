@@ -51,6 +51,11 @@
     text-align: center;
     padding-top: 3px;
     color: $dark-gray;
+    min-height: 1.5em; // spacer for .network-positions__bar-label
+  }
+
+  &__bar.network-positions__bar--majority  {
+    min-width: 1em;
   }
 
   &__bar--support {
