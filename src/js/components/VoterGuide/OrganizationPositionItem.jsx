@@ -39,6 +39,7 @@ export default class OrganizationPositionItem extends Component {
           {/* show explicit position, if available, otherwise show rating */}
           
           {/* make into component */}
+          <div>See issue #278</div>
           {/* if (position.is_support || position.is_oppose) {
             org_position = <div className="explicit-position">
               { position.is_support ? <img src="/img/global/icons/thumbs-up-color-icon.svg" width="20" height="20" className="explicit-position__icon" alt="Supports" /> : "[oppose icon]" }
