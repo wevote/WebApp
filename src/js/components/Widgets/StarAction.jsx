@@ -28,6 +28,7 @@ export default class StarAction extends Component {
     this.setState({ is_starred: StarStore.get(this.props.we_vote_id) || false});
   }
 
+
   starClick () {
     var we_vote_id = this.props.we_vote_id;
     var starred = this.state.is_starred;
@@ -40,15 +41,12 @@ export default class StarAction extends Component {
 
 	render () {
     if (this.state.is_starred === undefined){
-      return <span className="star-action-btn"></span>;
+      return <span className="star-action"></span>;
     }
     return <span className="star-action"
               onClick={this.starClick.bind(this)}
               title="Bookmark for later">
-            &nbsp;
-            {this.state.is_starred ?
-              <span className="star-action-btn glyphicon glyphicon-small glyphicon-star"></span> :
-              <span className="star-action-btn glyphicon glyphicon-small glyphicon-star-empty"></span> }
+              <img src={this.state.is_starred ? "/img/global/icons/bookmark-icon-filled.svg" : "/img/global/icons/bookmark-icon-empty.svg" }className="star-action-btn" width="24" height="24" />
             </span>;
 	}
 }
