@@ -24,9 +24,6 @@
   .btn {
     margin: 0 5px 0 0;
   }
-  .btn:last-child {
-    margin: 0;
-  }
   @include respond-to('medium') {
     flex-direction: column;
     .btn {

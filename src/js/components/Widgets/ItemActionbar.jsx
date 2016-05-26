@@ -1,54 +1,82 @@
-import React from "react";
-import ItemSupportOppose from "./ItemSupportOppose";
+import React, { Component, PropTypes } from "react";
+import SupportActions from "../../actions/SupportActions";
+const web_app_config = require("../../config");
 
-export default class ItemActionBar extends ItemSupportOppose {
+export default class ItemActionBar extends Component {
+  static propTypes = {
+    we_vote_id: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    transitioning: PropTypes.bool,
+    supportProps: PropTypes.object
+  };
+
+  share (){
+    const url = web_app_config.WE_VOTE_HOSTNAME + "/candidate/" + this.props.we_vote_id;
+    window.FB.ui({
+      display: "popup",
+      method: "share",
+      href: url,
+      redirect_uri: url
+    }, function (){});
+  }
+
+  supportItem () {
+    if (this.props.transitioning){ return; }
+    SupportActions.voterSupportingSave(this.props.we_vote_id, this.props.type);
+    this.setState({transitioning: true});
+  }
+
+  stopSupportingItem () {
+    if (this.props.transitioning){ return; }
+    SupportActions.voterStopSupportingSave(this.props.we_vote_id, this.props.type);
+    this.setState({transitioning: true});
+  }
+
+  opposeItem () {
+    if (this.props.transitioning){ return; }
+    SupportActions.voterOpposingSave(this.props.we_vote_id, this.props.type);
+    this.setState({transitioning: true});
+  }
+
+  stopOpposingItem () {
+    if (this.props.transitioning){ return; }
+    SupportActions.voterStopOpposingSave(this.props.we_vote_id, this.props.type);
+    this.setState({transitioning: true});
+  }
 
   render () {
-    const bold = { fontWeight: "bold" };
-    if (this.state.supportProps === undefined){
+    if (this.props.supportProps === undefined){
       return <div></div>;
     }
 
-    var {support_count, oppose_count, is_support, is_oppose } = this.state.supportProps;
+    var {support_count, oppose_count, is_support, is_oppose } = this.props.supportProps;
     if (support_count === undefined || oppose_count === undefined || is_support === undefined || is_oppose === undefined){
-      return <div></div>;
+      return null;
     }
 
-    // support toggle functions
-    const supportOn = this.supportItem.bind(this);
-    const supportOff = this.stopSupportingItem.bind(this);
-
-    // oppose toggle functions
-    const opposeOn = this.opposeItem.bind(this);
-    const opposeOff = this.stopOpposingItem.bind(this);
-
+    const removePosition = is_support ? this.stopSupportingItem.bind(this) : this.stopOpposingItem.bind(this);
+    const positionText = is_support ? "I Support" : "I Oppose";
     const itemActionBar =
-        <div className="item-actionbar row">
-          <span className="col-xs-4"
-                style={{whiteSpace: "nowrap"}}
-                onClick={ is_support ? supportOff : supportOn }>
-          <span className={ is_support ? "inline-phone support-emphasis" : "inline-phone" }>
-            <span className="glyphicon glyphicon-small glyphicon-arrow-up">
-            </span>
-            <span style={ is_support ? bold : {} }> Support</span>
-          </span>
-        </span>
-          <span className="col-xs-4"
-                style={{whiteSpace: "nowrap"}}
-                onClick={ is_oppose ? opposeOff : opposeOn }>
-          <span className={ is_oppose ? "inline-phone oppose-emphasis" : "inline-phone" }>
-            <span className="glyphicon glyphicon-small glyphicon-arrow-down">
-            </span>
-            <span style={ is_oppose ? bold : {} }> Oppose</span>
-          </span>
-        </span>
-        <span className="col-xs-4" onClick={this.share.bind(this)} >
-          <a className="glyphicon glyphicon-small glyphicon-share-alt">
-            Share
-          </a>
-        </span>
+      <div className="item-actionbar">
+        { //Show the position voter has taken
+          is_oppose || is_support ?
+          <div className="">
+            <button className="item-actionbar__btn item-actionbar__btn--position btn btn-default">{positionText} <span className="caret"></span>
+              <ul className="">
+                <li>
+                  <a onClick={removePosition}>Remove Position</a>
+                </li>
+              </ul>
+            </button> 
+          </div> :
+          // Voter hasn't supported or opposed, show both options
+          <div>
+            <button className="item-actionbar__btn item-actionbar__btn--support btn btn-default" onClick={this.supportItem.bind(this)}>Support</button>
+            <button className="item-actionbar__btn item-actionbar__btn--oppose btn btn-default" onClick={this.opposeItem.bind(this)}>Oppose</button>
+          </div>
+        }
+        <button className={!is_oppose && !is_support ? "item-actionbar__btn item-actionbar__btn--share btn btn-default hidden-xs" : "item-actionbar__btn item-actionbar__btn--share btn btn-default"} onClick={this.share.bind(this)} >Share</button>
       </div>;
-
     return itemActionBar;
   }
 }

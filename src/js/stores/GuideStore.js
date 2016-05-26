@@ -1,6 +1,7 @@
 var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
 import GuideActions from "../actions/GuideActions";
+import SupportActions from "../actions/SupportActions";
 
 class GuideStore extends FluxMapStore {
 
@@ -107,6 +108,7 @@ class GuideStore extends FluxMapStore {
         };
 
       case "organizationFollow":
+      SupportActions.retrieveAllCounts();
         id = action.res.organization_we_vote_id;
         return {
           ...state,
@@ -117,6 +119,7 @@ class GuideStore extends FluxMapStore {
         };
 
       case "organizationStopFollowing":
+      SupportActions.retrieveAllCounts();
         id = action.res.organization_we_vote_id;
         return {
           ...state,

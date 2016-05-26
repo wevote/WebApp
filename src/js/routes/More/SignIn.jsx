@@ -6,6 +6,7 @@ import Main from "../../components/Facebook/Main";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterStore from "../../stores/VoterStore";
 
+const debug_mode = false;
 export default class SignIn extends Component {
 
   constructor (props) {
@@ -77,7 +78,7 @@ export default class SignIn extends Component {
         </div>
         */}
 
-        {/* FOR DEBUGGING */}
+        {debug_mode &&
         <div className="text-center">
           signed_in_personal: {voter.signed_in_personal ? <span>True</span> : null}<br />
           signed_in_facebook: {voter.signed_in_facebook ? <span>True</span> : null}<br />
@@ -89,7 +90,7 @@ export default class SignIn extends Component {
           first_name: {voter.first_name ? <span>{voter.first_name}</span> : null}<br />
           facebook_id: {voter.facebook_id ? <span>{voter.facebook_id}</span> : null}<br />
         </div>
-
+      }
       </div>
       {/* FOR DEBUGGING */}
       <Main />

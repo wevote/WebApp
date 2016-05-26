@@ -36,9 +36,6 @@ class Main extends React.Component {
 
     render () {
         return <div>
-                <p>Facebook logged in: {this.state.loggedIn ? "true" : "false"}</p>
-                <p>Facebook access token: {this.state.accessToken}</p>
-                <p>User ID is: {this.state.userId}</p>
                 {this.state.userId ?
                   <FacebookDownloadPicture userId={this.state.userId} /> :
                   <div></div>
