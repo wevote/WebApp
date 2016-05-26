@@ -36,7 +36,7 @@ export default class PositionItem extends Component {
           </span>
           <span> {this.props.candidate_display_name}</span>
         {/* if there's an external source for the explicit position/endorsement, show it */}
-        <span className="explicit-position__source"> (Source: Some reputable organization)</span>
+        {/* <span className="explicit-position__source"> (Source: {position.more_info_url})</span> */}
         </p>
       </div>;
     } else if (position.vote_smart_rating) {
