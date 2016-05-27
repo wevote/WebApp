@@ -14,11 +14,16 @@ export default class OrganizationPositionItem extends Component {
       vote_smart_rating,
       vote_smart_time_span,
       ballot_item_we_vote_id,
-      ballot_item_image_url_https } = this.props.position;
+      ballot_item_image_url_https,
+      ballot_item_twitter_handle } = this.props.position;
+
+    // TODO TwitterHandle
+    let candidateLink = ballot_item_twitter_handle ? "/" + ballot_item_twitter_handle : "/candidate/" + ballot_item_we_vote_id;
+    // let candidateLink = "/candidate/" + ballot_item_we_vote_id;
 
     return <li className="position-item">
           <StarAction we_vote_id={ballot_item_we_vote_id} type={kind_of_ballot_item} />
-        <Link to={"/candidate/" + ballot_item_we_vote_id }
+        <Link to={ candidateLink }
               onlyActiveOnIndex={false}>
           {/*<i className="icon-icon-add-friends-2-1 icon-light icon-medium" />*/}
           { ballot_item_image_url_https ?
@@ -30,7 +35,7 @@ export default class OrganizationPositionItem extends Component {
           }
         </Link>
         <div className="position-item__content">
-          <Link to={"/candidate/" + ballot_item_we_vote_id }
+          <Link to={ candidateLink }
                 onlyActiveOnIndex={false}>
             <span className="position-rating__candidate-name">{ballot_item_display_name}</span>
           </Link>

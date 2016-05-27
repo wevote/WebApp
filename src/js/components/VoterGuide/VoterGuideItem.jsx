@@ -30,7 +30,9 @@ export default class VoterGuideItem extends Component {
     if (this.props.twitter_followers_count) {
       twitterFollowers = twitterFollowersCount;
     }
-    var voter_guide_we_vote_id_link = "/voterguide/" + this.props.organization_we_vote_id;
+    // TODO TwitterHandle - We aren't supporting internal organization links with Twitter handles yet
+    // var voterGuideLink = this.props.twitter_handle ? "/" + this.props.twitter_handle : "/voterguide/" + this.props.organization_we_vote_id;
+    var voterGuideLink = "/voterguide/" + this.props.organization_we_vote_id;
 
     /* This was refactored into /src/js/components/VoterGuide/GuideList.jsx for "More Opinions" page.
     * Since the migration of the existing styles was not done with total fidelity, we need to leave this
@@ -38,13 +40,13 @@ export default class VoterGuideItem extends Component {
     * TODO: Complete migration of this functionality */
     return <div className="ballot-item">
       <div className="ballot-item__avatar">
-        <Link to={voter_guide_we_vote_id_link}>
+        <Link to={voterGuideLink}>
           <Image imageUrl={this.props.voter_guide_image_url} />
         </Link>
       </div>
       <div className="ballot-item__content">
         <div className="ballot-item__summary">
-          <Link to={voter_guide_we_vote_id_link}>
+          <Link to={voterGuideLink}>
             <h4 className="ballot-item__display-name">{displayName}</h4>
           </Link>
           <p className="ballot-item__short-bio">
