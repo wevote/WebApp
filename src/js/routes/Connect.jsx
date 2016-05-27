@@ -31,7 +31,7 @@ export default class Connect extends Component {
 				<p>Friends can see what you support and oppose. We never sell emails.<br />
 				<br /></p>
 
-				<h4 className="text-left">Follow More Opinions</h4>
+				<h4 className="text-left">Who I Can Follow</h4>
 				<span style={floatRight}>
 					<Link to="/opinions"><Button bsStyle="primary">Next &#x21AC;</Button></Link>
 				</span>

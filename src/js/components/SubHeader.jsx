@@ -29,7 +29,7 @@ export default class SubHeader extends Component {
               <div className="col-xs-6 col-md-6 text-center">
                 <i className="icon-icon-more-opinions-2-2 icon-light icon-medium">
                 </i>
-                  More Opinions
+                  Who I Can Follow
               </div>
             </Link>
           </div>

@@ -64,10 +64,14 @@ export default class IntroOpinionsPage extends Component {
                     Follow Like-Minded Organizations
                 </label>
                 <br/>
+                Follow those you trust, and Ignore those you don't. Unfollow at any time.
+                Following won't add you to mailing lists.
+                We will never sell your email address.
+                <br />
                 <SearchBox />
                 <br/>
-                {ballot_has_guides ? <p></p> :
-                  <p>There are no organizations with opinions on your ballot. Here are some popular organizations</p>}
+                {ballot_has_guides ? <span></span> :
+                  <p>There are no organizations with opinions on your ballot. Here are some popular organizations.</p>}
                 {guideList ? <GuideList organizations={guideList} /> : <div></div> }
             </div>
         </div>
