@@ -52,7 +52,10 @@ export default class Opinions extends Component {
     } else {
         guides = <div>
           <p>
-            Find opinions about items on ballot (ordered by Twitter followers).
+            Find opinions about your ballot (ordered by Twitter followers).
+            Follow those you trust. We save those you follow in
+            "<Link to="/more/opinions/followed">Who I'm Following</Link>". Unfollow at any time.
+            Following won't add you to mailing lists.
           </p>
           <SearchBox />
           { ballot_has_guides ?
@@ -66,7 +69,7 @@ export default class Opinions extends Component {
     const content =
       <div className="opinion-view">
         <div className="container-fluid well gutter-top--small fluff-full1">
-          <h3 className="text-center">More Opinions I Can Follow</h3>
+          <h3 className="text-center">Who I Can Follow</h3>
           {guides}
         </div>
       </div>;

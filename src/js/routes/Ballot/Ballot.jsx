@@ -90,9 +90,9 @@ export default class Ballot extends Component {
   getTitle (){
     switch (this.state.type) {
       case "filterRemaining":
-        return "Choices Remaining";
+        return "Choices Remaining on My Ballot";
       case "filterSupport":
-        return "What I Support";
+        return "What I Support on My Ballot";
       default :
         return "All Ballot Items";
     }

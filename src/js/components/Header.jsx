@@ -53,16 +53,19 @@ export default class Header extends Component {
           <div className="device-menu--mobile container-fluid well well-90">
             <ul className="list-group">
               <li className="list-group-item">
+                <div><span className="we-vote-promise">We Vote's Promise: We will never sell your email.</span></div>
+              </li>
+              <li className="list-group-item">
                 <Link onClick={this.hide.bind(this)} to={{ pathname: "/ballot", query: { type: "filterRemaining" } }}>
                   <div>
-                  Choices Remaining
+                  Choices Remaining on My Ballot
                   </div>
                 </Link>
               </li>
               <li className="list-group-item">
                 <Link onClick={this.hide.bind(this)} to={{ pathname: "/ballot", query: { type: "filterSupport" } }}>
                   <div>
-                    What I Support
+                    What I Support on My Ballot
                   </div>
                 </Link>
               </li>
@@ -76,7 +79,7 @@ export default class Header extends Component {
               <li className="list-group-item">
                 <Link onClick={this.hide.bind(this)} to="/bookmarks">
                   <div>
-                  Bookmarks
+                  What I Have Bookmarked
                   </div>
                 </Link>
               </li>
@@ -86,7 +89,7 @@ export default class Header extends Component {
               <li className="list-group-item">
                 <Link onClick={this.hide.bind(this)} to="/more/opinions/followed">
                   <div>
-                  What I'm Following
+                  Who I'm Following
                   </div>
                 </Link>
               </li>

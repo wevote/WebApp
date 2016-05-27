@@ -31,7 +31,7 @@ export default class Bookmarks extends Component {
     }
     return (
       <div>
-      <h4>Bookmarks</h4>
+      <h4>What I Have Bookmarked</h4>
       <ul>
     {
       this.state.bookmarks.map(bookmark =>{

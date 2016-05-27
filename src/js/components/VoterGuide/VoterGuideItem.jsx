@@ -7,7 +7,7 @@ export default class VoterGuideItem extends Component {
   static propTypes = {
     voter_guide_display_name: PropTypes.string,
     voter_guide_image_url: PropTypes.string,
-    google_civic_election_id: PropTypes.string,
+    google_civic_election_id: PropTypes.number,
     we_vote_id: PropTypes.string,               // voter_guide we_vote_id
     voter_guide_owner_type: PropTypes.string,
     organization_we_vote_id: PropTypes.string,

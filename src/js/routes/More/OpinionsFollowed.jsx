@@ -1,4 +1,5 @@
 import React, {Component, PropTypes } from "react";
+import { Link } from "react-router";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import GuideStore from "../../stores/GuideStore";
 import GuideActions from "../../actions/GuideActions";
@@ -40,7 +41,11 @@ export default class OpinionsFollowed extends Component {
   render () {
     return <div>
   <div className="container-fluid opinions-followed__container">
-    <h3 className="text-center">What I'm Following</h3>
+    <h3 className="text-center">Who I'm Following</h3>
+      <p>
+        Organizations, public figures and other voters you currently follow. See also
+        "<Link to="/opinions">Who I Can Follow</Link>". We will never sell your email.
+      </p>
     <div className="voter-guide-list">
     <ReactCSSTransitionGroup transitionName="org-ignore" transitionEnterTimeout={400} transitionLeaveTimeout={200}>
       {
