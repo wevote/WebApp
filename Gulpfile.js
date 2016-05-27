@@ -1,7 +1,9 @@
 // dependencies
 const gulp = require("gulp");
 const sass = require("gulp-sass");
+const autoprefixer = require('gulp-autoprefixer');
 const uglify = require("gulp-uglify");
+var sourcemaps = require('gulp-sourcemaps');
 const browserSync = require("browser-sync").create();
 const browserify = require("browserify");
 const babelify = require("babelify");
@@ -64,8 +66,11 @@ gulp.task("server", PRODUCTION ? () => server(PRODUCTION) : function () {
 
 gulp.task("sass", function () {
   return gulp.src("./src/sass/main.scss")
+  .pipe(sourcemaps.init())
   .on("error", function (err) { console.error(err); })
-  .pipe(sass())
+  .pipe(sass({ style: 'expanded' }))
+  .pipe(autoprefixer('last 2 version'))
+  .pipe(sourcemaps.write())
   .pipe(gulp.dest("./build/css"))
   .pipe(browserSync.stream());
 });
