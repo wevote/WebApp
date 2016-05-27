@@ -8,7 +8,6 @@ import SupportStore from "../../stores/SupportStore";
 import {abbreviateNumber} from "../../utils/textFormat";
 import {numberWithCommas} from "../../utils/textFormat";
 
-
 export default class Candidate extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string.isRequired,
@@ -17,6 +16,7 @@ export default class Candidate extends Component {
     we_vote_id: PropTypes.string.isRequired,
     twitter_description: PropTypes.string,
     twitter_followers_count: PropTypes.number,
+    twitter_handle: PropTypes.string,
     office_name: PropTypes.string,
     isListItem: PropTypes.bool
   };
@@ -48,9 +48,13 @@ export default class Candidate extends Component {
       twitter_description,
       twitter_followers_count,
       office_name,
+      twitter_handle,
     } = this.props;
+
     const { supportProps, transitioning } = this.state;
-    const url = "/candidate/" + we_vote_id;
+
+    // TODO TwitterHandle
+    let candidateLink = twitter_handle ? "/" + twitter_handle : "/candidate/" + we_vote_id;
 
     return <div className="candidate-card__container">
       <div className="candidate-card">
@@ -80,7 +84,7 @@ export default class Candidate extends Component {
             }
             <h2 className="candidate-card__display-name">
               { this.props.isListItem ?
-                <Link to={url}>{ballot_item_display_name}</Link> :
+                <Link to={candidateLink}>{ballot_item_display_name}</Link> :
                 ballot_item_display_name
               }
             </h2>
@@ -100,7 +104,7 @@ export default class Candidate extends Component {
               <p className="candidate-card__description">
                   {twitter_description} 
                   { this.props.isListItem ?
-                    <Link to={url}>Read more</Link> :
+                    <Link to={candidateLink}>Read more</Link> :
                     null
                   } 
               </p> :
