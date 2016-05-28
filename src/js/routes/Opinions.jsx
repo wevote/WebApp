@@ -68,8 +68,8 @@ export default class Opinions extends Component {
 
     const content =
       <div className="opinion-view">
-        <div className="container-fluid well gutter-top--small fluff-full1">
-          <h3 className="text-center">Who I Can Follow</h3>
+        <div className="bs-container-fluid bs-well gutter-top--small fluff-full1">
+          <h3 className="bs-text-center">Who I Can Follow</h3>
           {guides}
         </div>
       </div>;

@@ -2,14 +2,14 @@ $icon-color-base: #999999;
 $icon-color-active: #337ab7;
 $icon-color-hover: #777777;
 
-.navbar .navicon {
+.bs-navbar .navicon {
   color: $icon-color-base;
 }
 
-.navbar .navicon:hover .text-center {
+.bs-navbar .navicon:hover .bs-text-center {
   text-decoration: underline;
 }
 
-.navbar .navicon:active, .navbar .active-icon {
+.bs-navbar .navicon:active, .bs-navbar .active-icon {
   color:$icon-color-active;
 }

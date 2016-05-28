@@ -8,7 +8,7 @@ export default class PositionList extends Component {
   };
 
   render () {
-    return <div><ul className="list-group">
+    return <div><ul className="bs-list-group">
       { this.props.position_list.map( item =>
           <PositionItem key={item.position_we_vote_id}
                         candidate_display_name={this.props.candidate_display_name}

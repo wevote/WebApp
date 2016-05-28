@@ -21,12 +21,12 @@
 .organization-item__follow-buttons {
   display: flex;
   align-items: flex-end;
-  .btn {
+  .bs-btn {
     margin: 0 5px 0 0;
   }
   @include respond-to('medium') {
     flex-direction: column;
-    .btn {
+    .bs-btn {
       margin: 0 0 5px;
     }
   }

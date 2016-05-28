@@ -54,10 +54,6 @@
     min-height: 1.5em; // spacer for .network-positions__bar-label
   }
 
-  &__bar.network-positions__bar--majority  {
-    min-width: 1em;
-  }
-
   &__bar--support {
     left: 0;
     background-color: $green;

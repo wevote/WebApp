@@ -44,10 +44,10 @@ export default class IntroOpinionsPage extends Component {
       }
     };
 
-  return <div className="container-fluid">
+  return <div className="bs-container-fluid">
     <h1>Here's the idea - Learn from Community</h1>
 
-    <div className="well well-100">
+    <div className="bs-well well-100">
             <p>You have organizations and friends you trust when it comes time to
               vote. Follow them so you can see what they endorse on your ballot.</p>
             <p className="clearfix">Or skip this.

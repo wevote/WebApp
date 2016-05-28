@@ -16,13 +16,13 @@ export default class Measure extends Component {
     var measure_subtitle = this.props.measure_subtitle;
     return <div>
               <div>{measure_subtitle}</div>
-              <div className="row" style={{ paddingBottom: "2rem" }}>
+              <div className="bs-row" style={{ paddingBottom: "2rem" }}>
                   <div className="col-xs-12">
                       <ItemSupportOpposeCounts we_vote_id={we_vote_id} type={type} />
                   </div>
               </div>
 
-              <div className="row" style={{ paddingBottom: "2rem" }}>
+              <div className="bs-row" style={{ paddingBottom: "2rem" }}>
                   <ItemActionBar we_vote_id={we_vote_id} type={type}/>
               </div>
           </div>;

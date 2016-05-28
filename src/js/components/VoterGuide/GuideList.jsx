@@ -27,11 +27,11 @@ export default class GuideList extends Component {
     return <Organization key={org.organization_we_vote_id}
                       {...org}
             >
-          <button className="btn btn-primary btn-sm follow"
+          <button className="bs-btn bs-btn-primary bs-btn-sm follow"
                   onClick={this.handleFollow.bind(this, org.organization_we_vote_id)}>
             Follow
           </button>
-          <button className="btn btn-default btn-sm"
+          <button className="bs-btn bs-btn-default bs-btn-sm"
                   onClick={this.handleIgnore.bind(this, org.organization_we_vote_id)}>
             Ignore
           </button>

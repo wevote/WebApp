@@ -45,11 +45,11 @@ class BottomContinueNavigation extends Component {
             margin: "auto",
             width: "100%"
         };
-        return <div className="row">
-    <div className="navbar navbar-default navbar-fixed-bottom">
-        <div className="container-fluid container-top10 seperator-top">
-            <div className="row">
-                <div className="col-xs-2 center-block text-center" style={alignCenter}>
+        return <div className="bs-row">
+    <div className="bs-navbar bs-navbar-default bs-navbar-fixed-bottom">
+        <div className="bs-container-fluid container-top10 seperator-top">
+            <div className="bs-row">
+                <div className="bs-col-xs-2 bs-center-block bs-text-center" style={alignCenter}>
                     {cancel_button}
                     <Link to={ link_route_continue } params={ this.props.params }>
                         <Button bsStyle="primary">{continue_text}</Button>

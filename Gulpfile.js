@@ -1,6 +1,7 @@
 // dependencies
 const gulp = require("gulp");
 const sass = require("gulp-sass");
+const classPrefix = require('gulp-class-prefix');
 const autoprefixer = require('gulp-autoprefixer');
 const uglify = require("gulp-uglify");
 var sourcemaps = require('gulp-sourcemaps');
@@ -91,6 +92,12 @@ gulp.task("copy-index", function () {
     .pipe(browserSync.stream());
 });
 
+gulp.task("prefix", ["copy-css"], function() {
+  return gulp.src("./build/css/bootstrap.css")
+    .pipe(classPrefix("bs-"))
+    .pipe(gulp.dest("./build/css"));
+});
+
 gulp.task("copy-css", function () {
   return gulp.src("./src/css/**/*.css")
     .pipe(gulp.dest("./build/css"))
@@ -103,11 +110,12 @@ gulp.task("copy-img", function () {
     .pipe(browserSync.stream());
 });
 
-gulp.task("build", ["copy-fonts", "copy-index", "copy-css", "copy-img", "browserify", "sass"]);
+gulp.task("build", ["copy-fonts", "copy-index", "prefix", "copy-css", "copy-img", "browserify", "sass"]);
 
 gulp.task("watch", ["build"], PRODUCTION ? ()=>{} : function () {
   gulp.watch(["./src/index.html"], ["copy-index"]);
   gulp.watch(["./src/sass/base/base/fonts/**"], ["copy-fonts"]);
+  gulp.watch(["./build/css/bootstrap.css"], ["prefix"]);
   gulp.watch(["./src/css/**/*.css"], ["copy-css"]);
   gulp.watch(["./src/img/**/*"], ["copy-img"]);
   gulp.watch(["./src/sass/**/*.scss"], ["sass"]);

@@ -13,14 +13,14 @@ export default class About extends Component {
 
   render () {
     return <div>
-        <div className="container-fluid well gutter-top--small fluff-full1">
-          <h3 className="text-center">About We Vote</h3>
+        <div className="bs-container-fluid bs-well gutter-top--small fluff-full1">
+          <h3 className="bs-text-center">About We Vote</h3>
           <p>
               We Vote USA is nonprofit and nonpartisan. For more information, please visit www.WeVoteUSA.org.
               This is a demonstration version and has not been launched to the general public yet.
           </p>
 
-          <h3 className="text-center">Acknowledgements</h3>
+          <h3 className="bs-text-center">Acknowledgements</h3>
 
           <p>We are grateful for these organizations that are critical to our work.<br />
               <br />

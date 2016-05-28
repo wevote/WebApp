@@ -12,12 +12,12 @@ export default class SubHeader extends Component {
 
   render () {
     var moreOpinionsLink = "/opinions";
-    return <section className="container-fluid ballotList-bg fluff-tight--full separate-bottom">
-          <div className="row">
+    return <section className="bs-container-fluid ballotList-bg fluff-tight--full separate-bottom">
+          <div className="bs-row">
             <Link
               to="/friends/add"
               className="font-darkest fluff-left-narrow utils-align--super">
-              <div className="col-xs-6 col-md-6 text-center">
+              <div className="bs-col-xs-6 bs-col-md-6 bs-text-center">
                 <i className="icon-icon-add-friends-2-1 icon-light icon-medium">
                 </i>
                   Add Friends
@@ -26,7 +26,7 @@ export default class SubHeader extends Component {
             <Link
               to={moreOpinionsLink}
               className="font-darkest fluff-left-narrow utils-align--super">
-              <div className="col-xs-6 col-md-6 text-center">
+              <div className="bs-col-xs-6 bs-col-md-6 bs-text-center">
                 <i className="icon-icon-more-opinions-2-2 icon-light icon-medium">
                 </i>
                   Who I Can Follow

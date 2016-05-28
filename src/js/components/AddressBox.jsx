@@ -66,7 +66,7 @@ export default class AddressBox extends Component {
           onChange={this.updateLocation.bind(this)}
           name="address"
           value={location}
-          className="form-control"
+          className="bs-form-control"
           defaultValue=""
           placeholder="Enter address where you are registered to vote"
         />

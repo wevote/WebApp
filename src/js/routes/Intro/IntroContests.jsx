@@ -23,7 +23,7 @@ export default class IntroBallotContests extends Component {
 			}
         };
 
-        return <div className="container-fluid">
+        return <div className="bs-container-fluid">
                 <div className="well-100">
                     <p>We have found your ballot for this location:</p>
 
@@ -50,8 +50,8 @@ export default class IntroBallotContests extends Component {
                     <a name="candidates"></a>
                     <h4>Candidates</h4>
                     <a href="#measures">Jump to Measures</a>
-                    <ul className="list-group">
-                        <li className="list-group-item">
+                    <ul className="bs-list-group">
+                        <li className="bs-list-group-item">
                             <Link to="/ballot">US House - District 12</Link>
                             <InfoIconAction we_vote_id="wvcand001" />
                             <br />
@@ -62,7 +62,7 @@ export default class IntroBallotContests extends Component {
                             <br />
                         </li>
 
-                        <li className="list-group-item">
+                        <li className="bs-list-group-item">
                             <Link to="/ballot">Governor</Link>
                             <InfoIconAction we_vote_id="wvcand001" />
                             <br />
@@ -73,7 +73,7 @@ export default class IntroBallotContests extends Component {
                             <br />
                         </li>
 
-                        <li className="list-group-item">
+                        <li className="bs-list-group-item">
                             <Link to="/ballot">Mayor</Link>
                             <InfoIconAction we_vote_id="wvcand001" />
                             <br />
@@ -88,8 +88,8 @@ export default class IntroBallotContests extends Component {
                     <a name="measures"></a>
                     <h4>Measures</h4>
                     <a href="#candidates">Jump to Candidates</a>
-                    <ul className="list-group">
-                        <li className="list-group-item">
+                    <ul className="bs-list-group">
+                        <li className="bs-list-group-item">
                             <Link to="/ballot">Measure AA</Link>
                             <InfoIconAction we_vote_id="wvcand001" />
                             <br />
@@ -100,7 +100,7 @@ export default class IntroBallotContests extends Component {
                             <br />
                         </li>
 
-                        <li className="list-group-item">
+                        <li className="bs-list-group-item">
                             <Link to="/ballot">Measure BB</Link>
                             <InfoIconAction we_vote_id="wvcand001" />
                             <br />
@@ -111,7 +111,7 @@ export default class IntroBallotContests extends Component {
                             <br />
                         </li>
 
-                        <li className="list-group-item">
+                        <li className="bs-list-group-item">
                             <Link to="/ballot">Measure CC</Link>
                             <InfoIconAction we_vote_id="wvcand001" />
                             <br />

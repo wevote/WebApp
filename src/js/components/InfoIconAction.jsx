@@ -13,7 +13,7 @@ export default class InfoIconAction extends Component {
 
 	render () {
 		return <span>
-        <span className="glyphicon glyphicon-small glyphicon-info-sign"></span>
+        <span className="bs-glyphicon bs-glyphicon-small bs-glyphicon-info-sign"></span>
       </span>;
 	}
 }
