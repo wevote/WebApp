@@ -23,7 +23,7 @@ export default class IntroBallotContests extends Component {
 			}
         };
 
-        return <div className="container-fluid">
+        return <div className="bs-container-fluid">
                 <div className="well-100">
                     <p>We have found your ballot for this location:</p>
 
@@ -40,7 +40,7 @@ export default class IntroBallotContests extends Component {
 
                     <span style={float.right}>
                         <Link to="/ballot">
-                            <Button bsStyle="primary">
+                            <Button bsClass="bs-btn" bsStyle="primary">
                                 Show me the ballot >
                             </Button>
                         </Link>
@@ -50,36 +50,36 @@ export default class IntroBallotContests extends Component {
                     <a name="candidates"></a>
                     <h4>Candidates</h4>
                     <a href="#measures">Jump to Measures</a>
-                    <ul className="list-group">
-                        <li className="list-group-item">
+                    <ul className="bs-list-group">
+                        <li className="bs-list-group-item">
                             <Link to="/ballot">US House - District 12</Link>
                             <InfoIconAction we_vote_id="wvcand001" />
                             <br />
                             You will choose one candidate from among three that are running for this office.<br />
                             <span style={float.right}><Link to="/ballot">
-                                <Button bsStyle="primary" bsSize="xsmall">Go to Candidates ></Button>
+                                <Button bsClass="bs-btn" bsStyle="primary" bsSize="xsmall">Go to Candidates ></Button>
                             </Link></span>
                             <br />
                         </li>
 
-                        <li className="list-group-item">
+                        <li className="bs-list-group-item">
                             <Link to="/ballot">Governor</Link>
                             <InfoIconAction we_vote_id="wvcand001" />
                             <br />
                             You will rank your top two choices from among three that are running for this office.<br />
                             <span style={float.right}><Link to="/ballot">
-                                <Button bsStyle="primary" bsSize="xsmall">Go to Candidates ></Button>
+                                <Button bsClass="bs-btn" bsStyle="primary" bsSize="xsmall">Go to Candidates ></Button>
                             </Link></span>
                             <br />
                         </li>
 
-                        <li className="list-group-item">
+                        <li className="bs-list-group-item">
                             <Link to="/ballot">Mayor</Link>
                             <InfoIconAction we_vote_id="wvcand001" />
                             <br />
                             You will rank your top three choices from among seven that are running for this office.<br />
                             <span style={float.right}><Link to="/ballot">
-                                <Button bsStyle="primary" bsSize="xsmall">Go to Candidates ></Button>
+                                <Button bsClass="bs-btn" bsStyle="primary" bsSize="xsmall">Go to Candidates ></Button>
                             </Link></span>
                             <br />
                         </li>
@@ -88,48 +88,48 @@ export default class IntroBallotContests extends Component {
                     <a name="measures"></a>
                     <h4>Measures</h4>
                     <a href="#candidates">Jump to Candidates</a>
-                    <ul className="list-group">
-                        <li className="list-group-item">
+                    <ul className="bs-list-group">
+                        <li className="bs-list-group-item">
                             <Link to="/ballot">Measure AA</Link>
                             <InfoIconAction we_vote_id="wvcand001" />
                             <br />
                             You will vote Yes or No on this Measure.<br />
                             <span style={float.right}><Link to="/ballot">
-                                <Button bsStyle="primary" bsSize="xsmall">Go to this Measure ></Button>
+                                <Button bsClass="bs-btn" bsStyle="primary" bsSize="xsmall">Go to this Measure ></Button>
                             </Link></span>
                             <br />
                         </li>
 
-                        <li className="list-group-item">
+                        <li className="bs-list-group-item">
                             <Link to="/ballot">Measure BB</Link>
                             <InfoIconAction we_vote_id="wvcand001" />
                             <br />
                             You will vote Yes or No on this Measure.<br />
                             <span style={float.right}><Link to="/ballot">
-                                <Button bsStyle="primary" bsSize="xsmall">Go to this Measure ></Button>
+                                <Button bsClass="bs-btn" bsStyle="primary" bsSize="xsmall">Go to this Measure ></Button>
                             </Link></span>
                             <br />
                         </li>
 
-                        <li className="list-group-item">
+                        <li className="bs-list-group-item">
                             <Link to="/ballot">Measure CC</Link>
                             <InfoIconAction we_vote_id="wvcand001" />
                             <br />
                             You will vote Yes or No on this Measure.<br />
                             <span style={float.right}><Link to="/ballot">
-                                <Button bsStyle="primary" bsSize="xsmall">Go to this Measure ></Button>
+                                <Button bsClass="bs-btn" bsStyle="primary" bsSize="xsmall">Go to this Measure ></Button>
                             </Link></span>
                             <br />
                         </li>
                     </ul>
                 </div>
 				<Link style={float.left} to="/intro/opinions">
-					<Button bsStyle="primary" bsSize="small">
+					<Button bsClass="bs-btn" bsStyle="primary" bsSize="small">
 						Back
 					</Button>
 				</Link>
                 <Link style={float.right} to="/ballot">
-					<Button bsStyle="primary" bsSize="small">
+					<Button bsClass="bs-btn" bsStyle="primary" bsSize="small">
                         Show me my ballot!
 					</Button>
                 </Link>

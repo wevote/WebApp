@@ -15,9 +15,9 @@ export default class Activity extends Component {
 
   render () {
     return <div>
-      <div className="container-fluid well gutter-top--small fluff-full1">
-        <h3 className="text-center">Activity Feed</h3>
-        <h4 className="text-center">Coming Soon</h4>
+      <div className="bs-container-fluid bs-well gutter-top--small fluff-full1">
+        <h3 className="bs-text-center">Activity Feed</h3>
+        <h4 className="bs-text-center">Coming Soon</h4>
         <p>See the latest endorsements and news.</p>
       </div>
     </div>;

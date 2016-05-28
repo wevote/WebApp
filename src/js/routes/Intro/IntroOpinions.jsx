@@ -44,16 +44,16 @@ export default class IntroOpinionsPage extends Component {
       }
     };
 
-  return <div className="container-fluid">
+  return <div className="bs-container-fluid">
     <h1>Here's the idea - Learn from Community</h1>
 
-    <div className="well well-100">
+    <div className="bs-well well-100">
             <p>You have organizations and friends you trust when it comes time to
               vote. Follow them so you can see what they endorse on your ballot.</p>
             <p className="clearfix">Or skip this.
                 <span style={float.right}>
                     <Link to="/ballot">
-                        <Button bsStyle="primary" bsSize="small">
+                        <Button bsClass="bs-btn" bsStyle="primary" bsSize="small">
                             Start on My Own >
                         </Button>
                     </Link>
@@ -76,10 +76,10 @@ export default class IntroOpinionsPage extends Component {
             </div>
         </div>
     <Link style={float.left} to="/intro">
-            <Button bsStyle="primary" bsSize="small">Back</Button>
+            <Button bsClass="bs-btn" bsStyle="primary" bsSize="small">Back</Button>
         </Link>
     <Link style={float.right} to="/ballot">
-            <Button bsStyle="primary" bsSize="small">Next</Button>
+            <Button bsClass="bs-btn" bsStyle="primary" bsSize="small">Next</Button>
         </Link>
     </div>;
   }

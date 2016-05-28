@@ -31,17 +31,17 @@ export default class Header extends Component {
     const logOut = FacebookActions.appLogout;
 
     const header =
-      <header className="header row">
-          <section className="separate-bottom container-fluid">
-            <h4 className="pull-left gutter-left--window bold">
-              <span className="glyphicon glyphicon-menu-hamburger glyphicon-line-adjustment device-icon--large">
+      <header className="header">
+          <section className="separate-bottom bs-container-fluid">
+            <h4 className="bs-pull-left gutter-left--window bold">
+              <span className="bs-glyphicon bs-glyphicon-menu-hamburger bs-glyphicon-line-adjustment device-icon--large">
               </span>
               <Link to="/ballot">
                 My Voter Guide
               </Link>
               <span className="header-version"> demo</span>
             </h4>
-            <div className="header-address pull-right gutter-right--window gutter-top--small">
+            <div className="header-address bs-pull-right gutter-right--window gutter-top--small">
               <Link to="/settings/location" className="font-lightest">
                 {location}
               </Link>
@@ -50,33 +50,33 @@ export default class Header extends Component {
           </section>
       {/* The components/MoreMenu code has to be reproduced here for mobile */}
         <Menu noOverlay>
-          <div className="device-menu--mobile container-fluid well well-90">
-            <ul className="list-group">
-              <li className="list-group-item">
+          <div className="device-menu--mobile bs-container-fluid bs-well well-90">
+            <ul className="bs-list-group">
+              <li className="bs-list-group-item">
                 <div><span className="we-vote-promise">We Vote's Promise: We will never sell your email.</span></div>
               </li>
-              <li className="list-group-item">
+              <li className="bs-list-group-item">
                 <Link onClick={this.hide.bind(this)} to={{ pathname: "/ballot", query: { type: "filterRemaining" } }}>
                   <div>
                   Choices Remaining on My Ballot
                   </div>
                 </Link>
               </li>
-              <li className="list-group-item">
+              <li className="bs-list-group-item">
                 <Link onClick={this.hide.bind(this)} to={{ pathname: "/ballot", query: { type: "filterSupport" } }}>
                   <div>
                     What I Support on My Ballot
                   </div>
                 </Link>
               </li>
-              <li className="list-group-item">
+              <li className="bs-list-group-item">
                 <Link onClick={this.hide.bind(this)} to="/ballot">
                   <div>
                   All Ballot Items
                   </div>
                 </Link>
               </li>
-              <li className="list-group-item">
+              <li className="bs-list-group-item">
                 <Link onClick={this.hide.bind(this)} to="/bookmarks">
                   <div>
                   What I Have Bookmarked
@@ -84,16 +84,16 @@ export default class Header extends Component {
                 </Link>
               </li>
             </ul>
-            <h4 className="text-left"></h4>
-            <ul className="list-group">
-              <li className="list-group-item">
+            <h4 className="bs-text-left"></h4>
+            <ul className="bs-list-group">
+              <li className="bs-list-group-item">
                 <Link onClick={this.hide.bind(this)} to="/more/opinions/followed">
                   <div>
                   Who I'm Following
                   </div>
                 </Link>
               </li>
-              <li className="list-group-item">
+              <li className="bs-list-group-item">
                 <Link onClick={this.hide.bind(this)} to="/settings/location">
                   <div>
                   My Address
@@ -101,24 +101,24 @@ export default class Header extends Component {
                 </Link>
               </li>
               { signed_in_personal ?
-                <li className="list-group-item">
+                <li className="bs-list-group-item">
                   <div onClick={logOut}>
                     <a>
                     Sign Out
                     </a>
                   </div>
                 </li> :
-                <li className="list-group-item">
-                      <Link onClick={this.hide.bind(this)} to="/more/sign_in">
-                        <div>
-                        Sign In
-                        </div>
-                      </Link>
-                    </li> }
+                <li className="bs-list-group-item">
+                  <Link onClick={this.hide.bind(this)} to="/more/sign_in">
+                    <div>
+                    Sign In
+                    </div>
+                  </Link>
+                </li> }
             </ul>
-            <h4 className="text-left"></h4>
-            <ul className="list-group">
-              <li className="list-group-item">
+            <h4 className="bs-text-left"></h4>
+            <ul className="bs-list-group">
+              <li className="bs-list-group-item">
                 <Link onClick={this.hide.bind(this)} to="/more/about">
                   <div>
                   About <strong>We Vote</strong>

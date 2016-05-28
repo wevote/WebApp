@@ -23,23 +23,23 @@ export default class Connect extends Component {
 			float: "right"
 		};
 		return <div>
-			<div className="container-fluid well gutter-top--small fluff-full1">
-				<h4 className="text-left">Add Friends</h4>
+			<div className="bs-container-fluid bs-well gutter-top--small fluff-full1">
+				<h4 className="bs-text-left">Add Friends</h4>
 				<span style={floatRight}>
-					<Link to="/friends/add"><Button bsStyle="primary">Next &#x21AC;</Button></Link>
+					<Link to="/friends/add"><Button bsClass="bs-btn" bsStyle="primary">Next &#x21AC;</Button></Link>
 				</span>
 				<p>Friends can see what you support and oppose. We never sell emails.<br />
 				<br /></p>
 
-				<h4 className="text-left">Who I Can Follow</h4>
+				<h4 className="bs-text-left">Who I Can Follow</h4>
 				<span style={floatRight}>
-					<Link to="/opinions"><Button bsStyle="primary">Next &#x21AC;</Button></Link>
+					<Link to="/opinions"><Button bsClass="bs-btn" bsStyle="primary">Next &#x21AC;</Button></Link>
 				</span>
 				<p>Find voter guides you can follow. These voter guides have been created by nonprofits, public figures, your friends, and more.<br />
 				<br /></p>
 
 				{/*
-				<input type="text" name="search_opinions" className="form-control"
+				<input type="text" name="search_opinions" className="bs-form-control"
 					   placeholder="Search by name or twitter handle." />
 				<Link to="add_friends_message"><Button bsStyle="primary">Select from those I Follow on Twitter &#x21AC;</Button></Link>
 				<OrganizationsToFollowList />

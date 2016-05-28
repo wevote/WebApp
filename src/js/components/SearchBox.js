@@ -26,7 +26,7 @@ export default class SearchBox extends Component {
 
   render () {
     return <input type="text"
-                className="form-control"
+                className="bs-form-control"
                 onChange={this.updateResults.bind(this)}
                 value={this.state.query}
                placeholder="Search by name or twitter handle." />;

@@ -50,11 +50,11 @@ export default class HeaderBackNavigation extends Component {
             header_text = "";
         }
         return <Headroom>
-                <div className="row">
-                    <nav className="navbar navbar-main navbar-fixed-top paradeiser">
-                        <div className="container-fluid">
+                <div className="bs-row">
+                    <nav className="bs-navbar bs-navbar-main bs-navbar-fixed-top paradeiser">
+                        <div className="bs-container-fluid">
                             {back_to_link}
-                            <h4 className="text-center">{header_text}</h4>
+                            <h4 className="bs-text-center">{header_text}</h4>
                         </div>
                     </nav>
                 </div>

@@ -49,16 +49,16 @@ export default class GuidePositionList extends Component {
     let twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
 
     return <div>
-        <div className="container-fluid well well-90">
-          <ul className="list-group">
-            <li className="list-group-item">
+        <div className="bs-container-fluid bs-well well-90">
+          <ul className="bs-list-group">
+            <li className="bs-list-group-item">
                 <FollowToggle we_vote_id={this.props.params.we_vote_id} />
                 { organization_photo_url ?
                  <span>
-                 <Image imageUrl={organization_photo_url} class="img-square" />
+                 <Image imageUrl={organization_photo_url} class="bs-img-square" />
                   </span> :
                 <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"></i> }
-                <div className="h4 page__display-name">{displayName}</div>
+                <div className="bs-h4 page__display-name">{displayName}</div>
                 { twitterDescriptionMinusName ? <p className="page__short-bio">{twitterDescriptionMinusName}</p> :
                     null}
                 <br />{/* TODO icon-org-placeholder */}
@@ -85,7 +85,7 @@ export default class GuidePositionList extends Component {
               <br />
             </li>
           </ul>
-           <ul className="list-group">
+           <ul className="bs-list-group">
           {position_list ?
             position_list.map( item => { return <OrganizationPositionItem key={item.position_we_vote_id} position={item}/>; }) :
             <div>{LoadingWheel}</div>}

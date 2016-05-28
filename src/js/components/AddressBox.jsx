@@ -66,16 +66,17 @@ export default class AddressBox extends Component {
           onChange={this.updateLocation.bind(this)}
           name="address"
           value={location}
-          className="form-control"
+          className="bs-form-control"
           defaultValue=""
           placeholder="Enter address where you are registered to vote"
         />
         </form>
 
         <div className="gutter-top--small">
-          <ButtonToolbar>
+          <ButtonToolbar bsClass="bs-btn-toolbar">
             <span style={floatRight}>
               <Button
+                bsClass="bs-btn"
                 onClick={this.saveLocation.bind(this)}
                 bsStyle="primary">
                 Save My Address</Button>

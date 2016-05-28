@@ -62,7 +62,7 @@ export default class PositionItem extends Component {
     var one_position_on_this_candidate = <li className="position-item">
       {/* One Position on this Candidate */}
           { this.props.speaker_image_url_https ?
-            <img className="img-square position-item__avatar"
+            <img className="bs-img-square position-item__avatar"
                   src={this.props.speaker_image_url_https}
                   width="50px"
             /> :

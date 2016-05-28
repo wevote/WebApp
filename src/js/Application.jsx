@@ -75,23 +75,23 @@ export default class Application extends Component {
 
     return <div className="app-base">
       <Headroom>
-        <div className="container-fluid">
-          <div className="row">
+        <div className="bs-container-fluid">
+          <div className="bs-row">
             <Header location={location} voter={voter}/>
           </div>
         </div>
-        <div className="container-fluid">
-          <div className="row">
+        <div className="bs-container-fluid">
+          <div className="bs-row">
             <SubHeader pathname={pathname} ballotItemWeVoteId={ballotItemWeVoteId} />
           </div>
       </div>
       </Headroom>
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-xs-4 col-sm-4 col-md-4 no-show">
+      <div className="bs-container-fluid">
+        <div className="bs-row">
+          <div className="bs-col-xs-4 bs-col-sm-4 bs-col-md-4 no-show">
             { voter.signed_in_personal ? <MoreMenu {...voter} /> : <MoreMenu /> }
           </div>
-          <div className="col-xs-8-container col-xs-8 container-main">
+          <div className="col-xs-8-container bs-col-xs-8 container-main">
             { this.props.children }
           </div>
         </div>

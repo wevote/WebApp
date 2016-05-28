@@ -8,12 +8,12 @@
 }
 
 // Bootstrap overrides
-.container-fluid {
-  padding-right: 0;
-  padding-left: 0;
-}
+// .bs-container-fluid {
+//   padding-right: 0;
+//   padding-left: 0;
+// }
 
-.glyphicon-menu-hamburger:before {
+.bs-glyphicon-menu-hamburger:before {
   padding-right: 10px;
 }
 
@@ -25,10 +25,10 @@
   background-color: #fff;
 }
 
-.row {
-  margin-left: 0;
-  margin-right: 0;
-}
+// .row {
+//   margin-left: 0;
+//   margin-right: 0;
+// }
 
 .btn-toolbar {
   margin-left: 10px;

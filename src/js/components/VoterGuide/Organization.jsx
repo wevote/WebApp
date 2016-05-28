@@ -55,7 +55,6 @@ export default class Organization extends Component {
             </Link>
             { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> :
               null}
-
           </div>
           <div className="organization-item__additional">
             <div className="organization-item__follow-buttons">

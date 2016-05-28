@@ -5,14 +5,14 @@ import { Link } from "react-router";
 
 const links = {
   ballot: function (active) {
-    var icon = "glyphicon glyphicon-list-alt glyphicon-line-adjustment font-footer_icon";
+    var icon = "bs-glyphicon bs-glyphicon-list-alt bs-glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
       <Link to="/ballot" className={ "navicon" + (active ? " active-icon" : "")}>
-        <div className="col-xs-3 center-block text-center">
+        <div className="bs-col-xs-3 bs-center-block bs-text-center">
           <span className={icon} title="Ballot"></span>
           <br/>
-          <span className="text-center small device-small--hide">
+          <span className="bs-text-center small device-small--hide">
             Ballot
           </span>
         </div>
@@ -23,15 +23,15 @@ const links = {
 
   /* className="badgeTotal badge">0</span> TODO badge should only show if positive number */
   requests: function (active) {
-    var icon = "glyphicon glyphicon-inbox glyphicon-line-adjustment font-footer_icon";
+    var icon = "bs-glyphicon bs-glyphicon-inbox bs-glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
       <Link to="/requests" className={ "navicon" + (active ? " active-icon" : "")}>
-        <div className="col-xs-3 center-block text-center">
+        <div className="bs-col-xs-3 bs-center-block bs-text-center">
           <span className={icon} title="Requests">
           </span>
           <br/>
-          <span className="text-center small device-small--hide">
+          <span className="bs-text-center small device-small--hide">
             Requests
           </span>
         </div>
@@ -41,14 +41,14 @@ const links = {
   },
 
   connect: function (active) {
-    var icon = "glyphicon icon-icon-connect-1-3 font-footer_icon";
+    var icon = "bs-glyphicon icon-icon-connect-1-3 font-footer_icon";
 
     var jsx =
       <Link to="/connect" className={ "navicon" + (active ? " active-icon" : "")}>
-        <div className="col-xs-3 center-block text-center">
+        <div className="bs-col-xs-3 bs-center-block bs-text-center">
           <span className={icon} title="Connect"></span>
           <br/>
-          <span className="text-center small device-small--hide">
+          <span className="bs-text-center small device-small--hide">
             Connect
           </span>
         </div>
@@ -58,14 +58,14 @@ const links = {
   },
 
   activity: function (active) {
-    var icon = "glyphicon icon-icon-activity-1-4 font-footer_icon";
+    var icon = "bs-glyphicon icon-icon-activity-1-4 font-footer_icon";
 
     var jsx =
       <Link to="/activity" className={ "navicon" + (active ? " active-icon" : "")}>
-        <div className="col-xs-3 center-block text-center">
+        <div className="bs-col-xs-3 bs-center-block bs-text-center">
           <span className={icon} title="Activity"></span>
           <br/>
-          <span className="text-center small device-small--hide">
+          <span className="bs-text-center small device-small--hide">
             Activity
           </span>
         </div>
@@ -85,11 +85,11 @@ export default class Navigator extends Component {
     var { ballot, requests, connect, activity } = links;
 
     const navigator =
-      <div className="navigator row">
-        <div className="container-fluid">
-          <div className="navbar navbar-default navbar-fixed-bottom">
-            <div className="container-fluid fluff-loose--top separate-top">
-              <div className="row">
+      <div className="navigator bs-row">
+        <div className="bs-container-fluid">
+          <div className="bs-navbar bs-navbar-default bs-navbar-fixed-bottom">
+            <div className="bs-container-fluid fluff-loose--top separate-top">
+              <div className="bs-row">
                 {ballot(pathname === "/ballot")}
                 {requests(pathname === "/requests")}
                 {connect(pathname === "/connect")}

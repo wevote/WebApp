@@ -41,7 +41,7 @@ export default class NotFound extends Component {
     this.props.params.we_vote_id = this.state.owner_we_vote_id;
     return <GuidePositionList we_vote_id {...this.props} />;
   } else {
-    return <div className="container-fluid well gutter-top--small fluff-full1">
+    return <div className="bs-container-fluid bs-well gutter-top--small fluff-full1">
             <h3>Page Not Found</h3>
               <div className="small">No candidate or organization with that twitter handle exists.</div>
           </div>;
