@@ -18,7 +18,7 @@ export default class EmailBallot extends Component {
 
 		const emailBallot =
 			<div>
-				<div className="bs-container-fluid well well-90">
+				<div className="bs-container-fluid bs-well well-90">
 					<h2 className="bs-text-center">Print, Save or Email Ballot</h2>
 					<div>
 						<label htmlFor="last-name">Email your ballot to yourself so you can print or save</label><br />
@@ -33,7 +33,7 @@ export default class EmailBallot extends Component {
 						See <Link to="privacy">privacy policy</Link>.
 						<br />
 						<Link to="add_friends_confirmed">
-							<Button bsStyle="primary">Send</Button>
+							<Button bsClass="bs-btn" bsStyle="primary">Send</Button>
 						</Link><br />
 						<br />
 						<br />
@@ -41,8 +41,8 @@ export default class EmailBallot extends Component {
 						<br />
 						<br />
 						<Link to="add_friends_confirmed">
-							<span><Button bsStyle="primary">Sign in with Facebook</Button><br /></span>
-							<Button bsStyle="primary">Sign in with Twitter</Button>
+							<span><Button bsClass="bs-btn" bsStyle="primary">Sign in with Facebook</Button><br /></span>
+							<Button bsClass="bs-btn" bsStyle="primary">Sign in with Twitter</Button>
 						</Link>
 						<br />
 					</div>

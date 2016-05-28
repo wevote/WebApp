@@ -44,7 +44,7 @@ export default class Opinions extends Component {
     if ( address === "" ){
       guides = <div>
           <span style={floatRight}>
-              <Link to="/settings/location"><Button bsStyle="primary">Enter my address &#x21AC;</Button></Link>
+              <Link to="/settings/location"><Button bsClass="bs-btn" bsStyle="primary">Enter my address &#x21AC;</Button></Link>
           </span>
           <p>Enter your address so we can find voter guides to follow.</p>
         </div>;

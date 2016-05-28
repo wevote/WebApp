@@ -40,7 +40,7 @@ export default class IntroBallotContests extends Component {
 
                     <span style={float.right}>
                         <Link to="/ballot">
-                            <Button bsStyle="primary">
+                            <Button bsClass="bs-btn" bsStyle="primary">
                                 Show me the ballot >
                             </Button>
                         </Link>
@@ -57,7 +57,7 @@ export default class IntroBallotContests extends Component {
                             <br />
                             You will choose one candidate from among three that are running for this office.<br />
                             <span style={float.right}><Link to="/ballot">
-                                <Button bsStyle="primary" bsSize="xsmall">Go to Candidates ></Button>
+                                <Button bsClass="bs-btn" bsStyle="primary" bsSize="xsmall">Go to Candidates ></Button>
                             </Link></span>
                             <br />
                         </li>
@@ -68,7 +68,7 @@ export default class IntroBallotContests extends Component {
                             <br />
                             You will rank your top two choices from among three that are running for this office.<br />
                             <span style={float.right}><Link to="/ballot">
-                                <Button bsStyle="primary" bsSize="xsmall">Go to Candidates ></Button>
+                                <Button bsClass="bs-btn" bsStyle="primary" bsSize="xsmall">Go to Candidates ></Button>
                             </Link></span>
                             <br />
                         </li>
@@ -79,7 +79,7 @@ export default class IntroBallotContests extends Component {
                             <br />
                             You will rank your top three choices from among seven that are running for this office.<br />
                             <span style={float.right}><Link to="/ballot">
-                                <Button bsStyle="primary" bsSize="xsmall">Go to Candidates ></Button>
+                                <Button bsClass="bs-btn" bsStyle="primary" bsSize="xsmall">Go to Candidates ></Button>
                             </Link></span>
                             <br />
                         </li>
@@ -95,7 +95,7 @@ export default class IntroBallotContests extends Component {
                             <br />
                             You will vote Yes or No on this Measure.<br />
                             <span style={float.right}><Link to="/ballot">
-                                <Button bsStyle="primary" bsSize="xsmall">Go to this Measure ></Button>
+                                <Button bsClass="bs-btn" bsStyle="primary" bsSize="xsmall">Go to this Measure ></Button>
                             </Link></span>
                             <br />
                         </li>
@@ -106,7 +106,7 @@ export default class IntroBallotContests extends Component {
                             <br />
                             You will vote Yes or No on this Measure.<br />
                             <span style={float.right}><Link to="/ballot">
-                                <Button bsStyle="primary" bsSize="xsmall">Go to this Measure ></Button>
+                                <Button bsClass="bs-btn" bsStyle="primary" bsSize="xsmall">Go to this Measure ></Button>
                             </Link></span>
                             <br />
                         </li>
@@ -117,19 +117,19 @@ export default class IntroBallotContests extends Component {
                             <br />
                             You will vote Yes or No on this Measure.<br />
                             <span style={float.right}><Link to="/ballot">
-                                <Button bsStyle="primary" bsSize="xsmall">Go to this Measure ></Button>
+                                <Button bsClass="bs-btn" bsStyle="primary" bsSize="xsmall">Go to this Measure ></Button>
                             </Link></span>
                             <br />
                         </li>
                     </ul>
                 </div>
 				<Link style={float.left} to="/intro/opinions">
-					<Button bsStyle="primary" bsSize="small">
+					<Button bsClass="bs-btn" bsStyle="primary" bsSize="small">
 						Back
 					</Button>
 				</Link>
                 <Link style={float.right} to="/ballot">
-					<Button bsStyle="primary" bsSize="small">
+					<Button bsClass="bs-btn" bsStyle="primary" bsSize="small">
                         Show me my ballot!
 					</Button>
                 </Link>

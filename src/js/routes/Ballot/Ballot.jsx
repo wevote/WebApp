@@ -132,12 +132,12 @@ export default class Ballot extends Component {
     const emptyBallotButton = this.getFilterType() !== "none" && !missing_address ?
         <span>
           <Link to="/ballot">
-              <Button bsStyle="primary">View Full Ballot</Button>
+              <Button bsClass="bs-btn" bsStyle="primary">View Full Ballot</Button>
           </Link>
         </span> :
         <span>
           <Link to="/settings/location">
-              <Button bsStyle="primary">Enter a Different Address</Button>
+              <Button bsClass="bs-btn" bsStyle="primary">Enter a Different Address</Button>
           </Link>
         </span>;
 

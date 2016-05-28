@@ -31,7 +31,7 @@ class BottomContinueNavigation extends Component {
         }
         var cancel_button;
         if (this.props.cancel_text) {
-            cancel_button = <Link to={ link_route_cancel }><Button bsStyle="default">{this.props.cancel_text}</Button></Link>;
+            cancel_button = <Link to={ link_route_cancel }><Button bsClass="bs-btn" bsStyle="default">{this.props.cancel_text}</Button></Link>;
         } else {
             cancel_button = "";
         }
@@ -52,7 +52,7 @@ class BottomContinueNavigation extends Component {
                 <div className="bs-col-xs-2 bs-center-block bs-text-center" style={alignCenter}>
                     {cancel_button}
                     <Link to={ link_route_continue } params={ this.props.params }>
-                        <Button bsStyle="primary">{continue_text}</Button>
+                        <Button bsClass="bs-btn" bsStyle="primary">{continue_text}</Button>
                     </Link>
                 </div>
             </div>

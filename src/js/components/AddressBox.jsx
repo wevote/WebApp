@@ -73,9 +73,10 @@ export default class AddressBox extends Component {
         </form>
 
         <div className="gutter-top--small">
-          <ButtonToolbar>
+          <ButtonToolbar bsClass="bs-btn-toolbar">
             <span style={floatRight}>
               <Button
+                bsClass="bs-btn"
                 onClick={this.saveLocation.bind(this)}
                 bsStyle="primary">
                 Save My Address</Button>
