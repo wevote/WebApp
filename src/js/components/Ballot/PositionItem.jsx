@@ -1,17 +1,22 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
+import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
 const moment = require("moment");
 
 export default class PositionItem extends Component {
   static propTypes = {
     candidate_display_name: PropTypes.string.isRequired,
     last_updated: PropTypes.string,
+    more_info_url: PropTypes.string,
     position_we_vote_id: PropTypes.string.isRequired,
     speaker_display_name: PropTypes.string.isRequired,
     speaker_image_url_https: PropTypes.string,
     speaker_type: PropTypes.string,
-    speaker_twitter_handle: PropTypes.string.isRequired
+    speaker_twitter_handle: PropTypes.string.isRequired,
+    statement_text: PropTypes.string,
+    vote_smart_rating: PropTypes.string,
+    vote_smart_time_span: PropTypes.string
   };
 
   render () {
@@ -29,22 +34,12 @@ export default class PositionItem extends Component {
         image_placeholder = <i className="icon-org-lg icon-icon-person-placeholder-6-1 icon-org-resting-color position-item__avatar"></i>;
     }
 
-    let position_description = null;
+    let position_description = "";
     if (position.is_support || position.is_oppose) {
-      position_description = <div className="explicit-position">
-        { position.is_support ? <img src="/img/global/icons/thumbs-up-color-icon.svg" width="20" height="20" className="explicit-position__icon" alt="Supports" /> : <img src="/img/global/icons/thumbs-down-color-icon.svg" width="20" height="20" className="explicit-position__icon" alt="Opposes" /> }
-        <p className="explicit-position__text">
-          <span className="explicit-position__position-label">
-            { position.is_support ? "Supports" : "Opposes" }
-          </span>
-          <span> {this.props.candidate_display_name}</span>
-        {/* if there's an external source for the explicit position/endorsement, show it */}
-        {/* <span className="explicit-position__source"> (Source: {position.more_info_url})</span> */}
-        </p>
-      </div>;
+      position_description = <PositionSupportOpposeSnippet {...position} is_on_candidate_page="1" />;
     } else if (position.vote_smart_rating) {
         position_description =
-          <PositionRatingSnippet rating = {position.vote_smart_rating} rating_time_span = {position.vote_smart_time_span} />;
+          <PositionRatingSnippet {...position} />;
     } else if (position.speaker_type === "V") {
         position_description = <p className="">
           <span>{this.props.candidate_display_name}</span>

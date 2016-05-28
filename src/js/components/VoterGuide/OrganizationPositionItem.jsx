@@ -2,6 +2,7 @@ import StarAction from "../../components/Widgets/StarAction";
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
+import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
 
 export default class OrganizationPositionItem extends Component {
   static propTypes = {
@@ -9,6 +10,7 @@ export default class OrganizationPositionItem extends Component {
   };
 
   render (){
+    var position = this.props.position;
     let { ballot_item_display_name,
       kind_of_ballot_item,
       vote_smart_rating,
@@ -40,23 +42,10 @@ export default class OrganizationPositionItem extends Component {
             <span className="position-rating__candidate-name">{ballot_item_display_name}</span>
           </Link>
           
-          {/* wasn't sure how to get this to work - Jeff */}
           {/* show explicit position, if available, otherwise show rating */}
-          
-          {/* make into component */}
-          <div>See issue #278</div>
-          {/* if (position.is_support || position.is_oppose) {
-            org_position = <div className="explicit-position">
-              { position.is_support ? <img src="/img/global/icons/thumbs-up-color-icon.svg" width="20" height="20" className="explicit-position__icon" alt="Supports" /> : "[oppose icon]" }
-              <div className="explicit-position__text">
-                <span className="explicit-position__position-label">
-                  { position.is_support ? "Supports" : "Opposes" }
-                </span>
-                <span> {this.props.candidate_display_name}</span>
-              </div>
-            </div>);
-          } else if (vote_smart_rating) */}
-          <PositionRatingSnippet rating = {vote_smart_rating} rating_time_span = {vote_smart_time_span} />
+          { vote_smart_rating ?
+          <PositionRatingSnippet {...position} /> :
+              <PositionSupportOpposeSnippet {...position} /> }
 
         </div>
         {/*Running for {office_display_name}
