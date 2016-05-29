@@ -30,7 +30,14 @@ Add the contributor's repository as a remote repo. Here are the core contributor
     Find the branch that the person is submitting:
     git branch -a
     
-TODO: Figure out how to pull a remote branch to your local
+
+If you are wanting to test a PR on your local machine, make sure you have already done a `fetch` on the 
+users repo. If you want to see if you have done so, you can do so by `git branch pertrai1 -a`. This will 
+show you all of the branches for that user (from the example above for pertrai1). Now you can find the 
+branch that is being worked on from the user and create a local branch based on that remote branch. Now 
+you can do a `git pull <remote name> <remote branch name>` and it will put you into a local version of that 
+users branch. Running `gulp` at this point will have you seeing what has been done for this PR and allow 
+you to look at the code.
 
 ---
 
