@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
+import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
 import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
 const moment = require("moment");
 
@@ -36,11 +37,13 @@ export default class PositionItem extends Component {
 
     let position_description = "";
     const is_on_candidate_page = true;
-    if (position.is_support || position.is_oppose) {
-      position_description = <PositionSupportOpposeSnippet {...position} is_on_candidate_page={is_on_candidate_page} />;
-    } else if (position.vote_smart_rating) {
+    if (position.vote_smart_rating) {
         position_description =
           <PositionRatingSnippet {...position} />;
+    } else if (position.is_support || position.is_oppose) {
+      position_description = <PositionSupportOpposeSnippet {...position} is_on_candidate_page={is_on_candidate_page} />;
+    } else if (position.is_information_only) {
+      position_description = <PositionInformationOnlySnippet {...position} is_on_candidate_page={is_on_candidate_page} />;
     } else if (position.speaker_type === "V") {
         position_description = <p className="">
           <span>{this.props.candidate_display_name}</span>

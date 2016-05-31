@@ -2,6 +2,7 @@ import StarAction from "../../components/Widgets/StarAction";
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
+import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
 import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
 
 export default class OrganizationPositionItem extends Component {
@@ -23,6 +24,17 @@ export default class OrganizationPositionItem extends Component {
     let candidateLink = ballot_item_twitter_handle ? "/" + ballot_item_twitter_handle : "/candidate/" + ballot_item_we_vote_id;
     // let candidateLink = "/candidate/" + ballot_item_we_vote_id;
 
+    let position_description = "";
+    const is_on_candidate_page = false;
+    if (position.vote_smart_rating) {
+        position_description =
+          <PositionRatingSnippet {...position} />;
+    } else if (position.is_support || position.is_oppose) {
+      position_description = <PositionSupportOpposeSnippet {...position} is_on_candidate_page={is_on_candidate_page} />;
+    } else if (position.is_information_only) {
+      position_description = <PositionInformationOnlySnippet {...position} is_on_candidate_page={is_on_candidate_page} />;
+    }
+
     return <li className="position-item">
           <StarAction we_vote_id={ballot_item_we_vote_id} type={kind_of_ballot_item} />
         <Link to={ candidateLink }
@@ -42,10 +54,7 @@ export default class OrganizationPositionItem extends Component {
             <span className="position-rating__candidate-name">{ballot_item_display_name}</span>
           </Link>
           {/* show explicit position, if available, otherwise show rating */}
-          { vote_smart_rating ?
-          <PositionRatingSnippet {...position} /> :
-              <PositionSupportOpposeSnippet {...position} /> }
-
+          { position_description }
         </div>
         {/*Running for {office_display_name}
         <br />
