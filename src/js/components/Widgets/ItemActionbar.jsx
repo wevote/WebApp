@@ -67,7 +67,7 @@ export default class ItemActionBar extends Component {
                   <a onClick={removePosition}>Remove Position</a>
                 </li>
               </ul>
-            </button> 
+            </button>
           </div> :
           // Voter hasn't supported or opposed, show both options
           <div>

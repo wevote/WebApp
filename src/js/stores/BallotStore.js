@@ -43,11 +43,15 @@ class BallotStore extends FluxMapStore {
       if (StarStore.get(ballot_item.we_vote_id)){ // item is bookmarked
         bookmarks.push(ballot_item);
       }
-      ballot_item.candidate_list.forEach( cand =>{
-        if (StarStore.get(cand.we_vote_id)){
-          bookmarks.push(cand);
-        }
-      });
+      if (ballot_item.candidate_list) {
+        ballot_item.candidate_list.forEach(candidate => {
+          if (candidate) {
+            if (StarStore.get(candidate.we_vote_id)) {
+              bookmarks.push(candidate);
+            }
+          }
+        });
+      }
     });
 
     return bookmarks;
