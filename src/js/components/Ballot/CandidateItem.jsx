@@ -100,13 +100,13 @@ export default class Candidate extends Component {
                 { office_name }
               </span>
             </p>
-            { twitter_description ? 
+            { twitter_description ?
               <p className="candidate-card__description">
-                  {twitter_description} 
+                  {twitter_description}
                   { this.props.isListItem ?
                     <Link to={candidateLink}>Read more</Link> :
                     null
-                  } 
+                  }
               </p> :
               null
             }

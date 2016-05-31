@@ -29,8 +29,7 @@ export default class Bookmarks extends Component {
     if (!this.state.bookmarks){
       return LoadingWheel;
     }
-    return (
-      <div>
+    return <div>
       <h4>What I Have Bookmarked</h4>
       <ul>
     {
@@ -39,6 +38,6 @@ export default class Bookmarks extends Component {
       })
     }
     </ul>
-      </div>);
+      </div>;
   }
 }

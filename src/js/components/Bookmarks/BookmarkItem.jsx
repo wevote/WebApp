@@ -15,7 +15,7 @@ export default class Bookmarks extends Component {
     } else { // Measures and Offices Link to anchor tag on ballot
       link = "/ballot#" + we_vote_id;
     }
-    return (<div className="bs-row position-item">
+    return <div className="bs-row position-item">
       <StarAction we_vote_id={we_vote_id} type={kind_of_ballot_item}/>
       <Link className="linkLight"
             to={link}
@@ -24,6 +24,6 @@ export default class Bookmarks extends Component {
           {ballot_item_display_name}
         </div>
       </Link>
-    </div>);
+    </div>;
   }
 }

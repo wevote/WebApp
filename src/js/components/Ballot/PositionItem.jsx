@@ -35,8 +35,9 @@ export default class PositionItem extends Component {
     }
 
     let position_description = "";
+    const is_on_candidate_page = true;
     if (position.is_support || position.is_oppose) {
-      position_description = <PositionSupportOpposeSnippet {...position} is_on_candidate_page="1" />;
+      position_description = <PositionSupportOpposeSnippet {...position} is_on_candidate_page={is_on_candidate_page} />;
     } else if (position.vote_smart_rating) {
         position_description =
           <PositionRatingSnippet {...position} />;

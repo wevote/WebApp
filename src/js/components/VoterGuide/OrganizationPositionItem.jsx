@@ -41,7 +41,6 @@ export default class OrganizationPositionItem extends Component {
                 onlyActiveOnIndex={false}>
             <span className="position-rating__candidate-name">{ballot_item_display_name}</span>
           </Link>
-          
           {/* show explicit position, if available, otherwise show rating */}
           { vote_smart_rating ?
           <PositionRatingSnippet {...position} /> :
