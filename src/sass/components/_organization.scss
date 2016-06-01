@@ -24,7 +24,7 @@
   .bs-btn {
     margin: 0 5px 0 0;
   }
-  @include respond-to('medium') {
+  @include breakpoints(medium) {
     flex-direction: column;
     .bs-btn {
       margin: 0 0 5px;

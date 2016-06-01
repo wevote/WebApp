@@ -32,7 +32,7 @@ $default-box-shadow: 0 1px 2px rgba(#000, .2);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  @include respond-to('medium') {
+  @include breakpoints(medium) {
     flex-direction: row;
   }
 }
@@ -41,7 +41,7 @@ $default-box-shadow: 0 1px 2px rgba(#000, .2);
 // container for org 'follow' buttons and twitter count
 @mixin list-item-additional {
   display: flex;
-  @include respond-to('medium') {
+  @include breakpoints(medium) {
     flex-direction: column;
     padding-left: 1em;
     text-align: right;
