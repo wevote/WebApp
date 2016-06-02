@@ -110,14 +110,20 @@ class BallotStore extends FluxMapStore {
     let newBallot = {};
 
     switch (action.type) {
+      // Dale 2016-06-02 On some pages we are calling BallotActions.retrieve() as many as three times in order to
+      // avoid problems like Issue #224. This should be optimized.
 
       case "voterRetrieve":
+        // console.log("BallotStore, voterRetrieve");
+        // We need to refresh the ballot here (in addition to voterAddressRetrieve) because there are routes that you
+        // can go to directly (e.g. wevote.me/ballot) that don't reach out and retrieve the ballot items any other way.
         BallotActions.retrieve();
         return state;
 
       case "voterBallotItemsRetrieve":
         key = action.res.google_civic_election_id;
         newBallot[key] = action.res;
+        // console.log("BallotStore, voterBallotItemsRetrieve, key: " + key);
 
         return {
           ...state,
@@ -127,13 +133,26 @@ class BallotStore extends FluxMapStore {
       case "voterAddressSave":
         key = action.res.google_civic_election_id;
         newBallot[key] = action.res;
+        // console.log("BallotStore, voterAddressSave, key: " + key);
 
+        // We need to refresh the ballot here after the address is changed. If we don't, it is possible to change
+        // the address and be left with the ballot for the prior address.
+        BallotActions.retrieve();
         return {
           ...state,
           ballots: assign({}, state.ballots, newBallot )
         };
 
+      case "voterAddressRetrieve":
+        // console.log("BallotStore, voterAddressRetrieve");
+        // We need to refresh the ballot here to solve Issue #224. On the very first visit, we need to make sure to
+        // call voterBallotItemsRetrieve *after* we have a google_civic_election_id, which is true (most of the time)
+        // after voterAddressRetrieve.
+        BallotActions.retrieve();
+        return state;
+
       case "error-voterBallotItemsRetrieve":
+        // console.log("BallotStore, error-voterBallotItemsRetrieve");
       default:
         return state;
     }
