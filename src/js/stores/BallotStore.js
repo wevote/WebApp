@@ -111,7 +111,7 @@ class BallotStore extends FluxMapStore {
 
     switch (action.type) {
 
-      case "voterRetrieve":
+      case "voterAddressRetrieve":
         BallotActions.retrieve();
         return state;
 

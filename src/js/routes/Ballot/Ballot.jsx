@@ -15,7 +15,7 @@ export default class Ballot extends Component {
 
   constructor (props){
     super(props);
-    this.state = {first_load: true};
+    this.state = {};
   }
 
   componentDidMount () {
@@ -33,15 +33,15 @@ export default class Ballot extends Component {
 
   componentWillReceiveProps (nextProps){
     let type = nextProps.location.query ? nextProps.location.query.type : "all";
-    this.setState({first_load: false, ballot: this.getBallot(nextProps), type: type });
+    this.setState({ballot: this.getBallot(nextProps), type: type });
   }
 
   _onChange (){
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0){ // Ballot is found but ballot is empty
       this.props.history.push("ballot/empty");
-    } else if (this.state.first_load){ // Only load new ballot on page mount or receiving props
+    } else {
       let type = this.props.location.query ? this.props.location.query.type : "all";
-      this.setState({first_load: false, ballot: this.getBallot(this.props), type: type });
+      this.setState({ballot: this.getBallot(this.props), type: type });
     }
   }
 
@@ -110,24 +110,12 @@ export default class Ballot extends Component {
   }
 
   render () {
-    if (this.state.first_load) {
+    const ballot = this.state.ballot;
+    if (!ballot) {
       return LoadingWheel;
     }
-    let ballot = this.state.ballot;
-    let ballot_props = BallotStore.ballot_properties;
-    let ballot_length = 0;
-    if (ballot && ballot.length) {
-      ballot_length = ballot.length;
-    }
-    let ballot_caveat = "";
-    if (ballot_props && ballot_props.ballot_caveat) {
-      ballot_caveat = ballot_props.ballot_caveat;
-    }
-
-    var missing_address = false;
-    if (this.props.location === null) {
-      missing_address = true;
-    }
+    const missing_address = this.props.location === null;
+    const ballot_caveat = BallotStore.ballot_properties.ballot_caveat;
 
     const emptyBallotButton = this.getFilterType() !== "none" && !missing_address ?
         <span>
@@ -141,30 +129,25 @@ export default class Ballot extends Component {
           </Link>
         </span>;
 
-    const emptyBallot = ballot_length === 0 ?
+    const emptyBallot = ballot.length === 0 ?
       <div className="bs-container-fluid bs-well gutter-top--small fluff-full1">
         <h3 className="bs-text-center">{this.emptyMsg()}</h3>
         {emptyBallotButton}
       </div> :
       <div></div>;
 
-    const ballotItems = ballot ?
-      ballot.map( (item) =>
-          <BallotItem key={item.we_vote_id} {...item} />
-        ) :
-      <span></span>;
-
     return <div className="ballot">
       <h4 className="bs-text-center">{this.getTitle()}</h4>
-      {ballot_caveat !== "" ?
+      { ballot_caveat !== "" ?
         <div className="alert bs-alert bs-alert-info alert-dismissible" role="alert">
           <button type="button" className="bs-close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           {ballot_caveat}
-        </div> :
-        <div></div>
+        </div> : null
       }
         {emptyBallot}
-        {ballotItems}
+        {
+          ballot.map( (item) => <BallotItem key={item.we_vote_id} {...item} />)
+        }
       </div>;
   }
 
