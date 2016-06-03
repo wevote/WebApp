@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import SupportActions from "../../actions/SupportActions";
+import Dropdown from "./Dropdown";
 const web_app_config = require("../../config");
 
 export default class ItemActionBar extends Component {
@@ -60,15 +61,8 @@ export default class ItemActionBar extends Component {
       <div className="item-actionbar">
         { //Show the position voter has taken
           is_oppose || is_support ?
-          <div className="">
-            <button className="item-actionbar__btn item-actionbar__btn--position bs-btn bs-btn-default">{positionText} <span className="bs-caret"></span>
-              <ul className="">
-                <li>
-                  <a onClick={removePosition}>Remove Position</a>
-                </li>
-              </ul>
-            </button>
-          </div> :
+          <Dropdown removePosition={removePosition} positionText={positionText}/>
+       :
           // Voter hasn't supported or opposed, show both options
           <div>
             <button className="item-actionbar__btn item-actionbar__btn--support bs-btn bs-btn-default" onClick={this.supportItem.bind(this)}>Support</button>
