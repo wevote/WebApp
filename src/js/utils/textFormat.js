@@ -9,7 +9,6 @@ export function numberWithCommas (raw_number) {
     }
 }
 
-
 export function abbreviateNumber (num) {
   // =< 1,000,000 - round to ten-thousand (1.45M)
   if (num >= 1000000) {
@@ -45,6 +44,12 @@ export function removeTwitterNameFromDescription (displayName, twitterDescriptio
       twitterDescriptionMinusName = twitterDescriptionNotNull;
     } else {
       twitterDescriptionMinusName = "";
+    }
+    if (twitterDescriptionMinusName.startsWith(", ")) {
+        twitterDescriptionMinusName = twitterDescriptionMinusName.substr(2);
+    }
+    if (twitterDescriptionMinusName.startsWith(": ")) {
+        twitterDescriptionMinusName = twitterDescriptionMinusName.substr(2);
     }
     return twitterDescriptionMinusName;
 }
