@@ -34,13 +34,13 @@ export default class FollowToggle extends Component {
       {is_following ?
         <Button bsClass="bs-btn"
                 bsStyle="info"
-                bsSize="xsmall"
+                bsSize="small"
                 className="bs-btn-action utils-margin_bottom5"
                 onClick={stopFollowingFunc}
                 data-hover="Unfollow">
                 <span>Following</span>
         </Button> :
-        <Button bsClass="bs-btn" bsStyle="info" bsSize="xsmall" onClick={followFunc}><span>Follow</span></Button>
+        <Button bsClass="bs-btn" bsStyle="info" bsSize="small" onClick={followFunc}><span>Follow</span></Button>
       }
       </span>;
     return jsx;

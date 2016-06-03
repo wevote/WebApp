@@ -1,14 +1,23 @@
 import React, { Component, PropTypes } from "react";
 import SupportActions from "../../actions/SupportActions";
+import Dropdown from "./Dropdown";
 const web_app_config = require("../../config");
 
 export default class ItemActionBar extends Component {
   static propTypes = {
     we_vote_id: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
-    transitioning: PropTypes.bool,
     supportProps: PropTypes.object
   };
+
+  constructor(props){
+    super(props);
+    this.state = {transitioning: false};
+  }
+
+  componentWillReceiveProps(nextProps){
+    this.setState({transitioning: false});
+  }
 
   share (){
     const url = web_app_config.WE_VOTE_HOSTNAME + "/candidate/" + this.props.we_vote_id;
@@ -21,25 +30,25 @@ export default class ItemActionBar extends Component {
   }
 
   supportItem () {
-    if (this.props.transitioning){ return; }
+    if (this.state.transitioning){ return; }
     SupportActions.voterSupportingSave(this.props.we_vote_id, this.props.type);
     this.setState({transitioning: true});
   }
 
   stopSupportingItem () {
-    if (this.props.transitioning){ return; }
+    if (this.state.transitioning){ return; }
     SupportActions.voterStopSupportingSave(this.props.we_vote_id, this.props.type);
     this.setState({transitioning: true});
   }
 
   opposeItem () {
-    if (this.props.transitioning){ return; }
+    if (this.state.transitioning){ return; }
     SupportActions.voterOpposingSave(this.props.we_vote_id, this.props.type);
     this.setState({transitioning: true});
   }
 
   stopOpposingItem () {
-    if (this.props.transitioning){ return; }
+    if (this.state.transitioning){ return; }
     SupportActions.voterStopOpposingSave(this.props.we_vote_id, this.props.type);
     this.setState({transitioning: true});
   }
@@ -60,15 +69,8 @@ export default class ItemActionBar extends Component {
       <div className="item-actionbar">
         { //Show the position voter has taken
           is_oppose || is_support ?
-          <div className="">
-            <button className="item-actionbar__btn item-actionbar__btn--position bs-btn bs-btn-default">{positionText} <span className="bs-caret"></span>
-              <ul className="">
-                <li>
-                  <a onClick={removePosition}>Remove Position</a>
-                </li>
-              </ul>
-            </button>
-          </div> :
+          <Dropdown removePosition={removePosition} positionText={positionText}/>
+       :
           // Voter hasn't supported or opposed, show both options
           <div>
             <button className="item-actionbar__btn item-actionbar__btn--support bs-btn bs-btn-default" onClick={this.supportItem.bind(this)}>Support</button>
