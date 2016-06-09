@@ -3,10 +3,10 @@ import { Button, ButtonToolbar } from "react-bootstrap";
 import VoterStore from "../stores/VoterStore";
 import LoadingWheel from "../components/LoadingWheel";
 import VoterActions from "../actions/VoterActions";
+import { browserHistory } from 'react-router';
 
 export default class AddressBox extends Component {
   static propTypes = {
-    history: PropTypes.object,
     saveUrl: PropTypes.string.isRequired
   };
 
@@ -26,7 +26,7 @@ export default class AddressBox extends Component {
 
   _onChange () {
     if (this.state.location){
-      this.props.history.push(this.props.saveUrl);
+      browserHistory.push(this.props.saveUrl);
     } else {
       this.setState({ location: VoterStore.getAddress(), loading: false });
     }
@@ -34,7 +34,7 @@ export default class AddressBox extends Component {
 
   _ballotLoaded (){
     console.log("ballotLoaded");
-    this.props.history.push(this.props.saveUrl);
+    browserHistory.push(this.props.saveUrl);
   }
 
   updateLocation (e) {
