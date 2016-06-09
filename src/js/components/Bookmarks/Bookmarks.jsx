@@ -26,18 +26,22 @@ export default class Bookmarks extends Component {
   }
 
   render () {
-    if (!this.state.bookmarks){
+    const {bookmarks} = this.state;
+    if (!bookmarks){
       return LoadingWheel;
     }
     return <div>
       <h4>What I Have Bookmarked</h4>
+      {
+        bookmarks.length === 0 && <p>No bookmarks yet</p>
+      }
       <ul>
-    {
-      this.state.bookmarks.map(bookmark =>{
-        return <BookmarkItem key={bookmark.ballot_item_display_name} bookmark={bookmark} />;
-      })
-    }
-    </ul>
+      {
+        bookmarks.map(bookmark => {
+          return <BookmarkItem key={bookmark.ballot_item_display_name} bookmark={bookmark}/>;
+        })
+      }
+      </ul>
       </div>;
   }
 }
