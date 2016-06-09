@@ -7,9 +7,17 @@ export default class ItemActionBar extends Component {
   static propTypes = {
     we_vote_id: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
-    transitioning: PropTypes.bool,
     supportProps: PropTypes.object
   };
+
+  constructor(props){
+    super(props);
+    this.state = {transitioning: false};
+  }
+
+  componentWillReceiveProps(nextProps){
+    this.setState({transitioning: false});
+  }
 
   share (){
     const url = web_app_config.WE_VOTE_HOSTNAME + "/candidate/" + this.props.we_vote_id;
@@ -22,25 +30,25 @@ export default class ItemActionBar extends Component {
   }
 
   supportItem () {
-    if (this.props.transitioning){ return; }
+    if (this.state.transitioning){ return; }
     SupportActions.voterSupportingSave(this.props.we_vote_id, this.props.type);
     this.setState({transitioning: true});
   }
 
   stopSupportingItem () {
-    if (this.props.transitioning){ return; }
+    if (this.state.transitioning){ return; }
     SupportActions.voterStopSupportingSave(this.props.we_vote_id, this.props.type);
     this.setState({transitioning: true});
   }
 
   opposeItem () {
-    if (this.props.transitioning){ return; }
+    if (this.state.transitioning){ return; }
     SupportActions.voterOpposingSave(this.props.we_vote_id, this.props.type);
     this.setState({transitioning: true});
   }
 
   stopOpposingItem () {
-    if (this.props.transitioning){ return; }
+    if (this.state.transitioning){ return; }
     SupportActions.voterStopOpposingSave(this.props.we_vote_id, this.props.type);
     this.setState({transitioning: true});
   }
