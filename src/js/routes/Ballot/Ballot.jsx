@@ -6,10 +6,10 @@ import LoadingWheel from "../../components/LoadingWheel";
 import BallotItem from "../../components/Ballot/BallotItem";
 import { Link } from "react-router";
 import { Button } from "react-bootstrap";
+import { browserHistory } from 'react-router';
 
 export default class Ballot extends Component {
   static propTypes = {
-      history: PropTypes.object,
       location: PropTypes.object
   };
 
@@ -20,7 +20,7 @@ export default class Ballot extends Component {
 
   componentDidMount () {
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
-      this.props.history.push("settings/location");
+      browserHistory.push("settings/location");
     }
       SupportActions.retrieveAll();
       SupportActions.retrieveAllCounts();
@@ -38,7 +38,7 @@ export default class Ballot extends Component {
 
   _onChange (){
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0){ // Ballot is found but ballot is empty
-      this.props.history.push("ballot/empty");
+      browserHistory.push("ballot/empty");
     } else {
       let type = this.props.location.query ? this.props.location.query.type : "all";
       this.setState({ballot: this.getBallot(this.props), type: type });

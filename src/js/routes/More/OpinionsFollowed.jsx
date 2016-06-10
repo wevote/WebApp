@@ -1,5 +1,5 @@
 import React, {Component, PropTypes } from "react";
-import { Link } from "react-router";
+import { Link, browserHistory } from "react-router";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import GuideStore from "../../stores/GuideStore";
 import GuideActions from "../../actions/GuideActions";
@@ -34,7 +34,7 @@ export default class OpinionsFollowed extends Component {
     if (list !== undefined && list.length > 0){
       this.setState({ voter_guide_followed_list: GuideStore.followedList() });
     } else {
-      this.props.history.push("/opinions");
+      browserHistory.push("/opinions");
     }
   }
 
