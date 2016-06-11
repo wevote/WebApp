@@ -72,7 +72,7 @@ export default class AddressBox extends Component {
         />
         </form>
 
-        <div className="gutter-top--small">
+        <div className="u-gutter-top--small">
           <ButtonToolbar bsClass="bs-btn-toolbar">
             <span style={floatRight}>
               <Button

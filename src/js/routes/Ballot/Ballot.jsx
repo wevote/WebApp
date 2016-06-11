@@ -130,7 +130,7 @@ export default class Ballot extends Component {
         </span>;
 
     const emptyBallot = ballot.length === 0 ?
-      <div className="bs-container-fluid bs-well gutter-top--small fluff-full1">
+      <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
         <h3 className="bs-text-center">{this.emptyMsg()}</h3>
         {emptyBallotButton}
       </div> :

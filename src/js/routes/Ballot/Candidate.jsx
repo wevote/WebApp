@@ -55,9 +55,9 @@ export default class Candidate extends Component {
       return null;
     }
 
-    return <section className="candidate gutter-top--small">
+    return <section className="candidate-card__container u-gutter-top--small">
             <CandidateItem {...candidate} office_name={office.ballot_item_display_name}/>
-            <div className="bs-container-fluid well-90">
+            <div className="bs-container-fluid">
               { candidate.position_list ?
                 <div>
                   <PositionList

@@ -15,7 +15,7 @@ export default class AddFriends extends Component {
 
 	render () {
 		return <div>
-			<div className="bs-container-fluid bs-well gutter-top--small fluff-full1">
+			<div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
 				<h3 className="bs-text-center">Add Friends</h3>
 				<h4 className="bs-text-center">Coming Soon</h4>
 				<p>You will be able to ask your friends for their opinions on how to vote.</p>
