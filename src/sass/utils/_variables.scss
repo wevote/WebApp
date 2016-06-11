@@ -18,14 +18,6 @@ $code-font-stack: 'Courier New', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono',
 
 /// Colors
 
-/// Copy text color
-/// @type Color
-$text-color: #222 !default;
-
-/// Main brand color
-/// @type Color
-$brand-color: #E50050 !default;
-
 /// Pale gray
 /// @type Color
 $pale-gray: #f8f8f8 !default;
@@ -49,6 +41,21 @@ $dark-gray: #555 !default;
 /// Darker gray
 /// @type Color
 $darker-gray: #333 !default;
+
+
+/// Main brand color
+/// @type Color
+$brand-color: #E50050 !default;
+
+/// Link color
+/// @type Color
+$link-color: #337ab7 !default; // mirrors Bootstrap default - TODO: set custom value globally
+
+/// Copy text color
+/// @type Color
+$text-color: $darker-gray !default;
+
+
 
 /// Container's maximum width
 /// Below that is 100%
