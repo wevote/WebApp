@@ -1,0 +1,43 @@
+/// OOCSS Media Object
+/// @link https://gist.github.com/zachharkey/5224086
+/// @requires $micro-clearfix
+
+@mixin media-object($container: '.media-object', $img: '.media-object__img', $bd: '.media-object__body', $margin: 10px, $position: 'left', $formatting-context: 'overflow', $flex: true) {
+  @if $flex == true {
+    #{unquote($container)} {
+      display: flex;
+      align-items: flex-start;
+    }
+    #{unquote($img)} {
+      margin-right: $margin;
+    }
+    #{unquote($bd)} {
+      flex: 1;
+    }
+  } @else {
+    #{unquote($container)} {
+      @include micro-clearfix;
+    }
+    #{unquote($bd)} {
+      @if $formatting-context == 'overflow' {
+        overflow: hidden;
+      } @else {
+        display: table-cell;
+        width: 10000px;
+        *width: auto;
+        *zoom: 1;
+      }
+    }
+    #{unquote($img)} {
+      float: $position;
+      img { display:block; }
+      @if $margin > 0 {
+        @if $position == 'left' {
+          margin-right: $margin;
+        } else {
+          margin-left: $margin;
+        }
+      }
+    }
+  }
+}
