@@ -1,0 +1,38 @@
+// 'Card' styling for Candidates, Organizations, etc.
+
+@include media-object('.card__media-object', '.card__media-object-anchor', '.card__media-object-content');
+
+.card {
+
+  &__container {
+    @include card-container();
+  }
+
+  &__main {
+    position: relative;
+    padding: 15px 15px 10px;
+    font-size: 14px; // remove once global defaults are set
+  }
+
+  &__media_object {
+    width: 50px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__display-name {
+    font-family: $heading-font-stack;
+    display: inline-block;
+    font-size: 18px;
+    margin-bottom: .5rem;
+    @media (min-width: 480px) {
+      font-size: 24px;
+    }
+  }
+
+  &__description {
+    color: $dark-gray;
+  }
+
+
+}

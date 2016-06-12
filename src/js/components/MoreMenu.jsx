@@ -23,10 +23,10 @@ export default class MoreMenu extends Component {
     const logOut = FacebookActions.appLogout;
 
   return <div>
-    <div className="device-menu--large bs-container-fluid">
+    <div className="device-menu--large">
       <ul className="bs-list-group">
         <li className="bs-list-group-item">
-          <div><span className="we-vote-promise">We Vote's Promise: We will never sell your email.</span></div>
+          <span className="we-vote-promise">We Vote's Promise: We will never sell your email.</span>
         </li>
         {this.menuLink("/ballot?type=filterRemaining", "Choices Remaining on My Ballot")}
         {this.menuLink("/ballot?type=filterSupport", "What I Support on My Ballot")}

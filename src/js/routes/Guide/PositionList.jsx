@@ -48,50 +48,53 @@ export default class GuidePositionList extends Component {
     let twitterDescription = twitter_description ? twitter_description : "";
     let twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
 
-    return <div>
-        <div className="bs-container-fluid bs-well well-90">
-          <ul className="bs-list-group">
-            <li className="bs-list-group-item">
-                <FollowToggle we_vote_id={this.props.params.we_vote_id} />
-                { organization_photo_url ?
-                 <span>
-                 <Image imageUrl={organization_photo_url} class="bs-img-square" />
-                  </span> :
-                <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color"></i> }
-                <div className="bs-h4 page__display-name">{displayName}</div>
-                { twitterDescriptionMinusName ? <p className="page__short-bio">{twitterDescriptionMinusName}</p> :
-                    null}
-                <br />{/* TODO icon-org-placeholder */}
-              { organization_twitter_handle ?
-               <span>@{organization_twitter_handle}&nbsp;&nbsp;</span> :
-               <span></span> }
-              {twitter_followers_count ?
-                <span className="twitter-followers__badge">
-                  <span className="fa fa-twitter twitter-followers__icon"></span>
-                  {numberWithCommas(twitter_followers_count)}
-                </span> :
-                null}
-              &nbsp;&nbsp;
-              <a href={organization_website} target="_blank">Website</a><br />
-              {/*5 of your friends follow Organization Name<br />*/}
-              {/*
-              <strong>2016 General Election, November 2nd</strong>
-              <br />
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur posuere vulputate massa ut efficitur.
-              Phasellus rhoncus hendrerit ultricies. Fusce hendrerit vel elit et euismod. Etiam bibendum ultricies
-              viverra. Integer ut bibendum ex. Suspendisse eleifend mi accumsan, euismod enim at, malesuada nibh.
-              Duis a eros fringilla, dictum leo vitae, vulputate mi. Nunc vitae neque nec erat fermentum... (more)<br />
-                <AskOrShareAction link_text={"Share Organization"} />*/}
-              <br />
-            </li>
-          </ul>
-           <ul className="bs-list-group">
-          {position_list ?
-            position_list.map( item => { return <OrganizationPositionItem key={item.position_we_vote_id} position={item}/>; }) :
-            <div>{LoadingWheel}</div>}
-            </ul>
+    return <div className="card__container u-gutter-top--small">
+      <div className="card__main">
+        <FollowToggle we_vote_id={this.props.params.we_vote_id} />
+        <div className="card__media-object">
+          { organization_photo_url ?
+            <Image imageUrl={organization_photo_url} class="card__media-object-anchor" /> :
+            <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color card__media-object-anchor"></i>
+          }
+          <div className="card__media-object-content">
+            <div className="card__display-name">{displayName}</div>
+            { twitterDescriptionMinusName ? 
+              <p className="card__description">{twitterDescriptionMinusName}</p> :
+              null
+            }
+            {/* TODO icon-org-placeholder */}
+            { organization_twitter_handle ?
+              <span>@{organization_twitter_handle}&nbsp;&nbsp;</span> :
+              <span></span> 
+            }
+            {twitter_followers_count ?
+              <span className="twitter-followers__badge">
+                <span className="fa fa-twitter twitter-followers__icon"></span>
+                {numberWithCommas(twitter_followers_count)}
+              </span> :
+              null
+            }
+            &nbsp;&nbsp;
+            <a href={organization_website} target="_blank">Website</a><br />
+            {/*5 of your friends follow Organization Name<br />*/}
+            {/*
+            <strong>2016 General Election, November 2nd</strong>
+            <br />
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur posuere vulputate massa ut efficitur.
+            Phasellus rhoncus hendrerit ultricies. Fusce hendrerit vel elit et euismod. Etiam bibendum ultricies
+            viverra. Integer ut bibendum ex. Suspendisse eleifend mi accumsan, euismod enim at, malesuada nibh.
+            Duis a eros fringilla, dictum leo vitae, vulputate mi. Nunc vitae neque nec erat fermentum... (more)<br />
+              <AskOrShareAction link_text={"Share Organization"} />*/}
+          </div>
         </div>
-          {/*<CopyLinkNavigation button_text={"Copy Link to Voter Guide"} />*/}
-      </div>;
+      </div>
+      <ul className="bs-list-group">
+        {position_list ?
+          position_list.map( item => { return <OrganizationPositionItem key={item.position_we_vote_id} position={item}/>; }) :
+          <div>{LoadingWheel}</div>
+        }
+      </ul>
+      {/*<CopyLinkNavigation button_text={"Copy Link to Voter Guide"} />*/}
+    </div>;
   }
 }
