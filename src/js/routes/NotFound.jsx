@@ -41,7 +41,7 @@ export default class NotFound extends Component {
     this.props.params.we_vote_id = this.state.owner_we_vote_id;
     return <GuidePositionList we_vote_id {...this.props} />;
   } else {
-    return <div className="bs-container-fluid bs-well gutter-top--small fluff-full1">
+    return <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
             <h3>Create Your Own Voter Guide</h3>
               <div className="small">Is this your Twitter handle? Coming soon, you will be able to create your own voter
               guide by signing in here with your Twitter account.</div>

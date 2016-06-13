@@ -1,6 +1,11 @@
 // Organization Item, (Org 'Card')
+// TODO Refactor to merge styles with .card
 
 @include media-object('.organization-item', '.organization-item__avatar', '.organization-item__content');
+
+.organization-item__container {
+  @include card-container;
+}
 
 .organization-item {
   @include list-item-card;

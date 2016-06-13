@@ -19,15 +19,19 @@ export default class FollowToggle extends Component {
     const {removePosition, positionText} = this.props;
     const onClick = this.state.open ? this.closeDropdown.bind(this) : this.openDropdown.bind(this);
 
-    return <span>
-              <button onClick={onClick} className="dropdown item-actionbar__btn item-actionbar__btn--position bs-btn bs-btn-default">
-                {positionText} <span className="bs-caret"></span>
-              </button>
-              {this.state.open &&
-                <button className="inner-dropdown" autoFocus onClick={removePosition} onBlur={this.closeDropdown.bind(this)}>
-                    <a>Remove</a>
-                </button>
-              }
-          </span>;
+    return <div className="bs-btn-group bs-open">
+      <button onClick={onClick} className="dropdown item-actionbar__btn item-actionbar__btn--position bs-btn bs-btn-default">
+        {positionText} <span className="bs-caret"></span>
+      </button>
+      {this.state.open &&
+        <ul className="bs-dropdown-menu">
+          <li>
+            <a autoFocus onClick={removePosition} onBlur={this.closeDropdown.bind(this)}>
+                Remove Position
+            </a>
+          </li>
+        </ul>
+      }
+    </div>;
   }
 }

@@ -32,7 +32,7 @@ export default class Header extends Component {
 
     const header =
       <header className="header">
-          <section className="separate-bottom bs-container-fluid">
+          <section className="separate-bottom u-gutter-top--small bs-container-fluid">
             <h4 className="bs-pull-left gutter-left--window bold">
               <span className="bs-glyphicon bs-glyphicon-menu-hamburger bs-glyphicon-line-adjustment device-icon--large">
               </span>
@@ -41,7 +41,7 @@ export default class Header extends Component {
               </Link>
               <span className="header-version"> demo</span>
             </h4>
-            <div className="header-address bs-pull-right gutter-right--window gutter-top--small">
+            <div className="header-address bs-pull-right gutter-right--window u-gutter-top--small">
               <Link to="/settings/location" className="font-lightest">
                 {location}
               </Link>

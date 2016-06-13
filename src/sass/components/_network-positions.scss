@@ -30,6 +30,9 @@
     width: 100%;
     text-align: center;
     color: $mid-gray;
+    @include breakpoints(max 400px){
+      display: none;
+    }
   }
 
   &__bar {

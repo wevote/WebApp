@@ -55,9 +55,9 @@ export default class Candidate extends Component {
       return null;
     }
 
-    return <section className="candidate gutter-top--small">
+    return <section className="candidate-card__container u-gutter-top--small">
             <CandidateItem {...candidate} office_name={office.ballot_item_display_name}/>
-            <div className="bs-container-fluid well-90">
+            <div className="candidate-card__additional">
               { candidate.position_list ?
                 <div>
                   <PositionList
@@ -66,10 +66,11 @@ export default class Candidate extends Component {
                 </div> :
                 null
               }
-                <h5>{"More Opinions About " + candidate.ballot_item_display_name}</h5>
+                
                 {guideList.length === 0 ?
-                  <div>{NO_VOTER_GUIDES_TEXT}</div> :
-                  <GuideList id={electionId} ballotItemWeVoteId={this.we_vote_id} organizations={guideList}/>
+                  <p className="candidate-card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
+                  <div><h3 className="candidate-card__additional-heading">{"More opinions about " + candidate.ballot_item_display_name}</h3>
+                  <GuideList id={electionId} ballotItemWeVoteId={this.we_vote_id} organizations={guideList}/></div>
                 }
             </div>
     </section>;
