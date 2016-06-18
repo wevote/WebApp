@@ -13,6 +13,11 @@ body {
 
 #app {
   height: 100%;
+  max-width: $max-page-container-width;
+}
+
+.container-main {
+  padding-top: 15px;
 }
 
 *, *::before, *::after {

@@ -3,7 +3,12 @@ import { Link } from "react-router";
 import HeaderIcons from "./Navigation/HeaderIcons";
 import FacebookActions from "../actions/FacebookActions";
 
-const Menu = require("react-burger-menu").slide;
+const Menu = require("react-burger-menu").push;
+var menuStyles = {
+  bmMenu: {
+    height: '100vh'
+  }
+}
 
 export default class Header extends Component {
   static propTypes = {
@@ -31,103 +36,101 @@ export default class Header extends Component {
     const logOut = FacebookActions.appLogout;
 
     const header =
-      <header className="header">
-          <section className="separate-bottom u-gutter-top--small bs-container-fluid">
-            <h4 className="bs-pull-left gutter-left--window bold">
-              <span className="bs-glyphicon bs-glyphicon-menu-hamburger bs-glyphicon-line-adjustment device-icon--large">
-              </span>
-              <Link to="/ballot">
-                My Voter Guide
-              </Link>
-              <span className="header-version"> demo</span>
-            </h4>
-            <div className="header-address bs-pull-right gutter-right--window u-gutter-top--small">
-              <Link to="/settings/location" className="font-lightest">
-                {location}
-              </Link>
-            </div>
-            <HeaderIcons />
-          </section>
-      {/* The components/MoreMenu code has to be reproduced here for mobile */}
-        <Menu noOverlay>
-          <div className="device-menu--mobile bs-container-fluid bs-well well-90">
-            <ul className="bs-list-group">
-              <li className="bs-list-group-item">
-                <div><span className="we-vote-promise">We Vote's Promise: We will never sell your email.</span></div>
-              </li>
-              <li className="bs-list-group-item">
-                <Link onClick={this.hide.bind(this)} to={{ pathname: "/ballot", query: { type: "filterRemaining" } }}>
-                  <div>
-                  Choices Remaining on My Ballot
-                  </div>
-                </Link>
-              </li>
-              <li className="bs-list-group-item">
-                <Link onClick={this.hide.bind(this)} to={{ pathname: "/ballot", query: { type: "filterSupport" } }}>
-                  <div>
-                    What I Support on My Ballot
-                  </div>
-                </Link>
-              </li>
-              <li className="bs-list-group-item">
-                <Link onClick={this.hide.bind(this)} to="/ballot">
-                  <div>
-                  All Ballot Items
-                  </div>
-                </Link>
-              </li>
-              <li className="bs-list-group-item">
-                <Link onClick={this.hide.bind(this)} to="/bookmarks">
-                  <div>
-                  What I Have Bookmarked
-                  </div>
-                </Link>
-              </li>
-            </ul>
-            <h4 className="bs-text-left"></h4>
-            <ul className="bs-list-group">
-              <li className="bs-list-group-item">
-                <Link onClick={this.hide.bind(this)} to="/more/opinions/followed">
-                  <div>
-                  Who I'm Following
-                  </div>
-                </Link>
-              </li>
-              <li className="bs-list-group-item">
-                <Link onClick={this.hide.bind(this)} to="/settings/location">
-                  <div>
-                  My Address
-                  </div>
-                </Link>
-              </li>
-              { signed_in_personal ?
-                <li className="bs-list-group-item">
-                  <div onClick={logOut}>
-                    <a>
-                    Sign Out
-                    </a>
-                  </div>
-                </li> :
-                <li className="bs-list-group-item">
-                  <Link onClick={this.hide.bind(this)} to="/more/sign_in">
+      <header className="page-header">
+        <section className="separate-bottom u-gutter-top--small bs-container-fluid">
+          {/* The components/MoreMenu code has to be reproduced here for mobile */}
+          <Menu styles={ menuStyles }>
+            <div className="device-menu--mobile">
+              <ul className="bs-nav bs-nav-stacked">
+                <li>
+                  <div><span className="we-vote-promise">We Vote's Promise: We will never sell your email.</span></div>
+                </li>
+                <li>
+                  <Link onClick={this.hide.bind(this)} to={{ pathname: "/ballot", query: { type: "filterRemaining" } }}>
                     <div>
-                    Sign In
+                    Choices Remaining on My Ballot
                     </div>
                   </Link>
-                </li> }
-            </ul>
-            <h4 className="bs-text-left"></h4>
-            <ul className="bs-list-group">
-              <li className="bs-list-group-item">
-                <Link onClick={this.hide.bind(this)} to="/more/about">
-                  <div>
-                  About <strong>We Vote</strong>
-                  </div>
-                </Link>
-              </li>
-            </ul>
+                </li>
+                <li>
+                  <Link onClick={this.hide.bind(this)} to={{ pathname: "/ballot", query: { type: "filterSupport" } }}>
+                    <div>
+                      What I Support on My Ballot
+                    </div>
+                  </Link>
+                </li>
+                <li>
+                  <Link onClick={this.hide.bind(this)} to="/ballot">
+                    <div>
+                    All Ballot Items
+                    </div>
+                  </Link>
+                </li>
+                <li>
+                  <Link onClick={this.hide.bind(this)} to="/bookmarks">
+                    <div>
+                    What I Have Bookmarked
+                    </div>
+                  </Link>
+                </li>
+              </ul>
+              <h4 className="bs-text-left"></h4>
+              <ul className="bs-nav bs-nav-stacked">
+                <li>
+                  <Link onClick={this.hide.bind(this)} to="/more/opinions/followed">
+                    <div>
+                    Who I'm Following
+                    </div>
+                  </Link>
+                </li>
+                <li>
+                  <Link onClick={this.hide.bind(this)} to="/settings/location">
+                    <div>
+                    My Address
+                    </div>
+                  </Link>
+                </li>
+                { signed_in_personal ?
+                  <li>
+                    <div onClick={logOut}>
+                      <a>
+                      Sign Out
+                      </a>
+                    </div>
+                  </li> :
+                  <li>
+                    <Link onClick={this.hide.bind(this)} to="/more/sign_in">
+                      <div>
+                      Sign In
+                      </div>
+                    </Link>
+                  </li> }
+              </ul>
+              <h4 className="bs-text-left"></h4>
+              <ul className="bs-nav bs-nav-stacked">
+                <li>
+                  <Link onClick={this.hide.bind(this)} to="/more/about">
+                    <div>
+                    About <strong>We Vote</strong>
+                    </div>
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </Menu>
+          <h4 className="bs-pull-left page-logo">
+            <Link to="/ballot">
+              My Voter Guide
+            </Link>
+            <span className="page-header__version"> demo</span>
+          </h4>
+          <div className="page-header__address bs-pull-right u-gutter-right--window">
+            <Link to="/settings/location" className="font-lightest">
+              {location}
+            </Link>
           </div>
-        </Menu>
+          <HeaderIcons />
+        </section>
       </header>;
 
     return header;
