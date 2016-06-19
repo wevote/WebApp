@@ -60,7 +60,7 @@ $text-color: $darker-gray !default;
 /// Container's maximum width
 /// Below that is 100%
 /// @type Length
-$max-width: 1200px !default;
+$max-page-container-width: 960px !default;
 
 /// Breakpoints map
 /// @prop {String} keys - Keys are identifiers mapped to a given length
@@ -70,7 +70,8 @@ $breakpoints: (
   'small': 320px,
   'mid-small': 480px,
   'medium': 768px,
-  'large': 1024px
+  'large': 1024px,
+  'nav': 695px
 ) !default;
 
 /// Relative or absolute URL where all assets are served from

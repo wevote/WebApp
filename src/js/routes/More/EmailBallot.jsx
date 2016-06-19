@@ -18,7 +18,7 @@ export default class EmailBallot extends Component {
 
 		const emailBallot =
 			<div>
-				<div className="bs-container-fluid bs-well well-90">
+				<div className="bs-container-fluid bs-well">
 					<h2 className="bs-text-center">Print, Save or Email Ballot</h2>
 					<div>
 						<label htmlFor="last-name">Email your ballot to yourself so you can print or save</label><br />

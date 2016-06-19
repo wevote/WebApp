@@ -1,3 +1,5 @@
-.header .bs-glyphicon-menu-hamburger:hover {
-  cursor: pointer;
+.page-logo {
+  @include breakpoints(max nav) {
+    padding-left: 10px;
+  }
 }

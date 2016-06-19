@@ -1,0 +1,83 @@
+// React Burger Menu
+// https://github.com/negomi/react-burger-menu
+
+// Position and sizing of burger button
+@include breakpoints(max nav) {
+
+  .bm-burger-button {
+    position: relative;
+    width: 18px;
+    height: 15px;
+    float: left;
+    // left: 18px;
+    // top: 18px;
+  }
+
+  // Color/shape of burger icon bars
+  .bm-burger-bars {
+    background: $darker-gray;
+  }
+
+  // Position and sizing of clickable cross button
+  .bm-cross-button {
+    height: 24px;
+    width: 24px;
+  }
+
+  // Color/shape of close button cross
+  .bm-cross {
+    background: #bdc3c7;
+  }
+
+  // General sidebar styles
+  .bm-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: $lighter-gray;
+    padding-top: 2.5em;
+    font-size: 1.15em;
+    box-shadow: $default-box-shadow;
+    height: 100vh; // inserted inline via menuStyles in Header.jsx
+  }
+
+  .bm-menu-wrap {
+    @include micro-clearfix;
+    // offsets for container
+    margin-top: -15px;
+    margin-left: -15px;
+    tranform: translateY(100%);
+  }
+
+  // Morph shape necessary with bubble or elastic
+  .bm-morph-shape {
+    fill: #373a47;
+  }
+
+  // Wrapper for item list
+  .bm-item-list {
+    color: #b8b7ad;
+    padding: 0.8em;
+  }
+
+  // Styling of overlay
+  .bm-overlay {
+    background: rgba(0, 0, 0, 0.7) !important;
+    margin-top: -15px; // offsets for container
+    margin-left: -15px; // offsets for container
+    height: 100vh !important; // override
+  }
+
+}
+@include breakpoints(nav) {
+.bm-burger-button, .bm-overlay, .bm-menu-wrap {
+    display: none !important;
+  }
+}
+
+// HACKY override for .headpin repositioning
+.bm-overlay, .bm-menu-wrap {  
+  .headroom--unpinned & {
+    transform: translateY(99px);
+  }
+}

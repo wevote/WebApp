@@ -75,20 +75,12 @@ export default class Application extends Component {
 
     return <div className="app-base">
       <Headroom>
-        <div className="bs-container-fluid">
-          <div className="bs-row">
-            <Header location={location} voter={voter}/>
-          </div>
-        </div>
-        <div className="bs-container-fluid">
-          <div className="bs-row">
-            <SubHeader pathname={pathname} ballotItemWeVoteId={ballotItemWeVoteId} />
-          </div>
-      </div>
+          <Header location={location} voter={voter}/>
+          <SubHeader pathname={pathname} ballotItemWeVoteId={ballotItemWeVoteId} />
       </Headroom>
       <div className="bs-container-fluid">
         <div className="bs-row">
-          <div className="bs-col-xs-4 bs-col-sm-4 bs-col-md-4 no-show">
+          <div className="bs-col-xs-4 sidebar-menu">
             { voter.signed_in_personal ? <MoreMenu {...voter} /> : <MoreMenu /> }
           </div>
           <div className="col-xs-8-container bs-col-xs-8 container-main">

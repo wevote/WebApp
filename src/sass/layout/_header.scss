@@ -12,34 +12,30 @@
   font-weight: 400;
 }
 
-.header {
-
-    &-address {
-        color: #D8D8D8;
-        margin-right: 200px;
-        overflow: hidden;
-        text-align: center;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        width: 30%;
+.page-header {
+  
+  background: #fff;
+  @include micro-clearfix;
+  
+  &__address {
+    color: #D8D8D8;
+    margin-right: 200px;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 30%;
+    @include breakpoints(max 659px) {
+      margin-right: 10px;
+      text-align: right;
     }
-}
+  }
 
-.header {
-    &-version {
-        color: rgba(171,171,171, 1);
-        font-size: 0.7em;
-        font-weight: 200;
-        overflow: hidden;
-        white-space: nowrap;
-    }
-}
-
-@media all and (max-width : 659px) {
-	.header {
-		&-address {
-			margin-right: 10px;
-			text-align: right;
-		}
-	}
+  &__version {
+    color: rgba(171,171,171, 1);
+    font-size: 0.7em;
+    font-weight: 200;
+    overflow: hidden;
+    white-space: nowrap;
+  }
 }
