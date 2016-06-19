@@ -1,14 +1,11 @@
-body, html {
-  height: 100%;
-  min-height: 100%;
-}
-
 html {
-    box-sizing: border-box;
+  box-sizing: border-box;
+  height: 100%;
 }
 
 body {
-  background-color: #F5F4F1
+  background-color: #F5F4F1;
+  min-height: 100%;
 }
 
 #app {
