@@ -3,3 +3,13 @@
     padding-left: 10px;
   }
 }
+
+
+.headroom {
+  margin: 0 auto;
+  max-width: $max-page-container-width - 2px;
+  &--unpinned {
+    transform: translateY(0px) !important;
+  }
+}
+
