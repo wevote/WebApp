@@ -48,7 +48,7 @@ export default class GuidePositionList extends Component {
     let twitterDescription = twitter_description ? twitter_description : "";
     let twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
 
-    return <div className="card__container u-gutter-top--small">
+    return <div className="card__container">
       <div className="card__main">
         <FollowToggle we_vote_id={this.props.params.we_vote_id} />
         <div className="card__media-object">

@@ -1,0 +1,63 @@
+
+$loader-duration: 1.4s;
+$loader-delay-increment: -120ms;
+$loader-size: 1.2rem;
+
+.u-loading-spinner {
+  margin: 0 auto ($loader-size * 2) auto;
+  position: relative;
+  text-indent: -9999em;
+  transform: translateZ(0);
+  animation-delay: $loader-delay-increment;
+  overflow: visible;
+  font-size: $loader-size * 2;
+  &,
+  &::before,
+  &::after {
+    border-radius: 50%;
+    width: $loader-size;
+    height: $loader-size;
+    animation-name: bouncedelay;
+    animation-duration: $loader-duration;
+    animation-timing-function: ease-in-out;
+    animation-timing-function: cubic-bezier(.5,0,.5,1);
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+    color: rgba($dark-gray, .7);
+  }
+  &--light {
+    &,
+    &::before,
+    &::after {
+      color: rgba(#fff, .7);
+    }
+  }
+  &::before {
+    left: -1.5 * $loader-size;
+    animation-delay: $loader-delay-increment * 2;
+  }
+  &::after {
+    left: 1.5 * $loader-size;
+  }
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+  }
+  &__wrapper {
+    @include micro-clearfix;
+    margin: 20px auto 40px auto;
+  }
+}
+
+@keyframes bouncedelay {
+  0%,
+  20%,
+  100% {
+    box-shadow: 0 $loader-size 0 (-1 * $loader-size);
+  }
+  60% {
+    box-shadow: 0 $loader-size 0 0;
+  }
+}

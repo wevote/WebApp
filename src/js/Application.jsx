@@ -9,6 +9,21 @@ import VoterActions from "./actions/VoterActions";
 import Headroom from "react-headroom";
 const web_app_config = require("./config");
 
+var loadingScreenStyles = {
+  position: "fixed",
+  height: "100vh",
+  width: "100vw",
+  display: "flex",
+  top: 0,
+  left: 0,
+  backgroundColor: "#337ec9",
+  justifyContent: "center",
+  alignItems: "center",
+  fontSize: "30px",
+  color: "#fff",
+  flexDirection: "column"
+};
+
 export default class Application extends Component {
   static propTypes = {
     children: PropTypes.element,
@@ -65,10 +80,10 @@ export default class Application extends Component {
     var ballotItemWeVoteId = ""; /* TODO Dale: Store the ballot item that is "on stage" in Ballot store? (wv02cand3) */
 
     if (voter === undefined || location === undefined ) {
-      return <div id="loading">
+      return <div style={loadingScreenStyles}>
                 <div>
                   <h1>We Vote</h1>
-                  <p>Loading...</p>
+                  <div className="u-loading-spinner u-loading-spinner--light">Loading...</div>
                 </div>
               </div>;
     }

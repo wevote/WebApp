@@ -40,22 +40,16 @@
 /// Micro Clearfix
 /// @link http://nicolasgallagher.com/micro-clearfix-hack
 
-@mixin micro-clearfix() {
-  // & {
-  //   *zoom: 1;
-  // }
-  &:before,
-  &:after {
-    content: "";
+@mixin micro-clearfix {
+  &::before,
+  &::after {
+    content: " ";
     display: table;
   }
-  &:after {
+  &::after {
     clear: both;
   }
 }
-
-
-
 
 
 /// Hide Text
