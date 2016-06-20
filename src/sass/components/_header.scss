@@ -1,11 +1,4 @@
-.page-logo {
-  @include breakpoints(max nav) {
-    padding-left: 10px;
-  }
-}
-
-
-.headroom {
+.page-header {
   margin: 0 auto;
   max-width: $max-page-container-width - 2px;
   &--unpinned {
@@ -13,3 +6,8 @@
   }
 }
 
+.page-logo {
+  @include breakpoints(max nav) {
+    padding-left: 10px;
+  }
+}

@@ -1,9 +1,8 @@
 import React from "react";
 
 const LoadingWheel =
-  <div style={{margin: "0 auto"}} className="box-loader">
-    <i className="fa fa-spinner fa-pulse"></i>
-    <p>Loading ... One Moment</p>
+  <div className="u-loading-spinner__wrapper">
+    <div className="u-loading-spinner">Loading...</div>
   </div>;
 
 export default LoadingWheel;

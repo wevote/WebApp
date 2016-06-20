@@ -24,16 +24,17 @@
 
 // 4. Layout-related sections
 @import
+  './layout/_root',
   './layout/_boxmodel',
   './layout/_header',
   './layout/_footer',
-  './layout/_root',
   './layout/_lists';
 
 // 5. Elements
 @import
-  './elements/_buttons',
-  './elements/_twitter-followers';
+  './elements/buttons',
+  './elements/loading-spinner',
+  './elements/twitter-followers';
 
 // 6. Components
 @import
