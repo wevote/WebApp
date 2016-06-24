@@ -16,12 +16,20 @@ export default class NotFound extends Component {
     };
   }
 
-   twitterIdentityRetrieve (){
+  componentWillMount () {
+    this.twitterIdentityRetrieve(this.props.params.twitter_handle);
+  }
+
+  componentWillReceiveProps (nextProps) {
+    this.twitterIdentityRetrieve(nextProps.params.twitter_handle);
+  }
+
+  twitterIdentityRetrieve (new_twitter_handle) {
     // We could create a store for this for consistency,
     // but if the rest of the application doesn't need to access the data then this is simpler.
     $ajax({
       endpoint: "twitterIdentityRetrieve",
-      data: { twitter_handle: this.props.params.twitter_handle },
+      data: { twitter_handle: new_twitter_handle },
       success: res => {
         this.setState(res);
       },
@@ -32,9 +40,7 @@ export default class NotFound extends Component {
     });
   }
 
-
   render () {
-    this.twitterIdentityRetrieve();
     if (this.state.status === undefined){
       return LoadingWheel;
     } else if (this.state.kind_of_owner === "CANDIDATE"){

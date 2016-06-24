@@ -24,9 +24,8 @@ export default class PositionItem extends Component {
     var position = this.props;
     var dateStr = this.props.last_updated;
     var dateText = moment(dateStr).startOf("day").fromNow();
-    // TODO TwitterHandle - We aren't supporting internal organization links with Twitter handles yet
+    // TwitterHandle-based link
     var speakerLink = position.speaker_twitter_handle ? "/" + position.speaker_twitter_handle : "/voterguide/" + position.speaker_we_vote_id;
-    //var speakerLink = "/voterguide/" + position.speaker_we_vote_id;
 
     let image_placeholder = "";
     if (this.props.speaker_type === "O") {
