@@ -15,7 +15,7 @@ export default class NotFound extends Component {
     };
   }
 
-  componentDidMount (){
+  componentDidMount (setState) {
     // We could create a store for this for consistency,
     // but if the rest of the application doesn't need to access the data then this is simpler.
     $ajax({
@@ -31,7 +31,29 @@ export default class NotFound extends Component {
     });
   }
 
+   twitterIdentityRetrieve (){
+    // We could create a store for this for consistency,
+    // but if the rest of the application doesn't need to access the data then this is simpler.
+    $ajax({
+      endpoint: "twitterIdentityRetrieve",
+      data: { twitter_handle: this.props.params.twitter_handle },
+      success: res => {
+        this.setState(res);
+      },
+      error: res => {
+        console.log( res);
+        this.setState(res);
+      }
+    });
+  }
+
+
   render () {
+    this.twitterIdentityRetrieve();
+    console.log("rendering NotFound.jsx: " + this.props.params.twitter_handle );
+    console.log(this.state.kind_of_owner);
+    console.log(this.props.params.we_vote_id);
+
   if (this.state.status === undefined){
     return LoadingWheel;
   } else if (this.state.kind_of_owner === "CANDIDATE"){
