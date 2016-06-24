@@ -44,8 +44,8 @@ export default class Organization extends Component {
     let twitterDescriptionMinusName = removeTwitterNameFromDescription(voter_guide_display_name, twitterDescription);
 
     // TODO TwitterHandle - We aren't supporting internal organization links with Twitter handles yet
-    // var voterGuideLink = this.props.twitter_handle ? "/" + this.props.twitter_handle : "/voterguide/" + organization_we_vote_id;
-    var voterGuideLink = "/voterguide/" + organization_we_vote_id;
+    var voterGuideLink = this.props.twitter_handle ? "/" + this.props.twitter_handle : "/voterguide/" + organization_we_vote_id;
+    // var voterGuideLink = "/voterguide/" + organization_we_vote_id;
 
     let position_description = "";
     const is_on_candidate_page = true;
