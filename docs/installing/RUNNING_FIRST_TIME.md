@@ -5,7 +5,6 @@
 - [Running WebApp for the First Time](#running-webapp-for-the-first-time)
   - [Install and start web application](#install-and-start-web-application)
   - [Using We Vote API server Locally](#using-we-vote-api-server-locally)
-  - [](#)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
