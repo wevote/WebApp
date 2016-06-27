@@ -20,9 +20,8 @@ export default class OrganizationPositionItem extends Component {
       ballot_item_image_url_https,
       ballot_item_twitter_handle } = this.props.position;
 
-    // TODO TwitterHandle
+    // TwitterHandle-based link
     let candidateLink = ballot_item_twitter_handle ? "/" + ballot_item_twitter_handle : "/candidate/" + ballot_item_we_vote_id;
-    // let candidateLink = "/candidate/" + ballot_item_we_vote_id;
 
     let position_description = "";
     const is_on_candidate_page = false;

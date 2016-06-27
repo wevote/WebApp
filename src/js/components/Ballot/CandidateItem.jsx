@@ -53,7 +53,7 @@ export default class Candidate extends Component {
 
     const { supportProps, transitioning } = this.state;
 
-    // TODO TwitterHandle
+    // TwitterHandle-based link
     let candidateLink = twitter_handle ? "/" + twitter_handle : "/candidate/" + we_vote_id;
 
     return <div className="candidate-card">

@@ -30,9 +30,8 @@ export default class VoterGuideItem extends Component {
     if (this.props.twitter_followers_count) {
       twitterFollowers = twitterFollowersCount;
     }
-    // TODO TwitterHandle - We aren't supporting internal organization links with Twitter handles yet
+    // TwitterHandle-based link
     var voterGuideLink = this.props.twitter_handle ? "/" + this.props.twitter_handle : "/voterguide/" + this.props.organization_we_vote_id;
-    // var voterGuideLink = "/voterguide/" + this.props.organization_we_vote_id;
 
     /* This was refactored into /src/js/components/VoterGuide/GuideList.jsx for "More Opinions" page.
     * Since the migration of the existing styles was not done with total fidelity, we need to leave this
