@@ -3,7 +3,7 @@ import { Button, ButtonToolbar } from "react-bootstrap";
 import VoterStore from "../stores/VoterStore";
 import LoadingWheel from "../components/LoadingWheel";
 import VoterActions from "../actions/VoterActions";
-import { browserHistory } from 'react-router';
+import { browserHistory } from "react-router";
 
 export default class AddressBox extends Component {
   static propTypes = {

@@ -6,7 +6,7 @@ import LoadingWheel from "../../components/LoadingWheel";
 import BallotItem from "../../components/Ballot/BallotItem";
 import { Link } from "react-router";
 import { Button } from "react-bootstrap";
-import { browserHistory } from 'react-router';
+import { browserHistory } from "react-router";
 
 export default class Ballot extends Component {
   static propTypes = {

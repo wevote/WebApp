@@ -23,7 +23,7 @@ export default class GuideList extends Component {
 
   handleIgnore (id) {
     GuideActions.ignore(id);
-    this.setState({ organizations: this.state.organizations.filter( (org) => { return org.organization_we_vote_id !== id;})})
+    this.setState({ organizations: this.state.organizations.filter( (org) => { return org.organization_we_vote_id !== id;})});
   }
 
   render () {

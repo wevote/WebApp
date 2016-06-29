@@ -66,12 +66,11 @@ export default class Candidate extends Component {
                 </div> :
                 null
               }
-                
-                {guideList.length === 0 ?
-                  <p className="candidate-card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
-                  <div><h3 className="candidate-card__additional-heading">{"More opinions about " + candidate.ballot_item_display_name}</h3>
-                  <GuideList id={electionId} ballotItemWeVoteId={this.we_vote_id} organizations={guideList}/></div>
-                }
+              {guideList.length === 0 ?
+                <p className="candidate-card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
+                <div><h3 className="candidate-card__additional-heading">{"More opinions about " + candidate.ballot_item_display_name}</h3>
+                <GuideList id={electionId} ballotItemWeVoteId={this.we_vote_id} organizations={guideList}/></div>
+              }
             </div>
     </section>;
 

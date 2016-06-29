@@ -6,9 +6,9 @@ import FacebookActions from "../actions/FacebookActions";
 const Menu = require("react-burger-menu").push;
 var menuStyles = {
   bmMenu: {
-    height: '100vh'
+    height: "100vh"
   }
-}
+};
 
 export default class Header extends Component {
   static propTypes = {

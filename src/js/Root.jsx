@@ -38,6 +38,8 @@ import Requests from "./routes/Requests";
 import Connect from "./routes/Connect";
 import Activity from "./routes/Activity";
 import NotFound from "./routes/NotFound";
+import TwitterSignInProcess from "./routes/Process/TwitterSignInProcess";
+import VerifyThisIsMe from "./routes/Guide/VerifyThisIsMe";
 import AddFriends from "./routes/AddFriends";
 
 
@@ -86,20 +88,18 @@ const routes = () =>
     <Route path="bookmarks" component={Bookmarks} />
 
     <Route path="ballot/empty" component={EmptyBallot} />
-      {/*
-          <Route path="org/:id" component={Organization}/>
-          <Route path="measure/:id" component={Measure} />
-          <Route path="org/:id" component={Organization}/>
-          <Route path="opinion" component={Opinion} />
-          <Route path="/office/:id" component={Office} />
-      */}
 
     <Route path="requests" component={Requests} />
     <Route path="connect" component={Connect} />
 
     <Route path="activity" component={Activity} />
 
-    // Any route that is not found -> @return NotFound component
+    <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />
+
+    {/* Confirming that person owns twitter handle */}
+    <Route path="/verifythisisme/:twitter_handle" component={VerifyThisIsMe} />
+
+    {/* Any route that is not found -> @return NotFound component */}
     <Route path=":twitter_handle" component={NotFound} />
   </Route>;
 

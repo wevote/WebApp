@@ -16,7 +16,8 @@ export default class UnknownTwitterAccount extends Component {
     let {twitter_handle} = this.props;
 
     return <div>
-      <TwitterAccountCard  {...this.props}/>
+      <TwitterAccountCard {...this.props}/>
+      <Link to={`/verifythisisme/${twitter_handle}`}><Button bsClass="bs-btn" bsStyle="primary">This is Me</Button></Link>
     </div>;
   }
 }
