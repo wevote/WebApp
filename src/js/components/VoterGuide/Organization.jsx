@@ -6,6 +6,9 @@ import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippe
 import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
 import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
 
+// Organization is used by GuideList for viewing voter guides you can follow on the Candidate
+// and Opinions (you can follow) Components
+// Please see VoterGuide/OrganizationCard for the Component displayed by TwitterHandle
 export default class Organization extends Component {
   static propTypes = {
     key: PropTypes.string,

@@ -14,8 +14,6 @@ export default class OrganizationPositionItem extends Component {
     var position = this.props.position;
     let { ballot_item_display_name,
       kind_of_ballot_item,
-      vote_smart_rating,
-      vote_smart_time_span,
       ballot_item_we_vote_id,
       ballot_item_image_url_https,
       ballot_item_twitter_handle } = this.props.position;
@@ -34,6 +32,7 @@ export default class OrganizationPositionItem extends Component {
       position_description = <PositionInformationOnlySnippet {...position} is_on_candidate_page={is_on_candidate_page} />;
     }
 
+    var edit_mode = false;
     return <li className="position-item">
           <StarAction we_vote_id={ballot_item_we_vote_id} type={kind_of_ballot_item} />
         <Link to={ candidateLink }
@@ -53,7 +52,9 @@ export default class OrganizationPositionItem extends Component {
             <span className="position-rating__candidate-name">{ballot_item_display_name}</span>
           </Link>
           {/* show explicit position, if available, otherwise show rating */}
-          { position_description }
+          { edit_mode ?
+            <div>EDIT MODE</div> :
+            position_description }
         </div>
         {/*Running for {office_display_name}
         <br />

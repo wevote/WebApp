@@ -6,7 +6,7 @@ class FacebookDisconnect extends React.Component {
         super(props);
     }
 
-    didClickDisconnectFromFacebookButton (e) {
+    didClickDisconnectFromFacebookButton () {
         console.log("didClickDisconnectFromFacebookButton");
         FacebookActions.disconnectFromFacebook();
     }

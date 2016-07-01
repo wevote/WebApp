@@ -11,7 +11,7 @@ class FacebookLogin extends React.Component {
     return <button ref="loginButton" onClick={this.didClickFacebookLoginButton}>Sign Into Facebook</button>;
   }
 
-  didClickFacebookLoginButton (e) {
+  didClickFacebookLoginButton () {
     FacebookActions.login();
   }
 }

@@ -1,6 +1,11 @@
 import React, { Component, PropTypes } from "react";
 
 export default class FollowToggle extends Component {
+  static propTypes = {
+    params: PropTypes.object,
+    removePosition: PropTypes.object,
+    positionText: PropTypes.string
+  };
 
   constructor (props) {
     super(props);
