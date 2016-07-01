@@ -94,6 +94,7 @@ const routes = () =>
 
     <Route path="activity" component={Activity} />
 
+    <Route path="/twittersigninprocess/:sign_in_step/:incoming_twitter_handle" component={TwitterSignInProcess} />
     <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />
 
     {/* Confirming that person owns twitter handle */}

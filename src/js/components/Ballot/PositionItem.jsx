@@ -57,6 +57,7 @@ export default class PositionItem extends Component {
 
     var nothing_to_display = null;
 
+    var edit_mode = false;
     var one_position_on_this_candidate = <li className="position-item">
       {/* One Position on this Candidate */}
           { this.props.speaker_image_url_https ?
@@ -71,7 +72,9 @@ export default class PositionItem extends Component {
               { this.props.speaker_display_name }
             </Link>
           </h4>
-            { position_description }
+            { edit_mode ?
+              <span> EDIT MODE</span> :
+              position_description }
         </div>
         {/* Likes coming in a later version
         <br />

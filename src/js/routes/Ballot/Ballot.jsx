@@ -1,12 +1,11 @@
 import React, { Component, PropTypes } from "react";
+import { Button } from "react-bootstrap";
+import { browserHistory, Link } from "react-router";
+import BallotItem from "../../components/Ballot/BallotItem";
 import BallotStore from "../../stores/BallotStore";
 import SupportStore from "../../stores/SupportStore";
 import SupportActions from "../../actions/SupportActions";
 import LoadingWheel from "../../components/LoadingWheel";
-import BallotItem from "../../components/Ballot/BallotItem";
-import { Link } from "react-router";
-import { Button } from "react-bootstrap";
-import { browserHistory } from "react-router";
 
 export default class Ballot extends Component {
   static propTypes = {

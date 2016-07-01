@@ -9,7 +9,7 @@ class FacebookLogout extends React.Component {
         return <button ref="logoutButton" onClick={this.didClickFacebookLogoutButton}>Sign Out of Facebook</button>;
     }
 
-    didClickFacebookLogoutButton (e) {
+    didClickFacebookLogoutButton () {
         FacebookActions.logout();
     }
 }

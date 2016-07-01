@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import { browserHistory } from "react-router";
 import { $ajax } from "../../utils/service";
+import FacebookActions from "../../actions/FacebookActions";
+import VoterStore from "../../stores/VoterStore";
 const web_app_config = require("../../config");
 
 // Flow chart here: https://docs.google.com/drawings/d/1WdVFsPZl3aLM9wxGuPTW3veqP-5EmZKv36KWjTz5pbU/edit
@@ -8,7 +10,8 @@ const web_app_config = require("../../config");
 export default class TwitterSignInProcess extends Component {
   static propTypes = {
     params: PropTypes.object,
-    sign_in_step: PropTypes.string
+    sign_in_step: PropTypes.string,
+    incoming_twitter_handle: PropTypes.string
   };
 
   constructor (props) {
@@ -19,20 +22,73 @@ export default class TwitterSignInProcess extends Component {
   }
 
   componentWillMount () {
-    // Where should the Twitter sign in process bring the voter back at the *very* end?
-    // TODO DALE Consider making this be the route we are currently on, instead of hard-code to the sign in page?
-    let return_url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/more/sign_in/";
-
+    console.log("componentWillMount, sign_in_step: " + this.props.params.sign_in_step);
     if (this.props.params.sign_in_step === undefined || this.props.params.sign_in_step === "signinstart") {
-      console.log("componentWillMount, sign_in_step: " + this.props.params.sign_in_step);
-      this.twitterSignInStart(return_url);
-    } else if (this.props.params.sign_in_step === "requestaccesstoken") {
-      console.log("componentWillMount, sign_in_step: " + this.props.params.sign_in_step);
-      this.twitterSignInRequestAccessToken(return_url);
-    } else if (this.props.params.sign_in_step === "requestvoterinfo") {
-      console.log("componentWillMount, sign_in_step: " + this.props.params.sign_in_step);
-      this.twitterSignInRequestVoterInfo();
+      this._onVoterStoreChange();
+    } else if (this.props.params.sign_in_step === "signinswitchstart") {
+      // Get the voter before we render
+      this._onVoterStoreChange();
     }
+  }
+
+  componentDidMount () {
+    this.listener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+
+    var {voter} = this.state;
+    var return_url;
+    console.log("componentDidMount, sign_in_step: " + this.props.params.sign_in_step);
+    if (this.props.params.sign_in_step === undefined || this.props.params.sign_in_step === "signinstart") {
+      if (voter !== undefined && (voter.signed_in_twitter || voter.signed_in_facebook)) {
+        // We don't want to start the sign in process again if they are already signed in, so we redirect to the
+        // sign in status page
+        browserHistory.push("/more/sign_in");
+      } else {
+        console.log("signinstart, return_url: /more/sign_in/");
+        return_url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/more/sign_in/";
+        this.twitterSignInStart(return_url);
+      }
+    } else if (this.props.params.sign_in_step === "signinswitchstart") {
+      if (voter !== undefined && (voter.signed_in_twitter || voter.signed_in_facebook)) {
+        console.log("signinswitchstart, In componentDidMount - still signed in. Signing out now.");
+        FacebookActions.appLogout();
+      } else {
+        // We call twitterSignInStart from here for the case where the person is already signed out
+        return_url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/twittersigninprocess/signinswitchend";
+        console.log("signinswitchstart, signed out, In componentDidMount -- about to call twitterSignInStart, return_url: ", return_url);
+        this.twitterSignInStart(return_url);
+      }
+    } else if (this.props.params.sign_in_step === "signinswitchend") {
+      // Redirect to the TwitterHandle page for the screen name added at the end of the return_url in the URL
+      console.log("signinswitchend, incoming_twitter_handle: ", this.props.params.incoming_twitter_handle);
+      if (this.props.params.incoming_twitter_handle !== undefined) {
+        browserHistory.push("/" + this.props.params.incoming_twitter_handle);
+      } else {
+        browserHistory.push("/more/sign_in");
+      }
+    }
+  }
+
+  componentDidUpdate () {
+    var {voter} = this.state;
+    if (this.props.params.sign_in_step === "signinswitchstart") {
+      if (voter !== undefined && (voter.signed_in_twitter || voter.signed_in_facebook)) {
+        // We are waiting for logout to take hold
+        console.log("In componentDidUpdate - waiting for logout to take hold (signed in)");
+      } else {
+        console.log("In componentDidUpdate - waiting for logout to take hold (not signed in)");
+        let return_url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/twittersigninprocess/signinswitchend";
+        console.log("In componentDidUpdate -- about to call twitterSignInStart, return_url: ", return_url);
+        this.twitterSignInStart(return_url);
+      }
+    }
+  }
+
+  componentWillUnmount () {
+    this.listener.remove();
+  }
+
+  _onVoterStoreChange () {
+    this.setState({ voter: VoterStore.voter() });
   }
 
   twitterSignInStart (return_url) {
@@ -40,63 +96,36 @@ export default class TwitterSignInProcess extends Component {
       endpoint: "twitterSignInStart",
       data: { return_url: return_url },
       success: res => {
-        this.setState(res);
-        if (this.state.twitter_redirect_url !== undefined) {
-          // Redirect browser to the Twitter authentication page
-          window.location.assign(this.state.twitter_redirect_url);
+        if (res.twitter_redirect_url) {
+          console.log("twitterSignInStart res.twitter_redirect_url: ", res.twitter_redirect_url);
+          window.location.assign(res.twitter_redirect_url);
+        } else {
+          // There is a problem signing in
+          console.log("twitterSignInStart ERROR res: ", res);
+          // When we visit this page and delete the voter_device_id cookie, we can get an error that requires
+          // reloading the browser page. This is how we do it:
+          window.location.assign("");
         }
       },
       error: res => {
-        console.log("twitterSignInStart error");
-      }
-    });
-  }
-
-  twitterSignInRequestAccessToken (return_url) {
-    $ajax({
-      endpoint: "twitterSignInRequestAccessToken",
-      data: { return_url: return_url },
-      success: res => {
-        this.setState(res);
-        console.log("browserHistory.push('/twittersigninprocess/requestvoterinfo')");
-        if (this.state.twitter_redirect_url !== undefined) {
-          browserHistory.push("/twittersigninprocess/requestvoterinfo");
-        }
-      },
-      error: res => {
-      }
-    });
-  }
-
-  twitterSignInRequestVoterInfo (return_url) {
-    $ajax({
-      endpoint: "twitterSignInRequestVoterInfo",
-      data: { return_url: return_url },
-      success: res => {
-        this.setState(res);
-        console.log("browserHistory.push('/more/sign_in')");
-        if (this.state.twitter_redirect_url !== undefined) {
-          browserHistory.push("/more/sign_in");
-        }
-      },
-      error: res => {
+        console.log("twitterSignInStart error: ", res);
+        // Try reloading the page
+        window.location.assign("");
       }
     });
   }
 
   render () {
-    if (this.props.params.sign_in_step === undefined || this.props.params.sign_in_step === "signinstart"){
-      console.log("this.props.params.sign_in_step === undefined) || (this.props.params.sign_in_step === 'signinstart'");
+    console.log("(this.props.params.sign_in_step === '", this.props.params.sign_in_step, "')");
+    if (this.props.params.sign_in_step === undefined || this.props.params.sign_in_step === "signinstart") {
+      return <div>
+        Please wait...
+      </div>;
+    } else if (this.props.params.sign_in_step === "signinswitchstart"){
       return <div>
           Please wait...
         </div>;
-    } else if (this.props.params.sign_in_step === "requestaccesstoken"){
-      console.log("(this.props.params.sign_in_step === 'requestaccesstoken')");
-      return <div>
-          Please wait...
-        </div>;
-    } else if (this.props.params.sign_in_step === "requestvoterinfo"){
-      console.log("(this.props.params.sign_in_step === 'requestvoterinfo')");
+    } else if (this.props.params.sign_in_step === "signinswitchend"){
       return <div>
           Please wait...
         </div>;

@@ -1,13 +1,14 @@
 import React, { Component, PropTypes } from "react";
+import CandidateActions from "../../actions/CandidateActions";
+import CandidateItem from "../../components/Ballot/CandidateItem";
 import CandidateStore from "../../stores/CandidateStore";
-import OfficeStore from "../../stores/OfficeStore";
+import GuideList from "../../components/VoterGuide/GuideList";
 import GuideStore from "../../stores/GuideStore";
 import GuideActions from "../../actions/GuideActions";
-import VoterStore from "../../stores/VoterStore";
-import CandidateActions from "../../actions/CandidateActions";
+import OfficeStore from "../../stores/OfficeStore";
 import PositionList from "../../components/Ballot/PositionList";
-import CandidateItem from "../../components/Ballot/CandidateItem";
-import GuideList from "../../components/VoterGuide/GuideList";
+import ThisIsMeAction from "../../components/Widgets/ThisIsMeAction";
+import VoterStore from "../../stores/VoterStore";
 
 export default class Candidate extends Component {
   static propTypes = {
@@ -20,12 +21,6 @@ export default class Candidate extends Component {
     this.state = {candidate: {}, office: {} };
   }
 
-  componentWillUnmount () {
-    this.candidateToken.remove();
-    this.officeToken.remove();
-    this.listener.remove();
-  }
-
   componentDidMount (){
     this.candidateToken = CandidateStore.addListener(this._onChange.bind(this));
     this.officeToken = OfficeStore.addListener(this._onChange.bind(this));
@@ -34,6 +29,12 @@ export default class Candidate extends Component {
 
     this.listener = GuideStore.addListener(this._onChange.bind(this));
     GuideActions.retrieveGuidesToFollowByBallotItem(this.we_vote_id, "CANDIDATE");
+  }
+
+  componentWillUnmount () {
+    this.candidateToken.remove();
+    this.officeToken.remove();
+    this.listener.remove();
   }
 
   _onChange (){
@@ -54,25 +55,33 @@ export default class Candidate extends Component {
     if (!candidate.ballot_item_display_name){
       return null;
     }
+    console.log("candidate: ", candidate);
 
-    return <section className="candidate-card__container">
-            <CandidateItem {...candidate} office_name={office.ballot_item_display_name}/>
-            <div className="candidate-card__additional">
-              { candidate.position_list ?
-                <div>
-                  <PositionList
-                  position_list={candidate.position_list}
-                  candidate_display_name={candidate.ballot_item_display_name} />
-                </div> :
-                null
-              }
-              {guideList.length === 0 ?
-                <p className="candidate-card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
-                <div><h3 className="candidate-card__additional-heading">{"More opinions about " + candidate.ballot_item_display_name}</h3>
-                <GuideList id={electionId} ballotItemWeVoteId={this.we_vote_id} organizations={guideList}/></div>
-              }
-            </div>
-    </section>;
+    return <span>
+        <section className="candidate-card__container">
+          <CandidateItem {...candidate} office_name={office.ballot_item_display_name}/>
+          <div className="candidate-card__additional">
+            { candidate.position_list ?
+              <div>
+                <PositionList
+                position_list={candidate.position_list}
+                candidate_display_name={candidate.ballot_item_display_name} />
+              </div> :
+              null
+            }
+            {guideList.length === 0 ?
+              <p className="candidate-card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
+              <div><h3 className="candidate-card__additional-heading">{"More opinions about " + candidate.ballot_item_display_name}</h3>
+              <GuideList id={electionId} ballotItemWeVoteId={this.we_vote_id} organizations={guideList}/></div>
+            }
+          </div>
+        </section>
+        <br />
+        <ThisIsMeAction twitter_handle_being_viewed={candidate.twitter_handle}
+                      name_being_viewed={candidate.ballot_item_display_name}
+                      kind_of_owner="POLITICIAN" />
+        <br />
+      </span>;
 
   }
 }
