@@ -10,17 +10,17 @@ export default class ItemActionBar extends Component {
     supportProps: PropTypes.object
   };
 
-  constructor(props){
+  constructor (props) {
     super(props);
     this.state = {transitioning: false};
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps () {
     this.setState({transitioning: false});
   }
 
   share (){
-    const url = web_app_config.WE_VOTE_HOSTNAME + "/candidate/" + this.props.we_vote_id;
+    const url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/candidate/" + this.props.we_vote_id;
     window.FB.ui({
       display: "popup",
       method: "share",
@@ -69,8 +69,7 @@ export default class ItemActionBar extends Component {
       <div className="item-actionbar">
         { //Show the position voter has taken
           is_oppose || is_support ?
-          <Dropdown removePosition={removePosition} positionText={positionText}/>
-       :
+          <Dropdown removePosition={removePosition} positionText={positionText}/> :
           // Voter hasn't supported or opposed, show both options
           <div>
             <button className="item-actionbar__btn item-actionbar__btn--support bs-btn bs-btn-default" onClick={this.supportItem.bind(this)}>Support</button>

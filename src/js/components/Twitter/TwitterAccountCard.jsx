@@ -1,7 +1,5 @@
-import { Button } from "react-bootstrap";
 import React, { Component, PropTypes } from "react";
 import Image from "../../components/Image";
-import { Link } from "react-router";
 import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
 
 export default class TwitterAccountCard extends Component {

@@ -58,14 +58,13 @@ export default class GuidePositionList extends Component {
           }
           <div className="card__media-object-content">
             <div className="card__display-name">{displayName}</div>
-            { twitterDescriptionMinusName ? 
+            { twitterDescriptionMinusName ?
               <p className="card__description">{twitterDescriptionMinusName}</p> :
               null
             }
-            {/* TODO icon-org-placeholder */}
             { organization_twitter_handle ?
               <span>@{organization_twitter_handle}&nbsp;&nbsp;</span> :
-              <span></span> 
+              <span></span>
             }
             {twitter_followers_count ?
               <span className="twitter-followers__badge">

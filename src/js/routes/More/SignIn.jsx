@@ -4,6 +4,7 @@ import FacebookStore from "../../stores/FacebookStore";
 import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 import Main from "../../components/Facebook/Main";
 import LoadingWheel from "../../components/LoadingWheel";
+import TwitterSignIn from "../../components/Twitter/TwitterSignIn";
 import VoterStore from "../../stores/VoterStore";
 
 const debug_mode = false;
@@ -49,20 +50,36 @@ export default class SignIn extends Component {
       return LoadingWheel;
     }
 
+    let facebook_sign_in_option = "";
+    if (voter.signed_in_twitter) {
+      facebook_sign_in_option = <span>To sign in with Facebook, Sign out of Twitter</span>;
+    } else {
+      facebook_sign_in_option = <FacebookSignIn />;
+    }
+
+    let twitter_sign_in_option = "";
+    if (voter.signed_in_facebook) {
+      twitter_sign_in_option = <span>To sign in with Twitter, Sign out of Facebook</span>;
+    } else {
+      twitter_sign_in_option = <TwitterSignIn />;
+    }
+
     return <div className="">
       <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
         <h3 className="bs-text-center">{voter.signed_in_personal ? <span>My Account</span> : <span>Sign In</span>}</h3>
         <div className="bs-text-center">
           {voter.signed_in_facebook ?
             <span><a className="bs-btn btn-social bs-btn-lg btn-facebook" onClick={FacebookActions.appLogout}>
-            <i className="fa fa-facebook"></i>Sign Out</a></span> : <FacebookSignIn />
+            <i className="fa fa-facebook"></i>Sign Out</a></span> : facebook_sign_in_option
+          }
+          <br />
+          <br />
+          {/* appLogout signs out the voter, regardless of how they are signed in */}
+          {voter.signed_in_twitter ?
+            <span><a className="bs-btn btn-social bs-btn-lg btn-twitter" onClick={FacebookActions.appLogout}>
+            <i className="fa fa-twitter"></i>Sign Out</a></span> : twitter_sign_in_option
           }
           {/*
-          <div>
-            <Link to="add_friends_confirmed" className="bs-btn btn-social bs-btn-lg btn-twitter">
-              <i className="fa fa-twitter"></i>Sign in with Twitter
-            </Link>
-          </div>
           <div>
             <Link to="add_friends_confirmed" className="bs-btn btn-social bs-btn-lg btn-google">
               <i className="fa fa-google"></i>Sign in with Google
