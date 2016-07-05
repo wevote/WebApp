@@ -2,7 +2,7 @@ import React, {Component } from "react";
 import GuideActions from "../actions/GuideActions";
 import VoterStore from "../stores/VoterStore";
 
-export default class SearchBox extends Component {
+export default class SearchGuidesToFollowBox extends Component {
 
   constructor (props){
     super(props);
@@ -29,6 +29,6 @@ export default class SearchBox extends Component {
                 className="bs-form-control"
                 onChange={this.updateResults.bind(this)}
                 value={this.state.query}
-               placeholder="Search by name or twitter handle." />;
+                placeholder="Search by name or twitter handle." />;
   }
 }

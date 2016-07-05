@@ -53,9 +53,13 @@ export default class Candidate extends Component {
     var { candidate, office, guideList } = this.state;
 
     if (!candidate.ballot_item_display_name){
-      return null;
+      return <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
+              <h3>No Candidate Found</h3>
+                <div className="small">We were not able to find that candidate.
+                  Please search again.</div>
+                <br />
+            </div>;
     }
-    console.log("candidate: ", candidate);
 
     return <span>
         <section className="candidate-card__container">

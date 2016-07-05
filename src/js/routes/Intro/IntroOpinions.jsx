@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import SearchBox from "../../components/SearchBox";
+import SearchGuidesToFollowBox from "../../components/SearchGuidesToFollowBox";
 import GuideStore from "../../stores/GuideStore";
 import VoterStore from "../../stores/VoterStore";
 import GuideList from "../../components/VoterGuide/GuideList";
@@ -68,7 +68,7 @@ export default class IntroOpinionsPage extends Component {
                 Following won't add you to mailing lists.
                 We will never sell your email address.
                 <br />
-                <SearchBox />
+                <SearchGuidesToFollowBox />
                 <br/>
                 {ballot_has_guides ? <span></span> :
                   <p>There are no organizations with opinions on your ballot. Here are some popular organizations.</p>}

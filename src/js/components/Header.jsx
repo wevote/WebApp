@@ -2,8 +2,9 @@ import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import HeaderIcons from "./Navigation/HeaderIcons";
 import FacebookActions from "../actions/FacebookActions";
-
 const Menu = require("react-burger-menu").push;
+import SearchAllBox from "./SearchAllBox";
+
 var menuStyles = {
   bmMenu: {
     height: "100vh"
@@ -124,9 +125,7 @@ export default class Header extends Component {
           <span className="page-header__version"> demo</span>
         </h4>
         <div className="page-header__address bs-pull-right u-gutter-right--window">
-          <Link to="/settings/location" className="font-lightest">
-            {location}
-          </Link>
+          <SearchAllBox />
         </div>
         <HeaderIcons />
       </section>;
