@@ -92,7 +92,7 @@ class SupportStore extends FluxMapStore {
       case "voterStopOpposingSave":
         return {
           ...state,
-          voter_opposes: assign({}, state.voter_oppose, { [we_vote_id]: false }),
+          voter_opposes: assign({}, state.voter_opposes, { [we_vote_id]: false }),
           oppose_counts: this.listWithChangedCount(state.oppose_counts, we_vote_id, -1)
         };
 
