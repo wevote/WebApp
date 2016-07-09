@@ -10,4 +10,7 @@
   @include breakpoints(max nav) {
     padding-left: 10px;
   }
+  @media all and (max-width: 329px) {
+  	display: none;
+  }
 }

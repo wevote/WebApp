@@ -124,7 +124,7 @@ export default class Header extends Component {
           </Link>
           <span className="page-header__version"> demo</span>
         </h4>
-        <div className="page-header__address bs-pull-right u-gutter-right--window">
+        <div>
           <SearchAllBox />
         </div>
         <HeaderIcons />
