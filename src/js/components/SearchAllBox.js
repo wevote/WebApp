@@ -11,7 +11,9 @@ export default class SearchAllBox extends Component {
 
   constructor (props){
     super(props);
-    this.state = {};
+    this.state = {
+      search_results: ''
+    };
   }
 
   componentDidMount (){
@@ -54,18 +56,35 @@ export default class SearchAllBox extends Component {
     let text_from_search_field = event.target.value;
     console.log("onSearchFieldTextChange: " + text_from_search_field);
     SearchAllActions.searchAll(text_from_search_field);
+    this.setState({search_results: ''});
+  }
+
+  onSearchFocus () {
+    let searchBox = document.getElementsByClassName("page-header__search")[0];
+    let siteLogoText = document.getElementsByClassName("page-logo")[0];
+    siteLogoText.style.display = "none";
+    searchBox.className += " page-logo__hidden"
+  }
+  
+  onSearchBlur () {
+    let searchBox = document.getElementsByClassName("page-header__search")[0];
+    let siteLogoText = document.getElementsByClassName("page-logo")[0];
+    siteLogoText.style.display = "block";
+    searchBox.classList.remove("page-logo__hidden");
   }
 
   render () {
     var search_results = this.state.search_results;
 
-    return <span>
+    return <div className="page-header__search">
         <form className="bs-navbar-form" role="search">
-        <div className="bs-input-group">
+        <div className="bs-input-group site-search">
           <input type="text"
                  className="bs-form-control"
                  placeholder="Search We Vote"
                  name="master_search_field"
+                 onFocus={this.onSearchFocus.bind(this)}
+                 onBlur={this.onSearchBlur.bind(this)}
                  onChange={this.onSearchFieldTextChange.bind(this)}
                  value={this.state.text_from_search_field} />
           <div className="bs-input-group-btn">
@@ -73,28 +92,36 @@ export default class SearchAllBox extends Component {
           </div>
         </div>
         </form>
-      { search_results ?
-        search_results.map(function(one_result) {
-          var searchLink = "/";
-          if (one_result.kind_of_owner === "CANDIDATE") {
-            searchLink = (one_result.twitter_handle) ? "/" + one_result.twitter_handle : "/candidate/" + one_result.we_vote_id;
-          } else if (one_result.kind_of_owner === "OFFICE") {
-            searchLink = "/office/" + one_result.we_vote_id;
-          } else if (one_result.kind_of_owner === "ORGANIZATION") {
-            searchLink = (one_result.twitter_handle) ? "/" + one_result.twitter_handle : "/organization/" + one_result.we_vote_id;
-          } else if (one_result.kind_of_owner === "MEASURE") {
-            searchLink = "/measure/" + one_result.we_vote_id;
-          } else if (one_result.kind_of_owner === "POLITICIAN") {
-            searchLink = (one_result.twitter_handle) ? "/" + one_result.twitter_handle : "/politician/" + one_result.we_vote_id;
+        <div className="search-container">
+          { search_results ?
+            search_results.map(function(one_result) {
+            var searchLink = "/";
+            switch (one_result.kind_of_owner) {
+              case "CANDIDATE":
+                searchLink = (one_result.twitter_handle) ? "/" + one_result.twitter_handle : "/candidate/" + one_result.we_vote_id;
+                break;
+              case "OFFICE":
+                searchLink = "/office/" + one_result.we_vote_id;
+                break;
+              case "ORGANIZATION":
+                searchLink = (one_result.twitter_handle) ? "/" + one_result.twitter_handle : "/organization/" + one_result.we_vote_id;
+                break;
+              case "MEASURE":
+                searchLink = "/measure/" + one_result.we_vote_id;
+                break;
+              case "POLITICIAN":
+                searchLink = (one_result.twitter_handle) ? "/" + one_result.twitter_handle : "/politician/" + one_result.we_vote_id;
+                break;
+            }
+            return <div className="search-container__results">
+              <Link to={searchLink} className="search-container__links">
+              {one_result.result_title}
+              </Link>
+            </div>;
+            }) :
+            <span></span>
           }
-
-          return <div className="candidate-card__container">
-            <Link to={searchLink}>
-            {one_result.result_title}
-            </Link>
-          </div>;
-          }) :
-          <span></span> }
-      </span>;
+        </div>
+      </div>;
   }
 }

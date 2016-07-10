@@ -13,10 +13,10 @@
 }
 
 .page-header {
-  
+
   background: #fff;
   @include micro-clearfix;
-  
+
   &__address {
     color: #D8D8D8;
     margin-right: 200px;
@@ -37,5 +37,113 @@
     font-weight: 200;
     overflow: hidden;
     white-space: nowrap;
+  }
+  &__search {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 70%;
+
+    @media all and (max-width: 497px) and (min-width: 330px) {
+      margin-top: -1em;
+      width: 35%;
+    }
+
+    @media all and (max-width: 659px) and (min-width: 498px) {
+      margin-top: -1em;
+      width: 59%
+    }
+
+    @media all and (max-width: 695px) and (min-width: 660px) {
+      margin-top: -1em;
+      width: 43%;
+    } 
+
+    @media all and (max-width: 805px) and (min-width: 696px) {
+      margin-top: -1em;
+      min-width: 48%;
+      max-width: 50%;
+    }
+  }
+}
+
+.page-logo {
+  
+  &__hidden {
+
+    @media all and (max-width: 499px) {
+      margin-top: -1em;
+      width: 92%;
+    }
+
+    @media all and (max-width: 657px) and (min-width: 500px) {
+      margin-top: -2em;
+      margin-left: 1em;
+      width: 97%;
+    }
+
+    @media all and (max-width: 695px) and (min-width: 658px) {
+      margin-top: -1em;
+      width: 65%;
+    } 
+
+    @media all and (max-width: 799px) and (min-width: 696px) {
+      margin-top: -1em;
+      min-width: 48%;
+      max-width: 75%;
+    }
+    
+  }
+}
+
+.site-search {
+  margin-top: -1em;
+  padding-left: 1em;
+  width: 100%;
+}
+
+.search-container {
+  background: #fff;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, .2);
+  margin-left: 27px;
+  position: absolute;
+  top: 30px;
+  min-width: 82%;
+  z-index: 1;
+
+  @media all and (max-width: 660px) {
+    margin-left: 12px;
+    min-width: 97%;
+    top: 41px;
+  }
+
+  @media all and (max-width: 695px) and (min-width: 661px) {
+    margin-left: 12px;
+    top: 41px;
+    width: 98%;
+  }
+
+  @media all and (max-width: 768px) and (min-width: 696px) {
+    top: 42px;
+    margin-left: 12px;
+  }
+
+  &__results {
+    background: #fff;
+    margin-bottom: .5em;
+    padding: .75em;
+
+    &:hover {
+      background: #d9edf7;
+    }
+  }
+
+  &__links {
+    display: block;
+
+    &:hover {
+      text-decoration: none;
+    }
   }
 }
