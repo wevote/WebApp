@@ -58,17 +58,24 @@ export default class SearchAllBox extends Component {
     this.setState({search_results: ''});
   }
 
+  // both of the two methods below need to have constants refactored
   onSearchFocus () {
-    let searchBox = document.getElementsByClassName("page-header__search")[0];
-    let siteLogoText = document.getElementsByClassName("page-logo")[0];
+    const searchBox = document.getElementsByClassName("page-header__search")[0];
+    const siteLogoText = document.getElementsByClassName("page-logo")[0];
+    const searchResultsBox = document.getElementsByClassName("search-container")[0];
     siteLogoText.style.display = "none";
+    searchResultsBox.style.display = "block";
     searchBox.className += " page-logo__hidden"
   }
-  
+
   onSearchBlur () {
-    let searchBox = document.getElementsByClassName("page-header__search")[0];
-    let siteLogoText = document.getElementsByClassName("page-logo")[0];
+    const searchBox = document.getElementsByClassName("page-header__search")[0];
+    const siteLogoText = document.getElementsByClassName("page-logo")[0];
+    const searchResultsBox = document.getElementsByClassName("search-container")[0];
+    const searchInput = document.getElementsByTagName('input')[0];
+    searchInput.value = "";
     siteLogoText.style.display = "block";
+    searchResultsBox.style.display = "none";
     searchBox.classList.remove("page-logo__hidden");
   }
 
