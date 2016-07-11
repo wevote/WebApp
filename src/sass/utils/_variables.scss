@@ -15,6 +15,7 @@ $text-font-stack: 'Open Sans', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvet
 $code-font-stack: 'Courier New', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Monaco', monospace !default;
 
 
+// TODO break out colors into its own partial
 
 /// Colors
 
@@ -58,6 +59,12 @@ $link-color: #337ab7 !default; // mirrors Bootstrap default - TODO: set custom v
 /// Copy text color
 /// @type Color
 $text-color: $darker-gray !default;
+
+/// Selected text color
+/// @type Color
+/// tentative color (can be adjusted)
+
+$selected-color: #0D546F !default;
 
 
 

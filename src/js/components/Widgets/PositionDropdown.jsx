@@ -4,6 +4,7 @@ export default class FollowToggle extends Component {
   static propTypes = {
     params: PropTypes.object,
     removePosition: PropTypes.object,
+    positionIcon: PropTypes.string,
     positionText: PropTypes.string
   };
 
@@ -21,12 +22,12 @@ export default class FollowToggle extends Component {
   }
 
   render () {
-    const {removePosition, positionText} = this.props;
+    const {removePosition, positionIcon, positionText} = this.props;
     const onClick = this.state.open ? this.closeDropdown.bind(this) : this.openDropdown.bind(this);
 
     return <div className="bs-btn-group bs-open">
-      <button onClick={onClick} className="dropdown item-actionbar__btn item-actionbar__btn--position bs-btn bs-btn-default">
-        {positionText} <span className="bs-caret"></span>
+      <button onClick={onClick} className="dropdown item-actionbar__btn item-actionbar__btn--position-selected bs-btn bs-btn-default">
+        {positionIcon} {positionText} <span className="bs-caret"></span>
       </button>
       {this.state.open &&
         <ul className="bs-dropdown-menu">

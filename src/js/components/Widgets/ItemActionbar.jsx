@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import SupportActions from "../../actions/SupportActions";
-import Dropdown from "./Dropdown";
+import PositionDropdown from "./PositionDropdown";
+var Icon = require("react-svg-icons");
+
 const web_app_config = require("../../config");
 
 export default class ItemActionBar extends Component {
@@ -63,20 +65,41 @@ export default class ItemActionBar extends Component {
       return null;
     }
 
+    const iconSize = 18;
+    var iconColor = "#999";
+    var selectedColor = "#0D546F";
     const removePosition = is_support ? this.stopSupportingItem.bind(this) : this.stopOpposingItem.bind(this);
     const positionText = is_support ? "I Support" : "I Oppose";
+    const positionIcon = is_support ?
+      <span className="btn__icon"><Icon name="thumbs-up-icon" width={iconSize} height={iconSize} color={selectedColor} /></span> :
+      <span className="btn__icon"><Icon name="thumbs-down-icon" width={iconSize} height={iconSize} color={selectedColor} /></span>;
     const itemActionBar =
       <div className="item-actionbar">
         { //Show the position voter has taken
           is_oppose || is_support ?
-          <Dropdown removePosition={removePosition} positionText={positionText}/> :
+          <PositionDropdown removePosition={removePosition} positionIcon={positionIcon} positionText={positionText}/> :
           // Voter hasn't supported or opposed, show both options
           <div>
-            <button className="item-actionbar__btn item-actionbar__btn--support bs-btn bs-btn-default" onClick={this.supportItem.bind(this)}>Support</button>
-            <button className="item-actionbar__btn item-actionbar__btn--oppose bs-btn bs-btn-default" onClick={this.opposeItem.bind(this)}>Oppose</button>
+            <button className="item-actionbar__btn item-actionbar__btn--support bs-btn bs-btn-default" onClick={this.supportItem.bind(this)}>
+              <span className="btn__icon">
+                <Icon name="thumbs-up-icon" width={iconSize} height={iconSize} color="#999" />
+              </span>
+              <span>Support</span>
+            </button>
+            <button className="item-actionbar__btn item-actionbar__btn--oppose bs-btn bs-btn-default" onClick={this.opposeItem.bind(this)}>
+              <span className="btn__icon">
+                <Icon name="thumbs-down-icon" width={iconSize} height={iconSize} color="#999" />
+              </span>
+              <span>Oppose</span>
+            </button>
           </div>
         }
-        <button className={!is_oppose && !is_support ? "item-actionbar__btn item-actionbar__btn--share bs-btn bs-btn-default bs-hidden-xs" : "item-actionbar__btn item-actionbar__btn--share bs-btn bs-btn-default"} onClick={this.share.bind(this)} >Share</button>
+        <button className={!is_oppose && !is_support ? "item-actionbar__btn item-actionbar__btn--share bs-btn bs-btn-default bs-hidden-xs" : "item-actionbar__btn item-actionbar__btn--share bs-btn bs-btn-default"} onClick={this.share.bind(this)} >
+          <span className="btn__icon">
+            <Icon name="share-icon" width={iconSize} height={iconSize} color="#999" />
+          </span>
+          Share
+        </button>
       </div>;
     return itemActionBar;
   }

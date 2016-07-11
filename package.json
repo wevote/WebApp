@@ -12,6 +12,9 @@
       "stage-0"
     ]
   },
+  "react-svg-icons": {
+    "assetPath": "src/img/global/svg-icons"
+  },
   "scripts": {
     "lint": "eslint --format stylish --ext .jsx --ext .js src/js",
     "test": "npm run lint",
@@ -83,6 +86,7 @@
     "react-router": "^2.0.0",
     "react-router-bootstrap": "^0.16.0",
     "react-select": "^0.9.1",
+    "react-svg-icons": "^0.2.0",
     "react-tap-event-plugin": "^0.2.1",
     "tape": "^4.4.0",
     "vinyl-source-stream": "^1.1.0",
