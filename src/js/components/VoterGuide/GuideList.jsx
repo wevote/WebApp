@@ -16,9 +16,7 @@ export default class GuideList extends Component {
   }
 
   componentWillReceiveProps (nextProps){
-    if (nextProps.organizations.length > this.props.organizations.length){
-      this.setState({organizations: nextProps.organizations });
-    }
+    this.setState({organizations: nextProps.organizations });
   }
 
   handleIgnore (id) {
