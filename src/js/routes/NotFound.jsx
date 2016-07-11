@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from "react";
+import { Button } from "react-bootstrap";
+import { Link } from "react-router";
 import Candidate from "./Ballot/Candidate";
 import LoadingWheel from "../components/LoadingWheel";
 import GuidePositionList from "./Guide/PositionList";
@@ -54,12 +56,18 @@ export default class NotFound extends Component {
     } else {
       return <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
               <h3>Create Your Own Voter Guide</h3>
-                <div className="small">We were not able to find an account for this
+                <div className="small">
+                  We were not able to find an account for this
                   Twitter Handle{ this.props.params.twitter_handle ?
-                  <span> "{this.props.params.twitter_handle}"</span> :
-                <span></span>}.
-                  Would you like to create a voter
-                guide for another Twitter account?</div>
+                    <span> "{this.props.params.twitter_handle}"</span> :
+                    <span></span>}.
+                </div>
+                <br />
+                <Link to="/twittersigninprocess/signinswitchstart">
+                  <Button bsClass="bs-btn" bsStyle="primary">Sign Into Twitter to Create Voter Guide</Button>
+                </Link>
+                <br />
+                <br />
                 <br />
                 <img src="https://github.com/wevote/WebApp/raw/develop/unclesamewevote.jpg" width="210" height="450" />
             </div>;

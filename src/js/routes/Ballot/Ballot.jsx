@@ -143,10 +143,10 @@ export default class Ballot extends Component {
           {ballot_caveat}
         </div> : null
       }
-        {emptyBallot}
-        {
-          ballot.map( (item) => <BallotItem key={item.we_vote_id} {...item} />)
-        }
+      {emptyBallot}
+      {
+        ballot.map( (item) => <BallotItem key={item.we_vote_id} {...item} />)
+      }
       </div>;
   }
 

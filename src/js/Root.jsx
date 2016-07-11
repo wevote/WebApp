@@ -22,6 +22,8 @@ import Ballot from "./routes/Ballot/Ballot";
 import Bookmarks from "./components/Bookmarks/Bookmarks";
 import Candidate from "./routes/Ballot/Candidate";
 import EmptyBallot from "./routes/Ballot/EmptyBallot";
+import Measure from "./routes/Ballot/Measure";
+import Office from "./routes/Ballot/Office";
 
 /* Ballot Off-shoot Pages */
 import Opinions from "./routes/Opinions"; // More opinions about anything on the ballot
@@ -82,7 +84,9 @@ const routes = () =>
 
     <Route path="ballot" component={BallotIndex}>
       <IndexRoute component={Ballot}/>
+      <Route path="/office/:we_vote_id" component={Office} />
       <Route path="/candidate/:we_vote_id" component={Candidate} />
+      <Route path="/measure/:we_vote_id" component={Measure} />
     </Route>
 
     <Route path="bookmarks" component={Bookmarks} />

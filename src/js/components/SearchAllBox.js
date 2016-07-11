@@ -43,7 +43,6 @@ export default class SearchAllBox extends Component {
   }
 
   _onSearchAllStoreChange (){
-    console.log("_onSearchAllStoreChange");
     this.setState(
       {
         search_results: SearchAllStore.getSearchResults(),

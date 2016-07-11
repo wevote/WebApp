@@ -23,7 +23,10 @@ export default class GuidePositionList extends Component {
     let we_vote_id = this.props.params.we_vote_id;
     this.listener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
     OrganizationActions.retrieve(we_vote_id);
-    OrganizationActions.retrievePositions(we_vote_id);
+    // Positions for this organization, for this voter / election
+    OrganizationActions.retrievePositions(we_vote_id, true);
+    // Positions for this organization, NOT including for this voter / election
+    OrganizationActions.retrievePositions(we_vote_id, false, true);
   }
 
   componentWillUnmount (){
@@ -39,7 +42,7 @@ export default class GuidePositionList extends Component {
       return <div>{LoadingWheel}</div>;
     }
 
-    const {organization_twitter_handle, position_list} = this.state.organization;
+    const {organization_twitter_handle, position_list_for_one_election, position_list_for_all_except_one_election} = this.state.organization;
 
     return <span>
         <div className="card__container">
@@ -48,8 +51,15 @@ export default class GuidePositionList extends Component {
             <OrganizationCard organization={this.state.organization} />
           </div>
           <ul className="bs-list-group">
-            {position_list ?
-              position_list.map( item => { return <OrganizationPositionItem key={item.position_we_vote_id} position={item}/>; }) :
+            { position_list_for_one_election ?
+              position_list_for_one_election.map( item => { return <OrganizationPositionItem key={item.position_we_vote_id} position={item}/>; }) :
+              <div>{LoadingWheel}</div>
+            }
+            { position_list_for_all_except_one_election ?
+              <span>
+                <h4>Positions for Other Elections</h4>
+                { position_list_for_all_except_one_election.map( item => { return <OrganizationPositionItem key={item.position_we_vote_id} position={item}/>; }) }
+              </span> :
               <div>{LoadingWheel}</div>
             }
           </ul>
