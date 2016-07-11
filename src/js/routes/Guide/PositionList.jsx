@@ -6,6 +6,7 @@ import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
 import LoadingWheel from "../../components/LoadingWheel";
 import ThisIsMeAction from "../../components/Widgets/ThisIsMeAction";
+import { exitSearch } from "../../utils/search-functions";
 
 /* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/94226088 */
 
@@ -27,6 +28,12 @@ export default class GuidePositionList extends Component {
     OrganizationActions.retrievePositions(we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
     OrganizationActions.retrievePositions(we_vote_id, false, true);
+
+    // Display the organization's name in the search box
+    // var { organization } = this.state;
+    // var searchBoxText = organization.organization_name || "";  // TODO DALE Not working right now
+    // exitSearch(searchBoxText);
+    exitSearch("");
   }
 
   componentWillUnmount (){
