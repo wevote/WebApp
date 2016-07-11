@@ -18,7 +18,21 @@ class OrganizationStore extends FluxMapStore {
       case "positionListForOpinionMaker":
         key = action.res.opinion_maker_we_vote_id;
         var position_list = action.res.position_list;
-        merged_properties = assign({}, state.get(key), {position_list: position_list} );
+        if (action.res.filter_for_voter) {
+          var position_list_for_one_election = action.res.position_list;
+          merged_properties = assign({}, state.get(key), {
+            position_list_for_one_election: position_list_for_one_election
+          } );
+        } else if (action.res.filter_out_voter) {
+          var position_list_for_all_except_one_election = action.res.position_list;
+          merged_properties = assign({}, state.get(key), {
+            position_list_for_all_except_one_election: position_list_for_all_except_one_election
+          } );
+        } else {
+          merged_properties = assign({}, state.get(key), {
+            position_list: position_list
+          } );
+        }
         return state.set(key, merged_properties );
 
       default:

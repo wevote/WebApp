@@ -40,7 +40,6 @@ class SearchAllStore extends FluxMapStore {
   }
 
   getTextFromSearchField (){
-    console.log("getTextFromSearchField: " + this.getState().text_from_search_field);
     return this.getState().text_from_search_field;
   }
 
