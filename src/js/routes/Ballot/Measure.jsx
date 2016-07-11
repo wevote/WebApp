@@ -9,6 +9,7 @@ import OfficeStore from "../../stores/OfficeStore";
 import PositionList from "../../components/Ballot/PositionList";
 import ThisIsMeAction from "../../components/Widgets/ThisIsMeAction";
 import VoterStore from "../../stores/VoterStore";
+import { exitSearch } from "../../utils/search-functions";
 
 // TODO DALE Convert to work for a Measure
 export default class Measure extends Component {
@@ -30,6 +31,8 @@ export default class Measure extends Component {
 
     this.listener = GuideStore.addListener(this._onChange.bind(this));
     GuideActions.retrieveGuidesToFollowByBallotItem(this.we_vote_id, "CANDIDATE");
+
+    exitSearch("");
   }
 
   componentWillUnmount () {

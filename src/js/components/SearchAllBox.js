@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from "react";
 import { Link } from "react-router";
 import SearchAllActions from "../actions/SearchAllActions";
 import SearchAllStore from "../stores/SearchAllStore";
+import { enterSearch } from "../utils/search-functions";
 
 export default class SearchAllBox extends Component {
   static propTypes = {
@@ -60,23 +61,11 @@ export default class SearchAllBox extends Component {
 
   // both of the two methods below need to have constants refactored
   onSearchFocus () {
-    const searchBox = document.getElementsByClassName("page-header__search")[0];
-    const siteLogoText = document.getElementsByClassName("page-logo")[0];
-    const searchResultsBox = document.getElementsByClassName("search-container")[0];
-    siteLogoText.style.display = "none";
-    searchResultsBox.style.display = "block";
-    searchBox.className += " page-logo__hidden"
+    enterSearch();
   }
 
   onSearchBlur () {
-    const searchBox = document.getElementsByClassName("page-header__search")[0];
-    const siteLogoText = document.getElementsByClassName("page-logo")[0];
-    const searchResultsBox = document.getElementsByClassName("search-container")[0];
-    const searchInput = document.getElementsByTagName('input')[0];
-    searchInput.value = "";
-    siteLogoText.style.display = "block";
-    searchResultsBox.style.display = "none";
-    searchBox.classList.remove("page-logo__hidden");
+    // We have code (exitSearch) that closes the search box once you arrive at a destination
   }
 
   render () {
@@ -94,7 +83,7 @@ export default class SearchAllBox extends Component {
                  onChange={this.onSearchFieldTextChange.bind(this)}
                  value={this.state.text_from_search_field} />
           <div className="bs-input-group-btn">
-            <button className="bs-btn bs-btn-primary" type="submit"><i className="bs-glyphicon bs-glyphicon-search"></i></button>
+            <button className="page-header__search-button bs-btn bs-btn-default" type="submit"><i className="bs-glyphicon bs-glyphicon-search"></i></button>
           </div>
         </div>
         </form>
@@ -119,11 +108,11 @@ export default class SearchAllBox extends Component {
                 searchLink = (one_result.twitter_handle) ? "/" + one_result.twitter_handle : "/politician/" + one_result.we_vote_id;
                 break;
             }
-            return <div className="search-container__results">
-              <Link to={searchLink} className="search-container__links">
-              {one_result.result_title}
-              </Link>
-            </div>;
+            return <Link to={searchLink} className="search-container__links">
+                <div className="search-container__results">
+                  {one_result.result_title}
+                </div>
+              </Link>;
             }) :
             <span></span>
           }
