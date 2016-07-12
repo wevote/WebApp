@@ -6,6 +6,7 @@ import SubHeader from "./components/SubHeader";
 import VoterStore from "./stores/VoterStore";
 import StarActions from "./actions/StarActions";
 import VoterActions from "./actions/VoterActions";
+import { exitSearch } from "./utils/search-functions";
 import Headroom from "react-headroom";
 const web_app_config = require("./config");
 
@@ -74,6 +75,10 @@ export default class Application extends Component {
     });
   }
 
+  hideSearchContainer () {
+    exitSearch();
+  }
+
   render () {
     var { location: { pathname }} = this.props;
     var { voter, location } = this.state;
@@ -95,7 +100,7 @@ export default class Application extends Component {
           <SubHeader pathname={pathname} ballotItemWeVoteId={ballotItemWeVoteId} />
         </header>
       </Headroom>
-      <div className="bs-container-fluid">
+      <div className="bs-container-fluid" onClick={this.hideSearchContainer.bind(this)}>
         <div className="bs-row">
           <div className="bs-col-xs-4 sidebar-menu">
             { voter.signed_in_personal ? <MoreMenu {...voter} /> : <MoreMenu /> }

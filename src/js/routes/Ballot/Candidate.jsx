@@ -18,23 +18,37 @@ export default class Candidate extends Component {
 
   constructor (props) {
     super(props);
-    this.we_vote_id = this.props.params.we_vote_id;
-    this.state = {candidate: {}, office: {} };
+    this.state = {candidate: {}, office: {}, we_vote_id: this.props.params.we_vote_id };
   }
 
   componentDidMount (){
     this.candidateToken = CandidateStore.addListener(this._onChange.bind(this));
     this.officeToken = OfficeStore.addListener(this._onChange.bind(this));
+    var { we_vote_id } = this.state;
 
-    CandidateActions.retrieve(this.we_vote_id);
+    CandidateActions.retrieve(we_vote_id);
 
     this.listener = GuideStore.addListener(this._onChange.bind(this));
-    GuideActions.retrieveGuidesToFollowByBallotItem(this.we_vote_id, "CANDIDATE");
+    GuideActions.retrieveGuidesToFollowByBallotItem(we_vote_id, "CANDIDATE");
 
     // Display the candidate's name in the search box
     var { candidate } = this.state;
     var searchBoxText = candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
     exitSearch(searchBoxText);
+  }
+
+  componentWillReceiveProps (nextProps) {
+    // When a new candidate is passed in, update this component to show the new data
+    this.setState({we_vote_id: nextProps.params.we_vote_id});
+
+    CandidateActions.retrieve(nextProps.params.we_vote_id);
+
+    GuideActions.retrieveGuidesToFollowByBallotItem(nextProps.params.we_vote_id, "CANDIDATE");
+
+    // Display the candidate's name in the search box
+    // var { candidate } = this.state;
+    // var searchBoxText = candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
+    exitSearch("");
   }
 
   componentWillUnmount () {
@@ -44,7 +58,8 @@ export default class Candidate extends Component {
   }
 
   _onChange (){
-    var candidate = CandidateStore.get(this.we_vote_id) || {};
+    var { we_vote_id } = this.state;
+    var candidate = CandidateStore.get(we_vote_id) || {};
     this.setState({ candidate: candidate, guideList: GuideStore.toFollowListForCand() });
 
     if (candidate.contest_office_we_vote_id){
@@ -56,7 +71,7 @@ export default class Candidate extends Component {
   render () {
     const electionId = VoterStore.election_id();
     const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to follow about this candidate or measure.";
-    var { candidate, office, guideList } = this.state;
+    var { candidate, office, guideList, we_vote_id } = this.state;
 
     if (!candidate.ballot_item_display_name){
       return <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
@@ -82,7 +97,7 @@ export default class Candidate extends Component {
             {guideList.length === 0 ?
               <p className="candidate-card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
               <div><h3 className="candidate-card__additional-heading">{"More opinions about " + candidate.ballot_item_display_name}</h3>
-              <GuideList id={electionId} ballotItemWeVoteId={this.we_vote_id} organizations={guideList}/></div>
+              <GuideList id={electionId} ballotItemWeVoteId={we_vote_id} organizations={guideList}/></div>
             }
           </div>
         </section>
