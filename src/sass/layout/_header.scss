@@ -93,12 +93,10 @@
       min-width: 48%;
       max-width: 75%;
     }
-    
   }
 }
 
 .site-search {
-  margin-top: -1em;
   padding-left: 1em;
   width: 100%;
 }
@@ -108,9 +106,13 @@
   box-shadow: 5px 5px 10px rgba(0, 0, 0, .2);
   margin-left: 27px;
   position: absolute;
-  top: 30px;
+  top: 38px;
   min-width: 82%;
   z-index: 1;
+
+  &__hidden {
+    display: none !important;
+  }
 
   @media all and (max-width: 660px) {
     margin-left: 12px;
