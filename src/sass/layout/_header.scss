@@ -44,6 +44,12 @@
     padding: 0;
     position: relative;
     width: 70%;
+    z-index: 1;
+
+    @media all and (min-width: 329px) {
+      margin-top: -1em;
+      width: 30%;
+    }
 
     @media all and (max-width: 497px) and (min-width: 330px) {
       margin-top: -1em;
@@ -57,7 +63,7 @@
 
     @media all and (max-width: 695px) and (min-width: 660px) {
       margin-top: -1em;
-      width: 43%;
+      width: 40%;
     } 
 
     @media all and (max-width: 805px) and (min-width: 696px) {
@@ -69,6 +75,10 @@
 }
 
 .page-logo {
+
+  @media all and (min-width: 694px) {
+    display: block !important;
+  }
   
   &__hidden {
 
@@ -87,16 +97,12 @@
       margin-top: -1em;
       width: 65%;
     } 
-
-    @media all and (max-width: 799px) and (min-width: 696px) {
-      margin-top: -1em;
-      min-width: 48%;
-      max-width: 75%;
-    }
+    
   }
 }
 
 .site-search {
+  margin-top: -1em;
   padding-left: 1em;
   width: 100%;
 }

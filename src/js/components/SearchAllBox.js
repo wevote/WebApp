@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import { Link } from "react-router";
 import SearchAllActions from "../actions/SearchAllActions";
 import SearchAllStore from "../stores/SearchAllStore";
-import { enterSearch } from "../utils/search-functions";
+import { enterSearch, exitSearch } from "../utils/search-functions";
 
 export default class SearchAllBox extends Component {
   static propTypes = {
@@ -64,6 +64,10 @@ export default class SearchAllBox extends Component {
     enterSearch();
   }
 
+  onSearchBlur () {
+    exitSearch();
+  }
+
   render () {
     var search_results = this.state.search_results;
 
@@ -76,7 +80,6 @@ export default class SearchAllBox extends Component {
                  name="master_search_field"
                  autoComplete="off"
                  onFocus={this.onSearchFocus.bind(this)}
-                 onBlur={this.onSearchFocus.bind(this)}
                  onChange={this.onSearchFieldTextChange.bind(this)}
                  value={this.state.text_from_search_field} />
           <div className="bs-input-group-btn">
