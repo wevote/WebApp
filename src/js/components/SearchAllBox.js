@@ -64,10 +64,6 @@ export default class SearchAllBox extends Component {
     enterSearch();
   }
 
-  onSearchBlur () {
-    // We have code (exitSearch) that closes the search box once you arrive at a destination
-  }
-
   render () {
     var search_results = this.state.search_results;
 
@@ -78,8 +74,9 @@ export default class SearchAllBox extends Component {
                  className="bs-form-control"
                  placeholder="Search We Vote"
                  name="master_search_field"
+                 autoComplete="off"
                  onFocus={this.onSearchFocus.bind(this)}
-                 onBlur={this.onSearchBlur.bind(this)}
+                 onBlur={this.onSearchFocus.bind(this)}
                  onChange={this.onSearchFieldTextChange.bind(this)}
                  value={this.state.text_from_search_field} />
           <div className="bs-input-group-btn">

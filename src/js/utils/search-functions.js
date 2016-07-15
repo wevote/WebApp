@@ -15,11 +15,12 @@ export function enterSearch () {
   // Show the search box drop-down
   const searchResultsBox = document.getElementsByClassName("search-container")[0];
   searchResultsBox.style.display = "block";
+  searchResultsBox.classList.remove("search-container__hidden");
 }
 
 
 // Clean up the searchAllBox after arriving at your destination
-export function exitSearch (textForSearchBox) {
+export function exitSearch () {
   // Change color of search button
   const searchButton = document.getElementsByClassName("page-header__search-button")[0];
   searchButton.classList.remove("bs-btn-primary");
@@ -27,7 +28,7 @@ export function exitSearch (textForSearchBox) {
 
   // Add the name of the item you are looking at to the search box
   const searchInput = document.getElementsByTagName('input')[0];
-  searchInput.value = textForSearchBox;
+  // searchInput.value = textForSearchBox;
   // Show the hamburger navigation and site name
   const siteLogoText = document.getElementsByClassName("page-logo")[0];
   siteLogoText.style.display = "block";
@@ -36,4 +37,5 @@ export function exitSearch (textForSearchBox) {
   // Hide the search box drop-down
   const searchResultsBox = document.getElementsByClassName("search-container")[0];
   searchResultsBox.style.display = "none";
+  searchResultsBox.className += " search-container__hidden";
 }
