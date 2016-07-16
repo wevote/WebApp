@@ -12,7 +12,7 @@
 
 # We Vote WebApp - README Home
 
-[![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=develop)](https://travis-ci.org/wevote/WebApp) [![Coverage Status](https://coveralls.io/repos/github/wevote/WebApp/badge.svg?branch=master)](https://coveralls.io/github/wevote/WebApp?branch=master) [![Build status](https://ci.appveyor.com/api/projects/status/g7dvmiax01d9ydjr?svg=true)](https://ci.appveyor.com/project/pertrai1/webapp)
+[![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=develop)](https://travis-ci.org/wevote/WebApp)
 
 ![We Vote USA](unclesamewevote.jpg)
 
