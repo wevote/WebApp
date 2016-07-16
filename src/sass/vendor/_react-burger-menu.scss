@@ -47,6 +47,7 @@
     margin-top: -15px;
     margin-left: -15px;
     tranform: translateY(100%);
+    z-index: 3 !important;
   }
 
   // Morph shape necessary with bubble or elastic
@@ -76,7 +77,7 @@
 }
 
 // HACKY override for .headpin repositioning
-.bm-overlay, .bm-menu-wrap {  
+.bm-overlay, .bm-menu-wrap {
   .headroom--unpinned & {
     transform: translateY(99px);
   }
