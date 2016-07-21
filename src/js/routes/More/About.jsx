@@ -22,27 +22,34 @@ export default class About extends Component {
 
           <h3 className="bs-text-center">Acknowledgements</h3>
 
-          <p>We are grateful for these organizations that are critical to our work.<br />
-              <br />
+          <p><strong>We are grateful for these organizations that are critical to our work.</strong><br />
               Ballotpedia - Data<br />
               Center for Technology and Civic Live - Data<br />
               CivicMakers - Event Collaborations<br />
               Code for San Francisco &amp; Code for America - Our Home for Volunteer Work<br />
-              Democracy Works - Data<br />
               DLA Piper - Legal<br />
-              Facebook - Data<br />
+              Facebook - Authentication &amp; Data<br />
               Google Civic - Data<br />
+              League of Women Voters - Data<br />
+              MapLight - Data<br />
               Microsoft - For supporting Code for San Francisco<br />
-              Twitter - Data<br />
+              Sunlight Foundation - Data<br />
+              TurboVote, Democracy Works - Data<br />
+              Twitter - Authentication &amp; Data<br />
               Vote Smart - Data<br />
               Voting Information Project, Pew Charitable Trusts - Data<br />
               We Vote Education - Data<br />
               Wikipedia - Data
           </p>
           <p>
-              Special thanks to our team of volunteers.
-              You are the best! (This is a list of volunteers who have contributed 10 or more hours, in rough order of hours contributed.)</p>
+              <strong>Thank you to our Board of Directors.</strong><br />
+              We Vote USA: coming soon<br />
+              We Vote Education: Jenifer Fernandez Ancona, Debra Cleaver, Dale McGrew, Anat Shenker-Osorio, William Winters<br />
+          </p>
           <p>
+              <strong>Special thanks to our team of volunteers.</strong><br />
+            You are the best!
+              (This is a list of volunteers who have contributed 10 or more hours, in rough order of hours contributed.)<br />
               Dale McGrew - Oakland, CA<br />
               Jenifer Fernandez Ancona - Oakland, CA<br />
               Rob Simpson - Warrenton, VA<br />
@@ -53,6 +60,7 @@ export default class About extends Component {
               Adam Barry - San Francisco, CA<br />
               Mary O'Connor - Sebastopol, CA<br />
               Harsha Dronamraju - San Francisco, CA<br />
+              Jennifer Holmes - Pacifica, CA<br />
               Nitin Garg - San Francisco, CA<br />
               Niko Barry - Berkeley, CA<br />
               Marissa Luna - Lansing, MI<br />
@@ -73,10 +81,10 @@ export default class About extends Component {
               Raphael Merx - San Francisco, CA<br />
               Susan Clark - Oakland, CA<br />
               Kim Anderson - San Francisco, CA<br />
+              Colette Phair - Oakland, CA<br />
               Jesse Aldridge - San Francisco, CA<br />
               Josh Levinger - Oakland, CA<br />
               Leslie Castellanos - San Francisco, CA<br />
-              Jennifer Holmes - Pacifica, CA<br />
               Miguel Elasmar - Sarasota, FL<br />
               Nicole Shanahan - Palo Alto, CA<br />
               Steve Whetstone - San Francisco, CA<br />
