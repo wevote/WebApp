@@ -24,7 +24,7 @@ export default class About extends Component {
 
           <p><strong>We are grateful for these organizations that are critical to our work.</strong><br />
               Ballotpedia - Data<br />
-              Center for Technology and Civic Live - Data<br />
+              Center for Technology and Civic Life - Data<br />
               CivicMakers - Event Collaborations<br />
               Code for San Francisco &amp; Code for America - Our Home for Volunteer Work<br />
               DLA Piper - Legal<br />
@@ -78,6 +78,7 @@ export default class About extends Component {
               Courtney Gonzales - Benicia, CA<br />
               Jenna Haywood - Berkeley, CA<br />
               Tom Furlong - Menlo Park, CA<br />
+              Jayadev Akkiraju - Santa Clara, CA<br />
               Raphael Merx - San Francisco, CA<br />
               Susan Clark - Oakland, CA<br />
               Kim Anderson - San Francisco, CA<br />

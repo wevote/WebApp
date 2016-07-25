@@ -1,15 +1,3 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-## Contents
-
-- [We Vote WebApp - README Home](#we-vote-webapp---readme-home)
-- [Installing WebApp](#installing-webapp)
-- [Working with WebApp](#working-with-webapp)
-- [Contributing to the Project](#contributing-to-the-project)
-- [How to Submit Code / Pull Requests](#how-to-submit-code--pull-requests)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 # We Vote WebApp - README Home
 
 [![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=develop)](https://travis-ci.org/wevote/WebApp)
@@ -26,32 +14,29 @@ http://start.wevoteusa.org/
 
 And finally, our current live version is here: https://wevote.me
 
-# Installing WebApp
-1. [Overview](docs/installing/README_INSTALLING.md)
+## Installing WebApp
+Our installation process is built to allow engineers all over America to contribute to We Vote. 
+It may seem complicated, but it allows anyone to be in a position to make suggestions, and get involved.
 
-2. [Preparing the Environment on Your Machine](docs/installing/ENVIRONMENT.md)
+1. [Preparing the Environment on Your Machine](docs/installing/ENVIRONMENT.md)
 
-3. [Bringing Code to Your Machine](docs/installing/CLONING_CODE.md)
+2. [Bringing Code to Your Machine](docs/installing/CLONING_CODE.md)
 
-4. [Running WebApp for the First Time](docs/installing/RUNNING_FIRST_TIME.md)
+3. [Running WebApp for the First Time](docs/installing/RUNNING_FIRST_TIME.md)
 
-# Working with WebApp
+## Working with WebApp
 1. [Working with WebApp Day-to-Day](docs/working/README_WORKING_WITH_WEB_APP.md)
 
 2. [Debugging Tools and Tips](docs/working/DEBUGGING_TOOLS.md)
 
 3. [Issues and Reporting Bugs](docs/working/ISSUES.md)
 
-# Contributing to the Project
+## Contributing to the Project
 Please read the following before you start contributing to the project. Thank you!
 
-1. [Overview](docs/contributing/index.md)
+[Coding Standards and Best Practices](docs/contributing/CONTRIBUTING_STANDARDS.md)
 
-2. [Our Culture and Philosophy](docs/contributing/CONTRIBUTING_PHILOSOPHY.md)
-
-3. [Coding Standards and Best Practices](docs/contributing/CONTRIBUTING_STANDARDS.md)
-
-# How to Submit Code / Pull Requests
+## How to Submit Code / Pull Requests
 1. [What the Heck is a Pull Request?](docs/contributing/PULL_REQUEST_BACKGROUND.md)
 
 2. [Before Your First Pull Request](docs/contributing/PULL_REQUEST_SETUP.md)

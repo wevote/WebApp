@@ -21,11 +21,11 @@ Add the contributor's repository as a remote repo. Here are the core contributor
 
     git remote add pertrai1 https://github.com/pertrai1/WebApp
     git fetch pertrai1
-    git remote add pertrai1 https://github.com/nf071590/WebApp
+    git remote add nf071590 https://github.com/nf071590/WebApp
     git fetch nf071590
-    git remote add pertrai1 https://github.com/lisamcho/WebApp
+    git remote add lisamcho https://github.com/lisamcho/WebApp
     git fetch lisamcho
-    git remote add pertrai1 https://github.com/dalemcgrew/WebApp
+    git remote add dalemcgrew https://github.com/dalemcgrew/WebApp
     git fetch dalemcgrew
     Find the branch that the person is submitting:
     git branch -a
