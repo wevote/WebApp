@@ -1,15 +1,5 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-## Contents
-
-- [Preparing the Environment on Your Machine](#preparing-the-environment-on-your-machine)
-  - [Install nodeenv ("Node Env")](#install-nodeenv-node-env)
-  - [Set up your environment](#set-up-your-environment)
-  - [](#)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 # Preparing the Environment on Your Machine
+[Go back to Readme Home](../../README.md)
 
 ## Install nodeenv ("Node Env")
 
@@ -40,6 +30,13 @@ Confirm the versions of your main packages are >= to these versions:
 
     (WebAppEnv) $ npm -v
     3.3.12
+    
+IF you find that your node or npm versions are below that, run this command:
+
+    (WebAppEnv) $ sudo npm install -g npm
+    (WebAppEnv) $ npm rebuild node-sass
+    (WebAppEnv) $ brew unlink node
+    (WebAppEnv) $ brew install node
 
 ## Set up your environment
 

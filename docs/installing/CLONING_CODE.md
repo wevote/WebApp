@@ -1,27 +1,24 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-## Contents
-
-- [Bringing Code to Your Machine](#bringing-code-to-your-machine)
-  - [Setting up your repository for work](#setting-up-your-repository-for-work)
-    - [Clone the repo](#clone-the-repo)
-  - [](#)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 # Bringing Code to Your Machine
+[Go back to Readme Home](../../README.md)
+
+## Set up your environment
+
+Make sure you have created a place to put all of the code from Github:
+
+    $ mkdir /Users/<YOUR NAME HERE>/MyProjects/
 
 ## Setting up your repository for work
 
-1.Install and configure git on your local machine.
+1. Install and configure git on your local machine.
 
-2.Create a fork of wevote/WebApp.git  
+2. Create a fork of wevote/WebApp.git. You can do this from https://github.com/wevote/WebApp with the "Fork" button 
+(upper right of screen)
 
-3.Clone your fork  
+3. Change into the `/Users/<YOUR NAME HERE>/MyProjects/` folder and clone your fork:
 
-`git clone https://github.com/username/WebApp.git`  
+`git clone https://github.com/<YOUR USERNAME HERE>/WebApp.git`  
 
-4.In your local repository, set up a remote for upstream:  
+4. Change into your local WebApp repository folder, and set up a remote for upstream:  
 `$ git remote add upstream git@github.com:wevote/WebApp.git`  
 
 5.Create ssh keys: `ssh-keygen -t rsa -C "youremail@somedomain.com"`  
@@ -31,18 +28,6 @@
 7.`pbcopy < ~/.ssh/id_rsa.pub` OR `pbcopy < ~/.ssh/github_rsa.pub`
 
 8.Go paste your keys into Github, under SSH Keys for your account.  
-
-9.Set up a git client where origin is a fork of the repository (e.g.
-  pertrai1/WebApp), and upstream is the real deal (e.g. wevote/WebApp) 
-
-### Clone the repo
-
-* Click the GitHub fork button to create your own fork
-* Clone your fork of the repo to your dev system
-
-```
-git clone git@github.com:pertrai1/wevote.git
-```
 
 
 ---

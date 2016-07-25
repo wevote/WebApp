@@ -37,11 +37,12 @@ Next, make sure that master is in sync with the upstream source of truth:
 
 ## Connect Your Personal Fork To wevote/WebApp
 
-Make sure your are connecting this way:
-`vi .git/config`
+  `cd PersonalGitForks/WebApp`
+  `vi .git/config`
 
 Replace the “url” connection string under [remote “origin”] with:
-`url = git@github.com:YOUR_GITHUB_ACCOUNT/WebApp.git`
+
+  `url = git@github.com:YOUR_GITHUB_ACCOUNT/WebApp.git`
 
 Make sure your `[remote “upstream”]` lines look like this:
 
@@ -50,7 +51,8 @@ Make sure your `[remote “upstream”]` lines look like this:
             fetch = +refs/heads/*:refs/remotes/upstream/*
         
 Run this command to confirm your setup:
-`git remote -v`
+
+  `git remote -v`
 
 You should see:
 

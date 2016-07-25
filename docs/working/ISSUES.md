@@ -15,6 +15,8 @@
  
 ## Reporting bugs
 
+You can report bugs / issues on our <a href="https://github.com/wevote/WebApp/issues" target="_blank" />Github Issues Page</a>.
+
 Bug reports should contain the following information:
 
 * Summary: A brief description.
