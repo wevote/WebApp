@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import Image from "../../components/Image";
-import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
+import { abbreviateNumber, numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
 
 export default class TwitterAccountCard extends Component {
   static propTypes = {
@@ -46,12 +46,17 @@ export default class TwitterAccountCard extends Component {
               {twitter_followers_count ?
                 <span className="twitter-followers__badge">
                   <span className="fa fa-twitter twitter-followers__icon"></span>
-                  {numberWithCommas(twitter_followers_count)}
+                  <span title={numberWithCommas(twitter_followers_count)}>{abbreviateNumber(twitter_followers_count)}</span>
                 </span> :
                 null
               }
-              &nbsp;&nbsp;
-              <a href={twitter_user_website} target="_blank">Website</a><br />
+              {twitter_user_website ?
+                <span>
+                  &nbsp;&nbsp;
+                  <a href={twitter_user_website} target="_blank">Website</a><br />
+                </span>:
+                null
+              }
             </div>
           </div>
         </div>

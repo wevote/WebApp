@@ -4,38 +4,7 @@ const assign = require("object-assign");
 import SearchAllActions from "../actions/SearchAllActions";
 
 class SearchAllStore extends FluxMapStore {
-
-  // getInitialState () {
-  //   return {
-  //     search_type: "",
-  //     text_from_search_field: "",
-  //     search_results: [],
-  //   };
-  // }
-
-  // getGroomedSearchResults (search_results) {
-  //   const state = this.getState();
-  //   let search_results_groomed = [];
-  //   // searchAll API returns search results with candidates that may be the same politician multiple times
-  //   //  We want to only return one entry per candidate
-  //   let uniq_arr = search_results.filter( (value, index, self) => { return self.indexOf(value) === index; });
-  //   uniq_arr.forEach( we_vote_id => {
-  //     search_results_groomed.push( state.data[we_vote_id] );
-  //   });
-  //   console.log("SearchAllStore, getGroomedSearchResults, search_results_groomed: " + search_results_groomed);
-  //   return search_results_groomed;
-  // }
-  //
-  // getSearchResultsOld (){
-  //   console.log("SearchAllStore, getSearchResults, this.getState().search_results: " + this.getState().search_results);
-  //   return this.getGroomedSearchResults(this.getState().search_results);
-  // }
-
   getSearchResults (){
-    // console.log("SearchAllStore, getSearchResults, this.getState().search_results: " + this.getState().search_results);
-    // console.log("SearchAllStore, getSearchResults, this.getState().search_results_new: " + this.getState().search_results_new);
-    // return this.getState().search_results;
-    // console.log("SearchAllStore, getSearchResults, this.getState().search_results_new: " + this.getState().search_results_new);
     return this.getState().search_results_new;
   }
 
@@ -44,17 +13,14 @@ class SearchAllStore extends FluxMapStore {
   }
 
   isRecentSearch (){
-    console.log("isRecentSearch: " + this.getState().search_type);
     return this.getState().search_type === "RECENT_SEARCH";
   }
 
   isRelatedSearch (){
-    console.log("isRelatedSearch: " + this.getState().search_type);
     return this.getState().search_type === "RELATED_SEARCH";
   }
 
   isSearchInProgress (){
-    console.log("isSearchInProgress, true");
     return true;
     // return this.getState().search_type === "SEARCH_IN_PROGRESS";
   }

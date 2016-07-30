@@ -10,9 +10,9 @@ export function numberWithCommas (raw_number) {
 }
 
 export function abbreviateNumber (num) {
-  // =< 1,000,000 - round to ten-thousand (1.45M)
+  // =< 1,000,000 - round to hundred-thousand (1.4M)
   if (num >= 1000000) {
-    return (num / 1000000).toFixed(2).replace(/\.0$/, "") + "M";
+    return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
   }
   // 100,000 – 999,999 - round to nearest thousand (847K)
   if (num >= 100000) {

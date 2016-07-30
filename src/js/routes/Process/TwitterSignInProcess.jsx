@@ -22,7 +22,6 @@ export default class TwitterSignInProcess extends Component {
   }
 
   componentWillMount () {
-    console.log("componentWillMount, sign_in_step: " + this.props.params.sign_in_step);
     if (this.props.params.sign_in_step === undefined || this.props.params.sign_in_step === "signinstart") {
       this._onVoterStoreChange();
     } else if (this.props.params.sign_in_step === "signinswitchstart") {
@@ -36,30 +35,25 @@ export default class TwitterSignInProcess extends Component {
 
     var {voter} = this.state;
     var return_url;
-    console.log("componentDidMount, sign_in_step: " + this.props.params.sign_in_step);
     if (this.props.params.sign_in_step === undefined || this.props.params.sign_in_step === "signinstart") {
       if (voter !== undefined && (voter.signed_in_twitter || voter.signed_in_facebook)) {
         // We don't want to start the sign in process again if they are already signed in, so we redirect to the
         // sign in status page
         browserHistory.push("/more/sign_in");
       } else {
-        console.log("signinstart, return_url: /more/sign_in/");
         return_url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/more/sign_in/";
         this.twitterSignInStart(return_url);
       }
     } else if (this.props.params.sign_in_step === "signinswitchstart") {
       if (voter !== undefined && (voter.signed_in_twitter || voter.signed_in_facebook)) {
-        console.log("signinswitchstart, In componentDidMount - still signed in. Signing out now.");
         FacebookActions.appLogout();
       } else {
         // We call twitterSignInStart from here for the case where the person is already signed out
         return_url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/twittersigninprocess/signinswitchend";
-        console.log("signinswitchstart, signed out, In componentDidMount -- about to call twitterSignInStart, return_url: ", return_url);
         this.twitterSignInStart(return_url);
       }
     } else if (this.props.params.sign_in_step === "signinswitchend") {
       // Redirect to the TwitterHandle page for the screen name added at the end of the return_url in the URL
-      console.log("signinswitchend, incoming_twitter_handle: ", this.props.params.incoming_twitter_handle);
       if (this.props.params.incoming_twitter_handle !== undefined) {
         browserHistory.push("/" + this.props.params.incoming_twitter_handle);
       } else {
@@ -73,11 +67,8 @@ export default class TwitterSignInProcess extends Component {
     if (this.props.params.sign_in_step === "signinswitchstart") {
       if (voter !== undefined && (voter.signed_in_twitter || voter.signed_in_facebook)) {
         // We are waiting for logout to take hold
-        console.log("In componentDidUpdate - waiting for logout to take hold (signed in)");
       } else {
-        console.log("In componentDidUpdate - waiting for logout to take hold (not signed in)");
         let return_url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/twittersigninprocess/signinswitchend";
-        console.log("In componentDidUpdate -- about to call twitterSignInStart, return_url: ", return_url);
         this.twitterSignInStart(return_url);
       }
     }
@@ -97,7 +88,6 @@ export default class TwitterSignInProcess extends Component {
       data: { return_url: return_url },
       success: res => {
         if (res.twitter_redirect_url) {
-          console.log("twitterSignInStart res.twitter_redirect_url: ", res.twitter_redirect_url);
           window.location.assign(res.twitter_redirect_url);
         } else {
           // There is a problem signing in
@@ -116,7 +106,6 @@ export default class TwitterSignInProcess extends Component {
   }
 
   render () {
-    console.log("(this.props.params.sign_in_step === '", this.props.params.sign_in_step, "')");
     if (this.props.params.sign_in_step === undefined || this.props.params.sign_in_step === "signinstart") {
       return <div>
         Please wait...

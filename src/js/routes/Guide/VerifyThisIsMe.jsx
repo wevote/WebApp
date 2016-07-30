@@ -1,17 +1,16 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 import { browserHistory, Link } from "react-router";
-import { $ajax } from "../../utils/service";
-import CandidateActions from "../../actions/CandidateActions";
 import CandidateItem from "../../components/Ballot/CandidateItem";
 import CandidateStore from "../../stores/CandidateStore";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import LoadingWheel from "../../components/LoadingWheel";
 import OfficeStore from "../../stores/OfficeStore";
-import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
 import TwitterAccountCard from "../../components/Twitter/TwitterAccountCard";
+import TwitterActions from "../../actions/TwitterActions";
+import TwitterStore from "../../stores/TwitterStore";
 import VoterStore from "../../stores/VoterStore";
 
 export default class VerifyThisIsMe extends Component {
@@ -25,15 +24,12 @@ export default class VerifyThisIsMe extends Component {
     this.state = {candidate: {}, office: {} };
   }
 
-  componentWillMount () {
-  }
-
   componentDidMount () {
     console.log("VerifyThisIsMe, Entering componentDidMount");
 
     this._onVoterStoreChange();
     console.log("VerifyThisIsMe, componentDidMount: " + this.props.params.twitter_handle);
-    this.twitterIdentityRetrieve(this.props.params.twitter_handle);
+    TwitterActions.twitterIdentityRetrieve(this.props.params.twitter_handle);
 
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
@@ -41,6 +37,7 @@ export default class VerifyThisIsMe extends Component {
     this.candidateStoreListener = CandidateStore.addListener(this._onCandidateStoreChange.bind(this));
     this.officeStoreListener = OfficeStore.addListener(this._onCandidateStoreChange.bind(this));
 
+    this.twitterStoreListener = TwitterStore.addListener(this._onTwitterStoreChange.bind(this));
   }
 
   componentWillUnmount (){
@@ -48,6 +45,7 @@ export default class VerifyThisIsMe extends Component {
     this.officeStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
+    this.twitterStoreListener.remove();
   }
 
   _onVoterStoreChange () {
@@ -56,41 +54,43 @@ export default class VerifyThisIsMe extends Component {
   }
 
   _onOrganizationStoreChange (){
-    console.log("Entering _onOrganizationStoreChange, this.state.owner_we_vote_id: " + this.state.owner_we_vote_id);
-    this.setState({ organization: OrganizationStore.get(this.state.owner_we_vote_id)});
+    let { kind_of_owner, owner_we_vote_id, status } = TwitterStore.get();
+    console.log("Entering _onOrganizationStoreChange, owner_we_vote_id: " + owner_we_vote_id);
+    this.setState({
+      organization: OrganizationStore.get(owner_we_vote_id),
+    });
   }
 
   _onCandidateStoreChange (){
-    var candidate = CandidateStore.get(this.state.owner_we_vote_id) || {};
-    this.setState({ candidate: candidate });
+    let { kind_of_owner, owner_we_vote_id, status } = TwitterStore.get();
+    var candidate = CandidateStore.get(owner_we_vote_id) || {};
+    this.setState({
+      candidate: candidate,
+    });
 
     if (candidate.contest_office_we_vote_id){
       this.setState({ office: OfficeStore.get(candidate.contest_office_we_vote_id) || {} });
     }
   }
 
-  twitterIdentityRetrieve (new_twitter_handle) {
-    $ajax({
-      endpoint: "twitterIdentityRetrieve",
-      data: { twitter_handle: new_twitter_handle },
-      success: res => {
-        console.log("twitterIdentityRetrieve res: ", res);
-        this.setState(res);
-        let owner_we_vote_id = this.state.owner_we_vote_id;
-        console.log("owner_we_vote_id: " + owner_we_vote_id);
+  _onTwitterStoreChange () {
+    let { kind_of_owner, owner_we_vote_id, twitter_handle, twitter_description, twitter_followers_count, twitter_name,
+      twitter_photo_url, twitter_user_website,
+      status } = TwitterStore.get();
 
-        if (this.state.kind_of_owner === "ORGANIZATION") {
-          OrganizationActions.retrieve(owner_we_vote_id);
-        } else if (this.state.kind_of_owner === "CANDIDATE") {
-          CandidateActions.retrieve(owner_we_vote_id);
-        }
+    console.log("Entering _onTwitterStoreChange, owner_we_vote_id: " + owner_we_vote_id);
 
-      },
-      error: res => {
-        console.log( res);
-        this.setState(res);
-      }
-    });
+    this.setState({
+      kind_of_owner: kind_of_owner,
+      owner_we_vote_id: owner_we_vote_id,
+      twitter_handle: twitter_handle,
+      twitter_description: twitter_description,
+      twitter_followers_count: twitter_followers_count,
+      twitter_name: twitter_name,
+      twitter_photo_url: twitter_photo_url,
+      twitter_user_website: twitter_user_website,
+      status: status
+   });
   }
 
   render () {
@@ -104,12 +104,13 @@ export default class VerifyThisIsMe extends Component {
       signed_in_with_this_twitter_account = voter.twitter_screen_name.toLowerCase() === this.props.params.twitter_handle.toLowerCase();
       if (signed_in_with_this_twitter_account) {
         // If we are being asked to verify the account we are already signed into, return to the TwitterHandle page
+        console.log("signed_in_with_this_twitter_account is True");
         browserHistory.push("/" + voter.twitter_screen_name);
       }
     }
 
     if (this.state.status === undefined){
-      console.log("this.state.status === undefined");
+      // Show a loading wheel while this component's data is loading
       return LoadingWheel;
     } else if (this.state.kind_of_owner === "CANDIDATE"){
       console.log("this.state.kind_of_owner === CANDIDATE");

@@ -19,11 +19,11 @@ export default class ThisIsMeAction extends Component {
 
   componentDidMount () {
     this._onVoterStoreChange();
-    this.listener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount (){
-    this.listener.remove();
+    this.voterStoreListener.remove();
   }
 
   _onVoterStoreChange () {
@@ -34,12 +34,12 @@ export default class ThisIsMeAction extends Component {
     let twitter_handle_being_viewed = this.props.twitter_handle_being_viewed;
     let kind_of_owner = this.props.kind_of_owner;
     let name_being_viewed = this.props.name_being_viewed || "";
-   // Manage the control over this organization voter guide
+    // Manage the control over this organization voter guide
     var {voter} = this.state;
     var signed_in_twitter = voter === undefined ? false : voter.signed_in_twitter;
     var signed_in_with_this_twitter_account = false;
     if (signed_in_twitter) {
-      signed_in_with_this_twitter_account = voter.twitter_screen_name === twitter_handle_being_viewed;
+      signed_in_with_this_twitter_account = voter.twitter_screen_name.toLowerCase() === twitter_handle_being_viewed.toLowerCase();
     }
 
     var this_is_me_action_text;

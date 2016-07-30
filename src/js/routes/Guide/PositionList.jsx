@@ -21,7 +21,7 @@ export default class GuidePositionList extends Component {
   }
 
   componentDidMount (){
-    this.listener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
 
     var { we_vote_id } = this.state;
 
@@ -55,7 +55,7 @@ export default class GuidePositionList extends Component {
   }
 
   componentWillUnmount (){
-    this.listener.remove();
+    this.organizationStoreListener.remove();
   }
 
   _onOrganizationStoreChange (){
@@ -68,8 +68,10 @@ export default class GuidePositionList extends Component {
       return <div>{LoadingWheel}</div>;
     }
 
-    const {organization_twitter_handle, position_list_for_one_election, position_list_for_all_except_one_election} = this.state.organization;
+    const { position_list_for_one_election, position_list_for_all_except_one_election } = this.state.organization;
     var { we_vote_id } = this.state;
+
+    // DALE TODO 2016/7/28 - If this is me, show public vs. friends-only tab
 
     return <span>
         <div className="card__container">
@@ -98,7 +100,7 @@ export default class GuidePositionList extends Component {
           </ul>
         </div>
         <br />
-        <ThisIsMeAction twitter_handle_being_viewed={organization_twitter_handle}
+        <ThisIsMeAction twitter_handle_being_viewed={this.state.organization.organization_twitter_handle}
                         name_being_viewed={this.state.organization.organization_name}
                         kind_of_owner="ORGANIZATION" />
         <br />
