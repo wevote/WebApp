@@ -92,11 +92,11 @@ export default class Header extends Component {
               </li>
               { signed_in_personal ?
                 <li>
-                  <div onClick={logOut}>
-                    <a>
-                    Sign Out
-                    </a>
-                  </div>
+                  <Link onClick={this.hide.bind(this)} to="/more/sign_in">
+                    <div onClick={logOut}>
+                      Sign Out
+                    </div>
+                  </Link>
                 </li> :
                 <li>
                   <Link onClick={this.hide.bind(this)} to="/more/sign_in">

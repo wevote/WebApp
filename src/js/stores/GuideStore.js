@@ -60,7 +60,6 @@ class GuideStore extends FluxMapStore {
 
       case "voterAddressRetrieve": // refresh guides when you change address
         id = action.res.google_civic_election_id;
-        console.log("refreshing guides! id:", id);
         GuideActions.retrieveGuidesToFollow(id);
         GuideActions.retrieveGuidesFollowed(id);
         return state;
@@ -74,7 +73,6 @@ class GuideStore extends FluxMapStore {
 
         // If no voter guides found , and it's not a search query, retrieve results for all elections
         if (is_empty && is_this_ballot && !is_search ){
-          console.log("No guides found for ballot, retrieving guides not on ballot");
           GuideActions.retrieveGuidesToFollow(0);
           return state;
         }

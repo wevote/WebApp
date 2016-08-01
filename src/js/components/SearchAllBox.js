@@ -18,7 +18,6 @@ export default class SearchAllBox extends Component {
   }
 
   componentDidMount (){
-    console.log("Entering SearchAllBox, componentDidMount");
     this.searchAllListener = SearchAllStore.addListener(this._onSearchAllStoreChange.bind(this));
     // When we first enter we want to retrieve values to have for a click in the search box
     let text_from_search_field = this.props.text_from_search_field;
@@ -54,7 +53,6 @@ export default class SearchAllBox extends Component {
 
   onSearchFieldTextChange (event){
     let text_from_search_field = event.target.value;
-    console.log("onSearchFieldTextChange: " + text_from_search_field);
     SearchAllActions.searchAll(text_from_search_field);
     this.setState({search_results: ''});
   }
