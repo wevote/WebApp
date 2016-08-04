@@ -102,18 +102,15 @@ export default class EditPositionAboutCandidateModal extends Component {
     //   is_for_friends_only
     // } = this.props;
 
-    return <Modal {...this.props} bsSize="large" aria-labelledby="contained-modal-title-lg">
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{this.props.ballot_item_display_name}</Modal.Title>
+    return <Modal {...this.props} bsClass="bs-modal" bsSize="large" aria-labelledby="contained-modal-title-lg">
+        <Modal.Header bsClass="bs-modal" closeButton>
+          <Modal.Title bsClass="bs-modal" id="contained-modal-title-lg">{this.props.ballot_item_display_name}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body bsClass="bs-modal" >
           <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
           <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
           <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
         </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={this.props.onHide}>Close</Button>
-        </Modal.Footer>
       </Modal>;
     // // Manage the control over this organization voter guide
     // var {candidate, office, organization, voter} = this.state;
