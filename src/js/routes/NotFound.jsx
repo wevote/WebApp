@@ -5,6 +5,7 @@ import Candidate from "./Ballot/Candidate";
 import LoadingWheel from "../components/LoadingWheel";
 import GuidePositionList from "./Guide/PositionList";
 import OrganizationActions from "../actions/OrganizationActions";
+import PositionListForFriends from "./Guide/PositionListForFriends";
 import TwitterActions from "../actions/TwitterActions";
 import TwitterStore from "../stores/TwitterStore";
 import UnknownTwitterAccount from "./Guide/UnknownTwitterAccount";
@@ -70,12 +71,17 @@ export default class NotFound extends Component {
       return LoadingWheel;
     }
 
-    var { voter, kind_of_owner, we_vote_id, twitter_handle } = this.state;
-    var signed_in_twitter = voter === undefined ? false : voter.signed_in_twitter;
-    var signed_in_with_this_twitter_account = false;
+    const { voter, kind_of_owner, we_vote_id, twitter_handle } = this.state;
+    let signed_in_twitter = voter === undefined ? false : voter.signed_in_twitter;
+    let signed_in_with_this_twitter_account = false;
+    let looking_at_positions_for_friends_only = false;
     if (signed_in_twitter) {
       let twitter_handle_being_viewed = twitter_handle;
+      // That is, you are looking at yourself
       signed_in_with_this_twitter_account = voter.twitter_screen_name === twitter_handle_being_viewed;
+
+      // TODO DALE - Do we want to give people a way to only see the positions that are only visible to their friends?
+      looking_at_positions_for_friends_only = false;
     }
 
     // If signed_in_with_this_twitter_account AND not an ORGANIZATION or POLITICIAN, then create ORGANIZATION
@@ -93,7 +99,13 @@ export default class NotFound extends Component {
       return <Candidate we_vote_id {...this.props} />;
     } else if (this.state.kind_of_owner === "ORGANIZATION"){
       this.props.params.we_vote_id = this.state.owner_we_vote_id;
-      return <GuidePositionList we_vote_id {...this.props} />;
+      if (looking_at_positions_for_friends_only) {
+        console.log("looking_at_positions_for_friends_only is TRUE");
+        return <PositionListForFriends we_vote_id {...this.props} />;
+      } else {
+        console.log("looking_at_positions_for_friends_only is FALSE");
+        return <GuidePositionList we_vote_id {...this.props} />;
+      }
     } else if (this.state.kind_of_owner === "TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE"){
       return <UnknownTwitterAccount {...this.state} />;
     } else {

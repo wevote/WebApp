@@ -10,7 +10,7 @@ const links = {
     var jsx =
       <Link to="/ballot" className={ "navicon" + (active ? " active-icon" : "")}>
         <div className="bs-col-xs-3 bs-center-block bs-text-center">
-          <span className={icon} title="Ballot"></span>
+          <span className={icon} title="Ballot" />
           <br/>
           <span className="bs-text-center small device-small--hide">
             Ballot
@@ -28,8 +28,7 @@ const links = {
     var jsx =
       <Link to="/requests" className={ "navicon" + (active ? " active-icon" : "")}>
         <div className="bs-col-xs-3 bs-center-block bs-text-center">
-          <span className={icon} title="Requests">
-          </span>
+          <span className={icon} title="Requests" />
           <br/>
           <span className="bs-text-center small device-small--hide">
             Requests
@@ -46,7 +45,7 @@ const links = {
     var jsx =
       <Link to="/connect" className={ "navicon" + (active ? " active-icon" : "")}>
         <div className="bs-col-xs-3 bs-center-block bs-text-center">
-          <span className={icon} title="Connect"></span>
+          <span className={icon} title="Connect" />
           <br/>
           <span className="bs-text-center small device-small--hide">
             Connect
@@ -63,7 +62,7 @@ const links = {
     var jsx =
       <Link to="/activity" className={ "navicon" + (active ? " active-icon" : "")}>
         <div className="bs-col-xs-3 bs-center-block bs-text-center">
-          <span className={icon} title="Activity"></span>
+          <span className={icon} title="Activity" />
           <br/>
           <span className="bs-text-center small device-small--hide">
             Activity
