@@ -65,23 +65,23 @@ export default class SignIn extends Component {
     }
 
     return <div className="">
-      <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
-        <h3 className="bs-text-center">{voter.signed_in_personal ? <span>My Account</span> : <span>Sign In</span>}</h3>
-        <div className="bs-text-center">
+      <div className="container-fluid well u-gutter-top--small fluff-full1">
+        <h3 className="text-center">{voter.signed_in_personal ? <span>My Account</span> : <span>Sign In</span>}</h3>
+        <div className="text-center">
           {voter.signed_in_facebook ?
-            <span><a className="bs-btn btn-social bs-btn-lg btn-facebook" onClick={FacebookActions.appLogout}>
+            <span><a className="btn btn-social btn-lg btn-facebook" onClick={FacebookActions.appLogout}>
             <i className="fa fa-facebook"></i>Sign Out</a></span> : facebook_sign_in_option
           }
           <br />
           <br />
           {/* appLogout signs out the voter, regardless of how they are signed in */}
           {voter.signed_in_twitter ?
-            <span><a className="bs-btn btn-social bs-btn-lg btn-twitter" onClick={FacebookActions.appLogout}>
+            <span><a className="btn btn-social btn-lg btn-twitter" onClick={FacebookActions.appLogout}>
             <i className="fa fa-twitter"></i>Sign Out</a></span> : twitter_sign_in_option
           }
           {/*
           <div>
-            <Link to="add_friends_confirmed" className="bs-btn btn-social bs-btn-lg btn-google">
+            <Link to="add_friends_confirmed" className="btn btn-social btn-lg btn-google">
               <i className="fa fa-google"></i>Sign in with Google
             </Link>
           </div>
@@ -90,13 +90,13 @@ export default class SignIn extends Component {
         <br />
         <br />
         {/*
-        <div className="bs-text-center">
+        <div className="text-center">
           {voter.signed_in_facebook ? <FacebookDisconnect /> : null}
         </div>
         */}
 
         {debug_mode &&
-        <div className="bs-text-center">
+        <div className="text-center">
           signed_in_personal: {voter.signed_in_personal ? <span>True</span> : null}<br />
           signed_in_facebook: {voter.signed_in_facebook ? <span>True</span> : null}<br />
           signed_in_twitter: {voter.signed_in_twitter ? <span>True</span> : null}<br />

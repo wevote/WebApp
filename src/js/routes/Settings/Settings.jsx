@@ -7,7 +7,7 @@ export default class Settings extends Component {
     };
 
     render () {
-        return <li className="bs-list-group settings center">
+        return <li className="list-group settings center">
                 <Link className="group-item" to="/settings/location"> Location </Link>
             </li>;
     }

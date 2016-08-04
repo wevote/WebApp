@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import AddressBox from "../../components/AddressBox";
 
 export default class Location extends Component {
-      // <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
+      // <div className="container-fluid well u-gutter-top--small fluff-full1">
       //   <div>
       //     <div className="medium">
       //       March 2016: This site is a demo version of We Vote.
@@ -21,8 +21,8 @@ export default class Location extends Component {
 
   render () {
     return <div>
-      <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
-        <h3 className="bs-text-center">
+      <div className="container-fluid well u-gutter-top--small fluff-full1">
+        <h3 className="text-center">
           Enter address where you are registered to vote
         </h3>
         <div>

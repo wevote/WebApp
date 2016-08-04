@@ -26,12 +26,12 @@
 .organization-item__follow-buttons {
   display: flex;
   align-items: flex-end;
-  .bs-btn {
+  .btn {
     margin: 0 5px 0 0;
   }
   @include breakpoints(medium) {
     flex-direction: column;
-    .bs-btn {
+    .btn {
       margin: 0 0 5px;
     }
   }

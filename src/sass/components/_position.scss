@@ -46,7 +46,6 @@
   color: $mid-gray;
 }
 
-
 // Position Ratings
 
 @include media-object('.position-rating', '.position-rating__icon', '.position-rating__text', $margin: 5px);

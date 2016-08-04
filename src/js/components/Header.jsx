@@ -45,17 +45,17 @@ export default class Header extends Component {
         image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
     }
 
-    return <section className="separate-bottom u-gutter-top--small bs-container-fluid">
+    return <section className="separate-bottom u-gutter-top--small container-fluid">
         {/* The components/MoreMenu code has to be reproduced here for mobile */}
         <Menu styles={ menuStyles }>
           <div className="device-menu--mobile">
-            <ul className="bs-nav bs-nav-stacked">
+            <ul className="nav nav-stacked">
               <li>
                 <div><span className="we-vote-promise">We Vote's Promise: We will never sell your email.</span></div>
               </li>
             </ul>
-            <h4 className="bs-text-left"></h4>
-            <ul className="bs-nav bs-nav-stacked">
+            <h4 className="text-left"></h4>
+            <ul className="nav nav-stacked">
               { signed_in_twitter && twitter_screen_name ?
                 <li>
                   <Link onClick={this.hide.bind(this)} to={"/" + twitter_screen_name}>
@@ -102,8 +102,8 @@ export default class Header extends Component {
                   </Link>
                 </li> }
             </ul>
-            <h4 className="bs-text-left"></h4>
-            <ul className="bs-nav bs-nav-stacked">
+            <h4 className="text-left"></h4>
+            <ul className="nav nav-stacked">
               <li>
                 <Link onClick={this.hide.bind(this)} to="/more/about">
                   <div>
@@ -114,7 +114,7 @@ export default class Header extends Component {
             </ul>
           </div>
         </Menu>
-        <h4 className="bs-pull-left page-logo">
+        <h4 className="pull-left page-logo">
           <Link to="/ballot">
             Your Voter Guide
           </Link>

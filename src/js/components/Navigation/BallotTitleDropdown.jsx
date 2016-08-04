@@ -39,15 +39,15 @@ export default class BallotTitleDropdown extends Component {
 
     var position_icon = "";
 
-    return <div className="bs-btn-group bs-open">
+    return <div className="btn-group open">
       <button onClick={onClick}
-              className="dropdown ballot-title-dropdown__btn ballot-title-dropdown__btn--position-selected bs-btn bs-btn-default">
+              className="dropdown ballot-title-dropdown__btn ballot-title-dropdown__btn--position-selected btn btn-default">
         {position_icon}
         <span className="ballot-title-dropdown__header-text">{this.getBallotTitle(ballot_type)}</span>
-        <span className="bs-caret" />
+        <span className="caret" />
       </button>
       {this.state.open &&
-        <ul className="bs-dropdown-menu">
+        <ul className="dropdown-menu">
           { ballot_type == "ALL_BALLOT_ITEMS" ?
             null :
             <li>

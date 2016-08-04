@@ -28,7 +28,7 @@ export default class PositionRatingSnippet extends Component {
       className = "position-rating__icon position-rating__icon--mixed";
       alt = "Mixed Rating";
     }
-    const popoverClickRootClose = <Popover bsClass="bs-popover" id="popover-trigger-click-root-close" title="Popover bottom">
+    const popoverClickRootClose = <Popover id="popover-trigger-click-root-close" title="Popover bottom">
         <strong>Holy guacamole!</strong> Check this info.
       </Popover>;
 

@@ -30,7 +30,7 @@ export default class GuideList extends Component {
     const orgs = this.state.organizations.map( (org) => {
       return <Organization key={org.organization_we_vote_id} {...org}>
             <FollowToggle we_vote_id={org.organization_we_vote_id} />
-              <button className="bs-btn bs-btn-default bs-btn-sm"
+              <button className="btn btn-default btn-sm"
                       onClick={this.handleIgnore.bind(this, org.organization_we_vote_id)}>
                 Ignore
               </button>

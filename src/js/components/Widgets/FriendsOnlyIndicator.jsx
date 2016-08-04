@@ -7,7 +7,7 @@ export default class FriendsOnlyIndicator extends Component {
   }
 
 	render () {
-    return <span className="friends-only-indicator bs-glyphicon bs-glyphicon-user"
+    return <span className="friends-only-indicator glyphicon glyphicon-user"
                  title="This position only displayed to friends" />;
 	}
 }

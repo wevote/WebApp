@@ -38,15 +38,15 @@ export default class followingDropdown extends Component {
 
     var position_icon = "";
 
-    return <div className="bs-btn-group bs-open">
+    return <div className="btn-group open">
       <button onClick={onClick}
-              className="dropdown voter-following-dropdown__btn voter-following-dropdown__btn--position-selected bs-btn bs-btn-default">
+              className="dropdown voter-following-dropdown__btn voter-following-dropdown__btn--position-selected btn btn-default">
         {position_icon}
         <span className="voter-following-dropdown__header-text">{this.getFollowingTitle(following_type)}</span>
-        <span className="bs-caret" />
+        <span className="caret" />
       </button>
       {this.state.open &&
-        <ul className="bs-dropdown-menu">
+        <ul className="dropdown-menu">
           { following_type == "WHO_YOU_CAN_FOLLOW" ?
             null :
             <li>

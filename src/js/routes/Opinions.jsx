@@ -60,7 +60,7 @@ export default class Opinions extends Component {
     if ( address === "" ){
       guides = <div>
           <span style={floatRight}>
-              <Link to="/settings/location"><Button bsClass="bs-btn" bsStyle="primary">Enter your address &#x21AC;</Button></Link>
+              <Link to="/settings/location"><Button bsStyle="primary">Enter your address &#x21AC;</Button></Link>
           </span>
           <p>Enter your address so we can find voter guides to follow.</p>
         </div>;
@@ -83,8 +83,8 @@ export default class Opinions extends Component {
 
     const content =
       <div className="opinion-view">
-        <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
-          <div className="bs-text-center"><FollowingDropdown following_type={this.getFollowingType()} /></div>
+        <div className="container-fluid well u-gutter-top--small fluff-full1">
+          <div className="text-center"><FollowingDropdown following_type={this.getFollowingType()} /></div>
           {guides}
         </div>
       </div>;

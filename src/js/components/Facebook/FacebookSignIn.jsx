@@ -6,7 +6,7 @@ class FacebookSignIn extends React.Component {
     super(props);
   }
   render () {
-    return <a className="bs-btn btn-social bs-btn-lg btn-facebook" onClick={this.didClickFacebookSignInButton}>
+    return <a className="btn btn-social btn-lg btn-facebook" onClick={this.didClickFacebookSignInButton}>
       <i className="fa fa-facebook"></i>Sign in with Facebook
     </a>;
   }

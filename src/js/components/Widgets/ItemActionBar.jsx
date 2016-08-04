@@ -97,13 +97,13 @@ export default class ItemActionBar extends Component {
           <PositionDropdown removePosition={removePosition} positionIcon={positionIcon} positionText={positionText}/> :
           // Voter hasn't supported or opposed, show both options
           <div>
-            <button className="item-actionbar__btn item-actionbar__btn--support bs-btn bs-btn-default" onClick={this.supportItem.bind(this)}>
+            <button className="item-actionbar__btn item-actionbar__btn--support btn btn-default" onClick={this.supportItem.bind(this)}>
               <span className="btn__icon">
                 <Icon name="thumbs-up-icon" width={iconSize} height={iconSize} color={iconColor} />
               </span>
               <span>Support</span>
             </button>
-            <button className="item-actionbar__btn item-actionbar__btn--oppose bs-btn bs-btn-default" onClick={this.opposeItem.bind(this)}>
+            <button className="item-actionbar__btn item-actionbar__btn--oppose btn btn-default" onClick={this.opposeItem.bind(this)}>
               <span className="btn__icon">
                 <Icon name="thumbs-down-icon" width={iconSize} height={iconSize} color={iconColor} />
               </span>
@@ -112,8 +112,8 @@ export default class ItemActionBar extends Component {
           </div>
         }
         <button className={!is_oppose && !is_support ?
-          "item-actionbar__btn item-actionbar__btn--share bs-btn bs-btn-default bs-hidden-xs" :
-          "item-actionbar__btn item-actionbar__btn--share bs-btn bs-btn-default"}
+          "item-actionbar__btn item-actionbar__btn--share btn btn-default hidden-xs" :
+          "item-actionbar__btn item-actionbar__btn--share btn btn-default"}
                 onClick={this.share.bind(this)} >
           <span className="btn__icon">
             <Icon name="share-icon" width={iconSize} height={iconSize} color={iconColor} />
@@ -121,11 +121,11 @@ export default class ItemActionBar extends Component {
           Share
         </button>
         { is_public_position ?
-        <button className="item-actionbar__btn-public item-actionbar__btn-public--visibility bs-btn bs-btn-default bs-btn-xs"
+        <button className="item-actionbar__btn-public item-actionbar__btn-public--visibility btn btn-default btn-xs"
                 onClick={this.showItemToFriendsOnly.bind(this)}>
           <span>Public</span>
         </button> :
-        <button className="item-actionbar__btn item-actionbar__btn--visibility bs-btn bs-btn-default bs-btn-xs"
+        <button className="item-actionbar__btn item-actionbar__btn--visibility btn btn-default btn-xs"
                 onClick={this.showItemToPublic.bind(this)}>
           <span>Friends</span>
         </button> }
