@@ -14,7 +14,7 @@ export default class PositionItem extends Component {
     speaker_display_name: PropTypes.string.isRequired,
     speaker_image_url_https: PropTypes.string,
     speaker_type: PropTypes.string,
-    speaker_twitter_handle: PropTypes.string.isRequired,
+    speaker_twitter_handle: PropTypes.string,
     statement_text: PropTypes.string,
     vote_smart_rating: PropTypes.string,
     vote_smart_time_span: PropTypes.string
