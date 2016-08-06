@@ -82,13 +82,13 @@ export default class ItemActionBar extends Component {
           <div>
             <button className="item-actionbar__btn item-actionbar__btn--support bs-btn bs-btn-default" onClick={this.supportItem.bind(this)}>
               <span className="btn__icon">
-                <Icon name="thumbs-up-icon" width={iconSize} height={iconSize} color="#999" />
+                <Icon name="thumbs-up-icon" width={iconSize} height={iconSize} color={iconColor} />
               </span>
               <span>Support</span>
             </button>
             <button className="item-actionbar__btn item-actionbar__btn--oppose bs-btn bs-btn-default" onClick={this.opposeItem.bind(this)}>
               <span className="btn__icon">
-                <Icon name="thumbs-down-icon" width={iconSize} height={iconSize} color="#999" />
+                <Icon name="thumbs-down-icon" width={iconSize} height={iconSize} color={iconColor} />
               </span>
               <span>Oppose</span>
             </button>
@@ -96,7 +96,7 @@ export default class ItemActionBar extends Component {
         }
         <button className={!is_oppose && !is_support ? "item-actionbar__btn item-actionbar__btn--share bs-btn bs-btn-default bs-hidden-xs" : "item-actionbar__btn item-actionbar__btn--share bs-btn bs-btn-default"} onClick={this.share.bind(this)} >
           <span className="btn__icon">
-            <Icon name="share-icon" width={iconSize} height={iconSize} color="#999" />
+            <Icon name="share-icon" width={iconSize} height={iconSize} color={iconColor} />
           </span>
           Share
         </button>

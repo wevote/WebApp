@@ -1,7 +1,5 @@
 var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
-const assign = require("object-assign");
-import SearchAllActions from "../actions/SearchAllActions";
 
 class SearchAllStore extends FluxMapStore {
   getSearchResults (){
@@ -41,7 +39,7 @@ class SearchAllStore extends FluxMapStore {
           alreadyContains = alreadyFoundTwitterHandles.indexOf(twitter_handle.toLowerCase()) > -1;
           if (!alreadyContains) {
             searchResults.push(one_search_result);
-            alreadyFoundTwitterHandles.push(twitter_handle.toLowerCase())
+            alreadyFoundTwitterHandles.push(twitter_handle.toLowerCase());
           }
         });
         return {

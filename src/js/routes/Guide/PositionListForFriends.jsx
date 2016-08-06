@@ -77,7 +77,11 @@ export default class PositionListForFriends extends Component {
           </div>
           <ul className="bs-list-group">
             { friends_position_list_for_one_election ?
-              friends_position_list_for_one_election.map( item => { return <OrganizationPositionItem key={item.position_we_vote_id} position={item}/>; }) :
+              friends_position_list_for_one_election.map( item => {
+                return <OrganizationPositionItem key={item.position_we_vote_id}
+                                                 position={item}
+                                                 organization={this.state.organization} />;
+              }) :
               <div>{LoadingWheel}</div>
             }
             { friends_position_list_for_all_except_one_election ?
@@ -89,7 +93,11 @@ export default class PositionListForFriends extends Component {
                   </span> :
                   <span></span>
                 }
-                { friends_position_list_for_all_except_one_election.map( item => { return <OrganizationPositionItem key={item.position_we_vote_id} position={item}/>; }) }
+                { friends_position_list_for_all_except_one_election.map( item => {
+                  return <OrganizationPositionItem key={item.position_we_vote_id}
+                                                   position={item}
+                                                   organization={this.state.organization} />;
+                }) }
               </span> :
               <div>{LoadingWheel}</div>
             }

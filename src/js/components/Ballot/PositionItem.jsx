@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
+import EditPositionAboutCandidateModal from "../../components/VoterGuide/EditPositionAboutCandidateModal";
+import FriendsOnlyIndicator from "../../components/Widgets/FriendsOnlyIndicator";
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
 import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
 import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
@@ -8,30 +10,35 @@ const moment = require("moment");
 export default class PositionItem extends Component {
   static propTypes = {
     candidate_display_name: PropTypes.string.isRequired,
-    last_updated: PropTypes.string,
-    more_info_url: PropTypes.string,
-    position_we_vote_id: PropTypes.string.isRequired,
-    speaker_display_name: PropTypes.string.isRequired,
-    speaker_image_url_https: PropTypes.string,
-    speaker_type: PropTypes.string,
-    speaker_twitter_handle: PropTypes.string,
-    statement_text: PropTypes.string,
-    vote_smart_rating: PropTypes.string,
-    vote_smart_time_span: PropTypes.string
+    //organization: PropTypes.object.isRequired,
+    position: PropTypes.object.isRequired
   };
 
+  constructor (props) {
+    super(props);
+    this.state = { showEditPositionModal: false };
+  }
+
+  closeEditPositionModal () {
+    this.setState({ showEditPositionModal: false });
+  }
+
+  openEditPositionModal () {
+    this.setState({ showEditPositionModal: true });
+  }
+
   render () {
-    var position = this.props;
-    var dateStr = this.props.last_updated;
+    var position = this.props.position;
+    var dateStr = position.last_updated;
     var dateText = moment(dateStr).startOf("day").fromNow();
     // TwitterHandle-based link
     var speakerLink = position.speaker_twitter_handle ? "/" + position.speaker_twitter_handle : "/voterguide/" + position.speaker_we_vote_id;
 
     let image_placeholder = "";
-    if (this.props.speaker_type === "O") {
-        image_placeholder = <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color position-item__avatar"></i>;
-    } else if (this.props.speaker_type === "V") {
-        image_placeholder = <i className="icon-org-lg icon-icon-person-placeholder-6-1 icon-org-resting-color position-item__avatar"></i>;
+    if (position.speaker_type === "O") {
+        image_placeholder = <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color position-item__avatar" />;
+    } else if (position.speaker_type === "V") {
+        image_placeholder = <i className="icon-org-lg icon-icon-person-placeholder-6-1 icon-org-resting-color position-item__avatar" />;
     }
 
     let position_description = "";
@@ -57,24 +64,46 @@ export default class PositionItem extends Component {
 
     var nothing_to_display = null;
 
-    var edit_mode = false;
+    var edit_mode = false;  // TODO DALE Convert this to be dynamically set
+    const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
+    // Only allow editing if the position we are passing in has a we_vote_id
+    // TODO DALE I need to think through passing in organization below
+    const edit_position_description = edit_mode && position !== undefined ?
+      <span>
+        <span className="edit-position-action"
+              onClick={onEditPositionClick}
+              title="Edit this position">
+          { position_description }
+        </span>
+        <EditPositionAboutCandidateModal show={this.state.showEditPositionModal}
+                                         onHide={this.closeEditPositionModal.bind(this)}
+                                         position={position}
+                                         organization={this.props.organization}/>
+      </span> :
+      null;
+
     var one_position_on_this_candidate = <li className="position-item">
       {/* One Position on this Candidate */}
-          { this.props.speaker_image_url_https ?
+        <Link to={speakerLink}>
+          { position.speaker_image_url_https ?
             <img className="bs-img-square position-item__avatar"
-                  src={this.props.speaker_image_url_https}
+                  src={position.speaker_image_url_https}
                   width="50px"
             /> :
           image_placeholder }
+        </Link>
         <div className="position-item__content">
           <h4 className="position-item__display-name">
             <Link to={speakerLink}>
-              { this.props.speaker_display_name }
+              { position.speaker_display_name }
             </Link>
           </h4>
-            { edit_mode ?
-              <span> EDIT MODE</span> :
-              position_description }
+          { edit_mode ?
+            edit_position_description:
+            position_description }
+          { position.is_for_friends_only ?
+            <FriendsOnlyIndicator /> :
+            null }
         </div>
         {/* Likes coming in a later version
         <br />
