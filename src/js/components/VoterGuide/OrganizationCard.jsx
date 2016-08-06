@@ -34,21 +34,21 @@ export default class OrganizationCard extends Component {
     return <div className="card__media-object">
           { organization_photo_url ?
             <Image imageUrl={organization_photo_url} class="card__media-object-anchor" /> :
-            <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color card__media-object-anchor"></i>
+            <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color card__media-object-anchor" />
           }
           <div className="card__media-object-content">
             <div className="card__display-name">{displayName}</div>
             { twitterDescriptionMinusName ?
               <p className="card__description">{twitterDescriptionMinusName}</p> :
-              null
+              <p className="card__description" />
             }
             { organization_twitter_handle ?
               <span>@{organization_twitter_handle}&nbsp;&nbsp;</span> :
-              <span></span>
+              null
             }
             {twitter_followers_count ?
               <span className="twitter-followers__badge">
-                <span className="fa fa-twitter twitter-followers__icon"></span>
+                <span className="fa fa-twitter twitter-followers__icon" />
                 {numberWithCommas(twitter_followers_count)}
               </span> :
               null

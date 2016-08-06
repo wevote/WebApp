@@ -68,3 +68,9 @@
   font-family: $heading-font-stack;
   font-size: 18px;
 }
+
+.edit-position-action {
+  &:hover {
+    cursor: pointer;
+  }
+}

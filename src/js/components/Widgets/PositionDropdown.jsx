@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from "react";
 
-export default class FollowToggle extends Component {
+export default class PositionDropdown extends Component {
   static propTypes = {
     params: PropTypes.object,
-    removePosition: PropTypes.object,
-    positionIcon: PropTypes.string,
+    removePosition: PropTypes.func.isRequired,
+    positionIcon: PropTypes.object,
     positionText: PropTypes.string
   };
 

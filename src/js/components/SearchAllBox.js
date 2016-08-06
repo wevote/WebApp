@@ -106,13 +106,13 @@ export default class SearchAllBox extends Component {
                 searchLink = (one_result.twitter_handle) ? "/" + one_result.twitter_handle : "/politician/" + one_result.we_vote_id;
                 break;
             }
-            return <Link to={searchLink} className="search-container__links">
+            return <Link key={one_result.we_vote_id} to={searchLink} className="search-container__links">
                 <div className="search-container__results">
                   {one_result.result_title}
                 </div>
               </Link>;
             }) :
-            <span></span>
+            null
           }
         </div>
       </div>;

@@ -71,8 +71,6 @@ export default class GuidePositionList extends Component {
     const { position_list_for_one_election, position_list_for_all_except_one_election } = this.state.organization;
     var { we_vote_id } = this.state;
 
-    // DALE TODO 2016/7/28 - If this is me, show public vs. friends-only tab
-
     return <span>
         <div className="card__container">
           <div className="card__main">
@@ -81,7 +79,11 @@ export default class GuidePositionList extends Component {
           </div>
           <ul className="bs-list-group">
             { position_list_for_one_election ?
-              position_list_for_one_election.map( item => { return <OrganizationPositionItem key={item.position_we_vote_id} position={item}/>; }) :
+              position_list_for_one_election.map( item => {
+                return <OrganizationPositionItem key={item.position_we_vote_id}
+                                                 position={item}
+                                                 organization={this.state.organization} />;
+              }) :
               <div>{LoadingWheel}</div>
             }
             { position_list_for_all_except_one_election ?
@@ -93,7 +95,11 @@ export default class GuidePositionList extends Component {
                   </span> :
                   <span></span>
                 }
-                { position_list_for_all_except_one_election.map( item => { return <OrganizationPositionItem key={item.position_we_vote_id} position={item}/>; }) }
+                { position_list_for_all_except_one_election.map( item => {
+                  return <OrganizationPositionItem key={item.position_we_vote_id}
+                                                   position={item}
+                                                   organization={this.state.organization} />;
+                }) }
               </span> :
               <div>{LoadingWheel}</div>
             }

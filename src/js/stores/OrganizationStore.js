@@ -23,8 +23,8 @@ class OrganizationStore extends FluxMapStore {
 
       case "positionListForOpinionMaker":  // retrievePositions and retrieveFriendsPositions
         key = action.res.opinion_maker_we_vote_id;
-        if (action.res.friends_vs_public == "FRIENDS_ONLY") {  // retrieveFriendsPositions
-          console.log("OrganizationStore, positionListForOpinionMaker, FRIENDS_ONLY");
+        if (action.res.friends_vs_public === "FRIENDS_ONLY") {  // retrieveFriendsPositions
+          // console.log("OrganizationStore, positionListForOpinionMaker, FRIENDS_ONLY");
           if (action.res.filter_for_voter) {
             var friends_position_list_for_one_election = action.res.position_list;
             merged_properties = assign({}, state.get(key), {
@@ -42,7 +42,7 @@ class OrganizationStore extends FluxMapStore {
             } );
           }
         } else {  // retrievePositions
-          console.log("OrganizationStore, positionListForOpinionMaker, NOT FRIENDS_ONLY");
+          // console.log("OrganizationStore, positionListForOpinionMaker, NOT FRIENDS_ONLY");
           if (action.res.filter_for_voter) {
             var position_list_for_one_election = action.res.position_list;
             merged_properties = assign({}, state.get(key), {

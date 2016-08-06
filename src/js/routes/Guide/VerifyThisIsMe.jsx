@@ -54,7 +54,7 @@ export default class VerifyThisIsMe extends Component {
   }
 
   _onOrganizationStoreChange (){
-    let { kind_of_owner, owner_we_vote_id, status } = TwitterStore.get();
+    let { owner_we_vote_id } = TwitterStore.get();
     console.log("Entering _onOrganizationStoreChange, owner_we_vote_id: " + owner_we_vote_id);
     this.setState({
       organization: OrganizationStore.get(owner_we_vote_id),
@@ -62,7 +62,7 @@ export default class VerifyThisIsMe extends Component {
   }
 
   _onCandidateStoreChange (){
-    let { kind_of_owner, owner_we_vote_id, status } = TwitterStore.get();
+    let { owner_we_vote_id } = TwitterStore.get();
     var candidate = CandidateStore.get(owner_we_vote_id) || {};
     this.setState({
       candidate: candidate,

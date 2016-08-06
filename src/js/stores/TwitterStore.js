@@ -1,6 +1,5 @@
 var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
-const assign = require("object-assign");
 import CandidateActions from "../actions/CandidateActions";
 import OrganizationActions from "../actions/OrganizationActions";
 
