@@ -1,16 +1,14 @@
 import React, { Component, PropTypes } from "react";
-import { Button, Modal } from "react-bootstrap";
-import { browserHistory, Link } from "react-router";
-import CandidateItem from "../../components/Ballot/CandidateItem";
+import { Modal } from "react-bootstrap";
 import CandidateStore from "../../stores/CandidateStore";
 import FollowToggle from "../../components/Widgets/FollowToggle";
+import ItemActionBar from "../../components/Widgets/ItemActionBar";
 import LoadingWheel from "../../components/LoadingWheel";
 import OfficeStore from "../../stores/OfficeStore";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
+import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
 import OrganizationStore from "../../stores/OrganizationStore";
-import TwitterAccountCard from "../../components/Twitter/TwitterAccountCard";
-import TwitterActions from "../../actions/TwitterActions";
-import TwitterStore from "../../stores/TwitterStore";
+import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
 
 export default class EditPositionAboutCandidateModal extends Component {
@@ -20,12 +18,12 @@ export default class EditPositionAboutCandidateModal extends Component {
     position: PropTypes.object.isRequired
   };
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {candidate: {}, office: {}};
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this._onVoterStoreChange();
 
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
@@ -33,20 +31,38 @@ export default class EditPositionAboutCandidateModal extends Component {
 
     this.candidateStoreListener = CandidateStore.addListener(this._onCandidateStoreChange.bind(this));
     this.officeStoreListener = OfficeStore.addListener(this._onCandidateStoreChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
+
+    // let { ballot_item_we_vote_id } = this.props.position;
+    // var candidate = CandidateStore.get(ballot_item_we_vote_id) || null;
+    // console.log("EditPositionAboutCandidateModal: componentDidMount, ballot_item_we_vote_id: ", ballot_item_we_vote_id, ", candidate: ", candidate);
+    // if (candidate === null) {
+    //   CandidateActions.retrieve(ballot_item_we_vote_id);
+    // } else {
+    //   this._onCandidateStoreChange()
+    // }
+
+    // this.props.position.ballot_item_we_vote_id is the candidate
+    var candidate_we_vote_id = this.props.position.ballot_item_we_vote_id;
+    let supportProps = SupportStore.get(candidate_we_vote_id);
+    // console.log("EditPositionAboutCandidateModal, supportProps: ", supportProps);
+
+    this.setState({supportProps: SupportStore.get(candidate_we_vote_id)});
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.officeStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
+    this.supportStoreListener.remove();
   }
 
-  _onVoterStoreChange() {
+  _onVoterStoreChange () {
     this.setState({voter: VoterStore.voter()});
   }
 
-  _onOrganizationStoreChange() {
+  _onOrganizationStoreChange () {
     // let {owner_we_vote_id} = this.props.position;
     // console.log("Entering _onOrganizationStoreChange, owner_we_vote_id: " + owner_we_vote_id);
     // this.setState({
@@ -54,25 +70,34 @@ export default class EditPositionAboutCandidateModal extends Component {
     // });
   }
 
-  _onCandidateStoreChange() {
-    let {kind_of_owner, owner_we_vote_id, status} = TwitterStore.get();
-    var candidate = CandidateStore.get(owner_we_vote_id) || {};
-    this.setState({
-      candidate: candidate,
-    });
-
-    if (candidate.contest_office_we_vote_id) {
-      this.setState({office: OfficeStore.get(candidate.contest_office_we_vote_id) || {}});
-    }
+  _onCandidateStoreChange () {
+    // let { ballot_item_we_vote_id } = this.props.position;
+    // var candidate = CandidateStore.get(ballot_item_we_vote_id) || {};
+    // console.log("_onCandidateStoreChange, ballot_item_we_vote_id: ", ballot_item_we_vote_id, ", candidate: ", candidate);
+    // this.setState({
+    //   candidate: candidate,
+    // });
+    //
+    // if (candidate.contest_office_we_vote_id) {
+    //   this.setState({office: OfficeStore.get(candidate.contest_office_we_vote_id) || {}});
+    // }
   }
 
-  render() {
+  _onSupportStoreChange () {
+    var candidate_we_vote_id = this.props.position.ballot_item_we_vote_id;
+    this.setState({ supportProps: SupportStore.get(candidate_we_vote_id) });
+  }
+
+  render () {
     // This is the position we are editing
     var position = this.props.position;
     // The owner of this position
     var organization = this.props.organization;
+    var candidate_we_vote_id = this.props.position.ballot_item_we_vote_id;
+    // console.log("this.state.candidate.we_vote_id: ", this.state.candidate.we_vote_id);
+    // console.log("this.state.candidate.candidate_we_vote_id: ", this.state.candidate.candidate_we_vote_id);
 
-    var {voter} = this.state;
+    const { supportProps, voter } = this.state;
     var signed_in_twitter = voter === undefined ? false : voter.signed_in_twitter;
     var signed_in_with_this_twitter_account = false;
     if (signed_in_twitter) {
@@ -102,7 +127,18 @@ export default class EditPositionAboutCandidateModal extends Component {
           <div className="card__container">
             <div className="card__main">
               <FollowToggle we_vote_id={organization.organization_we_vote_id}/>
-              <OrganizationCard organization={organization}/>
+              <OrganizationCard organization={organization} turn_off_description/>
+            </div>
+            <ul className="bs-list-group">
+              <OrganizationPositionItem position={position}
+                                        organization={this.props.organization}
+                                        link_to_edit_modal_off />
+            </ul>
+          </div>
+          <div className="candidate-card__media-object-content">
+            <div className="candidate-card__actions">
+              <ItemActionBar we_vote_id={candidate_we_vote_id}
+                             supportProps={supportProps} type="CANDIDATE" />
             </div>
           </div>
         </span>;
@@ -110,7 +146,7 @@ export default class EditPositionAboutCandidateModal extends Component {
     return <Modal {...this.props} bsClass="bs-modal" bsSize="large" aria-labelledby="contained-modal-title-lg">
       <Modal.Header bsClass="bs-modal" closeButton>
         <Modal.Title bsClass="bs-modal"
-                     id="contained-modal-title-lg">{position.ballot_item_display_name}</Modal.Title>
+                     id="contained-modal-title-lg"></Modal.Title>
       </Modal.Header>
       <Modal.Body bsClass="bs-modal">
         { modal_contents }

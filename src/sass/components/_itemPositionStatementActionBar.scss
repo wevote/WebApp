@@ -1,0 +1,31 @@
+.item-positionstatementactionbar .inline-phone:hover {
+  cursor: pointer;
+}
+.item-positionstatementactionbar {
+  display: flex;
+  border-top: 1px solid #DDD;
+  margin-top: 1em;
+  padding-top: 10px;
+
+ &__outer-div {
+
+  }
+
+  &__btn {
+    // currently uses Bootstrap .bs-btn styling
+    margin-right: 8px;
+
+    &--position-selected {
+      color: $selected-color;
+    }
+  }
+}
+
+.position-statement-input-div {
+  margin-top: 5px;
+  width: 100%;
+}
+
+.position-statement-input {
+  width: 100%;
+}

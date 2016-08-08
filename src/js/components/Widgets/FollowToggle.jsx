@@ -13,7 +13,7 @@ export default class FollowToggle extends Component {
     super(props);
     this.state = {
       voter: {
-        we_vote_id: ''
+        we_vote_id: ""
       }
     };
   }

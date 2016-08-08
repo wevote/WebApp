@@ -10,6 +10,7 @@ import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/
 export default class OrganizationCard extends Component {
   static propTypes = {
     organization: PropTypes.object.isRequired,
+    turn_off_description: PropTypes.bool
   };
 
   constructor (props) {
@@ -38,7 +39,7 @@ export default class OrganizationCard extends Component {
           }
           <div className="card__media-object-content">
             <div className="card__display-name">{displayName}</div>
-            { twitterDescriptionMinusName ?
+            { twitterDescriptionMinusName && !this.props.turn_off_description ?
               <p className="card__description">{twitterDescriptionMinusName}</p> :
               <p className="card__description" />
             }

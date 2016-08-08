@@ -4,8 +4,6 @@ export default class PositionInformationOnlySnippet extends Component {
   static propTypes = {
     candidate_display_name: PropTypes.string,
     is_on_candidate_page: PropTypes.bool,
-    is_support: PropTypes.bool.isRequired,
-    is_oppose: PropTypes.bool.isRequired,
     more_info_url: PropTypes.string,
     speaker_display_name: PropTypes.string,
     statement_text: PropTypes.string

@@ -13,7 +13,7 @@ export default class SearchAllBox extends Component {
   constructor (props){
     super(props);
     this.state = {
-      search_results: ''
+      search_results: ""
     };
   }
 
@@ -54,7 +54,7 @@ export default class SearchAllBox extends Component {
   onSearchFieldTextChange (event){
     let text_from_search_field = event.target.value;
     SearchAllActions.searchAll(text_from_search_field);
-    this.setState({search_results: ''});
+    this.setState({search_results: ""});
   }
 
   // both of the two methods below need to have constants refactored
@@ -87,23 +87,25 @@ export default class SearchAllBox extends Component {
         </form>
         <div className="search-container">
           { search_results ?
-            search_results.map(function(one_result) {
+            search_results.map(function (one_result) {
             var searchLink = "/";
             switch (one_result.kind_of_owner) {
               case "CANDIDATE":
-                searchLink = (one_result.twitter_handle) ? "/" + one_result.twitter_handle : "/candidate/" + one_result.we_vote_id;
+                searchLink = one_result.twitter_handle ? "/" + one_result.twitter_handle : "/candidate/" + one_result.we_vote_id;
                 break;
               case "OFFICE":
                 searchLink = "/office/" + one_result.we_vote_id;
                 break;
               case "ORGANIZATION":
-                searchLink = (one_result.twitter_handle) ? "/" + one_result.twitter_handle : "/organization/" + one_result.we_vote_id;
+                searchLink = one_result.twitter_handle ? "/" + one_result.twitter_handle : "/organization/" + one_result.we_vote_id;
                 break;
               case "MEASURE":
                 searchLink = "/measure/" + one_result.we_vote_id;
                 break;
               case "POLITICIAN":
-                searchLink = (one_result.twitter_handle) ? "/" + one_result.twitter_handle : "/politician/" + one_result.we_vote_id;
+                searchLink = one_result.twitter_handle ? "/" + one_result.twitter_handle : "/politician/" + one_result.we_vote_id;
+                break;
+              default:
                 break;
             }
             return <Link key={one_result.we_vote_id} to={searchLink} className="search-container__links">

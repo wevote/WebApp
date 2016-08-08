@@ -41,7 +41,7 @@ class OrganizationStore extends FluxMapStore {
               friends_position_list: friends_position_list
             } );
           }
-        } else {  // retrievePositions
+        } else // retrievePositions
           // console.log("OrganizationStore, positionListForOpinionMaker, NOT FRIENDS_ONLY");
           if (action.res.filter_for_voter) {
             var position_list_for_one_election = action.res.position_list;
@@ -59,7 +59,6 @@ class OrganizationStore extends FluxMapStore {
               position_list: position_list
             });
           }
-        }
         return state.set(key, merged_properties );
 
       default:

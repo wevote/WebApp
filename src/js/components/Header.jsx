@@ -13,7 +13,6 @@ var menuStyles = {
 
 export default class Header extends Component {
   static propTypes = {
-    location: PropTypes.string,
     voter: PropTypes.object
   };
 
@@ -32,7 +31,6 @@ export default class Header extends Component {
   }
 
   render () {
-    let location = this.props.location;
     var { signed_in_personal } = this.props.voter;
     const logOut = FacebookActions.appLogout;
 
