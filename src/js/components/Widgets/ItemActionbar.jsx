@@ -57,11 +57,13 @@ export default class ItemActionBar extends Component {
 
   render () {
     if (this.props.supportProps === undefined){
+      // console.log("this.props.supportProps === undefined");
       return <div></div>;
     }
 
     var {support_count, oppose_count, is_support, is_oppose } = this.props.supportProps;
     if (support_count === undefined || oppose_count === undefined || is_support === undefined || is_oppose === undefined){
+      // console.log("support_count, oppose_count, is_support, is_oppose all undefined");
       return null;
     }
 

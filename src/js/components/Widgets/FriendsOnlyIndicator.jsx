@@ -1,9 +1,6 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 
 export default class FriendsOnlyIndicator extends Component {
-  static propTypes = {
-  };
-
   constructor (props) {
     super(props);
     this.state = {};

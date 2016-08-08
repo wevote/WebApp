@@ -4,6 +4,7 @@ export default class PositionSupportOpposeSnippet extends Component {
   static propTypes = {
     candidate_display_name: PropTypes.string,
     is_on_candidate_page: PropTypes.bool,
+    is_looking_at_self: PropTypes.bool,
     is_support: PropTypes.bool.isRequired,
     is_oppose: PropTypes.bool.isRequired,
     more_info_url: PropTypes.string,
@@ -17,17 +18,18 @@ export default class PositionSupportOpposeSnippet extends Component {
     var alt;
     var positionLabel;
     var isSupportedBy;
+    var { is_looking_at_self } = this.props;
     if (this.props.is_support){
       src = "/img/global/icons/thumbs-up-color-icon.svg";
       className = "explicit-position__icon";
       alt = "Supports";
-      positionLabel = "Supports";
+      positionLabel = (is_looking_at_self) ? "You Support" : "Supports";
       isSupportedBy = "is Supported by";
     } else if (this.props.is_oppose) {
       src = "/img/global/icons/thumbs-down-color-icon.svg";
       className = "explicit-position__icon";
       alt = "Opposes";
-      positionLabel = "Opposes";
+      positionLabel = (is_looking_at_self) ? "You Oppose" : "Opposes";
       isSupportedBy = "is Opposed by";
     } else {
       // We shouldn't be here. Do not display position information. See instead PositionInformationOnlySnippet.jsx

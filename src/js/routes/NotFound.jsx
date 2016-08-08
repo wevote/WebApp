@@ -99,8 +99,8 @@ export default class NotFound extends Component {
     }
 
     if (this.state.kind_of_owner === "CANDIDATE"){
-      this.props.params.we_vote_id = this.state.owner_we_vote_id;
-      return <Candidate we_vote_id {...this.props} />;
+      this.props.params.candidate_we_vote_id = this.state.owner_we_vote_id;
+      return <Candidate candidate_we_vote_id {...this.props} />;
     } else if (this.state.kind_of_owner === "ORGANIZATION"){
       this.props.params.we_vote_id = this.state.owner_we_vote_id;
       if (looking_at_positions_for_friends_only) {

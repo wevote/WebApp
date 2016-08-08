@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import ItemActionBar from "../../components/Widgets/ItemActionbar";
+import ItemActionBar from "../../components/Widgets/ItemActionBar";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
 
 export default class Measure extends Component {

@@ -2,13 +2,14 @@ import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 
 import StarAction from "../../components/Widgets/StarAction";
-import ItemActionBar from "../../components/Widgets/ItemActionbar";
+import ItemActionBar from "../../components/Widgets/ItemActionBar";
+import ItemPositionStatementActionBar from "../../components/Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
 import SupportStore from "../../stores/SupportStore";
 import {abbreviateNumber} from "../../utils/textFormat";
 import {numberWithCommas} from "../../utils/textFormat";
 
-export default class Candidate extends Component {
+export default class CandidateItem extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string.isRequired,
     candidate_photo_url: PropTypes.string.isRequired,
@@ -27,15 +28,15 @@ export default class Candidate extends Component {
   }
 
   componentDidMount () {
-    this.listener = SupportStore.addListener(this._onChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
   }
 
   componentWillUnmount () {
-    this.listener.remove();
+    this.supportStoreListener.remove();
   }
 
-  _onChange () {
+  _onSupportStoreChange () {
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id), transitioning: false });
   }
 
@@ -69,7 +70,7 @@ export default class Candidate extends Component {
           </Link>
           {twitter_followers_count ?
             <span className="twitter-followers__badge">
-              <span className="fa fa-twitter twitter-followers__icon"></span>
+              <span className="fa fa-twitter twitter-followers__icon" />
               <span title={numberWithCommas(twitter_followers_count)}>{abbreviateNumber(twitter_followers_count)}</span>
             </span> :
             null
@@ -126,6 +127,11 @@ export default class Candidate extends Component {
       </div> {/* END .candidate-card__media-object */}
       <div className="candidate-card__actions">
         <ItemActionBar we_vote_id={we_vote_id} supportProps={supportProps} transitioniing={transitioning} type="CANDIDATE" />
+        <ItemPositionStatementActionBar we_vote_id={we_vote_id} 
+                                        ballot_item_display_name={ballot_item_display_name}
+                                        supportProps={supportProps} 
+                                        transitioniing={transitioning} 
+                                        type="CANDIDATE" />
       </div>
     </div>;
   }

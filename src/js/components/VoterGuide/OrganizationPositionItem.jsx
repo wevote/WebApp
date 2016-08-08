@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import { Button } from "react-bootstrap";
 import { Link } from "react-router";
 import EditPositionAboutCandidateModal from "../../components/VoterGuide/EditPositionAboutCandidateModal";
 import FriendsOnlyIndicator from "../../components/Widgets/FriendsOnlyIndicator";
@@ -12,6 +11,7 @@ export default class OrganizationPositionItem extends Component {
   static propTypes = {
     organization: PropTypes.object.isRequired,
     position: PropTypes.object.isRequired,
+    link_to_edit_modal_off: PropTypes.bool
   };
 
   constructor (props) {
@@ -66,7 +66,7 @@ export default class OrganizationPositionItem extends Component {
             <span className="position-rating__candidate-name">{position.ballot_item_display_name}</span>
           </Link>
           {/* show explicit position, if available, otherwise show rating */}
-          { edit_mode ?
+          { edit_mode && !this.props.link_to_edit_modal_off ?
             <span>
               <span className="edit-position-action"
                     onClick={onEditPositionClick}
@@ -77,7 +77,7 @@ export default class OrganizationPositionItem extends Component {
                                                onHide={this.closeEditPositionModal.bind(this)}
                                                position={position}
                                                organization={organization}/>
-            </span>:
+            </span> :
             position_description }
           { position.is_for_friends_only ?
             <FriendsOnlyIndicator /> :

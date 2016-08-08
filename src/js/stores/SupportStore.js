@@ -12,6 +12,7 @@ class SupportStore extends FluxMapStore {
    return {
      is_support: this.supportList[we_vote_id] || false,
      is_oppose: this.opposeList[we_vote_id] || false,
+     voter_statement_text: this.statementList[we_vote_id] || "",
      support_count: this.supportCounts[we_vote_id],
      oppose_count: this.opposeCounts[we_vote_id]
    };
@@ -23,6 +24,10 @@ class SupportStore extends FluxMapStore {
 
   get opposeList (){
     return this.getState().voter_opposes;
+  }
+
+  get statementList (){
+    return this.getState().voter_statement_text;
   }
 
   get supportCounts (){
@@ -61,21 +66,26 @@ class SupportStore extends FluxMapStore {
       case "voterAddressRetrieve":
         let id = action.res.google_civic_election_id;
         SupportActions.retrieveAll();
-        SupportActions.retrieveAllCounts(id);
+        SupportActions.retrieveAllCounts();  // TODO DALE Trying this without limiting to one election
         return state;
 
       case "voterAllPositionsRetrieve":
         return {
           ...state,
           voter_supports: this.parseListToHash("is_support", action.res.position_list),
-          voter_opposes: this.parseListToHash("is_oppose", action.res.position_list)
+          voter_opposes: this.parseListToHash("is_oppose", action.res.position_list),
+          voter_statement_text: this.parseListToHash("statement_text", action.res.position_list)
         };
 
       case "positionsCountForAllBallotItems":
+        console.log("SupportStore, positionsCountForAllBallotItems: ", action.res);
+        // Original version
+          // oppose_counts: this.parseListToHash("oppose_count", action.res.ballot_item_list),
+          // support_counts: this.parseListToHash("support_count", action.res.ballot_item_list)
         return {
           ...state,
-          oppose_counts: this.parseListToHash("oppose_count", action.res.ballot_item_list),
-          support_counts: this.parseListToHash("support_count", action.res.ballot_item_list)
+          oppose_counts: this.parseListToHash("oppose_count", action.res.position_counts_list),
+          support_counts: this.parseListToHash("support_count", action.res.position_counts_list)
         };
 
       case "voterOpposingSave":

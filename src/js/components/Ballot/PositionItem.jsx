@@ -10,7 +10,7 @@ const moment = require("moment");
 export default class PositionItem extends Component {
   static propTypes = {
     candidate_display_name: PropTypes.string.isRequired,
-    //organization: PropTypes.object.isRequired,
+    organization: PropTypes.object,  //.isRequired,
     position: PropTypes.object.isRequired
   };
 
@@ -99,7 +99,7 @@ export default class PositionItem extends Component {
             </Link>
           </h4>
           { edit_mode ?
-            edit_position_description:
+            edit_position_description :
             position_description }
           { position.is_for_friends_only ?
             <FriendsOnlyIndicator /> :
