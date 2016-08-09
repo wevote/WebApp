@@ -3,6 +3,7 @@ import { Modal } from "react-bootstrap";
 import CandidateStore from "../../stores/CandidateStore";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import ItemActionBar from "../../components/Widgets/ItemActionBar";
+import ItemPositionStatementActionBar from "../../components/Widgets/ItemPositionStatementActionBar";
 import LoadingWheel from "../../components/LoadingWheel";
 import OfficeStore from "../../stores/OfficeStore";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
@@ -43,11 +44,10 @@ export default class EditPositionAboutCandidateModal extends Component {
     // }
 
     // this.props.position.ballot_item_we_vote_id is the candidate
-    var candidate_we_vote_id = this.props.position.ballot_item_we_vote_id;
-    let supportProps = SupportStore.get(candidate_we_vote_id);
-    // console.log("EditPositionAboutCandidateModal, supportProps: ", supportProps);
+    var ballot_item_we_vote_id = this.props.position.ballot_item_we_vote_id;
+    let supportProps = SupportStore.get(ballot_item_we_vote_id);
 
-    this.setState({supportProps: SupportStore.get(candidate_we_vote_id)});
+    this.setState({supportProps: supportProps});
   }
 
   componentWillUnmount () {
@@ -84,8 +84,8 @@ export default class EditPositionAboutCandidateModal extends Component {
   }
 
   _onSupportStoreChange () {
-    var candidate_we_vote_id = this.props.position.ballot_item_we_vote_id;
-    this.setState({ supportProps: SupportStore.get(candidate_we_vote_id) });
+    var ballot_item_we_vote_id = this.props.position.ballot_item_we_vote_id;
+    this.setState({ supportProps: SupportStore.get(ballot_item_we_vote_id) });
   }
 
   render () {
@@ -93,8 +93,9 @@ export default class EditPositionAboutCandidateModal extends Component {
     var position = this.props.position;
     // The owner of this position
     var organization = this.props.organization;
-    var candidate_we_vote_id = this.props.position.ballot_item_we_vote_id;
-    // console.log("this.state.candidate.we_vote_id: ", this.state.candidate.we_vote_id);
+    var ballot_item_we_vote_id = this.props.position.ballot_item_we_vote_id;
+    var ballot_item_display_name = this.props.position.ballot_item_display_name;
+    //console.log("this.props.position: ", this.props.position);
     // console.log("this.state.candidate.candidate_we_vote_id: ", this.state.candidate.candidate_we_vote_id);
 
     const { supportProps, voter } = this.state;
@@ -132,13 +133,19 @@ export default class EditPositionAboutCandidateModal extends Component {
             <ul className="bs-list-group">
               <OrganizationPositionItem position={position}
                                         organization={this.props.organization}
-                                        link_to_edit_modal_off />
+                                        link_to_edit_modal_off
+                                        stance_display_off
+                                        comment_text_off />
             </ul>
           </div>
           <div className="candidate-card__media-object-content">
             <div className="candidate-card__actions">
-              <ItemActionBar we_vote_id={candidate_we_vote_id}
+              <ItemActionBar we_vote_id={ballot_item_we_vote_id}
                              supportProps={supportProps} type="CANDIDATE" />
+              <ItemPositionStatementActionBar ballot_item_we_vote_id={ballot_item_we_vote_id}
+                                              ballot_item_display_name={ballot_item_display_name}
+                                              supportProps={supportProps}
+                                              type="CANDIDATE" />
             </div>
           </div>
         </span>;
