@@ -1,15 +1,11 @@
 import React, { Component, PropTypes } from "react";
-<<<<<<< Updated upstream
-import ItemActionBar from "../../components/Widgets/ItemActionBar";
-=======
 import { Link } from "react-router";
 
-import StarAction from "../../components/Widgets/StarAction";
-import ItemActionBar from "../../components/Widgets/ItemActionbar";
->>>>>>> Stashed changes
+import ItemActionBar from "../../components/Widgets/ItemActionBar";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
+import StarAction from "../../components/Widgets/StarAction";
 import SupportStore from "../../stores/SupportStore";
-//
+
 
 export default class Measure extends Component {
   static propTypes = {
