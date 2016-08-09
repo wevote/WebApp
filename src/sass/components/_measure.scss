@@ -1,0 +1,133 @@
+// measure Card
+// TODO Refactor to merge styles with .card
+
+@include media-object(".measure-card__media-object", ".measure-card__media-object-anchor", ".measure-card__media-object-content");
+
+.measure-card {
+  $item-padding: 15px;
+  position: relative;
+  padding: 15px $item-padding 10px;
+  font-size: 14px; // remove once global defaults are set
+
+  &__container {
+    @include card-container();
+    margin-bottom: 1em;
+  }
+
+  &__media-object-anchor {
+    width: 50px;
+    display: flex;
+    flex-direction: column;
+    @media (min-width: 480px) {
+      width: 80px;
+    }
+  }
+  &__photo {
+    max-width: 50px;
+    @media (min-width: 480px) {
+      max-width: 80px;
+    }
+    border-radius: 10em;
+  }
+
+
+  &__media-object-content {
+    position: relative;
+  }
+
+  &__position-icon {
+    @media (max-width: 479px) {
+      display: inline-block;
+      margin-right: 5px;
+      vertical-align: top;
+    }
+    @media (min-width: 480px) {
+      position: absolute;
+      left: -30px;
+    }
+  }
+
+  &__display-name {
+    display: inline-block;
+    font-size: 18px;
+    @media (min-width: 480px) {
+      font-size: 24px;
+    }
+  }
+
+  &__candidacy {
+    color: $dark-gray;
+  }
+
+  &__description {
+    color: $dark-gray;
+  }
+
+  &__additional {
+    @include micro-clearfix;
+  }
+
+  &__additional-heading {
+    font-family: $heading-font-stack;
+    font-size: 18px;
+    margin: 15px $item-padding;
+  }
+
+  &__no-additional {
+    margin: 0 $item-padding 15px;
+  }
+}
+
+.measure-card__description-container {
+
+  &--truncated {
+    $line-height: 25px;
+    $text-container-height: $line-height * 2;
+    $read-more-width: 7em;
+    overflow: hidden;
+    position: relative;
+    height: $text-container-height;
+    line-height: $line-height;
+
+    &::before {
+      content:"";
+      float: left;
+      width: 5px;
+      height: $text-container-height;
+    }
+
+    > *:first-child {
+      float: right;
+      width: 100%;
+      margin-left: -5px; }
+
+    &::after {
+      content: "\00A0 Read More";
+
+      box-sizing: content-box;
+      float: right;
+      position: relative;
+      top: -$line-height;
+      left: 100%;
+      width: $read-more-width;
+      margin-left: -$read-more-width;
+      padding-right: 5px;
+      text-align: right;
+      background-size: 100% 100%;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0), white 15%, white);
+      font-style: normal;
+      color: $link-color;
+    }
+  }
+}
+
+.measure-card__read-more-link {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  text-indent: -9999px;
+  z-index: 5;
+}
