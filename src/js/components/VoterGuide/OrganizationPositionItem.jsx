@@ -11,7 +11,9 @@ export default class OrganizationPositionItem extends Component {
   static propTypes = {
     organization: PropTypes.object.isRequired,
     position: PropTypes.object.isRequired,
-    link_to_edit_modal_off: PropTypes.bool
+    link_to_edit_modal_off: PropTypes.bool,
+    stance_display_off: PropTypes.bool,
+    comment_text_off: PropTypes.bool
   };
 
   constructor (props) {
@@ -28,8 +30,9 @@ export default class OrganizationPositionItem extends Component {
   }
 
   render (){
-    var position = this.props.position;
-    var organization = this.props.organization;
+    let position = this.props.position;
+    let organization = this.props.organization;
+    let { stance_display_off, comment_text_off } = this.props;
 
     // TwitterHandle-based link
     let candidateLink = position.ballot_item_twitter_handle ? "/" + position.ballot_item_twitter_handle : "/candidate/" + position.ballot_item_we_vote_id;
@@ -37,16 +40,21 @@ export default class OrganizationPositionItem extends Component {
     let position_description = "";
     const is_on_candidate_page = false;
     if (position.vote_smart_rating) {
-        position_description = <PositionRatingSnippet {...position} />;
+      position_description = <PositionRatingSnippet {...position} />;
     } else if (position.is_support || position.is_oppose) {
-      position_description = <PositionSupportOpposeSnippet {...position} is_on_candidate_page={is_on_candidate_page} />;
-    } else if (position.is_information_only) {
-      position_description = <PositionInformationOnlySnippet {...position} is_on_candidate_page={is_on_candidate_page} />;
+      position_description = <PositionSupportOpposeSnippet {...position}
+                                                           is_on_candidate_page={is_on_candidate_page}
+                                                           stance_display_off={stance_display_off}
+                                                           comment_text_off={comment_text_off} />;
+    } else {
+      position_description = <PositionInformationOnlySnippet {...position}
+                                                             is_on_candidate_page={is_on_candidate_page}
+                                                             stance_display_off={stance_display_off}
+                                                             comment_text_off={comment_text_off} />;
     }
 
     const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
 
-    var edit_mode = true;  // TODO DALE Convert this to be dynamically set
     return <li className="position-item">
       <StarAction we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
         <Link to={ candidateLink }
@@ -66,7 +74,8 @@ export default class OrganizationPositionItem extends Component {
             <span className="position-rating__candidate-name">{position.ballot_item_display_name}</span>
           </Link>
           {/* show explicit position, if available, otherwise show rating */}
-          { edit_mode && !this.props.link_to_edit_modal_off ?
+          { this.props.link_to_edit_modal_off ?
+            position_description :
             <span>
               <span className="edit-position-action"
                     onClick={onEditPositionClick}
@@ -77,8 +86,7 @@ export default class OrganizationPositionItem extends Component {
                                                onHide={this.closeEditPositionModal.bind(this)}
                                                position={position}
                                                organization={organization}/>
-            </span> :
-            position_description }
+            </span> }
           { position.is_for_friends_only ?
             <FriendsOnlyIndicator /> :
             null }

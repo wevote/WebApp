@@ -5,21 +5,6 @@ import OfficeActions from "../actions/OfficeActions";
 
 class CandidateStore extends FluxMapStore {
 
-  // // TODO DALE This is a work in progress
-  // get (candidate_we_vote_id) {
-  //   if (!this.candidateList){
-  //     console.log("CandidateStore, get (candidate_we_vote_id), !this.candidateList: ", candidate_we_vote_id);
-  //     return undefined;
-  //   }
-  //   console.log("CandidateStore, this.candidateList: ", this.candidateList);
-  //   return this.candidateList[candidate_we_vote_id] || null;
-  // }
-  //
-  // // TODO DALE This is a work in progress
-  // get candidateList (){
-  //   return this.getState();
-  // }
-
   reduce (state, action) {
 
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)

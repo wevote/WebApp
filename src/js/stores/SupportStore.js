@@ -42,6 +42,10 @@ class SupportStore extends FluxMapStore {
     return assign({}, list, { [we_vote_id]: list[we_vote_id] + amount });
   }
 
+  statementListWithChanges (statement_list, we_vote_id, new_voter_statement_text) {
+    return assign({}, statement_list, { [we_vote_id]: new_voter_statement_text });
+  }
+
 /* Turn action into a dictionary/object format with we_vote_id as key for fast lookup */
   parseListToHash (property, list){
     let hash_map = {};
@@ -66,10 +70,12 @@ class SupportStore extends FluxMapStore {
       case "voterAddressRetrieve":
         let id = action.res.google_civic_election_id;
         SupportActions.retrieveAll();
-        SupportActions.retrieveAllCounts();  // TODO DALE Trying this without limiting to one election
+        SupportActions.retrieveAllCounts();
         return state;
 
       case "voterAllPositionsRetrieve":
+        // is_support is a property coming from 'position_list' in the incoming response
+        // this.state.voter_supports is an updated hash with the contents of position list['is_support']
         return {
           ...state,
           voter_supports: this.parseListToHash("is_support", action.res.position_list),
@@ -78,10 +84,6 @@ class SupportStore extends FluxMapStore {
         };
 
       case "positionsCountForAllBallotItems":
-        console.log("SupportStore, positionsCountForAllBallotItems: ", action.res);
-        // Original version
-          // oppose_counts: this.parseListToHash("oppose_count", action.res.ballot_item_list),
-          // support_counts: this.parseListToHash("support_count", action.res.ballot_item_list)
         return {
           ...state,
           oppose_counts: this.parseListToHash("oppose_count", action.res.position_counts_list),
@@ -122,6 +124,13 @@ class SupportStore extends FluxMapStore {
           ...state,
           voter_supports: assign({}, state.voter_supports, { [we_vote_id]: false }),
           support_counts: this.listWithChangedCount(state.support_counts, we_vote_id, -1)
+        };
+
+      case "voterPositionCommentSave":
+        // Add the comment to the list in memory
+        return {
+          ...state,
+          voter_statement_text: this.statementListWithChanges(state.voter_statement_text, we_vote_id, action.res.statement_text)
         };
 
       default:

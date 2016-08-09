@@ -24,5 +24,12 @@ module.exports = {
 
   voterStopSupportingSave: function (we_vote_id, type) {
     Dispatcher.loadEndpoint("voterStopSupportingSave", {ballot_item_we_vote_id: we_vote_id, kind_of_ballot_item: type});
+  },
+
+  voterPositionCommentSave: function (we_vote_id, type, statement_text) {
+    Dispatcher.loadEndpoint("voterPositionCommentSave", {
+      ballot_item_we_vote_id: we_vote_id,
+      kind_of_ballot_item: type,
+      statement_text: statement_text});
   }
 };
