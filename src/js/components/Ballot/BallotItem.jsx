@@ -22,15 +22,17 @@ export default class BallotItem extends Component {
 
   render () {
     return <div className="ballot-section" id={this.props.we_vote_id}>
-        <h2 className="ballot-section__display-name">
-          { this.props.ballot_item_display_name }
-        </h2>
-        <StarAction
-          we_vote_id={ this.props.we_vote_id }
-          type={ this.props.kind_of_ballot_item } />
         { this.isMeasure() ?
           <Measure {...this.props} /> :
-          <CandidateList children={this.props.candidate_list} office_name={this.props.ballot_item_display_name}/>
+          <span>
+            <h2 className="ballot-section__display-name">
+              { this.props.ballot_item_display_name }
+            </h2>
+            <StarAction
+              we_vote_id={ this.props.we_vote_id }
+              type={ this.props.kind_of_ballot_item } />
+            <CandidateList children={this.props.candidate_list} office_name={this.props.ballot_item_display_name}/>
+          </span>
         }
 
       </div>;
