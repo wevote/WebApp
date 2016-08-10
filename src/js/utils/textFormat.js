@@ -9,6 +9,11 @@ export function numberWithCommas (raw_number) {
     }
 }
 
+export function capitalizeString (str) {
+  var lowercase = str.toLowerCase();
+  return lowercase.replace( /(^|\s)([a-z])/g, function (m, p1, p2) { return p1 + p2.toUpperCase(); } );
+}
+
 export function abbreviateNumber (num) {
   // =< 1,000,000 - round to hundred-thousand (1.4M)
   if (num >= 1000000) {

@@ -23,7 +23,8 @@ export default class BallotItem extends Component {
   render () {
     return <div className="ballot-section" id={this.props.we_vote_id}>
         { this.isMeasure() ?
-          <Measure {...this.props} /> :
+          <Measure {...this.props}
+                   isListItem /> :
           <span>
             <h2 className="ballot-section__display-name">
               { this.props.ballot_item_display_name }
@@ -31,7 +32,8 @@ export default class BallotItem extends Component {
             <StarAction
               we_vote_id={ this.props.we_vote_id }
               type={ this.props.kind_of_ballot_item } />
-            <CandidateList children={this.props.candidate_list} office_name={this.props.ballot_item_display_name}/>
+            <CandidateList children={this.props.candidate_list}
+                           office_name={this.props.ballot_item_display_name}/>
           </span>
         }
 
