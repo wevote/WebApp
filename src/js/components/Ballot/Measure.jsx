@@ -5,7 +5,7 @@ import ItemActionBar from "../../components/Widgets/ItemActionBar";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
 import StarAction from "../../components/Widgets/StarAction";
 import SupportStore from "../../stores/SupportStore";
-
+import { capitalizeString } from "../../utils/textFormat";
 
 export default class Measure extends Component {
   static propTypes = {
@@ -30,6 +30,7 @@ export default class Measure extends Component {
     this.listener.remove();
   }
 
+
   _onChange () {
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id), transitioning: false });
   }
@@ -37,8 +38,9 @@ export default class Measure extends Component {
     const { supportProps, transitioning } = this.state;
 
     var we_vote_id = this.props.we_vote_id;
-    var measure_subtitle = this.props.measure_subtitle;
-    var measureLink = "#";
+    var measure_subtitle = capitalizeString(this.props.measure_subtitle);
+    var ballot_item_display_name = capitalizeString(this.props.ballot_item_display_name);
+    var measureLink = "/measure/" + we_vote_id;
     return <div className="measure-card__container">
       <div className="measure-card">
         <div className="measure-card__media-object">
@@ -56,8 +58,8 @@ export default class Measure extends Component {
             }
             <h2 className="measure-card__display-name">
               { this.props.isListItem ?
-                <Link to={measureLink}>{this.props.ballot_item_display_name}</Link> :
-                this.props.ballot_item_display_name
+                <Link to={measureLink}>{ballot_item_display_name}</Link> :
+                  ballot_item_display_name
               }
             </h2>
             <StarAction we_vote_id={we_vote_id} type="MEASURE"/>

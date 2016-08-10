@@ -127,10 +127,10 @@ export default class CandidateItem extends Component {
       </div> {/* END .candidate-card__media-object */}
       <div className="candidate-card__actions">
         <ItemActionBar we_vote_id={we_vote_id} supportProps={supportProps} transitioniing={transitioning} type="CANDIDATE" />
-        <ItemPositionStatementActionBar ballot_item_we_vote_id={we_vote_id} 
+        <ItemPositionStatementActionBar ballot_item_we_vote_id={we_vote_id}
                                         ballot_item_display_name={ballot_item_display_name}
-                                        supportProps={supportProps} 
-                                        transitioniing={transitioning} 
+                                        supportProps={supportProps}
+                                        transitioniing={transitioning}
                                         type="CANDIDATE" />
       </div>
     </div>;
