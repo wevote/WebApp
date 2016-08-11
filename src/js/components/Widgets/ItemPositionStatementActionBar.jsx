@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Form } from 'react-bootstrap';
+import { Form } from "react-bootstrap";
 import { Link } from "react-router";
 import PositionInformationOnlySnippet from "../Widgets/PositionInformationOnlySnippet";
 import PositionSupportOpposeSnippet from "../Widgets/PositionSupportOpposeSnippet";

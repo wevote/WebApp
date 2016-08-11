@@ -26,11 +26,11 @@ export default class PositionInformationOnlySnippet extends Component {
     hasThisToSay = "has this to say:";
     let stance_display_off = false;
     if (this.props.stance_display_off !== undefined) {
-      stance_display_off = (this.props.stance_display_off) ? true : false;
+      stance_display_off = this.props.stance_display_off ? true : false;
     }
     let comment_text_off = false;
     if (this.props.comment_text_off !== undefined) {
-      comment_text_off = (this.props.comment_text_off) ? true : false;
+      comment_text_off = this.props.comment_text_off ? true : false;
     }
 
     return <div className="explicit-position">

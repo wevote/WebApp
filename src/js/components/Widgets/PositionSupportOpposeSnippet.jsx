@@ -25,13 +25,13 @@ export default class PositionSupportOpposeSnippet extends Component {
       stance_icon_src = "/img/global/icons/thumbs-up-color-icon.svg";
       className = "explicit-position__icon";
       alt = "Supports";
-      positionLabel = (is_looking_at_self) ? "You Support" : "Supports";
+      positionLabel = is_looking_at_self ? "You Support" : "Supports";
       isSupportedBy = "is Supported by";
     } else if (this.props.is_oppose) {
       stance_icon_src = "/img/global/icons/thumbs-down-color-icon.svg";
       className = "explicit-position__icon";
       alt = "Opposes";
-      positionLabel = (is_looking_at_self) ? "You Oppose" : "Opposes";
+      positionLabel = is_looking_at_self ? "You Oppose" : "Opposes";
       isSupportedBy = "is Opposed by";
     } else {
       // We shouldn't be here. Do not display position information. See instead PositionInformationOnlySnippet.jsx
@@ -39,11 +39,11 @@ export default class PositionSupportOpposeSnippet extends Component {
     }
     let stance_display_off = false;
     if (this.props.stance_display_off !== undefined) {
-      stance_display_off = (this.props.stance_display_off) ? true : false;
+      stance_display_off = this.props.stance_display_off ? true : false;
     }
     let comment_text_off = false;
     if (this.props.comment_text_off !== undefined) {
-      comment_text_off = (this.props.comment_text_off) ? true : false;
+      comment_text_off = this.props.comment_text_off ? true : false;
     }
     return <div className="explicit-position">
       { stance_display_off ? null : <img src={stance_icon_src} width="20" height="20" className={className} alt={alt} /> }

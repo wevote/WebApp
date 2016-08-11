@@ -24,7 +24,7 @@ export default class BallotItem extends Component {
     return <div className="ballot-section" id={this.props.we_vote_id}>
         { this.isMeasure() ?
           <Measure {...this.props}
-                   isListItem /> :
+                   link_to_ballot_item_page /> :
           <span>
             <h2 className="ballot-section__display-name">
               { this.props.ballot_item_display_name }

@@ -19,7 +19,7 @@ export default class CandidateItem extends Component {
     twitter_followers_count: PropTypes.number,
     twitter_handle: PropTypes.string,
     office_name: PropTypes.string,
-    isListItem: PropTypes.bool
+    link_to_ballot_item_page: PropTypes.bool
   };
 
   constructor (props) {
@@ -56,21 +56,25 @@ export default class CandidateItem extends Component {
 
     // TwitterHandle-based link
     let candidateLink = twitter_handle ? "/" + twitter_handle : "/candidate/" + we_vote_id;
+    let candidate_photo_url_html;
+    if (candidate_photo_url) {
+      candidate_photo_url_html = <img className="candidate-card__photo"
+                                          src={candidate_photo_url}
+                                          alt="candidate-photo" />;
+    } else {
+      candidate_photo_url_html = <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light utils-img-contain-glyph" />;
+    }
 
     return <div className="candidate-card">
       <div className="candidate-card__media-object">
         <div className="candidate-card__media-object-anchor">
-          <Link to={candidateLink}> {/* TODO make this link conditional on isListItem */}
-            {candidate_photo_url ?
-              <img className="candidate-card__photo"
-                   src={candidate_photo_url}
-                   alt="candidate-photo"/> :
-              <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light utils-img-contain-glyph"/>
-            }
-          </Link>
+          {this.props.link_to_ballot_item_page ?
+            <Link to={candidateLink}>{candidate_photo_url_html}</Link> :
+            candidate_photo_url_html
+          }
           {twitter_followers_count ?
             <span className="twitter-followers__badge">
-              <span className="fa fa-twitter twitter-followers__icon" />
+              <span className="fa fa-twitter twitter-followers__icon"></span>
               <span title={numberWithCommas(twitter_followers_count)}>{abbreviateNumber(twitter_followers_count)}</span>
             </span> :
             null
@@ -87,7 +91,7 @@ export default class CandidateItem extends Component {
             <img src="/img/global/icons/thumbs-down-color-icon.svg" className="candidate-card__position-icon" width="20" height="20" /> : null
           }
           <h2 className="candidate-card__display-name">
-            { this.props.isListItem ?
+            { this.props.link_to_ballot_item_page ?
               <Link to={candidateLink}>{ballot_item_display_name}</Link> :
               ballot_item_display_name
             }
@@ -105,7 +109,7 @@ export default class CandidateItem extends Component {
             </span>
           </p>
           { twitter_description ?
-            <div className={this.props.isListItem ? "candidate-card__description-container--truncated" : "candidate-card__description-container"}>
+            <div className={this.props.link_to_ballot_item_page ? "candidate-card__description-container--truncated" : "candidate-card__description-container"}>
               <div>
                 <p className="candidate-card__description">
                     {twitter_description}
@@ -113,9 +117,9 @@ export default class CandidateItem extends Component {
               </div>
 
               <Link to={candidateLink}>
-                { this.props.isListItem ? <span className="candidate-card__read-more-pseudo"></span> : null }
+                { this.props.link_to_ballot_item_page ? <span className="candidate-card__read-more-pseudo"></span> : null }
               </Link>
-              { this.props.isListItem ?
+              { this.props.link_to_ballot_item_page ?
                 <Link to={candidateLink} className="candidate-card__read-more-link">&nbsp;Read more</Link> :
                 null
               }

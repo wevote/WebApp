@@ -14,7 +14,7 @@ export default class Measure extends Component {
     measure_subtitle: PropTypes.string,
     kind_of_ballot_item: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string.isRequired,
-    isListItem: PropTypes.bool
+    link_to_ballot_item_page: PropTypes.bool
   };
   constructor (props) {
     super(props);
@@ -57,7 +57,7 @@ export default class Measure extends Component {
               <img src="/img/global/icons/thumbs-down-color-icon.svg" className="measure-card__position-icon" width="20" height="20" /> : null
             }
             <h2 className="measure-card__display-name">
-              { this.props.isListItem ?
+              { this.props.link_to_ballot_item_page ?
                 <Link to={measureLink}>{ballot_item_display_name}</Link> :
                   ballot_item_display_name
               }

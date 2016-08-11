@@ -11,7 +11,7 @@ export default class CandidateList extends Component {
     return <article className="bs-list-group">
         { this.props.children.map( (child) =>
           <div key={child.we_vote_id} className="candidate-card__container">
-            <CandidateItem key={child.we_vote_id} isListItem office_name={this.props.office_name} {...child} />
+            <CandidateItem key={child.we_vote_id} link_to_ballot_item_page office_name={this.props.office_name} {...child} />
           </div>)
         }
       </article>;
