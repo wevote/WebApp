@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import BallotStore from "../../stores/BallotStore";
+import BallotTitleDropdown from "../../components/Widgets/BallotTitleDropdown";
 import BookmarkItem from "./BookmarkItem";
 import LoadingWheel from "../LoadingWheel";
 
@@ -31,7 +32,7 @@ export default class Bookmarks extends Component {
       return LoadingWheel;
     }
     return <div>
-      <h4>What I Have Bookmarked</h4>
+      <div className="bs-text-center"><BallotTitleDropdown ballot_type="BOOKMARKS" /></div>
       {
         bookmarks.length === 0 && <p>No bookmarks yet</p>
       }

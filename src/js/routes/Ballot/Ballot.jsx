@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 import { browserHistory, Link } from "react-router";
 import BallotItem from "../../components/Ballot/BallotItem";
 import BallotStore from "../../stores/BallotStore";
+import BallotTitleDropdown from "../../components/Widgets/BallotTitleDropdown";
 import SupportStore from "../../stores/SupportStore";
 import SupportActions from "../../actions/SupportActions";
 import LoadingWheel from "../../components/LoadingWheel";
@@ -31,16 +32,16 @@ export default class Ballot extends Component {
   }
 
   componentWillReceiveProps (nextProps){
-    let type = nextProps.location.query ? nextProps.location.query.type : "all";
-    this.setState({ballot: this.getBallot(nextProps), type: type });
+    let ballot_type = nextProps.location.query ? nextProps.location.query.type : "all";
+    this.setState({ballot: this.getBallot(nextProps), ballot_type: ballot_type });
   }
 
   _onChange (){
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0){ // Ballot is found but ballot is empty
       browserHistory.push("ballot/empty");
     } else {
-      let type = this.props.location.query ? this.props.location.query.type : "all";
-      this.setState({ballot: this.getBallot(this.props), type: type });
+      let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
+      this.setState({ballot: this.getBallot(this.props), ballot_type: ballot_type });
     }
   }
 
@@ -64,8 +65,8 @@ export default class Ballot extends Component {
   }
 
   getBallot (props){
-    let type = props.location.query ? props.location.query.type : "all";
-    switch (type) {
+    let ballot_type = props.location.query ? props.location.query.type : "all";
+    switch (ballot_type) {
       case "filterRemaining":
         return BallotStore.ballot_remaining_choices;
       case "filterSupport":
@@ -75,8 +76,19 @@ export default class Ballot extends Component {
     }
   }
 
+  getBallotType (){
+    switch (this.state.ballot_type) {
+      case "filterRemaining":
+        return "CHOICES_REMAINING";
+      case "filterSupport":
+        return "WHAT_I_SUPPORT";
+      default :
+        return "ALL_BALLOT_ITEMS";
+    }
+  }
+
   getFilterType (){
-    switch (this.state.type) {
+    switch (this.state.ballot_type) {
       case "filterRemaining":
         return "filterRemaining";
       case "filterSupport":
@@ -86,19 +98,8 @@ export default class Ballot extends Component {
     }
   }
 
-  getTitle (){
-    switch (this.state.type) {
-      case "filterRemaining":
-        return "Choices Remaining on My Ballot";
-      case "filterSupport":
-        return "What I Support on My Ballot";
-      default :
-        return "All Ballot Items";
-    }
-  }
-
   emptyMsg (){
-    switch (this.state.type) {
+    switch (this.state.ballot_type) {
       case "filterRemaining":
         return "You already chose a candidate or position for each ballot item";
       case "filterSupport":
@@ -136,7 +137,7 @@ export default class Ballot extends Component {
       <div></div>;
 
     return <div className="ballot">
-      <h4 className="bs-text-center">{this.getTitle()}</h4>
+      <div className="bs-text-center"><BallotTitleDropdown ballot_type={this.getBallotType()} /></div>
       { ballot_caveat !== "" ?
         <div className="alert bs-alert bs-alert-info alert-dismissible" role="alert">
           <button type="button" className="bs-close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
