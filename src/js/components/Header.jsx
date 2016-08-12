@@ -31,7 +31,7 @@ export default class Header extends Component {
   }
 
   render () {
-    var { signed_in_personal } = this.props.voter;
+    var { signed_in_personal, signed_in_twitter, twitter_screen_name } = this.props.voter;
     const logOut = FacebookActions.appLogout;
 
     const header =
@@ -43,48 +43,30 @@ export default class Header extends Component {
               <li>
                 <div><span className="we-vote-promise">We Vote's Promise: We will never sell your email.</span></div>
               </li>
-              <li>
-                <Link onClick={this.hide.bind(this)} to={{ pathname: "/ballot", query: { type: "filterRemaining" } }}>
-                  <div>
-                  Choices Remaining on My Ballot
-                  </div>
-                </Link>
-              </li>
-              <li>
-                <Link onClick={this.hide.bind(this)} to={{ pathname: "/ballot", query: { type: "filterSupport" } }}>
-                  <div>
-                    What I Support on My Ballot
-                  </div>
-                </Link>
-              </li>
-              <li>
-                <Link onClick={this.hide.bind(this)} to="/ballot">
-                  <div>
-                  All Ballot Items
-                  </div>
-                </Link>
-              </li>
-              <li>
-                <Link onClick={this.hide.bind(this)} to="/bookmarks">
-                  <div>
-                  What I Have Bookmarked
-                  </div>
-                </Link>
-              </li>
             </ul>
             <h4 className="bs-text-left"></h4>
             <ul className="bs-nav bs-nav-stacked">
-              <li>
-                <Link onClick={this.hide.bind(this)} to="/more/opinions/followed">
-                  <div>
-                  Who I'm Following
-                  </div>
-                </Link>
-              </li>
+              { signed_in_twitter && twitter_screen_name ?
+                <li>
+                  <Link onClick={this.hide.bind(this)} to={"/" + twitter_screen_name}>
+                    <div>
+                      My Profile
+                    </div>
+                  </Link>
+                </li> :
+                null
+              }
               <li>
                 <Link onClick={this.hide.bind(this)} to="/settings/location">
                   <div>
                   My Address
+                  </div>
+                </Link>
+              </li>
+             <li>
+                <Link onClick={this.hide.bind(this)} to="/more/opinions/followed">
+                  <div>
+                  Who I'm Following
                   </div>
                 </Link>
               </li>

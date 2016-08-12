@@ -6,8 +6,10 @@ export default class MoreMenu extends Component {
   static propTypes = {
     email: PropTypes.string,
     first_name: PropTypes.string,
+    twitter_screen_name: PropTypes.string,
     voter_photo_url: PropTypes.string,
-    signed_in_personal: PropTypes.bool
+    signed_in_personal: PropTypes.bool,
+    signed_in_twitter: PropTypes.bool
   };
 
   menuLink (url, label){
@@ -28,15 +30,15 @@ export default class MoreMenu extends Component {
         <li className="bs-list-group-item">
           <span className="we-vote-promise">We Vote's Promise: We will never sell your email.</span>
         </li>
-        {this.menuLink("/ballot?type=filterRemaining", "Choices Remaining on My Ballot")}
-        {this.menuLink("/ballot?type=filterSupport", "What I Support on My Ballot")}
-        {this.menuLink("/ballot", "All Ballot Items")}
-        {this.menuLink("/bookmarks", "What I Have Bookmarked")}
       </ul>
       <h4 className="bs-text-left"></h4>
       <ul className="bs-list-group">
-        {this.menuLink("/more/opinions/followed", "Who I'm Following")}
+        { this.props.signed_in_twitter && this.props.twitter_screen_name ?
+          this.menuLink("/" + this.props.twitter_screen_name, "My Profile") :
+          null
+        }
         {this.menuLink("/settings/location", "My Address")}
+        {this.menuLink("/more/opinions/followed", "Who I'm Following")}
         {this.props.signed_in_personal ?
           <li onClick={logOut} className="bs-list-group-item"><a>Sign Out</a></li> :
           this.menuLink("/more/sign_in", "Sign In")

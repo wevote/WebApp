@@ -1,0 +1,23 @@
+.ballot-title-dropdown .inline-phone:hover {
+  cursor: pointer;
+}
+.ballot-title-dropdown {
+  display: flex;
+  border-top: 1px solid #DDD;
+  margin-top: 1em;
+  padding-top: 10px;
+
+  &__btn {
+    // currently uses Bootstrap .bs-btn styling
+    margin-right: 8px;
+
+    &--position-selected {
+      color: $selected-color;
+    }
+  }
+
+  &__header-text {
+    font-family: $heading-font-stack;
+    font-size: 18px;
+  }
+}
