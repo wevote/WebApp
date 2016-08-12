@@ -1,13 +1,47 @@
-.item-positionstatementactionbar .inline-phone:hover {
-  cursor: pointer;
-}
-.item-positionstatementactionbar {
-  display: flex;
-  border-top: 1px solid #DDD;
-  margin-top: 1em;
-  padding-top: 10px;
 
- &__outer-div {
+@include media-object(".position-statement", ".position-statement__avatar", ".position-statement__input-group");
+
+.position-statement {
+  display: flex;
+  flex: 1 1 100%;
+  margin-top: 5px;
+  width: 100%;
+
+  &__avatar {
+    overflow: hidden;
+    border-radius: 3px;
+    background: #fff;
+    height: 34px;
+    width: 34px;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  &__input-group {
+    display: flex;
+  }
+
+  &__input {
+    margin-right: 8px;
+  }
+
+  &__container {
+    background-color: $pale-gray;
+    margin-top: 1em;
+    padding-top: 8px;
+    padding-right: 15px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    margin-right: -15px;
+    margin-bottom: -10px;
+    margin-left: -15px;
+
+    .inline-phone:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__outer-div {
 
   }
 
@@ -19,19 +53,10 @@
       color: $selected-color;
     }
   }
-}
 
-.position-statement-input-div {
-  margin-top: 5px;
-  width: 100%;
-}
-
-.position-statement-input {
-  width: 70%;
-}
-
-
-.position-statement__description-container {
+  &__speaker-name {
+    font-weight: bold;
+  }
 
   &--truncated {
     $line-height: 25px;
@@ -70,18 +95,18 @@
       background: linear-gradient(to right, rgba(255, 255, 255, 0), white 15%, white);
       font-style: normal;
       color: $link-color;
+      cursor: pointer;
     }
   }
 }
 
 .position-statement__edit-position-link {
+  @include hide-text;
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  text-indent: -9999px;
   z-index: 5;
 }
 
