@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
 import FacebookActions from "../actions/FacebookActions";
+var Icon = require("react-svg-icons");
 
 export default class MoreMenu extends Component {
   static propTypes = {
@@ -24,31 +25,54 @@ export default class MoreMenu extends Component {
   render () {
     const logOut = FacebookActions.appLogout;
 
-  return <div>
-    <div className="device-menu--large">
-      <ul className="bs-list-group">
-        <li className="bs-list-group-item">
-          <span className="we-vote-promise">We Vote's Promise: We will never sell your email.</span>
-        </li>
-      </ul>
-      <h4 className="bs-text-left"></h4>
-      <ul className="bs-list-group">
-        { this.props.signed_in_twitter && this.props.twitter_screen_name ?
-          this.menuLink("/" + this.props.twitter_screen_name, "Your Profile") :
-          null
-        }
-        {this.menuLink("/settings/location", "Your Address & Ballot")}
-        {this.menuLink("/opinions", "Who You Can Follow")}
-        {this.props.signed_in_personal ?
-          <li onClick={logOut} className="bs-list-group-item"><a><span className="header-menu-text-left">Sign Out</span></a></li> :
-          this.menuLink("/more/sign_in", "Sign In")
-        }
-      </ul>
-      <h4 className="bs-text-left"></h4>
-      <ul className="bs-list-group">
-      {this.menuLink("/more/about", "About We Vote")}
-      </ul>
-    </div>
-    </div>;
+    var { voter_photo_url } = this.props;
+
+    let image_placeholder = "";
+    let speaker_type = "V";  // TODO DALE make this dynamic
+    if (speaker_type === "O") {
+        image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
+    } else {
+        image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
+    }
+
+    let search = window.location.search ? window.location.search : "";
+    let currentUrl = window.location.pathname + search;
+
+    return <div>
+      <div className="device-menu--large">
+        <ul className="bs-list-group">
+          <li className="bs-list-group-item">
+            <span className="we-vote-promise">We Vote's Promise: We will never sell your email.</span>
+          </li>
+        </ul>
+        <h4 className="bs-text-left"></h4>
+        <ul className="bs-list-group">
+          { this.props.signed_in_twitter && this.props.twitter_screen_name ?
+            <li className={"/" + this.props.twitter_screen_name === currentUrl ? "active-link bs-list-group-item" : "bs-list-group-item"}>
+              <Link to={"/" + this.props.twitter_screen_name}><div>
+                { voter_photo_url ?
+                  <img className="position-statement__avatar"
+                        src={voter_photo_url}
+                        width="34px"
+                  /> :
+                  image_placeholder }
+                <span className="header-menu-text-left">Your Page</span>
+              </div></Link>
+            </li>:
+            null
+          }
+          {this.menuLink("/settings/location", "Your Address & Ballot")}
+          {this.menuLink("/opinions", "Who You Can Follow")}
+          {this.props.signed_in_personal ?
+            <li onClick={logOut} className="bs-list-group-item"><a><span className="header-menu-text-left">Sign Out</span></a></li> :
+            this.menuLink("/more/sign_in", "Sign In")
+          }
+        </ul>
+        <h4 className="bs-text-left"></h4>
+        <ul className="bs-list-group">
+        {this.menuLink("/more/about", "About We Vote")}
+        </ul>
+      </div>
+      </div>;
   }
 }

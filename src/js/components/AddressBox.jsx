@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { Button, ButtonToolbar } from "react-bootstrap";
-import VoterStore from "../stores/VoterStore";
+import { browserHistory } from "react-router";
 import LoadingWheel from "../components/LoadingWheel";
 import VoterActions from "../actions/VoterActions";
-import { browserHistory } from "react-router";
+import VoterStore from "../stores/VoterStore";
 
 export default class AddressBox extends Component {
   static propTypes = {
@@ -17,14 +17,14 @@ export default class AddressBox extends Component {
 
   componentDidMount () {
     this.setState({ location: VoterStore.getAddress() });
-    this.listener = VoterStore.addListener(this._onChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount (){
-    this.listener.remove();
+    this.voterStoreListener.remove();
   }
 
-  _onChange () {
+  _onVoterStoreChange () {
     if (this.state.location){
       browserHistory.push(this.props.saveUrl);
     } else {
