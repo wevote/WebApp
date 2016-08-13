@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import { browserHistory, Link } from "react-router";
 import BallotItem from "../../components/Ballot/BallotItem";
 import BallotStore from "../../stores/BallotStore";
-import BallotTitleDropdown from "../../components/Widgets/BallotTitleDropdown";
+import BallotTitleDropdown from "../../components/Navigation/BallotTitleDropdown";
 import SupportStore from "../../stores/SupportStore";
 import SupportActions from "../../actions/SupportActions";
 import LoadingWheel from "../../components/LoadingWheel";

@@ -59,14 +59,14 @@ export default class Header extends Component {
               <li>
                 <Link onClick={this.hide.bind(this)} to="/settings/location">
                   <div>
-                    <span className="header-slide-out-menu-text-left">Your Address</span>
+                    <span className="header-slide-out-menu-text-left">Your Address &amp; Ballot</span>
                   </div>
                 </Link>
               </li>
              <li>
-                <Link onClick={this.hide.bind(this)} to="/more/opinions/followed">
+                <Link onClick={this.hide.bind(this)} to="/opinions">
                   <div>
-                    <span className="header-slide-out-menu-text-left">Who You're Following</span>
+                    <span className="header-slide-out-menu-text-left">Who You Can Follow</span>
                   </div>
                 </Link>
               </li>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import BallotStore from "../../stores/BallotStore";
-import BallotTitleDropdown from "../../components/Widgets/BallotTitleDropdown";
+import BallotTitleDropdown from "../Navigation/BallotTitleDropdown";
 import BookmarkItem from "./BookmarkItem";
 import LoadingWheel from "../LoadingWheel";
 

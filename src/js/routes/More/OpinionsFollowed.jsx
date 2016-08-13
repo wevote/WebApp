@@ -1,6 +1,7 @@
 import React, {Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import FollowingDropdown from "../../components/Navigation/followingDropdown";
 import GuideStore from "../../stores/GuideStore";
 import GuideActions from "../../actions/GuideActions";
 import VoterGuideItem from "../../components/VoterGuide/VoterGuideItem";
@@ -38,13 +39,28 @@ export default class OpinionsFollowed extends Component {
     }
   }
 
+  getCurrentRoute (){
+    var current_route = "/more/opinions/followed";
+    return current_route;
+  }
+
+  getFollowingType (){
+    switch (this.getCurrentRoute()) {
+      case "/opinions":
+        return "WHO_YOU_CAN_FOLLOW";
+      case "/more/opinions/followed":
+      default :
+        return "WHO_YOU_FOLLOW";
+    }
+  }
+
   render () {
     return <div>
   <div className="bs-container-fluid opinions-followed__container">
-    <h3 className="bs-text-center">Who You're Following</h3>
+    <div className="bs-text-center"><FollowingDropdown following_type={this.getFollowingType()} /></div>
       <p>
         Organizations, public figures and other voters you currently follow. See also
-        "<Link to="/opinions">Who You Can Follow</Link>". We will never sell your email.
+        <Link to="/friends">your friends</Link>. We will never sell your email.
       </p>
     <div className="voter-guide-list">
     <ReactCSSTransitionGroup transitionName="org-ignore" transitionEnterTimeout={400} transitionLeaveTimeout={200}>
