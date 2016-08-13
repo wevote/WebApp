@@ -1,4 +1,5 @@
 import { Button } from "react-bootstrap";
+import FollowingDropdown from "../components/Navigation/followingDropdown";
 import GuideStore from "../stores/GuideStore";
 import SearchGuidesToFollowBox from "../components/SearchGuidesToFollowBox";
 import VoterStore from "../stores/VoterStore";
@@ -34,6 +35,21 @@ export default class Opinions extends Component {
     this.listener.remove();
   }
 
+  getCurrentRoute (){
+    var current_route = "/opinions";
+    return current_route;
+  }
+
+  getFollowingType (){
+    switch (this.getCurrentRoute()) {
+      case "/opinions":
+        return "WHO_YOU_CAN_FOLLOW";
+      case "/more/opinions/followed":
+      default :
+        return "WHO_YOU_FOLLOW";
+    }
+  }
+
   render () {
     const { ballot_has_guides, guideList, address } = this.state;
     let guides;
@@ -53,8 +69,7 @@ export default class Opinions extends Component {
         guides = <div>
           <p>
             Find opinions about your ballot (ordered by Twitter followers).
-            Follow those you trust. We save those you follow in
-            "<Link to="/more/opinions/followed">Who You're Following</Link>". Unfollow at any time.
+            Follow those you trust. Unfollow at any time.
             Following won't add you to mailing lists.
           </p>
           <SearchGuidesToFollowBox />
@@ -69,7 +84,7 @@ export default class Opinions extends Component {
     const content =
       <div className="opinion-view">
         <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
-          <h3 className="bs-text-center">Who You Can Follow</h3>
+          <div className="bs-text-center"><FollowingDropdown following_type={this.getFollowingType()} /></div>
           {guides}
         </div>
       </div>;

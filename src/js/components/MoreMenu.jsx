@@ -37,8 +37,8 @@ export default class MoreMenu extends Component {
           this.menuLink("/" + this.props.twitter_screen_name, "Your Profile") :
           null
         }
-        {this.menuLink("/settings/location", "Your Address")}
-        {this.menuLink("/more/opinions/followed", "Who You're Following")}
+        {this.menuLink("/settings/location", "Your Address & Ballot")}
+        {this.menuLink("/opinions", "Who You Can Follow")}
         {this.props.signed_in_personal ?
           <li onClick={logOut} className="bs-list-group-item"><a><span className="header-menu-text-left">Sign Out</span></a></li> :
           this.menuLink("/more/sign_in", "Sign In")
