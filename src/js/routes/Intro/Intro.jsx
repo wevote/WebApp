@@ -64,7 +64,7 @@ export default class Intro extends Component {
         <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
           <h2 className="bs-text-center">We Vote</h2>
             <label htmlFor="address">
-              My Address.&nbsp;
+              Your Address.&nbsp;
             </label>
             <span className="small">
               This is our best guess - feel free to change.

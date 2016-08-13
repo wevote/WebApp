@@ -53,7 +53,7 @@ export default class BallotTitleDropdown extends Component {
             <li>
               <Link onClick={this.closeDropdown.bind(this)} to="/ballot">
                 <div>
-                  All Ballot Items
+                  <span className="ballot-title-dropdown__header-text">All Ballot Items</span>
                 </div>
               </Link>
             </li>
@@ -64,7 +64,7 @@ export default class BallotTitleDropdown extends Component {
               <Link onClick={this.closeDropdown.bind(this)}
                     to={{ pathname: "/ballot", query: { type: "filterRemaining" } }}>
                 <div>
-                  Choices Remaining on My Ballot
+                  <span className="ballot-title-dropdown__header-text">Choices Remaining on My Ballot</span>
                 </div>
               </Link>
             </li>
@@ -74,7 +74,7 @@ export default class BallotTitleDropdown extends Component {
             <li>
               <Link onClick={this.closeDropdown.bind(this)} to={{pathname: "/ballot", query: {type: "filterSupport"}}}>
                 <div>
-                  What I Support on My Ballot
+                  <span className="ballot-title-dropdown__header-text">What I Support on My Ballot</span>
                 </div>
               </Link>
             </li>
@@ -84,7 +84,7 @@ export default class BallotTitleDropdown extends Component {
             <li>
               <Link onClick={this.closeDropdown.bind(this)} to="/bookmarks">
                 <div>
-                  What I Have Bookmarked
+                  <span className="ballot-title-dropdown__header-text">What I Have Bookmarked</span>
                 </div>
               </Link>
             </li>

@@ -44,7 +44,7 @@ export default class Opinions extends Component {
     if ( address === "" ){
       guides = <div>
           <span style={floatRight}>
-              <Link to="/settings/location"><Button bsClass="bs-btn" bsStyle="primary">Enter my address &#x21AC;</Button></Link>
+              <Link to="/settings/location"><Button bsClass="bs-btn" bsStyle="primary">Enter your address &#x21AC;</Button></Link>
           </span>
           <p>Enter your address so we can find voter guides to follow.</p>
         </div>;
@@ -54,7 +54,7 @@ export default class Opinions extends Component {
           <p>
             Find opinions about your ballot (ordered by Twitter followers).
             Follow those you trust. We save those you follow in
-            "<Link to="/more/opinions/followed">Who I'm Following</Link>". Unfollow at any time.
+            "<Link to="/more/opinions/followed">Who You're Following</Link>". Unfollow at any time.
             Following won't add you to mailing lists.
           </p>
           <SearchGuidesToFollowBox />
@@ -69,7 +69,7 @@ export default class Opinions extends Component {
     const content =
       <div className="opinion-view">
         <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
-          <h3 className="bs-text-center">Who I Can Follow</h3>
+          <h3 className="bs-text-center">Who You Can Follow</h3>
           {guides}
         </div>
       </div>;

@@ -3,6 +3,7 @@ import { Form } from "react-bootstrap";
 import { Link } from "react-router";
 import PositionInformationOnlySnippet from "../Widgets/PositionInformationOnlySnippet";
 import PositionSupportOpposeSnippet from "../Widgets/PositionSupportOpposeSnippet";
+import Textarea from 'react-textarea-autosize';
 import SupportActions from "../../actions/SupportActions";
 var Icon = require("react-svg-icons");
 
@@ -120,14 +121,12 @@ export default class ItemPositionStatementActionBar extends Component {
               /> :
             image_placeholder }
             <span className="position-statement__input-group">
-              <input
-                type="text"
-                onChange={this.updateStatementTextToBeSaved.bind(this)}
+              <Textarea onChange={this.updateStatementTextToBeSaved.bind(this)}
                 name="statement_text_to_be_saved"
-                value={statement_text_to_be_saved}
                 className="position-statement__input bs-form-control"
-                placeholder={statement_placeholder_text}
-              />
+                defaultValue={statement_placeholder_text}
+                value={statement_text_to_be_saved}
+                />
               <button className="bs-btn bs-btn-default" type="submit">Post</button>
             </span>
           </div>

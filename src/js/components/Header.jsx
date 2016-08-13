@@ -50,7 +50,7 @@ export default class Header extends Component {
                 <li>
                   <Link onClick={this.hide.bind(this)} to={"/" + twitter_screen_name}>
                     <div>
-                      My Profile
+                      <span className="header-slide-out-menu-text-left">Your Profile</span>
                     </div>
                   </Link>
                 </li> :
@@ -59,14 +59,14 @@ export default class Header extends Component {
               <li>
                 <Link onClick={this.hide.bind(this)} to="/settings/location">
                   <div>
-                  My Address
+                    <span className="header-slide-out-menu-text-left">Your Address</span>
                   </div>
                 </Link>
               </li>
              <li>
                 <Link onClick={this.hide.bind(this)} to="/more/opinions/followed">
                   <div>
-                  Who I'm Following
+                    <span className="header-slide-out-menu-text-left">Who You're Following</span>
                   </div>
                 </Link>
               </li>
@@ -74,14 +74,14 @@ export default class Header extends Component {
                 <li>
                   <Link onClick={this.hide.bind(this)} to="/more/sign_in">
                     <div onClick={logOut}>
-                      Sign Out
+                      <span className="header-slide-out-menu-text-left">Sign Out</span>
                     </div>
                   </Link>
                 </li> :
                 <li>
                   <Link onClick={this.hide.bind(this)} to="/more/sign_in">
                     <div>
-                    Sign In
+                      <span className="header-slide-out-menu-text-left">Sign In</span>
                     </div>
                   </Link>
                 </li> }
@@ -91,7 +91,7 @@ export default class Header extends Component {
               <li>
                 <Link onClick={this.hide.bind(this)} to="/more/about">
                   <div>
-                  About <strong>We Vote</strong>
+                    <span className="header-slide-out-menu-text-left">About <strong>We Vote</strong></span>
                   </div>
                 </Link>
               </li>
@@ -100,7 +100,7 @@ export default class Header extends Component {
         </Menu>
         <h4 className="bs-pull-left page-logo">
           <Link to="/ballot">
-            My Voter Guide
+            Your Voter Guide
           </Link>
           <span className="page-header__version"> demo</span>
         </h4>

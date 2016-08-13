@@ -6,10 +6,12 @@
   background-color: #d9edf7;
 }
 
-.we-vote-promise {
-  color: #ababab;
-  font-size: 0.9em;
-  font-weight: 400;
+.header-slide-out-menu-text-left {
+  font-size: 1.5em;
+}
+
+.header-menu-text-left {
+  font-size: 1.3em;
 }
 
 .page-header {
@@ -164,4 +166,10 @@
       text-decoration: none;
     }
   }
+}
+
+.we-vote-promise {
+  color: #ababab;
+  font-size: 0.9em;
+  font-weight: 400;
 }
