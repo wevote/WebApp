@@ -16,7 +16,7 @@ class Main extends React.Component {
             loggedIn: FacebookStore.loggedIn,
             userId: FacebookStore.userId,
             facebookPictureStatus: FacebookStore.facebookPictureStatus,
-            facebookPictureUrl: VoterStore.getPhoto()
+            facebookPictureUrl: VoterStore.getFacebookPhoto()
         };
     }
 

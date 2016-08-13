@@ -26,8 +26,17 @@ class VoterStore extends FluxMapStore {
     return this.getState().address.text_for_map_search;
   }
 
-  getPhoto (){
+  getFacebookPhoto (){
     return this.getState().voter.facebook_profile_image_url_https;
+  }
+
+  getFullName (){
+    return this.getState().voter.full_name;
+  }
+
+  // Could be either Facebook photo or Twitter photo
+  getVoterPhotoUrl (){
+    return this.getState().voter.voter_photo_url;
   }
 
   voterDeviceId () {

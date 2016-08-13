@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { Form } from "react-bootstrap";
 import { Link } from "react-router";
-import PositionInformationOnlySnippet from "../Widgets/PositionInformationOnlySnippet";
-import PositionSupportOpposeSnippet from "../Widgets/PositionSupportOpposeSnippet";
 import Textarea from 'react-textarea-autosize';
 import SupportActions from "../../actions/SupportActions";
+import VoterStore from "../../stores/VoterStore";
 var Icon = require("react-svg-icons");
 
 export default class ItemPositionStatementActionBar extends Component {
@@ -22,13 +21,19 @@ export default class ItemPositionStatementActionBar extends Component {
       loading: false,
       showEditPositionStatementInput: false,
       statement_text_to_be_saved: "",
-      transitioning: false
+      transitioning: false,
+      voter_photo_url: ""
     };
   }
   componentDidMount () {
     if (this.props.supportProps !== undefined) {
       this.setState({ statement_text_to_be_saved: this.props.supportProps.voter_statement_text });
     }
+    this.setState({
+      voter_full_name: VoterStore.getFullName(),
+      voter_photo_url: VoterStore.getVoterPhotoUrl()
+    });
+    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
   componentWillReceiveProps (nextProps) {
@@ -36,6 +41,16 @@ export default class ItemPositionStatementActionBar extends Component {
     if (nextProps.supportProps !== undefined) {
       this.setState({ statement_text_to_be_saved: nextProps.supportProps.voter_statement_text });
     }
+  }
+
+  componentWillUnmount (){
+    this.voterStoreListener.remove();
+  }
+
+  _onVoterStoreChange () {
+    this.setState({
+      voter_full_name: VoterStore.getFullName(),
+      voter_photo_url: VoterStore.getVoterPhotoUrl() });
   }
 
   updateStatementTextToBeSaved (e) {
@@ -68,7 +83,7 @@ export default class ItemPositionStatementActionBar extends Component {
     }
 
     var { is_support, is_oppose } = this.props.supportProps;
-    var { statement_text_to_be_saved } = this.state;
+    var { statement_text_to_be_saved, voter_full_name, voter_photo_url } = this.state;
 
     var statement_placeholder_text;
     if (is_support) {
@@ -91,8 +106,8 @@ export default class ItemPositionStatementActionBar extends Component {
       }
     }
 
-    let speaker_image_url_https = "";
-    let speaker_display_name = "Jeff";
+    let speaker_image_url_https = voter_photo_url;
+    let speaker_display_name = voter_full_name;
 
     let image_placeholder = "";
     let speaker_type = "V";  // TODO DALE make this dynamic
@@ -142,7 +157,9 @@ export default class ItemPositionStatementActionBar extends Component {
           <span className="position-statement__description edit-position-action"
                 onClick={onSavePositionStatementClick}
                 title="Edit this position">
-            <span className="position-statement__speaker-name">{speaker_display_name} </span>
+            { speaker_display_name ?
+              <span className="position-statement__speaker-name">{speaker_display_name} <br /></span> :
+              null }
             {statement_text_to_be_saved}
           </span>
 
