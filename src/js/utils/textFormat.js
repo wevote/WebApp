@@ -58,3 +58,4 @@ export function removeTwitterNameFromDescription (displayName, twitterDescriptio
     }
     return twitterDescriptionMinusName;
 }
+

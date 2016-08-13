@@ -17,7 +17,7 @@ export default class MoreMenu extends Component {
     let currentUrl = window.location.pathname + search;
 
     return <li className={url === currentUrl ? "active-link bs-list-group-item" : "bs-list-group-item"}>
-        <Link to={url}><div>{label}</div></Link>
+        <Link to={url}><div><span className="header-menu-text-left">{label}</span></div></Link>
       </li>;
   }
 
@@ -34,13 +34,13 @@ export default class MoreMenu extends Component {
       <h4 className="bs-text-left"></h4>
       <ul className="bs-list-group">
         { this.props.signed_in_twitter && this.props.twitter_screen_name ?
-          this.menuLink("/" + this.props.twitter_screen_name, "My Profile") :
+          this.menuLink("/" + this.props.twitter_screen_name, "Your Profile") :
           null
         }
-        {this.menuLink("/settings/location", "My Address")}
-        {this.menuLink("/more/opinions/followed", "Who I'm Following")}
+        {this.menuLink("/settings/location", "Your Address")}
+        {this.menuLink("/more/opinions/followed", "Who You're Following")}
         {this.props.signed_in_personal ?
-          <li onClick={logOut} className="bs-list-group-item"><a>Sign Out</a></li> :
+          <li onClick={logOut} className="bs-list-group-item"><a><span className="header-menu-text-left">Sign Out</span></a></li> :
           this.menuLink("/more/sign_in", "Sign In")
         }
       </ul>

@@ -41,10 +41,10 @@ export default class OpinionsFollowed extends Component {
   render () {
     return <div>
   <div className="bs-container-fluid opinions-followed__container">
-    <h3 className="bs-text-center">Who I'm Following</h3>
+    <h3 className="bs-text-center">Who You're Following</h3>
       <p>
         Organizations, public figures and other voters you currently follow. See also
-        "<Link to="/opinions">Who I Can Follow</Link>". We will never sell your email.
+        "<Link to="/opinions">Who You Can Follow</Link>". We will never sell your email.
       </p>
     <div className="voter-guide-list">
     <ReactCSSTransitionGroup transitionName="org-ignore" transitionEnterTimeout={400} transitionLeaveTimeout={200}>
