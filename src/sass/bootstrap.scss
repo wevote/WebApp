@@ -1,0 +1,13 @@
+// Keeping Bootstrap separate for the time being. It will probably make sense to integrate with main stylesheets eventually. - Jeff, Aug 13, 2016
+
+/* Custom Build for We Vote */
+
+@import 'bootstrap/bootstrap-variables';
+@import 'bootstrap/bootstrap-custom';
+
+// TODO Create Bootstrap overrides partial
+
+// Overrides - needs to be rethought - allow margin-top when following another element (* + h1, etc. ?)
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+}

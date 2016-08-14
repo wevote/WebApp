@@ -49,7 +49,7 @@
     "babel-preset-stage-0": "^6.3.13",
     "babelify": "^7.2.0",
     "blue-tape": "^0.1.10",
-    "bootstrap-sass": "^3.3.6",
+    "bootstrap-sass": "^3.3.7",
     "browser-sync": "^2.11.1",
     "browserify": "^13.0.0",
     "classnames": "^2.2.1",
