@@ -1,17 +1,16 @@
 import React, { Component, PropTypes } from "react";
-import CandidateActions from "../../actions/CandidateActions";
-import CandidateItem from "../../components/Ballot/CandidateItem";
-import CandidateStore from "../../stores/CandidateStore";
+
 import GuideList from "../../components/VoterGuide/GuideList";
 import GuideStore from "../../stores/GuideStore";
 import GuideActions from "../../actions/GuideActions";
-import OfficeStore from "../../stores/OfficeStore";
+import MeasureItem from "../../components/Ballot/MeasureItem";
+import MeasureActions from "../../actions/MeasureActions";
+import MeasureStore from "../../stores/MeasureStore";
 import PositionList from "../../components/Ballot/PositionList";
-import ThisIsMeAction from "../../components/Widgets/ThisIsMeAction";
 import VoterStore from "../../stores/VoterStore";
 import { exitSearch } from "../../utils/search-functions";
 
-// TODO DALE Convert to work for a Measure
+
 export default class Measure extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired
@@ -20,46 +19,39 @@ export default class Measure extends Component {
   constructor (props) {
     super(props);
     this.we_vote_id = this.props.params.we_vote_id;
-    this.state = {candidate: {}, office: {} };
+    this.state = {measure: {} };
   }
 
   componentDidMount (){
-    this.candidateToken = CandidateStore.addListener(this._onChange.bind(this));
-    this.officeToken = OfficeStore.addListener(this._onChange.bind(this));
+    this.measureStoreListener = MeasureStore.addListener(this._onChange.bind(this));
 
-    CandidateActions.retrieve(this.we_vote_id);
+    MeasureActions.retrieve(this.we_vote_id);
 
     this.listener = GuideStore.addListener(this._onChange.bind(this));
-    GuideActions.retrieveGuidesToFollowByBallotItem(this.we_vote_id, "CANDIDATE");
+    GuideActions.retrieveGuidesToFollowByBallotItem(this.we_vote_id, "MEASURE");
 
     exitSearch("");
   }
 
   componentWillUnmount () {
-    this.candidateToken.remove();
-    this.officeToken.remove();
+    this.measureStoreListener.remove();
     this.listener.remove();
   }
 
   _onChange (){
-    var candidate = CandidateStore.get(this.we_vote_id) || {};
-    this.setState({ candidate: candidate, guideList: GuideStore.toFollowListForCand() });
-
-    if (candidate.contest_office_we_vote_id){
-      this.setState({ office: OfficeStore.get(candidate.contest_office_we_vote_id) || {} });
-    }
+    var measure = MeasureStore.get(this.we_vote_id) || {};
+    this.setState({ measure: measure, guideList: GuideStore.toFollowListForCand() });
 
   }
 
   render () {
     const electionId = VoterStore.election_id();
-    const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to follow about this candidate or measure.";
-    var { candidate, office, guideList } = this.state;
+    const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to follow about this measure.";
+    var { measure, guideList } = this.state;
 
-    if (!candidate.ballot_item_display_name){
+    if (!measure.ballot_item_display_name){
       return <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
               <h3>No Measure Found</h3>
-        NOTE: The We Vote team is still building support for Measures.
                 <div className="small">We were not able to find that measure.
                   Please search again.</div>
                 <br />
@@ -67,28 +59,24 @@ export default class Measure extends Component {
     }
 
     return <span>
-        <section className="candidate-card__container">
-          <CandidateItem {...candidate} office_name={office.ballot_item_display_name}/>
-          <div className="candidate-card__additional">
-            { candidate.position_list ?
+        <section className="measure-card__container">
+          <MeasureItem {...measure} />
+          <div className="measure-card__additional">
+            { measure.position_list ?
               <div>
                 <PositionList
-                position_list={candidate.position_list}
-                candidate_display_name={candidate.ballot_item_display_name} />
+                position_list={measure.position_list}
+                candidate_display_name={measure.ballot_item_display_name} />
               </div> :
               null
             }
             {guideList.length === 0 ?
-              <p className="candidate-card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
-              <div><h3 className="candidate-card__additional-heading">{"More opinions about " + candidate.ballot_item_display_name}</h3>
+              <p className="measure-card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
+              <div><h3 className="measure-card__additional-heading">{"More opinions about " + measure.ballot_item_display_name}</h3>
               <GuideList id={electionId} ballotItemWeVoteId={this.we_vote_id} organizations={guideList}/></div>
             }
           </div>
         </section>
-        <br />
-        <ThisIsMeAction twitter_handle_being_viewed={candidate.twitter_handle}
-                      name_being_viewed={candidate.ballot_item_display_name}
-                      kind_of_owner="POLITICIAN" />
         <br />
       </span>;
 

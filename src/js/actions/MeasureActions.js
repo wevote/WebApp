@@ -1,17 +1,8 @@
-import MeasureConstants from "../constants/MeasureConstants";
-const AppDispatcher = require("../dispatcher/AppDispatcher");
+import Dispatcher from "../dispatcher/Dispatcher";
 
-
-const MeasureActions = {
-  /**
-   * @param {String} id we_vote_id of ballot item
-   * @param {Object} item ballot item as javascript object
-   */
-  addItemById: function (id, item) {
-    AppDispatcher.dispatch({
-      actionType: MeasureConstants.MEASURE_ADDED, id, item
-    });
+module.exports = {
+  retrieve: function (we_vote_id) {
+    Dispatcher.loadEndpoint("measureRetrieve", { measure_we_vote_id: we_vote_id} );
+    Dispatcher.loadEndpoint("positionListForBallotItem", { ballot_item_we_vote_id: we_vote_id, kind_of_ballot_item: "MEASURE"} );
   }
 };
-
-export default MeasureActions;

@@ -24,11 +24,11 @@ export default class Ballot extends Component {
     }
       SupportActions.retrieveAll();
       SupportActions.retrieveAllCounts();
-      this.supportToken = SupportStore.addListener(this._onChange.bind(this));
+      this.supportStoreListener = SupportStore.addListener(this._onChange.bind(this));
     }
 
   componentWillUnmount (){
-    this.supportToken.remove();
+    this.supportStoreListener.remove();
   }
 
   componentWillReceiveProps (nextProps){
