@@ -23,7 +23,7 @@ export default class Measure extends Component {
   }
 
   componentDidMount (){
-    this.measureToken = MeasureStore.addListener(this._onChange.bind(this));
+    this.measureStoreListener = MeasureStore.addListener(this._onChange.bind(this));
 
     MeasureActions.retrieve(this.we_vote_id);
 
@@ -34,7 +34,7 @@ export default class Measure extends Component {
   }
 
   componentWillUnmount () {
-    this.measureToken.remove();
+    this.measureStoreListener.remove();
     this.listener.remove();
   }
 

@@ -22,8 +22,8 @@ export default class Candidate extends Component {
   }
 
   componentDidMount (){
-    this.candidateToken = CandidateStore.addListener(this._onChange.bind(this));
-    this.officeToken = OfficeStore.addListener(this._onChange.bind(this));
+    this.candidateStoreListener = CandidateStore.addListener(this._onChange.bind(this));
+    this.officeStoreListener = OfficeStore.addListener(this._onChange.bind(this));
     var { candidate_we_vote_id } = this.state;
 
     CandidateActions.retrieve(candidate_we_vote_id);
@@ -52,8 +52,8 @@ export default class Candidate extends Component {
   }
 
   componentWillUnmount () {
-    this.candidateToken.remove();
-    this.officeToken.remove();
+    this.candidateStoreListener.remove();
+    this.officeStoreListener.remove();
     this.listener.remove();
   }
 
