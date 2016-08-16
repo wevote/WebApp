@@ -12,9 +12,11 @@ export default class MeasureItem extends Component {
     key: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired,
     measure_subtitle: PropTypes.string,
+    measure_text: PropTypes.string,
     kind_of_ballot_item: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string.isRequired,
-    link_to_ballot_item_page: PropTypes.bool
+    link_to_ballot_item_page: PropTypes.bool,
+    measure_url: PropTypes.string
   };
   constructor (props) {
     super(props);
@@ -40,6 +42,9 @@ export default class MeasureItem extends Component {
     var we_vote_id = this.props.we_vote_id;
     var measure_subtitle = capitalizeString(this.props.measure_subtitle);
     var ballot_item_display_name = capitalizeString(this.props.ballot_item_display_name);
+    var measure_text = this.props.measure_text;
+    var measure_url = this.props.measure_url;
+    var measure_url_display_name = "View Measure Webpage";
     var measureLink = "/measure/" + we_vote_id;
     return <div className="measure-card__container">
       <div className="measure-card">
@@ -65,6 +70,12 @@ export default class MeasureItem extends Component {
             <StarAction we_vote_id={we_vote_id} type="MEASURE"/>
 
             <div>{measure_subtitle}</div>
+              { this.props.measure_text ?
+                <div className="measure_text">{measure_text}</div> :
+                null }
+              { this.props.measure_url ?
+                <Link to={measure_url} target="_blank">{measure_url_display_name}</Link> :
+                null }
             <div className="bs-row" style={{ paddingBottom: "2rem" }}>
               <div className="col-xs-12">
               </div>

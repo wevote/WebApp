@@ -1,33 +1,42 @@
-// import MeasureConstants from "../constants/MeasureConstants";
-// Zach: "not sure what the purpose of MeasureConstants is, no similar constants for candidates"
-import { createStore } from "../utils/createStore";
-// import { shallowClone } from "../utils/object-utils";
-const AppDispatcher = require("../dispatcher/AppDispatcher");
+var Dispatcher = require("../dispatcher/Dispatcher");
+var FluxMapStore = require("flux/lib/FluxMapStore");
+const assign = require("object-assign");
 
-// Zach: "not sure of purpose of addItemById.  appears here and in MeasureActions,
-//      but no similar method associated with candidates"
 
-// const _measures = {};
+class MeasureStore extends FluxMapStore {
 
-// function addItemById (id, item) {
-//   _measures[id] = shallowClone(item);
-// }
+  reduce (state, action) {
 
-const MeasureStore = createStore({});
+    // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
+    if (!action.res || !action.res.success)
+      return state;
 
-MeasureStore.dispatchToken = AppDispatcher.register( (action) => {
-  switch (action.actionType) {
+    var key;
+    var merged_properties;
 
-    // case MeasureConstants.OFFICE_ADDED:
-    //   addItemById(action.id, action.item);
-    //   MeasureStore.emitChange();
-    //   break;
-    // Zach: "see note above: not sure of purpose of MeasureConstants.  also,
-    // not sure why 'OFFICE_ADDED' would be relevant since measures aren't offices"
+    switch (action.type) {
 
-    default:
-      break;
+      case "measureRetrieve":
+        key = action.res.we_vote_id;
+        merged_properties = assign({}, state.get(key), action.res );
+        return state.set(key, merged_properties );
+
+      case "positionListForBallotItem":
+        key = action.res.ballot_item_we_vote_id;
+        var position_list = action.res.position_list;
+        merged_properties = assign({}, state.get(key), {position_list: position_list} );
+        return state.set(key, merged_properties );
+
+      case "error-measureRetrieve" || "error-positionListForBallotItem":
+        console.log(action);
+        return state;
+
+      default:
+        return state;
+    }
+
   }
-});
 
-export default MeasureStore;
+}
+
+module.exports = new MeasureStore(Dispatcher);

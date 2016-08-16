@@ -42,10 +42,6 @@ export default class Measure extends Component {
     var measure = MeasureStore.get(this.we_vote_id) || {};
     this.setState({ measure: measure, guideList: GuideStore.toFollowListForCand() });
 
-    // if (candidate.contest_office_we_vote_id){
-    //   this.setState({ office: OfficeStore.get(candidate.contest_office_we_vote_id) || {} });
-    // }
-
   }
 
   render () {
