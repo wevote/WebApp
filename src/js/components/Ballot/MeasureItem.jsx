@@ -7,7 +7,7 @@ import StarAction from "../../components/Widgets/StarAction";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
-export default class Measure extends Component {
+export default class MeasureItem extends Component {
   static propTypes = {
     key: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired,

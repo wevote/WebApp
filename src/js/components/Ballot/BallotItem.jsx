@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import CandidateList from "../../components/Ballot/CandidateList";
-import Measure from "../../components/Ballot/Measure";
+import MeasureItem from "../../components/Ballot/MeasureItem";
 import StarAction from "../../components/Widgets/StarAction";
 
 const TYPES = require("keymirror")({
@@ -23,7 +23,7 @@ export default class BallotItem extends Component {
   render () {
     return <div className="ballot-section" id={this.props.we_vote_id}>
         { this.isMeasure() ?
-          <Measure {...this.props}
+          <MeasureItem {...this.props}
                    link_to_ballot_item_page /> :
           <span>
             <h2 className="ballot-section__display-name">
