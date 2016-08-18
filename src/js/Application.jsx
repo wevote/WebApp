@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import Navigator from "./components/Navigator";
+import NavigatorInFooter from "./components/Navigation/NavigatorInFooter";
 import MoreMenu from "./components/MoreMenu";
 import Header from "./components/Header";
 import SubHeader from "./components/SubHeader";
@@ -110,7 +110,7 @@ export default class Application extends Component {
           </div>
         </div>
       </div>
-        <Navigator pathname={pathname} />
+        <NavigatorInFooter pathname={pathname} />
     </div>;
   }
 }

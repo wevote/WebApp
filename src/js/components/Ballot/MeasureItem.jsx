@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 
 import ItemActionBar from "../../components/Widgets/ItemActionBar";
+import ItemPositionStatementActionBar from "../../components/Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
 import StarAction from "../../components/Widgets/StarAction";
 import SupportStore from "../../stores/SupportStore";
@@ -85,6 +86,11 @@ export default class MeasureItem extends Component {
             </div> {/* END .measure-card__media-object */}
             <div className="measure-card__actions">
               <ItemActionBar we_vote_id={we_vote_id} supportProps={supportProps} transitioniing={transitioning} type="MEASURE" />
+              <ItemPositionStatementActionBar ballot_item_we_vote_id={we_vote_id}
+                                              ballot_item_display_name={ballot_item_display_name}
+                                              supportProps={supportProps}
+                                              transitioniing={transitioning}
+                                              type="MEASURE" />
             </div>
           </div>
         </div>;
