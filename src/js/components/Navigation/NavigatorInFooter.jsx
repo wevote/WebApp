@@ -8,7 +8,7 @@ const links = {
     var icon = "bs-glyphicon bs-glyphicon-list-alt bs-glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
-      <Link to="/ballot" className={ "navicon" + (active ? " active-icon" : "")}>
+      <Link to="/ballot" className={ "footer-navicon" + (active ? " active-icon" : "")}>
         <div className="bs-col-xs-3 bs-center-block bs-text-center">
           <span className={icon} title="Ballot" />
           <br/>
@@ -26,7 +26,7 @@ const links = {
     var icon = "bs-glyphicon bs-glyphicon-inbox bs-glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
-      <Link to="/requests" className={ "navicon" + (active ? " active-icon" : "")}>
+      <Link to="/requests" className={ "footer-navicon" + (active ? " active-icon" : "")}>
         <div className="bs-col-xs-3 bs-center-block bs-text-center">
           <span className={icon} title="Requests" />
           <br/>
@@ -43,7 +43,7 @@ const links = {
     var icon = "bs-glyphicon icon-icon-connect-1-3 font-footer_icon";
 
     var jsx =
-      <Link to="/connect" className={ "navicon" + (active ? " active-icon" : "")}>
+      <Link to="/connect" className={ "footer-navicon" + (active ? " active-icon" : "")}>
         <div className="bs-col-xs-3 bs-center-block bs-text-center">
           <span className={icon} title="Connect" />
           <br/>
@@ -60,7 +60,7 @@ const links = {
     var icon = "bs-glyphicon icon-icon-activity-1-4 font-footer_icon";
 
     var jsx =
-      <Link to="/activity" className={ "navicon" + (active ? " active-icon" : "")}>
+      <Link to="/activity" className={ "footer-navicon" + (active ? " active-icon" : "")}>
         <div className="bs-col-xs-3 bs-center-block bs-text-center">
           <span className={icon} title="Activity" />
           <br/>

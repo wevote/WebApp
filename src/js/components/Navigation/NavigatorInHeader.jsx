@@ -8,11 +8,11 @@ const links = {
     var icon = "bs-glyphicon bs-glyphicon-list-alt bs-glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
-      <Link to="/ballot" className={ "navicon" + (active ? " active-icon" : "")}>
+      <Link to="/ballot" className={ "header-navicon" + (active ? " active-icon" : "")}>
         <div className="bs-col-xs-3 bs-center-block bs-text-center small">
           <span className={icon} title="Ballot" />
           <br/>
-          <span className="bs-text-center xtrsmall">
+          <span className="bs-text-center extra-small">
             Ballot
           </span>
         </div>
@@ -26,11 +26,11 @@ const links = {
     var icon = "bs-glyphicon bs-glyphicon-inbox bs-glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
-      <Link to="/requests" className={ "navicon" + (active ? " active-icon" : "")}>
+      <Link to="/requests" className={ "header-navicon" + (active ? " active-icon" : "")}>
         <div className="bs-col-xs-3 bs-center-block bs-text-center small">
           <span className={icon} title="Requests" />
           <br/>
-          <span className="bs-text-center xtrsmall">
+          <span className="bs-text-center extra-small">
             Requests
           </span>
         </div>
@@ -43,11 +43,11 @@ const links = {
     var icon = "bs-glyphicon icon-icon-connect-1-3 bs-glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
-      <Link to="/connect" className={ "navicon" + (active ? " active-icon" : "")}>
+      <Link to="/connect" className={ "header-navicon" + (active ? " active-icon" : "")}>
         <div className="bs-col-xs-3 bs-center-block bs-text-center small">
           <span className={icon} title="Connect" />
           <br/>
-          <span className="bs-text-center xtrsmall">
+          <span className="bs-text-center extra-small">
             Connect
           </span>
         </div>
@@ -60,11 +60,11 @@ const links = {
     var icon = "bs-glyphicon icon-icon-activity-1-4 bs-glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
-      <Link to="/activity" className={ "navicon" + (active ? " active-icon" : "")}>
+      <Link to="/activity" className={ "header-navicon" + (active ? " active-icon" : "")}>
         <div className="bs-col-xs-3 bs-center-block bs-text-center small">
           <span className={icon} title="Activity" />
           <br/>
-          <span className="bs-text-center xtrsmall">
+          <span className="bs-text-center extra-small">
             Activity
           </span>
         </div>

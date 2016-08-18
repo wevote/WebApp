@@ -2,19 +2,31 @@ $icon-color-base: #999999;
 $icon-color-active: #337ab7;
 $icon-color-hover: #777777;
 
-.navicon {
+.header-navicon {
   color: $icon-color-base;
 }
 
-.navicon:active, .active-icon {
+.header-navicon:active, .active-icon {
   color:$icon-color-active;
 }
 
-.navicon:hover .bs-text-center {
+.header-navicon:hover .bs-text-center {
   text-decoration: underline;
   font-weight: bold;
 }
 
-.xtrsmall {
+.footer-navicon {
+  color: $icon-color-base;
+}
+
+.footer-navicon:active, .active-icon {
+  color:$icon-color-active;
+}
+
+.footer-navicon:hover .bs-text-center {
+  text-decoration: underline;
+  font-weight: bold;
+}
+.extra-small {
   font-size: 10px;
 }
