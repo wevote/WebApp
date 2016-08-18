@@ -27,7 +27,11 @@ Make sure you have created a place to put all of the code from Github:
 
 7.`pbcopy < ~/.ssh/id_rsa.pub` OR `pbcopy < ~/.ssh/github_rsa.pub`
 
-8.Go paste your keys into Github, under SSH Keys for your account.  
+The command "pbcopy" copies the contents of the "~/.ssh/id_rsa.pub" key file so you can paste it.
+
+8.Go your profile in Github. In the left navigation, choose "SSH and GPG keys". 
+Click the "New SSH key" button to the right of "SSH keys". 
+Paste the contents of the "~/.ssh/id_rsa.pub" key file into the "Key" text area, and give it any Title you would like.  
 
 
 ---

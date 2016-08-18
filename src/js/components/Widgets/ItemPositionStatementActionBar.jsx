@@ -3,6 +3,7 @@ import { Form } from "react-bootstrap";
 import { Link } from "react-router";
 import Textarea from 'react-textarea-autosize';
 import SupportActions from "../../actions/SupportActions";
+import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
 var Icon = require("react-svg-icons");
 
@@ -27,24 +28,36 @@ export default class ItemPositionStatementActionBar extends Component {
   }
   componentDidMount () {
     if (this.props.supportProps !== undefined) {
-      this.setState({ statement_text_to_be_saved: this.props.supportProps.voter_statement_text });
+      this.setState({
+        statement_text_to_be_saved: this.props.supportProps.voter_statement_text,
+        is_public_position: this.props.supportProps.is_public_position,
+      });
     }
     this.setState({
       voter_full_name: VoterStore.getFullName(),
       voter_photo_url: VoterStore.getVoterPhotoUrl()
     });
+    this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
   componentWillReceiveProps (nextProps) {
     this.setState({transitioning: false});
     if (nextProps.supportProps !== undefined) {
-      this.setState({ statement_text_to_be_saved: nextProps.supportProps.voter_statement_text });
+      this.setState({
+        statement_text_to_be_saved: nextProps.supportProps.voter_statement_text,
+        is_public_position: nextProps.supportProps.is_public_position,
+      });
     }
   }
 
   componentWillUnmount (){
+    this.supportStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  _onSupportStoreChange () {
+    this.setState({ supportProps: SupportStore.get(this.props.ballot_item_we_vote_id), transitioning: false });
   }
 
   _onVoterStoreChange () {
@@ -83,7 +96,8 @@ export default class ItemPositionStatementActionBar extends Component {
     }
 
     var { is_support, is_oppose } = this.props.supportProps;
-    var { statement_text_to_be_saved, voter_full_name, voter_photo_url } = this.state;
+    var { is_public_position, statement_text_to_be_saved, voter_full_name, voter_photo_url } = this.state;
+    statement_text_to_be_saved = statement_text_to_be_saved.length === 0 ? null : statement_text_to_be_saved;
 
     var statement_placeholder_text;
     if (is_support) {
@@ -105,6 +119,10 @@ export default class ItemPositionStatementActionBar extends Component {
         statement_placeholder_text = "Share your thoughts…";
       }
     }
+    var post_button_text = <span>Post for<br />Friends</span>;
+    if (is_public_position) {
+      post_button_text = <span>Post for<br />Public</span>;
+    }
 
     let speaker_image_url_https = voter_photo_url;
     let speaker_display_name = voter_full_name;
@@ -121,7 +139,7 @@ export default class ItemPositionStatementActionBar extends Component {
     //  for viewing by him or herself. Not used currently.
     var short_version = false;
 
-    var no_statement_text = statement_text_to_be_saved.length ? false : true;
+    var no_statement_text = statement_text_to_be_saved !== null && statement_text_to_be_saved.length ? false : true;
     var edit_mode = this.state.showEditPositionStatementInput || no_statement_text;
     const onSavePositionStatementClick = this.state.showEditPositionStatementInput ? this.closeEditPositionStatementInput.bind(this) : this.openEditPositionStatementInput.bind(this);
     return <div className="position-statement__container">
@@ -139,10 +157,10 @@ export default class ItemPositionStatementActionBar extends Component {
               <Textarea onChange={this.updateStatementTextToBeSaved.bind(this)}
                 name="statement_text_to_be_saved"
                 className="position-statement__input bs-form-control"
-                defaultValue={statement_placeholder_text}
+                placeholder={statement_placeholder_text}
                 value={statement_text_to_be_saved}
                 />
-              <button className="bs-btn bs-btn-default" type="submit">Post</button>
+              <button className="bs-btn bs-btn-default" type="submit">{post_button_text}</button>
             </span>
           </div>
         </form> :
