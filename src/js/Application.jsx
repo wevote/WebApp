@@ -96,7 +96,7 @@ export default class Application extends Component {
     return <div className="app-base">
       <Headroom>
         <header className="page-header">
-          <Header location={location} voter={voter}/>
+          <Header location={location} pathname={pathname} voter={voter} />
           <SubHeader pathname={pathname} ballotItemWeVoteId={ballotItemWeVoteId} />
         </header>
       </Headroom>
