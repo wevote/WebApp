@@ -74,7 +74,7 @@ const links = {
   }
 };
 
-export default class Navigator extends Component {
+export default class NavigatorInHeader extends Component {
   static propTypes = {
     pathname: PropTypes.string
   };

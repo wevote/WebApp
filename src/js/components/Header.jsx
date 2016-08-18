@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
-import HeaderIcons from "./Navigation/HeaderIcons";
+import NavigatorInHeader from "./Navigation/NavigatorInHeader";
 import FacebookActions from "../actions/FacebookActions";
 import SearchAllBox from "./SearchAllBox";
 var Icon = require("react-svg-icons");
@@ -121,7 +121,7 @@ export default class Header extends Component {
         <div>
           <SearchAllBox />
         </div>
-        <HeaderIcons />
+        <NavigatorInHeader />
       </section>;
   }
 }
