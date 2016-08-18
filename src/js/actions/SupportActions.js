@@ -31,5 +31,13 @@ module.exports = {
       ballot_item_we_vote_id: we_vote_id,
       kind_of_ballot_item: type,
       statement_text: statement_text});
-  }
+  },
+  
+  voterPositionVisibilitySave: function (we_vote_id, type, visibility_setting) {  // TODO DALE
+    Dispatcher.loadEndpoint("voterPositionVisibilitySave", {
+      ballot_item_we_vote_id: we_vote_id, 
+      kind_of_ballot_item: type,
+      visibility_setting: visibility_setting
+    });
+  },
 };

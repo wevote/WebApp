@@ -55,13 +55,25 @@ export default class ItemActionBar extends Component {
     this.setState({transitioning: true});
   }
 
+  showItemToFriendsOnly () {
+    if (this.state.transitioning){ return; }
+    SupportActions.voterPositionVisibilitySave(this.props.we_vote_id, this.props.type, "FRIENDS_ONLY");
+    this.setState({transitioning: true});
+  }
+
+  showItemToPublic () {
+    if (this.state.transitioning){ return; }
+    SupportActions.voterPositionVisibilitySave(this.props.we_vote_id, this.props.type, "SHOW_PUBLIC");
+    this.setState({transitioning: true});
+  }
+
   render () {
     if (this.props.supportProps === undefined){
       // console.log("this.props.supportProps === undefined");
       return <div></div>;
     }
 
-    var {support_count, oppose_count, is_support, is_oppose } = this.props.supportProps;
+    var {support_count, oppose_count, is_support, is_oppose, is_public_position } = this.props.supportProps;
     if (support_count === undefined || oppose_count === undefined || is_support === undefined || is_oppose === undefined){
       // console.log("support_count, oppose_count, is_support, is_oppose all undefined");
       return null;
@@ -102,6 +114,13 @@ export default class ItemActionBar extends Component {
           </span>
           Share
         </button>
+        { is_public_position ?
+        <button className="item-actionbar__btn item-actionbar__btn--oppose bs-btn bs-btn-default" onClick={this.showItemToFriendsOnly.bind(this)}>
+          <span>Change: Friends Only</span>
+        </button> :
+        <button className="item-actionbar__btn item-actionbar__btn--oppose bs-btn bs-btn-default" onClick={this.showItemToPublic.bind(this)}>
+          <span>Change: Show Public</span>
+        </button> }
       </div>;
     return itemActionBar;
   }
