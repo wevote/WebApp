@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { Button, OverlayTrigger, Popover } from "react-bootstrap";
 import RatingPopover from "../../components/Widgets/RatingPopover";
 
 export default class PositionRatingSnippet extends Component {
@@ -13,7 +14,7 @@ export default class PositionRatingSnippet extends Component {
     var src;
     var className;
     var alt;
-    var Popover = <RatingPopover id="testID" placement="top" />;
+    //var Popover = <RatingPopover id="testID" placement="top" />;
     if (rating >= 65){
       src = "/img/global/icons/up-arrow-color-icon.svg";
       className = "position-rating__icon position-rating__icon--positive";
@@ -27,13 +28,22 @@ export default class PositionRatingSnippet extends Component {
       className = "position-rating__icon position-rating__icon--mixed";
       alt = "Mixed Rating";
     }
+    const popoverClickRootClose = <Popover id="popover-trigger-click-root-close" title="Popover bottom">
+        <strong>Holy guacamole!</strong> Check this info.
+      </Popover>;
+
+
     return <div className="position-rating">
         <img src={src} width="20" height="20" className={className} alt={alt} />
         <div className="position-rating__text">
           <span className="position-rating__percentage" data-percentage={rating}>{rating}% </span> rating
           { rating_time_span ? <span className="position-rating__timestamp"> in {rating_time_span}</span> :
             null }
-          { rating ? <span className="position-rating__source" onClick={Popover}> (source: VoteSmart.org)</span> : null }
+          { rating ? <span className="position-rating__source">&nbsp;
+            <OverlayTrigger trigger="click" rootClose placement="bottom" overlay={popoverClickRootClose}>
+              <Button>(source: VoteSmart.org)</Button>
+            </OverlayTrigger>
+          </span> : null }
         </div>
       </div>;
   }

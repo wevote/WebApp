@@ -22,6 +22,7 @@ export default class ItemPositionStatementActionBar extends Component {
       loading: false,
       showEditPositionStatementInput: false,
       statement_text_to_be_saved: "",
+      is_public_position: false,
       transitioning: false,
       voter_photo_url: ""
     };
@@ -119,9 +120,12 @@ export default class ItemPositionStatementActionBar extends Component {
         statement_placeholder_text = "Share your thoughts…";
       }
     }
-    var post_button_text = <span>Post for<br />Friends</span>;
+
+    // Currently this "Post" text is the same given we display the visibility setting, but we may want to change this
+    //  here if the near by visibility setting text changes
+    var post_button_text = <span>Post</span>;
     if (is_public_position) {
-      post_button_text = <span>Post for<br />Public</span>;
+      post_button_text = <span>Post</span>;
     }
 
     let speaker_image_url_https = voter_photo_url;

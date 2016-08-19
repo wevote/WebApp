@@ -6,17 +6,18 @@ import SupportActions from "../actions/SupportActions";
 class SupportStore extends FluxMapStore {
 
   get (ballot_item_we_vote_id) {
+    //console.log("SupportStore, ballot_item_we_vote_id: ", ballot_item_we_vote_id, ", is_public_position: ", this.isForPublicList[ballot_item_we_vote_id]);
     if (!(this.supportList && this.opposeList && this.supportCounts && this.opposeCounts )){
       return undefined;
     }
-   return {
-     is_support: this.supportList[ballot_item_we_vote_id] || false,
-     is_oppose: this.opposeList[ballot_item_we_vote_id] || false,
-     is_public_position: this.isForPublicList[ballot_item_we_vote_id] || false,  // Default to private
-     voter_statement_text: this.statementList[ballot_item_we_vote_id] || "",
-     support_count: this.supportCounts[ballot_item_we_vote_id],
-     oppose_count: this.opposeCounts[ballot_item_we_vote_id]
-   };
+    return {
+      is_support: this.supportList[ballot_item_we_vote_id] || false,
+      is_oppose: this.opposeList[ballot_item_we_vote_id] || false,
+      is_public_position: this.isForPublicList[ballot_item_we_vote_id] || false,  // Default to friends only
+      voter_statement_text: this.statementList[ballot_item_we_vote_id] || "",
+      support_count: this.supportCounts[ballot_item_we_vote_id],
+      oppose_count: this.opposeCounts[ballot_item_we_vote_id]
+    };
   }
 
   get supportList (){

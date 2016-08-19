@@ -14,7 +14,9 @@ export default class ItemActionBar extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {transitioning: false};
+    this.state = {
+      transitioning: false
+    };
   }
 
   componentWillReceiveProps () {
@@ -74,6 +76,7 @@ export default class ItemActionBar extends Component {
     }
 
     var {support_count, oppose_count, is_support, is_oppose, is_public_position } = this.props.supportProps;
+    //console.log("is_public_position", is_public_position);
     if (support_count === undefined || oppose_count === undefined || is_support === undefined || is_oppose === undefined){
       // console.log("support_count, oppose_count, is_support, is_oppose all undefined");
       return null;
@@ -108,18 +111,23 @@ export default class ItemActionBar extends Component {
             </button>
           </div>
         }
-        <button className={!is_oppose && !is_support ? "item-actionbar__btn item-actionbar__btn--share bs-btn bs-btn-default bs-hidden-xs" : "item-actionbar__btn item-actionbar__btn--share bs-btn bs-btn-default"} onClick={this.share.bind(this)} >
+        <button className={!is_oppose && !is_support ?
+          "item-actionbar__btn item-actionbar__btn--share bs-btn bs-btn-default bs-hidden-xs" :
+          "item-actionbar__btn item-actionbar__btn--share bs-btn bs-btn-default"}
+                onClick={this.share.bind(this)} >
           <span className="btn__icon">
             <Icon name="share-icon" width={iconSize} height={iconSize} color={iconColor} />
           </span>
           Share
         </button>
         { is_public_position ?
-        <button className="item-actionbar__btn item-actionbar__btn--oppose bs-btn bs-btn-default" onClick={this.showItemToFriendsOnly.bind(this)}>
-          <span>Change: Friends Only</span>
+        <button className="item-actionbar__btn-public item-actionbar__btn-public--visibility bs-btn bs-btn-default bs-btn-xs"
+                onClick={this.showItemToFriendsOnly.bind(this)}>
+          <span>Public</span>
         </button> :
-        <button className="item-actionbar__btn item-actionbar__btn--oppose bs-btn bs-btn-default" onClick={this.showItemToPublic.bind(this)}>
-          <span>Change: Show Public</span>
+        <button className="item-actionbar__btn item-actionbar__btn--visibility bs-btn bs-btn-default bs-btn-xs"
+                onClick={this.showItemToPublic.bind(this)}>
+          <span>Friends</span>
         </button> }
       </div>;
     return itemActionBar;

@@ -15,7 +15,6 @@ var menuStyles = {
 export default class Header extends Component {
   static propTypes = {
     voter: PropTypes.object,
-    location: PropTypes.string,
     pathname: PropTypes.string
   };
 
@@ -34,10 +33,7 @@ export default class Header extends Component {
   }
 
   render () {
-    var { location } = this.props;
     var { pathname } = this.props;
-    console.log("Header, location:", location);
-    console.log("Header, pathname:", pathname);
     var { signed_in_personal, signed_in_twitter, twitter_screen_name, voter_photo_url } = this.props.voter;
     const logOut = FacebookActions.appLogout;
 
