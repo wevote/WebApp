@@ -82,7 +82,6 @@ export default class NavigatorInHeader extends Component {
   render () {
     var { props: { pathname } } = this;
     var { ballot, requests, connect, activity } = links;
-    console.log("NavigatorInHeader pathname:", pathname);
     const navigator =
       <div className="navigator bs-row">
         <div className="bs-container-fluid">

@@ -16,4 +16,13 @@
     }
   }
 
+  &__btn-public {
+    // currently uses Bootstrap .bs-btn styling
+    margin-right: 8px;
+
+    &--position-selected {
+      color: $selected-color;
+    }
+  }
+
 }

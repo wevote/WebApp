@@ -3,8 +3,7 @@ import { Link } from "react-router";
 
 export default class SubHeader extends Component {
   static propTypes = {
-    ballotItemWeVoteId: PropTypes.string,
-    pathname: PropTypes.string
+    ballotItemWeVoteId: PropTypes.string
   };
   constructor (props) {
     super(props);
