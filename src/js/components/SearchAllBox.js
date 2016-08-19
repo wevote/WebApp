@@ -65,6 +65,25 @@ export default class SearchAllBox extends Component {
   onSearchBlur () {
     exitSearch();
   }
+  //handle pressing Enter in search field
+  handleKeyPress(e) {
+    if (e.key === 'Enter') {
+      console.log('pressed enter');
+      var results = document.getElementsByClassName('search-container__results');
+      console.log(results[0]);
+      //test if search results are empty
+      if(results[0]=='null'){
+        console.log("no results");
+        //stop submit somehow - where is the function that submits the search when you press enter?
+        //need to test results from SearchAll somehow
+        //but there will always be results because of autocomplete?
+      }
+      else{
+        results[0].click();
+        //can see brief loading screen that says "Candidate not found" before loading the page for first result
+      }
+    }
+  }
 
   render () {
     var search_results = this.state.search_results;
@@ -79,6 +98,8 @@ export default class SearchAllBox extends Component {
                  autoComplete="off"
                  onFocus={this.onSearchFocus.bind(this)}
                  onChange={this.onSearchFieldTextChange.bind(this)}
+                 //handle pressing 'enter'
+                 onKeyPress={this.handleKeyPress}
                  value={this.state.text_from_search_field} />
           <div className="bs-input-group-btn">
             <button className="page-header__search-button bs-btn bs-btn-default" type="submit"><i className="bs-glyphicon bs-glyphicon-search"></i></button>
