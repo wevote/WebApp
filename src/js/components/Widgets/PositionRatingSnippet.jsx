@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import RatingPopover from "../../components/Widgets/RatingPopover";
 
 export default class PositionRatingSnippet extends Component {
   static propTypes = {
@@ -12,6 +13,7 @@ export default class PositionRatingSnippet extends Component {
     var src;
     var className;
     var alt;
+    var Popover = <RatingPopover id="testID" placement="top" />;
     if (rating >= 65){
       src = "/img/global/icons/up-arrow-color-icon.svg";
       className = "position-rating__icon position-rating__icon--positive";
@@ -31,7 +33,7 @@ export default class PositionRatingSnippet extends Component {
           <span className="position-rating__percentage" data-percentage={rating}>{rating}% </span> rating
           { rating_time_span ? <span className="position-rating__timestamp"> in {rating_time_span}</span> :
             null }
-          { rating ? <span className="position-rating__source"> (source: VoteSmart.org)</span> : null }
+          { rating ? <span className="position-rating__source" onClick={Popover}> (source: VoteSmart.org)</span> : null }
         </div>
       </div>;
   }
