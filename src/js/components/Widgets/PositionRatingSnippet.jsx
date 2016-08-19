@@ -28,7 +28,7 @@ export default class PositionRatingSnippet extends Component {
       className = "position-rating__icon position-rating__icon--mixed";
       alt = "Mixed Rating";
     }
-    const popoverClickRootClose = <Popover id="popover-trigger-click-root-close" title="Popover bottom">
+    const popoverClickRootClose = <Popover bsClass="bs-popover" id="popover-trigger-click-root-close" title="Popover bottom">
         <strong>Holy guacamole!</strong> Check this info.
       </Popover>;
 
@@ -39,11 +39,12 @@ export default class PositionRatingSnippet extends Component {
           <span className="position-rating__percentage" data-percentage={rating}>{rating}% </span> rating
           { rating_time_span ? <span className="position-rating__timestamp"> in {rating_time_span}</span> :
             null }
-          { rating ? <span className="position-rating__source">&nbsp;
+          { rating ?
             <OverlayTrigger trigger="click" rootClose placement="bottom" overlay={popoverClickRootClose}>
-              <Button>(source: VoteSmart.org)</Button>
-            </OverlayTrigger>
-          </span> : null }
+              <span className="position-rating__source">&nbsp;(source: VoteSmart.org)</span>
+            </OverlayTrigger> :
+            null
+          }
         </div>
       </div>;
   }
