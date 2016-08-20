@@ -11,8 +11,8 @@ export default class Privacy extends React.Component {
 
   render () {
     return <div>
-        <div className="bs-container-fluid bs-well">
-          <h2 className="bs-text-center">Terms and Policies</h2>
+        <div className="container-fluid well">
+          <h2 className="text-center">Terms and Policies</h2>
           Coming soon.
         </div>
       </div>;

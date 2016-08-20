@@ -130,7 +130,7 @@ export default class EditPositionAboutCandidateModal extends Component {
               <FollowToggle we_vote_id={organization.organization_we_vote_id}/>
               <OrganizationCard organization={organization} turn_off_description/>
             </div>
-            <ul className="bs-list-group">
+            <ul className="list-group">
               <OrganizationPositionItem position={position}
                                         organization={this.props.organization}
                                         link_to_edit_modal_off
@@ -150,12 +150,12 @@ export default class EditPositionAboutCandidateModal extends Component {
           </div>
         </span>;
     }
-    return <Modal {...this.props} bsClass="bs-modal" bsSize="large" aria-labelledby="contained-modal-title-lg">
-      <Modal.Header bsClass="bs-modal" closeButton>
-        <Modal.Title bsClass="bs-modal"
+    return <Modal {...this.props} bsSize="large" aria-labelledby="contained-modal-title-lg">
+      <Modal.Header closeButton>
+        <Modal.Title
                      id="contained-modal-title-lg"></Modal.Title>
       </Modal.Header>
-      <Modal.Body bsClass="bs-modal">
+      <Modal.Body>
         { modal_contents }
       </Modal.Body>
     </Modal>;

@@ -26,7 +26,7 @@ export default class SearchGuidesToFollowBox extends Component {
 
   render () {
     return <input type="text"
-                className="bs-form-control"
+                className="form-control"
                 onChange={this.updateResults.bind(this)}
                 value={this.state.query}
                 placeholder="Search by name or twitter handle." />;

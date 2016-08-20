@@ -2,8 +2,8 @@
 export function enterSearch () {
   // Change color of search button
   const searchButton = document.getElementsByClassName("page-header__search-button")[0];
-  searchButton.classList.remove("bs-btn-default");
-  searchButton.classList.add("bs-btn-primary");
+  searchButton.classList.remove("btn-default");
+  searchButton.classList.add("btn-primary");
   // Clear out the contents of the search box
   const searchInput = document.getElementsByTagName("input")[0];
   searchInput.value = "";
@@ -23,8 +23,8 @@ export function enterSearch () {
 export function exitSearch () {
   // Change color of search button
   const searchButton = document.getElementsByClassName("page-header__search-button")[0];
-  searchButton.classList.remove("bs-btn-primary");
-  searchButton.classList.add("bs-btn-default");
+  searchButton.classList.remove("btn-primary");
+  searchButton.classList.add("btn-default");
 
   // Add the name of the item you are looking at to the search box
   const searchInput = document.getElementsByTagName("input")[0];

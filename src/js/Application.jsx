@@ -100,12 +100,12 @@ export default class Application extends Component {
           <SubHeader ballotItemWeVoteId={ballotItemWeVoteId} />
         </header>
       </Headroom>
-      <div className="bs-container-fluid" onClick={this.hideSearchContainer.bind(this)}>
-        <div className="bs-row">
-          <div className="bs-col-xs-4 sidebar-menu">
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-xs-4 sidebar-menu">
             { voter.signed_in_personal ? <MoreMenu {...voter} /> : <MoreMenu /> }
           </div>
-          <div className="col-xs-8-container bs-col-xs-8 container-main">
+          <div className="col-xs-8-container col-xs-8 container-main">
             { this.props.children }
           </div>
         </div>

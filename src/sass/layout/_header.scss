@@ -15,9 +15,9 @@
 }
 
 .page-header {
-
-  background: #fff;
   @include micro-clearfix;
+  background: #fff;
+  padding-bottom: 0; // override to avoid Bootstrap collision
 
   &__address {
     color: #D8D8D8;
@@ -110,7 +110,6 @@
       margin-top: -1em;
       width: 65%;
     }
-
   }
 }
 

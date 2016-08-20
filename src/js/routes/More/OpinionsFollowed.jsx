@@ -56,8 +56,8 @@ export default class OpinionsFollowed extends Component {
 
   render () {
     return <div>
-  <div className="bs-container-fluid opinions-followed__container">
-    <div className="bs-text-center"><FollowingDropdown following_type={this.getFollowingType()} /></div>
+  <div className="container-fluid opinions-followed__container">
+    <div className="text-center"><FollowingDropdown following_type={this.getFollowingType()} /></div>
       <p>
         Organizations, public figures and other voters you currently follow. See also
         <Link to="/friends">your friends</Link>. We will never sell your email.

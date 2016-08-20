@@ -32,7 +32,7 @@ export default class Bookmarks extends Component {
       return LoadingWheel;
     }
     return <div>
-      <div className="bs-text-center"><BallotTitleDropdown ballot_type="BOOKMARKS" /></div>
+      <div className="text-center"><BallotTitleDropdown ballot_type="BOOKMARKS" /></div>
       {
         bookmarks.length === 0 && <p>No bookmarks yet</p>
       }

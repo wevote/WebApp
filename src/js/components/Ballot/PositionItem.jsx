@@ -86,7 +86,7 @@ export default class PositionItem extends Component {
       {/* One Position on this Candidate */}
         <Link to={speakerLink}>
           { position.speaker_image_url_https ?
-            <img className="bs-img-square position-item__avatar"
+            <img className="img-square position-item__avatar"
                   src={position.speaker_image_url_https}
                   width="50px"
             /> :

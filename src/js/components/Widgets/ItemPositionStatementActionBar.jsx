@@ -160,11 +160,11 @@ export default class ItemPositionStatementActionBar extends Component {
             <span className="position-statement__input-group">
               <Textarea onChange={this.updateStatementTextToBeSaved.bind(this)}
                 name="statement_text_to_be_saved"
-                className="position-statement__input bs-form-control"
+                className="position-statement__input form-control"
                 placeholder={statement_placeholder_text}
                 value={statement_text_to_be_saved}
                 />
-              <button className="bs-btn bs-btn-default" type="submit">{post_button_text}</button>
+              <button className="btn btn-default" type="submit">{post_button_text}</button>
             </span>
           </div>
         </form> :

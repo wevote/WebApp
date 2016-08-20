@@ -57,7 +57,7 @@ export default class Office extends Component {
     var { candidate, office, guideList } = this.state;
 
     if (!candidate.ballot_item_display_name){
-      return <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
+      return <div className="container-fluid well u-gutter-top--small fluff-full1">
               <h3>This Office Not Found</h3>
         NOTE: The We Vote team is still building support for Offices.
                 <div className="small">We were not able to find that office.

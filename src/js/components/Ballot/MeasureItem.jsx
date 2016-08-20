@@ -77,7 +77,7 @@ export default class MeasureItem extends Component {
               { this.props.measure_url ?
                 <Link to={measure_url} target="_blank">{measure_url_display_name}</Link> :
                 null }
-            <div className="bs-row" style={{ paddingBottom: "2rem" }}>
+            <div className="row" style={{ paddingBottom: "2rem" }}>
               <div className="col-xs-12">
               </div>
             </div>

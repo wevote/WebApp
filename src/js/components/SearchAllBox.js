@@ -70,18 +70,18 @@ export default class SearchAllBox extends Component {
     var search_results = this.state.search_results;
 
     return <div className="page-header__search">
-        <form className="bs-navbar-form" role="search">
-        <div className="bs-input-group site-search">
+        <form className="navbar-form" role="search">
+        <div className="input-group site-search">
           <input type="text"
-                 className="bs-form-control"
+                 className="form-control"
                  placeholder="Search We Vote"
                  name="master_search_field"
                  autoComplete="off"
                  onFocus={this.onSearchFocus.bind(this)}
                  onChange={this.onSearchFieldTextChange.bind(this)}
                  value={this.state.text_from_search_field} />
-          <div className="bs-input-group-btn">
-            <button className="page-header__search-button bs-btn bs-btn-default" type="submit"><i className="bs-glyphicon bs-glyphicon-search"></i></button>
+          <div className="input-group-btn">
+            <button className="page-header__search-button btn btn-default" type="submit"><i className="glyphicon glyphicon-search"></i></button>
           </div>
         </div>
         </form>

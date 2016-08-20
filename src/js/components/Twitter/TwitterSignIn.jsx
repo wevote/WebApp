@@ -14,7 +14,7 @@ export default class TwitterSignIn extends Component {
 
   render () {
 
-    return <Link className="bs-btn btn-social bs-btn-lg btn-twitter" to="/twittersigninprocess/signinstart" >
+    return <Link className="btn btn-social btn-lg btn-twitter" to="/twittersigninprocess/signinstart" >
       <i className="fa fa-twitter"></i>Sign in with Twitter
     </Link>;
   }

@@ -77,7 +77,7 @@ export default class GuidePositionList extends Component {
             <FollowToggle we_vote_id={we_vote_id} />
             <OrganizationCard organization={this.state.organization} />
           </div>
-          <ul className="bs-list-group">
+          <ul className="list-group">
             { position_list_for_one_election ?
               position_list_for_one_election.map( item => {
                 return <OrganizationPositionItem key={item.position_we_vote_id}
