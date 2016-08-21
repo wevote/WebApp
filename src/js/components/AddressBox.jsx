@@ -16,7 +16,7 @@ export default class AddressBox extends Component {
   }
 
   componentDidMount () {
-    this.setState({ location: VoterStore.getAddress() });
+    this.setState({ voter_address: VoterStore.getAddress() });
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
@@ -25,34 +25,32 @@ export default class AddressBox extends Component {
   }
 
   _onVoterStoreChange () {
-    if (this.state.location){
+    if (this.state.voter_address){
       browserHistory.push(this.props.saveUrl);
     } else {
-      this.setState({ location: VoterStore.getAddress(), loading: false });
+      this.setState({ voter_address: VoterStore.getAddress(), loading: false });
     }
   }
 
   _ballotLoaded (){
-    console.log("ballotLoaded");
     browserHistory.push(this.props.saveUrl);
   }
 
-  updateLocation (e) {
+  updateVoterAddress (e) {
     this.setState({
-      location: e.target.value
+      voter_address: e.target.value
     });
   }
 
-  saveLocation (e) {
+  saveVoterAddress (e) {
     e.preventDefault();
-    var { location } = this.state;
-    console.log("Saving location", location);
-    VoterActions.saveAddress(location);
+    var { voter_address } = this.state;
+    VoterActions.saveAddress(voter_address);
     this.setState({loading: true});
   }
 
   render () {
-    var { loading, location } = this.state;
+    var { loading, voter_address } = this.state;
     if (loading){
       return LoadingWheel;
     }
@@ -60,14 +58,13 @@ export default class AddressBox extends Component {
         float: "right"
     };
     return <div>
-        <form onSubmit={this.saveLocation.bind(this)}>
+        <form onSubmit={this.saveVoterAddress.bind(this)}>
         <input
           type="text"
-          onChange={this.updateLocation.bind(this)}
+          onChange={this.updateVoterAddress.bind(this)}
           name="address"
-          value={location}
+          value={voter_address}
           className="form-control"
-          defaultValue=""
           placeholder="Enter address where you are registered to vote"
         />
         </form>
@@ -76,8 +73,7 @@ export default class AddressBox extends Component {
           <ButtonToolbar bsClass="btn-toolbar">
             <span style={floatRight}>
               <Button
-               
-                onClick={this.saveLocation.bind(this)}
+                onClick={this.saveVoterAddress.bind(this)}
                 bsStyle="primary">
                 Go to Ballot for this Address</Button>
             </span>

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
-import { Button, OverlayTrigger, Popover } from "react-bootstrap";
-import RatingPopover from "../../components/Widgets/RatingPopover";
+import { OverlayTrigger, Popover } from "react-bootstrap";
+// import RatingPopover from "../../components/Widgets/RatingPopover";
 
 export default class PositionRatingSnippet extends Component {
   static propTypes = {

@@ -47,7 +47,7 @@ export default class followingDropdown extends Component {
       </button>
       {this.state.open &&
         <ul className="dropdown-menu">
-          { following_type == "WHO_YOU_CAN_FOLLOW" ?
+          { following_type === "WHO_YOU_CAN_FOLLOW" ?
             null :
             <li>
               <Link onClick={this.closeDropdown.bind(this)} to="/opinions">
@@ -57,7 +57,7 @@ export default class followingDropdown extends Component {
               </Link>
             </li>
           }
-          { following_type == "WHO_YOU_FOLLOW" ?
+          { following_type === "WHO_YOU_FOLLOW" ?
             null :
             <li>
               <Link onClick={this.closeDropdown.bind(this)} to="/more/opinions/followed">

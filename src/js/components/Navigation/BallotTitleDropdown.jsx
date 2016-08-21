@@ -48,7 +48,7 @@ export default class BallotTitleDropdown extends Component {
       </button>
       {this.state.open &&
         <ul className="dropdown-menu">
-          { ballot_type == "ALL_BALLOT_ITEMS" ?
+          { ballot_type === "ALL_BALLOT_ITEMS" ?
             null :
             <li>
               <Link onClick={this.closeDropdown.bind(this)} to="/ballot">
@@ -58,7 +58,7 @@ export default class BallotTitleDropdown extends Component {
               </Link>
             </li>
           }
-          { ballot_type == "CHOICES_REMAINING" ?
+          { ballot_type === "CHOICES_REMAINING" ?
             null :
             <li>
               <Link onClick={this.closeDropdown.bind(this)}
@@ -69,7 +69,7 @@ export default class BallotTitleDropdown extends Component {
               </Link>
             </li>
           }
-          { ballot_type == "WHAT_I_SUPPORT" ?
+          { ballot_type === "WHAT_I_SUPPORT" ?
             null :
             <li>
               <Link onClick={this.closeDropdown.bind(this)} to={{pathname: "/ballot", query: {type: "filterSupport"}}}>
@@ -79,7 +79,7 @@ export default class BallotTitleDropdown extends Component {
               </Link>
             </li>
           }
-          { ballot_type == "BOOKMARKS" ?
+          { ballot_type === "BOOKMARKS" ?
             null :
             <li>
               <Link onClick={this.closeDropdown.bind(this)} to="/bookmarks">
