@@ -85,7 +85,7 @@ export default class MeasureItem extends Component {
               </div> {/* END .measure-card__media-object-content */}
             </div> {/* END .measure-card__media-object */}
             <div className="measure-card__actions">
-              <ItemActionBar we_vote_id={we_vote_id} supportProps={supportProps} transitioniing={transitioning} type="MEASURE" />
+              <ItemActionBar ballot_item_we_vote_id={we_vote_id} supportProps={supportProps} transitioniing={transitioning} type="MEASURE" />
               <ItemPositionStatementActionBar ballot_item_we_vote_id={we_vote_id}
                                               ballot_item_display_name={ballot_item_display_name}
                                               supportProps={supportProps}

@@ -7,7 +7,7 @@ const web_app_config = require("../../config");
 
 export default class ItemActionBar extends Component {
   static propTypes = {
-    we_vote_id: PropTypes.string.isRequired,
+    ballot_item_we_vote_id: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     supportProps: PropTypes.object
   };
@@ -24,7 +24,7 @@ export default class ItemActionBar extends Component {
   }
 
   share (){
-    const url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/candidate/" + this.props.we_vote_id;
+    const url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/candidate/" + this.props.ballot_item_we_vote_id;
     window.FB.ui({
       display: "popup",
       method: "share",
@@ -35,50 +35,47 @@ export default class ItemActionBar extends Component {
 
   supportItem () {
     if (this.state.transitioning){ return; }
-    SupportActions.voterSupportingSave(this.props.we_vote_id, this.props.type);
+    SupportActions.voterSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
   }
 
   stopSupportingItem () {
     if (this.state.transitioning){ return; }
-    SupportActions.voterStopSupportingSave(this.props.we_vote_id, this.props.type);
+    SupportActions.voterStopSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
   }
 
   opposeItem () {
     if (this.state.transitioning){ return; }
-    SupportActions.voterOpposingSave(this.props.we_vote_id, this.props.type);
+    SupportActions.voterOpposingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
   }
 
   stopOpposingItem () {
     if (this.state.transitioning){ return; }
-    SupportActions.voterStopOpposingSave(this.props.we_vote_id, this.props.type);
+    SupportActions.voterStopOpposingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
   }
 
   showItemToFriendsOnly () {
     if (this.state.transitioning){ return; }
-    SupportActions.voterPositionVisibilitySave(this.props.we_vote_id, this.props.type, "FRIENDS_ONLY");
+    SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, "FRIENDS_ONLY");
     this.setState({transitioning: true});
   }
 
   showItemToPublic () {
     if (this.state.transitioning){ return; }
-    SupportActions.voterPositionVisibilitySave(this.props.we_vote_id, this.props.type, "SHOW_PUBLIC");
+    SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, "SHOW_PUBLIC");
     this.setState({transitioning: true});
   }
 
   render () {
     if (this.props.supportProps === undefined){
-      // console.log("this.props.supportProps === undefined");
       return <div></div>;
     }
 
     var {support_count, oppose_count, is_support, is_oppose, is_public_position } = this.props.supportProps;
-    //console.log("is_public_position", is_public_position);
     if (support_count === undefined || oppose_count === undefined || is_support === undefined || is_oppose === undefined){
-      // console.log("support_count, oppose_count, is_support, is_oppose all undefined");
       return null;
     }
 

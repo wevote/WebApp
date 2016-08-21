@@ -7,6 +7,7 @@ import GuideStore from "../../stores/GuideStore";
 import GuideActions from "../../actions/GuideActions";
 import OfficeStore from "../../stores/OfficeStore";
 import PositionList from "../../components/Ballot/PositionList";
+import SupportActions from "../../actions/SupportActions";
 import ThisIsMeAction from "../../components/Widgets/ThisIsMeAction";
 import VoterStore from "../../stores/VoterStore";
 import { exitSearch } from "../../utils/search-functions";
@@ -30,6 +31,9 @@ export default class Candidate extends Component {
 
     this.listener = GuideStore.addListener(this._onChange.bind(this));
     GuideActions.retrieveGuidesToFollowByBallotItem(candidate_we_vote_id, "CANDIDATE");
+
+    // Make sure supportProps exist for this Candidate when browser comes straight to candidate page
+    SupportActions.retrievePositionsCountsForOneBallotItem(candidate_we_vote_id);
 
     // Display the candidate's name in the search box
     var { candidate } = this.state;

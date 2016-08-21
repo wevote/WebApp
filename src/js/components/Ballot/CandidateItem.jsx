@@ -29,7 +29,10 @@ export default class CandidateItem extends Component {
 
   componentDidMount () {
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
-    this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
+    var supportProps = SupportStore.get(this.props.we_vote_id);
+    if (supportProps !== undefined) {
+      this.setState({ supportProps: supportProps, transitioning: false });
+    }
   }
 
   componentWillUnmount () {
@@ -37,7 +40,10 @@ export default class CandidateItem extends Component {
   }
 
   _onSupportStoreChange () {
-    this.setState({ supportProps: SupportStore.get(this.props.we_vote_id), transitioning: false });
+    var supportProps = SupportStore.get(this.props.we_vote_id);
+    if (supportProps !== undefined) {
+      this.setState({ supportProps: supportProps, transitioning: false });
+    }
   }
 
   render () {
@@ -130,7 +136,7 @@ export default class CandidateItem extends Component {
         </div> {/* END .candidate-card__media-object-content */}
       </div> {/* END .candidate-card__media-object */}
       <div className="candidate-card__actions">
-        <ItemActionBar we_vote_id={we_vote_id} supportProps={supportProps} transitioniing={transitioning} type="CANDIDATE" />
+        <ItemActionBar ballot_item_we_vote_id={we_vote_id} supportProps={supportProps} transitioniing={transitioning} type="CANDIDATE" />
         <ItemPositionStatementActionBar ballot_item_we_vote_id={we_vote_id}
                                         ballot_item_display_name={ballot_item_display_name}
                                         supportProps={supportProps}

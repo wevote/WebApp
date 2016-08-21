@@ -100,7 +100,7 @@ export default class EditPositionAboutCandidateModal extends Component {
 
     const { supportProps, voter } = this.state;
     var signed_in_twitter = voter === undefined ? false : voter.signed_in_twitter;
-    var signed_in_with_this_twitter_account = false;
+    // var signed_in_with_this_twitter_account = false;
     if (signed_in_twitter) {
       // console.log("In render, voter: ", voter);
       // console.log("this.props.params.twitter_handle: " + this.props.params.twitter_handle);
@@ -140,7 +140,7 @@ export default class EditPositionAboutCandidateModal extends Component {
           </div>
           <div className="candidate-card__media-object-content">
             <div className="candidate-card__actions">
-              <ItemActionBar we_vote_id={ballot_item_we_vote_id}
+              <ItemActionBar ballot_item_we_vote_id={ballot_item_we_vote_id}
                              supportProps={supportProps} type="CANDIDATE" />
               <ItemPositionStatementActionBar ballot_item_we_vote_id={ballot_item_we_vote_id}
                                               ballot_item_display_name={ballot_item_display_name}

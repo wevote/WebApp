@@ -1,7 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Form } from "react-bootstrap";
-import { Link } from "react-router";
-import Textarea from 'react-textarea-autosize';
+import Textarea from "react-textarea-autosize";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
@@ -92,12 +90,12 @@ export default class ItemPositionStatementActionBar extends Component {
   }
 
   render () {
-    if (this.props.supportProps === undefined){
+    if (this.props.supportProps === undefined) {
       return <div></div>;
     }
 
-    var { is_support, is_oppose } = this.props.supportProps;
-    var { is_public_position, statement_text_to_be_saved, voter_full_name, voter_photo_url } = this.state;
+    var {is_support, is_oppose} = this.props.supportProps;
+    var {is_public_position, statement_text_to_be_saved, voter_full_name, voter_photo_url} = this.state;
     statement_text_to_be_saved = statement_text_to_be_saved.length === 0 ? null : statement_text_to_be_saved;
 
     var statement_placeholder_text;
@@ -113,12 +111,10 @@ export default class ItemPositionStatementActionBar extends Component {
       } else {
         statement_placeholder_text = "Why you oppose…";
       }
+    } else if (this.props.ballot_item_display_name) {
+      statement_placeholder_text = "Share your thoughts about " + this.props.ballot_item_display_name + "…";
     } else {
-      if (this.props.ballot_item_display_name) {
-        statement_placeholder_text = "Share your thoughts about " + this.props.ballot_item_display_name + "…";
-      } else {
-        statement_placeholder_text = "Share your thoughts…";
-      }
+      statement_placeholder_text = "Share your thoughts…";
     }
 
     // Currently this "Post" text is the same given we display the visibility setting, but we may want to change this
