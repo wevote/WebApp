@@ -58,7 +58,7 @@ export default class MoreMenu extends Component {
                   image_placeholder }
                 <span className="header-menu-text-left">Your Page</span>
               </div></Link>
-            </li>:
+            </li> :
             null
           }
           {this.menuLink("/settings/location", "Your Address & Ballot")}

@@ -53,10 +53,10 @@ export default class OrganizationPositionItem extends Component {
     const { supportProps } = this.state;
 
     // When component first loads, use the value in the incoming position. If there are any updates, use those.
-    var statement_text = (supportProps && supportProps.voter_statement_text) ? supportProps.voter_statement_text : position.statement_text;
-    var is_public_position = (supportProps && supportProps.is_public_position) ? supportProps.is_public_position : position.is_public_position;
-    var is_support = (supportProps && supportProps.is_support) ? supportProps.is_support : position.is_support;
-    var is_oppose = (supportProps && supportProps.is_oppose) ? supportProps.is_oppose : position.is_oppose;
+    var statement_text = supportProps && supportProps.voter_statement_text ? supportProps.voter_statement_text : position.statement_text;
+    var is_public_position = supportProps && supportProps.is_public_position ? supportProps.is_public_position : position.is_public_position;
+    var is_support = supportProps && supportProps.is_support ? supportProps.is_support : position.is_support;
+    var is_oppose = supportProps && supportProps.is_oppose ? supportProps.is_oppose : position.is_oppose;
 
     // TwitterHandle-based link
     let candidateLink = position.ballot_item_twitter_handle ? "/" + position.ballot_item_twitter_handle : "/candidate/" + position.ballot_item_we_vote_id;
