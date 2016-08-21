@@ -30,7 +30,7 @@ module.exports = {
     setItem: function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
         var sExpires = "";
 
-        if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return false; }
+        if (!sKey || (/^(?:expires|max\-age|path|domain|secure)$/i).test(sKey)) { return false; }
 
         if (vEnd) {
             switch (vEnd.constructor) {

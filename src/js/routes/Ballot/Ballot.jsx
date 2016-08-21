@@ -4,8 +4,8 @@ import { browserHistory, Link } from "react-router";
 import BallotItem from "../../components/Ballot/BallotItem";
 import BallotStore from "../../stores/BallotStore";
 import BallotTitleDropdown from "../../components/Navigation/BallotTitleDropdown";
-import SupportStore from "../../stores/SupportStore";
 import SupportActions from "../../actions/SupportActions";
+import SupportStore from "../../stores/SupportStore";
 import LoadingWheel from "../../components/LoadingWheel";
 
 export default class Ballot extends Component {
@@ -22,12 +22,22 @@ export default class Ballot extends Component {
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
       browserHistory.push("settings/location");
     }
-      SupportActions.retrieveAll();
-      SupportActions.retrieveAllCounts();
-      this.supportStoreListener = SupportStore.addListener(this._onChange.bind(this));
+    let ballot = this.getBallot(this.props);
+    if (ballot !== undefined) {
+      let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
+      this.setState({ballot: ballot, ballot_type: ballot_type });
     }
+    // We need a ballotStoreListener here because we want the ballot to display before positions are received
+    this.ballotStoreListener = BallotStore.addListener(this._onChange.bind(this));
+    // NOTE: retrieveAll and retrieveAllCounts are also called in SupportStore when voterAddressRetrieve is received,
+    // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
+    SupportActions.retrieveAll();
+    SupportActions.retrieveAllCounts();
+    this.supportStoreListener = SupportStore.addListener(this._onChange.bind(this));
+  }
 
   componentWillUnmount (){
+    this.ballotStoreListener.remove();
     this.supportStoreListener.remove();
   }
 

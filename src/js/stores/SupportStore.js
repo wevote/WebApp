@@ -6,7 +6,6 @@ import SupportActions from "../actions/SupportActions";
 class SupportStore extends FluxMapStore {
 
   get (ballot_item_we_vote_id) {
-    //console.log("SupportStore, ballot_item_we_vote_id: ", ballot_item_we_vote_id, ", is_public_position: ", this.isForPublicList[ballot_item_we_vote_id]);
     if (!(this.supportList && this.opposeList && this.supportCounts && this.opposeCounts )){
       return undefined;
     }
@@ -78,7 +77,6 @@ class SupportStore extends FluxMapStore {
     switch (action.type) {
 
       case "voterAddressRetrieve":
-        let id = action.res.google_civic_election_id;
         SupportActions.retrieveAll();
         SupportActions.retrieveAllCounts();
         return state;
@@ -86,7 +84,6 @@ class SupportStore extends FluxMapStore {
       case "voterAllPositionsRetrieve":
         // is_support is a property coming from 'position_list' in the incoming response
         // this.state.voter_supports is an updated hash with the contents of position list['is_support']
-        //console.log("voterAllPositionsRetrieve, ballot_item_we_vote_id: ", ballot_item_we_vote_id, ", response: ", action.res);
         return {
           ...state,
           voter_supports: this.parseListToHash("is_support", action.res.position_list),
@@ -96,6 +93,13 @@ class SupportStore extends FluxMapStore {
         };
 
       case "positionsCountForAllBallotItems":
+        return {
+          ...state,
+          oppose_counts: this.parseListToHash("oppose_count", action.res.position_counts_list),
+          support_counts: this.parseListToHash("support_count", action.res.position_counts_list)
+        };
+
+      case "positionsCountForOneBallotItem":
         return {
           ...state,
           oppose_counts: this.parseListToHash("oppose_count", action.res.position_counts_list),
@@ -140,7 +144,6 @@ class SupportStore extends FluxMapStore {
 
       case "voterPositionCommentSave":
         // Add the comment to the list in memory
-        // console.log("voterPositionCommentSave, ballot_item_we_vote_id: ", ballot_item_we_vote_id, ", response: ", action.res);
         return {
           ...state,
           voter_statement_text: this.statementListWithChanges(state.voter_statement_text, ballot_item_we_vote_id, action.res.statement_text),
@@ -148,7 +151,6 @@ class SupportStore extends FluxMapStore {
 
       case "voterPositionVisibilitySave":
         // Add the visibility to the list in memory
-        // console.log("voterPositionVisibilitySave, ballot_item_we_vote_id: ", ballot_item_we_vote_id, ", response: ", action.res);
         return {
           ...state,
           is_public_position: this.isForPublicListWithChanges(state.is_public_position, ballot_item_we_vote_id, action.res.is_public_position)
