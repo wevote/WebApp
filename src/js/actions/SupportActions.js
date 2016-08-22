@@ -7,6 +7,7 @@ module.exports = {
   },
 
   retrieveAllCounts: function (election_id){
+    // console.log("SupportActions, retrieveAllCounts, election_id: ", election_id);
     Dispatcher.loadEndpoint("positionsCountForAllBallotItems", {google_civic_election_id: election_id});
   },
 
