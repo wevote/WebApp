@@ -35,6 +35,31 @@ export function abbreviateNumber (num) {
   return num;
 }
 
+// Gives preference to the earlier entry in the incoming array
+export function arrayUnique (array) {
+  var a = array.concat();
+  for (var i = 0; i < a.length; ++i) {
+    for (var j = i + 1; j < a.length; ++j) {
+      if (a[i] === a[j])
+        a.splice(j--, 1);
+    }
+  }
+  return a;
+}
+
+/**
+ * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
+ * @param obj1
+ * @param obj2
+ * @returns obj3 a new object based on obj1 and obj2
+ */
+export function mergeTwoObjectLists (obj1, obj2) {
+    var obj3 = {};
+    for (var attribute_name1 in obj1) { obj3[attribute_name1] = obj1[attribute_name1]; }
+    for (var attribute_name2 in obj2) { obj3[attribute_name2] = obj2[attribute_name2]; }
+    return obj3;
+}
+
 // If Display name is repeated in beginning of the description, remove the name from the description (along with trailing 'is') and capitalize next word to begin description.
 export function removeTwitterNameFromDescription (displayName, twitterDescription) {
     var displayNameNotNull = displayName ? displayName : "";

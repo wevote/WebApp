@@ -1,6 +1,7 @@
 var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
 const assign = require("object-assign");
+import { mergeTwoObjectLists } from "../utils/textFormat";
 import SupportActions from "../actions/SupportActions";
 
 class SupportStore extends FluxMapStore {
@@ -57,10 +58,13 @@ class SupportStore extends FluxMapStore {
 
 /* Turn action into a dictionary/object format with we_vote_id as key for fast lookup */
   parseListToHash (property, list){
+    // console.log("parseListToHash, list:", list, "property:", property);
     let hash_map = {};
     list.forEach(el => {
+      // console.log("parseListToHash, el:", el);
       hash_map[el.ballot_item_we_vote_id] = el[property];
     });
+    // console.log("returning hash_map:", hash_map);
     return hash_map;
   }
 
@@ -84,6 +88,7 @@ class SupportStore extends FluxMapStore {
       case "voterAllPositionsRetrieve":
         // is_support is a property coming from 'position_list' in the incoming response
         // this.state.voter_supports is an updated hash with the contents of position list['is_support']
+        // console.log("SupportStore voterAllPositionsRetrieve, position_list: ", action.res.position_list);
         return {
           ...state,
           voter_supports: this.parseListToHash("is_support", action.res.position_list),
@@ -93,17 +98,27 @@ class SupportStore extends FluxMapStore {
         };
 
       case "positionsCountForAllBallotItems":
+        var new_oppose_counts = this.parseListToHash("oppose_count", action.res.position_counts_list);
+        var new_support_counts = this.parseListToHash("support_count", action.res.position_counts_list);
+        var existing_oppose_counts = state.oppose_counts !== undefined ? state.oppose_counts : [];
+        var existing_support_counts = state.support_counts !== undefined ? state.support_counts : [];
+
         return {
           ...state,
-          oppose_counts: this.parseListToHash("oppose_count", action.res.position_counts_list),
-          support_counts: this.parseListToHash("support_count", action.res.position_counts_list)
+          oppose_counts: mergeTwoObjectLists(new_oppose_counts, existing_oppose_counts),
+          support_counts: mergeTwoObjectLists(new_support_counts, existing_support_counts)
         };
 
       case "positionsCountForOneBallotItem":
+        var new_one_oppose_count = this.parseListToHash("oppose_count", action.res.position_counts_list);
+        var new_one_support_count = this.parseListToHash("support_count", action.res.position_counts_list);
+        var existing_oppose_counts2 = state.oppose_counts !== undefined ? state.oppose_counts : [];
+        var existing_support_counts2 = state.support_counts !== undefined ? state.support_counts : [];
+
         return {
           ...state,
-          oppose_counts: this.parseListToHash("oppose_count", action.res.position_counts_list),
-          support_counts: this.parseListToHash("support_count", action.res.position_counts_list)
+          oppose_counts: mergeTwoObjectLists(new_one_oppose_count, existing_oppose_counts2),
+          support_counts: mergeTwoObjectLists(new_one_support_count, existing_support_counts2)
         };
 
       case "voterOpposingSave":
@@ -144,6 +159,7 @@ class SupportStore extends FluxMapStore {
 
       case "voterPositionCommentSave":
         // Add the comment to the list in memory
+        console.log("SupportStore voterPositionCommentSave, position_counts_list: ", action.res.position_counts_list);
         return {
           ...state,
           voter_statement_text: this.statementListWithChanges(state.voter_statement_text, ballot_item_we_vote_id, action.res.statement_text),
