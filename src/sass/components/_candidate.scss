@@ -3,6 +3,10 @@
 
 @include media-object(".candidate-card__media-object", ".candidate-card__media-object-anchor", ".candidate-card__media-object-content");
 
+.cursor-pointer:hover {
+  cursor: pointer;
+}
+
 .candidate-card {
   $item-padding: 15px;
   position: relative;
@@ -30,10 +34,13 @@
     border-radius: 10em;
   }
 
+
   .twitter-followers__badge {
     text-align: center;
     margin-left: -.5em; // for visual centering
+
   }
+
 
   &__media-object-content {
     position: relative;
@@ -102,42 +109,42 @@
     &::before {
       content:"";
       float: left;
-      width: 5px; 
-      height: $text-container-height; 
+      width: 5px;
+      height: $text-container-height;
     }
 
     > *:first-child {
       float: right;
       width: 100%;
-      margin-left: -5px; }    
+      margin-left: -5px; }
 
     &::after {
-      content: "\00A0 Read More"; 
+      content: "\00A0 Read More";
 
       box-sizing: content-box;
-      float: right; 
+      float: right;
       position: relative;
-      top: -$line-height; 
-      left: 100%; 
-      width: $read-more-width; 
+      top: -$line-height;
+      left: 100%;
+      width: $read-more-width;
       margin-left: -$read-more-width;
       padding-right: 5px;
       text-align: right;
       background-size: 100% 100%;
       background: linear-gradient(to right, rgba(255, 255, 255, 0), white 15%, white);
-      font-style: normal; 
+      font-style: normal;
       color: $link-color;
     }
   }
 }
 
-.candidate-card__read-more-link { 
+.candidate-card__read-more-link {
   position: absolute;
-  left: 0; 
+  left: 0;
   top: 0;
-  width: 100%; 
+  width: 100%;
   height: 100%;
-  overflow: hidden; 
+  overflow: hidden;
   text-indent: -9999px;
   z-index: 5;
 }
