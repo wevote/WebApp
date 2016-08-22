@@ -14,7 +14,7 @@ export default class PositionRatingSnippet extends Component {
     var src;
     var className;
     var alt;
-    //var Popover = <RatingPopover id="testID" placement="top" />;
+
     if (rating >= 65){
       src = "/img/global/icons/up-arrow-color-icon.svg";
       className = "position-rating__icon position-rating__icon--positive";
@@ -28,8 +28,20 @@ export default class PositionRatingSnippet extends Component {
       className = "position-rating__icon position-rating__icon--mixed";
       alt = "Mixed Rating";
     }
-    const popoverClickRootClose = <Popover id="popover-trigger-click-root-close" title="Popover bottom">
-        <strong>Holy guacamole!</strong> Check this info.
+    const popoverClickRootClose = <Popover id="popover-trigger-click-root-close"
+                                           title="Ratings from Vote Smart">
+      Ratings are given by the organization, and collected by the
+      nonprofit Vote Smart. <span style={{whiteSpace: "nowrap"}}><img
+           src="/img/global/icons/down-arrow-color-icon.svg"
+           width="20" height="20" /> 0%</span> is a low score, and
+           <span style={{whiteSpace: "nowrap"}}><img
+           src="/img/global/icons/up-arrow-color-icon.svg"
+           width="20" height="20" /> 100%</span> is a high score.
+      Ratings can be invaluable in showing where an incumbent has stood
+      on a series of votes. Some groups select votes that tend to favor
+      members of one political party over another, rather than choosing
+      votes based solely on issues. Please call 1-888-VOTESMART for
+      more specific information.
       </Popover>;
 
 
@@ -39,8 +51,11 @@ export default class PositionRatingSnippet extends Component {
           <span className="position-rating__percentage" data-percentage={rating}>{rating}% </span> rating
           { rating_time_span ? <span className="position-rating__timestamp"> in {rating_time_span}</span> :
             null }
+            {/* zachmonteith:OverlayTrigger placement should be "auto" with bootstrap 4 */}
           { rating ?
-            <OverlayTrigger trigger="click" rootClose placement="bottom" overlay={popoverClickRootClose}>
+            <OverlayTrigger trigger="click" rootClose
+                            placement="top"
+                            overlay={popoverClickRootClose}>
               <span className="position-rating__source">&nbsp;(source: VoteSmart.org)</span>
             </OverlayTrigger> :
             null
