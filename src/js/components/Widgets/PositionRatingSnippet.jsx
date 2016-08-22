@@ -28,8 +28,10 @@ export default class PositionRatingSnippet extends Component {
       className = "position-rating__icon position-rating__icon--mixed";
       alt = "Mixed Rating";
     }
-    const popoverClickRootClose = <Popover id="popover-trigger-click-root-close" title="Popover bottom">
-        <strong>Holy guacamole!</strong> Check this info.
+    const popoverClickRootClose = <Popover id="popover-trigger-click-root-close" title="VoteSmart Ratings">
+      Ratings are given by the organization, and collected by the nonprofit Vote Smart.
+      (down arrow icon) 0% is a low score, and (up arrow icon) 100% is a high score.
+      Ratings can be invaluable in showing where an incumbent has stood on a series of votes in the past one or two years, especially when ratings by groups on all sides of an issue are compared. Some groups select votes that tend to favor members of one political party over another, rather than choosing votes based solely on issues concerns. Please visit the group's website or call 1-888-VOTESMART for more specific information.
       </Popover>;
 
 
