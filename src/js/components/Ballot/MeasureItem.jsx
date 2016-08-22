@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Link } from "react-router";
+import { Link, browserHistory } from "react-router";
 
 import ItemActionBar from "../../components/Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../../components/Widgets/ItemPositionStatementActionBar";
@@ -39,14 +39,14 @@ export default class MeasureItem extends Component {
   }
   render () {
     const { supportProps, transitioning } = this.state;
+    let { ballot_item_display_name, measure_subtitle,
+          measure_text, we_vote_id } = this.props;
+    let measureLink = "/measure/" + we_vote_id;
+    let goToMeasureLink = function () { browserHistory.push(measureLink); };
 
-    var we_vote_id = this.props.we_vote_id;
-    var measure_subtitle = capitalizeString(this.props.measure_subtitle);
-    var ballot_item_display_name = capitalizeString(this.props.ballot_item_display_name);
-    var measure_text = this.props.measure_text;
-    var measure_url = this.props.measure_url;
-    var measure_url_display_name = "View Measure Webpage";
-    var measureLink = "/measure/" + we_vote_id;
+    measure_subtitle = capitalizeString(measure_subtitle);
+    ballot_item_display_name = capitalizeString(ballot_item_display_name);
+
     return <div className="measure-card__container">
       <div className="measure-card">
         <div className="measure-card__media-object">
@@ -70,18 +70,27 @@ export default class MeasureItem extends Component {
             </h2>
             <StarAction we_vote_id={we_vote_id} type="MEASURE"/>
 
-            <div>{measure_subtitle}</div>
+            <div className={ this.props.link_to_ballot_item_page ?
+                    "cursor-pointer" : null }
+                  onClick={ this.props.link_to_ballot_item_page ?
+                    goToMeasureLink : null }>{measure_subtitle}</div>
               { this.props.measure_text ?
                 <div className="measure_text">{measure_text}</div> :
                 null }
-              { this.props.measure_url ?
-                <Link to={measure_url} target="_blank">{measure_url_display_name}</Link> :
-                null }
+
             <div className="row" style={{ paddingBottom: "2rem" }}>
               <div className="col-xs-12">
               </div>
             </div>
-                <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps} transitioning={transitioning} type="MEASURE" />
+              <span className={ this.props.link_to_ballot_item_page ?
+                      "cursor-pointer" :
+                      null }
+                    onClick={ this.props.link_to_ballot_item_page ?
+                      goToMeasureLink :
+                      null }
+              >
+                  <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps} transitioning={transitioning} type="MEASURE" />
+                </span>
               </div> {/* END .measure-card__media-object-content */}
             </div> {/* END .measure-card__media-object */}
             <div className="measure-card__actions">

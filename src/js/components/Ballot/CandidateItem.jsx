@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Link } from "react-router";
+import { Link, browserHistory } from "react-router";
 
 import StarAction from "../../components/Widgets/StarAction";
 import ItemActionBar from "../../components/Widgets/ItemActionBar";
@@ -62,6 +62,7 @@ export default class CandidateItem extends Component {
 
     // TwitterHandle-based link
     let candidateLink = twitter_handle ? "/" + twitter_handle : "/candidate/" + we_vote_id;
+    let goToCandidateLink = function () { browserHistory.push(candidateLink); };
     let candidate_photo_url_html;
     if (candidate_photo_url) {
       candidate_photo_url_html = <img className="candidate-card__photo"
@@ -71,6 +72,7 @@ export default class CandidateItem extends Component {
       candidate_photo_url_html = <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light utils-img-contain-glyph" />;
     }
 
+
     return <div className="candidate-card">
       <div className="candidate-card__media-object">
         <div className="candidate-card__media-object-anchor">
@@ -78,8 +80,14 @@ export default class CandidateItem extends Component {
             <Link to={candidateLink}>{candidate_photo_url_html}</Link> :
             candidate_photo_url_html
           }
+
           {twitter_followers_count ?
-            <span className="twitter-followers__badge">
+            <span className={this.props.link_to_ballot_item_page ?
+                    "twitter-followers__badge cursor-pointer" :
+                    "twitter-followers__badge" }
+                  onClick={ this.props.link_to_ballot_item_page ?
+                    goToCandidateLink : null }
+            >
               <span className="fa fa-twitter twitter-followers__icon"></span>
               <span title={numberWithCommas(twitter_followers_count)}>{abbreviateNumber(twitter_followers_count)}</span>
             </span> :
@@ -103,7 +111,12 @@ export default class CandidateItem extends Component {
             }
           </h2>
           <StarAction we_vote_id={we_vote_id} type="CANDIDATE"/>
-          <p className="candidate-card__candidacy">
+          <p className={this.props.link_to_ballot_item_page ?
+              "candidate-card__candidacy cursor-pointer" :
+              "candidate-card__candidacy"
+            } onClick={this.props.link_to_ballot_item_page ?
+              goToCandidateLink : null }
+          >
             { party ?
               <span><span className="candidate-card__political-party">
                 {party}
@@ -115,7 +128,7 @@ export default class CandidateItem extends Component {
             </span>
           </p>
           { twitter_description ?
-            <div className={this.props.link_to_ballot_item_page ? "candidate-card__description-container--truncated" : "candidate-card__description-container"}>
+            <div className={ this.props.link_to_ballot_item_page ? "candidate-card__description-container--truncated" : "candidate-card__description-container"}>
               <div>
                 <p className="candidate-card__description">
                     {twitter_description}
@@ -132,7 +145,19 @@ export default class CandidateItem extends Component {
             </div> :
             null
           }
-          <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps} transitioning={transitioning} type="CANDIDATE" />
+          {
+            <span className={ this.props.link_to_ballot_item_page ?
+                    "candidate-card__network-positions cursor-pointer" :
+                    "candidate-card__network-positions" }
+                  onClick={ this.props.link_to_ballot_item_page ?
+                    goToCandidateLink : null }
+            >
+              <ItemSupportOpposeCounts we_vote_id={we_vote_id}
+                                       supportProps={supportProps}
+                                       transitioning={transitioning}
+                                       type="CANDIDATE" /></span>
+            }
+
         </div> {/* END .candidate-card__media-object-content */}
       </div> {/* END .candidate-card__media-object */}
       <div className="candidate-card__actions">

@@ -3,6 +3,10 @@
 
 @include media-object(".measure-card__media-object", ".measure-card__media-object-anchor", ".measure-card__media-object-content");
 
+.cursor-pointer:hover {
+  cursor: pointer;
+}
+
 .measure-card {
   $item-padding: 15px;
   position: relative;
