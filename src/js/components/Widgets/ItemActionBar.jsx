@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import SupportActions from "../../actions/SupportActions";
 import PositionDropdown from "./PositionDropdown";
+import ReactBootstrapToggle from "react-bootstrap-toggle";
+
 var Icon = require("react-svg-icons");
 
 const web_app_config = require("../../config");
@@ -82,6 +84,8 @@ export default class ItemActionBar extends Component {
     const iconSize = 18;
     var iconColor = "#999";
     var selectedColor = "#0D546F";
+    let on = "Public";
+    let off = "Friends";
     const removePosition = is_support ? this.stopSupportingItem.bind(this) : this.stopOpposingItem.bind(this);
     const positionText = is_support ? "I Support" : "I Oppose";
     const positionIcon = is_support ?
@@ -117,15 +121,15 @@ export default class ItemActionBar extends Component {
           </span>
           Share
         </button>
+        <div className="rightToggle">
         { is_public_position ?
-        <button className="item-actionbar__btn-public item-actionbar__btn-public--visibility btn btn-default btn-xs"
-                onClick={this.showItemToFriendsOnly.bind(this)}>
-          <span>Public</span>
-        </button> :
-        <button className="item-actionbar__btn item-actionbar__btn--visibility btn btn-default btn-xs"
-                onClick={this.showItemToPublic.bind(this)}>
-          <span>Friends</span>
-        </button> }
+          <ReactBootstrapToggle on={on} off={off} onstyle="success" size="mini"
+                                width="55px" height="20px"
+                                onChange={this.showItemToFriendsOnly.bind(this)}/> :
+          <ReactBootstrapToggle on={on} off={off} active={false} onstyle="success"
+                                size="mini" width="55px" height="20px"
+                                onChange={this.showItemToPublic.bind(this)}/>
+                            }</div>
       </div>;
     return itemActionBar;
   }
