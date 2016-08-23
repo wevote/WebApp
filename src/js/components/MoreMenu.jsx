@@ -59,7 +59,7 @@ export default class MoreMenu extends Component {
                 <span className="header-menu-text-left">Your Page</span>
               </div></Link>
             </li> :
-            null
+            this.menuLink("/settings/claim", "Claim Your Page")
           }
           {this.menuLink("/settings/location", "Your Address & Ballot")}
           {this.menuLink("/opinions", "Who You Can Follow")}

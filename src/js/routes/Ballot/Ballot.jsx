@@ -4,9 +4,10 @@ import { browserHistory, Link } from "react-router";
 import BallotItem from "../../components/Ballot/BallotItem";
 import BallotStore from "../../stores/BallotStore";
 import BallotTitleDropdown from "../../components/Navigation/BallotTitleDropdown";
+import LoadingWheel from "../../components/LoadingWheel";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
-import LoadingWheel from "../../components/LoadingWheel";
+import VoterStore from "../../stores/VoterStore";
 
 export default class Ballot extends Component {
   static propTypes = {
@@ -122,7 +123,21 @@ export default class Ballot extends Component {
   render () {
     const ballot = this.state.ballot;
     if (!ballot) {
-      return LoadingWheel;
+      var voter_address = VoterStore.getAddress();
+      if (voter_address.length === 0) {
+        return <div className="ballot">
+          <div className="text-center">
+            <h1>Please enter your address so we can find your ballot.<br /></h1>
+            <span>
+              <Link to="/settings/location">
+                  <Button bsStyle="primary">Enter an Address</Button>
+              </Link>
+            </span>
+          </div>
+        </div>;
+      } else {
+        return LoadingWheel;
+      }
     }
     const missing_address = this.props.location === null;
     const ballot_caveat = BallotStore.ballot_properties.ballot_caveat;
@@ -160,5 +175,4 @@ export default class Ballot extends Component {
       }
       </div>;
   }
-
 }
