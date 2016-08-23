@@ -86,6 +86,12 @@ export default class ItemActionBar extends Component {
     var selectedColor = "#0D546F";
     let on = "Public";
     let off = "Friends";
+    var onChange;
+    if (is_public_position) {
+      onChange = this.showItemToFriendsOnly.bind(this);
+    } else {
+      onChange = this.showItemToPublic.bind(this);
+    }
     const removePosition = is_support ? this.stopSupportingItem.bind(this) : this.stopOpposingItem.bind(this);
     const positionText = is_support ? "I Support" : "I Oppose";
     const positionIcon = is_support ?
@@ -122,14 +128,11 @@ export default class ItemActionBar extends Component {
           Share
         </button>
         <div className="rightToggle">
-        { is_public_position ?
-          <ReactBootstrapToggle on={on} off={off} onstyle="success" size="mini"
+          <ReactBootstrapToggle on={on} off={off} active={is_public_position}
+                                onstyle="success" size="mini"
                                 width="55px" height="20px"
-                                onChange={this.showItemToFriendsOnly.bind(this)}/> :
-          <ReactBootstrapToggle on={on} off={off} active={false} onstyle="success"
-                                size="mini" width="55px" height="20px"
-                                onChange={this.showItemToPublic.bind(this)}/>
-                            }</div>
+                                onChange={onChange} />
+        </div>
       </div>;
     return itemActionBar;
   }
