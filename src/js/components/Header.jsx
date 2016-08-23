@@ -70,7 +70,13 @@ export default class Header extends Component {
                     </div>
                   </Link>
                 </li> :
-                null
+                <li>
+                  <Link onClick={this.hide.bind(this)} to="/settings/claim">
+                    <div>
+                      <span className="header-slide-out-menu-text-left">Claim Your Page</span>
+                    </div>
+                  </Link>
+                </li>
               }
               <li>
                 <Link onClick={this.hide.bind(this)} to="/settings/location">

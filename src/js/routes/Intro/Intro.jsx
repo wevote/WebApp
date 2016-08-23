@@ -66,10 +66,10 @@ export default class Intro extends Component {
             <label htmlFor="address">
               Your Address.&nbsp;
             </label>
-            <span className="small">
+            <span className="medium">
               This is our best guess - feel free to change.
             </span>
-            <AddressBox {...this.props} saveUrl="/intro/opinions" />
+            <AddressBox {...this.props} saveUrl="/ballot" />
             <br/>
             <ul className="list-group">
               <li className="list-group-item">Research ballot items</li>
