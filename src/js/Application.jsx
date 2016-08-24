@@ -93,7 +93,7 @@ export default class Application extends Component {
               </div>;
     }
 
-    return <div className="app-base">
+    return <div className="app-base" id="app-base-id">
       <Headroom>
         <header className="page-header">
           <Header pathname={pathname} voter={voter} />

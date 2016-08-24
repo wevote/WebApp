@@ -69,9 +69,8 @@ export default class Measure extends Component {
           <div className="measure-card__additional">
             { measure.position_list ?
               <div>
-                <PositionList
-                position_list={measure.position_list}
-                candidate_display_name={measure.ballot_item_display_name} />
+                <PositionList position_list={measure.position_list}
+                              ballot_item_display_name={measure.ballot_item_display_name} />
               </div> :
               null
             }

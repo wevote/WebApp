@@ -4,7 +4,7 @@ import PositionItem from "./PositionItem";
 export default class PositionList extends Component {
   static propTypes = {
     position_list: PropTypes.array.isRequired,
-    candidate_display_name: PropTypes.string.isRequired
+    ballot_item_display_name: PropTypes.string.isRequired
   };
 
   constructor (props) {
@@ -16,7 +16,7 @@ export default class PositionList extends Component {
     return <div><ul className="list-group">
       { this.props.position_list.map( item =>
           <PositionItem key={item.position_we_vote_id}
-                        candidate_display_name={this.props.candidate_display_name}
+                        ballot_item_display_name={this.props.ballot_item_display_name}
                         position={item}
           /> )
       }

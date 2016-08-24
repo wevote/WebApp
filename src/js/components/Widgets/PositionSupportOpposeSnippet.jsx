@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from "react";
 
 export default class PositionSupportOpposeSnippet extends Component {
   static propTypes = {
-    candidate_display_name: PropTypes.string,
-    is_on_candidate_page: PropTypes.bool,
+    ballot_item_display_name: PropTypes.string,
+    is_on_ballot_item_page: PropTypes.bool,
     is_looking_at_self: PropTypes.bool,
     is_support: PropTypes.bool.isRequired,
     is_oppose: PropTypes.bool.isRequired,
@@ -51,10 +51,10 @@ export default class PositionSupportOpposeSnippet extends Component {
         { stance_display_off ?
           null :
           <span>
-            {this.props.is_on_candidate_page ?
+            {this.props.is_on_ballot_item_page ?
               <span>
                 <span className="explicit-position__position-label">{positionLabel}</span>
-                <span> {this.props.candidate_display_name} </span>
+                <span> {this.props.ballot_item_display_name} </span>
               </span> :
               <span>
                 <span className="explicit-position__position-label">{isSupportedBy}</span>
