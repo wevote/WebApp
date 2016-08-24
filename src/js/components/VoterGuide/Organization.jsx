@@ -50,14 +50,14 @@ export default class Organization extends Component {
     var voterGuideLink = this.props.twitter_handle ? "/" + this.props.twitter_handle : "/voterguide/" + organization_we_vote_id;
 
     let position_description = "";
-    const is_on_candidate_page = true;
+    const is_on_ballot_item_page = true;
     if (position.vote_smart_rating) {
         position_description =
           <PositionRatingSnippet {...position} />;
     } else if (position.is_support || position.is_oppose) {
-      position_description = <PositionSupportOpposeSnippet {...position} is_on_candidate_page={is_on_candidate_page} />;
+      position_description = <PositionSupportOpposeSnippet {...position} is_on_ballot_item_page={is_on_ballot_item_page} />;
     } else if (position.is_information_only) {
-      position_description = <PositionInformationOnlySnippet {...position} is_on_candidate_page={is_on_candidate_page} />;
+      position_description = <PositionInformationOnlySnippet {...position} is_on_ballot_item_page={is_on_ballot_item_page} />;
     }
 
     return <div className="organization-item">

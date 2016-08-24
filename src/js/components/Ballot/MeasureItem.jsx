@@ -78,7 +78,7 @@ export default class MeasureItem extends Component {
                 <div className="measure_text">{measure_text}</div> :
                 null }
 
-            <div className="row" style={{ paddingBottom: "2rem" }}>
+            <div className="row" style={{ paddingBottom: "0.5rem" }}>
               <div className="col-xs-12">
               </div>
             </div>

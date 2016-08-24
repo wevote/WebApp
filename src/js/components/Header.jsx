@@ -4,7 +4,7 @@ import NavigatorInHeader from "./Navigation/NavigatorInHeader";
 import FacebookActions from "../actions/FacebookActions";
 import SearchAllBox from "./SearchAllBox";
 var Icon = require("react-svg-icons");
-const Menu = require("react-burger-menu").push;
+const ReactBurgerMenu = require("react-burger-menu").push;
 
 var menuStyles = {
   bmMenu: {
@@ -47,7 +47,7 @@ export default class Header extends Component {
 
     return <section className="separate-bottom u-gutter-top--small container-fluid">
         {/* The components/MoreMenu code has to be reproduced here for mobile */}
-        <Menu styles={ menuStyles }>
+        <ReactBurgerMenu pageWrapId={ "" } outerContainerId={ "app-base-id" } styles={ menuStyles }>
           <div className="device-menu--mobile">
             <ul className="nav nav-stacked">
               <li>
@@ -119,7 +119,7 @@ export default class Header extends Component {
               </li>
             </ul>
           </div>
-        </Menu>
+        </ReactBurgerMenu>
         <h4 className="pull-left page-logo">
           <Link to="/ballot">
             Your Voter Guide

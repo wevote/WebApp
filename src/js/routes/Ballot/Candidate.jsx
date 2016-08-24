@@ -92,9 +92,8 @@ export default class Candidate extends Component {
           <div className="candidate-card__additional">
             { candidate.position_list ?
               <div>
-                <PositionList
-                position_list={candidate.position_list}
-                candidate_display_name={candidate.ballot_item_display_name} />
+                <PositionList position_list={candidate.position_list}
+                              ballot_item_display_name={candidate.ballot_item_display_name} />
               </div> :
               null
             }

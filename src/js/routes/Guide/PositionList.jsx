@@ -70,7 +70,7 @@ export default class GuidePositionList extends Component {
 
     const { position_list_for_one_election, position_list_for_all_except_one_election } = this.state.organization;
     var { we_vote_id } = this.state;
-
+    
     return <span>
         <div className="card__container">
           <div className="card__main">

@@ -9,6 +9,7 @@ import OfficeStore from "../../stores/OfficeStore";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
 import OrganizationStore from "../../stores/OrganizationStore";
+import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
 
@@ -48,6 +49,11 @@ export default class EditPositionAboutCandidateModal extends Component {
     let supportProps = SupportStore.get(ballot_item_we_vote_id);
 
     this.setState({supportProps: supportProps});
+
+    // if supportProps is missing support_count or oppose_count, force a retrieve
+    if (supportProps.support_count === undefined || supportProps.oppose_count === undefined) {
+      SupportActions.retrievePositionsCountsForOneBallotItem(ballot_item_we_vote_id);
+    }
   }
 
   componentWillUnmount () {
@@ -95,8 +101,6 @@ export default class EditPositionAboutCandidateModal extends Component {
     var organization = this.props.organization;
     var ballot_item_we_vote_id = this.props.position.ballot_item_we_vote_id;
     var ballot_item_display_name = this.props.position.ballot_item_display_name;
-    //console.log("this.props.position: ", this.props.position);
-    // console.log("this.state.candidate.candidate_we_vote_id: ", this.state.candidate.candidate_we_vote_id);
 
     const { supportProps, voter } = this.state;
     var signed_in_twitter = voter === undefined ? false : voter.signed_in_twitter;
@@ -121,9 +125,6 @@ export default class EditPositionAboutCandidateModal extends Component {
     //     </section>
     //   </span>;
     } else if (organization !== undefined) {
-      // console.log("ORGANIZATION");
-      // console.log("organization.organization_name: " + organization.organization_name);
-
       modal_contents = <span>
           <div className="card__container">
             <div className="card__main">
