@@ -9,7 +9,7 @@ const moment = require("moment");
 
 export default class PositionItem extends Component {
   static propTypes = {
-    candidate_display_name: PropTypes.string.isRequired,
+    ballot_item_display_name: PropTypes.string.isRequired,
     organization: PropTypes.object,  //.isRequired,
     position: PropTypes.object.isRequired
   };
@@ -42,17 +42,17 @@ export default class PositionItem extends Component {
     }
 
     let position_description = "";
-    const is_on_candidate_page = true;
+    const is_on_ballot_item_page = true;
     if (position.vote_smart_rating) {
         position_description =
           <PositionRatingSnippet {...position} />;
     } else if (position.is_support || position.is_oppose) {
-      position_description = <PositionSupportOpposeSnippet {...position} is_on_candidate_page={is_on_candidate_page} />;
+      position_description = <PositionSupportOpposeSnippet {...position} is_on_ballot_item_page={is_on_ballot_item_page} />;
     } else if (position.is_information_only) {
-      position_description = <PositionInformationOnlySnippet {...position} is_on_candidate_page={is_on_candidate_page} />;
+      position_description = <PositionInformationOnlySnippet {...position} is_on_ballot_item_page={is_on_ballot_item_page} />;
     } else if (position.speaker_type === "V") {
         position_description = <p className="">
-          <span>{this.props.candidate_display_name}</span>
+          <span>{this.props.ballot_item_display_name}</span>
           <span className="small"> { dateText }</span>
           </p>;
     }
@@ -86,7 +86,7 @@ export default class PositionItem extends Component {
       {/* One Position on this Candidate */}
         <Link to={speakerLink}>
           { position.speaker_image_url_https ?
-            <img className="bs-img-square position-item__avatar"
+            <img className="img-square position-item__avatar"
                   src={position.speaker_image_url_https}
                   width="50px"
             /> :
@@ -101,9 +101,9 @@ export default class PositionItem extends Component {
           { edit_mode ?
             edit_position_description :
             position_description }
-          { position.is_for_friends_only ?
-            <FriendsOnlyIndicator /> :
-            null }
+          { position.is_public_position ?
+            null :
+            <FriendsOnlyIndicator /> }
         </div>
         {/* Likes coming in a later version
         <br />

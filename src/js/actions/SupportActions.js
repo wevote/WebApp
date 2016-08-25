@@ -7,7 +7,12 @@ module.exports = {
   },
 
   retrieveAllCounts: function (election_id){
+    // console.log("SupportActions, retrieveAllCounts, election_id: ", election_id);
     Dispatcher.loadEndpoint("positionsCountForAllBallotItems", {google_civic_election_id: election_id});
+  },
+
+  retrievePositionsCountsForOneBallotItem: function (ballot_item_we_vote_id){
+    Dispatcher.loadEndpoint("positionsCountForOneBallotItem", {ballot_item_we_vote_id: ballot_item_we_vote_id});
   },
 
   voterOpposingSave: function (we_vote_id, type) {
@@ -31,5 +36,13 @@ module.exports = {
       ballot_item_we_vote_id: we_vote_id,
       kind_of_ballot_item: type,
       statement_text: statement_text});
-  }
+  },
+
+  voterPositionVisibilitySave: function (we_vote_id, type, visibility_setting) {
+    Dispatcher.loadEndpoint("voterPositionVisibilitySave", {
+      ballot_item_we_vote_id: we_vote_id,
+      kind_of_ballot_item: type,
+      visibility_setting: visibility_setting
+    });
+  },
 };

@@ -15,9 +15,9 @@
 }
 
 .page-header {
-
-  background: #fff;
   @include micro-clearfix;
+  background: #fff;
+  padding-bottom: 0; // override to avoid Bootstrap collision
 
   &__address {
     color: #D8D8D8;
@@ -45,7 +45,7 @@
     margin: 0;
     padding: 0;
     position: relative;
-    width: 70%;
+    width: 50%;
 
     @media all and (max-width: 329px) {
       margin-top: -1em;
@@ -110,7 +110,6 @@
       margin-top: -1em;
       width: 65%;
     }
-
   }
 }
 
@@ -161,6 +160,7 @@
 
   &__links {
     display: block;
+    font-size: 20px;
 
     &:hover {
       text-decoration: none;

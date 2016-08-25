@@ -4,9 +4,10 @@ import { browserHistory, Link } from "react-router";
 import BallotItem from "../../components/Ballot/BallotItem";
 import BallotStore from "../../stores/BallotStore";
 import BallotTitleDropdown from "../../components/Navigation/BallotTitleDropdown";
-import SupportStore from "../../stores/SupportStore";
-import SupportActions from "../../actions/SupportActions";
 import LoadingWheel from "../../components/LoadingWheel";
+import SupportActions from "../../actions/SupportActions";
+import SupportStore from "../../stores/SupportStore";
+import VoterStore from "../../stores/VoterStore";
 
 export default class Ballot extends Component {
   static propTypes = {
@@ -22,12 +23,22 @@ export default class Ballot extends Component {
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
       browserHistory.push("settings/location");
     }
-      SupportActions.retrieveAll();
-      SupportActions.retrieveAllCounts();
-      this.supportStoreListener = SupportStore.addListener(this._onChange.bind(this));
+    let ballot = this.getBallot(this.props);
+    if (ballot !== undefined) {
+      let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
+      this.setState({ballot: ballot, ballot_type: ballot_type });
     }
+    // We need a ballotStoreListener here because we want the ballot to display before positions are received
+    this.ballotStoreListener = BallotStore.addListener(this._onChange.bind(this));
+    // NOTE: retrieveAll and retrieveAllCounts are also called in SupportStore when voterAddressRetrieve is received,
+    // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
+    SupportActions.retrieveAll();
+    SupportActions.retrieveAllCounts();
+    this.supportStoreListener = SupportStore.addListener(this._onChange.bind(this));
+  }
 
   componentWillUnmount (){
+    this.ballotStoreListener.remove();
     this.supportStoreListener.remove();
   }
 
@@ -112,7 +123,21 @@ export default class Ballot extends Component {
   render () {
     const ballot = this.state.ballot;
     if (!ballot) {
-      return LoadingWheel;
+      var voter_address = VoterStore.getAddress();
+      if (voter_address.length === 0) {
+        return <div className="ballot">
+          <div className="text-center">
+            <h1>Please enter your address so we can find your ballot.<br /></h1>
+            <span>
+              <Link to="/settings/location">
+                  <Button bsStyle="primary">Enter an Address</Button>
+              </Link>
+            </span>
+          </div>
+        </div>;
+      } else {
+        return LoadingWheel;
+      }
     }
     const missing_address = this.props.location === null;
     const ballot_caveat = BallotStore.ballot_properties.ballot_caveat;
@@ -120,27 +145,27 @@ export default class Ballot extends Component {
     const emptyBallotButton = this.getFilterType() !== "none" && !missing_address ?
         <span>
           <Link to="/ballot">
-              <Button bsClass="bs-btn" bsStyle="primary">View Full Ballot</Button>
+              <Button bsStyle="primary">View Full Ballot</Button>
           </Link>
         </span> :
         <span>
           <Link to="/settings/location">
-              <Button bsClass="bs-btn" bsStyle="primary">Enter a Different Address</Button>
+              <Button bsStyle="primary">Enter a Different Address</Button>
           </Link>
         </span>;
 
     const emptyBallot = ballot.length === 0 ?
-      <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
-        <h3 className="bs-text-center">{this.emptyMsg()}</h3>
+      <div className="container-fluid well u-gutter-top--small fluff-full1">
+        <h3 className="text-center">{this.emptyMsg()}</h3>
         {emptyBallotButton}
       </div> :
       <div></div>;
 
     return <div className="ballot">
-      <div className="bs-text-center"><BallotTitleDropdown ballot_type={this.getBallotType()} /></div>
+      <div className="text-center"><BallotTitleDropdown ballot_type={this.getBallotType()} /></div>
       { ballot_caveat !== "" ?
-        <div className="alert bs-alert bs-alert-info alert-dismissible" role="alert">
-          <button type="button" className="bs-close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div className="alert alert alert-info alert-dismissible" role="alert">
+          <button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           {ballot_caveat}
         </div> : null
       }
@@ -150,5 +175,4 @@ export default class Ballot extends Component {
       }
       </div>;
   }
-
 }

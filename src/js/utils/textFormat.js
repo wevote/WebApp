@@ -1,19 +1,4 @@
 
-export function numberWithCommas (raw_number) {
-    if (raw_number) {
-        var parts = raw_number.toString().split(".");
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        return parts.join(".");
-    } else {
-        return "";
-    }
-}
-
-export function capitalizeString (str) {
-  var lowercase = str.toLowerCase();
-  return lowercase.replace( /(^|\s)([a-z])/g, function (m, p1, p2) { return p1 + p2.toUpperCase(); } );
-}
-
 export function abbreviateNumber (num) {
   // =< 1,000,000 - round to hundred-thousand (1.4M)
   if (num >= 1000000) {
@@ -33,6 +18,64 @@ export function abbreviateNumber (num) {
     return stringNum.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
   return num;
+}
+
+// Gives preference to the earlier entry in the incoming array
+export function arrayUnique (array) {
+  var a = array.concat();
+  for (var i = 0; i < a.length; ++i) {
+    for (var j = i + 1; j < a.length; ++j) {
+      if (a[i] === a[j])
+        a.splice(j--, 1);
+    }
+  }
+  return a;
+}
+
+export function capitalizeString (raw_string) {
+  if (raw_string === undefined) {
+    return "";
+  }
+  var lowercase = raw_string.toLowerCase();
+  return lowercase.replace( /(^|\s)([a-z])/g, function (m, p1, p2) { return p1 + p2.toUpperCase(); } );
+}
+
+export function extractTwitterHandleFromTextString (raw_string) {
+  if (raw_string === undefined) {
+    return "";
+  }
+  var lowerCaseString = raw_string.toLowerCase();
+  lowerCaseString = lowerCaseString.replace("http://twitter.com", "");
+  lowerCaseString = lowerCaseString.replace("http://www.twitter.com", "");
+  lowerCaseString = lowerCaseString.replace("https://twitter.com", "");
+  lowerCaseString = lowerCaseString.replace("https://www.twitter.com", "");
+  lowerCaseString = lowerCaseString.replace("www.twitter.com", "");
+  lowerCaseString = lowerCaseString.replace("twitter.com", "");
+  lowerCaseString = lowerCaseString.replace("@", "");
+  lowerCaseString = lowerCaseString.replace("/", "");
+  return lowerCaseString;
+}
+/**
+ * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
+ * @param obj1
+ * @param obj2
+ * @returns obj3 a new object based on obj1 and obj2
+ */
+export function mergeTwoObjectLists (obj1, obj2) {
+    var obj3 = {};
+    for (var attribute_name1 in obj1) { obj3[attribute_name1] = obj1[attribute_name1]; }
+    for (var attribute_name2 in obj2) { obj3[attribute_name2] = obj2[attribute_name2]; }
+    return obj3;
+}
+
+export function numberWithCommas (raw_number) {
+    if (raw_number) {
+        var parts = raw_number.toString().split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return parts.join(".");
+    } else {
+        return "";
+    }
 }
 
 // If Display name is repeated in beginning of the description, remove the name from the description (along with trailing 'is') and capitalize next word to begin description.

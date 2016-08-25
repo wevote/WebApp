@@ -12,9 +12,10 @@ import IntroContests from "./routes/Intro/IntroContests";
 import IntroOpinions from "./routes/Intro/IntroOpinions";
 
 /* Settings */
+import ClaimYourPage from "./routes/Settings/ClaimYourPage";
+import Location from "./routes/Settings/Location";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
 import Settings from "./routes/Settings/Settings";
-import Location from "./routes/Settings/Location";
 
 /* Pages that use Ballot Navigation */
 import BallotIndex from "./routes/Ballot/BallotIndex";
@@ -26,24 +27,22 @@ import Measure from "./routes/Ballot/Measure";
 import Office from "./routes/Ballot/Office";
 
 /* Ballot Off-shoot Pages */
-import Opinions from "./routes/Opinions"; // More opinions about anything on the ballot
 import GuidePositionList from "./routes/Guide/PositionList"; // A list of all positions from one guide
+import Opinions from "./routes/Opinions"; // More opinions about anything on the ballot
 
 /* More */
 import About from "./routes/More/About";
-import OpinionsFollowed from "./routes/More/OpinionsFollowed";
-import SignIn from "./routes/More/SignIn";
-import EmailBallot from "./routes/More/EmailBallot";
-import Privacy from "./routes/More/Privacy";
-
-import Requests from "./routes/Requests";
-import Connect from "./routes/Connect";
 import Activity from "./routes/Activity";
+import AddFriends from "./routes/AddFriends";
+import Connect from "./routes/Connect";
+import EmailBallot from "./routes/More/EmailBallot";
 import NotFound from "./routes/NotFound";
+import OpinionsFollowed from "./routes/More/OpinionsFollowed";
+import Privacy from "./routes/More/Privacy";
+import Requests from "./routes/Requests";
+import SignIn from "./routes/More/SignIn";
 import TwitterSignInProcess from "./routes/Process/TwitterSignInProcess";
 import VerifyThisIsMe from "./routes/Guide/VerifyThisIsMe";
-import AddFriends from "./routes/AddFriends";
-
 
 const firstVisit = !cookies.getItem("voter_device_id");
 
@@ -62,6 +61,7 @@ const routes = () =>
     {/* Settings go in this structure... */}
     <Route path="/settings" component={SettingsDashboard}>
       <IndexRoute component={Settings} />
+      <Route path="/settings/claim" component={ClaimYourPage} />
       <Route path="/settings/location" component={Location} />  /* Complete path on one line for searching */
     </Route>
 

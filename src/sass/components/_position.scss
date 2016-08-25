@@ -46,27 +46,29 @@
   color: $mid-gray;
 }
 
-
 // Position Ratings
 
-.position-rating__percentage {
-  font-family: $heading-font-stack;
-  font-size: 18px;
-}
+@include media-object('.position-rating', '.position-rating__icon', '.position-rating__text', $margin: 5px);
 
-.position-rating__source {
-  color: $mid-gray;
-}
+.position-rating {
 
-@include media-object('.position-rating', '.position-rating__icon', '.position-rating__text', $margin: 5px)
-.position-rating__icon {
-  margin-top: 2px;
-}
+  &__icon {
+    margin-top: 2px;
+  }
 
+  &__percentage {
+    font-family: $heading-font-stack;
+    font-size: 18px;
+  }
 
-.position-rating__candidate-name {
-  font-family: $heading-font-stack;
-  font-size: 18px;
+  &__source {
+    color: $popover-link-color;
+  }
+
+  &__candidate-name {
+    font-family: $heading-font-stack;
+    font-size: 18px;
+  }
 }
 
 .edit-position-action {

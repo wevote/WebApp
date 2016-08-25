@@ -13,7 +13,7 @@ class FacebookDisconnect extends React.Component {
 
     render () {
         return <span>
-                <a className="bs-btn btn-social bs-btn-lg btn-facebook" onClick={this.didClickDisconnectFromFacebookButton}>
+                <a className="btn btn-social btn-lg btn-facebook" onClick={this.didClickDisconnectFromFacebookButton}>
                     <i className="fa fa-facebook"></i>Disconnect from Facebook
                 </a>
             </span>;

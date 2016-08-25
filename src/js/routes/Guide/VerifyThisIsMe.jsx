@@ -127,9 +127,9 @@ export default class VerifyThisIsMe extends Component {
           <br />
         </div>
         { signed_in_twitter ?
-          <Link to="/twittersigninprocess/signinswitchstart"><Button bsClass="bs-btn" bsStyle="primary">Sign In
+          <Link to="/twittersigninprocess/signinswitchstart"><Button bsStyle="primary">Sign In
             With @{this.props.params.twitter_handle} Account</Button></Link> :
-          <Link to="/twittersigninprocess/signinswitchstart"><Button bsClass="bs-btn" bsStyle="primary">Sign Into
+          <Link to="/twittersigninprocess/signinswitchstart"><Button bsStyle="primary">Sign Into
             Twitter</Button></Link>
         }
       </span>;
@@ -156,9 +156,9 @@ export default class VerifyThisIsMe extends Component {
             <br />
           </div>
           { signed_in_twitter ?
-            <Link to="/twittersigninprocess/signinswitchstart"><Button bsClass="bs-btn" bsStyle="primary">Sign In
+            <Link to="/twittersigninprocess/signinswitchstart"><Button bsStyle="primary">Sign In
               With @{this.props.params.twitter_handle} Account</Button></Link> :
-            <Link to="/twittersigninprocess/signinswitchstart"><Button bsClass="bs-btn" bsStyle="primary">Sign Into
+            <Link to="/twittersigninprocess/signinswitchstart"><Button bsStyle="primary">Sign Into
               Twitter</Button></Link>
           }
         </span>;
@@ -173,14 +173,14 @@ export default class VerifyThisIsMe extends Component {
           <br />
         </div>
         { signed_in_twitter ?
-          <Link to="/twittersigninprocess/signinswitchstart"><Button bsClass="bs-btn" bsStyle="primary">Sign In
+          <Link to="/twittersigninprocess/signinswitchstart"><Button bsStyle="primary">Sign In
             With @{this.props.params.twitter_handle} Account</Button></Link> :
-          <Link to="/twittersigninprocess/signinswitchstart"><Button bsClass="bs-btn" bsStyle="primary">Sign Into
+          <Link to="/twittersigninprocess/signinswitchstart"><Button bsStyle="primary">Sign Into
             Twitter</Button></Link>
         }
       </div>;
     } else {
-      return <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
+      return <div className="container-fluid well u-gutter-top--small fluff-full1">
               <h3>Could Not Confirm</h3>
                 <div className="small">We were not able to find an account for this
                   Twitter Handle{ this.props.params.twitter_handle ?

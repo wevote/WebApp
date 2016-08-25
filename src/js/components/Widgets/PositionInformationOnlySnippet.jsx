@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from "react";
 
 export default class PositionInformationOnlySnippet extends Component {
   static propTypes = {
-    candidate_display_name: PropTypes.string,
-    is_on_candidate_page: PropTypes.bool,
+    ballot_item_display_name: PropTypes.string,
+    is_on_ballot_item_page: PropTypes.bool,
     is_on_edit_position_modal: PropTypes.bool,
     more_info_url: PropTypes.string,
     speaker_display_name: PropTypes.string,
@@ -39,10 +39,10 @@ export default class PositionInformationOnlySnippet extends Component {
         { stance_display_off ?
           null :
           <span>
-            {this.props.is_on_candidate_page ?
+            {this.props.is_on_ballot_item_page ?
               <span>
                 <span className="explicit-position__position-label">{positionLabel}</span>
-                <span> {this.props.candidate_display_name} </span>
+                <span> {this.props.ballot_item_display_name} </span>
               </span> :
               <span>
                 <span> {this.props.speaker_display_name} </span>

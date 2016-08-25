@@ -57,7 +57,7 @@ export default class Office extends Component {
     var { candidate, office, guideList } = this.state;
 
     if (!candidate.ballot_item_display_name){
-      return <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
+      return <div className="container-fluid well u-gutter-top--small fluff-full1">
               <h3>This Office Not Found</h3>
         NOTE: The We Vote team is still building support for Offices.
                 <div className="small">We were not able to find that office.
@@ -72,9 +72,8 @@ export default class Office extends Component {
           <div className="candidate-card__additional">
             { candidate.position_list ?
               <div>
-                <PositionList
-                position_list={candidate.position_list}
-                candidate_display_name={candidate.ballot_item_display_name} />
+                <PositionList position_list={candidate.position_list}
+                              ballot_item_display_name={candidate.ballot_item_display_name} />
               </div> :
               null
             }
@@ -87,8 +86,8 @@ export default class Office extends Component {
         </section>
         <br />
         <ThisIsMeAction twitter_handle_being_viewed={candidate.twitter_handle}
-                      name_being_viewed={candidate.ballot_item_display_name}
-                      kind_of_owner="POLITICIAN" />
+                        name_being_viewed={candidate.ballot_item_display_name}
+                        kind_of_owner="POLITICIAN" />
         <br />
       </span>;
 

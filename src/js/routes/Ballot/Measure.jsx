@@ -7,6 +7,7 @@ import MeasureItem from "../../components/Ballot/MeasureItem";
 import MeasureActions from "../../actions/MeasureActions";
 import MeasureStore from "../../stores/MeasureStore";
 import PositionList from "../../components/Ballot/PositionList";
+import SupportActions from "../../actions/SupportActions";
 import VoterStore from "../../stores/VoterStore";
 import { exitSearch } from "../../utils/search-functions";
 
@@ -24,11 +25,15 @@ export default class Measure extends Component {
 
   componentDidMount (){
     this.measureStoreListener = MeasureStore.addListener(this._onChange.bind(this));
+    var { we_vote_id } = this.props.params;
 
-    MeasureActions.retrieve(this.we_vote_id);
+    MeasureActions.retrieve(we_vote_id);
 
     this.listener = GuideStore.addListener(this._onChange.bind(this));
-    GuideActions.retrieveGuidesToFollowByBallotItem(this.we_vote_id, "MEASURE");
+    GuideActions.retrieveGuidesToFollowByBallotItem(we_vote_id, "MEASURE");
+
+    // Make sure supportProps exist for this Measure when browser comes straight to measure page
+    SupportActions.retrievePositionsCountsForOneBallotItem(we_vote_id);
 
     exitSearch("");
   }
@@ -50,7 +55,7 @@ export default class Measure extends Component {
     var { measure, guideList } = this.state;
 
     if (!measure.ballot_item_display_name){
-      return <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
+      return <div className="container-fluid well u-gutter-top--small fluff-full1">
               <h3>No Measure Found</h3>
                 <div className="small">We were not able to find that measure.
                   Please search again.</div>
@@ -64,9 +69,8 @@ export default class Measure extends Component {
           <div className="measure-card__additional">
             { measure.position_list ?
               <div>
-                <PositionList
-                position_list={measure.position_list}
-                candidate_display_name={measure.ballot_item_display_name} />
+                <PositionList position_list={measure.position_list}
+                              ballot_item_display_name={measure.ballot_item_display_name} />
               </div> :
               null
             }

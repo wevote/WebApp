@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
-import HeaderIcons from "./Navigation/HeaderIcons";
+import NavigatorInHeader from "./Navigation/NavigatorInHeader";
 import FacebookActions from "../actions/FacebookActions";
 import SearchAllBox from "./SearchAllBox";
 var Icon = require("react-svg-icons");
-const Menu = require("react-burger-menu").push;
+const ReactBurgerMenu = require("react-burger-menu").push;
 
 var menuStyles = {
   bmMenu: {
@@ -14,7 +14,8 @@ var menuStyles = {
 
 export default class Header extends Component {
   static propTypes = {
-    voter: PropTypes.object
+    voter: PropTypes.object,
+    pathname: PropTypes.string
   };
 
   constructor (props) {
@@ -32,6 +33,7 @@ export default class Header extends Component {
   }
 
   render () {
+    var { pathname } = this.props;
     var { signed_in_personal, signed_in_twitter, twitter_screen_name, voter_photo_url } = this.props.voter;
     const logOut = FacebookActions.appLogout;
 
@@ -43,17 +45,17 @@ export default class Header extends Component {
         image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
     }
 
-    return <section className="separate-bottom u-gutter-top--small bs-container-fluid">
+    return <section className="separate-bottom u-gutter-top--small container-fluid">
         {/* The components/MoreMenu code has to be reproduced here for mobile */}
-        <Menu styles={ menuStyles }>
+        <ReactBurgerMenu pageWrapId={ "" } outerContainerId={ "app-base-id" } styles={ menuStyles }>
           <div className="device-menu--mobile">
-            <ul className="bs-nav bs-nav-stacked">
+            <ul className="nav nav-stacked">
               <li>
                 <div><span className="we-vote-promise">We Vote's Promise: We will never sell your email.</span></div>
               </li>
             </ul>
-            <h4 className="bs-text-left"></h4>
-            <ul className="bs-nav bs-nav-stacked">
+            <h4 className="text-left"></h4>
+            <ul className="nav nav-stacked">
               { signed_in_twitter && twitter_screen_name ?
                 <li>
                   <Link onClick={this.hide.bind(this)} to={"/" + twitter_screen_name}>
@@ -68,7 +70,13 @@ export default class Header extends Component {
                     </div>
                   </Link>
                 </li> :
-                null
+                <li>
+                  <Link onClick={this.hide.bind(this)} to="/settings/claim">
+                    <div>
+                      <span className="header-slide-out-menu-text-left">Claim Your Page</span>
+                    </div>
+                  </Link>
+                </li>
               }
               <li>
                 <Link onClick={this.hide.bind(this)} to="/settings/location">
@@ -100,8 +108,8 @@ export default class Header extends Component {
                   </Link>
                 </li> }
             </ul>
-            <h4 className="bs-text-left"></h4>
-            <ul className="bs-nav bs-nav-stacked">
+            <h4 className="text-left"></h4>
+            <ul className="nav nav-stacked">
               <li>
                 <Link onClick={this.hide.bind(this)} to="/more/about">
                   <div>
@@ -111,8 +119,8 @@ export default class Header extends Component {
               </li>
             </ul>
           </div>
-        </Menu>
-        <h4 className="bs-pull-left page-logo">
+        </ReactBurgerMenu>
+        <h4 className="pull-left page-logo">
           <Link to="/ballot">
             Your Voter Guide
           </Link>
@@ -121,7 +129,7 @@ export default class Header extends Component {
         <div>
           <SearchAllBox />
         </div>
-        <HeaderIcons />
+        <NavigatorInHeader pathname={pathname} />
       </section>;
   }
 }

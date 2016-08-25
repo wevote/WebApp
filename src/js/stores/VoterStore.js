@@ -23,7 +23,11 @@ class VoterStore extends FluxMapStore {
   }
 
   getAddress (){
-    return this.getState().address.text_for_map_search;
+    return this.getState().address.text_for_map_search || "";
+  }
+
+  getTwitterHandle (){
+    return this.getState().voter.twitter_handle || "";
   }
 
   getFacebookPhoto (){

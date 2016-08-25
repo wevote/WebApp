@@ -6,6 +6,7 @@ import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippe
 import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
 import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
 import StarAction from "../../components/Widgets/StarAction";
+import SupportStore from "../../stores/SupportStore";
 
 export default class OrganizationPositionItem extends Component {
   static propTypes = {
@@ -21,6 +22,22 @@ export default class OrganizationPositionItem extends Component {
     this.state = { showEditPositionModal: false };
   }
 
+  componentDidMount () {
+    this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
+  }
+
+  componentWillUnmount () {
+    this.supportStoreListener.remove();
+  }
+
+  _onSupportStoreChange () {
+    let position = this.props.position;
+    this.setState({
+      supportProps: SupportStore.get(position.ballot_item_we_vote_id),
+      transitioning: false
+    });
+  }
+
   closeEditPositionModal () {
     this.setState({ showEditPositionModal: false });
   }
@@ -33,22 +50,34 @@ export default class OrganizationPositionItem extends Component {
     let position = this.props.position;
     let organization = this.props.organization;
     let { stance_display_off, comment_text_off } = this.props;
+    const { supportProps } = this.state;
+
+    // When component first loads, use the value in the incoming position. If there are any updates, use those.
+    var statement_text = supportProps && supportProps.voter_statement_text ? supportProps.voter_statement_text : position.statement_text;
+    var is_public_position = supportProps && supportProps.is_public_position ? supportProps.is_public_position : position.is_public_position;
+    var is_support = supportProps && supportProps.is_support ? supportProps.is_support : position.is_support;
+    var is_oppose = supportProps && supportProps.is_oppose ? supportProps.is_oppose : position.is_oppose;
 
     // TwitterHandle-based link
-    let candidateLink = position.ballot_item_twitter_handle ? "/" + position.ballot_item_twitter_handle : "/candidate/" + position.ballot_item_we_vote_id;
+    let ballot_item_url = position.kind_of_ballot_item === "MEASURE" ? "/measure/" : "/candidate/";
+    let ballotItemLink = position.ballot_item_twitter_handle ? "/" + position.ballot_item_twitter_handle : ballot_item_url + position.ballot_item_we_vote_id;
 
     let position_description = "";
-    const is_on_candidate_page = false;
+    const is_on_ballot_item_page = false;
     if (position.vote_smart_rating) {
       position_description = <PositionRatingSnippet {...position} />;
-    } else if (position.is_support || position.is_oppose) {
+    } else if (is_support || is_oppose) {
+      // We overwrite the "statement_text" passed in with position
       position_description = <PositionSupportOpposeSnippet {...position}
-                                                           is_on_candidate_page={is_on_candidate_page}
+                                                           statement_text={statement_text}
+                                                           is_support={is_support}
+                                                           is_oppose={is_oppose}
+                                                           is_on_ballot_item_page={is_on_ballot_item_page}
                                                            stance_display_off={stance_display_off}
                                                            comment_text_off={comment_text_off} />;
     } else {
       position_description = <PositionInformationOnlySnippet {...position}
-                                                             is_on_candidate_page={is_on_candidate_page}
+                                                             is_on_ballot_item_page={is_on_ballot_item_page}
                                                              stance_display_off={stance_display_off}
                                                              comment_text_off={comment_text_off} />;
     }
@@ -57,7 +86,7 @@ export default class OrganizationPositionItem extends Component {
 
     return <li className="position-item">
       <StarAction we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
-        <Link to={ candidateLink }
+        <Link to={ ballotItemLink }
               onlyActiveOnIndex={false}>
           {/*<i className="icon-icon-add-friends-2-1 icon-light icon-medium" />*/}
           { position.ballot_item_image_url_https ?
@@ -69,7 +98,7 @@ export default class OrganizationPositionItem extends Component {
           }
         </Link>
         <div className="position-item__content">
-          <Link to={ candidateLink }
+          <Link to={ ballotItemLink }
                 onlyActiveOnIndex={false}>
             <span className="position-rating__candidate-name">{position.ballot_item_display_name}</span>
           </Link>
@@ -87,9 +116,9 @@ export default class OrganizationPositionItem extends Component {
                                                position={position}
                                                organization={organization}/>
             </span> }
-          { position.is_for_friends_only ?
-            <FriendsOnlyIndicator /> :
-            null }
+          { is_public_position ?
+            null :
+            <FriendsOnlyIndicator /> }
 
         </div>
         {/*Running for {office_display_name}

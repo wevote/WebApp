@@ -2,14 +2,29 @@ $icon-color-base: #999999;
 $icon-color-active: #337ab7;
 $icon-color-hover: #777777;
 
-.bs-navbar .navicon {
+.header-navicon {
   color: $icon-color-base;
 }
 
-.bs-navbar .navicon:hover .bs-text-center {
+.header-navicon:active, .active-icon {
+  color:$icon-color-active;
+}
+
+.header-navicon:hover {
   text-decoration: underline;
 }
 
-.bs-navbar .navicon:active, .bs-navbar .active-icon {
+.footer-navicon {
+  color: $icon-color-base;
+}
+
+.footer-navicon:active, .active-icon {
   color:$icon-color-active;
+}
+
+.footer-navicon:hover .bs-text-center {
+  text-decoration: underline;
+}
+.extra-small {
+  font-size: 10px;
 }

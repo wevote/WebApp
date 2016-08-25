@@ -56,6 +56,10 @@ $brand-color: #E50050 !default;
 /// @type Color
 $link-color: #337ab7 !default; // mirrors Bootstrap default - TODO: set custom value globally
 
+
+/// Popover Link Color
+/// @type Color
+$popover-link-color: #549bb6 !default;
 /// Copy text color
 /// @type Color
 $text-color: $darker-gray !default;

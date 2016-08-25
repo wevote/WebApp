@@ -7,6 +7,7 @@ import GuideStore from "../../stores/GuideStore";
 import GuideActions from "../../actions/GuideActions";
 import OfficeStore from "../../stores/OfficeStore";
 import PositionList from "../../components/Ballot/PositionList";
+import SupportActions from "../../actions/SupportActions";
 import ThisIsMeAction from "../../components/Widgets/ThisIsMeAction";
 import VoterStore from "../../stores/VoterStore";
 import { exitSearch } from "../../utils/search-functions";
@@ -30,6 +31,9 @@ export default class Candidate extends Component {
 
     this.listener = GuideStore.addListener(this._onChange.bind(this));
     GuideActions.retrieveGuidesToFollowByBallotItem(candidate_we_vote_id, "CANDIDATE");
+
+    // Make sure supportProps exist for this Candidate when browser comes straight to candidate page
+    SupportActions.retrievePositionsCountsForOneBallotItem(candidate_we_vote_id);
 
     // Display the candidate's name in the search box
     var { candidate } = this.state;
@@ -74,7 +78,7 @@ export default class Candidate extends Component {
     var { candidate, office, guideList, candidate_we_vote_id } = this.state;
 
     if (!candidate.ballot_item_display_name){
-      return <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
+      return <div className="container-fluid well u-gutter-top--small fluff-full1">
               <h3>No Candidate Found</h3>
                 <div className="small">We were not able to find that candidate.
                   Please search again.</div>
@@ -88,9 +92,8 @@ export default class Candidate extends Component {
           <div className="candidate-card__additional">
             { candidate.position_list ?
               <div>
-                <PositionList
-                position_list={candidate.position_list}
-                candidate_display_name={candidate.ballot_item_display_name} />
+                <PositionList position_list={candidate.position_list}
+                              ballot_item_display_name={candidate.ballot_item_display_name} />
               </div> :
               null
             }

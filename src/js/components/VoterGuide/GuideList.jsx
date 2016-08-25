@@ -20,18 +20,20 @@ export default class GuideList extends Component {
   }
 
   handleIgnore (id) {
+    console.log("GuideList, handleIgnore");
     GuideActions.ignore(id);
     this.setState({ organizations: this.state.organizations.filter( (org) => { return org.organization_we_vote_id !== id;})});
   }
 
   render () {
+    //console.log("components/VoterGuide/GuideList");
     const orgs = this.state.organizations.map( (org) => {
       return <Organization key={org.organization_we_vote_id} {...org}>
             <FollowToggle we_vote_id={org.organization_we_vote_id} />
-            <button className="bs-btn bs-btn-default bs-btn-sm"
-                    onClick={this.handleIgnore.bind(this, org.organization_we_vote_id)}>
-              Ignore
-            </button>
+              <button className="btn btn-default btn-sm"
+                      onClick={this.handleIgnore.bind(this, org.organization_we_vote_id)}>
+                Ignore
+              </button>
           </Organization>;
     });
 

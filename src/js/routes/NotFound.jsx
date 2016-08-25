@@ -111,9 +111,9 @@ export default class NotFound extends Component {
     } else if (this.state.kind_of_owner === "TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE"){
       return <UnknownTwitterAccount {...this.state} />;
     } else {
-      return <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
-              <h3>Create Your Own Voter Guide</h3>
-                <div className="small">
+      return <div className="container-fluid well u-gutter-top--small fluff-full1">
+              <h3>Claim Your Page</h3>
+                <div className="medium">
                   We were not able to find an account for this
                   Twitter Handle{ this.props.params.twitter_handle ?
                     <span> "{this.props.params.twitter_handle}"</span> :
@@ -121,7 +121,7 @@ export default class NotFound extends Component {
                 </div>
                 <br />
                 <Link to="/twittersigninprocess/signinswitchstart">
-                  <Button bsClass="bs-btn" bsStyle="primary">Sign Into Twitter to Create Voter Guide</Button>
+                  <Button bsStyle="primary">Sign Into Twitter to Create Voter Guide</Button>
                 </Link>
                 <br />
                 <br />

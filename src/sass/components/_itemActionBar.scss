@@ -1,6 +1,13 @@
 .item-actionbar .inline-phone:hover {
   cursor: pointer;
 }
+
+.rightToggle {
+  position: absolute;
+  right: 15px;
+
+}
+
 .item-actionbar {
   display: flex;
   border-top: 1px solid #DDD;
@@ -8,6 +15,15 @@
   padding-top: 10px;
 
   &__btn {
+    // currently uses Bootstrap .btn styling
+    margin-right: 8px;
+
+    &--position-selected {
+      color: $selected-color;
+    }
+  }
+
+  &__btn-public {
     // currently uses Bootstrap .bs-btn styling
     margin-right: 8px;
 

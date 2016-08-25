@@ -9,6 +9,7 @@ import OfficeStore from "../../stores/OfficeStore";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
 import OrganizationStore from "../../stores/OrganizationStore";
+import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
 
@@ -48,6 +49,11 @@ export default class EditPositionAboutCandidateModal extends Component {
     let supportProps = SupportStore.get(ballot_item_we_vote_id);
 
     this.setState({supportProps: supportProps});
+
+    // if supportProps is missing support_count or oppose_count, force a retrieve
+    if (supportProps.support_count === undefined || supportProps.oppose_count === undefined) {
+      SupportActions.retrievePositionsCountsForOneBallotItem(ballot_item_we_vote_id);
+    }
   }
 
   componentWillUnmount () {
@@ -95,12 +101,10 @@ export default class EditPositionAboutCandidateModal extends Component {
     var organization = this.props.organization;
     var ballot_item_we_vote_id = this.props.position.ballot_item_we_vote_id;
     var ballot_item_display_name = this.props.position.ballot_item_display_name;
-    //console.log("this.props.position: ", this.props.position);
-    // console.log("this.state.candidate.candidate_we_vote_id: ", this.state.candidate.candidate_we_vote_id);
 
     const { supportProps, voter } = this.state;
     var signed_in_twitter = voter === undefined ? false : voter.signed_in_twitter;
-    var signed_in_with_this_twitter_account = false;
+    // var signed_in_with_this_twitter_account = false;
     if (signed_in_twitter) {
       // console.log("In render, voter: ", voter);
       // console.log("this.props.params.twitter_handle: " + this.props.params.twitter_handle);
@@ -121,16 +125,13 @@ export default class EditPositionAboutCandidateModal extends Component {
     //     </section>
     //   </span>;
     } else if (organization !== undefined) {
-      // console.log("ORGANIZATION");
-      // console.log("organization.organization_name: " + organization.organization_name);
-
       modal_contents = <span>
           <div className="card__container">
             <div className="card__main">
               <FollowToggle we_vote_id={organization.organization_we_vote_id}/>
               <OrganizationCard organization={organization} turn_off_description/>
             </div>
-            <ul className="bs-list-group">
+            <ul className="list-group">
               <OrganizationPositionItem position={position}
                                         organization={this.props.organization}
                                         link_to_edit_modal_off
@@ -140,7 +141,7 @@ export default class EditPositionAboutCandidateModal extends Component {
           </div>
           <div className="candidate-card__media-object-content">
             <div className="candidate-card__actions">
-              <ItemActionBar we_vote_id={ballot_item_we_vote_id}
+              <ItemActionBar ballot_item_we_vote_id={ballot_item_we_vote_id}
                              supportProps={supportProps} type="CANDIDATE" />
               <ItemPositionStatementActionBar ballot_item_we_vote_id={ballot_item_we_vote_id}
                                               ballot_item_display_name={ballot_item_display_name}
@@ -150,12 +151,12 @@ export default class EditPositionAboutCandidateModal extends Component {
           </div>
         </span>;
     }
-    return <Modal {...this.props} bsClass="bs-modal" bsSize="large" aria-labelledby="contained-modal-title-lg">
-      <Modal.Header bsClass="bs-modal" closeButton>
-        <Modal.Title bsClass="bs-modal"
+    return <Modal {...this.props} bsSize="large" aria-labelledby="contained-modal-title-lg">
+      <Modal.Header closeButton>
+        <Modal.Title
                      id="contained-modal-title-lg"></Modal.Title>
       </Modal.Header>
-      <Modal.Body bsClass="bs-modal">
+      <Modal.Body>
         { modal_contents }
       </Modal.Body>
     </Modal>;

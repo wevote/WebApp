@@ -61,36 +61,36 @@ export default class Intro extends Component {
 
     return <div>
       { this.props.children ||
-        <div className="bs-container-fluid bs-well u-gutter-top--small fluff-full1">
-          <h2 className="bs-text-center">We Vote</h2>
+        <div className="container-fluid well u-gutter-top--small fluff-full1">
+          <h2 className="text-center">We Vote</h2>
             <label htmlFor="address">
               Your Address.&nbsp;
             </label>
-            <span className="small">
+            <span className="medium">
               This is our best guess - feel free to change.
             </span>
-            <AddressBox {...this.props} saveUrl="/intro/opinions" />
+            <AddressBox {...this.props} saveUrl="/ballot" />
             <br/>
-            <ul className="bs-list-group">
-              <li className="bs-list-group-item">Research ballot items</li>
-              <li className="bs-list-group-item">Learn from friends</li>
-              <li className="bs-list-group-item">Take to the polls</li>
+            <ul className="list-group">
+              <li className="list-group-item">Research ballot items</li>
+              <li className="list-group-item">Learn from friends</li>
+              <li className="list-group-item">Take to the polls</li>
             </ul>
 
-            <ul className="bs-list-group">
-              <li className="bs-list-group-item">
-                <span className="bs-glyphicon bs-glyphicon-small bs-glyphicon-ok-sign"></span> &nbsp;Neutral and private
+            <ul className="list-group">
+              <li className="list-group-item">
+                <span className="glyphicon glyphicon-small glyphicon-ok-sign"></span> &nbsp;Neutral and private
               </li>
-              <li className="bs-list-group-item">
-                <span className="bs-glyphicon bs-glyphicon-small bs-glyphicon-ok-sign"></span>
+              <li className="list-group-item">
+                <span className="glyphicon glyphicon-small glyphicon-ok-sign"></span>
                   &nbsp; {numberWithCommas(voterCount)} voters
               </li>
-              <li className="bs-list-group-item">
-                <span className="bs-glyphicon bs-glyphicon-small bs-glyphicon-ok-sign"></span>
+              <li className="list-group-item">
+                <span className="glyphicon glyphicon-small glyphicon-ok-sign"></span>
                   &nbsp; {numberWithCommas(orgCount)} not-for-profit organizations
               </li>
-              <li className="bs-list-group-item">
-                <span className="bs-glyphicon bs-glyphicon-small bs-glyphicon-ok-sign"></span>
+              <li className="list-group-item">
+                <span className="glyphicon glyphicon-small glyphicon-ok-sign"></span>
                   &nbsp; and you.
               </li>
             </ul>

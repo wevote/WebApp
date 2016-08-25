@@ -5,14 +5,14 @@ import { Link } from "react-router";
 
 const links = {
   ballot: function (active) {
-    var icon = "bs-glyphicon bs-glyphicon-list-alt bs-glyphicon-line-adjustment font-footer_icon";
+    var icon = "glyphicon glyphicon-list-alt glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
-      <Link to="/ballot" className={ "navicon" + (active ? " active-icon" : "")}>
-        <div className="bs-col-xs-3 bs-center-block bs-text-center">
+      <Link to="/ballot" className={ "header-navicon" + (active ? " active-icon" : "")}>
+        <div className="col-xs-3 center-block text-center small">
           <span className={icon} title="Ballot" />
           <br/>
-          <span className="bs-text-center small device-small--hide">
+          <span className="text-center extra-small">
             Ballot
           </span>
         </div>
@@ -23,14 +23,14 @@ const links = {
 
   /* className="badgeTotal badge">0</span> TODO badge should only show if positive number */
   requests: function (active) {
-    var icon = "bs-glyphicon bs-glyphicon-inbox bs-glyphicon-line-adjustment font-footer_icon";
+    var icon = "glyphicon glyphicon-inbox glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
-      <Link to="/requests" className={ "navicon" + (active ? " active-icon" : "")}>
-        <div className="bs-col-xs-3 bs-center-block bs-text-center">
+      <Link to="/requests" className={ "header-navicon" + (active ? " active-icon" : "")}>
+        <div className="col-xs-3 center-block text-center small">
           <span className={icon} title="Requests" />
           <br/>
-          <span className="bs-text-center small device-small--hide">
+          <span className="text-center extra-small">
             Requests
           </span>
         </div>
@@ -40,14 +40,14 @@ const links = {
   },
 
   connect: function (active) {
-    var icon = "bs-glyphicon icon-icon-connect-1-3 font-footer_icon";
+    var icon = "glyphicon icon-icon-connect-1-3 glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
-      <Link to="/connect" className={ "navicon" + (active ? " active-icon" : "")}>
-        <div className="bs-col-xs-3 bs-center-block bs-text-center">
+      <Link to="/connect" className={ "header-navicon" + (active ? " active-icon" : "")}>
+        <div className="col-xs-3 center-block text-center small">
           <span className={icon} title="Connect" />
           <br/>
-          <span className="bs-text-center small device-small--hide">
+          <span className="text-center extra-small">
             Connect
           </span>
         </div>
@@ -57,14 +57,14 @@ const links = {
   },
 
   activity: function (active) {
-    var icon = "bs-glyphicon icon-icon-activity-1-4 font-footer_icon";
+    var icon = "glyphicon icon-icon-activity-1-4 glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
-      <Link to="/activity" className={ "navicon" + (active ? " active-icon" : "")}>
-        <div className="bs-col-xs-3 bs-center-block bs-text-center">
+      <Link to="/activity" className={ "header-navicon" + (active ? " active-icon" : "")}>
+        <div className="col-xs-3 center-block text-center small">
           <span className={icon} title="Activity" />
           <br/>
-          <span className="bs-text-center small device-small--hide">
+          <span className="text-center extra-small">
             Activity
           </span>
         </div>
@@ -74,7 +74,7 @@ const links = {
   }
 };
 
-export default class Navigator extends Component {
+export default class NavigatorInHeader extends Component {
   static propTypes = {
     pathname: PropTypes.string
   };
@@ -82,13 +82,12 @@ export default class Navigator extends Component {
   render () {
     var { props: { pathname } } = this;
     var { ballot, requests, connect, activity } = links;
-
     const navigator =
-      <div className="navigator bs-row">
-        <div className="bs-container-fluid">
-          <div className="bs-navbar bs-navbar-default bs-navbar-fixed-bottom">
-            <div className="bs-container-fluid fluff-loose--top separate-top">
-              <div className="bs-row">
+      <div className="navigator row">
+        <div className="container-fluid">
+          <div className="device-headericons--large">
+            <div className="container-fluid fluff-loose--top separate-top">
+              <div className="row">
                 {ballot(pathname === "/ballot")}
                 {requests(pathname === "/requests")}
                 {connect(pathname === "/connect")}
