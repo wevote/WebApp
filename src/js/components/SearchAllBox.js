@@ -1,8 +1,8 @@
 import React, {Component, PropTypes} from "react";
-import { Link } from "react-router";
+import { browserHistory, Link } from "react-router";
 import SearchAllActions from "../actions/SearchAllActions";
 import SearchAllStore from "../stores/SearchAllStore";
-import { enterSearch, exitSearch } from "../utils/search-functions";
+import { enterSearch, exitSearch, makeSearchLink } from "../utils/search-functions";
 
 export default class SearchAllBox extends Component {
   static propTypes = {
@@ -66,11 +66,31 @@ export default class SearchAllBox extends Component {
     exitSearch();
   }
 
+  //handle pressing Enter in search field
+  onSearchFormSubmit (event){
+     console.log("onSearchFormSubmit");
+     var search_results = this.state.search_results;
+     console.log(search_results[0]);
+     var first_result = search_results[0];
+     if (search_results === undefined) {
+       first_result = search_results[0]
+     }
+     if (first_result === undefined || first_result === null) {
+       event.preventDefault();
+       return false;
+     } else {
+       event.preventDefault();
+       var searchLink = makeSearchLink(first_result.twitter_handle, first_result.we_vote_id, first_result.kind_of_owner);
+       browserHistory.push(searchLink);
+       return false;
+     }
+  }
+
   render () {
     var search_results = this.state.search_results;
 
     return <div className="page-header__search">
-        <form className="navbar-form" role="search">
+        <form onSubmit={this.onSearchFormSubmit.bind(this)} className="navbar-form" role="search">
         <div className="input-group site-search">
           <input type="text"
                  className="form-control"
@@ -88,27 +108,7 @@ export default class SearchAllBox extends Component {
         <div className="search-container">
           { search_results ?
             search_results.map(function (one_result) {
-            var searchLink = "/";
-            switch (one_result.kind_of_owner) {
-              case "CANDIDATE":
-                searchLink = one_result.twitter_handle ? "/" + one_result.twitter_handle : "/candidate/" + one_result.we_vote_id;
-                break;
-              case "OFFICE":
-                searchLink = "/office/" + one_result.we_vote_id;
-                break;
-              case "ORGANIZATION":
-                searchLink = one_result.twitter_handle ? "/" + one_result.twitter_handle : "/organization/" + one_result.we_vote_id;
-                break;
-              case "MEASURE":
-                searchLink = "/measure/" + one_result.we_vote_id;
-                break;
-              case "POLITICIAN":
-                searchLink = one_result.twitter_handle ? "/" + one_result.twitter_handle : "/politician/" + one_result.we_vote_id;
-                break;
-              default:
-                break;
-            }
-            return <Link key={one_result.we_vote_id} to={searchLink} className="search-container__links">
+            return <Link key={one_result.we_vote_id} to={makeSearchLink(one_result.twitter_handle, one_result.we_vote_id, one_result.kind_of_owner)} className="search-container__links">
                 <div className="search-container__results">
                   {one_result.result_title}
                 </div>
