@@ -5,6 +5,7 @@ import CandidateStore from "../../stores/CandidateStore";
 import GuideList from "../../components/VoterGuide/GuideList";
 import GuideStore from "../../stores/GuideStore";
 import GuideActions from "../../actions/GuideActions";
+import LoadingWheel from "../../components/LoadingWheel";
 import OfficeStore from "../../stores/OfficeStore";
 import PositionList from "../../components/Ballot/PositionList";
 import SupportActions from "../../actions/SupportActions";
@@ -78,10 +79,9 @@ export default class Candidate extends Component {
     var { candidate, office, guideList, candidate_we_vote_id } = this.state;
 
     if (!candidate.ballot_item_display_name){
+      // TODO DALE If the candidate we_vote_id is not valid, we need to update this with a notice
       return <div className="container-fluid well u-gutter-top--small fluff-full1">
-              <h3>No Candidate Found</h3>
-                <div className="small">We were not able to find that candidate.
-                  Please search again.</div>
+                <div>{LoadingWheel}</div>
                 <br />
             </div>;
     }

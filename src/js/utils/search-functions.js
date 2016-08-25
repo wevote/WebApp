@@ -40,8 +40,8 @@ export function exitSearch () {
   searchResultsBox.className += " search-container__hidden";
 }
 
-export function makeSearchLink (twitter_handle, we_vote_id, kind_of_owner){
-  var search_link="";
+export function makeSearchLink (twitter_handle, we_vote_id, kind_of_owner) {
+  var search_link = "";
   switch (kind_of_owner) {
     case "CANDIDATE":
       console.log(twitter_handle);

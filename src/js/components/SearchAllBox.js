@@ -68,22 +68,21 @@ export default class SearchAllBox extends Component {
 
   //handle pressing Enter in search field
   onSearchFormSubmit (event){
-     console.log("onSearchFormSubmit");
-     var search_results = this.state.search_results;
-     console.log(search_results[0]);
-     var first_result = search_results[0];
-     if (search_results === undefined) {
-       first_result = search_results[0]
-     }
-     if (first_result === undefined || first_result === null) {
-       event.preventDefault();
-       return false;
-     } else {
-       event.preventDefault();
-       var searchLink = makeSearchLink(first_result.twitter_handle, first_result.we_vote_id, first_result.kind_of_owner);
-       browserHistory.push(searchLink);
-       return false;
-     }
+    console.log("onSearchFormSubmit");
+    var search_results = this.state.search_results;
+    var first_result;
+    if (search_results !== undefined) {
+     first_result = search_results[0];
+    }
+    if (first_result === undefined || first_result === null) {
+      event.preventDefault();
+      return false;
+    } else {
+      event.preventDefault();
+      var searchLink = makeSearchLink(first_result.twitter_handle, first_result.we_vote_id, first_result.kind_of_owner);
+      browserHistory.push(searchLink);
+      return false;
+    }
   }
 
   render () {
