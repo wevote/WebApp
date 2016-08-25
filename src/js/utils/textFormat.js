@@ -57,6 +57,7 @@ export function extractTwitterHandleFromTextString (raw_string) {
 }
 /**
  * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
+ * Duplicate values in the second object will overwrite those in the first
  * @param obj1
  * @param obj2
  * @returns obj3 a new object based on obj1 and obj2

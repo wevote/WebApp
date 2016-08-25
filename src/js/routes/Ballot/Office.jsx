@@ -43,7 +43,7 @@ export default class Office extends Component {
 
   _onChange (){
     var candidate = CandidateStore.get(this.we_vote_id) || {};
-    this.setState({ candidate: candidate, guideList: GuideStore.toFollowListForCand() });
+    this.setState({ candidate: candidate, guideToFollowList: GuideStore.toFollowListForCand() });
 
     if (candidate.contest_office_we_vote_id){
       this.setState({ office: OfficeStore.get(candidate.contest_office_we_vote_id) || {} });
@@ -54,7 +54,7 @@ export default class Office extends Component {
   render () {
     const electionId = VoterStore.election_id();
     const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to follow about this candidate or measure.";
-    var { candidate, office, guideList } = this.state;
+    var { candidate, office, guideToFollowList } = this.state;
 
     if (!candidate.ballot_item_display_name){
       return <div className="container-fluid well u-gutter-top--small fluff-full1">
@@ -77,10 +77,10 @@ export default class Office extends Component {
               </div> :
               null
             }
-            {guideList.length === 0 ?
+            {guideToFollowList.length === 0 ?
               <p className="candidate-card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
               <div><h3 className="candidate-card__additional-heading">{"More opinions about " + candidate.ballot_item_display_name}</h3>
-              <GuideList id={electionId} ballotItemWeVoteId={this.we_vote_id} organizations={guideList}/></div>
+              <GuideList id={electionId} ballotItemWeVoteId={this.we_vote_id} organizationsToFollow={guideToFollowList}/></div>
             }
           </div>
         </section>

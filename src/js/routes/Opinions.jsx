@@ -17,7 +17,7 @@ export default class Opinions extends Component {
 
   constructor (props){
     super(props);
-    this.state = {guideList: [], ballot_has_guides: null};
+    this.state = {guideToFollowList: [], ballot_has_guides: null};
   }
 
   componentDidMount () {
@@ -26,9 +26,10 @@ export default class Opinions extends Component {
   }
 
   _onChange () {
-    this.setState({ guideList: GuideStore.toFollowList(),
-                  ballot_has_guides: GuideStore.ballotHasGuides(),
-                  address: VoterStore.getAddress() });
+    this.setState({
+      guideToFollowList: GuideStore.toFollowList(),
+      ballot_has_guides: GuideStore.ballotHasGuides(),
+      address: VoterStore.getAddress() });
   }
 
   componentWillUnmount (){
@@ -51,7 +52,7 @@ export default class Opinions extends Component {
   }
 
   render () {
-    const { ballot_has_guides, guideList, address } = this.state;
+    const { ballot_has_guides, guideToFollowList, address } = this.state;
     let guides;
     var floatRight = {
         float: "right"
@@ -77,7 +78,7 @@ export default class Opinions extends Component {
             <p></p> :
             <p>There are no organizations with opinions on your ballot. Here are some popular organizations</p>
           }
-        <GuideList organizations={guideList}/>
+        <GuideList organizationsToFollow={guideToFollowList} instantRefreshOn />
         </div>;
       }
 

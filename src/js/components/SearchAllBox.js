@@ -68,7 +68,6 @@ export default class SearchAllBox extends Component {
 
   //handle pressing Enter in search field
   onSearchFormSubmit (event){
-    console.log("onSearchFormSubmit");
     var search_results = this.state.search_results;
     var first_result;
     if (search_results !== undefined) {
