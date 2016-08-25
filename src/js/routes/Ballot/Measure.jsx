@@ -45,14 +45,14 @@ export default class Measure extends Component {
 
   _onChange (){
     var measure = MeasureStore.get(this.we_vote_id) || {};
-    this.setState({ measure: measure, guideList: GuideStore.toFollowListForCand() });
+    this.setState({ measure: measure, guideToFollowList: GuideStore.toFollowListForCand() });
 
   }
 
   render () {
     const electionId = VoterStore.election_id();
     const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to follow about this measure.";
-    var { measure, guideList } = this.state;
+    var { measure, guideToFollowList } = this.state;
 
     if (!measure.ballot_item_display_name){
       return <div className="container-fluid well u-gutter-top--small fluff-full1">
@@ -74,10 +74,10 @@ export default class Measure extends Component {
               </div> :
               null
             }
-            {guideList.length === 0 ?
+            {guideToFollowList.length === 0 ?
               <p className="measure-card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
               <div><h3 className="measure-card__additional-heading">{"More opinions about " + measure.ballot_item_display_name}</h3>
-              <GuideList id={electionId} ballotItemWeVoteId={this.we_vote_id} organizations={guideList}/></div>
+              <GuideList id={electionId} ballotItemWeVoteId={this.we_vote_id} organizationsToFollow={guideToFollowList}/></div>
             }
           </div>
         </section>

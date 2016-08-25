@@ -51,8 +51,10 @@ export default class EditPositionAboutCandidateModal extends Component {
     this.setState({supportProps: supportProps});
 
     // if supportProps is missing support_count or oppose_count, force a retrieve
-    if (supportProps.support_count === undefined || supportProps.oppose_count === undefined) {
-      SupportActions.retrievePositionsCountsForOneBallotItem(ballot_item_we_vote_id);
+    if (supportProps !== undefined) {
+      if (supportProps.support_count === undefined || supportProps.oppose_count === undefined) {
+        SupportActions.retrievePositionsCountsForOneBallotItem(ballot_item_we_vote_id);
+      }
     }
   }
 
@@ -114,7 +116,6 @@ export default class EditPositionAboutCandidateModal extends Component {
     let modal_contents;
     if (position === undefined) {
       // Show a loading wheel while this component's data is loading
-      console.log("position data loading");
       return LoadingWheel;
     // } else if (position.kind_of_ballot_item === "CANDIDATE") {
     //   console.log("this.state.kind_of_owner === CANDIDATE");

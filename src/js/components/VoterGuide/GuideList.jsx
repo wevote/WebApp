@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import Organization from "./Organization";
 import GuideActions from "../../actions/GuideActions";
 import FollowToggle from "../Widgets/FollowToggle";
@@ -7,27 +6,29 @@ import FollowToggle from "../Widgets/FollowToggle";
 export default class GuideList extends Component {
 
   static propTypes = {
-    organizations: PropTypes.array
+    organizationsToFollow: PropTypes.array,
+    instantRefreshOn: PropTypes.bool
   };
 
   constructor (props) {
     super(props);
-    this.state = { organizations: this.props.organizations };
+    this.state = { organizations_to_follow: this.props.organizationsToFollow };
   }
 
   componentWillReceiveProps (nextProps){
-    this.setState({organizations: nextProps.organizations });
+    if (this.props.instantRefreshOn) {
+      // NOTE: This is off because we don't want the organization to disappear from the "More opinions" list when clicked
+      this.setState({organizations_to_follow: nextProps.organizationsToFollow});
+    }
   }
 
   handleIgnore (id) {
-    console.log("GuideList, handleIgnore");
     GuideActions.ignore(id);
-    this.setState({ organizations: this.state.organizations.filter( (org) => { return org.organization_we_vote_id !== id;})});
+    this.setState({ organizations_to_follow: this.state.organizations_to_follow.filter( (org) => { return org.organization_we_vote_id !== id;})});
   }
 
   render () {
-    //console.log("components/VoterGuide/GuideList");
-    const orgs = this.state.organizations.map( (org) => {
+    const orgs = this.state.organizations_to_follow.map( (org) => {
       return <Organization key={org.organization_we_vote_id} {...org}>
             <FollowToggle we_vote_id={org.organization_we_vote_id} />
               <button className="btn btn-default btn-sm"
@@ -38,9 +39,7 @@ export default class GuideList extends Component {
     });
 
     return <div className="guidelist">
-        <ReactCSSTransitionGroup transitionName="org-ignore" transitionEnterTimeout={400} transitionLeaveTimeout={200}>
           {orgs}
-        </ReactCSSTransitionGroup>
       </div>;
   }
 

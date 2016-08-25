@@ -63,14 +63,12 @@ export default class OpinionsFollowed extends Component {
         <Link to="/friends">your friends</Link>. We will never sell your email.
       </p>
     <div className="voter-guide-list">
-    <ReactCSSTransitionGroup transitionName="org-ignore" transitionEnterTimeout={400} transitionLeaveTimeout={200}>
       {
         this.state.voter_guide_followed_list ?
         this.state.voter_guide_followed_list.map( item =>
           <VoterGuideItem key={item.we_vote_id} {...item} />
         ) : LoadingWheel
       }
-      </ReactCSSTransitionGroup>
     </div>
   </div>
 </div>;

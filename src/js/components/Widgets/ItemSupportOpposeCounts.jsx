@@ -5,17 +5,26 @@ export default class ItemSupportOpposeCounts extends Component {
     supportProps: PropTypes.object
   };
 
+  constructor (props) {
+    super(props);
+    this.state = { supportProps: this.props.supportProps };
+  }
+
+  componentWillReceiveProps (nextProps){
+    this.setState({supportProps: nextProps.supportProps});
+  }
+
   percentageMajority (){
-    const {support_count, oppose_count} = this.props.supportProps;
+    const {support_count, oppose_count} = this.state.supportProps;
     return Math.round(100 * Math.max(support_count, oppose_count) / (support_count + oppose_count));
   }
 
   render () {
-    if (this.props.supportProps === undefined){
+    if (this.state.supportProps === undefined){
       return null;
     }
 
-    var {support_count, oppose_count, is_support, is_oppose } = this.props.supportProps;
+    var {support_count, oppose_count, is_support, is_oppose } = this.state.supportProps;
     if (support_count === undefined || oppose_count === undefined || is_support === undefined || is_oppose === undefined){
       return null;
     }
@@ -31,7 +40,6 @@ export default class ItemSupportOpposeCounts extends Component {
     var isEmpty = support_count === 0 && oppose_count === 0;
 
     var isMajoritySupport = support_count >= oppose_count;
-
 
     return <div className="network-positions">
       <div className="network-positions__bar-label">

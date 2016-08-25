@@ -65,7 +65,7 @@ export default class Candidate extends Component {
   _onChange (){
     var { candidate_we_vote_id } = this.state;
     var candidate = CandidateStore.get(candidate_we_vote_id) || {};
-    this.setState({ candidate: candidate, guideList: GuideStore.toFollowListForCand() });
+    this.setState({ candidate: candidate, guideToFollowList: GuideStore.toFollowListForCand() });
 
     if (candidate.contest_office_we_vote_id){
       this.setState({ office: OfficeStore.get(candidate.contest_office_we_vote_id) || {} });
@@ -76,7 +76,7 @@ export default class Candidate extends Component {
   render () {
     const electionId = VoterStore.election_id();
     const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to follow about this candidate or measure.";
-    var { candidate, office, guideList, candidate_we_vote_id } = this.state;
+    var { candidate, office, guideToFollowList, candidate_we_vote_id } = this.state;
 
     if (!candidate.ballot_item_display_name){
       // TODO DALE If the candidate we_vote_id is not valid, we need to update this with a notice
@@ -97,10 +97,10 @@ export default class Candidate extends Component {
               </div> :
               null
             }
-            {guideList.length === 0 ?
+            {guideToFollowList.length === 0 ?
               <p className="candidate-card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
               <div><h3 className="candidate-card__additional-heading">{"More opinions about " + candidate.ballot_item_display_name}</h3>
-              <GuideList id={electionId} ballotItemWeVoteId={candidate_we_vote_id} organizations={guideList}/></div>
+              <GuideList id={electionId} ballotItemWeVoteId={candidate_we_vote_id} organizationsToFollow={guideToFollowList}/></div>
             }
           </div>
         </section>

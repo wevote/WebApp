@@ -58,13 +58,10 @@ class SupportStore extends FluxMapStore {
 
 /* Turn action into a dictionary/object format with we_vote_id as key for fast lookup */
   parseListToHash (property, list){
-    // console.log("parseListToHash, list:", list, "property:", property);
     let hash_map = {};
     list.forEach(el => {
-      // console.log("parseListToHash, el:", el);
       hash_map[el.ballot_item_we_vote_id] = el[property];
     });
-    // console.log("returning hash_map:", hash_map);
     return hash_map;
   }
 
@@ -88,7 +85,6 @@ class SupportStore extends FluxMapStore {
       case "voterAllPositionsRetrieve":
         // is_support is a property coming from 'position_list' in the incoming response
         // this.state.voter_supports is an updated hash with the contents of position list['is_support']
-        // console.log("SupportStore voterAllPositionsRetrieve, position_list: ", action.res.position_list);
         return {
           ...state,
           voter_supports: this.parseListToHash("is_support", action.res.position_list),
@@ -103,10 +99,11 @@ class SupportStore extends FluxMapStore {
         var existing_oppose_counts = state.oppose_counts !== undefined ? state.oppose_counts : [];
         var existing_support_counts = state.support_counts !== undefined ? state.support_counts : [];
 
+        // Duplicate values in the second array will overwrite those in the first
         return {
           ...state,
-          oppose_counts: mergeTwoObjectLists(new_oppose_counts, existing_oppose_counts),
-          support_counts: mergeTwoObjectLists(new_support_counts, existing_support_counts)
+          oppose_counts: mergeTwoObjectLists(existing_oppose_counts, new_oppose_counts),
+          support_counts: mergeTwoObjectLists(existing_support_counts, new_support_counts)
         };
 
       case "positionsCountForOneBallotItem":
@@ -115,10 +112,11 @@ class SupportStore extends FluxMapStore {
         var existing_oppose_counts2 = state.oppose_counts !== undefined ? state.oppose_counts : [];
         var existing_support_counts2 = state.support_counts !== undefined ? state.support_counts : [];
 
+        // Duplicate values in the second array will overwrite those in the first
         return {
           ...state,
-          oppose_counts: mergeTwoObjectLists(new_one_oppose_count, existing_oppose_counts2),
-          support_counts: mergeTwoObjectLists(new_one_support_count, existing_support_counts2)
+          oppose_counts: mergeTwoObjectLists(existing_oppose_counts2, new_one_oppose_count),
+          support_counts: mergeTwoObjectLists(existing_support_counts2, new_one_support_count)
         };
 
       case "voterOpposingSave":
@@ -159,7 +157,6 @@ class SupportStore extends FluxMapStore {
 
       case "voterPositionCommentSave":
         // Add the comment to the list in memory
-        console.log("SupportStore voterPositionCommentSave, position_counts_list: ", action.res.position_counts_list);
         return {
           ...state,
           voter_statement_text: this.statementListWithChanges(state.voter_statement_text, ballot_item_we_vote_id, action.res.statement_text),
