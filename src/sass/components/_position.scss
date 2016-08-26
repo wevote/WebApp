@@ -62,7 +62,7 @@
   }
 
   &__source {
-    color: $popover-link-color;
+    color: $mid-gray;
   }
 
   &__candidate-name {
@@ -71,6 +71,12 @@
   }
 }
 
+.with-popover{
+  color: $popover-link-color;
+  &:hover {
+    cursor: pointer;
+  }
+}
 .organization-position-item-toggle {
   position: absolute;
   right: 40px;

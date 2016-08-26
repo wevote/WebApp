@@ -15,7 +15,9 @@ export default class OrganizationPositionItem extends Component {
     position: PropTypes.object.isRequired,
     link_to_edit_modal_off: PropTypes.bool,
     stance_display_off: PropTypes.bool,
-    comment_text_off: PropTypes.bool
+    comment_text_off: PropTypes.bool,
+    popover_off: PropTypes.bool,
+    placement: PropTypes.string
   };
 
   constructor (props) {
@@ -50,7 +52,7 @@ export default class OrganizationPositionItem extends Component {
   render (){
     let position = this.props.position;
     let organization = this.props.organization;
-    let { stance_display_off, comment_text_off } = this.props;
+    let { stance_display_off, comment_text_off, popover_off, placement } = this.props;
     const { supportProps } = this.state;
 
     // When component first loads, use the value in the incoming position. If there are any updates, use those.
@@ -60,24 +62,26 @@ export default class OrganizationPositionItem extends Component {
     var is_oppose = supportProps && supportProps.is_oppose ? supportProps.is_oppose : position.is_oppose;
     let signed_in_with_this_twitter_account = true;
     // TwitterHandle-based link
-    let candidateLink = position.ballot_item_twitter_handle ? "/" + position.ballot_item_twitter_handle : "/candidate/" + position.ballot_item_we_vote_id;
-
+    let ballot_item_url = position.kind_of_ballot_item === "MEASURE" ? "/measure/" : "/candidate/";
+    let ballotItemLink = position.ballot_item_twitter_handle ? "/" + position.ballot_item_twitter_handle : ballot_item_url + position.ballot_item_we_vote_id;
     let position_description = "";
-    const is_on_candidate_page = false;
+    const is_on_ballot_item_page = false;
     if (position.vote_smart_rating) {
-      position_description = <PositionRatingSnippet {...position} />;
+      position_description = <PositionRatingSnippet {...position}
+                                                     popover_off={popover_off}
+                                                     placement={placement} />;
     } else if (is_support || is_oppose) {
       // We overwrite the "statement_text" passed in with position
       position_description = <PositionSupportOpposeSnippet {...position}
                                                            statement_text={statement_text}
                                                            is_support={is_support}
                                                            is_oppose={is_oppose}
-                                                           is_on_candidate_page={is_on_candidate_page}
+                                                           is_on_ballot_item_page={is_on_ballot_item_page}
                                                            stance_display_off={stance_display_off}
                                                            comment_text_off={comment_text_off} />;
     } else {
       position_description = <PositionInformationOnlySnippet {...position}
-                                                             is_on_candidate_page={is_on_candidate_page}
+                                                             is_on_ballot_item_page={is_on_ballot_item_page}
                                                              stance_display_off={stance_display_off}
                                                              comment_text_off={comment_text_off} />;
     }
@@ -86,7 +90,7 @@ export default class OrganizationPositionItem extends Component {
 
     return <li className="position-item">
       <StarAction we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
-        <Link to={ candidateLink }
+        <Link to={ ballotItemLink }
               onlyActiveOnIndex={false}>
           {/*<i className="icon-icon-add-friends-2-1 icon-light icon-medium" />*/}
           { position.ballot_item_image_url_https ?
@@ -98,7 +102,7 @@ export default class OrganizationPositionItem extends Component {
           }
         </Link>
         <div className="position-item__content">
-          <Link to={ candidateLink }
+          <Link to={ ballotItemLink }
                 onlyActiveOnIndex={false}>
             <span className="position-rating__candidate-name">{position.ballot_item_display_name}</span>
           </Link>

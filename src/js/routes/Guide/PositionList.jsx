@@ -81,7 +81,8 @@ export default class GuidePositionList extends Component {
               position_list_for_one_election.map( item => {
                 return <OrganizationPositionItem key={item.position_we_vote_id}
                                                  position={item}
-                                                 organization={this.state.organization} />;
+                                                 organization={this.state.organization}
+                                                 popover_off />;
               }) :
               <div>{LoadingWheel}</div>
             }
@@ -97,7 +98,8 @@ export default class GuidePositionList extends Component {
                 { position_list_for_all_except_one_election.map( item => {
                   return <OrganizationPositionItem key={item.position_we_vote_id}
                                                    position={item}
-                                                   organization={this.state.organization} />;
+                                                   organization={this.state.organization}
+                                                   popover_off />;
                 }) }
               </span> :
               <div>{LoadingWheel}</div>

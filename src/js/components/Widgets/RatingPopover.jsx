@@ -5,7 +5,8 @@ export default class RatingPopover extends Component {
   static propTypes = {
     params: PropTypes.object,
     id: PropTypes.string,
-    placement: PropTypes.string
+    placement: PropTypes.string,
+    popover_off: PropTypes.bool
   };
 
   constructor (props, context) {
@@ -23,15 +24,38 @@ export default class RatingPopover extends Component {
 
 
   render () {
-    const popoverClickRootClose =
-      <Popover id="popover-trigger-click-root-close" title="Popover top">
-        Ratings are given by the organization, and collected by the nonprofit Vote Smart.
-        (down arrow icon) 0% is a low score, and (up arrow icon) 100% is a high score.
-        Ratings can be invaluable in showing where an incumbent has stood on a series of votes in the past one or two years, especially when ratings by groups on all sides of an issue are compared. Some groups select votes that tend to favor members of one political party over another, rather than choosing votes based solely on issues concerns. Please visit the group's website or call 1-888-VOTESMART for more specific information.
-      </Popover>
-    ;
+    const voteSmartPopover = <Popover id="popover-trigger-click-root-close"
+      title="Ratings from Vote Smart">
+      Ratings are given by the organization, and collected by the
+      nonprofit Vote Smart. <span style={{whiteSpace: "nowrap"}}><img
+      src="/img/global/icons/down-arrow-color-icon.svg"
+      width="20" height="20" /> 0%</span> is a low score, and
+      <span style={{whiteSpace: "nowrap"}}><img
+        src="/img/global/icons/up-arrow-color-icon.svg"
+        width="20" height="20" /> 100%</span> is a high score.
+        Ratings can be invaluable in showing where an incumbent has stood
+        on a series of votes. Some groups select votes that tend to favor
+        members of one political party over another, rather than choosing
+        votes based solely on issues. Please call 1-888-VOTESMART for
+        more specific information.
+      </Popover>;
+      let popover_off = false;
+      if (this.props.popover_off !== undefined) {
+        popover_off = this.props.popover_off ? true : false;
+      }
+      let placement = "top";
+      if (this.props.placement !== undefined) {
+        placement = this.props.placement;
+      }
 
-    return <OverlayTrigger trigger="click" rootClose placement="top" overlay={popoverClickRootClose} />
+
+    return <span> { popover_off ? <span className="position-rating__source">&nbsp;(source: VoteSmart.org)</span> :
+        <OverlayTrigger trigger="click" rootClose
+                      placement={placement}
+                      overlay={voteSmartPopover}>
+          <span className="position-rating__source with-popover">&nbsp;(source: VoteSmart.org)</span>
+        </OverlayTrigger> }
+      </span>
       ;
     }
   }
