@@ -2,8 +2,9 @@ import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import EditPositionAboutCandidateModal from "../../components/VoterGuide/EditPositionAboutCandidateModal";
 import FriendsOnlyIndicator from "../../components/Widgets/FriendsOnlyIndicator";
-import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
 import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
+import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
+import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
 import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
 import StarAction from "../../components/Widgets/StarAction";
 import SupportStore from "../../stores/SupportStore";
@@ -57,13 +58,12 @@ export default class OrganizationPositionItem extends Component {
     var is_public_position = supportProps && supportProps.is_public_position ? supportProps.is_public_position : position.is_public_position;
     var is_support = supportProps && supportProps.is_support ? supportProps.is_support : position.is_support;
     var is_oppose = supportProps && supportProps.is_oppose ? supportProps.is_oppose : position.is_oppose;
-
+    let signed_in_with_this_twitter_account = true;
     // TwitterHandle-based link
-    let ballot_item_url = position.kind_of_ballot_item === "MEASURE" ? "/measure/" : "/candidate/";
-    let ballotItemLink = position.ballot_item_twitter_handle ? "/" + position.ballot_item_twitter_handle : ballot_item_url + position.ballot_item_we_vote_id;
+    let candidateLink = position.ballot_item_twitter_handle ? "/" + position.ballot_item_twitter_handle : "/candidate/" + position.ballot_item_we_vote_id;
 
     let position_description = "";
-    const is_on_ballot_item_page = false;
+    const is_on_candidate_page = false;
     if (position.vote_smart_rating) {
       position_description = <PositionRatingSnippet {...position} />;
     } else if (is_support || is_oppose) {
@@ -72,12 +72,12 @@ export default class OrganizationPositionItem extends Component {
                                                            statement_text={statement_text}
                                                            is_support={is_support}
                                                            is_oppose={is_oppose}
-                                                           is_on_ballot_item_page={is_on_ballot_item_page}
+                                                           is_on_candidate_page={is_on_candidate_page}
                                                            stance_display_off={stance_display_off}
                                                            comment_text_off={comment_text_off} />;
     } else {
       position_description = <PositionInformationOnlySnippet {...position}
-                                                             is_on_ballot_item_page={is_on_ballot_item_page}
+                                                             is_on_candidate_page={is_on_candidate_page}
                                                              stance_display_off={stance_display_off}
                                                              comment_text_off={comment_text_off} />;
     }
@@ -86,7 +86,7 @@ export default class OrganizationPositionItem extends Component {
 
     return <li className="position-item">
       <StarAction we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
-        <Link to={ ballotItemLink }
+        <Link to={ candidateLink }
               onlyActiveOnIndex={false}>
           {/*<i className="icon-icon-add-friends-2-1 icon-light icon-medium" />*/}
           { position.ballot_item_image_url_https ?
@@ -98,7 +98,7 @@ export default class OrganizationPositionItem extends Component {
           }
         </Link>
         <div className="position-item__content">
-          <Link to={ ballotItemLink }
+          <Link to={ candidateLink }
                 onlyActiveOnIndex={false}>
             <span className="position-rating__candidate-name">{position.ballot_item_display_name}</span>
           </Link>
@@ -116,10 +116,16 @@ export default class OrganizationPositionItem extends Component {
                                                position={position}
                                                organization={organization}/>
             </span> }
+            { signed_in_with_this_twitter_account ?
+              <PositionPublicToggle ballot_item_we_vote_id={position.ballot_item_we_vote_id}
+                type={position.kind_of_ballot_item}
+                supportProps={supportProps}
+                className="organization-position-item-toggle"/> :
+                null
+              }
           { is_public_position ?
             null :
             <FriendsOnlyIndicator /> }
-
         </div>
         {/*Running for {office_display_name}
         <br />
