@@ -9,12 +9,24 @@ export default class PositionList extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      position_list: this.props.position_list,
+    };
+  }
+
+  componentWillReceiveProps (nextProps){
+    //if (nextProps.instantRefreshOn ) {
+    // NOTE: We might want to turn this off because we don't want the organization to disappear from the 
+    // "More opinions" list when clicked
+    this.setState({
+      position_list: nextProps.position_list,
+    });
+    //}
   }
 
   render () {
     return <div><ul className="list-group">
-      { this.props.position_list.map( item =>
+      { this.state.position_list.map( item =>
           <PositionItem key={item.position_we_vote_id}
                         ballot_item_display_name={this.props.ballot_item_display_name}
                         position={item}

@@ -18,11 +18,11 @@ export default class SignIn extends Component {
   componentDidMount () {
     this._onVoterStoreChange();
     this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
-    this.listener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
-    this.listener.remove();
+    this.voterStoreListener.remove();
     this.facebookListener.remove();
   }
 

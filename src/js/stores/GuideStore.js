@@ -12,7 +12,7 @@ class GuideStore extends FluxMapStore {
         following: [],
         ignoring: [],
         to_follow: [],
-        to_follow_for_cand: [],
+        to_follow_list_for_ballot_item: [],
         data: {}
       };
     }
@@ -37,8 +37,8 @@ class GuideStore extends FluxMapStore {
       return this.getOrgsFromArr(this.getState().to_follow);
     }
 
-    toFollowListForCand (){
-      return this.getOrgsFromArr(this.getState().to_follow_for_cand);
+    toFollowListForBallotItem (){
+      return this.getOrgsFromArr(this.getState().to_follow_list_for_ballot_item) || {};
     }
 
     followedList (){
@@ -87,7 +87,7 @@ class GuideStore extends FluxMapStore {
           ...state,
           ballot_has_guides: is_search || is_this_ballot,
           to_follow: is_candidate_opinions ? state.to_follow : orgs,
-          to_follow_for_cand: is_candidate_opinions ? orgs : state.to_follow_for_cand,
+          to_follow_list_for_ballot_item: is_candidate_opinions ? orgs : state.to_follow_list_for_ballot_item,
           data: data
         };
 
@@ -112,7 +112,7 @@ class GuideStore extends FluxMapStore {
           ...state,
           following: state.following.concat(id),
           to_follow: state.to_follow.filter( el => { return el !== id; }),
-          to_follow_for_cand: state.to_follow_for_cand.filter(el => {return el !== id; }),
+          to_follow_list_for_ballot_item: state.to_follow_list_for_ballot_item.filter(el => {return el !== id; }),
           ignoring: state.ignoring.filter( el => { return el !== id; })
         };
 
@@ -131,7 +131,7 @@ class GuideStore extends FluxMapStore {
           ...state,
           ignoring: state.ignoring.concat(id),
           to_follow: state.to_follow.filter( el => { return el !== id; }),
-          to_follow_for_cand: state.to_follow_for_cand.filter( el => { return el !== id; }),
+          to_follow_list_for_ballot_item: state.to_follow_list_for_ballot_item.filter( el => { return el !== id; }),
           following: state.following.filter( el => { return el !== id; })
         };
 

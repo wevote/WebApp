@@ -20,17 +20,23 @@ export default class Candidate extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {candidate: {}, office: {}, candidate_we_vote_id: this.props.params.candidate_we_vote_id };
+    this.state = {
+      candidate: {},
+      office: {},
+      candidate_we_vote_id: this.props.params.candidate_we_vote_id,
+      guideToFollowList: GuideStore.toFollowListForBallotItem()
+
+    };
   }
 
   componentDidMount (){
-    this.candidateStoreListener = CandidateStore.addListener(this._onChange.bind(this));
-    this.officeStoreListener = OfficeStore.addListener(this._onChange.bind(this));
+    this.candidateStoreListener = CandidateStore.addListener(this._onCandidateChange.bind(this));
+    this.officeStoreListener = OfficeStore.addListener(this._onCandidateChange.bind(this));
     var { candidate_we_vote_id } = this.state;
-
     CandidateActions.retrieve(candidate_we_vote_id);
 
-    this.listener = GuideStore.addListener(this._onChange.bind(this));
+    // Get the latest guides to follow for this candidate
+    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
     GuideActions.retrieveGuidesToFollowByBallotItem(candidate_we_vote_id, "CANDIDATE");
 
     // Make sure supportProps exist for this Candidate when browser comes straight to candidate page
@@ -59,18 +65,23 @@ export default class Candidate extends Component {
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.officeStoreListener.remove();
-    this.listener.remove();
+    this.guideStoreListener.remove();
   }
 
-  _onChange (){
+  _onCandidateChange (){
     var { candidate_we_vote_id } = this.state;
     var candidate = CandidateStore.get(candidate_we_vote_id) || {};
-    this.setState({ candidate: candidate, guideToFollowList: GuideStore.toFollowListForCand() });
+    this.setState({ candidate: candidate });
 
     if (candidate.contest_office_we_vote_id){
       this.setState({ office: OfficeStore.get(candidate.contest_office_we_vote_id) || {} });
     }
+  }
 
+  _onGuideStoreChange (){
+    this.setState({ guideToFollowList: GuideStore.toFollowListForBallotItem() });
+    // When the guideToFollowList changes, trigger an update of the candidate so we can get an updated position_list
+    CandidateActions.retrieve(this.state.candidate_we_vote_id);
   }
 
   render () {

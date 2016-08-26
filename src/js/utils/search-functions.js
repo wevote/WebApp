@@ -44,7 +44,6 @@ export function makeSearchLink (twitter_handle, we_vote_id, kind_of_owner) {
   var search_link = "";
   switch (kind_of_owner) {
     case "CANDIDATE":
-      console.log(twitter_handle);
       search_link = twitter_handle ? "/" + twitter_handle : "/candidate/" + we_vote_id;
       break;
     case "OFFICE":

@@ -25,15 +25,14 @@ export default class MeasureItem extends Component {
   }
 
   componentDidMount () {
-    this.listener = SupportStore.addListener(this._onChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this._onChange.bind(this));
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
   }
 
   componentWillUnmount () {
-    this.listener.remove();
+    this.supportStoreListener.remove();
   }
-
-
+  
   _onChange () {
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id), transitioning: false });
   }
