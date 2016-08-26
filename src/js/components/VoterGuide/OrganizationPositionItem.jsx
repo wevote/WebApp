@@ -2,8 +2,9 @@ import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import EditPositionAboutCandidateModal from "../../components/VoterGuide/EditPositionAboutCandidateModal";
 import FriendsOnlyIndicator from "../../components/Widgets/FriendsOnlyIndicator";
-import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
 import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
+import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
+import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
 import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
 import StarAction from "../../components/Widgets/StarAction";
 import SupportStore from "../../stores/SupportStore";
@@ -14,7 +15,9 @@ export default class OrganizationPositionItem extends Component {
     position: PropTypes.object.isRequired,
     link_to_edit_modal_off: PropTypes.bool,
     stance_display_off: PropTypes.bool,
-    comment_text_off: PropTypes.bool
+    comment_text_off: PropTypes.bool,
+    popover_off: PropTypes.bool,
+    placement: PropTypes.string
   };
 
   constructor (props) {
@@ -49,7 +52,7 @@ export default class OrganizationPositionItem extends Component {
   render (){
     let position = this.props.position;
     let organization = this.props.organization;
-    let { stance_display_off, comment_text_off } = this.props;
+    let { stance_display_off, comment_text_off, popover_off, placement } = this.props;
     const { supportProps } = this.state;
 
     // When component first loads, use the value in the incoming position. If there are any updates, use those.
@@ -57,15 +60,16 @@ export default class OrganizationPositionItem extends Component {
     var is_public_position = supportProps && supportProps.is_public_position ? supportProps.is_public_position : position.is_public_position;
     var is_support = supportProps && supportProps.is_support ? supportProps.is_support : position.is_support;
     var is_oppose = supportProps && supportProps.is_oppose ? supportProps.is_oppose : position.is_oppose;
-
+    let signed_in_with_this_twitter_account = true;
     // TwitterHandle-based link
     let ballot_item_url = position.kind_of_ballot_item === "MEASURE" ? "/measure/" : "/candidate/";
     let ballotItemLink = position.ballot_item_twitter_handle ? "/" + position.ballot_item_twitter_handle : ballot_item_url + position.ballot_item_we_vote_id;
-
     let position_description = "";
     const is_on_ballot_item_page = false;
     if (position.vote_smart_rating) {
-      position_description = <PositionRatingSnippet {...position} />;
+      position_description = <PositionRatingSnippet {...position}
+                                                     popover_off={popover_off}
+                                                     placement={placement} />;
     } else if (is_support || is_oppose) {
       // We overwrite the "statement_text" passed in with position
       position_description = <PositionSupportOpposeSnippet {...position}
@@ -116,10 +120,16 @@ export default class OrganizationPositionItem extends Component {
                                                position={position}
                                                organization={organization}/>
             </span> }
+            { signed_in_with_this_twitter_account ?
+              <PositionPublicToggle ballot_item_we_vote_id={position.ballot_item_we_vote_id}
+                type={position.kind_of_ballot_item}
+                supportProps={supportProps}
+                className="organization-position-item-toggle"/> :
+                null
+              }
           { is_public_position ?
             null :
             <FriendsOnlyIndicator /> }
-
         </div>
         {/*Running for {office_display_name}
         <br />

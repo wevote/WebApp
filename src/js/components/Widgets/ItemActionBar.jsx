@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import SupportActions from "../../actions/SupportActions";
 import PositionDropdown from "./PositionDropdown";
-import ReactBootstrapToggle from "react-bootstrap-toggle";
+import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
 
 var Icon = require("react-svg-icons");
 
@@ -59,24 +59,12 @@ export default class ItemActionBar extends Component {
     this.setState({transitioning: true});
   }
 
-  showItemToFriendsOnly () {
-    if (this.state.transitioning){ return; }
-    SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, "FRIENDS_ONLY");
-    this.setState({transitioning: true});
-  }
-
-  showItemToPublic () {
-    if (this.state.transitioning){ return; }
-    SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, "SHOW_PUBLIC");
-    this.setState({transitioning: true});
-  }
-
   render () {
     if (this.props.supportProps === undefined){
       return <div></div>;
     }
 
-    var {support_count, oppose_count, is_support, is_oppose, is_public_position } = this.props.supportProps;
+    var {support_count, oppose_count, is_support, is_oppose } = this.props.supportProps;
     if (support_count === undefined || oppose_count === undefined || is_support === undefined || is_oppose === undefined){
       return null;
     }
@@ -84,14 +72,7 @@ export default class ItemActionBar extends Component {
     const iconSize = 18;
     var iconColor = "#999";
     var selectedColor = "#0D546F";
-    let on = "Public";
-    let off = "Friends";
-    var onChange;
-    if (is_public_position) {
-      onChange = this.showItemToFriendsOnly.bind(this);
-    } else {
-      onChange = this.showItemToPublic.bind(this);
-    }
+
     const removePosition = is_support ? this.stopSupportingItem.bind(this) : this.stopOpposingItem.bind(this);
     const positionText = is_support ? "I Support" : "I Oppose";
     const positionIcon = is_support ?
@@ -127,12 +108,10 @@ export default class ItemActionBar extends Component {
           </span>
           Share
         </button>
-        <div className="rightToggle">
-          <ReactBootstrapToggle on={on} off={off} active={is_public_position}
-                                onstyle="success" size="mini"
-                                width="55px" height="20px"
-                                onChange={onChange} />
-        </div>
+        <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
+                              type={this.props.type}
+                              supportProps={this.props.supportProps}
+                              className="candidate-card-position-public-toggle"/>
       </div>;
     return itemActionBar;
   }

@@ -137,7 +137,8 @@ export default class EditPositionAboutCandidateModal extends Component {
                                         organization={this.props.organization}
                                         link_to_edit_modal_off
                                         stance_display_off
-                                        comment_text_off />
+                                        comment_text_off
+                                        placement="bottom"/>
             </ul>
           </div>
           <div className="candidate-card__media-object-content">
