@@ -29,7 +29,7 @@ export default class Office extends Component {
 
     CandidateActions.retrieve(this.we_vote_id);
 
-    this.listener = GuideStore.addListener(this._onChange.bind(this));
+    this.guideStoreListener = GuideStore.addListener(this._onChange.bind(this));
     GuideActions.retrieveGuidesToFollowByBallotItem(this.we_vote_id, "CANDIDATE");
 
     exitSearch("");
@@ -38,12 +38,12 @@ export default class Office extends Component {
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.officeStoreListener.remove();
-    this.listener.remove();
+    this.guideStoreListener.remove();
   }
 
   _onChange (){
     var candidate = CandidateStore.get(this.we_vote_id) || {};
-    this.setState({ candidate: candidate, guideToFollowList: GuideStore.toFollowListForCand() });
+    this.setState({ candidate: candidate, guideToFollowList: GuideStore.toFollowListForBallotItem() });
 
     if (candidate.contest_office_we_vote_id){
       this.setState({ office: OfficeStore.get(candidate.contest_office_we_vote_id) || {} });

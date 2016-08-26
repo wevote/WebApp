@@ -14,12 +14,12 @@ export default class Bookmarks extends Component {
   }
 
   componentDidMount () {
-    this.listener = BallotStore.addListener(this._onChange.bind(this));
+    this.ballotStoreListener = BallotStore.addListener(this._onChange.bind(this));
     this._onChange();
   }
 
   componentWillUnmount (){
-    this.listener.remove();
+    this.ballotStoreListener.remove();
   }
 
   _onChange (){

@@ -31,7 +31,7 @@ export default class TwitterSignInProcess extends Component {
   }
 
   componentDidMount () {
-    this.listener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
 
     var {voter} = this.state;
     var return_url;
@@ -75,7 +75,7 @@ export default class TwitterSignInProcess extends Component {
   }
 
   componentWillUnmount () {
-    this.listener.remove();
+    this.voterStoreListener.remove();
   }
 
   _onVoterStoreChange () {

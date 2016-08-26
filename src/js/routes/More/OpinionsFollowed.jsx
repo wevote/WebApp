@@ -21,12 +21,12 @@ export default class OpinionsFollowed extends Component {
   }
 
   componentDidMount () {
-    this.listener = GuideStore.addListener(this._onChange.bind(this));
+    this.guideStoreListener = GuideStore.addListener(this._onChange.bind(this));
     GuideActions.retrieveGuidesFollowed();
   }
 
   componentWillUnmount (){
-    this.listener.remove();
+    this.guideStoreListener.remove();
   }
 
   _onChange (){

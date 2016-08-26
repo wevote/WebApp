@@ -21,12 +21,12 @@ class Main extends React.Component {
     }
 
     componentDidMount () {
-        this.listener = FacebookStore.addListener(this._onChange.bind(this));
+        this.facebookStoreListener = FacebookStore.addListener(this._onChange.bind(this));
         this.voterListener = VoterStore.addListener(this._onChange.bind(this));
     }
 
     componentWillUnmount () {
-      this.listener.remove();
+      this.facebookStoreListener.remove();
       this.voterListener.remove();
     }
 

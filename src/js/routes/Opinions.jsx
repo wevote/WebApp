@@ -22,7 +22,7 @@ export default class Opinions extends Component {
 
   componentDidMount () {
     this._onChange();
-    this.listener = GuideStore.addListener(this._onChange.bind(this));
+    this.guideStoreListener = GuideStore.addListener(this._onChange.bind(this));
   }
 
   _onChange () {
@@ -33,7 +33,7 @@ export default class Opinions extends Component {
   }
 
   componentWillUnmount (){
-    this.listener.remove();
+    this.guideStoreListener.remove();
   }
 
   getCurrentRoute (){

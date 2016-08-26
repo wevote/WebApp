@@ -86,7 +86,7 @@ const routes = () =>
       <IndexRoute component={Ballot}/>
       <Route path="/office/:we_vote_id" component={Office} />
       <Route path="/candidate/:candidate_we_vote_id" component={Candidate} />
-      <Route path="/measure/:we_vote_id" component={Measure} />
+      <Route path="/measure/:measure_we_vote_id" component={Measure} />
     </Route>
 
     <Route path="bookmarks" component={Bookmarks} />

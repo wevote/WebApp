@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react";
-
 import GuideList from "../../components/VoterGuide/GuideList";
 import GuideStore from "../../stores/GuideStore";
 import GuideActions from "../../actions/GuideActions";
+import LoadingWheel from "../../components/LoadingWheel";
 import MeasureItem from "../../components/Ballot/MeasureItem";
 import MeasureActions from "../../actions/MeasureActions";
 import MeasureStore from "../../stores/MeasureStore";
@@ -19,34 +19,55 @@ export default class Measure extends Component {
 
   constructor (props) {
     super(props);
-    this.we_vote_id = this.props.params.we_vote_id;
-    this.state = {measure: {} };
+    this.state = {
+      measure: {},
+      measure_we_vote_id: this.props.params.measure_we_vote_id,
+      guideToFollowList: GuideStore.toFollowListForBallotItem()
+    };
   }
 
   componentDidMount (){
-    this.measureStoreListener = MeasureStore.addListener(this._onChange.bind(this));
-    var { we_vote_id } = this.props.params;
+    this.measureStoreListener = MeasureStore.addListener(this._onMeasureStoreChange.bind(this));
+    var { measure_we_vote_id } = this.props.params;
 
-    MeasureActions.retrieve(we_vote_id);
+    MeasureActions.retrieve(measure_we_vote_id);
 
-    this.listener = GuideStore.addListener(this._onChange.bind(this));
-    GuideActions.retrieveGuidesToFollowByBallotItem(we_vote_id, "MEASURE");
+    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+    GuideActions.retrieveGuidesToFollowByBallotItem(measure_we_vote_id, "MEASURE");
 
     // Make sure supportProps exist for this Measure when browser comes straight to measure page
-    SupportActions.retrievePositionsCountsForOneBallotItem(we_vote_id);
+    SupportActions.retrievePositionsCountsForOneBallotItem(measure_we_vote_id);
 
+    exitSearch("");
+  }
+
+  componentWillReceiveProps (nextProps) {
+    // When a new candidate is passed in, update this component to show the new data
+    this.setState({measure_we_vote_id: nextProps.params.measure_we_vote_id});
+
+    MeasureActions.retrieve(nextProps.params.measure_we_vote_id);
+
+    GuideActions.retrieveGuidesToFollowByBallotItem(nextProps.params.measure_we_vote_id, "MEASURE");
+
+    // Display the measure's name in the search box
+    // var { measure } = this.state;
+    // var searchBoxText = measure.ballot_item_display_name || "";  // TODO DALE Not working right now
     exitSearch("");
   }
 
   componentWillUnmount () {
     this.measureStoreListener.remove();
-    this.listener.remove();
+    this.guideStoreListener.remove();
   }
 
-  _onChange (){
-    var measure = MeasureStore.get(this.we_vote_id) || {};
-    this.setState({ measure: measure, guideToFollowList: GuideStore.toFollowListForCand() });
+  _onGuideStoreChange (){
+    this.setState({ guideToFollowList: GuideStore.toFollowListForBallotItem() });
+    MeasureActions.retrieve(this.state.measure_we_vote_id);
+  }
 
+  _onMeasureStoreChange (){
+    var measure = MeasureStore.get(this.state.measure_we_vote_id) || {};
+    this.setState({ measure: measure });
   }
 
   render () {
@@ -55,10 +76,9 @@ export default class Measure extends Component {
     var { measure, guideToFollowList } = this.state;
 
     if (!measure.ballot_item_display_name){
+      // TODO DALE If the candidate measure_we_vote_id is not valid, we need to update this with a notice
       return <div className="container-fluid well u-gutter-top--small fluff-full1">
-              <h3>No Measure Found</h3>
-                <div className="small">We were not able to find that measure.
-                  Please search again.</div>
+                <div>{LoadingWheel}</div>
                 <br />
             </div>;
     }
@@ -77,7 +97,7 @@ export default class Measure extends Component {
             {guideToFollowList.length === 0 ?
               <p className="measure-card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
               <div><h3 className="measure-card__additional-heading">{"More opinions about " + measure.ballot_item_display_name}</h3>
-              <GuideList id={electionId} ballotItemWeVoteId={this.we_vote_id} organizationsToFollow={guideToFollowList}/></div>
+              <GuideList id={electionId} ballotItemWeVoteId={this.state.measure_we_vote_id} organizationsToFollow={guideToFollowList}/></div>
             }
           </div>
         </section>
