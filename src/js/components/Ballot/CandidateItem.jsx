@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
-
+import ImageHandler from "../../components/ImageHandler";
 import StarAction from "../../components/Widgets/StarAction";
 import ItemActionBar from "../../components/Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../../components/Widgets/ItemPositionStatementActionBar";
@@ -65,9 +65,10 @@ export default class CandidateItem extends Component {
     let goToCandidateLink = function () { browserHistory.push(candidateLink); };
     let candidate_photo_url_html;
     if (candidate_photo_url) {
-      candidate_photo_url_html = <img className="candidate-card__photo"
-                                          src={candidate_photo_url}
-                                          alt="candidate-photo" />;
+      candidate_photo_url_html = <ImageHandler className="candidate-card__photo"
+                                          imageUrl={candidate_photo_url}
+                                          alt="candidate-photo"
+                                          placeholderForCandidate />;
     } else {
       candidate_photo_url_html = <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light utils-img-contain-glyph" />;
     }

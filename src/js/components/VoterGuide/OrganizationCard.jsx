@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import Image from "../../components/Image";
+import ImageHandler from "../../components/ImageHandler";
 import LoadingWheel from "../../components/LoadingWheel";
 import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
 
@@ -34,7 +34,7 @@ export default class OrganizationCard extends Component {
 
     return <div className="card__media-object">
           { organization_photo_url ?
-            <Image imageUrl={organization_photo_url} class="card__media-object-anchor" /> :
+            <ImageHandler imageUrl={organization_photo_url} className="card__media-object-anchor" /> :
             <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color card__media-object-anchor" />
           }
           <div className="card__media-object-content">

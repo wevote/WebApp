@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
-import Image from "../../components/Image";
+import ImageHandler from "../../components/ImageHandler";
 import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
 import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
@@ -63,7 +63,7 @@ export default class Organization extends Component {
     return <div className="organization-item">
         <div className="organization-item__avatar">
           <Link to={voterGuideLink}>
-            <Image imageUrl={voter_guide_image_url} />
+            <ImageHandler imageUrl={voter_guide_image_url} />
           </Link>
         </div>
         <div className="organization-item__content">

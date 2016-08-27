@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
+import ImageHandler from "../../components/ImageHandler";
 import EditPositionAboutCandidateModal from "../../components/VoterGuide/EditPositionAboutCandidateModal";
 import FriendsOnlyIndicator from "../../components/Widgets/FriendsOnlyIndicator";
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
@@ -86,9 +87,8 @@ export default class PositionItem extends Component {
       {/* One Position on this Candidate */}
         <Link to={speakerLink}>
           { position.speaker_image_url_https ?
-            <img className="img-square position-item__avatar"
-                  src={position.speaker_image_url_https}
-                  width="50px"
+            <ImageHandler className="img-square position-item__avatar"
+                  imageUrl={position.speaker_image_url_https}
             /> :
           image_placeholder }
         </Link>

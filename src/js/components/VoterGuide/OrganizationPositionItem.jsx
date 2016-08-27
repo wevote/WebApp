@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
+import ImageHandler from "../../components/ImageHandler";
 import EditPositionAboutCandidateModal from "../../components/VoterGuide/EditPositionAboutCandidateModal";
 import FriendsOnlyIndicator from "../../components/Widgets/FriendsOnlyIndicator";
 import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
@@ -94,10 +95,10 @@ export default class OrganizationPositionItem extends Component {
               onlyActiveOnIndex={false}>
           {/*<i className="icon-icon-add-friends-2-1 icon-light icon-medium" />*/}
           { position.ballot_item_image_url_https ?
-            <img
+            <ImageHandler
               className="position-item__avatar"
-              src={position.ballot_item_image_url_https}
-              alt="candidate-photo"/> :
+              imageUrl={position.ballot_item_image_url_https}
+              alt="candidate-photo" placeholderForCandidate/> :
             <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light position-item__avatar"/>
           }
         </Link>
