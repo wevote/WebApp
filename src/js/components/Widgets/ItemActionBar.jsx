@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import SupportActions from "../../actions/SupportActions";
 import PositionDropdown from "./PositionDropdown";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
+import ShareButtonDropdown from "./ShareButtonDropdown";
 
 var Icon = require("react-svg-icons");
 
@@ -78,6 +79,7 @@ export default class ItemActionBar extends Component {
     const positionIcon = is_support ?
       <span className="btn__icon"><Icon name="thumbs-up-icon" width={iconSize} height={iconSize} color={selectedColor} /></span> :
       <span className="btn__icon"><Icon name="thumbs-down-icon" width={iconSize} height={iconSize} color={selectedColor} /></span>;
+    const shareIcon = <span className="btn__icon"><Icon name="share-icon" width={iconSize} height={iconSize} color={iconColor} /></span>
     const itemActionBar =
       <div className="item-actionbar">
         { //Show the position voter has taken
@@ -108,6 +110,7 @@ export default class ItemActionBar extends Component {
           </span>
           Share
         </button>
+        <ShareButtonDropdown removePosition={removePosition} positionIcon={shareIcon} positionText={"Share"} />
         <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
                               type={this.props.type}
                               supportProps={this.props.supportProps}
