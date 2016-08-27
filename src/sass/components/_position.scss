@@ -18,6 +18,13 @@
 
 .position-item__avatar {
   @include list-item-avatar;
+  &.img-square {
+    width: 50px;
+  }
+  &.replacement-icon {
+    margin-right: 23px;
+    color: $mid-gray;
+  }
 }
 
 .position-item__display-name {

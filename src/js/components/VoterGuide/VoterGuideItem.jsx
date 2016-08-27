@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
-import Image from "../../components/Image";
+import ImageHandler from "../../components/ImageHandler";
 import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
 
 /* This was refactored into /src/js/components/VoterGuide/GuideList.jsx and
@@ -42,7 +42,7 @@ export default class VoterGuideItem extends Component {
     return <div className="ballot-item">
       <div className="ballot-item__avatar">
         <Link to={voterGuideLink}>
-          <Image imageUrl={this.props.voter_guide_image_url} />
+          <ImageHandler imageUrl={this.props.voter_guide_image_url} />
         </Link>
       </div>
       <div className="ballot-item__content">
