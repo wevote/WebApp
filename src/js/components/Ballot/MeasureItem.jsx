@@ -32,7 +32,7 @@ export default class MeasureItem extends Component {
   componentWillUnmount () {
     this.supportStoreListener.remove();
   }
-  
+
   _onChange () {
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id), transitioning: false });
   }

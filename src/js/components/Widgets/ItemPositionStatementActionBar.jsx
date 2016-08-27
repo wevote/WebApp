@@ -119,7 +119,7 @@ export default class ItemPositionStatementActionBar extends Component {
 
     // Currently this "Post" text is the same given we display the visibility setting, but we may want to change this
     //  here if the near by visibility setting text changes
-    var post_button_text = <span>Post</span>;
+    var post_button_text = <span>Post for<br/>Friends</span>;
     if (is_public_position) {
       post_button_text = <span>Post</span>;
     }
@@ -160,7 +160,7 @@ export default class ItemPositionStatementActionBar extends Component {
                 placeholder={statement_placeholder_text}
                 value={statement_text_to_be_saved}
                 />
-              <button className="btn btn-default" type="submit">{post_button_text}</button>
+              <button className="btn btn-default btn-sm" type="submit">{post_button_text}</button>
             </span>
           </div>
         </form> :

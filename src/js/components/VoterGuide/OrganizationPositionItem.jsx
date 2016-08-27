@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import ImageHandler from "../../components/ImageHandler";
 import EditPositionAboutCandidateModal from "../../components/VoterGuide/EditPositionAboutCandidateModal";
 import FriendsOnlyIndicator from "../../components/Widgets/FriendsOnlyIndicator";
+import VoterStore from "../../stores/VoterStore";
 import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
@@ -28,10 +29,13 @@ export default class OrganizationPositionItem extends Component {
 
   componentDidMount () {
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
+    this._onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     this.supportStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   _onSupportStoreChange () {
@@ -40,6 +44,10 @@ export default class OrganizationPositionItem extends Component {
       supportProps: SupportStore.get(position.ballot_item_we_vote_id),
       transitioning: false
     });
+  }
+
+  _onVoterStoreChange () {
+    this.setState({ voter: VoterStore.voter() });
   }
 
   closeEditPositionModal () {
@@ -61,7 +69,19 @@ export default class OrganizationPositionItem extends Component {
     var is_public_position = supportProps && supportProps.is_public_position ? supportProps.is_public_position : position.is_public_position;
     var is_support = supportProps && supportProps.is_support ? supportProps.is_support : position.is_support;
     var is_oppose = supportProps && supportProps.is_oppose ? supportProps.is_oppose : position.is_oppose;
-    let signed_in_with_this_twitter_account = true;
+
+    // Manage the control over this organization voter guide
+    let organization_twitter_handle_being_viewed = "";
+    if (organization !== undefined) {
+      organization_twitter_handle_being_viewed = organization.organization_twitter_handle !== undefined ? organization.organization_twitter_handle : "";
+    }
+    var {voter} = this.state;
+    var signed_in_twitter = voter === undefined ? false : voter.signed_in_twitter;
+    var signed_in_with_this_twitter_account = false;
+    if (signed_in_twitter) {
+      signed_in_with_this_twitter_account = voter.twitter_screen_name.toLowerCase() === organization_twitter_handle_being_viewed.toLowerCase();
+    }
+
     // TwitterHandle-based link
     let ballot_item_url = position.kind_of_ballot_item === "MEASURE" ? "/measure/" : "/candidate/";
     let ballotItemLink = position.ballot_item_twitter_handle ? "/" + position.ballot_item_twitter_handle : ballot_item_url + position.ballot_item_we_vote_id;
