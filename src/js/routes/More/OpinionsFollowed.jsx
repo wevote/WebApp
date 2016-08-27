@@ -1,6 +1,5 @@
 import React, {Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
-import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import FollowingDropdown from "../../components/Navigation/followingDropdown";
 import GuideStore from "../../stores/GuideStore";
 import GuideActions from "../../actions/GuideActions";

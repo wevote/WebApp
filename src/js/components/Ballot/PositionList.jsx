@@ -16,7 +16,7 @@ export default class PositionList extends Component {
 
   componentWillReceiveProps (nextProps){
     //if (nextProps.instantRefreshOn ) {
-    // NOTE: We might want to turn this off because we don't want the organization to disappear from the 
+    // NOTE: We might want to turn this off because we don't want the organization to disappear from the
     // "More opinions" list when clicked
     this.setState({
       position_list: nextProps.position_list,

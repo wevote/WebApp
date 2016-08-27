@@ -7,6 +7,7 @@ import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 export default class GuideList extends Component {
 
   static propTypes = {
+    ballotItemWeVoteId: PropTypes.string,
     organizationsToFollow: PropTypes.array,
     instantRefreshOn: PropTypes.bool
   };
@@ -43,7 +44,7 @@ export default class GuideList extends Component {
 
   render () {
     if (this.state.organizations_to_follow === undefined) {
-      return null
+      return null;
     }
 
     const orgs = this.state.organizations_to_follow.map( (org) => {
