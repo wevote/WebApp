@@ -40,6 +40,7 @@
     overflow: hidden;
     white-space: nowrap;
   }
+
   &__search {
     display: inline-block;
     margin: 0;
@@ -77,13 +78,13 @@
       max-width: 60%
     }
 
-    &__search-button {
-      height: 34px;
-    }
-
     .bs-navbar-form {
       padding: 0;
     }
+  }
+
+  &__search-button {
+    height: 34px;
   }
 }
 
