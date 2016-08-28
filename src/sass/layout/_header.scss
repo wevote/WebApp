@@ -11,7 +11,7 @@
 }
 
 .header-menu-text-left {
-  font-size: 1.3em;
+  font-size: 1.25rem;
 }
 
 .page-header {
@@ -126,10 +126,10 @@
 .search-container {
   background: #fff;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, .2);
-  margin-left: 27px;
+  margin-left: 40px;
   position: absolute;
   top: 38px;
-  min-width: 82%;
+  min-width: 80%;
   z-index: 1;
 
   &__hidden {
@@ -165,7 +165,7 @@
 
   &__links {
     display: block;
-    font-size: 20px;
+    font-size: 1.25rem;
 
     &:hover {
       text-decoration: none;
