@@ -21,9 +21,6 @@
   &.img-square {
     width: 50px;
   }
-  &.replacement-icon {
-    margin-right: 23px;
-  }
 }
 
 .position-item__display-name {
@@ -87,6 +84,13 @@
   position: absolute;
   right: 40px;
   top: 17px;
+}
+
+.candidate-link {
+  &:hover{
+    text-decoration: none;
+    color: red;
+  }
 }
 
 .edit-position-action {
