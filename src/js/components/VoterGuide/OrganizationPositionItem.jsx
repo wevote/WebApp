@@ -153,11 +153,8 @@ export default class OrganizationPositionItem extends Component {
                 type={position.kind_of_ballot_item}
                 supportProps={supportProps}
                 className="organization-position-item-toggle"/> :
-                <FriendsOnlyIndicator isPublicPosition={is_public_position}/>
+                <FriendsOnlyIndicator isFriendsOnly={!is_public_position}/>
               }
-          {/* is_public_position ?
-            null :
-            <FriendsOnlyIndicator /> */}
         </div>
         {/*Running for {office_display_name}
         <br />

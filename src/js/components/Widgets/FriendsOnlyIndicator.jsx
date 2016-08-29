@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 
 export default class FriendsOnlyIndicator extends Component {
   static propTypes = {
-    isPublicPosition: PropTypes.bool
+    isFriendsOnly: PropTypes.bool
   };
 
   constructor (props) {
@@ -11,12 +11,15 @@ export default class FriendsOnlyIndicator extends Component {
   }
 
 	render () {
-    let is_public_position = this.props.isPublicPosition;
+    let is_friends_only = this.props.isFriendsOnly;
+    if (is_friends_only === undefined){
+      is_friends_only = true;
+    }
     let labelText = "";
-    if (is_public_position) {
-      labelText = "Public";
-    } else {
+    if (is_friends_only) {
       labelText = "Friends";
+    } else {
+      labelText = "Public";
     }
 
     const friendsOnlyIndicator = <span className="friends-only-indicator">{labelText}</span>;
