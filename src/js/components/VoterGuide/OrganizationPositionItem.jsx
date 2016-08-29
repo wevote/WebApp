@@ -88,7 +88,10 @@ export default class OrganizationPositionItem extends Component {
     let ballotItemLink = position.ballot_item_twitter_handle ? "/" + position.ballot_item_twitter_handle : ballot_item_url + position.ballot_item_we_vote_id;
     let position_description = "";
     let has_image = position.ballot_item_image_url_https && position.kind_of_ballot_item === "CANDIDATE";
-    let ballot_item_display_name = capitalizeString(position.ballot_item_display_name);
+    let ballot_item_display_name = "";
+    if (position.ballot_item_display_name) {
+      ballot_item_display_name = capitalizeString(position.ballot_item_display_name);
+    }
 
     const is_on_ballot_item_page = false;
     if (position.vote_smart_rating) {
