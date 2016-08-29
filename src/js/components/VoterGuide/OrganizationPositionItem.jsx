@@ -10,6 +10,7 @@ import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle"
 import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
 import StarAction from "../../components/Widgets/StarAction";
 import SupportStore from "../../stores/SupportStore";
+import { capitalizeString } from "../../utils/textFormat";
 
 export default class OrganizationPositionItem extends Component {
   static propTypes = {
@@ -86,6 +87,12 @@ export default class OrganizationPositionItem extends Component {
     let ballot_item_url = position.kind_of_ballot_item === "MEASURE" ? "/measure/" : "/candidate/";
     let ballotItemLink = position.ballot_item_twitter_handle ? "/" + position.ballot_item_twitter_handle : ballot_item_url + position.ballot_item_we_vote_id;
     let position_description = "";
+    let has_image = position.ballot_item_image_url_https && position.kind_of_ballot_item === "CANDIDATE";
+    let ballot_item_display_name = "";
+    if (position.ballot_item_display_name) {
+      ballot_item_display_name = capitalizeString(position.ballot_item_display_name);
+    }
+
     const is_on_ballot_item_page = false;
     if (position.vote_smart_rating) {
       position_description = <PositionRatingSnippet {...position}
@@ -114,18 +121,18 @@ export default class OrganizationPositionItem extends Component {
         <Link to={ ballotItemLink }
               onlyActiveOnIndex={false}>
           {/*<i className="icon-icon-add-friends-2-1 icon-light icon-medium" />*/}
-          { position.ballot_item_image_url_https ?
+          { has_image ?
             <ImageHandler
               className="position-item__avatar"
               imageUrl={position.ballot_item_image_url_https}
               alt="candidate-photo" placeholderForCandidate/> :
-            <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light position-item__avatar"/>
+            null
           }
         </Link>
         <div className="position-item__content">
           <Link to={ ballotItemLink }
                 onlyActiveOnIndex={false}>
-            <span className="position-rating__candidate-name">{position.ballot_item_display_name}</span>
+            <span className="position-rating__candidate-name">{ballot_item_display_name}</span>
           </Link>
           {/* show explicit position, if available, otherwise show rating */}
           { this.props.link_to_edit_modal_off ?
@@ -146,11 +153,8 @@ export default class OrganizationPositionItem extends Component {
                 type={position.kind_of_ballot_item}
                 supportProps={supportProps}
                 className="organization-position-item-toggle"/> :
-                null
+                <FriendsOnlyIndicator isFriendsOnly={!is_public_position}/>
               }
-          { is_public_position ?
-            null :
-            <FriendsOnlyIndicator /> }
         </div>
         {/*Running for {office_display_name}
         <br />

@@ -101,9 +101,7 @@ export default class PositionItem extends Component {
           { edit_mode ?
             edit_position_description :
             position_description }
-          { position.is_public_position ?
-            null :
-            <FriendsOnlyIndicator /> }
+          <FriendsOnlyIndicator isFriendsOnly={!position.is_public_position} />
         </div>
         {/* Likes coming in a later version
         <br />
