@@ -7,7 +7,7 @@ export default class PositionPublicToggle extends Component {
     ballot_item_we_vote_id: PropTypes.string.isRequired,
     className: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
-    supportProps: PropTypes.object,
+    supportProps: PropTypes.object
   };
 
   constructor (props) {

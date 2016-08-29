@@ -11,9 +11,14 @@
   }
 
   .friends-only-indicator {
-    top: 45px;
-    right: 16px;
+    color: $mid-gray;
+    display: inline-block;
+    font-size: 1.2rem;
+    position: absolute;
+    right: 40px;
+    top: 17px;
   }
+
 }
 
 .position-item__avatar {
