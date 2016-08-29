@@ -38,7 +38,7 @@ export function capitalizeString (raw_string) {
   }
   if (raw_string === raw_string.toUpperCase()) {
     var lowercase = raw_string.toLowerCase();
-    return lowercase.replace( /\b\w/g, function (m, p1, p2) { return p1 + p2.toUpperCase(); } );
+    return lowercase.replace( /(^|\s)([a-z])/g, function (m, p1, p2) { return p1 + p2.toUpperCase(); } );
   } else {
     return raw_string;
   }
