@@ -36,8 +36,12 @@ export function capitalizeString (raw_string) {
   if (raw_string === undefined) {
     return "";
   }
-  var lowercase = raw_string.toLowerCase();
-  return lowercase.replace( /(^|\s)([a-z])/g, function (m, p1, p2) { return p1 + p2.toUpperCase(); } );
+  if (raw_string === raw_string.toUpperCase()) {
+    var lowercase = raw_string.toLowerCase();
+    return lowercase.replace( /(^|\s)([a-z])/g, function (m, p1, p2) { return p1 + p2.toUpperCase(); } );
+  } else {
+    return raw_string;
+  }
 }
 
 export function extractTwitterHandleFromTextString (raw_string) {
@@ -102,4 +106,3 @@ export function removeTwitterNameFromDescription (displayName, twitterDescriptio
     }
     return twitterDescriptionMinusName;
 }
-
