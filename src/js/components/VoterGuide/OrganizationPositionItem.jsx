@@ -143,10 +143,10 @@ export default class OrganizationPositionItem extends Component {
                     title="Edit this position">
                 { position_description }
               </span>
-              <EditPositionAboutCandidateModal show={this.state.showEditPositionModal}
+              {/* GET WORKING WITH MEASURES <EditPositionAboutCandidateModal show={this.state.showEditPositionModal}
                                                onHide={this.closeEditPositionModal.bind(this)}
                                                position={position}
-                                               organization={organization}/>
+                                               organization={organization}/>*/}
             </span> }
             { signed_in_with_this_twitter_account ?
               <PositionPublicToggle ballot_item_we_vote_id={position.ballot_item_we_vote_id}
