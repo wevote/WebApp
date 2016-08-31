@@ -13,8 +13,8 @@ export default class SearchAllBox extends Component {
   constructor (props){
     super(props);
     this.state = {
-      search_results: ""
-    };
+      search_results: []
+    }
   }
 
   componentDidMount (){
@@ -54,7 +54,7 @@ export default class SearchAllBox extends Component {
   onSearchFieldTextChange (event){
     let text_from_search_field = event.target.value;
     SearchAllActions.searchAll(text_from_search_field);
-    this.setState({search_results: ""});
+    this.setState({search_results: []});
   }
 
   // both of the two methods below need to have constants refactored
