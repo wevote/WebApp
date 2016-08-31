@@ -20,7 +20,7 @@ export default class OpinionsFollowed extends Component {
   }
 
   componentDidMount () {
-    this.guideStoreListener = GuideStore.addListener(this._onChange.bind(this));
+    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
     GuideActions.retrieveGuidesFollowed();
   }
 
@@ -28,13 +28,11 @@ export default class OpinionsFollowed extends Component {
     this.guideStoreListener.remove();
   }
 
-  _onChange (){
+  _onGuideStoreChange (){
     var list = GuideStore.followedList();
 
     if (list !== undefined && list.length > 0){
       this.setState({ voter_guide_followed_list: GuideStore.followedList() });
-    } else {
-      browserHistory.push("/opinions");
     }
   }
 
@@ -55,21 +53,21 @@ export default class OpinionsFollowed extends Component {
 
   render () {
     return <div>
-  <div className="container-fluid opinions-followed__container">
-    <div className="text-center"><FollowingDropdown following_type={this.getFollowingType()} /></div>
-      <p>
-        Organizations, public figures and other voters you currently follow. See also
-        <Link to="/friends">your friends</Link>. We will never sell your email.
-      </p>
-    <div className="voter-guide-list">
-      {
-        this.state.voter_guide_followed_list ?
-        this.state.voter_guide_followed_list.map( item =>
-          <VoterGuideItem key={item.we_vote_id} {...item} />
-        ) : LoadingWheel
-      }
-    </div>
-  </div>
-</div>;
+      <div className="container-fluid opinions-followed__container">
+        <div className="text-center"><FollowingDropdown following_type={this.getFollowingType()} /></div>
+          <p>
+            Organizations, public figures and other voters you currently follow. See
+            also <Link to="/friends">your friends</Link>. We will never sell your email.
+          </p>
+        <div className="voter-guide-list">
+          {
+            this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length ?
+            this.state.voter_guide_followed_list.map( item =>
+              <VoterGuideItem key={item.we_vote_id} {...item} />
+            ) : null
+          }
+        </div>
+      </div>
+    </div>;
   }
 }
