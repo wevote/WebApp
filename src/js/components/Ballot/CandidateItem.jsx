@@ -69,7 +69,7 @@ export default class CandidateItem extends Component {
       candidate_photo_url_html = <ImageHandler className="candidate-card__photo"
                                           imageUrl={candidate_photo_url}
                                           alt="candidate-photo"
-                                          placeholderForCandidate />;
+                                          kind_of_ballot_item="CANDIDATE" />;
     } else {
       candidate_photo_url_html = <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light utils-img-contain-glyph" />;
     }

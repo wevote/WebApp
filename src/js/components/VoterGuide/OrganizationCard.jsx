@@ -33,10 +33,7 @@ export default class OrganizationCard extends Component {
     let twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
 
     return <div className="card__media-object">
-          { organization_photo_url ?
-            <ImageHandler imageUrl={organization_photo_url} className="card__media-object-anchor" /> :
-            <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color card__media-object-anchor" />
-          }
+            <ImageHandler imageUrl={organization_photo_url} className="card__media-object-anchor" />
           <div className="card__media-object-content">
             <div className="card__display-name">{displayName}</div>
             { twitterDescriptionMinusName && !this.props.turn_off_description ?

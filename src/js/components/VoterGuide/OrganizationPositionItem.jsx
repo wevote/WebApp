@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import ImageHandler from "../../components/ImageHandler";
-import EditPositionAboutCandidateModal from "../../components/VoterGuide/EditPositionAboutCandidateModal";
+// import EditPositionAboutCandidateModal from "../../components/VoterGuide/EditPositionAboutCandidateModal";
 import FriendsOnlyIndicator from "../../components/Widgets/FriendsOnlyIndicator";
 import VoterStore from "../../stores/VoterStore";
 import OfficeNameText from "../../components/Widgets/OfficeNameText";
@@ -92,7 +92,7 @@ export default class OrganizationPositionItem extends Component {
     let ballot_item_url = position.kind_of_ballot_item === "MEASURE" ? "/measure/" : "/candidate/";
     let ballotItemLink = position.ballot_item_twitter_handle ? "/" + position.ballot_item_twitter_handle : ballot_item_url + position.ballot_item_we_vote_id;
     let position_description = "";
-    let has_image = position.ballot_item_image_url_https && position.kind_of_ballot_item === "CANDIDATE";
+    let is_candidate = position.kind_of_ballot_item === "CANDIDATE";
     let ballot_item_display_name = "";
     if (position.ballot_item_display_name) {
       ballot_item_display_name = capitalizeString(position.ballot_item_display_name);
@@ -132,11 +132,12 @@ export default class OrganizationPositionItem extends Component {
         <Link to={ ballotItemLink }
               onlyActiveOnIndex={false}>
           {/*<i className="icon-icon-add-friends-2-1 icon-light icon-medium" />*/}
-          { has_image ?
+          { is_candidate ?
             <ImageHandler
               className="position-item__avatar"
               imageUrl={position.ballot_item_image_url_https}
-              alt="candidate-photo" placeholderForCandidate/> :
+              alt="candidate-photo"
+              kind_of_ballot_item={position.kind_of_ballot_item}/> :
             null
           }
         </Link>
