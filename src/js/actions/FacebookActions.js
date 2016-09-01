@@ -2,6 +2,7 @@ import Dispatcher from "../dispatcher/Dispatcher";
 import VoterActions from "../actions/VoterActions";
 import FacebookConstants from "../constants/FacebookConstants";
 const cookies = require("../utils/cookies");
+const web_app_config = require("../config");
 
 module.exports = {
 
@@ -23,6 +24,9 @@ module.exports = {
   },
 
   login: function () {
+    if (!web_app_config.FACEBOOK_APP_ID) {
+      console.log("Missing FACEBOOK_APP_ID from src/js/config.js")
+    }
     window.FB.getLoginStatus(function (response) {
       if (response.status === "connected") {
         Dispatcher.dispatch({
