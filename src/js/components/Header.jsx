@@ -34,7 +34,7 @@ export default class Header extends Component {
 
   render () {
     var { pathname } = this.props;
-    var { signed_in_personal, signed_in_twitter, twitter_screen_name, voter_photo_url } = this.props.voter;
+    var { signed_in_facebook, signed_in_personal, signed_in_twitter, twitter_screen_name, voter_photo_url } = this.props.voter;
     const logOut = FacebookActions.appLogout;
 
     let image_placeholder = "";
@@ -70,13 +70,17 @@ export default class Header extends Component {
                     </div>
                   </Link>
                 </li> :
+                null
+              }
+              { !signed_in_twitter && !signed_in_facebook ?
                 <li>
                   <Link onClick={this.hide.bind(this)} to="/settings/claim">
                     <div>
                       <span className="header-slide-out-menu-text-left">Claim Your Page</span>
                     </div>
                   </Link>
-                </li>
+                </li> :
+                null
               }
               <li>
                 <Link onClick={this.hide.bind(this)} to="/settings/location">

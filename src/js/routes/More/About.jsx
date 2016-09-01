@@ -16,8 +16,9 @@ export default class About extends Component {
         <div className="container-fluid well u-gutter-top--small fluff-full1">
           <h3 className="text-center">About We Vote</h3>
           <p>
-              We Vote USA is nonprofit and nonpartisan. For more information, please visit www.WeVoteUSA.org.
-              This is a demonstration version and has not been launched to the general public yet.
+            We Vote USA is nonprofit and nonpartisan. For more information, please
+            visit <a href="http://www.WeVoteUSA.org" target="_blank">www.WeVoteUSA.org</a>.
+            This is a demonstration version and has not been launched to the general public yet.
           </p>
 
           <h3 className="text-center">Acknowledgements</h3>
@@ -42,9 +43,10 @@ export default class About extends Component {
               Wikipedia - Data
           </p>
           <p>
-              <strong>Thank you to our Board of Directors.</strong><br />
-              We Vote USA: coming soon<br />
-              We Vote Education: Jenifer Fernandez Ancona, Debra Cleaver, Dale McGrew, Anat Shenker-Osorio, William Winters<br />
+            <strong>Thank you to our Board of Directors.</strong><br />
+            We Vote USA: coming soon<br />
+            We Vote Education: Jenifer Fernandez Ancona, Debra Cleaver, Dale McGrew, Anat Shenker-Osorio,
+            William Winters (coming soon: Tiana Epps-Johnson and Lawrence Grodeska)<br />
           </p>
           <p>
               <strong>Special thanks to our team of volunteers.</strong><br />
@@ -55,12 +57,14 @@ export default class About extends Component {
               Rob Simpson - Warrenton, VA<br />
               Lisa Cho - San Francisco, CA<br />
               Nicolas Fiorini - Arlington, VA<br />
-              Joe Evans - Santa Cruz, CA<br />
               Jeff French - Oakland, CA<br />
+              Colette Phair - Oakland, CA<br />
+              Zach Monteith - San Francisco, CA<br />
+              Jennifer Holmes - Pacifica, CA<br />
+              Joe Evans - Santa Cruz, CA<br />
               Adam Barry - San Francisco, CA<br />
               Mary O'Connor - Sebastopol, CA<br />
               Harsha Dronamraju - San Francisco, CA<br />
-              Jennifer Holmes - Pacifica, CA<br />
               Nitin Garg - San Francisco, CA<br />
               Niko Barry - Berkeley, CA<br />
               Marissa Luna - Lansing, MI<br />
@@ -82,7 +86,6 @@ export default class About extends Component {
               Raphael Merx - San Francisco, CA<br />
               Susan Clark - Oakland, CA<br />
               Kim Anderson - San Francisco, CA<br />
-              Colette Phair - Oakland, CA<br />
               Jesse Aldridge - San Francisco, CA<br />
               Josh Levinger - Oakland, CA<br />
               Leslie Castellanos - San Francisco, CA<br />
