@@ -22,7 +22,7 @@ export default class ImageHandler extends Component {
     let alt = this.props.alt || "icon";
     let replacementClass = "";
     if (this.props.placeholderForCandidate) {
-      replacementClass = "icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light position-item__avatar replacement-icon";
+      replacementClass = "icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light position-item__avatar";
     } else {
       replacementClass = "icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color position-item__avatar";
     }

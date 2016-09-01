@@ -4,6 +4,7 @@ import ImageHandler from "../../components/ImageHandler";
 import EditPositionAboutCandidateModal from "../../components/VoterGuide/EditPositionAboutCandidateModal";
 import FriendsOnlyIndicator from "../../components/Widgets/FriendsOnlyIndicator";
 import VoterStore from "../../stores/VoterStore";
+import OfficeNameText from "../../components/Widgets/OfficeNameText";
 import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
@@ -25,13 +26,15 @@ export default class OrganizationPositionItem extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { showEditPositionModal: false };
+    this.state = {
+      showEditPositionModal: false };
   }
 
   componentDidMount () {
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
     this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+
   }
 
   componentWillUnmount () {
@@ -41,6 +44,7 @@ export default class OrganizationPositionItem extends Component {
 
   _onSupportStoreChange () {
     let position = this.props.position;
+    // console.log("position:", position);
     this.setState({
       supportProps: SupportStore.get(position.ballot_item_we_vote_id),
       transitioning: false
@@ -60,8 +64,9 @@ export default class OrganizationPositionItem extends Component {
   }
 
   render (){
-    let position = this.props.position;
+    var position = this.props.position;
     let organization = this.props.organization;
+
     let { stance_display_off, comment_text_off, popover_off, placement } = this.props;
     const { supportProps } = this.state;
 
@@ -115,7 +120,13 @@ export default class OrganizationPositionItem extends Component {
     }
 
     const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
-
+    // console.log("this.props.position:", this.props.position);
+    var office_name;
+    var political_party;
+    if (position.kind_of_ballot_item === "CANDIDATE") {
+      office_name = position.office_name;
+      political_party = position.political_party;
+    }
     return <li className="position-item">
       <StarAction we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
         <Link to={ ballotItemLink }
@@ -134,6 +145,11 @@ export default class OrganizationPositionItem extends Component {
                 onlyActiveOnIndex={false}>
             <span className="position-rating__candidate-name">{ballot_item_display_name}</span>
           </Link>
+          <br />
+            { position.kind_of_ballot_item === "CANDIDATE" && office_name !== undefined ?
+            <OfficeNameText political_party={political_party} office_name={office_name} /> :
+              null
+            }
           {/* show explicit position, if available, otherwise show rating */}
           { this.props.link_to_edit_modal_off ?
             position_description :
@@ -156,11 +172,6 @@ export default class OrganizationPositionItem extends Component {
                 <FriendsOnlyIndicator isFriendsOnly={!is_public_position}/>
               }
         </div>
-        {/*Running for {office_display_name}
-        <br />
-          Integer ut bibendum ex. Suspendisse eleifend mi accumsan, euismod enim at, malesuada nibh.
-          Duis a eros fringilla, dictum leo vitae, vulputate mi. Nunc vitae neque nec erat fermentum... (more)
-        <br />*/}
       </ li>;
   }
 }

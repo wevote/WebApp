@@ -6,7 +6,6 @@ import GuideList from "../../components/VoterGuide/GuideList";
 import GuideStore from "../../stores/GuideStore";
 import GuideActions from "../../actions/GuideActions";
 import LoadingWheel from "../../components/LoadingWheel";
-import OfficeStore from "../../stores/OfficeStore";
 import PositionList from "../../components/Ballot/PositionList";
 import SupportActions from "../../actions/SupportActions";
 import ThisIsMeAction from "../../components/Widgets/ThisIsMeAction";
@@ -22,7 +21,6 @@ export default class Candidate extends Component {
     super(props);
     this.state = {
       candidate: {},
-      office: {},
       candidate_we_vote_id: this.props.params.candidate_we_vote_id,
       guideToFollowList: GuideStore.toFollowListForBallotItem()
 
@@ -30,10 +28,10 @@ export default class Candidate extends Component {
   }
 
   componentDidMount (){
-    this.candidateStoreListener = CandidateStore.addListener(this._onCandidateChange.bind(this));
-    this.officeStoreListener = OfficeStore.addListener(this._onCandidateChange.bind(this));
+    this.candidateStoreListener = CandidateStore.addListener(this._onCandidateStoreChange.bind(this));
     var { candidate_we_vote_id } = this.state;
     CandidateActions.retrieve(candidate_we_vote_id);
+
 
     // Get the latest guides to follow for this candidate
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
@@ -64,18 +62,13 @@ export default class Candidate extends Component {
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
-    this.officeStoreListener.remove();
     this.guideStoreListener.remove();
   }
 
-  _onCandidateChange (){
+  _onCandidateStoreChange (){
     var { candidate_we_vote_id } = this.state;
     var candidate = CandidateStore.get(candidate_we_vote_id) || {};
     this.setState({ candidate: candidate });
-
-    if (candidate.contest_office_we_vote_id){
-      this.setState({ office: OfficeStore.get(candidate.contest_office_we_vote_id) || {} });
-    }
   }
 
   _onGuideStoreChange (){
@@ -87,7 +80,7 @@ export default class Candidate extends Component {
   render () {
     const electionId = VoterStore.election_id();
     const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to follow about this candidate or measure.";
-    var { candidate, office, guideToFollowList, candidate_we_vote_id } = this.state;
+    var { candidate, guideToFollowList, candidate_we_vote_id } = this.state;
 
     if (!candidate.ballot_item_display_name){
       // TODO DALE If the candidate we_vote_id is not valid, we need to update this with a notice
@@ -99,7 +92,7 @@ export default class Candidate extends Component {
 
     return <span>
         <section className="candidate-card__container">
-          <CandidateItem {...candidate} office_name={office.ballot_item_display_name}/>
+          <CandidateItem {...candidate} office_name={candidate.office_name} />
           <div className="candidate-card__additional">
             { candidate.position_list ?
               <div>
