@@ -70,6 +70,7 @@ export default class GuidePositionList extends Component {
 
     const { position_list_for_one_election, position_list_for_all_except_one_election } = this.state.organization;
     var { we_vote_id } = this.state;
+    console.log("position list for one election:", position_list_for_one_election);
     return <span>
         <div className="card__container">
           <div className="card__main">
@@ -82,6 +83,7 @@ export default class GuidePositionList extends Component {
                 return <OrganizationPositionItem key={item.position_we_vote_id}
                                                  position={item}
                                                  organization={this.state.organization}
+
                                                  popover_off />;
               }) :
               <div>{LoadingWheel}</div>

@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from "react";
-import CandidateActions from "../../actions/CandidateActions";
+// import CandidateActions from "../../actions/CandidateActions";
 import CandidateItem from "../../components/Ballot/CandidateItem";
 import CandidateStore from "../../stores/CandidateStore";
 import GuideList from "../../components/VoterGuide/GuideList";
 import GuideStore from "../../stores/GuideStore";
-import GuideActions from "../../actions/GuideActions";
-import OfficeStore from "../../stores/OfficeStore";
+// import OfficeActions from "../../actions/OfficeActions";
+// import OfficeStore from "../../stores/OfficeStore";
 import PositionList from "../../components/Ballot/PositionList";
 import ThisIsMeAction from "../../components/Widgets/ThisIsMeAction";
 import VoterStore from "../../stores/VoterStore";
@@ -19,35 +19,32 @@ export default class Office extends Component {
 
   constructor (props) {
     super(props);
-    this.we_vote_id = this.props.params.we_vote_id;
+    this.office_we_vote_id = this.props.params.office_we_vote_id;
     this.state = {candidate: {}, office: {} };
   }
 
   componentDidMount (){
     this.candidateStoreListener = CandidateStore.addListener(this._onChange.bind(this));
-    this.officeStoreListener = OfficeStore.addListener(this._onChange.bind(this));
+    // this.officeStoreListener = OfficeStore.addListener(this._onChange.bind(this));
 
-    CandidateActions.retrieve(this.we_vote_id);
-
-    this.guideStoreListener = GuideStore.addListener(this._onChange.bind(this));
-    GuideActions.retrieveGuidesToFollowByBallotItem(this.we_vote_id, "CANDIDATE");
+    // OfficeActions.retrieve(this.office_we_vote_id);
 
     exitSearch("");
   }
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
-    this.officeStoreListener.remove();
-    this.guideStoreListener.remove();
+    // this.officeStoreListener.remove();
+
   }
 
   _onChange (){
     var candidate = CandidateStore.get(this.we_vote_id) || {};
     this.setState({ candidate: candidate, guideToFollowList: GuideStore.toFollowListForBallotItem() });
 
-    if (candidate.contest_office_we_vote_id){
-      this.setState({ office: OfficeStore.get(candidate.contest_office_we_vote_id) || {} });
-    }
+    // if (candidate.contest_office_we_vote_id){
+    //   this.setState({ office: OfficeStore.getOffice(candidate.contest_office_we_vote_id) || {} });
+    // }
 
   }
 
@@ -80,7 +77,7 @@ export default class Office extends Component {
             {guideToFollowList.length === 0 ?
               <p className="candidate-card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
               <div><h3 className="candidate-card__additional-heading">{"More opinions about " + candidate.ballot_item_display_name}</h3>
-              <GuideList id={electionId} ballotItemWeVoteId={this.we_vote_id} organizationsToFollow={guideToFollowList}/></div>
+              <GuideList id={electionId} ballotItemWeVoteId={this.office_we_vote_id} organizationsToFollow={guideToFollowList}/></div>
             }
           </div>
         </section>

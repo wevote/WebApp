@@ -5,6 +5,7 @@ import StarAction from "../../components/Widgets/StarAction";
 import ItemActionBar from "../../components/Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../../components/Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
+import OfficeNameText from "../../components/Widgets/OfficeNameText";
 import SupportStore from "../../stores/SupportStore";
 import {abbreviateNumber} from "../../utils/textFormat";
 import {numberWithCommas} from "../../utils/textFormat";
@@ -117,15 +118,10 @@ export default class CandidateItem extends Component {
             } onClick={this.props.link_to_ballot_item_page ?
               goToCandidateLink : null }
           >
-            { party ?
-              <span><span className="candidate-card__political-party">
-                {party}
-              </span><span> candidate for </span></span> :
-              "Candidate for "
-            }
-            <span className="candidate-card__office">
-              { office_name }
-            </span>
+          { office_name ?
+          <OfficeNameText political_party={party} office_name={office_name} /> :
+            null
+          }
           </p>
           { twitter_description ?
             <div className={ this.props.link_to_ballot_item_page ? "candidate-card__description-container--truncated" : "candidate-card__description-container"}>

@@ -5,7 +5,6 @@ import FollowToggle from "../../components/Widgets/FollowToggle";
 import ItemActionBar from "../../components/Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../../components/Widgets/ItemPositionStatementActionBar";
 import LoadingWheel from "../../components/LoadingWheel";
-import OfficeStore from "../../stores/OfficeStore";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -22,7 +21,7 @@ export default class EditPositionAboutCandidateModal extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {candidate: {}, office: {}};
+    this.state = {candidate: {}};
   }
 
   componentDidMount () {
@@ -32,7 +31,6 @@ export default class EditPositionAboutCandidateModal extends Component {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
 
     this.candidateStoreListener = CandidateStore.addListener(this._onCandidateStoreChange.bind(this));
-    this.officeStoreListener = OfficeStore.addListener(this._onCandidateStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
 
     // let { ballot_item_we_vote_id } = this.props.position;
@@ -45,7 +43,7 @@ export default class EditPositionAboutCandidateModal extends Component {
     // }
 
     // this.props.position.ballot_item_we_vote_id is the candidate
-    var ballot_item_we_vote_id = this.props.position.ballot_item_we_vote_id;
+    let ballot_item_we_vote_id = this.props.position.ballot_item_we_vote_id;
     let supportProps = SupportStore.get(ballot_item_we_vote_id);
 
     this.setState({supportProps: supportProps});
@@ -60,7 +58,6 @@ export default class EditPositionAboutCandidateModal extends Component {
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
-    this.officeStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
     this.supportStoreListener.remove();
@@ -86,9 +83,6 @@ export default class EditPositionAboutCandidateModal extends Component {
     //   candidate: candidate,
     // });
     //
-    // if (candidate.contest_office_we_vote_id) {
-    //   this.setState({office: OfficeStore.get(candidate.contest_office_we_vote_id) || {}});
-    // }
   }
 
   _onSupportStoreChange () {

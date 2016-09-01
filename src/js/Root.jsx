@@ -27,7 +27,7 @@ import Measure from "./routes/Ballot/Measure";
 import Office from "./routes/Ballot/Office";
 
 /* Ballot Off-shoot Pages */
-import GuidePositionList from "./routes/Guide/PositionList"; // A list of all positions from one guide
+import GuidePositionList from "./routes/Guide/GuidePositionList"; // A list of all positions from one guide
 import Opinions from "./routes/Opinions"; // More opinions about anything on the ballot
 
 /* More */
@@ -84,7 +84,7 @@ const routes = () =>
 
     <Route path="ballot" component={BallotIndex}>
       <IndexRoute component={Ballot}/>
-      <Route path="/office/:we_vote_id" component={Office} />
+      <Route path="/office/:office_we_vote_id" component={Office} />
       <Route path="/candidate/:candidate_we_vote_id" component={Candidate} />
       <Route path="/measure/:measure_we_vote_id" component={Measure} />
     </Route>

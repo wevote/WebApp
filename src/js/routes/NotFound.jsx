@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router";
 import Candidate from "./Ballot/Candidate";
 import LoadingWheel from "../components/LoadingWheel";
-import GuidePositionList from "./Guide/PositionList";
+import GuidePositionList from "./Guide/GuidePositionList";
 import OrganizationActions from "../actions/OrganizationActions";
 import PositionListForFriends from "./Guide/PositionListForFriends";
 import TwitterActions from "../actions/TwitterActions";
