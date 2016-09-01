@@ -5,7 +5,7 @@ export default class ImageHandler extends Component {
     imageUrl: PropTypes.string,
     className: PropTypes.string,
     alt: PropTypes.string,
-    placeholderForCandidate: PropTypes.bool
+    kind_of_ballot_item: PropTypes.string
   };
 
   constructor (props) {
@@ -21,7 +21,7 @@ export default class ImageHandler extends Component {
     let this_class = this.props.className || "utils-img-contain";
     let alt = this.props.alt || "icon";
     let replacementClass = "";
-    if (this.props.placeholderForCandidate) {
+    if (this.props.kind_of_ballot_item === "CANDIDATE") {
       replacementClass = "icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light position-item__avatar";
     } else {
       replacementClass = "icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color position-item__avatar";
