@@ -60,7 +60,7 @@ export default class Application extends Component {
   componentDidMount () {
     let voter_device_id = VoterStore.voterDeviceId();
     VoterActions.retrieveVoter(voter_device_id);
-    StarActions.retrieveAll();
+    StarActions.voterAllStarsStatusRetrieve();
     this.token = VoterStore.addListener(this._onChange.bind(this));
   }
 

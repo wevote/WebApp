@@ -2,12 +2,12 @@ import Dispatcher from "../dispatcher/Dispatcher";
 
 module.exports = {
 
-  retrieveAll: function (){
+  voterAllPositionsRetrieve: function (){
     Dispatcher.loadEndpoint("voterAllPositionsRetrieve");
   },
 
-  retrieveAllCounts: function (election_id){
-    // console.log("SupportActions, retrieveAllCounts, election_id: ", election_id);
+  positionsCountForAllBallotItems: function (election_id){
+    // console.log("SupportActions, positionsCountForAllBallotItems, election_id: ", election_id);
     Dispatcher.loadEndpoint("positionsCountForAllBallotItems", {google_civic_election_id: election_id});
   },
 

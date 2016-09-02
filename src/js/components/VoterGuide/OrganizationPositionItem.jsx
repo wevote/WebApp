@@ -26,15 +26,21 @@ export default class OrganizationPositionItem extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {
-      showEditPositionModal: false };
+    this.state = {};
+  }
+
+  componentWillMount () {
+    this.setState({
+      showEditPositionModal: false,
+      supportProps: SupportStore.get(this.props.position.ballot_item_we_vote_id),
+      transitioning: false
+    });
   }
 
   componentDidMount () {
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
     this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-
   }
 
   componentWillUnmount () {
@@ -70,12 +76,6 @@ export default class OrganizationPositionItem extends Component {
     let { stance_display_off, comment_text_off, popover_off, placement } = this.props;
     const { supportProps } = this.state;
 
-    // When component first loads, use the value in the incoming position. If there are any updates, use those.
-    var statement_text = supportProps && supportProps.voter_statement_text ? supportProps.voter_statement_text : position.statement_text;
-    var is_public_position = supportProps && supportProps.is_public_position ? supportProps.is_public_position : position.is_public_position;
-    var is_support = supportProps && supportProps.is_support ? supportProps.is_support : position.is_support;
-    var is_oppose = supportProps && supportProps.is_oppose ? supportProps.is_oppose : position.is_oppose;
-
     // Manage the control over this organization voter guide
     let organization_twitter_handle_being_viewed = "";
     if (organization !== undefined) {
@@ -86,6 +86,26 @@ export default class OrganizationPositionItem extends Component {
     var signed_in_with_this_twitter_account = false;
     if (signed_in_twitter) {
       signed_in_with_this_twitter_account = voter.twitter_screen_name.toLowerCase() === organization_twitter_handle_being_viewed.toLowerCase();
+    }
+
+    var statement_text;
+    var is_public_position;
+    var is_support;
+    var is_oppose;
+    // If looking at your own page, update when supportProps change
+    if (signed_in_with_this_twitter_account) {
+      // console.log("OrganizationPositionItem signed_in_with_this_twitter_account");
+      // When component first loads, use the value in the incoming position. If there are any supportProps updates, use those.
+      statement_text = supportProps && supportProps.voter_statement_text ? supportProps.voter_statement_text : position.statement_text;
+      is_public_position = supportProps && supportProps.is_public_position ? supportProps.is_public_position : position.is_public_position;
+      is_support = supportProps && supportProps.is_support ? supportProps.is_support : position.is_support;
+      is_oppose = supportProps && supportProps.is_oppose ? supportProps.is_oppose : position.is_oppose;
+    } else {
+      // console.log("OrganizationPositionItem NOT signed_in_with_this_twitter_account");
+      statement_text = position.statement_text;
+      is_public_position = position.is_public_position;
+      is_support = position.is_support;
+      is_oppose = position.is_oppose;
     }
 
     // TwitterHandle-based link
@@ -127,6 +147,7 @@ export default class OrganizationPositionItem extends Component {
       contest_office_name = position.contest_office_name;
       political_party = position.ballot_item_political_party;
     }
+    console.log("OrganizationPositionItem signed_in_with_this_twitter_account:", signed_in_with_this_twitter_account);
     return <li className="position-item">
       <StarAction we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
         <Link to={ ballotItemLink }

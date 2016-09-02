@@ -66,15 +66,18 @@ export default class Candidate extends Component {
   }
 
   _onCandidateStoreChange (){
-    var { candidate_we_vote_id } = this.state;
-    var candidate = CandidateStore.get(candidate_we_vote_id) || {};
+    let { candidate_we_vote_id } = this.state;
+    let candidate = CandidateStore.get(candidate_we_vote_id) || {};
     this.setState({ candidate: candidate });
   }
 
   _onGuideStoreChange (){
+    let { candidate_we_vote_id } = this.state;
     this.setState({ guideToFollowList: GuideStore.toFollowListForBallotItem() });
     // When the guideToFollowList changes, trigger an update of the candidate so we can get an updated position_list
     CandidateActions.retrieve(this.state.candidate_we_vote_id);
+    // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
+    SupportActions.retrievePositionsCountsForOneBallotItem(candidate_we_vote_id);
   }
 
   render () {
