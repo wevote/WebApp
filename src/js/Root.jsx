@@ -76,6 +76,7 @@ const routes = () =>
     <Route path="/more/sign_in" component={SignIn} />
     <Route path="/more/email_ballot" component={EmailBallot} />
     <Route path="/more/about" component={About} />
+    <Route path="/more/connect" component={Connect} />
     <Route path="/more/opinions/followed" component={OpinionsFollowed} />
     <Route path="/more/privacy" component={Privacy} />
 
@@ -94,7 +95,6 @@ const routes = () =>
     <Route path="ballot/empty" component={EmptyBallot} />
 
     <Route path="requests" component={Requests} />
-    <Route path="connect" component={Connect} />
 
     <Route path="activity" component={Activity} />
 

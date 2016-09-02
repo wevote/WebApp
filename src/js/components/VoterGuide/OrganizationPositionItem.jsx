@@ -121,11 +121,11 @@ export default class OrganizationPositionItem extends Component {
 
     const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
     // console.log("this.props.position:", this.props.position);
-    var office_name;
+    var contest_office_name;
     var political_party;
     if (position.kind_of_ballot_item === "CANDIDATE") {
-      office_name = position.office_name;
-      political_party = position.political_party;
+      contest_office_name = position.contest_office_name;
+      political_party = position.ballot_item_political_party;
     }
     return <li className="position-item">
       <StarAction we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
@@ -147,8 +147,8 @@ export default class OrganizationPositionItem extends Component {
             <span className="position-rating__candidate-name">{ballot_item_display_name}</span>
           </Link>
           <br />
-            { position.kind_of_ballot_item === "CANDIDATE" && office_name !== undefined ?
-            <OfficeNameText political_party={political_party} office_name={office_name} /> :
+            { position.kind_of_ballot_item === "CANDIDATE" && contest_office_name !== undefined ?
+            <OfficeNameText political_party={political_party} contest_office_name={contest_office_name} /> :
               null
             }
           {/* show explicit position, if available, otherwise show rating */}

@@ -72,6 +72,7 @@ module.exports = {
       }
   },
 
+  // https://developers.facebook.com/docs/graph-api/reference/v2.6/user
   getFacebookData: function (){
     window.FB.api("/me?fields=id,email,first_name,middle_name,last_name", (response) => {
         Dispatcher.dispatch({

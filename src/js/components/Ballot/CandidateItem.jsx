@@ -19,7 +19,7 @@ export default class CandidateItem extends Component {
     twitter_description: PropTypes.string,
     twitter_followers_count: PropTypes.number,
     twitter_handle: PropTypes.string,
-    office_name: PropTypes.string,
+    contest_office_name: PropTypes.string,
     link_to_ballot_item_page: PropTypes.bool
   };
 
@@ -55,7 +55,7 @@ export default class CandidateItem extends Component {
       we_vote_id,
       twitter_description,
       twitter_followers_count,
-      office_name,
+      contest_office_name,
       twitter_handle,
     } = this.props;
 
@@ -118,8 +118,8 @@ export default class CandidateItem extends Component {
             } onClick={this.props.link_to_ballot_item_page ?
               goToCandidateLink : null }
           >
-          { office_name ?
-          <OfficeNameText political_party={party} office_name={office_name} /> :
+          { contest_office_name ?
+          <OfficeNameText political_party={party} contest_office_name={contest_office_name} /> :
             null
           }
           </p>

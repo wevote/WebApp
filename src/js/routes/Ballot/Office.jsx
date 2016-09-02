@@ -65,7 +65,7 @@ export default class Office extends Component {
 
     return <span>
         <section className="candidate-card__container">
-          <CandidateItem {...candidate} office_name={office.ballot_item_display_name}/>
+          <CandidateItem {...candidate} contest_office_name={office.ballot_item_display_name}/>
           <div className="candidate-card__additional">
             { candidate.position_list ?
               <div>
