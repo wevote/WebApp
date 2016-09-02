@@ -9,8 +9,8 @@ export default class FollowOrIgnore extends Component {
     };
 
     render () {
-      const ignoreFunc = GuideActions.ignore.bind(this, this.props.organization_we_vote_id);
-      const stopFollowingFunc = GuideActions.stopFollowing.bind(this, this.props.organization_we_vote_id);
+      const ignoreFunc = GuideActions.organizationFollowIgnore.bind(this, this.props.organization_we_vote_id);
+      const stopFollowingFunc = GuideActions.organizationStopFollowing.bind(this, this.props.organization_we_vote_id);
 
       return <ButtonToolbar bsClass="btn-toolbar">
             <Button bsStyle="info" bsSize="xsmall" className="btn-action hidden-xs" onClick={stopFollowingFunc} data-hover="Unfollow"><span>Following</span></Button>

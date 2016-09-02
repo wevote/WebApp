@@ -43,10 +43,11 @@ export default class FollowToggle extends Component {
     let we_vote_id = this.props.we_vote_id;
     let is_following = this.state.is_following;
     let is_looking_at_self = this.state.voter.linked_organization_we_vote_id === we_vote_id;
+    // You should not be able to follow yourself
     if (is_looking_at_self) { return <div></div>; }
 
-    const followFunc = GuideActions.follow.bind(this, we_vote_id);
-    const stopFollowingFunc = GuideActions.stopFollowing.bind(this, we_vote_id);
+    const followFunc = GuideActions.organizationFollow.bind(this, we_vote_id);
+    const stopFollowingFunc = GuideActions.organizationStopFollowing.bind(this, we_vote_id);
     const floatRight = { float: "right"};
 
     return <span style={floatRight}>
