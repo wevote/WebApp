@@ -25,7 +25,6 @@ class CandidateStore extends FluxMapStore {
       case "positionListForBallotItem":
         key = action.res.ballot_item_we_vote_id;
         var position_list = action.res.position_list;
-        // console.log("CandidateStore, positionListForBallotItem, position_list:", position_list);
         merged_properties = assign({}, state.get(key), {position_list: position_list} );
         return state.set(key, merged_properties );
 

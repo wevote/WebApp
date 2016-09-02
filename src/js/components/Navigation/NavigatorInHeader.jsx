@@ -43,7 +43,7 @@ const links = {
     var icon = "glyphicon icon-icon-connect-1-3 glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
-      <Link to="/connect" className={ "header-navicon" + (active ? " active-icon" : "")}>
+      <Link to="/more/connect" className={ "header-navicon" + (active ? " active-icon" : "")}>
         <div className="col-xs-3 center-block text-center small">
           <span className={icon} title="Connect" />
           <br/>
@@ -90,7 +90,7 @@ export default class NavigatorInHeader extends Component {
               <div className="row">
                 {ballot(pathname === "/ballot")}
                 {requests(pathname === "/requests")}
-                {connect(pathname === "/connect")}
+                {connect(pathname === "/more/connect")}
                 {activity(pathname === "/activity")}
               </div>
             </div>
@@ -99,6 +99,5 @@ export default class NavigatorInHeader extends Component {
       </div>;
 
       return navigator;
-
   }
 }

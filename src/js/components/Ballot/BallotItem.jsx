@@ -33,7 +33,7 @@ export default class BallotItem extends Component {
               we_vote_id={ this.props.we_vote_id }
               type={ this.props.kind_of_ballot_item } />
             <CandidateList children={this.props.candidate_list}
-                           office_name={this.props.ballot_item_display_name}/>
+                           contest_office_name={this.props.ballot_item_display_name}/>
           </span>
         }
 

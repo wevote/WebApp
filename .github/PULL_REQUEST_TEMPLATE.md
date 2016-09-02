@@ -1,10 +1,3 @@
-### Reference to issue:  
+### What github.com/wevote/WebApp/issues does this fix?
 
-
-### Changes proposed to this pull request:  
-
-* 
-* 
-* 
-
-### Mentions: i.e @pertrai1 - please remote before adding
+### Changes included this pull request?

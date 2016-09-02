@@ -1,10 +1,3 @@
-### Expected behavior and actual behavior
+### Please describe the issue (What happens? What do you expect?)
 
-
-### Steps to reproduce the problem
-
-
-### Specification like the version of the project, operating system, or hardware
-
-
-### Meaning commit message
+### Steps to reproduce the problem (1, 2, 3...), including links
