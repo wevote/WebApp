@@ -2,7 +2,7 @@ import Dispatcher from "../dispatcher/Dispatcher";
 
 module.exports = {
 
-  retrieveAll: function (){
+  voterAllStarsStatusRetrieve: function (){
     Dispatcher.loadEndpoint("voterAllStarsStatusRetrieve");
   },
 

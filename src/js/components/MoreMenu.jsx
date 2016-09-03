@@ -9,6 +9,7 @@ export default class MoreMenu extends Component {
     first_name: PropTypes.string,
     twitter_screen_name: PropTypes.string,
     voter_photo_url: PropTypes.string,
+    signed_in_facebook: PropTypes.bool,
     signed_in_personal: PropTypes.bool,
     signed_in_twitter: PropTypes.bool
   };
@@ -59,7 +60,11 @@ export default class MoreMenu extends Component {
                 <span className="header-menu-text-left">Your Page</span>
               </div></Link>
             </li> :
-            this.menuLink("/settings/claim", "Claim Your Page")
+            null
+          }
+          { !this.props.signed_in_twitter && !this.props.signed_in_facebook ?
+            this.menuLink("/settings/claim", "Claim Your Page") :
+            null
           }
           {this.menuLink("/settings/location", "Your Address & Ballot")}
           {this.menuLink("/opinions", "Who You Can Follow")}

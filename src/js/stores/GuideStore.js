@@ -106,7 +106,7 @@ class GuideStore extends FluxMapStore {
         };
 
       case "organizationFollow":
-      SupportActions.retrieveAllCounts();
+        SupportActions.positionsCountForAllBallotItems();  // Following one org can change the support/oppose count for many items
         id = action.res.organization_we_vote_id;
         return {
           ...state,
@@ -117,7 +117,7 @@ class GuideStore extends FluxMapStore {
         };
 
       case "organizationStopFollowing":
-      SupportActions.retrieveAllCounts();
+        SupportActions.positionsCountForAllBallotItems();
         id = action.res.organization_we_vote_id;
         return {
           ...state,

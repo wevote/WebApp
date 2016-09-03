@@ -78,8 +78,8 @@ class SupportStore extends FluxMapStore {
     switch (action.type) {
 
       case "voterAddressRetrieve":
-        SupportActions.retrieveAll();
-        SupportActions.retrieveAllCounts();
+        SupportActions.voterAllPositionsRetrieve();
+        SupportActions.positionsCountForAllBallotItems();
         return state;
 
       case "voterAllPositionsRetrieve":

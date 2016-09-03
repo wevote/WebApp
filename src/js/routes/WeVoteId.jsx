@@ -3,15 +3,15 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router";
 import Candidate from "./Ballot/Candidate";
 import LoadingWheel from "../components/LoadingWheel";
-import GuidePositionList from "./Guide/GuidePositionList";
+import GuidePositionList from "./Guide/PositionList";
 import OrganizationActions from "../actions/OrganizationActions";
 import PositionListForFriends from "./Guide/PositionListForFriends";
-import TwitterActions from "../actions/TwitterActions";
-import TwitterStore from "../stores/TwitterStore";
+import WeVoteIdActions from "../actions/WeVoteIdActions";
+import WeVoteIdStore from "../stores/WeVoteIdStore";
 import UnknownTwitterAccount from "./Guide/UnknownTwitterAccount";
 import VoterStore from "../stores/VoterStore";
 
-export default class NotFound extends Component {
+export default class WeVoteId extends Component {
   static propTypes = {
     params: PropTypes.object
   };
@@ -22,15 +22,15 @@ export default class NotFound extends Component {
   }
 
   componentDidMount () {
-    TwitterActions.twitterIdentityRetrieve(this.props.params.twitter_handle);
-    this.twitterStoreListener = TwitterStore.addListener(this._onTwitterStoreChange.bind(this));
+    // WeVoteIdActions.twitterIdentityRetrieve(this.props.params.twitter_handle);
+    // this.twitterStoreListener = WeVoteIdStore.addListener(this._onWeVoteIdStoreChange.bind(this));
 
     this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
   componentWillReceiveProps (nextProps) {
-    TwitterActions.twitterIdentityRetrieve(nextProps.params.twitter_handle);
+    WeVoteIdActions.twitterIdentityRetrieve(nextProps.params.twitter_handle);
   }
 
   componentWillUnmount (){
@@ -38,10 +38,10 @@ export default class NotFound extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onTwitterStoreChange (){
+  _onWeVoteIdStoreChange (){
     let { kind_of_owner, owner_we_vote_id, twitter_handle, twitter_description, twitter_followers_count, twitter_name,
       twitter_photo_url, twitter_user_website,
-      status } = TwitterStore.get();
+      status } = WeVoteIdStore.get();
 
     this.setState({
       kind_of_owner: kind_of_owner,

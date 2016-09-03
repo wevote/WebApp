@@ -33,6 +33,18 @@ class BallotStore extends FluxMapStore {
     return this.getState().ballots[civicId].ballot_item_list;
   }
 
+  get currentBallotElectionName () {
+    if (!this.isLoaded()){ return undefined; }
+    let civicId = VoterStore.election_id();
+    return this.getState().ballots[civicId].election_name;
+  }
+
+  get currentBallotElectionDate () {
+    if (!this.isLoaded()){ return undefined; }
+    let civicId = VoterStore.election_id();
+    return this.getState().ballots[civicId].election_date;
+  }
+
   get bookmarks (){
     let civicId = VoterStore.election_id();
     if (!this.getState().ballots || !this.getState().ballots[civicId] ){ return undefined; }
