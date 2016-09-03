@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from "react";
 export default class PositionDropdown extends Component {
   static propTypes = {
     params: PropTypes.object,
-    removePosition: PropTypes.func.isRequired,
+    removePositionFunction: PropTypes.func.isRequired,
     positionIcon: PropTypes.object,
     positionText: PropTypes.string
   };
@@ -22,7 +22,7 @@ export default class PositionDropdown extends Component {
   }
 
   render () {
-    const {removePosition, positionIcon, positionText} = this.props;
+    const {removePositionFunction, positionIcon, positionText} = this.props;
     const onClick = this.state.open ? this.closeDropdown.bind(this) : this.openDropdown.bind(this);
 
     return <div className="btn-group open">
@@ -32,7 +32,7 @@ export default class PositionDropdown extends Component {
       {this.state.open &&
         <ul className="dropdown-menu">
           <li>
-            <a autoFocus onClick={removePosition} onBlur={this.closeDropdown.bind(this)}>
+            <a autoFocus onClick={removePositionFunction} onBlur={this.closeDropdown.bind(this)}>
                 Remove Position
             </a>
           </li>
