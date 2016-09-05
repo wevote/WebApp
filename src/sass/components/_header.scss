@@ -1,6 +1,7 @@
 .page-header {
   margin: 0 auto;
   max-width: $max-page-container-width - 2px;
+  position: relative;
   &--unpinned {
     transform: translateY(0px) !important;
   }
