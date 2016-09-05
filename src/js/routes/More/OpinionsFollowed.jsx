@@ -1,10 +1,9 @@
 import React, {Component, PropTypes } from "react";
-import { Link, browserHistory } from "react-router";
-import FollowingDropdown from "../../components/Navigation/followingDropdown";
+import { Link } from "react-router";
+import FollowingDropdown from "../../components/Navigation/FollowingDropdown";
 import GuideStore from "../../stores/GuideStore";
 import GuideActions from "../../actions/GuideActions";
 import VoterGuideItem from "../../components/VoterGuide/VoterGuideItem";
-import LoadingWheel from "../../components/LoadingWheel";
 
 /* VISUAL DESIGN HERE: https://invis.io/8F53FDX9G */
 

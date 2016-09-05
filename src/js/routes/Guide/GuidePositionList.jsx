@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from "react";
+import { Link } from "react-router";
+import { Button } from "react-bootstrap";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
@@ -17,19 +19,19 @@ export default class GuidePositionList extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { we_vote_id: this.props.params.we_vote_id };
+    this.state = { organization_we_vote_id: this.props.params.organization_we_vote_id };
   }
 
   componentDidMount (){
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
 
-    var { we_vote_id } = this.state;
+    var { organization_we_vote_id } = this.state;
 
-    OrganizationActions.retrieve(we_vote_id);
+    OrganizationActions.organizationRetrieve(organization_we_vote_id);
     // Positions for this organization, for this voter / election
-    OrganizationActions.retrievePositions(we_vote_id, true);
+    OrganizationActions.retrievePositions(organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
-    OrganizationActions.retrievePositions(we_vote_id, false, true);
+    OrganizationActions.retrievePositions(organization_we_vote_id, false, true);
 
     // Display the organization's name in the search box
     // var { organization } = this.state;
@@ -40,13 +42,13 @@ export default class GuidePositionList extends Component {
 
   componentWillReceiveProps (nextProps) {
     // When a new candidate is passed in, update this component to show the new data
-    this.setState({we_vote_id: nextProps.params.we_vote_id});
+    this.setState({organization_we_vote_id: nextProps.params.organization_we_vote_id});
 
-    OrganizationActions.retrieve(nextProps.params.we_vote_id);
+    OrganizationActions.organizationRetrieve(nextProps.params.organization_we_vote_id);
     // Positions for this organization, for this voter / election
-    OrganizationActions.retrievePositions(nextProps.params.we_vote_id, true);
+    OrganizationActions.retrievePositions(nextProps.params.organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
-    OrganizationActions.retrievePositions(nextProps.params.we_vote_id, false, true);
+    OrganizationActions.retrievePositions(nextProps.params.organization_we_vote_id, false, true);
 
     // Display the candidate's name in the search box
     // var { candidate } = this.state;
@@ -59,8 +61,8 @@ export default class GuidePositionList extends Component {
   }
 
   _onOrganizationStoreChange (){
-    var { we_vote_id } = this.state;
-    this.setState({ organization: OrganizationStore.get(we_vote_id)});
+    var { organization_we_vote_id } = this.state;
+    this.setState({ organization: OrganizationStore.get(organization_we_vote_id)});
   }
 
   render () {
@@ -68,13 +70,32 @@ export default class GuidePositionList extends Component {
       return <div>{LoadingWheel}</div>;
     }
 
-    const { position_list_for_one_election, position_list_for_all_except_one_election } = this.state.organization;
-    var { we_vote_id } = this.state;
-    // console.log("position list for one election:", position_list_for_one_election);
+    const { organization_id, position_list_for_one_election, position_list_for_all_except_one_election } = this.state.organization;
+
+    if (!organization_id) {
+      var floatRight = {
+        float: "right"
+      };
+      return <span>
+        <div className="card__container">
+          <div className="card__main">
+            <h4>Organization not Found</h4>
+          </div>
+          <div style={{margin: 10}}>
+            <span style={floatRight}>
+              <Link to="/opinions"><Button bsStyle="primary">Next &#x21AC;</Button></Link>
+            </span>
+            <p>Find voter guides you can follow. These voter guides have been created by nonprofits, public figures, your friends, and more.<br />
+            <br /></p>
+          </div>
+        </div>
+        </span>;
+    }
+    var { organization_we_vote_id } = this.state;
     return <span>
         <div className="card__container">
           <div className="card__main">
-            <FollowToggle we_vote_id={we_vote_id} />
+            <FollowToggle we_vote_id={organization_we_vote_id} />
             <OrganizationCard organization={this.state.organization} />
           </div>
           <ul className="list-group">
@@ -94,7 +115,7 @@ export default class GuidePositionList extends Component {
                     <br />
                     <h4>Positions for Other Elections</h4>
                   </span> :
-                  <span></span>
+                  null
                 }
                 { position_list_for_all_except_one_election.map( item => {
                   return <OrganizationPositionItem key={item.position_we_vote_id}

@@ -6,7 +6,7 @@ module.exports = {
     Dispatcher.loadEndpoint("voterSignOut", {sign_out_all_devices: false});
   },
 
-  retrieveVoter: function () {
+  voterRetrieve: function () {
     Dispatcher.loadEndpoint("voterRetrieve");
   },
 
@@ -21,6 +21,14 @@ module.exports = {
 
   retrieveAddress: function (id){
     Dispatcher.loadEndpoint("voterAddressRetrieve", { voter_device_id: id});
+  },
+
+  positionListForVoter: function (show_only_this_election, show_all_other_elections) {
+    Dispatcher.loadEndpoint("positionListForVoter",
+      {
+        show_only_this_election: show_only_this_election,
+        show_all_other_elections: show_all_other_elections
+      });
   },
 
   saveAddress: function (text){

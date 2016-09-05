@@ -43,7 +43,7 @@ class TwitterStore extends FluxMapStore {
 
       case "twitterIdentityRetrieve":
         if (action.res.kind_of_owner === "ORGANIZATION") {
-          OrganizationActions.retrieve(action.res.owner_we_vote_id);
+          OrganizationActions.organizationRetrieve(action.res.owner_we_vote_id);
         } else if (action.res.kind_of_owner === "CANDIDATE") {
           CandidateActions.retrieve(action.res.owner_we_vote_id);
         }

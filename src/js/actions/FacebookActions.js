@@ -20,12 +20,12 @@ module.exports = {
   appLogout: function (){
     cookies.setItem("voter_device_id", "", -1, "/");
     VoterActions.signOut();
-    VoterActions.retrieveVoter();
+    VoterActions.voterRetrieve();
   },
 
   login: function () {
     if (!web_app_config.FACEBOOK_APP_ID) {
-      console.log("Missing FACEBOOK_APP_ID from src/js/config.js")
+      console.log("Missing FACEBOOK_APP_ID from src/js/config.js");
     }
     window.FB.getLoginStatus(function (response) {
       if (response.status === "connected") {

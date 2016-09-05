@@ -5,6 +5,7 @@ export default class PositionInformationOnlySnippet extends Component {
     ballot_item_display_name: PropTypes.string,
     is_on_ballot_item_page: PropTypes.bool,
     is_on_edit_position_modal: PropTypes.bool,
+    is_looking_at_self: PropTypes.bool,
     more_info_url: PropTypes.string,
     speaker_display_name: PropTypes.string,
     statement_text: PropTypes.string,
@@ -18,12 +19,13 @@ export default class PositionInformationOnlySnippet extends Component {
     var alt;
     var positionLabel;
     var hasThisToSay;
+    var { is_looking_at_self } = this.props;
 
     stance_icon_src = "/img/global/icons/mixed-rating-icon.svg";
     className = "position-rating__icon position-rating__icon--mixed";
     alt = "Neutral Rating";
     positionLabel = "Information about";
-    hasThisToSay = "has this to say:";
+    hasThisToSay = is_looking_at_self ? "Your comment is this:" : "has this to say:";
     let stance_display_off = false;
     if (this.props.stance_display_off !== undefined) {
       stance_display_off = this.props.stance_display_off ? true : false;
@@ -56,7 +58,7 @@ export default class PositionInformationOnlySnippet extends Component {
             <span> {this.props.statement_text}</span>
             {/* if there's an external source for the explicit position/endorsement, show it */}
             {this.props.more_info_url ?
-              <span className="explicit-position__source"> (Source: {this.props.more_info_url})</span> :
+              <span className="explicit-position__source"> (view source)</span> :
               null }
           </span>
         }

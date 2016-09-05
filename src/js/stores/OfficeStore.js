@@ -15,14 +15,11 @@ class OfficeStore extends FluxMapStore {
     if (!action.res || !action.res.success)
       return state;
 
-      var key;
-
     switch (action.type) {
 
       case "officeRetrieve":
-        key = action.res.we_vote_id;
         console.log("officeRetrieve action.res", action.res);
-        var office = action.res || {};
+        let office = action.res || {};
         console.log("in OfficeStore, officeRetrieve office:", office);
         return {
           ...state,
@@ -31,14 +28,12 @@ class OfficeStore extends FluxMapStore {
 
 
       case "voterBallotItemsRetrieve":
-        key = action.res.google_civic_election_id;
-        var offices = {};
+        let offices = {};
         action.res.ballot_item_list.forEach(one_ballot_item =>{
           if (one_ballot_item.kind_of_ballot_item === "OFFICE") {
             offices[one_ballot_item.we_vote_id] = one_ballot_item;
           }
         });
-        console.log("In OfficeStore, voterBallotItemsRetrieve offices:", offices);
 
         return {
           ...state,

@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import FollowingDropdown from "../components/Navigation/followingDropdown";
+import FollowingDropdown from "../components/Navigation/FollowingDropdown";
 import GuideStore from "../stores/GuideStore";
 import SearchGuidesToFollowBox from "../components/SearchGuidesToFollowBox";
 import VoterStore from "../stores/VoterStore";

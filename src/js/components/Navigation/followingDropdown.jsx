@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 
-export default class followingDropdown extends Component {
+export default class FollowingDropdown extends Component {
   static propTypes = {
     params: PropTypes.object,
     following_type: PropTypes.string

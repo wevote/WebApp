@@ -14,7 +14,7 @@ export default class SearchAllBox extends Component {
     super(props);
     this.state = {
       search_results: []
-    }
+    };
   }
 
   componentDidMount (){

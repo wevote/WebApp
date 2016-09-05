@@ -26,13 +26,13 @@ export default class PositionSupportOpposeSnippet extends Component {
       className = "explicit-position__icon";
       alt = "Supports";
       positionLabel = is_looking_at_self ? "You Support" : "Supports";
-      isSupportedBy = "is Supported by";
+      isSupportedBy = is_looking_at_self ? "is Supported by You" : "is Supported by";
     } else if (this.props.is_oppose) {
       stance_icon_src = "/img/global/icons/thumbs-down-color-icon.svg";
       className = "explicit-position__icon";
       alt = "Opposes";
       positionLabel = is_looking_at_self ? "You Oppose" : "Opposes";
-      isSupportedBy = "is Opposed by";
+      isSupportedBy = is_looking_at_self ? "is Opposed by You" : "is Opposed by";
     } else {
       // We shouldn't be here. Do not display position information. See instead PositionInformationOnlySnippet.jsx
       return <span></span>;
@@ -68,8 +68,8 @@ export default class PositionSupportOpposeSnippet extends Component {
             <span> {this.props.statement_text}</span>
             {/* if there's an external source for the explicit position/endorsement, show it */}
             {this.props.more_info_url ?
-              <span className="explicit-position__source"> (Source: {this.props.more_info_url})</span> :
-              <span></span> }
+              <span className="explicit-position__source"> (view source)</span> :
+              null }
           </span>
         }
       </p>
