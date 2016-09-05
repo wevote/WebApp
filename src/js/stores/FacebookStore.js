@@ -63,7 +63,7 @@ class FacebookStore extends FluxMapStore {
         };
 
       case "facebookSignIn":
-        VoterActions.retrieveVoter();
+        VoterActions.voterRetrieve();
         return state;
 
       case "voterSignOut":

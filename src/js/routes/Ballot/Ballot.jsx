@@ -164,9 +164,11 @@ export default class Ballot extends Component {
       <div></div>;
 
     return <div className="ballot">
-      <div className="text-center"><BallotTitleDropdown ballot_type={this.getBallotType()} /></div>
-      <div className="text-center">Ballot for {election_date}</div>
       <h1 className="text-center">{election_name}</h1>
+      { election_date ?
+        <div className="text-center">Ballot for {election_date}</div> :
+        null }
+      <div className="text-center"><BallotTitleDropdown ballot_type={this.getBallotType()} /></div>
       {/* TO BE DISCUSSED ballot_caveat !== "" ?
         <div className="alert alert alert-info alert-dismissible" role="alert">
           <button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>

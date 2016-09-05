@@ -15,19 +15,19 @@ export default class PositionListForFriends extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { we_vote_id: this.props.params.we_vote_id };
+    this.state = { organization_we_vote_id: this.props.params.organization_we_vote_id };
   }
 
   componentDidMount (){
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
 
-    var { we_vote_id } = this.state;
+    var { organization_we_vote_id } = this.state;
 
-    OrganizationActions.retrieve(we_vote_id);
+    OrganizationActions.organizationRetrieve(organization_we_vote_id);
     // Positions for this organization, for this voter / election
-    OrganizationActions.retrieveFriendsPositions(we_vote_id, true);
+    OrganizationActions.retrieveFriendsPositions(organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
-    OrganizationActions.retrieveFriendsPositions(we_vote_id, false, true);
+    OrganizationActions.retrieveFriendsPositions(organization_we_vote_id, false, true);
 
     // Display the organization's name in the search box
     // var { organization } = this.state;
@@ -38,13 +38,13 @@ export default class PositionListForFriends extends Component {
 
   componentWillReceiveProps (nextProps) {
     // When a new candidate is passed in, update this component to show the new data
-    this.setState({we_vote_id: nextProps.params.we_vote_id});
+    this.setState({organization_we_vote_id: nextProps.params.organization_we_vote_id});
 
-    OrganizationActions.retrieve(nextProps.params.we_vote_id);
+    OrganizationActions.organizationRetrieve(nextProps.params.organization_we_vote_id);
     // Positions for this organization, for this voter / election
-    OrganizationActions.retrieveFriendsPositions(nextProps.params.we_vote_id, true);
+    OrganizationActions.retrieveFriendsPositions(nextProps.params.organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
-    OrganizationActions.retrieveFriendsPositions(nextProps.params.we_vote_id, false, true);
+    OrganizationActions.retrieveFriendsPositions(nextProps.params.organization_we_vote_id, false, true);
 
     // Display the candidate's name in the search box
     // var { candidate } = this.state;
@@ -57,8 +57,8 @@ export default class PositionListForFriends extends Component {
   }
 
   _onOrganizationStoreChange (){
-    var { we_vote_id } = this.state;
-    this.setState({ organization: OrganizationStore.get(we_vote_id)});
+    var { organization_we_vote_id } = this.state;
+    this.setState({ organization: OrganizationStore.get(organization_we_vote_id)});
   }
 
   render () {
@@ -67,12 +67,12 @@ export default class PositionListForFriends extends Component {
     }
 
     const { friends_position_list_for_one_election, friends_position_list_for_all_except_one_election } = this.state.organization;
-    var { we_vote_id } = this.state;
+    var { organization_we_vote_id } = this.state;
 
     return <span>
         <div className="card__container">
           <div className="card__main">
-            <FollowToggle we_vote_id={we_vote_id} />
+            <FollowToggle we_vote_id={organization_we_vote_id} />
             <OrganizationCard organization={this.state.organization} />
           </div>
           <ul className="list-group">

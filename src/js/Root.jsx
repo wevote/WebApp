@@ -6,43 +6,35 @@ import cookies from "./utils/cookies";
 import Application from "./Application";
 
 /****************************** ROUTE-COMPONENTS ******************************/
-/* Intro */
-import Intro from "./routes/Intro/Intro";
-import IntroContests from "./routes/Intro/IntroContests";
-import IntroOpinions from "./routes/Intro/IntroOpinions";
-
-/* Settings */
-import ClaimYourPage from "./routes/Settings/ClaimYourPage";
-import Location from "./routes/Settings/Location";
-import SettingsDashboard from "./routes/Settings/SettingsDashboard";
-import Settings from "./routes/Settings/Settings";
-
-/* Pages that use Ballot Navigation */
-import BallotIndex from "./routes/Ballot/BallotIndex";
-import Ballot from "./routes/Ballot/Ballot";
-import Bookmarks from "./components/Bookmarks/Bookmarks";
-import Candidate from "./routes/Ballot/Candidate";
-import EmptyBallot from "./routes/Ballot/EmptyBallot";
-import Measure from "./routes/Ballot/Measure";
-import Office from "./routes/Ballot/Office";
-
-/* Ballot Off-shoot Pages */
-import GuidePositionList from "./routes/Guide/GuidePositionList"; // A list of all positions from one guide
-import Opinions from "./routes/Opinions"; // More opinions about anything on the ballot
-
-/* More */
 import About from "./routes/More/About";
 import Activity from "./routes/Activity";
 import AddFriends from "./routes/AddFriends";
+import Ballot from "./routes/Ballot/Ballot";
+import BallotIndex from "./routes/Ballot/BallotIndex";
+import Bookmarks from "./components/Bookmarks/Bookmarks";
+import Candidate from "./routes/Ballot/Candidate";
+import ClaimYourPage from "./routes/Settings/ClaimYourPage";
 import Connect from "./routes/Connect";
 import EmailBallot from "./routes/More/EmailBallot";
+import EmptyBallot from "./routes/Ballot/EmptyBallot";
+import GuidePositionList from "./routes/Guide/GuidePositionList"; // A list of all positions from one guide
+import Intro from "./routes/Intro/Intro";
+import IntroContests from "./routes/Intro/IntroContests";
+import IntroOpinions from "./routes/Intro/IntroOpinions";
+import Location from "./routes/Settings/Location";
+import Measure from "./routes/Ballot/Measure";
 import NotFound from "./routes/NotFound";
+import Office from "./routes/Ballot/Office";
+import Opinions from "./routes/Opinions"; // More opinions about anything on the ballot
 import OpinionsFollowed from "./routes/More/OpinionsFollowed";
 import Privacy from "./routes/More/Privacy";
 import Requests from "./routes/Requests";
+import Settings from "./routes/Settings/Settings";
+import SettingsDashboard from "./routes/Settings/SettingsDashboard";
 import SignIn from "./routes/More/SignIn";
 import TwitterSignInProcess from "./routes/Process/TwitterSignInProcess";
 import VerifyThisIsMe from "./routes/Guide/VerifyThisIsMe";
+import YourPage from "./routes/YourPage";
 
 const firstVisit = !cookies.getItem("voter_device_id");
 
@@ -81,7 +73,8 @@ const routes = () =>
     <Route path="/more/privacy" component={Privacy} />
 
     {/* Voter Guide Pages */}
-    <Route path="/voterguide/:we_vote_id" component={GuidePositionList} />
+    <Route path="/voterguide/:organization_we_vote_id" component={GuidePositionList} />
+    <Route path="/yourpage" component={YourPage} />
 
     <Route path="ballot" component={BallotIndex}>
       <IndexRoute component={Ballot}/>

@@ -54,6 +54,54 @@ class VoterStore extends FluxMapStore {
   reduce (state, action) {
 
     switch (action.type) {
+      case "organizationSave":
+        // If an organization saves, we want to check to see if it is tied to this voter. If so,
+        // refresh the voter data so we have the value linked_organization_we_vote_id in the voter object.
+        if (action.res.success) {
+          if (action.res.facebook_id === state.voter.facebook_id) {
+            VoterActions.voterRetrieve();
+          } else {
+            let organization_twitter_handle = action.res.organization_twitter_handle !== undefined ? action.res.organization_twitter_handle : "";
+            let twitter_screen_name = state.voter.twitter_screen_name !== undefined ? state.voter.twitter_screen_name : "";
+            if (organization_twitter_handle && organization_twitter_handle.toLowerCase() === twitter_screen_name.toLowerCase()) {
+              VoterActions.voterRetrieve();
+            }
+          }
+        }
+        return state;
+
+      case "positionListForVoter":
+        if (action.res.show_only_this_election) {
+          var position_list_for_one_election = action.res.position_list;
+          return {
+            ...state,
+            voter: {
+              ...state.voter,
+              position_list_for_one_election: position_list_for_one_election
+            }
+          };
+        } else if (action.res.show_all_other_elections) {
+          var position_list_for_all_except_one_election = action.res.position_list;
+          return {
+            ...state,
+            voter: {
+              ...state.voter,
+              position_list_for_all_except_one_election: position_list_for_all_except_one_election
+            }
+          };
+        } else {
+          var position_list = action.res.position_list;
+          return {
+            ...state,
+            voter: {
+              ...state.voter,
+              position_list: position_list
+            }
+          };
+        }
+        return {
+          ...state
+        };
 
       case "voterRetrieve":
         let voter_device_id = action.res.voter_device_id;

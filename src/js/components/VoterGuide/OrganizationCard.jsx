@@ -52,7 +52,9 @@ export default class OrganizationCard extends Component {
               null
             }
             &nbsp;&nbsp;
-            <a href={organization_website} target="_blank">Website</a><br />
+            { organization_website ?
+              <span><a href={organization_website} target="_blank">Website</a><br /></span> :
+              null }
             {/*5 of your friends follow Organization Name<br />*/}
             {/*
             <strong>2016 General Election, November 2nd</strong>
