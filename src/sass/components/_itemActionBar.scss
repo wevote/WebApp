@@ -3,8 +3,8 @@
 }
 
 .candidate-card-position-public-toggle {
-  position: absolute;
-  right: 15px;
+  flex-grow: 10; // arbitrary value large enough to fill space
+  text-align: right;
 
 }
 
