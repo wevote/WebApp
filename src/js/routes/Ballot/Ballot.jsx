@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 import { browserHistory, Link } from "react-router";
 import BallotItem from "../../components/Ballot/BallotItem";
+import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 import BallotStore from "../../stores/BallotStore";
 import BallotTitleDropdown from "../../components/Navigation/BallotTitleDropdown";
 import LoadingWheel from "../../components/LoadingWheel";
@@ -122,8 +123,8 @@ export default class Ballot extends Component {
 
   render () {
     const ballot = this.state.ballot;
+    var voter_address = VoterStore.getAddress();
     if (!ballot) {
-      var voter_address = VoterStore.getAddress();
       if (voter_address.length === 0) {
         return <div className="ballot">
           <div className="text-center">
@@ -162,12 +163,18 @@ export default class Ballot extends Component {
         {emptyBallotButton}
       </div> :
       <div></div>;
+    
+    let show_expanded_ballot_items = false;
 
     return <div className="ballot">
       <h1 className="text-center">{election_name}</h1>
-      { election_date ?
-        <div className="text-center">Ballot for {election_date}</div> :
-        null }
+      <div className="text-center">
+        { election_date ?
+          <span>Ballot for {election_date}, </span> :
+          null }
+        {voter_address}
+        <span> (<Link to="/settings/location">edit</Link>)</span>
+      </div>
       <div className="text-center"><BallotTitleDropdown ballot_type={this.getBallotType()} /></div>
       {/* TO BE DISCUSSED ballot_caveat !== "" ?
         <div className="alert alert alert-info alert-dismissible" role="alert">
@@ -176,8 +183,9 @@ export default class Ballot extends Component {
         </div> : null
       */}
       {emptyBallot}
-      {
-        ballot.map( (item) => <BallotItem key={item.we_vote_id} {...item} />)
+      { show_expanded_ballot_items ?
+        ballot.map( (item) => <BallotItem key={item.we_vote_id} {...item} />):
+        ballot.map( (item) => <BallotItemCompressed key={item.we_vote_id} {...item} />)
       }
       </div>;
   }
