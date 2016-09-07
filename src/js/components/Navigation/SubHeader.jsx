@@ -11,7 +11,7 @@ export default class SubHeader extends Component {
 
   render () {
     var moreOpinionsLink = "/opinions";
-    return <section className="container-fluid ballotList-bg fluff-tight--full separate-bottom">
+    return <section className="container-fluid ballotList-bg fluff-none separate-bottom">
           <div className="row">
             <Link
               to="/friends/add"
