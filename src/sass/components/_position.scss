@@ -2,6 +2,7 @@
 
 @include media-object('.position-item', '.position-item__avatar', '.position-item__content');
 
+
 .position-item {
   @include list-item-card;
 
@@ -19,6 +20,9 @@
     top: 17px;
   }
 
+  &__list-group {
+    @include list-item-group;
+  }
 }
 
 .position-item__avatar {

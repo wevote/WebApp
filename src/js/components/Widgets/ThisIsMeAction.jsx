@@ -63,7 +63,7 @@ export default class ThisIsMeAction extends Component {
         {signed_in_with_this_twitter_account ?
           <span></span> :
           <Link to={`/verifythisisme/${twitter_handle_being_viewed}`}>
-            <Button bsStyle="primary">
+            <Button bsStyle="link">
               {this_is_me_action_text}
             </Button>
           </Link>

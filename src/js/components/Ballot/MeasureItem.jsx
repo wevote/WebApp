@@ -46,60 +46,53 @@ export default class MeasureItem extends Component {
     measure_subtitle = capitalizeString(measure_subtitle);
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
-    return <div className="measure-card__container">
-      <div className="measure-card">
-        <div className="measure-card__media-object">
-          <div className="measure-card__media-object-anchor">
+    return <div className="card__main">
+      <div className="card__content">
+        {
+          supportProps && supportProps.is_support ?
+          <img src="/img/global/icons/thumbs-up-color-icon.svg" className="card__position-icon" width="20" height="20" /> : null
+        }
+        {
+          supportProps && supportProps.is_oppose ?
+          <img src="/img/global/icons/thumbs-down-color-icon.svg" className="card__position-icon" width="20" height="20" /> : null
+        }
+        <h2 className="card__display-name">
+          { this.props.link_to_ballot_item_page ?
+            <Link to={measureLink}>{ballot_item_display_name}</Link> :
+              ballot_item_display_name
+          }
+        </h2>
+        <StarAction we_vote_id={we_vote_id} type="MEASURE"/>
 
+        <div className={ this.props.link_to_ballot_item_page ?
+                "cursor-pointer" : null }
+              onClick={ this.props.link_to_ballot_item_page ?
+                goToMeasureLink : null }>{measure_subtitle}</div>
+          { this.props.measure_text ?
+            <div className="measure_text">{measure_text}</div> :
+            null }
+
+        <div className="row" style={{ paddingBottom: "0.5rem" }}>
+          <div className="col-xs-12">
           </div>
-          <div className="measure-card__media-object-content">
-            {
-              supportProps && supportProps.is_support ?
-              <img src="/img/global/icons/thumbs-up-color-icon.svg" className="measure-card__position-icon" width="20" height="20" /> : null
-            }
-            {
-              supportProps && supportProps.is_oppose ?
-              <img src="/img/global/icons/thumbs-down-color-icon.svg" className="measure-card__position-icon" width="20" height="20" /> : null
-            }
-            <h2 className="measure-card__display-name">
-              { this.props.link_to_ballot_item_page ?
-                <Link to={measureLink}>{ballot_item_display_name}</Link> :
-                  ballot_item_display_name
-              }
-            </h2>
-            <StarAction we_vote_id={we_vote_id} type="MEASURE"/>
-
-            <div className={ this.props.link_to_ballot_item_page ?
-                    "cursor-pointer" : null }
-                  onClick={ this.props.link_to_ballot_item_page ?
-                    goToMeasureLink : null }>{measure_subtitle}</div>
-              { this.props.measure_text ?
-                <div className="measure_text">{measure_text}</div> :
-                null }
-
-            <div className="row" style={{ paddingBottom: "0.5rem" }}>
-              <div className="col-xs-12">
-              </div>
-            </div>
-              <span className={ this.props.link_to_ballot_item_page ?
-                      "cursor-pointer" :
-                      null }
-                    onClick={ this.props.link_to_ballot_item_page ?
-                      goToMeasureLink :
-                      null }
-              >
-                  <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps} transitioning={transitioning} type="MEASURE" />
-                </span>
-              </div> {/* END .measure-card__media-object-content */}
-            </div> {/* END .measure-card__media-object */}
-            <div className="measure-card__actions">
-              <ItemActionBar ballot_item_we_vote_id={we_vote_id} supportProps={supportProps} transitioniing={transitioning} type="MEASURE" />
-              <ItemPositionStatementActionBar ballot_item_we_vote_id={we_vote_id}
-                                              ballot_item_display_name={ballot_item_display_name}
-                                              supportProps={supportProps}
-                                              transitioniing={transitioning}
-                                              type="MEASURE" />
-            </div>
+        </div>
+          <span className={ this.props.link_to_ballot_item_page ?
+                  "cursor-pointer" :
+                  null }
+                onClick={ this.props.link_to_ballot_item_page ?
+                  goToMeasureLink :
+                  null }
+          >
+              <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps} transitioning={transitioning} type="MEASURE" />
+            </span>
+          </div> {/* END .card__content */}
+          <div className="card__actions">
+            <ItemActionBar ballot_item_we_vote_id={we_vote_id} supportProps={supportProps} transitioniing={transitioning} type="MEASURE" />
+            <ItemPositionStatementActionBar ballot_item_we_vote_id={we_vote_id}
+                                            ballot_item_display_name={ballot_item_display_name}
+                                            supportProps={supportProps}
+                                            transitioniing={transitioning}
+                                            type="MEASURE" />
           </div>
         </div>;
       }

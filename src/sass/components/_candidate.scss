@@ -18,6 +18,10 @@
     margin-bottom: 1em;
   }
 
+  &__list-group {
+    @include list-item-group;
+  }
+
   &__media-object-anchor {
     width: 50px;
     display: flex;
