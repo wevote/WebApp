@@ -111,7 +111,7 @@ export default class NotFound extends Component {
     } else if (this.state.kind_of_owner === "TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE"){
       return <UnknownTwitterAccount {...this.state} />;
     } else {
-      return <div className="container-fluid well u-gutter-top--small fluff-full1">
+      return <div className="container-fluid well u-gutter__top--small fluff-full1">
               <h3>Claim Your Page</h3>
                 <div className="medium">
                   We were not able to find an account for this

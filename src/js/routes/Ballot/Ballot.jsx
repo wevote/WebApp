@@ -158,12 +158,12 @@ export default class Ballot extends Component {
         </span>;
 
     const emptyBallot = ballot.length === 0 ?
-      <div className="container-fluid well u-gutter-top--small fluff-full1">
+      <div className="container-fluid well u-gutter__top--small fluff-full1">
         <h3 className="text-center">{this.emptyMsg()}</h3>
         {emptyBallotButton}
       </div> :
       <div></div>;
-    
+
     let show_expanded_ballot_items = false;
 
     return <div className="ballot">

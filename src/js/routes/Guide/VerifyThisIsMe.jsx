@@ -173,7 +173,7 @@ export default class VerifyThisIsMe extends Component {
         }
       </div>;
     } else {
-      return <div className="container-fluid well u-gutter-top--small fluff-full1">
+      return <div className="container-fluid well u-gutter__top--small fluff-full1">
               <h3>Could Not Confirm</h3>
                 <div className="small">We were not able to find an account for this
                   Twitter Handle{ this.props.params.twitter_handle ?

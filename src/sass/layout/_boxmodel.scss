@@ -31,17 +31,17 @@
 
 // Margin
 .u-gutter {
-  &-left {
+  &__left {
     &--window {
       margin-left: 1em;
     }
   }
-  &-right {
+  &__right {
     &--window {
       margin-right: 1em;
     }
   }
-  &-top {
+  &__top {
     &--small {
       margin-top: 1em;
     }
@@ -49,11 +49,11 @@
 }
 
 // Border
-.separate {
-  &-bottom {
+.u-separate {
+  &__bottom {
     border-bottom: 1px solid $border-gray;
   }
-  &-top {
+  &__top {
     border-top: 1px solid $border-gray;
   }
 }
