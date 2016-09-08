@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from "react";
 import NavigatorInFooter from "./components/Navigation/NavigatorInFooter";
 import MoreMenu from "./components/Navigation/MoreMenu";
 import HeaderBar from "./components/Navigation/HeaderBar";
-import SubHeader from "./components/Navigation/SubHeader";
 import VoterStore from "./stores/VoterStore";
 import StarActions from "./actions/StarActions";
 import VoterActions from "./actions/VoterActions";
@@ -97,7 +96,6 @@ export default class Application extends Component {
       <Headroom>
         <header className="page-header">
           <HeaderBar pathname={pathname} voter={voter} />
-          <SubHeader ballotItemWeVoteId={ballotItemWeVoteId} />
         </header>
       </Headroom>
       <div className="container-fluid">
