@@ -55,8 +55,7 @@
   }
 }
 
-
-@media all and (max-width: 661px) {
+@include breakpoints(max nav) {
   .device {
     &-headericons--large {
       display: none;

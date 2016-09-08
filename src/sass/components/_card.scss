@@ -25,7 +25,7 @@
     display: inline-block;
     font-size: 18px;
     margin-bottom: .5rem;
-    @media (min-width: 480px) {
+    @include breakpoints(mid-small) {
       font-size: 24px;
     }
   }
