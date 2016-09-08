@@ -2,29 +2,58 @@ $icon-color-base: #999999;
 $icon-color-active: #337ab7;
 $icon-color-hover: #777777;
 
-.header-navicon {
-  color: $icon-color-base;
+.header-nav {
+  @include breakpoints(max nav){
+    display: none;
+  }
+  display: flex;
+
+  &__label {
+    display: block;
+    font-size: 10px
+  }
+
+  &__item {
+    display: block;
+    width: 60px;
+    margin-top: -.5em; // temporary offsets for .page-header__container padding
+    margin-bottom: -.5em;
+    padding: 8px 10px;
+    color: #fff;
+    opacity: .8;
+    text-align: center;
+
+    &:active,
+    &.active-icon,
+    &:focus,
+    &:hover {
+      color: #fff;
+      opacity: 1;
+      text-decoration: none;
+    }
+
+    &:active,
+    &.active-icon {
+      background-color: rgba(0,0,0,.1);
+    }
+
+    &:hover {
+      background-color: rgba(0,0,0,.3);
+    }
+  }
 }
 
-.header-navicon:active, .active-icon {
-  color:$icon-color-active;
-}
+.footer-nav {
+  &__icon {
+    color: $icon-color-base;
 
-.header-navicon:hover {
-  text-decoration: underline;
-}
+    &:active,
+    .active-icon {
+      color: $icon-color-active;
+    }
 
-.footer-navicon {
-  color: $icon-color-base;
-}
-
-.footer-navicon:active, .active-icon {
-  color:$icon-color-active;
-}
-
-.footer-navicon:hover .bs-text-center {
-  text-decoration: underline;
-}
-.extra-small {
-  font-size: 10px;
+    &:hover .text-center {
+      text-decoration: underline;
+    }
+  }
 }

@@ -8,7 +8,7 @@ const links = {
     var icon = "glyphicon glyphicon-list-alt glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
-      <Link to="/ballot" className={ "footer-navicon" + (active ? " active-icon" : "")}>
+      <Link to="/ballot" className={ "footer-nav__item" + (active ? " active-icon" : "")}>
         <div className="col-xs-3 center-block text-center">
           <span className={icon} title="Ballot" />
           <br/>
@@ -26,7 +26,7 @@ const links = {
     var icon = "glyphicon glyphicon-inbox glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
-      <Link to="/requests" className={ "footer-navicon" + (active ? " active-icon" : "")}>
+      <Link to="/requests" className={ "footer-nav__item" + (active ? " active-icon" : "")}>
         <div className="col-xs-3 center-block text-center">
           <span className={icon} title="Requests" />
           <br/>
@@ -43,7 +43,7 @@ const links = {
     var icon = "glyphicon icon-icon-connect-1-3 font-footer_icon";
 
     var jsx =
-      <Link to="/more/connect" className={ "footer-navicon" + (active ? " active-icon" : "")}>
+      <Link to="/more/connect" className={ "footer-nav__item" + (active ? " active-icon" : "")}>
         <div className="col-xs-3 center-block text-center">
           <span className={icon} title="Connect" />
           <br/>
@@ -60,7 +60,7 @@ const links = {
     var icon = "glyphicon icon-icon-activity-1-4 font-footer_icon";
 
     var jsx =
-      <Link to="/activity" className={ "footer-navicon" + (active ? " active-icon" : "")}>
+      <Link to="/activity" className={ "footer-nav__item" + (active ? " active-icon" : "")}>
         <div className="col-xs-3 center-block text-center">
           <span className={icon} title="Activity" />
           <br/>
@@ -84,17 +84,13 @@ export default class NavigatorInFooter extends Component {
     var { ballot, requests, connect, activity } = links;
 
     const navigator =
-      <div className="navigator row">
-        <div className="container-fluid">
-          <div className="navbar navbar-default navbar-fixed-bottom">
-            <div className="container-fluid fluff-loose--top separate-top">
-              <div className="row">
-                {ballot(pathname === "/ballot")}
-                {requests(pathname === "/requests")}
-                {connect(pathname === "/more/connect")}
-                {activity(pathname === "/activity")}
-              </div>
-            </div>
+      <div className="navbar navbar-default navbar-fixed-bottom footer-nav">
+        <div className="container-fluid fluff-loose--top u-separate__top">
+          <div className="row">
+            {ballot(pathname === "/ballot")}
+            {requests(pathname === "/requests")}
+            {connect(pathname === "/more/connect")}
+            {activity(pathname === "/activity")}
           </div>
         </div>
       </div>;
