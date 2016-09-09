@@ -47,7 +47,7 @@ export default class VerifyThisIsMe extends Component {
 
   _onVoterStoreChange () {
     console.log("Entering _onVoterStoreChange");
-    this.setState({ voter: VoterStore.voter() });
+    this.setState({ voter: VoterStore.getVoter() });
   }
 
   _onOrganizationStoreChange (){

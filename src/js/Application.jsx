@@ -69,7 +69,7 @@ export default class Application extends Component {
 
   _onChange () {
     this.setState({
-      voter: VoterStore.voter(),
+      voter: VoterStore.getVoter(),
       location: VoterStore.getAddress()
     });
   }

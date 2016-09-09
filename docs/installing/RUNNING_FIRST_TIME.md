@@ -21,8 +21,7 @@ should work as-is for new developers.
     (WebAppEnv) $ cd /Users/<YOUR NAME HERE>/MyProjects/WebApp
     (WebAppEnv) $ npm -g install gulp-cli      // try sudo if it does not work
     (WebAppEnv) $ npm install
-    (WebAppEnv) $ gulp
-    (WebAppEnv) $ npm rebuild node-sass
+    (WebAppEnv) $ npm start
 
 You should be able to visit WebApp here:
 

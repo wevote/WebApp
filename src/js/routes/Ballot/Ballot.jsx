@@ -184,7 +184,7 @@ export default class Ballot extends Component {
       */}
       {emptyBallot}
       { show_expanded_ballot_items ?
-        ballot.map( (item) => <BallotItem key={item.we_vote_id} {...item} />):
+        ballot.map( (item) => <BallotItem key={item.we_vote_id} {...item} />) :
         ballot.map( (item) => <BallotItemCompressed key={item.we_vote_id} {...item} />)
       }
       </div>;

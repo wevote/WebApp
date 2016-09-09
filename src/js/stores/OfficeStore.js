@@ -4,10 +4,14 @@ const assign = require("object-assign");
 
 class OfficeStore extends FluxMapStore {
   getOffice (office_we_vote_id) {
-      // if (!this.isLoaded()){ return undefined; }
-      console.log("in getOffice, office_we_vote_id and office:", office_we_vote_id, this.getState().office[office_we_vote_id]);
-      return this.getState().office[office_we_vote_id];
+    // if (!this.isLoaded()){ return undefined; }
+    let office_list = this.getState().offices;
+    if (office_list) {
+      return office_list[office_we_vote_id];
+    } else {
+      return undefined;
     }
+  }
 
   reduce (state, action) {
 
@@ -18,12 +22,10 @@ class OfficeStore extends FluxMapStore {
     switch (action.type) {
 
       case "officeRetrieve":
-        console.log("officeRetrieve action.res", action.res);
-        let office = action.res || {};
-        console.log("in OfficeStore, officeRetrieve office:", office);
+        let office = action.res;
         return {
           ...state,
-          office: assign({}, state.office, office )
+          offices: assign({}, state.offices, office )
         };
 
 

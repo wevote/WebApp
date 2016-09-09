@@ -15,7 +15,7 @@ export default class YourPage extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {voter: VoterStore.voter()};
+    this.state = {voter: VoterStore.getVoter()};
   }
 
   componentWillMount () {
@@ -62,7 +62,7 @@ export default class YourPage extends Component {
   }
 
   _onVoterStoreChange () {
-    this.setState({ voter: VoterStore.voter() });
+    this.setState({ voter: VoterStore.getVoter() });
   }
 
   render () {
@@ -83,7 +83,7 @@ export default class YourPage extends Component {
     }
 
     return <div>
-      <div className="container-fluid well u-gutter-top--small fluff-full1">
+      <div className="container-fluid well u-gutter__top--small fluff-full1">
         <h4 className="text-center">
           Enter your Twitter handle to create a public voter guide.
         </h4>
