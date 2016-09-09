@@ -14,7 +14,7 @@ class VoterStore extends FluxMapStore {
     };
   }
 
-  voter (){
+  getVoter (){
     return this.getState().voter;
   }
 

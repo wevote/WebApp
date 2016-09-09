@@ -56,7 +56,7 @@ export default class OrganizationPositionItem extends Component {
   }
 
   _onVoterStoreChange () {
-    this.setState({ voter: VoterStore.voter() });
+    this.setState({ voter: VoterStore.getVoter() });
   }
 
   closeEditPositionModal () {

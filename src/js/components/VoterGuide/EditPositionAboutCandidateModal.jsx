@@ -64,7 +64,7 @@ export default class EditPositionAboutCandidateModal extends Component {
   }
 
   _onVoterStoreChange () {
-    this.setState({voter: VoterStore.voter()});
+    this.setState({voter: VoterStore.getVoter()});
   }
 
   _onOrganizationStoreChange () {

@@ -1,17 +1,11 @@
 import React, { Component, PropTypes } from "react";
-// import CandidateActions from "../../actions/CandidateActions";
-import CandidateItem from "../../components/Ballot/CandidateItem";
-import CandidateStore from "../../stores/CandidateStore";
-import GuideList from "../../components/VoterGuide/GuideList";
-import GuideStore from "../../stores/GuideStore";
-// import OfficeActions from "../../actions/OfficeActions";
-// import OfficeStore from "../../stores/OfficeStore";
-import PositionList from "../../components/Ballot/PositionList";
-import ThisIsMeAction from "../../components/Widgets/ThisIsMeAction";
-import VoterStore from "../../stores/VoterStore";
+import CandidateList from "../../components/Ballot/CandidateList";
+import LoadingWheel from "../../components/LoadingWheel";
+import OfficeActions from "../../actions/OfficeActions";
+import OfficeItem from "../../components/Ballot/OfficeItem";
+import OfficeStore from "../../stores/OfficeStore";
 import { exitSearch } from "../../utils/search-functions";
 
-// TODO DALE Convert to work for an Office
 export default class Office extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired
@@ -19,72 +13,72 @@ export default class Office extends Component {
 
   constructor (props) {
     super(props);
-    this.office_we_vote_id = this.props.params.office_we_vote_id;
-    this.state = {candidate: {}, office: {} };
+    this.state = {office: {}, office_we_vote_id: this.props.params.office_we_vote_id };
   }
 
   componentDidMount (){
-    this.candidateStoreListener = CandidateStore.addListener(this._onChange.bind(this));
-    // this.officeStoreListener = OfficeStore.addListener(this._onChange.bind(this));
+    this.officeStoreListener = OfficeStore.addListener(this._onOfficeStoreChange.bind(this));
+    let office = OfficeStore.getOffice(this.state.office_we_vote_id);
+		if ( !office || !office.ballot_item_display_name ) {
+      OfficeActions.officeRetrieve(this.state.office_we_vote_id);
+    } else {
+      this.setState({office: office})
+    }
+    exitSearch("");
+  }
 
-    // OfficeActions.retrieve(this.office_we_vote_id);
+  componentWillReceiveProps (nextProps) {
+    // When a new office is passed in, update this component to show the new data
+    let office = OfficeStore.getOffice(nextProps.params.office_we_vote_id);
+		if ( !office || !office.ballot_item_display_name ) {
+      this.setState({office_we_vote_id: nextProps.params.office_we_vote_id});
+      OfficeActions.officeRetrieve(nextProps.params.office_we_vote_id);
+    } else {
+      this.setState({office: office, office_we_vote_id: nextProps.params.office_we_vote_id})
+    }
 
+    // Display the office name in the search box
+    // var { candidate } = this.state;
+    // var searchBoxText = candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
     exitSearch("");
   }
 
   componentWillUnmount () {
-    this.candidateStoreListener.remove();
-    // this.officeStoreListener.remove();
-
+    this.officeStoreListener.remove();
   }
 
-  _onChange (){
-    var candidate = CandidateStore.get(this.we_vote_id) || {};
-    this.setState({ candidate: candidate, guideToFollowList: GuideStore.toFollowListForBallotItem() });
-
-    // if (candidate.contest_office_we_vote_id){
-    //   this.setState({ office: OfficeStore.getOffice(candidate.contest_office_we_vote_id) || {} });
-    // }
-
+  _onOfficeStoreChange (){
+    var office = OfficeStore.getOffice(this.state.office_we_vote_id);
+    this.setState({ office: office });
   }
 
   render () {
-    const electionId = VoterStore.election_id();
-    const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to follow about this candidate or measure.";
-    var { candidate, office, guideToFollowList } = this.state;
+    var { office } = this.state;
 
-    if (!candidate.ballot_item_display_name){
+    if (!office || !office.ballot_item_display_name){
+      // TODO DALE If the office_we_vote_id is not valid, we need to update this with a notice
       return <div className="container-fluid well u-gutter__top--small fluff-full1">
-              <h3>This Office Not Found</h3>
-        NOTE: The We Vote team is still building support for Offices.
-                <div className="small">We were not able to find that office.
-                  Please search again.</div>
-                <br />
-            </div>;
+          <div>{LoadingWheel}</div>
+          <br />
+        </div>;
     }
 
     return <span>
-        <section className="candidate-card__container">
-          <CandidateItem {...candidate} contest_office_name={office.ballot_item_display_name}/>
-          <div className="candidate-card__additional">
-            { candidate.position_list ?
+        <section className="office-card__container">
+          <OfficeItem we_vote_id={office.we_vote_id}
+                      kind_of_ballot_item="OFFICE"
+                      ballot_item_display_name={office.ballot_item_display_name} />
+          <div className="office-card__additional">
+            { office.candidate_list ?
               <div>
-                <PositionList position_list={candidate.position_list}
-                              ballot_item_display_name={candidate.ballot_item_display_name} />
+                <CandidateList children={office.candidate_list}
+                               contest_office_name={office.ballot_item_display_name} />
               </div> :
               null
-            }
-            {guideToFollowList.length === 0 ?
-              <p className="candidate-card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
-              <div><h3 className="candidate-card__additional-heading">{"More opinions about " + candidate.ballot_item_display_name}</h3>
-              <GuideList id={electionId} ballotItemWeVoteId={this.office_we_vote_id} organizationsToFollow={guideToFollowList}/></div>
             }
           </div>
         </section>
         <br />
-        <ThisIsMeAction twitter_handle_being_viewed={candidate.twitter_handle}
-                        name_being_viewed={candidate.ballot_item_display_name}
-                        kind_of_owner="POLITICIAN" />
         <br />
       </span>;
 

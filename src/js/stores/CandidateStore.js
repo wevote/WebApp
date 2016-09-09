@@ -2,6 +2,7 @@ var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
 const assign = require("object-assign");
 import OfficeActions from "../actions/OfficeActions";
+import OfficeStore from "../stores/OfficeStore";
 
 class CandidateStore extends FluxMapStore {
 
@@ -18,7 +19,13 @@ class CandidateStore extends FluxMapStore {
 
       case "candidateRetrieve":
         key = action.res.we_vote_id;
-        OfficeActions.retrieve(action.res.contest_office_we_vote_id);
+        // Make sure we have information for the office the candidate is running for
+        if (action.res.contest_office_we_vote_id) {
+          let office = OfficeStore.getOffice(action.res.contest_office_we_vote_id);
+          if (!office || !office.ballot_item_display_name) {
+            OfficeActions.officeRetrieve(action.res.contest_office_we_vote_id);
+          }
+        }
         merged_properties = assign({}, state.get(key), action.res );
         return state.set(key, merged_properties );
 

@@ -79,7 +79,7 @@ export default class TwitterSignInProcess extends Component {
   }
 
   _onVoterStoreChange () {
-    this.setState({ voter: VoterStore.voter() });
+    this.setState({ voter: VoterStore.getVoter() });
   }
 
   twitterSignInStart (return_url) {

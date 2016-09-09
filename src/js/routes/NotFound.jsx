@@ -57,7 +57,7 @@ export default class NotFound extends Component {
   }
 
   _onVoterStoreChange () {
-    this.setState({ voter: VoterStore.voter() });
+    this.setState({ voter: VoterStore.getVoter() });
   }
 
   organizationCreateFromTwitter (new_twitter_handle) {
