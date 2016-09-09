@@ -55,8 +55,7 @@
   }
 }
 
-
-@media all and (max-width: 661px) {
+@include breakpoints(max nav) {
   .device {
     &-headericons--large {
       display: none;
@@ -75,23 +74,6 @@
         display: block;
         margin-top: 10px;
       }
-    }
-    &-headericons { // device-headericons
-      &--large {
-        background: transparent;
-        border-color: #fff;
-        display: inline-block;
-        height: 45px;
-        left: auto;
-        position: absolute;
-        right: 0;
-        top: 0px;
-
-        .separate-top {
-          border-top: none;
-        }
-      }
-
     }
     &-icon {
       &--large {
@@ -121,8 +103,6 @@
 
 @include breakpoints($max-page-container-width) {
   #app {
-    border-right: 1px solid $border-gray;
-    border-left: 1px solid $border-gray;
     margin: 0 auto;
   }
 }

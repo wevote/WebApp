@@ -8,40 +8,40 @@
 
 // Padding
 .fluff-loose--full {
-    padding: 1.5em;
+  padding: 1.5em;
 }
 
 .fluff-tight--full {
-    padding: .75em;
+  padding: .75em;
 }
 
 .fluff-loose--top {
-    padding-top: 1.5em;
+  padding-top: 1.5em;
 }
 
 .fluff-full1 {
-    padding: 1em;
+  padding: 1em;
 }
 
-@media all and (min-width: 480px) {
-    .fluff-loose--top {
-        padding-top: .8em;
-    }
+@include breakpoints(mid-small) {
+  .fluff-loose--top {
+    padding-top: .8em;
+  }
 }
 
 // Margin
 .u-gutter {
-  &-left {
+  &__left {
     &--window {
       margin-left: 1em;
     }
   }
-  &-right {
+  &__right {
     &--window {
       margin-right: 1em;
     }
   }
-  &-top {
+  &__top {
     &--small {
       margin-top: 1em;
     }
@@ -49,11 +49,11 @@
 }
 
 // Border
-.separate {
-  &-bottom {
+.u-separate {
+  &__bottom {
     border-bottom: 1px solid $border-gray;
   }
-  &-top {
+  &__top {
     border-top: 1px solid $border-gray;
   }
 }

@@ -4,7 +4,7 @@ import TwitterHandleBox from "../../components/Twitter/TwitterHandleBox";
 export default class ClaimYourPage extends Component {
   render () {
     return <div>
-      <div className="container-fluid well u-gutter-top--small fluff-full1">
+      <div className="container-fluid well u-gutter__top--small fluff-full1">
         <h3 className="text-center">
           Claim Your Page
         </h3>

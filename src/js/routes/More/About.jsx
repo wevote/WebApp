@@ -13,7 +13,7 @@ export default class About extends Component {
 
   render () {
     return <div>
-        <div className="container-fluid well u-gutter-top--small fluff-full1">
+        <div className="container-fluid well u-gutter__top--small fluff-full1">
           <h3 className="text-center">About We Vote</h3>
           <p>
             We Vote USA is nonprofit and nonpartisan. For more information, please

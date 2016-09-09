@@ -23,7 +23,7 @@ export default class Connect extends Component {
 			float: "right"
 		};
 		return <div>
-			<div className="container-fluid well u-gutter-top--small fluff-full1">
+			<div className="container-fluid well u-gutter__top--small fluff-full1">
 				<h4 className="text-left">Add Friends</h4>
 				<span style={floatRight}>
 					<Link to="/friends/add"><Button bsStyle="primary">Next &#x21AC;</Button></Link>

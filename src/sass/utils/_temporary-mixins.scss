@@ -10,7 +10,14 @@ $default-box-shadow: 0 1px 2px rgba(#000, .2);
   background-color: #fff;
   border-radius: 2px;
   box-shadow: $default-box-shadow;
+  margin-bottom: 20px;
   @include micro-clearfix;
+@include breakpoints(max mid-small){
+    margin-right: -15px;
+    margin-bottom: 10px;
+    margin-left: -15px;
+    border-radius: 0;
+  }
 }
 
 @mixin list-item-card() {
@@ -42,6 +49,14 @@ $default-box-shadow: 0 1px 2px rgba(#000, .2);
   }
 }
 
+// list container/group
+@mixin list-item-group {
+  padding: 0;
+  margin: 0;
+  @include breakpoints(max mid-small){
+    padding: 0 15px;
+  }
+}
 
 // container for org 'follow' buttons and twitter count
 @mixin list-item-additional {
@@ -50,7 +65,7 @@ $default-box-shadow: 0 1px 2px rgba(#000, .2);
   @include breakpoints(medium) {
     flex-direction: column;
     padding-left: 1em;
-    margin-top: auto;
+    margin-top: inherit;
     text-align: right;
   }
 }

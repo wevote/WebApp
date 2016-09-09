@@ -1,7 +1,7 @@
 /*=============================================================================
     This file contains all styles related to the footer of the app
 =============================================================================*/
-@media all and (min-width : 661px) {
+@include breakpoints(nav) {
     .navbar-fixed-bottom {
         position: absolute;
     }

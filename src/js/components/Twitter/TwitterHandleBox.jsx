@@ -69,7 +69,7 @@ export default class TwitterHandleBox extends Component {
         />
         </form>
 
-        <div className="u-gutter-top--small">
+        <div className="u-gutter__top--small">
           <ButtonToolbar bsClass="btn-toolbar">
             <span style={floatRight}>
               <Button

@@ -8,14 +8,11 @@ const links = {
     var icon = "glyphicon glyphicon-list-alt glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
-      <Link to="/ballot" className={ "header-navicon" + (active ? " active-icon" : "")}>
-        <div className="col-xs-3 center-block text-center small">
-          <span className={icon} title="Ballot" />
-          <br/>
-          <span className="text-center extra-small">
-            Ballot
+      <Link to="/ballot" className={ "header-nav__item" + (active ? " active-icon" : "")}>
+        <span className={icon} title="Ballot" />
+        <span className="header-nav__label">
+          Ballot
           </span>
-        </div>
       </Link>;
 
     return jsx;
@@ -26,14 +23,11 @@ const links = {
     var icon = "glyphicon glyphicon-inbox glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
-      <Link to="/requests" className={ "header-navicon" + (active ? " active-icon" : "")}>
-        <div className="col-xs-3 center-block text-center small">
-          <span className={icon} title="Requests" />
-          <br/>
-          <span className="text-center extra-small">
-            Requests
+      <Link to="/requests" className={ "header-nav__item" + (active ? " active-icon" : "")}>
+        <span className={icon} title="Requests" />
+        <span className="header-nav__label">
+          Requests
           </span>
-        </div>
       </Link>;
 
     return jsx;
@@ -43,14 +37,11 @@ const links = {
     var icon = "glyphicon icon-icon-connect-1-3 glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
-      <Link to="/more/connect" className={ "header-navicon" + (active ? " active-icon" : "")}>
-        <div className="col-xs-3 center-block text-center small">
-          <span className={icon} title="Connect" />
-          <br/>
-          <span className="text-center extra-small">
-            Connect
+      <Link to="/more/connect" className={ "header-nav__item" + (active ? " active-icon" : "")}>
+        <span className={icon} title="Connect" />
+        <span className="header-nav__label">
+          Connect
           </span>
-        </div>
       </Link>;
 
     return jsx;
@@ -60,14 +51,11 @@ const links = {
     var icon = "glyphicon icon-icon-activity-1-4 glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
-      <Link to="/activity" className={ "header-navicon" + (active ? " active-icon" : "")}>
-        <div className="col-xs-3 center-block text-center small">
-          <span className={icon} title="Activity" />
-          <br/>
-          <span className="text-center extra-small">
-            Activity
+      <Link to="/activity" className={ "header-nav__item" + (active ? " active-icon" : "")}>
+        <span className={icon} title="Activity" />
+        <span className="header-nav__label">
+          Activity
           </span>
-        </div>
       </Link>;
 
     return jsx;
@@ -83,19 +71,11 @@ export default class NavigatorInHeader extends Component {
     var { props: { pathname } } = this;
     var { ballot, requests, connect, activity } = links;
     const navigator =
-      <div className="navigator row">
-        <div className="container-fluid">
-          <div className="device-headericons--large">
-            <div className="container-fluid fluff-loose--top separate-top">
-              <div className="row">
-                {ballot(pathname === "/ballot")}
-                {requests(pathname === "/requests")}
-                {connect(pathname === "/more/connect")}
-                {activity(pathname === "/activity")}
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="header-nav">
+        {ballot(pathname === "/ballot")}
+        {requests(pathname === "/requests")}
+        {connect(pathname === "/more/connect")}
+        {activity(pathname === "/activity")}
       </div>;
 
       return navigator;

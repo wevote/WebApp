@@ -1,14 +1,122 @@
+
+.headroom {
+  &--pinned {
+    box-shadow: 0 2px 4px rgba(0,0,0, .2);
+  }
+}
+
 .page-header {
+  // required overrides for Bootstrap :(
+  margin: 0;
+  padding-bottom: 0;
+  border: none;
+
+  &__container {
+    background-color: $brand-color;
+    // border-bottom: 1px solid $border-gray;
+    padding: .5em;
+  }
+
+  @include micro-clearfix;
+  padding-bottom: 0; // override to avoid Bootstrap collision
   margin: 0 auto;
-  max-width: $max-page-container-width - 2px;
+  max-width: $max-page-container-width;
   position: relative;
-  &--unpinned {
-    transform: translateY(0px) !important;
+
+  &__content { // additional element to exclue Burger Menu element
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+  }
+
+  &__search {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 100%;
   }
 }
 
 .page-logo {
-  @include breakpoints(max nav) {
-    padding-left: 10px;
+  white-space: nowrap;
+  margin: 0 1em 0 0; // zeros to override Bootstrap h4
+  margin-top: -.5em;
+  margin-bottom: -.5em;
+  padding: 10px 8px;
+  &,
+  &:hover,
+  &:focus,
+  &:active {
+    color: #fff;
+    text-decoration: none;
+  }
+  &:hover {
+    text-shadow: 0 0 3px rgba(255, 255, 255, .3);
+  }
+
+  &__version {
+    color: #fff;
+    opacity: .5;
+    font-size: 0.7em;
+    margin-left: .3em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  @include breakpoints(max mid-small) {
+    display: none;
+  }
+
+  @include breakpoints(mid-small) {
+    display: block;
+  }
+}
+
+.site-search {
+  padding: 0 1em;
+
+  &__input-field {
+    border: none; // override Bootstrap
+  }
+
+  &__button {
+    border: none; // override Bootstrap
+    height: 34px;
+  }
+}
+
+.search-container {
+  background: #fff;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, .2);
+  margin: 0 1em;
+  position: absolute;
+  top: 36px;
+  right: 0;
+  left: 0;
+  min-width: 80%;
+  z-index: 1;
+
+  &__hidden {
+    display: none !important;
+  }
+
+  &__results {
+    background: #fff;
+    margin-bottom: .5em;
+    padding: .75em;
+
+    &:hover {
+      background: #d9edf7;
+    }
+  }
+
+  &__links {
+    display: block;
+    font-size: 1.25rem;
+
+    &:hover {
+      text-decoration: none;
+    }
   }
 }

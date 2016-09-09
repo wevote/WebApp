@@ -10,8 +10,8 @@
 
 .item-actionbar {
   display: flex;
-  border-top: 1px solid #DDD;
-  margin: 1em 0 0;
+  border-top: 1px solid $lighter-gray;
+  margin: 1em 0;
   padding-top: 10px;
 
   &__btn {

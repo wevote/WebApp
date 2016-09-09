@@ -98,7 +98,7 @@ export default class GuidePositionList extends Component {
             <FollowToggle we_vote_id={organization_we_vote_id} />
             <OrganizationCard organization={this.state.organization} />
           </div>
-          <ul className="list-group">
+          <ul className="card__list-group">
             { position_list_for_one_election ?
               position_list_for_one_election.map( item => {
                 return <OrganizationPositionItem key={item.position_we_vote_id}
@@ -112,8 +112,7 @@ export default class GuidePositionList extends Component {
               <span>
                 { position_list_for_all_except_one_election.length ?
                   <span>
-                    <br />
-                    <h4>Positions for Other Elections</h4>
+                    <h4 className="card__additional-heading">Positions for Other Elections</h4>
                   </span> :
                   null
                 }

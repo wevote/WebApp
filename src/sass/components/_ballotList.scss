@@ -1,5 +1,6 @@
 .ballot-section {
   position: relative;
+  margin-bottom: 1em;
 
   &__display-name {
     font-size: 24px;
@@ -27,7 +28,6 @@
     margin-bottom: 15px;
     padding-bottom: 0;
   }
-
 }
 
 .ballotList-bg {

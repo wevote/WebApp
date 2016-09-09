@@ -50,7 +50,7 @@ $darker-gray: #333 !default;
 
 /// Main brand color
 /// @type Color
-$brand-color: #E50050 !default;
+$brand-color: #4F5F6F !default;
 
 /// Link color
 /// @type Color
@@ -86,7 +86,8 @@ $breakpoints: (
   'small': 320px,
   'mid-small': 480px,
   'medium': 768px,
-  'large': 1024px,
+  'large': 960px,
+  'wide': 1024px,
   'nav': 695px
 ) !default;
 

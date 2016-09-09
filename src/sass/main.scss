@@ -2,34 +2,34 @@
 
 // 1. Configuration and helpers
 @import
-  './utils/_variables',
-  './utils/_functions',
-  './utils/_mixins',
-  './utils/_temporary-mixins',
-  './utils/_app';
+  './utils/variables',
+  './utils/functions',
+  './utils/mixins',
+  './utils/temporary-mixins',
+  './utils/app';
 
 // 2. Vendors
 @import
-  './vendor/_normalize',
-  './vendor/_vendors',
+  './vendor/normalize',
+  './vendor/vendors',
   './vendor/react-burger-menu',
-  './vendor/_react-bootstrap-toggle',
+  './vendor/react-bootstrap-toggle',
   './utils/bootstrap-react-overrides';
 
 // 3. Base stuff
 @import
-  './base/_base',
-  './base/_fonts',
-  './base/_typography',
-  './base/_helpers';
+  './base/base',
+  './base/fonts',
+  './base/typography',
+  './base/helpers';
 
 // 4. Layout-related sections
 @import
-  './layout/_root',
-  './layout/_boxmodel',
-  './layout/_header',
-  './layout/_footer',
-  './layout/_lists';
+  './layout/root',
+  './layout/boxmodel',
+  './layout/header',
+  './layout/footer',
+  './layout/lists';
 
 // 5. Elements
 @import
@@ -40,27 +40,27 @@
 // 6. Components
 @import
   './components/card',
-  './components/_badges',
-  './components/_ballotList',
-  './components/_ballotTitleDropdown',
-  './components/_itemActionBar',
-  './components/_itemPositionStatementActionBar',
-  './components/_measure',
-  './components/_office',
-  './components/_candidate',
-  './components/_followingDropdown',
-  './components/_starAction',
-  './components/_position',
-  './components/_navigator',
-  './components/_ignore',
-  './components/_organization',
-  './components/_header',
-  './components/_opinions',
+  './components/badges',
+  './components/ballotList',
+  './components/ballotTitleDropdown',
+  './components/itemActionBar',
+  './components/itemPositionStatementActionBar',
+  './components/measure',
+  './components/office',
+  './components/candidate',
+  './components/followingDropdown',
+  './components/starAction',
+  './components/position',
+  './components/navigator',
+  './components/ignore',
+  './components/organization',
+  './components/header',
+  './components/opinions',
   './components/network-positions';
 
 // 7. Page-specific styles
 @import
-  './pages/_home';
+  './pages/home';
 
 // 8. Themes
 @import

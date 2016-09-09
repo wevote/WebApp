@@ -18,7 +18,7 @@ body {
     text-transform: uppercase;
 }
 
-@media all and (max-width: 480px) {
+@include breakpoints(max mid-small) {
     .link-text-to-opinions {
         font-size: .85em;
     }

@@ -23,8 +23,10 @@ export default class BallotItem extends Component {
   render () {
     return <div className="ballot-section" id={this.props.we_vote_id}>
         { this.isMeasure() ?
-          <MeasureItem {...this.props}
-                   link_to_ballot_item_page /> :
+          <div className="card__container">
+            <MeasureItem {...this.props}
+                     link_to_ballot_item_page />
+          </div> :
           <span>
             <h2 className="ballot-section__display-name">
               { this.props.ballot_item_display_name }

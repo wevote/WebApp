@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from "react";
 import NavigatorInFooter from "./components/Navigation/NavigatorInFooter";
 import MoreMenu from "./components/Navigation/MoreMenu";
 import HeaderBar from "./components/Navigation/HeaderBar";
-import SubHeader from "./components/Navigation/SubHeader";
 import VoterStore from "./stores/VoterStore";
 import StarActions from "./actions/StarActions";
 import VoterActions from "./actions/VoterActions";
@@ -95,22 +94,23 @@ export default class Application extends Component {
 
     return <div className="app-base" id="app-base-id">
       <Headroom>
-        <header className="page-header">
+        <div className="page-header__container">
           <HeaderBar pathname={pathname} voter={voter} />
-          <SubHeader ballotItemWeVoteId={ballotItemWeVoteId} />
-        </header>
+        </div>
       </Headroom>
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-xs-4 sidebar-menu">
-            { voter.signed_in_personal ? <MoreMenu {...voter} /> : <MoreMenu /> }
-          </div>
-          <div className="col-xs-8-container col-xs-8 container-main">
-            { this.props.children }
+      <div className="page-content-container">
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-xs-4 sidebar-menu">
+              { voter.signed_in_personal ? <MoreMenu {...voter} /> : <MoreMenu /> }
+            </div>
+            <div className="col-xs-8-container col-xs-8 container-main">
+              { this.props.children }
+            </div>
           </div>
         </div>
       </div>
-        <NavigatorInFooter pathname={pathname} />
+      <NavigatorInFooter pathname={pathname} />
     </div>;
   }
 }

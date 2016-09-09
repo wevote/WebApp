@@ -9,13 +9,14 @@
     width: 18px;
     height: 15px;
     float: left;
-    // left: 18px;
-    // top: 18px;
+    left: .5em;
+    top: .8em;
+    margin-right: 1em;
   }
 
   // Color/shape of burger icon bars
   .bm-burger-bars {
-    background: $darker-gray;
+    background: $lighter-gray;
   }
 
   // Position and sizing of clickable cross button
@@ -58,15 +59,18 @@
   // Wrapper for item list
   .bm-item-list {
     color: #b8b7ad;
-    padding: 0.8em;
+    padding: .5em 1em 1em calc(1em + 10px);
   }
 
   // Styling of overlay
   .bm-overlay {
     background: rgba(0, 0, 0, 0.7) !important;
-    margin-top: -15px; // offsets for container
-    margin-left: -15px; // offsets for container
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     height: 100vh !important; // override
+    z-index: 3 !important; // to cover site-search TODO: try using descriptive variables for z-index values
   }
 
 }

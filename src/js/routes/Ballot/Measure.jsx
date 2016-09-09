@@ -77,16 +77,15 @@ export default class Measure extends Component {
 
     if (!measure.ballot_item_display_name){
       // TODO DALE If the candidate measure_we_vote_id is not valid, we need to update this with a notice
-      return <div className="container-fluid well u-gutter-top--small fluff-full1">
+      return <div className="container-fluid well u-gutter__top--small fluff-full1">
                 <div>{LoadingWheel}</div>
                 <br />
             </div>;
     }
 
-    return <span>
-        <section className="measure-card__container">
+    return <section className="card__container">
           <MeasureItem {...measure} />
-          <div className="measure-card__additional">
+          <div className="card__additional">
             { measure.position_list ?
               <div>
                 <PositionList position_list={measure.position_list}
@@ -95,14 +94,12 @@ export default class Measure extends Component {
               null
             }
             {guideToFollowList.length === 0 ?
-              <p className="measure-card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
-              <div><h3 className="measure-card__additional-heading">{"More opinions about " + measure.ballot_item_display_name}</h3>
+              <p className="card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
+              <div><h3 className="card__additional-heading">{"More opinions about " + measure.ballot_item_display_name}</h3>
               <GuideList id={electionId} ballotItemWeVoteId={this.state.measure_we_vote_id} organizationsToFollow={guideToFollowList}/></div>
             }
           </div>
-        </section>
-        <br />
-      </span>;
+        </section>;
 
   }
 }

@@ -89,7 +89,7 @@ export default class PositionListForFriends extends Component {
                 { friends_position_list_for_all_except_one_election.length ?
                   <span>
                     <br />
-                    <h4>Positions for Other Elections</h4>
+                    <h4 className="card__additional-heading">Positions for Other Elections</h4>
                   </span> :
                   <span></span>
                 }

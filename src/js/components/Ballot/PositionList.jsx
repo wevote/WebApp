@@ -25,7 +25,7 @@ export default class PositionList extends Component {
   }
 
   render () {
-    return <div><ul className="list-group">
+    return <div><ul className="position-item__list-group">
       { this.state.position_list.map( item =>
           <PositionItem key={item.position_we_vote_id}
                         ballot_item_display_name={this.props.ballot_item_display_name}

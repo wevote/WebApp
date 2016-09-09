@@ -11,7 +11,6 @@ body {
 
 #app {
   min-height: 100%;
-  max-width: $max-page-container-width;
 }
 
 .container-main {
@@ -26,4 +25,11 @@ body {
 
 a {
   cursor: pointer;
+}
+
+
+// TODO: Breakout/move into a utility class partial/directory
+
+.u-hide {
+  display: none !important;
 }

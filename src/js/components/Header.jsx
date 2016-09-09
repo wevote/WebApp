@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
-import NavigatorInHeader from "./NavigatorInHeader";
-import FacebookActions from "../../actions/FacebookActions";
-import SearchAllBox from "../SearchAllBox";
+import NavigatorInHeader from "./Navigation/NavigatorInHeader";
+import FacebookActions from "../actions/FacebookActions";
+import SearchAllBox from "./SearchAllBox";
 var Icon = require("react-svg-icons");
 const ReactBurgerMenu = require("react-burger-menu").push;
 
@@ -12,7 +12,7 @@ var menuStyles = {
   }
 };
 
-export default class HeaderBar extends Component {
+export default class Header extends Component {
   static propTypes = {
     voter: PropTypes.object,
     pathname: PropTypes.string
@@ -74,9 +74,9 @@ export default class HeaderBar extends Component {
             }
             { !signed_in_twitter && !signed_in_facebook ?
               <li>
-                <Link onClick={this.hide.bind(this)} to="/yourpage">
+                <Link onClick={this.hide.bind(this)} to="/settings/claim">
                   <div>
-                    <span className="header-slide-out-menu-text-left">Your Page</span>
+                    <span className="header-slide-out-menu-text-left">Claim Your Page</span>
                   </div>
                 </Link>
               </li> :
