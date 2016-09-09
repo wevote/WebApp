@@ -42,22 +42,18 @@ export default class MeasureItemCompressed extends Component {
     measure_subtitle = capitalizeString(measure_subtitle);
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
-    return <div className="measure-card__container">
-      <div className="measure-card">
-        <div className="measure-card__media-object">
-          <div className="measure-card__media-object-anchor">
-
-          </div>
-          <div className="measure-card__media-object-content">
+    return <div className="card__container">
+      <div className="card__main measure-card">
+        <div className="card__content">
             {
               supportProps && supportProps.is_support ?
-              <img src="/img/global/icons/thumbs-up-color-icon.svg" className="measure-card__position-icon" width="20" height="20" /> : null
+              <img src="/img/global/icons/thumbs-up-color-icon.svg" className="card__position-icon" width="20" height="20" /> : null
             }
             {
               supportProps && supportProps.is_oppose ?
-              <img src="/img/global/icons/thumbs-down-color-icon.svg" className="measure-card__position-icon" width="20" height="20" /> : null
+              <img src="/img/global/icons/thumbs-down-color-icon.svg" className="card__position-icon" width="20" height="20" /> : null
             }
-            <h2 className="measure-card__display-name">
+            <h2 className="card__display-name">
               { this.props.link_to_ballot_item_page ?
                 <Link to={measureLink}>{ballot_item_display_name}</Link> :
                   ballot_item_display_name
@@ -69,16 +65,11 @@ export default class MeasureItemCompressed extends Component {
                     "cursor-pointer" : null }
                   onClick={ this.props.link_to_ballot_item_page ?
                     goToMeasureLink : null }>{measure_subtitle}</div>
-              { this.props.measure_text ?
-                <div className="measure_text">{measure_text}</div> :
-                null }
+            { this.props.measure_text ?
+              <div className="measure_text">{measure_text}</div> :
+              null }
 
-            <div className="row" style={{ paddingBottom: "0.5rem" }}>
-              <div className="col-xs-12">
-              </div>
-            </div>
-              </div> {/* END .measure-card__media-object-content */}
-            </div> {/* END .measure-card__media-object */}
+            </div> {/* END .card__content */}
           </div>
         </div>;
       }

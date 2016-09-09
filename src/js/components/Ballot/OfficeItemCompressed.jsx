@@ -37,22 +37,18 @@ export default class OfficeItemCompressed extends Component {
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
-    return <div className="office-card__container">
-      <div className="office-card">
-        <div className="office-card__media-object">
-          <div className="office-card__media-object-anchor">
-
-          </div>
-          <div className="office-card__media-object-content">
+    return <div className="card__container">
+      <div className="card__main office-card">
+        <div className="card__content">
             {
               supportProps && supportProps.is_support ?
-              <img src="/img/global/icons/thumbs-up-color-icon.svg" className="office-card__position-icon" width="20" height="20" /> : null
+              <img src="/img/global/icons/thumbs-up-color-icon.svg" className="card__position-icon" width="20" height="20" /> : null
             }
             {
               supportProps && supportProps.is_oppose ?
-              <img src="/img/global/icons/thumbs-down-color-icon.svg" className="office-card__position-icon" width="20" height="20" /> : null
+              <img src="/img/global/icons/thumbs-down-color-icon.svg" className="card__position-icon" width="20" height="20" /> : null
             }
-            <h2 className="office-card__display-name">
+            <h2 className="card__display-name">
               { this.props.link_to_ballot_item_page ?
                 <Link to={officeLink}>{ballot_item_display_name}</Link> :
                   ballot_item_display_name
@@ -68,13 +64,7 @@ export default class OfficeItemCompressed extends Component {
                 <span key={one_candidate.we_vote_id}>{one_candidate.ballot_item_display_name}. </span>)
               }
             </div>
-
-            <div className="row" style={{ paddingBottom: "0.5rem" }}>
-              <div className="col-xs-12">
-              </div>
-            </div>
-              </div> {/* END .office-card__media-object-content */}
-            </div> {/* END .office-card__media-object */}
+            </div> {/* END .card__content */}
           </div>
         </div>;
       }
