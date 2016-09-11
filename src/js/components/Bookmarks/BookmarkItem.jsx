@@ -15,12 +15,12 @@ export default class Bookmarks extends Component {
     } else { // Measures and Offices Link to anchor tag on ballot
       link = "/ballot#" + we_vote_id;
     }
-    return <div className="row position-item">
+    return <div className="position-item">
       <StarAction we_vote_id={we_vote_id} type={kind_of_ballot_item}/>
       <Link className="linkLight"
             to={link}
             onlyActiveOnIndex={false}>
-        <div className="row">
+        <div>
           {ballot_item_display_name}
         </div>
       </Link>

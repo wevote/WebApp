@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from "react";
-import { Button } from "react-bootstrap";
+import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { browserHistory, Link } from "react-router";
 import BallotItem from "../../components/Ballot/BallotItem";
 import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 import BallotStore from "../../stores/BallotStore";
-import BallotTitleDropdown from "../../components/Navigation/BallotTitleDropdown";
+import BallotFilter from "../../components/Navigation/BallotFilter";
 import LoadingWheel from "../../components/LoadingWheel";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
@@ -127,13 +127,11 @@ export default class Ballot extends Component {
     if (!ballot) {
       if (voter_address.length === 0) {
         return <div className="ballot">
-          <div className="text-center">
-            <h1>Please enter your address so we can find your ballot.<br /></h1>
-            <span>
-              <Link to="/settings/location">
-                  <Button bsStyle="primary">Enter an Address</Button>
-              </Link>
-            </span>
+          <div className="ballot__header">
+            <h1>Please enter your address so we can find your ballot.</h1>
+            <Link to="/settings/location">
+                <Button bsStyle="primary">Enter an Address</Button>
+            </Link>
           </div>
         </div>;
       } else {
@@ -162,20 +160,23 @@ export default class Ballot extends Component {
         <h3 className="text-center">{this.emptyMsg()}</h3>
         {emptyBallotButton}
       </div> :
-      <div></div>;
+      null;
+
+    const electionTooltip =  election_date ? <Tooltip id="tooltip">Ballot for {election_date}</Tooltip> : <span></span>;
 
     let show_expanded_ballot_items = false;
 
     return <div className="ballot">
-      <h1 className="text-center">{election_name}</h1>
-      <div className="text-center">
-        { election_date ?
-          <span>Ballot for {election_date}, </span> :
-          null }
-        {voter_address}
-        <span> (<Link to="/settings/location">edit</Link>)</span>
+      <div className="ballot__heading">
+        <OverlayTrigger placement="top" overlay={electionTooltip} >
+          <h1 className="ballot__election-name">{election_name}</h1>
+        </OverlayTrigger>
+        <p className="ballot__date_location">
+          {voter_address}
+          <span> (<Link to="/settings/location">Edit</Link>)</span>
+        </p>
+        <div className="ballot__filter"><BallotFilter ballot_type={this.getBallotType()} /></div>
       </div>
-      <div className="text-center"><BallotTitleDropdown ballot_type={this.getBallotType()} /></div>
       {/* TO BE DISCUSSED ballot_caveat !== "" ?
         <div className="alert alert alert-info alert-dismissible" role="alert">
           <button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
