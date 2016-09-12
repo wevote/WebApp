@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import NavigatorInHeader from "./Navigation/NavigatorInHeader";
 import FacebookActions from "../actions/FacebookActions";
 import SearchAllBox from "./SearchAllBox";
-var Icon = require("react-svg-icons");
+const Icon = require("react-svg-icons");
 const ReactBurgerMenu = require("react-burger-menu").push;
 
 var menuStyles = {
