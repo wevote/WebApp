@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import BallotStore from "../../stores/BallotStore";
-import BallotTitleDropdown from "../Navigation/BallotTitleDropdown";
+import BallotFilter from "../Navigation/BallotFilter";
 import BookmarkItem from "./BookmarkItem";
 import LoadingWheel from "../LoadingWheel";
 
@@ -32,17 +32,17 @@ export default class Bookmarks extends Component {
       return LoadingWheel;
     }
     return <div>
-      <div className="text-center"><BallotTitleDropdown ballot_type="BOOKMARKS" /></div>
+      <BallotFilter ballot_type="BOOKMARKS" />
       {
         bookmarks.length === 0 && <p>No bookmarks yet</p>
       }
-      <ul>
+      <div>
       {
         bookmarks.map(bookmark => {
           return <BookmarkItem key={bookmark.ballot_item_display_name} bookmark={bookmark}/>;
         })
       }
-      </ul>
+      </div>
       </div>;
   }
 }

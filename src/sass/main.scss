@@ -42,7 +42,6 @@
   './components/card',
   './components/badges',
   './components/ballotList',
-  './components/ballotTitleDropdown',
   './components/itemActionBar',
   './components/itemPositionStatementActionBar',
   './components/measure',
@@ -60,7 +59,8 @@
 
 // 7. Page-specific styles
 @import
-  './pages/home';
+  './pages/home',
+  './pages/ballot';
 
 // 8. Themes
 @import
