@@ -68,9 +68,9 @@ export default class MeasureItem extends Component {
                 "cursor-pointer" : null }
               onClick={ this.props.link_to_ballot_item_page ?
                 goToMeasureLink : null }>{measure_subtitle}</div>
-          { this.props.measure_text ?
+          {/* OFF FOR NOW -- HIDE MOST OF TEXT BY DEFAULT this.props.measure_text ?
             <div className="measure_text">{measure_text}</div> :
-            null }
+            null */}
 
         <div className="row" style={{ paddingBottom: "0.5rem" }}>
           <div className="col-xs-12">

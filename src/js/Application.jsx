@@ -81,7 +81,6 @@ export default class Application extends Component {
   render () {
     var { location: { pathname }} = this.props;
     var { voter, location } = this.state;
-    var ballotItemWeVoteId = ""; /* TODO Dale: Store the ballot item that is "on stage" in Ballot store? (wv02cand3) */
 
     if (voter === undefined || location === undefined ) {
       return <div style={loadingScreenStyles}>

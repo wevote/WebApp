@@ -162,7 +162,7 @@ export default class Ballot extends Component {
       </div> :
       null;
 
-    const electionTooltip =  election_date ? <Tooltip id="tooltip">Ballot for {election_date}</Tooltip> : <span></span>;
+    const electionTooltip = election_date ? <Tooltip id="tooltip">Ballot for {election_date}</Tooltip> : <span></span>;
 
     let show_expanded_ballot_items = false;
 

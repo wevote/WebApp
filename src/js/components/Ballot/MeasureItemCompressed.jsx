@@ -33,7 +33,7 @@ export default class MeasureItemCompressed extends Component {
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id), transitioning: false });
   }
   render () {
-    const { supportProps, transitioning } = this.state;
+    const { supportProps } = this.state;
     let { ballot_item_display_name, measure_subtitle,
           measure_text, we_vote_id } = this.props;
     let measureLink = "/measure/" + we_vote_id;
