@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { Button, ButtonToolbar, Input } from "react-bootstrap";
 import { browserHistory } from "react-router";
-import LoadingWheel from "../components/LoadingWheel";
-import VoterActions from "../actions/VoterActions";
-import VoterStore from "../stores/VoterStore";
+import LoadingWheel from "../LoadingWheel";
+import VoterActions from "../../actions/VoterActions";
+import VoterStore from "../../stores/VoterStore";
 
 /* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/89479679 */
 export default class AddFriends extends Component {
@@ -13,6 +13,8 @@ export default class AddFriends extends Component {
   constructor (props) {
       super(props);
       this.state = {
+        add_friends_message: "",
+        email_addresses: "",
         redirect_url_upon_save: "/friends/sign_in",
         loading: false,
         voter: {}
@@ -36,16 +38,22 @@ export default class AddFriends extends Component {
     browserHistory.push(this.state.redirect_url_upon_save);
   }
 
-  updateVoterAddress (e) {
+  cacheEmailAddresses (e) {
     this.setState({
-      voter_address: e.target.value
+      email_addresses: e.target.value
     });
   }
 
-  saveVoterAddress (e) {
+  cacheAddFriendsMessage (e) {
+    this.setState({
+      add_friends_message: e.target.value
+    });
+  }
+
+  sendFriendInvitationsByEmail (e) {
     e.preventDefault();
-    var { voter_address } = this.state;
-    VoterActions.saveAddress(voter_address);
+    var { email_addresses, add_friends_message } = this.state;
+    //VoterActions.sendFriendInvitationsByEmail(email_addresses, add_friends_message);
     this.setState({loading: true});
   }
 
@@ -57,21 +65,20 @@ export default class AddFriends extends Component {
     var floatRight = {
         float: "right"
     };
-    let voter_is_signed_in = voter !== undefined ? voter.signed_in_personal : false;
+    let has_valid_email = voter !== undefined ? voter.has_valid_email : false;
 
-    console.log("voter:", voter);
-		return <div className="container-fluid well u-gutter__top--small fluff-full1">
-      <h2 className="text-center">Add Friends</h2>
-      <form onSubmit={this.saveVoterAddress.bind(this)}>
+		return <div>
+      <form onSubmit={this.sendFriendInvitationsByEmail.bind(this)}>
       <div>
-        <Input type="text" addonBefore="@" name="email_address" className="form-control"
-             placeholder="Enter email addresses here, separated by commas" />
-        <div>These friends will see what you support, oppose, and which opinions you follow.
-          We will never sell your email.</div>
-        <br />
+        <Input type="text" addonBefore="@" name="email_address"
+               className="form-control"
+               onChange={this.cacheEmailAddresses.bind(this)}
+               placeholder="Enter email addresses here, separated by commas" />
         <label htmlFor="last-name">Include a Message <span className="small">(Optional)</span></label><br />
-        <input type="text" name="add_friends_message" className="form-control"
-             defaultValue="Please join me in preparing for the upcoming election." /><br />
+        <Input type="text" name="add_friends_message"
+               className="form-control"
+               onChange={this.cacheAddFriendsMessage.bind(this)}
+               defaultValue="Please join me in preparing for the upcoming election." />
       </div>
       </form>
 
@@ -79,14 +86,16 @@ export default class AddFriends extends Component {
         <ButtonToolbar bsClass="btn-toolbar">
           <span style={floatRight}>
             <Button
-              onClick={this.saveVoterAddress.bind(this)}
+              onClick={this.sendFriendInvitationsByEmail.bind(this)}
               bsStyle="primary">
-              { voter_is_signed_in ?
+              { has_valid_email ?
                 <span>Send &gt;</span> :
                 <span>Next &gt;</span>
               }
             </Button>
           </span>
+          <span>These friends will see what you support, oppose, and which opinions you follow.
+            We will never sell your email.</span>
         </ButtonToolbar>
       </div>
 		</div>;

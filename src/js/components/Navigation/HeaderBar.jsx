@@ -127,7 +127,7 @@ export default class HeaderBar extends Component {
       <div className="page-header__content">
         <Link to="/ballot" className="page-logo h4">
           We Vote
-          <span className="page-logo__version"> demo</span>
+          <span className="page-logo__version"> alpha</span>
         </Link>
         <SearchAllBox />
         <NavigatorInHeader pathname={pathname} />

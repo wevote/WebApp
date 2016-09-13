@@ -8,7 +8,6 @@ import Application from "./Application";
 /****************************** ROUTE-COMPONENTS ******************************/
 import About from "./routes/More/About";
 import Activity from "./routes/Activity";
-import AddFriends from "./routes/AddFriends";
 import Ballot from "./routes/Ballot/Ballot";
 import BallotIndex from "./routes/Ballot/BallotIndex";
 import Bookmarks from "./components/Bookmarks/Bookmarks";
@@ -60,7 +59,7 @@ const routes = () =>
     {/* Ballot Off-shoot Pages */}
     <Route path="/opinions" component={Opinions} />
     <Route path="/friends" >
-      <Route path="add" component={AddFriends} />
+      <Route path="add" component={Connect} />
       <Route path="remove" />
     </Route>
 
