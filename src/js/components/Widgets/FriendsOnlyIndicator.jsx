@@ -29,9 +29,9 @@ export default class FriendsOnlyIndicator extends Component {
 
     const tooltip = <Tooltip id="tooltip">{labelText}</Tooltip>;
 
-    const visibilityIndicator = (<OverlayTrigger placement="top" overlay={tooltip}>
+    const visibilityIndicator = <OverlayTrigger placement="top" overlay={tooltip}>
         <div className="visibility-indicator">{visibilityIcon}</div>
-      </OverlayTrigger>);
+      </OverlayTrigger>;
 
     return visibilityIndicator;
 	}

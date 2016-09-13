@@ -1,8 +1,11 @@
 import React, { Component } from "react";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Link } from "react-router";
 import BallotStore from "../../stores/BallotStore";
 import BallotFilter from "../Navigation/BallotFilter";
 import BookmarkItem from "./BookmarkItem";
 import LoadingWheel from "../LoadingWheel";
+import VoterStore from "../../stores/VoterStore";
 
 export default class Bookmarks extends Component {
   static propTypes = {
@@ -31,8 +34,22 @@ export default class Bookmarks extends Component {
     if (!bookmarks){
       return LoadingWheel;
     }
-    return <div>
-      <BallotFilter ballot_type="BOOKMARKS" />
+    var voter_address = VoterStore.getAddress();
+    const election_name = BallotStore.currentBallotElectionName;
+    const election_date = BallotStore.currentBallotElectionDate;
+    const electionTooltip = election_date ? <Tooltip id="tooltip">Ballot for {election_date}</Tooltip> : <span></span>;
+
+    return <div className="ballot">
+      <div className="ballot__heading">
+        <OverlayTrigger placement="top" overlay={electionTooltip} >
+          <h1 className="ballot__election-name">{election_name}</h1>
+        </OverlayTrigger>
+        <p className="ballot__date_location">
+          {voter_address}
+          <span> (<Link to="/settings/location">Edit</Link>)</span>
+        </p>
+        <div className="ballot__filter"><BallotFilter ballot_type="BOOKMARKS" /></div>
+      </div>
       {
         bookmarks.length === 0 && <p>No bookmarks yet</p>
       }

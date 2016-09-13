@@ -12,8 +12,10 @@ export default class Bookmarks extends Component {
     let link;
     if (kind_of_ballot_item === "CANDIDATE"){
       link = "/candidate/" + we_vote_id;
-    } else { // Measures and Offices Link to anchor tag on ballot
-      link = "/ballot#" + we_vote_id;
+    } else if (kind_of_ballot_item === "OFFICE"){
+      link = "/office/" + we_vote_id;
+    } else {
+      link = "/measure/" + we_vote_id;
     }
     return <div className="position-item">
       <StarAction we_vote_id={we_vote_id} type={kind_of_ballot_item}/>

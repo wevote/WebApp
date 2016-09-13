@@ -10,7 +10,7 @@ export function enterSearch () {
   // Hide the hamburger navigation and site name
   const siteLogoText = document.getElementsByClassName("page-logo")[0];
   siteLogoText.style.display = "none";
-  const searchBox = document.getElementsByClassName("page-header__search")[0];
+  // const searchBox = document.getElementsByClassName("page-header__search")[0];
   // Show the search box drop-down
   const searchResultsBox = document.getElementsByClassName("search-container")[0];
   searchResultsBox.style.display = "block";
@@ -31,7 +31,7 @@ export function exitSearch () {
   // Show the hamburger navigation and site name
   const siteLogoText = document.getElementsByClassName("page-logo")[0];
   siteLogoText.style.display = null;
-  const searchBox = document.getElementsByClassName("page-header__search")[0];
+  // const searchBox = document.getElementsByClassName("page-header__search")[0];
   // Hide the search box drop-down
   const searchResultsBox = document.getElementsByClassName("search-container")[0];
   searchResultsBox.style.display = "none";

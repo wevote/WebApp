@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
 import StarAction from "../../components/Widgets/StarAction";
-import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
 export default class OfficeItemCompressed extends Component {
