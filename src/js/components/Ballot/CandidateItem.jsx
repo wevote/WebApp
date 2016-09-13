@@ -84,7 +84,7 @@ export default class CandidateItem extends Component {
 
           {twitter_followers_count ?
             <span className={this.props.link_to_ballot_item_page ?
-                    "twitter-followers__badge cursor-pointer" :
+                    "twitter-followers__badge u-cursor--pointer" :
                     "twitter-followers__badge" }
                   onClick={ this.props.link_to_ballot_item_page ?
                     goToCandidateLink : null }
@@ -113,7 +113,7 @@ export default class CandidateItem extends Component {
           </h2>
           <StarAction we_vote_id={we_vote_id} type="CANDIDATE"/>
           <p className={this.props.link_to_ballot_item_page ?
-              "candidate-card__candidacy cursor-pointer" :
+              "candidate-card__candidacy u-cursor--pointer" :
               "candidate-card__candidacy"
             } onClick={this.props.link_to_ballot_item_page ?
               goToCandidateLink : null }
@@ -143,8 +143,8 @@ export default class CandidateItem extends Component {
           }
           {
             <span className={ this.props.link_to_ballot_item_page ?
-                    "candidate-card__network-positions cursor-pointer" :
-                    "candidate-card__network-positions" }
+                    "card__network-positions u-cursor--pointer" :
+                    "card__network-positions" }
                   onClick={ this.props.link_to_ballot_item_page ?
                     goToCandidateLink : null }
             >

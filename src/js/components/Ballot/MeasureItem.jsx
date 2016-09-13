@@ -65,7 +65,7 @@ export default class MeasureItem extends Component {
         <StarAction we_vote_id={we_vote_id} type="MEASURE"/>
 
         <div className={ this.props.link_to_ballot_item_page ?
-                "cursor-pointer" : null }
+                "u-cursor--pointer" : null }
               onClick={ this.props.link_to_ballot_item_page ?
                 goToMeasureLink : null }>{measure_subtitle}</div>
           {/* OFF FOR NOW -- HIDE MOST OF TEXT BY DEFAULT this.props.measure_text ?
@@ -77,7 +77,7 @@ export default class MeasureItem extends Component {
           </div>
         </div>
           <span className={ this.props.link_to_ballot_item_page ?
-                  "cursor-pointer" :
+                  "u-cursor--pointer" :
                   null }
                 onClick={ this.props.link_to_ballot_item_page ?
                   goToMeasureLink :

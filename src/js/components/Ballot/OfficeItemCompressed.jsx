@@ -36,7 +36,7 @@ export default class OfficeItemCompressed extends Component {
             <StarAction we_vote_id={we_vote_id} type="OFFICE"/>
 
             <div className={ this.props.link_to_ballot_item_page ?
-                    "cursor-pointer" : null }
+                    "u-cursor--pointer" : null }
                   onClick={ this.props.link_to_ballot_item_page ?
                     goToOfficeLink : null }>
               { this.props.candidate_list.map( (one_candidate) =>
