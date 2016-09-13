@@ -1,6 +1,6 @@
 import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
-import FollowingDropdown from "../../components/Navigation/FollowingDropdown";
+import FollowingFilter from "../../components/Navigation/FollowingFilter";
 import GuideStore from "../../stores/GuideStore";
 import GuideActions from "../../actions/GuideActions";
 import VoterGuideItem from "../../components/VoterGuide/VoterGuideItem";
@@ -52,7 +52,8 @@ export default class OpinionsFollowed extends Component {
 
   render () {
     return <div className="opinions-followed__container">
-      <FollowingDropdown following_type={this.getFollowingType()} />
+      <h1>Your Network</h1>
+      <FollowingFilter following_type={this.getFollowingType()} />
         <p>
           Organizations, public figures and other voters you currently follow. <em>We will never sell your email</em>.
         </p>

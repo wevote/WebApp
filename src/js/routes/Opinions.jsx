@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import FollowingDropdown from "../components/Navigation/FollowingDropdown";
+import FollowingFilter from "../components/Navigation/FollowingFilter";
 import GuideStore from "../stores/GuideStore";
 import SearchGuidesToFollowBox from "../components/SearchGuidesToFollowBox";
 import VoterStore from "../stores/VoterStore";
@@ -86,7 +86,8 @@ export default class Opinions extends Component {
 
     const content =
       <div className="opinion-view">
-        <FollowingDropdown following_type={this.getFollowingType()} />
+        <h1>Build Your Network</h1>
+        <FollowingFilter following_type={this.getFollowingType()} />
           {guides}
       </div>;
 
