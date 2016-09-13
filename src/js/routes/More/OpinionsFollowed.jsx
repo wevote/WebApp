@@ -51,14 +51,13 @@ export default class OpinionsFollowed extends Component {
   }
 
   render () {
-    return <div>
-      <div className="container-fluid opinions-followed__container">
-        <div className="text-center"><FollowingDropdown following_type={this.getFollowingType()} /></div>
-          <p>
-            Organizations, public figures and other voters you currently follow. See
-            also <Link to="/friends">your friends</Link>. We will never sell your email.
-          </p>
-        <div className="voter-guide-list">
+    return <div className="opinions-followed__container">
+      <FollowingDropdown following_type={this.getFollowingType()} />
+        <p>
+          Organizations, public figures and other voters you currently follow. <em>We will never sell your email</em>.
+        </p>
+      <div className="voter-guide-list card">
+        <div className="card-child__list-group">
           {
             this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length ?
             this.state.voter_guide_followed_list.map( item =>

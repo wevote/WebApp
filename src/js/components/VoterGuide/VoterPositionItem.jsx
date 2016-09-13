@@ -121,21 +121,21 @@ export default class VoterPositionItem extends Component {
       contest_office_name = position.contest_office_name;
       political_party = position.ballot_item_political_party;
     }
-    return <li className="position-item">
+    return <li className="position-item card-child">
       <StarAction we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
         <Link to={ ballotItemLink }
               onlyActiveOnIndex={false}>
           {/*<i className="icon-icon-add-friends-2-1 icon-light icon-medium" />*/}
           { is_candidate ?
             <ImageHandler
-              className="position-item__avatar"
+              className="card-child__avatar"
               imageUrl={position.ballot_item_image_url_https}
               alt="candidate-photo"
               kind_of_ballot_item={position.kind_of_ballot_item}/> :
             null
           }
         </Link>
-        <div className="position-item__content">
+        <div className="card-child__content">
           <Link to={ ballotItemLink }
                 onlyActiveOnIndex={false}>
             <span className="position-rating__candidate-name">{ballot_item_display_name}</span>

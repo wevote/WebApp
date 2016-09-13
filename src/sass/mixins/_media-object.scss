@@ -7,6 +7,7 @@
     #{unquote($container)} {
       display: flex;
       align-items: flex-start;
+      position: relative;
     }
     #{unquote($img)} {
       margin-right: $margin;

@@ -46,17 +46,17 @@ export default class MeasureItem extends Component {
     measure_subtitle = capitalizeString(measure_subtitle);
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
-    return <div className="card__main">
-      <div className="card__content">
+    return <div className="card-main">
+      <div className="card-main__content">
         {
           supportProps && supportProps.is_support ?
-          <img src="/img/global/icons/thumbs-up-color-icon.svg" className="card__position-icon" width="20" height="20" /> : null
+          <img src="/img/global/icons/thumbs-up-color-icon.svg" className="card-main__position-icon" width="20" height="20" /> : null
         }
         {
           supportProps && supportProps.is_oppose ?
-          <img src="/img/global/icons/thumbs-down-color-icon.svg" className="card__position-icon" width="20" height="20" /> : null
+          <img src="/img/global/icons/thumbs-down-color-icon.svg" className="card-main__position-icon" width="20" height="20" /> : null
         }
-        <h2 className="card__display-name">
+        <h2 className="card-main__display-name">
           { this.props.link_to_ballot_item_page ?
             <Link to={measureLink}>{ballot_item_display_name}</Link> :
               ballot_item_display_name
@@ -85,8 +85,8 @@ export default class MeasureItem extends Component {
           >
               <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps} transitioning={transitioning} type="MEASURE" />
             </span>
-          </div> {/* END .card__content */}
-          <div className="card__actions">
+          </div> {/* END .card-main__content */}
+          <div className="card-main__actions">
             <ItemActionBar ballot_item_we_vote_id={we_vote_id} supportProps={supportProps} transitioniing={transitioning} type="MEASURE" />
             <ItemPositionStatementActionBar ballot_item_we_vote_id={we_vote_id}
                                             ballot_item_display_name={ballot_item_display_name}

@@ -66,7 +66,7 @@ export default class CandidateItem extends Component {
     let goToCandidateLink = function () { browserHistory.push(candidateLink); };
     let candidate_photo_url_html;
     if (candidate_photo_url) {
-      candidate_photo_url_html = <ImageHandler className="candidate-card__photo"
+      candidate_photo_url_html = <ImageHandler className="card-main__avatar"
                                           imageUrl={candidate_photo_url}
                                           alt="candidate-photo"
                                           kind_of_ballot_item="CANDIDATE" />;
@@ -74,9 +74,9 @@ export default class CandidateItem extends Component {
       candidate_photo_url_html = <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light utils-img-contain-glyph" />;
     }
 
-    return <div className="candidate-card">
-      <div className="candidate-card__media-object">
-        <div className="candidate-card__media-object-anchor">
+    return <div className="card-main candidate-card">
+      <div className="card-main__media-object">
+        <div className="card-main__media-object-anchor">
           {this.props.link_to_ballot_item_page ?
             <Link to={candidateLink}>{candidate_photo_url_html}</Link> :
             candidate_photo_url_html
@@ -96,16 +96,16 @@ export default class CandidateItem extends Component {
           }
         </div>
 
-        <div className="candidate-card__media-object-content">
+        <div className="card-main__media-object-content">
           {
             supportProps && supportProps.is_support ?
-            <img src="/img/global/icons/thumbs-up-color-icon.svg" className="candidate-card__position-icon" width="20" height="20" /> : null
+            <img src="/img/global/icons/thumbs-up-color-icon.svg" className="card-main__position-icon" width="20" height="20" /> : null
           }
           {
             supportProps && supportProps.is_oppose ?
-            <img src="/img/global/icons/thumbs-down-color-icon.svg" className="candidate-card__position-icon" width="20" height="20" /> : null
+            <img src="/img/global/icons/thumbs-down-color-icon.svg" className="card-main__position-icon" width="20" height="20" /> : null
           }
-          <h2 className="candidate-card__display-name">
+          <h2 className="card-main__display-name">
             { this.props.link_to_ballot_item_page ?
               <Link to={candidateLink}>{ballot_item_display_name}</Link> :
               ballot_item_display_name
@@ -113,8 +113,8 @@ export default class CandidateItem extends Component {
           </h2>
           <StarAction we_vote_id={we_vote_id} type="CANDIDATE"/>
           <p className={this.props.link_to_ballot_item_page ?
-              "candidate-card__candidacy u-cursor--pointer" :
-              "candidate-card__candidacy"
+              "t-darker-gray u-cursor--pointer" :
+              "t-darker-gray"
             } onClick={this.props.link_to_ballot_item_page ?
               goToCandidateLink : null }
           >
@@ -124,18 +124,18 @@ export default class CandidateItem extends Component {
           }
           </p>
           { twitter_description ?
-            <div className={ this.props.link_to_ballot_item_page ? "candidate-card__description-container--truncated" : "candidate-card__description-container"}>
+            <div className={ this.props.link_to_ballot_item_page ? "card-main__description-container--truncated" : "card-main__description-container"}>
               <div>
-                <p className="candidate-card__description">
+                <p className="card-main__description">
                     {twitter_description}
                 </p>
               </div>
 
               <Link to={candidateLink}>
-                { this.props.link_to_ballot_item_page ? <span className="candidate-card__read-more-pseudo"></span> : null }
+                { this.props.link_to_ballot_item_page ? <span className="card-main__read-more-pseudo"></span> : null }
               </Link>
               { this.props.link_to_ballot_item_page ?
-                <Link to={candidateLink} className="candidate-card__read-more-link">&nbsp;Read more</Link> :
+                <Link to={candidateLink} className="card-main__read-more-link">&nbsp;Read more</Link> :
                 null
               }
             </div> :
@@ -143,8 +143,8 @@ export default class CandidateItem extends Component {
           }
           {
             <span className={ this.props.link_to_ballot_item_page ?
-                    "card__network-positions u-cursor--pointer" :
-                    "card__network-positions" }
+                    "card-main__network-positions u-cursor--pointer" :
+                    "card-main__network-positions" }
                   onClick={ this.props.link_to_ballot_item_page ?
                     goToCandidateLink : null }
             >
@@ -154,9 +154,9 @@ export default class CandidateItem extends Component {
                                        type="CANDIDATE" /></span>
             }
 
-        </div> {/* END .candidate-card__media-object-content */}
-      </div> {/* END .candidate-card__media-object */}
-      <div className="candidate-card__actions">
+        </div> {/* END .card-main__media-object-content */}
+      </div> {/* END .card-main__media-object */}
+      <div className="card-main__actions">
         <ItemActionBar ballot_item_we_vote_id={we_vote_id} supportProps={supportProps} transitioniing={transitioning} type="CANDIDATE" />
         <ItemPositionStatementActionBar ballot_item_we_vote_id={we_vote_id}
                                         ballot_item_display_name={ballot_item_display_name}

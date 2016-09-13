@@ -26,14 +26,16 @@ export default class TwitterAccountCard extends Component {
     let twitterDescription = twitter_description || "";
     let twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
 
-    return <div className="card__container">
-        <div className="card__main">
-          <div className="card__media-object">
-            <ImageHandler imageUrl={twitter_photo_url} className="card__media-object-anchor" />
-            <div className="card__media-object-content">
-              <div className="card__display-name">{displayName}</div>
+    return <div className="card">
+        <div className="card-main">
+          <div className="card-main__media-object">
+            <div className="card-main__media-object-anchor">
+              <ImageHandler imageUrl={twitter_photo_url} className="card-main__avatar" />
+            </div>
+            <div className="card-main__media-object-content">
+              <div className="card-main__display-name">{displayName}</div>
               { twitterDescriptionMinusName ?
-                <p className="card__description">{twitterDescriptionMinusName}</p> :
+                <p className="card-main__description">{twitterDescriptionMinusName}</p> :
                 null
               }
               { twitter_handle ?

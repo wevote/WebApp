@@ -83,7 +83,7 @@ export default class Measure extends Component {
             </div>;
     }
 
-    return <section className="card__container">
+    return <section className="card">
           <MeasureItem {...measure} />
           <div className="card__additional">
             { measure.position_list ?

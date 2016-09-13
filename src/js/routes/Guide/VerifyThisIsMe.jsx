@@ -109,7 +109,7 @@ export default class VerifyThisIsMe extends Component {
       console.log("this.state.kind_of_owner === CANDIDATE");
       this.props.params.we_vote_id = this.state.owner_we_vote_id;
       return <span>
-        <section className="candidate-card__container">
+        <section className="card">
           <CandidateItem {...candidate} />
         </section>
         <div>
@@ -136,8 +136,8 @@ export default class VerifyThisIsMe extends Component {
       }
 
       return <span>
-          <div className="card__container">
-            <div className="card__main">
+          <div className="card">
+            <div className="card-main">
               <FollowToggle we_vote_id={this.props.params.we_vote_id} />
               <OrganizationCard organization={organization} />
             </div>

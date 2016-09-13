@@ -24,13 +24,13 @@ export default class FriendsOnlyIndicator extends Component {
       visibilityIcon = <Icon name="group-icon" color="#999" width={18} height={18} />;
     } else {
       labelText = "Public";
-      visibilityIcon = <Icon name="public-icon" color="#999" width={18} height={18} />;
+      visibilityIcon = <Icon name="public-icon" color="#ccc" width={18} height={18} />;
     }
 
     const tooltip = <Tooltip id="tooltip">{labelText}</Tooltip>;
 
     const visibilityIndicator = <OverlayTrigger placement="top" overlay={tooltip}>
-        <div className="visibility-indicator">{visibilityIcon}</div>
+        <div className="public-friends-indicator">{visibilityIcon}</div>
       </OverlayTrigger>;
 
     return visibilityIndicator;

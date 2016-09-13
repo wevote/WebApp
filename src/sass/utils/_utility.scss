@@ -4,3 +4,26 @@
 .u-cursor--pointer:hover {
   cursor: pointer;
 }
+
+// Visibility
+
+.u-hide {
+  display: none !important;
+}
+
+// Spacing
+
+.t-mt3 { // TEMPORARY! Considering Tachyons for small inline styles
+  margin-top: 1em;
+}
+
+// Text
+
+.t-b {
+  font-weight: bold;
+}
+
+
+.t-darker-gray {
+  color: $darker-gray;
+}

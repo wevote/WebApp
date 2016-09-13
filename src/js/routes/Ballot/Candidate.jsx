@@ -94,9 +94,9 @@ export default class Candidate extends Component {
     }
 
     return <span>
-        <section className="candidate-card__container">
+        <section className="card">
           <CandidateItem {...candidate} contest_office_name={candidate.contest_office_name} />
-          <div className="candidate-card__additional">
+          <div className="card__additional">
             { candidate.position_list ?
               <div>
                 <PositionList position_list={candidate.position_list}
@@ -105,8 +105,8 @@ export default class Candidate extends Component {
               null
             }
             {guideToFollowList.length === 0 ?
-              <p className="candidate-card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
-              <div><h3 className="candidate-card__additional-heading">{"More opinions about " + candidate.ballot_item_display_name}</h3>
+              <p className="card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
+              <div><h3 className="card__additional-heading">{"More opinions about " + candidate.ballot_item_display_name}</h3>
               <GuideList id={electionId} ballotItemWeVoteId={candidate_we_vote_id} organizationsToFollow={guideToFollowList}/></div>
             }
           </div>

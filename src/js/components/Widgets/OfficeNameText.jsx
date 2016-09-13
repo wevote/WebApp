@@ -23,11 +23,11 @@ export default class OfficeNameText extends Component {
     let { contest_office_name, political_party } = this.props;
     if (political_party === undefined) {
       nameText = <span className="no-political-party">
-      Candidate for <span className="candidate-card__office">
+      Candidate for <span className="candidate-card-main__office">
       { contest_office_name } </span> </span>;
     } else {
-      nameText = <span> <span className="candidate-card__political-party">
-      {political_party} </span> candidate for <span className="candidate-card__office">
+      nameText = <span> <span className="card-main__political-party t-b t-darker-gray">
+      {political_party} </span> candidate for <span className="candidate-card-main__office t-b t-darker-gray">
         { contest_office_name }
       </span></span>;
     }

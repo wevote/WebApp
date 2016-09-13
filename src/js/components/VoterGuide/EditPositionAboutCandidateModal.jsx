@@ -111,21 +111,13 @@ export default class EditPositionAboutCandidateModal extends Component {
     if (position === undefined) {
       // Show a loading wheel while this component's data is loading
       return LoadingWheel;
-    // } else if (position.kind_of_ballot_item === "CANDIDATE") {
-    //   console.log("this.state.kind_of_owner === CANDIDATE");
-    //   this.props.params.we_vote_id = this.state.owner_we_vote_id;
-    //   modal_contents = <span>
-    //     <section className="candidate-card__container">
-    //       <CandidateItem {...candidate} office_name={office.ballot_item_display_name}/>
-    //     </section>
-    //   </span>;
+
     } else if (organization !== undefined) {
-      modal_contents = <span>
-          <div className="card__container">
-            <div className="card__main">
-              <FollowToggle we_vote_id={organization.organization_we_vote_id}/>
-              <OrganizationCard organization={organization} turn_off_description/>
-            </div>
+      modal_contents = <div className="card">
+              <div className="card-main candidate-card">
+                <FollowToggle we_vote_id={organization.organization_we_vote_id}/>
+                <OrganizationCard organization={organization} turn_off_description/>
+              </div>
             <ul className="list-group">
               <OrganizationPositionItem position={position}
                                         organization={this.props.organization}
@@ -134,18 +126,17 @@ export default class EditPositionAboutCandidateModal extends Component {
                                         comment_text_off
                                         placement="bottom"/>
             </ul>
-          </div>
-          <div className="candidate-card__media-object-content">
-            <div className="candidate-card__actions">
+          <div className="card-main__media-object-content">
+            <div className="card-main__actions">
               <ItemActionBar ballot_item_we_vote_id={ballot_item_we_vote_id}
                              supportProps={supportProps} type="CANDIDATE" />
               <ItemPositionStatementActionBar ballot_item_we_vote_id={ballot_item_we_vote_id}
                                               ballot_item_display_name={ballot_item_display_name}
                                               supportProps={supportProps}
                                               type="CANDIDATE" />
+              </div>
             </div>
-          </div>
-        </span>;
+          </div>;
     }
     return <Modal {...this.props} bsSize="large" aria-labelledby="contained-modal-title-lg">
       <Modal.Header closeButton>
