@@ -26,6 +26,7 @@ export default class About extends Component {
           <p><strong>We are grateful for these organizations that are critical to our work.</strong><br />
               Ballotpedia - Data<br />
               Center for Technology and Civic Life - Data<br />
+              Change.org - Data<br />
               CivicMakers - Event Collaborations<br />
               Code for San Francisco &amp; Code for America - Our Home for Volunteer Work<br />
               DLA Piper - Legal<br />
