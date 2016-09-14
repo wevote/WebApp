@@ -53,12 +53,12 @@ export default class Bookmarks extends Component {
       {
         bookmarks.length === 0 && <p>No bookmarks yet</p>
       }
-      <div className="card bookmarks-list">
-      {
-        bookmarks.map(bookmark => {
-          return <BookmarkItem key={bookmark.ballot_item_display_name} bookmark={bookmark}/>;
-        })
-      }
+      <div className="bookmarks-list">
+        {
+          bookmarks.map(bookmark => {
+            return <BookmarkItem key={bookmark.ballot_item_display_name} bookmark={bookmark}/>;
+          })
+        }
       </div>
     </div>;
   }

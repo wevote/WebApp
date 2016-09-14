@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Button, ButtonToolbar } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { browserHistory } from "react-router";
 import LoadingWheel from "../components/LoadingWheel";
 import VoterActions from "../actions/VoterActions";
@@ -54,9 +54,6 @@ export default class AddressBox extends Component {
     if (loading){
       return LoadingWheel;
     }
-    var floatRight = {
-        float: "right"
-    };
     return <div>
         <form onSubmit={this.saveVoterAddress.bind(this)}>
         <input

@@ -1,5 +1,4 @@
 import React, {Component, PropTypes } from "react";
-import { Link } from "react-router";
 import FollowingFilter from "../../components/Navigation/FollowingFilter";
 import GuideStore from "../../stores/GuideStore";
 import GuideActions from "../../actions/GuideActions";
