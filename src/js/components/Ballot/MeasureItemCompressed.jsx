@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
+import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
 import StarAction from "../../components/Widgets/StarAction";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
@@ -33,7 +34,17 @@ export default class MeasureItemCompressed extends Component {
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id), transitioning: false });
   }
   render () {
-    const { supportProps } = this.state;
+    const { supportProps, transitioning } = this.state;
+    let support_count = 0;
+    if (supportProps && supportProps.support_count) {
+      // Only show ItemSupportOpposeCounts if your network has something to say
+      support_count = supportProps.support_count;
+    }
+    let oppose_count = 0;
+    if (supportProps && supportProps.oppose_count) {
+      // Only show ItemSupportOpposeCounts if your network has something to say
+      oppose_count = supportProps.oppose_count;
+    }
     let { ballot_item_display_name, measure_subtitle,
           measure_text, we_vote_id } = this.props;
     let measureLink = "/measure/" + we_vote_id;
@@ -67,6 +78,17 @@ export default class MeasureItemCompressed extends Component {
         { this.props.measure_text ?
           <div className="measure_text">{measure_text}</div> :
           null }
+          { support_count || oppose_count ?
+            <span className={ this.props.link_to_ballot_item_page ?
+                    "cursor-pointer" :
+                    null }
+                  onClick={ this.props.link_to_ballot_item_page ?
+                    goToMeasureLink :
+                    null }
+            >
+              <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps} transitioning={transitioning} type="MEASURE" />
+            </span> :
+            null }
 
       </div> {/* END .card-main__content */}
     </div>;

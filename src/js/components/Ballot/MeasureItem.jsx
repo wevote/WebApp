@@ -72,10 +72,10 @@ export default class MeasureItem extends Component {
             <div className="measure_text">{measure_text}</div> :
             null */}
 
-        <div className="row" style={{ paddingBottom: "0.5rem" }}>
-          <div className="col-xs-12">
+          <div className="row" style={{ paddingBottom: "0.5rem" }}>
+            <div className="col-xs-12">
+            </div>
           </div>
-        </div>
           <span className={ this.props.link_to_ballot_item_page ?
                   "u-cursor--pointer" :
                   null }
