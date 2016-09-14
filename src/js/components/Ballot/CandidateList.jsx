@@ -8,9 +8,9 @@ export default class CandidateList extends Component {
   };
 
   render () {
-    return <article className="candidate-card__list-group">
+    return <article className="card-main__list-group">
         { this.props.children.map( (child) =>
-          <div key={child.we_vote_id} className="candidate-card__container">
+          <div key={child.we_vote_id} className="card">
             <CandidateItem key={child.we_vote_id} link_to_ballot_item_page contest_office_name={this.props.contest_office_name} {...child} />
           </div>)
         }

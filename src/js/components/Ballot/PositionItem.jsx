@@ -37,9 +37,9 @@ export default class PositionItem extends Component {
 
     let image_placeholder = "";
     if (position.speaker_type === "O") {
-        image_placeholder = <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color position-item__avatar" />;
+        image_placeholder = <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color card-child__avatar" />;
     } else if (position.speaker_type === "V") {
-        image_placeholder = <i className="icon-org-lg icon-icon-person-placeholder-6-1 icon-org-resting-color position-item__avatar" />;
+        image_placeholder = <i className="icon-org-lg icon-icon-person-placeholder-6-1 icon-org-resting-color card-child__avatar" />;
     }
 
     let position_description = "";
@@ -83,30 +83,28 @@ export default class PositionItem extends Component {
       </span> :
       null;
 
-    var one_position_on_this_candidate = <li className="position-item">
+    var one_position_on_this_candidate = <li className="card-child position-item">
       {/* One Position on this Candidate */}
         <Link to={speakerLink}>
           { position.speaker_image_url_https ?
-            <ImageHandler className="img-square position-item__avatar"
+            <ImageHandler className="img-square card-child__avatar"
                   imageUrl={position.speaker_image_url_https}
             /> :
           image_placeholder }
         </Link>
-        <div className="position-item__content">
-          <h4 className="position-item__display-name">
-            <Link to={speakerLink}>
-              { position.speaker_display_name }
-            </Link>
-          </h4>
-          { edit_mode ?
-            edit_position_description :
-            position_description }
-          <FriendsOnlyIndicator isFriendsOnly={!position.is_public_position} />
+        <div className="card-child__media-object-content">
+          <div className="card-child__content">
+            <h4 className="card-child__display-name">
+              <Link to={speakerLink}>
+                { position.speaker_display_name }
+              </Link>
+            </h4>
+            { edit_mode ?
+              edit_position_description :
+              position_description }
+            <FriendsOnlyIndicator isFriendsOnly={!position.is_public_position} />
+          </div>
         </div>
-        {/* Likes coming in a later version
-        <br />
-        23 Likes<br />
-        */}
       </li>;
 
       if (show_position) {

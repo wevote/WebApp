@@ -1,6 +1,5 @@
 import React, {Component, PropTypes } from "react";
-import { Link } from "react-router";
-import FollowingDropdown from "../../components/Navigation/FollowingDropdown";
+import FollowingFilter from "../../components/Navigation/FollowingFilter";
 import GuideStore from "../../stores/GuideStore";
 import GuideActions from "../../actions/GuideActions";
 import VoterGuideItem from "../../components/VoterGuide/VoterGuideItem";
@@ -51,14 +50,14 @@ export default class OpinionsFollowed extends Component {
   }
 
   render () {
-    return <div>
-      <div className="container-fluid opinions-followed__container">
-        <div className="text-center"><FollowingDropdown following_type={this.getFollowingType()} /></div>
-          <p>
-            Organizations, public figures and other voters you currently follow. See
-            also <Link to="/friends">your friends</Link>. We will never sell your email.
-          </p>
-        <div className="voter-guide-list">
+    return <div className="opinions-followed__container">
+      <h1>Your Network</h1>
+      <FollowingFilter following_type={this.getFollowingType()} />
+        <p>
+          Organizations, public figures and other voters you currently follow. <em>We will never sell your email</em>.
+        </p>
+      <div className="voter-guide-list card">
+        <div className="card-child__list-group">
           {
             this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length ?
             this.state.voter_guide_followed_list.map( item =>

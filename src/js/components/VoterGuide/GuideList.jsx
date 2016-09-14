@@ -57,7 +57,7 @@ export default class GuideList extends Component {
           </Organization>;
     });
 
-    return <div className="guidelist organization-item__list-group">
+    return <div className="guidelist card-child__list-group">
         <ReactCSSTransitionGroup transitionName="org-ignore" transitionEnterTimeout={4000} transitionLeaveTimeout={2000}>
           {orgs}
         </ReactCSSTransitionGroup>

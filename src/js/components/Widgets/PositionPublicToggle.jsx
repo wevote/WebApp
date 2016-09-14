@@ -41,11 +41,11 @@ export default class PositionPublicToggle extends Component {
     }
 
     var { is_public_position } = this.props.supportProps;
-    let vPublic = "Public";
-    let vFriendsOnly = "Your friends";
+    let visibilityPublic = "Public";
+    let visibilityFriendsOnly = "Your friends";
     const publicIcon = <Icon name="public-icon" color="#fff" width={18} height={18} />;
     const friendsIcon = <Icon name="group-icon" color="#555" width={18} height={18} />;
-    const tooltip = <Tooltip id="tooltip">{is_public_position ? vPublic : vFriendsOnly}</Tooltip>;
+    const tooltip = <Tooltip id="visibility-tooltip">{is_public_position ? visibilityPublic : visibilityFriendsOnly}</Tooltip>;
 
     var onChange;
     if (is_public_position) {
@@ -57,13 +57,16 @@ export default class PositionPublicToggle extends Component {
 
     const positionPublicToggle =
     <div className={this.props.className}>
-      <OverlayTrigger className="trigger" placement="top" overlay={tooltip}><div>
-        <ReactBootstrapToggle on={publicIcon} off={friendsIcon} active={is_public_position}
-                              onstyle="success" size="mini"
-                              width="40px"
-                              onChange={onChange} />
-                            </div></OverlayTrigger>
-                          </div>;
+      <div style={{display: "inline-block"}}>
+        <OverlayTrigger className="trigger" placement="top" overlay={tooltip}>
+          <div><ReactBootstrapToggle on={publicIcon} off={friendsIcon}
+                                    active={is_public_position}
+                                    onstyle="success" size="mini"
+                                    width="40px"
+                                    onChange={onChange} /></div>
+                                  </OverlayTrigger>
+                                </div>
+                              </div>;
     return positionPublicToggle;
   }
 }

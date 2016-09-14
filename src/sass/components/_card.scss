@@ -1,127 +1,245 @@
 // 'Card' styling for Candidates, Organizations, etc.
 
-@include media-object('.card__media-object', '.card__media-object-anchor', '.card__media-object-content');
+@include media-object('.card-main__media-object', '.card-main__media-object-anchor', '.card-main__media-object-content');
 
 .card {
   $item-padding: 15px;
-
-  &__container {
-    @include card-container();
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: $default-box-shadow;
+  margin-bottom: 20px;
+  @include micro-clearfix;
+  @include breakpoints(max mid-small){
+    margin-right: -15px;
+    margin-bottom: 10px;
+    margin-left: -15px;
+    border-radius: 0;
   }
 
-  &__list-group {
-    @include list-item-group;
-  }
+  // ----------------------------------------
+  // Card 'Main'
+  // the main subject of the card (candidate, measure, organizations, etc.)
 
-  &__main {
+  &-main { // primary subject of card
     position: relative;
     padding: 15px 15px 10px;
     font-size: 14px; // remove once global defaults are set
-  }
 
-  &__content {
-    position: relative;
-  }
-
-  &__media_object {
-    width: 50px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  &__display-name {
-    font-family: $heading-font-stack;
-    display: inline-block;
-    font-size: 18px;
-    margin-right: 24px; // space for bookmark button
-    margin-bottom: .5rem;
-    @include breakpoints(mid-small) {
-      font-size: 24px;
+    &__content {
+      position: relative;
     }
-  }
 
-  &__description {
-    color: $dark-gray;
-  }
+    &__media_object {
+      // additional styling set with 'media-object' mixin
+      width: 50px;
+      display: flex;
+      flex-direction: column;
+    }
 
-  &__read-more-link {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    text-indent: -9999px;
-    z-index: 5;
-  }
+    &__media-object-anchor {
+      // additional styling set with 'media-object' mixin
+      display: flex;
+      flex-direction: column;
+    }
 
-  &__position-icon {
-    @include breakpoints(max mid-small) {
+    &__avatar {
+      max-width: 50px;
+      border-radius: 2px;
+      .card-main & {
+        @include breakpoints(mid-small) {
+          max-width: 80px;
+        }
+        border-radius: 10em;
+      }
+    }
+
+    &__position-icon {
       display: inline-block;
       margin-right: 5px;
-      vertical-align: top;
+      vertical-align: baseline;
     }
-    @include breakpoints(mid-small) {
+
+    &__display-name {
+      font-family: $heading-font-stack;
+      display: inline-block;
+      font-size: 18px;
+      margin-right: 24px; // space for bookmark button
+      margin-bottom: .5rem;
+      @include breakpoints(mid-small) {
+        font-size: 24px;
+      }
+    }
+
+    &__description {
+      color: $dark-gray;
+    }
+
+    &__description-container {
+
+      &--truncated {
+        $line-height: 25px;
+        $text-container-height: $line-height * 2;
+        $read-more-width: 7em;
+        overflow: hidden;
+        position: relative;
+        height: $text-container-height;
+        line-height: $line-height;
+
+        &::before {
+          content:"";
+          float: left;
+          width: 5px;
+          height: $text-container-height;
+        }
+
+        > *:first-child {
+          float: right;
+          width: 100%;
+          margin-left: -5px; }
+
+        &::after {
+          content: "\00A0 Read More";
+
+          box-sizing: content-box;
+          float: right;
+          position: relative;
+          top: -$line-height;
+          left: 100%;
+          width: $read-more-width;
+          margin-left: -$read-more-width;
+          padding-right: 5px;
+          text-align: right;
+          background-size: 100% 100%;
+          background: linear-gradient(to right, rgba(255, 255, 255, 0), white 15%, white);
+          font-style: normal;
+          color: $link-color;
+        }
+      }
+    }
+
+    &__read-more-link {
       position: absolute;
-      left: -30px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      text-indent: -9999px;
+      z-index: 5;
     }
-  }
+  } // end .card-main
+
+  // ----------------------------------------
+  // Card 'Child'
+  // previously 'position-item' - candidates or orgs/users and their positions under a card-main
+
+  @include media-object('.card-child', '.card-child__avatar', '.card-child__media-object-content');
+
+  .card-child {
+    position: relative;
+    padding: 15px;
+    margin-top: -1px;
+    background-color: $pale-gray;
+    border-top: 1px solid $lighter-gray;
+    border-bottom: 1px solid $lighter-gray;
+    @include breakpoints(max mid-small){
+      margin-left: -15px;
+      margin-right: -15px;
+    }
+
+    &__list-group {
+      padding: 0;
+      margin: 0;
+      @include breakpoints(max mid-small){
+        padding: 0 15px;
+      }
+      .card__additional-heading {
+        @include breakpoints(max mid-small){
+          margin-right: 0;
+          margin-left: 0;
+        }
+      }
+    }
+
+    &__avatar { // placed on the actual image
+      border-radius: 2px;
+      max-width: 50px;
+      &.img-square {
+        width: 50px;
+      }
+    }
+
+    &__media-object-content { // positioning for media-object pattern
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      @include breakpoints(medium) {
+        flex-direction: row;
+      }
+    }
+
+    &__display-name {
+      font-size: 18px;
+      margin-bottom: .2em;
+    }
+
+    &__follow-buttons {
+      display: flex;
+      align-items: flex-end;
+      .btn {
+        margin: 0 5px 0 0;
+      }
+      @include breakpoints(medium) {
+        flex-direction: column;
+        .btn {
+          margin: 0 0 5px;
+        }
+      }
+    }
+
+    &__additional {
+      display: flex;
+      margin-top: .5em;
+      @include breakpoints(medium) {
+        flex-direction: column;
+        padding-left: 1em;
+        margin-top: inherit;
+        text-align: right;
+      }
+    }
+    &--not-followed &__additional {
+      margin-top: 1em; // for follow buttons
+    }
+
+    .star-action {
+      top: 15px;
+      right: 10px;
+    }
+
+    .public-friends-indicator {
+      color: $mid-gray;
+      display: inline-block;
+      font-size: 1.2rem;
+      position: absolute;
+      right: 40px;
+      top: 17px;
+    }
+  } // end .card-child
+
+  // ----------------------------------------
 
   &__additional {
     @include micro-clearfix;
-    margin-top: .5rem;
+    border-top: 5px solid $lighter-gray;
   }
 
   &__additional-heading {
     font-family: $heading-font-stack;
     font-size: 18px;
-    margin: 15px $item-padding;
+    margin: 20px $item-padding 15px;
   }
 
   &__no-additional {
-    margin: 0 $item-padding 15px;
-  }
-
-  &__description-container {
-
-    &--truncated {
-      $line-height: 25px;
-      $text-container-height: $line-height * 2;
-      $read-more-width: 7em;
-      overflow: hidden;
-      position: relative;
-      height: $text-container-height;
-      line-height: $line-height;
-
-      &::before {
-        content:"";
-        float: left;
-        width: 5px;
-        height: $text-container-height;
-      }
-
-      > *:first-child {
-        float: right;
-        width: 100%;
-        margin-left: -5px; }
-
-      &::after {
-        content: "\00A0 Read More";
-
-        box-sizing: content-box;
-        float: right;
-        position: relative;
-        top: -$line-height;
-        left: 100%;
-        width: $read-more-width;
-        margin-left: -$read-more-width;
-        padding-right: 5px;
-        text-align: right;
-        background-size: 100% 100%;
-        background: linear-gradient(to right, rgba(255, 255, 255, 0), white 15%, white);
-        font-style: normal;
-        color: $link-color;
-      }
-    }
+    margin: 15px $item-padding;
   }
 }

@@ -39,23 +39,23 @@ export default class VoterGuideItem extends Component {
     // TwitterHandle-based link
     var voterGuideLink = this.props.twitter_handle ? "/" + this.props.twitter_handle : "/voterguide/" + this.props.organization_we_vote_id;
 
-    return <div className="ballot-item">
-      <div className="ballot-item__avatar">
+    return <div className="card-child">
+      <div className="card-child__media-object-avatar">
         <Link to={voterGuideLink}>
-          <ImageHandler imageUrl={this.props.voter_guide_image_url} />
+          <ImageHandler className="card-child__avatar"imageUrl={this.props.voter_guide_image_url} />
         </Link>
       </div>
-      <div className="ballot-item__content">
-        <div className="ballot-item__summary">
+      <div className="card-child__media-object-content">
+        <div className="card-child__content">
           <Link to={voterGuideLink}>
-            <h4 className="ballot-item__display-name">{displayName}</h4>
+            <h4 className="card-child__display-name">{displayName}</h4>
           </Link>
-          <p className="ballot-item__short-bio">
+          <div className="card-child__short-bio">
             { twitterDescriptionMinusName ? <span>{twitterDescriptionMinusName}</span> :
                 null }
-          </p>
+          </div>
         </div>
-        <div className="ballot-item__additional">
+        <div className="card-child__additional">
           {twitterFollowers ?
             <span className="twitter-followers__badge">
               <span className="fa fa-twitter twitter-followers__icon"></span>

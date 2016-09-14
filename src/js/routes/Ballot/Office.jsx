@@ -63,24 +63,17 @@ export default class Office extends Component {
         </div>;
     }
 
-    return <span>
-        <section className="office-card__container">
-          <OfficeItem we_vote_id={office.we_vote_id}
-                      kind_of_ballot_item="OFFICE"
-                      ballot_item_display_name={office.ballot_item_display_name} />
-          <div className="office-card__additional">
-            { office.candidate_list ?
-              <div>
-                <CandidateList children={office.candidate_list}
-                               contest_office_name={office.ballot_item_display_name} />
-              </div> :
-              null
-            }
-          </div>
-        </section>
-        <br />
-        <br />
-      </span>;
-
+    return <div>
+      <OfficeItem we_vote_id={office.we_vote_id}
+                  kind_of_ballot_item="OFFICE"
+                  ballot_item_display_name={office.ballot_item_display_name} />
+      { office.candidate_list ?
+        <div>
+          <CandidateList children={office.candidate_list}
+                         contest_office_name={office.ballot_item_display_name} />
+        </div> :
+        null
+      }
+    </div>;
   }
 }

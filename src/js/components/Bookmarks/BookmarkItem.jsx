@@ -17,15 +17,17 @@ export default class Bookmarks extends Component {
     } else {
       link = "/measure/" + we_vote_id;
     }
-    return <div className="position-item">
-      <StarAction we_vote_id={we_vote_id} type={kind_of_ballot_item}/>
-      <Link className="linkLight"
-            to={link}
-            onlyActiveOnIndex={false}>
-        <div>
-          {ballot_item_display_name}
+    return <div className="bookmark-item card">
+      <div className="card-main">
+        <div className="card-main__content">
+          <StarAction we_vote_id={we_vote_id} type={kind_of_ballot_item}/>
+          <div className="card-main__display-name">
+            <Link to={link} onlyActiveOnIndex={false}>
+              {ballot_item_display_name}
+            </Link>
+          </div>
         </div>
-      </Link>
+      </div>
     </div>;
   }
 }

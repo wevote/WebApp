@@ -24,27 +24,25 @@ export default class OfficeItemCompressed extends Component {
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
-    return <div className="card__container">
-      <div className="card__main office-card">
-        <div className="card__content">
-            <h2 className="card__display-name">
-              { this.props.link_to_ballot_item_page ?
-                <Link to={officeLink}>{ballot_item_display_name}</Link> :
-                  ballot_item_display_name
-              }
-            </h2>
-            <StarAction we_vote_id={we_vote_id} type="OFFICE"/>
+    return <div className="card-main office-item">
+      <div className="card-main__content">
+        <h2 className="card-main__display-name">
+          { this.props.link_to_ballot_item_page ?
+            <Link to={officeLink}>{ballot_item_display_name}</Link> :
+              ballot_item_display_name
+          }
+        </h2>
+        <StarAction we_vote_id={we_vote_id} type="OFFICE"/>
 
-            <div className={ this.props.link_to_ballot_item_page ?
-                    "cursor-pointer" : null }
-                  onClick={ this.props.link_to_ballot_item_page ?
-                    goToOfficeLink : null }>
-              { this.props.candidate_list.map( (one_candidate) =>
-                <span key={one_candidate.we_vote_id}>{one_candidate.ballot_item_display_name}. </span>)
-              }
-            </div>
-            </div> {/* END .card__content */}
-          </div> {/* END .card__main office-card */}
-        </div>;
-      }
-    }
+        <div className={ this.props.link_to_ballot_item_page ?
+                "u-cursor--pointer" : null }
+              onClick={ this.props.link_to_ballot_item_page ?
+                goToOfficeLink : null }>
+          { this.props.candidate_list.map( (one_candidate) =>
+            <span key={one_candidate.we_vote_id}>{one_candidate.ballot_item_display_name}. </span>)
+          }
+        </div>
+      </div>
+    </div>;
+  }
+}

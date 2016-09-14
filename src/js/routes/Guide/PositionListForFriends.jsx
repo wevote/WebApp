@@ -70,8 +70,8 @@ export default class PositionListForFriends extends Component {
     var { organization_we_vote_id } = this.state;
 
     return <span>
-        <div className="card__container">
-          <div className="card__main">
+        <div className="card">
+          <div className="card-main">
             <FollowToggle we_vote_id={organization_we_vote_id} />
             <OrganizationCard organization={this.state.organization} />
           </div>

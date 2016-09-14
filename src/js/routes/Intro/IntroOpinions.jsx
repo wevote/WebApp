@@ -70,9 +70,9 @@ export default class IntroOpinionsPage extends Component {
                 <br />
                 <SearchGuidesToFollowBox />
                 <br/>
-                {ballot_has_guides ? <span></span> :
+                {ballot_has_guides ? null :
                   <p>There are no organizations with opinions on your ballot. Here are some popular organizations.</p>}
-                {guideToFollowList ? <GuideList organizationsToFollow={guideToFollowList} /> : <div></div> }
+                {guideToFollowList ? <div className="card"><GuideList organizationsToFollow={guideToFollowList} /></div> : null }
             </div>
         </div>
     <Link style={float.left} to="/intro">

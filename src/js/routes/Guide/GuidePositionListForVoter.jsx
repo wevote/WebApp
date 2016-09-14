@@ -24,7 +24,7 @@ export default class GuidePositionListForVoter extends Component {
 
     const { position_list_for_one_election, position_list_for_all_except_one_election } = this.state.voter;
     return <span>
-        <div className="card__container">
+        <div className="card">
           <ul className="list-group">
             { position_list_for_one_election ?
               position_list_for_one_election.map( item => {

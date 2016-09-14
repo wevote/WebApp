@@ -76,29 +76,26 @@ export default class GuidePositionList extends Component {
       var floatRight = {
         float: "right"
       };
-      return <span>
-        <div className="card__container">
-          <div className="card__main">
+      return <div className="card">
+          <div className="card-main">
             <h4>Organization not Found</h4>
           </div>
           <div style={{margin: 10}}>
             <span style={floatRight}>
               <Link to="/opinions"><Button bsStyle="primary">Next &#x21AC;</Button></Link>
             </span>
-            <p>Find voter guides you can follow. These voter guides have been created by nonprofits, public figures, your friends, and more.<br />
-            <br /></p>
+            <p>Find voter guides you can follow. These voter guides have been created by nonprofits, public figures, your friends, and more.</p>
           </div>
-        </div>
-        </span>;
+        </div>;
     }
     var { organization_we_vote_id } = this.state;
     return <span>
-        <div className="card__container">
-          <div className="card__main">
+        <div className="card">
+          <div className="card-main">
             <FollowToggle we_vote_id={organization_we_vote_id} />
             <OrganizationCard organization={this.state.organization} />
           </div>
-          <ul className="card__list-group">
+          <ul className="card-child__list-group">
             { position_list_for_one_election ?
               position_list_for_one_election.map( item => {
                 return <OrganizationPositionItem key={item.position_we_vote_id}

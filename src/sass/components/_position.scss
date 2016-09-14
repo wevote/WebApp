@@ -1,40 +1,4 @@
-// Position Item
-
-@include media-object('.position-item', '.position-item__avatar', '.position-item__content');
-
-
-.position-item {
-  @include list-item-card;
-
-  .star-action {
-    top: 15px;
-    right: 10px;
-  }
-
-  .visibility-indicator {
-    color: $mid-gray;
-    display: inline-block;
-    font-size: 1.2rem;
-    position: absolute;
-    right: 40px;
-    top: 17px;
-  }
-
-  &__list-group {
-    @include list-item-group;
-  }
-}
-
-.position-item__avatar {
-  @include list-item-avatar;
-  &.img-square {
-    width: 50px;
-  }
-}
-
-.position-item__display-name {
-  margin-bottom: .2em;
-}
+// Positions: Explicit & Ratings
 
 
 // Explicit Positions
@@ -82,6 +46,10 @@
     font-size: 18px;
   }
 }
+
+
+// =====================================
+// TODO: Jeff - these styles should be melted down (globalize or abstract)
 
 .with-popover{
   color: $popover-link-color;

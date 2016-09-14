@@ -5,8 +5,8 @@
   './utils/variables',
   './utils/functions',
   './utils/mixins',
-  './utils/temporary-mixins',
-  './utils/app';
+  './utils/app',
+  './utils/utility';
 
 // 2. Vendors
 @import
@@ -44,15 +44,11 @@
   './components/ballotList',
   './components/itemActionBar',
   './components/itemPositionStatementActionBar',
-  './components/measure',
-  './components/office',
-  './components/candidate',
-  './components/followingDropdown',
+  './components/followingFilter',
   './components/starAction',
   './components/position',
   './components/navigator',
   './components/ignore',
-  './components/organization',
   './components/header',
   './components/opinions',
   './components/network-positions';

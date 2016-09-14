@@ -42,35 +42,33 @@ export default class MeasureItemCompressed extends Component {
     measure_subtitle = capitalizeString(measure_subtitle);
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
-    return <div className="card__container">
-      <div className="card__main measure-card">
-        <div className="card__content">
-            {
-              supportProps && supportProps.is_support ?
-              <img src="/img/global/icons/thumbs-up-color-icon.svg" className="card__position-icon" width="20" height="20" /> : null
-            }
-            {
-              supportProps && supportProps.is_oppose ?
-              <img src="/img/global/icons/thumbs-down-color-icon.svg" className="card__position-icon" width="20" height="20" /> : null
-            }
-            <h2 className="card__display-name">
-              { this.props.link_to_ballot_item_page ?
-                <Link to={measureLink}>{ballot_item_display_name}</Link> :
-                  ballot_item_display_name
-              }
-            </h2>
-            <StarAction we_vote_id={we_vote_id} type="MEASURE"/>
+    return <div className="card-main measure-card">
+      <div className="card-main__content">
+        {
+          supportProps && supportProps.is_support ?
+          <img src="/img/global/icons/thumbs-up-color-icon.svg" className="card-main__position-icon" width="20" height="20" /> : null
+        }
+        {
+          supportProps && supportProps.is_oppose ?
+          <img src="/img/global/icons/thumbs-down-color-icon.svg" className="card-main__position-icon" width="20" height="20" /> : null
+        }
+        <h2 className="card-main__display-name">
+          { this.props.link_to_ballot_item_page ?
+            <Link to={measureLink}>{ballot_item_display_name}</Link> :
+              ballot_item_display_name
+          }
+        </h2>
+        <StarAction we_vote_id={we_vote_id} type="MEASURE"/>
 
-            <div className={ this.props.link_to_ballot_item_page ?
-                    "cursor-pointer" : null }
-                  onClick={ this.props.link_to_ballot_item_page ?
-                    goToMeasureLink : null }>{measure_subtitle}</div>
-            { this.props.measure_text ?
-              <div className="measure_text">{measure_text}</div> :
-              null }
+        <div className={ this.props.link_to_ballot_item_page ?
+                "u-cursor--pointer" : null }
+              onClick={ this.props.link_to_ballot_item_page ?
+                goToMeasureLink : null }>{measure_subtitle}</div>
+        { this.props.measure_text ?
+          <div className="measure_text">{measure_text}</div> :
+          null }
 
-            </div> {/* END .card__content */}
-          </div>
-        </div>;
-      }
-    }
+      </div> {/* END .card-main__content */}
+    </div>;
+  }
+}

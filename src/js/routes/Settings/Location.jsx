@@ -21,13 +21,11 @@ export default class Location extends Component {
 
   render () {
     return <div>
-      <div className="container-fluid well u-gutter__top--small fluff-full1">
-        <h3 className="text-center">
-          Enter address where you are registered to vote
-        </h3>
-        <div>
-          <AddressBox {...this.props} saveUrl="/ballot" />
-        </div>
+      <h3>
+        Enter address where you are registered to vote
+      </h3>
+      <div>
+        <AddressBox {...this.props} saveUrl="/ballot" />
       </div>
     </div>;
   }

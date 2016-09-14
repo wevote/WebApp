@@ -60,33 +60,33 @@ export default class Organization extends Component {
       position_description = <PositionInformationOnlySnippet {...position} is_on_ballot_item_page={is_on_ballot_item_page} />;
     }
 
-    return <div className="organization-item">
-        <div className="organization-item__avatar">
+    return <div className="position-item card-child card-child--not-followed">
+      <div className="card-child__avatar">
+        <Link to={voterGuideLink}>
+          <ImageHandler imageUrl={voter_guide_image_url} />
+        </Link>
+      </div>
+      <div className="card-child__media-object-content">
+        <div className="card-child__content">
           <Link to={voterGuideLink}>
-            <ImageHandler imageUrl={voter_guide_image_url} />
+            <h4 className="card-child__display-name">{voter_guide_display_name}</h4>
           </Link>
+          { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> :
+            null}
+          { position_description }
         </div>
-        <div className="organization-item__content">
-          <div className="position-item__summary">
-            <Link to={voterGuideLink}>
-              <h4 className="organization-item__display-name">{voter_guide_display_name}</h4>
-            </Link>
-            { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> :
-              null}
-            { position_description }
+        <div className="card-child__additional">
+          <div className="card-child__follow-buttons">
+            {this.props.children}
           </div>
-          <div className="organization-item__additional">
-            <div className="organization-item__follow-buttons">
-              {this.props.children}
-            </div>
-            {twitter_followers_count ?
-              <span className="twitter-followers__badge">
-                <span className="fa fa-twitter twitter-followers__icon"></span>
-                {numberWithCommas(twitter_followers_count)}
-              </span> :
-              null}
-          </div>
+          {twitter_followers_count ?
+            <span className="twitter-followers__badge">
+              <span className="fa fa-twitter twitter-followers__icon"></span>
+              {numberWithCommas(twitter_followers_count)}
+            </span> :
+            null}
         </div>
-      </div>;
+      </div>
+    </div>;
   }
 }
