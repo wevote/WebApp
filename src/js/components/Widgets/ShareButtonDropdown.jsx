@@ -23,7 +23,7 @@ export default class ShareButtonDropdown extends Component {
 
   shareFacebookComment (e) {
 	  
-	  console.log(e);
+	console.log(e);
     e.stopPropagation();
     window.FB.ui({
       display: "popup",
@@ -35,7 +35,7 @@ export default class ShareButtonDropdown extends Component {
  }
 
  copyToClipboard (e) {
-	 console.log(e);
+   console.log(e);
    e.stopPropagation();
    this.closeDropdown();
  }
