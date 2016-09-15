@@ -57,11 +57,13 @@ export default class MeasureItemCompressed extends Component {
       <div className="card-main__content">
         {
           supportProps && supportProps.is_support ?
-          <img src="/img/global/icons/thumbs-up-color-icon.svg" className="card-main__position-icon" width="20" height="20" /> : null
+          <img src="/img/global/icons/thumbs-up-color-icon.svg" 
+               className="card-main__position-icon" width="20" height="20" /> : null
         }
         {
           supportProps && supportProps.is_oppose ?
-          <img src="/img/global/icons/thumbs-down-color-icon.svg" className="card-main__position-icon" width="20" height="20" /> : null
+          <img src="/img/global/icons/thumbs-down-color-icon.svg" 
+               className="card-main__position-icon" width="20" height="20" /> : null
         }
         <h2 className="card-main__display-name">
           { this.props.link_to_ballot_item_page ?
@@ -80,13 +82,14 @@ export default class MeasureItemCompressed extends Component {
           null }
           { support_count || oppose_count ?
             <span className={ this.props.link_to_ballot_item_page ?
-                    "cursor-pointer" :
+                    "u-cursor--pointer" :
                     null }
                   onClick={ this.props.link_to_ballot_item_page ?
                     goToMeasureLink :
                     null }
             >
-              <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps} transitioning={transitioning} type="MEASURE" />
+              <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps} transitioning={transitioning} 
+                                       type="MEASURE" />
             </span> :
             null }
 
