@@ -15,3 +15,4 @@ Dispatcher.prototype.loadEndpoint = function (endpoint, data = {}) {
 
 
 module.exports = new Dispatcher();
+ 
