@@ -22,7 +22,7 @@ export default class ShareButtonDropdown extends Component {
   }
 
   shareFacebookComment (e) {
-	  
+
 	console.log(e);
     e.stopPropagation();
     window.FB.ui({
