@@ -21,10 +21,9 @@ export default class ShareButtonDropdown extends Component {
     this.setState({open: true});
   }
 
-  shareFacebookComment (e) {
-
-	console.log(e);
-    e.stopPropagation();
+  shareFacebookComment (event) {
+    console.log(event);
+    event.stopPropagation();
     window.FB.ui({
       display: "popup",
       method: "share",
@@ -34,9 +33,9 @@ export default class ShareButtonDropdown extends Component {
     this.closeDropdown();
  }
 
- copyToClipboard (e) {
-   console.log(e);
-   e.stopPropagation();
+ copyToClipboard (event) {
+   console.log(event);
+   event.stopPropagation();
    this.closeDropdown();
  }
 
@@ -50,12 +49,12 @@ export default class ShareButtonDropdown extends Component {
       </button>
       {this.state.open ?
         <ul className="dropdown-menu">
-          {<li>
+          <li>
             <a onBlur={this.closeDropdown.bind(this)}
                onClick={this.copyToClipboard.bind(this)}>
                 Copy link
             </a>
-          </li>}
+          </li>
           <li>
             <a
                onBlur={this.closeDropdown.bind(this)}
