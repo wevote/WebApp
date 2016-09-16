@@ -92,6 +92,11 @@ export default class MoreMenu extends Component {
         <h4 className="text-left"></h4>
         <ul className="list-group">
         {this.menuLink("/more/about", "About We Vote")}
+          <li className="list-group-item">
+            <a href="https://goo.gl/forms/B6P0iE44R21t36L42" target="_blank"><div>
+              <span className="header-menu-text-left">What would make We Vote better?</span>
+            </div></a>
+          </li>
         </ul>
       </div>
       </div>;
