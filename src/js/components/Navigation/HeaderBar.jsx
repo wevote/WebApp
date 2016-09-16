@@ -114,6 +114,13 @@ export default class HeaderBar extends Component {
                 </div>
               </Link>
             </li>
+            <li>
+              <a onClick={this.hide.bind(this)} href="https://goo.gl/forms/B6P0iE44R21t36L42">
+                <div>
+                  <span className="header-slide-out-menu-text-left">Suggestions?</span>
+                </div>
+              </a>
+            </li>
           </ul>
         </div>
       </ReactBurgerMenu>
