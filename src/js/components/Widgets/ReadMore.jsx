@@ -5,6 +5,7 @@ export default class ReadMore extends Component {
   static propTypes = {
     text_to_display: PropTypes.node.isRequired,
     link_text: PropTypes.node,
+    collapse_text: PropTypes.node,
     num_of_lines: PropTypes.number
   };
 
@@ -26,12 +27,15 @@ export default class ReadMore extends Component {
     }
 
     render () {
-        let { text_to_display, link_text, num_of_lines } = this.props;
+        let { text_to_display, link_text, num_of_lines, collapse_text } = this.props;
         if (num_of_lines === undefined) {
           num_of_lines = 3;
         }
         if (link_text === undefined) {
           link_text = "More";
+        }
+        if (collapse_text === undefined) {
+          collapse_text = "...Less";
         }
 
         if (this.state.readMore){
@@ -42,7 +46,7 @@ export default class ReadMore extends Component {
                 textTruncateChild={<a href="#" onClick={this.toggleLines}>{link_text}</a>}
             /></span>
           ;} else {
-            return <span>{text_to_display}<a href="#" onClick={this.toggleLines}> ...Less</a></span>;
+            return <span>{text_to_display}<a href="#" onClick={this.toggleLines}>{collapse_text}</a></span>;
           }
     }
 }
