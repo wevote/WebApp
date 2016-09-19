@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import ReadMore from "../../components/Widgets/ReadMore";
 
 export default class PositionSupportOpposeSnippet extends Component {
   static propTypes = {
@@ -21,6 +22,9 @@ export default class PositionSupportOpposeSnippet extends Component {
     var positionLabel;
     var isSupportedBy;
     var { is_looking_at_self } = this.props;
+    var statement_text = this.props.statement_text || "";
+    var statement_text_html = <ReadMore text_to_display={statement_text} />;
+
     if (this.props.is_support){
       stance_icon_src = "/img/global/icons/thumbs-up-color-icon.svg";
       className = "explicit-position__icon";
@@ -47,7 +51,7 @@ export default class PositionSupportOpposeSnippet extends Component {
     }
     return <div className="explicit-position">
       { stance_display_off ? null : <img src={stance_icon_src} width="20" height="20" className={className} alt={alt} /> }
-      <p className="explicit-position__text">
+      <div className="explicit-position__text">
         { stance_display_off ?
           null :
           <span>
@@ -65,14 +69,14 @@ export default class PositionSupportOpposeSnippet extends Component {
         }
         { comment_text_off ? null :
           <span>
-            <span> {this.props.statement_text}</span>
+            <span>{statement_text_html}</span>
             {/* if there's an external source for the explicit position/endorsement, show it */}
             {this.props.more_info_url ?
               <span className="explicit-position__source"> (view source)</span> :
               null }
           </span>
         }
-      </p>
+      </div>
     </div>;
   }
 }
