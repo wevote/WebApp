@@ -57,12 +57,12 @@ export default class MeasureItemCompressed extends Component {
       <div className="card-main__content">
         {
           supportProps && supportProps.is_support ?
-          <img src="/img/global/icons/thumbs-up-color-icon.svg" 
+          <img src="/img/global/icons/thumbs-up-color-icon.svg"
                className="card-main__position-icon" width="20" height="20" /> : null
         }
         {
           supportProps && supportProps.is_oppose ?
-          <img src="/img/global/icons/thumbs-down-color-icon.svg" 
+          <img src="/img/global/icons/thumbs-down-color-icon.svg"
                className="card-main__position-icon" width="20" height="20" /> : null
         }
         <h2 className="card-main__display-name">
@@ -88,7 +88,7 @@ export default class MeasureItemCompressed extends Component {
                     goToMeasureLink :
                     null }
             >
-              <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps} transitioning={transitioning} 
+              <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps} transitioning={transitioning}
                                        type="MEASURE" />
             </span> :
             null }

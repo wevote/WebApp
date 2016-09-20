@@ -33,5 +33,13 @@ module.exports = {
 
   saveAddress: function (text){
     Dispatcher.loadEndpoint("voterAddressSave", { text_for_map_search: text });
-  }
+  },
+
+  friendInvitationByEmailSend: function (email_addresses, invitation_message) {
+    Dispatcher.loadEndpoint("friendInvitationByEmailSend",
+      {
+        email_addresses_raw: email_addresses,
+        invitation_message: invitation_message
+      });
+  },
 };
