@@ -34,8 +34,10 @@
     "react-addons-css-transition-group": "^0.14.7",
     "react-bootstrap-toggle": "^1.2.19",
     "react-burger-menu": "^1.10.4",
+    "react-copy-to-clipboard": "^4.2.3",
     "react-dom": "^0.14.3",
     "react-textarea-autosize": "^4.0.4",
+    "react-text-truncate": "^0.8.2",
     "superagent": "^1.5.0",
     "underscore": "^1.8.3",
     "vinyl-buffer": "^1.0.0"
@@ -90,7 +92,6 @@
     "react-select": "^0.9.1",
     "react-svg-icons": "^0.2.0",
     "react-tap-event-plugin": "^0.2.1",
-    "react-text-truncate": "^0.8.2",
     "tape": "^4.4.0",
     "vinyl-source-stream": "^1.1.0",
     "yargs": "^3.31.0"
