@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import CopyLinkModal from "../../components/Widgets/CopyLinkModal";
 
 export default class ShareButtonDropdown extends Component {
   static propTypes = {
@@ -10,7 +11,14 @@ export default class ShareButtonDropdown extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {open: false };
+    this.state = { open: false };
+  }
+
+  componentWillMount () {
+    this.setState({
+      showCopyLinkModal: false,
+      transitioning: false
+    });
   }
 
   closeDropdown () {
@@ -33,16 +41,23 @@ export default class ShareButtonDropdown extends Component {
     this.closeDropdown();
  }
 
- copyToClipboard (event) {
+
+ closeCopyLinkModal () {
+   this.setState({ showCopyLinkModal: false });
+ }
+
+ openCopyLinkModal (event) {
    console.log(event);
    event.stopPropagation();
+   this.setState({ showCopyLinkModal: true });
    this.closeDropdown();
  }
 
-  render () {
-    const {shareIcon, shareText} = this.props;
-    const onClick = this.state.open ? this.closeDropdown.bind(this) : this.openDropdown.bind(this);
 
+  render () {
+    const {shareIcon, shareText, urlBeingShared} = this.props;
+    const onClick = this.state.open ? this.closeDropdown.bind(this) : this.openDropdown.bind(this);
+    const onCopyLinkClick = this.state.showCopyLinkModal ? this.closeCopyLinkModal.bind(this) : this.openCopyLinkModal.bind(this);
     return <div className="btn-group open">
       <button onClick={onClick} className="dropdown item-actionbar__btn item-actionbar__btn--position-selected btn btn-default">
         {shareIcon} {shareText} <span className="caret"></span>
@@ -51,7 +66,7 @@ export default class ShareButtonDropdown extends Component {
         <ul className="dropdown-menu">
           <li>
             <a onBlur={this.closeDropdown.bind(this)}
-               onClick={this.copyToClipboard.bind(this)}>
+               onClick={onCopyLinkClick}>
                 Copy link
             </a>
           </li>
@@ -65,6 +80,9 @@ export default class ShareButtonDropdown extends Component {
         </ul> :
         null
       }
+      <CopyLinkModal show={this.state.showCopyLinkModal}
+                     onHide={this.closeCopyLinkModal.bind(this)}
+                     urlBeingShared={urlBeingShared} />
     </div>;
   }
 }
