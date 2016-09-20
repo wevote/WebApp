@@ -10,12 +10,13 @@ export default class ReadMore extends Component {
   };
 
     constructor (...args) {
-        super(...args);
+      super(...args);
 
-        this.state = {readMore: true};
+      this.state = {
+        readMore: true
+      };
 
-        this.toggleLines = this.toggleLines.bind(this);
-
+      this.toggleLines = this.toggleLines.bind(this);
     }
 
     toggleLines (event) {
@@ -35,18 +36,20 @@ export default class ReadMore extends Component {
           link_text = "More";
         }
         if (collapse_text === undefined) {
-          collapse_text = "...Less";
+          collapse_text = " ...Less";
         }
 
-        if (this.state.readMore){
-        return <span><TextTruncate
-                line={num_of_lines}
-                truncateText="..."
-                text={text_to_display}
-                textTruncateChild={<a href="#" onClick={this.toggleLines}>{link_text}</a>}
-            /></span>
-          ;} else {
-            return <span>{text_to_display}<a href="#" onClick={this.toggleLines}>{collapse_text}</a></span>;
-          }
+        if (this.state.readMore) {
+          return <span>
+            <TextTruncate
+                  line={num_of_lines}
+                  truncateText="..."
+                  text={text_to_display}
+                  textTruncateChild={<a href="#" onClick={this.toggleLines}>{link_text}</a>}
+              />
+          </span>;
+        } else {
+          return <span>{text_to_display}<a href="#" onClick={this.toggleLines}>{collapse_text}</a></span>;
+        }
     }
 }

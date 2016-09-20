@@ -90,6 +90,7 @@
     "react-select": "^0.9.1",
     "react-svg-icons": "^0.2.0",
     "react-tap-event-plugin": "^0.2.1",
+    "react-text-truncate": "^0.8.2",
     "tape": "^4.4.0",
     "vinyl-source-stream": "^1.1.0",
     "yargs": "^3.31.0"

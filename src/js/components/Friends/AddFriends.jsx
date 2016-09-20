@@ -50,10 +50,10 @@ export default class AddFriends extends Component {
     });
   }
 
-  sendFriendInvitationsByEmail (e) {
+  friendInvitationByEmailSend (e) {
     e.preventDefault();
     var { email_addresses, add_friends_message } = this.state;
-    //VoterActions.sendFriendInvitationsByEmail(email_addresses, add_friends_message);
+    VoterActions.friendInvitationByEmailSend(email_addresses, add_friends_message);
     this.setState({loading: true});
   }
 
@@ -68,7 +68,7 @@ export default class AddFriends extends Component {
     let has_valid_email = voter !== undefined ? voter.has_valid_email : false;
 
 		return <div>
-      <form onSubmit={this.sendFriendInvitationsByEmail.bind(this)}>
+      <form onSubmit={this.friendInvitationByEmailSend.bind(this)}>
       <div>
         <Input type="text" addonBefore="@" name="email_address"
                className="form-control"
@@ -86,7 +86,7 @@ export default class AddFriends extends Component {
         <ButtonToolbar bsClass="btn-toolbar">
           <span style={floatRight}>
             <Button
-              onClick={this.sendFriendInvitationsByEmail.bind(this)}
+              onClick={this.friendInvitationByEmailSend.bind(this)}
               bsStyle="primary">
               { has_valid_email ?
                 <span>Send &gt;</span> :

@@ -49,7 +49,7 @@ export default class Bookmarks extends Component {
     }
     let goToLink = function () { browserHistory.push(bookmark_link); };
     let what_your_network_thinks;
-    if ((kind_of_ballot_item === "CANDIDATE") || (kind_of_ballot_item === "MEASURE")) {
+    if (kind_of_ballot_item === "CANDIDATE" || kind_of_ballot_item === "MEASURE") {
       if (support_count || oppose_count) {
         what_your_network_thinks = <span className={"u-cursor--pointer"}
                                          onClick={goToLink} >
