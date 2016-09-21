@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import ReadMore from "../../components/Widgets/ReadMore";
 import Textarea from "react-textarea-autosize";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
@@ -172,14 +173,15 @@ export default class ItemPositionStatementActionBar extends Component {
                   width="34px"
             /> :
           image_placeholder }
-          <span className="position-statement__description edit-position-action"
+          <span className="position-statement__description">
+          {/*<span className="position-statement__description edit-position-action"
                 onClick={onSavePositionStatementClick}
-                title="Edit this position">
+                title="Edit this position"> */}
             { speaker_display_name ?
               <span className="position-statement__speaker-name">{speaker_display_name} <br /></span> :
               null }
-            {statement_text_to_be_saved}
-          </span>
+            <ReadMore text_to_display={statement_text_to_be_saved} />
+            </span>
 
           { short_version ?
             <span className="position-statement__edit-position-pseudo"
