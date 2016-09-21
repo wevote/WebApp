@@ -85,6 +85,7 @@ export default class PositionItem extends Component {
 
     var one_position_on_this_candidate = <li className="card-child position-item">
       {/* One Position on this Candidate */}
+      <div className="card-child__media-object-content">
         <Link to={speakerLink}>
           { position.speaker_image_url_https ?
             <ImageHandler className="img-square card-child__avatar"
@@ -92,7 +93,6 @@ export default class PositionItem extends Component {
             /> :
           image_placeholder }
         </Link>
-        <div className="card-child__media-object-content">
           <div className="card-child__content">
             <h4 className="card-child__display-name">
               <Link to={speakerLink}>
