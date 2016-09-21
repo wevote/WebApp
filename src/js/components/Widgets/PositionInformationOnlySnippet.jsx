@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import ReadMore from "../../components/Widgets/ReadMore";
-import ViewSourceModal from "../../components/Widgets/ViewSourceModal";
+// import ViewSourceModal from "../../components/Widgets/ViewSourceModal";
 
 export default class PositionInformationOnlySnippet extends Component {
   static propTypes = {
@@ -98,9 +98,9 @@ export default class PositionInformationOnlySnippet extends Component {
           </span>
         }
       </div>
-      <ViewSourceModal show={this.state.showViewSourceModal}
+      {/*<ViewSourceModal show={this.state.showViewSourceModal}
                      onHide={this.closeViewSourceModal.bind(this)}
-                     url={this.props.more_info_url} />
+                     url={this.props.more_info_url} /> */}
     </div>;
   }
 }
