@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import ReadMore from "../../components/Widgets/ReadMore";
+// import ViewSourceModal from "../../components/Widgets/ViewSourceModal";
 
 export default class PositionInformationOnlySnippet extends Component {
   static propTypes = {
@@ -14,6 +15,23 @@ export default class PositionInformationOnlySnippet extends Component {
     comment_text_off: PropTypes.bool
   };
 
+  componentWillMount () {
+    this.setState({
+      showViewSourceModal: false,
+      transitioning: false
+    });
+  }
+
+  closeViewSourceModal () {
+    this.setState({ showViewSourceModal: false });
+  }
+
+  openViewSourceModal (event) {
+    console.log(event);
+    event.stopPropagation();
+    this.setState({ showViewSourceModal: true });
+  }
+
   render () {
     var stance_icon_src;
     var className;
@@ -23,7 +41,8 @@ export default class PositionInformationOnlySnippet extends Component {
     var { is_looking_at_self } = this.props;
     var statement_text = this.props.statement_text || "";
     var statement_text_html = <ReadMore text_to_display={statement_text} />;
-
+    // onViewSourceClick is onClick function for view source modal in mobile browser
+    // const onViewSourceClick = this.state.showViewSourceModal ? this.closeViewSourceModal.bind(this) : this.openViewSourceModal.bind(this);
 
     stance_icon_src = "/img/global/icons/mixed-rating-icon.svg";
     className = "position-rating__icon position-rating__icon--mixed";
@@ -62,11 +81,26 @@ export default class PositionInformationOnlySnippet extends Component {
             <span>{statement_text_html}</span>
             {/* if there's an external source for the explicit position/endorsement, show it */}
             {this.props.more_info_url ?
-              <span className="explicit-position__source"> (view source)</span> :
+              <span className="explicit-position__source">
+                {/* link for desktop browser: open in new tab*/}
+                <a href={this.props.more_info_url}
+                   className="interface-element--desktop"
+                   target="_blank">
+                  (view source)
+                </a>
+                {/* link for mobile browser: open in bootstrap modal */}
+                {/*<a onClick={onViewSourceClick}
+                   className="interface-element--mobile">
+                  (view source)
+                </a> */}
+              </span> :
               null }
           </span>
         }
       </div>
+      {/*<ViewSourceModal show={this.state.showViewSourceModal}
+                     onHide={this.closeViewSourceModal.bind(this)}
+                     url={this.props.more_info_url} /> */}
     </div>;
   }
 }

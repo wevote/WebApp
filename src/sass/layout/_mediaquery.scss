@@ -57,6 +57,10 @@
       display: none;
     }
   }
+
+  .interface-element--desktop {
+    display: none;
+  }
 }
 
 
@@ -64,6 +68,11 @@
   .navbar-fixed-bottom {
     display: none;
   }
+
+  .interface-element--mobile {
+    display: none;
+  }
+
   .device {
     &-menu { // device-menu
       &--large {

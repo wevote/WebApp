@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import ImageHandler from "../../components/ImageHandler";
-import EditPositionAboutCandidateModal from "../../components/VoterGuide/EditPositionAboutCandidateModal";
+// import EditPositionAboutCandidateModal from "../../components/VoterGuide/EditPositionAboutCandidateModal";
 import FriendsOnlyIndicator from "../../components/Widgets/FriendsOnlyIndicator";
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
 import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
@@ -17,16 +17,16 @@ export default class PositionItem extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { showEditPositionModal: false };
+    // this.state = { showEditPositionModal: false };
   }
 
-  closeEditPositionModal () {
-    this.setState({ showEditPositionModal: false });
-  }
-
-  openEditPositionModal () {
-    this.setState({ showEditPositionModal: true });
-  }
+  // closeEditPositionModal () {
+  //   this.setState({ showEditPositionModal: false });
+  // }
+  //
+  // openEditPositionModal () {
+  //   this.setState({ showEditPositionModal: true });
+  // }
 
   render () {
     var position = this.props.position;
@@ -65,23 +65,23 @@ export default class PositionItem extends Component {
 
     var nothing_to_display = null;
 
-    var edit_mode = false;  // TODO DALE Convert this to be dynamically set
-    const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
+    // var edit_mode = false;  // TODO DALE Convert this to be dynamically set
+    // const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
     // Only allow editing if the position we are passing in has a we_vote_id
     // TODO DALE I need to think through passing in organization below
-    const edit_position_description = edit_mode && position !== undefined ?
-      <span>
-        <span className="edit-position-action"
-              onClick={onEditPositionClick}
-              title="Edit this position">
-          { position_description }
-        </span>
-        <EditPositionAboutCandidateModal show={this.state.showEditPositionModal}
-                                         onHide={this.closeEditPositionModal.bind(this)}
-                                         position={position}
-                                         organization={this.props.organization}/>
-      </span> :
-      null;
+    // const edit_position_description = edit_mode && position !== undefined ?
+    //   <span>
+    //     <span className="edit-position-action"
+    //           onClick={onEditPositionClick}
+    //           title="Edit this position">
+    //       { position_description }
+    //     </span>
+    //     <EditPositionAboutCandidateModal show={this.state.showEditPositionModal}
+    //                                      onHide={this.closeEditPositionModal.bind(this)}
+    //                                      position={position}
+    //                                      organization={this.props.organization}/>
+    //   </span> :
+    //   null;
 
     var one_position_on_this_candidate = <li className="card-child position-item">
       {/* One Position on this Candidate */}
@@ -99,9 +99,10 @@ export default class PositionItem extends Component {
                 { position.speaker_display_name }
               </Link>
             </h4>
-            { edit_mode ?
+            {/* edit_mode ?
               edit_position_description :
-              position_description }
+              position_description */}
+              {position_description}
             <FriendsOnlyIndicator isFriendsOnly={!position.is_public_position} />
           </div>
         </div>
