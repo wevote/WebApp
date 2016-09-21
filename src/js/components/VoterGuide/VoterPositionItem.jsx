@@ -28,7 +28,7 @@ export default class VoterPositionItem extends Component {
 
   componentWillMount () {
     this.setState({
-      showEditPositionModal: false,
+      // showEditPositionModal: false,
       supportProps: SupportStore.get(this.props.position.ballot_item_we_vote_id),
       transitioning: false
     });
@@ -58,13 +58,13 @@ export default class VoterPositionItem extends Component {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-  closeEditPositionModal () {
-    this.setState({ showEditPositionModal: false });
-  }
-
-  openEditPositionModal () {
-    this.setState({ showEditPositionModal: true });
-  }
+  // closeEditPositionModal () {
+  //   this.setState({ showEditPositionModal: false });
+  // }
+  //
+  // openEditPositionModal () {
+  //   this.setState({ showEditPositionModal: true });
+  // }
 
   render (){
     var position = this.props.position;
@@ -114,7 +114,7 @@ export default class VoterPositionItem extends Component {
                                                              comment_text_off={comment_text_off} />;
     }
 
-    const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
+    // const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
     var contest_office_name;
     var political_party;
     if (position.kind_of_ballot_item === "CANDIDATE") {
@@ -146,7 +146,7 @@ export default class VoterPositionItem extends Component {
               null
             }
           {/* show explicit position, if available, otherwise show rating */}
-          { this.props.link_to_edit_modal_off ?
+          {/* this.props.link_to_edit_modal_off ?
             position_description :
             <span>
               <span className="edit-position-action"
@@ -154,11 +154,12 @@ export default class VoterPositionItem extends Component {
                     title="Edit this position">
                 { position_description }
               </span>
-              {/* GET WORKING WITH MEASURES <EditPositionAboutCandidateModal show={this.state.showEditPositionModal}
+              { GET WORKING WITH MEASURES <EditPositionAboutCandidateModal show={this.state.showEditPositionModal}
                                                onHide={this.closeEditPositionModal.bind(this)}
                                                position={position}
-                                               organization={organization}/>*/}
-            </span> }
+                                               organization={organization}/>}
+            </span> */}
+            {position_description}
             <PositionPublicToggle ballot_item_we_vote_id={position.ballot_item_we_vote_id}
               type={position.kind_of_ballot_item}
               supportProps={supportProps}
