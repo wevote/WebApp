@@ -96,6 +96,7 @@ export default class SearchAllBox extends Component {
                  name="master_search_field"
                  autoComplete="off"
                  onFocus={this.onSearchFocus.bind(this)}
+                 onBlur={this.onSearchBlur.bind(this)}
                  onChange={this.onSearchFieldTextChange.bind(this)}
                  value={this.state.text_from_search_field} />
           <div className="input-group-btn">
