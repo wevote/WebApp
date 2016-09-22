@@ -15,13 +15,11 @@ export default class ReadMore extends Component {
       this.state = {
         readMore: true
       };
-
       this.toggleLines = this.toggleLines.bind(this);
     }
 
     toggleLines (event) {
         event.preventDefault();
-
         this.setState({
             readMore: !this.state.readMore
         });
@@ -38,6 +36,19 @@ export default class ReadMore extends Component {
         if (collapse_text === undefined) {
           collapse_text = " ...Less";
         }
+        let expanded_text_array = text_to_display.replace(/(?:\r\n|\r|\n){2,}/g, "\r\n\r\n").split(/(?:\r\n|\r|\n)/g);
+
+        let expanded_text_to_display = expanded_text_array.map(function (item, key){
+           if (key === 0) {
+            return <span key={key}>
+              {item}
+              </span>;
+          } else {
+          return <span key={key}>
+            <br/>
+              {item}
+            </span>; }
+        });
 
         if (this.state.readMore) {
           return <span>
@@ -49,7 +60,7 @@ export default class ReadMore extends Component {
               />
           </span>;
         } else {
-          return <span>{text_to_display}<a href="#" onClick={this.toggleLines}>{collapse_text}</a></span>;
+          return <span>{expanded_text_to_display}<a href="#" onClick={this.toggleLines}><br/>{collapse_text}</a></span>;
         }
     }
 }
