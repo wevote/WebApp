@@ -63,8 +63,12 @@ export default class ItemActionBar extends Component {
     const icon_size = 18;
     var icon_color = "#999";
     var selected_color = "#0D546F";
-
-    const url_being_shared = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/candidate/" + this.props.ballot_item_we_vote_id;
+    var url_being_shared;
+    if (this.props.type === "CANDIDATE") {
+      url_being_shared = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/candidate/" + this.props.ballot_item_we_vote_id;
+    } else {
+      url_being_shared = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/measure/" + this.props.ballot_item_we_vote_id;
+    }
     const remove_position_function = is_support ? this.stopSupportingItem.bind(this) : this.stopOpposingItem.bind(this);
     const position_text = is_support ? "I Support" : "I Oppose";
     const position_icon = is_support ?
@@ -81,13 +85,13 @@ export default class ItemActionBar extends Component {
               <span className="btn__icon">
                 <Icon name="thumbs-up-icon" width={icon_size} height={icon_size} color={icon_color} />
               </span>
-              <span>Support</span>
+              <span className="interface-element--desktop">Support</span>
             </button>
             <button className="item-actionbar__btn item-actionbar__btn--oppose btn btn-default" onClick={this.opposeItem.bind(this)}>
               <span className="btn__icon">
                 <Icon name="thumbs-down-icon" width={icon_size} height={icon_size} color={icon_color} />
               </span>
-              <span>Oppose</span>
+              <span className="interface-element--desktop">Oppose</span>
             </button>
           </div>
         }

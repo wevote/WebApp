@@ -38,7 +38,7 @@ export default class PositionInformationOnlySnippet extends Component {
     var alt;
     var positionLabel;
     var hasThisToSay;
-    var { is_looking_at_self } = this.props;
+    var { is_looking_at_self, more_info_url } = this.props;
     var statement_text = this.props.statement_text || "";
     var statement_text_html = <ReadMore text_to_display={statement_text} />;
     // onViewSourceClick is onClick function for view source modal in mobile browser
@@ -56,6 +56,13 @@ export default class PositionInformationOnlySnippet extends Component {
     let comment_text_off = false;
     if (this.props.comment_text_off !== undefined) {
       comment_text_off = this.props.comment_text_off ? true : false;
+    }
+    if (more_info_url) {
+      if (more_info_url.toLowerCase().startsWith("http")) {
+        more_info_url = more_info_url;
+      } else {
+        more_info_url = "http://" + more_info_url;
+      }
     }
 
     return <div className="explicit-position">
@@ -80,10 +87,10 @@ export default class PositionInformationOnlySnippet extends Component {
           <span>
             <span>{statement_text_html}</span>
             {/* if there's an external source for the explicit position/endorsement, show it */}
-            {this.props.more_info_url ?
+            {more_info_url ?
               <span className="explicit-position__source">
                 {/* link for desktop browser: open in new tab*/}
-                <a href={this.props.more_info_url}
+                <a href={more_info_url}
                    className="interface-element--desktop"
                    target="_blank">
                   (view source)

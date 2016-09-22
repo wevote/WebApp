@@ -101,7 +101,7 @@ export default class GuidePositionList extends Component {
                 return <OrganizationPositionItem key={item.position_we_vote_id}
                                                  position={item}
                                                  organization={this.state.organization}
-                                                 popover_off />;
+                                                  />;
               }) :
               <div>{LoadingWheel}</div>
             }
@@ -117,7 +117,7 @@ export default class GuidePositionList extends Component {
                   return <OrganizationPositionItem key={item.position_we_vote_id}
                                                    position={item}
                                                    organization={this.state.organization}
-                                                   popover_off />;
+                                                    />;
                 }) }
               </span> :
               <div>{LoadingWheel}</div>
