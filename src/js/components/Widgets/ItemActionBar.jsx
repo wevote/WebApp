@@ -85,13 +85,13 @@ export default class ItemActionBar extends Component {
               <span className="btn__icon">
                 <Icon name="thumbs-up-icon" width={icon_size} height={icon_size} color={icon_color} />
               </span>
-              <span>Support</span>
+              <span className="interface-element--desktop">Support</span>
             </button>
             <button className="item-actionbar__btn item-actionbar__btn--oppose btn btn-default" onClick={this.opposeItem.bind(this)}>
               <span className="btn__icon">
                 <Icon name="thumbs-down-icon" width={icon_size} height={icon_size} color={icon_color} />
               </span>
-              <span>Oppose</span>
+              <span className="interface-element--desktop">Oppose</span>
             </button>
           </div>
         }
