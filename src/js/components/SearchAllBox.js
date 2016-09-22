@@ -65,8 +65,11 @@ export default class SearchAllBox extends Component {
   }
 
   onSearchBlur () {
-    exitSearch();
-    this.closeDropdown();
+    // Delay closing the drop down so that a click on the Link can have time to work
+    setTimeout(function () {
+      exitSearch();
+      this.closeDropdown();
+    }, 300);
   }
 
   closeDropdown () {
