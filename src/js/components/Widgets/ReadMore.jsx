@@ -38,6 +38,12 @@ export default class ReadMore extends Component {
         if (collapse_text === undefined) {
           collapse_text = " ...Less";
         }
+        let expanded_text_to_display = text_to_display.split(/(?:\r\n|\r|\n)/g).map(function (item, key){
+          return <span key={key}>
+              {item}
+              <br/>
+            </span>;
+        });
 
         if (this.state.readMore) {
           return <span>
@@ -49,7 +55,7 @@ export default class ReadMore extends Component {
               />
           </span>;
         } else {
-          return <span>{text_to_display}<a href="#" onClick={this.toggleLines}>{collapse_text}</a></span>;
+          return <span>{expanded_text_to_display}<a href="#" onClick={this.toggleLines}>{collapse_text}</a></span>;
         }
     }
 }
