@@ -26,7 +26,7 @@ export default class ShareButtonDropdown extends Component {
   }
 
   openDropdown () {
-    this.setState({open: true});
+    this.setState({ open: true });
   }
 
   shareFacebookComment (event) {
@@ -58,21 +58,19 @@ export default class ShareButtonDropdown extends Component {
     const {shareIcon, shareText, urlBeingShared} = this.props;
     const onClick = this.state.open ? this.closeDropdown.bind(this) : this.openDropdown.bind(this);
     const onCopyLinkClick = this.state.showCopyLinkModal ? this.closeCopyLinkModal.bind(this) : this.openCopyLinkModal.bind(this);
-    return <div onBlur={this.closeDropdown.bind(this)} className="btn-group open">
-      <button onClick={onClick} className="dropdown item-actionbar__btn item-actionbar__btn--position-selected btn btn-default">
+    return <div className="btn-group open">
+      <button onBlur={this.closeDropdown.bind(this)} onClick={onClick} className="dropdown item-actionbar__btn item-actionbar__btn--position-selected btn btn-default">
         {shareIcon} {shareText} <span className="caret"></span>
       </button>
       {this.state.open ?
         <ul className="dropdown-menu">
           <li>
-            <a onBlur={this.closeDropdown.bind(this)}
-              onClick={onCopyLinkClick}>
+            <a onMouseDown={onCopyLinkClick}>
                 Copy link
             </a>
           </li>
           <li>
-            <a onBlur={this.closeDropdown.bind(this)}
-              onClick={this.shareFacebookComment.bind(this)}>
+            <a onMouseDown={this.shareFacebookComment.bind(this)}>
                 Share on Facebook
             </a>
           </li>

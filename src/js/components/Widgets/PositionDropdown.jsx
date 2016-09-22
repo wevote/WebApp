@@ -26,13 +26,13 @@ export default class PositionDropdown extends Component {
     const onClick = this.state.open ? this.closeDropdown.bind(this) : this.openDropdown.bind(this);
 
     return <div className="btn-group open">
-      <button onClick={onClick} className="dropdown item-actionbar__btn item-actionbar__btn--position-selected btn btn-default">
+      <button onBlur={this.closeDropdown.bind(this)} onClick={onClick} className="dropdown item-actionbar__btn item-actionbar__btn--position-selected btn btn-default">
         {positionIcon} {positionText} <span className="caret"></span>
       </button>
       {this.state.open &&
         <ul className="dropdown-menu">
           <li>
-            <a autoFocus onClick={removePositionFunction} onBlur={this.closeDropdown.bind(this)}>
+            <a autoFocus onMouseDown={removePositionFunction}>
                 Remove Position
             </a>
           </li>
