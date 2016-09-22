@@ -36,18 +36,15 @@ export default class ReadMore extends Component {
         if (collapse_text === undefined) {
           collapse_text = " ...Less";
         }
-        let expanded_text_array = text_to_display.split(/(?:\r\n|\r|\n)+/g);
+        let expanded_text_array = text_to_display.replace(/(?:\r\n|\r|\n){2,}/g, "\r\n\r\n").split(/(?:\r\n|\r|\n)/g);
 
         let expanded_text_to_display = expanded_text_array.map(function (item, key){
-          if (item.trim() === "") {
-            return null;
-          } else if (key === 0) {
+           if (key === 0) {
             return <span key={key}>
               {item}
               </span>;
           } else {
           return <span key={key}>
-            <br/>
             <br/>
               {item}
             </span>; }
