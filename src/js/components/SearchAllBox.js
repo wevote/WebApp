@@ -13,6 +13,7 @@ export default class SearchAllBox extends Component {
   constructor (props){
     super(props);
     this.state = {
+      open: false,
       search_results: []
     };
   }
@@ -45,6 +46,7 @@ export default class SearchAllBox extends Component {
   _onSearchAllStoreChange (){
     this.setState(
       {
+        open: true,
         search_results: SearchAllStore.getSearchResults(),
         text_from_search_field: SearchAllStore.getTextFromSearchField()
       }
@@ -57,13 +59,22 @@ export default class SearchAllBox extends Component {
     this.setState({search_results: []});
   }
 
-  // both of the two methods below need to have constants refactored
   onSearchFocus () {
     enterSearch();
+    this.openDropdown();
   }
 
   onSearchBlur () {
     exitSearch();
+    this.closeDropdown();
+  }
+
+  closeDropdown () {
+    this.setState({ open: false });
+  }
+
+  openDropdown () {
+    this.setState({ open: true });
   }
 
   //handle pressing Enter in search field
@@ -105,7 +116,7 @@ export default class SearchAllBox extends Component {
         </div>
         </form>
         <div className="search-container">
-          { search_results ?
+          { search_results && this.state.open ?
             search_results.map(function (one_result) {
             return <Link key={one_result.we_vote_id} to={makeSearchLink(one_result.twitter_handle, one_result.we_vote_id, one_result.kind_of_owner)} className="search-container__links">
                 <div className="search-container__results">
