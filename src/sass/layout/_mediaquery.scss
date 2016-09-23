@@ -64,7 +64,7 @@
 }
 
 
-@media all and (min-width : 660px) {
+@include breakpoints(nav) {
   .navbar-fixed-bottom {
     display: none;
   }
