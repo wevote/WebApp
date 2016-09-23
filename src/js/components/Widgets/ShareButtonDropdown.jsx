@@ -30,7 +30,6 @@ export default class ShareButtonDropdown extends Component {
   }
 
   shareFacebookComment (event) {
-    console.log(event);
     event.stopPropagation();
     window.FB.ui({
       display: "popup",
@@ -41,36 +40,42 @@ export default class ShareButtonDropdown extends Component {
     this.closeDropdown();
  }
 
+  closeCopyLinkModal () {
+    this.setState({ showCopyLinkModal: false });
+  }
 
- closeCopyLinkModal () {
-   this.setState({ showCopyLinkModal: false });
- }
+  openCopyLinkModal (event) {
+    event.stopPropagation();
+    this.setState({ showCopyLinkModal: true });
+    this.closeDropdown();
+  }
 
- openCopyLinkModal (event) {
-   console.log(event);
-   event.stopPropagation();
-   this.setState({ showCopyLinkModal: true });
-   this.closeDropdown();
- }
-
+  onButtonBlur () {
+    // Delay closing the drop down so that onClick has time to work
+    var temp_this = this;
+    setTimeout(function () {
+      temp_this.closeDropdown();
+      }, 250);
+  }
 
   render () {
     const {shareIcon, shareText, urlBeingShared} = this.props;
     const onClick = this.state.open ? this.closeDropdown.bind(this) : this.openDropdown.bind(this);
     const onCopyLinkClick = this.state.showCopyLinkModal ? this.closeCopyLinkModal.bind(this) : this.openCopyLinkModal.bind(this);
+    // const onButtonBlur = ;
     return <div className="btn-group open">
-      <button onBlur={this.closeDropdown.bind(this)} onClick={onClick} className="dropdown item-actionbar__btn item-actionbar__btn--position-selected btn btn-default">
+      <button onBlur={this.onButtonBlur.bind(this)} onClick={onClick} className="dropdown item-actionbar__btn item-actionbar__btn--position-selected btn btn-default">
         {shareIcon} {shareText} <span className="caret"></span>
       </button>
       {this.state.open ?
         <ul className="dropdown-menu">
           <li>
-            <a onMouseDown={onCopyLinkClick}>
+            <a onClick={onCopyLinkClick}>
                 Copy link
             </a>
           </li>
           <li>
-            <a onMouseDown={this.shareFacebookComment.bind(this)}>
+            <a onClick={this.shareFacebookComment.bind(this)}>
                 Share on Facebook
             </a>
           </li>
