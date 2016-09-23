@@ -16,4 +16,6 @@
 .page-content-container {
   margin: 0 auto;
   max-width: $max-page-container-width;
+  position: relative;
+  z-index: 0;
 }
