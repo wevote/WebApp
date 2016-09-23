@@ -64,20 +64,21 @@ export default class SearchAllBox extends Component {
     this.openDropdown();
   }
 
-  onSearchBlur () {
-    // Delay closing the drop down so that a click on the Link can have time to work
-    setTimeout(function () {
-      exitSearch();
-      this.closeDropdown();
-    }, 300);
-  }
-
   closeDropdown () {
     this.setState({ open: false });
   }
 
   openDropdown () {
     this.setState({ open: true });
+  }
+
+  onSearchBlur () {
+    // Delay closing the drop down so that a click on the Link can have time to work
+    var temp_this = this;
+    setTimeout(function () {
+      exitSearch();
+      temp_this.closeDropdown();
+      }, 250);
   }
 
   //handle pressing Enter in search field

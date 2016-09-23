@@ -21,18 +21,26 @@ export default class PositionDropdown extends Component {
     this.setState({open: true});
   }
 
+  onButtonBlur () {
+    // Delay closing the drop down so that onClick has time to work
+    var temp_this = this;
+    setTimeout(function () {
+      temp_this.closeDropdown();
+      }, 250);
+  }
+
   render () {
     const {removePositionFunction, positionIcon, positionText} = this.props;
     const onClick = this.state.open ? this.closeDropdown.bind(this) : this.openDropdown.bind(this);
 
     return <div className="btn-group open">
-      <button onBlur={this.closeDropdown.bind(this)} onClick={onClick} className="dropdown item-actionbar__btn item-actionbar__btn--position-selected btn btn-default">
+      <button onBlur={this.onButtonBlur.bind(this)} onClick={onClick} className="dropdown item-actionbar__btn item-actionbar__btn--position-selected btn btn-default">
         {positionIcon} {positionText} <span className="caret"></span>
       </button>
       {this.state.open &&
         <ul className="dropdown-menu">
           <li>
-            <a autoFocus onMouseDown={removePositionFunction}>
+            <a autoFocus onClick={removePositionFunction}>
                 Remove Position
             </a>
           </li>
