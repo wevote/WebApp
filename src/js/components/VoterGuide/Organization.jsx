@@ -60,10 +60,10 @@ export default class Organization extends Component {
       position_description = <PositionInformationOnlySnippet {...position} is_on_ballot_item_page={is_on_ballot_item_page} />;
     }
 
-    return <div className="position-item card-child card-child--not-followed">
-      <div className="card-child__avatar">
+    return <div className="card-child card-child--not-followed">
+      <div className="card-child__media-object-anchor">
         <Link to={voterGuideLink}>
-          <ImageHandler imageUrl={voter_guide_image_url} />
+          <ImageHandler className="card-child__avatar" imageUrl={voter_guide_image_url} />
         </Link>
       </div>
       <div className="card-child__media-object-content">

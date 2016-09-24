@@ -168,7 +168,7 @@ export default class ItemPositionStatementActionBar extends Component {
         // Show the comment, but in read-only mode
         <div className={short_version ? "position-statement--truncated" : "position-statement"}>
           { speaker_image_url_https ?
-            <img className="card-child__avatar"
+            <img className="position-statement__avatar"
                   src={speaker_image_url_https}
                   width="34px"
             /> :
