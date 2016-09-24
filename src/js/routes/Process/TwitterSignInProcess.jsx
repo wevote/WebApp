@@ -36,6 +36,7 @@ export default class TwitterSignInProcess extends Component {
     var {voter} = this.state;
     var return_url;
     if (this.props.params.sign_in_step === undefined || this.props.params.sign_in_step === "signinstart") {
+      // In this block, we aren't ready to proceed to a later step
       if (voter !== undefined && (voter.signed_in_twitter || voter.signed_in_facebook)) {
         // We don't want to start the sign in process again if they are already signed in, so we redirect to the
         // sign in status page
@@ -45,6 +46,7 @@ export default class TwitterSignInProcess extends Component {
         this.twitterSignInStart(return_url);
       }
     } else if (this.props.params.sign_in_step === "signinswitchstart") {
+      // In this block, we are presumably already signed in and want to switch to another account
       if (voter !== undefined && (voter.signed_in_twitter || voter.signed_in_facebook)) {
         FacebookActions.appLogout();
       } else {
@@ -53,7 +55,8 @@ export default class TwitterSignInProcess extends Component {
         this.twitterSignInStart(return_url);
       }
     } else if (this.props.params.sign_in_step === "signinswitchend") {
-      // Redirect to the TwitterHandle page for the screen name added at the end of the return_url in the URL
+      // We have finished the Twitter sign in process, so we redirect to the TwitterHandle page
+      // for the screen name in return_url
       if (this.props.params.incoming_twitter_handle !== undefined) {
         browserHistory.push("/" + this.props.params.incoming_twitter_handle);
       } else {

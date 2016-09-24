@@ -24,15 +24,14 @@ export default class FollowingFilter extends Component {
 
     return <div className="btn-group t-mb3">
       <Link to="/opinions" className={ following_type === "WHO_YOU_CAN_FOLLOW" ? "active btn btn-default" : "btn btn-default"}>
-        Who You Can Follow
+        To Follow
       </Link>
       <Link to="/more/opinions/followed" className={ following_type === "WHO_YOU_FOLLOW" ? "active btn btn-default" : "btn btn-default"}>
-        Currently Following
+        Following
+      </Link>
+      <Link to="/friends" className={ following_type === "YOUR_FRIENDS" ? "active btn btn-default" : "btn btn-default"}>
+        Friends
       </Link>
     </div>;
   }
-  // TODO Coming soon
-  //     <Link to="/friends" className={ following_type === "YOUR_FRIENDS" ? "active btn btn-default" : "btn btn-default"}>
-  //       Your Friends
-  //     </Link>
 }

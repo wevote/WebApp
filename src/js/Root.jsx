@@ -16,7 +16,8 @@ import ClaimYourPage from "./routes/Settings/ClaimYourPage";
 import Connect from "./routes/Connect";
 import EmailBallot from "./routes/More/EmailBallot";
 import EmptyBallot from "./routes/Ballot/EmptyBallot";
-import GuidePositionList from "./routes/Guide/GuidePositionList"; // A list of all positions from one guide
+import Friends from "./routes/Friends";
+import GuidePositionList from "./routes/Guide/GuidePositionList";
 import Intro from "./routes/Intro/Intro";
 import IntroContests from "./routes/Intro/IntroContests";
 import IntroOpinions from "./routes/Intro/IntroOpinions";
@@ -24,7 +25,7 @@ import Location from "./routes/Settings/Location";
 import Measure from "./routes/Ballot/Measure";
 import NotFound from "./routes/NotFound";
 import Office from "./routes/Ballot/Office";
-import Opinions from "./routes/Opinions"; // More opinions about anything on the ballot
+import Opinions from "./routes/Opinions";
 import OpinionsFollowed from "./routes/More/OpinionsFollowed";
 import Privacy from "./routes/More/Privacy";
 import Requests from "./routes/Requests";
@@ -59,6 +60,7 @@ const routes = () =>
     {/* Ballot Off-shoot Pages */}
     <Route path="/opinions" component={Opinions} />
     <Route path="/friends" >
+      <IndexRoute component={Friends} />
       <Route path="add" component={Connect} />
       <Route path="remove" />
     </Route>

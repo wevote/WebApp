@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Link } from "react-router";
 import { Button } from "react-bootstrap";
 import AddFriends from "../components/Friends/AddFriends";
-//import OrganizationsToFollowList from "../components/OrganizationsToFollowList";
 
 /* VISUAL DESIGN HERE: https://invis.io/E45246B2C */
 
@@ -25,7 +24,6 @@ export default class Connect extends Component {
 		};
 		return <div>
 			<div className="container-fluid well u-gutter__top--small fluff-full1">
-				<h4 className="text-left">Add Friends</h4>
 				<AddFriends />
       </div>
 

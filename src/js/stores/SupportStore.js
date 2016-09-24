@@ -56,7 +56,7 @@ class SupportStore extends FluxMapStore {
     return assign({}, is_public_position_list, { [ballot_item_we_vote_id]: is_public_position });
   }
 
-/* Turn action into a dictionary/object format with we_vote_id as key for fast lookup */
+  // Turn action into a dictionary/object format with we_vote_id as key for fast lookup
   parseListToHash (property, list){
     let hash_map = {};
     list.forEach(el => {

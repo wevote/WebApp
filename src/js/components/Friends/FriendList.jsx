@@ -1,0 +1,46 @@
+import React, { Component, PropTypes } from "react";
+import FriendDisplayForList from "./FriendDisplayForList";
+import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+
+export default class FriendList extends Component {
+
+  static propTypes = {
+    friendList: PropTypes.array
+  };
+
+  constructor (props) {
+    super(props);
+    this.state = {
+      friend_list: this.props.friendList
+    };
+  }
+
+  componentDidMount () {
+    this.setState({
+      friend_list: this.props.friendList
+    });
+  }
+
+  componentWillReceiveProps (nextProps){
+    this.setState({
+      friend_list: nextProps.friendList
+    });
+  }
+
+  render () {
+    if (this.state.friend_list === undefined) {
+      return null;
+    }
+
+    const friend_list_for_display = this.state.friend_list.map( (friend) => {
+      return <FriendDisplayForList key={friend.voter_we_vote_id} {...friend} />;
+    });
+
+    return <div className="guidelist card-child__list-group">
+        <ReactCSSTransitionGroup transitionName="org-ignore" transitionEnterTimeout={4000} transitionLeaveTimeout={2000}>
+          {friend_list_for_display}
+        </ReactCSSTransitionGroup>
+      </div>;
+  }
+
+}

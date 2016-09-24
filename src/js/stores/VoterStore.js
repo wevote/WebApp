@@ -3,15 +3,58 @@ import FluxMapStore from "flux/lib/FluxMapStore";
 import VoterActions from "../actions/VoterActions";
 import FacebookActions from "../actions/FacebookActions";
 import FacebookStore from "../stores/FacebookStore";
+const assign = require("object-assign");
 const cookies = require("../utils/cookies");
 
 class VoterStore extends FluxMapStore {
+
+  currentFriends (){
+    let current_friends = this.getDataFromArr(this.getState().current_friends) || {};
+    return current_friends;
+  }
+
+  currentFriendsIndexed (){
+    let current_friends = this.getIndexFromArr(this.getState().current_friends) || {};
+    return current_friends;
+  }
+
+  isFriend (voter_we_vote_id) {
+    let current_friends_index = this.currentFriendsIndexed();  // TODO DALE THIS NEEDS TO BE TESTED
+    if (current_friends_index[voter_we_vote_id] != undefined) {
+      return true;
+    }
+    return false;
+  }
 
   getInitialState () {
     return {
       voter: {},
       address: {}
     };
+  }
+
+  getDataFromArr (arr) {
+    if (arr == undefined) {
+      return [];
+    }
+    let data_list = [];
+    for (var i = 0, len = arr.length; i < len; i++) {
+      data_list.push( arr[i] );
+    }
+    return data_list;
+  }
+
+  getIndexFromArr (arr) {
+    if (arr == undefined) {
+      return [];
+    }
+    let indexed_data_list = [];
+    let friend_voter_we_vote_id;
+    for (var i = 0, len = arr.length; i < len; i++) {
+      friend_voter_we_vote_id = arr[i].voter_we_vote_id;
+      indexed_data_list[friend_voter_we_vote_id] = arr[i];
+    }
+    return indexed_data_list;
   }
 
   getVoter (){
@@ -34,6 +77,14 @@ class VoterStore extends FluxMapStore {
     return this.getState().voter.facebook_profile_image_url_https;
   }
 
+  friendInvitationsSentByMe (){
+    return this.getDataFromArr(this.getState().friend_invitations_sent_by_me) || {};
+  }
+
+  friendInvitationsSentToMe (){
+    return this.getDataFromArr(this.getState().friend_invitations_sent_to_me) || {};
+  }
+
   getFullName (){
     return this.getState().voter.full_name;
   }
@@ -54,6 +105,84 @@ class VoterStore extends FluxMapStore {
   reduce (state, action) {
 
     switch (action.type) {
+      case "friendInviteResponse":
+        if (!action.res.success) {
+          // There was a problem
+          VoterActions.friendInvitationsSentToMe();
+          // console.log("VoterStore friendInviteResponse incoming data NO SUCCESS, action.res:", action.res);
+          return {
+            ...state
+          }
+        } else if (action.res.kind_of_invite_response === "ACCEPT_INVITATION") {
+          // console.log("VoterStore friendInviteResponse incoming data ACCEPT_INVITATION, action.res:", action.res);
+          VoterActions.friendInvitationsSentToMe();
+          // We update the current_friends locally because it could be a heavy API call we don't want to call too often
+          return {
+            ...state,
+            current_friends: assign({}, state.current_friends, { [action.res.voter_we_vote_id]: action.res.friend_voter })
+          }
+        } else if (action.res.kind_of_invite_response === "IGNORE_INVITATION") {
+          VoterActions.friendInvitationsSentToMe();
+          // console.log("VoterStore friendInviteResponse incoming data IGNORE_INVITATION, action.res:", action.res);
+          return {
+            ...state
+          }
+        } else if (action.res.kind_of_invite_response === "DELETE_INVITATION_VOTER_SENT_BY_ME") {
+          VoterActions.friendInvitationsSentByMe();
+          // console.log("VoterStore friendInviteResponse incoming data DELETE_INVITATION_VOTER_SENT_BY_ME, action.res:", action.res);
+          return {
+            ...state
+          }
+        } else if (action.res.kind_of_invite_response === "DELETE_INVITATION_EMAIL_SENT_BY_ME") {
+          VoterActions.friendInvitationsSentByMe();
+          // console.log("VoterStore friendInviteResponse incoming data DELETE_INVITATION_EMAIL_SENT_BY_ME, action.res:", action.res);
+          return {
+            ...state
+          }
+        } else if (action.res.kind_of_invite_response === "UNFRIEND_CURRENT_FRIEND") {
+          // Because of the potential size of the friend list, it would be better NOT to request the entire list
+          // after un-friending, but we do it for now until we can refactor this
+          VoterActions.currentFriends();
+          // console.log("VoterStore friendInviteResponse incoming data UNFRIEND_CURRENT_FRIEND, action.res:", action.res);
+          return {
+            ...state
+          }
+        }
+        return {
+          ...state
+        };
+
+      case "friendInvitationByEmailSend":
+        VoterActions.friendInvitationsSentByMe();
+        return {
+          ...state
+        };
+
+      case "friendList":
+        if (action.res.kind_of_list === "CURRENT_FRIENDS") {
+          // console.log("VoterStore incoming data CURRENT_FRIENDS, action.res:", action.res);
+          return {
+            ...state,
+            current_friends: action.res.friend_list
+          }
+        } else if (action.res.kind_of_list === "FRIEND_INVITATIONS_SENT_BY_ME") {
+          // console.log("VoterStore incoming data FRIEND_INVITATIONS_SENT_BY_ME, action.res:", action.res);
+          return {
+            ...state,
+            friend_invitations_sent_by_me: action.res.friend_list
+          }
+        } else if (action.res.kind_of_list === "FRIEND_INVITATIONS_SENT_TO_ME") {
+          // console.log("VoterStore incoming data FRIEND_INVITATIONS_SENT_TO_ME, action.res:", action.res);
+          return {
+            ...state,
+            friend_invitations_sent_to_me: action.res.friend_list
+          }
+        }
+
+        return {
+          ...state
+        };
+
       case "organizationSave":
         // If an organization saves, we want to check to see if it is tied to this voter. If so,
         // refresh the voter data so we have the value linked_organization_we_vote_id in the voter object.

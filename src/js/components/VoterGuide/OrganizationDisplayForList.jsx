@@ -6,10 +6,10 @@ import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippe
 import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
 import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
 
-// Organization is used by GuideList for viewing voter guides you can follow on the Candidate
+// OrganizationDisplayForList is used by GuideList for viewing voter guides you can follow on the Candidate
 // and Opinions (you can follow) Components
 // Please see VoterGuide/OrganizationCard for the Component displayed by TwitterHandle
-export default class Organization extends Component {
+export default class OrganizationDisplayForList extends Component {
   static propTypes = {
     key: PropTypes.string,
     organization_we_vote_id: PropTypes.string,
@@ -20,7 +20,7 @@ export default class Organization extends Component {
     twitter_description: PropTypes.string,
     twitter_followers_count: PropTypes.number,
     twitter_handle: PropTypes.string,
-    children: PropTypes.array,
+    children: PropTypes.array,  // A list of the tags in OrganizationDisplayForList when called (from GuideList for example)
     is_support: PropTypes.bool,
     is_positive_rating: PropTypes.bool,
     is_oppose: PropTypes.bool,

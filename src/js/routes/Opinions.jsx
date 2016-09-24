@@ -17,7 +17,10 @@ export default class Opinions extends Component {
 
   constructor (props){
     super(props);
-    this.state = {guideToFollowList: [], ballot_has_guides: null};
+    this.state = {
+      guideToFollowList: [], 
+      ballot_has_guides: null
+    };
   }
 
   componentDidMount () {
@@ -84,13 +87,10 @@ export default class Opinions extends Component {
         </div>;
       }
 
-    const content =
-      <div className="opinion-view">
+    return <div className="opinion-view">
         <h1>Build Your Network</h1>
         <FollowingFilter following_type={this.getFollowingType()} />
           {guides}
       </div>;
-
-    return content;
   }
 }

@@ -1,44 +1,57 @@
 import React, { Component } from "react";
-
-// import FollowOrIgnore from "../components/Widgets/FollowOrIgnore";
+import FriendInvitationList from "../components/Friends/FriendInvitationList";
+import VoterActions from "../actions/VoterActions";
+import VoterStore from "../stores/VoterStore";
 
 export default class RequestsPage extends Component {
-	constructor (props) {
-		super(props);
-	}
+  constructor (props) {
+      super(props);
+      this.state = {
+        friend_invitations_sent_by_me: VoterStore.friendInvitationsSentByMe(),
+        friend_invitations_sent_to_me: VoterStore.friendInvitationsSentToMe()
+      };
+  }
 
-	static getProps () {
-		return {};
-	}
+  componentDidMount () {
+    VoterActions.currentFriends();
+    VoterActions.friendInvitationsSentByMe();
+    VoterActions.friendInvitationsSentToMe();
+    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+  }
+
+  componentWillUnmount (){
+    this.voterStoreListener.remove();
+  }
+
+  _onVoterStoreChange () {
+    this.setState({
+      friend_invitations_sent_by_me: VoterStore.friendInvitationsSentByMe(),
+      friend_invitations_sent_to_me: VoterStore.friendInvitationsSentToMe()
+    });
+  }
 
 	render () {
-		return <section>
-				<div className="container-fluid well u-gutter__top--small fluff-full1">
-					<h3 className="text-center">Friend Requests</h3>
-					<h4 className="text-center">Coming Soon</h4>
-					<p>Friends will be able to reach out to you so you can collaborate on how to vote.</p>
-					{/*
-					<h4 className="text-left">Friend Requests</h4>
-                    <ul className="list-group">
-                        <li className="list-group-item">
-		                    <FollowOrIgnore action={VoterGuideActions} action_text={"Add Friend"} />
-							<i className="icon-icon-add-friends-2-1 icon-light icon-medium"></i>
-							Janet Smith</li>
-                        <li className="list-group-item">
-		                    <FollowOrIgnore action={VoterGuideActions} action_text={"Add Friend"} />
-							<i className="icon-icon-add-friends-2-1 icon-light icon-medium"></i>
-							Will Rogers</li>
-                        <li className="list-group-item">
-		                    <FollowOrIgnore action={VoterGuideActions} action_text={"Add Friend"} />
-							<i className="icon-icon-add-friends-2-1 icon-light icon-medium"></i>
-							Andrea Moed</li>
-                        <li className="list-group-item">
-		                    <FollowOrIgnore action={VoterGuideActions} action_text={"Add Friend"} />
-							<i className="icon-icon-add-friends-2-1 icon-light icon-medium"></i>
-							Amy Muller</li>
-                    </ul>
-					*/}
-				</div>
-			</section>;
+    return <section className="card">
+			<h3 className="text-center">Friend Requests</h3>
+			<p>Friends will be able to reach out to you so you can collaborate on how to vote.</p>
+      <div className="card__additional">
+        {/* Invitations you have received */}
+        { this.state.friend_invitations_sent_to_me ?
+          <div>
+            <FriendInvitationList friendList={this.state.friend_invitations_sent_to_me} />
+          </div> :
+          null
+        }
+        {/* Invitations you have sent */}
+        { this.state.friend_invitations_sent_by_me.length ?
+          <div><h3 className="card__additional-heading">Invitations You Have Sent</h3>
+            <FriendInvitationList friendList={this.state.friend_invitations_sent_by_me}
+                                  invitationsSentByMe />
+          </div> :
+          null
+        }
+      </div>
+    </section>;
+
 	}
 }
