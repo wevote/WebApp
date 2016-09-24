@@ -113,9 +113,9 @@ export default class ItemPositionStatementActionBar extends Component {
         statement_placeholder_text = "Why you oppose…";
       }
     } else if (this.props.ballot_item_display_name) {
-      statement_placeholder_text = "Share your thoughts about " + this.props.ballot_item_display_name + "…";
+      statement_placeholder_text = "Your thoughts about " + this.props.ballot_item_display_name + "…";
     } else {
-      statement_placeholder_text = "Share your thoughts…";
+      statement_placeholder_text = "Your thoughts…";
     }
 
     // Currently this "Post" text is the same given we display the visibility setting, but we may want to change this
@@ -161,42 +161,35 @@ export default class ItemPositionStatementActionBar extends Component {
                 placeholder={statement_placeholder_text}
                 value={statement_text_to_be_saved}
                 />
-              <button className="btn btn-default btn-sm utils-nowrap" type="submit">{post_button_text}</button>
+              <button className="btn btn-default btn-sm" type="submit">{post_button_text}</button>
             </span>
           </div>
         </form> :
         // Show the comment, but in read-only mode
         <div className={short_version ? "position-statement--truncated" : "position-statement"}>
           { speaker_image_url_https ?
-            <img className="card-child__avatar"
+            <img className="position-statement__avatar"
                   src={speaker_image_url_https}
                   width="34px"
             /> :
           image_placeholder }
-          <span className="position-statement__description">
-          {/*<span className="position-statement__description edit-position-action"
-                onClick={onSavePositionStatementClick}
-                title="Edit this position"> */}
+          <div className="position-statement__description">
             { speaker_display_name ?
               <span className="position-statement__speaker-name">{speaker_display_name} <br /></span> :
               null }
             <ReadMore text_to_display={statement_text_to_be_saved} />
-            </span>
 
-          { short_version ?
-            <span className="position-statement__edit-position-pseudo"
+
+            { short_version ?
+              <span className="position-statement__edit-position-pseudo"
+                    onClick={onSavePositionStatementClick}
+                    title="Edit this position"/> :
+              null
+            }
+            <div className="position-statement__edit-position-link"
                   onClick={onSavePositionStatementClick}
-                  title="Edit this position"/> :
-            null
-          }
-          { short_version ?
-            <span className="position-statement__edit-position-link"
-                  onClick={onSavePositionStatementClick}
-                  title="Edit this position">&nbsp;Edit</span> :
-            <span className="position-statement__edit-position-link-long"
-                  onClick={onSavePositionStatementClick}
-                  title="Edit this position">&nbsp;&nbsp;Edit</span>
-          }
+                  title="Edit this position">Edit</div>
+          </div>
         </div>
       }
     </div>;

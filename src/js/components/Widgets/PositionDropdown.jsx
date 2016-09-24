@@ -33,7 +33,7 @@ export default class PositionDropdown extends Component {
     const {removePositionFunction, positionIcon, positionText} = this.props;
     const onClick = this.state.open ? this.closeDropdown.bind(this) : this.openDropdown.bind(this);
 
-    return <div className="btn-group open">
+    return <div className="btn-group open item-actionbar__btn-set">
       <button onBlur={this.onButtonBlur.bind(this)} onClick={onClick} className="dropdown item-actionbar__btn item-actionbar__btn--position-selected btn btn-default">
         {positionIcon} {positionText} <span className="caret"></span>
       </button>

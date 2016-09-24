@@ -133,7 +133,7 @@
   // Card 'Child'
   // previously 'position-item' - candidates or orgs/users and their positions under a card-main
 
-  @include media-object('.card-child', '.card-child__avatar', '.card-child__media-object-content');
+  @include media-object('.card-child', '.card-child__media-object-anchor', '.card-child__media-object-content');
 
   .card-child {
     position: relative;

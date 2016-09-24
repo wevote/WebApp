@@ -14,12 +14,20 @@
   margin: 1em 0;
   padding-top: 10px;
 
+  &__btn-set {
+    margin-right: 8px;
+  }
+
   &__btn {
     // currently uses Bootstrap .btn styling
-    margin-right: 8px;
-
     &--position-selected {
       color: $selected-color;
+    }
+  }
+
+  &__position-btn-label {
+    @include breakpoints (max mid-small) {
+      display: none; // Hide Support/Oppose button labels on small screens
     }
   }
 

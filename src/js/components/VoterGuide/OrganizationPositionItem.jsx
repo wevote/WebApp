@@ -153,18 +153,20 @@ export default class OrganizationPositionItem extends Component {
     }
     return <li className="position-item card-child">
       <StarAction we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
-        <Link to={ ballotItemLink }
-              onlyActiveOnIndex={false}>
-          {/*<i className="icon-icon-add-friends-2-1 icon-light icon-medium" />*/}
-          { is_candidate ?
+      { is_candidate ?
+        <div className="card-child__media-object-anchor">
+          <Link to={ ballotItemLink }
+                onlyActiveOnIndex={false}>
             <ImageHandler
               className="card-child__avatar"
               imageUrl={position.ballot_item_image_url_https}
               alt="candidate-photo"
-              kind_of_ballot_item={position.kind_of_ballot_item}/> :
-            null
-          }
-        </Link>
+              kind_of_ballot_item={position.kind_of_ballot_item}/>
+          </Link>
+        </div> :
+        null
+      }
+      <div className="card-child__media-object-content">
         <div className="card-child__content">
           <Link to={ ballotItemLink }
                 onlyActiveOnIndex={false}>
@@ -198,6 +200,7 @@ export default class OrganizationPositionItem extends Component {
                 <FriendsOnlyIndicator isFriendsOnly={!is_public_position}/>
               }
         </div>
-      </ li>;
+      </div>
+    </li>;
   }
 }

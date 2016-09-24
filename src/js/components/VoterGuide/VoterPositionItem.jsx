@@ -123,6 +123,7 @@ export default class VoterPositionItem extends Component {
     }
     return <li className="position-item card-child">
       <StarAction we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
+      <div className="card-child__media-object-anchor">
         <Link to={ ballotItemLink }
               onlyActiveOnIndex={false}>
           {/*<i className="icon-icon-add-friends-2-1 icon-light icon-medium" />*/}
@@ -135,6 +136,8 @@ export default class VoterPositionItem extends Component {
             null
           }
         </Link>
+      </div>
+      <div className="card-child__media-object-content">
         <div className="card-child__content">
           <Link to={ ballotItemLink }
                 onlyActiveOnIndex={false}>
@@ -165,6 +168,7 @@ export default class VoterPositionItem extends Component {
               supportProps={supportProps}
               className="organization-position-item-toggle"/>
         </div>
-      </ li>;
+      </div>
+    </li>;
   }
 }

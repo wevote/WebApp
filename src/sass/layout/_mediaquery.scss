@@ -57,19 +57,11 @@
       display: none;
     }
   }
-
-  .interface-element--desktop {
-    display: none;
-  }
 }
 
 
 @include breakpoints(nav) {
   .navbar-fixed-bottom {
-    display: none;
-  }
-
-  .interface-element--mobile {
     display: none;
   }
 

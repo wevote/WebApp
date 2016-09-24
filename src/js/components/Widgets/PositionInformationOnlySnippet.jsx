@@ -88,19 +88,17 @@ export default class PositionInformationOnlySnippet extends Component {
             <span>{statement_text_html}</span>
             {/* if there's an external source for the explicit position/endorsement, show it */}
             {more_info_url ?
-              <span className="explicit-position__source">
-                {/* link for desktop browser: open in new tab*/}
+              <div className="explicit-position__source">
+                {/* default: open in new tab*/}
                 <a href={more_info_url}
-                   className="interface-element--desktop"
                    target="_blank">
-                  (view source)
+                  (view source <i className="fa fa-external-link-square" aria-hidden="true"></i>)
                 </a>
                 {/* link for mobile browser: open in bootstrap modal */}
-                {/*<a onClick={onViewSourceClick}
-                   className="interface-element--mobile">
+                {/*<a onClick={onViewSourceClick}>
                   (view source)
                 </a> */}
-              </span> :
+              </div> :
               null }
           </span>
         }
