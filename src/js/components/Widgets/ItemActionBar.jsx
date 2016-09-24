@@ -80,18 +80,18 @@ export default class ItemActionBar extends Component {
           is_oppose || is_support ?
           <PositionDropdown removePositionFunction={remove_position_function} positionIcon={position_icon} positionText={position_text}/> :
           // Voter hasn't supported or opposed, show both options
-          <div>
+          <div className="btn-group item-actionbar__btn-set">
             <button className="item-actionbar__btn item-actionbar__btn--support btn btn-default" onClick={this.supportItem.bind(this)}>
               <span className="btn__icon">
                 <Icon name="thumbs-up-icon" width={icon_size} height={icon_size} color={icon_color} />
               </span>
-              <span className="interface-element--desktop">Support</span>
+              <span className="item-actionbar__position-btn-label">Support</span>
             </button>
             <button className="item-actionbar__btn item-actionbar__btn--oppose btn btn-default" onClick={this.opposeItem.bind(this)}>
               <span className="btn__icon">
                 <Icon name="thumbs-down-icon" width={icon_size} height={icon_size} color={icon_color} />
               </span>
-              <span className="interface-element--desktop">Oppose</span>
+              <span className="item-actionbar__position-btn-label">Oppose</span>
             </button>
           </div>
         }

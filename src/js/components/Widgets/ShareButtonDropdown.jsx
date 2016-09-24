@@ -63,25 +63,27 @@ export default class ShareButtonDropdown extends Component {
     const onClick = this.state.open ? this.closeDropdown.bind(this) : this.openDropdown.bind(this);
     const onCopyLinkClick = this.state.showCopyLinkModal ? this.closeCopyLinkModal.bind(this) : this.openCopyLinkModal.bind(this);
     // const onButtonBlur = ;
-    return <div className="btn-group open">
-      <button onBlur={this.onButtonBlur.bind(this)} onClick={onClick} className="dropdown item-actionbar__btn item-actionbar__btn--position-selected btn btn-default">
-        {shareIcon} {shareText} <span className="caret"></span>
-      </button>
-      {this.state.open ?
-        <ul className="dropdown-menu">
-          <li>
-            <a onClick={onCopyLinkClick}>
-                Copy link
-            </a>
-          </li>
-          <li>
-            <a onClick={this.shareFacebookComment.bind(this)}>
-                Share on Facebook
-            </a>
-          </li>
-        </ul> :
-        null
-      }
+    return <div>
+      <div className="btn-group open item-actionbar__btn-set">
+        <button onBlur={this.onButtonBlur.bind(this)} onClick={onClick} className="dropdown item-actionbar__btn btn btn-default">
+          {shareIcon} {shareText} <span className="caret"></span>
+        </button>
+        {this.state.open ?
+          <ul className="dropdown-menu">
+            <li>
+              <a onClick={onCopyLinkClick}>
+                  Copy link
+              </a>
+            </li>
+            <li>
+              <a onClick={this.shareFacebookComment.bind(this)}>
+                  Share on Facebook
+              </a>
+            </li>
+          </ul> :
+          null
+        }
+        </div>
       <CopyLinkModal show={this.state.showCopyLinkModal}
                      onHide={this.closeCopyLinkModal.bind(this)}
                      urlBeingShared={urlBeingShared} />
