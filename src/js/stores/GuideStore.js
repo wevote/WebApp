@@ -5,49 +5,49 @@ import SupportActions from "../actions/SupportActions";
 
 class GuideStore extends FluxMapStore {
 
-/* The store keeps nested attributes of voter guides in data, whereas the followed, ignoring, to_follow are just lists of ids.*/
-    getInitialState () {
-      return {
-        ballot_has_guides: true,
-        following: [],
-        ignoring: [],
-        to_follow: [],
-        to_follow_list_for_ballot_item: [],
-        data: {}
-      };
-    }
+  // The store keeps nested attributes of voter guides in data, whereas the followed, ignoring, to_follow are just lists of ids.
+  getInitialState () {
+    return {
+      ballot_has_guides: true,
+      following: [],
+      ignoring: [],
+      to_follow: [],
+      to_follow_list_for_ballot_item: [],
+      data: {}
+    };
+  }
 
-/* Given a list of ids, retrieve the complete data with all attributes and return as array */
-    getOrgsFromArr (arr) {
-      const state = this.getState();
-      let orgs = [];
-      // voterGuidesFollowedRetrieve API returns more than one voter guide per organization some times.
-      let uniq_arr = arr.filter( (value, index, self) => { return self.indexOf(value) === index; });
-      uniq_arr.forEach( id => {
-        orgs.push( state.data[id] );
-      });
-      return orgs;
-    }
+  // Given a list of ids, retrieve the complete data with all attributes and return as array 
+  getOrgsFromArr (arr) {
+    const state = this.getState();
+    let orgs = [];
+    // voterGuidesFollowedRetrieve API returns more than one voter guide per organization some times.
+    let uniq_arr = arr.filter( (value, index, self) => { return self.indexOf(value) === index; });
+    uniq_arr.forEach( id => {
+      orgs.push( state.data[id] );
+    });
+    return orgs;
+  }
 
-    ballotHasGuides (){
-      return this.getState().ballot_has_guides;
-    }
+  ballotHasGuides (){
+    return this.getState().ballot_has_guides;
+  }
 
-    toFollowList () {
-      return this.getOrgsFromArr(this.getState().to_follow);
-    }
+  toFollowList () {
+    return this.getOrgsFromArr(this.getState().to_follow);
+  }
 
-    toFollowListForBallotItem (){
-      return this.getOrgsFromArr(this.getState().to_follow_list_for_ballot_item) || {};
-    }
+  toFollowListForBallotItem (){
+    return this.getOrgsFromArr(this.getState().to_follow_list_for_ballot_item) || {};
+  }
 
-    followedList (){
-      return this.getOrgsFromArr(this.getState().following);
-    }
+  followedList (){
+    return this.getOrgsFromArr(this.getState().following);
+  }
 
-    isFollowing (we_vote_id){
-      return this.getState().following.filter( el => { return el === we_vote_id; }).length > 0;
-    }
+  isFollowing (we_vote_id){
+    return this.getState().following.filter( el => { return el === we_vote_id; }).length > 0;
+  }
 
   reduce (state, action) {
     let voter_guides;

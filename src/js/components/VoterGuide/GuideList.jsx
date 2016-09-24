@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import FollowToggle from "../Widgets/FollowToggle";
 import GuideActions from "../../actions/GuideActions";
-import Organization from "./Organization";
+import OrganizationDisplayForList from "./OrganizationDisplayForList";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 
 export default class GuideList extends Component {
@@ -48,13 +48,13 @@ export default class GuideList extends Component {
     }
 
     const orgs = this.state.organizations_to_follow.map( (org) => {
-      return <Organization key={org.organization_we_vote_id} {...org}>
+      return <OrganizationDisplayForList key={org.organization_we_vote_id} {...org}>
             <FollowToggle we_vote_id={org.organization_we_vote_id} />
-              <button className="btn btn-default btn-sm"
-                      onClick={this.handleIgnore.bind(this, org.organization_we_vote_id)}>
-                Ignore
-              </button>
-          </Organization>;
+            <button className="btn btn-default btn-sm"
+                    onClick={this.handleIgnore.bind(this, org.organization_we_vote_id)}>
+              Ignore
+            </button>
+          </OrganizationDisplayForList>;
     });
 
     return <div className="guidelist card-child__list-group">
