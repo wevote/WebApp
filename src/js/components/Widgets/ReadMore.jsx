@@ -38,6 +38,12 @@ export default class ReadMore extends Component {
         }
         let expanded_text_array = text_to_display.replace(/(?:\r\n|\r|\n){2,}/g, "\r\n\r\n").split(/(?:\r\n|\r|\n)/g);
 
+        // There are cases where we would like to show line breaks when there is a little bit of text
+        let not_enough_text_to_truncate = false;
+        if (text_to_display.length <= 81) {
+          not_enough_text_to_truncate = true;
+        }
+
         let expanded_text_to_display = expanded_text_array.map(function (item, key){
            if (key === 0) {
             return <span key={key}>
@@ -50,7 +56,9 @@ export default class ReadMore extends Component {
             </span>; }
         });
 
-        if (this.state.readMore) {
+        if (not_enough_text_to_truncate) {
+          return <span>{expanded_text_to_display}</span>;
+        } else if (this.state.readMore) {
           return <span>
             <TextTruncate
                   line={num_of_lines}
