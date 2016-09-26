@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import FriendInvitationToggle from "../Friends/FriendInvitationToggle";
 import ImageHandler from "../../components/ImageHandler";
-import VoterActions from "../../actions/VoterActions";
+import FriendActions from "../../actions/FriendActions";
 import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
 
 export default class FriendInvitationDisplayForList extends Component {
@@ -19,7 +19,7 @@ export default class FriendInvitationDisplayForList extends Component {
   };
 
   handleIgnore (voter_we_vote_id) {
-    VoterActions.ignoreFriendInvite(voter_we_vote_id);
+    FriendActions.ignoreFriendInvite(voter_we_vote_id);
     this.setState({
       friend_invitations_list: this.state.friend_invitations_list.filter( (friend) => {
         return friend.voter_we_vote_id !== voter_we_vote_id;

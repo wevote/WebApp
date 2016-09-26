@@ -2,11 +2,12 @@ import React, { Component, PropTypes } from "react";
 import { Button, ButtonToolbar, Input } from "react-bootstrap";
 import { browserHistory } from "react-router";
 import LoadingWheel from "../LoadingWheel";
-import VoterActions from "../../actions/VoterActions";
+import FriendActions from "../../actions/FriendActions";
+import FriendStore from "../../stores/FriendStore";
 import VoterStore from "../../stores/VoterStore";
 
 /* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/89479679 */
-export default class AddFriends extends Component {
+export default class AddFriendsByFacebook extends Component {
   static propTypes = {
   };
 
@@ -26,11 +27,17 @@ export default class AddFriends extends Component {
 
   componentDidMount () {
     this.setState({ voter: VoterStore.getVoter() });
+    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount (){
+    this.friendStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  _onFriendStoreChange () {
+    this.setState({ loading: false });
   }
 
   _onVoterStoreChange () {
@@ -48,7 +55,7 @@ export default class AddFriends extends Component {
     });
   }
 
-  cacheAddFriendsMessage (e) {
+  cacheAddFriendsByFacebookMessage (e) {
     this.setState({
       add_friends_message: e.target.value
     });
@@ -56,7 +63,7 @@ export default class AddFriends extends Component {
 
   friendInvitationByEmailSend (e) {
     e.preventDefault();
-    VoterActions.friendInvitationByEmailSend(this.state.email_addresses, this.state.add_friends_message);
+    FriendActions.friendInvitationByEmailSend(this.state.email_addresses, this.state.add_friends_message);
     this.setState({
       loading: true,
       email_addresses: "",
@@ -71,9 +78,9 @@ export default class AddFriends extends Component {
     return voter !== undefined ? voter.has_valid_email : false;
   }
 
-  addFriendsStepsManager (event) {
+  AddFriendsByFacebookStepsManager (event) {
     // This function is called when the form is submitted
-    console.log("addFriendsStepsManager");
+    console.log("AddFriendsByFacebookStepsManager");
 
     // Validate email_addresses
     let email_addresses_error = false;
@@ -84,20 +91,20 @@ export default class AddFriends extends Component {
     }
 
     if (email_addresses_error) {
-      console.log("addFriendsStepsManager, email_addresses_error");
+      console.log("AddFriendsByFacebookStepsManager, email_addresses_error");
       this.setState({
         loading: false,
         email_addresses_error: true,
         error_message: error_message
       });
     } else if (!this.hasValidEmail()) {
-      console.log("addFriendsStepsManager, NOT hasValidEmail");
+      console.log("AddFriendsByFacebookStepsManager, NOT hasValidEmail");
       this.setState({
         loading: false,
         on_request_email_step: true,
       });
     } else {
-      console.log("addFriendsStepsManager, calling friendInvitationByEmailSend");
+      console.log("AddFriendsByFacebookStepsManager, calling friendInvitationByEmailSend");
       this.friendInvitationByEmailSend(event);
     }
   }
@@ -112,7 +119,6 @@ export default class AddFriends extends Component {
     };
 
 		return <div>
-			<h4 className="text-left">Add Friends</h4>
       {this.state.on_friend_invitations_sent_step ?
         <div className="alert alert-success">
           Invitations sent. Is there anyone else you'd like to invite?
@@ -121,21 +127,9 @@ export default class AddFriends extends Component {
 
       {this.state.on_enter_email_addresses_step ?
         <div>
-          <form onSubmit={this.addFriendsStepsManager.bind(this)}>
+          <form onSubmit={this.AddFriendsByFacebookStepsManager.bind(this)}>
           <div>
-            <Input type="text" addonBefore="@" name="email_address"
-                   className="form-control"
-                   onChange={this.cacheEmailAddresses.bind(this)}
-                   placeholder="Enter email addresses here, separated by commas" />
-            {this.state.email_addresses ?
-              <span>
-                <label htmlFor="last-name">Include a Message <span className="small">(Optional)</span></label><br />
-                <Input type="text" name="add_friends_message"
-                       className="form-control"
-                       onChange={this.cacheAddFriendsMessage.bind(this)}
-                       defaultValue="Please join me in preparing for the upcoming election." />
-              </span> :
-              null }
+            ADD_FRIENDS_BY_FACEBOOK - NOT FINISHED YET
           </div>
           </form>
 
@@ -143,7 +137,7 @@ export default class AddFriends extends Component {
             <ButtonToolbar bsClass="btn-toolbar">
               <span style={floatRight}>
                 <Button
-                  onClick={this.addFriendsStepsManager.bind(this)}
+                  onClick={this.AddFriendsByFacebookStepsManager.bind(this)}
                   bsStyle="primary"
                   disabled={!this.state.email_addresses}
                 >
@@ -153,8 +147,7 @@ export default class AddFriends extends Component {
                   }
                 </Button>
               </span>
-              <span>These friends will see what you support, oppose, and which opinions you follow.
-                We will never sell your email.</span>
+              <span>These friends will see what you support, oppose, and which opinions you follow.</span>
             </ButtonToolbar>
           </div>
         </div> :

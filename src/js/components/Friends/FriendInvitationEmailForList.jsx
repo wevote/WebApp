@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import ImageHandler from "../../components/ImageHandler";
-import VoterActions from "../../actions/VoterActions";
+import FriendActions from "../../actions/FriendActions";
 
 export default class FriendInvitationEmailForList extends Component {
   static propTypes = {
@@ -18,7 +18,7 @@ export default class FriendInvitationEmailForList extends Component {
   };
 
   deleteInvitation (voter_email_address) {
-    VoterActions.deleteFriendInviteEmail(voter_email_address);
+    FriendActions.deleteFriendInviteEmail(voter_email_address);
     // this.setState({
     //   friend_invitations_list: this.state.friend_invitations_list.filter( (friend) => {
     //     return friend.voter_we_vote_id !== voter_we_vote_id;
