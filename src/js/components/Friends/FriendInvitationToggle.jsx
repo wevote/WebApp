@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import VoterActions from "../../actions/VoterActions";
+import FriendActions from "../../actions/FriendActions";
+import FriendStore from "../../stores/FriendStore";
 import VoterStore from "../../stores/VoterStore";
 
 export default class FriendToggle extends Component {
@@ -19,17 +20,25 @@ export default class FriendToggle extends Component {
   }
 
   componentDidMount (){
+    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this._onFriendStoreChange();
     this._onVoterStoreChange();
   }
 
   componentWillUnmount (){
+    this.friendStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  _onFriendStoreChange (){
+    this.setState({
+      is_friend: FriendStore.isFriend(this.props.other_voter_we_vote_id)
+    });
   }
 
   _onVoterStoreChange (){
     this.setState({
-      is_friend: VoterStore.isFriend(this.props.other_voter_we_vote_id),
       voter: VoterStore.getVoter()
     });
   }
@@ -42,8 +51,8 @@ export default class FriendToggle extends Component {
     // You should not be able to friend yourself
     if (is_looking_at_self) { return <div></div>; }
 
-    const acceptFriendInvite = VoterActions.acceptFriendInvite.bind(this, other_voter_we_vote_id);
-    const unFriend = VoterActions.unFriend.bind(this, other_voter_we_vote_id);
+    const acceptFriendInvite = FriendActions.acceptFriendInvite.bind(this, other_voter_we_vote_id);
+    const unFriend = FriendActions.unFriend.bind(this, other_voter_we_vote_id);
     const floatRight = { float: "right"};
 
     return <span style={floatRight}>

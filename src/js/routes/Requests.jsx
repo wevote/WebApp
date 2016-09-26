@@ -1,32 +1,32 @@
 import React, { Component } from "react";
 import FriendInvitationList from "../components/Friends/FriendInvitationList";
-import VoterActions from "../actions/VoterActions";
-import VoterStore from "../stores/VoterStore";
+import FriendActions from "../actions/FriendActions";
+import FriendStore from "../stores/FriendStore";
 
 export default class RequestsPage extends Component {
   constructor (props) {
       super(props);
       this.state = {
-        friend_invitations_sent_by_me: VoterStore.friendInvitationsSentByMe(),
-        friend_invitations_sent_to_me: VoterStore.friendInvitationsSentToMe()
+        friend_invitations_sent_by_me: FriendStore.friendInvitationsSentByMe(),
+        friend_invitations_sent_to_me: FriendStore.friendInvitationsSentToMe()
       };
   }
 
   componentDidMount () {
-    VoterActions.currentFriends();
-    VoterActions.friendInvitationsSentByMe();
-    VoterActions.friendInvitationsSentToMe();
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    FriendActions.currentFriends();
+    FriendActions.friendInvitationsSentByMe();
+    FriendActions.friendInvitationsSentToMe();
+    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
   }
 
   componentWillUnmount (){
-    this.voterStoreListener.remove();
+    this.friendStoreListener.remove();
   }
 
-  _onVoterStoreChange () {
+  _onFriendStoreChange () {
     this.setState({
-      friend_invitations_sent_by_me: VoterStore.friendInvitationsSentByMe(),
-      friend_invitations_sent_to_me: VoterStore.friendInvitationsSentToMe()
+      friend_invitations_sent_by_me: FriendStore.friendInvitationsSentByMe(),
+      friend_invitations_sent_to_me: FriendStore.friendInvitationsSentToMe()
     });
   }
 

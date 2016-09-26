@@ -1,10 +1,10 @@
-import { Button } from "react-bootstrap";
-import FollowingFilter from "../components/Navigation/FollowingFilter";
-import VoterActions from "../actions/VoterActions";
-import VoterStore from "../stores/VoterStore";
-import FriendList from "../components/Friends/FriendList";
-import { Link } from "react-router";
 import React, {Component, PropTypes } from "react";
+import { Button } from "react-bootstrap";
+import { Link } from "react-router";
+import FollowingFilter from "../components/Navigation/FollowingFilter";
+import FriendList from "../components/Friends/FriendList";
+import FriendActions from "../actions/FriendActions";
+import FriendStore from "../stores/FriendStore";
 
 export default class Friends extends Component {
   static propTypes = {
@@ -15,24 +15,24 @@ export default class Friends extends Component {
   constructor (props){
     super(props);
     this.state = {
-        current_friend_list: VoterStore.currentFriends()
+        current_friend_list: FriendStore.currentFriends()
     };
   }
 
   componentDidMount () {
     if (this.state.current_friend_list)
-    VoterActions.currentFriends();
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    FriendActions.currentFriends();
+    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
   }
 
-  _onVoterStoreChange () {
+  _onFriendStoreChange () {
     this.setState({
-      current_friend_list: VoterStore.currentFriends()
+      current_friend_list: FriendStore.currentFriends()
     });
   }
 
   componentWillUnmount (){
-    this.voterStoreListener.remove();
+    this.friendStoreListener.remove();
   }
 
   getCurrentRoute (){
