@@ -137,7 +137,7 @@
 
   .card-child {
     position: relative;
-    padding: 15px;
+    padding: 15px 15px 7px 15px;
     margin-top: -1px;
     background-color: $pale-gray;
     border-top: 1px solid $lighter-gray;
@@ -189,10 +189,16 @@
       .btn {
         margin: 0 5px 0 0;
       }
+      .twitter-followers__badge {
+        margin: 5px 0;
+      }
       @include breakpoints(medium) {
         flex-direction: column;
         .btn {
           margin: 0 0 5px;
+        }
+        .twitter-followers__badge {
+          margin: 0;
         }
       }
     }
