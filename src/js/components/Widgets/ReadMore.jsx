@@ -83,17 +83,17 @@ export default class ReadMore extends Component {
         if (not_enough_text_to_truncate) {
           return <span>{expanded_text_to_display}</span>;
         }
-          if (this.state.readMore) {
-            return <span>
-              <TextTruncate
-                    line={num_of_lines}
-                    truncateText="..."
-                    text={text_to_display}
-                    textTruncateChild={<a href="#" onClick={this.toggleLines}>{link_text}</a>}
-                />
-            </span>;
-          } else {
-            return <span>{expanded_text_to_display}&nbsp;&nbsp;<a href="#" onClick={this.toggleLines}>{collapse_text}</a></span>;
-          }
+        if (this.state.readMore) {
+          return <span>
+            <TextTruncate
+                  line={num_of_lines}
+                  truncateText="..."
+                  text={text_to_display}
+                  textTruncateChild={<a href="#" onClick={this.toggleLines}>{link_text}</a>}
+              />
+          </span>;
+        } else {
+          return <span>{expanded_text_to_display}&nbsp;&nbsp;<a href="#" onClick={this.toggleLines}>{collapse_text}</a></span>;
         }
+    } //end render
   }
