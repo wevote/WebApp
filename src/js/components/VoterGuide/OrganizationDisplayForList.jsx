@@ -42,7 +42,6 @@ export default class OrganizationDisplayForList extends Component {
       voter_guide_image_url,
     } = this.props;
     let num_of_lines = 2;
-    let max_num_of_char = 160;
     let voter_guide_display_name = this.props.voter_guide_display_name ? this.props.voter_guide_display_name : "";
     let twitterDescription = this.props.twitter_description ? this.props.twitter_description : "";
     // If the voter_guide_display_name is in the twitter_description, remove it
@@ -73,7 +72,7 @@ export default class OrganizationDisplayForList extends Component {
           <Link to={voterGuideLink}>
             <h4 className="card-child__display-name">{voter_guide_display_name}</h4>
           </Link>
-          { twitterDescriptionMinusName ? <ReadMore text_to_display={twitterDescriptionMinusName} max_num_of_char={max_num_of_char} num_of_lines={num_of_lines} /> :
+          { twitterDescriptionMinusName ? <ReadMore text_to_display={twitterDescriptionMinusName} num_of_lines={num_of_lines} /> :
             null}
           { position_description }
         </div>

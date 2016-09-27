@@ -6,8 +6,7 @@ export default class ReadMore extends Component {
     text_to_display: PropTypes.node.isRequired,
     link_text: PropTypes.node,
     collapse_text: PropTypes.node,
-    num_of_lines: PropTypes.number,
-    max_num_of_char: PropTypes.number
+    num_of_lines: PropTypes.number
   };
 
     constructor (...args) {
@@ -27,8 +26,8 @@ export default class ReadMore extends Component {
     }
 
     render () {
-        let { text_to_display, link_text, num_of_lines, collapse_text, max_num_of_char } = this.props;
-        //default props
+        let { text_to_display, link_text, num_of_lines, collapse_text } = this.props;
+        // default prop valuess
         if (num_of_lines === undefined) {
           num_of_lines = 3;
         }
@@ -38,9 +37,9 @@ export default class ReadMore extends Component {
         if (collapse_text === undefined) {
           collapse_text = "Show Less  ";
         }
-        if (max_num_of_char === undefined) {
-          max_num_of_char = 100;
-        }
+        // if (max_num_of_char === undefined) {
+        //   max_num_of_char = 100;
+        // }
 
         // remove extra ascii carriage returns or other control text
         text_to_display = text_to_display.replace(/[\x0D-\x1F]/g, "");
@@ -51,6 +50,7 @@ export default class ReadMore extends Component {
         let not_enough_text_to_truncate = false;
         let all_lines_short = true;
         let max_num_of_lines = num_of_lines;
+        // max num of lines shouldn't be greater than the total num of line breaks hard coded
         if (max_num_of_lines > expanded_text_array.length) {
           max_num_of_lines = expanded_text_array.length;
         }
@@ -82,7 +82,7 @@ export default class ReadMore extends Component {
 
         if (not_enough_text_to_truncate) {
           return <span>{expanded_text_to_display}</span>;
-        } else {
+        }
           if (this.state.readMore) {
             return <span>
               <TextTruncate
@@ -97,4 +97,3 @@ export default class ReadMore extends Component {
           }
         }
   }
-}
