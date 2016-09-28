@@ -34,12 +34,12 @@ export default class FriendDisplayForList extends Component {
     return <div className="position-item card-child card-child--not-followed">
       <div className="card-child__avatar">
         <Link to={voterGuideLink}>
-          <ImageHandler imageUrl={voter_photo_url} />
+          <ImageHandler sizeClassName="icon-lg " imageUrl={voter_photo_url} />
         </Link>
       </div>
       <div className="card-child__media-object-content">
         <div className="card-child__content">
-          <Link to={voterGuideLink}>
+          <Link to={voterGuideLink} className="no-underline">
             <h4 className="card-child__display-name">{voter_display_name}</h4>
           </Link>
           { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> :

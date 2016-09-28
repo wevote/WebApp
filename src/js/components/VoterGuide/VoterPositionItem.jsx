@@ -125,11 +125,13 @@ export default class VoterPositionItem extends Component {
       <StarAction we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
       <div className="card-child__media-object-anchor">
         <Link to={ ballotItemLink }
+              className="no-underline"
               onlyActiveOnIndex={false}>
           {/*<i className="icon-icon-add-friends-2-1 icon-light icon-medium" />*/}
           { is_candidate ?
             <ImageHandler
               className="card-child__avatar"
+              sizeClassName="icon-lg "
               imageUrl={position.ballot_item_image_url_https}
               alt="candidate-photo"
               kind_of_ballot_item={position.kind_of_ballot_item}/> :

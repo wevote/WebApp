@@ -42,6 +42,10 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.no-underline {
+    text-decoration: none !important;
+}
+
 .icon-icon-vote-3-4:before {
     content: "a";
 }
@@ -73,6 +77,10 @@
 
 .icon-xl {
   font-size: 10em;
+}
+
+.icon-office-child {
+  font-size: 80px;
 }
 
 .icon-lg {

@@ -44,8 +44,8 @@ export default class FriendInvitationDisplayForList extends Component {
 
     return <div className="position-item card-child card-child--not-followed">
       <div className="card-child__avatar">
-        <Link to={voterGuideLink}>
-          <ImageHandler imageUrl={voter_photo_url} kind_of_ballot_item="CANDIDATE" />
+        <Link to={voterGuideLink} className="no-underline">
+          <ImageHandler sizeClassName="icon-lg " imageUrl={voter_photo_url} kind_of_ballot_item="CANDIDATE" />
         </Link>
       </div>
       <div className="card-child__media-object-content">
