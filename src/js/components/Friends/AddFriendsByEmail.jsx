@@ -40,7 +40,26 @@ export default class AddFriendsByEmail extends Component {
   }
 
   _onFriendStoreChange () {
-    this.setState({ loading: false });
+    let add_friends_by_email_step = FriendStore.switchToAddFriendsByEmailStep();
+    let error_message_to_show_voter = FriendStore.getErrorMessageToShowVoter();
+    console.log("AddFriendsByEmail, _onFriendStoreChange, add_friends_by_email_step:", add_friends_by_email_step);
+    if (add_friends_by_email_step == 'on_collect_email_step') {
+      // Switch to "on_collect_email_step"
+      this.setState({
+        loading: false,
+        on_enter_email_addresses_step: false,
+        on_collect_email_step: true,
+        on_friend_invitations_sent_step: false,
+        error_message_to_show_voter: error_message_to_show_voter
+      });
+      // FriendStore.clearErrorMessageToShowVoter()
+    } else {
+      this.setState({
+        loading: false,
+        error_message_to_show_voter: ""
+      });
+
+    }
   }
 
   _onVoterStoreChange () {

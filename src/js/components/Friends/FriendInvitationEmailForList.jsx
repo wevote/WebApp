@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from "react";
+import { Button } from "react-bootstrap";
 import { Link } from "react-router";
-import ImageHandler from "../../components/ImageHandler";
 import FriendActions from "../../actions/FriendActions";
+import VoterStore from "../../stores/VoterStore";
 
 export default class FriendInvitationEmailForList extends Component {
   static propTypes = {
@@ -14,8 +15,29 @@ export default class FriendInvitationEmailForList extends Component {
     voter_twitter_handle: PropTypes.string,
     voter_twitter_description: PropTypes.string,
     voter_twitter_followers_count: PropTypes.number,
-    voter_email_address: PropTypes.string
+    voter_email_address: PropTypes.string,
+    invitation_status: PropTypes.string
   };
+
+  constructor (props) {
+    super(props);
+    this.state = {
+      voter: {}
+    };
+  }
+
+  componentDidMount () {
+    this._onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+  }
+
+  componentWillUnmount () {
+    this.voterStoreListener.remove();
+  }
+
+  _onVoterStoreChange () {
+    this.setState({ voter: VoterStore.getVoter() });
+  }
 
   deleteInvitation (voter_email_address) {
     FriendActions.deleteFriendInviteEmail(voter_email_address);
@@ -28,27 +50,29 @@ export default class FriendInvitationEmailForList extends Component {
 
   render () {
     const {
-      voter_email_address,
+      invitation_status, voter_email_address,
     } = this.props;
 
-    let voter_photo_url = "";
+    var {voter} = this.state;
 
     return <div className="position-item card-child card-child--not-followed">
-      <div className="card-child__avatar">
-        <ImageHandler imageUrl={voter_photo_url} kind_of_ballot_item="CANDIDATE" />
-      </div>
       <div className="card-child__media-object-content">
         <div className="card-child__content">
-          <h4 className="card-child__display-name">{voter_email_address}</h4>
+          <h5 className="card-child__display-name">{voter_email_address}</h5>
         </div>
         <div className="card-child__additional">
           <div className="card-child__follow-buttons">
-            <span>
-              < button className="btn btn-default btn-sm"
-                onClick={this.deleteInvitation.bind(this, voter_email_address)}>
-                Delete Invitation
-              </button>
-            </span>
+            <button className="btn btn-default btn-sm"
+              onClick={this.deleteInvitation.bind(this, voter_email_address)}>
+              Delete Invitation
+            </button>
+            {invitation_status === "PENDING_EMAIL_VERIFICATION" && !voter.signed_in_with_email ?
+              <Link to="/more/sign_in">
+                <Button bsSize="small" bsStyle="warning">
+                  Verify Your Email To Send
+                </Button>
+              </Link> :
+              null }
           </div>
         </div>
       </div>
