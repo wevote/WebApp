@@ -5,7 +5,8 @@ export default class ImageHandler extends Component {
     imageUrl: PropTypes.string,
     className: PropTypes.string,
     alt: PropTypes.string,
-    kind_of_ballot_item: PropTypes.string
+    kind_of_ballot_item: PropTypes.string,
+    sizeClassName: PropTypes.string
   };
 
   constructor (props) {
@@ -21,16 +22,17 @@ export default class ImageHandler extends Component {
     let this_class = this.props.className || "utils-img-contain";
     let alt = this.props.alt || "icon";
     let replacementClass = "";
+    let sizeClassName = this.props.sizeClassName || "";
     if (this.props.kind_of_ballot_item === "CANDIDATE") {
-      replacementClass = "icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light card-child__avatar";
+      replacementClass = "icon-main icon-icon-person-placeholder-6-1 card-child__avatar";
     } else {
-      replacementClass = "icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color card-child__avatar";
+      replacementClass = "icon-main icon-icon-org-placeholder-6-2 card-child__avatar";
     }
 
 
     const image = this.state.error ?
-      <i className={replacementClass} /> :
-      <img className={this_class} src={this.props.imageUrl} alt={alt}
+      <i className={sizeClassName + replacementClass} /> :
+      <img className={sizeClassName + this_class} src={this.props.imageUrl} alt={alt}
            onError={this.brokenLink.bind(this)} />;
 
     return image;

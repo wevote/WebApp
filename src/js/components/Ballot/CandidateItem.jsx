@@ -67,18 +67,19 @@ export default class CandidateItem extends Component {
     let candidate_photo_url_html;
     if (candidate_photo_url) {
       candidate_photo_url_html = <ImageHandler className="card-main__avatar"
+                                          sizeClassName="icon-office-child "
                                           imageUrl={candidate_photo_url}
                                           alt="candidate-photo"
                                           kind_of_ballot_item="CANDIDATE" />;
     } else {
-      candidate_photo_url_html = <i className="icon-lg icon-main icon-icon-person-placeholder-6-1 icon-light utils-img-contain-glyph" />;
+      candidate_photo_url_html = <i className="card-main__avatar icon-office-child icon-main icon-icon-person-placeholder-6-1" />;
     }
 
     return <div className="card-main candidate-card">
       <div className="card-main__media-object">
         <div className="card-main__media-object-anchor">
           {this.props.link_to_ballot_item_page ?
-            <Link to={candidateLink}>{candidate_photo_url_html}</Link> :
+            <Link to={candidateLink} className="no-underline">{candidate_photo_url_html}</Link> :
             candidate_photo_url_html
           }
 

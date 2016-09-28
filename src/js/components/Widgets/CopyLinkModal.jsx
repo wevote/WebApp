@@ -11,25 +11,25 @@ export default class CopyLinkModal extends Component {
     super(props);
     this.state = {
       value: "",
-      copied: false
+      was_copied: false
     };
   }
 
   componentWillMount () {
     this.setState({
-      copied: false
+      was_copied: false
     });
   }
 
   componentWillReceiveProps () {
     this.setState({
-      copied: false
+      was_copied: false
     });
   }
 
-  copied () {
+  updateWasCopied () {
     this.setState({
-      copied: true
+      was_copied: true
     });
   }
 
@@ -60,13 +60,13 @@ render () {
                style={{marginTop: "17px"}}
                onFocus={()=>{document.getElementById("url-to-copy").setSelectionRange(0, 999);}} />&nbsp;
           <span className="input-group-btn">
-            <CopyToClipboard text={urlBeingShared} onCopy={this.copied.bind(this)}>
+            <CopyToClipboard text={urlBeingShared} onCopy={this.updateWasCopied.bind(this)}>
               <button className={"btn btn-default " + copy_btn_className}>Copy</button>
             </CopyToClipboard>
             {select_all_button}
           </span>
       </div>
-    {this.state.copied ? <span style={{color: "red"}}>Copied.  Can now paste into an email or social media!</span> : null}
+    {this.state.was_copied ? <span style={{color: "red"}}>Copied.  Can now paste into an email or social media!</span> : null}
     </Modal.Body>
   </Modal>;
   }

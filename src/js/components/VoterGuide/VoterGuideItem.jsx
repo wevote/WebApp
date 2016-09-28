@@ -41,8 +41,8 @@ export default class VoterGuideItem extends Component {
 
     return <div className="card-child">
       <div className="card-child__media-object-avatar">
-        <Link to={voterGuideLink}>
-          <ImageHandler className="card-child__avatar"imageUrl={this.props.voter_guide_image_url} />
+        <Link to={voterGuideLink} className="no-underline">
+          <ImageHandler className="card-child__avatar" sizeClassName="icon-lg " imageUrl={this.props.voter_guide_image_url} />
         </Link>
       </div>
       <div className="card-child__media-object-content">

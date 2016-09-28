@@ -30,7 +30,7 @@ export default class TwitterAccountCard extends Component {
         <div className="card-main">
           <div className="card-main__media-object">
             <div className="card-main__media-object-anchor">
-              <ImageHandler imageUrl={twitter_photo_url} className="card-main__avatar" />
+              <ImageHandler imageUrl={twitter_photo_url} className="card-main__avatar" sizeClassName="icon-lg "/>
             </div>
             <div className="card-main__media-object-content">
               <div className="card-main__display-name">{displayName}</div>
