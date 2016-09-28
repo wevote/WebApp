@@ -29,7 +29,7 @@ export default class CopyLinkModal extends Component {
 
 render () {
   let urlBeingShared = this.props.urlBeingShared;
-  let browser_supports_CopyToClipboard = true; //latest iOS update supports CopyToClipboard, check for users version and let them copy if latest, perhaps with npm pckg "mobile-detect"
+  let browser_supports_CopyToClipboard = false; //latest iOS update supports CopyToClipboard, check for users version and let them copy if latest, perhaps with npm pckg "mobile-detect"
   let copy_btn_className;
   let select_all_button;
   if (browser_supports_CopyToClipboard) {
