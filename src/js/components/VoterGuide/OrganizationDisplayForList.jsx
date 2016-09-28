@@ -5,6 +5,7 @@ import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
 import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
 import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
+import ReadMore from "../../components/Widgets/ReadMore";
 
 // OrganizationDisplayForList is used by GuideList for viewing voter guides you can follow on the Candidate
 // and Opinions (you can follow) Components
@@ -40,7 +41,7 @@ export default class OrganizationDisplayForList extends Component {
       organization_we_vote_id,
       voter_guide_image_url,
     } = this.props;
-
+    let num_of_lines = 2;
     let voter_guide_display_name = this.props.voter_guide_display_name ? this.props.voter_guide_display_name : "";
     let twitterDescription = this.props.twitter_description ? this.props.twitter_description : "";
     // If the voter_guide_display_name is in the twitter_description, remove it
@@ -71,20 +72,20 @@ export default class OrganizationDisplayForList extends Component {
           <Link to={voterGuideLink}>
             <h4 className="card-child__display-name">{voter_guide_display_name}</h4>
           </Link>
-          { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> :
+          { twitterDescriptionMinusName ? <ReadMore text_to_display={twitterDescriptionMinusName} num_of_lines={num_of_lines} /> :
             null}
           { position_description }
         </div>
         <div className="card-child__additional">
           <div className="card-child__follow-buttons">
             {this.props.children}
-          </div>
           {twitter_followers_count ?
             <span className="twitter-followers__badge">
               <span className="fa fa-twitter twitter-followers__icon"></span>
               {numberWithCommas(twitter_followers_count)}
             </span> :
             null}
+          </div>
         </div>
       </div>
     </div>;

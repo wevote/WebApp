@@ -1,5 +1,9 @@
 // TODO: Jeff - Refactor all styles here and remove this partial
 
+.view-source {
+  display: none;
+}
+
 .device {
   &-menu {
     &--large {
@@ -63,6 +67,10 @@
 @include breakpoints(nav) {
   .navbar-fixed-bottom {
     display: none;
+  }
+
+  .view-source {
+    display: block;
   }
 
   .device {
