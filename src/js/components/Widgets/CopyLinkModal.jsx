@@ -37,7 +37,7 @@ render () {
     select_all_button = null;
   } else {
     copy_btn_className = "copy-btn__hide-mobile"; // display: none; in mobile view
-    select_all_button = <button className="select-all-btn btn btn-default" onClick={()=>{this.refs.input.select();}}>Select All</button>;
+    select_all_button = <button className="select-all-btn btn btn-default" onClick={()=>{document.getElementById("url-to-copy").select();}}>Select All</button>;
   }
 
   return <Modal {...this.props} bsSize="large" aria-labelledby="contained-modal-title-lg">
@@ -46,7 +46,7 @@ render () {
     </Modal.Header>
     <Modal.Body>
       <div className="input-group">
-        <input ref="input" value={urlBeingShared} className="form-control" style={{marginTop: "17px"}} onChange={({target: {value}}) => this.setState({value, copied: false})} onFocus={()=>{this.refs.input.select();}} />&nbsp;
+        <input id="url-to-copy" value={urlBeingShared} className="form-control" style={{marginTop: "17px"}} onChange={({target: {value}}) => this.setState({value, copied: false})} onFocus={()=>{document.getElementById("url-to-copy").select();}} />&nbsp;
           <span className="input-group-btn">
             <CopyToClipboard text={urlBeingShared} onCopy={() => this.setState({copied: true})}>
               <button className={"btn btn-default " + copy_btn_className}>Copy</button>
