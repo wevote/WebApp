@@ -62,6 +62,11 @@ export default class Friends extends Component {
           <FriendList friendList={current_friend_list} />
         </div>
       </div>
+      <Link to="/requests">
+        <Button bsStyle="link">
+          See Friend Requests
+        </Button>
+      </Link>
     </div>;
   }
 }

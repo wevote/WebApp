@@ -27,6 +27,10 @@ class VoterStore extends FluxMapStore {
     return this.getState().address.text_for_map_search || "";
   }
 
+  getEmailAddressList (){
+    return this.getDataFromArr(this.getState().email_address_list) || {};
+  }
+
   getTwitterHandle (){
     return this.getState().voter.twitter_handle || "";
   }
@@ -50,6 +54,17 @@ class VoterStore extends FluxMapStore {
 
   setVoterDeviceIdCookie (id){
     cookies.setItem("voter_device_id", id, Infinity, "/");
+  }
+
+  getDataFromArr (arr) {
+    if (arr == undefined) {
+      return [];
+    }
+    let data_list = [];
+    for (var i = 0, len = arr.length; i < len; i++) {
+      data_list.push( arr[i] );
+    }
+    return data_list;
   }
 
   reduce (state, action) {
@@ -130,6 +145,13 @@ class VoterStore extends FluxMapStore {
           ...state,
           address: { text_for_map_search: action.res.text_for_map_search,
                     google_civic_election_id: action.res.google_civic_election_id }
+        };
+
+      case "voterEmailAddressRetrieve":
+        console.log("VoterStore voterEmailAddressRetrieve, action.res:", action.res);
+        return {
+          ...state,
+          email_address_list: action.res.email_address_list
         };
 
       case "voterPhotoSave":

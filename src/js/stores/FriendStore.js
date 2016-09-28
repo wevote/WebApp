@@ -18,10 +18,17 @@ class FriendStore extends FluxMapStore {
 
   isFriend (voter_we_vote_id) {
     let current_friends_index = this.currentFriendsIndexed();  // TODO DALE THIS NEEDS TO BE TESTED
-    if (current_friends_index[voter_we_vote_id] != undefined) {
-      return true;
-    }
-    return false;
+    return current_friends_index[voter_we_vote_id] != undefined;
+  }
+
+  switchToAddFriendsByEmailStep () {
+    return this.getState().add_friends_by_email_step;
+  }
+  
+  getErrorMessageToShowVoter () {
+    let error_message_to_show_voter = this.getState().error_message_to_show_voter;
+    //this.state.error_message_to_show_voter = "";  // TODO DALE This may not work
+    return error_message_to_show_voter
   }
 
   getDataFromArr (arr) {
@@ -108,7 +115,12 @@ class FriendStore extends FluxMapStore {
 
       case "friendInvitationByEmailSend":
         if (action.res.sender_voter_email_address_missing) {
-          // Deal with this
+          // Return the person to the form where they can fill in their email address
+          return {
+            ...state,
+            add_friends_by_email_step: "on_collect_email_step",
+            error_message_to_show_voter: action.res.error_message_to_show_voter
+          };
         } else {
           // Reset the invitation form
         }

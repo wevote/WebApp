@@ -5,6 +5,7 @@ import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 import Main from "../../components/Facebook/Main";
 import LoadingWheel from "../../components/LoadingWheel";
 import TwitterSignIn from "../../components/Twitter/TwitterSignIn";
+import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
 import VoterStore from "../../stores/VoterStore";
 
 const debug_mode = false;
@@ -70,14 +71,14 @@ export default class SignIn extends Component {
         <div className="text-center">
           {voter.signed_in_facebook ?
             <span><a className="btn btn-social btn-lg btn-facebook" onClick={FacebookActions.appLogout}>
-            <i className="fa fa-facebook"></i>Sign Out</a></span> : facebook_sign_in_option
+            <i className="fa fa-facebook" />Sign Out</a></span> : facebook_sign_in_option
           }
           <br />
           <br />
           {/* appLogout signs out the voter, regardless of how they are signed in */}
           {voter.signed_in_twitter ?
             <span><a className="btn btn-social btn-lg btn-twitter" onClick={FacebookActions.appLogout}>
-            <i className="fa fa-twitter"></i>Sign Out</a></span> : twitter_sign_in_option
+            <i className="fa fa-twitter" />Sign Out</a></span> : twitter_sign_in_option
           }
           {/*
           <div>
@@ -86,6 +87,11 @@ export default class SignIn extends Component {
             </Link>
           </div>
           */}
+          <br />
+          <br />
+          <br />
+          <br />
+          <VoterEmailAddressEntry />
         </div>
         <br />
         <br />
