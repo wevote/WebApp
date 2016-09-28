@@ -27,6 +27,12 @@ export default class CopyLinkModal extends Component {
     });
   }
 
+  copied () {
+    this.setState({
+      copied: true
+    });
+  }
+
 render () {
   let urlBeingShared = this.props.urlBeingShared;
   let browser_supports_CopyToClipboard = false; //latest iOS update supports CopyToClipboard, check for users version and let them copy if latest, perhaps with npm pckg "mobile-detect"
@@ -37,8 +43,10 @@ render () {
     select_all_button = null;
   } else {
     copy_btn_className = "copy-btn__hide-mobile"; // display: none; in mobile view
-    select_all_button = <button className="select-all-btn btn btn-default" onClick={()=>{document.getElementById("url-to-copy").setSelectionRange(0, 999);}}>Select All</button>;
+    select_all_button = <button className="select-all-btn btn btn-default"
+                                onClick={()=>{document.getElementById("url-to-copy").setSelectionRange(0, 999);}}>Select All</button>;
   }
+
 
   return <Modal {...this.props} bsSize="large" aria-labelledby="contained-modal-title-lg">
     <Modal.Header closeButton>
@@ -46,9 +54,13 @@ render () {
     </Modal.Header>
     <Modal.Body>
       <div className="input-group">
-        <input id="url-to-copy" value={urlBeingShared} className="form-control" style={{marginTop: "17px"}} onChange={({target: {value}}) => this.setState({value, copied: false})} onFocus={()=>{document.getElementById("url-to-copy").setSelectionRange(0, 999);}} />&nbsp;
+        <input id="url-to-copy"
+               value={urlBeingShared}
+               className="form-control"
+               style={{marginTop: "17px"}}
+               onFocus={()=>{document.getElementById("url-to-copy").setSelectionRange(0, 999);}} />&nbsp;
           <span className="input-group-btn">
-            <CopyToClipboard text={urlBeingShared} onCopy={() => this.setState({copied: true})}>
+            <CopyToClipboard text={urlBeingShared} onCopy={this.copied.bind(this)}>
               <button className={"btn btn-default " + copy_btn_className}>Copy</button>
             </CopyToClipboard>
             {select_all_button}
