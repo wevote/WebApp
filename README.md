@@ -12,7 +12,7 @@ Interested in volunteering? [Starting presentation here](https://prezi.com/5v4dr
 You can see our current wireframe mockup for a San Francisco ballot here:
 http://start.wevoteusa.org/
 
-And finally, our current live version is here: https://wevote.me
+And finally, our current live version is here: [https://WeVote.US](https://WeVote.US)
 
 ## Installing WebApp
 Our installation process is built to allow engineers all over America to contribute to We Vote. 

@@ -1,7 +1,7 @@
 // Note that we import these values into "web_app_config" (so we can search for it)
 module.exports = {
     WE_VOTE_URL_PROTOCOL: "http://",  // "http://" for local dev or "https://" for live server
-    WE_VOTE_HOSTNAME: "localhost:3000",  // This should be without "http...". This is "wevote.me" on live server.
+    WE_VOTE_HOSTNAME: "localhost:3000",  // This should be without "http...". This is "WeVote.US" on live server.
 
     WE_VOTE_SERVER_ADMIN_ROOT_URL: "https://api.wevoteusa.org/admin/",
     WE_VOTE_SERVER_API_ROOT_URL: "https://api.wevoteusa.org/apis/v1/",

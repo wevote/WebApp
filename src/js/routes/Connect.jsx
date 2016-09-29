@@ -51,6 +51,7 @@ export default class Connect extends Component {
         <div className="ballot__filter"><AddFriendsFilter add_friends_type={this.state.add_friends_type}
                                                           changeAddFriendsTypeFunction={this.changeAddFriendsType.bind(this)} /></div>
         {add_friends_html}
+        <Link to="/friends">See current friends</Link>
       </div>
 
 			<div className="container-fluid well u-gutter__top--small fluff-full1">
@@ -60,7 +61,9 @@ export default class Connect extends Component {
 				</span>
 				<p>Find voter guides you can follow. These voter guides have been created by nonprofits, public figures, your friends, and more.<br />
 				<br /></p>
-			</div>
+        <Link to="/more/opinions/followed">See who you are following</Link>
+      </div>
+
 		</div>;
 	}
 }

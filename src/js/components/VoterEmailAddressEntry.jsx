@@ -43,26 +43,21 @@ export default class VoterEmailAddressEntry extends Component {
     });
   }
 
-  saveVoterEmailAddress (event) {
+  voterEmailAddressSave (event) {
     event.preventDefault();
     var { voter_email_address } = this.state;
-    VoterActions.saveVoterEmailAddress(voter_email_address);
+    VoterActions.voterEmailAddressSave(voter_email_address);
     this.setState({loading: true});
   }
 
-  sendVerificationEmail (event, email_we_vote_id) {
-    event.preventDefault();
+  sendVerificationEmail (email_we_vote_id) {
     VoterActions.sendVerificationEmail(email_we_vote_id);
     this.setState({loading: true});
   }
 
-  deleteInvitation (voter_email_address) {
-    //FriendActions.deleteFriendInviteEmail(voter_email_address);
-    // this.setState({
-    //   friend_invitations_list: this.state.friend_invitations_list.filter( (friend) => {
-    //     return friend.voter_we_vote_id !== voter_we_vote_id;
-    //   })
-    // });
+  removeVoterEmailAddress (event, email_we_vote_id) {
+    console.log("VoterEmailAddressEntry, removeVoterEmailAddress, email_we_vote_id:", email_we_vote_id);
+    VoterActions.removeVoterEmailAddress(email_we_vote_id);
   }
 
   render () {
@@ -71,7 +66,7 @@ export default class VoterEmailAddressEntry extends Component {
       return LoadingWheel;
     }
     const enter_email_html = <div>
-        <form onSubmit={this.saveVoterEmailAddress.bind(this)}>
+        <form onSubmit={this.voterEmailAddressSave.bind(this)}>
           <input
             type="text"
             onChange={this.updateVoterEmailAddress.bind(this)}
@@ -83,7 +78,7 @@ export default class VoterEmailAddressEntry extends Component {
         </form>
 
         <div className="u-gutter__top--small">
-          <Button onClick={this.saveVoterEmailAddress.bind(this)}
+          <Button onClick={this.voterEmailAddressSave.bind(this)}
                   bsStyle="primary">
             Send Verification Email</Button>
         </div>
@@ -99,16 +94,21 @@ export default class VoterEmailAddressEntry extends Component {
             <h4 className="card-child__display-name">{voter_email_address.normalized_email_address}</h4>
             {email_status_description}
           </div>
-          {voter_email_address.email_ownership_is_verified ?
-            null :
             <div className="card-child__additional">
               <div className="card-child__follow-buttons">
-                <Button onClick={this.sendVerificationEmail.bind(this, voter_email_address.email_we_vote_id)}
-                        bsStyle="warning">
-                  Send Verification Email Again
+                <Button onClick={this.removeVoterEmailAddress.bind(this, voter_email_address.we_vote_id)}
+                        bsStyle="default"
+                        bsSize="small">
+                  Remove Email
                 </Button>
+                {voter_email_address.email_ownership_is_verified ?
+                  null :
+                  <Button onClick={this.sendVerificationEmail.bind(this, voter_email_address.email_we_vote_id)}
+                          bsStyle="warning">
+                    Send Verification Email Again
+                  </Button>}
               </div>
-            </div>}
+            </div>
         </div>
       </div>;
     });

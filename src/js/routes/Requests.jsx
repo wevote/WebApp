@@ -59,13 +59,13 @@ export default class RequestsPage extends Component {
         { this.state.friend_invitations_sent_by_me.length ?
           <div>
             <h3 className="card__additional-heading">Invitations From You</h3>
+            <FriendInvitationList friendList={this.state.friend_invitations_sent_by_me}
+                                  invitationsSentByMe />
             <Link to="/more/connect">
               <Button bsStyle="link">
                 Invite More Friends
               </Button>
             </Link>
-            <FriendInvitationList friendList={this.state.friend_invitations_sent_by_me}
-                                  invitationsSentByMe />
           </div> :
           null
         }

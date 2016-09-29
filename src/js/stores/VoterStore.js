@@ -119,21 +119,6 @@ class VoterStore extends FluxMapStore {
           ...state
         };
 
-      case "voterRetrieve":
-        let voter_device_id = action.res.voter_device_id;
-        this.setVoterDeviceIdCookie(voter_device_id);
-        VoterActions.retrieveAddress(voter_device_id);
-        const url = action.res.facebook_profile_image_url_https;
-        if (action.res.signed_in_facebook && (url === null || url === "")){
-          const userId = FacebookStore.userId;
-          FacebookActions.getFacebookProfilePicture(userId);
-        }
-
-        return {
-          ...state,
-          voter: action.res
-      };
-
       case "voterAddressRetrieve":
         return {
           ...state,
@@ -148,7 +133,12 @@ class VoterStore extends FluxMapStore {
         };
 
       case "voterEmailAddressRetrieve":
-        console.log("VoterStore voterEmailAddressRetrieve, action.res:", action.res);
+        return {
+          ...state,
+          email_address_list: action.res.email_address_list
+        };
+
+      case "voterEmailAddressSave":
         return {
           ...state,
           email_address_list: action.res.email_address_list
@@ -159,6 +149,21 @@ class VoterStore extends FluxMapStore {
           ...state,
           voter: {...state.voter, facebook_profile_image_url_https: action.res.facebook_profile_image_url_https}
         };
+
+      case "voterRetrieve":
+        let voter_device_id = action.res.voter_device_id;
+        this.setVoterDeviceIdCookie(voter_device_id);
+        VoterActions.retrieveAddress(voter_device_id);
+        const url = action.res.facebook_profile_image_url_https;
+        if (action.res.signed_in_facebook && (url === null || url === "")){
+          const userId = FacebookStore.userId;
+          FacebookActions.getFacebookProfilePicture(userId);
+        }
+
+        return {
+          ...state,
+          voter: action.res
+      };
 
       case "voterUpdate":
         const {first_name, last_name, email} = action.res;

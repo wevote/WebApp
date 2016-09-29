@@ -54,11 +54,20 @@ export default class FriendInvitationEmailForList extends Component {
     } = this.props;
 
     var {voter} = this.state;
+    let invitation_status_text;
+    if (invitation_status === "PENDING_EMAIL_VERIFICATION") {
+      invitation_status_text = "Your invitation will be sent when you verify your email address."
+    } else if (invitation_status === "NO_RESPONSE") {
+      invitation_status_text = "Invitation sent."
+    }
 
     return <div className="position-item card-child card-child--not-followed">
       <div className="card-child__media-object-content">
         <div className="card-child__content">
-          <h5 className="card-child__display-name">{voter_email_address}</h5>
+          <h4 className="card-child__display-name">
+            {voter_email_address}</h4>
+          <h5>
+            {invitation_status_text}</h5>
         </div>
         <div className="card-child__additional">
           <div className="card-child__follow-buttons">
@@ -69,7 +78,7 @@ export default class FriendInvitationEmailForList extends Component {
             {invitation_status === "PENDING_EMAIL_VERIFICATION" && !voter.signed_in_with_email ?
               <Link to="/more/sign_in">
                 <Button bsSize="small" bsStyle="warning">
-                  Verify Your Email To Send
+                  Verify Your Email
                 </Button>
               </Link> :
               null }

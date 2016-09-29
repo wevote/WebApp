@@ -9,6 +9,13 @@ module.exports = {
       });
   },
 
+  removeVoterEmailAddress: function (email_we_vote_id){
+    Dispatcher.loadEndpoint("voterEmailAddressSave", {
+      email_we_vote_id: email_we_vote_id,
+      deleted: true
+    });
+  },
+
   retrieveAddress: function (id){
     Dispatcher.loadEndpoint("voterAddressRetrieve", { voter_device_id: id});
   },
@@ -21,8 +28,18 @@ module.exports = {
     Dispatcher.loadEndpoint("voterAddressSave", { text_for_map_search: text });
   },
 
-  saveVoterEmailAddress: function (voter_email_address){
-    Dispatcher.loadEndpoint("voterEmailAddressSave", { email_address: voter_email_address });
+  sendVerificationEmail: function (voter_email_we_vote_id){
+    Dispatcher.loadEndpoint("voterEmailAddressSave", {
+      email_we_vote_id: voter_email_we_vote_id,
+      resend_verification_email: true
+    });
+  },
+
+  voterEmailAddressSave: function (voter_email_address){
+    Dispatcher.loadEndpoint("voterEmailAddressSave", {
+      text_for_email_address: voter_email_address,
+      make_primary_email: true
+    });
   },
 
   signOut: function (){
