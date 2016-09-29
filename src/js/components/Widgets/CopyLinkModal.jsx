@@ -66,7 +66,9 @@ render () {
             {select_all_button}
           </span>
       </div>
-    {this.state.was_copied ? <span style={{color: "red"}}>Copied.  Can now paste into an email or social media!</span> : null}
+    {this.state.was_copied ? <span style={{color: "red"}}>
+      Link copied to your clipboard! You can now paste into an email or social media.
+    </span> : null}
     </Modal.Body>
   </Modal>;
   }

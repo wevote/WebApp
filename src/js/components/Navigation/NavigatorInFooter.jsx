@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
-
-// import "stylesheets/main.scss";
+import FriendStore from "../../stores/FriendStore";
 
 const links = {
   ballot: function (active) {
@@ -21,14 +20,17 @@ const links = {
     return jsx;
   },
 
-  /* className="badgeTotal badge">0</span> TODO badge should only show if positive number */
-  requests: function (active) {
+  requests: function (active, number_of_incoming_friend_requests) {
     var icon = "glyphicon glyphicon-inbox glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
       <Link to="/requests" className={ "footer-nav__item" + (active ? " active-icon" : "")}>
         <div className="col-xs-3 center-block text-center">
-          <span className={icon} title="Requests" />
+          <span className={icon} title="Requests">
+            {number_of_incoming_friend_requests ?
+              <span className="badgeTotal badge">{number_of_incoming_friend_requests}</span> :
+              null }
+          </span>
           <br/>
           <span className="text-center small device-small--hide">
             Requests
@@ -79,16 +81,38 @@ export default class NavigatorInFooter extends Component {
     pathname: PropTypes.string
   };
 
+  constructor (props) {
+      super(props);
+      this.state = {
+        friend_invitations_sent_to_me: FriendStore.friendInvitationsSentToMe()
+      };
+  }
+
+  componentDidMount () {
+    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
+  }
+
+  componentWillUnmount (){
+    this.friendStoreListener.remove();
+  }
+
+  _onFriendStoreChange () {
+    this.setState({
+      friend_invitations_sent_to_me: FriendStore.friendInvitationsSentToMe()
+    });
+  }
+
   render () {
     var { props: { pathname } } = this;
     var { ballot, requests, connect, activity } = links;
+    let number_of_incoming_friend_requests = this.state.friend_invitations_sent_to_me.length;
 
     const navigator =
       <div className="navbar navbar-default navbar-fixed-bottom footer-nav">
         <div className="container-fluid fluff-loose--top u-separate__top">
           <div className="row">
             {ballot(pathname === "/ballot")}
-            {requests(pathname === "/requests")}
+            {requests(pathname === "/requests", number_of_incoming_friend_requests)}
             {connect(pathname === "/more/connect")}
             {activity(pathname === "/activity")}
           </div>

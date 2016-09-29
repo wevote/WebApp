@@ -1,12 +1,13 @@
 import React, { Component, PropTypes } from "react";
-import NavigatorInFooter from "./components/Navigation/NavigatorInFooter";
-import MoreMenu from "./components/Navigation/MoreMenu";
+import FriendActions from "./actions/FriendActions";
 import HeaderBar from "./components/Navigation/HeaderBar";
-import VoterStore from "./stores/VoterStore";
+import Headroom from "react-headroom";
+import MoreMenu from "./components/Navigation/MoreMenu";
+import NavigatorInFooter from "./components/Navigation/NavigatorInFooter";
 import StarActions from "./actions/StarActions";
 import VoterActions from "./actions/VoterActions";
+import VoterStore from "./stores/VoterStore";
 import { exitSearch } from "./utils/search-functions";
-import Headroom from "react-headroom";
 const web_app_config = require("./config");
 
 var loadingScreenStyles = {
@@ -60,11 +61,13 @@ export default class Application extends Component {
     let voter_device_id = VoterStore.voterDeviceId();
     VoterActions.voterRetrieve(voter_device_id);
     StarActions.voterAllStarsStatusRetrieve();
-    this.token = VoterStore.addListener(this._onChange.bind(this));
+    FriendActions.friendInvitationsSentToMe();
+
+    this.voterStoreListener = VoterStore.addListener(this._onChange.bind(this));
   }
 
   componentWillUnmount () {
-    this.token.remove();
+    this.voterStoreListener.remove();
   }
 
   _onChange () {
