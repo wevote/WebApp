@@ -29,8 +29,7 @@ export default class ImageHandler extends Component {
       replacementClass = "icon-main icon-icon-org-placeholder-6-2 card-child__avatar";
     }
 
-
-    const image = this.state.error ?
+    const image = this.state.error || this.props.imageUrl === "" ?
       <i className={sizeClassName + replacementClass} /> :
       <img className={sizeClassName + this_class} src={this.props.imageUrl} alt={alt}
            onError={this.brokenLink.bind(this)} />;
