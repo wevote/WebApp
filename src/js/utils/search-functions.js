@@ -4,9 +4,14 @@ export function enterSearch () {
   // const searchButton = document.getElementsByClassName("site-search__button")[0];
   // searchButton.classList.remove("btn-default");
   // searchButton.classList.add("btn-primary");
-  // Clear out the contents of the search box
+
+  // Clear out the contents of the search box. Then select the text in searchInput. We're searching the DOM and then
+  // using setSelectionRange because the normal way I'd do things in React (e.target.select(), instead of the
+  // relatively-slow DOM search) apparently doesn't work in some iPhone mobile browsers. I haven't verified that
+  // (Nico 9/28/16)
   const searchInput = document.getElementById("SearchAllBox-input");
   searchInput.setSelectionRange(0, 999);
+
   // Hide the hamburger navigation and site name
   const siteLogoText = document.getElementsByClassName("page-logo")[0];
   siteLogoText.style.display = "none";
