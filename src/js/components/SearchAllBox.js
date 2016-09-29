@@ -106,6 +106,7 @@ export default class SearchAllBox extends Component {
         <form onSubmit={this.onSearchFormSubmit.bind(this)} className="" role="search">
         <div className="input-group site-search">
           <input type="text"
+                 id="SearchAllBox-input"
                  className="form-control site-search__input-field"
                  placeholder="Search We Vote…"
                  name="master_search_field"
