@@ -3,6 +3,7 @@ import { browserHistory, Link } from "react-router";
 import SearchAllActions from "../actions/SearchAllActions";
 import SearchAllStore from "../stores/SearchAllStore";
 import { enterSearch, exitSearch, makeSearchLink } from "../utils/search-functions";
+import { capitalizeString } from "../utils/textFormat";
 
 export default class SearchAllBox extends Component {
   static propTypes = {
@@ -72,6 +73,7 @@ export default class SearchAllBox extends Component {
     this.setState({ open: true });
   }
 
+
   onSearchBlur () {
     // Delay closing the drop down so that a click on the Link can have time to work
     var temp_this = this;
@@ -122,11 +124,12 @@ export default class SearchAllBox extends Component {
         <div className="search-container">
           { search_results && this.state.open ?
             search_results.map(function (one_result) {
-            return <Link key={one_result.we_vote_id} to={makeSearchLink(one_result.twitter_handle, one_result.we_vote_id, one_result.kind_of_owner)} className="search-container__links">
-                <div className="search-container__results">
-                  {one_result.result_title}
-                </div>
-              </Link>;
+              let capitalized_title = capitalizeString(one_result.result_title);
+              return <Link key={one_result.we_vote_id} to={makeSearchLink(one_result.twitter_handle, one_result.we_vote_id, one_result.kind_of_owner)} className="search-container__links">
+                  <div className="search-container__results">
+                    {capitalized_title}
+                  </div>
+                </Link>;
             }) :
             null
           }
