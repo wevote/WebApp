@@ -5,8 +5,8 @@ export function enterSearch () {
   // searchButton.classList.remove("btn-default");
   // searchButton.classList.add("btn-primary");
   // Clear out the contents of the search box
-  const searchInput = document.getElementsByTagName("input")[0];
-  searchInput.value = "";
+  const searchInput = document.getElementById("SearchAllBox-input");
+  searchInput.setSelectionRange(0, 999);
   // Hide the hamburger navigation and site name
   const siteLogoText = document.getElementsByClassName("page-logo")[0];
   siteLogoText.style.display = "none";
