@@ -37,9 +37,6 @@ export default class ReadMore extends Component {
         if (collapse_text === undefined) {
           collapse_text = "Show Less  ";
         }
-        // if (max_num_of_char === undefined) {
-        //   max_num_of_char = 100;
-        // }
 
         // remove extra ascii carriage returns or other control text
         text_to_display = text_to_display.replace(/[\x0D-\x1F]/g, "");
