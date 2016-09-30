@@ -5,8 +5,11 @@
   './utils/variables',
   './utils/functions',
   './utils/mixins',
-  './utils/app',
-  './utils/utility';
+  './utils/utility',
+  './utils/colors',
+  './utils/flexbox',
+  './utils/spacing';
+
 
 // 2. Vendors
 @import
@@ -44,7 +47,6 @@
   './components/ballotList',
   './components/itemActionBar',
   './components/itemPositionStatementActionBar',
-  './components/followingFilter',
   './components/starAction',
   './components/position',
   './components/navigator',

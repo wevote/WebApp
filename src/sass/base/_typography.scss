@@ -1,25 +1,20 @@
-// ----------------------------------------------------------------------------
-// Basic typography style for copy text
-// ----------------------------------------------------------------------------
+$base-font-size: 16px;
 
-h1, h2, h3, h4, h5, h6,
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: $base-font-size
+}
+
 .h1, .h2, .h3, .h4, .h5, .h6 {
   font-family: $heading-font-stack;
 }
 
+html {
+  font-size: 16px;
+}
+
 body {
-    color: $darker-gray;
+    color: $gray-darker;
     font-family: $text-font-stack;
-    font-size: 125%;
     line-height: 1.4;
-}
-
-.text-uppercase {
-    text-transform: uppercase;
-}
-
-@include breakpoints(max mid-small) {
-    .link-text-to-opinions {
-        font-size: .85em;
-    }
 }

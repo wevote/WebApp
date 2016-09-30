@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import ReadMore from "../../components/Widgets/ReadMore";
+var Icon = require("react-svg-icons");
 // import ViewSourceModal from "../../components/Widgets/ViewSourceModal";
 
 export default class PositionInformationOnlySnippet extends Component {
@@ -33,7 +34,6 @@ export default class PositionInformationOnlySnippet extends Component {
   }
 
   render () {
-    var stance_icon_src;
     var className;
     var alt;
     var positionLabel;
@@ -44,11 +44,10 @@ export default class PositionInformationOnlySnippet extends Component {
     // onViewSourceClick is onClick function for view source modal in mobile browser
     // const onViewSourceClick = this.state.showViewSourceModal ? this.closeViewSourceModal.bind(this) : this.openViewSourceModal.bind(this);
 
-    stance_icon_src = "/img/global/icons/mixed-rating-icon.svg";
-    className = "position-rating__icon position-rating__icon--mixed";
+    className = "position-rating__icon position-rating__icon--no-position";
     alt = "Neutral Rating";
-    positionLabel = "Information about";
-    hasThisToSay = is_looking_at_self ? "Your comment is this:" : "has this to say:";
+    positionLabel = "About";
+    hasThisToSay = is_looking_at_self ? "Your comment:" : null;
     let stance_display_off = false;
     if (this.props.stance_display_off !== undefined) {
       stance_display_off = this.props.stance_display_off ? true : false;
@@ -66,7 +65,7 @@ export default class PositionInformationOnlySnippet extends Component {
     }
 
     return <div className="explicit-position">
-      {stance_display_off ? null : <img src={stance_icon_src} width="20" height="20" className={className} alt={alt} />}
+      {stance_display_off ? null : <Icon name="no-position-icon" width={24} height={24} className={className} alt={alt} />}
       <div className="explicit-position__text">
         { stance_display_off ?
           null :

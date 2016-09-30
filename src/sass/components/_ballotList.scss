@@ -3,8 +3,9 @@
   margin-bottom: 1em;
 
   &__display-name {
+    font-family: $heading-font-stack;
     font-size: 24px;
-    color: $dark-gray;
+    color: $gray-dark;
     @include breakpoints(max mid-small){
       font-size: 18px;
       max-width: 100%;

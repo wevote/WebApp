@@ -1,4 +1,70 @@
+@import "./src/sass/utils/variables";
 $bootstrap-sass-asset-helper: false !default;
+
+//== Colors
+//
+
+$brand-primary:         $brand-color;
+
+//== Scaffolding
+//
+//## Settings for some of the most global styles.
+
+//** Global textual link color.
+$link-color:            #00749E;
+
+
+
+//== Components
+//
+//## Define common padding and border radius sizes and more. Values based on 14px text and 1.428 line-height (~20px to start).
+
+// $padding-base-vertical:     6px !default;
+// $padding-base-horizontal:   12px !default;
+//
+// $padding-large-vertical:    10px !default;
+// $padding-large-horizontal:  16px !default;
+//
+// $padding-small-vertical:    5px !default;
+// $padding-small-horizontal:  10px !default;
+//
+// $padding-xs-vertical:       1px !default;
+// $padding-xs-horizontal:     5px !default;
+//
+// $line-height-large:         1.3333333 !default; // extra decimals for Win 8.1 Chrome
+// $line-height-small:         1.5 !default;
+
+$border-radius-base:        4px !default;
+$border-radius-large:       6px !default;
+$border-radius-small:       3px !default;
+
+
+
+
+//== Buttons
+//
+//## For each of Bootstrap's buttons, define text, background and border color.
+
+$btn-primary-bg:                $link-color;
+
+
+
+$btn-font-weight:                normal !default;
+
+$btn-default-color:              #333 !default;
+$btn-default-bg:                 #fff !default;
+$btn-default-border:             #ccc !default;
+
+$btn-primary-color:              #fff !default;
+$btn-primary-bg:                 $link-color;
+$btn-primary-border:             darken($btn-primary-bg, 5%) !default;
+
+
+// Allows for customizing button radius independently from global border radius
+$btn-border-radius-base:         $border-radius-base !default;
+$btn-border-radius-large:        $border-radius-large !default;
+$btn-border-radius-small:        $border-radius-small !default;
+
 
 
 // == Iconography

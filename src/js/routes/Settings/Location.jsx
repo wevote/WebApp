@@ -9,11 +9,11 @@ export default class Location extends Component {
       //       If you would like to see a recent live ballot, copy and paste
       //       one of these addresses and paste them in the box above.
       //     </div>
-      //     <h4>
+      //     <h4 className="h4">
       //       Charlotte, NC 28205
       //     </h4>
       //     or
-      //     <h4>
+      //     <h4 className="h4">
       //       Columbus, OH 43202
       //     </h4>
       //   </div>
@@ -21,7 +21,7 @@ export default class Location extends Component {
 
   render () {
     return <div>
-      <h3>
+      <h3 className="h3">
         Enter address where you are registered to vote
       </h3>
       <div>

@@ -26,7 +26,7 @@
   }
 
   &__container {
-    background-color: $pale-gray;
+    background-color: $gray-pale;
     margin-top: 0px;
     padding-top: 10px;
     padding-right: 15px;
@@ -48,10 +48,6 @@
   &__btn {
     // currently uses Bootstrap .bs-btn styling
     margin-right: 8px;
-
-    &--position-selected {
-      color: $selected-color;
-    }
   }
 
   &__speaker-name {

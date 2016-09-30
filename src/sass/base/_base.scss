@@ -6,7 +6,6 @@ html {
 body {
   background-color: #F5F4F1;
   height: 100%;
-  letter-spacing: -0.02em;
 }
 
 #app {
@@ -26,4 +25,8 @@ body {
 
 a {
   cursor: pointer;
+}
+
+img {
+  max-width: 100%;
 }

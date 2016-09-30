@@ -54,7 +54,7 @@ export default class FollowToggle extends Component {
       {is_following ?
         <Button bsStyle="info"
                 bsSize="small"
-                className="btn-action utils-margin_bottom5"
+                className="btn-action"
                 onClick={stopFollowingFunc}
                 data-hover="Unfollow">
                 <span>Following</span>

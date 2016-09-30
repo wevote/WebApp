@@ -1,15 +1,13 @@
 // Network Positions bar (ItemSupportOpposeCounts)
 
 .network-positions {
-  display: flex;
-}
-
-.network-positions {
   $bar-height: 10px;
   $icon-size: 20px;
   $green: #76D00B;
   $red: #FF4921;
   position: relative;
+  display: flex;
+  margin-top: .5rem;
 
   &__bar-well {
     display: block;
@@ -20,7 +18,7 @@
     flex-grow: 5;
     height: $bar-height;
     border-radius: 3em;
-    background-color: $light-gray;
+    background-color: $gray-light;
     overflow: hidden;
   }
 
@@ -29,7 +27,7 @@
     margin-top: $icon-size;
     width: 100%;
     text-align: center;
-    color: $mid-gray;
+    color: $gray-mid;
     @include breakpoints(max 300px){
       display: none;
     }
@@ -53,7 +51,7 @@
   &__count {
     text-align: center;
     padding-top: 3px;
-    color: $dark-gray;
+    color: $gray-dark;
     min-height: 1.5em; // spacer for .network-positions__bar-label
   }
 
@@ -72,4 +70,3 @@
   }
 
 }
-

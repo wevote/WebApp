@@ -23,7 +23,7 @@ export default class FacebookPicture extends React.Component {
             msg = "Received picture!";
         }
 
-        return <h3>{msg}</h3>;
+        return <h3 className="h3">{msg}</h3>;
     }
 
     get facebookPicture () {

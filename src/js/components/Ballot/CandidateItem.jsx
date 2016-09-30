@@ -98,14 +98,14 @@ export default class CandidateItem extends Component {
         </div>
 
         <div className="card-main__media-object-content">
-          {
+          {/* {
             supportProps && supportProps.is_support ?
-            <img src="/img/global/icons/thumbs-up-color-icon.svg" className="card-main__position-icon" width="20" height="20" /> : null
+            <img src="/img/global/svg-icons/thumbs-up-color-icon.svg" className="card-main__position-icon" width="24" height="24" /> : null
           }
           {
             supportProps && supportProps.is_oppose ?
-            <img src="/img/global/icons/thumbs-down-color-icon.svg" className="card-main__position-icon" width="20" height="20" /> : null
-          }
+            <img src="/img/global/svg-icons/thumbs-down-color-icon.svg" className="card-main__position-icon" width="24" height="24" /> : null
+          } */}
           <h2 className="card-main__display-name">
             { this.props.link_to_ballot_item_page ?
               <Link to={candidateLink}>{ballot_item_display_name}</Link> :

@@ -85,6 +85,9 @@
 
 .icon-lg {
   font-size: 5rem;
+    @include breakpoints (max mid-small){
+      font-size: 2rem;
+    }
 }
 
 .icon-medium {
@@ -104,7 +107,7 @@
 }
 
 .icon-org-lg {
-  font-size: 5rem;
+  font-size: 3.2rem;
 }
 
 .icon-org-medium {

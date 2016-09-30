@@ -13,7 +13,7 @@ class FacebookDownloadPicture extends React.Component {
 
     render () {
         return <div>
-                <h5>Download Picture:</h5>
+                <h5 className="h5">Download Picture:</h5>
                 <button ref="downloadPictureButton" onClick={() => this.didClickDownloadPicture()}>Download FB Picture</button>
             </div>;
     }

@@ -47,7 +47,7 @@ export default class HeaderBackNavigation extends Component {
         if (this.props.header_text) {
             header_text = this.props.header_text;
         } else {
-            header_text = "";
+            header_text = null;
         }
         return <Headroom>
                 <div className="row">

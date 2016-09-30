@@ -152,7 +152,7 @@ export default class OrganizationPositionItem extends Component {
       political_party = position.ballot_item_political_party;
     }
     return <li className="position-item card-child">
-      <StarAction we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
+
       { is_candidate ?
         <div className="card-child__media-object-anchor">
           <Link to={ ballotItemLink }
@@ -170,11 +170,22 @@ export default class OrganizationPositionItem extends Component {
       }
       <div className="card-child__media-object-content">
         <div className="card-child__content">
-          <Link to={ ballotItemLink }
-                onlyActiveOnIndex={false}>
-            <span className="position-rating__candidate-name">{ballot_item_display_name}</span>
-          </Link>
-          <br />
+          <div className="flex items-center">
+            <Link to={ ballotItemLink }
+                  onlyActiveOnIndex={false}
+                  className="position-rating__candidate-name flex-auto">
+                  {ballot_item_display_name}
+            </Link>
+
+            { signed_in_with_this_twitter_account || signed_in_with_this_facebook_account ?
+              <PositionPublicToggle ballot_item_we_vote_id={position.ballot_item_we_vote_id}
+                type={position.kind_of_ballot_item}
+                supportProps={supportProps}
+                className="organization-position-item-toggle"/> :
+                <FriendsOnlyIndicator isFriendsOnly={!is_public_position}/>
+              }
+              <StarAction we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
+            </div>
             { position.kind_of_ballot_item === "CANDIDATE" && contest_office_name !== undefined ?
             <OfficeNameText political_party={political_party} contest_office_name={contest_office_name} /> :
               null
@@ -194,13 +205,6 @@ export default class OrganizationPositionItem extends Component {
                                                organization={organization}/>}
             </span> */}
             { position_description }
-            { signed_in_with_this_twitter_account || signed_in_with_this_facebook_account ?
-              <PositionPublicToggle ballot_item_we_vote_id={position.ballot_item_we_vote_id}
-                type={position.kind_of_ballot_item}
-                supportProps={supportProps}
-                className="organization-position-item-toggle"/> :
-                <FriendsOnlyIndicator isFriendsOnly={!is_public_position}/>
-              }
         </div>
       </div>
     </li>;

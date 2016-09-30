@@ -19,7 +19,7 @@ export default class ImageHandler extends Component {
   }
 
   render () {
-    let this_class = this.props.className || "utils-img-contain";
+    let this_class = this.props.className || null;
     let alt = this.props.alt || "icon";
     let replacementClass = "";
     let sizeClassName = this.props.sizeClassName || "";

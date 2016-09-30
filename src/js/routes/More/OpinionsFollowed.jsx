@@ -51,7 +51,7 @@ export default class OpinionsFollowed extends Component {
 
   render () {
     return <div className="opinions-followed__container">
-      <h1>Your Network</h1>
+      <h1 className="h1">Your Network</h1>
       <FollowingFilter following_type={this.getFollowingType()} />
         <p>
           Organizations, public figures and other voters you currently follow. <em>We will never sell your email</em>.

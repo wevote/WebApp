@@ -78,7 +78,7 @@ export default class GuidePositionList extends Component {
       };
       return <div className="card">
           <div className="card-main">
-            <h4>Organization not Found</h4>
+            <h4 className="h4">Organization not Found</h4>
           </div>
           <div style={{margin: 10}}>
             <span style={floatRight}>
