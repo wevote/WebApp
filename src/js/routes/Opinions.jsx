@@ -18,7 +18,7 @@ export default class Opinions extends Component {
   constructor (props){
     super(props);
     this.state = {
-      guideToFollowList: [], 
+      guideToFollowList: [],
       ballot_has_guides: null
     };
   }

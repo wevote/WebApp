@@ -52,4 +52,5 @@ export default class RequestsPage extends Component {
         null
       }
     </section>;
+  }
 }

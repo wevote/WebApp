@@ -52,7 +52,7 @@ export default class TwitterAccountCard extends Component {
               {twitter_user_website ?
                 <span>
                   &nbsp;&nbsp;
-                  <a href={twitter_user_website} target="_blank">Website</a><br />
+                  <a href={twitter_user_website} target="_blank">Website <i className="fa fa-external-link"></i></a><br />
                 </span> :
                 null
               }

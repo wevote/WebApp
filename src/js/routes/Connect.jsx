@@ -36,13 +36,13 @@ export default class Connect extends Component {
     let add_friends_html;
     if (this.state.add_friends_type == "ADD_FRIENDS_BY_TWITTER") {
       add_friends_header = "Add Friends By Twitter Handle";
-      add_friends_html = <AddFriendsByTwitter />
+      add_friends_html = <AddFriendsByTwitter />;
     } else if (this.state.add_friends_type == "ADD_FRIENDS_BY_FACEBOOK") {
       add_friends_header = "Add Friends From Facebook";
-      add_friends_html = <AddFriendsByFacebook />
+      add_friends_html = <AddFriendsByFacebook />;
     } else {
       add_friends_header = "Add Friends By Email";
-      add_friends_html = <AddFriendsByEmail />
+      add_friends_html = <AddFriendsByEmail />;
     }
 
 		return <div>

@@ -103,9 +103,8 @@ export default class PositionSupportOpposeSnippet extends Component {
               <div className="view-source">
                 {/* default: open in new tab*/}
                 <a href={more_info_url}
-                   target="_blank"
-                   className="explicit-position__source">
-                  view source <i className="fa fa-external-link-square" aria-hidden="true"></i>
+                   target="_blank">
+                  (view source <i className="fa fa-external-link" aria-hidden="true"></i>)
                 </a>
                 {/* link for mobile browser: open in bootstrap modal */}
                 {/*

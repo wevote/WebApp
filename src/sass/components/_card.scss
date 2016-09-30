@@ -52,6 +52,12 @@
         border-radius: 10em;
       }
     }
+    .icon-lg { // temp - for placeholder icons
+      font-size: 50px;
+      @include breakpoints(mid-small) {
+        font-size: 80px;
+      }
+    }
 
     &__position-icon {
       display: inline-block;
@@ -165,12 +171,12 @@
     &__avatar { // placed on the actual image
       border-radius: 2px;
       max-width: 50px;
-      .icon-lg {
-        font-size: 3rem;
-      }
       &.img-square {
         width: 50px;
       }
+    }
+    .icon-lg { // temp - for placeholder icons
+      font-size: 50px;
     }
 
     &__media-object-content { // positioning for media-object pattern

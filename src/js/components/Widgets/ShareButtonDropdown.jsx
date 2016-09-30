@@ -63,9 +63,11 @@ export default class ShareButtonDropdown extends Component {
     const onClick = this.state.open ? this.closeDropdown.bind(this) : this.openDropdown.bind(this);
     const onCopyLinkClick = this.state.showCopyLinkModal ? this.closeCopyLinkModal.bind(this) : this.openCopyLinkModal.bind(this);
     // const onButtonBlur = ;
-    return <div>
-      <div className="btn-group open item-actionbar__btn-set">
-        <button onBlur={this.onButtonBlur.bind(this)} onClick={onClick} className="dropdown item-actionbar__btn btn btn-default">
+    const dropdownClass = this.state.open ? " open" : "";
+
+    return <div className="item-actionbar__btn-set">
+      <div className={"btn-group" + dropdownClass}>
+        <button onBlur={this.onButtonBlur.bind(this)} onClick={onClick} className="dropdown-toggle item-actionbar__btn btn btn-default">
           {shareIcon} {shareText} <span className="caret"></span>
         </button>
         {this.state.open ?

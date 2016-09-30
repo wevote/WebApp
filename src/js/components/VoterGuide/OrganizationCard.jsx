@@ -42,30 +42,24 @@ export default class OrganizationCard extends Component {
           <p className="card-main__description">{twitterDescriptionMinusName}</p> :
           <p className="card-main__description" />
         }
-        { organization_twitter_handle ?
-          <span>@{organization_twitter_handle}&nbsp;&nbsp;</span> :
-          null
-        }
-        {twitter_followers_count ?
-          <span className="twitter-followers__badge">
-            <span className="fa fa-twitter twitter-followers__icon" />
-            {numberWithCommas(twitter_followers_count)}
-          </span> :
-          null
-        }
-        &nbsp;&nbsp;
-        { organization_website ?
-          <span><a href={organization_website} target="_blank">Website</a><br /></span> :
-          null }
-        {/*5 of your friends follow Organization Name<br />*/}
-        {/*
-        <strong>2016 General Election, November 2nd</strong>
-        <br />
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur posuere vulputate massa ut efficitur.
-        Phasellus rhoncus hendrerit ultricies. Fusce hendrerit vel elit et euismod. Etiam bibendum ultricies
-        viverra. Integer ut bibendum ex. Suspendisse eleifend mi accumsan, euismod enim at, malesuada nibh.
-        Duis a eros fringilla, dictum leo vitae, vulputate mi. Nunc vitae neque nec erat fermentum... (more)<br />
-          <AskOrShareAction link_text={"Share Organization"} />*/}
+        <div>
+          { organization_twitter_handle ?
+            <span>@{organization_twitter_handle}&nbsp;&nbsp;</span> :
+            null
+          }
+          {twitter_followers_count ?
+            <span className="twitter-followers__badge">
+              <span className="fa fa-twitter twitter-followers__icon" />
+              {numberWithCommas(twitter_followers_count)}
+            </span> :
+            null
+          }
+          &nbsp;&nbsp;
+          { organization_website ?
+            <span><a href={organization_website} target="_blank">Website <i className="fa fa-external-link"></i></a></span> :
+            null }
+          {/*5 of your friends follow Organization Name<br />*/}
+        </div>
       </div>
     </div>;
   }

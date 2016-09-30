@@ -37,9 +37,9 @@ export default class PositionItem extends Component {
 
     let image_placeholder = "";
     if (position.speaker_type === "O") {
-        image_placeholder = <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color card-child__avatar" />;
+        image_placeholder = <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color" />;
     } else if (position.speaker_type === "V") {
-        image_placeholder = <i className="icon-org-lg icon-icon-person-placeholder-6-1 icon-org-resting-color card-child__avatar" />;
+        image_placeholder = <i className="icon-org-lg icon-icon-person-placeholder-6-1 icon-org-resting-color" />;
     }
 
     let position_description = "";
