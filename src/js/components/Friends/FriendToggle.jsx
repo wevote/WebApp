@@ -59,7 +59,7 @@ export default class FriendToggle extends Component {
       {is_friend ?
         <Button bsStyle="info"
                 bsSize="small"
-                className="btn-action utils-margin_bottom5"
+                className="btn-action"
                 onClick={unFriend}
                 data-hover="Unfriend">
                 <span>Remove Friend</span>

@@ -19,14 +19,14 @@ export default class ImageHandler extends Component {
   }
 
   render () {
-    let this_class = this.props.className || "utils-img-contain";
+    let this_class = this.props.className || null;
     let alt = this.props.alt || "icon";
     let replacementClass = "";
     let sizeClassName = this.props.sizeClassName || "";
     if (this.props.kind_of_ballot_item === "CANDIDATE") {
-      replacementClass = "icon-main icon-icon-person-placeholder-6-1 card-child__avatar";
+      replacementClass = "icon-main icon-icon-person-placeholder-6-1";
     } else {
-      replacementClass = "icon-main icon-icon-org-placeholder-6-2 card-child__avatar";
+      replacementClass = "icon-main icon-icon-org-placeholder-6-2";
     }
 
     const image = this.state.error || this.props.imageUrl === "" ?

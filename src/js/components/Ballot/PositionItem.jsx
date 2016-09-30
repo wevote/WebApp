@@ -37,9 +37,9 @@ export default class PositionItem extends Component {
 
     let image_placeholder = "";
     if (position.speaker_type === "O") {
-        image_placeholder = <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color card-child__avatar" />;
+        image_placeholder = <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color" />;
     } else if (position.speaker_type === "V") {
-        image_placeholder = <i className="icon-org-lg icon-icon-person-placeholder-6-1 icon-org-resting-color card-child__avatar" />;
+        image_placeholder = <i className="icon-org-lg icon-icon-person-placeholder-6-1 icon-org-resting-color" />;
     }
 
     let position_description = "";
@@ -97,16 +97,18 @@ export default class PositionItem extends Component {
         </div>
         <div className="card-child__media-object-content">
           <div className="card-child__content">
-            <h4 className="card-child__display-name">
-              <Link to={speakerLink}>
-                { position.speaker_display_name }
-              </Link>
-            </h4>
+          <div className="flex">
+              <h4 className="card-child__display-name">
+                <Link to={speakerLink}>
+                  { position.speaker_display_name }
+                </Link>
+              </h4>
+              <FriendsOnlyIndicator isFriendsOnly={!position.is_public_position} />
+            </div>
             {/* edit_mode ?
               edit_position_description :
               position_description */}
               {position_description}
-            <FriendsOnlyIndicator isFriendsOnly={!position.is_public_position} />
           </div>
         </div>
       </li>;

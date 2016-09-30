@@ -52,7 +52,7 @@ export default class Friends extends Component {
     const { current_friend_list } = this.state;
 
     return <div className="opinion-view">
-      <h1>Build Your Network</h1>
+      <h1 className="h1">Build Your Network</h1>
       <FollowingFilter following_type={this.getFollowingType()} />
       <div>
         <p>

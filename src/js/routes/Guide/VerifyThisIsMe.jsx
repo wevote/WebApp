@@ -114,9 +114,9 @@ export default class VerifyThisIsMe extends Component {
         </section>
         <div>
           <br />
-          <h1>Please verify that you have the right to manage statements by this politician
+          <h1 className="h1">Please verify that you have the right to manage statements by this politician
             by signing into this Twitter account:</h1>
-          <h2>@{this.props.params.twitter_handle}</h2>
+          <h2 className="h2">@{this.props.params.twitter_handle}</h2>
           <br />
         </div>
         { signed_in_twitter ?
@@ -144,8 +144,8 @@ export default class VerifyThisIsMe extends Component {
           </div>
           <div>
             <br />
-            <h1>Please verify that you work for this organization by signing into this Twitter account:</h1>
-            <h2>@{this.props.params.twitter_handle}</h2>
+            <h1 className="h1">Please verify that you work for this organization by signing into this Twitter account:</h1>
+            <h2 className="h2">@{this.props.params.twitter_handle}</h2>
             <br />
           </div>
           { signed_in_twitter ?
@@ -161,8 +161,8 @@ export default class VerifyThisIsMe extends Component {
         <TwitterAccountCard {...this.state}/>
         <div>
           <br />
-          <h1>Please verify that this is you by signing into this Twitter account:</h1>
-          <h2>@{this.props.params.twitter_handle}</h2>
+          <h1 className="h1">Please verify that this is you by signing into this Twitter account:</h1>
+          <h2 className="h2">@{this.props.params.twitter_handle}</h2>
           <br />
         </div>
         { signed_in_twitter ?
@@ -174,7 +174,7 @@ export default class VerifyThisIsMe extends Component {
       </div>;
     } else {
       return <div className="container-fluid well u-gutter__top--small fluff-full1">
-              <h3>Could Not Confirm</h3>
+              <h3 className="h3">Could Not Confirm</h3>
                 <div className="small">We were not able to find an account for this
                   Twitter Handle{ this.props.params.twitter_handle ?
                   <span> "{this.props.params.twitter_handle}"</span> :

@@ -13,97 +13,98 @@ export default class About extends Component {
 
   render () {
     return <div>
-        <div className="container-fluid well u-gutter__top--small fluff-full1">
-          <h3 className="text-center">About We Vote</h3>
+        <div className="container-fluid card">
+          <h1 className="h1">About We Vote</h1>
           <p>
             We Vote USA is nonprofit and nonpartisan. For more information, please
             visit <a href="http://www.WeVoteUSA.org" target="_blank">www.WeVoteUSA.org</a>.
             This is a demonstration version and has not been launched to the general public yet.
           </p>
 
-          <h3 className="text-center">Acknowledgements</h3>
+          <h2 className="h2">Acknowledgements</h2>
 
-          <p><strong>We are grateful for these organizations that are critical to our work.</strong><br />
-              Ballotpedia - Data<br />
-              Center for Technology and Civic Life - Data<br />
-              Change.org - Data<br />
-              CivicMakers - Event Collaborations<br />
-              Code for San Francisco &amp; Code for America - Our Home for Volunteer Work<br />
-              DLA Piper - Legal<br />
-              Facebook - Authentication &amp; Data<br />
-              Google Civic - Data<br />
-              League of Women Voters - Data<br />
-              MapLight - Data<br />
-              Microsoft - For supporting Code for San Francisco<br />
-              Sunlight Foundation - Data<br />
-              TurboVote, Democracy Works - Data<br />
-              Twitter - Authentication &amp; Data<br />
-              Vote Smart - Data<br />
-              Voting Information Project, Pew Charitable Trusts - Data<br />
-              We Vote Education - Data<br />
-              Wikipedia - Data
-          </p>
-          <p>
-            <strong>Thank you to our Board of Directors.</strong><br />
-            We Vote USA: coming soon<br />
+          <h3 className="h4">We are grateful for these organizations that are critical to our work.</h3>
+          <ul>
+              <li><strong>Ballotpedia</strong> - Data</li>
+              <li><strong>Center for Technology and Civic Life</strong> - Data</li>
+              <li><strong>Change.org</strong> - Data</li>
+              <li><strong>CivicMakers</strong> - Event Collaborations</li>
+              <li><strong>Code for San Francisco &amp; Code for America</strong> - Our Home for Volunteer Work</li>
+              <li><strong>DLA Piper</strong> - Legal</li>
+              <li><strong>Facebook</strong> - Authentication &amp; Data</li>
+              <li><strong>Google Civic</strong> - Data</li>
+              <li><strong>League of Women Voters</strong> - Data</li>
+              <li><strong>MapLight</strong> - Data</li>
+              <li><strong>Microsoft</strong> - For supporting Code for San Francisco</li>
+              <li><strong>Sunlight Foundation</strong> - Data</li>
+              <li><strong>TurboVote, Democracy Works</strong> - Data</li>
+              <li><strong>Twitter</strong> - Authentication &amp; Data</li>
+              <li><strong>Vote Smart</strong> - Data</li>
+              <li><strong>Voting Information Project, Pew Charitable Trusts</strong> - Data</li>
+              <li><strong>We Vote Education</strong> - Data</li>
+              <li><strong>Wikipedia</strong> - Data</li>
+          </ul>
+
+          <h3 className="h4">Thank you to our Board of Directors.</h3>
+          <p> <em>We Vote USA: coming soon</em><br />
             We Vote Education: Jenifer Fernandez Ancona, Debra Cleaver, Dale McGrew, Anat Shenker-Osorio,
             William Winters (coming soon: Tiana Epps-Johnson and Lawrence Grodeska)<br />
           </p>
-          <p>
-              <strong>Special thanks to our team of volunteers.</strong><br />
-            You are the best!
-              (This is a list of volunteers who have contributed 10 or more hours, in rough order of hours contributed.)<br />
-              Dale McGrew - Oakland, CA<br />
-              Jenifer Fernandez Ancona - Oakland, CA<br />
-              Rob Simpson - Warrenton, VA<br />
-              Lisa Cho - San Francisco, CA<br />
-              Nicolas Fiorini - Arlington, VA<br />
-              Jeff French - Oakland, CA<br />
-              Colette Phair - Oakland, CA<br />
-              Zach Monteith - San Francisco, CA<br />
-              Jennifer Holmes - Pacifica, CA<br />
-              Joe Evans - Santa Cruz, CA<br />
-              Adam Barry - San Francisco, CA<br />
-              Mary O'Connor - Sebastopol, CA<br />
-              Harsha Dronamraju - San Francisco, CA<br />
-              Nitin Garg - San Francisco, CA<br />
-              Niko Barry - Berkeley, CA<br />
-              Marissa Luna - Lansing, MI<br />
-              Aaron Borden - San Francisco, CA<br />
-              Judy Johnson - Oakland, CA<br />
-              Robin Braverman - Walnut Creek, CA<br />
-              Mike McConnell - San Francisco, CA<br />
-              Dan Ancona - Oakland, CA<br />
-              Zak Zaidman - Ojai, CA<br />
-              Debra Cleaver - San Francisco, CA<br />
-              William Winters - Oakland, CA<br />
-              Andrea Moed - San Francisco, CA<br />
-              Anat Shenker-Osorio - Oakland, CA<br />
-              Kad Smith - Berkeley, CA<br />
-              Courtney Gonzales - Benicia, CA<br />
-              Jenna Haywood - Berkeley, CA<br />
-              Tom Furlong - Menlo Park, CA<br />
-              Jayadev Akkiraju - Santa Clara, CA<br />
-              Raphael Merx - San Francisco, CA<br />
-              Susan Clark - Oakland, CA<br />
-              Kim Anderson - San Francisco, CA<br />
-              Jesse Aldridge - San Francisco, CA<br />
-              Josh Levinger - Oakland, CA<br />
-              Leslie Castellanos - San Francisco, CA<br />
-              Miguel Elasmar - Sarasota, FL<br />
-              Nicole Shanahan - Palo Alto, CA<br />
-              Steve Whetstone - San Francisco, CA<br />
-              Brian Bordley - Berkeley, CA<br />
-              Marcus Busby - San Francisco, CA<br />
-              lulu - New York, NY<br />
-              Chris Griffith - Santa Cruz, CA<br />
-              Nathan Stankowski - San Rafael, CA<br />
-              Sean McMahon - Redwood City, CA<br />
-              Scott Wasserman - Philadelphia, PA<br />
-              Adrienne Yang - Oakland, CA<br />
-              Mark Rosenthal - Oakland, CA<br />
+          <h3 className="h4">Special thanks to our team of volunteers.</h3>
+          <p>You are the best! <br />
+            (This is a list of volunteers who have contributed 10 or more hours, in rough order of hours contributed.)<br />
           </p>
-
+          <ul>
+            <li>Dale McGrew - Oakland, CA</li>
+            <li>Jenifer Fernandez Ancona - Oakland, CA</li>
+            <li>Rob Simpson - Warrenton, VA</li>
+            <li>Lisa Cho - San Francisco, CA</li>
+            <li>Nicolas Fiorini - Arlington, VA</li>
+            <li>Jeff French - Oakland, CA</li>
+            <li>Colette Phair - Oakland, CA</li>
+            <li>Zach Monteith - San Francisco, CA</li>
+            <li>Jennifer Holmes - Pacifica, CA</li>
+            <li>Joe Evans - Santa Cruz, CA</li>
+            <li>Adam Barry - San Francisco, CA</li>
+            <li>Mary O'Connor - Sebastopol, CA</li>
+            <li>Harsha Dronamraju - San Francisco, CA</li>
+            <li>Nitin Garg - San Francisco, CA</li>
+            <li>Niko Barry - Berkeley, CA</li>
+            <li>Marissa Luna - Lansing, MI</li>
+            <li>Aaron Borden - San Francisco, CA</li>
+            <li>Judy Johnson - Oakland, CA</li>
+            <li>Robin Braverman - Walnut Creek, CA</li>
+            <li>Mike McConnell - San Francisco, CA</li>
+            <li>Dan Ancona - Oakland, CA</li>
+            <li>Zak Zaidman - Ojai, CA</li>
+            <li>Debra Cleaver - San Francisco, CA</li>
+            <li>William Winters - Oakland, CA</li>
+            <li>Andrea Moed - San Francisco, CA</li>
+            <li>Anat Shenker-Osorio - Oakland, CA</li>
+            <li>Kad Smith - Berkeley, CA</li>
+            <li>Courtney Gonzales - Benicia, CA</li>
+            <li>Jenna Haywood - Berkeley, CA</li>
+            <li>Tom Furlong - Menlo Park, CA</li>
+            <li>Jayadev Akkiraju - Santa Clara, CA</li>
+            <li>Raphael Merx - San Francisco, CA</li>
+            <li>Susan Clark - Oakland, CA</li>
+            <li>Kim Anderson - San Francisco, CA</li>
+            <li>Jesse Aldridge - San Francisco, CA</li>
+            <li>Josh Levinger - Oakland, CA</li>
+            <li>Leslie Castellanos - San Francisco, CA</li>
+            <li>Miguel Elasmar - Sarasota, FL</li>
+            <li>Nicole Shanahan - Palo Alto, CA</li>
+            <li>Steve Whetstone - San Francisco, CA</li>
+            <li>Brian Bordley - Berkeley, CA</li>
+            <li>Marcus Busby - San Francisco, CA</li>
+            <li>lulu - New York, NY</li>
+            <li>Chris Griffith - Santa Cruz, CA</li>
+            <li>Nathan Stankowski - San Rafael, CA</li>
+            <li>Sean McMahon - Redwood City, CA</li>
+            <li>Scott Wasserman - Philadelphia, PA</li>
+            <li>Adrienne Yang - Oakland, CA</li>
+            <li>Mark Rosenthal - Oakland, CA</li>
+          </ul>
         </div>
       </div>;
   }

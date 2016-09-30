@@ -42,7 +42,7 @@ export default class Bookmarks extends Component {
     return <div className="ballot">
       <div className="ballot__heading">
         <OverlayTrigger placement="top" overlay={electionTooltip} >
-          <h1 className="ballot__election-name">{election_name}</h1>
+          <h1 className="h1 ballot__election-name">{election_name}</h1>
         </OverlayTrigger>
         <p className="ballot__date_location">
           {voter_address}

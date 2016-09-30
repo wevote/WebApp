@@ -1,7 +1,7 @@
 
 $loader-duration: 1.4s;
 $loader-delay-increment: -120ms;
-$loader-size: 1.2rem;
+$loader-size: .8rem;
 
 .u-loading-spinner {
   margin: 0 auto ($loader-size * 2) auto;
@@ -23,7 +23,7 @@ $loader-size: 1.2rem;
     animation-timing-function: cubic-bezier(.5,0,.5,1);
     animation-iteration-count: infinite;
     animation-fill-mode: both;
-    color: rgba($dark-gray, .7);
+    color: rgba($gray-dark, .7);
   }
   &--light {
     &,

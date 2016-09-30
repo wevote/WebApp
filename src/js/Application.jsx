@@ -88,7 +88,7 @@ export default class Application extends Component {
     if (voter === undefined || location === undefined ) {
       return <div style={loadingScreenStyles}>
                 <div>
-                  <h1>We Vote</h1>
+                  <h1 className="h1">We Vote</h1>
                   <div className="u-loading-spinner u-loading-spinner--light">Loading...</div>
                 </div>
               </div>;

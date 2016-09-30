@@ -46,13 +46,13 @@ export default class PositionSupportOpposeSnippet extends Component {
     // const onViewSourceClick = this.state.showViewSourceModal ? this.closeViewSourceModal.bind(this) : this.openViewSourceModal.bind(this);
 
     if (this.props.is_support){
-      stance_icon_src = "/img/global/icons/thumbs-up-color-icon.svg";
+      stance_icon_src = "/img/global/svg-icons/thumbs-up-color-icon.svg";
       className = "explicit-position__icon";
       alt = "Supports";
       positionLabel = is_looking_at_self ? "You Support" : "Supports";
       isSupportedBy = is_looking_at_self ? "is Supported by You" : "is Supported by";
     } else if (this.props.is_oppose) {
-      stance_icon_src = "/img/global/icons/thumbs-down-color-icon.svg";
+      stance_icon_src = "/img/global/svg-icons/thumbs-down-color-icon.svg";
       className = "explicit-position__icon";
       alt = "Opposes";
       positionLabel = is_looking_at_self ? "You Oppose" : "Opposes";
@@ -78,7 +78,7 @@ export default class PositionSupportOpposeSnippet extends Component {
     }
 
     return <div className="explicit-position">
-      { stance_display_off ? null : <img src={stance_icon_src} width="20" height="20" className={className} alt={alt} /> }
+      { stance_display_off ? null : <img src={stance_icon_src} width="24" height="24" className={className} alt={alt} /> }
       <div className="explicit-position__text">
         { stance_display_off ?
           null :
@@ -103,9 +103,8 @@ export default class PositionSupportOpposeSnippet extends Component {
               <div className="view-source">
                 {/* default: open in new tab*/}
                 <a href={more_info_url}
-                   target="_blank"
-                   className="explicit-position__source">
-                  view source <i className="fa fa-external-link-square" aria-hidden="true"></i>
+                   target="_blank">
+                  (view source <i className="fa fa-external-link" aria-hidden="true"></i>)
                 </a>
                 {/* link for mobile browser: open in bootstrap modal */}
                 {/*

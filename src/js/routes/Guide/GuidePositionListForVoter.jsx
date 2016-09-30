@@ -40,7 +40,7 @@ export default class GuidePositionListForVoter extends Component {
                 { position_list_for_all_except_one_election.length ?
                   <span>
                     <br />
-                    <h4>Positions for Other Elections</h4>
+                    <h4 className="h4">Positions for Other Elections</h4>
                   </span> :
                   null
                 }

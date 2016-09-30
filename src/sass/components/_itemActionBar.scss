@@ -5,25 +5,13 @@
 .candidate-card-position-public-toggle {
   flex-grow: 10; // arbitrary value large enough to fill space
   text-align: right;
-
 }
 
 .item-actionbar {
   display: flex;
-  border-top: 1px solid $lighter-gray;
+  border-top: 1px solid $gray-lighter;
   margin: 1em 0;
   padding-top: 10px;
-
-  &__btn-set {
-    margin-right: 8px;
-  }
-
-  &__btn {
-    // currently uses Bootstrap .btn styling
-    &--position-selected {
-      color: $selected-color;
-    }
-  }
 
   &__position-btn-label {
     @include breakpoints (max mid-small) {
@@ -34,10 +22,6 @@
   &__btn-public {
     // currently uses Bootstrap .bs-btn styling
     margin-right: 8px;
-
-    &--position-selected {
-      color: $selected-color;
-    }
   }
 
 }

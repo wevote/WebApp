@@ -11,7 +11,7 @@
 
 .explicit-position__text {
   padding-top: .2em;
-  color: $dark-gray;
+  color: $gray-dark;
 }
 
 .explicit-position__position-label {
@@ -19,7 +19,7 @@
 }
 
 .explicit-position__source {
-  color: $mid-gray;
+  color: $gray-mid;
 }
 
 // Position Ratings
@@ -28,17 +28,13 @@
 
 .position-rating {
 
-  &__icon {
-    margin-top: 2px;
-  }
-
   &__percentage {
     font-family: $heading-font-stack;
     font-size: 18px;
   }
 
   &__source {
-    color: $mid-gray;
+    color: $gray-mid;
   }
 
   &__candidate-name {

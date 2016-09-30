@@ -22,7 +22,7 @@
 
   &-main { // primary subject of card
     position: relative;
-    padding: 15px 15px 10px;
+    padding: 15px $item-padding 10px;
     font-size: 14px; // remove once global defaults are set
 
     &__content {
@@ -52,11 +52,17 @@
         border-radius: 10em;
       }
     }
+    .icon-lg { // temp - for placeholder icons
+      font-size: 50px;
+      @include breakpoints(mid-small) {
+        font-size: 80px;
+      }
+    }
 
     &__position-icon {
       display: inline-block;
       margin-right: 5px;
-      vertical-align: baseline;
+      vertical-align: text-bottom;
     }
 
     &__display-name {
@@ -65,13 +71,14 @@
       font-size: 18px;
       margin-right: 24px; // space for bookmark button
       margin-bottom: .5rem;
+      vertical-align: middle;
       @include breakpoints(mid-small) {
         font-size: 24px;
       }
     }
 
     &__description {
-      color: $dark-gray;
+      color: $gray-dark;
     }
 
     &__description-container {
@@ -137,21 +144,21 @@
 
   .card-child {
     position: relative;
-    padding: 15px 15px 7px 15px;
+    padding: $item-padding;
     margin-top: -1px;
-    background-color: $pale-gray;
-    border-top: 1px solid $lighter-gray;
-    border-bottom: 1px solid $lighter-gray;
+    background-color: $gray-pale;
+    border-top: 1px solid $gray-lighter;
+    border-bottom: 1px solid $gray-lighter;
     @include breakpoints(max mid-small){
-      margin-left: -15px;
-      margin-right: -15px;
+      margin-left: -$item-padding;
+      margin-right: -$item-padding;
     }
 
     &__list-group {
       padding: 0;
       margin: 0;
       @include breakpoints(max mid-small){
-        padding: 0 15px;
+        padding: 0 $item-padding;
       }
       .card__additional-heading {
         @include breakpoints(max mid-small){
@@ -168,6 +175,9 @@
         width: 50px;
       }
     }
+    .icon-lg { // temp - for placeholder icons
+      font-size: 50px;
+    }
 
     &__media-object-content { // positioning for media-object pattern
       display: flex;
@@ -178,9 +188,15 @@
       }
     }
 
+    &__content {
+      flex: auto;
+    }
+
     &__display-name {
+      font-family: $heading-font-stack;
       font-size: 18px;
       margin-bottom: .2em;
+      flex: auto;
     }
 
     &__follow-buttons {
@@ -218,17 +234,18 @@
     }
 
     .star-action {
-      top: 15px;
-      right: 10px;
+      order: 4;
+      position: relative;
+      // top: 15px;
+      // right: 10px;
     }
 
     .public-friends-indicator {
-      color: $mid-gray;
+      color: $gray-mid;
       display: inline-block;
-      font-size: 1.2rem;
-      position: absolute;
-      right: 40px;
-      top: 17px;
+      // right: 40px;
+      top: 16px;
+      height: 18px;
     }
   } // end .card-child
 
@@ -236,7 +253,7 @@
 
   &__additional {
     @include micro-clearfix;
-    border-top: 5px solid $lighter-gray;
+    border-top: 5px solid $gray-lighter;
   }
 
   &__additional-heading {

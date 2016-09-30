@@ -19,33 +19,14 @@ $code-font-stack: 'Courier New', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono',
 
 /// Colors
 
-/// Pale gray
-/// @type Color
-$pale-gray: #f8f8f8 !default;
-
-/// Lighter gray
-/// @type Color
-$lighter-gray: #eee !default;
-
-/// Border gray
-/// @type Color
-$border-gray: #ddd !default;
-
-/// Light gray
-/// @type Color
-$light-gray: #ccc !default;
-
-/// Medium gray
-/// @type Color
-$mid-gray: #999 !default;
-
-/// Dark gray
-/// @type Color
-$dark-gray: #555 !default;
-
-/// Darker gray
-/// @type Color
-$darker-gray: #333 !default;
+// Grays
+$gray-pale:    #f8f8f8 !default;
+$gray-lighter: #eee !default;
+$gray-border:  #ddd !default;
+$gray-light:   #ccc !default;
+$gray-mid:     #999 !default;
+$gray-dark:    #555 !default;
+$gray-darker:  #333 !default;
 
 
 /// Main brand color
@@ -54,7 +35,7 @@ $brand-color: #4F5F6F !default;
 
 /// Link color
 /// @type Color
-$link-color: #337ab7 !default; // mirrors Bootstrap default - TODO: set custom value globally
+$link-color: #00749E !default; // mirrors Bootstrap variable - TODO: set single value globally
 
 
 /// Popover Link Color
@@ -63,7 +44,7 @@ $popover-link-color: #549bb6 !default;
 
 /// Copy text color
 /// @type Color
-$text-color: $darker-gray !default;
+$text-color: $gray-darker !default;
 
 /// Selected text color
 /// @type Color

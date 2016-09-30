@@ -123,7 +123,7 @@ export default class TwitterSignInProcess extends Component {
         </div>;
     } else {
       return <div className="container-fluid well u-gutter__top--small fluff-full1">
-              <h3>Page Not Found</h3>
+              <h3 className="h3">Page Not Found</h3>
                 <div className="small">We were not able to find that page. Please try again!</div>
             </div>;
     }

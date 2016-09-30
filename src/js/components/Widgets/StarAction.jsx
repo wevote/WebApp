@@ -41,7 +41,7 @@ export default class StarAction extends Component {
     if (this.state.is_starred === undefined){
       return <span className="star-action"></span>;
     }
-    return <span className="star-action"
+    return <span className="star-action ml1"
               onClick={this.starClick.bind(this)}
               title="Bookmark for later">
               <img src={this.state.is_starred ? "/img/global/icons/bookmark-icon-filled.svg" : "/img/global/icons/bookmark-icon-empty.svg" }className="star-action-btn" width="24" height="24" />

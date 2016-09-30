@@ -112,7 +112,7 @@ export default class NotFound extends Component {
       return <UnknownTwitterAccount {...this.state} />;
     } else {
       return <div className="container-fluid well u-gutter__top--small fluff-full1">
-              <h3>Claim Your Page</h3>
+              <h3 className="h3">Claim Your Page</h3>
                 <div className="medium">
                   We were not able to find an account for this
                   Twitter Handle{ this.props.params.twitter_handle ?
