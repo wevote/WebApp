@@ -26,7 +26,7 @@ import Measure from "./routes/Ballot/Measure";
 import NotFound from "./routes/NotFound";
 import Office from "./routes/Ballot/Office";
 import Opinions from "./routes/Opinions";
-import OpinionsFollowed from "./routes/More/OpinionsFollowed";
+import OpinionsFollowed from "./routes/OpinionsFollowed";
 import Privacy from "./routes/More/Privacy";
 import Requests from "./routes/Requests";
 import Settings from "./routes/Settings/Settings";
@@ -59,6 +59,7 @@ const routes = () =>
 
     {/* Ballot Off-shoot Pages */}
     <Route path="/opinions" component={Opinions} />
+    <Route path="/opinions_followed" component={OpinionsFollowed} />
     <Route path="/friends" >
       <IndexRoute component={Friends} />
       <Route path="add" component={Connect} />
@@ -70,7 +71,6 @@ const routes = () =>
     <Route path="/more/email_ballot" component={EmailBallot} />
     <Route path="/more/about" component={About} />
     <Route path="/more/connect" component={Connect} />
-    <Route path="/more/opinions/followed" component={OpinionsFollowed} />
     <Route path="/more/privacy" component={Privacy} />
 
     {/* Voter Guide Pages */}

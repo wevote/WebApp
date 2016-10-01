@@ -48,6 +48,7 @@ export default class GuideList extends Component {
     }
 
     const orgs = this.state.organizations_to_follow.map( (org) => {
+
       return <OrganizationDisplayForList key={org.organization_we_vote_id} {...org}>
             <FollowToggle we_vote_id={org.organization_we_vote_id} />
             <button className="btn btn-default btn-sm"

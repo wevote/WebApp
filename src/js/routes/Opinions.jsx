@@ -48,7 +48,7 @@ export default class Opinions extends Component {
     switch (this.getCurrentRoute()) {
       case "/opinions":
         return "WHO_YOU_CAN_FOLLOW";
-      case "/more/opinions/followed":
+      case "/opinions_followed":
       default :
         return "WHO_YOU_FOLLOW";
     }

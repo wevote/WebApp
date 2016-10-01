@@ -90,8 +90,9 @@ export default class PositionInformationOnlySnippet extends Component {
               <div className="view-source">
                 {/* default: open in new tab*/}
                 <a href={more_info_url}
-                   target="_blank">
-                  (view source <i className="fa fa-external-link" aria-hidden="true"></i>)
+                   target="_blank"
+                   className="gray-mid">
+                  view source <i className="fa fa-external-link" aria-hidden="true"></i>
                 </a>
                 {/* link for mobile browser: open in bootstrap modal */}
                 {/*<a onClick={onViewSourceClick}>

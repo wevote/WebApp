@@ -1,8 +1,8 @@
 import React, {Component, PropTypes } from "react";
-import FollowingFilter from "../../components/Navigation/FollowingFilter";
-import GuideStore from "../../stores/GuideStore";
-import GuideActions from "../../actions/GuideActions";
-import VoterGuideItem from "../../components/VoterGuide/VoterGuideItem";
+import FollowingFilter from "../components/Navigation/FollowingFilter";
+import GuideStore from "../stores/GuideStore";
+import GuideActions from "../actions/GuideActions";
+import OpinionsFollowedList from "../components/VoterGuide/OpinionsFollowedList";
 
 /* VISUAL DESIGN HERE: https://invis.io/8F53FDX9G */
 
@@ -14,7 +14,8 @@ export default class OpinionsFollowed extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {voter_guide_followed_list: GuideStore.followedList()};
+    this.state = {voter_guide_followed_list: GuideStore.followedList(),
+                  editMode: false};
   }
 
   componentDidMount () {
@@ -35,15 +36,19 @@ export default class OpinionsFollowed extends Component {
   }
 
   getCurrentRoute (){
-    var current_route = "/more/opinions/followed";
+    var current_route = "/opinions_followed";
     return current_route;
+  }
+
+  toggleEditMode (){
+    this.setState({editMode: !this.state.editMode});
   }
 
   getFollowingType (){
     switch (this.getCurrentRoute()) {
       case "/opinions":
         return "WHO_YOU_CAN_FOLLOW";
-      case "/more/opinions/followed":
+      case "/opinions_followed":
       default :
         return "WHO_YOU_FOLLOW";
     }
@@ -51,8 +56,9 @@ export default class OpinionsFollowed extends Component {
 
   render () {
     return <div className="opinions-followed__container">
-      <h1 className="h1">Your Network</h1>
+      <h1 className="h1">Build Your Network</h1>
       <FollowingFilter following_type={this.getFollowingType()} />
+      <a className="fa-pull-right" onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit"}</a>
         <p>
           Organizations, public figures and other voters you currently follow. <em>We will never sell your email</em>.
         </p>
@@ -60,9 +66,10 @@ export default class OpinionsFollowed extends Component {
         <div className="card-child__list-group">
           {
             this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length ?
-            this.state.voter_guide_followed_list.map( item =>
-              <VoterGuideItem key={item.we_vote_id} {...item} />
-            ) : null
+            <OpinionsFollowedList organizationsFollowed={this.state.voter_guide_followed_list}
+                                  editMode={this.state.editMode}
+                                  instantRefreshOn /> :
+              null
           }
         </div>
       </div>

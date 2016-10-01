@@ -55,6 +55,7 @@ render () {
     <Modal.Body>
       <div className="input-group">
         <input id="url-to-copy"
+               readOnly="true"
                value={urlBeingShared}
                className="form-control"
                style={{marginTop: "17px"}}
