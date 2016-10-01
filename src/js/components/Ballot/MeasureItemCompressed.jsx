@@ -55,7 +55,7 @@ export default class MeasureItemCompressed extends Component {
 
     return <div className="card-main measure-card">
       <div className="card-main__content">
-        {/* {
+        {
           supportProps && supportProps.is_support ?
           <img src="/img/global/svg-icons/thumbs-up-color-icon.svg"
                className="card-main__position-icon" width="24" height="24" /> : null
@@ -64,7 +64,7 @@ export default class MeasureItemCompressed extends Component {
           supportProps && supportProps.is_oppose ?
           <img src="/img/global/svg-icons/thumbs-down-color-icon.svg"
                className="card-main__position-icon" width="24" height="24" /> : null
-        } */}
+        }
         <h2 className="card-main__display-name">
           { this.props.link_to_ballot_item_page ?
             <Link to={measureLink}>{ballot_item_display_name}</Link> :
