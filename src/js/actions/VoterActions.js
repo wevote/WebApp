@@ -12,7 +12,7 @@ module.exports = {
   removeVoterEmailAddress: function (email_we_vote_id){
     Dispatcher.loadEndpoint("voterEmailAddressSave", {
       email_we_vote_id: email_we_vote_id,
-      deleted: true
+      delete_email: true
     });
   },
 
@@ -35,13 +35,6 @@ module.exports = {
     });
   },
 
-  voterEmailAddressSave: function (voter_email_address){
-    Dispatcher.loadEndpoint("voterEmailAddressSave", {
-      text_for_email_address: voter_email_address,
-      make_primary_email: true
-    });
-  },
-
   signOut: function (){
     Dispatcher.loadEndpoint("voterSignOut", {sign_out_all_devices: false});
   },
@@ -55,6 +48,13 @@ module.exports = {
       twitter_profile_image_url_https: false
     };
     Dispatcher.loadEndpoint("voterUpdate", attributes );
+  },
+
+  voterEmailAddressSave: function (voter_email_address){
+    Dispatcher.loadEndpoint("voterEmailAddressSave", {
+      text_for_email_address: voter_email_address,
+      make_primary_email: true
+    });
   },
 
   voterRetrieve: function () {

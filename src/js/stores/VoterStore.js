@@ -11,7 +11,8 @@ class VoterStore extends FluxMapStore {
   getInitialState () {
     return {
       voter: {},
-      address: {}
+      address: {},
+      email_address_status: {}
     };
   }
 
@@ -29,6 +30,10 @@ class VoterStore extends FluxMapStore {
 
   getEmailAddressList (){
     return this.getDataFromArr(this.getState().email_address_list) || {};
+  }
+
+  getEmailAddressStatus (){
+    return this.getState().email_address_status;
   }
 
   getTwitterHandle (){
@@ -141,7 +146,13 @@ class VoterStore extends FluxMapStore {
       case "voterEmailAddressSave":
         return {
           ...state,
-          email_address_list: action.res.email_address_list
+          email_address_list: action.res.email_address_list,
+          email_address_status: { 
+            email_address_already_owned_by_other_voter: action.res.email_address_already_owned_by_other_voter,
+            email_address_created: action.res.email_address_created,
+            email_address_deleted: action.res.email_address_deleted,
+            verification_email_sent: action.res.verification_email_sent
+          }
         };
 
       case "voterPhotoSave":
