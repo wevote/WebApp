@@ -61,7 +61,7 @@ export default class Connect extends Component {
 				</span>
 				<p>Find voter guides you can follow. These voter guides have been created by nonprofits, public figures, your friends, and more.<br />
 				<br /></p>
-        <Link to="/more/opinions/followed">See who you are following</Link>
+        <Link to="/opinions_followed">See who you are following</Link>
       </div>
 
 		</div>;
