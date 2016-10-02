@@ -1,8 +1,10 @@
 import Dispatcher from "../dispatcher/Dispatcher";
-import FluxMapStore from "flux/lib/FluxMapStore";
-import VoterActions from "../actions/VoterActions";
 import FacebookActions from "../actions/FacebookActions";
 import FacebookStore from "../stores/FacebookStore";
+import FluxMapStore from "flux/lib/FluxMapStore";
+import FriendActions from "../actions/FriendActions";
+import StarActions from "../actions/StarActions";
+import VoterActions from "../actions/VoterActions";
 const assign = require("object-assign");
 const cookies = require("../utils/cookies");
 
@@ -74,7 +76,18 @@ class VoterStore extends FluxMapStore {
 
   reduce (state, action) {
 
+    let voter_device_id;
     switch (action.type) {
+      case "mergeTwoVoterAccounts":
+        // On the server we just switched linked this voter_device_id to a new voter record, so we want to
+        //  refresh a lot of data
+        voter_device_id = this.voterDeviceId();
+        VoterActions.voterRetrieve(voter_device_id);
+        VoterActions.retrieveEmailAddress();
+        StarActions.voterAllStarsStatusRetrieve();
+        FriendActions.friendInvitationsSentToMe();
+        return state;
+
       case "organizationSave":
         // If an organization saves, we want to check to see if it is tied to this voter. If so,
         // refresh the voter data so we have the value linked_organization_we_vote_id in the voter object.
@@ -140,18 +153,29 @@ class VoterStore extends FluxMapStore {
       case "voterEmailAddressRetrieve":
         return {
           ...state,
-          email_address_list: action.res.email_address_list
+          email_address_list: action.res.email_address_list,
         };
 
       case "voterEmailAddressSave":
         return {
           ...state,
           email_address_list: action.res.email_address_list,
-          email_address_status: { 
+          email_address_status: {
             email_address_already_owned_by_other_voter: action.res.email_address_already_owned_by_other_voter,
             email_address_created: action.res.email_address_created,
             email_address_deleted: action.res.email_address_deleted,
-            verification_email_sent: action.res.verification_email_sent
+            verification_email_sent: action.res.verification_email_sent,
+          }
+        };
+
+      case "voterEmailAddressVerify":
+        return {
+          ...state,
+          email_address_status: {
+            email_ownership_is_verified: action.res.email_ownership_is_verified,
+            email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
+            email_retrieve_attempted: action.res.email_retrieve_attempted,
+            email_address_found: action.res.email_address_found,
           }
         };
 
@@ -162,7 +186,7 @@ class VoterStore extends FluxMapStore {
         };
 
       case "voterRetrieve":
-        let voter_device_id = action.res.voter_device_id;
+        voter_device_id = action.res.voter_device_id;
         this.setVoterDeviceIdCookie(voter_device_id);
         VoterActions.retrieveAddress(voter_device_id);
         const url = action.res.facebook_profile_image_url_https;

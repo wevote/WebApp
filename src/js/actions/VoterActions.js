@@ -1,6 +1,15 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
 module.exports = {
+  mergeTwoVoterAccountsByEmailSecretKey: function (current_voter_device_id, email_secret_key) {
+    // TODO DALE Set up this API Endpoint
+    Dispatcher.loadEndpoint("mergeTwoVoterAccounts",
+      {
+        current_voter_device_id: current_voter_device_id,
+        email_secret_key: email_secret_key
+      });
+  },
+
   positionListForVoter: function (show_only_this_election, show_all_other_elections) {
     Dispatcher.loadEndpoint("positionListForVoter",
       {
@@ -22,6 +31,12 @@ module.exports = {
 
   retrieveEmailAddress: function (){
     Dispatcher.loadEndpoint("voterEmailAddressRetrieve", {});
+  },
+
+  retrieveEmailAddressBySecretKey: function (email_secret_key){
+    Dispatcher.loadEndpoint("voterEmailAddressRetrieve", {
+      email_secret_key: email_secret_key
+    });
   },
 
   saveAddress: function (text){
@@ -54,6 +69,12 @@ module.exports = {
     Dispatcher.loadEndpoint("voterEmailAddressSave", {
       text_for_email_address: voter_email_address,
       make_primary_email: true
+    });
+  },
+
+  voterEmailAddressVerify: function (email_secret_key){
+    Dispatcher.loadEndpoint("voterEmailAddressVerify", {
+      email_secret_key: email_secret_key
     });
   },
 

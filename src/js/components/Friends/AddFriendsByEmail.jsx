@@ -191,7 +191,6 @@ export default class AddFriendsByEmail extends Component {
       {this.state.on_enter_email_addresses_step ?
         <div>
           <form onSubmit={this.AddFriendsByEmailStepsManager.bind(this)}>
-            STILL A WORK IN PROGRESS - FOR TESTING ONLY
             <Input type="text" addonBefore="@" name="email_address"
                    className="form-control"
                    onChange={this.cacheEmailAddresses.bind(this)}
