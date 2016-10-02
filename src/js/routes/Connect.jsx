@@ -34,10 +34,10 @@ export default class Connect extends Component {
 		};
     let add_friends_header;
     let add_friends_html;
-    if (this.state.add_friends_type == "ADD_FRIENDS_BY_TWITTER") {
+    if (this.state.add_friends_type === "ADD_FRIENDS_BY_TWITTER") {
       add_friends_header = "Add Friends By Twitter Handle";
       add_friends_html = <AddFriendsByTwitter />;
-    } else if (this.state.add_friends_type == "ADD_FRIENDS_BY_FACEBOOK") {
+    } else if (this.state.add_friends_type === "ADD_FRIENDS_BY_FACEBOOK") {
       add_friends_header = "Add Friends From Facebook";
       add_friends_html = <AddFriendsByFacebook />;
     } else {
@@ -52,6 +52,8 @@ export default class Connect extends Component {
                                                           changeAddFriendsTypeFunction={this.changeAddFriendsType.bind(this)} /></div>
         {add_friends_html}
         <Link to="/friends">See current friends</Link>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <Link to="/requests">See other invitations</Link>
       </div>
 
 			<div className="container-fluid well u-gutter__top--small fluff-full1">

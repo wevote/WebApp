@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import { Alert, Button } from "react-bootstrap";
+import { browserHistory } from "react-router";
 import LoadingWheel from "../components/LoadingWheel";
 import VoterActions from "../actions/VoterActions";
 import VoterStore from "../stores/VoterStore";
 
-export default class VoterEmailAddressEntry extends Component {
+export default class WouldYouLikeToMergeAccounts extends Component {
   static propTypes = {
   };
 
@@ -109,7 +110,7 @@ export default class VoterEmailAddressEntry extends Component {
 
     var email_status_description;
     const email_list_html = this.state.voter_email_address_list.map( (voter_email_address) => {
-      email_status_description = voter_email_address.email_ownership_is_verified ? "Email Verified" : "Email Not Verified";
+      email_status_description = (voter_email_address.email_ownership_is_verified) ? "Email Verified" : "Email Not Verified";
       return <div key={voter_email_address.email_we_vote_id}
                   className="position-item card-child card-child--not-followed">
         <div className="card-child__media-object-content">

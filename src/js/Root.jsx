@@ -33,6 +33,8 @@ import Settings from "./routes/Settings/Settings";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
 import SignIn from "./routes/More/SignIn";
 import TwitterSignInProcess from "./routes/Process/TwitterSignInProcess";
+import VerifyEmailProcess from "./routes/Process/VerifyEmailProcess";
+import VerifyFriendRequestProcess from "./routes/Process/VerifyFriendRequestProcess";
 import VerifyThisIsMe from "./routes/Guide/VerifyThisIsMe";
 import YourPage from "./routes/YourPage";
 
@@ -89,11 +91,15 @@ const routes = () =>
     <Route path="ballot/empty" component={EmptyBallot} />
 
     <Route path="requests" component={Requests} />
+    <Route path="requests/:invitation_secret_key" component={VerifyFriendRequestProcess} />
+    <Route path="requests/:invitation_secret_key/ignore" component={VerifyFriendRequestProcess} />
 
     <Route path="activity" component={Activity} />
 
     <Route path="/twittersigninprocess/:sign_in_step/:incoming_twitter_handle" component={TwitterSignInProcess} />
     <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />
+
+    <Route path="/verify_email/:email_secret_key" component={VerifyEmailProcess} />
 
     {/* Confirming that person owns twitter handle */}
     <Route path="/verifythisisme/:twitter_handle" component={VerifyThisIsMe} />
