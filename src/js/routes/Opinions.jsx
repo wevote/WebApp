@@ -1,6 +1,7 @@
 import { Button } from "react-bootstrap";
 import FollowingFilter from "../components/Navigation/FollowingFilter";
 import GuideStore from "../stores/GuideStore";
+import Helmet from "react-helmet";
 import SearchGuidesToFollowBox from "../components/SearchGuidesToFollowBox";
 import VoterStore from "../stores/VoterStore";
 import GuideList from "../components/VoterGuide/GuideList";
@@ -88,6 +89,7 @@ export default class Opinions extends Component {
       }
 
     return <div className="opinion-view">
+      <Helmet title="Build Your Network - We Vote" />
         <h1 className="h1">Build Your Network</h1>
         <FollowingFilter following_type={this.getFollowingType()} />
           {guides}

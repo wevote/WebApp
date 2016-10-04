@@ -14,6 +14,7 @@ import Bookmarks from "./components/Bookmarks/Bookmarks";
 import Candidate from "./routes/Ballot/Candidate";
 import ClaimYourPage from "./routes/Settings/ClaimYourPage";
 import Connect from "./routes/Connect";
+import Credits from "./routes/More/Credits";
 import EmailBallot from "./routes/More/EmailBallot";
 import EmptyBallot from "./routes/Ballot/EmptyBallot";
 import Friends from "./routes/Friends";
@@ -71,6 +72,7 @@ const routes = () =>
     {/* More Menu Pages */}
     <Route path="/more/sign_in" component={SignIn} />
     <Route path="/more/email_ballot" component={EmailBallot} />
+    <Route path="/more/credits" component={Credits} />
     <Route path="/more/about" component={About} />
     <Route path="/more/connect" component={Connect} />
     <Route path="/more/privacy" component={Privacy} />

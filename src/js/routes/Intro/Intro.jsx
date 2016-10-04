@@ -1,6 +1,6 @@
 "use strict";
 import React, { Component, PropTypes } from "react";
-
+import Helmet from "react-helmet";
 const request = require("superagent");
 const web_app_config = require("../../config");
 import AddressBox from "../../components/AddressBox";
@@ -60,6 +60,7 @@ export default class Intro extends Component {
     } = this.state;
 
     return <div>
+      <Helmet title="Welcome to We Vote" />
       { this.props.children ||
         <div className="container-fluid well u-gutter__top--small fluff-full1">
           <h2 className="text-center">We Vote</h2>

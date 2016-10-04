@@ -4,6 +4,7 @@ import { browserHistory, Link } from "react-router";
 import CandidateItem from "../../components/Ballot/CandidateItem";
 import CandidateStore from "../../stores/CandidateStore";
 import FollowToggle from "../../components/Widgets/FollowToggle";
+import Helmet from "react-helmet";
 import LoadingWheel from "../../components/LoadingWheel";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -109,6 +110,7 @@ export default class VerifyThisIsMe extends Component {
       console.log("this.state.kind_of_owner === CANDIDATE");
       this.props.params.we_vote_id = this.state.owner_we_vote_id;
       return <span>
+        <Helmet title="Claim This Page - We Vote" />
         <section className="card">
           <CandidateItem {...candidate} />
         </section>
@@ -136,6 +138,7 @@ export default class VerifyThisIsMe extends Component {
       }
 
       return <span>
+        <Helmet title="Claim This Page - We Vote" />
           <div className="card">
             <div className="card-main">
               <FollowToggle we_vote_id={this.props.params.we_vote_id} />
@@ -158,6 +161,7 @@ export default class VerifyThisIsMe extends Component {
     } else if (this.state.kind_of_owner === "TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE"){
       console.log("this.state.kind_of_owner === TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE");
       return <div>
+        <Helmet title="Claim This Page - We Vote" />
         <TwitterAccountCard {...this.state}/>
         <div>
           <br />
@@ -174,6 +178,7 @@ export default class VerifyThisIsMe extends Component {
       </div>;
     } else {
       return <div className="container-fluid well u-gutter__top--small fluff-full1">
+        <Helmet title="Could Not Confirm - We Vote" />
               <h3 className="h3">Could Not Confirm</h3>
                 <div className="small">We were not able to find an account for this
                   Twitter Handle{ this.props.params.twitter_handle ?

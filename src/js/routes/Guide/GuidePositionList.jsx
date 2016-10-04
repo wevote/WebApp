@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import { Button } from "react-bootstrap";
+import { capitalizeString } from "../../utils/textFormat";
 import FollowToggle from "../../components/Widgets/FollowToggle";
+import Helmet from "react-helmet";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -89,7 +91,14 @@ export default class GuidePositionList extends Component {
         </div>;
     }
     var { organization_we_vote_id } = this.state;
+    let organization_name = capitalizeString(this.state.organization.organization_name);
+    let title_text = organization_name + " - We Vote";
+    let description_text = "See endorsements and opinions from " + organization_name + " for the November election";
+
     return <span>
+      <Helmet title={title_text}
+              meta={[{"name": "description", "content": description_text}]}
+              />
         <div className="card">
           <div className="card-main">
             <FollowToggle we_vote_id={organization_we_vote_id} />

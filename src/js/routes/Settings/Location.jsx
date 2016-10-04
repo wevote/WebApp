@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import AddressBox from "../../components/AddressBox";
+import Helmet from "react-helmet";
 
 export default class Location extends Component {
       // <div className="container-fluid well u-gutter__top--small fluff-full1">
@@ -21,6 +22,7 @@ export default class Location extends Component {
 
   render () {
     return <div>
+      <Helmet title="Enter Your Address - We Vote" />
       <h3 className="h3">
         Enter address where you are registered to vote
       </h3>

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button, Input } from "react-bootstrap";
 import { Link } from "react-router";
+import Helmet from "react-helmet";
 import Main from "../../components/Facebook/Main";
 
 /* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/89479656 */
@@ -18,6 +19,7 @@ export default class EmailBallot extends Component {
 
 		const emailBallot =
 			<div>
+				<Helmet title="Email Your Ballot - We Vote" />
 				<div className="container-fluid well">
 					<h2 className="text-center">Print, Save or Email Ballot</h2>
 					<div>

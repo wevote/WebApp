@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import Helmet from "react-helmet";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterPositionItem from "../../components/VoterGuide/VoterPositionItem";
 
@@ -24,6 +25,7 @@ export default class GuidePositionListForVoter extends Component {
 
     const { position_list_for_one_election, position_list_for_all_except_one_election } = this.state.voter;
     return <span>
+      <Helmet title="Your Voter Guide - We Vote" />
         <div className="card">
           <ul className="list-group">
             { position_list_for_one_election ?

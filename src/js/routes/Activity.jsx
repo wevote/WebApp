@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from "react";
+import Helmet from "react-helmet";
 
 export default class Activity extends Component {
   static propTypes = {
@@ -15,6 +16,7 @@ export default class Activity extends Component {
 
   render () {
     return <div>
+      <Helmet title="Activity Feed - We Vote" />
       <div className="container-fluid well u-gutter__top--small fluff-full1">
         <h3 className="text-center">Activity Feed</h3>
         <h4 className="text-center">Coming Soon</h4>
