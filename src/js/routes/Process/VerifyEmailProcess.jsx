@@ -39,8 +39,8 @@ export default class VerifyEmailProcess extends Component {
     });
   }
 
-  mergeTwoVoterAccountsByEmailSecretKey (current_voter_device_id, email_secret_key) {
-    VoterActions.mergeTwoVoterAccountsByEmailSecretKey(current_voter_device_id, email_secret_key);
+  voterMergeTwoAccounts (current_voter_device_id, email_secret_key) {
+    VoterActions.voterMergeTwoAccounts(current_voter_device_id, email_secret_key);
     this.setState({saving: true});
   }
   voterEmailAddressVerify (email_secret_key) {
@@ -70,14 +70,15 @@ export default class VerifyEmailProcess extends Component {
       } else {
         return <div>The email you just verified belongs to another account.
           Perhaps you used We Vote from another browser?</div>;
+
         // Is there anything to save from this voter account?
         // if (this.state.voter.has_data_to_preserve) {
         //   // If so, ask if they want to connect two accounts?
         //   if (this.state.yes_please_merge_accounts) {
         //     // Go ahead and merge this voter record with the voter record that the email_secret_key belongs to
-        //     console.log("this.mergeTwoVoterAccountsByEmailSecretKey");
-        //     //this.mergeTwoVoterAccountsByEmailSecretKey(current_voter_device_id, this.state.email_secret_key)
-        //     return <span>this.mergeTwoVoterAccountsByEmailSecretKey</span>;
+        //     console.log("this.voterMergeTwoAccounts");
+        //     //this.voterMergeTwoAccounts(current_voter_device_id, this.state.email_secret_key)
+        //     return <span>this.voterMergeTwoAccounts</span>;
         //     // return LoadingWheel;
         //   } else {
         //     // Display the question of whether to merge accounts or not
@@ -86,9 +87,9 @@ export default class VerifyEmailProcess extends Component {
         //   }
         // } else {
         //   // Go ahead and merge the accounts, which means deleting the current voter id and switching to the email owner
-        //   console.log("this.mergeTwoVoterAccountsByEmailSecretKey - go ahead");
-        //   //this.mergeTwoVoterAccountsByEmailSecretKey(current_voter_device_id, this.state.email_secret_key)
-        //   return <span>this.mergeTwoVoterAccountsByEmailSecretKey - go ahead</span>;
+        //   console.log("this.voterMergeTwoAccounts - go ahead");
+        //   this.voterMergeTwoAccounts(current_voter_device_id, this.state.email_secret_key);
+        //   return <span>this.voterMergeTwoAccounts - go ahead</span>;
         //   // return LoadingWheel;
         // }
       }

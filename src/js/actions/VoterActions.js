@@ -1,9 +1,8 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
 module.exports = {
-  mergeTwoVoterAccountsByEmailSecretKey: function (current_voter_device_id, email_secret_key) {
-    // TODO DALE Set up this API Endpoint
-    Dispatcher.loadEndpoint("mergeTwoVoterAccounts",
+  voterMergeTwoAccounts: function (current_voter_device_id, email_secret_key) {
+    Dispatcher.loadEndpoint("voterMergeTwoAccounts",
       {
         current_voter_device_id: current_voter_device_id,
         email_secret_key: email_secret_key

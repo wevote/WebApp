@@ -16,6 +16,24 @@ class FriendStore extends FluxMapStore {
     return current_friends;
   }
 
+  friendInvitationsSentByMe (){
+    return this.getDataFromArr(this.getState().friend_invitations_sent_by_me) || {};
+  }
+
+  friendInvitationsSentToMe (){
+    return this.getDataFromArr(this.getState().friend_invitations_sent_to_me) || {};
+  }
+  
+  getErrorMessageToShowVoter () {
+    let error_message_to_show_voter = this.getState().error_message_to_show_voter;
+    //this.state.error_message_to_show_voter = "";  // TODO DALE This may not work
+    return error_message_to_show_voter
+  }
+
+  getInvitationStatus (){
+    return this.getState().invitation_status;
+  }
+
   isFriend (voter_we_vote_id) {
     let current_friends_index = this.currentFriendsIndexed();  // TODO DALE THIS NEEDS TO BE TESTED
     return current_friends_index[voter_we_vote_id] != undefined;
@@ -23,12 +41,6 @@ class FriendStore extends FluxMapStore {
 
   switchToAddFriendsByEmailStep () {
     return this.getState().add_friends_by_email_step;
-  }
-  
-  getErrorMessageToShowVoter () {
-    let error_message_to_show_voter = this.getState().error_message_to_show_voter;
-    //this.state.error_message_to_show_voter = "";  // TODO DALE This may not work
-    return error_message_to_show_voter
   }
 
   getDataFromArr (arr) {
@@ -53,14 +65,6 @@ class FriendStore extends FluxMapStore {
       indexed_data_list[friend_voter_we_vote_id] = arr[i];
     }
     return indexed_data_list;
-  }
-
-  friendInvitationsSentByMe (){
-    return this.getDataFromArr(this.getState().friend_invitations_sent_by_me) || {};
-  }
-
-  friendInvitationsSentToMe (){
-    return this.getDataFromArr(this.getState().friend_invitations_sent_to_me) || {};
   }
 
   reduce (state, action) {
@@ -133,6 +137,18 @@ class FriendStore extends FluxMapStore {
         FriendActions.friendInvitationsSentByMe();
         return {
           ...state
+        };
+
+      case "friendInvitationByEmailVerify":
+        FriendActions.friendInvitationsSentToMe();
+        return {
+          ...state,
+          invitation_status: {
+            // email_ownership_is_verified: action.res.email_ownership_is_verified,
+            // email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
+            // email_retrieve_attempted: action.res.email_retrieve_attempted,
+            invitation_found: action.res.invitation_found,
+          }
         };
 
       case "friendList":

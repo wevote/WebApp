@@ -61,6 +61,12 @@ module.exports = {
       });
   },
 
+  friendInvitationByEmailVerify: function (invitation_secret_key){
+    Dispatcher.loadEndpoint("friendInvitationByEmailVerify", {
+      invitation_secret_key: invitation_secret_key
+    });
+  },
+
   // TODO DALE 2016-9-20 To be built
   ignoreFriendInvite: function (other_voter_we_vote_id) {
     Dispatcher.loadEndpoint("friendInviteResponse", {
