@@ -2,9 +2,11 @@ import React, { Component, PropTypes } from "react";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateItem from "../../components/Ballot/CandidateItem";
 import CandidateStore from "../../stores/CandidateStore";
+import { capitalizeString } from "../../utils/textFormat";
 import GuideList from "../../components/VoterGuide/GuideList";
 import GuideStore from "../../stores/GuideStore";
 import GuideActions from "../../actions/GuideActions";
+import Helmet from "react-helmet";
 import LoadingWheel from "../../components/LoadingWheel";
 import PositionList from "../../components/Ballot/PositionList";
 import SupportActions from "../../actions/SupportActions";
@@ -92,8 +94,14 @@ export default class Candidate extends Component {
                 <br />
             </div>;
     }
+    let candidate_name = capitalizeString(candidate.ballot_item_display_name);
+    let title_text = candidate_name + " - We Vote";
+    let description_text = "Information about " + candidate_name + ", candidate for " + candidate.contest_office_name;
 
     return <span>
+      <Helmet title={title_text}
+              meta={[{"name": "description", "content": description_text}]}
+              />
         <section className="card">
           <CandidateItem {...candidate} contest_office_name={candidate.contest_office_name} />
           <div className="card__additional">

@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import GuideList from "../../components/VoterGuide/GuideList";
 import GuideStore from "../../stores/GuideStore";
 import GuideActions from "../../actions/GuideActions";
+import Helmet from "react-helmet";
 import LoadingWheel from "../../components/LoadingWheel";
 import MeasureItem from "../../components/Ballot/MeasureItem";
 import MeasureActions from "../../actions/MeasureActions";
@@ -9,6 +10,7 @@ import MeasureStore from "../../stores/MeasureStore";
 import PositionList from "../../components/Ballot/PositionList";
 import SupportActions from "../../actions/SupportActions";
 import VoterStore from "../../stores/VoterStore";
+import { capitalizeString } from "../../utils/textFormat";
 import { exitSearch } from "../../utils/search-functions";
 
 
@@ -82,8 +84,14 @@ export default class Measure extends Component {
                 <br />
             </div>;
     }
+    let measure_name = capitalizeString(measure.ballot_item_display_name);
+    let title_text = measure_name + " - We Vote";
+    let description_text = "Information about " + measure_name;
 
     return <section className="card">
+      <Helmet title={title_text}
+              meta={[{"name": "description", "content": description_text}]}
+              />
           <MeasureItem {...measure} />
           <div className="card__additional">
             { measure.position_list ?

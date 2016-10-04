@@ -7,6 +7,7 @@ import Application from "./Application";
 
 /****************************** ROUTE-COMPONENTS ******************************/
 import About from "./routes/More/About";
+import Credits from "./routes/More/Credits";
 import Activity from "./routes/Activity";
 import Ballot from "./routes/Ballot/Ballot";
 import BallotIndex from "./routes/Ballot/BallotIndex";
@@ -71,6 +72,7 @@ const routes = () =>
     {/* More Menu Pages */}
     <Route path="/more/sign_in" component={SignIn} />
     <Route path="/more/email_ballot" component={EmailBallot} />
+    <Route path="/more/credits" component={Credits} />
     <Route path="/more/about" component={About} />
     <Route path="/more/connect" component={Connect} />
     <Route path="/more/privacy" component={Privacy} />

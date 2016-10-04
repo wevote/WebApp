@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
 import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
+import Helmet from "react-helmet"
 import Main from "../../components/Facebook/Main";
 import LoadingWheel from "../../components/LoadingWheel";
 import TwitterSignIn from "../../components/Twitter/TwitterSignIn";
@@ -66,6 +67,7 @@ export default class SignIn extends Component {
     }
 
     return <div className="">
+      <Helmet title="Sign In - We Vote" />
       <div className="container-fluid well u-gutter__top--small fluff-full1">
         <h3 className="text-center">{voter.signed_in_personal ? <span>My Account</span> : <span>Sign In</span>}</h3>
         <div className="text-center">

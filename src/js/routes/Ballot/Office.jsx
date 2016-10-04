@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import CandidateList from "../../components/Ballot/CandidateList";
+import { capitalizeString } from "../../utils/textFormat";
+import Helmet from "react-helmet";
 import LoadingWheel from "../../components/LoadingWheel";
 import OfficeActions from "../../actions/OfficeActions";
 import OfficeItem from "../../components/Ballot/OfficeItem";
@@ -62,8 +64,14 @@ export default class Office extends Component {
           <br />
         </div>;
     }
+    let office_name = capitalizeString(office.ballot_item_display_name);
+    let title_text = office_name + " - We Vote";
+    let description_text = "Choose who you support for " + office_name + "in the November Election";
 
     return <div>
+      <Helmet title={title_text}
+              meta={[{"name": "description", "content": description_text}]}
+              />
       <OfficeItem we_vote_id={office.we_vote_id}
                   kind_of_ballot_item="OFFICE"
                   ballot_item_display_name={office.ballot_item_display_name} />

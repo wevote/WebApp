@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router";
 import Candidate from "./Ballot/Candidate";
+import Helmet from "react-helmet";
 import LoadingWheel from "../components/LoadingWheel";
 import GuidePositionList from "./Guide/GuidePositionList";
 import OrganizationActions from "../actions/OrganizationActions";
@@ -112,6 +113,7 @@ export default class NotFound extends Component {
       return <UnknownTwitterAccount {...this.state} />;
     } else {
       return <div className="container-fluid well u-gutter__top--small fluff-full1">
+              <Helmet title="Not Found - We Vote" />
               <h3 className="h3">Claim Your Page</h3>
                 <div className="medium">
                   We were not able to find an account for this

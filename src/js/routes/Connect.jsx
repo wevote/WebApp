@@ -5,6 +5,7 @@ import AddFriendsByEmail from "../components/Friends/AddFriendsByEmail";
 import AddFriendsByFacebook from "../components/Friends/AddFriendsByFacebook";
 import AddFriendsByTwitter from "../components/Friends/AddFriendsByTwitter";
 import AddFriendsFilter from "../components/Navigation/AddFriendsFilter";
+import Helmet from "react-helmet";
 
 /* VISUAL DESIGN HERE: https://invis.io/E45246B2C */
 
@@ -46,6 +47,7 @@ export default class Connect extends Component {
     }
 
 		return <div>
+			<Helmet title={add_friends_header} />
 			<div className="container-fluid well u-gutter__top--small fluff-full1">
         <h4 className="text-left">{add_friends_header}</h4>
         <div className="ballot__filter"><AddFriendsFilter add_friends_type={this.state.add_friends_type}

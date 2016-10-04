@@ -5,6 +5,7 @@ import FollowingFilter from "../components/Navigation/FollowingFilter";
 import FriendList from "../components/Friends/FriendList";
 import FriendActions from "../actions/FriendActions";
 import FriendStore from "../stores/FriendStore";
+import Helmet from "react-helmet";
 
 export default class Friends extends Component {
   static propTypes = {
@@ -52,6 +53,7 @@ export default class Friends extends Component {
     const { current_friend_list } = this.state;
 
     return <div className="opinion-view">
+      <Helmet title="Your Friends - We Vote" />
       <h1 className="h1">Build Your Network</h1>
       <FollowingFilter following_type={this.getFollowingType()} />
       <div>

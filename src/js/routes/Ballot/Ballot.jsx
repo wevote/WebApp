@@ -5,6 +5,7 @@ import BallotItem from "../../components/Ballot/BallotItem";
 import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 import BallotStore from "../../stores/BallotStore";
 import BallotFilter from "../../components/Navigation/BallotFilter";
+import Helmet from "react-helmet";
 import LoadingWheel from "../../components/LoadingWheel";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
@@ -168,6 +169,7 @@ export default class Ballot extends Component {
 
     return <div className="ballot">
       <div className="ballot__heading">
+        <Helmet title="Ballot - We Vote" />
         <OverlayTrigger placement="top" overlay={electionTooltip} >
           <h1 className="h1 ballot__election-name">{election_name}</h1>
         </OverlayTrigger>

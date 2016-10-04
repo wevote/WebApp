@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import FriendInvitationList from "../components/Friends/FriendInvitationList";
 import FriendActions from "../actions/FriendActions";
 import FriendStore from "../stores/FriendStore";
+import Helmet from "react-helmet";
 
 export default class RequestsPage extends Component {
   constructor (props) {
@@ -34,6 +35,7 @@ export default class RequestsPage extends Component {
 
   render () {
     return <section className="card">
+      <Helmet title="Friend Requests - We Vote" />
       <div className="card-main">
         <h3 className="h3">Friend Requests</h3>
         { this.state.friend_invitations_sent_to_me.length ?
