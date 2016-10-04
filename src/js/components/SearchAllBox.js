@@ -4,6 +4,7 @@ import SearchAllActions from "../actions/SearchAllActions";
 import SearchAllStore from "../stores/SearchAllStore";
 import { enterSearch, exitSearch, makeSearchLink } from "../utils/search-functions";
 import { capitalizeString } from "../utils/textFormat";
+import ImageHandler from "../components/ImageHandler";
 
 export default class SearchAllBox extends Component {
   static propTypes = {
@@ -103,7 +104,6 @@ export default class SearchAllBox extends Component {
 
   render () {
     var search_results = this.state.search_results;
-
     return <div className="page-header__search">
         <form onSubmit={this.onSearchFormSubmit.bind(this)} className="" role="search">
         <div className="input-group site-search">
@@ -128,6 +128,10 @@ export default class SearchAllBox extends Component {
               let capitalized_title = capitalizeString(one_result.result_title);
               return <Link key={one_result.we_vote_id} to={makeSearchLink(one_result.twitter_handle, one_result.we_vote_id, one_result.kind_of_owner)} className="search-container__links">
                   <div className="search-container__results">
+                  <span><ImageHandler imageUrl={one_result.result_image}
+                                kind_of_ballot_item={one_result.kind_of_owner}
+                                sizeClassName="search-image "
+                                className={one_result.kind_of_owner} /></span>
                     {capitalized_title}
                   </div>
                 </Link>;

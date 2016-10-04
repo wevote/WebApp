@@ -25,6 +25,8 @@ export default class ImageHandler extends Component {
     let sizeClassName = this.props.sizeClassName || "";
     if (this.props.kind_of_ballot_item === "CANDIDATE") {
       replacementClass = "icon-main icon-icon-person-placeholder-6-1";
+    } else if (this.props.kind_of_ballot_item === "MEASURE" || this.props.kind_of_ballot_item === "OFFICE"){
+      return <i className="search-image__filler" />;
     } else {
       replacementClass = "icon-main icon-icon-org-placeholder-6-2";
     }

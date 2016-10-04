@@ -52,6 +52,14 @@
         border-radius: 10em;
       }
     }
+
+    &__org-avatar {
+      max-width: 50px;
+      @include breakpoints(mid-small) {
+        max-width: 80px;
+      }
+    }
+
     .icon-lg { // temp - for placeholder icons
       font-size: 50px;
       @include breakpoints(mid-small) {
@@ -169,10 +177,10 @@
     }
 
     &__avatar { // placed on the actual image
-      border-radius: 2px;
       max-width: 50px;
-      &.img-square {
-        width: 50px;
+      &-round {
+        border-radius: 25px;
+        max-width: 50px;
       }
     }
     .icon-lg { // temp - for placeholder icons
