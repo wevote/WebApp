@@ -122,15 +122,15 @@
 }
 
 .search-image {
-  display: none;
-  @include breakpoints(mid-small) {
-    display: inline;
-    width: 30px;
-    font-size: 30px;
-    margin: 0 12px 0 0;
-    &__filler {
-      padding: 0 21px;
-    }
+  display: inline;
+  width: 30px;
+  font-size: 30px;
+  margin: 0 12px 0 0;
+  &__filler {
+    padding: 0 21px;
+  }
+  @include breakpoints(max nav) {
+    display: none;
   }
 }
   .CANDIDATE {
