@@ -88,7 +88,7 @@ export default class PositionItem extends Component {
         <div className="card-child__media-object-anchor">
           <Link to={speakerLink} className="no-underline">
             { position.speaker_image_url_https ?
-              <ImageHandler className="img-square card-child__avatar"
+              <ImageHandler className="card-child__avatar"
                     sizeClassName="icon-lg "
                     imageUrl={position.speaker_image_url_https}
               /> :

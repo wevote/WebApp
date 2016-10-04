@@ -159,7 +159,7 @@ export default class OrganizationPositionItem extends Component {
                 className="no-underline"
                 onlyActiveOnIndex={false}>
             <ImageHandler
-              className="card-child__avatar"
+              className="card-child__avatar-round"
               sizeClassName="icon-lg "
               imageUrl={position.ballot_item_image_url_https}
               alt="candidate-photo"

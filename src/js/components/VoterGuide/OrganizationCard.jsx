@@ -34,7 +34,7 @@ export default class OrganizationCard extends Component {
 
     return <div className="card-main__media-object">
       <div className="card-main__media-object-anchor">
-        <ImageHandler imageUrl={organization_photo_url} className="card-main__avatar" sizeClassName="icon-lg "/>
+        <ImageHandler imageUrl={organization_photo_url} className="card-main__org-avatar" sizeClassName="icon-lg "/>
       </div>
       <div className="card-main__media-object-content">
         <div className="card-main__display-name">{displayName}</div>

@@ -18,20 +18,19 @@
 
 .select-all-btn{
 	height: 34px;
+	margin: -1px 0 0 0;
 	display: none;
 	@include breakpoints (max nav) {
-		display: block; // show button on small screens
+		display: inline; // show button on small screens
 	}
 }
 
 
-.copy-btn {
-	height: 34px;
-		&__hide-mobile {
-			height: 34px;
-			@include breakpoints (max nav) {
-				display: none; // Hide button on small screens
-		}
+.copy-btn__hide-mobile {
+		margin: -1px 0 0 0;
+		height: 34px;
+		@include breakpoints (max nav) {
+			display: none; // Hide button on small screens
 	}
 }
 
