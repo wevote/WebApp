@@ -34,7 +34,7 @@ import SettingsDashboard from "./routes/Settings/SettingsDashboard";
 import SignIn from "./routes/More/SignIn";
 import TwitterSignInProcess from "./routes/Process/TwitterSignInProcess";
 import VerifyEmailProcess from "./routes/Process/VerifyEmailProcess";
-import VerifyFriendRequestProcess from "./routes/Process/VerifyFriendRequestProcess";
+import FriendInvitationByEmailVerifyProcess from "./routes/Process/FriendInvitationByEmailVerifyProcess";
 import VerifyThisIsMe from "./routes/Guide/VerifyThisIsMe";
 import YourPage from "./routes/YourPage";
 
@@ -91,8 +91,8 @@ const routes = () =>
     <Route path="ballot/empty" component={EmptyBallot} />
 
     <Route path="requests" component={Requests} />
-    <Route path="requests/:invitation_secret_key" component={VerifyFriendRequestProcess} />
-    <Route path="requests/:invitation_secret_key/ignore" component={VerifyFriendRequestProcess} />
+    <Route path="requests/:invitation_secret_key" component={FriendInvitationByEmailVerifyProcess} />
+    <Route path="requests/:invitation_secret_key/ignore" component={FriendInvitationByEmailVerifyProcess} />
 
     <Route path="activity" component={Activity} />
 

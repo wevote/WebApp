@@ -18,6 +18,15 @@ export default class FriendInvitationDisplayForList extends Component {
     voter_twitter_followers_count: PropTypes.number
   };
 
+  deleteInvitation (other_voter_we_vote_id) {
+    FriendActions.deleteFriendInvite(other_voter_we_vote_id);
+    // this.setState({
+    //   friend_invitations_list: this.state.friend_invitations_list.filter( (friend) => {
+    //     return friend.voter_we_vote_id !== voter_we_vote_id;
+    //   })
+    // });
+  }
+
   handleIgnore (voter_we_vote_id) {
     FriendActions.ignoreFriendInvite(voter_we_vote_id);
     this.setState({
@@ -40,26 +49,37 @@ export default class FriendInvitationDisplayForList extends Component {
     let twitterDescriptionMinusName = removeTwitterNameFromDescription(voter_display_name, twitterDescription);
 
     // TwitterHandle-based link
-    var voterGuideLink = this.props.voter_twitter_handle ? "/" + this.props.voter_twitter_handle : "/voterguide/" + voter_we_vote_id;
+    var voterGuideLink = this.props.voter_twitter_handle ? "/" + this.props.voter_twitter_handle : null;
+    let voter_image = <ImageHandler sizeClassName="icon-lg " imageUrl={voter_photo_url} kind_of_ballot_item="CANDIDATE" />;
+    let voter_display_name_formatted = <h4 className="card-child__display-name">{voter_display_name}</h4>;
 
     return <div className="position-item card-child card-child--not-followed">
       <div className="card-child__avatar">
-        <Link to={voterGuideLink} className="no-underline">
-          <ImageHandler sizeClassName="icon-lg " imageUrl={voter_photo_url} kind_of_ballot_item="CANDIDATE" />
-        </Link>
+        { voterGuideLink ?
+          <Link to={voterGuideLink} className="no-underline">
+            {voter_image}
+          </Link> :
+          <span>{voter_image}</span> }
       </div>
       <div className="card-child__media-object-content">
         <div className="card-child__content">
-          <Link to={voterGuideLink}>
-            <h4 className="card-child__display-name">{voter_display_name}</h4>
-          </Link>
+          { voterGuideLink ?
+            <Link to={voterGuideLink} className="no-underline">
+              {voter_display_name_formatted}
+            </Link> :
+            <span>{voter_display_name_formatted}</span> }
           { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> :
             null}
         </div>
         <div className="card-child__additional">
           <div className="card-child__follow-buttons">
             { this.props.invitationsSentByMe ?
-              null :
+              <span>
+                <button className="btn btn-default btn-sm"
+                  onClick={this.deleteInvitation.bind(this, voter_we_vote_id)}>
+                  Delete Invitation
+                </button>
+              </span> :
               <span>
                 <FriendInvitationToggle other_voter_we_vote_id={voter_we_vote_id}/>
                 < button className="btn btn-default btn-sm"

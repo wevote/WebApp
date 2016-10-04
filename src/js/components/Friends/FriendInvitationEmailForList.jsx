@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router";
 import FriendActions from "../../actions/FriendActions";
+import ImageHandler from "../../components/ImageHandler";
 import VoterStore from "../../stores/VoterStore";
 
 export default class FriendInvitationEmailForList extends Component {
@@ -58,14 +59,28 @@ export default class FriendInvitationEmailForList extends Component {
     if (invitation_status === "PENDING_EMAIL_VERIFICATION") {
       invitation_status_text = "Your invitation will be sent when you verify your email address."
     } else if (invitation_status === "NO_RESPONSE") {
-      invitation_status_text = "Invitation sent."
+      invitation_status_text = ""
     }
 
+    let voterGuideLink = this.props.voter_twitter_handle ? "/" + this.props.voter_twitter_handle : null;
+    let voter_image = <ImageHandler sizeClassName="icon-lg " imageUrl="" kind_of_ballot_item="CANDIDATE" />;
+    let voter_display_name_formatted = <h4 className="card-child__display-name">{voter_email_address}</h4>;
+
     return <div className="position-item card-child card-child--not-followed">
+      <div className="card-child__avatar">
+        { voterGuideLink ?
+          <Link to={voterGuideLink} className="no-underline">
+            {voter_image}
+          </Link> :
+          <span>{voter_image}</span> }
+      </div>
       <div className="card-child__media-object-content">
         <div className="card-child__content">
-          <h4 className="card-child__display-name">
-            {voter_email_address}</h4>
+          { voterGuideLink ?
+            <Link to={voterGuideLink} className="no-underline">
+              {voter_display_name_formatted}
+            </Link> :
+            <span>{voter_display_name_formatted}</span> }
           <h5>
             {invitation_status_text}</h5>
         </div>

@@ -10,6 +10,7 @@ export default class FriendDisplayForList extends Component {
     children: PropTypes.array,  // A list of the tags in FriendDisplayForList when called (e.g. from FriendInvitationList)
     voter_we_vote_id: PropTypes.string,
     voter_photo_url: PropTypes.string,
+    voter_email_address: PropTypes.string,
     voter_display_name: PropTypes.string,
     voter_twitter_handle: PropTypes.string,
     voter_twitter_description: PropTypes.string,
@@ -23,25 +24,32 @@ export default class FriendDisplayForList extends Component {
       voter_photo_url,
     } = this.props;
 
-    let voter_display_name = this.props.voter_display_name ? this.props.voter_display_name : "";
+    let alternate_voter_display_name = this.props.voter_email_address ? this.props.voter_email_address : this.props.voter_twitter_handle;
+    let voter_display_name = this.props.voter_display_name ? this.props.voter_display_name : alternate_voter_display_name;
     let twitterDescription = this.props.voter_twitter_description ? this.props.voter_twitter_description : "";
     // If the voter_display_name is in the voter_twitter_description, remove it
     let twitterDescriptionMinusName = removeTwitterNameFromDescription(voter_display_name, twitterDescription);
 
     // TwitterHandle-based link
-    var voterGuideLink = this.props.voter_twitter_handle ? "/" + this.props.voter_twitter_handle : "/voterguide/" + voter_we_vote_id;
+    let voterGuideLink = this.props.voter_twitter_handle ? "/" + this.props.voter_twitter_handle : null;
+    let voter_image = <ImageHandler sizeClassName="icon-lg " imageUrl={voter_photo_url} kind_of_ballot_item="CANDIDATE" />;
+    let voter_display_name_formatted = <h4 className="card-child__display-name">{voter_display_name}</h4>;
 
     return <div className="position-item card-child card-child--not-followed">
       <div className="card-child__avatar">
-        <Link to={voterGuideLink}>
-          <ImageHandler sizeClassName="icon-lg " imageUrl={voter_photo_url} />
-        </Link>
+        { voterGuideLink ?
+          <Link to={voterGuideLink} className="no-underline">
+            {voter_image}
+          </Link> :
+          <span>{voter_image}</span> }
       </div>
       <div className="card-child__media-object-content">
         <div className="card-child__content">
-          <Link to={voterGuideLink} className="no-underline">
-            <h4 className="card-child__display-name">{voter_display_name}</h4>
-          </Link>
+          { voterGuideLink ?
+            <Link to={voterGuideLink} className="no-underline">
+              {voter_display_name_formatted}
+            </Link> :
+            <span>{voter_display_name_formatted}</span> }
           { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> :
             null}
         </div>

@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 
-/* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/90192590 */
-
 export default class About extends Component {
   constructor (props) {
     super(props);
@@ -58,11 +56,11 @@ export default class About extends Component {
             <li>Dale McGrew - Oakland, CA</li>
             <li>Jenifer Fernandez Ancona - Oakland, CA</li>
             <li>Rob Simpson - Warrenton, VA</li>
+            <li>Jeff French - Oakland, CA</li>
+            <li>Zach Monteith - San Francisco, CA</li>
             <li>Lisa Cho - San Francisco, CA</li>
             <li>Nicolas Fiorini - Arlington, VA</li>
-            <li>Jeff French - Oakland, CA</li>
             <li>Colette Phair - Oakland, CA</li>
-            <li>Zach Monteith - San Francisco, CA</li>
             <li>Jennifer Holmes - Pacifica, CA</li>
             <li>Joe Evans - Santa Cruz, CA</li>
             <li>Adam Barry - San Francisco, CA</li>
@@ -73,6 +71,8 @@ export default class About extends Component {
             <li>Marissa Luna - Lansing, MI</li>
             <li>Aaron Borden - San Francisco, CA</li>
             <li>Judy Johnson - Oakland, CA</li>
+            <li>Udi Davidovich - Walnut Creek, CA</li>
+            <li>Mikel Duffy - San Francisco, CA</li>
             <li>Robin Braverman - Walnut Creek, CA</li>
             <li>Mike McConnell - San Francisco, CA</li>
             <li>Dan Ancona - Oakland, CA</li>
