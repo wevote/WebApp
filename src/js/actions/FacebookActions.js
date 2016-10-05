@@ -1,5 +1,6 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 import VoterActions from "../actions/VoterActions";
+import VoterSessionActions from "../actions/VoterSessionActions";
 import FacebookConstants from "../constants/FacebookConstants";
 const cookies = require("../utils/cookies");
 const web_app_config = require("../config");
@@ -17,9 +18,10 @@ module.exports = {
     Dispatcher.loadEndpoint("facebookDisconnect");
   },
 
+  // TODO Convert this to sign out of just Facebook
   appLogout: function (){
     cookies.setItem("voter_device_id", "", -1, "/");
-    VoterActions.signOut();
+    VoterSessionActions.signOut();
     VoterActions.voterRetrieve();
   },
 

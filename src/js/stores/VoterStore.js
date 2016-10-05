@@ -168,6 +168,17 @@ class VoterStore extends FluxMapStore {
           }
         };
 
+      case "voterEmailAddressSignIn":
+        return {
+          ...state,
+          email_address_status: {
+            email_ownership_is_verified: action.res.email_ownership_is_verified,
+            email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
+            email_retrieve_attempted: action.res.email_retrieve_attempted,
+            email_address_found: action.res.email_address_found,
+          }
+        };
+      
       case "voterEmailAddressVerify":
         return {
           ...state,
@@ -199,6 +210,17 @@ class VoterStore extends FluxMapStore {
           ...state,
           voter: action.res
       };
+      
+      case "voterSignOut":
+        return {
+          ...state,
+          email_address_status: {
+            email_ownership_is_verified: false,
+            email_secret_key_belongs_to_this_voter: false,
+            email_retrieve_attempted: false,
+            email_address_found: false
+          }
+        };
 
       case "voterUpdate":
         const {first_name, last_name, email} = action.res;

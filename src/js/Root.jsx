@@ -33,6 +33,7 @@ import Requests from "./routes/Requests";
 import Settings from "./routes/Settings/Settings";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
 import SignIn from "./routes/More/SignIn";
+import SignInEmailProcess from "./routes/Process/SignInEmailProcess";
 import TwitterSignInProcess from "./routes/Process/TwitterSignInProcess";
 import VerifyEmailProcess from "./routes/Process/VerifyEmailProcess";
 import FriendInvitationByEmailVerifyProcess from "./routes/Process/FriendInvitationByEmailVerifyProcess";
@@ -102,6 +103,7 @@ const routes = () =>
     <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />
 
     <Route path="/verify_email/:email_secret_key" component={VerifyEmailProcess} />
+    <Route path="/sign_in_email/:email_secret_key" component={SignInEmailProcess} />
 
     {/* Confirming that person owns twitter handle */}
     <Route path="/verifythisisme/:twitter_handle" component={VerifyThisIsMe} />

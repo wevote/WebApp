@@ -5,6 +5,7 @@ import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 import Helmet from "react-helmet"
 import Main from "../../components/Facebook/Main";
 import LoadingWheel from "../../components/LoadingWheel";
+import TwitterActions from "../../actions/TwitterActions";
 import TwitterSignIn from "../../components/Twitter/TwitterSignIn";
 import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
 import VoterStore from "../../stores/VoterStore";
@@ -24,8 +25,8 @@ export default class SignIn extends Component {
   }
 
   componentWillUnmount () {
-    this.voterStoreListener.remove();
     this.facebookListener.remove();
+    this.voterStoreListener.remove();
   }
 
   _onVoterStoreChange () {
@@ -79,7 +80,7 @@ export default class SignIn extends Component {
           <br />
           {/* appLogout signs out the voter, regardless of how they are signed in */}
           {voter.signed_in_twitter ?
-            <span><a className="btn btn-social btn-lg btn-twitter" onClick={FacebookActions.appLogout}>
+            <span><a className="btn btn-social btn-lg btn-twitter" onClick={TwitterActions.appLogout}>
             <i className="fa fa-twitter" />Sign Out</a></span> : twitter_sign_in_option
           }
           {/*

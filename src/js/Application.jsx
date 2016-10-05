@@ -93,6 +93,9 @@ export default class Application extends Component {
                 </div>
               </div>;
     }
+    console.log("voter.we_vote_id:", voter.we_vote_id, ", voter.email:", voter.email, ", voter.email_ownership_is_verified:", voter.email_ownership_is_verified);
+    let voter_device_id = VoterStore.voterDeviceId();
+    console.log("voter_device_id:", voter_device_id);
 
     return <div className="app-base" id="app-base-id">
       <Headroom>
