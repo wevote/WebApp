@@ -1,14 +1,6 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
 module.exports = {
-  voterMergeTwoAccounts: function (current_voter_device_id, email_secret_key) {
-    Dispatcher.loadEndpoint("voterMergeTwoAccounts",
-      {
-        current_voter_device_id: current_voter_device_id,
-        email_secret_key: email_secret_key
-      });
-  },
-
   positionListForVoter: function (show_only_this_election, show_all_other_elections) {
     Dispatcher.loadEndpoint("positionListForVoter",
       {
@@ -42,6 +34,14 @@ module.exports = {
     Dispatcher.loadEndpoint("voterAddressSave", { text_for_map_search: text });
   },
 
+  sendSignInLinkEmail: function (voter_email_address){
+    Dispatcher.loadEndpoint("voterEmailAddressSignIn", {
+      text_for_email_address: voter_email_address,
+      send_link_to_sign_in: true,
+      make_primary_email: true
+    });
+  },
+
   sendVerificationEmail: function (voter_email_we_vote_id){
     Dispatcher.loadEndpoint("voterEmailAddressSave", {
       email_we_vote_id: voter_email_we_vote_id,
@@ -49,9 +49,7 @@ module.exports = {
     });
   },
 
-  signOut: function (){
-    Dispatcher.loadEndpoint("voterSignOut", {sign_out_all_devices: false});
-  },
+  //signOut moved to VoterSessionActions
 
   updateVoter: function (data){
     let attributes = {
@@ -71,10 +69,24 @@ module.exports = {
     });
   },
 
+  voterEmailAddressSignIn: function (email_secret_key){
+    Dispatcher.loadEndpoint("voterEmailAddressSignIn", {
+      email_secret_key: email_secret_key
+    });
+  },
+
   voterEmailAddressVerify: function (email_secret_key){
     Dispatcher.loadEndpoint("voterEmailAddressVerify", {
       email_secret_key: email_secret_key
     });
+  },
+
+  voterMergeTwoAccounts: function (current_voter_device_id, email_secret_key) {
+    Dispatcher.loadEndpoint("voterMergeTwoAccounts",
+      {
+        current_voter_device_id: current_voter_device_id,
+        email_secret_key: email_secret_key
+      });
   },
 
   voterRetrieve: function () {

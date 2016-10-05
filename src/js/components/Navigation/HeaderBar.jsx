@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import NavigatorInHeader from "./NavigatorInHeader";
-import FacebookActions from "../../actions/FacebookActions";
+import VoterSessionActions from "../../actions/VoterSessionActions";
 import SearchAllBox from "../SearchAllBox";
 var Icon = require("react-svg-icons");
 const ReactBurgerMenu = require("react-burger-menu").push;
@@ -35,7 +35,7 @@ export default class HeaderBar extends Component {
   render () {
     var { pathname } = this.props;
     var { signed_in_facebook, signed_in_personal, signed_in_twitter, twitter_screen_name, voter_photo_url } = this.props.voter;
-    const logOut = FacebookActions.appLogout;
+    const logOut = VoterSessionActions.appLogout;
 
     let image_placeholder = "";
     let speaker_type = "V";  // TODO DALE make this dynamic

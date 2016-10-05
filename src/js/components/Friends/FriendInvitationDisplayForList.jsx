@@ -15,7 +15,8 @@ export default class FriendInvitationDisplayForList extends Component {
     voter_display_name: PropTypes.string,
     voter_twitter_handle: PropTypes.string,
     voter_twitter_description: PropTypes.string,
-    voter_twitter_followers_count: PropTypes.number
+    voter_twitter_followers_count: PropTypes.number,
+    voter_email_address: PropTypes.string
   };
 
   deleteInvitation (other_voter_we_vote_id) {
@@ -43,7 +44,7 @@ export default class FriendInvitationDisplayForList extends Component {
       voter_photo_url,
     } = this.props;
 
-    let voter_display_name = this.props.voter_display_name ? this.props.voter_display_name : "";
+    let voter_display_name = this.props.voter_display_name ? this.props.voter_display_name : this.props.voter_email_address;
     let twitterDescription = this.props.voter_twitter_description ? this.props.voter_twitter_description : "";
     // If the voter_display_name is in the voter_twitter_description, remove it
     let twitterDescriptionMinusName = removeTwitterNameFromDescription(voter_display_name, twitterDescription);

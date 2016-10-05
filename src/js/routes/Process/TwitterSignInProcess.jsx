@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { browserHistory } from "react-router";
 import { $ajax } from "../../utils/service";
-import FacebookActions from "../../actions/FacebookActions";
+import TwitterActions from "../../actions/TwitterActions";
 import VoterStore from "../../stores/VoterStore";
 const web_app_config = require("../../config");
 
@@ -48,7 +48,7 @@ export default class TwitterSignInProcess extends Component {
     } else if (this.props.params.sign_in_step === "signinswitchstart") {
       // In this block, we are presumably already signed in and want to switch to another account
       if (voter !== undefined && (voter.signed_in_twitter || voter.signed_in_facebook)) {
-        FacebookActions.appLogout();
+        TwitterActions.appLogout();
       } else {
         // We call twitterSignInStart from here for the case where the person is already signed out
         return_url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/twittersigninprocess/signinswitchend";

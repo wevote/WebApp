@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
-import FacebookActions from "../../actions/FacebookActions";
+import VoterSessionActions from "../../actions/VoterSessionActions";
 var Icon = require("react-svg-icons");
 
 export default class MoreMenu extends Component {
@@ -25,7 +25,7 @@ export default class MoreMenu extends Component {
   }
 
   render () {
-    const logOut = FacebookActions.appLogout;
+    const logOut = VoterSessionActions.appLogout;
 
     var { linked_organization_we_vote_id, voter_photo_url } = this.props;
 
