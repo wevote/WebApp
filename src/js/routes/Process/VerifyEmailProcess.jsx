@@ -35,12 +35,13 @@ export default class VerifyEmailProcess extends Component {
     this.setState({
       voter: VoterStore.getVoter(),
       email_address_status: VoterStore.getEmailAddressStatus(),
+      email_sign_in_status: VoterStore.getEmailSignInStatus(),
       saving: false
     });
   }
 
-  voterMergeTwoAccounts (current_voter_device_id, email_secret_key) {
-    VoterActions.voterMergeTwoAccounts(current_voter_device_id, email_secret_key);
+  voterMergeTwoAccounts (email_secret_key) {
+    VoterActions.voterMergeTwoAccounts(email_secret_key);
     this.setState({saving: true});
   }
   voterEmailAddressVerify (email_secret_key) {
@@ -61,7 +62,6 @@ export default class VerifyEmailProcess extends Component {
       browserHistory.push("/more/sign_in");
     }
 
-    let current_voter_device_id = VoterStore.voterDeviceId();
     if (this.state.email_address_status.email_ownership_is_verified) {
       if (this.state.email_address_status.email_secret_key_belongs_to_this_voter) {
         // We don't need to do anything more except redirect to the email management page
@@ -77,7 +77,7 @@ export default class VerifyEmailProcess extends Component {
         //   if (this.state.yes_please_merge_accounts) {
         //     // Go ahead and merge this voter record with the voter record that the email_secret_key belongs to
         //     console.log("this.voterMergeTwoAccounts");
-        //     //this.voterMergeTwoAccounts(current_voter_device_id, this.state.email_secret_key)
+        //     //this.voterMergeTwoAccounts(email_secret_key)
         //     return <span>this.voterMergeTwoAccounts</span>;
         //     // return LoadingWheel;
         //   } else {
@@ -88,7 +88,7 @@ export default class VerifyEmailProcess extends Component {
         // } else {
         //   // Go ahead and merge the accounts, which means deleting the current voter id and switching to the email owner
         //   console.log("this.voterMergeTwoAccounts - go ahead");
-        //   this.voterMergeTwoAccounts(current_voter_device_id, this.state.email_secret_key);
+        //   this.voterMergeTwoAccounts(email_secret_key);
         //   return <span>this.voterMergeTwoAccounts - go ahead</span>;
         //   // return LoadingWheel;
         // }

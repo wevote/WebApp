@@ -14,7 +14,8 @@ class VoterStore extends FluxMapStore {
     return {
       voter: {},
       address: {},
-      email_address_status: {}
+      email_address_status: {},
+      email_sign_in_status: {}
     };
   }
 
@@ -36,6 +37,10 @@ class VoterStore extends FluxMapStore {
 
   getEmailAddressStatus (){
     return this.getState().email_address_status;
+  }
+
+  getEmailSignInStatus (){
+    return this.getState().email_sign_in_status;
   }
 
   getTwitterHandle (){
@@ -78,16 +83,6 @@ class VoterStore extends FluxMapStore {
 
     let voter_device_id;
     switch (action.type) {
-      case "mergeTwoVoterAccounts":
-        // On the server we just switched linked this voter_device_id to a new voter record, so we want to
-        //  refresh a lot of data
-        voter_device_id = this.voterDeviceId();
-        VoterActions.voterRetrieve(voter_device_id);
-        VoterActions.retrieveEmailAddress();
-        StarActions.voterAllStarsStatusRetrieve();
-        FriendActions.friendInvitationsSentToMe();
-        return state;
-
       case "organizationSave":
         // If an organization saves, we want to check to see if it is tied to this voter. If so,
         // refresh the voter data so we have the value linked_organization_we_vote_id in the voter object.
@@ -165,20 +160,24 @@ class VoterStore extends FluxMapStore {
             email_address_created: action.res.email_address_created,
             email_address_deleted: action.res.email_address_deleted,
             verification_email_sent: action.res.verification_email_sent,
+            link_to_sign_in_email_sent: action.res.link_to_sign_in_email_sent,
           }
         };
 
       case "voterEmailAddressSignIn":
         return {
           ...state,
-          email_address_status: {
+          email_sign_in_status: {
             email_ownership_is_verified: action.res.email_ownership_is_verified,
             email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
-            email_retrieve_attempted: action.res.email_retrieve_attempted,
+            email_sign_in_attempted: action.res.email_sign_in_attempted,
             email_address_found: action.res.email_address_found,
+            yes_please_merge_accounts: action.res.yes_please_merge_accounts,
+            voter_we_vote_id_from_secret_key: action.res.voter_we_vote_id_from_secret_key,
+            voter_merge_two_accounts_attempted: false,
           }
         };
-      
+
       case "voterEmailAddressVerify":
         return {
           ...state,
@@ -187,6 +186,27 @@ class VoterStore extends FluxMapStore {
             email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
             email_retrieve_attempted: action.res.email_retrieve_attempted,
             email_address_found: action.res.email_address_found,
+          }
+        };
+
+      case "voterMergeTwoAccounts":
+        // On the server we just switched linked this voter_device_id to a new voter record, so we want to
+        //  refresh a lot of data
+        voter_device_id = this.voterDeviceId();
+        VoterActions.voterRetrieve(voter_device_id);
+        VoterActions.retrieveEmailAddress();
+        StarActions.voterAllStarsStatusRetrieve();
+        FriendActions.friendInvitationsSentToMe();
+        return {
+          ...state,
+          email_sign_in_status: {
+            email_ownership_is_verified: true,
+            email_secret_key_belongs_to_this_voter: true,
+            email_sign_in_attempted: true,
+            email_address_found: true,
+            yes_please_merge_accounts: false,
+            voter_we_vote_id_from_secret_key: "",
+            voter_merge_two_accounts_attempted: true,
           }
         };
 
@@ -210,7 +230,7 @@ class VoterStore extends FluxMapStore {
           ...state,
           voter: action.res
       };
-      
+
       case "voterSignOut":
         return {
           ...state,
