@@ -66,7 +66,12 @@ export default class VoterEmailAddressEntry extends Component {
     event.preventDefault();
     var {voter_email_address} = this.state;
     VoterActions.sendSignInLinkEmail(voter_email_address);
-    this.setState({loading: true});
+    this.setState({
+      email_address_status: {
+        email_address_already_owned_by_other_voter: false,
+      },
+      loading: true
+    });
   }
 
   sendVerificationEmail (email_we_vote_id) {
@@ -99,10 +104,10 @@ export default class VoterEmailAddressEntry extends Component {
           To sign into that account, please click "Send Login Link in an Email".
         </Alert> :
         null }
-      { this.state.email_address_status.email_address_created 
-        || this.state.email_address_status.email_address_deleted 
-        || this.state.email_address_status.email_ownership_is_verified 
-        || this.state.email_address_status.verification_email_sent 
+      { this.state.email_address_status.email_address_created
+        || this.state.email_address_status.email_address_deleted
+        || this.state.email_address_status.email_ownership_is_verified
+        || this.state.email_address_status.verification_email_sent
         || this.state.email_address_status.link_to_sign_in_email_sent ?
         <Alert bsStyle="success">
           { this.state.email_address_status.email_address_created ? <span>Your email address was saved. </span> : null }
@@ -120,7 +125,7 @@ export default class VoterEmailAddressEntry extends Component {
           <input
             type="text"
             onChange={this.updateVoterEmailAddress.bind(this)}
-            name="address"
+            name="voter_email_address"
             value={voter_email_address}
             className="form-control text-center"
             placeholder="Sign in with email address"
@@ -136,11 +141,11 @@ export default class VoterEmailAddressEntry extends Component {
 
     const send_link_to_login_html = <div>
       {email_address_status_html}
-        <form onSubmit={this.voterEmailAddressSave.bind(this)}>
+        <form onSubmit={this.sendSignInLinkEmail.bind(this)}>
           <input
             type="text"
             onChange={this.updateVoterEmailAddress.bind(this)}
-            name="address"
+            name="voter_email_address"
             value={voter_email_address}
             className="form-control text-center"
             placeholder="Sign in with email address"

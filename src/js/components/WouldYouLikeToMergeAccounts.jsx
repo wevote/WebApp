@@ -7,6 +7,9 @@ import VoterStore from "../stores/VoterStore";
 
 export default class WouldYouLikeToMergeAccounts extends Component {
   static propTypes = {
+    currentVoterWeVoteId: PropTypes.string.isRequired,
+    mergeIntoVoterWeVoteId: PropTypes.string.isRequired,
+    emailSecretKey: PropTypes.string.isRequired
   };
 
   constructor (props) {
@@ -34,117 +37,56 @@ export default class WouldYouLikeToMergeAccounts extends Component {
   }
 
   _onVoterStoreChange () {
-      this.setState({
-        voter_email_address_list: VoterStore.getEmailAddressList(),
-        email_address_status: VoterStore.getEmailAddressStatus(),
-        loading: false });
-  }
-
-  _ballotLoaded (){
-    // browserHistory.push(this.props.saveUrl);
-  }
-
-  updateVoterEmailAddress (e) {
     this.setState({
-      voter_email_address: e.target.value
+      email_sign_in_status: VoterStore.getEmailSignInStatus(),
+      saving: false
     });
   }
 
-  voterEmailAddressSave (event) {
-    event.preventDefault();
-    var { voter_email_address } = this.state;
-    VoterActions.voterEmailAddressSave(voter_email_address);
-    this.setState({loading: true});
+  cancelMerge () {
+    browserHistory.push("/more/sign_in");
   }
 
-  sendVerificationEmail (email_we_vote_id) {
-    VoterActions.sendVerificationEmail(email_we_vote_id);
-    this.setState({loading: true});
-  }
-
-  removeVoterEmailAddress (email_we_vote_id) {
-    console.log("VoterEmailAddressEntry, removeVoterEmailAddress, email_we_vote_id:", email_we_vote_id);
-    VoterActions.removeVoterEmailAddress(email_we_vote_id);
+  voterEmailAddressSignInConfirm (email_secret_key) {
+    console.log("voterEmailAddressSignInConfirm, email_secret_key:", email_secret_key);
+    VoterActions.voterEmailAddressSignInConfirm(email_secret_key);
+    this.setState({
+      saving: true
+    });
   }
 
   render () {
-    var { loading, voter_email_address } = this.state;
-    if (loading){
+    var { saving } = this.state;
+    if (saving || !this.state.email_sign_in_status){
       return LoadingWheel;
     }
     const email_address_status_html = <span>
-      { this.state.email_address_status.email_address_already_owned_by_other_voter ?
+      { !this.state.email_sign_in_status.yes_please_merge_accounts ?
         <Alert bsStyle="danger">
-          That email cannot be used. It is already being used by another account.
+          If you sign in now, all of your positions and friends will be merged with the account
+          that is already signed into this browser. Would you like to merge? (If NOT, please cancel.)
         </Alert> :
         null }
-      { this.state.email_address_status.email_address_created || this.state.email_address_status.email_address_deleted || this.state.email_address_status.email_ownership_is_verified || this.state.email_address_status.verification_email_sent ?
+      { this.state.email_sign_in_status.email_address_created ?
         <Alert bsStyle="success">
-          { this.state.email_address_status.email_address_created ? <span>Your email address was saved. </span> : null }
-          { this.state.email_address_status.email_address_deleted ? <span>Your email address was deleted. </span> : null }
-          { this.state.email_address_status.email_ownership_is_verified ? <span>Your email address was verified. </span> : null }
-          { this.state.email_address_status.verification_email_sent ? <span>Please check your email. A verification email was sent. </span> : null }
+          { this.state.email_sign_in_status.email_address_created ? <span>Your email address was saved. </span> : null }
         </Alert> :
         null }
       </span>;
 
-    const enter_email_html = <div>
+    return <div className="guidelist card-child__list-group">
       {email_address_status_html}
-        <form onSubmit={this.voterEmailAddressSave.bind(this)}>
-          <input
-            type="text"
-            onChange={this.updateVoterEmailAddress.bind(this)}
-            name="address"
-            value={voter_email_address}
-            className="form-control text-center"
-            placeholder="Sign in with email address"
-          />
-        </form>
 
         <div className="u-gutter__top--small">
-          <Button onClick={this.voterEmailAddressSave.bind(this)}
+          <Button onClick={this.cancelMerge.bind(this)}
+                  bsStyle="default"
+                  bsSize="small">
+            Cancel
+          </Button>
+          <Button onClick={this.voterEmailAddressSignInConfirm.bind(this, this.props.emailSecretKey)}
                   bsStyle="primary">
-            Send Verification Email</Button>
+            Merge These Accounts</Button>
         </div>
       </div>;
-
-    var email_status_description;
-    const email_list_html = this.state.voter_email_address_list.map( (voter_email_address) => {
-      email_status_description = (voter_email_address.email_ownership_is_verified) ? "Email Verified" : "Email Not Verified";
-      return <div key={voter_email_address.email_we_vote_id}
-                  className="position-item card-child card-child--not-followed">
-        <div className="card-child__media-object-content">
-          <div className="card-child__content">
-            <h4 className="card-child__display-name">{voter_email_address.normalized_email_address}</h4>
-            {email_status_description}
-          </div>
-          <div className="card-child__additional">
-            <div className="card-child__follow-buttons">
-              <Button onClick={this.removeVoterEmailAddress.bind(this, voter_email_address.email_we_vote_id)}
-                      bsStyle="default"
-                      bsSize="small">
-                Remove Email
-              </Button>
-              {voter_email_address.email_ownership_is_verified ?
-                null :
-                <Button onClick={this.sendVerificationEmail.bind(this, voter_email_address.email_we_vote_id)}
-                        bsStyle="warning">
-                  Send Verification Email Again
-                </Button>}
-            </div>
-          </div>
-        </div>
-      </div>;
-    });
-
-
-    return <div className="guidelist card-child__list-group">
-      {this.state.voter_email_address_list.length ?
-        <span>
-          {email_address_status_html}
-          {email_list_html}
-        </span> :
-        enter_email_html }
-    </div>;
   }
 }

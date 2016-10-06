@@ -60,6 +60,7 @@ export default class Application extends Component {
   componentDidMount () {
     let voter_device_id = VoterStore.voterDeviceId();
     VoterActions.voterRetrieve(voter_device_id);
+    VoterActions.retrieveEmailAddress();
     StarActions.voterAllStarsStatusRetrieve();
     FriendActions.friendInvitationsSentToMe();
 

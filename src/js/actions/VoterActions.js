@@ -34,8 +34,9 @@ module.exports = {
     Dispatcher.loadEndpoint("voterAddressSave", { text_for_map_search: text });
   },
 
+  // Send the sign in link to their email address
   sendSignInLinkEmail: function (voter_email_address){
-    Dispatcher.loadEndpoint("voterEmailAddressSignIn", {
+    Dispatcher.loadEndpoint("voterEmailAddressSave", {
       text_for_email_address: voter_email_address,
       send_link_to_sign_in: true,
       make_primary_email: true
@@ -75,16 +76,22 @@ module.exports = {
     });
   },
 
+  voterEmailAddressSignInConfirm: function (email_secret_key){
+    Dispatcher.loadEndpoint("voterEmailAddressSignIn", {
+      email_secret_key: email_secret_key,
+      yes_please_merge_accounts: true
+    });
+  },
+
   voterEmailAddressVerify: function (email_secret_key){
     Dispatcher.loadEndpoint("voterEmailAddressVerify", {
       email_secret_key: email_secret_key
     });
   },
 
-  voterMergeTwoAccounts: function (current_voter_device_id, email_secret_key) {
+  voterMergeTwoAccounts: function (email_secret_key) {
     Dispatcher.loadEndpoint("voterMergeTwoAccounts",
       {
-        current_voter_device_id: current_voter_device_id,
         email_secret_key: email_secret_key
       });
   },
