@@ -60,7 +60,7 @@ export default class Application extends Component {
   componentDidMount () {
     let voter_device_id = VoterStore.voterDeviceId();
     VoterActions.voterRetrieve(voter_device_id);
-    VoterActions.retrieveEmailAddress();
+    VoterActions.voterEmailAddressRetrieve();
     StarActions.voterAllStarsStatusRetrieve();
     FriendActions.friendInvitationsSentToMe();
 
@@ -94,9 +94,9 @@ export default class Application extends Component {
                 </div>
               </div>;
     }
-    console.log("voter.we_vote_id:", voter.we_vote_id, ", voter.email:", voter.email, ", voter.email_ownership_is_verified:", voter.email_ownership_is_verified);
+    // console.log("voter:", voter);
     let voter_device_id = VoterStore.voterDeviceId();
-    console.log("voter_device_id:", voter_device_id);
+    // console.log("voter_device_id:", voter_device_id);
 
     return <div className="app-base" id="app-base-id">
       <Headroom>

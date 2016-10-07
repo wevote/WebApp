@@ -42,10 +42,10 @@ export default class AddressBox extends Component {
     });
   }
 
-  saveVoterAddress (e) {
+  voterAddressSave (e) {
     e.preventDefault();
     var { voter_address } = this.state;
-    VoterActions.saveAddress(voter_address);
+    VoterActions.voterAddressSave(voter_address);
     this.setState({loading: true});
   }
 
@@ -55,7 +55,7 @@ export default class AddressBox extends Component {
       return LoadingWheel;
     }
     return <div>
-        <form onSubmit={this.saveVoterAddress.bind(this)}>
+        <form onSubmit={this.voterAddressSave.bind(this)}>
         <input
           type="text"
           onChange={this.updateVoterAddress.bind(this)}
@@ -68,7 +68,7 @@ export default class AddressBox extends Component {
 
         <div className="u-gutter__top--small">
           <Button
-            onClick={this.saveVoterAddress.bind(this)}
+            onClick={this.voterAddressSave.bind(this)}
             bsStyle="primary">
             Save</Button>
         </div>

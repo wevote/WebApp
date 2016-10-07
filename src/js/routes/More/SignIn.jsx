@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { browserHistory } from "react-router";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
 import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
@@ -15,7 +16,9 @@ export default class SignIn extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      facebook_auth_response: {}
+    };
   }
 
   componentDidMount () {
@@ -34,23 +37,32 @@ export default class SignIn extends Component {
   }
 
   _onFacebookChange () {
-    this.setState({ fb_state: this.getFacebookState() });
+    this.setState({
+      facebook_auth_response: FacebookStore.getFacebookState(),
+    });
   }
 
-  getFacebookState () {
-    return {
-      accessToken: FacebookStore.accessToken,
-      facebookIsLoggedIn: FacebookStore.loggedIn,
-      userId: FacebookStore.userId,
-      facebookPictureStatus: FacebookStore.facebookPictureStatus,
-      facebookPictureUrl: FacebookStore.facebookPictureUrl
-    };
-  }
+  // getFacebookState () {
+  //   return {
+  //     accessToken: FacebookStore.accessToken,
+  //     facebookIsLoggedIn: FacebookStore.loggedIn,
+  //     userId: FacebookStore.userId,
+  //     facebookPictureStatus: FacebookStore.facebookPictureStatus,
+  //     facebookPictureUrl: FacebookStore.facebookPictureUrl
+  //   };
+  // }
 
   render () {
     var { voter} = this.state;
     if (!voter){
       return LoadingWheel;
+    }
+
+    // console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
+    if (this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
+      // console.log("SignIn.jsx facebook_retrieve_attempted");
+      browserHistory.push("/facebook_sign_in");
+      // return <span>SignIn.jsx facebook_retrieve_attempted</span>;
     }
 
     let facebook_sign_in_option = "";

@@ -91,7 +91,9 @@ export default class YourPage extends Component {
           <TwitterHandleBox {...this.props} />
         </div>
       </div>
-      <GuidePositionListForVoter voter={this.state.voter} />
+      { this.state.voter ?
+        <GuidePositionListForVoter voter={this.state.voter} /> :
+        null }
     </div>;
   }
 }

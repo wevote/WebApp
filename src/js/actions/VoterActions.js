@@ -16,21 +16,15 @@ module.exports = {
     });
   },
 
-  retrieveAddress: function (id){
+  voterAddressRetrieve: function (id){
     Dispatcher.loadEndpoint("voterAddressRetrieve", { voter_device_id: id});
   },
 
-  retrieveEmailAddress: function (){
+  voterEmailAddressRetrieve: function (){
     Dispatcher.loadEndpoint("voterEmailAddressRetrieve", {});
   },
 
-  retrieveEmailAddressBySecretKey: function (email_secret_key){
-    Dispatcher.loadEndpoint("voterEmailAddressRetrieve", {
-      email_secret_key: email_secret_key
-    });
-  },
-
-  saveAddress: function (text){
+  voterAddressSave: function (text){
     Dispatcher.loadEndpoint("voterAddressSave", { text_for_map_search: text });
   },
 
@@ -52,16 +46,16 @@ module.exports = {
 
   //signOut moved to VoterSessionActions
 
-  updateVoter: function (data){
-    let attributes = {
-      facebook_email: data.email || false,
-      first_name: data.first_name || false,
-      middle_name: data.middle_name || false,
-      last_name: data.last_name || false,
-      twitter_profile_image_url_https: false
-    };
-    Dispatcher.loadEndpoint("voterUpdate", attributes );
-  },
+  // updateVoter: function (data){
+  //   let attributes = {
+  //     facebook_email: data.email || false,
+  //     first_name: data.first_name || false,
+  //     middle_name: data.middle_name || false,
+  //     last_name: data.last_name || false,
+  //     twitter_profile_image_url_https: false
+  //   };
+  //   Dispatcher.loadEndpoint("voterUpdate", attributes );
+  // },
 
   voterEmailAddressSave: function (voter_email_address){
     Dispatcher.loadEndpoint("voterEmailAddressSave", {
@@ -89,10 +83,11 @@ module.exports = {
     });
   },
 
-  voterMergeTwoAccounts: function (email_secret_key) {
+  voterMergeTwoAccounts: function (email_secret_key, facebook_secret_key) {
     Dispatcher.loadEndpoint("voterMergeTwoAccounts",
       {
-        email_secret_key: email_secret_key
+        email_secret_key: email_secret_key,
+        facebook_secret_key: facebook_secret_key
       });
   },
 

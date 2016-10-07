@@ -1,4 +1,5 @@
 import Dispatcher from "../dispatcher/Dispatcher";
+import BallotActions from "../actions/BallotActions";
 import FacebookActions from "../actions/FacebookActions";
 import FacebookStore from "../stores/FacebookStore";
 import FluxMapStore from "flux/lib/FluxMapStore";
@@ -15,7 +16,8 @@ class VoterStore extends FluxMapStore {
       voter: {},
       address: {},
       email_address_status: {},
-      email_sign_in_status: {}
+      email_sign_in_status: {},
+      facebook_sign_in_status: {}
     };
   }
 
@@ -43,16 +45,20 @@ class VoterStore extends FluxMapStore {
     return this.getState().email_sign_in_status;
   }
 
-  getTwitterHandle (){
-    return this.getState().voter.twitter_handle || "";
-  }
-
   getFacebookPhoto (){
     return this.getState().voter.facebook_profile_image_url_https;
   }
 
+  getFacebookSignInStatus (){
+    return this.getState().facebook_sign_in_status;
+  }
+
   getFullName (){
     return this.getState().voter.full_name;
+  }
+
+  getTwitterHandle (){
+    return this.getState().voter.twitter_handle || "";
   }
 
   // Could be either Facebook photo or Twitter photo
@@ -152,10 +158,12 @@ class VoterStore extends FluxMapStore {
         };
 
       case "voterEmailAddressSave":
+        VoterActions.voterRetrieve();
         return {
           ...state,
           email_address_list: action.res.email_address_list,
           email_address_status: {
+            email_verify_attempted: action.res.email_verify_attempted,
             email_address_already_owned_by_other_voter: action.res.email_address_already_owned_by_other_voter,
             email_address_created: action.res.email_address_created,
             email_address_deleted: action.res.email_address_deleted,
@@ -165,12 +173,13 @@ class VoterStore extends FluxMapStore {
         };
 
       case "voterEmailAddressSignIn":
+        VoterActions.voterRetrieve();
         return {
           ...state,
           email_sign_in_status: {
+            email_sign_in_attempted: action.res.email_sign_in_attempted,
             email_ownership_is_verified: action.res.email_ownership_is_verified,
             email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
-            email_sign_in_attempted: action.res.email_sign_in_attempted,
             email_address_found: action.res.email_address_found,
             yes_please_merge_accounts: action.res.yes_please_merge_accounts,
             voter_we_vote_id_from_secret_key: action.res.voter_we_vote_id_from_secret_key,
@@ -179,12 +188,13 @@ class VoterStore extends FluxMapStore {
         };
 
       case "voterEmailAddressVerify":
+        VoterActions.voterRetrieve();
         return {
           ...state,
           email_address_status: {
             email_ownership_is_verified: action.res.email_ownership_is_verified,
             email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
-            email_retrieve_attempted: action.res.email_retrieve_attempted,
+            email_verify_attempted: action.res.email_verify_attempted,
             email_address_found: action.res.email_address_found,
           }
         };
@@ -194,7 +204,7 @@ class VoterStore extends FluxMapStore {
         //  refresh a lot of data
         voter_device_id = this.voterDeviceId();
         VoterActions.voterRetrieve(voter_device_id);
-        VoterActions.retrieveEmailAddress();
+        VoterActions.voterEmailAddressRetrieve();
         StarActions.voterAllStarsStatusRetrieve();
         FriendActions.friendInvitationsSentToMe();
         return {
@@ -206,6 +216,9 @@ class VoterStore extends FluxMapStore {
             email_address_found: true,
             yes_please_merge_accounts: false,
             voter_we_vote_id_from_secret_key: "",
+            voter_merge_two_accounts_attempted: true,
+          },
+          facebook_sign_in_status: {
             voter_merge_two_accounts_attempted: true,
           }
         };
@@ -219,7 +232,7 @@ class VoterStore extends FluxMapStore {
       case "voterRetrieve":
         voter_device_id = action.res.voter_device_id;
         this.setVoterDeviceIdCookie(voter_device_id);
-        VoterActions.retrieveAddress(voter_device_id);
+        VoterActions.voterAddressRetrieve(voter_device_id);
         const url = action.res.facebook_profile_image_url_https;
         if (action.res.signed_in_facebook && (url === null || url === "")){
           const userId = FacebookStore.userId;
@@ -232,12 +245,17 @@ class VoterStore extends FluxMapStore {
       };
 
       case "voterSignOut":
+        VoterActions.voterRetrieve();
+        VoterActions.voterEmailAddressRetrieve();
+        StarActions.voterAllStarsStatusRetrieve();
+        FriendActions.friendInvitationsSentToMe();
+        BallotActions.voterBallotItemsRetrieve();
         return {
           ...state,
           email_address_status: {
             email_ownership_is_verified: false,
             email_secret_key_belongs_to_this_voter: false,
-            email_retrieve_attempted: false,
+            email_verify_attempted: false,
             email_address_found: false
           }
         };

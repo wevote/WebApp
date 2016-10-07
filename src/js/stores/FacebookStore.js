@@ -20,6 +20,23 @@ class FacebookStore extends FluxMapStore {
     return this.getState().emailData;
   }
 
+  getFacebookState () {
+    return {
+      accessToken: this.accessToken,
+      facebookIsLoggedIn: this.loggedIn,
+      userId: this.userId,
+      // facebookPictureStatus: this.getState().facebookPictureStatus,
+      // facebookPictureUrl: this.getState().facebookPictureUrl,
+      facebook_retrieve_attempted: this.getState().facebook_retrieve_attempted,
+      facebook_sign_in_verified: this.getState().facebook_sign_in_verified,
+      facebook_sign_in_failed: this.getState().facebook_sign_in_failed,
+      facebook_secret_key: this.getState().facebook_secret_key,
+      voter_we_vote_id_attached_to_facebook: this.getState().voter_we_vote_id_attached_to_facebook,
+      voter_we_vote_id_attached_to_facebook_email: this.getState().voter_we_vote_id_attached_to_facebook_email,
+      yes_please_merge_accounts: this.getState().yes_please_merge_accounts,
+    };
+  }
+
   get loggedIn () {
     if (!this.facebookAuthData) {
         return undefined;
@@ -48,6 +65,8 @@ class FacebookStore extends FluxMapStore {
     switch (action.type) {
 
       case FacebookConstants.FACEBOOK_LOGGED_IN:
+        // console.log("FACEBOOK_LOGGED_IN action.data:", action.data);
+        FacebookActions.voterFacebookSignInAuth(action.data.authResponse);
         FacebookActions.getFacebookData();
         return {
           ...state,
@@ -55,15 +74,46 @@ class FacebookStore extends FluxMapStore {
         };
 
       case FacebookConstants.FACEBOOK_RECEIVED_DATA:
-        FacebookActions.facebookSignIn(action.data.id, action.data.email);
-        VoterActions.updateVoter(action.data);
+        // OLD
+        // FacebookActions.facebookSignIn(action.data.id, action.data.email);
+        // Cache the data in the API server
+        // console.log("FACEBOOK_RECEIVED_DATA action.data:", action.data);
+        FacebookActions.voterFacebookSignInData(action.data);
+        // VoterActions.updateVoter(action.data);
         return {
           ...state,
           emailData: action.data
         };
 
-      case "facebookSignIn":
-        VoterActions.voterRetrieve();
+      // OLD
+      // case "facebookSignIn":
+      //   VoterActions.voterRetrieve();
+      //   return state;
+
+      case "voterFacebookSignInRetrieve":
+        if (action.res.facebook_sign_in_verified) {
+          VoterActions.voterRetrieve();
+        }
+        return {
+          ...state,
+          facebook_retrieve_attempted: action.res.facebook_retrieve_attempted,
+          facebook_sign_in_verified: action.res.facebook_sign_in_verified,
+          facebook_sign_in_failed: action.res.facebook_sign_in_failed,
+          facebook_secret_key: action.res.facebook_secret_key,
+          voter_we_vote_id_attached_to_facebook: action.res.voter_we_vote_id_attached_to_facebook,
+          voter_we_vote_id_attached_to_facebook_email: action.res.voter_we_vote_id_attached_to_facebook_email,
+          // facebook_email: action.res.facebook_email,
+          // facebook_first_name: action.res.facebook_first_name,
+          // facebook_middle_name: action.res.facebook_middle_name,
+          // facebook_last_name: action.res.facebook_last_name,
+          // facebook_profile_image_url_https: action.res.facebook_profile_image_url_https,
+        };
+
+      case "voterFacebookSignInSave":
+        if (action.res.save_profile_data) {
+          // Only reach out for the Facebook Sign In information if the save_profile_data call has completed
+          FacebookActions.voterFacebookSignInRetrieve();
+        }
         return state;
 
       case "voterSignOut":
