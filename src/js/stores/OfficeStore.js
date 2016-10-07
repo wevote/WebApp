@@ -7,7 +7,8 @@ class OfficeStore extends FluxMapStore {
     // if (!this.isLoaded()){ return undefined; }
     let office_list = this.getState().offices;
     if (office_list) {
-      return office_list[office_we_vote_id];
+      // return office_list[office_we_vote_id];
+      return office_list;
     } else {
       return undefined;
     }
