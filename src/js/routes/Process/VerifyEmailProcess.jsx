@@ -16,7 +16,7 @@ export default class VerifyEmailProcess extends Component {
     this.state = {
       voter: VoterStore.getVoter(),
       yes_please_merge_accounts: false,
-      saving: false
+      saving: true
     };
   }
 
@@ -52,21 +52,25 @@ export default class VerifyEmailProcess extends Component {
   render () {
     let { email_secret_key } = this.props.params;
     console.log("VerifyEmailProcess, email_secret_key:", email_secret_key);
-    if (!email_secret_key || this.state.saving || !this.state.email_address_status) {
+    console.log("VerifyEmailProcess, email_secret_key:", email_secret_key);
+    if (!email_secret_key
+      || this.state.saving
+      || !this.state.email_address_status
+      || !this.state.email_address_status.email_verify_attempted) {
       return LoadingWheel;
     }
 
     // This process starts when we return from attempting voterEmailAddressVerify
     if (!this.state.email_address_status.email_address_found) {
-      console.log("Could not find secret_key - push to /more/sign_in");
-      browserHistory.push("/more/sign_in");
+      console.log("Could not find secret_key - push to /ballot");
+      browserHistory.push("/ballot");
     }
 
     if (this.state.email_address_status.email_ownership_is_verified) {
       if (this.state.email_address_status.email_secret_key_belongs_to_this_voter) {
-        // We don't need to do anything more except redirect to the email management page
-        console.log("secret key owned by this voter - push to /more/sign_in");
-        browserHistory.push("/more/sign_in");
+        // We don't need to do anything more except redirect
+        console.log("secret key owned by this voter - push to /ballot");
+        browserHistory.push("/ballot");
       } else {
         return <div>The email you just verified belongs to another account.
           Perhaps you used We Vote from another browser?</div>;

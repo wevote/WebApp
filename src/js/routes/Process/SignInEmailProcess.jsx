@@ -51,7 +51,8 @@ export default class SignInEmailProcess extends Component {
   render () {
     let { email_secret_key } = this.props.params;
     console.log("SignInEmailProcess, email_secret_key:", email_secret_key);
-    if (!email_secret_key || this.state.saving
+    if (!email_secret_key 
+      || this.state.saving
       || !this.state.email_sign_in_status
       || !this.state.email_sign_in_status.email_sign_in_attempted) {
       console.log("this.state.email_sign_in_status:", this.state.email_sign_in_status)

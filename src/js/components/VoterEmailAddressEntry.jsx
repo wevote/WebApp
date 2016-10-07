@@ -19,6 +19,7 @@ export default class VoterEmailAddressEntry extends Component {
           verification_email_sent: false,
           link_to_sign_in_email_sent: false
         },
+        voter: VoterStore.getVoter(),
         voter_email_address: "",
         voter_email_address_list: []
       };
@@ -26,7 +27,8 @@ export default class VoterEmailAddressEntry extends Component {
 
   componentDidMount () {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    VoterActions.retrieveEmailAddress();
+    VoterActions.voterRetrieve();
+    VoterActions.voterEmailAddressRetrieve();
   }
 
   componentWillUnmount (){
@@ -35,6 +37,7 @@ export default class VoterEmailAddressEntry extends Component {
 
   _onVoterStoreChange () {
       this.setState({
+        voter: VoterStore.getVoter(),
         voter_email_address_list: VoterStore.getEmailAddressList(),
         email_address_status: VoterStore.getEmailAddressStatus(),
         loading: false });
@@ -45,7 +48,6 @@ export default class VoterEmailAddressEntry extends Component {
   }
 
   removeVoterEmailAddress (email_we_vote_id) {
-    console.log("VoterEmailAddressEntry, removeVoterEmailAddress, email_we_vote_id:", email_we_vote_id);
     VoterActions.removeVoterEmailAddress(email_we_vote_id);
   }
 
@@ -93,12 +95,13 @@ export default class VoterEmailAddressEntry extends Component {
   }
 
   render () {
-    var { loading, voter_email_address } = this.state;
+    var { loading, voter, voter_email_address } = this.state;
     if (loading){
       return LoadingWheel;
     }
     const email_address_status_html = <span>
-      { this.state.email_address_status.email_address_already_owned_by_other_voter ?
+      { this.state.email_address_status.email_address_already_owned_by_other_voter
+        && !this.state.email_address_status.link_to_sign_in_email_sent ?
         <Alert bsStyle="danger">
           That email is already being used by another account.
           To sign into that account, please click "Send Login Link in an Email".
@@ -110,11 +113,12 @@ export default class VoterEmailAddressEntry extends Component {
         || this.state.email_address_status.verification_email_sent
         || this.state.email_address_status.link_to_sign_in_email_sent ?
         <Alert bsStyle="success">
-          { this.state.email_address_status.email_address_created ? <span>Your email address was saved. </span> : null }
+          { this.state.email_address_status.email_address_created
+            && !this.state.email_address_status.verification_email_sent ? <span>Your email address was saved. </span> : null }
           { this.state.email_address_status.email_address_deleted ? <span>Your email address was deleted. </span> : null }
           { this.state.email_address_status.email_ownership_is_verified ? <span>Your email address was verified. </span> : null }
           { this.state.email_address_status.verification_email_sent ? <span>Please check your email. A verification email was sent. </span> : null }
-          { this.state.email_address_status.link_to_sign_in_email_sent ? <span>Please check your email. An email you can use to sign in was sent. </span> : null }
+          { this.state.email_address_status.link_to_sign_in_email_sent ? <span>Please check your email. A sign in link was sent. </span> : null }
         </Alert> :
         null }
       </span>;
@@ -164,10 +168,11 @@ export default class VoterEmailAddressEntry extends Component {
         </div>
       </div>;
 
-    var email_status_description;
+    let email_status_description;
+    let allow_remove_email;
     const email_list_html = this.state.voter_email_address_list.map( (voter_email_address) => {
       email_status_description = voter_email_address.email_ownership_is_verified ? "Email Verified" : "Email Not Verified";
-      console.log("VoterEmailAddressEntry, voter_email_address:", voter_email_address);
+      allow_remove_email = voter.signed_in_facebook ? false : true;
       return <div key={voter_email_address.email_we_vote_id}
                   className="position-item card-child card-child--not-followed">
         <div className="card-child__media-object-content">
@@ -177,11 +182,13 @@ export default class VoterEmailAddressEntry extends Component {
           </div>
           <div className="card-child__additional">
             <div className="card-child__follow-buttons">
-              <Button onClick={this.removeVoterEmailAddress.bind(this, voter_email_address.email_we_vote_id)}
+              {allow_remove_email ?
+                <Button onClick={this.removeVoterEmailAddress.bind(this, voter_email_address.email_we_vote_id)}
                       bsStyle="default"
                       bsSize="small">
                 Remove Email
-              </Button>
+              </Button> :
+                null }
               {voter_email_address.email_ownership_is_verified ?
                 null :
                 <Button onClick={this.sendVerificationEmail.bind(this, voter_email_address.email_we_vote_id)}

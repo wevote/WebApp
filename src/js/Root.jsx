@@ -17,6 +17,7 @@ import Connect from "./routes/Connect";
 import Credits from "./routes/More/Credits";
 import EmailBallot from "./routes/More/EmailBallot";
 import EmptyBallot from "./routes/Ballot/EmptyBallot";
+import FacebookSignInProcess from "./routes/Process/FacebookSignInProcess";
 import Friends from "./routes/Friends";
 import GuidePositionList from "./routes/Guide/GuidePositionList";
 import Intro from "./routes/Intro/Intro";
@@ -98,6 +99,8 @@ const routes = () =>
     <Route path="requests/:invitation_secret_key/ignore" component={FriendInvitationByEmailVerifyProcess} />
 
     <Route path="activity" component={Activity} />
+
+    <Route path="/facebook_sign_in" component={FacebookSignInProcess} />
 
     <Route path="/twittersigninprocess/:sign_in_step/:incoming_twitter_handle" component={TwitterSignInProcess} />
     <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />

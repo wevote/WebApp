@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import { Alert, Button } from "react-bootstrap";
 import { browserHistory } from "react-router";
+import FacebookActions from "../actions/FacebookActions";
+import FacebookStore from "../stores/FacebookStore";
 import LoadingWheel from "../components/LoadingWheel";
 import VoterActions from "../actions/VoterActions";
 import VoterStore from "../stores/VoterStore";
@@ -9,7 +11,8 @@ export default class WouldYouLikeToMergeAccounts extends Component {
   static propTypes = {
     currentVoterWeVoteId: PropTypes.string.isRequired,
     mergeIntoVoterWeVoteId: PropTypes.string.isRequired,
-    emailSecretKey: PropTypes.string.isRequired
+    emailSecretKey: PropTypes.string,
+    facebookSecretKey: PropTypes.string
   };
 
   constructor (props) {
@@ -22,18 +25,36 @@ export default class WouldYouLikeToMergeAccounts extends Component {
           email_address_deleted: false,
           verification_email_sent: false
         },
+        facebook_sign_in_status: {
+          email_address_created: false,
+          email_address_deleted: false,
+          verification_email_sent: false
+        },
         voter_email_address: "",
         voter_email_address_list: []
       };
   }
 
   componentDidMount () {
+    this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    VoterActions.retrieveEmailAddress();
+    if (this.props.emailSecretKey && this.props.emailSecretKey != "") {
+      VoterActions.voterEmailAddressRetrieve();
+    } else if (this.props.facebookSecretKey && this.props.facebookSecretKey != "") {
+      FacebookActions.voterFacebookSignInRetrieve();
+    }
   }
 
   componentWillUnmount (){
+    this.facebookStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  _onFacebookStoreChange () {
+    this.setState({
+      facebook_sign_in_status: FacebookStore.getFacebookState(),
+      saving: false
+    });
   }
 
   _onVoterStoreChange () {
@@ -48,11 +69,16 @@ export default class WouldYouLikeToMergeAccounts extends Component {
   }
 
   voterEmailAddressSignInConfirm (email_secret_key) {
-    console.log("voterEmailAddressSignInConfirm, email_secret_key:", email_secret_key);
+    // console.log("voterEmailAddressSignInConfirm, email_secret_key:", email_secret_key);
     VoterActions.voterEmailAddressSignInConfirm(email_secret_key);
     this.setState({
       saving: true
     });
+  }
+
+  voterFacebookSignInConfirm () {
+    FacebookActions.voterFacebookSignInConfirm();
+    this.setState({saving: true});
   }
 
   render () {
@@ -60,7 +86,7 @@ export default class WouldYouLikeToMergeAccounts extends Component {
     if (saving || !this.state.email_sign_in_status){
       return LoadingWheel;
     }
-    const email_address_status_html = <span>
+    const merge_status_html = <span>
       { !this.state.email_sign_in_status.yes_please_merge_accounts ?
         <Alert bsStyle="danger">
           If you sign in now, all of your positions and friends will be merged with the account
@@ -74,8 +100,19 @@ export default class WouldYouLikeToMergeAccounts extends Component {
         null }
       </span>;
 
+    let merge_action_button;
+    if (this.props.emailSecretKey && this.props.emailSecretKey != "") {
+      merge_action_button = <Button onClick={this.voterEmailAddressSignInConfirm.bind(this, this.props.emailSecretKey)}
+                  bsStyle="primary">
+            Merge These Accounts</Button>;
+    } else {
+      merge_action_button = <Button onClick={this.voterFacebookSignInConfirm.bind(this)}
+                  bsStyle="primary">
+            Merge These Accounts</Button>;
+    }
+
     return <div className="guidelist card-child__list-group">
-      {email_address_status_html}
+      {merge_status_html}
 
         <div className="u-gutter__top--small">
           <Button onClick={this.cancelMerge.bind(this)}
@@ -83,9 +120,7 @@ export default class WouldYouLikeToMergeAccounts extends Component {
                   bsSize="small">
             Cancel
           </Button>
-          <Button onClick={this.voterEmailAddressSignInConfirm.bind(this, this.props.emailSecretKey)}
-                  bsStyle="primary">
-            Merge These Accounts</Button>
+          {merge_action_button}
         </div>
       </div>;
   }
