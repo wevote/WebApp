@@ -16,9 +16,10 @@ export default class FacebookSignInProcess extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      voter: VoterStore.getVoter(),
-      facebook_auth_response: FacebookStore.getFacebookState(),
-      facebook_sign_in_status: VoterStore.getFacebookSignInStatus(),
+      voter: {},
+      facebook_auth_response: {},
+      facebook_sign_in_status: {},
+      creating_account: false,
       saving: false
     };
   }
@@ -43,9 +44,22 @@ export default class FacebookSignInProcess extends Component {
   }
 
   _onVoterStoreChange () {
+    let facebook_sign_in_status = VoterStore.getFacebookSignInStatus();
+    let local_creating_account;
+    if (this.state.creating_account) {
+      local_creating_account = true;
+      // If already set, don't let creating_account get un-set until facebook_account_created is true
+      if (facebook_sign_in_status.facebook_account_created) {
+        local_creating_account = false;
+      }
+    } else {
+      local_creating_account = false;
+    }
+
     this.setState({
       voter: VoterStore.getVoter(),
       facebook_sign_in_status: VoterStore.getFacebookSignInStatus(),
+      creating_account: local_creating_account,
       saving: false
     });
   }
@@ -55,6 +69,11 @@ export default class FacebookSignInProcess extends Component {
     this.setState({saving: true});
   }
 
+  voterFacebookSaveToCurrentAccount () {
+    VoterActions.voterFacebookSaveToCurrentAccount();
+    this.setState({creating_account: true});
+  }
+
   voterFacebookSignInRetrieve () {
     FacebookActions.voterFacebookSignInRetrieve();
     this.setState({saving: true});
@@ -62,18 +81,19 @@ export default class FacebookSignInProcess extends Component {
 
   render () {
     let {facebook_auth_response, facebook_sign_in_status} = this.state;
-    // console.log("FacebookSignInProcess render, this.state.saving:", this.state.saving);
+    console.log("FacebookSignInProcess render, this.state.saving:", this.state.saving, ", this.state.creating_account:", this.state.creating_account);
     if (this.state.saving
+      || this.state.creating_account
       || !facebook_auth_response
       || !facebook_auth_response.facebook_retrieve_attempted
       || !facebook_sign_in_status ) {
-      // console.log("facebook_auth_response:", facebook_auth_response);
-      // console.log("facebook_sign_in_status:", facebook_sign_in_status);
+      console.log("facebook_auth_response:", facebook_auth_response);
+      console.log("facebook_sign_in_status:", facebook_sign_in_status);
       return LoadingWheel;
     }
-    // console.log("=== Passed initial gate ===");
-    // console.log("facebook_auth_response:", facebook_auth_response);
-    // console.log("facebook_sign_in_status:", facebook_sign_in_status);
+    console.log("=== Passed initial gate ===");
+    console.log("facebook_auth_response:", facebook_auth_response);
+    console.log("facebook_sign_in_status:", facebook_sign_in_status);
 
     // We redirect after voterMergeTwoAccounts comes back
     if (facebook_sign_in_status.voter_merge_two_accounts_attempted) {
@@ -81,14 +101,16 @@ export default class FacebookSignInProcess extends Component {
       browserHistory.push("/ballot");
     }
 
+    // We redirect after voterFacebookSaveToCurrentAccount comes back
+    if (facebook_sign_in_status.facebook_account_created) {
+      console.log("voterFacebookSaveToCurrentAccount - push to /ballot");
+      browserHistory.push("/ballot");
+    }
+
     if (facebook_auth_response.facebook_sign_in_failed) {
       // console.log("Facebook sign in failed - push to /more/sign_in");
       browserHistory.push("/more/sign_in");
     }
-
-    // NO voter_we_vote_id_attached_to_facebook (No prior facebook sign in).
-    // Is there a voter_we_vote_id_attached_to_facebook_email?
-    // Connect it to this account.
 
     // Is there a collision of two accounts?
     let there_are_two_accounts_related_to_this_facebook_account = false;
@@ -135,7 +157,12 @@ export default class FacebookSignInProcess extends Component {
       && facebook_auth_response.voter_we_vote_id_attached_to_facebook_email != "") {
       return <span>You haven't signed in with this Facebook account yet, but you have signed in with your Facebook email.
         Please go back to the Sign In page.</span>
+    } else {
+      console.log("Setting up new Facebook entry");
+      this.voterFacebookSaveToCurrentAccount();
+      return <span>Setting up new Facebook entry</span>;
     }
+    console.log("Hanging out by last LoadingWheel");
     return LoadingWheel;
   }
 }

@@ -83,6 +83,11 @@ module.exports = {
     });
   },
 
+  voterFacebookSaveToCurrentAccount: function () {
+    Dispatcher.loadEndpoint("voterFacebookSaveToCurrentAccount", {
+    });
+  },
+
   voterMergeTwoAccounts: function (email_secret_key, facebook_secret_key) {
     Dispatcher.loadEndpoint("voterMergeTwoAccounts",
       {

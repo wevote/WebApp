@@ -6,14 +6,6 @@ const cookies = require("../utils/cookies");
 const web_app_config = require("../config");
 
 module.exports = {
-  // OLD method
-  // facebookSignIn: function (facebook_id, facebook_email){
-  //   Dispatcher.loadEndpoint("facebookSignIn", {
-  //     facebook_id: facebook_id,
-  //     facebook_email: facebook_email
-  //   });
-  // },
-
   // TODO Convert this to sign out of just Facebook
   appLogout: function (){
     cookies.setItem("voter_device_id", "", -1, "/");
@@ -103,13 +95,14 @@ module.exports = {
 
   // Save incoming data from Facebook
   voterFacebookSignInData: function (data) {
+    console.log("FacebookActions voterFacebookSignInData, data:", data);
     Dispatcher.loadEndpoint("voterFacebookSignInSave", {
       facebook_user_id: data.id || false,
       facebook_email: data.email || false,
       facebook_first_name: data.first_name || false,
       facebook_middle_name: data.middle_name || false,
       facebook_last_name: data.last_name || false,
-      facebook_profile_image_url_https: false,
+      facebook_profile_image_url_https: data.url || false,
       save_auth_data: false,
       save_profile_data: true,
     });
