@@ -199,6 +199,15 @@ class VoterStore extends FluxMapStore {
           }
         };
 
+      case "voterFacebookSaveToCurrentAccount":
+        VoterActions.voterRetrieve();
+        return {
+          ...state,
+          facebook_sign_in_status: {
+            facebook_account_created: action.res.success,
+          }
+        };
+
       case "voterMergeTwoAccounts":
         // On the server we just switched linked this voter_device_id to a new voter record, so we want to
         //  refresh a lot of data

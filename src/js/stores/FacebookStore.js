@@ -31,6 +31,7 @@ class FacebookStore extends FluxMapStore {
       facebook_sign_in_verified: this.getState().facebook_sign_in_verified,
       facebook_sign_in_failed: this.getState().facebook_sign_in_failed,
       facebook_secret_key: this.getState().facebook_secret_key,
+      facebook_account_created: this.getState().facebook_account_created,
       voter_we_vote_id_attached_to_facebook: this.getState().voter_we_vote_id_attached_to_facebook,
       voter_we_vote_id_attached_to_facebook_email: this.getState().voter_we_vote_id_attached_to_facebook_email,
       yes_please_merge_accounts: this.getState().yes_please_merge_accounts,
@@ -74,8 +75,6 @@ class FacebookStore extends FluxMapStore {
         };
 
       case FacebookConstants.FACEBOOK_RECEIVED_DATA:
-        // OLD
-        // FacebookActions.facebookSignIn(action.data.id, action.data.email);
         // Cache the data in the API server
         // console.log("FACEBOOK_RECEIVED_DATA action.data:", action.data);
         FacebookActions.voterFacebookSignInData(action.data);
@@ -84,11 +83,6 @@ class FacebookStore extends FluxMapStore {
           ...state,
           emailData: action.data
         };
-
-      // OLD
-      // case "facebookSignIn":
-      //   VoterActions.voterRetrieve();
-      //   return state;
 
       case "voterFacebookSignInRetrieve":
         if (action.res.facebook_sign_in_verified) {
@@ -100,6 +94,7 @@ class FacebookStore extends FluxMapStore {
           facebook_sign_in_verified: action.res.facebook_sign_in_verified,
           facebook_sign_in_failed: action.res.facebook_sign_in_failed,
           facebook_secret_key: action.res.facebook_secret_key,
+          yes_please_merge_accounts: action.res.yes_please_merge_accounts,
           voter_we_vote_id_attached_to_facebook: action.res.voter_we_vote_id_attached_to_facebook,
           voter_we_vote_id_attached_to_facebook_email: action.res.voter_we_vote_id_attached_to_facebook_email,
           // facebook_email: action.res.facebook_email,
@@ -128,8 +123,9 @@ class FacebookStore extends FluxMapStore {
         return state;
 
       case FacebookConstants.FACEBOOK_RECEIVED_PICTURE:
-          FacebookActions.savePhoto(action.data.data.url);
-          return state;
+        // FacebookActions.savePhoto(action.data.data.url);  // TODO DALE We need to figure out how best to save this
+        // FacebookActions.voterFacebookSignInData(action.data);
+        return state;
 
       default:
         return state;

@@ -59,9 +59,9 @@ export default class PositionItem extends Component {
     }
 
     var show_position = true;
-    // For now, do not show the voter's position. We will show a voter's position when can have comments.
-    if (position.speaker_type === "V")
-        show_position = false;
+    // For now, do not show the voter's own position. We will show a voter's position when can have comments.
+    // if (position.speaker_type === "V")  // TO BE REFACTORED
+    //     show_position = false;
 
     var nothing_to_display = null;
 
