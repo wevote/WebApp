@@ -70,7 +70,7 @@ on the front page of his web site, Democracy Dash, he knew things had to change.
 Through the rise and fall of Democracy Dash, the first social site for voters, it became clear that
 
 technology meant to empower voters should not be owned by a corporation.
-
+<br />
 After meeting in Oakland in the spring of 2013, We Vote founders <a href="#Dale">Dale McGrew</a>, <a href="#Jen">Jenifer Fernandez
 
 Ancona</a>, <a href="#Dan">Dan Ancona</a>, and their families became fast friends and bought a home together,
