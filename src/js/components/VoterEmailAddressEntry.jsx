@@ -102,9 +102,10 @@ export default class VoterEmailAddressEntry extends Component {
     const email_address_status_html = <span>
       { this.state.email_address_status.email_address_already_owned_by_other_voter
         && !this.state.email_address_status.link_to_sign_in_email_sent ?
-        <Alert bsStyle="danger">
-          That email is already being used by another account.
-          To sign into that account, please click "Send Login Link in an Email".
+        <Alert bsStyle="warning">
+          That email is already being used by another account.<br />
+          <br />
+          Please click "Send Login Link in an Email" below to sign into that account.
         </Alert> :
         null }
       { this.state.email_address_status.email_address_created
