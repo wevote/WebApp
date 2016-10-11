@@ -3,7 +3,7 @@ import { browserHistory } from "react-router";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
-import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
+import WouldYouLikeToMergeAccountsOld from "../../components/WouldYouLikeToMergeAccountsOld";
 
 export default class SignInEmailProcess extends Component {
   static propTypes = {
@@ -38,8 +38,8 @@ export default class SignInEmailProcess extends Component {
     });
   }
 
-  voterMergeTwoAccounts (email_secret_key) {
-    VoterActions.voterMergeTwoAccounts(email_secret_key);
+  voterMergeTwoAccountsByEmailKey (email_secret_key) {
+    VoterActions.voterMergeTwoAccountsByEmailKey(email_secret_key);
     this.setState({saving: true});
   }
 
@@ -59,9 +59,9 @@ export default class SignInEmailProcess extends Component {
       return LoadingWheel;
     }
 
-    // We redirect after voterMergeTwoAccounts comes back
+    // We redirect after voterMergeTwoAccountsByEmailKey comes back
     if (this.state.email_sign_in_status.voter_merge_two_accounts_attempted) {
-      // console.log("voterMergeTwoAccounts attempted - push to /more/sign_in");
+      // console.log("voterMergeTwoAccountsByEmailKey attempted - push to /more/sign_in");
       browserHistory.push("/ballot");
     }
 
@@ -84,12 +84,12 @@ export default class SignInEmailProcess extends Component {
           // If so, ask if they want to connect two accounts?
           if (this.state.email_sign_in_status.yes_please_merge_accounts) {
             // Go ahead and merge this voter record with the voter record that the email_secret_key belongs to
-            // console.log("this.voterMergeTwoAccounts -- yes please merge accounts");
-            this.voterMergeTwoAccounts(email_secret_key)
+            // console.log("this.voterMergeTwoAccountsByEmailKey -- yes please merge accounts");
+            this.voterMergeTwoAccountsByEmailKey(email_secret_key)
           } else {
             // Display the question of whether to merge accounts or not
-            // console.log("BEFORE WouldYouLikeToMergeAccounts, this.state.email_sign_in_status:", this.state.email_sign_in_status);
-            return <WouldYouLikeToMergeAccounts
+            // console.log("BEFORE WouldYouLikeToMergeAccountsOld, this.state.email_sign_in_status:", this.state.email_sign_in_status);
+            return <WouldYouLikeToMergeAccountsOld
               currentVoterWeVoteId={this.state.voter.we_vote_id}
               mergeIntoVoterWeVoteId={this.state.email_sign_in_status.voter_we_vote_id_from_secret_key}
               emailSecretKey={email_secret_key}
@@ -97,8 +97,8 @@ export default class SignInEmailProcess extends Component {
           }
         } else {
           // Go ahead and merge the accounts, which means deleting the current voter id and switching to the email owner
-          // console.log("this.voterMergeTwoAccounts - go ahead");
-          this.voterMergeTwoAccounts(email_secret_key);
+          // console.log("this.voterMergeTwoAccountsByEmailKey - go ahead");
+          this.voterMergeTwoAccountsByEmailKey(email_secret_key);
         }
       }
     }

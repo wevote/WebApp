@@ -47,6 +47,13 @@ module.exports = {
       });
   },
 
+  friendInvitationsProcessed: function () {
+    Dispatcher.loadEndpoint("friendList",
+      {
+        kind_of_list: "FRIEND_INVITATIONS_PROCESSED"
+      });
+  },
+
   friendInvitationsSentByMe: function () {
     Dispatcher.loadEndpoint("friendList",
       {

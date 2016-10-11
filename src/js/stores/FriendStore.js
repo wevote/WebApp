@@ -23,7 +23,11 @@ class FriendStore extends FluxMapStore {
   friendInvitationsSentToMe (){
     return this.getDataFromArr(this.getState().friend_invitations_sent_to_me) || {};
   }
-  
+
+  friendInvitationsProcessed (){
+    return this.getDataFromArr(this.getState().friend_invitations_processed) || {};
+  }
+
   getErrorMessageToShowVoter () {
     let error_message_to_show_voter = this.getState().error_message_to_show_voter;
     //this.state.error_message_to_show_voter = "";  // TODO DALE This may not work
@@ -140,14 +144,22 @@ class FriendStore extends FluxMapStore {
         };
 
       case "friendInvitationByEmailVerify":
-        FriendActions.friendInvitationsSentToMe();
+        if (action.res.voter_device_id == "") {
+          // The first time it was called there was no voter_device_id, so we want to call it again
+          // console.log("FriendStore, friendInvitationByEmailVerify, voter_device_id missing, invitation_secret_key:", action.res.invitation_secret_key);
+          FriendActions.friendInvitationByEmailVerify(action.res.invitation_secret_key);
+        } else {
+          // console.log("FriendStore, voter_device_id present");
+          FriendActions.friendInvitationsSentToMe();
+        }
         return {
           ...state,
           invitation_status: {
-            // email_ownership_is_verified: action.res.email_ownership_is_verified,
-            // email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
-            // email_retrieve_attempted: action.res.email_retrieve_attempted,
+            voter_device_id: action.res.voter_device_id,
+            voter_has_data_to_preserve: action.res.voter_has_data_to_preserve,
             invitation_found: action.res.invitation_found,
+            attempted_to_approve_own_invitation: action.res.attempted_to_approve_own_invitation,
+            invitation_secret_key_belongs_to_this_voter: action.res.invitation_secret_key_belongs_to_this_voter,
           }
         };
 
@@ -169,6 +181,12 @@ class FriendStore extends FluxMapStore {
           return {
             ...state,
             friend_invitations_sent_to_me: action.res.friend_list
+          }
+        } else if (action.res.kind_of_list === "FRIEND_INVITATIONS_PROCESSED") {
+          // console.log("FriendStore incoming data FRIEND_INVITATIONS_PROCESSED, action.res:", action.res);
+          return {
+            ...state,
+            friend_invitations_processed: action.res.friend_list
           }
         }
 

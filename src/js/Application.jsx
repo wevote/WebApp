@@ -59,10 +59,13 @@ export default class Application extends Component {
 
   componentDidMount () {
     let voter_device_id = VoterStore.voterDeviceId();
-    VoterActions.voterRetrieve(voter_device_id);
-    VoterActions.voterEmailAddressRetrieve();
-    StarActions.voterAllStarsStatusRetrieve();
-    FriendActions.friendInvitationsSentToMe();
+    VoterActions.voterRetrieve();
+    // console.log("Application, componentDidMount, voter_device_id:", voter_device_id);
+    if (voter_device_id && voter_device_id !== "") {
+      VoterActions.voterEmailAddressRetrieve();
+      StarActions.voterAllStarsStatusRetrieve();
+      FriendActions.friendInvitationsSentToMe();
+    }
 
     this.voterStoreListener = VoterStore.addListener(this._onChange.bind(this));
   }
