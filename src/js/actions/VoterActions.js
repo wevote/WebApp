@@ -88,11 +88,30 @@ module.exports = {
     });
   },
 
-  voterMergeTwoAccounts: function (email_secret_key, facebook_secret_key) {
+  voterMergeTwoAccountsByEmailKey: function (email_secret_key) {
     Dispatcher.loadEndpoint("voterMergeTwoAccounts",
       {
         email_secret_key: email_secret_key,
-        facebook_secret_key: facebook_secret_key
+        facebook_secret_key: "",
+        invitation_secret_key: "",
+      });
+  },
+
+  voterMergeTwoAccountsByFacebookKey: function (facebook_secret_key) {
+    Dispatcher.loadEndpoint("voterMergeTwoAccounts",
+      {
+        email_secret_key: "",
+        facebook_secret_key: facebook_secret_key,
+        invitation_secret_key: "",
+      });
+  },
+
+  voterMergeTwoAccountsByInvitationKey: function (invitation_secret_key) {
+    Dispatcher.loadEndpoint("voterMergeTwoAccounts",
+      {
+        email_secret_key: "",
+        facebook_secret_key: "",
+        invitation_secret_key: invitation_secret_key,
       });
   },
 
