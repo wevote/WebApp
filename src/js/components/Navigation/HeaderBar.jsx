@@ -113,6 +113,12 @@ export default class HeaderBar extends Component {
                   <span className="header-slide-out-menu-text-left">About <strong>We Vote</strong></span>
                 </div>
               </Link>
+            </li><li>
+              <Link onClick={this.hide.bind(this)} to="/more/credits">
+                <div>
+                  <span className="header-slide-out-menu-text-left">Credits</span>
+                </div>
+              </Link>
             </li>
             <li>
               <a onClick={this.hide.bind(this)} href="https://goo.gl/forms/B6P0iE44R21t36L42">
