@@ -53,24 +53,38 @@ export default class VerifyEmailProcess extends Component {
     let { email_secret_key } = this.props.params;
     console.log("VerifyEmailProcess, email_secret_key:", email_secret_key);
     console.log("VerifyEmailProcess, email_secret_key:", email_secret_key);
-    if (!email_secret_key
-      || this.state.saving
-      || !this.state.email_address_status
-      || !this.state.email_address_status.email_verify_attempted) {
+    if (!email_secret_key ||
+      this.state.saving ||
+      !this.state.email_address_status ||
+      !this.state.email_address_status.email_verify_attempted) {
       return LoadingWheel;
     }
 
     // This process starts when we return from attempting voterEmailAddressVerify
     if (!this.state.email_address_status.email_address_found) {
       console.log("Could not find secret_key - push to /ballot");
-      browserHistory.push("/ballot");
+      browserHistory.push({
+        pathname: "/ballot",
+        state: {
+          message: "Email verification did not work.",
+          message_type: "success"
+        }
+      });
+      return LoadingWheel;
     }
 
     if (this.state.email_address_status.email_ownership_is_verified) {
       if (this.state.email_address_status.email_secret_key_belongs_to_this_voter) {
         // We don't need to do anything more except redirect
         console.log("secret key owned by this voter - push to /ballot");
-        browserHistory.push("/ballot");
+        browserHistory.push({
+          pathname: "/ballot",
+          state: {
+            message: "Your have successfully verified your email.",
+            message_type: "success"
+          }
+        });
+        return LoadingWheel;
       } else {
         return <div>The email you just verified belongs to another account.
           Perhaps you used We Vote from another browser?</div>;

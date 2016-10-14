@@ -100,22 +100,22 @@ export default class VoterEmailAddressEntry extends Component {
       return LoadingWheel;
     }
     const email_address_status_html = <span>
-      { this.state.email_address_status.email_address_already_owned_by_other_voter
-        && !this.state.email_address_status.link_to_sign_in_email_sent ?
+      { this.state.email_address_status.email_address_already_owned_by_other_voter &&
+        !this.state.email_address_status.link_to_sign_in_email_sent ?
         <Alert bsStyle="warning">
           That email is already being used by another account.<br />
           <br />
           Please click "Send Login Link in an Email" below to sign into that account.
         </Alert> :
         null }
-      { this.state.email_address_status.email_address_created
-        || this.state.email_address_status.email_address_deleted
-        || this.state.email_address_status.email_ownership_is_verified
-        || this.state.email_address_status.verification_email_sent
-        || this.state.email_address_status.link_to_sign_in_email_sent ?
+      { this.state.email_address_status.email_address_created ||
+        this.state.email_address_status.email_address_deleted ||
+        this.state.email_address_status.email_ownership_is_verified ||
+        this.state.email_address_status.verification_email_sent ||
+        this.state.email_address_status.link_to_sign_in_email_sent ?
         <Alert bsStyle="success">
-          { this.state.email_address_status.email_address_created
-            && !this.state.email_address_status.verification_email_sent ? <span>Your email address was saved. </span> : null }
+          { this.state.email_address_status.email_address_created &&
+            !this.state.email_address_status.verification_email_sent ? <span>Your email address was saved. </span> : null }
           { this.state.email_address_status.email_address_deleted ? <span>Your email address was deleted. </span> : null }
           { this.state.email_address_status.email_ownership_is_verified ? <span>Your email address was verified. </span> : null }
           { this.state.email_address_status.verification_email_sent ? <span>Please check your email. A verification email was sent. </span> : null }
@@ -171,28 +171,28 @@ export default class VoterEmailAddressEntry extends Component {
 
     let email_status_description;
     let allow_remove_email;
-    const email_list_html = this.state.voter_email_address_list.map( (voter_email_address) => {
-      email_status_description = voter_email_address.email_ownership_is_verified ? "Email Verified" : "Email Not Verified";
+    const email_list_html = this.state.voter_email_address_list.map( (voter_email_address_from_list) => {
+      email_status_description = voter_email_address_from_list.email_ownership_is_verified ? "Email Verified" : "Email Not Verified";
       allow_remove_email = voter.signed_in_facebook ? false : true;
-      return <div key={voter_email_address.email_we_vote_id}
+      return <div key={voter_email_address_from_list.email_we_vote_id}
                   className="position-item card-child card-child--not-followed">
         <div className="card-child__media-object-content">
           <div className="card-child__content">
-            <h4 className="card-child__display-name">{voter_email_address.normalized_email_address}</h4>
+            <h4 className="card-child__display-name">{voter_email_address_from_list.normalized_email_address}</h4>
             {email_status_description}
           </div>
           <div className="card-child__additional">
             <div className="card-child__follow-buttons">
               {allow_remove_email ?
-                <Button onClick={this.removeVoterEmailAddress.bind(this, voter_email_address.email_we_vote_id)}
+                <Button onClick={this.removeVoterEmailAddress.bind(this, voter_email_address_from_list.email_we_vote_id)}
                       bsStyle="default"
                       bsSize="small">
                 Remove Email
               </Button> :
                 null }
-              {voter_email_address.email_ownership_is_verified ?
+              {voter_email_address_from_list.email_ownership_is_verified ?
                 null :
-                <Button onClick={this.sendVerificationEmail.bind(this, voter_email_address.email_we_vote_id)}
+                <Button onClick={this.sendVerificationEmail.bind(this, voter_email_address_from_list.email_we_vote_id)}
                         bsStyle="warning">
                   Send Verification Email Again
                 </Button>}

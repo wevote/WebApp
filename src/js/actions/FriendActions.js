@@ -37,7 +37,7 @@ module.exports = {
         sender_email_address: sender_email_address
       });
   },
-  
+
   // TODO DALE To be built on API server
   friendInvitationByTwitterHandleSend: function (twitter_handles, invitation_message) {
     Dispatcher.loadEndpoint("friendInvitationByTwitterHandleSend",

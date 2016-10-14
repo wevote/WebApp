@@ -5,6 +5,7 @@ import BallotItem from "../../components/Ballot/BallotItem";
 import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 import BallotStore from "../../stores/BallotStore";
 import BallotFilter from "../../components/Navigation/BallotFilter";
+import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import Helmet from "react-helmet";
 import LoadingWheel from "../../components/LoadingWheel";
 import SupportActions from "../../actions/SupportActions";
@@ -24,19 +25,20 @@ export default class Ballot extends Component {
   componentDidMount () {
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
       browserHistory.push("settings/location");
+    } else {
+      let ballot = this.getBallot(this.props);
+      if (ballot !== undefined) {
+        let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
+        this.setState({ballot: ballot, ballot_type: ballot_type});
+      }
+      // We need a ballotStoreListener here because we want the ballot to display before positions are received
+      this.ballotStoreListener = BallotStore.addListener(this._onChange.bind(this));
+      // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
+      // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
+      SupportActions.voterAllPositionsRetrieve();
+      SupportActions.positionsCountForAllBallotItems();
+      this.supportStoreListener = SupportStore.addListener(this._onChange.bind(this));
     }
-    let ballot = this.getBallot(this.props);
-    if (ballot !== undefined) {
-      let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
-      this.setState({ballot: ballot, ballot_type: ballot_type });
-    }
-    // We need a ballotStoreListener here because we want the ballot to display before positions are received
-    this.ballotStoreListener = BallotStore.addListener(this._onChange.bind(this));
-    // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
-    // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
-    SupportActions.voterAllPositionsRetrieve();
-    SupportActions.positionsCountForAllBallotItems();
-    this.supportStoreListener = SupportStore.addListener(this._onChange.bind(this));
   }
 
   componentWillUnmount (){
@@ -170,6 +172,7 @@ export default class Ballot extends Component {
     return <div className="ballot">
       <div className="ballot__heading">
         <Helmet title="Ballot - We Vote" />
+        <BrowserPushMessage incomingProps={this.props} />
         <OverlayTrigger placement="top" overlay={electionTooltip} >
           <h1 className="h1 ballot__election-name">{election_name}</h1>
         </OverlayTrigger>

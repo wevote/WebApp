@@ -6,7 +6,6 @@ import FluxMapStore from "flux/lib/FluxMapStore";
 import FriendActions from "../actions/FriendActions";
 import StarActions from "../actions/StarActions";
 import VoterActions from "../actions/VoterActions";
-const assign = require("object-assign");
 const cookies = require("../utils/cookies");
 
 class VoterStore extends FluxMapStore {
@@ -75,7 +74,7 @@ class VoterStore extends FluxMapStore {
   }
 
   getDataFromArr (arr) {
-    if (arr == undefined) {
+    if (arr === undefined) {
       return [];
     }
     let data_list = [];
@@ -204,18 +203,21 @@ class VoterStore extends FluxMapStore {
         return {
           ...state,
           facebook_sign_in_status: {
-            facebook_account_created: action.res.success,
+            facebook_account_created: action.res.facebook_account_created,
           }
         };
 
       case "voterMergeTwoAccounts":
         // On the server we just switched linked this voter_device_id to a new voter record, so we want to
         //  refresh a lot of data
-        voter_device_id = this.voterDeviceId();
-        VoterActions.voterRetrieve(voter_device_id);
+        VoterActions.voterRetrieve();
         VoterActions.voterEmailAddressRetrieve();
         StarActions.voterAllStarsStatusRetrieve();
+        FriendActions.currentFriends();
+        FriendActions.friendInvitationsSentByMe();
         FriendActions.friendInvitationsSentToMe();
+        FriendActions.friendInvitationsProcessed();
+        BallotActions.voterBallotItemsRetrieve();
         return {
           ...state,
           email_sign_in_status: {
@@ -257,7 +259,10 @@ class VoterStore extends FluxMapStore {
         VoterActions.voterRetrieve();
         VoterActions.voterEmailAddressRetrieve();
         StarActions.voterAllStarsStatusRetrieve();
+        FriendActions.currentFriends();
+        FriendActions.friendInvitationsSentByMe();
         FriendActions.friendInvitationsSentToMe();
+        FriendActions.friendInvitationsProcessed();
         BallotActions.voterBallotItemsRetrieve();
         return {
           ...state,

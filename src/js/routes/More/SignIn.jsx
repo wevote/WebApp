@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { browserHistory } from "react-router";
+import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
 import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
-import Helmet from "react-helmet"
+import Helmet from "react-helmet";
 import Main from "../../components/Facebook/Main";
 import LoadingWheel from "../../components/LoadingWheel";
 import TwitterActions from "../../actions/TwitterActions";
@@ -63,6 +64,7 @@ export default class SignIn extends Component {
       // console.log("SignIn.jsx facebook_retrieve_attempted");
       browserHistory.push("/facebook_sign_in");
       // return <span>SignIn.jsx facebook_retrieve_attempted</span>;
+      return LoadingWheel;
     }
 
     let facebook_sign_in_option = "";
@@ -81,6 +83,7 @@ export default class SignIn extends Component {
 
     return <div className="">
       <Helmet title="Sign In - We Vote" />
+      <BrowserPushMessage incomingProps={this.props} />
       <div className="container-fluid well u-gutter__top--small fluff-full1">
         <h3 className="text-center">{voter.signed_in_personal ? <span>My Account</span> : <span>Sign In</span>}</h3>
         <div className="text-center">

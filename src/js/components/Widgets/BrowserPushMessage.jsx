@@ -25,7 +25,7 @@ export default class BrowserPushMessage extends Component {
 	render () {
     let { browser_history_message, browser_history_message_name, browser_history_message_type } = this.state;
 
-    if (browser_history_message_name == "test") {
+    if (browser_history_message_name === "test") {
       browser_history_message_type = "danger";
       browser_history_message = "Test message";
     }

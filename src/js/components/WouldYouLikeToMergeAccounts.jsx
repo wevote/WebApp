@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Alert, Button } from "react-bootstrap";
 import { browserHistory } from "react-router";
-import LoadingWheel from "../components/LoadingWheel";
 
 export default class WouldYouLikeToMergeAccounts extends Component {
   static propTypes = {
@@ -11,9 +10,6 @@ export default class WouldYouLikeToMergeAccounts extends Component {
 
   constructor (props) {
       super(props);
-      this.state = {
-        loading: true,
-      };
   }
 
   cancelMerge () {
@@ -21,18 +17,14 @@ export default class WouldYouLikeToMergeAccounts extends Component {
   }
 
   render () {
+    console.log("WouldYouLikeToMergeAccounts, in render");
     const {cancelMergeFunction, pleaseMergeAccountsFunction} = this.props;
-    var { saving } = this.state;
-    if (saving){
-      return LoadingWheel;
-    }
+
     const merge_status_html = <span>
-      { !this.state.yes_please_merge_accounts ?
         <Alert bsStyle="warning">
           If you sign in now, all of your positions and friends will be merged with the account
           that is already signed into this browser. Would you like to merge? (If NOT, please cancel.)
-        </Alert> :
-        null }
+        </Alert>
       </span>;
 
     return <div className="guidelist card-child__list-group">
