@@ -8,8 +8,7 @@ const web_app_config = require("../config");
 module.exports = {
   // TODO Convert this to sign out of just Facebook
   appLogout: function (){
-    cookies.setItem("voter_device_id", "", -1, "/");
-    VoterSessionActions.signOut();
+    VoterSessionActions.voterSignOut();
     VoterActions.voterRetrieve();
     VoterActions.voterEmailAddressRetrieve();
   },
@@ -112,7 +111,7 @@ module.exports = {
     Dispatcher.loadEndpoint("voterFacebookSignInRetrieve", {
       facebook_id: facebook_id,
       facebook_email: facebook_email,
-      yes_please_merge_accounts: false
+      // yes_please_merge_accounts: false
     });
   },
 
@@ -120,7 +119,7 @@ module.exports = {
     Dispatcher.loadEndpoint("voterFacebookSignInRetrieve", {
       facebook_id: facebook_id,
       facebook_email: facebook_email,
-      yes_please_merge_accounts: true
+      // yes_please_merge_accounts: true
     });
   },
 };

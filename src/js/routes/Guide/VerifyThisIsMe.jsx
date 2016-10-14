@@ -100,6 +100,7 @@ export default class VerifyThisIsMe extends Component {
         // If we are being asked to verify the account we are already signed into, return to the TwitterHandle page
         console.log("signed_in_with_this_twitter_account is True");
         browserHistory.push("/" + voter.twitter_screen_name);
+        return LoadingWheel;
       }
     }
 

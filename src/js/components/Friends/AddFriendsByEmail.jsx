@@ -43,7 +43,7 @@ export default class AddFriendsByEmail extends Component {
     let add_friends_by_email_step = FriendStore.switchToAddFriendsByEmailStep();
     let error_message_to_show_voter = FriendStore.getErrorMessageToShowVoter();
     console.log("AddFriendsByEmail, _onFriendStoreChange, add_friends_by_email_step:", add_friends_by_email_step);
-    if (add_friends_by_email_step == 'on_collect_email_step') {
+    if (add_friends_by_email_step === "on_collect_email_step") {
       // Switch to "on_collect_email_step"
       this.setState({
         loading: false,
@@ -151,7 +151,7 @@ export default class AddFriendsByEmail extends Component {
         error_message += "Please enter a valid email address for yourself. ";
       } else if (!this.senderEmailAddressVerified()) {
         sender_email_address_error = true;
-        error_message += "This is not a valid email address. "
+        error_message += "This is not a valid email address. ";
       }
 
       if (sender_email_address_error) {

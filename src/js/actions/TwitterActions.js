@@ -6,8 +6,7 @@ import VoterSessionActions from "../actions/VoterSessionActions";
 module.exports = {
   // TODO Convert this to sign out of just Twitter
   appLogout: function (){
-    cookies.setItem("voter_device_id", "", -1, "/");
-    VoterSessionActions.signOut();
+    VoterSessionActions.voterSignOut();
     VoterActions.voterRetrieve();
   },
 

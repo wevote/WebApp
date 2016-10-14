@@ -28,13 +28,15 @@ class FacebookStore extends FluxMapStore {
       // facebookPictureStatus: this.getState().facebookPictureStatus,
       // facebookPictureUrl: this.getState().facebookPictureUrl,
       facebook_retrieve_attempted: this.getState().facebook_retrieve_attempted,
+      facebook_sign_in_found: this.getState().facebook_sign_in_found,
       facebook_sign_in_verified: this.getState().facebook_sign_in_verified,
       facebook_sign_in_failed: this.getState().facebook_sign_in_failed,
       facebook_secret_key: this.getState().facebook_secret_key,
-      facebook_account_created: this.getState().facebook_account_created,
+      voter_has_data_to_preserve: this.getState().voter_has_data_to_preserve,
+      existing_facebook_account_found: this.getState().existing_facebook_account_found,
       voter_we_vote_id_attached_to_facebook: this.getState().voter_we_vote_id_attached_to_facebook,
       voter_we_vote_id_attached_to_facebook_email: this.getState().voter_we_vote_id_attached_to_facebook_email,
-      yes_please_merge_accounts: this.getState().yes_please_merge_accounts,
+      // yes_please_merge_accounts: this.getState().yes_please_merge_accounts,
     };
   }
 
@@ -90,11 +92,15 @@ class FacebookStore extends FluxMapStore {
         }
         return {
           ...state,
+          voter_device_id: action.res.voter_device_id,
+          voter_has_data_to_preserve: action.res.voter_has_data_to_preserve,
           facebook_retrieve_attempted: action.res.facebook_retrieve_attempted,
+          facebook_sign_in_found: action.res.facebook_sign_in_found,
           facebook_sign_in_verified: action.res.facebook_sign_in_verified,
           facebook_sign_in_failed: action.res.facebook_sign_in_failed,
           facebook_secret_key: action.res.facebook_secret_key,
-          yes_please_merge_accounts: action.res.yes_please_merge_accounts,
+          // yes_please_merge_accounts: action.res.yes_please_merge_accounts,
+          existing_facebook_account_found: action.res.existing_facebook_account_found,
           voter_we_vote_id_attached_to_facebook: action.res.voter_we_vote_id_attached_to_facebook,
           voter_we_vote_id_attached_to_facebook_email: action.res.voter_we_vote_id_attached_to_facebook_email,
           // facebook_email: action.res.facebook_email,

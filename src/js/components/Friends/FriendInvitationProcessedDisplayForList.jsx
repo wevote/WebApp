@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
-import FriendInvitationToggle from "../Friends/FriendInvitationToggle";
 import ImageHandler from "../../components/ImageHandler";
-import FriendActions from "../../actions/FriendActions";
 import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
 
 export default class FriendInvitationDisplayForList extends Component {
@@ -22,8 +20,7 @@ export default class FriendInvitationDisplayForList extends Component {
 
   render () {
     const {
-      twitter_followers_count,
-      voter_we_vote_id,
+      voter_twitter_followers_count,
       voter_photo_url,
     } = this.props;
 
@@ -31,7 +28,7 @@ export default class FriendInvitationDisplayForList extends Component {
     let invitation_sent_to = this.props.invitation_sent_to ? this.props.invitation_sent_to : null;
     let invitation_sent_to_html;
     if (invitation_sent_to) {
-      invitation_sent_to_html = <span>Sent to: {invitation_sent_to}</span>
+      invitation_sent_to_html = <span>Sent to: {invitation_sent_to}</span>;
     }
     let twitterDescription = this.props.voter_twitter_description ? this.props.voter_twitter_description : "";
     // If the voter_display_name is in the voter_twitter_description, remove it
@@ -66,10 +63,10 @@ export default class FriendInvitationDisplayForList extends Component {
         <div className="card-child__additional">
           <div className="card-child__follow-buttons">
           </div>
-          {twitter_followers_count ?
+          {voter_twitter_followers_count ?
             <span className="twitter-followers__badge">
               <span className="fa fa-twitter twitter-followers__icon" />
-              {numberWithCommas(twitter_followers_count)}
+              {numberWithCommas(voter_twitter_followers_count)}
             </span> :
             null}
         </div>

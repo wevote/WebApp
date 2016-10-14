@@ -17,7 +17,7 @@ class GuideStore extends FluxMapStore {
     };
   }
 
-  // Given a list of ids, retrieve the complete data with all attributes and return as array 
+  // Given a list of ids, retrieve the complete data with all attributes and return as array
   getOrgsFromArr (arr) {
     const state = this.getState();
     let orgs = [];

@@ -1,8 +1,18 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import AddressBox from "../../components/AddressBox";
+import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import Helmet from "react-helmet";
 
 export default class Location extends Component {
+  static propTypes = {
+      location: PropTypes.object
+  };
+
+  constructor (props){
+    super(props);
+    this.state = {};
+  }
+
       // <div className="container-fluid well u-gutter__top--small fluff-full1">
       //   <div>
       //     <div className="medium">
@@ -23,6 +33,7 @@ export default class Location extends Component {
   render () {
     return <div>
       <Helmet title="Enter Your Address - We Vote" />
+      <BrowserPushMessage incomingProps={this.props} />
       <h3 className="h3">
         Enter address where you are registered to vote
       </h3>

@@ -97,7 +97,7 @@ export default class ItemPositionStatementActionBar extends Component {
     }
 
     var {is_support, is_oppose} = this.props.supportProps;
-    var {is_public_position, statement_text_to_be_saved, voter_full_name, voter_photo_url} = this.state;
+    var {statement_text_to_be_saved, voter_full_name, voter_photo_url} = this.state;
     statement_text_to_be_saved = statement_text_to_be_saved.length === 0 ? null : statement_text_to_be_saved;
 
     var statement_placeholder_text;

@@ -35,7 +35,7 @@ export default class HeaderBar extends Component {
   render () {
     var { pathname } = this.props;
     var { signed_in_facebook, signed_in_personal, signed_in_twitter, twitter_screen_name, voter_photo_url } = this.props.voter;
-    const logOut = VoterSessionActions.appLogout;
+    const voterSignOut = VoterSessionActions.voterSignOut;
 
     let image_placeholder = "";
     let speaker_type = "V";  // TODO DALE make this dynamic
@@ -92,7 +92,7 @@ export default class HeaderBar extends Component {
             { signed_in_personal ?
               <li>
                 <Link onClick={this.hide.bind(this)} to="/more/sign_in">
-                  <div onClick={logOut}>
+                  <div onClick={voterSignOut}>
                     <span className="header-slide-out-menu-text-left">Sign Out</span>
                   </div>
                 </Link>

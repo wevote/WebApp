@@ -57,9 +57,9 @@ export default class FriendInvitationEmailForList extends Component {
     var {voter} = this.state;
     let invitation_status_text;
     if (invitation_status === "PENDING_EMAIL_VERIFICATION") {
-      invitation_status_text = "Your invitation will be sent when you verify your email address."
+      invitation_status_text = "Your invitation will be sent when you verify your email address.";
     } else if (invitation_status === "NO_RESPONSE") {
-      invitation_status_text = ""
+      invitation_status_text = "";
     }
 
     let voterGuideLink = this.props.voter_twitter_handle ? "/" + this.props.voter_twitter_handle : null;

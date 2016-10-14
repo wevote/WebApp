@@ -38,9 +38,9 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
   componentDidMount () {
     this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    if (this.props.emailSecretKey && this.props.emailSecretKey != "") {
+    if (this.props.emailSecretKey && this.props.emailSecretKey !== "") {
       VoterActions.voterEmailAddressRetrieve();
-    } else if (this.props.facebookSecretKey && this.props.facebookSecretKey != "") {
+    } else if (this.props.facebookSecretKey && this.props.facebookSecretKey !== "") {
       FacebookActions.voterFacebookSignInRetrieve();
     }
   }
@@ -82,7 +82,6 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
   }
 
   render () {
-    const {pleaseMergeAccountsFunction} = this.props;
     var { saving } = this.state;
     if (saving || !this.state.email_sign_in_status){
       return LoadingWheel;
@@ -102,7 +101,7 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
       </span>;
 
     let merge_action_button;
-    if (this.props.emailSecretKey && this.props.emailSecretKey != "") {
+    if (this.props.emailSecretKey && this.props.emailSecretKey !== "") {
       merge_action_button = <Button onClick={this.voterEmailAddressSignInConfirm.bind(this, this.props.emailSecretKey)}
                   bsStyle="primary">
             Merge These Accounts</Button>;

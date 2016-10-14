@@ -98,6 +98,7 @@ module.exports = {
   },
 
   voterMergeTwoAccountsByFacebookKey: function (facebook_secret_key) {
+    console.log("VoterActions, voterMergeTwoAccountsByFacebookKey");
     Dispatcher.loadEndpoint("voterMergeTwoAccounts",
       {
         email_secret_key: "",

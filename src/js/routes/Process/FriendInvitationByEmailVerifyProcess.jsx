@@ -41,7 +41,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
         }
       });
   }
-  friendInvitationByEmailVerify(invitation_secret_key) {
+  friendInvitationByEmailVerify (invitation_secret_key) {
     FriendActions.friendInvitationByEmailVerify(invitation_secret_key);
     this.setState({saving: true});
   }
@@ -97,6 +97,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
           message_type: "warning"
         }
       });
+      return LoadingWheel;
     }
 
     if (this.state.invitation_status.attempted_to_approve_own_invitation) {
@@ -107,6 +108,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
           message_type: "danger"
         }
       });
+      return LoadingWheel;
     }
 
     if (this.state.invitation_status.invitation_secret_key_belongs_to_this_voter) {
@@ -118,24 +120,22 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
           message_type: "success"
         }
       });
+      return LoadingWheel;
+    } else if (this.state.invitation_status.voter_has_data_to_preserve) {
+      // If so, ask if they want to connect two accounts?
+      console.log("FriendInvitationByEmailVerifyProcess yes_please_merge_accounts is FALSE");
+      const cancel_merge_function = this.cancelMergeFunction.bind(this);
+      const please_merge_accounts_function = this.yesPleaseMergeAccounts.bind(this);
+      // Display the question of whether to merge accounts or not
+      return <WouldYouLikeToMergeAccounts cancelMergeFunction={cancel_merge_function}
+                                          pleaseMergeAccountsFunction={please_merge_accounts_function} />;
+      // return <span>WouldYouLikeToMergeAccounts</span>;
     } else {
-      // Is there anything to save from this voter account?
-      if (this.state.invitation_status.voter_has_data_to_preserve) {
-        // If so, ask if they want to connect two accounts?
-        console.log("FriendInvitationByEmailVerifyProcess yes_please_merge_accounts is FALSE");
-        const cancel_merge_function = this.cancelMergeFunction.bind(this);
-        const please_merge_accounts_function = this.yesPleaseMergeAccounts.bind(this);
-        // Display the question of whether to merge accounts or not
-        return <WouldYouLikeToMergeAccounts cancelMergeFunction={cancel_merge_function}
-                                            pleaseMergeAccountsFunction={please_merge_accounts_function} />;
-        // return <span>WouldYouLikeToMergeAccounts</span>;
-      } else {
-        // Go ahead and merge the accounts, which means deleting the current voter and switching to the invitation owner
-        console.log("FriendInvitationByEmailVerifyProcess - voter_has_data_to_preserve is FALSE");
-        this.voterMergeTwoAccountsByInvitationKey(invitation_secret_key);
-        // return <span>this.voterMergeTwoAccountsByInvitationKey - go ahead</span>;
-        return LoadingWheel;
-      }
+      // Go ahead and merge the accounts, which means deleting the current voter and switching to the invitation owner
+      console.log("FriendInvitationByEmailVerifyProcess - voter_has_data_to_preserve is FALSE");
+      this.voterMergeTwoAccountsByInvitationKey(invitation_secret_key);
+      // return <span>this.voterMergeTwoAccountsByInvitationKey - go ahead</span>;
+      return LoadingWheel;
     }
     return LoadingWheel;
   }

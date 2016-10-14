@@ -39,7 +39,7 @@ export default class FriendInvitationDisplayForList extends Component {
 
   render () {
     const {
-      twitter_followers_count,
+      voter_twitter_followers_count,
       voter_we_vote_id,
       voter_photo_url,
     } = this.props;
@@ -90,10 +90,10 @@ export default class FriendInvitationDisplayForList extends Component {
               </span>
             }
           </div>
-          {twitter_followers_count ?
+          {voter_twitter_followers_count ?
             <span className="twitter-followers__badge">
               <span className="fa fa-twitter twitter-followers__icon" />
-              {numberWithCommas(twitter_followers_count)}
+              {numberWithCommas(voter_twitter_followers_count)}
             </span> :
             null}
         </div>
