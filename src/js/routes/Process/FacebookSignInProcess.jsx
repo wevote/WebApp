@@ -24,14 +24,11 @@ export default class FacebookSignInProcess extends Component {
 
   componentDidMount () {
     this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
-    //this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     this.voterFacebookSignInRetrieve();
-    //this._onVoterStoreChange();
   }
 
   componentWillUnmount () {
     this.facebookStoreListener.remove();
-    //this.voterStoreListener.remove();
   }
 
   _onFacebookStoreChange () {

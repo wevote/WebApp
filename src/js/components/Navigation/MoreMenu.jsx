@@ -85,6 +85,10 @@ export default class MoreMenu extends Component {
           }
           {this.menuLink("/settings/location", "Your Address & Ballot")}
           {this.props.signed_in_personal ?
+            this.menuLink("/more/sign_in", "My Account") :
+            null
+          }
+          {this.props.signed_in_personal ?
             <li onClick={voterSignOut} className="list-group-item"><a><span className="header-menu-text-left">Sign Out</span></a></li> :
             this.menuLink("/more/sign_in", "Sign In")
           }

@@ -20,6 +20,10 @@ class FacebookStore extends FluxMapStore {
     return this.getState().emailData;
   }
 
+  get facebookUserId (){
+    return this.getState().userId;
+  }
+
   getFacebookState () {
     return {
       accessToken: this.accessToken,
@@ -32,6 +36,7 @@ class FacebookStore extends FluxMapStore {
       facebook_sign_in_verified: this.getState().facebook_sign_in_verified,
       facebook_sign_in_failed: this.getState().facebook_sign_in_failed,
       facebook_secret_key: this.getState().facebook_secret_key,
+      facebook_profile_image_url_https: this.getState().facebook_profile_image_url_https,
       voter_has_data_to_preserve: this.getState().voter_has_data_to_preserve,
       existing_facebook_account_found: this.getState().existing_facebook_account_found,
       voter_we_vote_id_attached_to_facebook: this.getState().voter_we_vote_id_attached_to_facebook,
@@ -80,7 +85,7 @@ class FacebookStore extends FluxMapStore {
         // Cache the data in the API server
         // console.log("FACEBOOK_RECEIVED_DATA action.data:", action.data);
         FacebookActions.voterFacebookSignInData(action.data);
-        // VoterActions.updateVoter(action.data);
+        FacebookActions.getFacebookProfilePicture(action.data.id);
         return {
           ...state,
           emailData: action.data
@@ -107,11 +112,11 @@ class FacebookStore extends FluxMapStore {
           // facebook_first_name: action.res.facebook_first_name,
           // facebook_middle_name: action.res.facebook_middle_name,
           // facebook_last_name: action.res.facebook_last_name,
-          // facebook_profile_image_url_https: action.res.facebook_profile_image_url_https,
+          facebook_profile_image_url_https: action.res.facebook_profile_image_url_https,
         };
 
       case "voterFacebookSignInSave":
-        if (action.res.save_profile_data) {
+        if (action.res.save_photo_data) {
           // Only reach out for the Facebook Sign In information if the save_profile_data call has completed
           FacebookActions.voterFacebookSignInRetrieve();
         }
@@ -129,9 +134,12 @@ class FacebookStore extends FluxMapStore {
         return state;
 
       case FacebookConstants.FACEBOOK_RECEIVED_PICTURE:
-        // FacebookActions.savePhoto(action.data.data.url);  // TODO DALE We need to figure out how best to save this
-        // FacebookActions.voterFacebookSignInData(action.data);
-        return state;
+        let facebook_user_id = this.userId;
+        FacebookActions.voterFacebookSignInPhoto(facebook_user_id, action.data.data);
+        return {
+          ...state,
+          facebook_profile_image_url_https: action.data.data.url
+        };
 
       default:
         return state;
