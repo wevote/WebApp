@@ -17,7 +17,6 @@ export default class WouldYouLikeToMergeAccounts extends Component {
   }
 
   render () {
-    console.log("WouldYouLikeToMergeAccounts, in render");
     const {cancelMergeFunction, pleaseMergeAccountsFunction} = this.props;
 
     const merge_status_html = <span>

@@ -1,6 +1,8 @@
 import Dispatcher from "../dispatcher/Dispatcher";
+// Including FacebookStore causes problems
 import VoterActions from "../actions/VoterActions";
 import VoterSessionActions from "../actions/VoterSessionActions";
+
 import FacebookConstants from "../constants/FacebookConstants";
 const cookies = require("../utils/cookies");
 const web_app_config = require("../config");
@@ -88,13 +90,13 @@ module.exports = {
       facebook_expires_in: data.expiresIn || false,
       facebook_signed_request: data.signedRequest || false,
       save_auth_data: true,
-      save_profile_data: false,
+      save_profile_data: false
     });
   },
 
   // Save incoming data from Facebook
   voterFacebookSignInData: function (data) {
-    console.log("FacebookActions voterFacebookSignInData, data:", data);
+    // console.log("FacebookActions voterFacebookSignInData, data:", data);
     Dispatcher.loadEndpoint("voterFacebookSignInSave", {
       facebook_user_id: data.id || false,
       facebook_email: data.email || false,
@@ -103,7 +105,16 @@ module.exports = {
       facebook_last_name: data.last_name || false,
       facebook_profile_image_url_https: data.url || false,
       save_auth_data: false,
-      save_profile_data: true,
+      save_profile_data: true
+    });
+  },
+
+  voterFacebookSignInPhoto: function (facebook_user_id, data) {
+    // console.log("FacebookActions voterFacebookSignInPhoto, data:", data);
+    Dispatcher.loadEndpoint("voterFacebookSignInSave", {
+      facebook_user_id: facebook_user_id || false,
+      facebook_profile_image_url_https: data.url || false,
+      save_photo_data: true
     });
   },
 
