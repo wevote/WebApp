@@ -45,18 +45,18 @@ export default class ThisIsMeAction extends Component {
     var this_is_me_action_text;
     if (kind_of_owner === "ORGANIZATION") {
       if (name_being_viewed) {
-        this_is_me_action_text = "I Work for " + name_being_viewed;
+        this_is_me_action_text = "I represent " + name_being_viewed;
       } else {
-        this_is_me_action_text = "I Work for this Organization";
+        this_is_me_action_text = "I represent this organization";
       }
     } else if (kind_of_owner === "POLITICIAN") {
       if (name_being_viewed) {
-        this_is_me_action_text = "I Work for " + name_being_viewed;
+        this_is_me_action_text = "I represent " + name_being_viewed;
       } else {
-        this_is_me_action_text = "I Work for this Politician";
+        this_is_me_action_text = "I represent this politician";
       }
     } else {
-      this_is_me_action_text = "This is Me";
+      this_is_me_action_text = "This is me";
     }
 
     return <span>

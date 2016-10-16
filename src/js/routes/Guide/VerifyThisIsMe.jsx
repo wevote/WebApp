@@ -147,10 +147,7 @@ export default class VerifyThisIsMe extends Component {
             </div>
           </div>
           <div>
-            <br />
-            <h1 className="h1">Please verify that you work for this organization by signing into this Twitter account:</h1>
-            <h2 className="h2">@{this.props.params.twitter_handle}</h2>
-            <br />
+            <p className="h4">Verify that you represent @{this.props.params.twitter_handle} by signing into this Twitter account.</p>
           </div>
           { signed_in_twitter ?
             <Link to="/twittersigninprocess/signinswitchstart"><Button bsStyle="primary">Sign In
