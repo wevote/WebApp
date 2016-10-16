@@ -15,11 +15,12 @@ export default class About extends Component {
   }
 
   render () {
+    let supportProps = { is_public_position: false };
     return <div>
       <Helmet title="About Us - We Vote" />
         <div className="container-fluid card">
           <h1 className="h1">About We Vote</h1>
-          <p><strong>Vote with Confidence</strong><br />
+          <strong>Vote with Confidence</strong><br />
             We Vote is the political social network for America. That means a place to share what you believe and
             find opinions on candidates and propositions before you vote. We Vote is a one-stop-shop for voter
             preparation, where you can:
@@ -39,8 +40,8 @@ export default class About extends Component {
             by default. Use the privacy button (sample below) to switch your views to public, or back to private.
             <PositionPublicToggle ballot_item_we_vote_id="null"
                                   className="null"
-                                  type="null"
-                                  supportProps="null"
+                                  type="MEASURE"
+                                  supportProps={supportProps}
             />
             Like email, We Vote is built to run on many servers all over America, which means that no one person or company owns
             the data on the site. We will never sell your email.<br />
@@ -63,15 +64,15 @@ export default class About extends Component {
             <h3>WHO WE ARE</h3>
             <br />
             <strong>A Nonprofit Startup</strong><br />
-            We Vote is made of two 501c3/501c4 nonpartisan nonprofit organization based in Oakland, California. Our
-            software is open source, and our work is driven by the nearly 100 volunteers who&#39;ve contributed so far.
-            Inspired by groups like <a href="http://codeforsanfrancisco.org/">Code for America</a>
-            and the <a href="https://www.mozilla.org/en-US/foundation/">Mozilla Foundation</a>, we use technology to
+            We Vote is made of two 501c3/501c4 nonpartisan nonprofit organizations based in Oakland, California. Our
+            software is open source, and our work is driven by the nearly 100 volunteers who have contributed so far.
+            Inspired by groups like <a href="http://codeforsanfrancisco.org/" target="_blank">Code for America&nbsp;<i className="fa fa-external-link"></i>
+            </a> and the <a href="https://www.mozilla.org/en-US/foundation/" target="_blank">Mozilla Foundation&nbsp;<i className="fa fa-external-link"></i></a>, we use technology to
             make democracy stronger.<br />
             <br />
   <ImageHandler className="about-photo"
                 imageUrl="http://res.cloudinary.com/hrscywv4p/image/upload/c_limit,f_auto,h_1440,q_80,w_720/v1/181340/JeniferAncona-300x300_jbqmlu.jpg"
-                alt="Jen-photo" />
+                alt="Jen-photo" /><br />
 <h3 id="Jen">Jenifer Fernandez Ancona</h3>
 
 Co-founder &amp; Board Member
@@ -88,7 +89,7 @@ disconnect between voters and government.
 <br /><br />
   <ImageHandler className="about-photo"
                 imageUrl="http://res.cloudinary.com/hrscywv4p/image/upload/c_limit,f_auto,h_1440,q_80,w_720/v1/181340/DaleMcGrew-300x300_ofybhb.jpg"
-                alt="Dale-photo" />
+                alt="Dale-photo" /><br />
 <h3 id="Dale">Dale McGrew</h3>
 
 Co-founder &amp; Executive Director
@@ -114,7 +115,7 @@ and American Lung Association.
   <ImageHandler className="about-photo"
                 imageUrl="https://avatars0.githubusercontent.com/u/17035647?v=3&s=466"
                 alt="Zach-photo" />
-
+<br />
 <h3 id="Zach">Zach Monteith</h3>
 Engineering Intern
 <br /><br />
@@ -134,7 +135,7 @@ site, Zach met We Vote at Code for San Francisco&#39;s Civic Hack Night, and the
 <br /><br />
   <ImageHandler className="about-photo"
                 imageUrl="http://res.cloudinary.com/hrscywv4p/image/upload/c_limit,h_1440,w_720,f_auto,q_90/v1/181340/Me-WeVoteProfile_dati1v.jpg"
-                alt="Colette-photo" />
+                alt="Colette-photo" /><br />
 <h3>Colette Phair</h3>
 Manager of Communications &amp; Community Engagement
 <br /><br />
@@ -156,10 +157,10 @@ Winters (coming soon: Tiana Epps-Johnson and Lawrence Grodeska)<br />
             <br />
 <h3>Our Volunteers</h3>
 
-We can&#39;t say thank you enough times to the <Link to="/more/credits"> nearly 100 volunteers</Link> who&#39;ve generously
+We can&#39;t say thank you enough times to the <Link to="/more/credits/"> nearly 100 volunteers</Link> who&#39;ve generously
 donated their time and skills to build We Vote.
 <br /><br />
-          </p>
+
 
         </div>
       </div>;
