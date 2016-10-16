@@ -15,5 +15,18 @@ module.exports = {
       {
         twitter_handle: new_twitter_handle
       });
-  }
+  },
+
+  twitterSignInRetrieve: function () {
+    Dispatcher.loadEndpoint("twitterSignInRetrieve", {
+    });
+  },
+
+  twitterSignInStart: function (return_url) {
+    Dispatcher.loadEndpoint("twitterSignInStart",
+      {
+        return_url: return_url
+      });
+  },
+
 };

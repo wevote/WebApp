@@ -39,11 +39,11 @@ export default class SignIn extends Component {
 
   _onFacebookChange () {
     this.setState({
-      facebook_auth_response: FacebookStore.getFacebookState(),
+      facebook_auth_response: FacebookStore.getFacebookAuthResponse(),
     });
   }
 
-  // getFacebookState () {
+  // getFacebookAuthResponse () {
   //   return {
   //     accessToken: FacebookStore.accessToken,
   //     facebookIsLoggedIn: FacebookStore.loggedIn,
@@ -68,18 +68,18 @@ export default class SignIn extends Component {
     }
 
     let facebook_sign_in_option = "";
-    if (voter.signed_in_twitter) {
-      facebook_sign_in_option = <span>To sign in with Facebook, Sign out of Twitter</span>;
-    } else {
+    // if (voter.signed_in_twitter) {
+    //   facebook_sign_in_option = <span>To sign in with Facebook, Sign out of Twitter</span>;
+    // } else {
       facebook_sign_in_option = <FacebookSignIn />;
-    }
+    // }
 
     let twitter_sign_in_option = "";
-    if (voter.signed_in_facebook) {
-      twitter_sign_in_option = <span>To sign in with Twitter, Sign out of Facebook</span>;
-    } else {
+    // if (voter.signed_in_facebook) {
+    //   twitter_sign_in_option = <span>To sign in with Twitter, Sign out of Facebook</span>;
+    // } else {
       twitter_sign_in_option = <TwitterSignIn />;
-    }
+    // }
 
     return <div className="">
       <Helmet title="Sign In - We Vote" />

@@ -230,7 +230,10 @@ class VoterStore extends FluxMapStore {
             voter_merge_two_accounts_attempted: true,
           },
           facebook_sign_in_status: {
-            voter_merge_two_accounts_attempted: true,
+            voter_merge_two_accounts_attempted: true,  // TODO DALE is this needed?
+          },
+          twitter_sign_in_status: {
+            voter_merge_two_accounts_attempted: true,  // TODO DALE is this needed?
           }
         };
 
@@ -271,6 +274,15 @@ class VoterStore extends FluxMapStore {
             email_secret_key_belongs_to_this_voter: false,
             email_verify_attempted: false,
             email_address_found: false
+          }
+        };
+
+      case "voterTwitterSaveToCurrentAccount":
+        VoterActions.voterRetrieve();
+        return {
+          ...state,
+          twitter_sign_in_status: {
+            twitter_account_created: action.res.twitter_account_created,
           }
         };
 

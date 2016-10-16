@@ -88,12 +88,18 @@ module.exports = {
     });
   },
 
+  voterTwitterSaveToCurrentAccount: function () {
+    Dispatcher.loadEndpoint("voterTwitterSaveToCurrentAccount", {
+    });
+  },
+
   voterMergeTwoAccountsByEmailKey: function (email_secret_key) {
     Dispatcher.loadEndpoint("voterMergeTwoAccounts",
       {
         email_secret_key: email_secret_key,
         facebook_secret_key: "",
         invitation_secret_key: "",
+        twitter_secret_key: "",
       });
   },
 
@@ -104,6 +110,7 @@ module.exports = {
         email_secret_key: "",
         facebook_secret_key: facebook_secret_key,
         invitation_secret_key: "",
+        twitter_secret_key: "",
       });
   },
 
@@ -113,6 +120,17 @@ module.exports = {
         email_secret_key: "",
         facebook_secret_key: "",
         invitation_secret_key: invitation_secret_key,
+        twitter_secret_key: "",
+      });
+  },
+
+  voterMergeTwoAccountsByTwitterKey: function (twitter_secret_key) {
+    Dispatcher.loadEndpoint("voterMergeTwoAccounts",
+      {
+        email_secret_key: "",
+        facebook_secret_key: "",
+        invitation_secret_key: "",
+        twitter_secret_key: twitter_secret_key,
       });
   },
 

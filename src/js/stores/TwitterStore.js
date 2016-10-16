@@ -2,6 +2,7 @@ var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
 import CandidateActions from "../actions/CandidateActions";
 import OrganizationActions from "../actions/OrganizationActions";
+import VoterActions from "../actions/VoterActions";
 
 class TwitterStore extends FluxMapStore {
 
@@ -35,6 +36,20 @@ class TwitterStore extends FluxMapStore {
     return this.getState().status;
   }
 
+  getTwitterAuthResponse () {
+    return {
+      twitter_retrieve_attempted: this.getState().twitter_retrieve_attempted,
+      twitter_sign_in_found: this.getState().twitter_sign_in_found,
+      twitter_sign_in_verified: this.getState().twitter_sign_in_verified,
+      twitter_sign_in_failed: this.getState().twitter_sign_in_failed,
+      twitter_secret_key: this.getState().twitter_secret_key,
+      twitter_profile_image_url_https: this.getState().twitter_profile_image_url_https,
+      voter_has_data_to_preserve: this.getState().voter_has_data_to_preserve,
+      existing_twitter_account_found: this.getState().existing_twitter_account_found,
+      voter_we_vote_id_attached_to_twitter: this.getState().voter_we_vote_id_attached_to_twitter,
+    };
+  }
+
   reduce (state, action) {
     // var key;
     // var merged_properties;
@@ -61,12 +76,38 @@ class TwitterStore extends FluxMapStore {
           status: action.res.status
         };
 
+      case "twitterSignInRetrieve":
+        if (action.res.twitter_sign_in_verified) {
+          VoterActions.voterRetrieve();
+        }
+        return {
+          ...state,
+          voter_device_id: action.res.voter_device_id,
+          voter_has_data_to_preserve: action.res.voter_has_data_to_preserve,
+          twitter_retrieve_attempted: action.res.twitter_retrieve_attempted,
+          twitter_sign_in_found: action.res.twitter_sign_in_found,
+          twitter_sign_in_verified: action.res.twitter_sign_in_verified,
+          twitter_sign_in_failed: action.res.twitter_sign_in_failed,
+          twitter_secret_key: action.res.twitter_secret_key,
+          existing_twitter_account_found: action.res.existing_twitter_account_found,
+          voter_we_vote_id_attached_to_twitter: action.res.voter_we_vote_id_attached_to_twitter,
+          voter_we_vote_id_attached_to_twitter_email: action.res.voter_we_vote_id_attached_to_twitter_email,
+          twitter_profile_image_url_https: action.res.twitter_profile_image_url_https,
+        };
+
+      case "twitterSignInStart":
+        console.log("TwitterStore twitterSignInStart, action.res:", action.res);
+        if (action.res.twitter_redirect_url) {
+          window.location.assign(action.res.twitter_redirect_url);
+        }
+        return {
+          ...state,
+        };
+
       default:
         return state;
     }
-
   }
-
 }
 
 module.exports = new TwitterStore(Dispatcher);

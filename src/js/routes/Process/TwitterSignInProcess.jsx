@@ -1,131 +1,163 @@
 import React, { Component, PropTypes } from "react";
 import { browserHistory } from "react-router";
-import { $ajax } from "../../utils/service";
 import TwitterActions from "../../actions/TwitterActions";
-import VoterStore from "../../stores/VoterStore";
-const web_app_config = require("../../config");
-
-// Flow chart here: https://docs.google.com/drawings/d/1WdVFsPZl3aLM9wxGuPTW3veqP-5EmZKv36KWjTz5pbU/edit
+import TwitterStore from "../../stores/TwitterStore";
+import LoadingWheel from "../../components/LoadingWheel";
+import VoterActions from "../../actions/VoterActions";
+import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
 
 export default class TwitterSignInProcess extends Component {
   static propTypes = {
     params: PropTypes.object,
-    sign_in_step: PropTypes.string,
-    incoming_twitter_handle: PropTypes.string
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      "twitter_redirect_url": ""
+      twitter_auth_response: {},
+      saving: false,
+      voter: {},
+      yes_please_merge_accounts: false
     };
   }
 
-  componentWillMount () {
-    if (this.props.params.sign_in_step === undefined || this.props.params.sign_in_step === "signinstart") {
-      this._onVoterStoreChange();
-    } else if (this.props.params.sign_in_step === "signinswitchstart") {
-      // Get the voter before we render
-      this._onVoterStoreChange();
-    }
-  }
-
   componentDidMount () {
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-
-    var {voter} = this.state;
-    var return_url;
-    if (this.props.params.sign_in_step === undefined || this.props.params.sign_in_step === "signinstart") {
-      // In this block, we aren't ready to proceed to a later step
-      if (voter !== undefined && (voter.signed_in_twitter || voter.signed_in_facebook)) {
-        // We don't want to start the sign in process again if they are already signed in, so we redirect to the
-        // sign in status page
-        browserHistory.push("/more/sign_in");
-      } else {
-        return_url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/more/sign_in/";
-        this.twitterSignInStart(return_url);
-      }
-    } else if (this.props.params.sign_in_step === "signinswitchstart") {
-      // In this block, we are presumably already signed in and want to switch to another account
-      if (voter !== undefined && (voter.signed_in_twitter || voter.signed_in_facebook)) {
-        TwitterActions.appLogout();
-      } else {
-        // We call twitterSignInStart from here for the case where the person is already signed out
-        return_url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/twittersigninprocess/signinswitchend";
-        this.twitterSignInStart(return_url);
-      }
-    } else if (this.props.params.sign_in_step === "signinswitchend") {
-      // We have finished the Twitter sign in process, so we redirect to the TwitterHandle page
-      // for the screen name in return_url
-      if (this.props.params.incoming_twitter_handle !== undefined) {
-        browserHistory.push("/" + this.props.params.incoming_twitter_handle);
-      } else {
-        browserHistory.push("/more/sign_in");
-      }
-    }
-  }
-
-  componentDidUpdate () {
-    var {voter} = this.state;
-    if (this.props.params.sign_in_step === "signinswitchstart") {
-      if (voter !== undefined && (voter.signed_in_twitter || voter.signed_in_facebook)) {
-        // We are waiting for logout to take hold
-      } else {
-        let return_url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/twittersigninprocess/signinswitchend";
-        this.twitterSignInStart(return_url);
-      }
-    }
+    this.twitterStoreListener = TwitterStore.addListener(this._onTwitterStoreChange.bind(this));
+    this.twitterSignInRetrieve();
   }
 
   componentWillUnmount () {
-    this.voterStoreListener.remove();
+    this.twitterStoreListener.remove();
   }
 
-  _onVoterStoreChange () {
-    this.setState({ voter: VoterStore.getVoter() });
+  _onTwitterStoreChange () {
+    this.setState({
+      twitter_auth_response: TwitterStore.getTwitterAuthResponse(),
+      saving: false
+    });
   }
 
-  twitterSignInStart (return_url) {
-    $ajax({
-      endpoint: "twitterSignInStart",
-      data: { return_url: return_url },
-      success: res => {
-        if (res.twitter_redirect_url) {
-          window.location.assign(res.twitter_redirect_url);
-        } else {
-          // There is a problem signing in
-          console.log("twitterSignInStart ERROR res: ", res);
-          // When we visit this page and delete the voter_device_id cookie, we can get an error that requires
-          // reloading the browser page. This is how we do it:
-          window.location.assign("");
+  cancelMergeFunction () {
+      browserHistory.push({
+        pathname: "/more/sign_in",
+        state: {
+          message: "You have chosen to NOT merge your two accounts.",
+          message_type: "success"
         }
-      },
-      error: res => {
-        console.log("twitterSignInStart error: ", res);
-        // Try reloading the page
-        window.location.assign("");
+      });
+  }
+
+  voterMergeTwoAccountsByTwitterKey (twitter_secret_key, voter_has_data_to_preserve=true) {
+    VoterActions.voterMergeTwoAccountsByTwitterKey(twitter_secret_key);
+    if (voter_has_data_to_preserve) {
+      browserHistory.push({
+        pathname: "/more/sign_in",
+        state: {
+          message: "Your accounts have been merged.",
+          message_type: "success"
+        }
+      });
+    } else {
+      browserHistory.push({
+        pathname: "/ballot",
+        state: {
+          message: "You have successfully signed in with Twitter.",
+          message_type: "success"
+        }
+      });
+    }
+  }
+
+  voterTwitterSaveToCurrentAccount () {
+    VoterActions.voterTwitterSaveToCurrentAccount();
+    browserHistory.push({
+      pathname: "/more/sign_in",
+      state: {
+        message: "Your have successfully signed into Twitter.",
+        message_type: "success"
       }
     });
   }
 
+  twitterSignInRetrieve () {
+    TwitterActions.twitterSignInRetrieve();
+    this.setState({saving: true});
+  }
+
+  yesPleaseMergeAccounts () {
+    this.setState({yes_please_merge_accounts: true});
+  }
+
   render () {
-    if (this.props.params.sign_in_step === undefined || this.props.params.sign_in_step === "signinstart") {
-      return <div>
-        Please wait...
-      </div>;
-    } else if (this.props.params.sign_in_step === "signinswitchstart"){
-      return <div>
-          Please wait...
-        </div>;
-    } else if (this.props.params.sign_in_step === "signinswitchend"){
-      return <div>
-          Please wait...
-        </div>;
+    let {twitter_auth_response, yes_please_merge_accounts} = this.state;
+
+    console.log("TwitterSignInProcess render, this.state.saving:", this.state.saving);
+    if (this.state.saving ||
+      !twitter_auth_response ||
+      !twitter_auth_response.twitter_retrieve_attempted ) {
+      // console.log("twitter_auth_response:", twitter_auth_response);
+      return LoadingWheel;
+    }
+    console.log("=== Passed initial gate ===");
+    console.log("twitter_auth_response:", twitter_auth_response);
+    let { twitter_secret_key } = twitter_auth_response;
+
+    if (twitter_auth_response.twitter_sign_in_failed) {
+      console.log("Twitter sign in failed - push to /more/sign_in");
+      browserHistory.push({
+        pathname: "/more/sign_in",
+        state: {
+          message: "Twitter sign in failed. Please try again.",
+          message_type: "success"
+        }
+      });
+      return LoadingWheel;
+    }
+
+    if (yes_please_merge_accounts) {
+      // Go ahead and merge this voter record with the voter record that the twitter_secret_key belongs to
+      console.log("this.voterMergeTwoAccountsByTwitterKey -- yes please merge accounts");
+      this.voterMergeTwoAccountsByTwitterKey(twitter_secret_key);
+      // return <span>this.voterMergeTwoAccountsByTwitterKey({twitter_secret_key})</span>;
+      return LoadingWheel;
+    }
+
+    // This process starts when we return from attempting voterTwitterSignInRetrieve
+    // If twitter_sign_in_found NOT True, go back to the sign in page to try again
+    if (!twitter_auth_response.twitter_sign_in_found) {
+      // console.log("twitter_auth_response.twitter_sign_in_found", twitter_auth_response.twitter_sign_in_found);
+      browserHistory.push({
+        pathname: "/more/sign_in",
+        state: {
+          message: "Twitter authentication not found. Please try again.",
+          message_type: "warning"
+        }
+      });
+      return LoadingWheel;
+    }
+
+    if (twitter_auth_response.existing_twitter_account_found) {
+      // Is there anything to save from this voter account?
+      if (twitter_auth_response.voter_has_data_to_preserve) {
+        console.log("TwitterSignInProcess voter_has_data_to_preserve is TRUE");
+        const cancel_merge_function = this.cancelMergeFunction.bind(this);
+        const please_merge_accounts_function = this.yesPleaseMergeAccounts.bind(this);
+        // Display the question of whether to merge accounts or not
+        return <WouldYouLikeToMergeAccounts cancelMergeFunction={cancel_merge_function}
+                                            pleaseMergeAccountsFunction={please_merge_accounts_function} />;
+        // return <span>WouldYouLikeToMergeAccounts</span>;
+      } else {
+        // Go ahead and merge the accounts, which means deleting the current voter and switching to the twitter-linked account
+        console.log("TwitterSignInProcess this.voterMergeTwoAccountsByTwitterKey - No data to merge");
+        this.voterMergeTwoAccountsByTwitterKey(twitter_secret_key, twitter_auth_response.voter_has_data_to_preserve);
+        // return <span>this.voterMergeTwoAccountsByTwitterKey({twitter_secret_key}); - No data to merge</span>;
+        return LoadingWheel;
+      }
     } else {
-      return <div className="container-fluid well u-gutter__top--small fluff-full1">
-              <h3 className="h3">Page Not Found</h3>
-                <div className="small">We were not able to find that page. Please try again!</div>
-            </div>;
+      console.log("Setting up new Twitter entry - voterTwitterSaveToCurrentAccount");
+      this.voterTwitterSaveToCurrentAccount();
+      //return <span>Setting up new Twitter entry - voterTwitterSaveToCurrentAccount</span>;
+      return LoadingWheel;
     }
   }
 }

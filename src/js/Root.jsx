@@ -36,6 +36,7 @@ import SettingsDashboard from "./routes/Settings/SettingsDashboard";
 import SignIn from "./routes/More/SignIn";
 import SignInEmailProcess from "./routes/Process/SignInEmailProcess";
 import TwitterSignInProcess from "./routes/Process/TwitterSignInProcess";
+import TwitterSignInProcessOld from "./routes/Process/TwitterSignInProcessOld";
 import VerifyEmailProcess from "./routes/Process/VerifyEmailProcess";
 import FriendInvitationByEmailVerifyProcess from "./routes/Process/FriendInvitationByEmailVerifyProcess";
 import VerifyThisIsMe from "./routes/Guide/VerifyThisIsMe";
@@ -102,8 +103,9 @@ const routes = () =>
 
     <Route path="/facebook_sign_in" component={FacebookSignInProcess} />
 
-    <Route path="/twittersigninprocess/:sign_in_step/:incoming_twitter_handle" component={TwitterSignInProcess} />
-    <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />
+    <Route path="/twittersigninprocess/:sign_in_step/:incoming_twitter_handle" component={TwitterSignInProcessOld} />
+    <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcessOld} />
+    <Route path="/twitter_sign_in" component={TwitterSignInProcess} />
 
     <Route path="/verify_email/:email_secret_key" component={VerifyEmailProcess} />
     <Route path="/sign_in_email/:email_secret_key" component={SignInEmailProcess} />
