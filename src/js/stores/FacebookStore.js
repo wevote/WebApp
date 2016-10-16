@@ -24,7 +24,7 @@ class FacebookStore extends FluxMapStore {
     return this.getState().userId;
   }
 
-  getFacebookState () {
+  getFacebookAuthResponse () {
     return {
       accessToken: this.accessToken,
       facebookIsLoggedIn: this.loggedIn,
@@ -116,7 +116,7 @@ class FacebookStore extends FluxMapStore {
         };
 
       case "voterFacebookSignInSave":
-        if (action.res.save_photo_data) {
+        if (action.res.minimum_data_saved) {
           // Only reach out for the Facebook Sign In information if the save_profile_data call has completed
           FacebookActions.voterFacebookSignInRetrieve();
         }

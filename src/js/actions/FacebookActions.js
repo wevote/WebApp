@@ -118,19 +118,13 @@ module.exports = {
     });
   },
 
-  voterFacebookSignInRetrieve: function (facebook_id, facebook_email){
+  voterFacebookSignInRetrieve: function (){
     Dispatcher.loadEndpoint("voterFacebookSignInRetrieve", {
-      facebook_id: facebook_id,
-      facebook_email: facebook_email,
-      // yes_please_merge_accounts: false
     });
   },
 
-  voterFacebookSignInConfirm: function (facebook_id, facebook_email){
+  voterFacebookSignInConfirm: function (){
     Dispatcher.loadEndpoint("voterFacebookSignInRetrieve", {
-      facebook_id: facebook_id,
-      facebook_email: facebook_email,
-      // yes_please_merge_accounts: true
     });
   },
 };
