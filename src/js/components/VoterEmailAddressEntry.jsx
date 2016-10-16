@@ -126,22 +126,24 @@ export default class VoterEmailAddressEntry extends Component {
 
     const enter_email_html = <div>
       {email_address_status_html}
-        <form onSubmit={this.voterEmailAddressSave.bind(this)}>
-          <input
-            type="text"
-            onChange={this.updateVoterEmailAddress.bind(this)}
-            name="voter_email_address"
-            value={voter_email_address}
-            className="form-control text-center"
-            placeholder="Sign in with email address"
-          />
-        </form>
+          <form onSubmit={this.voterEmailAddressSave.bind(this)}>
+            <div className="input-group">
+              <input
+              type="text"
+              onChange={this.updateVoterEmailAddress.bind(this)}
+              name="voter_email_address"
+              value={voter_email_address}
+              className="form-control"
+              placeholder="Sign in with email address"
+            />
+            <span className="input-group-btn">
+              <Button onClick={this.voterEmailAddressSave.bind(this)}
+                      bsStyle="primary">
+                Send Verification Email</Button>
+              </span>
+            </div>
+          </form>
 
-        <div className="u-gutter__top--small">
-          <Button onClick={this.voterEmailAddressSave.bind(this)}
-                  bsStyle="primary">
-            Send Verification Email</Button>
-        </div>
       </div>;
 
     const send_link_to_login_html = <div>
