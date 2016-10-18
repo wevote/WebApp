@@ -4,7 +4,6 @@ import VoterActions from "../actions/VoterActions";
 import VoterSessionActions from "../actions/VoterSessionActions";
 
 import FacebookConstants from "../constants/FacebookConstants";
-const cookies = require("../utils/cookies");
 const web_app_config = require("../config");
 
 module.exports = {

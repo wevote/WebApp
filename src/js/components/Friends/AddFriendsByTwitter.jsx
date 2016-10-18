@@ -1,5 +1,5 @@
-import React, { Component, PropTypes } from "react";
-import { Button, ButtonToolbar, Input } from "react-bootstrap";
+import React, { Component } from "react";
+import { Button, ButtonToolbar } from "react-bootstrap";
 import { browserHistory } from "react-router";
 import LoadingWheel from "../LoadingWheel";
 import FriendActions from "../../actions/FriendActions";

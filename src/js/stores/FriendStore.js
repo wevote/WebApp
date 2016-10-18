@@ -1,6 +1,7 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 import FluxMapStore from "flux/lib/FluxMapStore";
 import FriendActions from "../actions/FriendActions";
+import VoterActions from "../actions/VoterActions";
 const assign = require("object-assign");
 
 class FriendStore extends FluxMapStore {
@@ -150,6 +151,7 @@ class FriendStore extends FluxMapStore {
         } else {
           // console.log("FriendStore, voter_device_id present");
           FriendActions.friendInvitationsSentToMe();
+          VoterActions.voterRetrieve();  // We need to update the indicator that the person has a verified email
         }
         return {
           ...state,

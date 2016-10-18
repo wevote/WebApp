@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import { Link } from "react-router";
 import TwitterActions from "../../actions/TwitterActions";
 const web_app_config = require("../../config");
 

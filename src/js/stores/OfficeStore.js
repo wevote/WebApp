@@ -23,7 +23,7 @@ class OfficeStore extends FluxMapStore {
 
       case "officeRetrieve":
         let office = action.res;
-        let new_offices = {}
+        let new_offices = {};
         new_offices[office.we_vote_id] = office;
         return {
           ...state,

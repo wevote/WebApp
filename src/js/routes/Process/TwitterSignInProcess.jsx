@@ -47,7 +47,7 @@ export default class TwitterSignInProcess extends Component {
       });
   }
 
-  voterMergeTwoAccountsByTwitterKey (twitter_secret_key, voter_has_data_to_preserve=true) {
+  voterMergeTwoAccountsByTwitterKey (twitter_secret_key, voter_has_data_to_preserve = true) {
     VoterActions.voterMergeTwoAccountsByTwitterKey(twitter_secret_key);
     if (voter_has_data_to_preserve) {
       browserHistory.push({

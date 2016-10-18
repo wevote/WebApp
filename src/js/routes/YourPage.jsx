@@ -77,7 +77,18 @@ export default class YourPage extends Component {
     if (signed_in_facebook) {
       let voter_not_linked_to_organization = !voter.linked_organization_we_vote_id;
       if (voter_not_linked_to_organization) {
-        let organization_name = voter.first_name + " " + voter.last_name;
+        let organization_name = "";
+        let first_name_value_exists = voter.first_name && voter.first_name !== "null" && voter.first_name.length;
+        let last_name_value_exists = voter.last_name && voter.last_name !== "null" && voter.last_name.length;
+        if (first_name_value_exists) {
+          organization_name += voter.first_name;
+        }
+        if (first_name_value_exists && last_name_value_exists) {
+          organization_name += " ";
+        }
+        if (last_name_value_exists) {
+          organization_name += voter.last_name;
+        }
         OrganizationActions.saveFromFacebook(voter.facebook_id, voter.facebook_email, voter.facebook_profile_image_url_https, organization_name);
       }
     }
