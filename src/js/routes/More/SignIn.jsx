@@ -5,7 +5,7 @@ import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
 import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 import Helmet from "react-helmet";
-import Main from "../../components/Facebook/Main";
+// import Main from "../../components/Facebook/Main";
 import LoadingWheel from "../../components/LoadingWheel";
 import TwitterActions from "../../actions/TwitterActions";
 import TwitterSignIn from "../../components/Twitter/TwitterSignIn";

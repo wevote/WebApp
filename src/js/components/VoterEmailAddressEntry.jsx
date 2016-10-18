@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { Alert, Button } from "react-bootstrap";
 import LoadingWheel from "../components/LoadingWheel";
 import VoterActions from "../actions/VoterActions";
@@ -81,6 +81,10 @@ export default class VoterEmailAddressEntry extends Component {
     this.setState({loading: true});
   }
 
+  setAsPrimaryEmailAddress (email_we_vote_id) {
+    VoterActions.setAsPrimaryEmailAddress(email_we_vote_id);
+  }
+
   updateVoterEmailAddress (e) {
     this.setState({
       voter_email_address: e.target.value
@@ -95,7 +99,7 @@ export default class VoterEmailAddressEntry extends Component {
   }
 
   render () {
-    var { loading, voter, voter_email_address } = this.state;
+    var { loading, voter_email_address } = this.state;
     if (loading){
       return LoadingWheel;
     }
@@ -171,17 +175,24 @@ export default class VoterEmailAddressEntry extends Component {
         </div>
       </div>;
 
-    let email_status_description;
     let allow_remove_email;
+    let email_ownership_is_verified;
+    let email_status_description;
+    let is_primary_email_address;
     const email_list_html = this.state.voter_email_address_list.map( (voter_email_address_from_list) => {
+      email_ownership_is_verified = voter_email_address_from_list.email_ownership_is_verified ? true : false;
       email_status_description = voter_email_address_from_list.email_ownership_is_verified ? "Email Verified" : "Email Not Verified";
-      allow_remove_email = voter.signed_in_facebook ? false : true;
+      allow_remove_email = voter_email_address_from_list.primary_email_address ? false : true;
+      is_primary_email_address = voter_email_address_from_list.primary_email_address ? true : false;
       return <div key={voter_email_address_from_list.email_we_vote_id}
                   className="position-item card-child card-child--not-followed">
         <div className="card-child__media-object-content">
           <div className="card-child__content">
             <h4 className="card-child__display-name">{voter_email_address_from_list.normalized_email_address}</h4>
-            {email_status_description}
+              {email_status_description}
+              {!is_primary_email_address && email_ownership_is_verified ?
+                <span> &middot; <a onClick={this.setAsPrimaryEmailAddress.bind(this, voter_email_address_from_list.email_we_vote_id)}>set as primary</a></span> :
+                null}
           </div>
           <div className="card-child__additional">
             <div className="card-child__follow-buttons">
@@ -192,11 +203,14 @@ export default class VoterEmailAddressEntry extends Component {
                 Remove Email
               </Button> :
                 null }
+              {is_primary_email_address ?
+              <span>Primary</span> :
+              null}
               {voter_email_address_from_list.email_ownership_is_verified ?
                 null :
                 <Button onClick={this.sendVerificationEmail.bind(this, voter_email_address_from_list.email_we_vote_id)}
                         bsStyle="warning">
-                  Send Verification Email Again
+                  Send Verification Again
                 </Button>}
             </div>
           </div>

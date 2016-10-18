@@ -1,4 +1,3 @@
-const cookies = require("../utils/cookies");
 import Dispatcher from "../dispatcher/Dispatcher";
 import VoterActions from "../actions/VoterActions";
 import VoterSessionActions from "../actions/VoterSessionActions";

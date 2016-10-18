@@ -3,7 +3,7 @@ import { browserHistory } from "react-router";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
-import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
+// import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
 
 export default class VerifyEmailProcess extends Component {
   static propTypes = {

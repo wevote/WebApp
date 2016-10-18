@@ -12,9 +12,12 @@ class OrganizationStore extends FluxMapStore {
 
       // After an organization is created, return it
       case "organizationSave":
-        key = action.res.organization_we_vote_id;
-        merged_properties = assign({}, state.get(key), action.res);
-        return state.set(key, merged_properties);
+        if (action.res.success) {
+          key = action.res.organization_we_vote_id;
+          merged_properties = assign({}, state.get(key), action.res);
+          return state.set(key, merged_properties);
+        }
+        return state;
 
       case "organizationRetrieve":
         key = action.res.organization_we_vote_id;

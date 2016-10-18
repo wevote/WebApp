@@ -65,7 +65,7 @@ export default class SignInEmailProcess extends Component {
       browserHistory.push({
         pathname: "/ballot",
         state: {
-          message: "You have successfully signed in and merged accounts.",
+          message: "You have successfully signed in.",
           message_type: "success"
         }
       });

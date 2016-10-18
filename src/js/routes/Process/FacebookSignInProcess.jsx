@@ -47,7 +47,7 @@ export default class FacebookSignInProcess extends Component {
       });
   }
 
-  voterMergeTwoAccountsByFacebookKey (facebook_secret_key, voter_has_data_to_preserve=true) {
+  voterMergeTwoAccountsByFacebookKey (facebook_secret_key, voter_has_data_to_preserve = true) {
     VoterActions.voterMergeTwoAccountsByFacebookKey(facebook_secret_key);
     if (voter_has_data_to_preserve) {
       browserHistory.push({
