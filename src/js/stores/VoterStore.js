@@ -144,6 +144,7 @@ class VoterStore extends FluxMapStore {
       };
 
       case "voterAddressSave":
+      BallotActions.voterBallotItemsRetrieve();
         return {
           ...state,
           address: { text_for_map_search: action.res.text_for_map_search,
