@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
-
 import ItemActionBar from "../../components/Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../../components/Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
+import ReadMore from "../../components/Widgets/ReadMore";
 import StarAction from "../../components/Widgets/StarAction";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
@@ -17,7 +17,11 @@ export default class MeasureItem extends Component {
     kind_of_ballot_item: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string.isRequired,
     link_to_ballot_item_page: PropTypes.bool,
-    measure_url: PropTypes.string
+    measure_url: PropTypes.string,
+    state_code: PropTypes.string,
+    election_display_name: PropTypes.string,
+    regional_display_name: PropTypes.string,
+    state_display_name: PropTypes.string
   };
   constructor (props) {
     super(props);
@@ -39,10 +43,14 @@ export default class MeasureItem extends Component {
   render () {
     const { supportProps, transitioning } = this.state;
     let { ballot_item_display_name, measure_subtitle,
-          measure_text, we_vote_id } = this.props;
+          measure_text, we_vote_id, state_display_name,
+          election_display_name, regional_display_name } = this.props;
+    if (state_display_name === undefined) {
+      state_display_name = this.props.state_code.toUpperCase();
+    }
     let measureLink = "/measure/" + we_vote_id;
     let goToMeasureLink = function () { browserHistory.push(measureLink); };
-
+    let num_of_lines = 2;
     measure_subtitle = capitalizeString(measure_subtitle);
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
@@ -63,14 +71,24 @@ export default class MeasureItem extends Component {
           }
         </h2>
         <StarAction we_vote_id={we_vote_id} type="MEASURE"/>
-
+        <div className="card-main__measure-election t-b t-darker-gray">
+          <p>{ election_display_name ? election_display_name : "Appearing on the ballot in " }
+            { election_display_name ? <span> &middot; </span> : null }
+            { regional_display_name ? regional_display_name : null }
+            { regional_display_name && state_display_name ? ", " : null }
+            { state_display_name }
+        </p></div>
         <div className={ this.props.link_to_ballot_item_page ?
                 "u-cursor--pointer" : null }
               onClick={ this.props.link_to_ballot_item_page ?
                 goToMeasureLink : null }>{measure_subtitle}</div>
-          {/* OFF FOR NOW -- HIDE MOST OF TEXT BY DEFAULT this.props.measure_text ?
-            <div className="measure_text">{measure_text}</div> :
-            null */}
+          { this.props.measure_text ?
+            <div className="measure_text gray-mid">
+              <ReadMore num_of_lines={num_of_lines}
+                        text_to_display={measure_text} />
+            </div> :
+            null
+          }
 
           <div className="row" style={{ paddingBottom: "0.5rem" }}>
             <div className="col-xs-12">
