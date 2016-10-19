@@ -15,6 +15,7 @@ export default class FriendDisplayForList extends Component {
     voter_twitter_handle: PropTypes.string,
     voter_twitter_description: PropTypes.string,
     voter_twitter_followers_count: PropTypes.number,
+    linked_organization_we_vote_id: PropTypes.string,
     editMode: PropTypes.bool
   };
 
@@ -31,10 +32,12 @@ export default class FriendDisplayForList extends Component {
     // If the voter_display_name is in the voter_twitter_description, remove it
     let twitterDescriptionMinusName = removeTwitterNameFromDescription(voter_display_name, twitterDescription);
 
-    // TwitterHandle-based link
-    let voterGuideLink = this.props.voter_twitter_handle ? "/" + this.props.voter_twitter_handle : null;
+    // Link to their voter guide
+    let twitter_voter_guide_link = this.props.voter_twitter_handle ? "/" + this.props.voter_twitter_handle : null;
+    let we_vote_id_voter_guide_link = this.props.linked_organization_we_vote_id ? "/voterguide/" + this.props.linked_organization_we_vote_id : null;
+    let voterGuideLink = twitter_voter_guide_link ? twitter_voter_guide_link : we_vote_id_voter_guide_link;
     let voter_image = <ImageHandler sizeClassName="icon-lg " imageUrl={voter_photo_url} kind_of_ballot_item="CANDIDATE" />;
-    let voter_display_name_formatted = <h4 className="card-child__display-name">{voter_display_name}</h4>;
+    let voter_display_name_formatted = <span className="card-child__display-name">{voter_display_name}</span>;
 
     return <div className="position-item card-child card-child--not-followed">
       <div className="card-child__avatar">
@@ -50,8 +53,11 @@ export default class FriendDisplayForList extends Component {
             <Link to={voterGuideLink} className="no-underline">
               {voter_display_name_formatted}
             </Link> :
-            <span>{voter_display_name_formatted}</span> }
+            <span>{voter_display_name_formatted}</span> } is your Friend
           { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> :
+            null}
+          { voterGuideLink ?
+            <span><br /><Link to={voterGuideLink} className="no-underline">See your friend's voter guide.</Link></span> :
             null}
         </div>
         <div className="card-child__additional">

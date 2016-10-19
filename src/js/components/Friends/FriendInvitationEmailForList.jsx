@@ -40,18 +40,14 @@ export default class FriendInvitationEmailForList extends Component {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-  deleteInvitation (voter_email_address) {
+  deleteFriendInviteEmail (voter_email_address) {
+    // console.log("deleteFriendInviteEmail");
     FriendActions.deleteFriendInviteEmail(voter_email_address);
-    // this.setState({
-    //   friend_invitations_list: this.state.friend_invitations_list.filter( (friend) => {
-    //     return friend.voter_we_vote_id !== voter_we_vote_id;
-    //   })
-    // });
   }
 
   render () {
     const {
-      invitation_status, voter_email_address,
+      invitationsSentByMe, invitation_status, voter_email_address,
     } = this.props;
 
     var {voter} = this.state;
@@ -81,13 +77,16 @@ export default class FriendInvitationEmailForList extends Component {
               {voter_display_name_formatted}
             </Link> :
             <span>{voter_display_name_formatted}</span> }
+          { invitationsSentByMe ?
+            <span> has an open invitation from you.</span> :
+            <span> invited you.</span>}
           <h5>
             {invitation_status_text}</h5>
         </div>
         <div className="card-child__additional">
           <div className="card-child__follow-buttons">
             <button className="btn btn-default btn-sm"
-              onClick={this.deleteInvitation.bind(this, voter_email_address)}>
+              onClick={this.deleteFriendInviteEmail.bind(this, voter_email_address)}>
               Delete Invitation
             </button>
             {invitation_status === "PENDING_EMAIL_VERIFICATION" && !voter.signed_in_with_email ?

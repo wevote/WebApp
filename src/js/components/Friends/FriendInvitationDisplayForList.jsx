@@ -19,13 +19,16 @@ export default class FriendInvitationDisplayForList extends Component {
     voter_email_address: PropTypes.string
   };
 
-  deleteInvitation (other_voter_we_vote_id) {
-    FriendActions.deleteFriendInvite(other_voter_we_vote_id);
-    // this.setState({
-    //   friend_invitations_list: this.state.friend_invitations_list.filter( (friend) => {
-    //     return friend.voter_we_vote_id !== voter_we_vote_id;
-    //   })
-    // });
+  deleteFriendInviteEmail (voter_email_address) {
+    // TODO DALE We have a problem with how we are deleting friend invitations.
+    // It has to do with retrieve_friend_invitations_sent_by_me on the API server
+    // console.log("deleteFriendInviteEmail");
+    FriendActions.deleteFriendInviteEmail(voter_email_address);
+  }
+
+  deleteFriendInviteVoter (other_voter_we_vote_id) {
+    // console.log("deleteFriendInviteVoter");
+    FriendActions.deleteFriendInviteVoter(other_voter_we_vote_id);
   }
 
   handleIgnore (voter_we_vote_id) {
@@ -39,9 +42,11 @@ export default class FriendInvitationDisplayForList extends Component {
 
   render () {
     const {
+      invitationsSentByMe,
       voter_twitter_followers_count,
       voter_we_vote_id,
       voter_photo_url,
+      voter_email_address
     } = this.props;
 
     let voter_display_name = this.props.voter_display_name ? this.props.voter_display_name : this.props.voter_email_address;
@@ -52,7 +57,25 @@ export default class FriendInvitationDisplayForList extends Component {
     // TwitterHandle-based link
     var voterGuideLink = this.props.voter_twitter_handle ? "/" + this.props.voter_twitter_handle : null;
     let voter_image = <ImageHandler sizeClassName="icon-lg " imageUrl={voter_photo_url} kind_of_ballot_item="CANDIDATE" />;
-    let voter_display_name_formatted = <h4 className="card-child__display-name">{voter_display_name}</h4>;
+    let voter_display_name_formatted = <span className="card-child__display-name">{voter_display_name}</span>;
+    // console.log("FriendInvitationDisplayForList, this.props.voter_we_vote_id:", this.props.voter_we_vote_id);
+
+    let delete_invitation_html;
+    if (voter_email_address) {
+      delete_invitation_html = <span>
+          <button className="btn btn-default btn-sm"
+            onClick={this.deleteFriendInviteEmail.bind(this, voter_email_address)}>
+            Delete Email Invitation
+          </button>
+        </span>;
+    } else {
+      delete_invitation_html = <span>
+          <button className="btn btn-default btn-sm"
+            onClick={this.deleteFriendInviteVoter.bind(this, voter_we_vote_id)}>
+            Delete Invitation
+          </button>
+        </span>;
+    }
 
     return <div className="position-item card-child card-child--not-followed">
       <div className="card-child__avatar">
@@ -69,18 +92,16 @@ export default class FriendInvitationDisplayForList extends Component {
               {voter_display_name_formatted}
             </Link> :
             <span>{voter_display_name_formatted}</span> }
+          { invitationsSentByMe ?
+            <span> has an open invitation from you.</span> :
+            <span> invited you.</span>}
           { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> :
             null}
         </div>
         <div className="card-child__additional">
           <div className="card-child__follow-buttons">
             { this.props.invitationsSentByMe ?
-              <span>
-                <button className="btn btn-default btn-sm"
-                  onClick={this.deleteInvitation.bind(this, voter_we_vote_id)}>
-                  Delete Invitation
-                </button>
-              </span> :
+              <span>{delete_invitation_html}</span> :
               <span>
                 <FriendInvitationToggle other_voter_we_vote_id={voter_we_vote_id}/>
                 < button className="btn btn-default btn-sm"

@@ -4,7 +4,7 @@ import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
 import VoterStore from "../../stores/VoterStore";
 
-export default class FriendToggle extends Component {
+export default class FriendInvitationToggle extends Component {
   static propTypes = {
     other_voter_we_vote_id: PropTypes.string.isRequired
   };
@@ -47,9 +47,13 @@ export default class FriendToggle extends Component {
     if (!this.state) { return <div></div>; }
     let other_voter_we_vote_id = this.props.other_voter_we_vote_id;
     let is_friend = this.state.is_friend;
+    // console.log("FriendInvitationToggle, my voter_we_vote_id:", this.state.voter.we_vote_id, ", other_voter_we_vote_id:", other_voter_we_vote_id, ", is_friend:", is_friend);
     let is_looking_at_self = this.state.voter.we_vote_id === other_voter_we_vote_id;
     // You should not be able to friend yourself
-    if (is_looking_at_self) { return <div></div>; }
+    if (is_looking_at_self) {
+      // console.log("FriendInvitationToggle, is_looking_at_self");
+      return <div></div>;
+    }
 
     const acceptFriendInvite = FriendActions.acceptFriendInvite.bind(this, other_voter_we_vote_id);
     const unFriend = FriendActions.unFriend.bind(this, other_voter_we_vote_id);

@@ -15,7 +15,7 @@ module.exports = {
       });
   },
 
-  deleteFriendInvite: function (other_voter_we_vote_id) {
+  deleteFriendInviteVoter: function (other_voter_we_vote_id) {
     Dispatcher.loadEndpoint("friendInviteResponse", {
       voter_we_vote_id: other_voter_we_vote_id,
       kind_of_invite_response: "DELETE_INVITATION_VOTER_SENT_BY_ME"
