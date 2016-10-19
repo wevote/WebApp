@@ -41,6 +41,10 @@ export default class Friends extends Component {
     return current_route;
   }
 
+  toggleEditMode (){
+    this.setState({editMode: !this.state.editMode});
+  }
+
   getFollowingType (){
     switch (this.getCurrentRoute()) {
       case "/friends":
@@ -56,12 +60,18 @@ export default class Friends extends Component {
       <Helmet title="Your Friends - We Vote" />
       <h1 className="h1">Build Your Network</h1>
       <FollowingFilter following_type={this.getFollowingType()} />
+      <a className="fa-pull-right"
+         onClick={this.toggleEditMode.bind(this)}>
+        {this.state.editMode ? "Done Editing" : "Edit"}
+      </a>
       <div>
         <p>
           These friends see what you support, oppose, and which opinions you follow.
         </p>
         <div className="card">
-          <FriendList friendList={current_friend_list} />
+          <FriendList friendList={current_friend_list}
+                      editMode={this.state.editMode}
+                      />
         </div>
       </div>
       <Link to="/requests">
