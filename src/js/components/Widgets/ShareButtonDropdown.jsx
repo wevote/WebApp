@@ -1,5 +1,10 @@
 import React, { Component, PropTypes } from "react";
 import CopyLinkModal from "../../components/Widgets/CopyLinkModal";
+// import CopyLinkModal from "../../components/Widgets/CopyLinkManual";
+// import CopyLinkModal from "../../components/Widgets/CopyLinkModalManual";
+//zachmonteith: comment out either line 2 or line 3, depending on whether
+// 1) a dynamic select all/copy button with a select all onFocus input field
+// is desired, or 2) always manual copy button with textarea field.
 
 export default class ShareButtonDropdown extends Component {
   static propTypes = {
