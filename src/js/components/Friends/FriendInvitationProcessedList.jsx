@@ -36,7 +36,12 @@ export default class FriendInvitationProcessedList extends Component {
     let counter = 0;
     const friend_list = this.state.friend_invitations_list.map( (friend) => {
       counter++;
-      return <FriendInvitationProcessedDisplayForList key={counter} {...friend} />;
+      if (this.props.invitationsSentByMe) {
+        return <FriendInvitationProcessedDisplayForList key={counter} {...friend}
+                                                        invitationsSentByMe={this.props.invitationsSentByMe} />;
+      } else {
+        return <FriendInvitationProcessedDisplayForList key={counter} {...friend} />;
+      }
     });
 
     return <div className="guidelist card-child__list-group">

@@ -38,10 +38,11 @@ export default class FriendInvitationList extends Component {
 
     const friend_list = this.state.friend_invitations_list.map( (friend) => {
       if (friend.voter_we_vote_id === "") {
-        return <FriendInvitationEmailForList key={friend.voter_email_address} {...friend}/>;
+        return <FriendInvitationEmailForList key={friend.voter_email_address} {...friend}
+                                             invitationsSentByMe={invitations_sent_by_me} />;
       } else {
         return <FriendInvitationDisplayForList key={friend.voter_we_vote_id} {...friend}
-                                               invitationsSentByMe={invitations_sent_by_me}/>;
+                                               invitationsSentByMe={invitations_sent_by_me} />;
       }
     });
 

@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import ImageHandler from "../../components/ImageHandler";
 import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
 
-export default class FriendInvitationDisplayForList extends Component {
+export default class FriendInvitationProcessedDisplayForList extends Component {
   static propTypes = {
     key: PropTypes.string,
     children: PropTypes.array,  // A list of the tags in FriendDisplayForList when called (e.g. from FriendInvitationList)
