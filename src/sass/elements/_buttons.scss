@@ -16,21 +16,17 @@
 	}
 }
 
-.select-all-btn{
-	height: 34px;
-	margin: -1px 0 0 0;
-	display: none;
-	@include breakpoints (max nav) {
-		display: inline; // show button on small screens
-	}
+.url-to-copy {
+	width: 100% !important;
 }
 
+.copy-btn{
+	height: 52px;
+}
 
-.copy-btn__hide-mobile {
-		margin: -1px 0 0 0;
-		height: 34px;
-		@include breakpoints (max nav) {
-			display: none; // Hide button on small screens
+.hide-mobile {
+	@include breakpoints (max nav) {
+		display: none; // Hide button on small screens
 	}
 }
 

@@ -5,7 +5,8 @@ import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 export default class FriendList extends Component {
 
   static propTypes = {
-    friendList: PropTypes.array
+    friendList: PropTypes.array,
+    editMode: PropTypes.bool
   };
 
   constructor (props) {
@@ -33,7 +34,8 @@ export default class FriendList extends Component {
     }
 
     const friend_list_for_display = this.state.friend_list.map( (friend) => {
-      return <FriendDisplayForList key={friend.voter_we_vote_id} {...friend} />;
+      return <FriendDisplayForList editMode={this.props.editMode}
+                                   key={friend.voter_we_vote_id} {...friend} />;
     });
 
     return <div className="guidelist card-child__list-group">

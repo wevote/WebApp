@@ -37,14 +37,10 @@ render () {
   let urlBeingShared = this.props.urlBeingShared;
   let browser_supports_CopyToClipboard = false; //latest iOS update supports CopyToClipboard, check for users version and let them copy if latest, perhaps with npm pckg "mobile-detect"
   let copy_btn_className;
-  let select_all_button;
   if (browser_supports_CopyToClipboard) {
     copy_btn_className = "copy-btn"; // display copy button at all times
-    select_all_button = null;
   } else {
-    copy_btn_className = "copy-btn__hide-mobile"; // display: none; in mobile view
-    select_all_button = <button className="select-all-btn btn btn-default"
-                                onClick={()=>{document.getElementById("url-to-copy").setSelectionRange(0, 999);}}>Select All</button>;
+    copy_btn_className = "copy-btn hide-mobile"; // display: none; in mobile view
   }
 
 
@@ -53,18 +49,15 @@ render () {
       <Modal.Title id="contained-modal-title-lg">Copy link to clipboard</Modal.Title>
     </Modal.Header>
     <Modal.Body>
-      <div className="input-group">
-        <input id="url-to-copy"
-               readOnly="true"
-               value={urlBeingShared}
-               className="form-control"
-               style={{marginTop: "17px"}}
-               onFocus={()=>{document.getElementById("url-to-copy").setSelectionRange(0, 999);}} />&nbsp;
+      <div className="input-group url-to-copy">
+        <textarea readOnly="true"
+                  value={urlBeingShared}
+                  className="form-control url-to-copy"
+                  style={{height: "52px"}} />
           <span className="input-group-btn">
             <CopyToClipboard text={urlBeingShared} onCopy={this.updateWasCopied.bind(this)}>
               <button className={"btn btn-default " + copy_btn_className}>Copy</button>
             </CopyToClipboard>
-            {select_all_button}
           </span>
       </div>
     {this.state.was_copied ? <span style={{color: "red"}}>
