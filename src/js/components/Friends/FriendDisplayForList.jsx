@@ -14,7 +14,8 @@ export default class FriendDisplayForList extends Component {
     voter_display_name: PropTypes.string,
     voter_twitter_handle: PropTypes.string,
     voter_twitter_description: PropTypes.string,
-    voter_twitter_followers_count: PropTypes.number
+    voter_twitter_followers_count: PropTypes.number,
+    editMode: PropTypes.bool
   };
 
   render () {
@@ -55,7 +56,7 @@ export default class FriendDisplayForList extends Component {
         </div>
         <div className="card-child__additional">
           <div className="card-child__follow-buttons">
-            <FriendToggle other_voter_we_vote_id={voter_we_vote_id}/>
+            { this.props.editMode ? <FriendToggle other_voter_we_vote_id={voter_we_vote_id}/> : null }
           </div>
           {voter_twitter_followers_count ?
             <span className="twitter-followers__badge">
