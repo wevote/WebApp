@@ -38,6 +38,10 @@ export default class FollowToggle extends Component {
     this.setState({ voter: VoterStore.getVoter()});
   }
 
+  toggleFollow () {
+    this.state.is_following = !this.state.is_following;
+  }
+
   render () {
     if (!this.state) { return <div></div>; }
     let we_vote_id = this.props.we_vote_id;
@@ -46,27 +50,31 @@ export default class FollowToggle extends Component {
     // You should not be able to follow yourself
     if (is_looking_at_self) { return <div></div>; }
 
-    var that = this;
-    const followFunc = function () {
-      is_following = true;
-      GuideActions.organizationFollow.bind(that, we_vote_id);
-    };
-    const stopFollowingFunc = function () {
-      is_following = false;
-      GuideActions.organizationStopFollowing.bind(that, we_vote_id);
-    };
+
+    const followFunc = GuideActions.organizationFollow.bind(this, we_vote_id);
+    const stopFollowingFunc = GuideActions.organizationStopFollowing.bind(this, we_vote_id);
     const floatRight = { float: "right"};
+
+    var stopFollowingInstantly = function () {
+      is_following = false;
+      stopFollowingFunc();
+    };
+
+    var followInstantly = function () {
+      is_following = true;
+      followFunc();
+    };
 
     return <span style={floatRight}>
       {is_following ?
         <Button bsStyle="info"
                 bsSize="small"
                 className="btn-action"
-                onClick={stopFollowingFunc}
+                onClick={stopFollowingInstantly}
                 data-hover="Unfollow">
                 <span>Following</span>
         </Button> :
-        <Button bsStyle="info" bsSize="small" onClick={followFunc}><span>Follow</span></Button>
+        <Button bsStyle="info" bsSize="small" onClick={followInstantly}><span>Follow</span></Button>
       }
       </span>;
   }
