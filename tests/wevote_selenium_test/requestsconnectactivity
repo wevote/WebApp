@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="https://wevote.us/" />
+<title>requestsconnectactivity</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">requestsconnectactivity</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>https://wevote.us</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='app-base-id']/div/div/div/header/div[2]/div[2]/a[2]/span[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='app-base-id']/div/div/div/header/div[2]/div[2]/a[3]/span[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='app-base-id']/div/div/div/header/div[2]/div[2]/a[4]/span[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='app-base-id']/div/div/div/header/div[2]/div[2]/a[3]/span[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=ADD_FRIENDS_BY_TWITTER</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=ADD_FRIENDS_BY_FACEBOOK</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=ADD_FRIENDS_BY_EMAIL</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=See current friends</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=button.btn.btn-link</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='app-base-id']/div/div/div/header/div[2]/div[2]/a[3]/span[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=See other invitations</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Connect</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=a &gt; button.btn.btn-primary</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='button']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>xpath=(//input[@type='text'])[2]</td>
+	<td>greenpeace</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='button']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Following</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Friends</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
