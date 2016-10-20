@@ -36,10 +36,14 @@ class SearchAllStore extends FluxMapStore {
         let alreadyContains;
         action.res.search_results.forEach(one_search_result =>{
           twitter_handle = one_search_result.twitter_handle || "";
-          alreadyContains = alreadyFoundTwitterHandles.indexOf(twitter_handle.toLowerCase()) > -1;
-          if (!alreadyContains) {
+          if (twitter_handle === "") {
             searchResults.push(one_search_result);
-            alreadyFoundTwitterHandles.push(twitter_handle.toLowerCase());
+          } else {
+            alreadyContains = alreadyFoundTwitterHandles.indexOf(twitter_handle.toLowerCase()) > -1;
+            if (!alreadyContains) {
+              searchResults.push(one_search_result);
+              alreadyFoundTwitterHandles.push(twitter_handle.toLowerCase());
+            }
           }
         });
         return {
