@@ -12,27 +12,12 @@ export default class PositionPublicToggle extends Component {
     supportProps: PropTypes.object
   };
 
-  constructor (props) {
-    super(props);
-    this.state = {
-      transitioning: false
-    };
-  }
-
-  componentWillReceiveProps () {
-    this.setState({transitioning: false});
-  }
-
   showItemToFriendsOnly () {
-    if (this.state.transitioning){ return; }
     SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, "FRIENDS_ONLY");
-    this.setState({transitioning: true});
   }
 
   showItemToPublic () {
-    if (this.state.transitioning){ return; }
     SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, "SHOW_PUBLIC");
-    this.setState({transitioning: true});
   }
 
   render () {
@@ -48,12 +33,18 @@ export default class PositionPublicToggle extends Component {
     const tooltip = <Tooltip id="visibility-tooltip">{is_public_position ? visibilityPublic : visibilityFriendsOnly}</Tooltip>;
 
     var onChange;
+    var that = this;
     if (is_public_position) {
-      onChange = this.showItemToFriendsOnly.bind(this);
+      onChange = function () {
+        is_public_position = false;
+        that.showItemToFriendsOnly();
+      };
     } else {
-      onChange = this.showItemToPublic.bind(this);
+      onChange = function () {
+        is_public_position = true;
+        that.showItemToPublic();
+      };
     }
-
 
     const positionPublicToggle =
     <div className={this.props.className}>
