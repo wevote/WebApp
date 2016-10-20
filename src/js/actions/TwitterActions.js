@@ -20,12 +20,12 @@ module.exports = {
     Dispatcher.loadEndpoint("twitterSignInRetrieve", {
     });
   },
-
-  twitterSignInStart: function (return_url) {
-    Dispatcher.loadEndpoint("twitterSignInStart",
-      {
-        return_url: return_url
-      });
-  },
+  //
+  // twitterSignInStart: function (return_url) {
+  //   Dispatcher.loadEndpoint("twitterSignInStart",
+  //     {
+  //       return_url: return_url
+  //     });
+  // },
 
 };

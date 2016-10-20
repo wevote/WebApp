@@ -131,6 +131,8 @@ export default class Ballot extends Component {
       if (voter_address.length === 0) {
         return <div className="ballot">
           <div className="ballot__header">
+            <Helmet title="Ballot - We Vote" />
+            <BrowserPushMessage incomingProps={this.props} />
             <h1 className="h1">Please enter your address so we can find your ballot.</h1>
             <Link to="/settings/location">
                 <Button bsStyle="primary">Enter an Address</Button>

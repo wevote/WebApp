@@ -13,24 +13,8 @@ export default class Location extends Component {
     this.state = {};
   }
 
-      // <div className="container-fluid well u-gutter__top--small fluff-full1">
-      //   <div>
-      //     <div className="medium">
-      //       March 2016: This site is a demo version of We Vote.
-      //       If you would like to see a recent live ballot, copy and paste
-      //       one of these addresses and paste them in the box above.
-      //     </div>
-      //     <h4 className="h4">
-      //       Charlotte, NC 28205
-      //     </h4>
-      //     or
-      //     <h4 className="h4">
-      //       Columbus, OH 43202
-      //     </h4>
-      //   </div>
-      // </div>
-
   render () {
+    console.log("Settings/Location");
     return <div>
       <Helmet title="Enter Your Address - We Vote" />
       <BrowserPushMessage incomingProps={this.props} />
