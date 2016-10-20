@@ -48,11 +48,11 @@ export default class FollowToggle extends Component {
 
     var that = this;
     const followFunc = function () {
-      is_following = !is_following;
+      is_following = true;
       GuideActions.organizationFollow.bind(that, we_vote_id);
     };
     const stopFollowingFunc = function () {
-      is_following = !is_following;
+      is_following = false;
       GuideActions.organizationStopFollowing.bind(that, we_vote_id);
     };
     const floatRight = { float: "right"};

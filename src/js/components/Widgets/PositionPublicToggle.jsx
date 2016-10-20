@@ -36,12 +36,12 @@ export default class PositionPublicToggle extends Component {
     var that = this;
     if (is_public_position) {
       onChange = function () {
-        is_public_position = !is_public_position;
+        is_public_position = false;
         that.showItemToFriendsOnly();
       };
     } else {
       onChange = function () {
-        is_public_position = !is_public_position;
+        is_public_position = true;
         that.showItemToPublic();
       };
     }
