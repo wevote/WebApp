@@ -94,15 +94,15 @@ class TwitterStore extends FluxMapStore {
           voter_we_vote_id_attached_to_twitter_email: action.res.voter_we_vote_id_attached_to_twitter_email,
           twitter_profile_image_url_https: action.res.twitter_profile_image_url_https,
         };
-
-      case "twitterSignInStart":
-        console.log("TwitterStore twitterSignInStart, action.res:", action.res);
-        if (action.res.twitter_redirect_url) {
-          window.location.assign(action.res.twitter_redirect_url);
-        }
-        return {
-          ...state,
-        };
+      //
+      // case "twitterSignInStart":
+      //   console.log("TwitterStore twitterSignInStart, action.res:", action.res);
+      //   if (action.res.twitter_redirect_url) {
+      //     window.location.assign(action.res.twitter_redirect_url);
+      //   }
+      //   return {
+      //     ...state,
+      //   };
 
       default:
         return state;
