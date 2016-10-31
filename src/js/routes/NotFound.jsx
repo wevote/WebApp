@@ -95,8 +95,9 @@ export default class NotFound extends Component {
       this.organizationCreateFromTwitter(voter.twitter_screen_name);
     } else if (signed_in_with_this_twitter_account && voter_not_linked_to_organization) {
       // We (TODO DALE *should*) link the voter record to the organization with Twitter sign in -- this is for safety
-      console.log("NotFound, calling organizationCreateFromTwitter because voter_not_linked_to_organization");
-      this.organizationCreateFromTwitter(voter.twitter_screen_name);
+      // TODO DALE 2016-10-30 Moving this to Twitter sign in
+      // console.log("NotFound, calling organizationCreateFromTwitter because voter_not_linked_to_organization");
+      // this.organizationCreateFromTwitter(voter.twitter_screen_name);
     }
 
     if (this.state.kind_of_owner === "CANDIDATE"){

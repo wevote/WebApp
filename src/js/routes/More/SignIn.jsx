@@ -86,7 +86,7 @@ export default class SignIn extends Component {
       <BrowserPushMessage incomingProps={this.props} />
       <div className="card">
         <div className="card-main text-center">
-          <h1 className="h3">{voter.signed_in_personal ? <span>My Account</span> : <span>Sign In</span>}</h1>
+          <h1 className="h3">{voter.signed_in_personal ? <span>Your Account</span> : <span>Sign In</span>}</h1>
           <div>
             {voter.signed_in_facebook ?
               <span><a className="btn btn-social btn-lg btn-facebook" onClick={FacebookActions.appLogout}>
