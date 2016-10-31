@@ -34,7 +34,7 @@ export default class HeaderBar extends Component {
 
   render () {
     var { pathname } = this.props;
-    var { signed_in_facebook, signed_in_personal, signed_in_twitter, twitter_screen_name, voter_photo_url } = this.props.voter;
+    var { signed_in_facebook, is_signed_in, signed_in_twitter, twitter_screen_name, voter_photo_url } = this.props.voter;
     const voterSignOut = VoterSessionActions.voterSignOut;
 
     let image_placeholder = "";
@@ -89,7 +89,7 @@ export default class HeaderBar extends Component {
                 </div>
               </Link>
             </li>
-            { signed_in_personal ?
+            { is_signed_in ?
               <li>
                 <Link onClick={this.hide.bind(this)} to="/more/sign_in">
                   <div>
@@ -99,7 +99,7 @@ export default class HeaderBar extends Component {
               </li> :
               null
             }
-            { signed_in_personal ?
+            { is_signed_in ?
               <li>
                 <Link onClick={this.hide.bind(this)} to="/more/sign_in">
                   <div onClick={voterSignOut}>

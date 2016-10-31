@@ -111,7 +111,7 @@ export default class Application extends Component {
         <div className="container-fluid">
           <div className="row">
             <div className="col-xs-4 sidebar-menu">
-              { voter.signed_in_personal ? <MoreMenu {...voter} /> : <MoreMenu /> }
+              { voter.is_signed_in ? <MoreMenu {...voter} /> : <MoreMenu /> }
             </div>
             <div className="col-xs-8-container col-xs-8 container-main">
               { this.props.children }

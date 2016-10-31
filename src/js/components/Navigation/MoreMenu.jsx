@@ -9,7 +9,7 @@ export default class MoreMenu extends Component {
     first_name: PropTypes.string,
     linked_organization_we_vote_id: PropTypes.string,
     signed_in_facebook: PropTypes.bool,
-    signed_in_personal: PropTypes.bool,
+    is_signed_in: PropTypes.bool,
     signed_in_twitter: PropTypes.bool,
     twitter_screen_name: PropTypes.string,
     voter_photo_url: PropTypes.string
@@ -84,11 +84,11 @@ export default class MoreMenu extends Component {
             null
           }
           {this.menuLink("/settings/location", "Your Address & Ballot")}
-          {this.props.signed_in_personal ?
+          {this.props.is_signed_in ?
             this.menuLink("/more/sign_in", "Your Account") :
             null
           }
-          {this.props.signed_in_personal ?
+          {this.props.is_signed_in ?
             <li onClick={voterSignOut} className="list-group-item"><a><span className="header-menu-text-left">Sign Out</span></a></li> :
             this.menuLink("/more/sign_in", "Sign In")
           }
