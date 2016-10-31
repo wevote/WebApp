@@ -86,7 +86,7 @@ export default class SignIn extends Component {
       <BrowserPushMessage incomingProps={this.props} />
       <div className="card">
         <div className="card-main text-center">
-          <h1 className="h3">{voter.signed_in_personal ? <span>Your Account</span> : <span>Sign In</span>}</h1>
+          <h1 className="h3">{voter.is_signed_in ? <span>Your Account</span> : <span>Sign In</span>}</h1>
           <div>
             {voter.signed_in_facebook ?
               <span><a className="btn btn-social btn-lg btn-facebook" onClick={FacebookActions.appLogout}>
@@ -122,7 +122,7 @@ export default class SignIn extends Component {
 
           {debug_mode &&
           <div className="text-center">
-            signed_in_personal: {voter.signed_in_personal ? <span>True</span> : null}<br />
+            is_signed_in: {voter.is_signed_in ? <span>True</span> : null}<br />
             signed_in_facebook: {voter.signed_in_facebook ? <span>True</span> : null}<br />
             signed_in_twitter: {voter.signed_in_twitter ? <span>True</span> : null}<br />
             we_vote_id: {voter.we_vote_id ? <span>{voter.we_vote_id}</span> : null}<br />
