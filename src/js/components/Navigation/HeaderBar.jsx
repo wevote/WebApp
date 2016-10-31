@@ -93,7 +93,7 @@ export default class HeaderBar extends Component {
               <li>
                 <Link onClick={this.hide.bind(this)} to="/more/sign_in">
                   <div>
-                    <span className="header-slide-out-menu-text-left">My Account</span>
+                    <span className="header-slide-out-menu-text-left">Your Account</span>
                   </div>
                 </Link>
               </li> :
