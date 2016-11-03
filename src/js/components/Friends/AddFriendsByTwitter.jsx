@@ -16,7 +16,7 @@ export default class AddFriendsByTwitter extends Component {
       this.state = {
         add_friends_message: "Please join me in preparing for the upcoming election.",
         twitter_handles: "",
-        redirect_url_upon_save: "/friends/sign_in",
+        redirect_url_upon_save: "/friends/sign_in",  // TODO DALE Remove this?
         loading: false,
         on_enter_twitter_handles_step: true,
         on_request_email_step: false,
@@ -45,6 +45,7 @@ export default class AddFriendsByTwitter extends Component {
   }
 
   _ballotLoaded (){
+    // TODO DALE Remove this?
     browserHistory.push(this.state.redirect_url_upon_save);
   }
 

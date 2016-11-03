@@ -38,6 +38,14 @@ module.exports = {
       });
   },
 
+  friendInvitationByWeVoteIdSend: function (other_voter_we_vote_id, invitation_message='') {
+    Dispatcher.loadEndpoint("friendInvitationByWeVoteIdSend",
+      {
+        other_voter_we_vote_id: other_voter_we_vote_id,
+        invitation_message: invitation_message
+      });
+  },
+
   // TODO DALE To be built on API server
   friendInvitationByTwitterHandleSend: function (twitter_handles, invitation_message) {
     Dispatcher.loadEndpoint("friendInvitationByTwitterHandleSend",
@@ -80,6 +88,13 @@ module.exports = {
       voter_we_vote_id: other_voter_we_vote_id,
       kind_of_invite_response: "IGNORE_INVITATION"
     } );
+  },
+
+  suggestedFriendList: function () {
+    Dispatcher.loadEndpoint("friendList",
+      {
+        kind_of_list: "SUGGESTED_FRIEND_LIST"
+      });
   },
 
   unFriend: function (other_voter_we_vote_id) {

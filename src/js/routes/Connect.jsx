@@ -5,6 +5,10 @@ import AddFriendsByEmail from "../components/Friends/AddFriendsByEmail";
 import AddFriendsByFacebook from "../components/Friends/AddFriendsByFacebook";
 import AddFriendsByTwitter from "../components/Friends/AddFriendsByTwitter";
 import AddFriendsFilter from "../components/Navigation/AddFriendsFilter";
+import FollowingFilter from "../components/Navigation/FollowingFilter";
+import FriendActions from "../actions/FriendActions";
+import FriendList from "../components/Friends/FriendList";
+import FriendStore from "../stores/FriendStore";
 import Helmet from "react-helmet";
 
 /* VISUAL DESIGN HERE: https://invis.io/E45246B2C */
@@ -17,9 +21,27 @@ export default class Connect extends Component {
 	constructor (props) {
 		super(props);
     this.state = {
-      add_friends_type: "ADD_FRIENDS_BY_EMAIL"
+      add_friends_type: "ADD_FRIENDS_BY_EMAIL",
+      current_friend_list: FriendStore.currentFriends()
     };
 	}
+
+  componentDidMount () {
+    if (this.state.current_friend_list) {
+      FriendActions.currentFriends();
+    }
+    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
+  }
+
+  _onFriendStoreChange () {
+    this.setState({
+      current_friend_list: FriendStore.currentFriends()
+    });
+  }
+
+  componentWillUnmount (){
+    this.friendStoreListener.remove();
+  }
 
 	static getProps () {
 		return {};
@@ -29,10 +51,28 @@ export default class Connect extends Component {
     this.setState({add_friends_type: event.target.id});
   }
 
+  getCurrentRoute (){
+    var current_route = "/more/connect";
+    return current_route;
+  }
+
+  toggleEditMode (){
+    this.setState({editMode: !this.state.editMode});
+  }
+
+  getFollowingType (){
+    switch (this.getCurrentRoute()) {
+      case "/more/connect":
+      default :
+        return "YOUR_FRIENDS";
+    }
+  }
+
 	render () {
 		var floatRight = {
 			float: "right"
 		};
+    const { current_friend_list } = this.state;
     let add_friends_header;
     let add_friends_html;
     if (this.state.add_friends_type === "ADD_FRIENDS_BY_TWITTER") {
@@ -48,26 +88,34 @@ export default class Connect extends Component {
 
 		return <div>
 			<Helmet title={add_friends_header} />
+      <h1 className="h1">Build Your Network</h1>
+      <FollowingFilter following_type={this.getFollowingType()} />
 			<div className="container-fluid well u-gutter__top--small fluff-full1">
         <h4 className="text-left">{add_friends_header}</h4>
         <div className="ballot__filter"><AddFriendsFilter add_friends_type={this.state.add_friends_type}
                                                           changeAddFriendsTypeFunction={this.changeAddFriendsType.bind(this)} /></div>
         {add_friends_html}
-        <Link to="/friends">See current friends</Link>
-        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <Link to="/requests">See other invitations</Link>
       </div>
 
 			<div className="container-fluid well u-gutter__top--small fluff-full1">
-				<h4 className="text-left">Who You Can Follow</h4>
-				<span style={floatRight}>
-					<Link to="/opinions"><Button bsStyle="primary">Next &#x21AC;</Button></Link>
-				</span>
-				<p>Find voter guides you can follow. These voter guides have been created by nonprofits, public figures, your friends, and more.<br />
-				<br /></p>
-        <Link to="/opinions_followed">See who you are following</Link>
+        <a className="fa-pull-right"
+           onClick={this.toggleEditMode.bind(this)}>
+          {this.state.editMode ? "Done Editing" : "Edit"}
+        </a>
+        <div>
+          <p>Your Friends</p>
+          <div className="card">
+            <FriendList friendList={current_friend_list}
+                        editMode={this.state.editMode}
+                        />
+          </div>
+        </div>
       </div>
-
+      <Link to="/requests">
+        <Button bsStyle="link">
+          See Friend Requests
+        </Button>
+      </Link>
 		</div>;
 	}
 }

@@ -3,10 +3,11 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router";
 import BrowserPushMessage from "../components/Widgets/BrowserPushMessage";
 import FriendInvitationList from "../components/Friends/FriendInvitationList";
-// import FriendInvitationProcessedList from "../components/Friends/FriendInvitationProcessedList";
 import FriendActions from "../actions/FriendActions";
 import FriendStore from "../stores/FriendStore";
+import SuggestedFriendList from "../components/Friends/SuggestedFriendList";
 import Helmet from "react-helmet";
+// import FriendInvitationProcessedList from "../components/Friends/FriendInvitationProcessedList";
 
 export default class RequestsPage extends Component {
   constructor (props) {
@@ -14,7 +15,8 @@ export default class RequestsPage extends Component {
     this.state = {
       friend_invitations_sent_by_me: [],
       friend_invitations_sent_to_me: [],
-      friend_invitations_processed: []
+      friend_invitations_processed: [],
+      suggested_friend_list: []
     };
   }
 
@@ -23,6 +25,7 @@ export default class RequestsPage extends Component {
     FriendActions.friendInvitationsSentByMe();
     FriendActions.friendInvitationsSentToMe();
     FriendActions.friendInvitationsProcessed();
+    //FriendActions.suggestedFriendList();
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
   }
 
@@ -34,7 +37,8 @@ export default class RequestsPage extends Component {
     this.setState({
       friend_invitations_sent_by_me: FriendStore.friendInvitationsSentByMe(),
       friend_invitations_sent_to_me: FriendStore.friendInvitationsSentToMe(),
-      friend_invitations_processed: FriendStore.friendInvitationsProcessed()
+      friend_invitations_processed: FriendStore.friendInvitationsProcessed(),
+      suggested_friend_list: FriendStore.suggestedFriendList()
     });
   }
 
@@ -53,7 +57,7 @@ export default class RequestsPage extends Component {
                 <span>
                   <Link to="/more/connect">Send invitations</Link> to your friends so you can collaborate on how to vote.
                 </span> }
-              <span> <Link to="/friends">See your friends.</Link></span>
+              <span> <Link to="/more/connect">See your friends.</Link></span>
             </p> }
         </div>
         <div className="card__additional">
@@ -61,6 +65,14 @@ export default class RequestsPage extends Component {
           { this.state.friend_invitations_sent_to_me.length ?
             <div>
               <FriendInvitationList friendList={this.state.friend_invitations_sent_to_me} />
+            </div> :
+            null
+          }
+          {/* Suggested Friends */}
+          { this.state.suggested_friend_list.length ?
+            <div>
+              <h3 className="card__additional-heading">People You May Know</h3>
+              <SuggestedFriendList friendList={this.state.suggested_friend_list} />
             </div> :
             null
           }
