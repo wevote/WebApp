@@ -19,7 +19,7 @@ export default class AddFriendsByEmail extends Component {
         email_addresses_error: false,
         sender_email_address: "",
         sender_email_address_error: false,
-        redirect_url_upon_save: "/friends/sign_in",
+        redirect_url_upon_save: "/friends/sign_in",  // TODO DALE Remove this?
         loading: false,
         on_enter_email_addresses_step: true,
         on_collect_email_step: false,
@@ -67,6 +67,7 @@ export default class AddFriendsByEmail extends Component {
   }
 
   _ballotLoaded (){
+    // TODO DALE Remove this?
     browserHistory.push(this.state.redirect_url_upon_save);
   }
 

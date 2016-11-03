@@ -7,13 +7,11 @@ const assign = require("object-assign");
 class FriendStore extends FluxMapStore {
 
   currentFriends (){
-    let current_friends = this.getDataFromArr(this.getState().current_friends) || {};
-    return current_friends;
+    return this.getDataFromArr(this.getState().current_friends) || {};
   }
 
   currentFriendsIndexed (){
-    let current_friends = this.getIndexFromArr(this.getState().current_friends) || {};
-    return current_friends;
+    return this.getIndexFromArr(this.getState().current_friends) || {};
   }
 
   friendInvitationsSentByMe (){
@@ -41,6 +39,10 @@ class FriendStore extends FluxMapStore {
   isFriend (voter_we_vote_id) {
     let current_friends_index = this.currentFriendsIndexed();  // TODO DALE THIS NEEDS TO BE TESTED
     return current_friends_index[voter_we_vote_id] !== undefined;
+  }
+
+  suggestedFriendList (){
+    return this.getDataFromArr(this.getState().suggested_friend_list) || {};
   }
 
   switchToAddFriendsByEmailStep () {
@@ -188,6 +190,12 @@ class FriendStore extends FluxMapStore {
           return {
             ...state,
             friend_invitations_processed: action.res.friend_list
+          };
+        } else if (action.res.kind_of_list === "SUGGESTED_FRIEND_LIST") {
+          console.log("FriendStore incoming data SUGGESTED_FRIEND_LIST, action.res:", action.res);
+          return {
+            ...state,
+            suggested_friend_list: action.res.friend_list
           };
         }
 

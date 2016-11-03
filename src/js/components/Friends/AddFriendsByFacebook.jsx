@@ -16,7 +16,7 @@ export default class AddFriendsByFacebook extends Component {
       this.state = {
         add_friends_message: "Please join me in preparing for the upcoming election.",
         email_addresses: "",
-        redirect_url_upon_save: "/friends/sign_in",
+        redirect_url_upon_save: "/friends/sign_in",  // TODO DALE Remove this?
         loading: false,
         on_enter_email_addresses_step: true,
         on_request_email_step: false,
@@ -45,6 +45,7 @@ export default class AddFriendsByFacebook extends Component {
   }
 
   _ballotLoaded (){
+    // TODO DALE Remove this?
     browserHistory.push(this.state.redirect_url_upon_save);
   }
 

@@ -21,8 +21,9 @@ export default class Friends extends Component {
   }
 
   componentDidMount () {
-    if (this.state.current_friend_list)
-    FriendActions.currentFriends();
+    if (this.state.current_friend_list) {
+      FriendActions.currentFriends();
+    }
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
   }
 

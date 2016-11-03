@@ -29,7 +29,7 @@ export default class FollowingFilter extends Component {
       <Link to="/opinions_followed" className={ following_type === "WHO_YOU_FOLLOW" ? "active btn btn-default" : "btn btn-default"}>
         Following
       </Link>
-      <Link to="/friends" className={ following_type === "YOUR_FRIENDS" ? "active btn btn-default" : "btn btn-default"}>
+      <Link to="/more/connect" className={ following_type === "YOUR_FRIENDS" ? "active btn btn-default" : "btn btn-default"}>
         Friends
       </Link>
     </div>;
