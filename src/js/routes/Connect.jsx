@@ -69,9 +69,6 @@ export default class Connect extends Component {
   }
 
 	render () {
-		var floatRight = {
-			float: "right"
-		};
     const { current_friend_list } = this.state;
     let add_friends_header;
     let add_friends_html;

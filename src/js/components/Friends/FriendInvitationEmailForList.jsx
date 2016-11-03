@@ -85,10 +85,12 @@ export default class FriendInvitationEmailForList extends Component {
         </div>
         <div className="card-child__additional">
           <div className="card-child__follow-buttons">
+            {/*
             <button className="btn btn-default btn-sm"
               onClick={this.deleteFriendInviteEmail.bind(this, voter_email_address)}>
               Delete Invitation
             </button>
+            */}
             {invitation_status === "PENDING_EMAIL_VERIFICATION" && !voter.signed_in_with_email ?
               <Link to="/more/sign_in">
                 <Button bsSize="small" bsStyle="warning">

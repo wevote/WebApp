@@ -45,8 +45,7 @@ export default class FriendInvitationDisplayForList extends Component {
       invitationsSentByMe,
       voter_twitter_followers_count,
       voter_we_vote_id,
-      voter_photo_url,
-      voter_email_address
+      voter_photo_url
     } = this.props;
 
     let voter_display_name = this.props.voter_display_name ? this.props.voter_display_name : this.props.voter_email_address;
@@ -60,22 +59,22 @@ export default class FriendInvitationDisplayForList extends Component {
     let voter_display_name_formatted = <span className="card-child__display-name">{voter_display_name}</span>;
     // console.log("FriendInvitationDisplayForList, this.props.voter_we_vote_id:", this.props.voter_we_vote_id);
 
-    let delete_invitation_html;
-    if (voter_email_address) {
-      delete_invitation_html = <span>
-          <button className="btn btn-default btn-sm"
-            onClick={this.deleteFriendInviteEmail.bind(this, voter_email_address)}>
-            Delete Email Invitation
-          </button>
-        </span>;
-    } else {
-      delete_invitation_html = <span>
-          <button className="btn btn-default btn-sm"
-            onClick={this.deleteFriendInviteVoter.bind(this, voter_we_vote_id)}>
-            Delete Invitation
-          </button>
-        </span>;
-    }
+    let delete_invitation_html = "";
+    // if (voter_email_address) {
+    //   delete_invitation_html = <span>
+    //       <button className="btn btn-default btn-sm"
+    //         onClick={this.deleteFriendInviteEmail.bind(this, voter_email_address)}>
+    //         Delete Email Invitation
+    //       </button>
+    //     </span>;
+    // } else {
+    //   delete_invitation_html = <span>
+    //       <button className="btn btn-default btn-sm"
+    //         onClick={this.deleteFriendInviteVoter.bind(this, voter_we_vote_id)}>
+    //         Delete Invitation
+    //       </button>
+    //     </span>;
+    // }
 
     return <div className="position-item card-child card-child--not-followed">
       <div className="card-child__avatar">

@@ -30,8 +30,8 @@ export default class SuggestedFriendDisplayForList extends Component {
     FriendActions.deleteFriendInviteVoter(other_voter_we_vote_id);
   }
 
-  handleIgnore (voter_we_vote_id) {
-    FriendActions.ignoreFriendInvite(voter_we_vote_id);
+  ignoreSuggestedFriend (voter_we_vote_id) {
+    FriendActions.ignoreSuggestedFriend(voter_we_vote_id);
     this.setState({
       friend_invitations_list: this.state.friend_invitations_list.filter( (friend) => {
         return friend.voter_we_vote_id !== voter_we_vote_id;
@@ -78,10 +78,12 @@ export default class SuggestedFriendDisplayForList extends Component {
           <div className="card-child__follow-buttons">
             <span>
               <SuggestedFriendToggle other_voter_we_vote_id={voter_we_vote_id}/>
-              < button className="btn btn-default btn-sm"
-                onClick={this.handleIgnore.bind(this, voter_we_vote_id)}>
+              {/*
+              <button className="btn btn-default btn-sm"
+                onClick={this.ignoreSuggestedFriend.bind(this, voter_we_vote_id)}>
                 Remove
               </button>
+              */}
             </span>
           </div>
           {voter_twitter_followers_count ?

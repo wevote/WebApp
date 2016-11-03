@@ -47,7 +47,7 @@ export default class SuggestedFriendToggle extends Component {
     if (!this.state) { return <div></div>; }
     let other_voter_we_vote_id = this.props.other_voter_we_vote_id;
     let is_friend = this.state.is_friend;
-    // console.log("SuggestedFriendToggle, my voter_we_vote_id:", this.state.voter.we_vote_id, ", other_voter_we_vote_id:", other_voter_we_vote_id, ", is_friend:", is_friend);
+    // console.log("SuggestedFriendToggle, other_voter_we_vote_id:", other_voter_we_vote_id, ", is_friend:", is_friend);
     let is_looking_at_self = this.state.voter.we_vote_id === other_voter_we_vote_id;
     // You should not be able to friend yourself
     if (is_looking_at_self) {
