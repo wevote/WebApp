@@ -77,9 +77,11 @@ export default class OrganizationPositionItem extends Component {
     // Manage the control over this organization voter guide
     let organization_twitter_handle_being_viewed = "";
     let organization_facebook_id_being_viewed = 0;
+    let organization_we_vote_id = "";
     if (organization !== undefined) {
       organization_twitter_handle_being_viewed = organization.organization_twitter_handle !== undefined ? organization.organization_twitter_handle : "";
       organization_facebook_id_being_viewed = organization.facebook_id !== undefined ? organization.facebook_id : 0;
+      organization_we_vote_id = organization.we_vote_id;
     }
     var {voter} = this.state;
     var signed_in_twitter = voter === undefined ? false : voter.signed_in_twitter;
@@ -91,6 +93,11 @@ export default class OrganizationPositionItem extends Component {
     var signed_in_with_this_facebook_account = false;
     if (signed_in_facebook) {
       signed_in_with_this_facebook_account = voter.facebook_id === organization_facebook_id_being_viewed;
+    }
+    var signed_in_with_email = voter === undefined ? false : voter.signed_in_with_email;
+    var signed_in_with_this_email_account = false;
+    if (signed_in_with_email && voter.linked_organization_we_vote_id && organization_we_vote_id) {
+      signed_in_with_this_email_account = voter.linked_organization_we_vote_id === organization_we_vote_id;
     }
 
     var statement_text;
@@ -177,7 +184,9 @@ export default class OrganizationPositionItem extends Component {
                   {ballot_item_display_name}
             </Link>
 
-            { signed_in_with_this_twitter_account || signed_in_with_this_facebook_account ?
+            { signed_in_with_this_twitter_account ||
+              signed_in_with_this_facebook_account ||
+              signed_in_with_this_email_account ?
               <PositionPublicToggle ballot_item_we_vote_id={position.ballot_item_we_vote_id}
                 type={position.kind_of_ballot_item}
                 supportProps={supportProps}
