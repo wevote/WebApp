@@ -55,7 +55,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     browserHistory.push({
       pathname: "/requests",
       state: {
-        message: "Your accounts have been merged.",
+        message: "Your have successfully signed in.",
         message_type: "success"
       }
     });
