@@ -25,7 +25,7 @@ export default class RequestsPage extends Component {
     FriendActions.friendInvitationsSentByMe();
     FriendActions.friendInvitationsSentToMe();
     FriendActions.friendInvitationsProcessed();
-    //FriendActions.suggestedFriendList();
+    FriendActions.suggestedFriendList();
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
   }
 

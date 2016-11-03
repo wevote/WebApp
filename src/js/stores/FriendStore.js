@@ -145,6 +145,13 @@ class FriendStore extends FluxMapStore {
           ...state
         };
 
+      case "friendInvitationByWeVoteIdSend":
+        FriendActions.suggestedFriendList();
+        FriendActions.friendInvitationsSentByMe();
+        return {
+          ...state
+        };
+
       case "friendInvitationByEmailVerify":
         if (action.res.voter_device_id === "") {
           // The first time it was called there was no voter_device_id, so we want to call it again
