@@ -12,11 +12,11 @@ export default class EmptyBallot extends Component {
     return <div>
         <div className="container-fluid well u-gutter__top--small fluff-full1">
           <h3 className="text-center">
-            Your Ballot Is Not Ready Yet
+            We Cannot Find Your Ballot
           </h3>
           <div className="small">
-            Our data providers don't have ballot data for your address yet.
-            Please check back 1-2 weeks before your election day. Thank you for your patience.
+            Please try entering a full address. If no ballot data is found for your full address, 
+            we may not have data for this election.
           </div>
           <br />
           <br />
@@ -24,7 +24,7 @@ export default class EmptyBallot extends Component {
             See We Vote in action! Copy this test address into "Your Address":
           </div>
           <h4 className="h4">
-            2208 Ebb Tide Rd, Virginia Beach, VA 23451
+            1717 Clemens Rd, Oakland CA 94602
           </h4>
         </div>
       </div>;
