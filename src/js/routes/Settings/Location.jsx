@@ -14,7 +14,7 @@ export default class Location extends Component {
   }
 
   render () {
-    console.log("Settings/Location");
+    // console.log("Settings/Location");
     return <div>
       <Helmet title="Enter Your Address - We Vote" />
       <BrowserPushMessage incomingProps={this.props} />

@@ -199,7 +199,7 @@ class FriendStore extends FluxMapStore {
             friend_invitations_processed: action.res.friend_list
           };
         } else if (action.res.kind_of_list === "SUGGESTED_FRIEND_LIST") {
-          console.log("FriendStore incoming data SUGGESTED_FRIEND_LIST, action.res:", action.res);
+          // console.log("FriendStore incoming data SUGGESTED_FRIEND_LIST, action.res:", action.res);
           return {
             ...state,
             suggested_friend_list: action.res.friend_list

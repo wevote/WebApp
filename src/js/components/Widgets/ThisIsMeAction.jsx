@@ -32,6 +32,10 @@ export default class ThisIsMeAction extends Component {
 
   render () {
     let twitter_handle_being_viewed = this.props.twitter_handle_being_viewed;
+    if (!twitter_handle_being_viewed) {
+      // We do not want to show the "This is me" link if there isn't a twitter_handle associated with this organization
+      return <span></span>;
+    }
     let kind_of_owner = this.props.kind_of_owner;
     let name_being_viewed = this.props.name_being_viewed || "";
     // Manage the control over this organization voter guide
@@ -41,7 +45,6 @@ export default class ThisIsMeAction extends Component {
     if (signed_in_twitter) {
       signed_in_with_this_twitter_account = voter.twitter_screen_name.toLowerCase() === twitter_handle_being_viewed.toLowerCase();
     }
-
     var this_is_me_action_text;
     if (kind_of_owner === "ORGANIZATION") {
       if (name_being_viewed) {
