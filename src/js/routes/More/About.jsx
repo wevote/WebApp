@@ -20,6 +20,25 @@ export default class About extends Component {
       <Helmet title="About Us - We Vote" />
         <div className="container-fluid card">
           <h1 className="h1">About We Vote</h1>
+          <div className="btn-toolbar">
+          <a className="btn btn-social-icon btn-twitter" href="https://twitter.com/WeVote" target="_blank">
+            <span className="fa fa-twitter"></span>
+          </a>
+
+          <a className="btn btn-social-icon btn-facebook" href="https://www.facebook.com/WeVoteUSA" target="_blank">
+            <span className="fa fa-facebook"></span>
+          </a>
+
+          <a className="btn btn-social-icon btn-github" href="https://github.com/WeVote" target="_blank">
+            <span className="fa fa-github"></span>
+          </a>
+
+          <a className="btn btn-social-icon btn-medium" href="https://medium.com/@WeVote" target="_blank">
+            <span className="fa fa-medium"></span>
+          </a>
+          </div>
+
+          <br />
           <strong>Vote with Confidence</strong><br />
             We Vote is the political social network for America. That means a place to share what you believe and
             find opinions on candidates and propositions before you vote. We Vote is a one-stop-shop for voter
@@ -86,7 +105,15 @@ Donors Network and serves on the board of Citizen Engagement Laboratory. Once a 
 reporter, Jenifer left journalism to tell stories that had a direct impact on social justice. She has worked
 as a legislative aide in the California State Assembly and sees We Vote as a means to bridge the
 disconnect between voters and government.
+<br />
+<hr />
+<h3 id="Jeff">Jeff French</h3>
+
+Lead Designer
 <br /><br />
+<i>&quot;Design is what defines engaging experiences and productive processes.&quot;</i>
+<br />
+<hr />
   <ImageHandler className="about-photo"
                 imageUrl="http://res.cloudinary.com/hrscywv4p/image/upload/c_limit,f_auto,h_1440,q_80,w_720/v1/181340/DaleMcGrew-300x300_ofybhb.jpg"
                 alt="Dale-photo" /><br />
@@ -97,21 +124,15 @@ Co-founder &amp; Executive Director
 <i>&quot;When you deal with something like democracy, you&#39;ve got to take the long view.&quot;</i>
 <br />
 Dale is a serial entrepreneur and founder of GoLightly and Gravity, Inc. Growing up in a political
-
 household meant Dale&#39;s idea of fun later on would be to throw ballot parties where friends would
-
 discuss the important voting choices they&#39;d be making before an election. Yet the sensationalized
-
 &quot;hockey game&quot; version of politics Dale saw portrayed in the media, where candidates would brutally
-
-compete for voter attention, never felt right. He envisioned We Vote as a place where voters could
-
-make informed decisions based on rational discussion rather than debates that dodged the issues. Dale
-
+compete for voter attention, never felt right. He envisions We Vote as a place where voters
+make informed decisions based on discussion rather than debates that dodge the issues. Dale
 has managed software projects for companies like Intel and IBM and for nonprofits like the Red Cross
-
 and American Lung Association.
-<br /><br />
+<br />
+<hr />
   <ImageHandler className="about-photo"
                 imageUrl="https://avatars0.githubusercontent.com/u/17035647?v=3&s=466"
                 alt="Zach-photo" />
@@ -122,17 +143,13 @@ Engineering Intern
 <i>&quot;In an age where we are so connected, we can't let our political discourse be so fragmented.&quot;</i>
 <br />
 Zach brings a unique blend of experience in front end web development, political campaigning, and
-
 adding puns to any conversation. He&#39;s worked as a Canvass Director for the Fund for the Public Interest
-
 and Campaign Manager for an Oakland mayoral race. Zach probably first knew we needed We Vote
-
 when working as a USPS carrier, where he actually injured himself from lifting the bags of 200-page
-
 voter information guides issued by the State of California. Motivated by his own idea for a social voter
-
 site, Zach met We Vote at Code for San Francisco&#39;s Civic Hack Night, and the rest is history.
-<br /><br />
+<br />
+<hr />
   <ImageHandler className="about-photo"
                 imageUrl="http://res.cloudinary.com/hrscywv4p/image/upload/c_limit,h_1440,w_720,f_auto,q_90/v1/181340/Me-WeVoteProfile_dati1v.jpg"
                 alt="Colette-photo" /><br />
