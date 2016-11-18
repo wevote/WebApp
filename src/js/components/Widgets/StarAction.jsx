@@ -55,8 +55,8 @@ export default class StarAction extends Component {
                  onKeyDown={this.starKeyDown.bind(this)}
                  title="Bookmark for later">
               {this.state.is_starred ?
-                <Icon name="bookmark-icon" width={24} height={24} fill="#999" stroke="none" /> :
-                <Icon name="bookmark-icon" width={24} height={24} fill="none" stroke="#ccc" strokeWidth={2} />
+                <Icon alt="Is Bookmarked" name="bookmark-icon" width={24} height={24} fill="#999" stroke="none" /> :
+                <Icon alt="Bookmark for later" name="bookmark-icon" width={24} height={24} fill="none" stroke="#ccc" strokeWidth={2} />
               }
             </span>;
 	}
