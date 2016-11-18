@@ -39,7 +39,8 @@ export default class StarAction extends Component {
   }
 
   starKeyDown (e) {
-    if (e.keyCode === 13) {
+    let enterAndSpaceKeyCodes = [13, 32];
+    if (enterAndSpaceKeyCodes.includes(e.keyCode)) {
       this.starClick().bind(this);
     }
   }

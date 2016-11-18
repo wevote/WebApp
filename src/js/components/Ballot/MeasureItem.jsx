@@ -30,10 +30,7 @@ export default class MeasureItem extends Component {
 
   componentDidMount () {
     this.supportStoreListener = SupportStore.addListener(this._onChange.bind(this));
-    var supportProps = SupportStore.get(this.props.we_vote_id);
-    if (supportProps !== undefined) {
-      this.setState({ supportProps: supportProps, transitioning: false });
-    }
+    this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
   }
 
   componentWillUnmount () {
