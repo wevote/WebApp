@@ -164,6 +164,13 @@ export default class ItemPositionStatementActionBar extends Component {
     var no_statement_text = statement_text_to_be_saved !== null && statement_text_to_be_saved.length ? false : true;
     var edit_mode = this.state.showEditPositionStatementInput || no_statement_text;
     const onSavePositionStatementClick = this.state.showEditPositionStatementInput ? this.closeEditPositionStatementInput.bind(this) : this.openEditPositionStatementInput.bind(this);
+    var onKeyDown = function (e) {
+      let enterAndSpaceKeyCodes = [13, 32];
+      if (enterAndSpaceKeyCodes.includes(e.keyCode)) {
+        onSavePositionStatementClick();
+      }
+    };
+
     return <div className="position-statement__container">
 
       <div className="position-statement__overview u-flex items-center mb2">
@@ -212,14 +219,16 @@ export default class ItemPositionStatementActionBar extends Component {
 
 
             { short_version ?
-              <span className="position-statement__edit-position-pseudo"
+              <span tabIndex="0" onKeyDown={onKeyDown}
+                    className="position-statement__edit-position-pseudo"
                     onClick={onSavePositionStatementClick}
                     title="Edit this position"/> :
               null
             }
-            <div className="position-statement__edit-position-link"
-                  onClick={onSavePositionStatementClick}
-                  title="Edit this position">Edit</div>
+            <div tabIndex="0" onKeyDown={onKeyDown}
+                 className="position-statement__edit-position-link"
+                 onClick={onSavePositionStatementClick}
+                 title="Edit this position">Edit</div>
           </div>
         </div>
       }

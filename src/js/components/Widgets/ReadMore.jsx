@@ -24,6 +24,15 @@ export default class ReadMore extends Component {
             readMore: !this.state.readMore
         });
     }
+    // this onKeyDown function is for accessibility: both toggle links
+    // have a tab index so that users can use tab key to select the link, and then
+    // press either space or enter (key codes 32 and 13, respectively) to toggle
+    onKeyDown (event) {
+      let enterAndSpaceKeyCodes = [13, 32];
+      if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+        this.toggleLines(event);
+      }
+    }
 
     render () {
         let { text_to_display, link_text, num_of_lines, collapse_text } = this.props;
@@ -86,11 +95,24 @@ export default class ReadMore extends Component {
                   line={num_of_lines}
                   truncateText="..."
                   text={text_to_display}
-                  textTruncateChild={<a href="#" onClick={this.toggleLines}>{link_text}</a>}
+                  textTruncateChild={<a tabIndex="0"
+                                        href="#"
+                                        onClick={this.toggleLines}
+                                        onKeyDown={this.onKeyDown.bind(this)}>
+                                      {link_text}
+                                     </a>
+                                    }
               />
           </span>;
         } else {
-          return <span>{expanded_text_to_display}&nbsp;&nbsp;<a href="#" onClick={this.toggleLines}>{collapse_text}</a></span>;
+          return <span tabIndex="0"> {expanded_text_to_display}&nbsp;&nbsp;
+            <a tabIndex="0"
+               href="#"
+               onClick={this.toggleLines}
+               onKeyDown={this.onKeyDown.bind(this)}>
+              {collapse_text}
+            </a>
+          </span>;
         }
     } //end render
   }

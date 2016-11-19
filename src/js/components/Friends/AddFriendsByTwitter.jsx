@@ -79,6 +79,14 @@ export default class AddFriendsByTwitter extends Component {
     return voter !== undefined ? voter.has_valid_email : false;
   }
 
+  onKeyDown (event) {
+    let enterAndSpaceKeyCodes = [13, 32];
+    let scope = this;
+    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+      scope.AddFriendsByTwitterStepsManager(event).bind(scope);
+    }
+  }
+
   AddFriendsByTwitterStepsManager (event) {
     // This function is called when the form is submitted
     console.log("AddFriendsByTwitterStepsManager");
@@ -151,6 +159,8 @@ export default class AddFriendsByTwitter extends Component {
             <ButtonToolbar bsClass="btn-toolbar">
               <span style={floatRight}>
                 <Button
+                  tabIndex="0"
+                  onKeyDown={this.onKeyDown.bind(this)}
                   onClick={this.AddFriendsByTwitterStepsManager.bind(this)}
                   bsStyle="primary"
                   disabled={!this.state.twitter_handles}

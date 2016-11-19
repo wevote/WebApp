@@ -45,6 +45,14 @@ export default class OpinionsFollowed extends Component {
     this.setState({editMode: !this.state.editMode});
   }
 
+  onKeyDownEditMode (event) {
+    let enterAndSpaceKeyCodes = [13, 32];
+    let scope = this;
+    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+      scope.setState({editMode: !this.state.editMode});
+    }
+  }
+
   getFollowingType (){
     switch (this.getCurrentRoute()) {
       case "/opinions":
@@ -60,7 +68,10 @@ export default class OpinionsFollowed extends Component {
       <Helmet title="Organizations You Follow - We Vote" />
       <h1 className="h1">Build Your Network</h1>
       <FollowingFilter following_type={this.getFollowingType()} />
-      <a className="fa-pull-right" onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit"}</a>
+      <a className="fa-pull-right"
+         tabIndex="0"
+         onKeyDown={this.onKeyDownEditMode.bind(this)}
+         onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit"}</a>
         <p>
           Organizations, public figures and other voters you currently follow. <em>We will never sell your email</em>.
         </p>

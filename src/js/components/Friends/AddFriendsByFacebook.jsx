@@ -79,6 +79,14 @@ export default class AddFriendsByFacebook extends Component {
     return voter !== undefined ? voter.has_valid_email : false;
   }
 
+  onKeyDown (event) {
+    let enterAndSpaceKeyCodes = [13, 32];
+    let scope = this;
+    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+      scope.AddFriendsByFacebookStepsManager(event).bind(scope);
+    }
+  }
+
   AddFriendsByFacebookStepsManager (event) {
     // This function is called when the form is submitted
     console.log("AddFriendsByFacebookStepsManager");
@@ -138,6 +146,8 @@ export default class AddFriendsByFacebook extends Component {
             <ButtonToolbar bsClass="btn-toolbar">
               <span style={floatRight}>
                 <Button
+                  tabIndex="0"
+                  onKeyDown={this.onKeyDown.bind(this)}
                   onClick={this.AddFriendsByFacebookStepsManager.bind(this)}
                   bsStyle="primary"
                   disabled={!this.state.email_addresses}

@@ -60,6 +60,14 @@ export default class Connect extends Component {
     this.setState({editMode: !this.state.editMode});
   }
 
+	onKeyDownEditMode (event) {
+		let enterAndSpaceKeyCodes = [13, 32];
+		let scope = this;
+		if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+			scope.setState({editMode: !this.state.editMode});
+		}
+	}
+
   getFollowingType (){
     switch (this.getCurrentRoute()) {
       case "/more/connect":
@@ -96,7 +104,9 @@ export default class Connect extends Component {
 
 			<div className="container-fluid well u-gutter__top--small fluff-full1">
         <a className="fa-pull-right"
-           onClick={this.toggleEditMode.bind(this)}>
+						tabIndex="0"
+						onKeyDown={this.onKeyDownEditMode.bind(this)}
+						onClick={this.toggleEditMode.bind(this)}>
           {this.state.editMode ? "Done Editing" : "Edit"}
         </a>
         <div>

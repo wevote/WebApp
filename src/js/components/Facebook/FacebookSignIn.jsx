@@ -10,8 +10,17 @@ class FacebookSignIn extends React.Component {
     FacebookActions.login();
   }
 
+  onKeyDown (event) {
+    let enterAndSpaceKeyCodes = [13, 32];
+    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+      this.didClickFacebookSignInButton();
+    }
+  }
+
   render () {
-    return <a className="btn btn-social btn-lg btn-facebook" onClick={this.didClickFacebookSignInButton}>
+    return <a tabIndex="0" onKeyDown={this.onKeyDown.bind(this)}
+              className="btn btn-social btn-lg btn-facebook"
+              onClick={this.didClickFacebookSignInButton}>
       <i className="fa fa-facebook"></i>Sign in with Facebook
     </a>;
   }

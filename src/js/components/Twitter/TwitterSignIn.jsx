@@ -21,6 +21,13 @@ export default class TwitterSignIn extends Component {
     this.twitterSignInStart(return_url);
   }
 
+  onKeyDown (event) {
+    let enterAndSpaceKeyCodes = [13, 32];
+    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+      this.didClickTwitterSignInButton();
+    }
+  }
+
   twitterSignInStart () {
     let return_url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/twitter_sign_in";
     $ajax({
@@ -48,7 +55,9 @@ export default class TwitterSignIn extends Component {
 
   render () {
 
-    return <a className="btn btn-social btn-lg btn-twitter" onClick={this.twitterSignInStart} >
+    return <a tabIndex="0" onKeyDown={this.onKeyDown.bind(this)}
+              className="btn btn-social btn-lg btn-twitter"
+              onClick={this.twitterSignInStart} >
       <i className="fa fa-twitter" />Sign in with Twitter
     </a>;
   }

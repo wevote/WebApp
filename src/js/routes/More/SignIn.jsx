@@ -43,6 +43,20 @@ export default class SignIn extends Component {
     });
   }
 
+  facebookLogOutOnKeyDown (event) {
+    let enterAndSpaceKeyCodes = [13, 32];
+    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+      FacebookActions.appLogout();
+    }
+  }
+
+  twitterLogOutOnKeyDown (event) {
+    let enterAndSpaceKeyCodes = [13, 32];
+    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+      TwitterActions.appLogout();
+    }
+  }
+
   // getFacebookAuthResponse () {
   //   return {
   //     accessToken: FacebookStore.accessToken,
@@ -89,15 +103,17 @@ export default class SignIn extends Component {
           <h1 className="h3">{voter.is_signed_in ? <span>Your Account</span> : <span>Sign In</span>}</h1>
           <div>
             {voter.signed_in_facebook ?
-              <span><a className="btn btn-social btn-lg btn-facebook" onClick={FacebookActions.appLogout}>
+              <span tabIndex="0" onKeyDown={this.facebookLogOutOnKeyDown.bind(this)}>
+                <a className="btn btn-social btn-lg btn-facebook" onClick={FacebookActions.appLogout}>
               <i className="fa fa-facebook" />Sign Out</a></span> : facebook_sign_in_option
             }
             <br />
             <br />
             {/* appLogout signs out the voter, regardless of how they are signed in */}
             {voter.signed_in_twitter ?
-              <span><a className="btn btn-social btn-lg btn-twitter" onClick={TwitterActions.appLogout}>
-              <i className="fa fa-twitter" />Sign Out</a></span> : twitter_sign_in_option
+              <span tabIndex="0" onKeyDown={this.twitterLogOutOnKeyDown.bind(this)}>
+                <a className="btn btn-social btn-lg btn-twitter" onClick={TwitterActions.appLogout}>
+                  <i className="fa fa-twitter" />Sign Out</a></span> : twitter_sign_in_option
             }
             {/*
             <div>

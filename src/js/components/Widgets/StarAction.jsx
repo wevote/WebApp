@@ -38,16 +38,25 @@ export default class StarAction extends Component {
       StarActions.voterStarOnSave(we_vote_id, this.props.type);
   }
 
+  starKeyDown (e) {
+    let enterAndSpaceKeyCodes = [13, 32];
+    if (enterAndSpaceKeyCodes.includes(e.keyCode)) {
+      this.starClick().bind(this);
+    }
+  }
+
 	render () {
     if (this.state.is_starred === undefined){
       return <span className="star-action"></span>;
     }
-    return <span className="star-action ml1"
-              onClick={this.starClick.bind(this)}
-              title="Bookmark for later">
+    return <span tabIndex="0"
+                 className="star-action ml1"
+                 onClick={this.starClick.bind(this)}
+                 onKeyDown={this.starKeyDown.bind(this)}
+                 title="Bookmark for later">
               {this.state.is_starred ?
-                <Icon name="bookmark-icon" width={24} height={24} fill="#999" stroke="none" /> :
-                <Icon name="bookmark-icon" width={24} height={24} fill="none" stroke="#ccc" strokeWidth={2} />
+                <Icon alt="Is Bookmarked" name="bookmark-icon" width={24} height={24} fill="#999" stroke="none" /> :
+                <Icon alt="Bookmark for later" name="bookmark-icon" width={24} height={24} fill="none" stroke="#ccc" strokeWidth={2} />
               }
             </span>;
 	}
