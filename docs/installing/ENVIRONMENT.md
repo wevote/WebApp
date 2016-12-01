@@ -6,6 +6,7 @@
 Install nodeenv globally. For instructions installing it locally, see: https://github.com/ekalinin/nodeenv
 
     $ cd ~
+    $ sudo easy_install pip
     $ sudo -H pip install nodeenv
 
 Create a place for your WebApp virtual environment to live on your hard drive. We recommend installing it
