@@ -113,7 +113,8 @@ export default class SignIn extends Component {
             {voter.signed_in_twitter ?
               <span tabIndex="0" onKeyDown={this.twitterLogOutOnKeyDown.bind(this)}>
                 <a className="btn btn-social btn-lg btn-twitter" onClick={TwitterActions.appLogout}>
-                  <i className="fa fa-twitter" />Sign Out</a></span> : twitter_sign_in_option
+                  <i className="fa fa-twitter" />@{voter.twitter_screen_name} Sign Out</a></span> :
+              twitter_sign_in_option
             }
             {/*
             <div>
