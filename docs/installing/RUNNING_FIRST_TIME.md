@@ -19,8 +19,7 @@ should work as-is for new developers.
 ## Install and start web application
 
     (WebAppEnv) $ cd /Users/<YOUR NAME HERE>/MyProjects/WebApp
-    (WebAppEnv) $ npm -g install gulp-cli      // try sudo if it does not work
-    (WebAppEnv) $ npm install
+    (WebAppEnv) $ npm install      // try sudo if it does not work
     (WebAppEnv) $ npm start
 
 You should be able to visit WebApp here:

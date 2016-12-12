@@ -6,6 +6,7 @@
 Install nodeenv globally. For instructions installing it locally, see: https://github.com/ekalinin/nodeenv
 
     $ cd ~
+    $ curl https://bootstrap.pypa.io/ez_setup.py -o - | sudo python
     $ sudo easy_install pip
     $ sudo -H pip install nodeenv
 
