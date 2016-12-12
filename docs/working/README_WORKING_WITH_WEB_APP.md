@@ -34,8 +34,6 @@ You should be able to visit WebApp here:
 
 Lets assume you are working on a branch called "dale_work_feb28". Ctrl-C to stop npm from running. Then:
 
-`(WebAppEnv) $ git fetch` # Sync your changes with what's upstream
-
 `(WebAppEnv) $ git branch -a`  # See what branch you are currently set to (look for "*" on left of listing)
 
 `(WebAppEnv) $ git checkout develop`  # If you aren’t set to the develop branch, switch to that
@@ -44,7 +42,7 @@ Lets assume you are working on a branch called "dale_work_feb28". Ctrl-C to stop
 
 `(WebAppEnv) $ git push origin develop`  # Push this latest version of develop up to your Personal Fork on the github servers
 
-`(WebAppEnv) $ git checkout <your-feature-branch>`
+`(WebAppEnv) $ git checkout -b <your-feature-branch>`
 
 Now you need to merge locally the latest code from "develop" with your branch name. Dale does this merging with 
 the PyCharm IDE. How you do this depends on the development environment you use. 
