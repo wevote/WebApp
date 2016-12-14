@@ -18,6 +18,7 @@ import Credits from "./routes/More/Credits";
 import EmailBallot from "./routes/More/EmailBallot";
 import EmptyBallot from "./routes/Ballot/EmptyBallot";
 import FacebookSignInProcess from "./routes/Process/FacebookSignInProcess";
+import FAQ from "./routes/More/FAQ";
 import Friends from "./routes/Friends";
 import GuidePositionList from "./routes/Guide/GuidePositionList";
 import Intro from "./routes/Intro/Intro";
@@ -77,6 +78,7 @@ const routes = () =>
     <Route path="/more/email_ballot" component={EmailBallot} />
     <Route path="/more/credits" component={Credits} />
     <Route path="/more/about" component={About} />
+    <Route path="/more/faq" component={FAQ} />
     <Route path="/more/connect" component={Connect} />
     <Route path="/more/privacy" component={Privacy} />
 

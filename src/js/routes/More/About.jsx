@@ -50,9 +50,11 @@ export default class About extends Component {
             </li><li>
             share your views with friends
             </li></ul>
+
             <strong>How does it work?</strong><br />
             Sign in using Twitter or Facebook. Enter your address to view your ballot and start supporting and
-            opposing candidates and propositions. Follow nonprofit groups and add friends to build your network.<br />
+            opposing candidates and propositions. Follow nonprofit groups and add friends to build your network, so you
+            have voting recommendations all the way down your ballot.<br />
             <br />
             <strong>What about privacy?</strong><br />
             When you support or oppose a ballot item, your position is friends-only
@@ -65,13 +67,13 @@ export default class About extends Component {
             Like email, We Vote is built to run on many servers all over America, which means that no one person or company owns
             the data on the site. We will never sell your email.<br />
             <br />
-            <strong>Our Story - 42 Million</strong><br />
-            That was the figure on the screen. 42,000,000 fewer voters in the 2010 midterm election than there
-            had been just two years prior in 2008. When We Vote cofounder Dan Ancona saw this negative number
-            on the front page of his web site, Democracy Dash, he knew things had to change.
-            Through the rise and fall of Democracy Dash, the first social site for voters, it became clear that social
-            technology meant to empower voters should not be owned by a corporation.<br />
+
+            <strong>More questions?</strong><br />
+            <Link to="/more/faq/">Visit our frequently asked questions page</Link> for answers.<br />
             <br />
+
+            <h3>WHO WE ARE</h3>
+            <strong>Our Story</strong><br />
             After meeting in Oakland in the spring of 2013, We Vote co-founders <a href="#Dale">Dale McGrew</a>, <a href="#Jen">Jenifer Fernandez Ancona</a>, <a href="#Dan">Dan Ancona</a>,
             and their families became fast friends and bought a home together,
             forming an intentional community. Through
@@ -80,10 +82,9 @@ export default class About extends Component {
             from a communal home of people concerned about where this country is heading. Being an open
             source, volunteer-driven project means anyone can contribute. Kind of like democracy.<br />
             <br />
-            <h3>WHO WE ARE</h3>
-            <br />
             <strong>A Nonprofit Startup</strong><br />
-            We Vote is made of two 501c3/501c4 nonpartisan nonprofit organizations based in Oakland, California. Our
+            We Vote is made of two 501(c)(3) and 501(c)(4) nonpartisan nonprofit organizations based in
+            Oakland, California. This site is managed by the 501(c)(4), We Vote USA. Our
             software is open source, and our work is driven by the nearly 100 volunteers who have contributed so far.
             Inspired by groups like <a href="http://codeforsanfrancisco.org/" target="_blank">Code for America&nbsp;<i className="fa fa-external-link"></i>
             </a> and the <a href="https://www.mozilla.org/en-US/foundation/" target="_blank">Mozilla Foundation&nbsp;<i className="fa fa-external-link"></i></a>, we use technology to
@@ -124,12 +125,12 @@ Co-founder &amp; Executive Director
 <i>&quot;When you deal with something like democracy, you&#39;ve got to take the long view.&quot;</i>
 <br />
 Dale is a serial entrepreneur and founder of GoLightly and Gravity, Inc. Growing up in a political
-household meant Dale&#39;s idea of fun later on would be to throw ballot parties where friends would
+household meant Dale&#39;s idea of fun later on would be ballot parties where friends would
 discuss the important voting choices they&#39;d be making before an election. Yet the sensationalized
 &quot;hockey game&quot; version of politics Dale saw portrayed in the media, where candidates would brutally
 compete for voter attention, never felt right. He envisions We Vote as a place where voters
 make informed decisions based on discussion rather than debates that dodge the issues. Dale
-has managed software projects for companies like Intel and IBM and for nonprofits like the Red Cross
+has managed software teams for companies like Intel, Disney and IBM and for nonprofits like the Red Cross
 and American Lung Association.
 <br />
 <hr />

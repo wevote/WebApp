@@ -58,6 +58,7 @@ export default class Credits extends Component {
             <li>Colette Phair - Oakland, CA</li>
             <li>Jennifer Holmes - Pacifica, CA</li>
             <li>Joe Evans - Santa Cruz, CA</li>
+            <li>Andrea Moed - San Francisco, CA</li>
             <li>Adam Barry - San Francisco, CA</li>
             <li>Mary O'Connor - Sebastopol, CA</li>
             <li>Harsha Dronamraju - San Francisco, CA</li>
@@ -74,7 +75,6 @@ export default class Credits extends Component {
             <li>Zak Zaidman - Ojai, CA</li>
             <li>Debra Cleaver - San Francisco, CA</li>
             <li>William Winters - Oakland, CA</li>
-            <li>Andrea Moed - San Francisco, CA</li>
             <li>Anat Shenker-Osorio - Oakland, CA</li>
             <li>Kad Smith - Berkeley, CA</li>
             <li>Courtney Gonzales - Benicia, CA</li>
@@ -84,10 +84,12 @@ export default class Credits extends Component {
             <li>Raphael Merx - San Francisco, CA</li>
             <li>Susan Clark - Oakland, CA</li>
             <li>Kim Anderson - San Francisco, CA</li>
+            <li>Sarah Clements - San Francisco, CA</li>
             <li>Jesse Aldridge - San Francisco, CA</li>
             <li>Josh Levinger - Oakland, CA</li>
             <li>Leslie Castellanos - San Francisco, CA</li>
             <li>Miguel Elasmar - Sarasota, FL</li>
+            <li>Cindy Cruz - Daly City, CA</li>
             <li>Nicole Shanahan - Palo Alto, CA</li>
             <li>Steve Whetstone - San Francisco, CA</li>
             <li>Brian Bordley - Berkeley, CA</li>
