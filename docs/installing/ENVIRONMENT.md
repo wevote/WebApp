@@ -9,6 +9,10 @@ Install nodeenv globally. For instructions installing it locally, see: https://g
     $ curl https://bootstrap.pypa.io/ez_setup.py -o - | sudo python
     $ sudo easy_install pip
     $ sudo -H pip install nodeenv
+    
+Tip: If `sudo easy_install pip` fails, you can try:
+
+    $ brew install python
 
 Create a place for your WebApp virtual environment to live on your hard drive. We recommend installing it
 away from the WebApp source code:
