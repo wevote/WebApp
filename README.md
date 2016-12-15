@@ -31,6 +31,8 @@ It may seem complicated, but it allows anyone to be in a position to make sugges
 
 3. [Issues and Reporting Bugs](docs/working/ISSUES.md)
 
+4. [Working with CSS and SASS Styles](docs/working/WORKING_WITH_STYLES.md)
+
 ## Contributing to the Project
 Please read the following before you start contributing to the project. Thank you!
 
