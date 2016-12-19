@@ -24,6 +24,7 @@ import GuidePositionList from "./routes/Guide/GuidePositionList";
 import Intro from "./routes/Intro/Intro";
 import IntroContests from "./routes/Intro/IntroContests";
 import IntroOpinions from "./routes/Intro/IntroOpinions";
+import IntroStory from "./routes/Intro/IntroStory";
 import Location from "./routes/Settings/Location";
 import Measure from "./routes/Ballot/Measure";
 import NotFound from "./routes/NotFound";
@@ -53,8 +54,9 @@ const routes = () =>
       <IndexRedirect to="ballot" /> }
 
     <Route path="/intro" component={Intro}>
-      <Route path="/intro/opinions" component={IntroOpinions} />
       <Route path="/intro/contests" component={IntroContests} />
+      <Route path="/intro/opinions" component={IntroOpinions} />
+      <Route path="/intro/story" component={IntroStory} />
     </Route>
 
     {/* Settings go in this structure... */}

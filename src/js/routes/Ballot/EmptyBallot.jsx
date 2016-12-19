@@ -15,8 +15,7 @@ export default class EmptyBallot extends Component {
             We Cannot Find Your Ballot
           </h3>
           <div className="small">
-            Please try entering a full address. If no ballot data is found for your full address, 
-            we may not have data for this election.
+            Please try entering a full address. If no ballot data is found for your full address, we may not have data for this election.
           </div>
           <br />
           <br />
