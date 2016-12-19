@@ -98,8 +98,29 @@ export default class Application extends Component {
               </div>;
     }
     // console.log("voter:", voter);
-    let voter_device_id = VoterStore.voterDeviceId();
+    // let voter_device_id = VoterStore.voterDeviceId();
     // console.log("voter_device_id:", voter_device_id);
+    // console.log("pathname:", pathname);
+
+    // If looking at these paths, we want to enter theater mode
+    var in_theater_mode = false;
+    if (pathname === "/intro/story") {
+      in_theater_mode = true;
+    }
+
+    if (in_theater_mode) {
+      return <div className="app-base" id="app-base-id">
+        <div className="page-content-container">
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-xs-12-container col-xs-12 container-main">
+                { this.props.children }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>;
+    }
 
     return <div className="app-base" id="app-base-id">
       <Headroom>

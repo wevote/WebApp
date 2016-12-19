@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
 import { Link } from "react-router";
-import ImageHandler from "../../components/ImageHandler";
-import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
-// const Icon = require("react-svg-icons");
 
 export default class About extends Component {
   constructor (props) {
@@ -15,7 +12,6 @@ export default class About extends Component {
   }
 
   render () {
-    let supportProps = { is_public_position: false };
     return <div>
       <Helmet title="FAQ - We Vote" />
         <div className="container-fluid card">
