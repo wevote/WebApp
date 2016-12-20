@@ -62,40 +62,10 @@ export default class IntroStory extends Component {
     return <div>
       <Helmet title="Welcome to We Vote" />
       { this.props.children ||
-        <div className="container-fluid well u-gutter__top--small fluff-full1">
-          <h2 className="text-center">We Vote</h2>
-            <label htmlFor="address">
-              Your Address.&nbsp;
-            </label>
-            <span className="medium">
-              HELLO WORLD This is our best guess - feel free to change.
-            </span>
-            <AddressBox {...this.props} saveUrl="/ballot" />
-            <br/>
-            <ul className="list-group">
-              <li className="list-group-item">Research ballot items</li>
-              <li className="list-group-item">Learn from friends</li>
-              <li className="list-group-item">Take to the polls</li>
-            </ul>
-
-            <ul className="list-group">
-              <li className="list-group-item">
-                <span className="glyphicon glyphicon-small glyphicon-ok-sign"></span> &nbsp;Neutral and private
-              </li>
-              <li className="list-group-item">
-                <span className="glyphicon glyphicon-small glyphicon-ok-sign"></span>
-                  &nbsp; {numberWithCommas(voterCount)} voters
-              </li>
-              <li className="list-group-item">
-                <span className="glyphicon glyphicon-small glyphicon-ok-sign"></span>
-                  &nbsp; {numberWithCommas(orgCount)} not-for-profit organizations
-              </li>
-              <li className="list-group-item">
-                <span className="glyphicon glyphicon-small glyphicon-ok-sign"></span>
-                  &nbsp; and you.
-              </li>
-            </ul>
-          </div>
+        <div className="container-fluid well u-gutter__top--small fluff-full1 intro-story">
+          <h2>We Vote</h2>
+          <p> Intro page 1 </p>
+        </div>
         }
       </div>;
     }
