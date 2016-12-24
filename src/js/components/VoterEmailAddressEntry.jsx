@@ -143,7 +143,7 @@ export default class VoterEmailAddressEntry extends Component {
             <span className="input-group-btn">
               <Button onClick={this.voterEmailAddressSave.bind(this)}
                       bsStyle="primary">
-                Send Verification Email</Button>
+                Go</Button>
               </span>
             </div>
           </form>

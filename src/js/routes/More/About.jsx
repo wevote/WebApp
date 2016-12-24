@@ -68,6 +68,10 @@ export default class About extends Component {
             the data on the site. We will never sell your email.<br />
             <br />
 
+            <strong>How do I use We Vote?</strong><br />
+            <a href="https://wevote.zendesk.com/hc/en-us/" target="_blank">Visit our help center for answers.&nbsp;<i className="fa fa-external-link"></i></a><br />
+            <br />
+
             <strong>More questions?</strong><br />
             <Link to="/more/faq/">Visit our frequently asked questions page</Link> for answers.<br />
             <br />
