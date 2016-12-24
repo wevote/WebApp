@@ -95,6 +95,11 @@ export default class MoreMenu extends Component {
         </ul>
         <h4 className="text-left"></h4>
         <ul className="list-group">
+          <li className="list-group-item">
+            <a href="https://wevote.zendesk.com/hc/en-us/" target="_blank"><div>
+              <span className="header-menu-text-left">Using We Vote <i className="fa fa-external-link"></i></span>
+            </div></a>
+          </li>
         {this.menuLink("/more/about", "About We Vote")}
         {this.menuLink("/more/credits", "Credits")}
           <li className="list-group-item">

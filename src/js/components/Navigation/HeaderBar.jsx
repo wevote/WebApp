@@ -118,6 +118,13 @@ export default class HeaderBar extends Component {
           <h4 className="text-left"></h4>
           <ul className="nav nav-stacked">
             <li>
+              <a onClick={this.hide.bind(this)} href="https://wevote.zendesk.com/hc/en-us/">
+                <div>
+                  <span className="header-slide-out-menu-text-left">Using We Vote</span>
+                </div>
+              </a>
+            </li>
+            <li>
               <Link onClick={this.hide.bind(this)} to="/more/about">
                 <div>
                   <span className="header-slide-out-menu-text-left">About <strong>We Vote</strong></span>
@@ -131,9 +138,9 @@ export default class HeaderBar extends Component {
               </Link>
             </li>
             <li>
-              <a onClick={this.hide.bind(this)} href="https://goo.gl/forms/B6P0iE44R21t36L42" target="_blank">
+              <a onClick={this.hide.bind(this)} href="https://goo.gl/forms/B6P0iE44R21t36L42">
                 <div>
-                  <span className="header-slide-out-menu-text-left">Suggestions? <i className="fa fa-external-link"></i></span>
+                  <span className="header-slide-out-menu-text-left">Suggestions?</span>
                 </div>
               </a>
             </li>
