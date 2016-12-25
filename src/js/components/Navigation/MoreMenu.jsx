@@ -97,7 +97,7 @@ export default class MoreMenu extends Component {
         <ul className="list-group">
           <li className="list-group-item">
             <a href="https://wevote.zendesk.com/hc/en-us/" target="_blank"><div>
-              <span className="header-menu-text-left">Using We Vote <i className="fa fa-external-link"></i></span>
+              <span className="header-menu-text-left">Get Help Using We Vote <i className="fa fa-external-link"></i></span>
             </div></a>
           </li>
         {this.menuLink("/more/about", "About We Vote")}
@@ -108,6 +108,10 @@ export default class MoreMenu extends Component {
             </div></a>
           </li>
         </ul>
+        <span className="terms-and-privacy">
+          <br />
+          <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy Policy</Link>
+        </span>
       </div>
       </div>;
   }

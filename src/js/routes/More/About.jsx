@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
 import { Link } from "react-router";
+import ReactPlayer from "react-player";
 import ImageHandler from "../../components/ImageHandler";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
 // const Icon = require("react-svg-icons");
@@ -39,6 +40,8 @@ export default class About extends Component {
           </div>
 
           <br />
+            <ReactPlayer url="https://player.vimeo.com/video/121315141" width="320" height="247" />
+            <br />
           <strong>Vote with Confidence</strong><br />
             We Vote is the political social network for America. That means a place to share what you believe and
             find opinions on candidates and propositions before you vote. We Vote is a one-stop-shop for voter
@@ -77,6 +80,7 @@ export default class About extends Component {
             <br />
 
             <h3>WHO WE ARE</h3>
+
             <strong>Our Story</strong><br />
             After meeting in Oakland in the spring of 2013, We Vote co-founders <a href="#Dale">Dale McGrew</a>, <a href="#Jen">Jenifer Fernandez Ancona</a>, <a href="#Dan">Dan Ancona</a>,
             and their families became fast friends and bought a home together,
@@ -180,7 +184,9 @@ Winters (coming soon: Tiana Epps-Johnson and Lawrence Grodeska)<br />
 <h3>Our Volunteers</h3>
 
 We can&#39;t say thank you enough times to the <Link to="/more/credits/"> nearly 100 volunteers</Link> who&#39;ve generously
-donated their time and skills to build We Vote.
+donated their time and skills to build We Vote. Join us! Please sign up to volunteer at
+            <a href="http://WeVoteTeam.org/volunteer"
+               target="_blank"> http://WeVoteTeam.org</a>.
 <br /><br />
 
 

@@ -120,7 +120,7 @@ export default class HeaderBar extends Component {
             <li>
               <a onClick={this.hide.bind(this)} href="https://wevote.zendesk.com/hc/en-us/">
                 <div>
-                  <span className="header-slide-out-menu-text-left">Using We Vote</span>
+                  <span className="header-slide-out-menu-text-left">Get Help Using We Vote</span>
                 </div>
               </a>
             </li>
@@ -145,6 +145,10 @@ export default class HeaderBar extends Component {
               </a>
             </li>
           </ul>
+          <span className="terms-and-privacy">
+            <br />
+            <Link onClick={this.hide.bind(this)} to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link onClick={this.hide.bind(this)} to="/more/privacy">Privacy Policy</Link>
+          </span>
         </div>
       </ReactBurgerMenu>
       <div className="page-header__content">
