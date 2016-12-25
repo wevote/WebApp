@@ -116,8 +116,8 @@ export default class About extends Component {
           <br />
 
           <strong>Sounds great! How can I help?</strong><br />
-            We couldn’t do what we do without volunteers and donors. Please sign up at
-            <a href="http://WeVoteTeam.org"
+            We couldn’t do what we do without volunteers and donors. Please sign up to volunteer at
+            <a href="http://WeVoteTeam.org/volunteer"
                target="_blank"> http://WeVoteTeam.org</a>.<br />
           <br />
 

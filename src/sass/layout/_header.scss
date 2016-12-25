@@ -11,8 +11,13 @@
   font-size: 1.2rem;
 }
 
-
 .we-vote-promise {
+  color: $gray-mid;
+  font-size: 0.9em;
+  font-weight: 400;
+}
+
+.terms-and-privacy, .terms-and-privacy a {
   color: $gray-mid;
   font-size: 0.9em;
   font-weight: 400;

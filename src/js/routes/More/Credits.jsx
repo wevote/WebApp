@@ -102,6 +102,13 @@ export default class Credits extends Component {
             <li>Adrienne Yang - Oakland, CA</li>
             <li>Mark Rosenthal - Oakland, CA</li>
           </ul>
+          <br />
+
+          <h3>Join Us!</h3>
+            We couldn’t do what we do without volunteers and donors. Please sign up to volunteer at
+            <a href="http://WeVoteTeam.org/volunteer"
+               target="_blank"> http://WeVoteTeam.org</a>.<br />
+          <br />
         </div>
       </div>;
   }

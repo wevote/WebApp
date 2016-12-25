@@ -39,6 +39,7 @@
     "react-helmet": "^3.1.0",
     "react-text-truncate": "^0.8.2",
     "react-textarea-autosize": "^4.0.4",
+    "react-player": "^0.13.0",
     "superagent": "^1.5.0",
     "underscore": "^1.8.3",
     "vinyl-buffer": "^1.0.0"

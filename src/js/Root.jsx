@@ -37,6 +37,7 @@ import Settings from "./routes/Settings/Settings";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
 import SignIn from "./routes/More/SignIn";
 import SignInEmailProcess from "./routes/Process/SignInEmailProcess";
+import TermsOfService from "./routes/More/TermsOfService";
 import TwitterSignInProcess from "./routes/Process/TwitterSignInProcess";
 import TwitterSignInProcessOld from "./routes/Process/TwitterSignInProcessOld";
 import VerifyEmailProcess from "./routes/Process/VerifyEmailProcess";
@@ -83,6 +84,7 @@ const routes = () =>
     <Route path="/more/faq" component={FAQ} />
     <Route path="/more/connect" component={Connect} />
     <Route path="/more/privacy" component={Privacy} />
+    <Route path="/more/terms" component={TermsOfService} />
 
     {/* Voter Guide Pages */}
     <Route path="/voterguide/:organization_we_vote_id" component={GuidePositionList} />
