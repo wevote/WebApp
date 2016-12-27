@@ -82,13 +82,6 @@ export default class HeaderBar extends Component {
               </li> :
               null
             }
-            <li>
-              <Link onClick={this.hide.bind(this)} to="/settings/location">
-                <div>
-                  <span className="header-slide-out-menu-text-left">Your Address &amp; Ballot</span>
-                </div>
-              </Link>
-            </li>
             { is_signed_in ?
               <li>
                 <Link onClick={this.hide.bind(this)} to="/more/sign_in">
@@ -118,7 +111,7 @@ export default class HeaderBar extends Component {
           <h4 className="text-left"></h4>
           <ul className="nav nav-stacked">
             <li>
-              <a onClick={this.hide.bind(this)} href="https://wevote.zendesk.com/hc/en-us/">
+              <a onClick={this.hide.bind(this)} href="https://help.wevote.us/hc/en-us/">
                 <div>
                   <span className="header-slide-out-menu-text-left">Get Help Using We Vote</span>
                 </div>
@@ -128,12 +121,6 @@ export default class HeaderBar extends Component {
               <Link onClick={this.hide.bind(this)} to="/more/about">
                 <div>
                   <span className="header-slide-out-menu-text-left">About <strong>We Vote</strong></span>
-                </div>
-              </Link>
-            </li><li>
-              <Link onClick={this.hide.bind(this)} to="/more/credits">
-                <div>
-                  <span className="header-slide-out-menu-text-left">Credits</span>
                 </div>
               </Link>
             </li>

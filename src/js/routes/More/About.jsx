@@ -40,10 +40,10 @@ export default class About extends Component {
           </div>
 
           <br />
-            <ReactPlayer url="https://player.vimeo.com/video/121315141" width="320" height="247" />
+            <ReactPlayer url="https://player.vimeo.com/video/121315141" width="300" height="231" />
             <br />
           <strong>Vote with Confidence</strong><br />
-            We Vote is the political social network for America. That means a place to share what you believe and
+            We Vote is the political social network for America. That means a place to share what you believe, and
             find opinions on candidates and propositions before you vote. We Vote is a one-stop-shop for voter
             preparation, where you can:
             <ul><li>
@@ -72,17 +72,21 @@ export default class About extends Component {
             <br />
 
             <strong>How do I use We Vote?</strong><br />
-            <a href="https://wevote.zendesk.com/hc/en-us/" target="_blank">Visit our help center for answers.&nbsp;<i className="fa fa-external-link"></i></a><br />
+            <a href="https://help.wevote.us/hc/en-us/" target="_blank">Visit our help center for answers.&nbsp;<i className="fa fa-external-link"></i></a><br />
             <br />
 
             <strong>More questions?</strong><br />
             <Link to="/more/faq/">Visit our frequently asked questions page</Link> for answers.<br />
             <br />
+            <strong>Credits</strong><br />
+            <Link to="/more/credits/">We are thankful for our volunteers, our board of directors, and the organizations</Link> that are critical to our work.
+            <br />
+            <br />
 
             <h3>WHO WE ARE</h3>
 
             <strong>Our Story</strong><br />
-            After meeting in Oakland in the spring of 2013, We Vote co-founders <a href="#Dale">Dale McGrew</a>, <a href="#Jen">Jenifer Fernandez Ancona</a>, <a href="#Dan">Dan Ancona</a>,
+            After meeting in Oakland in the spring of 2013, We Vote co-founders <a href="#Dale">Dale McGrew</a>, <a href="#Jen">Jenifer Fernandez Ancona</a>, Dan Ancona,
             and their families became fast friends and bought a home together,
             forming an intentional community. Through
             daily conversations, the idea of a nonprofit social voter network was born.
