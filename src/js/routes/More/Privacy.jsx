@@ -1,17 +1,16 @@
 import React from "react";
 import Helmet from "react-helmet";
-import { Link } from "react-router";
 
 export default class Privacy extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
   }
 
-  static getProps() {
+  static getProps () {
     return {};
   }
 
-  render() {
+  render () {
     return <div>
       <Helmet title="Privacy Policy - We Vote" />
       <div className="container-fluid well">

@@ -3,15 +3,15 @@ import Helmet from "react-helmet";
 import { Link } from "react-router";
 
 export default class TermsOfService extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
   }
 
-  static getProps() {
+  static getProps () {
     return {};
   }
 
-  render() {
+  render () {
     return <div>
       <Helmet title="Terms of Service - We Vote" />
       <div className="container-fluid well">
