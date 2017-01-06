@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
-import TimelineLite from "gsap";
+// import TimelineLite from "gsap";
 import AnimationStory1 from "../../components/Animation/AnimationStory1";
 import AnimationStory2 from "../../components/Animation/AnimationStory2";
 import AnimationStory3 from "../../components/Animation/AnimationStory3";
