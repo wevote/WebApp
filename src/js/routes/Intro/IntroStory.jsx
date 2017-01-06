@@ -1,72 +1,62 @@
-"use strict";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import Helmet from "react-helmet";
-const request = require("superagent");
-const web_app_config = require("../../config");
-import AddressBox from "../../components/AddressBox";
-import { numberWithCommas } from "../../utils/textFormat";
+import TimelineLite from "gsap";
+import AnimationStory1 from "../../components/Animation/AnimationStory1";
+import AnimationStory2 from "../../components/Animation/AnimationStory2";
+import AnimationStory3 from "../../components/Animation/AnimationStory3";
+var Slider = require("react-slick");
 
 export default class IntroStory extends Component {
-  static propTypes = {
-    history: PropTypes.object,
-    children: PropTypes.object
-  };
 
   constructor (props) {
     super(props);
-    this.state = {
-      voterCount: null,
-      orgCount: null
-    };
+    this.state = {};
   }
 
-  static getProps () {
-    return {};
+  componentWillMount (){
+//  TODO: Research how to do this in a react-friendly way
+    document.body.style.backgroundColor = "#A3A3A3";
   }
 
-  componentDidMount () {
-    this.getVoterCount();
-    this.getOrgCount();
-  }
-
-  getVoterCount () {
-    request
-      .get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}voterCount/`)
-      .end( (err, res) => {
-        if (err) throw err;
-
-        this.setState({
-          voterCount: res.body.voter_count
-        });
-      });
-  }
-
-  getOrgCount () {
-    request
-      .get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}organizationCount/`)
-      .end( (err, res) => {
-        if (err) throw err;
-
-        this.setState({
-          orgCount: res.body.organization_count
-        });
-      });
+  componentWillUnmount (){
+//  TODO: Research how to do this in a react-friendly way
+      document.body.style.backgroundColor = null;
   }
 
   render () {
-    const {
-      orgCount,
-      voterCount,
-    } = this.state;
+//These are GreenSock animation instances
+    var timeline1 = new TimelineLite();
+    var timeline2 = new TimelineLite();
+    var timeline3 = new TimelineLite();
+
+//These are settings for the react-slick slider
+    var settings = {
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      slide: true,
+      accessibility: true,
+      arrows: false,
+      beforeChange: function () {
+        timeline1.restart();
+        timeline2.restart();
+        timeline3.restart();
+      }
+    };
 
     return <div>
       <Helmet title="Welcome to We Vote" />
-      { this.props.children ||
-        <div className="container-fluid well u-gutter__top--small fluff-full1 intro-story">
-          <h2>We Vote</h2>
-          <p> Intro page 1 </p>
-        </div>
-        }
-      </div>;
-    }
+      <div className="container-fluid well u-gutter__top--small fluff-full1 intro-story">
+        <Slider {...settings}>
+          <div><AnimationStory1 timeline1={timeline1}/></div>
+          <div><AnimationStory2 timeline2={timeline2}/></div>
+          <div><AnimationStory3 timeline3={timeline3}/></div>
+          <div><p>This will be an image</p></div>
+         </Slider>
+      </div>
+    </div>;
+  }
 }
+
