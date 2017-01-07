@@ -60,7 +60,7 @@ export default class AddressBox extends Component {
           type="text"
           onChange={this.updateVoterAddress.bind(this)}
           name="address"
-          value={voter_address}
+          defaultValue={voter_address}
           className="form-control"
           placeholder="Enter address where you are registered to vote"
         />

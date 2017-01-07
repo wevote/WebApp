@@ -63,7 +63,7 @@ export default class TwitterHandleBox extends Component {
           type="text"
           onChange={this.updateTwitterHandle.bind(this)}
           name="twitter_handle"
-          value={twitter_handle}
+          defaultValue={twitter_handle}
           className="form-control"
           placeholder="Enter your twitter handle"
         />
