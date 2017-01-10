@@ -22,7 +22,7 @@ export default class PositionPublicToggle extends Component {
 
   render () {
     if (this.props.supportProps === undefined){
-      return <div className="undefined-props"></div>;
+      return <div className="undefined-props" />;
     }
 
     var { is_public_position } = this.props.supportProps;

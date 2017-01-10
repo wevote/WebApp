@@ -22,7 +22,7 @@ export default class OfficeItem extends Component {
     let goToOfficeLink = function () { browserHistory.push(officeLink); };
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
-    let candidates_html = <span></span>;  // For a preview of the candidates
+    let candidates_html = <span />;  // For a preview of the candidates
 
     return <div className="card-main office-item">
       <div className="card-main__content">

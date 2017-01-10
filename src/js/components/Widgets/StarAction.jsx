@@ -47,7 +47,7 @@ export default class StarAction extends Component {
 
 	render () {
     if (this.state.is_starred === undefined){
-      return <span className="star-action"></span>;
+      return <span className="star-action" />;
     }
     return <span tabIndex="0"
                  className="star-action ml1"

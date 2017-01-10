@@ -118,7 +118,7 @@ export default class SearchAllBox extends Component {
                  onChange={this.onSearchFieldTextChange.bind(this)}
                  value={this.state.text_from_search_field} />
           <div className="input-group-btn">
-            <button className="site-search__button btn btn-default" type="submit"><i className="glyphicon glyphicon-search"></i></button>
+            <button className="site-search__button btn btn-default" type="submit"><i className="glyphicon glyphicon-search" /></button>
           </div>
         </div>
         </form>

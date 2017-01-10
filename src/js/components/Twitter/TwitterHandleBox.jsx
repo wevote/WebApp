@@ -8,7 +8,10 @@ import { extractTwitterHandleFromTextString } from "../../utils/textFormat";
 export default class TwitterHandleBox extends Component {
   constructor (props) {
       super(props);
-      this.state = { loading: false };
+      this.state = {
+        loading: false,
+        twitter_handle: ""
+      };
   }
 
   componentDidMount () {
@@ -48,7 +51,7 @@ export default class TwitterHandleBox extends Component {
   }
 
   render () {
-    var { loading, twitter_handle } = this.state;
+    var { loading } = this.state;
     if (loading){
       return LoadingWheel;
     }
@@ -63,7 +66,7 @@ export default class TwitterHandleBox extends Component {
           type="text"
           onChange={this.updateTwitterHandle.bind(this)}
           name="twitter_handle"
-          defaultValue={twitter_handle}
+          value={this.state.twitter_handle}
           className="form-control"
           placeholder="Enter your twitter handle"
         />

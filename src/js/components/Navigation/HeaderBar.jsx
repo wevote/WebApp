@@ -54,7 +54,7 @@ export default class HeaderBar extends Component {
               <div><span className="we-vote-promise">We Vote's Promise: We will never sell your email.</span></div>
             </li>
           </ul>
-          <h4 className="text-left"></h4>
+          <h4 className="text-left" />
           <ul className="nav nav-stacked">
             { signed_in_twitter && twitter_screen_name ?
               <li>
@@ -108,7 +108,7 @@ export default class HeaderBar extends Component {
                 </Link>
               </li> }
           </ul>
-          <h4 className="text-left"></h4>
+          <h4 className="text-left" />
           <ul className="nav nav-stacked">
             <li>
               <a onClick={this.hide.bind(this)} href="https://help.wevote.us/hc/en-us/">

@@ -34,7 +34,7 @@ export default class ThisIsMeAction extends Component {
     let twitter_handle_being_viewed = this.props.twitter_handle_being_viewed;
     if (!twitter_handle_being_viewed) {
       // We do not want to show the "This is me" link if there isn't a twitter_handle associated with this organization
-      return <span></span>;
+      return <span />;
     }
     let kind_of_owner = this.props.kind_of_owner;
     let name_being_viewed = this.props.name_being_viewed || "";
@@ -64,7 +64,7 @@ export default class ThisIsMeAction extends Component {
 
     return <span>
         {signed_in_with_this_twitter_account ?
-          <span></span> :
+          <span /> :
           <Link to={`/verifythisisme/${twitter_handle_being_viewed}`}>
             <Button bsStyle="link">
               {this_is_me_action_text}

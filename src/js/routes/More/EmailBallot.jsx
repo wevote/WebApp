@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Input } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
 import Main from "../../components/Facebook/Main";
@@ -24,8 +24,7 @@ export default class EmailBallot extends Component {
 					<h2 className="text-center">Print, Save or Email Ballot</h2>
 					<div>
 						<label htmlFor="last-name">Email your ballot to yourself so you can print or save</label><br />
-						<Input type="text"
-								addonBefore="@"
+						<input type="text"
 								name="email_address"
 								className="form-control"
 								placeholder="Enter your email address"

@@ -91,8 +91,7 @@ export default class MeasureItem extends Component {
           }
 
           <div className="row" style={{ paddingBottom: "0.5rem" }}>
-            <div className="col-xs-12">
-            </div>
+            <div className="col-xs-12" />
           </div>
           <span className={ this.props.link_to_ballot_item_page ?
                   "u-cursor--pointer" :

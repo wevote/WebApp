@@ -40,11 +40,11 @@ export default class TwitterAccountCard extends Component {
               }
               { twitter_handle ?
                 <span>@{twitter_handle}&nbsp;&nbsp;</span> :
-                <span></span>
+                <span />
               }
               {twitter_followers_count ?
                 <span className="twitter-followers__badge">
-                  <span className="fa fa-twitter twitter-followers__icon"></span>
+                  <span className="fa fa-twitter twitter-followers__icon" />
                   <span title={numberWithCommas(twitter_followers_count)}>{abbreviateNumber(twitter_followers_count)}</span>
                 </span> :
                 null
@@ -52,7 +52,7 @@ export default class TwitterAccountCard extends Component {
               {twitter_user_website ?
                 <span>
                   &nbsp;&nbsp;
-                  <a href={twitter_user_website} target="_blank">Website <i className="fa fa-external-link"></i></a><br />
+                  <a href={twitter_user_website} target="_blank">Website <i className="fa fa-external-link" /></a><br />
                 </span> :
                 null
               }

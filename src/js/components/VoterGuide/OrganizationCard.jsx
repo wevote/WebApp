@@ -56,7 +56,7 @@ export default class OrganizationCard extends Component {
           }
           &nbsp;&nbsp;
           { organization_website ?
-            <span><a href={organization_website} target="_blank">Website <i className="fa fa-external-link"></i></a></span> :
+            <span><a href={organization_website} target="_blank">Website <i className="fa fa-external-link" /></a></span> :
             null }
           {/*5 of your friends follow Organization Name<br />*/}
         </div>

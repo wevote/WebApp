@@ -90,7 +90,7 @@ export default class CandidateItem extends Component {
                   onClick={ this.props.link_to_ballot_item_page ?
                     goToCandidateLink : null }
             >
-              <span className="fa fa-twitter twitter-followers__icon"></span>
+              <span className="fa fa-twitter twitter-followers__icon" />
               <span title={numberWithCommas(twitter_followers_count)}>{abbreviateNumber(twitter_followers_count)}</span>
             </span> :
             null
@@ -133,7 +133,7 @@ export default class CandidateItem extends Component {
               </div>
 
               <Link to={candidateLink}>
-                { this.props.link_to_ballot_item_page ? <span className="card-main__read-more-pseudo"></span> : null }
+                { this.props.link_to_ballot_item_page ? <span className="card-main__read-more-pseudo" /> : null }
               </Link>
               { this.props.link_to_ballot_item_page ?
                 <Link to={candidateLink} className="card-main__read-more-link">&nbsp;Read more</Link> :

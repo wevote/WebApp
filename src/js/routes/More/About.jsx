@@ -23,24 +23,24 @@ export default class About extends Component {
           <h1 className="h1">About We Vote</h1>
           <div className="btn-toolbar">
           <a className="btn btn-social-icon btn-twitter" href="https://twitter.com/WeVote" target="_blank">
-            <span className="fa fa-twitter"></span>
+            <span className="fa fa-twitter" />
           </a>
 
           <a className="btn btn-social-icon btn-facebook" href="https://www.facebook.com/WeVoteUSA" target="_blank">
-            <span className="fa fa-facebook"></span>
+            <span className="fa fa-facebook" />
           </a>
 
           <a className="btn btn-social-icon btn-github" href="https://github.com/WeVote" target="_blank">
-            <span className="fa fa-github"></span>
+            <span className="fa fa-github" />
           </a>
 
           <a className="btn btn-social-icon btn-medium" href="https://medium.com/@WeVote" target="_blank">
-            <span className="fa fa-medium"></span>
+            <span className="fa fa-medium" />
           </a>
           </div>
 
           <br />
-            <ReactPlayer url="https://player.vimeo.com/video/121315141" width="300" height="231" />
+            <ReactPlayer url="https://player.vimeo.com/video/121315141" width="300px" height="231px" />
             <br />
           <strong>Vote with Confidence</strong><br />
             We Vote is the political social network for America. That means a place to share what you believe, and
@@ -72,7 +72,7 @@ export default class About extends Component {
             <br />
 
             <strong>How do I use We Vote?</strong><br />
-            <a href="https://help.wevote.us/hc/en-us/" target="_blank">Visit our help center for answers.&nbsp;<i className="fa fa-external-link"></i></a><br />
+            <a href="https://help.wevote.us/hc/en-us/" target="_blank">Visit our help center for answers.&nbsp;<i className="fa fa-external-link" /></a><br />
             <br />
 
             <strong>More questions?</strong><br />
@@ -98,8 +98,8 @@ export default class About extends Component {
             We Vote is made of two 501(c)(3) and 501(c)(4) nonpartisan nonprofit organizations based in
             Oakland, California. This site is managed by the 501(c)(4), We Vote USA. Our
             software is open source, and our work is driven by the nearly 100 volunteers who have contributed so far.
-            Inspired by groups like <a href="http://codeforsanfrancisco.org/" target="_blank">Code for America&nbsp;<i className="fa fa-external-link"></i>
-            </a> and the <a href="https://www.mozilla.org/en-US/foundation/" target="_blank">Mozilla Foundation&nbsp;<i className="fa fa-external-link"></i></a>, we use technology to
+            Inspired by groups like <a href="http://codeforsanfrancisco.org/" target="_blank">Code for America&nbsp;<i className="fa fa-external-link" />
+            </a> and the <a href="https://www.mozilla.org/en-US/foundation/" target="_blank">Mozilla Foundation&nbsp;<i className="fa fa-external-link" /></a>, we use technology to
             make democracy stronger.<br />
             <br />
   <ImageHandler className="about-photo"

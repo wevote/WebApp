@@ -37,7 +37,7 @@ export default class Bookmarks extends Component {
     var voter_address = VoterStore.getAddress();
     const election_name = BallotStore.currentBallotElectionName;
     const election_date = BallotStore.currentBallotElectionDate;
-    const electionTooltip = election_date ? <Tooltip id="tooltip">Ballot for {election_date}</Tooltip> : <span></span>;
+    const electionTooltip = election_date ? <Tooltip id="tooltip">Ballot for {election_date}</Tooltip> : <span />;
 
     return <div className="ballot">
       <div className="ballot__heading">

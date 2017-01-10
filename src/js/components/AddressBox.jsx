@@ -12,7 +12,13 @@ export default class AddressBox extends Component {
 
   constructor (props) {
       super(props);
-      this.state = { loading: false };
+      this.state = {
+        loading: false,
+        voter_address: ""
+      };
+
+    this.updateVoterAddress = this.updateVoterAddress.bind(this);
+    this.voterAddressSave = this.voterAddressSave.bind(this);
   }
 
   componentDidMount () {
@@ -36,9 +42,9 @@ export default class AddressBox extends Component {
     browserHistory.push(this.props.saveUrl);
   }
 
-  updateVoterAddress (e) {
+  updateVoterAddress (event) {
     this.setState({
-      voter_address: e.target.value
+      voter_address: event.target.value
     });
   }
 
@@ -50,17 +56,17 @@ export default class AddressBox extends Component {
   }
 
   render () {
-    var { loading, voter_address } = this.state;
+    var { loading } = this.state;
     if (loading){
       return LoadingWheel;
     }
     return <div>
-        <form onSubmit={this.voterAddressSave.bind(this)}>
+        <form onSubmit={this.voterAddressSave}>
         <input
           type="text"
-          onChange={this.updateVoterAddress.bind(this)}
+          onChange={this.updateVoterAddress}
           name="address"
-          defaultValue={voter_address}
+          value={this.state.voter_address}
           className="form-control"
           placeholder="Enter address where you are registered to vote"
         />
@@ -68,7 +74,7 @@ export default class AddressBox extends Component {
 
         <div className="u-gutter__top--small">
           <Button
-            onClick={this.voterAddressSave.bind(this)}
+            onClick={this.voterAddressSave}
             bsStyle="primary">
             Save</Button>
         </div>

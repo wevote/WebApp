@@ -47,7 +47,7 @@ export default class IntroBallotContests extends Component {
                     </span>
                     <br/>
 
-                    <a name="candidates"></a>
+                    <a name="candidates" />
                     <h4 className="h4">Candidates</h4>
                     <a href="#measures">Jump to Measures</a>
                     <ul className="list-group">
@@ -85,7 +85,7 @@ export default class IntroBallotContests extends Component {
                         </li>
                     </ul>
 
-                    <a name="measures"></a>
+                    <a name="measures" />
                     <h4 className="h4">Measures</h4>
                     <a href="#candidates">Jump to Candidates</a>
                     <ul className="list-group">

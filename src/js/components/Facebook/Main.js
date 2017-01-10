@@ -38,7 +38,7 @@ class Main extends React.Component {
         return <div>
                 {this.state.userId ?
                   <FacebookDownloadPicture userId={this.state.userId} /> :
-                  <div></div>
+                  <div />
                 }
                 <FacebookPicture
                     facebookPictureStatus={this.state.facebookPictureStatus}

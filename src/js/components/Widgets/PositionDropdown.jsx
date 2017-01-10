@@ -36,7 +36,7 @@ export default class PositionDropdown extends Component {
 
     return <div className={"btn-group mr2" + dropdownClass}>
       <button onBlur={this.onButtonBlur.bind(this)} onClick={onClick} className="dropdown-toggle item-actionbar__btn item-actionbar__btn--position-selected btn btn-default">
-        {positionIcon} {positionText} <span className="caret"></span>
+        {positionIcon} {positionText} <span className="caret" />
       </button>
       {this.state.open &&
         <ul className="dropdown-menu">

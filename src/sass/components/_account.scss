@@ -1,0 +1,10 @@
+// TODO This is not working on the SignIn page
+.account-edit-action {
+  font-size: 1rem;
+  position: relative;
+  top: 0;
+  right: 0;
+  &:hover {
+    cursor: pointer;
+  }
+}

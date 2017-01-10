@@ -59,7 +59,7 @@ export default class PositionSupportOpposeSnippet extends Component {
       isSupportedBy = is_looking_at_self ? "is Opposed by You" : "is Opposed by";
     } else {
       // We shouldn't be here. Do not display position information. See instead PositionInformationOnlySnippet.jsx
-      return <span></span>;
+      return <span />;
     }
     let stance_display_off = false;
     if (this.props.stance_display_off !== undefined) {
@@ -105,7 +105,7 @@ export default class PositionSupportOpposeSnippet extends Component {
                 <a href={more_info_url}
                    target="_blank"
                    className="gray-mid">
-                  view source <i className="fa fa-external-link" aria-hidden="true"></i>
+                  view source <i className="fa fa-external-link" aria-hidden="true" />
                 </a>
                 {/* link for mobile browser: open in bootstrap modal */}
                 {/*

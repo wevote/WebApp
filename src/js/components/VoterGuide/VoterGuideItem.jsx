@@ -58,7 +58,7 @@ export default class VoterGuideItem extends Component {
         <div className="card-child__additional">
           {twitterFollowers ?
             <span className="twitter-followers__badge">
-              <span className="fa fa-twitter twitter-followers__icon"></span>
+              <span className="fa fa-twitter twitter-followers__icon" />
               {numberWithCommas(twitterFollowers)}
             </span> :
             null}

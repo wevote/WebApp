@@ -79,7 +79,7 @@ export default class Opinions extends Component {
           </p>
           <SearchGuidesToFollowBox />
           { ballot_has_guides ?
-            <p></p> :
+            <p /> :
             <p>There are no organizations with opinions on your ballot. Here are some popular organizations</p>
           }
         <div className="card">

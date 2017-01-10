@@ -80,18 +80,18 @@ export default class Intro extends Component {
 
             <ul className="list-group">
               <li className="list-group-item">
-                <span className="glyphicon glyphicon-small glyphicon-ok-sign"></span> &nbsp;Neutral and private
+                <span className="glyphicon glyphicon-small glyphicon-ok-sign" /> &nbsp;Neutral and private
               </li>
               <li className="list-group-item">
-                <span className="glyphicon glyphicon-small glyphicon-ok-sign"></span>
+                <span className="glyphicon glyphicon-small glyphicon-ok-sign" />
                   &nbsp; {numberWithCommas(voterCount)} voters
               </li>
               <li className="list-group-item">
-                <span className="glyphicon glyphicon-small glyphicon-ok-sign"></span>
+                <span className="glyphicon glyphicon-small glyphicon-ok-sign" />
                   &nbsp; {numberWithCommas(orgCount)} not-for-profit organizations
               </li>
               <li className="list-group-item">
-                <span className="glyphicon glyphicon-small glyphicon-ok-sign"></span>
+                <span className="glyphicon glyphicon-small glyphicon-ok-sign" />
                   &nbsp; and you.
               </li>
             </ul>

@@ -28,8 +28,9 @@ export default class FacebookPicture extends React.Component {
 
     get facebookPicture () {
         if (this.props.facebookPictureUrl) {
-            return <img src={this.props.facebookPictureUrl}></img>;
+            return <img src={this.props.facebookPictureUrl} />;
         }
+        return <span />;
     }
 
     render () {
