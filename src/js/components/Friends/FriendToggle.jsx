@@ -44,12 +44,12 @@ export default class FriendToggle extends Component {
   }
 
   render () {
-    if (!this.state) { return <div></div>; }
+    if (!this.state) { return <div />; }
     let other_voter_we_vote_id = this.props.other_voter_we_vote_id;
     let is_friend = this.state.is_friend;
     let is_looking_at_self = this.state.voter.we_vote_id === other_voter_we_vote_id;
     // You should not be able to friend yourself
-    if (is_looking_at_self) { return <div></div>; }
+    if (is_looking_at_self) { return <div />; }
 
     const acceptFriendInvite = FriendActions.acceptFriendInvite.bind(this, other_voter_we_vote_id);
     const unFriend = FriendActions.unFriend.bind(this, other_voter_we_vote_id);

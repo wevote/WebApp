@@ -120,7 +120,7 @@ export default class NotFound extends Component {
                   We were not able to find an account for this
                   Twitter Handle{ this.props.params.twitter_handle ?
                     <span> "{this.props.params.twitter_handle}"</span> :
-                    <span></span>}.
+                    <span />}.
                 </div>
                 <br />
                 <Link to="/twittersigninprocess/signinswitchstart">

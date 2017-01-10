@@ -18,19 +18,19 @@ export default class About extends Component {
           <h1 className="h1">Frequently Asked Questions</h1>
           <div className="btn-toolbar">
           <a className="btn btn-social-icon btn-twitter" href="https://twitter.com/WeVote" target="_blank">
-            <span className="fa fa-twitter"></span>
+            <span className="fa fa-twitter" />
           </a>
 
           <a className="btn btn-social-icon btn-facebook" href="https://www.facebook.com/WeVoteUSA" target="_blank">
-            <span className="fa fa-facebook"></span>
+            <span className="fa fa-facebook" />
           </a>
 
           <a className="btn btn-social-icon btn-github" href="https://github.com/WeVote" target="_blank">
-            <span className="fa fa-github"></span>
+            <span className="fa fa-github" />
           </a>
 
           <a className="btn btn-social-icon btn-medium" href="https://medium.com/@WeVote" target="_blank">
-            <span className="fa fa-medium"></span>
+            <span className="fa fa-medium" />
           </a>
           </div>
 

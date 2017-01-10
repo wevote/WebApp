@@ -61,8 +61,7 @@ export default class FriendInvitationProcessedDisplayForList extends Component {
             null}
         </div>
         <div className="card-child__additional">
-          <div className="card-child__follow-buttons">
-          </div>
+          <div className="card-child__follow-buttons" />
           {voter_twitter_followers_count ?
             <span className="twitter-followers__badge">
               <span className="fa fa-twitter twitter-followers__icon" />

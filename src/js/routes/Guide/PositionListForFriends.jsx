@@ -91,7 +91,7 @@ export default class PositionListForFriends extends Component {
                     <br />
                     <h4 className="card__additional-heading">Positions for Other Elections</h4>
                   </span> :
-                  <span></span>
+                  <span />
                 }
                 { friends_position_list_for_all_except_one_election.map( item => {
                   return <OrganizationPositionItem key={item.position_we_vote_id}

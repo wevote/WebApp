@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { Button, ButtonToolbar, Input } from "react-bootstrap";
+import { Button, ButtonToolbar } from "react-bootstrap";
 import { browserHistory } from "react-router";
 import LoadingWheel from "../LoadingWheel";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
 import VoterStore from "../../stores/VoterStore";
 
-/* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/89479679 */
 export default class AddFriendsByEmail extends Component {
   static propTypes = {
   };
@@ -196,25 +195,23 @@ export default class AddFriendsByEmail extends Component {
           {this.state.error_message}
         </div> :
         null }
-
       {this.state.on_enter_email_addresses_step ?
         <div>
           <form onSubmit={this.AddFriendsByEmailStepsManager.bind(this)}>
-            <Input type="text" addonBefore="@" name="email_address"
+            <input type="text" name="email_address"
                    className="form-control"
                    onChange={this.cacheEmailAddresses.bind(this)}
                    placeholder="Enter email addresses here, separated by commas" />
             {this.state.email_addresses ?
               <span>
                 <label htmlFor="last-name">Include a Message <span className="small">(Optional)</span></label><br />
-                <Input type="text" name="add_friends_message"
+                <input type="text" name="add_friends_message"
                        className="form-control"
                        onChange={this.cacheAddFriendsByEmailMessage.bind(this)}
-                       defaultValue="Please join me in preparing for the upcoming election." />
+                       placeholder="Please join me in preparing for the upcoming election." />
               </span> :
               null }
           </form>
-
           <div className="u-gutter__top--small">
             <ButtonToolbar bsClass="btn-toolbar">
               <span style={floatRight}>
@@ -241,7 +238,7 @@ export default class AddFriendsByEmail extends Component {
       {this.state.on_collect_email_step ?
         <div>
           <form onSubmit={this.AddFriendsByEmailStepsManager.bind(this)}>
-            <Input type="text" addonBefore="@" name="sender_email_address"
+            <input type="text" name="sender_email_address"
                    className="form-control"
                    onChange={this.cacheSenderEmailAddress.bind(this)}
                    placeholder="Enter your email address" />

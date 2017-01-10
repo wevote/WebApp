@@ -53,11 +53,11 @@ export default class OpinionsFollowedList extends Component {
     const orgs = this.state.organizations_followed.map( (org) => {
       if (this.props.editMode) {
         return <OrganizationDisplayForList key={org.organization_we_vote_id} {...org}>
-              <FollowToggle we_vote_id={org.organization_we_vote_id} /><span></span>
+              <FollowToggle we_vote_id={org.organization_we_vote_id} /><span />
             </OrganizationDisplayForList>;
       } else {
         return <OrganizationDisplayForList key={org.organization_we_vote_id} {...org}>
-              <span></span><span></span></OrganizationDisplayForList>;
+              <span /><span /></OrganizationDisplayForList>;
       }
     });
 

@@ -181,7 +181,7 @@ export default class VerifyThisIsMe extends Component {
                 <div className="small">We were not able to find an account for this
                   Twitter Handle{ this.props.params.twitter_handle ?
                   <span> "{this.props.params.twitter_handle}"</span> :
-                <span></span>}.
+                <span />}.
                 </div>
                 <br />
             </div>;

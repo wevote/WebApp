@@ -139,14 +139,14 @@ export default class AddFriendsByTwitter extends Component {
           <form onSubmit={this.AddFriendsByTwitterStepsManager.bind(this)}>
           <div>
             ADD_FRIENDS_BY_TWITTER - NOT FINISHED YET
-            {/*<Input type="text" addonBefore="@" name="email_address"
+            {/*<input type="text" name="email_address"
                    className="form-control"
                    onChange={this.cacheTwitterHandles.bind(this)}
                    placeholder="Enter twitter handles here, separated by commas" />
             {this.state.twitter_handles ?
               <span>
                 <label htmlFor="last-name">Include a Message <span className="small">(Optional)</span></label><br />
-                <Input type="text" name="add_friends_message"
+                <input type="text" name="add_friends_message"
                        className="form-control"
                        onChange={this.cacheAddFriendsByTwitterMessage.bind(this)}
                        defaultValue="Please join me in preparing for the upcoming election." />

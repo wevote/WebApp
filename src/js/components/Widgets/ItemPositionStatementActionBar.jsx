@@ -93,7 +93,7 @@ export default class ItemPositionStatementActionBar extends Component {
 
   render () {
     if (this.props.supportProps === undefined) {
-      return <div></div>;
+      return <div />;
     }
 
     var {is_support, is_oppose} = this.props.supportProps;

@@ -137,6 +137,5 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
       // return <span>this.voterMergeTwoAccountsByInvitationKey - go ahead</span>;
       return LoadingWheel;
     }
-    return LoadingWheel;
   }
 }

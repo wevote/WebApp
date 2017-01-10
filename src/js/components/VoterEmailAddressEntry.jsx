@@ -136,7 +136,7 @@ export default class VoterEmailAddressEntry extends Component {
               type="text"
               onChange={this.updateVoterEmailAddress.bind(this)}
               name="voter_email_address"
-              defaultValue={voter_email_address}
+              value={voter_email_address}
               className="form-control"
               placeholder="Sign in with email address"
             />
@@ -157,7 +157,7 @@ export default class VoterEmailAddressEntry extends Component {
             type="text"
             onChange={this.updateVoterEmailAddress.bind(this)}
             name="voter_email_address"
-            defaultValue={voter_email_address}
+            value={voter_email_address}
             className="form-control text-center"
             placeholder="Sign in with email address"
           />

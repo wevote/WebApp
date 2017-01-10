@@ -44,7 +44,7 @@ export default class FriendInvitationToggle extends Component {
   }
 
   render () {
-    if (!this.state) { return <div></div>; }
+    if (!this.state) { return <div />; }
     let other_voter_we_vote_id = this.props.other_voter_we_vote_id;
     let is_friend = this.state.is_friend;
     // console.log("FriendInvitationToggle, my voter_we_vote_id:", this.state.voter.we_vote_id, ", other_voter_we_vote_id:", other_voter_we_vote_id, ", is_friend:", is_friend);
@@ -52,7 +52,7 @@ export default class FriendInvitationToggle extends Component {
     // You should not be able to friend yourself
     if (is_looking_at_self) {
       // console.log("FriendInvitationToggle, is_looking_at_self");
-      return <div></div>;
+      return <div />;
     }
 
     const acceptFriendInvite = FriendActions.acceptFriendInvite.bind(this, other_voter_we_vote_id);
