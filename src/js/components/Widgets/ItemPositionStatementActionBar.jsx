@@ -197,7 +197,7 @@ export default class ItemPositionStatementActionBar extends Component {
                   name="statement_text_to_be_saved"
                   className="position-statement__input form-control"
                   placeholder={statement_placeholder_text}
-                  value={statement_text_to_be_saved}
+                  defaultValue={statement_text_to_be_saved}
                   />
                 <button className="btn btn-default btn-sm" type="submit">{post_button_text}</button>
               </span>
