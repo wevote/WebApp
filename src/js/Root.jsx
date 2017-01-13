@@ -33,6 +33,7 @@ import Opinions from "./routes/Opinions";
 import OpinionsFollowed from "./routes/OpinionsFollowed";
 import Privacy from "./routes/More/Privacy";
 import Requests from "./routes/Requests";
+import SampleBallot from "./routes/Intro/SampleBallot";
 import Settings from "./routes/Settings/Settings";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
 import SignIn from "./routes/More/SignIn";
@@ -58,6 +59,7 @@ const routes = () =>
       <Route path="/intro/contests" component={IntroContests} />
       <Route path="/intro/opinions" component={IntroOpinions} />
       <Route path="/intro/story" component={IntroStory} />
+      <Route path="/intro/sample_ballot" component={SampleBallot} />
     </Route>
 
     {/* Settings go in this structure... */}

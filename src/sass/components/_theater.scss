@@ -1,5 +1,5 @@
 .intro-story {
-  width: 100%;
+
   height: 500px;
   background-color: $gray-dark;
   color: #fff;
@@ -9,12 +9,74 @@
   }
 
   .example-header {
+    padding-top: 20px;
+    padding-bottom: 40px;
     font-size: 20px;
     font-weight: 400px;
   }
 
   .example-header2 {
+
     font-size:24px;
     font-weight: 600;
+  }
+  .x-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 2;
+    height: 30px;
+    width: 30px;
+    padding: 5px;
+    color: #fff;
+  }
+
+  .background-image {
+  height:450px;
+  width: 100%
+  }
+
+  .election-img {
+    height: 200px;
+    width: 100px;
+  }
+
+  .animation-images {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media screen and (max-width: 426px){
+  .intro-story {
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+
+    .x-close {
+    height: 25px;
+    width: 25px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 20px;
+    }
+  }
+
+  .container-main {
+    margin: 0px;
+    min-height: 100%;
+    padding: 0px;
+  }
+
+  .well {
+    border: 0;
+  }
+
+  .background-image {
+    height:540px;
+    width: 100%
   }
 }
