@@ -85,6 +85,7 @@ export default class About extends Component {
 
             <h3>WHO WE ARE</h3>
 
+            <div className="Our-Story">
             <strong>Our Story</strong><br />
             After meeting in Oakland in the spring of 2013, We Vote co-founders <a href="#Dale">Dale McGrew</a>, <a href="#Jen">Jenifer Fernandez Ancona</a>, Dan Ancona,
             and their families became fast friends and bought a home together,
@@ -101,90 +102,299 @@ export default class About extends Component {
             Inspired by groups like <a href="http://codeforsanfrancisco.org/" target="_blank">Code for America&nbsp;<i className="fa fa-external-link" />
             </a> and the <a href="https://www.mozilla.org/en-US/foundation/" target="_blank">Mozilla Foundation&nbsp;<i className="fa fa-external-link" /></a>, we use technology to
             make democracy stronger.<br />
-            <br />
-  <ImageHandler className="about-photo"
-                imageUrl="http://res.cloudinary.com/hrscywv4p/image/upload/c_limit,f_auto,h_1440,q_80,w_720/v1/181340/JeniferAncona-300x300_jbqmlu.jpg"
-                alt="Jen-photo" /><br />
-<h3 id="Jen">Jenifer Fernandez Ancona</h3>
+            <br/><br/><br/>
+            </div>
+        <div className="container-fluid">
+        <h3><strong>We Vote Boards</strong></h3>
+        <br/>
+        <div className="row centered">
+        <div className="col-xs-4 col-md-3">
+          <div className="media">
+            <ImageHandler className="img-responsive" imageUrl="/img/global/photos/JeniferAncona-300x300.jpg"
+                alt="Jenifer Fernandez Ancona"/>
+            <div className="media-body">
+                <h2><strong>Jenifer Fernandez Ancona</strong></h2>
+                <h3>Co-founder &amp; Board Chair</h3>
+                <span className="xx-small hidden-xs">
+                  <span>Vice President, Strategy & Member Engagement at the Women Donors Network. 10 yrs of experience
+                  in social change philanthropy. Was reporter at the LA Times. </span>
+                <a className="smaller" href="https://twitter.com/JenAncona" target="_blank">@JenAncona</a>
+                <br />
+                <br />
+                </span>
+            </div>
+         </div>
+        </div>
+        <div className="col-xs-4 col-md-3">
+          <div className="media">
+            <ImageHandler className="img-responsive" imageUrl="/img/global/photos/TianaEpps-Johnson-512x512.jpg"
+                alt="Tiana Epps-Johnson"/>
+            <div className="media-body">
+                <h2><strong>Tiana Epps-Johnson</strong></h2>
+                <h3>C3 Board Chair</h3>
+                <span className="xx-small hidden-xs">Lorem ipsum dolor sit amet, consectetur.
+                <br />
+                <br />
+                </span>
+            </div>
+          </div>
+        </div>
+        <div className="col-xs-4 col-md-3">
+          <div className="media">
+            <ImageHandler className="img-responsive" imageUrl="/img/global/photos/DebraCleaver-300x300.png"
+            alt="Debra Cleaver"/>
+            <div className="media-body">
+              <h2><strong>Debra Cleaver</strong></h2>
+              <h3>C3 Board Member</h3>
+              <span className="xx-small hidden-xs">
+                <span>Founder & Exec. Dir. of VOTE.org, the web's most heavily trafficked site for accurate voting
+                information. Recognized expert in technology, product development, and voting. Recent recipient of
+                Knight News Challenge grant. </span>
+              <a className="smaller" href="https://twitter.com/VoteDotOrg" target="_blank">@VoteDotOrg</a>
+              <br />
+              <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="clearfix visible-xs-block" />
+        <div className="col-xs-4 col-md-3">
+          <div className="media">
+            <ImageHandler className="img-responsive" imageUrl="/img/global/photos/ToryGavito_400x400.jpeg"
+            alt="Tory Gavito"/>
+            <div className="media-body">
+              <h2><strong>Tory Gavito</strong></h2>
+              <h3>C4 Board Member</h3>
+              <span className="xx-small hidden-xs">Lorem ipsum dolor sit amet, consectetur.
+              <br />
+              <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="clearfix visible-md-block" />
+        <div className="col-xs-4 col-md-3">
+          <div className="media">
+            <ImageHandler className="img-responsive" imageUrl="/img/global/photos/LawrenceGrodeska-200x200.jpg"
+            alt="Lawrence Grodeska"/>
+            <div className="media-body">
+              <h2><strong>Lawrence Grodeska</strong></h2>
+              <h3>C3 Board Member</h3>
+              <span className="xx-small hidden-xs">Lorem ipsum dolor sit amet, consectetur.
+              <br />
+              <br />
+              </span>
+            </div>
+          </div>
+        </div>
+         <div className="col-xs-4 col-md-3">
+          <div className="media">
+            <ImageHandler className="img-responsive" imageUrl="/img/global/photos/DaleMcGrew-300x300.jpg"
+            alt="Dale John McGrew"/>
+            <div className="media-body">
+              <h2><strong>Dale John McGrew</strong></h2>
+              <h3>Executive Director &amp; Board Member</h3>
+              <span className="xx-small hidden-xs">
+                <span>Has managed large interactive software projects for companies like Disney, Intel, IBM, Frogdesign
+                and Crayola, and nonprofits like Clinton Global Initiative, American Red Cross, American Lung
+                Association, and over 60 other nonprofits. </span>
+              <a className="smaller" href="https://twitter.com/WeVote" target="_blank">@WeVote</a>
+              <br />
+              <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="clearfix visible-xs-block" />
+        <div className="col-xs-4 col-md-3">
+          <div className="media">
+            <ImageHandler className="img-responsive" imageUrl="/img/global/photos/AnatShenker-300x300.jpeg"
+            alt="Anat Shenker-Osorio"/>
+            <div className="media-body">
+              <h2><strong>Anat Shenker-Osorio</strong></h2>
+              <h3>C4 Board Member</h3>
+              <span className="xx-small hidden-xs">
+                <span>Communications expert, researcher and political pundit. The author of the acclaimed book “Don’t
+                Buy It: The Trouble with Talking Nonsense About the Economy.” Anat’s writing & research has appeared in
+                The Atlantic, Boston Globe, Huffington Post, among other publications. </span>
+              <a className="smaller" href="https://twitter.com/anatosaurus" target="_blank">@anatosaurus</a>
+              <br />
+              <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="col-xs-4 col-md-3">
+          <div className="media">
+            <ImageHandler className="img-responsive" imageUrl="/img/global/photos/WilliamWinters-300x300.jpg"
+            alt="William Winters"/>
+            <div className="media-body">
+              <h2><strong>William Winters</strong></h2>
+              <h3>C4 Board Member</h3>
+              <span className="xx-small hidden-xs">
+                <span>Sr. Strategist at Citizen Engagement Laboratory. Previously: Sr. Campaigner at Change.org,
+                Campaign Manager at Color Of Change. </span>
+              <a href="https://twitter.com/wwintersiii" target="_blank">@wwintersiii</a>
+              <br />
+              <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        </div>
+    </div>
+<br/><br/>
+  <div className="container-fluid">
+        <h3><strong>We Vote Staff</strong></h3>
+        <br/>
+        <div className="row centered">
+        <div className="col-xs-4 col-md-3">
+          <div className="media">
+            <ImageHandler className="img-responsive" imageUrl="/img/global/photos/SarahClements-400x400.jpg"
+            alt="Sarah Clements"/>
+            <div className="media-body">
+              <h2><strong>Sarah Clements</strong></h2>
+              <h3>Engineering Intern</h3>
+              <span className="xx-small hidden-xs">Lorem ipsum dolor sit amet, consectetur.
+              <br />
+              <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="col-xs-4 col-md-3">
+          <div className="media">
+            <ImageHandler className="img-responsive" imageUrl="/img/global/photos/IreneFlorez-400x400.jpg"
+            alt="Irene Florez"/>
+            <div className="media-body">
+              <h2><strong>Irene Florez</strong></h2>
+              <h3>Engineering Intern</h3>
+              <span className="xx-small hidden-xs">Lorem ipsum dolor sit amet, consectetur.
+              <br />
+              <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="col-xs-4 col-md-3">
+          <div className="media">
+            <ImageHandler className="img-responsive" imageUrl="/img/global/photos/JeffFrench-500x500.jpg"
+            alt="Jeff French"/>
+            <div className="media-body">
+              <h2><strong>Jeff French</strong></h2>
+              <h3>Lead Designer</h3>
+              <span className="xx-small hidden-xs">Lorem ipsum dolor sit amet, consectetur.
+              <br />
+              <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="clearfix visible-xs-block" />
+        <div className="col-xs-4 col-md-3">
+          <div className="media">
+            <ImageHandler className="img-responsive" imageUrl="/img/global/photos/AnishaJain-200x200.jpg"
+            alt="Anisha Jain"/>
+            <div className="media-body">
+              <h2><strong>Anisha Jain</strong></h2>
+              <h3>Engineering Intern</h3>
+              <span className="xx-small hidden-xs">Lorem ipsum dolor sit amet, consectetur.
+              <br />
+              <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="clearfix visible-md-block" />
+        <div className="col-xs-4 col-md-3">
+          <div className="media">
+            <ImageHandler className="img-responsive" imageUrl="/img/global/photos/JudyJohnson-300x300.jpg"
+            alt="Judy Johnson"/>
+            <div className="media-body">
+              <h2><strong>Judy Johnson</strong></h2>
+              <h3>Operations</h3>
+              <span className="xx-small hidden-xs">Lorem ipsum dolor sit amet, consectetur.
+              <br />
+              <br />
+              </span>
+            </div>
+          </div>
+        </div>
+         <div className="col-xs-4 col-md-3">
+          <div className="media">
+            <ImageHandler className="img-responsive" imageUrl="/img/global/photos/NeelamJoshi_415x400.jpg"
+            alt="Neelam Joshi"/>
+            <div className="media-body">
+              <h2><strong>Neelam Joshi</strong></h2>
+              <h3>Engineering Intern</h3>
+              <span className="xx-small hidden-xs">Lorem ipsum dolor sit amet, consectetur.
+              <br />
+              <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="clearfix visible-xs-block" />
+        <div className="col-xs-4 col-md-3">
+          <div className="media">
+            <ImageHandler className="img-responsive" imageUrl="/img/global/photos/CieroKilpatrrick_400x401.jpg"
+            alt="Ciero Kilpatrick"/>
+            <div className="media-body">
+              <h2><strong>Ciero Kilpatrick</strong></h2>
+              <h3>User Experience Intern</h3>
+              <span className="xx-small hidden-xs">Lorem ipsum dolor sit amet, consectetur.
+              <br />
+              <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="col-xs-4 col-md-3">
+          <div className="media">
+            <ImageHandler className="img-responsive" imageUrl="/img/global/photos/DaleMcGrew-300x300.jpg"
+            alt="Dale John McGrew"/>
+            <div className="media-body">
+              <h2><strong>Dale John McGrew</strong></h2>
+              <h3>Executive Director</h3>
+              <span className="xx-small hidden-xs">Lorem ipsum dolor sit amet, consectetur.
+              <br />
+              <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="clearfix visible-md-block" />
+        <div className="col-xs-4 col-md-3">
+          <div className="media">
+            <ImageHandler className="img-responsive" imageUrl="/img/global/photos/ColettePhair-300x300.png"
+            alt="Colette Phair"/>
+            <div className="media-body">
+              <h2><strong>Colette Phair</strong></h2>
+              <h3>Manager of Communications and Community Outreach</h3>
+              <span className="xx-small hidden-xs">Lorem ipsum dolor sit amet, consectetur.
+              <br />
+              <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="col-xs-4 col-md-3 col-">
+          <div className="media">
+            <ImageHandler className="img-responsive" imageUrl="/img/global/photos/EricOgawa-400x400.jpg"
+            alt="Eric"/>
+            <div className="media-body">
+              <h2><strong>Eric Ogawa</strong></h2>
+              <h3>User Experience Design Intern</h3>
+              <span className="xx-small hidden-xs">Lorem ipsum dolor sit amet, consectetur.
+              <br />
+              <br />
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-Co-founder &amp; Board Member
-<br /><br />
-<i>&quot;We need to match the values of the people with the values of the leadership in this country.&quot;</i>
-<br />
-Inspired by her grandmother&#39;s experience of immigrating to the U.S. from El Salvador and the
-knowledge that some people were treated differently from others, Jenifer has worked to make large-scale
-change to address inequality. She is Senior Director of Membership &amp; Communications at Women
-Donors Network and serves on the board of Citizen Engagement Laboratory. Once a Los Angeles Times
-reporter, Jenifer left journalism to tell stories that had a direct impact on social justice. She has worked
-as a legislative aide in the California State Assembly and sees We Vote as a means to bridge the
-disconnect between voters and government.
-<br />
-<hr />
-<h3 id="Jeff">Jeff French</h3>
-
-Lead Designer
-<br /><br />
-<i>&quot;Design is what defines engaging experiences and productive processes.&quot;</i>
-<br />
-<hr />
-  <ImageHandler className="about-photo"
-                imageUrl="http://res.cloudinary.com/hrscywv4p/image/upload/c_limit,f_auto,h_1440,q_80,w_720/v1/181340/DaleMcGrew-300x300_ofybhb.jpg"
-                alt="Dale-photo" /><br />
-<h3 id="Dale">Dale McGrew</h3>
-
-Co-founder &amp; Executive Director
-<br /><br />
-<i>&quot;When you deal with something like democracy, you&#39;ve got to take the long view.&quot;</i>
-<br />
-Dale is a serial entrepreneur and founder of GoLightly and Gravity, Inc. Growing up in a political
-household meant Dale&#39;s idea of fun later on would be ballot parties where friends would
-discuss the important voting choices they&#39;d be making before an election. Yet the sensationalized
-&quot;hockey game&quot; version of politics Dale saw portrayed in the media, where candidates would brutally
-compete for voter attention, never felt right. He envisions We Vote as a place where voters
-make informed decisions based on discussion rather than debates that dodge the issues. Dale
-has managed software teams for companies like Intel, Disney and IBM and for nonprofits like the Red Cross
-and American Lung Association.
-<br />
-<hr />
-  <ImageHandler className="about-photo"
-                imageUrl="https://avatars0.githubusercontent.com/u/17035647?v=3&s=466"
-                alt="Zach-photo" />
-<br />
-<h3 id="Zach">Zach Monteith</h3>
-Engineering Intern
-<br /><br />
-<i>&quot;In an age where we are so connected, we can't let our political discourse be so fragmented.&quot;</i>
-<br />
-Zach brings a unique blend of experience in front end web development, political campaigning, and
-adding puns to any conversation. He&#39;s worked as a Canvass Director for the Fund for the Public Interest
-and Campaign Manager for an Oakland mayoral race. Zach probably first knew we needed We Vote
-when working as a USPS carrier, where he actually injured himself from lifting the bags of 200-page
-voter information guides issued by the State of California. Motivated by his own idea for a social voter
-site, Zach met We Vote at Code for San Francisco&#39;s Civic Hack Night, and the rest is history.
-<br />
-<hr />
-  <ImageHandler className="about-photo"
-                imageUrl="http://res.cloudinary.com/hrscywv4p/image/upload/c_limit,h_1440,w_720,f_auto,q_90/v1/181340/Me-WeVoteProfile_dati1v.jpg"
-                alt="Colette-photo" /><br />
-<h3>Colette Phair</h3>
-Manager of Communications &amp; Community Engagement
-<br /><br />
-What do science fiction novel writing, women&#39;s rights work in sub-Saharan Africa, and briefly fronting a
-
-black metal band have in common? Not much, except they&#39;re all things Colette has done. Studying
-
-political science at the University of California and Paris Institute of Political Studies led to work with
-
-several nonprofit and media groups. Colette took part in Get Out The Vote efforts in 2016 and has
-
-written everything from academic articles to other people&#39;s dating profiles.
-<br /><br />
-<h3>Our Boards</h3>
-501c3 Board: Jenifer Fernandez Ancona, Debra Cleaver, Dale McGrew, Anat Shenker-Osorio, William
-Winters (coming soon: Tiana Epps-Johnson and Lawrence Grodeska)<br />
-            <br />
-501c4 Board: coming soon<br />
-            <br />
 <h3>Our Volunteers</h3>
 
 We can&#39;t say thank you enough times to the <Link to="/more/credits/"> nearly 100 volunteers</Link> who&#39;ve generously
