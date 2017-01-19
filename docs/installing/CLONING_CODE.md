@@ -33,7 +33,7 @@ You can also refer to
 
         1. The command "pbcopy" copies the contents of the "~/.ssh/id_rsa.pub" key file so you can paste it.
 
-1. Go your "Settings" page in Github. In the left navigation, choose "SSH and GPG keys".  
+1. Go to your "Settings" page in Github. In the left navigation, choose "SSH and GPG keys".  
 
 Click the "New SSH key" button to the right of "SSH keys".  
 
