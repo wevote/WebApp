@@ -16,6 +16,23 @@
 	}
 }
 
+.btn-email {
+	color: #fff;
+  background-color: #f0ad4e;
+	border-color: #d38312;
+		&:hover {
+			background-color: #eda135;
+			color: #fff;
+		}
+	.email-icon {
+		height: 20px;
+	}
+}
+
+.btn-medium {
+	border-color: #999;
+}
+
 .url-to-copy {
 	width: 100% !important;
 }

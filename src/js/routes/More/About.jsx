@@ -30,6 +30,12 @@ export default class About extends Component {
             <span className="fa fa-facebook"/>
           </a>
 
+          <a className="btn btn-email" href="http://eepurl.com/cx_frP" target="_blank">
+            <span>
+              <span className="email-icon glyphicon glyphicon-envelope" /> Join Newsletter
+            </span>
+          </a>
+
           <a className="btn btn-social-icon btn-github" href="https://github.com/WeVote" target="_blank">
             <span className="fa fa-github"/>
           </a>
