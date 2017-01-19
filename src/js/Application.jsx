@@ -113,7 +113,7 @@ export default class Application extends Component {
         <div className="page-content-container">
           <div className="container-fluid">
             <div className="row">
-              <div className="col-xs-12-container col-xs-12 container-main">
+              <div className="col-xs-12 container-main">
                 { this.props.children }
               </div>
             </div>

@@ -58,7 +58,7 @@ export default class TwitterSignIn extends Component {
     return <a tabIndex="0" onKeyDown={this.onKeyDown.bind(this)}
               className="btn btn-social btn-lg btn-twitter"
               onClick={this.twitterSignInStart} >
-      <i className="fa fa-twitter" />Sign in with Twitter
+      <i className="fa fa-twitter" />Sign in
     </a>;
   }
 }

@@ -1,0 +1,79 @@
+.intro-story {
+  background-color: $gray-dark;
+  color: #fff;
+  text-align: center;
+  padding: 0;
+  height: 500px;
+  width: 100%;
+  @include breakpoints (small large){
+    height: 100vh;
+  }
+}
+
+.intro-story__background-image {
+    //Image for desktop has to be a very specific size otherwise it will tile or wrap
+    // onto the next slide (due to div width of react-slick carousel) - 1118 width works fine
+    background-image: url("/img/global/animations/3.1/flag_background_lg.png");
+    height: 500px;
+    width: 100%;
+    float: left; //This is important to ensure proper alignment with the parent div.
+    @include breakpoints (small large){
+      background-image: url("/img/global/animations/3.1/flag_background_sm.png");
+      height: 100vh;
+      width: 100vw;
+      background-size: cover;
+    }
+}
+
+.intro-story__menu-right {
+  font-size: 2.5em;
+  z-index: 3;
+  top: 45%;
+  right: 0;
+  position: absolute;
+    @include breakpoints (small large){
+    display: none;
+    }
+}
+.intro-story__menu-left {
+  font-size: 2.5em;
+  z-index: 3;
+  top: 45%;
+  left: 0;
+  position: absolute;
+    @include breakpoints (small large){
+    display: none;
+    }
+}
+
+// TODO Move to separate file if global, otherwise, rename to be scoped to this component '.intro-tour__close-btn'
+.x-close {
+  position: absolute;
+  height: 25px;
+  width: 25px;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  color: #fff;
+  @include breakpoints (small mid-small) {
+    height: 30px;
+    width: 30px;
+    padding: 5px;
+  }
+}
+
+// Overrides
+
+.slick-dots {
+  bottom: 2em;
+}
+
+.container-main {
+  margin: 0px;
+  min-height: 100%;
+  padding: 0px;
+}
+
+.well {
+    border: 0;
+  }
