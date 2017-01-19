@@ -38,11 +38,6 @@ export default class Credits extends Component {
               <li><strong>Wikipedia</strong> - Data</li>
           </ul>
 
-          <h3 className="h4">Thank you to our Board of Directors.</h3>
-          <p> <em>We Vote USA: coming soon</em><br />
-            We Vote Education: Jenifer Fernandez Ancona, Debra Cleaver, Dale McGrew, Anat Shenker-Osorio,
-            William Winters (coming soon: Tiana Epps-Johnson and Lawrence Grodeska)<br />
-          </p>
           <h3 className="h4">Special thanks to our team of volunteers.</h3>
           <p>You are the best! <br />
             (This is a list of volunteers who have contributed 10 or more hours, in rough order of hours contributed.)<br />
