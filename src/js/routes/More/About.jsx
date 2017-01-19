@@ -86,20 +86,20 @@ export default class About extends Component {
         <br />
         <h2>We Vote Board Members</h2>
         <div className="row centered">
-          <div className="col-xs-4 col-md-3">
+          <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
               <ImageHandler className="img-responsive" imageUrl="/img/global/photos/JeniferAncona-300x300.jpg"
                             alt="Jenifer Fernandez Ancona"/>
               <div className="media-body">
                 <h3><strong>Jenifer Fernandez Ancona</strong>, Co-founder &amp; Board Chair</h3>
                 <span className="xx-small hidden-xs">
-                  Vice President, Strategy &amp; Member Engagement at the Women Donors Network.<br />
+                  VP, Strategy &amp; Member Engagement at the Women Donors Network.<br />
                   <br />
                 </span>
               </div>
             </div>
           </div>
-          <div className="col-xs-4 col-md-3">
+          <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
               <ImageHandler className="img-responsive" imageUrl="/img/global/photos/TianaEpps-Johnson-512x512.jpg"
                             alt="Tiana Epps-Johnson"/>
@@ -112,7 +112,7 @@ export default class About extends Component {
               </div>
             </div>
           </div>
-          <div className="col-xs-4 col-md-3">
+          <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
               <ImageHandler className="img-responsive" imageUrl="/img/global/photos/DebraCleaver-300x300.png"
                             alt="Debra Cleaver"/>
@@ -127,7 +127,7 @@ export default class About extends Component {
             </div>
           </div>
           <div className="clearfix visible-xs-block" />
-          <div className="col-xs-4 col-md-3">
+          <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
               <ImageHandler className="img-responsive" imageUrl="/img/global/photos/ToryGavito_400x400.jpeg"
                             alt="Tory Gavito"/>
@@ -140,8 +140,8 @@ export default class About extends Component {
               </div>
             </div>
           </div>
-          <div className="clearfix visible-md-block" />
-          <div className="col-xs-4 col-md-3">
+          <div className="clearfix visible-sm-block visible-md-block visible-lg-block" />
+          <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
               <ImageHandler className="img-responsive" imageUrl="/img/global/photos/LawrenceGrodeska-200x200.jpg"
                             alt="Lawrence Grodeska"/>
@@ -154,21 +154,21 @@ export default class About extends Component {
               </div>
             </div>
           </div>
-          <div className="col-xs-4 col-md-3">
+          <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
               <ImageHandler className="img-responsive" imageUrl="/img/global/photos/DaleMcGrew-300x300.jpg"
                             alt="Dale John McGrew"/>
               <div className="media-body">
-                <h3><strong>Dale John McGrew</strong>, Executive Director &amp; c4 Board Member</h3>
+                <h3><strong>Dale John McGrew</strong>, Exec. Dir. &amp; c4 Board Member</h3>
               <span className="xx-small hidden-xs">
-                Has managed large interactive software projects for companies like Disney and over 60 nonprofits.<br />
+                Managed large software projects for companies like Disney and over 60 nonprofits.<br />
                 <br />
               </span>
               </div>
             </div>
           </div>
           <div className="clearfix visible-xs-block" />
-          <div className="col-xs-4 col-md-3">
+          <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
               <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Barbara_Shannon-200x200.jpg"
                             alt="Barbara Shannon"/>
@@ -181,7 +181,7 @@ export default class About extends Component {
               </div>
             </div>
           </div>
-          <div className="col-xs-4 col-md-3">
+          <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
               <ImageHandler className="img-responsive" imageUrl="/img/global/photos/AnatShenker-300x300.jpeg"
                             alt="Anat Shenker-Osorio"/>
@@ -195,8 +195,8 @@ export default class About extends Component {
               </div>
             </div>
           </div>
-          <div className="clearfix visible-md-block" />
-          <div className="col-xs-4 col-md-3">
+          <div className="clearfix visible-sm-block visible-md-block visible-lg-block" />
+          <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
               <ImageHandler className="img-responsive" imageUrl="/img/global/photos/WilliamWinters-300x300.jpg"
                             alt="William Winters"/>
@@ -213,7 +213,7 @@ export default class About extends Component {
         </div>
         <h2>We Vote Staff</h2>
         <div className="row centered">
-          <div className="col-xs-4 col-md-3">
+          <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
               <ImageHandler className="img-responsive" imageUrl="/img/global/photos/SarahClements-400x400.jpg"
                             alt="Sarah Clements"/>
@@ -222,7 +222,7 @@ export default class About extends Component {
               </div>
             </div>
           </div>
-          <div className="col-xs-4 col-md-3">
+          <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
               <ImageHandler className="img-responsive" imageUrl="/img/global/photos/IreneFlorez-400x400.jpg"
                             alt="Irene Florez"/>
@@ -231,7 +231,7 @@ export default class About extends Component {
               </div>
             </div>
           </div>
-          <div className="col-xs-4 col-md-3">
+          <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
               <ImageHandler className="img-responsive" imageUrl="/img/global/photos/JeffFrench-500x500.jpg"
                             alt="Jeff French"/>
@@ -241,7 +241,7 @@ export default class About extends Component {
             </div>
           </div>
           <div className="clearfix visible-xs-block" />
-          <div className="col-xs-4 col-md-3">
+          <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
               <ImageHandler className="img-responsive" imageUrl="/img/global/photos/AnishaJain-200x200.jpg"
                             alt="Anisha Jain"/>
@@ -250,8 +250,8 @@ export default class About extends Component {
               </div>
             </div>
           </div>
-          <div className="clearfix visible-md-block" />
-          <div className="col-xs-4 col-md-3">
+          <div className="clearfix visible-sm-block visible-md-block visible-lg-block" />
+          <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
               <ImageHandler className="img-responsive" imageUrl="/img/global/photos/JudyJohnson-300x300.jpg"
                             alt="Judy Johnson"/>
@@ -260,7 +260,7 @@ export default class About extends Component {
               </div>
             </div>
           </div>
-          <div className="col-xs-4 col-md-3">
+          <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
               <ImageHandler className="img-responsive" imageUrl="/img/global/photos/NeelamJoshi_415x400.jpg"
                             alt="Neelam Joshi"/>
@@ -270,7 +270,7 @@ export default class About extends Component {
             </div>
           </div>
           <div className="clearfix visible-xs-block" />
-          <div className="col-xs-4 col-md-3">
+          <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
               <ImageHandler className="img-responsive" imageUrl="/img/global/photos/CieroKilpatrrick_400x401.jpg"
                             alt="Ciero Kilpatrick"/>
@@ -279,21 +279,21 @@ export default class About extends Component {
               </div>
             </div>
           </div>
-          <div className="col-xs-4 col-md-3">
+          <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
               <ImageHandler className="img-responsive" imageUrl="/img/global/photos/DaleMcGrew-300x300.jpg"
                             alt="Dale John McGrew"/>
               <div className="media-body">
                 <h3><strong>Dale John McGrew</strong>, Executive Director</h3>
               <span className="xx-small hidden-xs">
-                Has managed large interactive software projects for companies like Disney and over 60 nonprofits.<br />
+                Managed large software projects for companies like Disney and over 60 nonprofits.<br />
               <br />
               </span>
               </div>
             </div>
           </div>
-          <div className="clearfix visible-md-block" />
-          <div className="col-xs-4 col-md-3">
+          <div className="clearfix visible-sm-block visible-md-block visible-lg-block" />
+          <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
               <ImageHandler className="img-responsive" imageUrl="/img/global/photos/ColettePhair-300x300.png"
                             alt="Colette Phair"/>
@@ -307,7 +307,7 @@ export default class About extends Component {
             </div>
           </div>
           <div className="clearfix visible-xs-block" />
-          <div className="col-xs-4 col-md-3">
+          <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
               <ImageHandler className="img-responsive" imageUrl="/img/global/photos/EricOgawa-400x400.jpg"
                             alt="Eric"/>
