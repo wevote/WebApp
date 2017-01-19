@@ -20,7 +20,10 @@ Make sure you have created a place to put all of the code from Github:
 1. Change into your local WebApp repository folder, and set up a remote for upstream:  
 `$ git remote add upstream git@github.com:wevote/WebApp.git`  
 
-1. Create SSH keys (or follow [these instructions](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/#platform-windows) for Windows):
+1. Create SSH keys 
+
+You can also refer to 
+[these instructions](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/#platform-windows) for Windows):
 
     1. Create ssh keys: `ssh-keygen -t rsa -C "youremail@somedomain.com"`  
 
@@ -30,8 +33,10 @@ Make sure you have created a place to put all of the code from Github:
 
         1. The command "pbcopy" copies the contents of the "~/.ssh/id_rsa.pub" key file so you can paste it.
 
-1. Go your profile in Github. In the left navigation, choose "SSH and GPG keys".  
+1. Go your "Settings" page in Github. In the left navigation, choose "SSH and GPG keys".  
+
 Click the "New SSH key" button to the right of "SSH keys".  
+
 Paste the contents of the "~/.ssh/id_rsa.pub" key file into the "Key" text area, and give it any Title you would like.  
 
 
