@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { browserHistory } from "react-router";
 import Helmet from "react-helmet";
 // import TimelineLite from "gsap";
 import AnimationStory1 from "../../components/Animation/AnimationStory1";
@@ -13,30 +14,31 @@ export default class IntroStory extends Component {
     this.state = {};
   }
 
-  componentWillMount (){
-//  TODO: Research how to do this in a react-friendly way
-    document.body.style.backgroundColor = "#A3A3A3";
+  nextSlide () {
+//    console.log("current slide " + this.refs.slider.currentSlide);
+
   }
 
-  componentWillUnmount (){
-//  TODO: Research how to do this in a react-friendly way
-      document.body.style.backgroundColor = null;
+  goToBallotLink () {
+    var sampleBallotLink = "/intro/sample_ballot";
+    browserHistory.push(sampleBallotLink);
   }
 
   render () {
+
 //These are GreenSock animation instances
-    var timeline1 = new TimelineLite();
+    var timeline1 = new TimelineLite({onComplete: this.nextSlide.bind(this)});
     var timeline2 = new TimelineLite();
     var timeline3 = new TimelineLite();
 
 //These are settings for the react-slick slider
     var settings = {
       dots: true,
-      infinite: true,
+      infinite: false,
       speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
-      slide: true,
+      swipe: true,
       accessibility: true,
       arrows: false,
       beforeChange: function () {
@@ -48,12 +50,13 @@ export default class IntroStory extends Component {
 
     return <div>
       <Helmet title="Welcome to We Vote" />
-      <div className="container-fluid well u-gutter__top--small fluff-full1 intro-story">
-        <Slider {...settings}>
-          <div><AnimationStory1 timeline1={timeline1}/></div>
-          <div><AnimationStory2 timeline2={timeline2}/></div>
-          <div><AnimationStory3 timeline3={timeline3}/></div>
-          <div><p>This will be an image</p></div>
+      <div className="intro-story container-fluid well fluff-full1">
+        <img src={"/img/global/icons/close-x.png"} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
+        <Slider ref="slider" {...settings}>
+          <div key={1}><AnimationStory1 timeline1={timeline1}/></div>
+          <div key={2}><AnimationStory2 timeline2={timeline2}/></div>
+          <div key={3}><AnimationStory3 timeline3={timeline3}/></div>
+          <div key={4}><p>This will be an image</p></div>
          </Slider>
       </div>
     </div>;
