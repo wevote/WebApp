@@ -25,6 +25,12 @@ export default class About extends Component {
             <span className="fa fa-facebook" />
           </a>
 
+          <a className="btn btn-email" href="http://eepurl.com/cx_frP" target="_blank">
+            <span>
+              <span className="email-icon glyphicon glyphicon-envelope" /> Join Newsletter
+            </span>
+          </a>
+
           <a className="btn btn-social-icon btn-github" href="https://github.com/WeVote" target="_blank">
             <span className="fa fa-github" />
           </a>
@@ -104,6 +110,13 @@ export default class About extends Component {
             revenues by offering premium features.<br />
           <br />
 
+          <strong>How will you use my donation?</strong><br />
+            While most of the We Vote software is written by unpaid volunteers, we use financial donations to pay the staff
+            required
+            to gather and groom election data, as well as manage communications, operations, and our internship program.
+            Other expenses include server costs and fees required to buy political data.<br />
+          <br />
+
           <strong>How will you handle trolls?</strong><br />
             Unless your name is J.R.R. Tolkien, we know how much you hate trolls. That’s why on We Vote you only hear from
             people and organizations that you Friend or Follow. We Vote eliminates noise from people with radically
@@ -118,7 +131,9 @@ export default class About extends Component {
           <strong>Sounds great! How can I help?</strong><br />
             We couldn’t do what we do without volunteers and donors. Please sign up to volunteer at
             <a href="http://WeVoteTeam.org/volunteer"
-               target="_blank"> http://WeVoteTeam.org</a>.<br />
+               target="_blank"> http://WeVoteTeam.org</a>, and if you live in the San Francisco Bay Area, come find us every Wednesday night at
+          <a href="http://codeforsanfrancisco.org/" target="_blank"> Code for San Francisco&nbsp;<i
+          className="fa fa-external-link"/></a>.<br />
           <br />
 
           <Link to="/ballot/">Let's get started!</Link><br />

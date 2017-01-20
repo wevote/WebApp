@@ -49,20 +49,19 @@ export default class About extends Component {
         <ReactPlayer url="https://player.vimeo.com/video/121315141" width="300px" height="231px"/>
         <br />
         <strong>Vote with Confidence</strong><br />
-        We Vote is the place to share what you believe, and
-        find your network's opinions on candidates and propositions before you vote:
+        We Vote is the place to find your network's opinions on candidates and propositions before you vote, and share what you believe:
         <ul>
           <li>
-            follow trusted nonprofit groups to see their voter guides
+            follow the <strong>voter guides</strong> of trusted groups and thought leaders
           </li>
           <li>
-            easily create your own voter guide, showing which candidates and propositions you support
+            see voting recommendations <strong>all the way down your ballot</strong>
           </li>
           <li>
-            discuss your views with friends
+            easily <strong>create your own voter guide</strong>, showing which candidates and propositions you support
           </li>
           <li>
-            see voting recommendations all the way down your ballot
+            discuss your views <strong>with friends</strong>
           </li>
         </ul>
         <br />
@@ -80,11 +79,19 @@ export default class About extends Component {
         <a href="https://help.wevote.us/hc/en-us/" target="_blank">Visit our help center for answers.&nbsp;<i
           className="fa fa-external-link"/></a><br />
         <br />
+        More questions? <Link to="/more/faq">Visit our frequently asked questions page</Link> for answers.<br />
 
-        <strong>More questions?</strong><br />
-        <Link to="/more/faq/">Visit our frequently asked questions page</Link> for answers.<br />
-        <br />
-        <h2>We Vote Board Members</h2>
+        <h3 className="h3">A Nonprofit Startup</h3>
+          We Vote is made of two 501(c)(3) and 501(c)(4) nonpartisan nonprofit organizations based in
+          Oakland, California. This site is managed by the 501(c)(4), We Vote USA. Our
+          software is open source, and our work is driven by the nearly 100 volunteers who have contributed so far.
+          Inspired by groups like <a href="http://codeforsanfrancisco.org/" target="_blank">Code for America&nbsp;<i
+          className="fa fa-external-link"/>
+        </a> and the <a href="https://www.mozilla.org/en-US/foundation/" target="_blank">Mozilla Foundation&nbsp;<i
+          className="fa fa-external-link"/></a>, we use technology to
+          make democracy stronger by increasing voter turnout.<br />
+
+        <h3 className="h3">We Vote Board Members</h3>
         <div className="row centered">
           <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
@@ -211,7 +218,8 @@ export default class About extends Component {
             </div>
           </div>
         </div>
-        <h2>We Vote Staff</h2>
+
+        <h3 className="h3">We Vote Staff</h3>
         <div className="row centered">
           <div className="col-xs-4 col-sm-3 col-md-3">
             <div className="media">
@@ -318,39 +326,21 @@ export default class About extends Component {
           </div>
         </div>
 
-        <br />
-        <h2>WHO WE ARE</h2>
+        <h3 className="h3">Our Story</h3>
+        After meeting in Oakland in the spring of 2013, We Vote co-founders <a href="#Dale">Dale McGrew</a>, <a
+        href="#Jen">Jenifer Fernandez Ancona</a>, Dan Ancona,
+        and their families became fast friends and bought a home together,
+        forming an intentional community. Through
+        daily conversations, the idea of a nonprofit social voter network was born.
+        &quot;We&#39;re living our values,&quot; says Jenifer. We Vote would be a community for voters, they
+        decided, created
+        from a communal home of people concerned about where this country is heading. Being an open
+        source, volunteer-driven project means anyone can contribute. Kind of like democracy.<br />
 
-        <div className="Our-Story">
-          <strong>Our Story</strong><br />
-          After meeting in Oakland in the spring of 2013, We Vote co-founders <a href="#Dale">Dale McGrew</a>, <a
-          href="#Jen">Jenifer Fernandez Ancona</a>, Dan Ancona,
-          and their families became fast friends and bought a home together,
-          forming an intentional community. Through
-          daily conversations, the idea of a nonprofit social voter network was born.
-          &quot;We&#39;re living our values,&quot; says Jenifer. We Vote would be a community for voters, they
-          decided, created
-          from a communal home of people concerned about where this country is heading. Being an open
-          source, volunteer-driven project means anyone can contribute. Kind of like democracy.<br />
-          <br />
-          <strong>A Nonprofit Startup</strong><br />
-          We Vote is made of two 501(c)(3) and 501(c)(4) nonpartisan nonprofit organizations based in
-          Oakland, California. This site is managed by the 501(c)(4), We Vote USA. Our
-          software is open source, and our work is driven by the nearly 100 volunteers who have contributed so far.
-          Inspired by groups like <a href="http://codeforsanfrancisco.org/" target="_blank">Code for America&nbsp;<i
-          className="fa fa-external-link"/>
-        </a> and the <a href="https://www.mozilla.org/en-US/foundation/" target="_blank">Mozilla Foundation&nbsp;<i
-          className="fa fa-external-link"/></a>, we use technology to
-          make democracy stronger.<br />
-          <br/>
-          <strong>Credits</strong><br />
-          <Link to="/more/credits/">We are thankful for our volunteers, our board of directors, and the
-            organizations</Link> that are critical to our work.
-          <br/><br/>
-        </div>
-
+        <h3 className="h3">Credits &amp; Gratitude</h3>
+        <Link to="/more/credits/">We are thankful for our volunteers, our board of directors, and the
+          organizations</Link> that are critical to our work.
         <br /><br />
-
       </div>
     </div>;
   }
