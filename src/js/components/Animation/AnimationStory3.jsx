@@ -21,7 +21,10 @@ export default class AnimationStory3 extends Component {
   static getProps () {
     return {};
   }
-
+      //<div className="row" ref="signInBtn">
+        //<div className="col-xs-6 col-md-6 pull-left"><FacebookSignIn /></div>
+        //<div className="col-xs-6 col-md-6 pull-right"><TwitterSignIn /></div>
+      //</div>
   render () {
     return <div>
       <div ref="header7" className="example-header">Section 3</div>
