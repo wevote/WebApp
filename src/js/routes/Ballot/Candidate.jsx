@@ -12,7 +12,7 @@ import PositionList from "../../components/Ballot/PositionList";
 import SupportActions from "../../actions/SupportActions";
 import ThisIsMeAction from "../../components/Widgets/ThisIsMeAction";
 import VoterStore from "../../stores/VoterStore";
-import { exitSearch } from "../../utils/search-functions";
+import SearchAllActions from "../../actions/SearchAllActions";
 
 export default class Candidate extends Component {
   static propTypes = {
@@ -45,7 +45,7 @@ export default class Candidate extends Component {
     // Display the candidate's name in the search box
     var { candidate } = this.state;
     var searchBoxText = candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
-    exitSearch(searchBoxText);
+    SearchAllActions.exitSearch(searchBoxText); // TODO: still not used :)
   }
 
   componentWillReceiveProps (nextProps) {
@@ -59,7 +59,7 @@ export default class Candidate extends Component {
     // Display the candidate's name in the search box
     // var { candidate } = this.state;
     // var searchBoxText = candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
-    exitSearch("");
+    SearchAllActions.exitSearch("");
   }
 
   componentWillUnmount () {

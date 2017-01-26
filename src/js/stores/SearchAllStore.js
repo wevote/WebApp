@@ -1,13 +1,19 @@
+const assign = require("object-assign");
+
 var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
 
 class SearchAllStore extends FluxMapStore {
   getSearchResults (){
-    return this.getState().search_results_new;
+    return this.getState().search_results_new || [];
   }
 
   getTextFromSearchField (){
-    return this.getState().text_from_search_field;
+    return this.getState().text_from_search_field || "";
+  }
+
+  getForceClosed (){
+    return this.getState().force_closed;
   }
 
   isRecentSearch (){
@@ -24,12 +30,14 @@ class SearchAllStore extends FluxMapStore {
   }
 
   reduce (state, action) {
-    // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
-    if (!action.res || !action.res.success)
-      return state;
-
     switch (action.type) {
+      case "exitSearch":
+        return assign({}, state, {forceClosed: true});
       case "searchAll":
+        // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
+        if (!action.res || !action.res.success)
+          return state;
+
         let searchResults = [];
         let alreadyFoundTwitterHandles = [];
         let twitter_handle;

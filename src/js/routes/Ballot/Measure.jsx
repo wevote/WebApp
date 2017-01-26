@@ -11,7 +11,7 @@ import PositionList from "../../components/Ballot/PositionList";
 import SupportActions from "../../actions/SupportActions";
 import VoterStore from "../../stores/VoterStore";
 import { capitalizeString } from "../../utils/textFormat";
-import { exitSearch } from "../../utils/search-functions";
+import SearchAllActions from "../../actions/SearchAllActions";
 
 
 export default class Measure extends Component {
@@ -40,7 +40,7 @@ export default class Measure extends Component {
     // Make sure supportProps exist for this Measure when browser comes straight to measure page
     SupportActions.retrievePositionsCountsForOneBallotItem(measure_we_vote_id);
 
-    exitSearch("");
+    SearchAllActions.exitSearch();
   }
 
   componentWillReceiveProps (nextProps) {
@@ -54,7 +54,7 @@ export default class Measure extends Component {
     // Display the measure's name in the search box
     // var { measure } = this.state;
     // var searchBoxText = measure.ballot_item_display_name || "";  // TODO DALE Not working right now
-    exitSearch("");
+    SearchAllActions.exitSearch();
   }
 
   componentWillUnmount () {

@@ -6,8 +6,8 @@ import MoreMenu from "./components/Navigation/MoreMenu";
 import NavigatorInFooter from "./components/Navigation/NavigatorInFooter";
 import StarActions from "./actions/StarActions";
 import VoterActions from "./actions/VoterActions";
+import SearchAllActions from "./actions/SearchAllActions";
 import VoterStore from "./stores/VoterStore";
-import { exitSearch } from "./utils/search-functions";
 const web_app_config = require("./config");
 
 var loadingScreenStyles = {
@@ -82,7 +82,7 @@ export default class Application extends Component {
   }
 
   hideSearchContainer () {
-    exitSearch();
+    SearchAllActions.exitSearch();
   }
 
   render () {
