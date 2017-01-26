@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import { browserHistory } from "react-router";
 import Helmet from "react-helmet";
-// import TimelineLite from "gsap";
 import AnimationStory1 from "../../components/Animation/AnimationStory1";
 import AnimationStory2 from "../../components/Animation/AnimationStory2";
 import AnimationStory3 from "../../components/Animation/AnimationStory3";
+import AnimationStory4 from "../../components/Animation/AnimationStory4";
+import AnimationStory5 from "../../components/Animation/AnimationStory5";
+import AnimationStory6 from "../../components/Animation/AnimationStory6";
+import AnimationStory7 from "../../components/Animation/AnimationStory7";
 var Slider = require("react-slick");
 
 export default class IntroStory extends Component {
@@ -45,6 +48,11 @@ export default class IntroStory extends Component {
     var timeline1 = new TimelineLite();
     var timeline2 = new TimelineLite();
     var timeline3 = new TimelineLite();
+    var timeline4 = new TimelineLite();
+    var timeline5 = new TimelineLite();
+    var timeline6 = new TimelineLite();
+    var timeline7 = new TimelineLite();
+
 
 //These are settings for the react-slick slider
     var settings = {
@@ -56,11 +64,15 @@ export default class IntroStory extends Component {
       swipe: true,
       accessibility: true,
       arrows: false,
-      afterChange: function () {
-      //This needs to be reconfigured at some point
+      beforeChange: function () {
         timeline1.restart();
         timeline2.restart();
         timeline3.restart();
+        timeline4.restart();
+        timeline5.restart();
+        timeline6.restart();
+        timeline7.restart();
+
       }
     };
 
@@ -74,7 +86,10 @@ export default class IntroStory extends Component {
           <div key={1}><AnimationStory1 timeline1={timeline1}/></div>
           <div key={2}><AnimationStory2 timeline2={timeline2}/></div>
           <div key={3}><AnimationStory3 timeline3={timeline3}/></div>
-          <div key={4}><p>This will be an image</p></div>
+          <div key={4}><AnimationStory4 timeline4={timeline4}/></div>
+          <div key={5}><AnimationStory5 timeline5={timeline5}/></div>
+          <div key={6}><AnimationStory6 timeline6={timeline6}/></div>
+          <div key={7}><AnimationStory7 timeline7={timeline7}/></div>
        </Slider>
       </div>
     </div>;

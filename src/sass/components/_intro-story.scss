@@ -1,28 +1,140 @@
 .intro-story {
   background-color: $gray-dark;
+  padding: 0;
+  height: 600px;
+  width: 100%;
   color: #fff;
   text-align: center;
-  padding: 0;
-  height: 500px;
-  width: 100%;
-  @include breakpoints (small large){
+  @include breakpoints (max large){
     height: 100vh;
   }
 }
 
-.intro-story__background-image {
-    //Image for desktop has to be a very specific size otherwise it will tile or wrap
-    // onto the next slide (due to div width of react-slick carousel) - 1118 width works fine
-    background-image: url("/img/global/animations/3.1/flag_background_lg.png");
-    height: 500px;
+.intro-story__h1 {
+  font-weight: 700;
+  font-size: 30px;
+  padding: 40px 40px;
+  @include breakpoints (max large){
+    font-size: 24px;
+  }
+}
+
+.intro-story__h1-alt {
+  font-weight: 700;
+  font-size: 30px;
+  padding-top: 40px;
+  @include breakpoints (max large){
+    font-size: 24px;
+  }
+}
+
+.intro-story__h2 {
+  padding-top: 40px;
+  font-size: 20px;
+  @include breakpoints (max large){
+    font-size: 19px;
+  }
+}
+
+.intro-story__padding {
+  padding: 40px 40px;
+}
+
+.intro-story__padding--btm {
+  padding-bottom: 30px;
+}
+
+.intro-story__img-height {
+  height: 200px;
+}
+
+.intro-story__img-width {
+  width: 250px;
+}
+
+.intro-story__background {
+  @include breakpoints (small) {
+    height: 100vh;
+    width: 100vw;
+    background-size: cover;
+  }
+  @include breakpoints (large) {
+    height: 600px;
     width: 100%;
     float: left; //This is important to ensure proper alignment with the parent div.
-    @include breakpoints (small large){
-      background-image: url("/img/global/animations/3.1/flag_background_sm.png");
-      height: 100vh;
-      width: 100vw;
-      background-size: cover;
-    }
+  }
+}
+
+.background--image1 {
+//Image by Gabby Orcutt at unsplash.com
+  @include breakpoints (small) {
+    background-image: url("/img/global/animations/flag_background_sm-min.png");
+  }
+  @include breakpoints (large) {
+    //Image for desktop has to be a very specific size otherwise it will tile or wrap
+    // onto the next slide (due to div width of react-slick carousel) - approx 1000 width works fine
+    background-image: url("/img/global/animations/flag_background_lg-min.png");
+  }
+}
+
+.background--image2 {
+//Image by Andrew Pons at unsplash.com
+  @include breakpoints (small) {
+    background-image: url("/img/global/animations/flag-grass-sm-min.png");
+   }
+    @include breakpoints (large) {
+    background-image: url("/img/global/animations/flag-grass-lg-min.png");
+  }
+}
+
+.background--image3 {
+//Image by Frank McKenna at unsplash.com
+  @include breakpoints (small) {
+    background-image: url("/img/global/animations/american-bicycle-sm-min.png");
+  }
+    @include breakpoints (large) {
+    background-image: url("/img/global/animations/american-bicycle-lg-min.png");
+  }
+}
+//TODO - add additional images
+.background--image4 {
+//Image by Frank McKenna at unsplash.com
+  @include breakpoints (small) {
+    background-image: url("/img/global/animations/american-bicycle-sm-min.png");
+  }
+    @include breakpoints (large) {
+    background-image: url("/img/global/animations/american-bicycle-lg-min.png");
+  }
+}
+
+.background--image5 {
+//Image by Frank McKenna at unsplash.com
+  @include breakpoints (small) {
+    background-image: url("/img/global/animations/american-bicycle-sm-min.png");
+  }
+    @include breakpoints (large) {
+    background-image: url("/img/global/animations/american-bicycle-lg-min.png");
+  }
+}
+
+.background--image6 {
+//Image by Frank McKenna at unsplash.com
+  @include breakpoints (small) {
+    background-image: url("/img/global/animations/american-bicycle-sm-min.png");
+  }
+    @include breakpoints (large) {
+    background-image: url("/img/global/animations/american-bicycle-lg-min.png");
+  }
+}
+
+.background--image7 {
+//Image by Frank McKenna at unsplash.com
+  @include breakpoints (small) {
+    background-image: url("/img/global/animations/american-bicycle-sm-min.png");
+  }
+    @include breakpoints (large) {
+    background-image: url("/img/global/animations/american-bicycle-lg-min.png");
+  }
 }
 
 .intro-story__menu-right {
@@ -43,6 +155,15 @@
   position: absolute;
     @include breakpoints (small large){
     display: none;
+    }
+}
+
+.intro-story__footer {
+  position: absolute;
+  bottom: 20%;
+  width: 100%;
+  @include breakpoints (mid-small){
+    bottom: 10%;
     }
 }
 
