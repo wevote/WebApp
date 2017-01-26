@@ -107,14 +107,14 @@ export default class SearchAllBox extends Component {
 
   onSearchFormSubmit (e) {
     e.preventDefault();
-    this.navigateToSelectedLink()
+    this.navigateToSelectedLink();
     return false;
   }
 
   onSearchKeyDown (e) {
-    const keyArrowUp = (e.keyCode == 38);
-    const keyArrowDown = (e.keyCode == 40);
-    const keyEscape = (e.keyCode == 27);
+    const keyArrowUp = e.keyCode === 38;
+    const keyArrowDown = e.keyCode === 40;
+    const keyEscape = e.keyCode === 27;
 
     // no special handling unless it's an up or down arrow
     if (!(keyArrowUp || keyArrowDown || keyEscape)) {
@@ -138,7 +138,7 @@ export default class SearchAllBox extends Component {
   }
 
   onSearchResultMouseOver (e) {
-    let idx = parseInt(e.currentTarget.getAttribute('data-idx'), 10);
+    let idx = parseInt(e.currentTarget.getAttribute("data-idx"), 10);
     this.setState({selected_index: idx});
   }
 
@@ -182,7 +182,7 @@ export default class SearchAllBox extends Component {
               let capitalized_title = capitalizeString(one_result.result_title);
               let search_result_classes = classNames({
                 "search-container__results": true,
-                "search-container__results__highlighted": idx == this.state.selected_index
+                "search-container__results__highlighted": idx === this.state.selected_index
               });
 
               return <Link key={one_result.we_vote_id}
