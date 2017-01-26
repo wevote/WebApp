@@ -6,7 +6,7 @@ import LoadingWheel from "../../components/LoadingWheel";
 import OfficeActions from "../../actions/OfficeActions";
 import OfficeItem from "../../components/Ballot/OfficeItem";
 import OfficeStore from "../../stores/OfficeStore";
-import { exitSearch } from "../../utils/search-functions";
+import SearchAllActions from "../../actions/SearchAllActions";
 
 export default class Office extends Component {
   static propTypes = {
@@ -26,7 +26,8 @@ export default class Office extends Component {
     } else {
       this.setState({office: office});
     }
-    exitSearch("");
+
+    SearchAllActions.exitSearch();
   }
 
   componentWillReceiveProps (nextProps) {
@@ -42,7 +43,7 @@ export default class Office extends Component {
     // Display the office name in the search box
     // var { candidate } = this.state;
     // var searchBoxText = candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
-    exitSearch("");
+    SearchAllActions.exitSearch();
   }
 
   componentWillUnmount () {

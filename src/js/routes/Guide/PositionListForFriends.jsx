@@ -6,7 +6,7 @@ import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
 import LoadingWheel from "../../components/LoadingWheel";
 import ThisIsMeAction from "../../components/Widgets/ThisIsMeAction";
-import { exitSearch } from "../../utils/search-functions";
+import SearchAllActions from "../../actions/SearchAllActions";
 
 export default class PositionListForFriends extends Component {
   static propTypes = {
@@ -33,7 +33,7 @@ export default class PositionListForFriends extends Component {
     // var { organization } = this.state;
     // var searchBoxText = organization.organization_name || "";  // TODO DALE Not working right now
     // exitSearch(searchBoxText);
-    exitSearch("");
+    SearchAllActions.exitSearch();
   }
 
   componentWillReceiveProps (nextProps) {
@@ -49,7 +49,7 @@ export default class PositionListForFriends extends Component {
     // Display the candidate's name in the search box
     // var { candidate } = this.state;
     // var searchBoxText = candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
-    exitSearch("");
+    SearchAllActions.exitSearch();
   }
 
   componentWillUnmount (){
