@@ -39,7 +39,18 @@ export default class ItemSupportOpposeCounts extends Component {
 
     var isEmpty = support_count === 0 && oppose_count === 0;
 
+    var isSupportAndOppose = support_count !== 0 && oppose_count !== 0;
+
     var isMajoritySupport = support_count >= oppose_count;
+
+    var backgroundBarClassName;
+    if (isSupportAndOppose && isMajoritySupport) {
+      backgroundBarClassName = "network-positions__bar-well red-bar";
+        } else if (isSupportAndOppose && !isMajoritySupport) {
+      backgroundBarClassName = "network-positions__bar-well green-bar";
+        } else {
+      backgroundBarClassName = "network-positions__bar-well";
+    }
 
     return <div className="network-positions">
       <div className="network-positions__bar-label">
@@ -55,7 +66,7 @@ export default class ItemSupportOpposeCounts extends Component {
           <span className="sr-only"> Support</span>
         </div>
       </div>
-      <div className="network-positions__bar-well">
+      <div className={backgroundBarClassName}>
         { isMajoritySupport ?
           <div className="network-positions__bar network-positions__bar--majority network-positions__bar--support" style={!isEmpty ? barStyle : emptyBarStyle}>
             <span className="sr-only">{this.percentageMajority()}% Supports</span>
