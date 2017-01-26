@@ -20,6 +20,7 @@ import EmptyBallot from "./routes/Ballot/EmptyBallot";
 import FacebookSignInProcess from "./routes/Process/FacebookSignInProcess";
 import FAQ from "./routes/More/FAQ";
 import Friends from "./routes/Friends";
+import GetStarted from "./routes/Intro/GetStarted";
 import GuidePositionList from "./routes/Guide/GuidePositionList";
 import Intro from "./routes/Intro/Intro";
 import IntroContests from "./routes/Intro/IntroContests";
@@ -33,6 +34,7 @@ import Opinions from "./routes/Opinions";
 import OpinionsFollowed from "./routes/OpinionsFollowed";
 import Privacy from "./routes/More/Privacy";
 import Requests from "./routes/Requests";
+import SampleBallot from "./routes/Intro/SampleBallot";
 import Settings from "./routes/Settings/Settings";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
 import SignIn from "./routes/More/SignIn";
@@ -58,6 +60,8 @@ const routes = () =>
       <Route path="/intro/contests" component={IntroContests} />
       <Route path="/intro/opinions" component={IntroOpinions} />
       <Route path="/intro/story" component={IntroStory} />
+      <Route path="/intro/sample_ballot" component={SampleBallot} />
+      <Route path="/intro/get_started" component={GetStarted} />
     </Route>
 
     {/* Settings go in this structure... */}
