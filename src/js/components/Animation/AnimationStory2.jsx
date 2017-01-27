@@ -13,13 +13,13 @@ export default class AnimationStory2 extends Component {
 
 //  This will start the GreenSock animation
   componentDidMount () {
-    this.props.timeline2.from(this.refs.header2, 2, {delay: 1, left: 100, autoAlpha: 0});
+    //this.props.timeline2.from(this.refs.header2, 2, {delay: 1, left: 100, autoAlpha: 0});
   }
 
   render () {
-    return <div className="intro-story__background background--image1">
+    return <div className="intro-story__background background--image2">
       <div className="intro-story__h1">We Vote Informed</div>
-      <div ref="ballotImg1"><img className="center-block intro-story__img-width" src={"/img/global/animations/slide2.svg"}/></div>
+      <div ref="ballotImg1"><img className="center-block intro-story__img-width" src={"/img/global/intro-story/slide2-322x124.svg"}/></div>
       <div ref="header2" className="intro-story__h2">Follow groups you trust.<br />See what they support or oppose.</div>
     </div>;
   }

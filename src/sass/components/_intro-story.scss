@@ -37,7 +37,11 @@
 }
 
 .intro-story__padding {
-  padding: 40px 40px;
+  padding: 40px;
+  @include breakpoints (max large) {
+    padding-top: 30px;
+    padding-bottom: 15px;
+  }
 }
 
 .intro-story__padding--btm {
@@ -46,10 +50,16 @@
 
 .intro-story__img-height {
   height: 200px;
+    @include breakpoints (max mid-small) {
+      height: 150px;
+  }
 }
 
 .intro-story__img-width {
   width: 250px;
+    @include breakpoints (max mid-small) {
+      width: 200px;
+  }
 }
 
 .intro-story__background {
@@ -66,74 +76,67 @@
 }
 
 .background--image1 {
-//Image by Gabby Orcutt at unsplash.com
   @include breakpoints (small) {
-    background-image: url("/img/global/animations/flag_background_sm-min.png");
+    background-image: url("/img/global/intro-story/flag-fence-698x600.jpg");
   }
   @include breakpoints (large) {
     //Image for desktop has to be a very specific size otherwise it will tile or wrap
     // onto the next slide (due to div width of react-slick carousel) - approx 1000 width works fine
-    background-image: url("/img/global/animations/flag_background_lg-min.png");
+    background-image: url("/img/global/intro-story/flag-fence-1000x600.jpg");
   }
 }
 
 .background--image2 {
-//Image by Andrew Pons at unsplash.com
   @include breakpoints (small) {
-    background-image: url("/img/global/animations/flag-grass-sm-min.png");
+    background-image: url("/img/global/intro-story/historic-place-698x600.jpg");
    }
     @include breakpoints (large) {
-    background-image: url("/img/global/animations/flag-grass-lg-min.png");
+    background-image: url("/img/global/intro-story/historic-place-1000x600.jpg");
   }
 }
 
 .background--image3 {
-//Image by Frank McKenna at unsplash.com
   @include breakpoints (small) {
-    background-image: url("/img/global/animations/american-bicycle-sm-min.png");
+    background-image: url("/img/global/intro-story/working-together-698x600.jpg");
   }
     @include breakpoints (large) {
-    background-image: url("/img/global/animations/american-bicycle-lg-min.png");
+    background-image: url("/img/global/intro-story/working-together-1000x600.jpg");
   }
 }
-//TODO - add additional images
+
 .background--image4 {
-//Image by Frank McKenna at unsplash.com
   @include breakpoints (small) {
-    background-image: url("/img/global/animations/american-bicycle-sm-min.png");
+    background-image: url("/img/global/intro-story/lady-liberty-698x600.jpg");
   }
     @include breakpoints (large) {
-    background-image: url("/img/global/animations/american-bicycle-lg-min.png");
+    background-image: url("/img/global/intro-story/lady-liberty-1000x600.jpg");
   }
 }
 
 .background--image5 {
-//Image by Frank McKenna at unsplash.com
   @include breakpoints (small) {
-    background-image: url("/img/global/animations/american-bicycle-sm-min.png");
+    background-image: url("/img/global/intro-story/flagpole-698x600.jpg");
   }
     @include breakpoints (large) {
-    background-image: url("/img/global/animations/american-bicycle-lg-min.png");
+    background-image: url("/img/global/intro-story/flagpole-1000x600.jpg");
   }
 }
 
 .background--image6 {
-//Image by Frank McKenna at unsplash.com
   @include breakpoints (small) {
-    background-image: url("/img/global/animations/american-bicycle-sm-min.png");
+    background-image: url("/img/global/intro-story/flag-building-698x600.jpg");
   }
     @include breakpoints (large) {
-    background-image: url("/img/global/animations/american-bicycle-lg-min.png");
+    background-image: url("/img/global/intro-story/flag-building-1000x600.jpg");
   }
 }
 
 .background--image7 {
-//Image by Frank McKenna at unsplash.com
   @include breakpoints (small) {
-    background-image: url("/img/global/animations/american-bicycle-sm-min.png");
+    background-image: url("/img/global/intro-story/american-bicycle-698x600.jpg");
   }
     @include breakpoints (large) {
-    background-image: url("/img/global/animations/american-bicycle-lg-min.png");
+    background-image: url("/img/global/intro-story/american-bicycle-1000x600.jpg");
   }
 }
 
@@ -143,7 +146,7 @@
   top: 45%;
   right: 0;
   position: absolute;
-    @include breakpoints (small large){
+    @include breakpoints (max mid-small){
     display: none;
     }
 }
@@ -153,7 +156,7 @@
   top: 45%;
   left: 0;
   position: absolute;
-    @include breakpoints (small large){
+    @include breakpoints (max mid-small){
     display: none;
     }
 }
