@@ -18,7 +18,7 @@ export default class AnimationStory4 extends Component {
 
   render () {
     return <div className="intro-story__background background--image4">
-      <div className="intro-story__h1">We Vote Together</div>
+      <div className="intro-story__h1">We Vote in Safety</div>
       <div ref="ballotImg1"><img className="center-block intro-story__img-height" src={"/img/global/intro-story/slide4-282x282-min.png"}/></div>
       <div ref="header2" className="intro-story__h2">You control who is in<br />your <strong>We Vote</strong> network.</div>
     </div>;
