@@ -21,7 +21,6 @@ export default class IntroStory extends Component {
   }
 
   next () {
-    console.log("next slide");
     this.refs.slider.slickNext();
   }
 

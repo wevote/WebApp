@@ -21,22 +21,23 @@ export default class AnimationStory2 extends Component {
 
   //  This will start the GreenSock animation
   componentDidMount () {
-    this.props.timeline7.from(this.refs.header1, 1, {delay: 1, left: 100, autoAlpha: 0})
-    .from(this.refs.header2, 1, {left: 100, autoAlpha: 0})
-    .from(this.refs.header3, 1, {left: 100, autoAlpha: 0})
-    .from(this.refs.button, 1, {left: 100, autoAlpha: 0})
-    .from(this.refs.signInBtn, 1, {left: 100, autoAlpha: 0});
+    this.props.timeline7.from(this.refs.header1, 0.75, {left: 100, autoAlpha: 0})
+    .from(this.refs.header2, 0.75, {left: 100, autoAlpha: 0})
+    .from(this.refs.header3, 0.75, {left: 100, autoAlpha: 0})
+    .from(this.refs.signInBtn, 0.50, {left: 100, autoAlpha: 0});
   }
 
   render () {
-    return <div className="intro-story__background background--image3">
+    return <div className="intro-story__background background--image7">
       <div ref="header1" className="intro-story__h1-alt">We Vote Informed</div>
       <div ref="header2" className="intro-story__h1-alt">We Vote Together</div>
       <div ref="header3" className="intro-story__h1-alt">We Vote with Confidence</div>
-      <div ref="button" className="intro-story__padding"><button type="button" className="btn btn-lg btn-info" onClick={this.goToGetStarted}>Get Started</button></div>
-        <div ref="signInBtn" className="row">
+      <div ref="signInBtn">
+        <div className="intro-story__padding"><button type="button" className="btn btn-lg btn-info" onClick={this.goToGetStarted}>Get Started</button></div>
+        <div className="row">
          <div className="col-md-2 col-md-offset-4 xs-block form-group"><FacebookSignIn /></div>
          <div className="col-md-2"><TwitterSignIn /></div>
+        </div>
       </div>
     </div>;
   }
