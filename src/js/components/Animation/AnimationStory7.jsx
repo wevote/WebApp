@@ -33,7 +33,7 @@ export default class AnimationStory2 extends Component {
       <div ref="header2" className="intro-story__h1-alt">We Vote Together</div>
       <div ref="header3" className="intro-story__h1-alt">We Vote with Confidence</div>
       <div ref="signInBtn">
-        <div className="intro-story__padding"><button type="button" className="btn btn-lg btn-info" onClick={this.goToGetStarted}>Get Started</button></div>
+        <div className="intro-story__padding"><button type="button" className="btn btn-lg btn-info" onClick={this.goToGetStarted}>Join Us</button></div>
         <div className="row">
          <div className="col-md-2 col-md-offset-4 xs-block form-group"><FacebookSignIn /></div>
          <div className="col-md-2"><TwitterSignIn /></div>

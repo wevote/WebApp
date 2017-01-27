@@ -18,9 +18,11 @@ export default class AnimationStory2 extends Component {
 
   render () {
     return <div className="intro-story__background background--image6">
-      <div className="intro-story__h1">We Vote Informed</div>
+      <div className="intro-story__h1">We Vote</div>
       <div ref="ballotImg1"><img className="center-block intro-story__img-height" src={"/img/global/intro-story/slide6-300x410-min.jpg"}/></div>
-      <div ref="header2" className="intro-story__h2">See what your <strong>We Vote</strong> network thinks<br />about everything on your ballot.</div>
+      <div ref="header2" className="intro-story__h2">See what your <br />
+        <strong>We Vote</strong> network thinks about<br />
+        everything on your ballot.</div>
     </div>;
   }
 }

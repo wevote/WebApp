@@ -45,10 +45,12 @@ export default class ItemSupportOpposeCounts extends Component {
 
     var backgroundBarClassName;
     if (isSupportAndOppose && isMajoritySupport) {
+      // If there are both support and oppose positions, change the color of the bar background to the minority position
       backgroundBarClassName = "network-positions__bar-well red-bar";
-        } else if (isSupportAndOppose && !isMajoritySupport) {
+    } else if (isSupportAndOppose && !isMajoritySupport) {
+      // If there are both support and oppose positions, change the color of the bar background to the minority position
       backgroundBarClassName = "network-positions__bar-well green-bar";
-        } else {
+    } else {
       backgroundBarClassName = "network-positions__bar-well";
     }
 

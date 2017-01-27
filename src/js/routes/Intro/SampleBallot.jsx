@@ -17,14 +17,17 @@ export default class SampleBallot extends Component {
   render () {
 
     return <div className="intro-story intro-story__background background--image3">
-          <div className="intro-story__h1">See Sample Ballot</div>
-          <p>On the next screen, you can interact with<br />a local ballot from the most recent US<br />
-           2016 General Election.</p>
-          <p>Get ready for the next election by following<br />voter guides and inviting your friends.</p>
+          <div className="intro-story__h1">See Your Ballot</div>
+          <div ref="header2" className="intro-story__h2">On the next screen,<br />
+           you'll see your ballot from the<br />
+           2016 General Election.</div>
+          <div ref="header2" className="intro-story__h2">Get ready for the next election now<br />
+            by following voter guides<br />
+            and inviting your friends.</div>
         <div className="intro-story__padding">
-          <button type="button" className="btn btn-lg btn-info" onClick={this.goToBallotLink}>See Sample Ballot</button>
+          <button type="button" className="btn btn-lg btn-info" onClick={this.goToBallotLink}>Go to Your Ballot</button>
         </div>
-        <footer className="intro-story__footer">Stay tuned for 2017-2018 election data.</footer>
+        <footer className="intro-story__footer">Stay tuned for 2017-2018 election data!</footer>
       </div>;
   }
 }
