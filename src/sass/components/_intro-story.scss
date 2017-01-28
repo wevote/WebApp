@@ -1,3 +1,11 @@
+.story-view {
+  .container-main {
+    margin: 0px;
+    min-height: 100%;
+    padding: 0px;
+  }
+}
+
 .intro-story {
   background-color: $gray-dark;
   padding: 0;
@@ -8,6 +16,7 @@
   @include breakpoints (max large){
     height: 100vh;
   }
+
 }
 
 .intro-story__h1 {
@@ -190,12 +199,6 @@
 
 .slick-dots {
   bottom: 2em;
-}
-
-.container-main {
-  margin: 0px;
-  min-height: 100%;
-  padding: 0px;
 }
 
 .well {
