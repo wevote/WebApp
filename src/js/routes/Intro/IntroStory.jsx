@@ -35,10 +35,12 @@ export default class IntroStory extends Component {
 
   componentWillMount () {
     document.body.style.backgroundColor = "#A3A3A3";
+    document.body.className = "story-view";
   }
 
   componentWillUnmount () {
     document.body.style.backgroundColor = null;
+    document.body.className = "";
   }
 
   render () {
