@@ -25,8 +25,6 @@ export default class MoreMenu extends Component {
   }
 
   render () {
-    const voterSignOut = VoterSessionActions.voterSignOut;
-
     var { linked_organization_we_vote_id, voter_photo_url } = this.props;
 
     let image_placeholder = "";
@@ -60,7 +58,7 @@ export default class MoreMenu extends Component {
                         width="34px"
                   /> :
                   image_placeholder }
-                <span className="header-menu-text-left">Your Page</span>
+                <span className="header-menu-text-left">Your Voter Guide</span>
               </div></Link>
             </li> :
             null
@@ -74,24 +72,16 @@ export default class MoreMenu extends Component {
                         width="34px"
                   /> :
                   image_placeholder }
-                <span className="header-menu-text-left">Your Page</span>
+                <span className="header-menu-text-left">Your Voter Guide</span>
               </div></Link>
             </li> :
             null
           }
           { !show_your_page_from_twitter && !show_your_page_from_facebook ?
-            this.menuLink("/yourpage", "Your Page") :
+            this.menuLink("/yourpage", "Your Voter Guide") :
             null
           }
-          {this.menuLink("/settings/location", "Your Address & Ballot")}
-          {this.props.is_signed_in ?
-            this.menuLink("/more/sign_in", "Your Account") :
-            null
-          }
-          {this.props.is_signed_in ?
-            <li onClick={voterSignOut} className="list-group-item"><a><span className="header-menu-text-left">Sign Out</span></a></li> :
-            this.menuLink("/more/sign_in", "Sign In")
-          }
+          {this.menuLink("/more/sign_in", "Your Account")}
         </ul>
         <h4 className="text-left" />
         <ul className="list-group">

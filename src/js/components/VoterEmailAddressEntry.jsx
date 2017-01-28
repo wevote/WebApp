@@ -198,8 +198,9 @@ export default class VoterEmailAddressEntry extends Component {
     let is_primary_email_address;
 
     // ///////////////////////////////////
-    // VERIFIED EMAIL LIST
+    // LIST OF VERIFIED EMAILS
     let verified_emails_found = false;
+    let verified_email_exists_that_is_not_primary = false;
     const verified_email_list_html = this.state.voter_email_address_list.map( (voter_email_address_from_list) => {
       email_ownership_is_verified = voter_email_address_from_list.email_ownership_is_verified ? true : false;
 
@@ -207,6 +208,9 @@ export default class VoterEmailAddressEntry extends Component {
         verified_emails_found = true;
         allow_remove_email = voter_email_address_from_list.primary_email_address !== true;
         is_primary_email_address = voter_email_address_from_list.primary_email_address === true;
+        if (!is_primary_email_address) {
+          verified_email_exists_that_is_not_primary = true;
+        }
         return <div key={voter_email_address_from_list.email_we_vote_id}>
           <div className="position-item card-child" >
             <span><strong>{voter_email_address_from_list.normalized_email_address}</strong></span>
@@ -242,7 +246,7 @@ export default class VoterEmailAddressEntry extends Component {
     });
 
     // ///////////////////////////////////
-    // EMAILS TO VERIFY
+    // LIST OF EMAILS TO VERIFY
     let unverified_emails_found = false;
     const to_verify_email_list_html = this.state.voter_email_address_list.map( (voter_email_address_from_list) => {
       email_ownership_is_verified = voter_email_address_from_list.email_ownership_is_verified ? true : false;
@@ -279,11 +283,10 @@ export default class VoterEmailAddressEntry extends Component {
       }
     });
 
-
     return <div className="guidelist card-child__list-group">
       {verified_emails_found ?
         <div>
-          <span className="h3">Verified Emails</span>
+          <span className="h3">Your Emails</span>
           { this.state.edit_verified_emails_on ?
             <span>
               <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -292,11 +295,15 @@ export default class VoterEmailAddressEntry extends Component {
               </span>
             </span> :
             <span>
-              <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-              <span className="account-edit-action" tabIndex="0" onClick={this.editVerifiedEmailsOn.bind(this)} >
-                edit
-              </span>
-            </span> }
+              { verified_email_exists_that_is_not_primary ? <span>
+                  <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                  <span className="account-edit-action" tabIndex="0" onClick={this.editVerifiedEmailsOn.bind(this)} >
+                    edit
+                  </span>
+                </span> :
+                null }
+            </span>
+          }
           <br />
           {email_address_status_html}
           {verified_email_list_html}

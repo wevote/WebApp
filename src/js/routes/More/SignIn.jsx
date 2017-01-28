@@ -23,7 +23,7 @@ export default class SignIn extends Component {
   }
 
   componentDidMount () {
-    console.log("SignIn componentDidMount");
+    // console.log("SignIn componentDidMount");
     this._onVoterStoreChange();
     this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
@@ -124,7 +124,7 @@ export default class SignIn extends Component {
                 <span className="h3">Currently Signed In</span>
                 <span>&nbsp;&nbsp;&nbsp;</span>
                 <span className="account-edit-action" tabIndex="0" onKeyDown={this.twitterLogOutOnKeyDown.bind(this)}>
-                  <a onClick={VoterSessionActions.signOut}>Sign Out</a>
+                  <a onClick={VoterSessionActions.voterSignOut}>Sign Out</a>
                 </span>
 
                 <br />

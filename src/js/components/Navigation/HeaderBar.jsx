@@ -34,8 +34,7 @@ export default class HeaderBar extends Component {
 
   render () {
     var { pathname } = this.props;
-    var { signed_in_facebook, is_signed_in, signed_in_twitter, twitter_screen_name, voter_photo_url } = this.props.voter;
-    const voterSignOut = VoterSessionActions.voterSignOut;
+    var { signed_in_facebook, signed_in_twitter, twitter_screen_name, voter_photo_url } = this.props.voter;
 
     let image_placeholder = "";
     let speaker_type = "V";  // TODO DALE make this dynamic
@@ -66,7 +65,7 @@ export default class HeaderBar extends Component {
                             width="34px"
                       /> :
                       image_placeholder }
-                    <span className="header-slide-out-menu-text-left">Your Page</span>
+                    <span className="header-slide-out-menu-text-left">Your Voter Guide</span>
                   </div>
                 </Link>
               </li> :
@@ -76,37 +75,19 @@ export default class HeaderBar extends Component {
               <li>
                 <Link onClick={this.hide.bind(this)} to="/yourpage">
                   <div>
-                    <span className="header-slide-out-menu-text-left">Your Page</span>
+                    <span className="header-slide-out-menu-text-left">Your Voter Guide</span>
                   </div>
                 </Link>
               </li> :
               null
             }
-            { is_signed_in ?
-              <li>
-                <Link onClick={this.hide.bind(this)} to="/more/sign_in">
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Your Account</span>
-                  </div>
-                </Link>
-              </li> :
-              null
-            }
-            { is_signed_in ?
-              <li>
-                <Link onClick={this.hide.bind(this)} to="/more/sign_in">
-                  <div onClick={voterSignOut}>
-                    <span className="header-slide-out-menu-text-left">Sign Out</span>
-                  </div>
-                </Link>
-              </li> :
-              <li>
-                <Link onClick={this.hide.bind(this)} to="/more/sign_in">
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Sign In</span>
-                  </div>
-                </Link>
-              </li> }
+            <li>
+              <Link onClick={this.hide.bind(this)} to="/more/sign_in">
+                <div>
+                  <span className="header-slide-out-menu-text-left">Your Account</span>
+                </div>
+              </Link>
+            </li>
           </ul>
           <h4 className="text-left" />
           <ul className="nav nav-stacked">
