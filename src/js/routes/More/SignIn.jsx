@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Button } from "react-bootstrap";
 import Helmet from "react-helmet";
 import { browserHistory } from "react-router";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";

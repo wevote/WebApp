@@ -8,10 +8,10 @@ module.exports = {
       });
   },
 
-  exitSearch: function() {
+  exitSearch: function () {
     // setTimeout, as some components attempt to close the search
     // while it is already being closed
-    setTimeout((() => Dispatcher.dispatch("exitSearch")), 0);
+    setTimeout(() => Dispatcher.dispatch("exitSearch"), 0);
   },
 
   retrieveRecentSearches: function () {

@@ -3,7 +3,6 @@ import FacebookConstants from "../constants/FacebookConstants";
 import FacebookActions from "../actions/FacebookActions";
 import Dispatcher from "../dispatcher/Dispatcher";
 import VoterActions from "../actions/VoterActions";
-import VoterStore from "./VoterStore";
 
 class FacebookStore extends FluxMapStore {
   getInitialState (){

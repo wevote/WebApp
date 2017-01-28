@@ -318,7 +318,7 @@ export default class VoterEmailAddressEntry extends Component {
               <span className="account-edit-action" tabIndex="0" onClick={this.editEmailsToVerifyOn.bind(this)} >
                 edit
               </span>
-            </span>  }
+            </span> }
           <br />
           {email_address_status_html}
           {to_verify_email_list_html}
