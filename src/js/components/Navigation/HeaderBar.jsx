@@ -51,7 +51,7 @@ export default class HeaderBar extends Component {
         <div className="device-menu--mobile">
           <ul className="nav nav-stacked">
             <li>
-              <div><span className="we-vote-promise">We Vote's Promise: We will never sell your email.</span></div>
+              <div><span className="we-vote-promise">Our Promise: We'll never sell your email.</span></div>
             </li>
           </ul>
           <h4 className="text-left" />

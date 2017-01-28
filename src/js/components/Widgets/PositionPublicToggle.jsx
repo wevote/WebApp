@@ -26,8 +26,8 @@ export default class PositionPublicToggle extends Component {
     }
 
     var { is_public_position } = this.props.supportProps;
-    let visibilityPublic = "Public";
-    let visibilityFriendsOnly = "Your friends";
+    let visibilityPublic = "Share with public";
+    let visibilityFriendsOnly = "Share with We Vote friends only";
     const publicIcon = <Icon alt="Visible to Public" name="public-icon" color="#fff" width={18} height={18} />;
     const friendsIcon = <Icon alt="Visible to Friends Only" name="group-icon" color="#555" width={18} height={18} />;
     const tooltip = <Tooltip id="visibility-tooltip">{is_public_position ? visibilityPublic : visibilityFriendsOnly}</Tooltip>;

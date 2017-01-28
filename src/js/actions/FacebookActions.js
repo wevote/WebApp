@@ -83,6 +83,7 @@ module.exports = {
 
   // Save incoming auth data from Facebook
   voterFacebookSignInAuth: function (data) {
+    console.log("FacebookActions voterFacebookSignInAuth");
     Dispatcher.loadEndpoint("voterFacebookSignInSave", {
       facebook_access_token: data.accessToken || false,
       facebook_user_id: data.userId || false,
@@ -95,7 +96,7 @@ module.exports = {
 
   // Save incoming data from Facebook
   voterFacebookSignInData: function (data) {
-    // console.log("FacebookActions voterFacebookSignInData, data:", data);
+    console.log("FacebookActions voterFacebookSignInData, data:", data);
     Dispatcher.loadEndpoint("voterFacebookSignInSave", {
       facebook_user_id: data.id || false,
       facebook_email: data.email || false,
@@ -109,7 +110,7 @@ module.exports = {
   },
 
   voterFacebookSignInPhoto: function (facebook_user_id, data) {
-    // console.log("FacebookActions voterFacebookSignInPhoto, data:", data);
+    console.log("FacebookActions voterFacebookSignInPhoto, data:", data);
     Dispatcher.loadEndpoint("voterFacebookSignInSave", {
       facebook_user_id: facebook_user_id || false,
       facebook_profile_image_url_https: data.url || false,

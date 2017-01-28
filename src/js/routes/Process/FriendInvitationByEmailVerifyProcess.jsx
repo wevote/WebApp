@@ -33,13 +33,13 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   }
 
   cancelMergeFunction () {
-      browserHistory.push({
-        pathname: "/requests",
-        state: {
-          message: "You have chosen to NOT merge your two accounts.",
-          message_type: "success"
-        }
-      });
+    browserHistory.push({
+      pathname: "/requests",
+      state: {
+      }
+    });
+    // message: "You have chosen to NOT merge your two accounts.",
+    // message_type: "success"
   }
   friendInvitationByEmailVerify (invitation_secret_key) {
     FriendActions.friendInvitationByEmailVerify(invitation_secret_key);
