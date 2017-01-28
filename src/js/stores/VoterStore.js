@@ -138,14 +138,16 @@ class VoterStore extends FluxMapStore {
         return {
           ...state,
           address: action.res
-      };
+        };
 
       case "voterAddressSave":
         BallotActions.voterBallotItemsRetrieve();
         return {
           ...state,
-          address: { text_for_map_search: action.res.text_for_map_search,
-                    google_civic_election_id: action.res.google_civic_election_id }
+          address: {
+            text_for_map_search: action.res.text_for_map_search,
+            google_civic_election_id: action.res.google_civic_election_id
+          }
         };
 
       case "voterEmailAddressRetrieve":
@@ -248,13 +250,20 @@ class VoterStore extends FluxMapStore {
         };
 
       case "voterRetrieve":
-        voter_device_id = action.res.voter_device_id;
-        this.setVoterDeviceIdCookie(voter_device_id);
-        VoterActions.voterAddressRetrieve(voter_device_id);
-        const url = action.res.facebook_profile_image_url_https;
-        if (action.res.signed_in_facebook && (url === null || url === "")){
-          const userId = FacebookStore.userId;
-          FacebookActions.getFacebookProfilePicture(userId);
+        if (!action.res.voter_found) {
+          // This voter_device_id is no good, so delete it.
+          cookies.setItem("voter_device_id", "", -1, "/");
+          // ...and then ask for a new voter. When it returns a voter with a new voter_device_id, we will set new cookie
+          VoterActions.voterRetrieve();
+        } else {
+          voter_device_id = action.res.voter_device_id;
+          this.setVoterDeviceIdCookie(voter_device_id);
+          VoterActions.voterAddressRetrieve(voter_device_id);
+          const url = action.res.facebook_profile_image_url_https;
+          if (action.res.signed_in_facebook && (url === null || url === "")) {
+            const userId = FacebookStore.userId;
+            FacebookActions.getFacebookProfilePicture(userId);
+          }
         }
 
         return {

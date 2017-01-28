@@ -91,19 +91,19 @@ export default class TwitterSignInProcess extends Component {
   render () {
     let {twitter_auth_response, yes_please_merge_accounts} = this.state;
 
-    console.log("TwitterSignInProcess render, this.state.saving:", this.state.saving);
+    // console.log("TwitterSignInProcess render, this.state.saving:", this.state.saving);
     if (this.state.saving ||
       !twitter_auth_response ||
       !twitter_auth_response.twitter_retrieve_attempted ) {
       // console.log("twitter_auth_response:", twitter_auth_response);
       return LoadingWheel;
     }
-    console.log("=== Passed initial gate ===");
-    console.log("twitter_auth_response:", twitter_auth_response);
+    // console.log("=== Passed initial gate ===");
+    // console.log("twitter_auth_response:", twitter_auth_response);
     let { twitter_secret_key } = twitter_auth_response;
 
     if (twitter_auth_response.twitter_sign_in_failed) {
-      console.log("Twitter sign in failed - push to /more/sign_in");
+      // console.log("Twitter sign in failed - push to /more/sign_in");
       browserHistory.push({
         pathname: "/more/sign_in",
         state: {
@@ -116,7 +116,7 @@ export default class TwitterSignInProcess extends Component {
 
     if (yes_please_merge_accounts) {
       // Go ahead and merge this voter record with the voter record that the twitter_secret_key belongs to
-      console.log("this.voterMergeTwoAccountsByTwitterKey -- yes please merge accounts");
+      // console.log("this.voterMergeTwoAccountsByTwitterKey -- yes please merge accounts");
       this.voterMergeTwoAccountsByTwitterKey(twitter_secret_key);
       // return <span>this.voterMergeTwoAccountsByTwitterKey({twitter_secret_key})</span>;
       return LoadingWheel;
@@ -139,7 +139,7 @@ export default class TwitterSignInProcess extends Component {
     if (twitter_auth_response.existing_twitter_account_found) {
       // Is there anything to save from this voter account?
       if (twitter_auth_response.voter_has_data_to_preserve) {
-        console.log("TwitterSignInProcess voter_has_data_to_preserve is TRUE");
+        // console.log("TwitterSignInProcess voter_has_data_to_preserve is TRUE");
         const cancel_merge_function = this.cancelMergeFunction.bind(this);
         const please_merge_accounts_function = this.yesPleaseMergeAccounts.bind(this);
         // Display the question of whether to merge accounts or not
@@ -148,13 +148,13 @@ export default class TwitterSignInProcess extends Component {
         // return <span>WouldYouLikeToMergeAccounts</span>;
       } else {
         // Go ahead and merge the accounts, which means deleting the current voter and switching to the twitter-linked account
-        console.log("TwitterSignInProcess this.voterMergeTwoAccountsByTwitterKey - No data to merge");
+        // console.log("TwitterSignInProcess this.voterMergeTwoAccountsByTwitterKey - No data to merge");
         this.voterMergeTwoAccountsByTwitterKey(twitter_secret_key, twitter_auth_response.voter_has_data_to_preserve);
         // return <span>this.voterMergeTwoAccountsByTwitterKey({twitter_secret_key}); - No data to merge</span>;
         return LoadingWheel;
       }
     } else {
-      console.log("Setting up new Twitter entry - voterTwitterSaveToCurrentAccount");
+      // console.log("Setting up new Twitter entry - voterTwitterSaveToCurrentAccount");
       this.voterTwitterSaveToCurrentAccount();
       //return <span>Setting up new Twitter entry - voterTwitterSaveToCurrentAccount</span>;
       return LoadingWheel;

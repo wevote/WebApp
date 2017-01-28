@@ -24,7 +24,7 @@ export default class FacebookSignInProcess extends Component {
 
   componentDidMount () {
     this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
-    console.log("FacebookSignInProcess, componentDidMount");
+    // console.log("FacebookSignInProcess, componentDidMount");
     this.voterFacebookSignInRetrieve();
   }
 
@@ -50,11 +50,11 @@ export default class FacebookSignInProcess extends Component {
   }
 
   voterMergeTwoAccountsByFacebookKey (facebook_secret_key, voter_has_data_to_preserve = true) {
-    console.log("In voterMergeTwoAccountsByFacebookKey, facebook_secret_key: ", facebook_secret_key, ", voter_has_data_to_preserve: ", voter_has_data_to_preserve);
+    // console.log("In voterMergeTwoAccountsByFacebookKey, facebook_secret_key: ", facebook_secret_key, ", voter_has_data_to_preserve: ", voter_has_data_to_preserve);
     if (this.state.merging_two_accounts) {
-      console.log("In process of merging_two_accounts");
+      // console.log("In process of merging_two_accounts");
     } else {
-      console.log("About to make API call");
+      // console.log("About to make API call");
       VoterActions.voterMergeTwoAccountsByFacebookKey(facebook_secret_key);
       // Prevent voterMergeTwoAccountsByFacebookKey from being called multiple times
       this.setState({merging_two_accounts: true});
@@ -79,7 +79,7 @@ export default class FacebookSignInProcess extends Component {
   }
 
   voterFacebookSaveToCurrentAccount () {
-    console.log("In voterFacebookSaveToCurrentAccount");
+    // console.log("In voterFacebookSaveToCurrentAccount");
     VoterActions.voterFacebookSaveToCurrentAccount();
     browserHistory.push({
       pathname: "/more/sign_in",
@@ -91,7 +91,7 @@ export default class FacebookSignInProcess extends Component {
   }
 
   voterFacebookSignInRetrieve () {
-    console.log("FacebookSignInProcess voterFacebookSignInRetrieve");
+    // console.log("FacebookSignInProcess voterFacebookSignInRetrieve");
     if (!this.state.saving) {
       FacebookActions.voterFacebookSignInRetrieve();
       this.setState({saving: true});
@@ -112,12 +112,12 @@ export default class FacebookSignInProcess extends Component {
       // console.log("facebook_auth_response:", facebook_auth_response);
       return LoadingWheel;
     }
-    console.log("=== Passed initial gate ===");
-    console.log("facebook_auth_response:", facebook_auth_response);
+    // console.log("=== Passed initial gate ===");
+    // console.log("facebook_auth_response:", facebook_auth_response);
     let { facebook_secret_key } = facebook_auth_response;
 
     if (facebook_auth_response.facebook_sign_in_failed) {
-      console.log("Facebook sign in failed - push to /more/sign_in");
+      // console.log("Facebook sign in failed - push to /more/sign_in");
       browserHistory.push({
         pathname: "/more/sign_in",
         state: {
@@ -130,7 +130,7 @@ export default class FacebookSignInProcess extends Component {
 
     if (yes_please_merge_accounts) {
       // Go ahead and merge this voter record with the voter record that the facebook_secret_key belongs to
-      console.log("this.voterMergeTwoAccountsByFacebookKey -- yes please merge accounts");
+      // console.log("this.voterMergeTwoAccountsByFacebookKey -- yes please merge accounts");
       this.voterMergeTwoAccountsByFacebookKey(facebook_secret_key);
       return LoadingWheel;
       // return <span>this.voterMergeTwoAccountsByFacebookKey({facebook_secret_key})</span>;
@@ -139,7 +139,7 @@ export default class FacebookSignInProcess extends Component {
     // This process starts when we return from attempting voterFacebookSignInRetrieve
     // If facebook_sign_in_found NOT True, go back to the sign in page to try again
     if (!facebook_auth_response.facebook_sign_in_found) {
-      console.log("facebook_auth_response.facebook_sign_in_found", facebook_auth_response.facebook_sign_in_found);
+      // console.log("facebook_auth_response.facebook_sign_in_found", facebook_auth_response.facebook_sign_in_found);
       browserHistory.push({
         pathname: "/more/sign_in",
         state: {
@@ -154,7 +154,7 @@ export default class FacebookSignInProcess extends Component {
     if (facebook_auth_response.existing_facebook_account_found) {
       // Is there anything to save from this voter account?
       if (facebook_auth_response.voter_has_data_to_preserve) {
-        console.log("FacebookSignInProcess voter_has_data_to_preserve is TRUE");
+        // console.log("FacebookSignInProcess voter_has_data_to_preserve is TRUE");
         const cancel_merge_function = this.cancelMergeFunction.bind(this);
         const please_merge_accounts_function = this.yesPleaseMergeAccounts.bind(this);
         // Display the question of whether to merge accounts or not
@@ -163,13 +163,13 @@ export default class FacebookSignInProcess extends Component {
         // return <span>WouldYouLikeToMergeAccounts</span>;
       } else {
         // Go ahead and merge the accounts, which means deleting the current voter and switching to the facebook-linked account
-        console.log("FacebookSignInProcess this.voterMergeTwoAccountsByFacebookKey - No data to merge");
+        // console.log("FacebookSignInProcess this.voterMergeTwoAccountsByFacebookKey - No data to merge");
         this.voterMergeTwoAccountsByFacebookKey(facebook_secret_key, facebook_auth_response.voter_has_data_to_preserve);
         return LoadingWheel;
         // return <span>this.voterMergeTwoAccountsByFacebookKey({facebook_secret_key}); - No data to merge</span>;
       }
     } else {
-      console.log("Setting up new Facebook entry - voterFacebookSaveToCurrentAccount");
+      // console.log("Setting up new Facebook entry - voterFacebookSaveToCurrentAccount");
       this.voterFacebookSaveToCurrentAccount();
       return LoadingWheel;
       // return <span>Setting up new Facebook entry - voterFacebookSaveToCurrentAccount</span>;
