@@ -38,13 +38,13 @@ export default class TwitterSignInProcess extends Component {
   }
 
   cancelMergeFunction () {
-      browserHistory.push({
-        pathname: "/more/sign_in",
-        state: {
-          message: "You have chosen to NOT merge your two accounts.",
-          message_type: "success"
-        }
-      });
+    browserHistory.push({
+      pathname: "/more/sign_in",
+      state: {
+      }
+    });
+    // message: "You have chosen to NOT merge your two accounts.",
+    // message_type: "success"
   }
 
   voterMergeTwoAccountsByTwitterKey (twitter_secret_key, voter_has_data_to_preserve = true) {

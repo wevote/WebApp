@@ -32,13 +32,13 @@ export default class VerifyEmailProcess extends Component {
   }
 
   cancelMergeFunction () {
-      browserHistory.push({
-        pathname: "/more/sign_in",
-        state: {
-          message: "You have chosen to NOT merge your two accounts.",
-          message_type: "success"
-        }
-      });
+    browserHistory.push({
+      pathname: "/more/sign_in",
+      state: {
+      }
+    });
+    // message: "You have chosen to NOT merge your two accounts.",
+    // message_type: "success"
   }
 
   _onVoterStoreChange () {

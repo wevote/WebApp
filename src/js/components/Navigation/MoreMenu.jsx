@@ -46,7 +46,7 @@ export default class MoreMenu extends Component {
       <div className="device-menu--large">
         <ul className="list-group">
           <li className="list-group-item">
-            <span className="we-vote-promise">We Vote's Promise: We will never sell your email.</span>
+            <span className="we-vote-promise">Our Promise: We'll never sell your email.</span>
           </li>
         </ul>
         <h4 className="text-left" />

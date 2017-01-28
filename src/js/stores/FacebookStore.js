@@ -73,7 +73,7 @@ class FacebookStore extends FluxMapStore {
     switch (action.type) {
 
       case FacebookConstants.FACEBOOK_LOGGED_IN:
-        // console.log("FACEBOOK_LOGGED_IN action.data:", action.data);
+        console.log("FACEBOOK_LOGGED_IN action.data:", action.data);
         FacebookActions.voterFacebookSignInAuth(action.data.authResponse);
         FacebookActions.getFacebookData();
         return {
@@ -83,7 +83,7 @@ class FacebookStore extends FluxMapStore {
 
       case FacebookConstants.FACEBOOK_RECEIVED_DATA:
         // Cache the data in the API server
-        // console.log("FACEBOOK_RECEIVED_DATA action.data:", action.data);
+        console.log("FACEBOOK_RECEIVED_DATA action.data:", action.data);
         FacebookActions.voterFacebookSignInData(action.data);
         FacebookActions.getFacebookProfilePicture(action.data.id);
         return {
@@ -92,6 +92,7 @@ class FacebookStore extends FluxMapStore {
         };
 
       case "voterFacebookSignInRetrieve":
+        console.log("FacebookStore voterFacebookSignInRetrieve, facebook_sign_in_verified: ", action.res.facebook_sign_in_verified);
         if (action.res.facebook_sign_in_verified) {
           VoterActions.voterRetrieve();
         }
@@ -116,8 +117,11 @@ class FacebookStore extends FluxMapStore {
         };
 
       case "voterFacebookSignInSave":
+        console.log("FacebookStore voterFacebookSignInSave, minimum_data_saved: ", action.res.minimum_data_saved);
         if (action.res.minimum_data_saved) {
           // Only reach out for the Facebook Sign In information if the save_profile_data call has completed
+          // TODO: We need a check here to prevent an infinite loop if the local voter_device_id isn't recognized by server
+          // console.log("FacebookStore voterFacebookSignInSave, voter exists");
           FacebookActions.voterFacebookSignInRetrieve();
         }
         return state;

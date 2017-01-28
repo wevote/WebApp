@@ -1,15 +1,15 @@
 import React, { Component } from "react";
+import Helmet from "react-helmet";
 import { browserHistory } from "react-router";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
 import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
-import Helmet from "react-helmet";
-// import Main from "../../components/Facebook/Main";
 import LoadingWheel from "../../components/LoadingWheel";
 import TwitterActions from "../../actions/TwitterActions";
 import TwitterSignIn from "../../components/Twitter/TwitterSignIn";
 import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
+import VoterSessionActions from "../../actions/VoterSessionActions";
 import VoterStore from "../../stores/VoterStore";
 
 const debug_mode = false;
@@ -23,6 +23,7 @@ export default class SignIn extends Component {
   }
 
   componentDidMount () {
+    console.log("SignIn componentDidMount");
     this._onVoterStoreChange();
     this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
@@ -74,68 +75,89 @@ export default class SignIn extends Component {
     }
 
     // console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
-    if (this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
-      // console.log("SignIn.jsx facebook_retrieve_attempted");
+    if (!voter.signed_in_facebook && this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
+      console.log("SignIn.jsx facebook_retrieve_attempted");
       browserHistory.push("/facebook_sign_in");
       // return <span>SignIn.jsx facebook_retrieve_attempted</span>;
       return LoadingWheel;
     }
 
-    let facebook_sign_in_option = "";
-    // if (voter.signed_in_twitter) {
-    //   facebook_sign_in_option = <span>To sign in with Facebook, Sign out of Twitter</span>;
-    // } else {
-      facebook_sign_in_option = <FacebookSignIn />;
-    // }
-
-    let twitter_sign_in_option = "";
-    // if (voter.signed_in_facebook) {
-    //   twitter_sign_in_option = <span>To sign in with Twitter, Sign out of Facebook</span>;
-    // } else {
-      twitter_sign_in_option = <TwitterSignIn />;
-    // }
+    let your_account_title = "Your Account";
+    let your_account_explanation = "";
+    if (voter.is_signed_in) {
+      if (voter.signed_in_facebook && !voter.signed_in_twitter) {
+        your_account_title = "Have Twitter Too?";
+        your_account_explanation = "By adding your Twitter account to your We Vote profile, you get access to the voter guides of everyone you follow.";
+      } else if (voter.signed_in_twitter && !voter.signed_in_facebook) {
+        your_account_title = "Have Facebook Too?";
+        your_account_explanation = "By adding Facebook to your We Vote profile, it is easier to invite friends.";
+      }
+    }
 
     return <div className="">
       <Helmet title="Sign In - We Vote" />
       <BrowserPushMessage incomingProps={this.props} />
       <div className="card">
-        <div className="card-main text-center">
-          <h1 className="h3">{voter.is_signed_in ? <span>Your Account</span> : <span>Sign In</span>}</h1>
+        <div className="card-main">
+          <h1 className="h3">{voter.is_signed_in ? <span>{your_account_title}</span> : <span>Your Account</span>}</h1>
+          {voter.is_signed_in ?
+            <span>{your_account_explanation}</span> :
+            <div>Before you can share, either publicly or with friends, please sign in. Don't worry, we won't post anything automatically.<br />
+            <br /></div>
+          }
           <div>
-            {voter.signed_in_facebook ?
-              <span tabIndex="0" onKeyDown={this.facebookLogOutOnKeyDown.bind(this)}>
-                <a className="btn btn-social btn-lg btn-facebook" onClick={FacebookActions.appLogout}>
-              <i className="fa fa-facebook" />Sign Out</a></span> : facebook_sign_in_option
-            }
-            <br />
-            <br />
-            {/* appLogout signs out the voter, regardless of how they are signed in */}
             {voter.signed_in_twitter ?
-              <span tabIndex="0" onKeyDown={this.twitterLogOutOnKeyDown.bind(this)}>
-                <a className="btn btn-social btn-lg btn-twitter" onClick={TwitterActions.appLogout}>
-                  <i className="fa fa-twitter" />@{voter.twitter_screen_name} Sign Out</a></span> :
-              twitter_sign_in_option
+              null :
+              <TwitterSignIn />
             }
-            {/*
-            <div>
-              <Link to="add_friends_confirmed" className="btn btn-social btn-lg btn-google">
-                <i className="fa fa-google"></i>Sign in with Google
-              </Link>
-            </div>
-            */}
+            <span>&nbsp;</span>
+            {voter.signed_in_facebook ?
+              null :
+              <FacebookSignIn />
+            }
             <br />
             <br />
-            <br />
+          </div>
+          <div>
+            {voter.is_signed_in ?
+              <div>
+                <span className="h3">Currently Signed In</span>
+                <span>&nbsp;&nbsp;&nbsp;</span>
+                <span className="account-edit-action" tabIndex="0" onKeyDown={this.twitterLogOutOnKeyDown.bind(this)}>
+                  <a onClick={VoterSessionActions.signOut}>Sign Out</a>
+                </span>
+
+                <br />
+                {voter.signed_in_twitter ?
+                  <span>
+                    <span className="btn btn-social btn-lg btn-twitter" href="#">
+                      <i className="fa fa-twitter" />@{voter.twitter_screen_name}</span><span>&nbsp;</span>
+                  </span> :
+                  null
+                }
+                {voter.signed_in_facebook ?
+                  <span>
+                    <span className="btn btn-social-icon btn-lg btn-facebook">
+                      <span className="fa fa-facebook" />
+                    </span>
+                    <span>&nbsp;</span>
+                  </span> :
+                  null
+                }
+                {voter.signed_in_with_email ?
+                  <span>
+                    <span className="btn btn-warning btn-lg">
+                    <span className="glyphicon glyphicon-envelope" /></span>
+                  </span> :
+                  null
+                }
+              </div> :
+              null
+            }
+          </div>
+          <br />
             <br />
             <VoterEmailAddressEntry />
-          </div>
-          <br />
-          <br />
-          {/*
-          <div className="text-center">
-            {voter.signed_in_facebook ? <FacebookDisconnect /> : null}
-          </div>
-          */}
 
           {debug_mode &&
           <div className="text-center">

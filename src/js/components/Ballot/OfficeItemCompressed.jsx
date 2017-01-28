@@ -39,7 +39,7 @@ export default class OfficeItemCompressed extends Component {
               onClick={ this.props.link_to_ballot_item_page ?
                 goToOfficeLink : null }>
           { this.props.candidate_list.map( (one_candidate) =>
-            <span key={one_candidate.we_vote_id}>{one_candidate.ballot_item_display_name}. </span>)
+            <span key={one_candidate.we_vote_id}><span>{one_candidate.ballot_item_display_name}. </span><br /></span>)
           }
         </div>
       </div>
