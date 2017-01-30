@@ -6,6 +6,7 @@ import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 import BallotStore from "../../stores/BallotStore";
 import BallotFilter from "../../components/Navigation/BallotFilter";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
+import cookies from "../../utils/cookies";
 import Helmet from "react-helmet";
 import LoadingWheel from "../../components/LoadingWheel";
 import SupportActions from "../../actions/SupportActions";
@@ -125,6 +126,13 @@ export default class Ballot extends Component {
   }
 
   render () {
+    const showIntroStory = !cookies.getItem("intro_story_watched");
+
+    if (showIntroStory) {
+      browserHistory.push("/intro/story");
+      return LoadingWheel;
+    }
+
     const ballot = this.state.ballot;
     var voter_address = VoterStore.getAddress();
     if (!ballot) {

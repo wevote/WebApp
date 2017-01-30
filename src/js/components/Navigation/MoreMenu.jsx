@@ -85,17 +85,7 @@ export default class MoreMenu extends Component {
         </ul>
         <h4 className="text-left" />
         <ul className="list-group">
-          <li className="list-group-item">
-            <a href="https://help.wevote.us/hc/en-us/" target="_blank"><div>
-              <span className="header-menu-text-left">Get Help Using We Vote <i className="fa fa-external-link" /></span>
-            </div></a>
-          </li>
         {this.menuLink("/more/about", "About We Vote")}
-          <li className="list-group-item">
-            <a href="https://goo.gl/forms/B6P0iE44R21t36L42" target="_blank"><div>
-              <span className="header-menu-text-left">What would make We Vote better? <i className="fa fa-external-link" /></span>
-            </div></a>
-          </li>
         </ul>
         <span className="terms-and-privacy">
           <br />

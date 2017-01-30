@@ -53,8 +53,8 @@ const routes = () =>
   <Route path="/" component={Application}>
     <Route component={Intro} />
     { firstVisit ?
-      <IndexRedirect to="intro/story" /> :
-      <IndexRedirect to="ballot" /> }
+      <IndexRedirect to="/intro/story" /> :
+      <IndexRedirect to="/ballot" /> }
 
     <Route path="/intro" component={Intro}>
       <Route path="/intro/contests" component={IntroContests} />
@@ -94,8 +94,9 @@ const routes = () =>
     <Route path="/voterguide/:organization_we_vote_id" component={GuidePositionList} />
     <Route path="/yourpage" component={YourPage} />
 
-    <Route path="ballot" component={BallotIndex}>
+    <Route path="/ballot" component={BallotIndex}>
       <IndexRoute component={Ballot}/>
+
       <Route path="/office/:office_we_vote_id" component={Office} />
       <Route path="/candidate/:candidate_we_vote_id" component={Candidate} />
       <Route path="/measure/:measure_we_vote_id" component={Measure} />
