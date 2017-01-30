@@ -8,6 +8,7 @@ import AnimationStory4 from "../../components/Animation/AnimationStory4";
 import AnimationStory5 from "../../components/Animation/AnimationStory5";
 import AnimationStory6 from "../../components/Animation/AnimationStory6";
 import AnimationStory7 from "../../components/Animation/AnimationStory7";
+import cookies from "../../utils/cookies";
 var Slider = require("react-slick");
 
 export default class IntroStory extends Component {
@@ -36,6 +37,9 @@ export default class IntroStory extends Component {
   componentWillMount () {
     document.body.style.backgroundColor = "#A3A3A3";
     document.body.className = "story-view";
+
+    // Once you have visited this page, set a cookie recording that you have visited this page
+    cookies.setItem("intro_story_watched", '1', Infinity, "/");
   }
 
   componentWillUnmount () {

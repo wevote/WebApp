@@ -77,8 +77,8 @@ export default class About extends Component {
           />
           <br />
 
-          <strong>How do I use We Vote?</strong><br />
-          <a href="https://help.wevote.us/hc/en-us/" target="_blank">Visit our help center for answers.&nbsp;<i
+          <strong>Get Help Using We Vote</strong><br />
+          <a href="https://help.wevote.us/hc/en-us/" target="_blank">Visit our help center for answers to common questions.&nbsp;<i
             className="fa fa-external-link"/></a><br />
           <br />
           More questions? <Link to="/more/faq">Visit our frequently asked questions page</Link> for answers.<br />
@@ -170,7 +170,7 @@ export default class About extends Component {
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Dale_McGrew-200x200.jpg"
                               alt="Dale John McGrew"/>
                 <div className="media-body">
-                  <h3><strong>Dale John McGrew</strong>, Exec. Dir. &amp; c4 Board Member</h3>
+                  <h3><strong>Dale John McGrew</strong>, Exec. Dir. &amp; c3 + c4 Board Member</h3>
               <span className="xx-small hidden-xs">
                 Managed large software projects for companies like Disney and over 60 nonprofits.<br />
                 <br />
@@ -342,8 +342,12 @@ export default class About extends Component {
 
           <h3 className="h3">Credits &amp; Gratitude</h3>
           <Link to="/more/credits/">We are thankful for our volunteers, our board of directors, and the
-            organizations</Link> that are critical to our work.
-          <br /><br />
+            organizations</Link> that are critical to our work.<br />
+
+          <h3 className="h3">Help Make We Vote Better</h3>
+          <a href="https://goo.gl/forms/B6P0iE44R21t36L42" target="_blank">We would love to hear how you think we can improve We Vote.&nbsp;<i
+            className="fa fa-external-link"/></a><br />
+          <br />
         </div>
       </div>
     </div>;

@@ -34,7 +34,7 @@ export default class HeaderBar extends Component {
 
   render () {
     var { pathname } = this.props;
-    var { signed_in_facebook, signed_in_twitter, twitter_screen_name, voter_photo_url } = this.props.voter;
+    var { linked_organization_we_vote_id, signed_in_facebook, signed_in_twitter, twitter_screen_name, voter_photo_url } = this.props.voter;
 
     let image_placeholder = "";
     let speaker_type = "V";  // TODO DALE make this dynamic
@@ -43,6 +43,9 @@ export default class HeaderBar extends Component {
     } else {
         image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
     }
+
+    let show_your_page_from_twitter = signed_in_twitter && twitter_screen_name;
+    let show_your_page_from_facebook = signed_in_facebook && linked_organization_we_vote_id && !show_your_page_from_twitter;
 
     return <header className="page-header">
       {/* The components/MoreMenu code has to be reproduced here for mobile */}
@@ -55,7 +58,7 @@ export default class HeaderBar extends Component {
           </ul>
           <h4 className="text-left" />
           <ul className="nav nav-stacked">
-            { signed_in_twitter && twitter_screen_name ?
+            { show_your_page_from_twitter ?
               <li>
                 <Link onClick={this.hide.bind(this)} to={"/" + twitter_screen_name}>
                   <div>
@@ -71,7 +74,23 @@ export default class HeaderBar extends Component {
               </li> :
               null
             }
-            { !signed_in_twitter && !signed_in_facebook ?
+            { show_your_page_from_facebook ?
+              <li>
+                <Link onClick={this.hide.bind(this)} to={"/voterguide/" + linked_organization_we_vote_id}>
+                  <div>
+                    { voter_photo_url ?
+                      <img className="position-statement__avatar"
+                            src={voter_photo_url}
+                            width="34px"
+                      /> :
+                      image_placeholder }
+                    <span className="header-slide-out-menu-text-left">Your Voter Guide</span>
+                  </div>
+                </Link>
+              </li> :
+              null
+            }
+            { !show_your_page_from_twitter && !show_your_page_from_facebook ?
               <li>
                 <Link onClick={this.hide.bind(this)} to="/yourpage">
                   <div>
@@ -92,25 +111,11 @@ export default class HeaderBar extends Component {
           <h4 className="text-left" />
           <ul className="nav nav-stacked">
             <li>
-              <a onClick={this.hide.bind(this)} href="https://help.wevote.us/hc/en-us/">
-                <div>
-                  <span className="header-slide-out-menu-text-left">Get Help Using We Vote</span>
-                </div>
-              </a>
-            </li>
-            <li>
               <Link onClick={this.hide.bind(this)} to="/more/about">
                 <div>
                   <span className="header-slide-out-menu-text-left">About <strong>We Vote</strong></span>
                 </div>
               </Link>
-            </li>
-            <li>
-              <a onClick={this.hide.bind(this)} href="https://goo.gl/forms/B6P0iE44R21t36L42">
-                <div>
-                  <span className="header-slide-out-menu-text-left">Suggestions?</span>
-                </div>
-              </a>
             </li>
           </ul>
           <span className="terms-and-privacy">
