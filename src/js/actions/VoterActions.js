@@ -1,6 +1,14 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
 module.exports = {
+  organizationSuggestionTasks: function (kind_of_suggestion_task, kind_of_follow_task) {
+    Dispatcher.loadEndpoint("organizationSuggestionTasks",
+      {
+        kind_of_suggestion_task: kind_of_suggestion_task,
+        kind_of_follow_task: kind_of_follow_task
+      });
+  },
+
   positionListForVoter: function (show_only_this_election, show_all_other_elections) {
     Dispatcher.loadEndpoint("positionListForVoter",
       {

@@ -24,7 +24,7 @@ module.exports = {
     });
   },
 
-  retrieveGuidesFollowed: function () {
+  voterGuidesFollowedRetrieve: function () {
     Dispatcher.loadEndpoint("voterGuidesFollowedRetrieve");
   }
 };
