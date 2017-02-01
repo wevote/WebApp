@@ -33,14 +33,13 @@ export default class AnimationStory7 extends Component {
 
   componentDidUpdate () {
     //  This will start the GreenSock animation
-    if(this.state.voter && !this.state.animation_complete) {
+    if (this.state.voter && !this.state.animation_complete) {
       this.props.timeline.from(this.refs.header1, 0.75, {left: 100, autoAlpha: 0})
       .from(this.refs.header2, 0.75, {left: 100, autoAlpha: 0})
       .from(this.refs.header3, 0.75, {left: 100, autoAlpha: 0})
       .from(this.refs.signInBtn, 0.50, {left: 100, autoAlpha: 0, onComplete: this.setState({animation_complete: true})});
     }
   }
-
 
   _onVoterStoreChange () {
     this.setState({

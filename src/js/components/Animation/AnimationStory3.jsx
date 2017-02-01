@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from "react";
 
 export default class AnimationStory3 extends Component {
   static propTypes = {
-    history: PropTypes.object
+    history: PropTypes.object,
+    next: React.PropTypes.func
   };
 
   constructor (props) {
