@@ -95,6 +95,7 @@ class FacebookStore extends FluxMapStore {
         // console.log("FacebookStore voterFacebookSignInRetrieve, facebook_sign_in_verified: ", action.res.facebook_sign_in_verified);
         if (action.res.facebook_sign_in_verified) {
           VoterActions.voterRetrieve();
+          FacebookActions.facebookFriendsAction();
         }
         return {
           ...state,

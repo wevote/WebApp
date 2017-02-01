@@ -1,5 +1,6 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 // Including FacebookStore causes problems
+import FriendActions from "../actions/FriendActions";
 import VoterActions from "../actions/VoterActions";
 import VoterSessionActions from "../actions/VoterSessionActions";
 
@@ -24,6 +25,11 @@ module.exports = {
 
   facebookDisconnect: function (){
     Dispatcher.loadEndpoint("facebookDisconnect");
+  },
+
+  facebookFriendsAction: function () {
+    Dispatcher.loadEndpoint("facebookFriendsAction", {});
+    FriendActions.suggestedFriendList();
   },
 
   getFacebookProfilePicture: function (userId) {
@@ -63,7 +69,7 @@ module.exports = {
               type: FacebookConstants.FACEBOOK_LOGGED_IN,
               data: res
           });
-        }, {scope: "public_profile,email"});
+        }, {scope: "public_profile,email,user_friends"});
       }
     });
   },
