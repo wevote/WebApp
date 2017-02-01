@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from "react";
 export default class AnimationStory2 extends Component {
   static propTypes = {
     history: PropTypes.object,
-    timeline5: PropTypes.object
+    next: React.PropTypes.func
   };
 
   constructor (props) {
@@ -11,16 +11,12 @@ export default class AnimationStory2 extends Component {
     this.state = {};
   }
 
-//  This will start the GreenSock animation
-  componentDidMount () {
-    //this.props.timeline5.from(this.refs.header2, 2, {delay: 1, left: 100, autoAlpha: 0});
-  }
-
   render () {
     return <div className="intro-story__background background--image5">
       <div className="intro-story__h1">We Vote with Confidence</div>
-      <div ref="ballotImg1"><img className="center-block intro-story__img-width" src={"/img/global/intro-story/slide5-300x140-min.jpg"}/></div>
-      <div ref="header2" className="intro-story__h2">See what your <strong>We Vote</strong><br />network supports or opposes.</div>
+      <div><img className="center-block intro-story__img-width" src={"/img/global/intro-story/slide5-candidate-position-300x140-min.jpg"}/></div>
+      <div className="intro-story__h2">See what your <strong>We Vote</strong><br />network supports or opposes.</div>
+      <div className="intro-story__padding-btn"><button type="button" className="btn btn-info" onClick={this.props.next}>Next</button></div>
     </div>;
   }
 }
