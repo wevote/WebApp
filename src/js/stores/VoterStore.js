@@ -4,7 +4,9 @@ import FacebookActions from "../actions/FacebookActions";
 import FacebookStore from "../stores/FacebookStore";
 import FluxMapStore from "flux/lib/FluxMapStore";
 import FriendActions from "../actions/FriendActions";
+import GuideActions from "../actions/GuideActions";
 import StarActions from "../actions/StarActions";
+import SupportActions from "../actions/SupportActions";
 import VoterActions from "../actions/VoterActions";
 const cookies = require("../utils/cookies");
 
@@ -100,6 +102,22 @@ class VoterStore extends FluxMapStore {
             if (organization_twitter_handle && organization_twitter_handle.toLowerCase() === twitter_screen_name.toLowerCase()) {
               VoterActions.voterRetrieve();
             }
+          }
+        }
+        return state;
+
+      case "organizationSuggestionTasks":
+        if (action.res.success) {
+          // Check to see what was updated.
+          console.log("organizationSuggestionTasks complete. TODO Request list of orgs being followed again.");
+          if (action.res.kind_of_follow_task === "FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW") {
+            console.log("FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
+            GuideActions.retrieveGuidesToFollow(this.election_id());
+            GuideActions.voterGuidesFollowedRetrieve(this.election_id());
+            SupportActions.positionsCountForAllBallotItems(this.election_id());
+          } else if (action.res.kind_of_suggestion_task === "UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW") {
+            console.log("UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
+            GuideActions.retrieveGuidesToFollow(this.election_id());
           }
         }
         return state;
