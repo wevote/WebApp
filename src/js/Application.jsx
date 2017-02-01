@@ -43,7 +43,7 @@ export default class Application extends Component {
       window.FB.init({
         appId: web_app_config.FACEBOOK_APP_ID,
         xfbml: true,
-        version: "v2.6"
+        version: "v2.8"
       });
     };
 
