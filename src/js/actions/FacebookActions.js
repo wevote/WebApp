@@ -1,6 +1,6 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 // Including FacebookStore causes problems
-import FriendActions from "../actions/FriendActions"
+import FriendActions from "../actions/FriendActions";
 import VoterActions from "../actions/VoterActions";
 import VoterSessionActions from "../actions/VoterSessionActions";
 
