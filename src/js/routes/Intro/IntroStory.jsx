@@ -39,7 +39,9 @@ export default class IntroStory extends Component {
     document.body.className = "story-view";
 
     // Once you have visited this page, set a cookie recording that you have visited this page
-    cookies.setItem("intro_story_watched", '1', Infinity, "/");
+    cookies.setItem("intro_story_watched", "1", Infinity, "/");
+
+
   }
 
   componentWillUnmount () {
@@ -50,14 +52,7 @@ export default class IntroStory extends Component {
   render () {
 
 //These are GreenSock animation instances
-    var timeline1 = new TimelineLite();
-    var timeline2 = new TimelineLite();
-    var timeline3 = new TimelineLite();
-    var timeline4 = new TimelineLite();
-    var timeline5 = new TimelineLite();
-    var timeline6 = new TimelineLite();
-    var timeline7 = new TimelineLite();
-
+    var timeline = new TimelineLite();
 
 //These are settings for the react-slick slider
     var settings = {
@@ -68,33 +63,27 @@ export default class IntroStory extends Component {
       slidesToScroll: 1,
       swipe: true,
       accessibility: true,
-      arrows: false,
+      //react-slick default left & right nav arrows
+      arrows: true,
       beforeChange: function () {
-        timeline1.restart();
-        timeline2.restart();
-        timeline3.restart();
-        timeline4.restart();
-        timeline5.restart();
-        timeline6.restart();
-        timeline7.restart();
-
+        timeline.restart();
       }
     };
 
     return <div>
       <Helmet title="Welcome to We Vote" />
       <div className="intro-story container-fluid well fluff-full1">
-        <span onClick={this.next} className="glyphicon glyphicon-menu-right intro-story__menu-right" aria-hidden="true"/>
-        <span onClick={this.previous} className="glyphicon glyphicon-menu-left intro-story__menu-left" aria-hidden="true"/>
+        {/*<span onClick={this.next} className="glyphicon glyphicon-menu-right intro-story__menu-right" aria-hidden="true"/>*/}
+        {/*<span onClick={this.previous} className="glyphicon glyphicon-menu-left intro-story__menu-left" aria-hidden="true"/>*/}
         <img src={"/img/global/icons/x-close.png"} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
         <Slider ref="slider" {...settings}>
-          <div key={1}><AnimationStory1 timeline1={timeline1}/></div>
-          <div key={2}><AnimationStory2 timeline2={timeline2}/></div>
-          <div key={3}><AnimationStory3 timeline3={timeline3}/></div>
-          <div key={4}><AnimationStory4 timeline4={timeline4}/></div>
-          <div key={5}><AnimationStory5 timeline5={timeline5}/></div>
-          <div key={6}><AnimationStory6 timeline6={timeline6}/></div>
-          <div key={7}><AnimationStory7 timeline7={timeline7}/></div>
+          <div key={1}><AnimationStory1 next={this.next}/></div>
+          <div key={2}><AnimationStory2 next={this.next}/></div>
+          <div key={3}><AnimationStory3 next={this.next}/></div>
+          <div key={4}><AnimationStory4 next={this.next}/></div>
+          <div key={5}><AnimationStory5 next={this.next}/></div>
+          <div key={6}><AnimationStory6 next={this.next}/></div>
+          <div key={7}><AnimationStory7 next={this.next} timeline={timeline}/></div>
        </Slider>
       </div>
     </div>;

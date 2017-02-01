@@ -2,8 +2,7 @@ import React, { Component, PropTypes } from "react";
 
 export default class AnimationStory2 extends Component {
   static propTypes = {
-    history: PropTypes.object,
-    timeline6: PropTypes.object
+    history: PropTypes.object
   };
 
   constructor (props) {
@@ -11,18 +10,14 @@ export default class AnimationStory2 extends Component {
     this.state = {};
   }
 
-//  This will start the GreenSock animation
-  componentDidMount () {
-    //this.props.timeline6.from(this.refs.header2, 2, {delay: 1, left: 100, autoAlpha: 0});
-  }
-
   render () {
     return <div className="intro-story__background background--image6">
       <div className="intro-story__h1">We Vote</div>
-      <div ref="ballotImg1"><img className="center-block intro-story__img-height" src={"/img/global/intro-story/slide6-300x410-min.jpg"}/></div>
-      <div ref="header2" className="intro-story__h2">See what your <br />
-        <strong>We Vote</strong> network thinks about<br />
+      <div><img className="center-block intro-story__img-height--extra" src={"/img/global/intro-story/slide6-ballot-positions-300x410-min.jpg"}/></div>
+      <div className="intro-story__h2">See what your <strong>We Vote</strong> <br />
+         network thinks about<br />
         everything on your ballot.</div>
+      <div className="intro-story__padding-btn"><button type="button" className="btn btn-info" onClick={this.props.next}>Next</button></div>
     </div>;
   }
 }
