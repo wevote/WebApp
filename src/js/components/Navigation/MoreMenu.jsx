@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
-import VoterSessionActions from "../../actions/VoterSessionActions";
 var Icon = require("react-svg-icons");
 
 export default class MoreMenu extends Component {

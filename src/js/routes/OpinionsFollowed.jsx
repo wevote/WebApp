@@ -21,7 +21,7 @@ export default class OpinionsFollowed extends Component {
 
   componentDidMount () {
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
-    GuideActions.retrieveGuidesFollowed();
+    GuideActions.voterGuidesFollowedRetrieve();
   }
 
   componentWillUnmount (){

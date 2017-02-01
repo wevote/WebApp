@@ -61,7 +61,7 @@ class GuideStore extends FluxMapStore {
       case "voterAddressRetrieve": // refresh guides when you change address
         id = action.res.google_civic_election_id;
         GuideActions.retrieveGuidesToFollow(id);
-        GuideActions.retrieveGuidesFollowed(id);
+        GuideActions.voterGuidesFollowedRetrieve(id);
         return state;
 
       case "voterGuidesToFollowRetrieve":
