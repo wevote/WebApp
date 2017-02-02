@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 
-export default class AnimationStory2 extends Component {
+export default class AnimationStory6 extends Component {
   static propTypes = {
     history: PropTypes.object,
     next: React.PropTypes.func
@@ -18,7 +18,9 @@ export default class AnimationStory2 extends Component {
       <div className="intro-story__h2">See what your <strong>We Vote</strong> <br />
          network thinks about<br />
         everything on your ballot.</div>
-      <div className="intro-story__padding-btn"><button type="button" className="btn btn-info" onClick={this.props.next}>Next</button></div>
+      <div className="intro-story__padding-btn">
+        <button type="button" className="btn btn-info" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
+      </div>
     </div>;
   }
 }

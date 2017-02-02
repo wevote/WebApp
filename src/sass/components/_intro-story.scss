@@ -14,7 +14,7 @@
 .intro-story__h1 {
   font-weight: 700;
   font-size: 30px;
-  padding: 40px 40px;
+  padding: 40px 0px 20px;
   @include breakpoints (max large){
     font-size: 22px;
   }
@@ -30,7 +30,7 @@
 }
 
 .intro-story__h2 {
-  padding-top: 40px;
+  padding-top: 20px;
   font-size: 20px;
   @include breakpoints (max large){
     font-size: 19px;
@@ -38,9 +38,9 @@
 }
 
 .intro-story__padding {
-  padding: 40px;
+  padding: 20px;
   @include breakpoints (max large) {
-    padding-top: 30px;
+    padding-top: 20px;
     padding-bottom: 15px;
   }
 }
@@ -65,14 +65,14 @@
 .intro-story__img-height {
   height: 200px;
     @include breakpoints (max mid-small) {
-      height: 150px;
+      height: 200px;
   }
 }
 
 .intro-story__img-height--extra {
   height: 225px;
     @include breakpoints (max mid-small) {
-      height: 150px;
+      height: 200px;
   }
 }
 

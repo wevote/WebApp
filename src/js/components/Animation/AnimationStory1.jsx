@@ -14,10 +14,15 @@ export default class AnimationStory1 extends Component {
 
   render () {
     return <div className="intro-story__background background--image1">
-      <div className="intro-story__h1">Welcome to We Vote!</div>
+      <div className="intro-story__h1">Welcome to We&nbsp;Vote!</div>
       <div><img className="center-block intro-story__img-height" src={"/img/global/intro-story/slide1-blank-ballot-300x315.svg"}/></div>
-      <div className="intro-story__h2">View your ballot to see<br />candidates and measures<br />for upcoming elections.</div>
-      <div className="intro-story__padding-btn"><button type="button" className="btn btn-info" onClick={this.props.next}>Next</button></div>
+      <div className="intro-story__h2"><strong>We Vote</strong> is the place to find<br />
+        your network's opinions<br />
+        on candidates and measures<br />
+        before you vote.</div>
+      <div className="intro-story__padding-btn">
+        <button type="button" className="btn btn-info" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
+      </div>
     </div>;
   }
 }
