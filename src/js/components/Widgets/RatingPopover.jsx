@@ -11,21 +11,18 @@ export default class RatingPopover extends Component {
 
   constructor (props, context) {
     super(props, context);
-    this.state = {show: false};
-  }
 
-  openPopover () {
-    this.setState = {show: true};
+    this.closePopover = this.closePopover.bind(this);
   }
 
   closePopover () {
-    this.setState = {show: false};
+    this.refs.overlay.hide();
   }
-
 
   render () {
     const voteSmartPopover = <Popover id="popover-trigger-click-root-close"
-      title="Ratings from Vote Smart">
+      title={<span>Ratings from Vote Smart <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+      onClick={this.closePopover}>
       Ratings are given by the organization, and collected by the
       nonprofit Vote Smart. <span style={{whiteSpace: "nowrap"}}><img
       src="/img/global/icons/down-arrow-color-icon.svg"
@@ -39,6 +36,7 @@ export default class RatingPopover extends Component {
         votes based solely on issues. Please call 1-888-VOTESMART for
         more specific information.
       </Popover>;
+
       let popover_off = false;
       if (this.props.popover_off !== undefined) {
         popover_off = this.props.popover_off ? true : false;
@@ -50,9 +48,13 @@ export default class RatingPopover extends Component {
 
 
     return <span> { popover_off ? <span className="position-rating__source">&nbsp;(source: VoteSmart.org)</span> :
-        <OverlayTrigger trigger="click" rootClose
-                      placement={placement}
-                      overlay={voteSmartPopover}>
+        <OverlayTrigger
+          trigger="click"
+          ref="overlay"
+          onExit={this.closePopover}
+          rootClose
+          placement={placement}
+          overlay={voteSmartPopover}>
           <span className="position-rating__source with-popover">&nbsp;(source: VoteSmart.org)</span>
         </OverlayTrigger> }
       </span>
