@@ -109,7 +109,7 @@ class VoterStore extends FluxMapStore {
       case "organizationSuggestionTasks":
         if (action.res.success) {
           // Check to see what was updated.
-          console.log("organizationSuggestionTasks complete. TODO Request list of orgs being followed again.");
+          console.log("organizationSuggestionTasks complete.");
           if (action.res.kind_of_follow_task === "FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW") {
             console.log("FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
             GuideActions.retrieveGuidesToFollow(this.election_id());
