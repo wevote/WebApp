@@ -100,7 +100,7 @@ export default class PositionSupportOpposeSnippet extends Component {
             <span>{statement_text_html}</span>
             {/* if there's an external source for the explicit position/endorsement, show it */}
             {more_info_url ?
-              <div className="view-source">
+              <div className="hidden-xs">
                 {/* default: open in new tab*/}
                 <a href={more_info_url}
                    target="_blank"
