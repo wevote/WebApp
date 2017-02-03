@@ -1,0 +1,59 @@
+// ===============================================
+// Layout helpers
+// ===============================================
+
+// -------------------------------------------
+// Spacing
+// -------------------------------------------
+
+// $space-none:   0;
+// $space-xxs:  2px;
+// $space-xs:   4px;
+// $space-sm:   8px;
+// $space-md:  16px;
+// $space-lg:  32px;
+// $space-xl:  64px;
+
+// Inline classes
+// -------------------------------
+
+.u-inline--xxs { margin-right: $space-xxs; }
+.u-inline--xs { margin-right: $space-xs; }
+.u-inline--sm { margin-right: $space-sm; }
+.u-inline--md { margin-right: $space-md; }
+.u-inline--lg { margin-right: $space-lg; }
+
+// Stack classes
+// -------------------------------
+
+.u-stack--xs { margin-bottom: $space-xs; }
+.u-stack--sm { margin-bottom: $space-sm; }
+.u-stack--md { margin-bottom: $space-md; }
+.u-stack--lg { margin-bottom: $space-lg; }
+.u-stack--xl { margin-bottom: $space-xl; }
+
+// Inset classes
+// -------------------------------
+
+.u-inset--xs { padding: $space-xs; }
+.u-inset--sm { padding: $space-sm; }
+.u-inset--md { padding: $space-md; }
+.u-inset--lg { padding: $space-lg; }
+.u-inset--xl { padding: $space-xl; }
+
+// Inset Squish classes
+.u-inset__squish--sm { padding: $space-xs $space-sm; } // 4px 8px
+.u-inset__squish--md { padding: $space-sm $space-md; } // 8px 16px
+.u-inset__squish--lg { padding: $space-md $space-lg; } // 16px 32px
+
+// Inset Stretch classes
+.u-inset__stretch--sm { padding: $space-sm $space-xs; } // 8px 4px
+.u-inset__stretch--md { padding: $space-md $space-sm; } // 16px 8px
+.u-inset__stretch--lg { padding: $space-lg $space-md; } // 32px 16px
+
+// Inset Vertical
+.u-inset__vertical--xs { padding-top: $space-xs; padding-bottom: $space-xs; }
+.u-inset__vertical--sm { padding-top: $space-sm; padding-bottom: $space-sm; }
+.u-inset__vertical--md { padding-top: $space-md; padding-bottom: $space-md; }
+.u-inset__vertical--lg { padding-top: $space-lg; padding-bottom: $space-lg; }
+.u-inset__vertical--xl { padding-top: $space-xl; padding-bottom: $space-xl; }

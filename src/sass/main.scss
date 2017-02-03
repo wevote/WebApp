@@ -1,74 +1,90 @@
 // @charset 'UTF-8';
 
-// 1. Configuration and helpers
-@import
-  './utils/variables',
-  './utils/functions',
-  './utils/mixins',
-  './utils/utility',
-  './utils/colors',
-  './utils/flexbox',
-  './utils/spacing';
+// ===============================================
+// 1. Setup
+// ===============================================
+
+// -------------------------------
+// Base Variables & Mixins
+// -------------------------------
+@import 'base/variables';
+@import 'base/functions';
+@import 'base/mixins';
+@import 'base/normalize'; // * not sure this is necessary w/ Bootstrap - Jeff
 
 
-// 2. Vendors
-@import
-  './vendor/normalize',
-  './vendor/vendors',
-  './vendor/react-burger-menu',
-  './vendor/react-bootstrap-toggle',
+// ===============================================
+// 2. Base Styles
+// ===============================================
 
-// 3. Base stuff
-@import
-  './base/base',
-  './base/fonts',
-  './base/typography',
-  './base/helpers';
+@import 'base/base';
+@import 'base/fonts';
+@import 'base/typography';
 
-// 4. Layout-related sections
-@import
-  './layout/root',
-  './layout/boxmodel',
-  './layout/header',
-  './layout/footer',
-  './layout/lists';
+// ===============================================
+// 3. Vendor
+// ===============================================
+
+// * Bootstrap is currently compiled + linked as a separate stylesheet, but should get pulled in here once we do more to customize/integrate styling.
+@import 'vendor/react-burger-menu';
+@import 'vendor/react-bootstrap-toggle';
+
+// ===============================================
+// 4. Utility & Helpers
+// ===============================================
+
+@import 'utility/utility';
+@import 'utility/u-bg-colors';
+@import 'utility/u-flexbox';
+@import 'utility/u-typography';
+@import 'utility/u-layout';
+
+
+// ===============================================
+// 5. Objects, Components, Sections, Templates
+// ===============================================
+
+// Layout-related sections
+
+@import 'layout/boxmodel';
+@import 'layout/header';
+@import 'layout/footer';
+@import 'layout/lists';
+
+@import 'sections/loading-screen';
 
 // 5. Elements
-@import
-  './elements/buttons',
-  './elements/loading-spinner',
-  './elements/twitter-followers';
+
+@import 'elements/buttons';
+@import 'elements/loading-spinner';
+@import 'elements/twitter-followers';
 
 // 6. Components
-@import
-  './components/account',
-  './components/card',
-  './components/badges',
-  './components/ballotList',
-  './components/itemActionBar',
-  './components/itemPositionStatementActionBar',
-  './components/starAction',
-  './components/position',
-  './components/navigator',
-  './components/ignore',
-  './components/header',
-  './components/opinions',
-  './components/network-positions',
-  './components/intro-story';
+
+@import 'components/account';
+@import 'components/card';
+@import 'components/badges';
+@import 'components/ballotList';
+@import 'components/itemActionBar';
+@import 'components/itemPositionStatementActionBar';
+@import 'components/starAction';
+@import 'components/position';
+@import 'components/navigator';
+@import 'components/ignore';
+@import 'components/header';
+@import 'components/opinions';
+@import 'components/network-positions';
+@import 'components/intro-story';
 
 // 7. Page-specific styles
-@import
-  './pages/home',
-  './pages/ballot';
 
-// 8. Themes
-@import
-  './themes/default';
+@import 'pages/home';
+@import 'pages/ballot';
 
-// 9. Media Queries
-@import
-  './layout/mediaquery';
+// 8. Media Queries
 
-// 10. Trumps - !important
-@import
-  './utils/trumps.scss';
+@import 'layout/mediaquery';
+
+// 9. Trumps/Overrides - !important
+
+@import 'overrides/overrides.scss';

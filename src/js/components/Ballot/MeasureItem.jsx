@@ -71,7 +71,7 @@ export default class MeasureItem extends Component {
           }
         </h2>
         <StarAction we_vote_id={we_vote_id} type="MEASURE"/>
-        <div className="card-main__measure-election t-b t-darker-gray">
+        <div className="card-main__measure-election u-bold u-gray-darker">
           <p>{ election_display_name ? election_display_name : "Appearing on the ballot in " }
             { election_display_name ? <span> &middot; </span> : null }
             { regional_display_name ? regional_display_name : null }
@@ -83,7 +83,7 @@ export default class MeasureItem extends Component {
               onClick={ this.props.link_to_ballot_item_page ?
                 goToMeasureLink : null }>{measure_subtitle}</div>
           { this.props.measure_text ?
-            <div className="measure_text gray-mid">
+            <div className="measure_text u-gray-mid">
               <ReadMore num_of_lines={num_of_lines}
                         text_to_display={measure_text} />
             </div> :

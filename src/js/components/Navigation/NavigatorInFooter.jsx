@@ -109,7 +109,7 @@ export default class NavigatorInFooter extends Component {
 
     const navigator =
       <div className="navbar navbar-default navbar-fixed-bottom footer-nav">
-        <div className="container-fluid fluff-loose--top u-separate__top">
+        <div className="container-fluid fluff-loose--top">
           <div className="row">
             {ballot(pathname === "/ballot")}
             {requests(pathname === "/requests", number_of_incoming_friend_requests)}

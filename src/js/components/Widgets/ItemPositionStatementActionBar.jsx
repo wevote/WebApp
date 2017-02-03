@@ -133,9 +133,9 @@ export default class ItemPositionStatementActionBar extends Component {
     } else {
       user_position_icon = "no-position-icon";
       if (this.props.ballot_item_display_name) {
-        user_position_text = <em className="gray-mid">No position on {user_position_subject_name}</em>;
+        user_position_text = <em className="u-gray-mid">No position on {user_position_subject_name}</em>;
       } else {
-        user_position_text = <em className="gray-mid">No position</em>;
+        user_position_text = <em className="u-gray-mid">No position</em>;
       }
     }
 

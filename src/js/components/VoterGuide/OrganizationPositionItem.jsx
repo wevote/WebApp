@@ -163,7 +163,7 @@ export default class OrganizationPositionItem extends Component {
       { is_candidate ?
         <div className="card-child__media-object-anchor">
           <Link to={ ballotItemLink }
-                className="no-underline"
+                className="u-no-underline"
                 onlyActiveOnIndex={false}>
             <ImageHandler
               className="card-child__avatar-round"

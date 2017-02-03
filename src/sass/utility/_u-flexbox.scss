@@ -1,0 +1,58 @@
+// ===============================================
+// Flexbox utility classes
+// ===============================================
+
+// -------------------------------------------
+// Referenced from Tachyons.css
+// -------------------------------------------
+.u-flex { display: flex; }
+.u-inline-flex { display: inline-flex; }
+
+//  1. Fix for Chrome 44 bug - https://code.google.com/p/chromium/issues/detail?id=506893
+.u-flex-auto {
+  min-width: 0; // [1]
+  min-height: 0; // [1]
+  flex: 1 1 auto;
+}
+
+.u-flex-none { flex: none; }
+
+.u-flex-column  { flex-direction: column; }
+.u-flex-row     { flex-direction: row; }
+.u-flex-wrap    { flex-wrap: wrap; }
+
+.u-items-start    { align-items: flex-start; }
+.u-items-end      { align-items: flex-end; }
+.u-items-center   { align-items: center; }
+.u-items-baseline { align-items: baseline; }
+.u-items-stretch  { align-items: stretch; }
+
+.u-self-start    { align-self: flex-start; }
+.u-self-end      { align-self: flex-end; }
+.u-self-center   { align-self: center; }
+.u-self-baseline { align-self: baseline; }
+.u-self-stretch  { align-self: stretch; }
+
+.u-justify-start   { justify-content: flex-start; }
+.u-justify-end     { justify-content: flex-end; }
+.u-justify-center  { justify-content: center; }
+.u-justify-between { justify-content: space-between; }
+.u-justify-around  { justify-content: space-around; }
+
+.u-content-start   { align-content: flex-start; }
+.u-content-end     { align-content: flex-end; }
+.u-content-center  { align-content: center; }
+.u-content-between { align-content: space-between; }
+.u-content-around  { align-content: space-around; }
+.u-content-stretch { align-content: stretch; }
+
+.u-order-0 { order: 0; }
+.u-order-1 { order: 1; }
+.u-order-2 { order: 2; }
+.u-order-3 { order: 3; }
+.u-order-4 { order: 4; }
+.u-order-5 { order: 5; }
+.u-order-6 { order: 6; }
+.u-order-7 { order: 7; }
+.u-order-8 { order: 8; }
+.u-order-last { order: 99999; }

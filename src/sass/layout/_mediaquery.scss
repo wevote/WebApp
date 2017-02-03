@@ -103,11 +103,3 @@
     }
   }
 }
-
-
-
-@include breakpoints($max-page-container-width) {
-  #app {
-    margin: 0 auto;
-  }
-}

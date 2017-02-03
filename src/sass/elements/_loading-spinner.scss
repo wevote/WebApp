@@ -46,7 +46,7 @@ $loader-size: .8rem;
     top: 0;
   }
   &__wrapper {
-    @include micro-clearfix;
+    @include clearfix;
     margin: 20px auto 40px auto;
   }
 }

@@ -86,7 +86,7 @@ export default class PositionItem extends Component {
     var one_position_on_this_candidate = <li className="card-child position-item">
       {/* One Position on this Candidate */}
         <div className="card-child__media-object-anchor">
-          <Link to={speakerLink} className="no-underline">
+          <Link to={speakerLink} className="u-no-underline">
             { position.speaker_image_url_https ?
               <ImageHandler className="card-child__avatar"
                     sizeClassName="icon-lg "

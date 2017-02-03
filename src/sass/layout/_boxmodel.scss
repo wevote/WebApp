@@ -1,10 +1,6 @@
 /*=============================================================================
     Anything to do with content, padding, border, margin
 ================================--|--========================================*/
-// Box
-#app {
-  position: relative;
-}
 
 // Padding
 .fluff-loose--full {
@@ -31,29 +27,9 @@
 
 // Margin
 .u-gutter {
-  &__left {
-    &--window {
-      margin-left: 1em;
-    }
-  }
-  &__right {
-    &--window {
-      margin-right: 1em;
-    }
-  }
   &__top {
     &--small {
       margin-top: 1em;
     }
-  }
-}
-
-// Border
-.u-separate {
-  &__bottom {
-    border-bottom: 1px solid $gray-border;
-  }
-  &__top {
-    border-top: 1px solid $gray-border;
   }
 }

@@ -2,6 +2,11 @@
 // This file contains all application-wide Sass variables.
 // ----------------------------------------------------------------------------
 
+
+// ===========================================
+// Fonts
+// ===========================================
+
 /// Heading font family
 /// @type List
 $heading-font-stack: 'Roboto Slab', serif;
@@ -15,9 +20,66 @@ $text-font-stack: 'Open Sans', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvet
 $code-font-stack: 'Courier New', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Monaco', monospace !default;
 
 
-// TODO break out colors into its own partial
 
-/// Colors
+// ===========================================
+// Spacing
+// ===========================================
+
+// Spacing Tokens
+$space-none:   0;
+$space-xxs:  2px;
+$space-xs:   4px;
+$space-sm:   8px;
+$space-md:  16px;
+$space-lg:  32px;
+$space-xl:  64px;
+
+
+// Inset: padding
+$space-inset-xs: $space-xs; // 4px
+$space-inset-sm: $space-sm; // 8px
+$space-inset-md: $space-md; // 16px
+$space-inset-lg: $space-lg; // 32px
+
+
+// Inset Squish classes
+$space-inset__squish-sm: $space-xs $space-sm; // 4px 8px
+$space-inset__squish-md: $space-sm $space-md; // 8px 16px
+$space-inset__squish-lg: $space-md $space-lg; // 16px 32px
+
+// Inset Stretch classes
+$space-inset-stretch-sm: $space-sm $space-xs; // 8px 4px
+$space-inset-stretch-md: $space-md $space-sm; // 16px 8px
+$space-inset-stretch-lg: $space-lg $space-md; // 32px 16px
+
+
+// Inline (margin-right)
+$space-inline-xxs: 0 $space-xxs 0 0; // 2px
+$space-inline-xs:  0 $space-xs 0 0;  // 4px
+$space-inline-sm:  0 $space-sm 0 0;  // 8px
+$space-inline-md:  0 $space-md 0 0;  // 16px
+$space-inline-lg:  0 $space-lg 0 0;  // 32px
+
+
+// Stack (margin-bottom)
+$space-stack-xs:   0 0 $space-xs 0;  // 4px
+$space-stack-sm:   0 0 $space-sm 0;  // 8px
+$space-stack-md:   0 0 $space-md 0;  // 16px
+$space-stack-lg:   0 0 $space-lg 0;  // 32px
+$space-stack-xl:   0 0 $space-xl 0;  // 64px
+
+
+
+// Border Radii
+// * Uses a slightly shifted scale to acknowledge smaller common values
+$border-radius-xs: 2px;
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+
+
+// ===========================================
+// Colors
+// ===========================================
 
 // Grays
 $gray-pale:    #f8f8f8 !default;
@@ -53,11 +115,19 @@ $text-color: $gray-darker !default;
 $selected-color: #0D546F !default;
 
 
+// ===========================================
+// Layout
+// ===========================================
 
 /// Container's maximum width
 /// Below that is 100%
 /// @type Length
 $max-page-container-width: 960px !default;
+
+
+// ===========================================
+// Breakpoints (Media Queries)
+// ===========================================
 
 /// Breakpoints map
 /// @prop {String} keys - Keys are identifiers mapped to a given length
@@ -72,14 +142,17 @@ $breakpoints: (
   'nav': 695px
 ) !default;
 
+
+// ===========================================
+// Misc
+// ===========================================
+
 /// Relative or absolute URL where all assets are served from
 /// @type String
 /// @example scss - When using a CDN
 ///   $base-url: 'http://cdn.example.com/assets/';
 $base-url: '/assets/' !default;
 
-
 $modal-backdrop-opacity: .5;
-
 
 $default-box-shadow: 0 1px 2px rgba(#000, .2);
