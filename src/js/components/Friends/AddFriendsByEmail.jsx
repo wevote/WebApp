@@ -197,7 +197,7 @@ export default class AddFriendsByEmail extends Component {
         null }
       {this.state.on_enter_email_addresses_step ?
         <div>
-          <form onSubmit={this.AddFriendsByEmailStepsManager.bind(this)}>
+          <form onSubmit={this.AddFriendsByEmailStepsManager.bind(this)} className="u-hang--md">
             <input type="text" name="email_address"
                    className="form-control"
                    onChange={this.cacheEmailAddresses.bind(this)}
@@ -212,25 +212,23 @@ export default class AddFriendsByEmail extends Component {
               </span> :
               null }
           </form>
-          <div className="u-gutter__top--small">
-            <ButtonToolbar bsClass="btn-toolbar">
-              <span style={floatRight}>
-                <Button
-                  tabIndex="0"
-                  onKeyDown={this.onKeyDown.bind(this)}
-                  onClick={this.AddFriendsByEmailStepsManager.bind(this)}
-                  bsStyle="primary"
-                  disabled={!this.state.email_addresses}
-                >
-                  { this.hasValidEmail() ?
-                    <span>Send &gt;</span> :
-                    <span>Next &gt;</span>
-                  }
-                </Button>
-              </span>
-              <span>These friends will see what you support, oppose, and which opinions you follow.
-                We will never sell your email.</span>
-            </ButtonToolbar>
+          <div className="u-hang--md">
+            <span style={floatRight}>
+              <Button
+                tabIndex="0"
+                onKeyDown={this.onKeyDown.bind(this)}
+                onClick={this.AddFriendsByEmailStepsManager.bind(this)}
+                bsStyle="primary"
+                disabled={!this.state.email_addresses}
+              >
+                { this.hasValidEmail() ?
+                  <span>Send</span> :
+                  <span>Next</span>
+                }
+              </Button>
+            </span>
+            <span>These friends will see what you support, oppose, and which opinions you follow.
+              We will never sell your email.</span>
           </div>
         </div> :
         null }
@@ -244,7 +242,7 @@ export default class AddFriendsByEmail extends Component {
                    placeholder="Enter your email address" />
           </form>
 
-          <div className="u-gutter__top--small">
+          <div className="u-hang--md">
             <ButtonToolbar bsClass="btn-toolbar">
               <span style={floatRight}>
                 <Button

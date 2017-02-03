@@ -29,7 +29,7 @@ export default class WouldYouLikeToMergeAccounts extends Component {
     return <div className="guidelist card-child__list-group">
       {merge_status_html}
 
-        <div className="u-gutter__top--small">
+        <div className="u-hang--md">
           <Button onClick={cancelMergeFunction}
                   bsStyle="default"
                   bsSize="small">

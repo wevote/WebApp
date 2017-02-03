@@ -94,7 +94,7 @@ export default class YourPage extends Component {
     }
 
     return <div>
-      <div className="container-fluid well u-gutter__top--small fluff-full1">
+      <div className="container-fluid well u-hang--md u-inset--md">
         <h4 className="text-center">
           Enter your Twitter handle to create a public voter guide.
         </h4>

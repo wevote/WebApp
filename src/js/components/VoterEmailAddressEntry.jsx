@@ -181,7 +181,7 @@ export default class VoterEmailAddressEntry extends Component {
           />
         </form>
 
-        <div className="u-gutter__top--small">
+        <div className="u-hang--md">
           <Button onClick={this.resetEmailForm.bind(this)}
                   bsStyle="default"
                   bsSize="small">

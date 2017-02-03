@@ -32,6 +32,17 @@
 .u-stack--lg { margin-bottom: $space-lg; }
 .u-stack--xl { margin-bottom: $space-xl; }
 
+// TODO: Choose 'Stack' or 'Hang' (don't move forward with both)
+
+// Hang classes
+// -------------------------------
+
+.u-hang--xs { margin-top: $space-xs; }
+.u-hang--sm { margin-top: $space-sm; }
+.u-hang--md { margin-top: $space-md; }
+.u-hang--lg { margin-top: $space-lg; }
+.u-hang--xl { margin-top: $space-xl; }
+
 // Inset classes
 // -------------------------------
 

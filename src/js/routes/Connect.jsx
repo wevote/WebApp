@@ -95,14 +95,14 @@ export default class Connect extends Component {
 			<Helmet title={add_friends_header} />
       <h1 className="h1">Build Your Network</h1>
       <FollowingFilter following_type={this.getFollowingType()} />
-			<div className="container-fluid well u-gutter__top--small fluff-full1">
+			<div className="container-fluid well u-hang--md u-inset--md">
         <h4 className="text-left">{add_friends_header}</h4>
         <div className="ballot__filter"><AddFriendsFilter add_friends_type={this.state.add_friends_type}
                                                           changeAddFriendsTypeFunction={this.changeAddFriendsType.bind(this)} /></div>
         {add_friends_html}
       </div>
 
-			<div className="container-fluid well u-gutter__top--small fluff-full1">
+			<div className="container-fluid well u-hang--md u-inset--md">
         <a className="fa-pull-right"
 						tabIndex="0"
 						onKeyDown={this.onKeyDownEditMode.bind(this)}

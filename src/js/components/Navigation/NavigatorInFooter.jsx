@@ -7,15 +7,16 @@ const links = {
     var icon = "glyphicon glyphicon-list-alt glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
-      <Link to="/ballot" className={ "footer-nav__item" + (active ? " active-icon" : "")}>
-        <div className="col-xs-3 center-block text-center">
+      <div className="col-xs-3 center-block text-center">
+        <Link to="/ballot" className={ "footer-nav__item" + (active ? " active-icon" : "")}>
+
           <span className={icon} title="Ballot" />
           <br/>
           <span className="text-center small device-small--hide">
             Ballot
           </span>
-        </div>
-      </Link>;
+        </Link>
+      </div>;
 
     return jsx;
   },
@@ -24,8 +25,8 @@ const links = {
     var icon = "glyphicon glyphicon-inbox glyphicon-line-adjustment font-footer_icon";
 
     var jsx =
-      <Link to="/requests" className={ "footer-nav__item" + (active ? " active-icon" : "")}>
-        <div className="col-xs-3 center-block text-center">
+      <div className="col-xs-3 center-block text-center">
+        <Link to="/requests" className={ "footer-nav__item" + (active ? " active-icon" : "")}>
           <span className={icon} title="Requests">
             {number_of_incoming_friend_requests ?
               <span className="badgeTotal badge">{number_of_incoming_friend_requests}</span> :
@@ -35,8 +36,8 @@ const links = {
           <span className="text-center small device-small--hide">
             Requests
           </span>
-        </div>
-      </Link>;
+        </Link>
+      </div>;
 
     return jsx;
   },
@@ -45,15 +46,15 @@ const links = {
     var icon = "glyphicon icon-icon-connect-1-3 font-footer_icon";
 
     var jsx =
-      <Link to="/more/connect" className={ "footer-nav__item" + (active ? " active-icon" : "")}>
-        <div className="col-xs-3 center-block text-center">
+      <div className="col-xs-3 center-block text-center">
+        <Link to="/more/connect" className={ "footer-nav__item" + (active ? " active-icon" : "")}>
           <span className={icon} title="Connect" />
           <br/>
           <span className="text-center small device-small--hide">
             Connect
           </span>
-        </div>
-      </Link>;
+        </Link>
+      </div>;
 
     return jsx;
   },
@@ -62,15 +63,15 @@ const links = {
     var icon = "glyphicon icon-icon-activity-1-4 font-footer_icon";
 
     var jsx =
-      <Link to="/activity" className={ "footer-nav__item" + (active ? " active-icon" : "")}>
-        <div className="col-xs-3 center-block text-center">
+      <div className="col-xs-3 center-block text-center">
+        <Link to="/activity" className={ "footer-nav__item" + (active ? " active-icon" : "")}>
           <span className={icon} title="Activity" />
           <br/>
           <span className="text-center small device-small--hide">
             Activity
           </span>
-        </div>
-      </Link>;
+        </Link>
+      </div>;
 
     return jsx;
   }
@@ -109,7 +110,7 @@ export default class NavigatorInFooter extends Component {
 
     const navigator =
       <div className="navbar navbar-default navbar-fixed-bottom footer-nav">
-        <div className="container-fluid fluff-loose--top">
+        <div className="container-fluid u-inset--sm">
           <div className="row">
             {ballot(pathname === "/ballot")}
             {requests(pathname === "/requests", number_of_incoming_friend_requests)}

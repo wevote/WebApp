@@ -6,7 +6,7 @@ export default class ClaimYourPage extends Component {
   render () {
     return <div>
       <Helmet title="Claim Your Page - We Vote" />
-      <div className="container-fluid well u-gutter__top--small fluff-full1">
+      <div className="container-fluid well u-hang--md u-inset--md">
         <h3 className="text-center">
           Claim Your Page
         </h3>
