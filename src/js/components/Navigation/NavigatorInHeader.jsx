@@ -4,7 +4,7 @@ import FriendStore from "../../stores/FriendStore";
 
 const links = {
   ballot: function (active) {
-    var icon = "glyphicon glyphicon-list-alt glyphicon-line-adjustment font-footer_icon";
+    var icon = "glyphicon glyphicon-list-alt glyphicon-line-adjustment nav-icon";
 
     var jsx =
       <Link to="/ballot" className={ "header-nav__item" + (active ? " active-icon" : "")}>
@@ -18,7 +18,7 @@ const links = {
   },
 
   requests: function (active, number_of_incoming_friend_requests) {
-    var icon = "glyphicon glyphicon-inbox glyphicon-line-adjustment font-footer_icon";
+    var icon = "glyphicon glyphicon-inbox glyphicon-line-adjustment nav-icon";
 
     var jsx =
       <Link to="/requests" className={ "header-nav__item" + (active ? " active-icon" : "")}>
@@ -36,7 +36,7 @@ const links = {
   },
 
   connect: function (active) {
-    var icon = "glyphicon icon-icon-connect-1-3 glyphicon-line-adjustment font-footer_icon";
+    var icon = "glyphicon icon-icon-connect-1-3 glyphicon-line-adjustment nav-icon";
 
     var jsx =
       <Link to="/more/connect" className={ "header-nav__item" + (active ? " active-icon" : "")}>
@@ -50,7 +50,7 @@ const links = {
   },
 
   activity: function (active) {
-    var icon = "glyphicon icon-icon-activity-1-4 glyphicon-line-adjustment font-footer_icon";
+    var icon = "glyphicon icon-icon-activity-1-4 glyphicon-line-adjustment nav-icon";
 
     var jsx =
       <Link to="/activity" className={ "header-nav__item" + (active ? " active-icon" : "")}>

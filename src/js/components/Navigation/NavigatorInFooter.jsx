@@ -4,7 +4,7 @@ import FriendStore from "../../stores/FriendStore";
 
 const links = {
   ballot: function (active) {
-    var icon = "glyphicon glyphicon-list-alt glyphicon-line-adjustment font-footer_icon";
+    var icon = "glyphicon glyphicon-list-alt glyphicon-line-adjustment nav-icon";
 
     var jsx =
       <div className="col-xs-3 center-block text-center">
@@ -12,7 +12,7 @@ const links = {
 
           <span className={icon} title="Ballot" />
           <br/>
-          <span className="text-center small device-small--hide">
+          <span className="text-center small">
             Ballot
           </span>
         </Link>
@@ -22,7 +22,7 @@ const links = {
   },
 
   requests: function (active, number_of_incoming_friend_requests) {
-    var icon = "glyphicon glyphicon-inbox glyphicon-line-adjustment font-footer_icon";
+    var icon = "glyphicon glyphicon-inbox glyphicon-line-adjustment nav-icon";
 
     var jsx =
       <div className="col-xs-3 center-block text-center">
@@ -33,7 +33,7 @@ const links = {
               null }
           </span>
           <br/>
-          <span className="text-center small device-small--hide">
+          <span className="text-center small">
             Requests
           </span>
         </Link>
@@ -43,14 +43,14 @@ const links = {
   },
 
   connect: function (active) {
-    var icon = "glyphicon icon-icon-connect-1-3 font-footer_icon";
+    var icon = "glyphicon icon-icon-connect-1-3 nav-icon";
 
     var jsx =
       <div className="col-xs-3 center-block text-center">
         <Link to="/more/connect" className={ "footer-nav__item" + (active ? " active-icon" : "")}>
           <span className={icon} title="Connect" />
           <br/>
-          <span className="text-center small device-small--hide">
+          <span className="text-center small">
             Connect
           </span>
         </Link>
@@ -60,14 +60,14 @@ const links = {
   },
 
   activity: function (active) {
-    var icon = "glyphicon icon-icon-activity-1-4 font-footer_icon";
+    var icon = "glyphicon icon-icon-activity-1-4 nav-icon";
 
     var jsx =
       <div className="col-xs-3 center-block text-center">
         <Link to="/activity" className={ "footer-nav__item" + (active ? " active-icon" : "")}>
           <span className={icon} title="Activity" />
           <br/>
-          <span className="text-center small device-small--hide">
+          <span className="text-center small">
             Activity
           </span>
         </Link>

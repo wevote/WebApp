@@ -173,8 +173,8 @@ export default class ItemPositionStatementActionBar extends Component {
 
     return <div className="position-statement__container">
 
-      <div className="position-statement__overview u-flex items-center mb2">
-      { is_support || is_oppose ? <Icon className="mr1" name={user_position_icon} width={24} height={24} /> : null }
+      <div className="position-statement__overview u-flex items-center u-stack--sm">
+      { is_support || is_oppose ? <Icon className="u-inline--xs" name={user_position_icon} width={24} height={24} /> : null }
       { user_position_text }
         <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
                               type={this.props.type}

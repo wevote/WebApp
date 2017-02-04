@@ -1,0 +1,35 @@
+// Device Menu (App side-nav)
+// ===========================================
+
+.device-menu {
+  &--large {
+    display: none;
+    @include breakpoints(nav) {
+      display: block;
+      margin-top: 10px;
+    }
+  }
+  &--mobile {
+    display: block;
+    visibility: inherit;
+    @include breakpoints(nav) {
+      visibility: hidden;
+    }
+  }
+}
+
+
+
+@include breakpoints(max nav){
+  .sidebar-menu {
+    // display: none;
+  }
+  .col-xs-8-container {
+    width: 100%;
+  }
+  .container-main {
+    margin-bottom: -72px;
+    min-height: 100%;
+    padding-bottom: 72px;
+  }
+}

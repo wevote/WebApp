@@ -2,10 +2,4 @@
     This file contains all styles related to the footer of the app
 =============================================================================*/
 @include breakpoints(nav) {
-    .navbar-fixed-bottom {
-        position: absolute;
-    }
-}
-.font-footer_icon {
-    font-size: 2em;
 }
