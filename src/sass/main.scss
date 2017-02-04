@@ -44,46 +44,36 @@
 // 5. Objects, Components, Sections, Templates
 // ===============================================
 
-// Layout-related sections
+// Sections
 
-@import 'layout/header';
-@import 'layout/footer';
-@import 'layout/lists';
+@import 'components/header';
+@import 'components/loading-screen';
+@import 'components/device-menu';
 
-@import 'sections/loading-screen';
-@import 'sections/device-menu';
+// Elements
 
-// 5. Elements
+@import 'components/buttons';
+@import 'components/loading-spinner';
+@import 'components/twitter-followers';
 
-@import 'elements/buttons';
-@import 'elements/loading-spinner';
-@import 'elements/twitter-followers';
-
-// 6. Components
+// Components & Design Patterns
 
 @import 'components/account';
-@import 'components/card';
 @import 'components/badges';
-@import 'components/ballotList';
-@import 'components/itemActionBar';
-@import 'components/itemPositionStatementActionBar';
-@import 'components/starAction';
-@import 'components/position';
-@import 'components/navigator';
-@import 'components/ignore';
-@import 'components/header';
-@import 'components/opinions';
-@import 'components/network-positions';
+@import 'components/card';
 @import 'components/intro-story';
+@import 'components/network-positions';
+@import 'components/navigator';
+@import 'components/position';
 
-// 7. Page-specific styles
+// React Components
 
-@import 'pages/home';
-@import 'pages/ballot';
+@import 'components/BallotList';
+@import 'components/ItemActionBar';
+@import 'components/ItemPositionStatementActionBar';
+@import 'components/StarAction';
 
-// 8. Media Queries
 
-@import 'layout/mediaquery';
 
 // 9. Trumps/Overrides - !important
 

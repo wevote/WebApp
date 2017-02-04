@@ -180,7 +180,7 @@ export default class Ballot extends Component {
     let show_expanded_ballot_items = false;
 
     return <div className="ballot">
-      <div className="ballot__heading">
+      <div className="ballot__heading u-stack--lg">
         <Helmet title="Ballot - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
         <OverlayTrigger placement="top" overlay={electionTooltip} >

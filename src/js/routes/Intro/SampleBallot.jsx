@@ -28,7 +28,7 @@ export default class SampleBallot extends Component {
 
     return <div className="intro-story intro-story__background background--image3">
       <Helmet title="See Your Ballot - We Vote" />
-      <div className="intro-story__h1-alt">See Your Ballot</div>
+      <div className="intro-story__h1--alt">See Your Ballot</div>
       <div ref="header2" className="intro-story__h2">On the next screen, you'll see<br />
        your ballot from the 2016 <br />
         General Election.

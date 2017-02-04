@@ -18,8 +18,6 @@
   }
 }
 
-
-
 @include breakpoints(max nav){
   .sidebar-menu {
     // display: none;
@@ -32,4 +30,26 @@
     min-height: 100%;
     padding-bottom: 72px;
   }
+}
+
+.active-link {
+  font-weight: 600;
+  background-color: #d9edf7;
+}
+
+.header-slide-out-menu-text-left {
+  font-size: 1.2rem;
+}
+
+.we-vote-promise {
+  color: $gray-mid;
+  font-size: 0.9em;
+  font-weight: 400;
+}
+
+.terms-and-privacy,
+.terms-and-privacy a {
+  color: $gray-mid;
+  font-size: 0.9em;
+  font-weight: 400;
 }

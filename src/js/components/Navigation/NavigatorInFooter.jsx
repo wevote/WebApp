@@ -29,7 +29,7 @@ const links = {
         <Link to="/requests" className={ "footer-nav__item" + (active ? " active-icon" : "")}>
           <span className={icon} title="Requests">
             {number_of_incoming_friend_requests ?
-              <span className="badgeTotal badge">{number_of_incoming_friend_requests}</span> :
+              <span className="badge-total badge">{number_of_incoming_friend_requests}</span> :
               null }
           </span>
           <br/>
