@@ -40,7 +40,7 @@ render () {
   if (browser_supports_CopyToClipboard) {
     copy_btn_className = "copy-btn"; // display copy button at all times
   } else {
-    copy_btn_className = "copy-btn hide-mobile"; // display: none; in mobile view
+    copy_btn_className = "copy-btn hidden-xs"; // display: none; in mobile view
   }
 
 
@@ -49,11 +49,10 @@ render () {
       <Modal.Title id="contained-modal-title-lg">Copy link to clipboard</Modal.Title>
     </Modal.Header>
     <Modal.Body>
-      <div className="input-group url-to-copy">
-        <textarea readOnly="true"
+      <div className="input-group">
+        <input readOnly="true"
                   value={urlBeingShared}
-                  className="form-control url-to-copy"
-                  style={{height: "52px"}} />
+                  className="form-control" />
           <span className="input-group-btn">
             <CopyToClipboard text={urlBeingShared} onCopy={this.updateWasCopied.bind(this)}>
               <button className={"btn btn-default " + copy_btn_className}>Copy</button>

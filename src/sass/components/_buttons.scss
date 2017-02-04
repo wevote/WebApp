@@ -1,21 +1,6 @@
 
-// Bootstrap button override
-.btn {
-	&-action {
-		&:hover {
-			background-color: #d9534f !important;
-			border-color: #d9534f !important;
-			 span {
-				display:none;
-			}
-			&:before {
-				content: attr(data-hover);
-				width: 100%;
-			}
-		}
-	}
-}
 
+// Social button cusotmizations (on About page)
 .btn-email {
 	color: #fff;
   background-color: #f0ad4e;
@@ -24,7 +9,7 @@
 			background-color: #eda135;
 			color: #fff;
 		}
-	.email-icon {
+	&__icon {
 		height: 20px;
 	}
 }
@@ -33,22 +18,7 @@
 	border-color: #999;
 }
 
-.url-to-copy {
-	width: 100% !important;
-}
-
-.copy-btn{
-	height: 52px;
-}
-
-.hide-mobile {
-	@include breakpoints (max nav) {
-		display: none; // Hide button on small screens
-	}
-}
-
-
-// TODO: Jeff - move styles to <Button> component (doesn't currently exist)
+// For icons on buttons
 .btn__icon {
 	margin-right: .3em;
 	display: inline-block;

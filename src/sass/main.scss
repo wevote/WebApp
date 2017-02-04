@@ -21,6 +21,7 @@
 @import 'base/fonts';
 @import 'base/typography';
 
+
 // ===============================================
 // 3. Vendor
 // ===============================================
@@ -28,6 +29,7 @@
 // * Bootstrap is currently compiled + linked as a separate stylesheet, but should get pulled in here once we do more to customize/integrate styling.
 @import 'vendor/react-burger-menu';
 @import 'vendor/react-bootstrap-toggle';
+
 
 // ===============================================
 // 4. Utility & Helpers
@@ -44,37 +46,49 @@
 // 5. Objects, Components, Sections, Templates
 // ===============================================
 
-// Sections
-
-@import 'components/header';
-@import 'components/loading-screen';
-@import 'components/device-menu';
-
-// Elements
+// -------------------------------
+// Smaller Elements
+// -------------------------------
+// Relatively simple patterns for (often) smaller UI elements
 
 @import 'components/buttons';
 @import 'components/loading-spinner';
 @import 'components/twitter-followers';
 
-// Components & Design Patterns
+// -------------------------------
+// Reusable Components & Design Patterns
+// -------------------------------
+// 'Components' that are abstracted and used in more than one or two places
 
 @import 'components/account';
-@import 'components/badges';
 @import 'components/card';
-@import 'components/intro-story';
 @import 'components/network-positions';
-@import 'components/navigator';
 @import 'components/position';
 
+// -------------------------------
 // React Components
+// -------------------------------
+// Styles specific to React Components
 
 @import 'components/BallotList';
 @import 'components/ItemActionBar';
 @import 'components/ItemPositionStatementActionBar';
 @import 'components/StarAction';
 
+// -------------------------------
+// Sections
+// -------------------------------
+// Larger areas that are not limited to a single component
+
+@import 'components/device-menu';
+@import 'components/header';
+@import 'components/intro-story';
+@import 'components/loading-screen';
+@import 'components/navigator';
 
 
-// 9. Trumps/Overrides - !important
+// ===============================================
+// 6. Overrides
+// ===============================================
 
 @import 'overrides/overrides.scss';

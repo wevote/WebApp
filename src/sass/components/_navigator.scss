@@ -10,8 +10,8 @@ $icon-color-hover: $gray-dark;
 // ================================
 
 .header-nav {
-  display: none; // #1
-  @include breakpoints(nav){ // #2
+  display: none; // 1
+  @include breakpoints(nav){ // 2
     display: flex;
   }
 
@@ -58,7 +58,7 @@ $icon-color-hover: $gray-dark;
 
 .footer-nav {
   @include breakpoints(nav){
-    display: none; // #2
+    display: none; // 2
   }
   .nav-icon {
     font-size: 1.25rem;
@@ -73,5 +73,17 @@ $icon-color-hover: $gray-dark;
 
   a:hover .nav-icon {
     color: $icon-color-hover;
+  }
+}
+
+// Custom styling for ba
+.header-nav,
+.footer-nav {
+  .badge-total {
+    left: 1em;
+    position: absolute;
+    top: -7px;
+    font-family: $body-font-stack;
+    background-color: #db4437; // Override for Bootstrap class .badge
   }
 }

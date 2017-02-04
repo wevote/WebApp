@@ -57,11 +57,9 @@ export default class FriendToggle extends Component {
 
     return <span style={floatRight}>
       {is_friend ?
-        <Button bsStyle="info"
+        <Button bsStyle="warning"
                 bsSize="small"
-                className="btn-action"
-                onClick={unFriend}
-                data-hover="Unfriend">
+                onClick={unFriend}>
                 <span>Remove Friend</span>
         </Button> :
         <Button bsStyle="info" bsSize="small" onClick={acceptFriendInvite}><span>Add Friend</span></Button>

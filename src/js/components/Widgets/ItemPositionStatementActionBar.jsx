@@ -192,10 +192,10 @@ export default class ItemPositionStatementActionBar extends Component {
                       width="34px"
                 /> :
               image_placeholder }
-              <span className="u-flex u-items-start">
+              <span className="position-statement__input-group u-flex u-items-start">
                 <Textarea onChange={this.updateStatementTextToBeSaved.bind(this)}
                   name="statement_text_to_be_saved"
-                  className="position-statement__input u-inline-sm form-control"
+                  className="position-statement__input u-inline--sm form-control"
                   placeholder={statement_placeholder_text}
                   defaultValue={statement_text_to_be_saved}
                   />

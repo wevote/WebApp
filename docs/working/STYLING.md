@@ -33,10 +33,9 @@ Use these prefixes for any custom classes. This helps keep classes scoped and id
 ### BEM Naming Conventions
 Components, Objects, and small scoped sections should use the BEM naming convention: (`component__child--modifier`).
 
-Styles that reference React components should use the same Camel Case naming convention. Design patterns that don't have a dedicated React component use dashed naming. (`.BallotItem` vs `.ballot-section`)
+Styles that reference React components should use the same Camel Case naming convention. Design patterns that don't refer to a dedicated React component use dashed naming. (`.BallotItem` vs `.twitter-followers`)
 
-**Try to limit usage to reusable patterns to avoid excessive customizations.**
-
+**Try to limit creation of (non React)'component' styles to reusable patterns to avoid excessive customizations.**
 
 
 ## Helpers
