@@ -55,9 +55,6 @@ export default class TwitterHandleBox extends Component {
     if (loading){
       return LoadingWheel;
     }
-    var floatRight = {
-        float: "right"
-    };
     var twitter_handle_stripped = this.twitterHandleStripped();
     var claim_your_page_button_text = twitter_handle_stripped.length === 0 ? "Claim Your Page" : "Claim @" + twitter_handle_stripped;
     return <div>

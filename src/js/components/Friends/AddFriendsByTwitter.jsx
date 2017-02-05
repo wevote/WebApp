@@ -136,7 +136,7 @@ export default class AddFriendsByTwitter extends Component {
 
       {this.state.on_enter_twitter_handles_step ?
         <div>
-          <form onSubmit={this.AddFriendsByTwitterStepsManager.bind(this)}  className="u-stack--md">
+          <form onSubmit={this.AddFriendsByTwitterStepsManager.bind(this)} className="u-stack--md">
           <div>
             ADD_FRIENDS_BY_TWITTER - NOT FINISHED YET
             {/*<input type="text" name="email_address"

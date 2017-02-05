@@ -1,7 +1,8 @@
 # Styling guidelines
 
-Styling is currently handled with Sass which compiles to a site-wide stylesheet.
-Eventually, we should look into switching to React inline styles (with something like React CSS Modules).
+Styling is currently handled with [Sass](http://sass-lang.com/guide) which compiles `scss` partials into two site-wide stylesheets (`main.css` and `bootstrap.css`).
+
+*_Eventually, we should look into switching to React inline styles (with something like React CSS Modules)._
 
 
 ### Directory structure
@@ -16,7 +17,11 @@ Stylesheet partials are organized by scope (based on the ITCSS model), and compi
 
 
 ### A note on using Bootstrap
-This project relies heavily on the Bootstrap framework and related third-party plugins. Bootstrap's core value lies in its solid set of default helpers and styles, but as a third-party framework, it should not be expected to support all styling needs and it should not be customized with overrides (except in rare instances). Rely on Bootstrap styles and helpers when they can be used without hacks, and create sensible custom (We Vote specific) patterns and helpers instead of trying to extend Bootstrap styles.
+This project relies heavily on the Bootstrap framework and related third-party plugins. Bootstrap's core value lies in its solid set of default helpers and styles, but as a third-party framework, it should not be expected to support all styling needs and it should not be customized with overrides (except in rare instances).
+
+Rely on Bootstrap styles and helpers when they can be used without hacks, and create sensible custom (We Vote specific) patterns and helpers instead of trying to extend Bootstrap styles.
+
+To edit Bootstrap defaults, set variable values in `_bootstrap-variables.scss` and only use selector strings to override Bootstrap declarations as a **last resort**.
 
 
 ## Naming Conventions
@@ -43,7 +48,7 @@ Styles that reference React components should use the same Camel Case naming con
 1. Avoid using raw (numeric) values for style declarations. Always try to use a context-appropriate 'token' or variable instead.
 
 
-### Tokens
+### Use Tokens/Variables (avoid raw values)
 
 Tokens refer to variables that specify context. They add additional layers of abstraction (with specificity) to keep usage more scoped and identifiable.
 
