@@ -65,7 +65,7 @@ export default class FriendInvitationEmailForList extends Component {
     return <div className="position-item card-child card-child--not-followed">
       <div className="card-child__avatar">
         { voterGuideLink ?
-          <Link to={voterGuideLink} className="no-underline">
+          <Link to={voterGuideLink} className="u-no-underline">
             {voter_image}
           </Link> :
           <span>{voter_image}</span> }
@@ -73,7 +73,7 @@ export default class FriendInvitationEmailForList extends Component {
       <div className="card-child__media-object-content">
         <div className="card-child__content">
           { voterGuideLink ?
-            <Link to={voterGuideLink} className="no-underline">
+            <Link to={voterGuideLink} className="u-no-underline">
               {voter_display_name_formatted}
             </Link> :
             <span>{voter_display_name_formatted}</span> }

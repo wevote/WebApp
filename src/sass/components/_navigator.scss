@@ -1,12 +1,19 @@
-$icon-color-base: #999999;
-$icon-color-active: #337ab7;
-$icon-color-hover: #777777;
+$icon-color-base: $gray-mid;
+$icon-color-active: $link-color;
+$icon-color-hover: $gray-dark;
+
+// 1. Display .footer-nav, hide .header-nav
+// 2. Display .header-nav, hide .footer-nav
+
+
+// Header Nav
+// ================================
 
 .header-nav {
-  @include breakpoints(max nav){
-    display: none;
+  display: none; // 1
+  @include breakpoints(nav){ // 2
+    display: flex;
   }
-  display: flex;
 
   &__label {
     display: block;
@@ -41,19 +48,42 @@ $icon-color-hover: #777777;
       background-color: rgba(0,0,0,.3);
     }
   }
+  .nav-icon {
+    font-size: 1rem;
+  }
 }
 
-.footer-nav {
-  &__icon {
-    color: $icon-color-base;
+// Footer Nav
+// ================================
 
-    &:active,
-    .active-icon {
+.footer-nav {
+  @include breakpoints(nav){
+    display: none; // 2
+  }
+  .nav-icon {
+    font-size: 1.25rem;
+    color: $icon-color-base;
+  }
+  .active-icon,
+  .active-icon:hover {
+    .nav-icon {
       color: $icon-color-active;
     }
+  }
 
-    &:hover .text-center {
-      text-decoration: underline;
-    }
+  a:hover .nav-icon {
+    color: $icon-color-hover;
+  }
+}
+
+// Custom styling for ba
+.header-nav,
+.footer-nav {
+  .badge-total {
+    left: 1em;
+    position: absolute;
+    top: -7px;
+    font-family: $body-font-stack;
+    background-color: #db4437; // Override for Bootstrap class .badge
   }
 }

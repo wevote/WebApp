@@ -28,7 +28,7 @@ export default class IntroBallotContests extends Component {
                     <p>We have found your ballot for this location:</p>
 
                     <div>
-                        <Link to="/settings/location" className="font-lightest">
+                        <Link to="/settings/location">
                             Oakland, CA (click to change)
                         </Link>
                     </div>

@@ -1,5 +1,5 @@
 $base-font-size: 16px;
-
+$html-base-size: 16px;
 
 h1, h2, h3, h4, h5, h6 {
   font-size: $base-font-size
@@ -10,11 +10,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 html {
-  font-size: 16px;
+  font-size: $html-base-size;
 }
 
 body {
     color: $gray-darker;
-    font-family: $text-font-stack;
+    font-family: $body-font-stack;
     line-height: 1.4;
 }

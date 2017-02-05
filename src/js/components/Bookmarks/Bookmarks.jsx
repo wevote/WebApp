@@ -40,7 +40,7 @@ export default class Bookmarks extends Component {
     const electionTooltip = election_date ? <Tooltip id="tooltip">Ballot for {election_date}</Tooltip> : <span />;
 
     return <div className="ballot">
-      <div className="ballot__heading">
+      <div className="ballot__heading u-stack--lg">
         <OverlayTrigger placement="top" overlay={electionTooltip} >
           <h1 className="h1 ballot__election-name">{election_name}</h1>
         </OverlayTrigger>

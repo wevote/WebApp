@@ -79,7 +79,7 @@ export default class CandidateItem extends Component {
       <div className="card-main__media-object">
         <div className="card-main__media-object-anchor">
           {this.props.link_to_ballot_item_page ?
-            <Link to={candidateLink} className="no-underline">{candidate_photo_url_html}</Link> :
+            <Link to={candidateLink} className="u-no-underline">{candidate_photo_url_html}</Link> :
             candidate_photo_url_html
           }
 
@@ -114,8 +114,8 @@ export default class CandidateItem extends Component {
           </h2>
           <StarAction we_vote_id={we_vote_id} type="CANDIDATE"/>
           <p className={this.props.link_to_ballot_item_page ?
-              "t-darker-gray u-cursor--pointer" :
-              "t-darker-gray"
+              "u-gray-darker u-cursor--pointer" :
+              "u-gray-darker"
             } onClick={this.props.link_to_ballot_item_page ?
               goToCandidateLink : null }
           >

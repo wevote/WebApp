@@ -1,0 +1,27 @@
+
+
+// Social button cusotmizations (on About page)
+.btn-email {
+	color: #fff;
+  background-color: #f0ad4e;
+	border-color: #d38312;
+		&:hover {
+			background-color: #eda135;
+			color: #fff;
+		}
+	&__icon {
+		height: 20px;
+	}
+}
+
+.btn-medium {
+	border-color: #999;
+}
+
+// For icons on buttons
+.btn__icon {
+	margin-right: .3em;
+	display: inline-block;
+	vertical-align: middle;
+	line-height: 1;
+}

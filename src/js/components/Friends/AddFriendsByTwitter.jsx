@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, ButtonToolbar } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { browserHistory } from "react-router";
 import LoadingWheel from "../LoadingWheel";
 import FriendActions from "../../actions/FriendActions";
@@ -136,7 +136,7 @@ export default class AddFriendsByTwitter extends Component {
 
       {this.state.on_enter_twitter_handles_step ?
         <div>
-          <form onSubmit={this.AddFriendsByTwitterStepsManager.bind(this)}>
+          <form onSubmit={this.AddFriendsByTwitterStepsManager.bind(this)} className="u-stack--md">
           <div>
             ADD_FRIENDS_BY_TWITTER - NOT FINISHED YET
             {/*<input type="text" name="email_address"
@@ -155,8 +155,7 @@ export default class AddFriendsByTwitter extends Component {
           </div>
           </form>
 
-          <div className="u-gutter__top--small">
-            <ButtonToolbar bsClass="btn-toolbar">
+          <div>
               <span style={floatRight}>
                 <Button
                   tabIndex="0"
@@ -171,10 +170,9 @@ export default class AddFriendsByTwitter extends Component {
                   }
                 </Button>
               </span>
-              <span>
+              <p>
                 These friends will see what you support, oppose, and which opinions you follow.
-              </span>
-            </ButtonToolbar>
+              </p>
           </div>
         </div> :
         null }

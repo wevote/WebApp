@@ -133,9 +133,9 @@ export default class ItemPositionStatementActionBar extends Component {
     } else {
       user_position_icon = "no-position-icon";
       if (this.props.ballot_item_display_name) {
-        user_position_text = <em className="gray-mid">No position on {user_position_subject_name}</em>;
+        user_position_text = <em className="u-gray-mid">No position on {user_position_subject_name}</em>;
       } else {
-        user_position_text = <em className="gray-mid">No position</em>;
+        user_position_text = <em className="u-gray-mid">No position</em>;
       }
     }
 
@@ -173,13 +173,13 @@ export default class ItemPositionStatementActionBar extends Component {
 
     return <div className="position-statement__container">
 
-      <div className="position-statement__overview u-flex items-center mb2">
-      { is_support || is_oppose ? <Icon className="mr1" name={user_position_icon} width={24} height={24} /> : null }
+      <div className="position-statement__overview u-flex items-center u-stack--sm">
+      { is_support || is_oppose ? <Icon className="u-inline--xs" name={user_position_icon} width={24} height={24} /> : null }
       { user_position_text }
         <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
                               type={this.props.type}
                               supportProps={this.props.supportProps}
-                              className="candidate-card-position-public-toggle" />
+                              className="u-flex-auto u-tr" />
       </div>
 
       { // Show the edit box (Viewing self)
@@ -192,10 +192,10 @@ export default class ItemPositionStatementActionBar extends Component {
                       width="34px"
                 /> :
               image_placeholder }
-              <span className="position-statement__input-group">
+              <span className="position-statement__input-group u-flex u-items-start">
                 <Textarea onChange={this.updateStatementTextToBeSaved.bind(this)}
                   name="statement_text_to_be_saved"
-                  className="position-statement__input form-control"
+                  className="position-statement__input u-inline--sm form-control"
                   placeholder={statement_placeholder_text}
                   defaultValue={statement_text_to_be_saved}
                   />
@@ -213,7 +213,7 @@ export default class ItemPositionStatementActionBar extends Component {
           image_placeholder }
           <div className="position-statement__description">
             { speaker_display_name ?
-              <span className="position-statement__speaker-name">{speaker_display_name} <br /></span> :
+              <span className="u-bold">{speaker_display_name} <br /></span> :
               null }
             <ReadMore text_to_display={statement_text_to_be_saved} />
 

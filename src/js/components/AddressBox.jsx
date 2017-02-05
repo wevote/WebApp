@@ -72,7 +72,7 @@ export default class AddressBox extends Component {
         />
         </form>
 
-        <div className="u-gutter__top--small">
+        <div>
           <Button
             onClick={this.voterAddressSave}
             bsStyle="primary">

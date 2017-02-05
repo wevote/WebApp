@@ -16,15 +16,6 @@
     flex-shrink: 0;
   }
 
-  &__input-group {
-    display: flex;
-    align-items: flex-start;
-  }
-
-  &__input {
-    margin-right: 8px;
-  }
-
   &__container {
     background-color: $gray-pale;
     margin-top: 0px;
@@ -35,23 +26,6 @@
     margin-right: -15px;
     margin-bottom: -10px;
     margin-left: -15px;
-
-    .inline-phone:hover {
-      cursor: pointer;
-    }
-  }
-
-  &__outer-div {
-
-  }
-
-  &__btn {
-    // currently uses Bootstrap .bs-btn styling
-    margin-right: 8px;
-  }
-
-  &__speaker-name {
-    font-weight: bold;
   }
 
   &--truncated {

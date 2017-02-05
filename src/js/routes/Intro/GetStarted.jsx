@@ -69,7 +69,7 @@ export default class SignIn extends Component {
 
     return <div>
       <Helmet title="Welcome to We Vote" />
-        <div className="intro-story container-fluid well fluff-full1">
+        <div className="intro-story container-fluid well u-inset--md">
           <img src={"/img/global/icons/x-close.png"} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
           <div className="intro-story__h1 xs-text-left">Sign In</div>
           <div className="intro-story__padding--btm">It's not required but it helps<br />you get started faster.</div>

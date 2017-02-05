@@ -2,7 +2,7 @@
 // This file contains all application-wide Sass mixins.
 // ----------------------------------------------------------------------------
 
-@import "./mixins/mappy-breakpoints";
+@import "./mixins/breakpoints";
 @import "./mixins/media-object";
 
 
@@ -40,7 +40,7 @@
 /// Micro Clearfix
 /// @link http://nicolasgallagher.com/micro-clearfix-hack
 
-@mixin micro-clearfix {
+@mixin clearfix {
   &::before,
   &::after {
     content: " ";
@@ -54,7 +54,7 @@
 
 /// Hide Text
 
-@mixin hide-text {  
+@mixin hide-text {
   text-indent: -10000em;
   overflow: hidden;
   white-space: nowrap;

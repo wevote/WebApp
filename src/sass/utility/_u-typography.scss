@@ -1,0 +1,70 @@
+// ===============================================
+// Typographic Utility Classes
+// ===============================================
+
+
+// -------------------------------
+// Colors
+// -------------------------------
+
+.u-gray-pale       { color: $gray-pale; }
+.u-gray-lighter    { color: $gray-lighter; }
+.u-gray-light      { color: $gray-light; }
+.u-gray-mid        { color: $gray-mid; }
+.u-gray-dark       { color: $gray-dark; }
+.u-gray-darker     { color: $gray-darker; }
+.u-gray-border     { color: $gray-border; }
+
+
+// -------------------------------
+// 'Measure'
+// -------------------------------
+// Keeps line width to a readable length
+
+.u-measure { max-width: 30em; }
+.u-measure--narrow { max-width: 20em; }
+.u-measure--wide { max-width: 34em; }
+
+
+// -------------------------------
+// Basic text formatting
+// -------------------------------
+
+.u-bold {
+  font-weight: bold;
+}
+
+.u-italic {
+  font-style: italic;
+}
+
+.u-underline {
+  text-decoration: underline;
+}
+
+.u-no-underline {
+  text-decoration: none;
+}
+
+.u-uppercase {
+  text-transform: uppercase;
+}
+
+.u-inline {
+  display: inline-block;
+  width: auto; // helpful for form inputs
+}
+
+// Alignment
+
+.u-tr {
+  text-align: right;
+}
+
+.u-tc {
+  text-align: center;
+}
+
+.u-tl {
+  text-align: left;
+}

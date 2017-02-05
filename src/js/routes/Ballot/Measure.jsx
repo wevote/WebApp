@@ -79,7 +79,7 @@ export default class Measure extends Component {
 
     if (!measure.ballot_item_display_name){
       // TODO DALE If the candidate measure_we_vote_id is not valid, we need to update this with a notice
-      return <div className="container-fluid well u-gutter__top--small fluff-full1">
+      return <div className="container-fluid well u-stack--md u-inset--md">
                 <div>{LoadingWheel}</div>
                 <br />
             </div>;
