@@ -114,7 +114,7 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
     return <div className="guidelist card-child__list-group">
       {merge_status_html}
 
-        <div className="u-hang--md">
+        <div className="u-stack--md">
           <Button onClick={this.cancelMerge.bind(this)}
                   bsStyle="default"
                   bsSize="small">

@@ -157,7 +157,7 @@ export default class TwitterSignInProcessOld extends Component {
           Please wait...
         </div>;
     } else {
-      return <div className="container-fluid well u-hang--md u-inset--md">
+      return <div className="container-fluid well u-stack--md u-inset--md">
               <h3 className="h3">Page Not Found</h3>
                 <div className="small">We were not able to find that page. Please try again!</div>
             </div>;

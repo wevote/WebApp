@@ -15,7 +15,7 @@ export default class AddFriendsFilter extends Component {
         changeAddFriendsTypeFunction(event);
       }
     };
-    return <div className="btn-group u-hang--md">
+    return <div className="btn-group u-stack--md">
       <span tabIndex="0"
             onKeyDown={onKeyDown}
             id="ADD_FRIENDS_BY_EMAIL"

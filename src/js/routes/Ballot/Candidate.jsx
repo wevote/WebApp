@@ -89,7 +89,7 @@ export default class Candidate extends Component {
 
     if (!candidate.ballot_item_display_name){
       // TODO DALE If the candidate we_vote_id is not valid, we need to update this with a notice
-      return <div className="container-fluid well u-hang--md u-inset--md">
+      return <div className="container-fluid well u-stack--md u-inset--md">
                 <div>{LoadingWheel}</div>
                 <br />
             </div>;

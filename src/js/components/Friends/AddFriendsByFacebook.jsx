@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, ButtonToolbar } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { browserHistory } from "react-router";
 import LoadingWheel from "../LoadingWheel";
 import FriendActions from "../../actions/FriendActions";
@@ -136,14 +136,13 @@ export default class AddFriendsByFacebook extends Component {
 
       {this.state.on_enter_email_addresses_step ?
         <div>
-          <form onSubmit={this.AddFriendsByFacebookStepsManager.bind(this)}>
+          <form onSubmit={this.AddFriendsByFacebookStepsManager.bind(this)} className="u-stack--md">
           <div>
             ADD_FRIENDS_BY_FACEBOOK - NOT FINISHED YET
           </div>
           </form>
 
-          <div className="u-hang--md">
-            <ButtonToolbar bsClass="btn-toolbar">
+          <div>
               <span style={floatRight}>
                 <Button
                   tabIndex="0"
@@ -158,8 +157,7 @@ export default class AddFriendsByFacebook extends Component {
                   }
                 </Button>
               </span>
-              <span>These friends will see what you support, oppose, and which opinions you follow.</span>
-            </ButtonToolbar>
+              <p>These friends will see what you support, oppose, and which opinions you follow.</p>
           </div>
         </div> :
         null }

@@ -10,7 +10,7 @@ export default class EmptyBallot extends Component {
 
   render () {
     return <div>
-        <div className="container-fluid well u-hang--md u-inset--md">
+        <div className="container-fluid well u-stack--md u-inset--md">
           <h3 className="text-center">
             We Cannot Find Your Ballot
           </h3>

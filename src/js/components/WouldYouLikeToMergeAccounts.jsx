@@ -21,15 +21,14 @@ export default class WouldYouLikeToMergeAccounts extends Component {
 
     const merge_status_html = <span>
         <Alert bsStyle="warning">
-          If you sign in now, all of your positions and friends will be merged with the account
-          that is already signed into this browser. Would you like to merge? (If NOT, please cancel.)
+          If you sign in now, all of your positions and friends will be merged with the account that is already signed into this browser. Would you like to merge? (If NOT, please cancel.)
         </Alert>
       </span>;
 
     return <div className="guidelist card-child__list-group">
       {merge_status_html}
 
-        <div className="u-hang--md">
+        <div className="u-stack--md">
           <Button onClick={cancelMergeFunction}
                   bsStyle="default"
                   bsSize="small">

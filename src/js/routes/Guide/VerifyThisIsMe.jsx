@@ -175,7 +175,7 @@ export default class VerifyThisIsMe extends Component {
         }
       </div>;
     } else {
-      return <div className="container-fluid well u-hang--md u-inset--md">
+      return <div className="container-fluid well u-stack--md u-inset--md">
         <Helmet title="Could Not Confirm - We Vote" />
               <h3 className="h3">Could Not Confirm</h3>
                 <div className="small">We were not able to find an account for this

@@ -32,17 +32,6 @@
 .u-stack--lg { margin-bottom: $space-lg; }
 .u-stack--xl { margin-bottom: $space-xl; }
 
-// TODO: Choose 'Stack' or 'Hang' (don't move forward with both)
-
-// Hang classes
-// -------------------------------
-
-.u-hang--xs { margin-top: $space-xs; }
-.u-hang--sm { margin-top: $space-sm; }
-.u-hang--md { margin-top: $space-md; }
-.u-hang--lg { margin-top: $space-lg; }
-.u-hang--xl { margin-top: $space-xl; }
-
 // Inset classes
 // -------------------------------
 
@@ -63,8 +52,8 @@
 .u-inset__stretch--lg { padding: $space-lg $space-md; } // 32px 16px
 
 // Inset Vertical
-.u-inset__vertical--xs { padding-top: $space-xs; padding-bottom: $space-xs; }
-.u-inset__vertical--sm { padding-top: $space-sm; padding-bottom: $space-sm; }
-.u-inset__vertical--md { padding-top: $space-md; padding-bottom: $space-md; }
-.u-inset__vertical--lg { padding-top: $space-lg; padding-bottom: $space-lg; }
-.u-inset__vertical--xl { padding-top: $space-xl; padding-bottom: $space-xl; }
+.u-inset__v--xs { padding-top: $space-xs; padding-bottom: $space-xs; }
+.u-inset__v--sm { padding-top: $space-sm; padding-bottom: $space-sm; }
+.u-inset__v--md { padding-top: $space-md; padding-bottom: $space-md; }
+.u-inset__v--lg { padding-top: $space-lg; padding-bottom: $space-lg; }
+.u-inset__v--xl { padding-top: $space-xl; padding-bottom: $space-xl; }

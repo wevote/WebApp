@@ -17,7 +17,7 @@ export default class Activity extends Component {
   render () {
     return <div>
       <Helmet title="Activity Feed - We Vote" />
-      <div className="container-fluid well u-hang--md u-inset--md">
+      <div className="container-fluid well u-stack--md u-inset--md">
         <h3 className="text-center">Activity Feed</h3>
         <h4 className="text-center">Coming Soon</h4>
         <p>See the latest endorsements and news.</p>

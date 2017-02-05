@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, ButtonToolbar } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { browserHistory } from "react-router";
 import LoadingWheel from "../LoadingWheel";
 import FriendActions from "../../actions/FriendActions";
@@ -197,7 +197,7 @@ export default class AddFriendsByEmail extends Component {
         null }
       {this.state.on_enter_email_addresses_step ?
         <div>
-          <form onSubmit={this.AddFriendsByEmailStepsManager.bind(this)} className="u-hang--md">
+          <form onSubmit={this.AddFriendsByEmailStepsManager.bind(this)} className="u-stack--md">
             <input type="text" name="email_address"
                    className="form-control"
                    onChange={this.cacheEmailAddresses.bind(this)}
@@ -212,7 +212,7 @@ export default class AddFriendsByEmail extends Component {
               </span> :
               null }
           </form>
-          <div className="u-hang--md">
+          <div className="u-stack--md">
             <span style={floatRight}>
               <Button
                 tabIndex="0"
@@ -235,29 +235,25 @@ export default class AddFriendsByEmail extends Component {
 
       {this.state.on_collect_email_step ?
         <div>
-          <form onSubmit={this.AddFriendsByEmailStepsManager.bind(this)}>
+          <form onSubmit={this.AddFriendsByEmailStepsManager.bind(this)} className="u-stack--md">
             <input type="text" name="sender_email_address"
                    className="form-control"
                    onChange={this.cacheSenderEmailAddress.bind(this)}
                    placeholder="Enter your email address" />
           </form>
 
-          <div className="u-hang--md">
-            <ButtonToolbar bsClass="btn-toolbar">
+          <div>
               <span style={floatRight}>
                 <Button
                   tabIndex="0"
                   onKeyDown={this.onKeyDown.bind(this)}
                   onClick={this.AddFriendsByEmailStepsManager.bind(this)}
                   bsStyle="primary"
-                  disabled={!this.state.sender_email_address}
-                >
-                  <span>Send &gt;</span>
+                  disabled={!this.state.sender_email_address} >
+                  <span>Send</span>
                 </Button>
               </span>
-              <span>In order to send your message, you will need to verify your email address.
-                We will never sell your email.</span>
-            </ButtonToolbar>
+              <p>In order to send your message, you will need to verify your email address. We will never sell your email.</p>
           </div>
         </div> :
         null }

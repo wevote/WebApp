@@ -170,7 +170,7 @@ export default class VoterEmailAddressEntry extends Component {
 
     const send_link_to_login_html = <div>
       {email_address_status_html}
-        <form onSubmit={this.sendSignInLinkEmail.bind(this)}>
+        <form onSubmit={this.sendSignInLinkEmail.bind(this)} className="u-stack--md">
           <input
             type="text"
             onChange={this.updateVoterEmailAddress.bind(this)}
@@ -181,7 +181,7 @@ export default class VoterEmailAddressEntry extends Component {
           />
         </form>
 
-        <div className="u-hang--md">
+        <div className="u-stack--md">
           <Button onClick={this.resetEmailForm.bind(this)}
                   bsStyle="default"
                   bsSize="small">

@@ -68,14 +68,16 @@ ex: `.u-stack--md { margin-bottom: $space-md; } // 8px`
 
 #### Inset
 
-*Inset helpers apply even padding within an element. Additional 'squish' and 'stretch' variations are also available.*
+*Inset helpers apply even padding within an element. Additional 'squish,' 'stretch,' and 'v(ertical)' variations are also available.*
 ex:
 
 - `.u-inset--lg { padding: $space-lg; } // 16px`
 - `.u-inset__squish--md { padding: $space-sm $space-md; } // 8px 16px`
 - `.u-inset__stretch--sm { padding: $space-sm $space-xs; } // 8px 4px`
+- `.u-inset__v--sm { padding-top: $space-sm; padding-bottom: $space-sm; } // 8px 0`
 
 # To Do:
 - [ ] Add typographic + heading utility classes
 - [ ] Clean up colors (remove old and add new)
-- [ ] Replace length literals with variables/tokens (linter for LengthVariable in place)
+- [ ] Replace length literals with variables/tokens
+- [ ] Add Sass linter
