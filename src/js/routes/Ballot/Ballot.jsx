@@ -43,8 +43,12 @@ export default class Ballot extends Component {
   }
 
   componentWillUnmount (){
-    this.ballotStoreListener.remove();
-    this.supportStoreListener.remove();
+    if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){
+      // No ballot found
+    } else {
+      this.ballotStoreListener.remove();
+      this.supportStoreListener.remove();
+    }
   }
 
   componentWillReceiveProps (nextProps){
