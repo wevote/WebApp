@@ -14,23 +14,24 @@ export default class AddressBox extends Component {
       super(props);
       this.state = {
         loading: false,
-        voter_address: "",
-        //value: ""
+        voter_address: ""
       };
 
     this.updateVoterAddress = this.updateVoterAddress.bind(this);
     this.voterAddressSave = this.voterAddressSave.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.clear = this.clear.bind(this);
   }
 
   componentDidMount () {
     this.setState({ voter_address: VoterStore.getAddress() });
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    let addressAutocomplete = new google.maps.places.Autocomplete(this.refs.autocomplete);
+    this.googleAutocompleteListener = addressAutocomplete.addListener("place_changed", this._placeChanged.bind(this, addressAutocomplete));
   }
 
   componentWillUnmount (){
     this.voterStoreListener.remove();
+    this.googleAutocompleteListener.remove();
   }
 
   _onVoterStoreChange () {
@@ -46,65 +47,48 @@ export default class AddressBox extends Component {
   }
 
   _placeChanged (addressAutocomplete) {
-
     let place = addressAutocomplete.getPlace();
-
     if (place.formatted_address) {
       this.setState({
         voter_address: place.formatted_address
       });
-      //console.log("place.formatted_address: " + place.formatted_address);
-      //console.log("formatted address state change: " + this.state.voter_address);
     } else {
       this.setState({
         voter_address: place.name
       });
-      //console.log("place.name: " + place.name);
-      //console.log("place.name state change: " + this.state.voter_address);
     }
   }
 
   updateVoterAddress (event) {
-    this.setState({value: event.target.value});
-
-    let addressAutocomplete = new google.maps.places.Autocomplete(this.refs.autocomplete);
-
-    addressAutocomplete.addListener("place_changed", this._placeChanged.bind(this, addressAutocomplete));
+    this.setState({voter_address: event.target.value});
   }
 
   handleKeyPress (event) {
-    if (event.keyCode === 13) {
-
+    const ENTER_KEY_CODE = 13;
+    if (event.keyCode === ENTER_KEY_CODE) {
       event.preventDefault();
       setTimeout(() => {
-        var { voter_address } = this.state;
-        VoterActions.voterAddressSave(voter_address);
+        VoterActions.voterAddressSave(this.state.voter_address);
         this.setState({loading: true});
       }, 250);
     }
   }
 
-  clear () {
-    this.setState({value: event.target.value});
-  }
-
   voterAddressSave (event) {
     event.preventDefault();
-    var { voter_address } = this.state;
-    VoterActions.voterAddressSave(voter_address);
+    VoterActions.voterAddressSave(this.state.voter_address);
     this.setState({loading: true});
   }
- // this was removed because the value was sometimes not letting me type a new address in the input {/*this.state.voter_address*/}
 
   render () {
-    var { loading } = this.state;
-    if (loading){
+    if (this.state.loading){
       return LoadingWheel;
     }
     return <div>
         <form onSubmit={this.voterAddressSave}>
         <input
           type="text"
+          value={this.state.voter_address}
           onKeyDown={this.handleKeyPress}
           onChange={this.updateVoterAddress}
           name="address"
