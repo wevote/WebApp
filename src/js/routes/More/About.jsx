@@ -32,7 +32,7 @@ export default class About extends Component {
 
           <a className="btn btn-email" href="http://eepurl.com/cx_frP" target="_blank">
             <span>
-              <span className="email-icon glyphicon glyphicon-envelope"/> Join Newsletter
+              <span className="btn-email__icon glyphicon glyphicon-envelope"/> Join Newsletter
             </span>
           </a>
 

@@ -1,8 +1,6 @@
-# We Vote WebApp - README Home
+# We Vote WebApp
 
 [![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=develop)](https://travis-ci.org/wevote/WebApp)
-
-![We Vote USA](unclesamewevote.jpg)
 
 This WebApp repository contains a Node/React/Flux Javascript application. Using data from
 Google Civic API, Vote Smart, MapLight, TheUnitedStates.io and the Voting Information Project, we give voters a social way to interact with ballot data.
@@ -15,7 +13,7 @@ http://start.wevoteusa.org/
 And finally, our current live version is here: [https://WeVote.US](https://WeVote.US)
 
 ## Installing WebApp
-Our installation process is built to allow engineers all over America to contribute to We Vote. 
+Our installation process is built to allow engineers all over America to contribute to We Vote.
 It may seem complicated, but it allows anyone to be in a position to make suggestions, and get involved.
 
 1. [Preparing the Environment on Your Machine](docs/installing/ENVIRONMENT.md)
@@ -31,7 +29,7 @@ It may seem complicated, but it allows anyone to be in a position to make sugges
 
 3. [Issues and Reporting Bugs](docs/working/ISSUES.md)
 
-4. [Working with CSS and SASS Styles](docs/working/WORKING_WITH_STYLES.md)
+4. [Styling Guidelines](docs/working/STYLING.md)
 
 ## Contributing to the Project
 Please read the following before you start contributing to the project. Thank you!

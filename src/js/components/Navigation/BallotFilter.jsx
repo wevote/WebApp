@@ -11,7 +11,7 @@ export default class BallotFilter extends Component {
   render () {
     const {ballot_type} = this.props;
 
-    return <div className="btn-group t-mb3">
+    return <div className="btn-group">
       <Link to="/ballot" className={ ballot_type === "ALL_BALLOT_ITEMS" ? "active btn btn-default" : "btn btn-default"}>
         <span>All</span>
       </Link>

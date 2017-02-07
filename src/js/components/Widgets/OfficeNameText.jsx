@@ -26,8 +26,8 @@ export default class OfficeNameText extends Component {
       Candidate for <span className="candidate-card-main__office">
       { contest_office_name } </span> </span>;
     } else {
-      nameText = <span> <span className="card-main__political-party t-b t-darker-gray">
-      {political_party} </span> candidate for <span className="candidate-card-main__office t-b t-darker-gray">
+      nameText = <span> <span className="card-main__political-party u-bold u-gray-darker">
+      {political_party} </span> candidate for <span className="candidate-card-main__office u-bold u-gray-darker">
         { contest_office_name }
       </span></span>;
     }

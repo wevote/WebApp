@@ -17,7 +17,7 @@
     padding: .5em;
   }
 
-  @include micro-clearfix;
+  @include clearfix;
   padding-bottom: 0; // override to avoid Bootstrap collision
   margin: 0 auto;
   max-width: $max-page-container-width;

@@ -72,7 +72,7 @@ export default class IntroStory extends Component {
 
     return <div>
       <Helmet title="Welcome to We Vote" />
-      <div className="intro-story container-fluid well fluff-full1">
+      <div className="intro-story container-fluid well u-inset--md">
         {/*<span onClick={this.next} className="glyphicon glyphicon-menu-right intro-story__menu-right" aria-hidden="true"/>*/}
         {/*<span onClick={this.previous} className="glyphicon glyphicon-menu-left intro-story__menu-left" aria-hidden="true"/>*/}
         <img src={"/img/global/icons/x-close.png"} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>

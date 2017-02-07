@@ -169,7 +169,7 @@ export default class Ballot extends Component {
         </span>;
 
     const emptyBallot = ballot.length === 0 ?
-      <div className="container-fluid well u-gutter__top--small fluff-full1">
+      <div className="container-fluid well u-stack--md u-inset--md">
         <h3 className="text-center">{this.emptyMsg()}</h3>
         {emptyBallotButton}
       </div> :
@@ -180,7 +180,7 @@ export default class Ballot extends Component {
     let show_expanded_ballot_items = false;
 
     return <div className="ballot">
-      <div className="ballot__heading">
+      <div className="ballot__heading u-stack--lg">
         <Helmet title="Ballot - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
         <OverlayTrigger placement="top" overlay={electionTooltip} >

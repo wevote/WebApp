@@ -1,11 +1,4 @@
-.item-actionbar .inline-phone:hover {
-  cursor: pointer;
-}
 
-.candidate-card-position-public-toggle {
-  flex-grow: 10; // arbitrary value large enough to fill space
-  text-align: right;
-}
 
 .item-actionbar {
   display: flex;
@@ -18,10 +11,4 @@
       display: none; // Hide Support/Oppose button labels on small screens
     }
   }
-
-  &__btn-public {
-    // currently uses Bootstrap .bs-btn styling
-    margin-right: 8px;
-  }
-
 }

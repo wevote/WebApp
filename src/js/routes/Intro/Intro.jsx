@@ -62,7 +62,7 @@ export default class Intro extends Component {
     return <div>
       <Helmet title="Welcome to We Vote" />
       { this.props.children ||
-        <div className="container-fluid well u-gutter__top--small fluff-full1">
+        <div className="container-fluid well u-stack--md u-inset--md">
           <h2 className="text-center">We Vote</h2>
             <label htmlFor="address">
               Your Address.&nbsp;

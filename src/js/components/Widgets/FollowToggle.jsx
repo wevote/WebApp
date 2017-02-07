@@ -67,12 +67,10 @@ export default class FollowToggle extends Component {
 
     return <span style={floatRight}>
       {is_following ?
-        <Button bsStyle="info"
+        <Button bsStyle="warning"
                 bsSize="small"
-                className="btn-action"
-                onClick={stopFollowingInstantly}
-                data-hover="Unfollow">
-                <span>Following</span>
+                onClick={stopFollowingInstantly}>
+                <span>Unfollow</span>
         </Button> :
         <Button bsStyle="info" bsSize="small" onClick={followInstantly}><span>Follow</span></Button>
       }

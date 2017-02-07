@@ -114,7 +114,7 @@ export default class AddressBox extends Component {
         />
         </form>
 
-        <div className="u-gutter__top--small">
+        <div>
           <Button
             className="pull-right"
             onClick={this.voterAddressSave}

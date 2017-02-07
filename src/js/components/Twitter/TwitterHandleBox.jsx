@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, ButtonToolbar } from "react-bootstrap";
+import { Button, InputGroup } from "react-bootstrap";
 import { browserHistory } from "react-router";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterStore from "../../stores/VoterStore";
@@ -7,11 +7,11 @@ import { extractTwitterHandleFromTextString } from "../../utils/textFormat";
 
 export default class TwitterHandleBox extends Component {
   constructor (props) {
-      super(props);
-      this.state = {
-        loading: false,
-        twitter_handle: ""
-      };
+    super(props);
+    this.state = {
+      loading: false,
+      twitter_handle: ""
+    };
   }
 
   componentDidMount () {
@@ -55,33 +55,27 @@ export default class TwitterHandleBox extends Component {
     if (loading){
       return LoadingWheel;
     }
-    var floatRight = {
-        float: "right"
-    };
     var twitter_handle_stripped = this.twitterHandleStripped();
     var claim_your_page_button_text = twitter_handle_stripped.length === 0 ? "Claim Your Page" : "Claim @" + twitter_handle_stripped;
     return <div>
-        <form onSubmit={this.submitTwitterHandle.bind(this)}>
-        <input
-          type="text"
-          onChange={this.updateTwitterHandle.bind(this)}
-          name="twitter_handle"
-          value={this.state.twitter_handle}
-          className="form-control"
-          placeholder="Enter your twitter handle"
-        />
-        </form>
-
-        <div className="u-gutter__top--small">
-          <ButtonToolbar bsClass="btn-toolbar">
-            <span style={floatRight}>
-              <Button
-                onClick={this.submitTwitterHandle.bind(this)}
-                bsStyle="primary">
-                {claim_your_page_button_text}</Button>
-            </span>
-          </ButtonToolbar>
-        </div>
-      </div>;
+      <form onSubmit={this.submitTwitterHandle.bind(this)} className="u-stack--md">
+        <InputGroup>
+          <input
+            type="text"
+            onChange={this.updateTwitterHandle.bind(this)}
+            name="twitter_handle"
+            value={this.state.twitter_handle}
+            className="form-control"
+            placeholder="Enter your twitter handle"
+          />
+          <InputGroup.Button>
+            <Button
+              onClick={this.submitTwitterHandle.bind(this)}
+              bsStyle="primary">
+              {claim_your_page_button_text}</Button>
+          </InputGroup.Button>
+        </InputGroup>
+      </form>
+    </div>;
   }
 }

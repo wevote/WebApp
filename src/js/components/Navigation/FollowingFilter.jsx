@@ -22,7 +22,7 @@ export default class FollowingFilter extends Component {
   render () {
     const {following_type} = this.props;
 
-    return <div className="btn-group t-mb3">
+    return <div className="btn-group u-stack--md">
       <Link to="/opinions" className={ following_type === "WHO_YOU_CAN_FOLLOW" ? "active btn btn-default" : "btn btn-default"}>
         To Follow
       </Link>

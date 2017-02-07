@@ -43,7 +43,7 @@
   }
 
   .bm-menu-wrap {
-    @include micro-clearfix;
+    @include clearfix;
     // offsets for container
     margin-top: -15px;
     margin-left: -15px;
