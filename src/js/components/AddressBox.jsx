@@ -14,11 +14,14 @@ export default class AddressBox extends Component {
       super(props);
       this.state = {
         loading: false,
-        voter_address: ""
+        voter_address: "",
+        //value: ""
       };
 
     this.updateVoterAddress = this.updateVoterAddress.bind(this);
     this.voterAddressSave = this.voterAddressSave.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.clear = this.clear.bind(this);
   }
 
   componentDidMount () {
@@ -43,45 +46,53 @@ export default class AddressBox extends Component {
   }
 
   _placeChanged (addressAutocomplete) {
+
     let place = addressAutocomplete.getPlace();
 
-    if(place.formatted_address) {
+    if (place.formatted_address) {
       this.setState({
         voter_address: place.formatted_address
       });
-      console.log("place.formatted_address: " + place.formatted_address);
-      console.log("formatted address state change: " + this.state.voter_address);
+      //console.log("place.formatted_address: " + place.formatted_address);
+      //console.log("formatted address state change: " + this.state.voter_address);
     } else {
       this.setState({
         voter_address: place.name
       });
-      console.log("place.name: " + place.name);
-      console.log("place.name state change: " + this.state.voter_address);
+      //console.log("place.name: " + place.name);
+      //console.log("place.name state change: " + this.state.voter_address);
     }
   }
 
   updateVoterAddress (event) {
+    this.setState({value: event.target.value});
+
     let addressAutocomplete = new google.maps.places.Autocomplete(this.refs.autocomplete);
 
-    addressAutocomplete.addListener('place_changed', this._placeChanged.bind(this, addressAutocomplete));
+    addressAutocomplete.addListener("place_changed", this._placeChanged.bind(this, addressAutocomplete));
   }
 
-  onSearchBlur () {
-    // Delay closing the drop down so that a click on the Link can have time to work
-    setTimeout(() => {
-      //this.clear();
-    }, 250);
+  handleKeyPress (event) {
+    if (event.keyCode === 13) {
+
+      event.preventDefault();
+      setTimeout(() => {
+        var { voter_address } = this.state;
+        VoterActions.voterAddressSave(voter_address);
+        this.setState({loading: true});
+      }, 250);
+    }
   }
 
-  voterAddressSave (e) {
-    console.log("state change: " + this.state.voter_address);
-    setTimeout(() => {
-      //this.clear();
-      e.preventDefault();
-      var { voter_address } = this.state;
-      VoterActions.voterAddressSave(voter_address);
-      this.setState({loading: true});
-    }, 250);
+  clear () {
+    this.setState({value: event.target.value});
+  }
+
+  voterAddressSave (event) {
+    event.preventDefault();
+    var { voter_address } = this.state;
+    VoterActions.voterAddressSave(voter_address);
+    this.setState({loading: true});
   }
  // this was removed because the value was sometimes not letting me type a new address in the input {/*this.state.voter_address*/}
 
@@ -94,6 +105,7 @@ export default class AddressBox extends Component {
         <form onSubmit={this.voterAddressSave}>
         <input
           type="text"
+          onKeyDown={this.handleKeyPress}
           onChange={this.updateVoterAddress}
           name="address"
           className="form-control"
@@ -104,6 +116,7 @@ export default class AddressBox extends Component {
 
         <div className="u-gutter__top--small">
           <Button
+            className="pull-right"
             onClick={this.voterAddressSave}
             bsStyle="primary">
             Save</Button>
