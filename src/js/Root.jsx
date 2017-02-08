@@ -32,6 +32,7 @@ import NotFound from "./routes/NotFound";
 import Office from "./routes/Ballot/Office";
 import Opinions from "./routes/Opinions";
 import OpinionsFollowed from "./routes/OpinionsFollowed";
+import OpinionsIgnored from "./routes/OpinionsIgnored";
 import Privacy from "./routes/More/Privacy";
 import Requests from "./routes/Requests";
 import SampleBallot from "./routes/Intro/SampleBallot";
@@ -74,6 +75,7 @@ const routes = () =>
     {/* Ballot Off-shoot Pages */}
     <Route path="/opinions" component={Opinions} />
     <Route path="/opinions_followed" component={OpinionsFollowed} />
+    <Route path="/opinions_ignored" component={OpinionsIgnored} />
     <Route path="/friends" >
       <IndexRoute component={Friends} />
       <Route path="add" component={Connect} />

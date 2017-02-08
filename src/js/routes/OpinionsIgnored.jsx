@@ -1,14 +1,11 @@
 import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
-import FollowingFilter from "../components/Navigation/FollowingFilter";
 import Helmet from "react-helmet";
 import GuideStore from "../stores/GuideStore";
 import GuideActions from "../actions/GuideActions";
-import OpinionsFollowedList from "../components/VoterGuide/OpinionsFollowedList";
+import OpinionsIgnoredList from "../components/VoterGuide/OpinionsIgnoredList";
 
-/* VISUAL DESIGN HERE: https://invis.io/8F53FDX9G */
-
-export default class OpinionsFollowed extends Component {
+export default class OpinionsIgnored extends Component {
   static propTypes = {
     children: PropTypes.object,
     history: PropTypes.object
@@ -16,13 +13,13 @@ export default class OpinionsFollowed extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {voter_guide_followed_list: GuideStore.followedList(),
+    this.state = {voter_guide_ignored_list: GuideStore.ignoredList(),
                   editMode: false};
   }
 
   componentDidMount () {
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
-    GuideActions.voterGuidesFollowedRetrieve();
+    GuideActions.voterGuidesIgnoredRetrieve();
   }
 
   componentWillUnmount (){
@@ -30,16 +27,12 @@ export default class OpinionsFollowed extends Component {
   }
 
   _onGuideStoreChange (){
-    var list = GuideStore.followedList();
+    var list = GuideStore.ignoredList();
 
     if (list !== undefined && list.length > 0){
-      this.setState({ voter_guide_followed_list: GuideStore.followedList() });
+      this.setState({ voter_guide_ignored_list: GuideStore.ignoredList() });
+      console.log(this.state.voter_guide_ignored_list);
     }
-  }
-
-  getCurrentRoute (){
-    var current_route = "/opinions_followed";
-    return current_route;
   }
 
   toggleEditMode (){
@@ -54,40 +47,29 @@ export default class OpinionsFollowed extends Component {
     }
   }
 
-  getFollowingType (){
-    switch (this.getCurrentRoute()) {
-      case "/opinions":
-        return "WHO_YOU_CAN_FOLLOW";
-      case "/opinions_followed":
-      default :
-        return "WHO_YOU_FOLLOW";
-    }
-  }
-
   render () {
     return <div className="opinions-followed__container">
-      <Helmet title="Organizations You Follow - We Vote" />
-      <h1 className="h1">Build Your Network</h1>
-      <FollowingFilter following_type={this.getFollowingType()} />
+      <Helmet title="Who You're Ignoring - We Vote" />
+      <h1 className="h1">Who You're Ignoring</h1>
       <a className="fa-pull-right"
          tabIndex="0"
          onKeyDown={this.onKeyDownEditMode.bind(this)}
          onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit"}</a>
         <p>
-          Organizations, public figures and other voters you currently follow. <em>We will never sell your email</em>.
+          Organizations, public figures and other voters you're ignoring.
         </p>
       <div className="voter-guide-list card">
         <div className="card-child__list-group">
           {
-            this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length ?
-            <OpinionsFollowedList organizationsFollowed={this.state.voter_guide_followed_list}
+            this.state.voter_guide_ignored_list && this.state.voter_guide_ignored_list.length ?
+            <OpinionsIgnoredList organizationsIgnored={this.state.voter_guide_ignored_list}
                                   editMode={this.state.editMode}
                                   instantRefreshOn /> :
               null
           }
         </div>
       </div>
-      <Link className="pull-right" to="/opinions_ignored">See who you're ignoring</Link>
+      <Link className="pull-right" to="/opinions_followed">Go back</Link>
     </div>;
   }
 }

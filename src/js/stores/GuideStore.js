@@ -45,6 +45,10 @@ class GuideStore extends FluxMapStore {
     return this.getOrgsFromArr(this.getState().following);
   }
 
+  ignoredList (){
+    return this.getOrgsFromArr(this.getState().ignoring);
+  }
+
   isFollowing (we_vote_id){
     return this.getState().following.filter( el => { return el === we_vote_id; }).length > 0;
   }
@@ -102,6 +106,20 @@ class GuideStore extends FluxMapStore {
         return {
           ...state,
           following: following,
+          data: data
+        };
+
+      case "voterGuidesIgnoredRetrieve":
+        voter_guides = action.res.voter_guides;
+        data = state.data;
+        var ignoring = [];
+        voter_guides.forEach( item => {
+          data[item.organization_we_vote_id] = item;
+          ignoring.push(item.organization_we_vote_id);
+        });
+        return {
+          ...state,
+          ignoring: ignoring,
           data: data
         };
 
