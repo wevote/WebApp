@@ -29,7 +29,7 @@
     padding-top: 20px;
     font-size: 20px;
     @include breakpoints (max large){
-      font-size: 19px;
+      font-size: 18px;
     }
   }
 
@@ -61,14 +61,14 @@
   &__img-height {
     height: 200px;
       @include breakpoints (max mid-small) {
-        height: 200px;
+        height: 165px;
     }
   }
 
   &__img-height--extra {
     height: 225px;
       @include breakpoints (max mid-small) {
-        height: 200px;
+        height: 175px;
     }
   }
 
@@ -137,28 +137,28 @@
 
 .background--image2 {
   @include breakpoints (small) {
-    background-image: url("/img/global/intro-story/slide2-historic-place-698x600.jpg");
-   }
+    background-image: url("/img/global/intro-story/slide2-lady-liberty-698x600.jpg");
+  }
     @include breakpoints (large) {
-    background-image: url("/img/global/intro-story/slide2-historic-place-1000x600.jpg");
+    background-image: url("/img/global/intro-story/slide2-lady-liberty-1000x600.jpg");
   }
 }
 
 .background--image3 {
   @include breakpoints (small) {
-    background-image: url("/img/global/intro-story/slide3-working-together-698x600.jpg");
-  }
+    background-image: url("/img/global/intro-story/slide3-historic-place-698x600.jpg");
+   }
     @include breakpoints (large) {
-    background-image: url("/img/global/intro-story/slide3-working-together-1000x600.jpg");
+    background-image: url("/img/global/intro-story/slide3-historic-place-1000x600.jpg");
   }
 }
 
 .background--image4 {
   @include breakpoints (small) {
-    background-image: url("/img/global/intro-story/slide4-lady-liberty-698x600.jpg");
+    background-image: url("/img/global/intro-story/slide4-working-together-698x600.jpg");
   }
     @include breakpoints (large) {
-    background-image: url("/img/global/intro-story/slide4-lady-liberty-1000x600.jpg");
+    background-image: url("/img/global/intro-story/slide4-working-together-1000x600.jpg");
   }
 }
 
@@ -189,7 +189,7 @@
   }
 }
 
-// TODO Move to separate file if global, otherwise, rename to be scoped to this component '.intro-tour__close-btn'
+// TODO Move to separate file if global, otherwise, rename to be scoped to this component '.intro-story__close-btn'
 .x-close {
   position: absolute;
   height: 25px;
