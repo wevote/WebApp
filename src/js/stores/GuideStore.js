@@ -2,10 +2,11 @@ var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
 import GuideActions from "../actions/GuideActions";
 import SupportActions from "../actions/SupportActions";
+const assign = require("object-assign");
 
 class GuideStore extends FluxMapStore {
 
-  // The store keeps nested attributes of voter guides in data, whereas the followed, ignoring, to_follow are just lists of ids.
+  // The store keeps nested attributes of voter guides in all_cached_voter_guides, whereas the followed, ignoring, to_follow are just lists of ids.
   getInitialState () {
     return {
       ballot_has_guides: true,
@@ -13,20 +14,25 @@ class GuideStore extends FluxMapStore {
       ignoring: [],
       to_follow: [],
       to_follow_list_for_ballot_item: [],
-      data: {}
+      to_follow_list_for_all_ballot_items: [],
+      all_cached_voter_guides: {}
     };
   }
 
-  // Given a list of ids, retrieve the complete data with all attributes and return as array
-  getOrgsFromArr (arr) {
+  // Given a list of ids, retrieve the complete all_cached_voter_guides with all attributes and return as array
+  returnVoterGuidesFromListOfIds (list_of_organization_we_vote_ids) {
     const state = this.getState();
-    let orgs = [];
-    // voterGuidesFollowedRetrieve API returns more than one voter guide per organization some times.
-    let uniq_arr = arr.filter( (value, index, self) => { return self.indexOf(value) === index; });
-    uniq_arr.forEach( id => {
-      orgs.push( state.data[id] );
-    });
-    return orgs;
+    let filtered_voter_guides = [];
+    if (list_of_organization_we_vote_ids) {
+      // voterGuidesFollowedRetrieve API returns more than one voter guide per organization some times.
+      let uniq_arr = list_of_organization_we_vote_ids.filter((value, index, self) => {
+        return self.indexOf(value) === index;
+      });
+      uniq_arr.forEach(organization_we_vote_id => {
+        filtered_voter_guides.push(state.all_cached_voter_guides[organization_we_vote_id]);
+      });
+    }
+    return filtered_voter_guides;
   }
 
   ballotHasGuides (){
@@ -34,28 +40,33 @@ class GuideStore extends FluxMapStore {
   }
 
   toFollowList () {
-    return this.getOrgsFromArr(this.getState().to_follow);
+    return this.returnVoterGuidesFromListOfIds(this.getState().to_follow) || [];
   }
 
+  // We need this function because we don't always know
   toFollowListForBallotItem (){
-    return this.getOrgsFromArr(this.getState().to_follow_list_for_ballot_item) || {};
+    return this.returnVoterGuidesFromListOfIds(this.getState().to_follow_list_for_ballot_item) || [];
+  }
+
+  toFollowListForBallotItemById (ballot_item_we_vote_id){
+    return this.returnVoterGuidesFromListOfIds(this.getState().to_follow_list_for_all_ballot_items[ballot_item_we_vote_id]) || [];
   }
 
   followedList (){
-    return this.getOrgsFromArr(this.getState().following);
+    return this.returnVoterGuidesFromListOfIds(this.getState().following) || [];
   }
 
   ignoredList (){
-    return this.getOrgsFromArr(this.getState().ignoring);
+    return this.returnVoterGuidesFromListOfIds(this.getState().ignoring);
   }
 
   isFollowing (we_vote_id){
-    return this.getState().following.filter( el => { return el === we_vote_id; }).length > 0;
+    return this.getState().following.filter( existing_org_we_vote_id => { return existing_org_we_vote_id === we_vote_id; }).length > 0;
   }
 
   reduce (state, action) {
     let voter_guides;
-    let data;
+    let all_cached_voter_guides;
     let id;
 
     switch (action.type) {
@@ -69,6 +80,7 @@ class GuideStore extends FluxMapStore {
         return state;
 
       case "voterGuidesToFollowRetrieve":
+        console.log("voterGuidesToFollowRetrieve");
         voter_guides = action.res.voter_guides;
         let is_empty = voter_guides.length === 0;
         let is_search = action.res.search_string !== "";
@@ -81,46 +93,94 @@ class GuideStore extends FluxMapStore {
           return state;
         }
 
-        data = state.data;
-        var orgs = [];
-        voter_guides.forEach( item => {
-          data[item.organization_we_vote_id] = item;
-          orgs.push(item.organization_we_vote_id);
+        all_cached_voter_guides = state.all_cached_voter_guides;
+        var filtered_voter_guide_ids = [];
+        voter_guides.forEach( one_voter_guide => {
+          all_cached_voter_guides[one_voter_guide.organization_we_vote_id] = one_voter_guide;
+          filtered_voter_guide_ids.push(one_voter_guide.organization_we_vote_id);
         });
+
+        // Now store the voter_guide information by ballot_item (i.e., which organizations have positions on each ballot_item)
+        // let existing_voter_guide_ids_for_one_ballot_item;
+        let updated_voter_guide_ids_for_one_ballot_item = [];
+        let to_follow_list_for_all_ballot_items_updated = state.to_follow_list_for_all_ballot_items;
+        if (action.res.ballot_item_we_vote_id) {
+          // Go through each of the voter_guides that was just returned. If the existing_voter_guides does not contain
+          //  that voter_guide organization_we_vote_id, then add it.
+          voter_guides.forEach( one_voter_guide => {
+            // Add voter guides if they don't already exist
+            if (!updated_voter_guide_ids_for_one_ballot_item.includes(one_voter_guide.organization_we_vote_id)) {
+              updated_voter_guide_ids_for_one_ballot_item.push(one_voter_guide.organization_we_vote_id);
+            }
+          });
+          // And finally update new_ballot_items with all voter guide ids that can be followed
+          to_follow_list_for_all_ballot_items_updated[action.res.ballot_item_we_vote_id] = updated_voter_guide_ids_for_one_ballot_item;
+          console.log("updated_voter_guide_ids_for_one_ballot_item: ", updated_voter_guide_ids_for_one_ballot_item);
+        } else {
+          // Go voter_guide-by-voter_guide and add them to each ballot_item
+          // We assume here that we have a complete set of voter guides, so for every ballot_item we_vote_id
+          //  we bring in, we clear out all earlier organization we_vote_id's at start
+          console.log("Object.keys: ", Object.keys(to_follow_list_for_all_ballot_items_updated));
+          let ballot_items_we_are_tracking = Object.keys(to_follow_list_for_all_ballot_items_updated);
+          let current_list = [];
+          let new_list = [];
+          let ballot_item_we_vote_ids_this_org_supports;
+          voter_guides.forEach( one_voter_guide => {
+            ballot_item_we_vote_ids_this_org_supports = one_voter_guide.ballot_item_we_vote_ids_this_org_supports;
+            if (ballot_item_we_vote_ids_this_org_supports) {
+              ballot_item_we_vote_ids_this_org_supports.forEach(one_ballot_item_id => {
+                console.log("one_ballot_item_id: ", one_ballot_item_id);
+                // Do we have an entry in this.state.to_follow_list_for_all_ballot_items[one_ballot_item_id]
+                if (ballot_items_we_are_tracking.includes(one_ballot_item_id)) {
+                  current_list = to_follow_list_for_all_ballot_items_updated[one_ballot_item_id];
+                  current_list.push(one_voter_guide.organization_we_vote_id);
+                  to_follow_list_for_all_ballot_items_updated[one_ballot_item_id] = current_list;
+                } else {
+                  new_list = [];
+                  new_list.push(one_voter_guide.organization_we_vote_id);
+                  to_follow_list_for_all_ballot_items_updated[one_ballot_item_id] = new_list;
+                }
+                ballot_items_we_are_tracking = Object.keys(to_follow_list_for_all_ballot_items_updated);
+              });
+            }
+          });
+        }
+
         return {
           ...state,
           ballot_has_guides: is_search || is_this_ballot,
-          to_follow: is_candidate_opinions ? state.to_follow : orgs,
-          to_follow_list_for_ballot_item: is_candidate_opinions ? orgs : state.to_follow_list_for_ballot_item,
-          data: data
+          to_follow: is_candidate_opinions ? state.to_follow : filtered_voter_guide_ids,
+          to_follow_list_for_ballot_item: is_candidate_opinions ? filtered_voter_guide_ids : state.to_follow_list_for_ballot_item,
+          to_follow_list_for_all_ballot_items: to_follow_list_for_all_ballot_items_updated,
+          all_cached_voter_guides: all_cached_voter_guides
         };
 
       case "voterGuidesFollowedRetrieve":
         voter_guides = action.res.voter_guides;
-        data = state.data;
+        all_cached_voter_guides = state.all_cached_voter_guides;
         var following = [];
-        voter_guides.forEach( item => {
-          data[item.organization_we_vote_id] = item;
-          following.push(item.organization_we_vote_id);
+        voter_guides.forEach( one_voter_guide => {
+          all_cached_voter_guides[one_voter_guide.organization_we_vote_id] = one_voter_guide;
+          following.push(one_voter_guide.organization_we_vote_id);
         });
         return {
           ...state,
           following: following,
-          data: data
+          all_cached_voter_guides: all_cached_voter_guides
         };
 
       case "voterGuidesIgnoredRetrieve":
         voter_guides = action.res.voter_guides;
-        data = state.data;
+        all_cached_voter_guides = state.all_cached_voter_guides;
         var ignoring = [];
-        voter_guides.forEach( item => {
-          data[item.organization_we_vote_id] = item;
-          ignoring.push(item.organization_we_vote_id);
+        voter_guides.forEach( one_voter_guide => {
+          all_cached_voter_guides[one_voter_guide.organization_we_vote_id] = one_voter_guide;
+          ignoring.push(one_voter_guide.organization_we_vote_id);
         });
         return {
           ...state,
           ignoring: ignoring,
-          data: data
+          all_cached_voter_guides: all_cached_voter_guides
         };
 
       case "organizationFollow":
@@ -129,9 +189,10 @@ class GuideStore extends FluxMapStore {
         return {
           ...state,
           following: state.following.concat(id),
-          to_follow: state.to_follow.filter( el => { return el !== id; }),
-          to_follow_list_for_ballot_item: state.to_follow_list_for_ballot_item.filter(el => {return el !== id; }),
-          ignoring: state.ignoring.filter( el => { return el !== id; })
+          to_follow: state.to_follow.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== id; }),
+          to_follow_list_for_ballot_item: state.to_follow_list_for_ballot_item.filter(existing_org_we_vote_id => {return existing_org_we_vote_id !== id; }),
+          // Add to_follow_list_for_all_ballot_items here
+          ignoring: state.ignoring.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== id; })
         };
 
       case "organizationStopFollowing":
@@ -139,7 +200,7 @@ class GuideStore extends FluxMapStore {
         id = action.res.organization_we_vote_id;
         return {
           ...state,
-          following: state.following.filter( el => { return el !== id; }),
+          following: state.following.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== id; }),
           to_follow: state.to_follow.concat(id)
         };
 
@@ -148,9 +209,10 @@ class GuideStore extends FluxMapStore {
         return {
           ...state,
           ignoring: state.ignoring.concat(id),
-          to_follow: state.to_follow.filter( el => { return el !== id; }),
-          to_follow_list_for_ballot_item: state.to_follow_list_for_ballot_item.filter( el => { return el !== id; }),
-          following: state.following.filter( el => { return el !== id; })
+          to_follow: state.to_follow.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== id; }),
+          to_follow_list_for_ballot_item: state.to_follow_list_for_ballot_item.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== id; }),
+          // Add to_follow_list_for_all_ballot_items here
+          following: state.following.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== id; })
         };
 
       case "error-organizationFollowIgnore" || "error-organizationFollow":
@@ -160,9 +222,7 @@ class GuideStore extends FluxMapStore {
       default:
         return state;
     }
-
   }
-
 }
 
 module.exports = new GuideStore(Dispatcher);

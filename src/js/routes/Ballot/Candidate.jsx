@@ -13,6 +13,7 @@ import SupportActions from "../../actions/SupportActions";
 import ThisIsMeAction from "../../components/Widgets/ThisIsMeAction";
 import VoterStore from "../../stores/VoterStore";
 import SearchAllActions from "../../actions/SearchAllActions";
+const web_app_config = require("../../config");
 
 export default class Candidate extends Component {
   static propTypes = {
@@ -24,8 +25,10 @@ export default class Candidate extends Component {
     this.state = {
       candidate: {},
       candidate_we_vote_id: this.props.params.candidate_we_vote_id,
-      guideToFollowList: GuideStore.toFollowListForBallotItem()
-
+      // Eventually we could use this toFollowListForBallotItemById with candidate_we_vote_id, but we can't now
+      //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
+      // guidesToFollowList: GuideStore.toFollowListForBallotItemById(this.props.params.candidate_we_vote_id)
+      guidesToFollowList: GuideStore.toFollowListForBallotItem()
     };
   }
 
@@ -75,8 +78,11 @@ export default class Candidate extends Component {
 
   _onGuideStoreChange (){
     let { candidate_we_vote_id } = this.state;
-    this.setState({ guideToFollowList: GuideStore.toFollowListForBallotItem() });
-    // When the guideToFollowList changes, trigger an update of the candidate so we can get an updated position_list
+    // Eventually we could use this toFollowListForBallotItemById with candidate_we_vote_id, but we can't now
+    //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
+    // this.setState({ guidesToFollowList: GuideStore.toFollowListForBallotItemById(this.state.candidate_we_vote_id) });
+    this.setState({ guidesToFollowList: GuideStore.toFollowListForBallotItem() });
+    // When the guidesToFollowList changes, trigger an update of the candidate so we can get an updated position_list
     CandidateActions.retrieve(this.state.candidate_we_vote_id);
     // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
     SupportActions.retrievePositionsCountsForOneBallotItem(candidate_we_vote_id);
@@ -85,9 +91,9 @@ export default class Candidate extends Component {
   render () {
     const electionId = VoterStore.election_id();
     const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to follow about this candidate or measure.";
-    var { candidate, guideToFollowList, candidate_we_vote_id } = this.state;
+    var { candidate, guidesToFollowList, candidate_we_vote_id } = this.state;
 
-    if (!candidate.ballot_item_display_name){
+    if (!candidate || !candidate.ballot_item_display_name){
       // TODO DALE If the candidate we_vote_id is not valid, we need to update this with a notice
       return <div className="container-fluid well u-stack--md u-inset--md">
                 <div>{LoadingWheel}</div>
@@ -97,6 +103,8 @@ export default class Candidate extends Component {
     let candidate_name = capitalizeString(candidate.ballot_item_display_name);
     let title_text = candidate_name + " - We Vote";
     let description_text = "Information about " + candidate_name + ", candidate for " + candidate.contest_office_name;
+    let voter = VoterStore.getVoter();
+    let candidate_admin_edit_url = web_app_config.WE_VOTE_SERVER_ROOT_URL + "c/" + this.state.candidate.id + "/edit/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
 
     return <span>
       <Helmet title={title_text}
@@ -112,10 +120,10 @@ export default class Candidate extends Component {
               </div> :
               null
             }
-            {guideToFollowList.length === 0 ?
+            {guidesToFollowList.length === 0 ?
               <p className="card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
               <div><h3 className="card__additional-heading">{"More opinions about " + candidate.ballot_item_display_name}</h3>
-              <GuideList id={electionId} ballotItemWeVoteId={candidate_we_vote_id} organizationsToFollow={guideToFollowList}/></div>
+              <GuideList id={electionId} ballotItemWeVoteId={candidate_we_vote_id} organizationsToFollow={guidesToFollowList}/></div>
             }
           </div>
         </section>
@@ -124,6 +132,11 @@ export default class Candidate extends Component {
                       name_being_viewed={candidate.ballot_item_display_name}
                       kind_of_owner="POLITICIAN" />
         <br />
+      {/* Show links to this candidate in the admin tools */}
+      { voter.is_admin ?
+        <span>Admin: <a href={candidate_admin_edit_url} target="_blank">edit {candidate_name}</a></span> :
+        null
+      }
       </span>;
 
   }
