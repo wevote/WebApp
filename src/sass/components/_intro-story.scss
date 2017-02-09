@@ -29,7 +29,7 @@
     padding-top: 20px;
     font-size: 20px;
     @include breakpoints (max large){
-      font-size: 19px;
+      font-size: 18px;
     }
   }
 
@@ -61,14 +61,14 @@
   &__img-height {
     height: 200px;
       @include breakpoints (max mid-small) {
-        height: 200px;
+        height: 165px;
     }
   }
 
   &__img-height--extra {
     height: 225px;
       @include breakpoints (max mid-small) {
-        height: 200px;
+        height: 175px;
     }
   }
 
@@ -189,7 +189,7 @@
   }
 }
 
-// TODO Move to separate file if global, otherwise, rename to be scoped to this component '.intro-tour__close-btn'
+// TODO Move to separate file if global, otherwise, rename to be scoped to this component '.intro-story__close-btn'
 .x-close {
   position: absolute;
   height: 25px;
