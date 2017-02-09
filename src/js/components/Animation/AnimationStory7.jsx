@@ -1,9 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { browserHistory } from "react-router";
-import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 import FacebookStore from "../../stores/FacebookStore";
 import LoadingWheel from "../../components/LoadingWheel";
-import TwitterSignIn from "../../components/Twitter/TwitterSignIn";
 import VoterStore from "../../stores/VoterStore";
 
 export default class AnimationStory7 extends Component {
@@ -79,16 +77,6 @@ export default class AnimationStory7 extends Component {
           <button type="button" className="btn btn-lg btn-success"
                   onClick={this.goToGetStarted}>Get Started&nbsp;&nbsp;&gt;</button>
         </div>
-        {/*
-        <div className="row">
-          <div className="col-md-2 col-md-offset-4 xs-block form-group">
-            <FacebookSignIn />
-          </div>
-          <div className="col-md-2">
-            <TwitterSignIn />
-          </div>
-        </div>
-        */}
       </div>
     </div>;
   }

@@ -137,28 +137,28 @@
 
 .background--image2 {
   @include breakpoints (small) {
-    background-image: url("/img/global/intro-story/slide2-historic-place-698x600.jpg");
-   }
+    background-image: url("/img/global/intro-story/slide2-lady-liberty-698x600.jpg");
+  }
     @include breakpoints (large) {
-    background-image: url("/img/global/intro-story/slide2-historic-place-1000x600.jpg");
+    background-image: url("/img/global/intro-story/slide2-lady-liberty-1000x600.jpg");
   }
 }
 
 .background--image3 {
   @include breakpoints (small) {
-    background-image: url("/img/global/intro-story/slide3-working-together-698x600.jpg");
-  }
+    background-image: url("/img/global/intro-story/slide3-historic-place-698x600.jpg");
+   }
     @include breakpoints (large) {
-    background-image: url("/img/global/intro-story/slide3-working-together-1000x600.jpg");
+    background-image: url("/img/global/intro-story/slide3-historic-place-1000x600.jpg");
   }
 }
 
 .background--image4 {
   @include breakpoints (small) {
-    background-image: url("/img/global/intro-story/slide4-lady-liberty-698x600.jpg");
+    background-image: url("/img/global/intro-story/slide4-working-together-698x600.jpg");
   }
     @include breakpoints (large) {
-    background-image: url("/img/global/intro-story/slide4-lady-liberty-1000x600.jpg");
+    background-image: url("/img/global/intro-story/slide4-working-together-1000x600.jpg");
   }
 }
 
