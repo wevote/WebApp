@@ -34,7 +34,7 @@ export default class MeasureItemCompressed extends Component {
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id), transitioning: false });
   }
   render () {
-    const { supportProps, transitioning } = this.state;
+    const { supportProps } = this.state;
     let support_count = 0;
     if (supportProps && supportProps.support_count) {
       // Only show ItemSupportOpposeCounts if your network has something to say
@@ -88,7 +88,7 @@ export default class MeasureItemCompressed extends Component {
                     goToMeasureLink :
                     null }
             >
-              <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps} transitioning={transitioning}
+              <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps}
                                        type="MEASURE" />
             </span> :
             null }

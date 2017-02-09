@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import FollowToggle from "../Widgets/FollowToggle";
-import GuideActions from "../../actions/GuideActions";
 import OrganizationDisplayForList from "./OrganizationDisplayForList";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 

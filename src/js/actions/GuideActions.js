@@ -14,8 +14,9 @@ module.exports = {
   },
 
   retrieveGuidesToFollow: function (election_id, search_string) {
+    const MAXIMUM_NUMBER_OF_GUIDES_TO_RETRIEVE = 50;
     Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", { google_civic_election_id: election_id,
-      maximum_number_to_retrieve: 15, search_string: search_string || "" });
+      maximum_number_to_retrieve: MAXIMUM_NUMBER_OF_GUIDES_TO_RETRIEVE, search_string: search_string || "" });
   },
 
   retrieveGuidesToFollowByBallotItem: function (ballot_item_we_vote_id, kind_of_ballot_item) {

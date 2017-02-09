@@ -81,7 +81,7 @@ export default class Office extends Component {
           <CandidateList children={office.candidate_list}
                          contest_office_name={office.ballot_item_display_name} />
         </div> :
-        null
+        <span>No candidates found.</span>
       }
     </div>;
   }
