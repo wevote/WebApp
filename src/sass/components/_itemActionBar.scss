@@ -1,5 +1,5 @@
 
-
+// This style is for when the item-actionbar is on its own line
 .item-actionbar {
   display: flex;
   border-top: 1px solid $gray-lighter;
@@ -10,5 +10,20 @@
     @include breakpoints (max mid-small) {
       display: none; // Hide Support/Oppose button labels on small screens
     }
+  }
+}
+
+
+// This style is for when the item-actionbar is added to a line with other elements (like for a candidate on ballot page)
+.item-actionbar-inline {
+  display: flex;
+  border-top: 1px solid $gray-lighter;
+  margin: 1em 0;
+  padding-top: 0px;
+
+  &__position-btn-label {
+    //@include breakpoints (max large) {
+      display: none; // Hide Support/Oppose button labels on all screens
+    //}
   }
 }

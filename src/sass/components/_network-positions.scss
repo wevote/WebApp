@@ -8,7 +8,7 @@
   $icon-size: 20px;
   position: relative;
   display: flex;
-  margin-top: .5rem;
+  //margin-top: .5rem;
 
   &__bar-well {
     display: block;
@@ -21,11 +21,7 @@
     border-radius: 3em;
     background-color: $gray-light;
     overflow: hidden;
-
   }
-
-
-
 
   &__bar-label {
     position: absolute;
@@ -51,6 +47,7 @@
   &__oppose {
     overflow: visible;
     width: $icon-size;
+    display: flex; // temp - rewrite
   }
 
   &__count {

@@ -24,7 +24,7 @@ export default class Measure extends Component {
     this.state = {
       measure: {},
       measure_we_vote_id: this.props.params.measure_we_vote_id,
-      // Eventually we could use this toFollowListForBallotItemById with measure_we_vote_id, but we can't now 
+      // Eventually we could use this toFollowListForBallotItemById with measure_we_vote_id, but we can't now
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
       // guideToFollowList: GuideStore.toFollowListForBallotItemById(this.props.params.measure_we_vote_id)
       guideToFollowList: GuideStore.toFollowListForBallotItem()
@@ -66,7 +66,7 @@ export default class Measure extends Component {
   }
 
   _onGuideStoreChange (){
-    // Eventually we could use this toFollowListForBallotItemById with measure_we_vote_id, but we can't now 
+    // Eventually we could use this toFollowListForBallotItemById with measure_we_vote_id, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
     this.setState({ guideToFollowList: GuideStore.toFollowListForBallotItem() });
     MeasureActions.retrieve(this.state.measure_we_vote_id);

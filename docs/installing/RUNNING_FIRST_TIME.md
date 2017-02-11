@@ -13,6 +13,8 @@ Every developer needs to maintain their own WebApp/src/js/config.js file, which 
 WebApp/src/js/config-template.js. The default configuration, copied from config-template.js, 
 should work as-is for new developers.
 
+Copy `WebApp/src/js/config-template.js` into `WebApp/src/js/config.js`:
+
     (WebAppEnv) $ cd /Users/<YOUR NAME HERE>/MyProjects/WebApp
     (WebAppEnv) $ cp src/js/config-template.js src/js/config.js
 
