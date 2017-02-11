@@ -78,9 +78,9 @@ export default class IntroStory extends Component {
         <img src={"/img/global/icons/x-close.png"} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
         <Slider ref="slider" {...settings}>
           <div key={1}><AnimationStory1 next={this.next}/></div>
-          <div key={4}><AnimationStory4 next={this.next}/></div>
-          <div key={2}><AnimationStory2 next={this.next}/></div>
-          <div key={3}><AnimationStory3 next={this.next}/></div>
+          <div key={4}><AnimationStory2 next={this.next}/></div>
+          <div key={2}><AnimationStory3 next={this.next}/></div>
+          <div key={3}><AnimationStory4 next={this.next}/></div>
           <div key={5}><AnimationStory5 next={this.next}/></div>
           <div key={6}><AnimationStory6 next={this.next}/></div>
           <div key={7}><AnimationStory7 next={this.next} timeline={timeline}/></div>
