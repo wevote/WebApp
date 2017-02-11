@@ -177,10 +177,10 @@ export default class OrganizationPositionItem extends Component {
       }
       <div className="card-child__media-object-content">
         <div className="card-child__content">
-          <div className="flex items-center">
+          <div className="u-flex items-center">
             <Link to={ ballotItemLink }
                   onlyActiveOnIndex={false}
-                  className="position-rating__candidate-name flex-auto">
+                  className="position-rating__candidate-name u-flex-auto">
                   {ballot_item_display_name}
             </Link>
 

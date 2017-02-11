@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
 import GuideStore from "../../stores/GuideStore";
+import ItemActionBar from "../../components/Widgets/ItemActionBar";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
+import ItemTinyOpinionsToFollow from "../../components/VoterGuide/ItemTinyOpinionsToFollow";
 import StarAction from "../../components/Widgets/StarAction";
 import SupportStore from "../../stores/SupportStore";
-import ItemTinyOpinionsToFollow from "../../components/VoterGuide/ItemTinyOpinionsToFollow";
 import { capitalizeString } from "../../utils/textFormat";
 
 export default class OfficeItemCompressed extends Component {
@@ -23,17 +24,29 @@ export default class OfficeItemCompressed extends Component {
     };
   }
 
-  // _onGuideStoreChange (){
-  //   let { candidate_we_vote_id } = this.state;
-  //   // Eventually we could use this toFollowListForBallotItemById with candidate_we_vote_id, but we can't now
-  //   //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-  //   // this.setState({ guidesToFollowList: GuideStore.toFollowListForBallotItemById(this.state.candidate_we_vote_id) });
-  //   this.setState({ guidesToFollowList: GuideStore.toFollowListForBallotItem() });
-  //   // When the guidesToFollowList changes, trigger an update of the candidate so we can get an updated position_list
-  //   CandidateActions.retrieve(this.state.candidate_we_vote_id);
-  //   // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
-  //   SupportActions.retrievePositionsCountsForOneBallotItem(candidate_we_vote_id);
-  // }
+  componentDidMount () {
+    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+    this._onGuideStoreChange();
+    this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
+    // console.log("OfficeItemCompressed, this.props.we_vote_id: ", this.props.we_vote_id);
+  }
+
+  componentWillUnmount () {
+    this.guideStoreListener.remove();
+    this.supportStoreListener.remove();
+  }
+
+  _onGuideStoreChange (){
+    // We just want to trigger a re-render
+    this.setState({ transitioning: false });
+    // console.log("_onGuideStoreChange");
+  }
+
+  _onSupportStoreChange () {
+    // We just want to trigger a re-render
+    this.setState({ transitioning: false });
+    // console.log("_onSupportStoreChange");
+  }
 
   render () {
     let { ballot_item_display_name, we_vote_id } = this.props;
@@ -52,30 +65,47 @@ export default class OfficeItemCompressed extends Component {
         </h2>
         <StarAction we_vote_id={we_vote_id} type="OFFICE"/>
 
-        <div className={ this.props.link_to_ballot_item_page ?
-                "u-cursor--pointer" : null }
-              onClick={ this.props.link_to_ballot_item_page ?
-                goToOfficeLink : null }>
+        <table className={ this.props.link_to_ballot_item_page ?
+                "u-cursor--pointer table table-condensed" : "table table-condensed" } >
+          <tbody>
           { this.props.candidate_list.map( (one_candidate) =>
-            <span key={one_candidate.we_vote_id}>
-              <span>{one_candidate.ballot_item_display_name}
-                {/* Decide whether to show the "Positions in your network" bar or the options of groups to follow */}
+            <tr key={one_candidate.we_vote_id}>
+              {/* *** Candidate name *** */}
+              <td className="col-md-6" onClick={ this.props.link_to_ballot_item_page ?
+                goToOfficeLink : null }>
+                {one_candidate.ballot_item_display_name}
+              </td>
+
+              {/* *** "Positions in your Network" bar OR items you can follow *** */}
+              <td className="col-md-3 u-tr u-inset__minimum-width--100px" onClick={ this.props.link_to_ballot_item_page ?
+                goToOfficeLink : null }>
+                {/* Decide whether to show the "Positions in your network" bar or the options of voter guides to follow */}
                 { SupportStore.get(one_candidate.we_vote_id) && ( SupportStore.get(one_candidate.we_vote_id).oppose_count || SupportStore.get(one_candidate.we_vote_id).support_count) ?
                   <ItemSupportOpposeCounts we_vote_id={one_candidate.we_vote_id}
                                            supportProps={SupportStore.get(one_candidate.we_vote_id)}
                                            type="CANDIDATE"/> :
                   <span>
+                  {/* Show possible voter guides to follow */}
                   { GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id) && GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id).length !== 0 ?
                     <ItemTinyOpinionsToFollow id="5000" ballotItemWeVoteId={one_candidate.we_vote_id}
                                organizationsToFollow={GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id)}/> :
                     <span /> }
                   </span>
                 }
+              </td>
 
-              </span><br />
-            </span>)
+              {/* *** Choose Support or Oppose *** */}
+              <td className="col-md-3 u-inset__minimum-width--120px">
+                <ItemActionBar ballot_item_we_vote_id={one_candidate.we_vote_id}
+                               supportProps={SupportStore.get(one_candidate.we_vote_id)}
+                               share_button_hide
+                               transitioniing={this.state.transitioning}
+                               type="CANDIDATE" />
+              </td>
+            </tr>)
           }
-        </div>
+          </tbody>
+        </table>
       </div>
     </div>;
   }

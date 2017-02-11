@@ -16,3 +16,14 @@
     }
   }
 }
+
+// For display of tiny thumbnail images for organizational voter guides
+.organization-image-tiny {
+  margin-left: 3px;
+  max-width: 25px;
+  border-radius: 2px;
+  @include breakpoints(small) {
+    // TODO DALE this seems to always get set
+    // max-width: 20px;
+  }
+}

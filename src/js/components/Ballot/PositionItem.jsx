@@ -97,7 +97,7 @@ export default class PositionItem extends Component {
         </div>
         <div className="card-child__media-object-content">
           <div className="card-child__content">
-          <div className="flex">
+          <div className="u-flex">
               <h4 className="card-child__display-name">
                 <Link to={speakerLink}>
                   { position.speaker_display_name }

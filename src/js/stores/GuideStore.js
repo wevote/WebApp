@@ -2,7 +2,6 @@ var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
 import GuideActions from "../actions/GuideActions";
 import SupportActions from "../actions/SupportActions";
-const assign = require("object-assign");
 
 class GuideStore extends FluxMapStore {
 
@@ -115,12 +114,12 @@ class GuideStore extends FluxMapStore {
           });
           // And finally update new_ballot_items with all voter guide ids that can be followed
           to_follow_list_for_all_ballot_items_updated[action.res.ballot_item_we_vote_id] = updated_voter_guide_ids_for_one_ballot_item;
-          console.log("updated_voter_guide_ids_for_one_ballot_item: ", updated_voter_guide_ids_for_one_ballot_item);
+          // console.log("updated_voter_guide_ids_for_one_ballot_item: ", updated_voter_guide_ids_for_one_ballot_item);
         } else {
           // Go voter_guide-by-voter_guide and add them to each ballot_item
           // We assume here that we have a complete set of voter guides, so for every ballot_item we_vote_id
           //  we bring in, we clear out all earlier organization we_vote_id's at start
-          console.log("Object.keys: ", Object.keys(to_follow_list_for_all_ballot_items_updated));
+          // console.log("Object.keys: ", Object.keys(to_follow_list_for_all_ballot_items_updated));
           let ballot_items_we_are_tracking = Object.keys(to_follow_list_for_all_ballot_items_updated);
           let current_list = [];
           let new_list = [];
@@ -129,7 +128,7 @@ class GuideStore extends FluxMapStore {
             ballot_item_we_vote_ids_this_org_supports = one_voter_guide.ballot_item_we_vote_ids_this_org_supports;
             if (ballot_item_we_vote_ids_this_org_supports) {
               ballot_item_we_vote_ids_this_org_supports.forEach(one_ballot_item_id => {
-                console.log("one_ballot_item_id: ", one_ballot_item_id);
+                // console.log("one_ballot_item_id: ", one_ballot_item_id);
                 // Do we have an entry in this.state.to_follow_list_for_all_ballot_items[one_ballot_item_id]
                 if (ballot_items_we_are_tracking.includes(one_ballot_item_id)) {
                   current_list = to_follow_list_for_all_ballot_items_updated[one_ballot_item_id];

@@ -55,12 +55,12 @@ export default class ItemSupportOpposeCounts extends Component {
     }
 
     return <div className="network-positions">
-      <div className="network-positions__bar-label">
+      {/*<div className="network-positions__bar-label">
         {!isEmpty ?
           "Positions in your network" :
           "No positions in your network"
         }
-      </div>
+      </div>*/}
       <div className="network-positions__support">
         <img src={!isEmpty && isMajoritySupport ? "/img/global/icons/up-arrow-color-icon.svg" : "/img/global/icons/up-arrow-gray-icon.svg"} className="network-positions__support-icon" width="20" height="20" />
         <div className="network-positions__count">

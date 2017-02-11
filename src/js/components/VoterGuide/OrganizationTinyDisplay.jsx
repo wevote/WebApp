@@ -27,6 +27,7 @@ export default class OrganizationTinyDisplay extends Component {
   };
 
   render () {
+    // TODO DALE NOTE: We need to generate a popover here, which is why we will need all of these variables
     // We package up the above variables to mimic a position
     var position = this.props;
 
@@ -35,21 +36,23 @@ export default class OrganizationTinyDisplay extends Component {
       organization_we_vote_id,
       voter_guide_image_url,
     } = this.props;
-    let num_of_lines = 2;
+    // let num_of_lines = 2;
     let voter_guide_display_name = this.props.voter_guide_display_name ? this.props.voter_guide_display_name : "";
     let twitterDescription = this.props.twitter_description ? this.props.twitter_description : "";
     // If the voter_guide_display_name is in the twitter_description, remove it
     let twitterDescriptionMinusName = removeTwitterNameFromDescription(voter_guide_display_name, twitterDescription);
 
     // TwitterHandle-based link
-    var voterGuideLink = this.props.twitter_handle ? "/" + this.props.twitter_handle : "/voterguide/" + organization_we_vote_id;
+    // var voterGuideLink = this.props.twitter_handle ? "/" + this.props.twitter_handle : "/voterguide/" + organization_we_vote_id;
 
-    return <div className="card-child card-child--not-followed">
-      <div className="card-child__media-object-anchor">
-        <Link to={voterGuideLink} className="u-no-underline">
-          <ImageHandler className="card-child__avatar" sizeClassName="icon-lg" imageUrl={voter_guide_image_url} />
-        </Link>
-      </div>
-    </div>;
+    return <span>
+      {/*<Link to={voterGuideLink} className="u-no-underline">*/}
+          <ImageHandler className=""
+                        sizeClassName="organization-image-tiny"
+                        hidePlaceholder
+                        imageUrl={voter_guide_image_url}
+                        alt={voter_guide_display_name} />
+      {/* </Link> */}
+    </span>;
   }
 }

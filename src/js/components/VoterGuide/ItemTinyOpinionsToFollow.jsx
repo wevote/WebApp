@@ -45,9 +45,24 @@ export default class ItemTinyOpinionsToFollow extends Component {
       return null;
     }
 
+    const MAXIMUM_ORGANIZATION_DISPLAY = 4;
+    let local_counter = 0;
+    let orgs_not_shown_count = 0;
+    if (this.state.organizations_to_follow && this.state.organizations_to_follow.length > MAXIMUM_ORGANIZATION_DISPLAY) {
+      orgs_not_shown_count = this.state.organizations_to_follow.length - MAXIMUM_ORGANIZATION_DISPLAY;
+    }
     const orgs = this.state.organizations_to_follow.map( (org) => {
-
-      return <OrganizationTinyDisplay key={org.organization_we_vote_id} {...org} />;
+      local_counter++;
+      if (local_counter > MAXIMUM_ORGANIZATION_DISPLAY) {
+        if (local_counter === MAXIMUM_ORGANIZATION_DISPLAY + 1) {
+          // If here we want to show how many organizations there are to follow
+          return <span key={org.organization_we_vote_id}> +{orgs_not_shown_count}</span>;
+        } else {
+          return "";
+        }
+      } else {
+        return <OrganizationTinyDisplay key={org.organization_we_vote_id} {...org} />;
+      }
     });
 
     return <div className="guidelist card-child__list-group">
