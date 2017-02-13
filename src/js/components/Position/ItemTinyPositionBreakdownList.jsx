@@ -1,13 +1,14 @@
 import React, { Component, PropTypes } from "react";
 import GuideActions from "../../actions/GuideActions";
-import OrganizationTinyDisplay from "./OrganizationTinyDisplay";
+import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
 
-export default class ItemTinyOpinionsToFollow extends Component {
+export default class ItemTinyPositionBreakdownList extends Component {  // TODO DALE WORK IN PROGRESS
 
   static propTypes = {
-    ballotItemWeVoteId: PropTypes.string,
-    organizationsToFollow: PropTypes.array,
-    instantRefreshOn: PropTypes.bool
+    ballot_item_we_vote_id: PropTypes.string.isRequired,
+    showOppose: PropTypes.bool,
+    showSupport: PropTypes.bool,
+    supportProps: PropTypes.object
   };
 
   constructor (props) {
@@ -26,7 +27,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
   }
 
   componentWillReceiveProps (nextProps){
-    // console.log("ItemTinyOpinionsToFollow, componentWillReceiveProps, nextProps.organizationsToFollow:", nextProps.organizationsToFollow);
+    console.log("ItemTinyOpinionsToFollow, componentWillReceiveProps, nextProps.organizationsToFollow:", nextProps.organizationsToFollow);
     //if (nextProps.instantRefreshOn ) {
       // NOTE: This is off because we don't want the organization to disappear from the "More opinions" list when clicked
       this.setState({
@@ -36,8 +37,13 @@ export default class ItemTinyOpinionsToFollow extends Component {
     //}
   }
 
+  handleIgnore (id) {
+    GuideActions.organizationFollowIgnore(id);
+    this.setState({ organizations_to_follow: this.state.organizations_to_follow.filter( (org) => { return org.organization_we_vote_id !== id;})});
+  }
+
   render () {
-    // console.log("ItemTinyOpinionsToFollow, render");
+    console.log("ItemTinyOpinionsToFollow, render");
     if (this.state.organizations_to_follow === undefined) {
       return null;
     }

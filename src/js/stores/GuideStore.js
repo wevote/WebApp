@@ -2,6 +2,7 @@ var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
 import GuideActions from "../actions/GuideActions";
 import SupportActions from "../actions/SupportActions";
+import VoterStore from "../stores/VoterStore";
 
 class GuideStore extends FluxMapStore {
 
@@ -102,8 +103,10 @@ class GuideStore extends FluxMapStore {
         // Now store the voter_guide information by ballot_item (i.e., which organizations have positions on each ballot_item)
         // let existing_voter_guide_ids_for_one_ballot_item;
         let updated_voter_guide_ids_for_one_ballot_item = [];
-        let to_follow_list_for_all_ballot_items_updated = state.to_follow_list_for_all_ballot_items;
+        let to_follow_list_for_all_ballot_items_updated = [];
         if (action.res.ballot_item_we_vote_id) {
+          // Start with previous list
+          to_follow_list_for_all_ballot_items_updated = state.to_follow_list_for_all_ballot_items;
           // Go through each of the voter_guides that was just returned. If the existing_voter_guides does not contain
           //  that voter_guide organization_we_vote_id, then add it.
           voter_guides.forEach( one_voter_guide => {
@@ -183,6 +186,7 @@ class GuideStore extends FluxMapStore {
         };
 
       case "organizationFollow":
+        GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter follows a new org, update list
         SupportActions.positionsCountForAllBallotItems();  // Following one org can change the support/oppose count for many items
         id = action.res.organization_we_vote_id;
         return {
@@ -195,6 +199,7 @@ class GuideStore extends FluxMapStore {
         };
 
       case "organizationStopFollowing":
+        GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter stops following an org, update list
         SupportActions.positionsCountForAllBallotItems();
         id = action.res.organization_we_vote_id;
         return {
@@ -204,6 +209,7 @@ class GuideStore extends FluxMapStore {
         };
 
       case "organizationFollowIgnore":
+        GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter ignores an org, update list
         id = action.res.organization_we_vote_id;
         return {
           ...state,

@@ -119,7 +119,7 @@ export default class MeasureItemCompressed extends Component {
                   <span>
                   {/* Show possible voter guides to follow */}
                   { GuideStore.toFollowListForBallotItemById(we_vote_id) && GuideStore.toFollowListForBallotItemById(we_vote_id).length !== 0 ?
-                    <ItemTinyOpinionsToFollow id="5000" ballotItemWeVoteId={we_vote_id}
+                    <ItemTinyOpinionsToFollow ballotItemWeVoteId={we_vote_id}
                                               organizationsToFollow={GuideStore.toFollowListForBallotItemById(we_vote_id)}/> :
                     <span /> }
                   </span> }
