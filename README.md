@@ -34,7 +34,7 @@ It may seem complicated, but it allows anyone to be in a position to make sugges
 
 Thanks to BrowserStack for helping us with automated testing!
 
-<img src='src/img/global/logos/browserstack-logo-600x315.png' width='150' height='79'/>
+[<img src='src/img/global/logos/browserstack-logo-600x315.png' width='150' height='79'/>](https://www.browserstack.com)
 
 ## Contributing to the Project
 Please read the following before you start contributing to the project. Thank you!
