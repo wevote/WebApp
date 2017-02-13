@@ -111,7 +111,9 @@ export default class Candidate extends Component {
               meta={[{"name": "description", "content": description_text}]}
               />
         <section className="card">
-          <CandidateItem {...candidate} contest_office_name={candidate.contest_office_name} />
+          <CandidateItem {...candidate}
+                         contest_office_name={candidate.contest_office_name}
+                         hideOpinionsToFollow />
           <div className="card__additional">
             { candidate.position_list ?
               <div>

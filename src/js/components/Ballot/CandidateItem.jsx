@@ -1,11 +1,14 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
+import GuideStore from "../../stores/GuideStore";
 import ImageHandler from "../../components/ImageHandler";
-import StarAction from "../../components/Widgets/StarAction";
 import ItemActionBar from "../../components/Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../../components/Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
+import ItemTinyOpinionsToFollow from "../../components/VoterGuide/ItemTinyOpinionsToFollow";
+//import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPositionBreakdownList";
 import OfficeNameText from "../../components/Widgets/OfficeNameText";
+import StarAction from "../../components/Widgets/StarAction";
 import SupportStore from "../../stores/SupportStore";
 import {abbreviateNumber} from "../../utils/textFormat";
 import {numberWithCommas} from "../../utils/textFormat";
@@ -14,6 +17,8 @@ export default class CandidateItem extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string.isRequired,
     candidate_photo_url: PropTypes.string.isRequired,
+    hideOpinionsToFollow: PropTypes.bool,
+    showPositionsInYourNetworkBreakdown: PropTypes.bool,
     party: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired,
     twitter_description: PropTypes.string,
@@ -29,6 +34,8 @@ export default class CandidateItem extends Component {
   }
 
   componentDidMount () {
+    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+    this._onGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
     var supportProps = SupportStore.get(this.props.we_vote_id);
     if (supportProps !== undefined) {
@@ -37,7 +44,13 @@ export default class CandidateItem extends Component {
   }
 
   componentWillUnmount () {
+    this.guideStoreListener.remove();
     this.supportStoreListener.remove();
+  }
+
+  _onGuideStoreChange (){
+    // We just want to trigger a re-render
+    this.setState({ transitioning: false });
   }
 
   _onSupportStoreChange () {
@@ -74,6 +87,7 @@ export default class CandidateItem extends Component {
     } else {
       candidate_photo_url_html = <i className="card-main__avatar icon-office-child icon-main icon-icon-person-placeholder-6-1" />;
     }
+    let positions_in_your_network = SupportStore.get(we_vote_id) && ( SupportStore.get(we_vote_id).oppose_count || SupportStore.get(we_vote_id).support_count);
 
     return <div className="card-main candidate-card">
       <div className="card-main__media-object">
@@ -142,18 +156,42 @@ export default class CandidateItem extends Component {
             </div> :
             null
           }
-          {
-            <span className={ this.props.link_to_ballot_item_page ?
-                    "card-main__network-positions u-cursor--pointer" :
-                    "card-main__network-positions" }
-                  onClick={ this.props.link_to_ballot_item_page ?
-                    goToCandidateLink : null }
-            >
+          <span className={ this.props.link_to_ballot_item_page ?
+                  "card-main__network-positions u-cursor--pointer" :
+                  "card-main__network-positions" }
+                onClick={ this.props.link_to_ballot_item_page ?
+                  goToCandidateLink : null }
+          >
+            { positions_in_your_network ?
               <ItemSupportOpposeCounts we_vote_id={we_vote_id}
                                        supportProps={supportProps}
                                        transitioning={transitioning}
-                                       type="CANDIDATE" /></span>
-            }
+                                       type="CANDIDATE" /> :
+              <span /> }
+            {/* Show possible voter guides to follow */}
+            { !this.props.hideOpinionsToFollow &&
+              GuideStore.toFollowListForBallotItemById(we_vote_id) && GuideStore.toFollowListForBallotItemById(we_vote_id).length !== 0 ?
+              <span>
+                { positions_in_your_network ?
+                  "More Opinions to Follow." :
+                  "Opinions to Follow." }
+                <ItemTinyOpinionsToFollow ballotItemWeVoteId={we_vote_id}
+                                          organizationsToFollow={GuideStore.toFollowListForBallotItemById(we_vote_id)} />
+              </span> :
+              <span /> }
+            {/* TODO DALE WORK IN PROGRESS
+            { positions_in_your_network && this.props.showPositionsInYourNetworkBreakdown ?
+              <span>
+                <ItemTinyPositionBreakdownList ballot_item_we_vote_id={we_vote_id}
+                                               showSupport
+                                               supportProps={this.state.supportProps} />
+                <ItemTinyPositionBreakdownList ballot_item_we_vote_id={we_vote_id}
+                                               showOppose
+                                               supportProps={this.state.supportProps} />
+              </span> :
+              <span /> }
+              */}
+          </span>
 
         </div> {/* END .card-main__media-object-content */}
       </div> {/* END .card-main__media-object */}

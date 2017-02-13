@@ -87,7 +87,7 @@ export default class OfficeItemCompressed extends Component {
                   <span>
                   {/* Show possible voter guides to follow */}
                   { GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id) && GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id).length !== 0 ?
-                    <ItemTinyOpinionsToFollow id="5000" ballotItemWeVoteId={one_candidate.we_vote_id}
+                    <ItemTinyOpinionsToFollow ballotItemWeVoteId={one_candidate.we_vote_id}
                                organizationsToFollow={GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id)}/> :
                     <span /> }
                   </span>
