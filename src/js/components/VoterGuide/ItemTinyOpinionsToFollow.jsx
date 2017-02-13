@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import GuideActions from "../../actions/GuideActions";
 import OrganizationTinyDisplay from "./OrganizationTinyDisplay";
 
 export default class ItemTinyOpinionsToFollow extends Component {
