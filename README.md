@@ -1,6 +1,7 @@
 # We Vote WebApp
 
 [![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=develop)](https://travis-ci.org/wevote/WebApp)
+![BrowserStack Status](https://www.browserstack.com/automate/badge.svg?badge_key=)
 
 This WebApp repository contains a Node/React/Flux Javascript application. Using data from
 Google Civic API, Vote Smart, MapLight, TheUnitedStates.io and the Voting Information Project, we give voters a social way to interact with ballot data.
@@ -30,6 +31,10 @@ It may seem complicated, but it allows anyone to be in a position to make sugges
 3. [Issues and Reporting Bugs](docs/working/ISSUES.md)
 
 4. [Styling Guidelines](docs/working/STYLING.md)
+
+Thanks to BrowserStack for helping us with automated testing!
+
+<img src='src/img/global/logos/browserstack-logo-600x315.png' width='150' height='79'/>
 
 ## Contributing to the Project
 Please read the following before you start contributing to the project. Thank you!
