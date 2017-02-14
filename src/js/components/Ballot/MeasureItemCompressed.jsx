@@ -130,7 +130,8 @@ export default class MeasureItemCompressed extends Component {
               <td className="col-md-3 u-inset__minimum-width--120px">
                 <ItemActionBar ballot_item_we_vote_id={we_vote_id}
                                supportProps={supportProps}
-                               share_button_hide
+                               shareButtonHide
+                               commentButtonHide
                                transitioniing={this.state.transitioning}
                                type="MEASURE" />
               </td>

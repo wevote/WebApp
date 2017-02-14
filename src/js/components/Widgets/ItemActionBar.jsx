@@ -10,7 +10,8 @@ const web_app_config = require("../../config");
 export default class ItemActionBar extends Component {
   static propTypes = {
     ballot_item_we_vote_id: PropTypes.string.isRequired,
-    share_button_hide: PropTypes.bool,
+    commentButtonHide: PropTypes.bool,
+    shareButtonHide: PropTypes.bool,
     supportProps: PropTypes.object,
     toggleFunction: PropTypes.func,
     type: PropTypes.string.isRequired
@@ -77,7 +78,7 @@ export default class ItemActionBar extends Component {
       <span className="btn__icon"><Icon name="thumbs-up-icon" width={icon_size} height={icon_size} color={icon_color} /></span> :
       <span className="btn__icon"><Icon name="thumbs-down-icon" width={icon_size} height={icon_size} color={icon_color} /></span>;
     const share_icon = <span className="btn__icon"><Icon name="share-icon" width={icon_size} height={icon_size} color={icon_color} /></span>;
-    return <div className={ this.props.share_button_hide ? "item-actionbar-inline" : "item-actionbar" }>
+    return <div className={ this.props.shareButtonHide ? "item-actionbar-inline" : "item-actionbar" }>
       { //Show the position voter has taken
         is_oppose || is_support ?
         <PositionDropdown removePositionFunction={remove_position_function} positionIcon={position_icon} positionText={position_text}/> :
@@ -87,24 +88,26 @@ export default class ItemActionBar extends Component {
             <span className="btn__icon">
               <Icon name="thumbs-up-icon" width={icon_size} height={icon_size} color={icon_color} />
             </span>
-            <span className={ this.props.share_button_hide ? "item-actionbar-inline__position-btn-label" : "item-actionbar__position-btn-label" }>Support</span>
+            <span className={ this.props.shareButtonHide ? "item-actionbar-inline__position-btn-label" : "item-actionbar__position-btn-label" }>Support</span>
           </button>
           <button className="item-actionbar__btn item-actionbar__btn--oppose btn btn-default" onClick={this.opposeItem.bind(this)}>
             <span className="btn__icon">
               <Icon name="thumbs-down-icon" width={icon_size} height={icon_size} color={icon_color} />
             </span>
-            <span className={ this.props.share_button_hide ? "item-actionbar-inline__position-btn-label" : "item-actionbar__position-btn-label" }>Oppose</span>
+            <span className={ this.props.shareButtonHide ? "item-actionbar-inline__position-btn-label" : "item-actionbar__position-btn-label" }>Oppose</span>
           </button>
         </div>
       }
+      { this.props.commentButtonHide ?
+        null :
          <button className="item-actionbar__btn item-actionbar__btn--comment btn btn-default" onClick={this.props.toggleFunction}>
             <span className="btn__icon">
               <Icon name="comment-icon" width={icon_size} height={icon_size} color={icon_color} />
             </span>
             <span className="item-actionbar__position-btn-label">Comment</span>
-          </button>
+          </button> }
 
-      { this.props.share_button_hide ?
+      { this.props.shareButtonHide ?
         null :
         <ShareButtonDropdown urlBeingShared={url_being_shared} shareIcon={share_icon} shareText={"Share"} /> }
     </div>;
