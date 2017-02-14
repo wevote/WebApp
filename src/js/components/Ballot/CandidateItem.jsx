@@ -17,7 +17,9 @@ export default class CandidateItem extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string.isRequired,
     candidate_photo_url: PropTypes.string.isRequired,
+    commentButtonHide: PropTypes.bool,
     hideOpinionsToFollow: PropTypes.bool,
+    hidePositionStatement: PropTypes.bool,
     showPositionsInYourNetworkBreakdown: PropTypes.bool,
     party: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired,
@@ -31,7 +33,7 @@ export default class CandidateItem extends Component {
   constructor (props) {
     super(props);
     this.state = {
-     hide_position_statement: false,
+     hide_position_statement: this.props.hidePositionStatement,
      transitioning: false
     };
   }
@@ -205,6 +207,7 @@ export default class CandidateItem extends Component {
       </div> {/* END .card-main__media-object */}
       <div className="card-main__actions">
         <ItemActionBar ballot_item_we_vote_id={we_vote_id}
+                       commentButtonHide={this.props.commentButtonHide}
                        supportProps={supportProps}
                        transitioning={transitioning}
                        type="CANDIDATE"

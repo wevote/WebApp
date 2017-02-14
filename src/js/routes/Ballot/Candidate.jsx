@@ -112,6 +112,7 @@ export default class Candidate extends Component {
               />
         <section className="card">
           <CandidateItem {...candidate}
+                         commentButtonHide
                          contest_office_name={candidate.contest_office_name}
                          hideOpinionsToFollow />
           <div className="card__additional">

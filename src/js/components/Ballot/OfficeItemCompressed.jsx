@@ -98,7 +98,8 @@ export default class OfficeItemCompressed extends Component {
               <td className="col-md-3 u-inset__minimum-width--120px">
                 <ItemActionBar ballot_item_we_vote_id={one_candidate.we_vote_id}
                                supportProps={SupportStore.get(one_candidate.we_vote_id)}
-                               share_button_hide
+                               shareButtonHide
+                               commentButtonHide
                                transitioniing={this.state.transitioning}
                                type="CANDIDATE" />
               </td>
