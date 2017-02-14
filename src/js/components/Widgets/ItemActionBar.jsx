@@ -12,6 +12,7 @@ export default class ItemActionBar extends Component {
     ballot_item_we_vote_id: PropTypes.string.isRequired,
     share_button_hide: PropTypes.bool,
     supportProps: PropTypes.object,
+    toggleFunction: PropTypes.func,
     type: PropTypes.string.isRequired
   };
 
@@ -96,6 +97,13 @@ export default class ItemActionBar extends Component {
           </button>
         </div>
       }
+         <button className="item-actionbar__btn item-actionbar__btn--comment btn btn-default" onClick={this.props.toggleFunction}>
+            <span className="btn__icon">
+              <Icon name="comment-icon" width={icon_size} height={icon_size} color={icon_color} />
+            </span>
+            <span className="item-actionbar__position-btn-label">Comment</span>
+          </button>
+
       { this.props.share_button_hide ?
         null :
         <ShareButtonDropdown urlBeingShared={url_being_shared} shareIcon={share_icon} shareText={"Share"} /> }

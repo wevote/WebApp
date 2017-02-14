@@ -30,7 +30,10 @@ export default class CandidateItem extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {transitioning: false};
+    this.state = {
+     hide_position_statement: false,
+     transitioning: false
+    };
   }
 
   componentDidMount () {
@@ -59,6 +62,11 @@ export default class CandidateItem extends Component {
       this.setState({ supportProps: supportProps, transitioning: false });
     }
   }
+
+  togglePositionStatement (){
+    this.setState({hide_position_statement: !this.state.hide_position_statement});
+  }
+
 
   render () {
     let {
@@ -196,12 +204,19 @@ export default class CandidateItem extends Component {
         </div> {/* END .card-main__media-object-content */}
       </div> {/* END .card-main__media-object */}
       <div className="card-main__actions">
-        <ItemActionBar ballot_item_we_vote_id={we_vote_id} supportProps={supportProps} transitioniing={transitioning} type="CANDIDATE" />
-        <ItemPositionStatementActionBar ballot_item_we_vote_id={we_vote_id}
+        <ItemActionBar ballot_item_we_vote_id={we_vote_id}
+                       supportProps={supportProps}
+                       transitioning={transitioning}
+                       type="CANDIDATE"
+                       toggleFunction={this.togglePositionStatement.bind(this)}
+        />
+        { this.state.hide_position_statement ?
+          null :
+          <ItemPositionStatementActionBar ballot_item_we_vote_id={we_vote_id}
                                         ballot_item_display_name={ballot_item_display_name}
                                         supportProps={supportProps}
-                                        transitioniing={transitioning}
-                                        type="CANDIDATE" />
+                                        transitioning={transitioning}
+                                        type="CANDIDATE" /> }
       </div>
     </div>;
   }
