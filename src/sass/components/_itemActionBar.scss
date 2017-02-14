@@ -11,6 +11,9 @@
       display: none; // Hide Support/Oppose button labels on small screens
     }
   }
+  &__btn--comment {
+    margin-right: .5em;
+  }
 }
 
 
