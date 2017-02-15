@@ -11,6 +11,7 @@ import { capitalizeString } from "../../utils/textFormat";
 export default class MeasureItem extends Component {
   static propTypes = {
     key: PropTypes.string,
+    commentButtonHide: PropTypes.bool,
     we_vote_id: PropTypes.string.isRequired,
     measure_subtitle: PropTypes.string,
     measure_text: PropTypes.string,
@@ -104,7 +105,11 @@ export default class MeasureItem extends Component {
             </span>
           </div> {/* END .card-main__content */}
           <div className="card-main__actions">
-            <ItemActionBar ballot_item_we_vote_id={we_vote_id} supportProps={supportProps} transitioniing={transitioning} type="MEASURE" />
+            <ItemActionBar ballot_item_we_vote_id={we_vote_id}
+                           commentButtonHide={this.props.commentButtonHide}
+                           supportProps={supportProps}
+                           transitioniing={transitioning}
+                           type="MEASURE" />
             <ItemPositionStatementActionBar ballot_item_we_vote_id={we_vote_id}
                                             ballot_item_display_name={ballot_item_display_name}
                                             supportProps={supportProps}
