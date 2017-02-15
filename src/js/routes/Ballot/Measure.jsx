@@ -97,7 +97,8 @@ export default class Measure extends Component {
       <Helmet title={title_text}
               meta={[{"name": "description", "content": description_text}]}
               />
-          <MeasureItem {...measure} />
+          <MeasureItem {...measure}
+                       commentButtonHide />
           <div className="card__additional">
             { measure.position_list ?
               <div>
