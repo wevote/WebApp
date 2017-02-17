@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { browserHistory, Link } from "react-router";
+import BallotActions from "../../actions/BallotActions";
 import BallotItem from "../../components/Ballot/BallotItem";
 import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 import BallotStore from "../../stores/BallotStore";
@@ -38,6 +39,7 @@ export default class Ballot extends Component {
       // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
       SupportActions.voterAllPositionsRetrieve();
       SupportActions.positionsCountForAllBallotItems();
+      BallotActions.voterBallotListRetrieve();
       this.supportStoreListener = SupportStore.addListener(this._onChange.bind(this));
     }
   }

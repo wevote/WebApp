@@ -33,6 +33,10 @@ class BallotStore extends FluxMapStore {
     return this.getState().ballots[civicId].ballot_item_list;
   }
 
+  ballotList () {
+    return this.getState().ballot_list || [];
+  }
+
   get currentBallotElectionName () {
     if (!this.isLoaded()){ return undefined; }
     let civicId = VoterStore.election_id();
@@ -134,6 +138,13 @@ class BallotStore extends FluxMapStore {
         return {
           ...state,
           ballots: assign({}, state.ballots, newBallot )
+        };
+
+      case "voterBallotListRetrieve":
+        let ballot_list = action.res.voter_ballot_list;
+        return {
+         ...state,
+         ballot_list: ballot_list
         };
 
       case "voterAddressSave":

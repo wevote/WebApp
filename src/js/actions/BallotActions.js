@@ -4,6 +4,9 @@ module.exports = {
 
   voterBallotItemsRetrieve: function () {
     Dispatcher.loadEndpoint("voterBallotItemsRetrieve", { use_test_election: false });
-  }
+  },
 
+  voterBallotListRetrieve: function () {
+    Dispatcher.loadEndpoint("voterBallotListRetrieve");
+  }
 };

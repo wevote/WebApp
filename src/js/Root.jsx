@@ -36,6 +36,7 @@ import OpinionsIgnored from "./routes/OpinionsIgnored";
 import Privacy from "./routes/More/Privacy";
 import Requests from "./routes/Requests";
 import SampleBallot from "./routes/Intro/SampleBallot";
+import SelectBallot from "./routes/Ballot/SelectBallot";
 import Settings from "./routes/Settings/Settings";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
 import SignIn from "./routes/More/SignIn";
@@ -98,11 +99,11 @@ const routes = () =>
 
     <Route path="/ballot" component={BallotIndex}>
       <IndexRoute component={Ballot}/>
-
       <Route path="/office/:office_we_vote_id" component={Office} />
       <Route path="/candidate/:candidate_we_vote_id" component={Candidate} />
       <Route path="/measure/:measure_we_vote_id" component={Measure} />
     </Route>
+    <Route path="/ballot/select_ballot" component={SelectBallot} />
 
     <Route path="bookmarks" component={Bookmarks} />
 
