@@ -28,6 +28,7 @@ export default class Ballot extends Component {
       browserHistory.push("settings/location");
     } else {
       let ballot = this.getBallot(this.props);
+      // console.log(ballot);
       if (ballot !== undefined) {
         let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
         this.setState({ballot: ballot, ballot_type: ballot_type});
@@ -138,6 +139,7 @@ export default class Ballot extends Component {
     }
 
     const ballot = this.state.ballot;
+    // console.log(ballot,5);
     var voter_address = VoterStore.getAddress();
     if (!ballot) {
       if (voter_address.length === 0) {
