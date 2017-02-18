@@ -12,7 +12,10 @@
             "browserName": "firefox",
             "username": "${SAUCE_USERNAME}",
             "accessKey": "${SAUCE_ACCESS_KEY}"
-          }
+          },
+		  "browserOptions": {
+			"browserName": "chrome" 
+		  }
         }
       ],
       "scripts": [
