@@ -54,4 +54,8 @@ Please read the following before you start contributing to the project. Thank yo
 
 6. [Approving Pull Requests](docs/contributing/APPROVING_PULL_REQUESTS.md)
 
+## Testing WebApp
+
+[Introduction to WebApp testing](docs/testing/README_TESTING.md)
+
 Welcome aboard!!
