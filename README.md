@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=develop)](https://travis-ci.org/wevote/WebApp)
 ![BrowserStack Status](https://www.browserstack.com/automate/badge.svg?badge_key=)
+[![Sauce Test Status](https://saucelabs.com/buildstatus/WeVote)](https://saucelabs.com/u/WeVote)
 
 This WebApp repository contains a Node/React/Flux Javascript application. Using data from
 Google Civic API, Vote Smart, MapLight, TheUnitedStates.io and the Voting Information Project, we give voters a social way to interact with ballot data.
