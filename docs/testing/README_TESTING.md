@@ -11,4 +11,3 @@ We are setting up automated testing with SauceLabs and Selenium.
 ---
 
 [Go back to Readme Home](../../README.md)
-
