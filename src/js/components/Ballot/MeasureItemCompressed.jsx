@@ -127,7 +127,7 @@ export default class MeasureItemCompressed extends Component {
               </td>
 
               {/* *** "Positions in your Network" bar OR items you can follow *** */}
-              <td className="col-md-3 u-tr u-inset__minimum-width--100px-testerr">
+              <td className="col-md-3 u-tr u-inset__minimum-width--100px">
                 <span className={ this.props.link_to_ballot_item_page ?
                         "u-cursor--pointer" :
                         null }
