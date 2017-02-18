@@ -59,6 +59,11 @@ export default class SignIn extends Component {
       return LoadingWheel;
     }
 
+    if (this.state.voter.signed_in_facebook && this.state.voter.signed_in_twitter) {
+      browserHistory.push("/intro/sample_ballot");
+      return LoadingWheel;
+    }
+
     // console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
     if (!this.state.voter.signed_in_facebook && this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
       console.log("GetStarted.jsx facebook_retrieve_attempted");
@@ -73,20 +78,29 @@ export default class SignIn extends Component {
           <img src={"/img/global/icons/x-close.png"} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
           <div className="intro-story__h1 xs-text-left">Sign In</div>
           <div className="intro-story__padding--btm">It's not required but it helps<br />you get started faster.</div>
-          <div className="row">
-            <div className="col-md-2 col-md-offset-4 xs-block form-group">
-              {this.state.voter.signed_in_facebook ?
-                null :
-                <FacebookSignIn />
-              }</div>
-            <div className="col-md-2">
-              {this.state.voter.signed_in_twitter ?
-                null :
-                <TwitterSignIn />
-              }</div>
-          </div>
+          {this.state.voter.signed_in_facebook ?
+            null :
+            <div className="row">
+              <div className="col-md-4 col-md-offset-4 xs-block form-group">
+                <FacebookSignIn /><br />
+                Sign in with Facebook so you can<br />
+                ask your friends for voting advice.<br />
+                <br />
+              </div>
+            </div> }
+          {this.state.voter.signed_in_twitter ?
+            null :
+            <div className="row">
+              <div className="col-md-4 col-md-offset-4 xs-block form-group">
+                <TwitterSignIn /><br />
+                Sign in with Twitter to see<br />
+                the voter guides of everyone<br />
+                you follow on Twitter.<br />
+                <br />
+              </div>
+            </div> }
           <footer className="intro-story__footer">
-              <span role="button"><p onClick={this.goToBallotLink}><strong>Skip Sign In - check out We Vote first</strong></p></span>
+              <span role="button"><p onClick={this.goToBallotLink}><strong><span className="u-link-color-light u-underline">Skip Sign In</span> - check out We Vote first</strong></p></span>
           </footer>
         </div>
       </div>;

@@ -99,25 +99,29 @@ export default class SignIn extends Component {
       <BrowserPushMessage incomingProps={this.props} />
       <div className="card">
         <div className="card-main">
-          <h1 className="h3">{voter.is_signed_in ? <span>{your_account_title}</span> : <span>Your Account</span>}</h1>
+          {voter.signed_in_twitter && voter.signed_in_facebook ?
+            null :
+            <h1 className="h3">{voter.is_signed_in ? <span>{your_account_title}</span> : <span>Your Account</span>}</h1> }
           {voter.is_signed_in ?
             <span>{your_account_explanation}</span> :
             <div>Before you can share, either publicly or with friends, please sign in. Don't worry, we won't post anything automatically.<br />
             <br /></div>
           }
-          <div>
-            {voter.signed_in_twitter ?
-              null :
-              <TwitterSignIn />
-            }
-            <span>&nbsp;</span>
-            {voter.signed_in_facebook ?
-              null :
-              <FacebookSignIn />
-            }
-            <br />
-            <br />
-          </div>
+          {!voter.signed_in_twitter || !voter.signed_in_facebook ?
+            <div>
+              {voter.signed_in_twitter ?
+                null :
+                <TwitterSignIn />
+              }
+              <span>&nbsp;</span>
+              {voter.signed_in_facebook ?
+                null :
+                <FacebookSignIn />
+              }
+              <br />
+              <br />
+            </div> :
+            null }
           <div>
             {voter.is_signed_in ?
               <div>
