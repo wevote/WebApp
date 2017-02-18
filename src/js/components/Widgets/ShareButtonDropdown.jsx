@@ -34,8 +34,9 @@ export default class ShareButtonDropdown extends Component {
     window.FB.ui({
       display: "popup",
       method: "share",
-      href: this.urlBeingShared,
-      redirect_uri: this.urlBeingShared
+      // Sharing this href link to facebook(href must be a valid url else facebook share popup will be having issues)
+      href: this.props.urlBeingShared,
+      redirect_uri: this.props.urlBeingShared   // redirecting to the same url after sharing on facebook
     }, function (){});
     this.closeDropdown();
  }
