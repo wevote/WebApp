@@ -16,6 +16,7 @@ notifications:
   slack: wevote:Ngu6uKzt4qRAvhrCPPoTIIVM
   email:
       - SauceLabs@WeVote.US
+      - warlhord@gmail.com
 addons:
     jwt:
         secure: "eb6e0454-e844-4a1a-a695-2d5830897566"
