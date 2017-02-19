@@ -8,6 +8,7 @@ import StarAction from "../../components/Widgets/StarAction";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
+
 export default class MeasureItemCompressed extends Component {
   static propTypes = {
     key: PropTypes.string,
@@ -17,11 +18,13 @@ export default class MeasureItemCompressed extends Component {
     kind_of_ballot_item: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string.isRequired,
     link_to_ballot_item_page: PropTypes.bool,
-    measure_url: PropTypes.string
+    measure_url: PropTypes.string,
+    _togglePopup: PropTypes.func,
   };
+
   constructor (props) {
     super(props);
-    this.state = {transitioning: false};
+    this.state = {transitioning: false, showModal: false};
   }
 
   componentDidMount () {
@@ -29,6 +32,7 @@ export default class MeasureItemCompressed extends Component {
     this._onGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
+   
   }
 
   componentWillUnmount () {
@@ -46,6 +50,7 @@ export default class MeasureItemCompressed extends Component {
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id), transitioning: false });
   }
   render () {
+    //console.log("this.props", this.props);
     const { supportProps } = this.state;
     let support_count = 0;
     if (supportProps && supportProps.support_count) {
@@ -66,6 +71,7 @@ export default class MeasureItemCompressed extends Component {
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
     return <div className="card-main measure-card">
+         
       <div className="card-main__content">
         {/* Reuse this?
         {
@@ -108,7 +114,7 @@ export default class MeasureItemCompressed extends Component {
                         "u-cursor--pointer" :
                         null }
                       onClick={ this.props.link_to_ballot_item_page ?
-                        goToMeasureLink :
+                        ()=>{this.props._togglePopup(ballot_item_display_name);} :
                         null }
                 >
                 { support_count || oppose_count ?
