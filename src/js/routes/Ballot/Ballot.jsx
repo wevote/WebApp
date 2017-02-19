@@ -20,7 +20,7 @@ export default class Ballot extends Component {
 
   constructor (props){
     super(props);
-    this.state = {showModal:false};
+    this.state = {showModal: false};
   }
 
   componentDidMount () {
