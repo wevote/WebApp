@@ -8,14 +8,13 @@
   $icon-size: 20px;
   position: relative;
   display: flex;
-  //margin-top: .5rem;
+  align-items: center;
 
   &__bar-well {
     display: block;
     position: relative;
-    margin-top: ($icon-size - $bar-height) / 2;
-    margin-right: 5px;
-    margin-left: 5px;
+    margin-right: $space-sm;
+    margin-left: $space-sm;
     flex-grow: 5;
     height: $bar-height;
     border-radius: 3em;
@@ -45,16 +44,14 @@
 
   &__support,
   &__oppose {
-    overflow: visible;
-    width: $icon-size;
-    display: flex; // temp - rewrite
+    display: flex;
+    align-items: center;
+    flex: none;
   }
 
   &__count {
     text-align: center;
-    padding-top: 3px;
     color: $gray-dark;
-    min-height: 1.5em; // spacer for .network-positions__bar-label
   }
 
   &__bar--support {

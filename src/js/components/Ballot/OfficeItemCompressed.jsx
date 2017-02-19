@@ -115,7 +115,7 @@ export default class OfficeItemCompressed extends Component {
               </td>
 
               {/* *** Choose Support or Oppose *** */}
-              <td className="col-md-3 u-inset__minimum-width--120px u-cursor--pointer">
+              <td className="col-md-3 u-cursor--pointer">
                 <ItemActionBar ballot_item_we_vote_id={one_candidate.we_vote_id}
                                supportProps={SupportStore.get(one_candidate.we_vote_id)}
                                shareButtonHide

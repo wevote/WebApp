@@ -109,11 +109,10 @@ export default class MeasureItemCompressed extends Component {
         <StarAction we_vote_id={we_vote_id} type="MEASURE"/>
 
         {/* This is the area *under* the measure title */}
-        <table className={ this.props.link_to_ballot_item_page ?
-                "u-cursor--pointer table table-condensed" : "table table-condensed" } >
-          <tbody>
-            <tr>
-              <td className="col-md-6">
+        <div className={ this.props.link_to_ballot_item_page ?
+                "u-cursor--pointer u-flex row" : "u-flex row" } >
+
+              <div className="col-md-6 u-flex-none">
                 <div className={ this.props.link_to_ballot_item_page ?
                         "u-cursor--pointer" : null }
                       onClick={ this.props.link_to_ballot_item_page ?
@@ -121,10 +120,10 @@ export default class MeasureItemCompressed extends Component {
                 { this.props.measure_text ?
                   <div className="measure_text">{measure_text}</div> :
                   null }
-              </td>
+              </div>
 
               {/* *** "Positions in your Network" bar OR items you can follow *** */}
-              <td className="col-md-3 u-tr u-inset__minimum-width--100px">
+              <div className="col-md-3 u-tr">
                 <span className={ this.props.link_to_ballot_item_page ?
                         "u-cursor--pointer" :
                         null }
@@ -146,10 +145,10 @@ export default class MeasureItemCompressed extends Component {
                     <span /> }
                   </span> }
                 </span>
-              </td>
+              </div>
 
               {/* *** Choose Support or Oppose *** */}
-              <td className="col-md-3 u-inset__minimum-width--120px">
+              <td className="col-md-3">
                 <ItemActionBar ballot_item_we_vote_id={we_vote_id}
                                supportProps={this.state.supportProps}
                                shareButtonHide
@@ -157,9 +156,7 @@ export default class MeasureItemCompressed extends Component {
                                transitioniing={this.state.transitioning}
                                type="MEASURE" />
               </td>
-            </tr>
-          </tbody>
-        </table>
+        </div>
       </div> {/* END .card-main__content */}
     </div>;
   }
