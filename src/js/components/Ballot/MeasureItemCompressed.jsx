@@ -22,7 +22,7 @@ export default class MeasureItemCompressed extends Component {
   };
   constructor (props) {
     super(props);
-    this.state = {transitioning: false, showModal:false};
+    this.state = {transitioning: false, showModal: false};
   }
 
   componentDidMount () {
@@ -45,6 +45,7 @@ export default class MeasureItemCompressed extends Component {
   }
 
   _togglePopup () {
+    this.props.test();
      this.setState({
         showModal: !this.state.showModal,
       });
@@ -54,6 +55,7 @@ export default class MeasureItemCompressed extends Component {
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id), transitioning: false });
   }
   render () {
+    //console.log("this.props", this.props);
     const { supportProps } = this.state;
     let support_count = 0;
     if (supportProps && supportProps.support_count) {

@@ -37,6 +37,7 @@ export default class Ballot extends Component {
       this.ballotStoreListener = BallotStore.addListener(this._onChange.bind(this));
       // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
       // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
+      this.test = this.test.bind(this);
       SupportActions.voterAllPositionsRetrieve();
       SupportActions.positionsCountForAllBallotItems();
       this.supportStoreListener = SupportStore.addListener(this._onChange.bind(this));
@@ -130,6 +131,10 @@ export default class Ballot extends Component {
     }
   }
 
+  test (){
+    console.log("This is a test");
+  }
+
   render () {
     const showIntroStory = !cookies.getItem("intro_story_watched");
 
@@ -207,7 +212,7 @@ export default class Ballot extends Component {
       {emptyBallot}
       { show_expanded_ballot_items ?
         ballot.map( (item) => <BallotItem key={item.we_vote_id} {...item} />) :
-        ballot.map( (item) => <BallotItemCompressed key={item.we_vote_id} {...item} />)
+        ballot.map( (item) => <BallotItemCompressed test = {this.test} key={item.we_vote_id} {...item} />)
       }
       </div>;
   }
