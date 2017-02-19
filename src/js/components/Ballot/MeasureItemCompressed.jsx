@@ -70,21 +70,6 @@ export default class MeasureItemCompressed extends Component {
     measure_subtitle = capitalizeString(measure_subtitle);
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
-
-   // const PopupModal = (
-   //    <Modal show={this.state.showModal} onHide={this._togglePopup}>
-   //        <Modal.Header closeButton>
-   //          <Modal.Title>Modal heading</Modal.Title>
-   //        </Modal.Header>
-   //        <Modal.Body>
-   //          <h4>{ballot_item_display_name}</h4>
-   //        </Modal.Body>
-   //        <Modal.Footer>
-   //          <Button onClick={this._togglePopup}>Close</Button>
-   //        </Modal.Footer>
-   //      </Modal>
-   //    );
-
     return <div className="card-main measure-card">
          
       <div className="card-main__content">

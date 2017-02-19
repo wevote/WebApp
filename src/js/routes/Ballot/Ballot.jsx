@@ -138,10 +138,6 @@ export default class Ballot extends Component {
     }
   }
 
-  test (){
-    console.log("This is a test");
-  }
-
   render () {
       const popover = (
       <Popover id="modal-popover" title="popover">
@@ -194,7 +190,7 @@ export default class Ballot extends Component {
     }
 
     const ballot = this.state.ballot;
-    // console.log(ballot,5);
+
     var voter_address = VoterStore.getAddress();
     if (!ballot) {
       if (voter_address.length === 0) {
