@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { browserHistory, Link } from "react-router";
 import BallotItem from "../../components/Ballot/BallotItem";
 import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
@@ -20,7 +20,7 @@ export default class Ballot extends Component {
 
   constructor (props){
     super(props);
-    this.state = {};
+    this.state = {showModal:false};
   }
 
   componentDidMount () {
@@ -37,7 +37,7 @@ export default class Ballot extends Component {
       this.ballotStoreListener = BallotStore.addListener(this._onChange.bind(this));
       // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
       // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
-      this.test = this.test.bind(this);
+      this._togglePopup = this._togglePopup.bind(this);
       SupportActions.voterAllPositionsRetrieve();
       SupportActions.positionsCountForAllBallotItems();
       this.supportStoreListener = SupportStore.addListener(this._onChange.bind(this));
@@ -56,6 +56,13 @@ export default class Ballot extends Component {
   componentWillReceiveProps (nextProps){
     let ballot_type = nextProps.location.query ? nextProps.location.query.type : "all";
     this.setState({ballot: this.getBallot(nextProps), ballot_type: ballot_type });
+  }
+
+    _togglePopup (modalMessage) {
+     this.setState({
+        showModal: !this.state.showModal,
+        modalMessage: modalMessage
+      });
   }
 
   _onChange (){
@@ -136,6 +143,21 @@ export default class Ballot extends Component {
   }
 
   render () {
+      const PopupModal = (
+      <Modal show={this.state.showModal} onHide={()=>{this._togglePopup(null)}}>
+          <Modal.Header closeButton>
+            <Modal.Title>{this.state.modalMessage}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h4>{"Hello!"}</h4>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={()=>{this._togglePopup(null)}}>Close</Button>
+          </Modal.Footer>
+        </Modal>
+      );
+
+
     const showIntroStory = !cookies.getItem("intro_story_watched");
 
     if (showIntroStory) {
@@ -191,6 +213,7 @@ export default class Ballot extends Component {
     let show_expanded_ballot_items = false;
 
     return <div className="ballot">
+    {this.state.showModal ? PopupModal : null}
       <div className="ballot__heading u-stack--lg">
         <Helmet title="Ballot - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
@@ -212,7 +235,7 @@ export default class Ballot extends Component {
       {emptyBallot}
       { show_expanded_ballot_items ?
         ballot.map( (item) => <BallotItem key={item.we_vote_id} {...item} />) :
-        ballot.map( (item) => <BallotItemCompressed test = {this.test} key={item.we_vote_id} {...item} />)
+        ballot.map( (item) => <BallotItemCompressed _togglePopup = {this._togglePopup} key={item.we_vote_id} {...item} />)
       }
       </div>;
   }

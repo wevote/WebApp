@@ -7,7 +7,7 @@ import ItemTinyOpinionsToFollow from "../../components/VoterGuide/ItemTinyOpinio
 import StarAction from "../../components/Widgets/StarAction";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
-import { Modal, Button } from "react-bootstrap";
+
 
 export default class MeasureItemCompressed extends Component {
   static propTypes = {
@@ -18,8 +18,10 @@ export default class MeasureItemCompressed extends Component {
     kind_of_ballot_item: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string.isRequired,
     link_to_ballot_item_page: PropTypes.bool,
-    measure_url: PropTypes.string
+    measure_url: PropTypes.string,
+    _togglePopup: PropTypes.func,
   };
+
   constructor (props) {
     super(props);
     this.state = {transitioning: false, showModal: false};
@@ -30,7 +32,7 @@ export default class MeasureItemCompressed extends Component {
     this._onGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
-    this._togglePopup = this._togglePopup.bind(this);
+   
   }
 
   componentWillUnmount () {
@@ -42,13 +44,6 @@ export default class MeasureItemCompressed extends Component {
     // We just want to trigger a re-render
     this.setState({ transitioning: false });
     // console.log("_onGuideStoreChange");
-  }
-
-  _togglePopup () {
-    this.props.test();
-     this.setState({
-        showModal: !this.state.showModal,
-      });
   }
 
   _onSupportStoreChange () {
@@ -76,22 +71,22 @@ export default class MeasureItemCompressed extends Component {
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
 
-   const PopupModal = (
-      <Modal show={this.state.showModal} onHide={this._togglePopup}>
-          <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <h4>{ballot_item_display_name}</h4>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={this._togglePopup}>Close</Button>
-          </Modal.Footer>
-        </Modal>
-      );
+   // const PopupModal = (
+   //    <Modal show={this.state.showModal} onHide={this._togglePopup}>
+   //        <Modal.Header closeButton>
+   //          <Modal.Title>Modal heading</Modal.Title>
+   //        </Modal.Header>
+   //        <Modal.Body>
+   //          <h4>{ballot_item_display_name}</h4>
+   //        </Modal.Body>
+   //        <Modal.Footer>
+   //          <Button onClick={this._togglePopup}>Close</Button>
+   //        </Modal.Footer>
+   //      </Modal>
+   //    );
 
     return <div className="card-main measure-card">
-         {this.state.showModal ? PopupModal : null}
+         
       <div className="card-main__content">
         {/* Reuse this?
         {
@@ -134,7 +129,7 @@ export default class MeasureItemCompressed extends Component {
                         "u-cursor--pointer" :
                         null }
                       onClick={ this.props.link_to_ballot_item_page ?
-                        this._togglePopup :
+                        ()=>{this.props._togglePopup(ballot_item_display_name);} :
                         null }
                 >
                 { support_count || oppose_count ?
