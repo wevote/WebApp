@@ -75,7 +75,7 @@ export default class MeasureItemCompressed extends Component {
 
 
    const PopupModal = (
-      <Modal show={this.state.showModal} onHide={this.close}>
+      <Modal show={this.state.showModal} onHide={this._togglePopup}>
           <Modal.Header closeButton>
             <Modal.Title>Modal heading</Modal.Title>
           </Modal.Header>

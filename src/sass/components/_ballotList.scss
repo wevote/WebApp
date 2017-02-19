@@ -27,3 +27,9 @@
     // max-width: 20px;
   }
 }
+
+.modal-dialog {
+  position: relative;
+  top: 25%;
+  transform: translateY(-50%);
+}
