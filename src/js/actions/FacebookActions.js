@@ -57,6 +57,9 @@ module.exports = {
     if (!web_app_config.FACEBOOK_APP_ID) {
       console.log("Missing FACEBOOK_APP_ID from src/js/config.js");
     }
+    // FB.getLoginStatus does an ajax call and when you call FB.login on it's response, the popup that would open
+    // as a result of this call is blocked. A solution to this problem would be to to specify status: true in the
+    // options object of FB.init and you need to be confident that login status has already loaded.
     window.FB.getLoginStatus(function (response) {
       if (response.status === "connected") {
         Dispatcher.dispatch({
