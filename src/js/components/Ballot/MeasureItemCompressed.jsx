@@ -19,12 +19,15 @@ export default class MeasureItemCompressed extends Component {
     ballot_item_display_name: PropTypes.string.isRequired,
     link_to_ballot_item_page: PropTypes.bool,
     measure_url: PropTypes.string,
-    _togglePopup: PropTypes.func,
+    _toggleBallotModal: PropTypes.func
   };
 
   constructor (props) {
     super(props);
-    this.state = {transitioning: false, showModal: false};
+    this.state = {
+      transitioning: false,
+      showModal: false
+    };
   }
 
   componentDidMount () {
@@ -32,7 +35,6 @@ export default class MeasureItemCompressed extends Component {
     this._onGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
-   
   }
 
   componentWillUnmount () {
@@ -47,7 +49,10 @@ export default class MeasureItemCompressed extends Component {
   }
 
   _onSupportStoreChange () {
-    this.setState({ supportProps: SupportStore.get(this.props.we_vote_id), transitioning: false });
+    this.setState({
+      supportProps: SupportStore.get(this.props.we_vote_id),
+      transitioning: false
+    });
   }
   render () {
     //console.log("this.props", this.props);
@@ -71,7 +76,6 @@ export default class MeasureItemCompressed extends Component {
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
     return <div className="card-main measure-card">
-         
       <div className="card-main__content">
         {/* Reuse this?
         {
@@ -113,16 +117,15 @@ export default class MeasureItemCompressed extends Component {
                 <span className={ this.props.link_to_ballot_item_page ?
                         "u-cursor--pointer" :
                         null }
-                      onClick={ this.props.link_to_ballot_item_page ?
-                        ()=>{this.props._togglePopup(ballot_item_display_name);} :
-                        null }
                 >
                 { support_count || oppose_count ?
                   <span>
                     <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps}
                                              type="MEASURE" />
                   </span> :
-                  <span>
+                  <span onClick={ this.props.link_to_ballot_item_page ?
+                        ()=>{this.props._toggleBallotModal(ballot_item_display_name);} :
+                        null } >
                   {/* Show possible voter guides to follow */}
                   { GuideStore.toFollowListForBallotItemById(we_vote_id) && GuideStore.toFollowListForBallotItemById(we_vote_id).length !== 0 ?
                     <ItemTinyOpinionsToFollow ballotItemWeVoteId={we_vote_id}

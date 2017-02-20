@@ -20,7 +20,7 @@ export default class AnimationStory3 extends Component {
         your <strong>We Vote</strong> network.<br />
         See what they support or oppose.</div>
       <div className="intro-story__padding-btn">
-        <button type="button" className="btn btn-info" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
+        <button type="button" className="btn btn-success" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
       </div>
     </div>;
   }

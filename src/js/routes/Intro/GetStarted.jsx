@@ -49,11 +49,6 @@ export default class SignIn extends Component {
     });
   }
 
-  goToGetStarted () {
-    var getStartedNow = "/intro/get_started";
-    browserHistory.push(getStartedNow);
-  }
-
   render () {
     if (!this.state.voter){
       return LoadingWheel;
@@ -64,11 +59,9 @@ export default class SignIn extends Component {
       return LoadingWheel;
     }
 
-    // console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
     if (!this.state.voter.signed_in_facebook && this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
       console.log("GetStarted.jsx facebook_retrieve_attempted");
       browserHistory.push("/facebook_sign_in");
-      // return <span>SignIn.jsx facebook_retrieve_attempted</span>;
       return LoadingWheel;
     }
 
@@ -100,7 +93,8 @@ export default class SignIn extends Component {
               </div>
             </div> }
           <footer className="intro-story__footer">
-              <span role="button"><p onClick={this.goToBallotLink}><strong><span className="u-link-color-light u-underline">Skip Sign In</span> - check out We Vote first</strong></p></span>
+            <button type="button" className="btn btn-lg btn-success" onClick={this.goToBallotLink}>Skip Sign In&nbsp;&nbsp;&gt;</button><br />
+            Check out We Vote first
           </footer>
         </div>
       </div>;

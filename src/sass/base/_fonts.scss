@@ -80,6 +80,18 @@
   font-size: 80px;
 }
 
+.icon-candidate-large {
+  font-size: 80px;
+}
+
+.icon-candidate-medium {
+  font-size: 50px;
+}
+
+.icon-candidate-small {
+  font-size: 24px;
+}
+
 .icon-lg {
   font-size: 5rem;
     @include breakpoints (max mid-small){

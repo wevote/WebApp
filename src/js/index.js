@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 import { browserHistory, Router, applyRouterMiddleware } from "react-router";
-import { useScroll } from 'react-router-scroll';
+import { useScroll } from "react-router-scroll";
 import routes from "./Root";
 
 // polyfill
