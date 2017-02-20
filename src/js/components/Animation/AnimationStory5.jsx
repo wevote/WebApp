@@ -22,7 +22,7 @@ export default class AnimationStory5 extends Component {
         Share your opinions publicly<br />
         or privately.</div>
       <div className="intro-story__padding-btn">
-        <button type="button" className="btn btn-info" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
+        <button type="button" className="btn btn-success" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
       </div>
     </div>;
   }

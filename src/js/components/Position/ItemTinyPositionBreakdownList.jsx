@@ -2,10 +2,11 @@ import React, { Component, PropTypes } from "react";
 import GuideActions from "../../actions/GuideActions";
 import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
 
-export default class ItemTinyPositionBreakdownList extends Component {  // TODO DALE WORK IN PROGRESS
+export default class ItemTinyPositionBreakdownList extends Component {
 
   static propTypes = {
-    ballot_item_we_vote_id: PropTypes.string.isRequired,
+    ballotItemWeVoteId: PropTypes.string.isRequired,
+    organizationsToFollow: PropTypes.object,
     showOppose: PropTypes.bool,
     showSupport: PropTypes.bool,
     supportProps: PropTypes.object

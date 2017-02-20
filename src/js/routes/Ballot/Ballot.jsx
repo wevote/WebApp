@@ -37,7 +37,7 @@ export default class Ballot extends Component {
       this.ballotStoreListener = BallotStore.addListener(this._onChange.bind(this));
       // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
       // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
-      this._togglePopup = this._togglePopup.bind(this);
+      this._toggleBallotModal = this._toggleBallotModal.bind(this);
       SupportActions.voterAllPositionsRetrieve();
       SupportActions.positionsCountForAllBallotItems();
       this.supportStoreListener = SupportStore.addListener(this._onChange.bind(this));
@@ -58,11 +58,11 @@ export default class Ballot extends Component {
     this.setState({ballot: this.getBallot(nextProps), ballot_type: ballot_type });
   }
 
-    _togglePopup (modalMessage) {
-     this.setState({
-        showModal: !this.state.showModal,
-        modalMessage: modalMessage
-      });
+  _toggleBallotModal (modalMessage) {
+    this.setState({
+      showModal: !this.state.showModal,
+      modalMessage: modalMessage
+    });
   }
 
   _onChange (){
@@ -139,48 +139,30 @@ export default class Ballot extends Component {
   }
 
   render () {
-      const popover = (
-      <Popover id="modal-popover" title="popover">
+    const popover = <Popover id="modal-popover" title="popover">
         very popover. such engagement
-      </Popover>
-    );
-    const tooltip = (
-      <Tooltip id="modal-tooltip">
+      </Popover>;
+    const tooltip = <Tooltip id="modal-tooltip">
         wow.
-      </Tooltip>
-    );
-      const PopupModal = (
-      <Modal show={this.state.showModal} onHide={()=>{this._togglePopup(null)}}>
-          <Modal.Header closeButton>
-            <Modal.Title>{this.state.modalMessage}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+      </Tooltip>;
+    const PopupModal = <Modal show={this.state.showModal} onHide={()=>{this._toggleBallotModal(null);}}>
+        <Modal.Header closeButton>
+          <Modal.Title>{this.state.modalMessage}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
           <h4>Text in a modal</h4>
-            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
+          <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
 
-            <h4>Popover in a modal</h4>
-            <p>there is a <OverlayTrigger overlay={popover}><a href="#">popover</a></OverlayTrigger> here</p>
+          <h4>Popover in a modal</h4>
+          <p>there is a <OverlayTrigger overlay={popover}><a href="#">popover</a></OverlayTrigger> here</p>
 
-            <h4>Tooltips in a modal</h4>
-            <p>there is a <OverlayTrigger overlay={tooltip}><a href="#">tooltip</a></OverlayTrigger> here</p>
-            <hr />
-            <h4>Overflowing text to show scroll behavior</h4>
-            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={()=>{this._togglePopup(null)}}>Close</Button>
-          </Modal.Footer>
-        </Modal>
-      );
-
+          <h4>Tooltips in a modal</h4>
+          <p>there is a <OverlayTrigger overlay={tooltip}><a href="#">tooltip</a></OverlayTrigger> here</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={()=>{this._toggleBallotModal(null);}}>Close</Button>
+        </Modal.Footer>
+      </Modal>;
 
     const showIntroStory = !cookies.getItem("intro_story_watched");
 
@@ -237,7 +219,7 @@ export default class Ballot extends Component {
     let show_expanded_ballot_items = false;
 
     return <div className="ballot">
-    {this.state.showModal ? PopupModal : null}
+      { this.state.showModal ? PopupModal : null }
       <div className="ballot__heading u-stack--lg">
         <Helmet title="Ballot - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
@@ -259,7 +241,7 @@ export default class Ballot extends Component {
       {emptyBallot}
       { show_expanded_ballot_items ?
         ballot.map( (item) => <BallotItem key={item.we_vote_id} {...item} />) :
-        ballot.map( (item) => <BallotItemCompressed _togglePopup = {this._togglePopup} key={item.we_vote_id} {...item} />)
+        ballot.map( (item) => <BallotItemCompressed _toggleBallotModal = {this._toggleBallotModal} key={item.we_vote_id} {...item} />)
       }
       </div>;
   }
