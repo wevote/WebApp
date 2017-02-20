@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Modal, Button, OverlayTrigger, Tooltip, Popover } from "react-bootstrap";
 import { browserHistory, Link } from "react-router";
 import BallotActions from "../../actions/BallotActions";
 import BallotItem from "../../components/Ballot/BallotItem";
@@ -21,7 +21,7 @@ export default class Ballot extends Component {
 
   constructor (props){
     super(props);
-    this.state = {};
+    this.state = {showModal: false};
   }
 
   componentDidMount () {
@@ -29,6 +29,7 @@ export default class Ballot extends Component {
       browserHistory.push("settings/location");
     } else {
       let ballot = this.getBallot(this.props);
+      // console.log(ballot);
       if (ballot !== undefined) {
         let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
         this.setState({ballot: ballot, ballot_type: ballot_type});
@@ -37,6 +38,7 @@ export default class Ballot extends Component {
       this.ballotStoreListener = BallotStore.addListener(this._onChange.bind(this));
       // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
       // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
+      this._toggleBallotModal = this._toggleBallotModal.bind(this);
       SupportActions.voterAllPositionsRetrieve();
       SupportActions.positionsCountForAllBallotItems();
       BallotActions.voterBallotListRetrieve();
@@ -56,6 +58,13 @@ export default class Ballot extends Component {
   componentWillReceiveProps (nextProps){
     let ballot_type = nextProps.location.query ? nextProps.location.query.type : "all";
     this.setState({ballot: this.getBallot(nextProps), ballot_type: ballot_type });
+  }
+
+  _toggleBallotModal (modalMessage) {
+    this.setState({
+      showModal: !this.state.showModal,
+      modalMessage: modalMessage
+    });
   }
 
   _onChange (){
@@ -132,6 +141,31 @@ export default class Ballot extends Component {
   }
 
   render () {
+    const popover = <Popover id="modal-popover" title="popover">
+        very popover. such engagement
+      </Popover>;
+    const tooltip = <Tooltip id="modal-tooltip">
+        wow.
+      </Tooltip>;
+    const PopupModal = <Modal show={this.state.showModal} onHide={()=>{this._toggleBallotModal(null);}}>
+        <Modal.Header closeButton>
+          <Modal.Title>{this.state.modalMessage}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h4>Text in a modal</h4>
+          <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
+
+          <h4>Popover in a modal</h4>
+          <p>there is a <OverlayTrigger overlay={popover}><a href="#">popover</a></OverlayTrigger> here</p>
+
+          <h4>Tooltips in a modal</h4>
+          <p>there is a <OverlayTrigger overlay={tooltip}><a href="#">tooltip</a></OverlayTrigger> here</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={()=>{this._toggleBallotModal(null);}}>Close</Button>
+        </Modal.Footer>
+      </Modal>;
+
     const showIntroStory = !cookies.getItem("intro_story_watched");
 
     if (showIntroStory) {
@@ -140,6 +174,7 @@ export default class Ballot extends Component {
     }
 
     const ballot = this.state.ballot;
+
     var voter_address = VoterStore.getAddress();
     if (!ballot) {
       if (voter_address.length === 0) {
@@ -186,6 +221,7 @@ export default class Ballot extends Component {
     let show_expanded_ballot_items = false;
 
     return <div className="ballot">
+      { this.state.showModal ? PopupModal : null }
       <div className="ballot__heading u-stack--lg">
         <Helmet title="Ballot - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
@@ -207,7 +243,7 @@ export default class Ballot extends Component {
       {emptyBallot}
       { show_expanded_ballot_items ?
         ballot.map( (item) => <BallotItem key={item.we_vote_id} {...item} />) :
-        ballot.map( (item) => <BallotItemCompressed key={item.we_vote_id} {...item} />)
+        ballot.map( (item) => <BallotItemCompressed _toggleBallotModal = {this._toggleBallotModal} key={item.we_vote_id} {...item} />)
       }
       </div>;
   }

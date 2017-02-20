@@ -2,16 +2,14 @@
 
 [![Build Status](https://travis-ci.org/wevote/WebApp.svg?branch=develop)](https://travis-ci.org/wevote/WebApp)
 ![BrowserStack Status](https://www.browserstack.com/automate/badge.svg?badge_key=)
+[![Sauce Test Status](https://saucelabs.com/buildstatus/WeVote)](https://saucelabs.com/u/WeVote)
 
 This WebApp repository contains a Node/React/Flux Javascript application. Using data from
 Google Civic API, Vote Smart, MapLight, TheUnitedStates.io and the Voting Information Project, we give voters a social way to interact with ballot data.
 
 Interested in volunteering? [Starting presentation here](https://prezi.com/5v4drd74pt6n/we-vote-introduction-strategic-landscape/). Please also [read about our values](https://wevote.hackpad.com/Community-Rules-C0sn7DhZhDt) and [see our Code of Conduct](CODE_OF_CONDUCT.md)
 
-You can see our current wireframe mockup for a San Francisco ballot here:
-http://start.wevoteusa.org/
-
-And finally, our current live version is here: [https://WeVote.US](https://WeVote.US)
+Our current alpha version is here: [https://WeVote.US](https://WeVote.US)
 
 ## Installing WebApp
 Our installation process is built to allow engineers all over America to contribute to We Vote.
@@ -53,5 +51,9 @@ Please read the following before you start contributing to the project. Thank yo
 5. [Troubleshooting Pull Request Problems](docs/contributing/PULL_REQUEST_TROUBLESHOOTING.md)
 
 6. [Approving Pull Requests](docs/contributing/APPROVING_PULL_REQUESTS.md)
+
+## Testing WebApp
+
+[Introduction to WebApp testing](docs/testing/README_TESTING.md)
 
 Welcome aboard!!

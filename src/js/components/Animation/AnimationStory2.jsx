@@ -18,7 +18,7 @@ export default class AnimationStory2 extends Component {
       <div className="intro-story__h2">You control who is in<br />
         your <strong>We Vote</strong> network.</div>
       <div className="intro-story__padding-btn">
-        <button type="button" className="btn btn-info" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
+        <button type="button" className="btn btn-success" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
       </div>
     </div>;
   }

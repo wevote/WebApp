@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
 import GuideStore from "../../stores/GuideStore";
+import ImageHandler from "../../components/ImageHandler";
 import ItemActionBar from "../../components/Widgets/ItemActionBar";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
 import ItemTinyOpinionsToFollow from "../../components/VoterGuide/ItemTinyOpinionsToFollow";
@@ -73,6 +74,13 @@ export default class OfficeItemCompressed extends Component {
               {/* *** Candidate name *** */}
               <td className="col-md-6" onClick={ this.props.link_to_ballot_item_page ?
                 goToOfficeLink : null }>
+                <span className="hidden-xs">
+                  <ImageHandler className="card-main__avatar"
+                                sizeClassName="icon-candidate-small "
+                                imageUrl={one_candidate.candidate_photo_url}
+                                alt="candidate-photo"
+                                kind_of_ballot_item="CANDIDATE" />
+                </span>
                 {one_candidate.ballot_item_display_name}
               </td>
 
