@@ -176,6 +176,7 @@ export default class Ballot extends Component {
     const ballot = this.state.ballot;
 
     var voter_address = VoterStore.getAddress();
+    console.log("Ballot, voter_address " + voter_address);
     if (!ballot) {
       if (voter_address.length === 0) {
         return <div className="ballot">
@@ -226,7 +227,8 @@ export default class Ballot extends Component {
         <Helmet title="Ballot - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
         <OverlayTrigger placement="top" overlay={electionTooltip} >
-          <h1 className="h1 ballot__election-name">{election_name}</h1>
+          <h1 className="h1 ballot__election-name">{election_name}
+            <span className="ballotList__edit"> (<Link to="/ballot/select_ballot">Edit</Link>)</span></h1>
         </OverlayTrigger>
         <p className="ballot__date_location">
           {voter_address}

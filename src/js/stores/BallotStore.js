@@ -34,7 +34,7 @@ class BallotStore extends FluxMapStore {
   }
 
   ballotList () {
-    return this.getState().ballot_list || [];
+    return this.getState().ballot_election_list || [];
   }
 
   get currentBallotElectionName () {
@@ -135,26 +135,33 @@ class BallotStore extends FluxMapStore {
         key = action.res.google_civic_election_id;
         newBallot[key] = action.res;
 
+        console.log("BallotStore, voterBallotItemsRetrieve, state.ballots " + state.ballots);
+        console.log("BallotStore, voterBallotItemsRetrieve, newBallot " + newBallot);
+
         return {
           ...state,
-          ballots: assign({}, state.ballots, newBallot )
+          ballots: assign({}, state.ballots, newBallot ),
         };
 
       case "voterBallotListRetrieve":
-        let ballot_list = action.res.voter_ballot_list;
+        let ballot_election_list = action.res.voter_ballot_list;
         return {
          ...state,
-         ballot_list: ballot_list
+         ballot_election_list: ballot_election_list
         };
 
       case "voterAddressSave":
-        key = action.res.google_civic_election_id;
-        newBallot[key] = action.res;
+        if (action.res.status === "SIMPLE_ADDRESS_SAVE") {
+          return state;
+        } else {
+          key = action.res.google_civic_election_id;
+          newBallot[key] = action.res;
 
-        return {
-          ...state,
-          ballots: assign({}, state.ballots, newBallot )
-        };
+          return {
+            ...state,
+            ballots: assign({}, state.ballots, newBallot )
+          };
+        }
 
       case "error-voterBallotItemsRetrieve":
       default:

@@ -11,15 +11,13 @@ export default class SelectBallot extends Component {
   constructor (props){
     super(props);
     this.state = {
-      ballot_list: []
+      ballot_election_list: []
       };
   }
 
   componentDidMount () {
-    if(!BallotStore.ballotList().length){
-      BallotActions.voterBallotListRetrieve();
-    }
     this.ballotStoreListener = BallotStore.addListener(this._onBallotStoreChange.bind(this));
+    BallotActions.voterBallotListRetrieve();
   }
 
   componentWillUnmount (){
@@ -27,15 +25,18 @@ export default class SelectBallot extends Component {
   }
 
   _onBallotStoreChange () {
-    this.setState({ ballot_list: BallotStore.ballotList() });
+    console.log("SelectBallot, _onBallotStoreChange " + this.state.ballot_election_list);
+    this.setState({ ballot_election_list: BallotStore.ballotList() });
   }
 
   render () {
-     console.log(this.state);
+     console.log("SelectBallot " + this.state.ballot_election_list);
     return <div>
-      <Helmet title="Ballot List - We Vote" />
-      <h1 className = "h1">Your Election Guides</h1>
-      <BallotList ballot_list={this.state.ballot_list} />
+      <div className="text-center">
+        <Helmet title="Ballot List - We Vote" />
+        <h1 className = "h1">Your Ballot Guides</h1>
+        <BallotList ballot_election_list={this.state.ballot_election_list} />
+      </div>
     </div>;
   }
 }
