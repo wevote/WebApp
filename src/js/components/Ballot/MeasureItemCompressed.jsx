@@ -19,7 +19,7 @@ export default class MeasureItemCompressed extends Component {
     ballot_item_display_name: PropTypes.string.isRequired,
     link_to_ballot_item_page: PropTypes.bool,
     measure_url: PropTypes.string,
-    _toggleBallotModal: PropTypes.func
+    _toggleMeasureModal: PropTypes.func
   };
 
   constructor (props) {
@@ -75,6 +75,17 @@ export default class MeasureItemCompressed extends Component {
     measure_subtitle = capitalizeString(measure_subtitle);
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
+    let measure_for_modal = {
+      ballot_item_display_name: ballot_item_display_name,
+      guides_to_follow_list: GuideStore.toFollowListForBallotItemById(this.props.we_vote_id),
+      kind_of_ballot_item: this.props.kind_of_ballot_item,
+      link_to_ballot_item_page: this.props.link_to_ballot_item_page,
+      measure_subtitle: measure_subtitle,
+      measure_text: this.props.measure_text,
+      measure_url: this.props.measure_url,
+      measure_we_vote_id: this.props.we_vote_id
+    };
+
     return <div className="card-main measure-card">
       <div className="card-main__content">
         {/* Reuse this?
@@ -119,12 +130,14 @@ export default class MeasureItemCompressed extends Component {
                         null }
                 >
                 { support_count || oppose_count ?
-                  <span>
-                    <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps}
+                  <span onClick={ this.props.link_to_ballot_item_page ?
+                        ()=>{this.props._toggleMeasureModal(measure_for_modal);} :
+                        null } >
+                    <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={this.state.supportProps}
                                              type="MEASURE" />
                   </span> :
                   <span onClick={ this.props.link_to_ballot_item_page ?
-                        ()=>{this.props._toggleBallotModal(ballot_item_display_name);} :
+                        ()=>{this.props._toggleMeasureModal(measure_for_modal);} :
                         null } >
                   {/* Show possible voter guides to follow */}
                   { GuideStore.toFollowListForBallotItemById(we_vote_id) && GuideStore.toFollowListForBallotItemById(we_vote_id).length !== 0 ?
@@ -138,7 +151,7 @@ export default class MeasureItemCompressed extends Component {
               {/* *** Choose Support or Oppose *** */}
               <td className="col-md-3 u-inset__minimum-width--120px">
                 <ItemActionBar ballot_item_we_vote_id={we_vote_id}
-                               supportProps={supportProps}
+                               supportProps={this.state.supportProps}
                                shareButtonHide
                                commentButtonHide
                                transitioniing={this.state.transitioning}

@@ -26,8 +26,8 @@ export default class Measure extends Component {
       measure_we_vote_id: this.props.params.measure_we_vote_id,
       // Eventually we could use this toFollowListForBallotItemById with measure_we_vote_id, but we can't now
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-      // guideToFollowList: GuideStore.toFollowListForBallotItemById(this.props.params.measure_we_vote_id)
-      guideToFollowList: GuideStore.toFollowListForBallotItem()
+      // guides_to_follow_list: GuideStore.toFollowListForBallotItemById(this.props.params.measure_we_vote_id)
+      guides_to_follow_list: GuideStore.toFollowListForBallotItem()
     };
   }
 
@@ -68,7 +68,7 @@ export default class Measure extends Component {
   _onGuideStoreChange (){
     // Eventually we could use this toFollowListForBallotItemById with measure_we_vote_id, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-    this.setState({ guideToFollowList: GuideStore.toFollowListForBallotItem() });
+    this.setState({ guides_to_follow_list: GuideStore.toFollowListForBallotItem() });
     MeasureActions.retrieve(this.state.measure_we_vote_id);
   }
 
@@ -80,16 +80,15 @@ export default class Measure extends Component {
   render () {
     const electionId = VoterStore.election_id();
     const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to follow about this measure.";
-    var { measure, guideToFollowList } = this.state;
 
-    if (!measure.ballot_item_display_name){
+    if (!this.state.measure.ballot_item_display_name){
       // TODO DALE If the candidate measure_we_vote_id is not valid, we need to update this with a notice
       return <div className="container-fluid well u-stack--md u-inset--md">
                 <div>{LoadingWheel}</div>
                 <br />
             </div>;
     }
-    let measure_name = capitalizeString(measure.ballot_item_display_name);
+    let measure_name = capitalizeString(this.state.measure.ballot_item_display_name);
     let title_text = measure_name + " - We Vote";
     let description_text = "Information about " + measure_name;
 
@@ -97,20 +96,22 @@ export default class Measure extends Component {
       <Helmet title={title_text}
               meta={[{"name": "description", "content": description_text}]}
               />
-          <MeasureItem {...measure}
+          <MeasureItem {...this.state.measure}
                        commentButtonHide />
           <div className="card__additional">
-            { measure.position_list ?
+            { this.state.measure.position_list ?
               <div>
-                <PositionList position_list={measure.position_list}
-                              ballot_item_display_name={measure.ballot_item_display_name} />
+                <PositionList position_list={this.state.measure.position_list}
+                              ballot_item_display_name={this.state.measure.ballot_item_display_name} />
               </div> :
               null
             }
-            {guideToFollowList.length === 0 ?
+            {this.state.guides_to_follow_list.length === 0 ?
               <p className="card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
-              <div><h3 className="card__additional-heading">{"More opinions about " + measure.ballot_item_display_name}</h3>
-              <GuideList id={electionId} ballotItemWeVoteId={this.state.measure_we_vote_id} organizationsToFollow={guideToFollowList}/></div>
+              <div><h3 className="card__additional-heading">{"More opinions about " + this.state.measure.ballot_item_display_name}</h3>
+              <GuideList id={electionId}
+                         ballotItemWeVoteId={this.state.measure_we_vote_id}
+                         organizationsToFollow={this.state.guides_to_follow_list}/></div>
             }
           </div>
         </section>;

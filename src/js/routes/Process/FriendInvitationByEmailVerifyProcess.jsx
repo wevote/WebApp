@@ -55,7 +55,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     browserHistory.push({
       pathname: "/requests",
       state: {
-        message: "Your have successfully signed in.",
+        message: "You have successfully signed in.",
         message_type: "success"
       }
     });

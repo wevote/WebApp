@@ -129,7 +129,7 @@ export default class VerifyEmailProcess extends Component {
       browserHistory.push({
         pathname: "/ballot",
         state: {
-          message: "Your have successfully verified your email.",
+          message: "You have successfully verified your email.",
           message_type: "success"
         }
       });

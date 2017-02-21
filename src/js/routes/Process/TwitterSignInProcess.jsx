@@ -73,7 +73,7 @@ export default class TwitterSignInProcess extends Component {
     browserHistory.push({
       pathname: "/more/sign_in",
       state: {
-        message: "Your have successfully signed into Twitter.",
+        message: "You have successfully signed in with Twitter.",
         message_type: "success"
       }
     });
