@@ -191,7 +191,7 @@ export default class CandidateItem extends Component {
               <span /> }
             {/* TODO DALE WORK IN PROGRESS
             { positions_in_your_network && this.props.showPositionsInYourNetworkBreakdown ?
-              <span>
+              <span>ItemTinyPositionBreakdownList shown
                 <ItemTinyPositionBreakdownList ballotItemWeVoteId={we_vote_id}
                                                showSupport
                                                supportProps={this.state.supportProps} />
@@ -199,8 +199,8 @@ export default class CandidateItem extends Component {
                                                showOppose
                                                supportProps={this.state.supportProps} />
               </span> :
-              <span /> }
-              */}
+              <span>ItemTinyPositionBreakdownList NOT shown</span> }
+               */}
           </span>
 
         </div> {/* END .card-main__media-object-content */}

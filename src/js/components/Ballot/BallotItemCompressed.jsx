@@ -9,10 +9,12 @@ const TYPES = require("keymirror")({
 
 export default class BallotItemCompressed extends Component {
   static propTypes = {
+    ballot_item_display_name: PropTypes.string.isRequired,
+    candidate_list: PropTypes.array,
     kind_of_ballot_item: PropTypes.string.isRequired,
     we_vote_id: PropTypes.string.isRequired,
-    ballot_item_display_name: PropTypes.string.isRequired,
-    candidate_list: PropTypes.array
+    _toggleCandidateModal: PropTypes.func,
+    _toggleMeasureModal: PropTypes.func
   };
 
   isMeasure () {
