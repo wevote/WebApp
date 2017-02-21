@@ -149,7 +149,7 @@ export default class CandidateItem extends Component {
           }
           </p>
           { twitter_description ?
-            <div className={ this.props.link_to_ballot_item_page ? "card-main__description-container--truncated" : "card-main__description-container"}>
+            <div className={ "u-stack--sm" + (this.props.link_to_ballot_item_page ? " card-main__description-container--truncated" : " card-main__description-container")}>
               <div>
                 <p className="card-main__description">
                     {twitter_description}
@@ -166,9 +166,7 @@ export default class CandidateItem extends Component {
             </div> :
             null
           }
-          <span className={ this.props.link_to_ballot_item_page ?
-                  "card-main__network-positions u-cursor--pointer" :
-                  "card-main__network-positions" }
+          <div className={"card-main__network-positions u-stack--sm" +  this.props.link_to_ballot_item_page && " u-cursor--pointer"}
                 onClick={ this.props.link_to_ballot_item_page ?
                   goToCandidateLink : null }
           >
@@ -200,8 +198,8 @@ export default class CandidateItem extends Component {
                                                supportProps={this.state.supportProps} />
               </span> :
               <span>ItemTinyPositionBreakdownList NOT shown</span> }
-               */}
-          </span>
+            */}
+          </div>
 
         </div> {/* END .card-main__media-object-content */}
       </div> {/* END .card-main__media-object */}
