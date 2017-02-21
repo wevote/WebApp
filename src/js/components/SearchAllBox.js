@@ -85,7 +85,13 @@ export default class SearchAllBox extends Component {
   onSearchFieldTextChange (event){
     let search_text = event.target.value;
     this.setState({text_from_search_field: search_text});
-    SearchAllActions.searchAll(search_text);
+    //If text field is empty, hide the results. If not, perform search
+    if (search_text === '') {
+      this.clearSearch();
+    } else {
+      SearchAllActions.searchAll(search_text);
+      this.displayResults();
+    }
   }
 
   onSearchFocus () {
@@ -95,18 +101,21 @@ export default class SearchAllBox extends Component {
     // TODO: convert to flux action
     // for the global nav
     this.siteLogoText.style.display = "none";
-    this.setState({open: true});
+    this.displayResults();
   }
 
   onSearchBlur () {
     // Delay closing the drop down so that a click on the Link can have time to work
     setTimeout(() => {
-      this.clear();
+      this.siteLogoText.style.display = null;
+      this.hideResults();
     }, 250);
   }
 
   onSearchFormSubmit (e) {
     e.preventDefault();
+    //Remove focus from search bar
+    document.getElementById("SearchAllBox-input").blur();
     this.navigateToSelectedLink();
     return false;
   }
@@ -128,13 +137,13 @@ export default class SearchAllBox extends Component {
     } else if (keyArrowDown) {
       this.setState({selected_index: Math.min(this.state.selected_index + 1, this.state.search_results.length - 1)});
     } else if (keyEscape) {
-      this.clear();
+      this.clearSearch();
     }
   }
 
   navigateToSelectedLink () {
     browserHistory.push(this.links[this.state.selected_index]);
-    this.clear();
+    this.hideResults();
   }
 
   onSearchResultMouseOver (e) {
@@ -142,11 +151,18 @@ export default class SearchAllBox extends Component {
     this.setState({selected_index: idx});
   }
 
-  clear () {
+  clearSearch () {
     setTimeout(() => {
-      this.siteLogoText.style.display = null;
-      this.setState({open: false, text_from_search_field: "", selected_index: 0});
+      this.setState({open: false, text_from_search_field: "", selected_index: 0, search_results:[]});
     }, 0);
+  }
+
+  hideResults () {
+    this.setState({open: false});
+  }
+
+  displayResults () {
+    this.setState({open: true});
   }
 
   render () {
