@@ -43,7 +43,8 @@ export default class Application extends Component {
       window.FB.init({
         appId: web_app_config.FACEBOOK_APP_ID,
         xfbml: true,
-        version: "v2.8"
+        version: "v2.8",
+        status: true    // set this status to true, this will fixed popup blocker issue
       });
     };
 
@@ -104,7 +105,7 @@ export default class Application extends Component {
 
     // If looking at these paths, we want to enter theater mode
     var in_theater_mode = false;
-    if (pathname === "/intro/story" || pathname === "/intro/sample_ballot" || pathname === "/intro/get_started") {
+    if (pathname === "/intro/story" || pathname === "/intro/sample_ballot" || pathname === "/intro/get_started" || pathname === "/ballot/select_ballot") {
       in_theater_mode = true;
     }
 

@@ -38,7 +38,9 @@ export default class SampleBallot extends Component {
         and inviting your friends.
       </div>
       <div className="intro-story__padding">
-        <button type="button" className="btn btn-lg btn-success" onClick={this.goToBallotLink}>Go to Your Ballot</button>
+        <button type="button"
+                className="btn btn-lg btn-success"
+                onClick={this.goToBallotLink}>Go to Your Ballot&nbsp;&nbsp;&gt;</button>
       </div>
       <div className="intro-story__padding-top">Stay tuned for 2017-2018 election data!</div>
     </div>;

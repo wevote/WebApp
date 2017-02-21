@@ -21,7 +21,7 @@ export default class AnimationStory1 extends Component {
         on candidates and measures<br />
         before you vote.</div>
       <div className="intro-story__padding-btn">
-        <button type="button" className="btn btn-info" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
+        <button type="button" className="btn btn-success" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
       </div>
     </div>;
   }
