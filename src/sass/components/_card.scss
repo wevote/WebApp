@@ -78,7 +78,7 @@
       display: inline-block;
       font-size: 18px;
       margin-right: 24px; // space for bookmark button
-      margin-bottom: .5rem;
+      margin-bottom: $space-md;
       vertical-align: middle;
       @include breakpoints(mid-small) {
         font-size: 24px;

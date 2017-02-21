@@ -67,14 +67,13 @@ export default class OfficeItemCompressed extends Component {
         </h2>
         <StarAction we_vote_id={we_vote_id} type="OFFICE"/>
 
-        <table className={ this.props.link_to_ballot_item_page ?
-                "table table-condensed" : "table table-condensed" } >
-          <tbody>
+        <div className={this.props.link_to_ballot_item_page ?
+                "u-cursor--pointer" : null } >
           { this.props.candidate_list.map( (one_candidate) =>
             <div key={one_candidate.we_vote_id} className="u-stack--md">
-              <div className="row">
+              <div className="u-flex u-items-center">
                 {/* *** Candidate name *** */}
-                <div className="col-12 col-sm u-cursor--pointer"
+                <div className="u-flex-auto u-inline--sm u-cursor--pointer"
                     onClick={ this.props.link_to_ballot_item_page ?
                               ()=>{browserHistory.push("/candidate/" + one_candidate.we_vote_id);} :
                               null }>
@@ -85,11 +84,11 @@ export default class OfficeItemCompressed extends Component {
                                   alt="candidate-photo"
                                   kind_of_ballot_item="CANDIDATE" />
                   </span>
-                  {one_candidate.ballot_item_display_name}
+                  <span className="h5">{one_candidate.ballot_item_display_name}</span>
                 </div>
 
                 {/* *** "Positions in your Network" bar OR items you can follow *** */}
-                <div className="col-5 col-sm-3 u-tr">
+                <div className="u-flex-none u-justify-end u-inline--sm">
                   {/* Decide whether to show the "Positions in your network" bar or the options of voter guides to follow */}
                   { SupportStore.get(one_candidate.we_vote_id) && ( SupportStore.get(one_candidate.we_vote_id).oppose_count || SupportStore.get(one_candidate.we_vote_id).support_count) ?
                     <span className="u-cursor--pointer"
@@ -116,7 +115,7 @@ export default class OfficeItemCompressed extends Component {
                 </div>
 
                 {/* *** Choose Support or Oppose *** */}
-                <div className="col-5 col-sm-3 u-cursor--pointer">
+                <div className="u-flex-none u-cursor--pointer">
                   <ItemActionBar ballot_item_we_vote_id={one_candidate.we_vote_id}
                                  supportProps={SupportStore.get(one_candidate.we_vote_id)}
                                  shareButtonHide
@@ -127,8 +126,7 @@ export default class OfficeItemCompressed extends Component {
               </div>{/* end .row */}
             </div>)
           }
-          </tbody>
-        </table>
+        </div>
       </div>
     </div>;
   }

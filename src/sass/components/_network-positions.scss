@@ -9,13 +9,15 @@
   position: relative;
   display: flex;
   align-items: center;
+  flex: 5 0 130px;
+  min-width: 130px; // flex-basis not being respected (Chrome)
 
   &__bar-well {
     display: block;
     position: relative;
     margin-right: $space-sm;
     margin-left: $space-sm;
-    flex-grow: 5;
+    flex: 5 0 48px;
     height: $bar-height;
     border-radius: 3em;
     background-color: $gray-light;

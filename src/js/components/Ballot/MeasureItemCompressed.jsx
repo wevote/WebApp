@@ -109,10 +109,10 @@ export default class MeasureItemCompressed extends Component {
         <StarAction we_vote_id={we_vote_id} type="MEASURE"/>
 
         {/* This is the area *under* the measure title */}
-        <div className={ this.props.link_to_ballot_item_page ?
-                "u-cursor--pointer u-flex row" : "u-flex row" } >
+        <div className={"u-flex" + (this.props.link_to_ballot_item_page ?
+                " u-cursor--pointer" : "") } >
 
-              <div className="col-md-6 u-flex-none">
+              <div className="MeasureItem__summary u-flex-auto u-inline--sm">
                 <div className={ this.props.link_to_ballot_item_page ?
                         "u-cursor--pointer" : null }
                       onClick={ this.props.link_to_ballot_item_page ?
@@ -123,7 +123,7 @@ export default class MeasureItemCompressed extends Component {
               </div>
 
               {/* *** "Positions in your Network" bar OR items you can follow *** */}
-              <div className="col-md-3 u-tr">
+              <div className="u-flex-none u-justify-end u-inline--sm">
                 <span className={ this.props.link_to_ballot_item_page ?
                         "u-cursor--pointer" :
                         null }
@@ -148,7 +148,7 @@ export default class MeasureItemCompressed extends Component {
               </div>
 
               {/* *** Choose Support or Oppose *** */}
-              <td className="col-md-3">
+              <td className="u-flex-none u-justify-end">
                 <ItemActionBar ballot_item_we_vote_id={we_vote_id}
                                supportProps={this.state.supportProps}
                                shareButtonHide
