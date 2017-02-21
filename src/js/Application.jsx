@@ -105,7 +105,7 @@ export default class Application extends Component {
 
     // If looking at these paths, we want to enter theater mode
     var in_theater_mode = false;
-    if (pathname === "/intro/story" || pathname === "/intro/sample_ballot" || pathname === "/intro/get_started") {
+    if (pathname === "/intro/story" || pathname === "/intro/sample_ballot" || pathname === "/intro/get_started" || pathname === "/ballot/select_ballot") {
       in_theater_mode = true;
     }
 
