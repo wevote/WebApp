@@ -32,7 +32,6 @@ export default class MeasureItemCompressed extends Component {
     this._onGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
-   
   }
 
   componentWillUnmount () {
@@ -71,7 +70,6 @@ export default class MeasureItemCompressed extends Component {
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
     return <div className="card-main measure-card">
-         
       <div className="card-main__content">
         {/* Reuse this?
         {
