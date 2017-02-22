@@ -49,21 +49,38 @@ export default class OfficeItemReadyToVote extends Component {
     let { ballot_item_display_name, we_vote_id } = this.props;
     let officeLink = "/office/" + we_vote_id;
     let goToOfficeLink = function () { browserHistory.push(officeLink); };
-    let isSupport = [];
+    let is_support_array = [];
     let networkSupport = null;
+    let supportProps;
+    let is_support;
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
     this.props.candidate_list.forEach((candidate) => {
-        SupportStore.get(candidate.we_vote_id) && SupportStore.get(candidate.we_vote_id).is_support ?
-          isSupport.push(candidate.ballot_item_display_name) :
-          null;
+
+      supportProps = SupportStore.get(candidate.we_vote_id);
+
+      if (supportProps) {
+        is_support = supportProps.is_support;
+
+        if (is_support) {
+          is_support_array.push(candidate.ballot_item_display_name);
+        }
+      }
     });
 
-    this.props.candidate_list.forEach((candidate) => {
-      SupportStore.get(candidate.we_vote_id) && isSupport.length === 0 && SupportStore.get(candidate.we_vote_id).support_count > SupportStore.get(candidate.we_vote_id).oppose_count ? networkSupport = candidate.ballot_item_display_name :
-        null;
-    });
+    if (is_support_array.length === 0){
+      this.props.candidate_list.forEach((candidate) => {
+
+        supportProps = SupportStore.get(candidate.we_vote_id);
+
+        if (supportProps) {
+          if (supportProps.support_count > supportProps.oppose_count){
+            networkSupport = candidate.ballot_item_display_name;
+          }
+        }
+      });
+    }
 
     return <div className="card-main office-item">
       <div className="card-main__content">
@@ -91,7 +108,7 @@ export default class OfficeItemReadyToVote extends Component {
                   goToOfficeLink : null }>
                   {one_candidate.ballot_item_display_name}<span className="vote-ready-support">Your network supports</span>
                 </td> :
-                  isSupport === 0 && networkSupport !== one_candidate.ballot_item_display_name ?
+                  is_support_array === 0 && networkSupport !== one_candidate.ballot_item_display_name ?
                 <td><span className="vote-ready-support">Your network is undecided</span></td> :
                   null}
 
