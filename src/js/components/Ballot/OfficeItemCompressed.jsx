@@ -53,7 +53,6 @@ export default class OfficeItemCompressed extends Component {
   render () {
     let { ballot_item_display_name, we_vote_id } = this.props;
     let officeLink = "/office/" + we_vote_id;
-    let goToOfficeLink = function () { browserHistory.push(officeLink); };
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
