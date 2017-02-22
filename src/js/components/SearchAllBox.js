@@ -40,6 +40,8 @@ export default class SearchAllBox extends Component {
 
   componentDidMount (){
     this.siteLogoText = document.getElementsByClassName("page-logo")[0];
+    this.about = document.getElementsByClassName("header-nav__item")[3];
+    this.donate = document.getElementsByClassName("header-nav__item")[4];
     // When we first enter we want to retrieve values to have for a click in the search box
     let text_from_search_field = this.props.text_from_search_field;
 
@@ -64,6 +66,7 @@ export default class SearchAllBox extends Component {
   }
 
   _onSearchAllStoreChange (){
+    console.log("_onSearchAllStoreChange");
     var new_state = {};
 
     if (SearchAllStore.getSearchResults()) {
@@ -97,10 +100,13 @@ export default class SearchAllBox extends Component {
   onSearchFocus () {
     this.refs.searchAllBox.setSelectionRange(0, 999);
 
+
     // Hide the hamburger navigation and site name
     // TODO: convert to flux action
     // for the global nav
     this.siteLogoText.style.display = "none";
+    this.about.style.display = "none";
+    this.donate.style.display = "none";
     this.displayResults();
   }
 
@@ -108,6 +114,9 @@ export default class SearchAllBox extends Component {
     // Delay closing the drop down so that a click on the Link can have time to work
     setTimeout(() => {
       this.siteLogoText.style.display = null;
+      this.siteLogoText.style.display = null;
+      this.about.style.display = null;
+      this.donate.style.display = null;
       this.hideResults();
     }, 250);
   }

@@ -128,8 +128,18 @@ export default class HeaderBar extends Component {
           We Vote
           <span className="page-logo__version"> alpha</span>
         </Link>
-        <SearchAllBox />
+        
         <NavigatorInHeader pathname={pathname} />
+        <SearchAllBox />
+        { voter_photo_url ?
+                     <div id="avatarContainer">
+                       <img className="position-statement__avatar"
+                           src={voter_photo_url}
+                           width="34px"
+                       />
+                       <div>{this.props.voter.full_name || null}</div>
+                     </div> :
+             image_placeholder }
       </div>
     </header>;
   }
