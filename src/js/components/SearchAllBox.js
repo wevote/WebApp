@@ -86,7 +86,7 @@ export default class SearchAllBox extends Component {
     let search_text = event.target.value;
     this.setState({text_from_search_field: search_text});
     //If text field is empty, hide the results. If not, perform search
-    if (search_text === '') {
+    if (search_text === "") {
       this.clearSearch();
     } else {
       SearchAllActions.searchAll(search_text);
@@ -153,7 +153,7 @@ export default class SearchAllBox extends Component {
 
   clearSearch () {
     setTimeout(() => {
-      this.setState({open: false, text_from_search_field: "", selected_index: 0, search_results:[]});
+      this.setState({open: false, text_from_search_field: "", selected_index: 0, search_results: []});
     }, 0);
   }
 
