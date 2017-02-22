@@ -6,7 +6,7 @@ import ItemActionBar from "../../components/Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../../components/Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
 import ItemTinyOpinionsToFollow from "../../components/VoterGuide/ItemTinyOpinionsToFollow";
-//import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPositionBreakdownList";
+import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPositionBreakdownList";
 import OfficeNameText from "../../components/Widgets/OfficeNameText";
 import StarAction from "../../components/Widgets/StarAction";
 import SupportStore from "../../stores/SupportStore";
@@ -22,6 +22,7 @@ export default class CandidateItem extends Component {
     hidePositionStatement: PropTypes.bool,
     showPositionsInYourNetworkBreakdown: PropTypes.bool,
     party: PropTypes.string,
+    position_list: PropTypes.array,
     we_vote_id: PropTypes.string.isRequired,
     twitter_description: PropTypes.string,
     twitter_followers_count: PropTypes.number,
@@ -149,7 +150,7 @@ export default class CandidateItem extends Component {
           }
           </p>
           { twitter_description ?
-            <div className={ this.props.link_to_ballot_item_page ? "card-main__description-container--truncated" : "card-main__description-container"}>
+            <div className={ "u-stack--sm" + (this.props.link_to_ballot_item_page ? " card-main__description-container--truncated" : " card-main__description-container")}>
               <div>
                 <p className="card-main__description">
                     {twitter_description}
@@ -166,11 +167,10 @@ export default class CandidateItem extends Component {
             </div> :
             null
           }
-          <span className={ this.props.link_to_ballot_item_page ?
-                  "card-main__network-positions u-cursor--pointer" :
-                  "card-main__network-positions" }
-                onClick={ this.props.link_to_ballot_item_page ?
-                  goToCandidateLink : null }
+          <div className={"card-main__network-positions u-stack--sm" + this.props.link_to_ballot_item_page && " u-cursor--pointer"}
+               onClick={ this.props.link_to_ballot_item_page ?
+                         goToCandidateLink :
+                         null }
           >
             { positions_in_your_network ?
               <ItemSupportOpposeCounts we_vote_id={we_vote_id}
@@ -178,6 +178,23 @@ export default class CandidateItem extends Component {
                                        transitioning={transitioning}
                                        type="CANDIDATE" /> :
               <span /> }
+            {/* Show a break-down of the positions in your network */}
+            { positions_in_your_network && this.props.showPositionsInYourNetworkBreakdown ?
+              <span>
+                {/* In desktop mode, align left with position bar */}
+                {/* In mobile mode, turn on green up-arrow before icons */}
+                <ItemTinyPositionBreakdownList ballotItemWeVoteId={we_vote_id}
+                                               position_list={this.props.position_list}
+                                               showSupport
+                                               supportProps={this.state.supportProps} />
+                {/* In desktop mode, align right with position bar */}
+                {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
+                <ItemTinyPositionBreakdownList ballotItemWeVoteId={we_vote_id}
+                                               position_list={this.props.position_list}
+                                               showOppose
+                                               supportProps={this.state.supportProps} />
+              </span> :
+              null }
             {/* Show possible voter guides to follow */}
             { !this.props.hideOpinionsToFollow &&
               GuideStore.toFollowListForBallotItemById(we_vote_id) && GuideStore.toFollowListForBallotItemById(we_vote_id).length !== 0 ?
@@ -189,19 +206,7 @@ export default class CandidateItem extends Component {
                                           organizationsToFollow={GuideStore.toFollowListForBallotItemById(we_vote_id)} />
               </span> :
               <span /> }
-            {/* TODO DALE WORK IN PROGRESS
-            { positions_in_your_network && this.props.showPositionsInYourNetworkBreakdown ?
-              <span>
-                <ItemTinyPositionBreakdownList ballot_item_we_vote_id={we_vote_id}
-                                               showSupport
-                                               supportProps={this.state.supportProps} />
-                <ItemTinyPositionBreakdownList ballot_item_we_vote_id={we_vote_id}
-                                               showOppose
-                                               supportProps={this.state.supportProps} />
-              </span> :
-              <span /> }
-              */}
-          </span>
+          </div>
 
         </div> {/* END .card-main__media-object-content */}
       </div> {/* END .card-main__media-object */}

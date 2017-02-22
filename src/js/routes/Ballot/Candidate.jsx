@@ -3,9 +3,9 @@ import CandidateActions from "../../actions/CandidateActions";
 import CandidateItem from "../../components/Ballot/CandidateItem";
 import CandidateStore from "../../stores/CandidateStore";
 import { capitalizeString } from "../../utils/textFormat";
+import GuideActions from "../../actions/GuideActions";
 import GuideList from "../../components/VoterGuide/GuideList";
 import GuideStore from "../../stores/GuideStore";
-import GuideActions from "../../actions/GuideActions";
 import Helmet from "react-helmet";
 import LoadingWheel from "../../components/LoadingWheel";
 import PositionList from "../../components/Ballot/PositionList";
@@ -37,7 +37,6 @@ export default class Candidate extends Component {
     var { candidate_we_vote_id } = this.state;
     CandidateActions.retrieve(candidate_we_vote_id);
 
-
     // Get the latest guides to follow for this candidate
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
     GuideActions.retrieveGuidesToFollowByBallotItem(candidate_we_vote_id, "CANDIDATE");
@@ -46,8 +45,7 @@ export default class Candidate extends Component {
     SupportActions.retrievePositionsCountsForOneBallotItem(candidate_we_vote_id);
 
     // Display the candidate's name in the search box
-    var { candidate } = this.state;
-    var searchBoxText = candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
+    var searchBoxText = this.state.candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
     SearchAllActions.exitSearch(searchBoxText); // TODO: still not used :)
   }
 
@@ -114,11 +112,13 @@ export default class Candidate extends Component {
           <CandidateItem {...candidate}
                          commentButtonHide
                          contest_office_name={candidate.contest_office_name}
-                         hideOpinionsToFollow />
+                         hideOpinionsToFollow
+                         showPositionsInYourNetworkBreakdown />
           <div className="card__additional">
             { candidate.position_list ?
               <div>
                 <PositionList position_list={candidate.position_list}
+                              hideSimpleSupportOrOppose
                               ballot_item_display_name={candidate.ballot_item_display_name} />
               </div> :
               null

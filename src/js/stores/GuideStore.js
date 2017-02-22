@@ -71,7 +71,15 @@ class GuideStore extends FluxMapStore {
 
     switch (action.type) {
 
-      case "voterAddressSave": // fallthrough
+      case "voterAddressSave":
+        if (action.res.status === "SIMPLE_ADDRESS_SAVE") {
+          return state;
+        } else {
+          id = action.res.google_civic_election_id;
+          GuideActions.retrieveGuidesToFollow(id);
+          GuideActions.voterGuidesFollowedRetrieve(id);
+          return state;
+        }
 
       case "voterAddressRetrieve": // refresh guides when you change address
         id = action.res.google_civic_election_id;
@@ -80,7 +88,7 @@ class GuideStore extends FluxMapStore {
         return state;
 
       case "voterGuidesToFollowRetrieve":
-        console.log("voterGuidesToFollowRetrieve");
+        // console.log("voterGuidesToFollowRetrieve");
         voter_guides = action.res.voter_guides;
         let is_empty = voter_guides.length === 0;
         let is_search = action.res.search_string !== "";

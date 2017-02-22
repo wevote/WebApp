@@ -8,20 +8,27 @@ import StarAction from "../../components/Widgets/StarAction";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
+
 export default class MeasureItemCompressed extends Component {
   static propTypes = {
     key: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired,
     measure_subtitle: PropTypes.string,
     measure_text: PropTypes.string,
+    position_list: PropTypes.array,
     kind_of_ballot_item: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string.isRequired,
     link_to_ballot_item_page: PropTypes.bool,
-    measure_url: PropTypes.string
+    measure_url: PropTypes.string,
+    _toggleMeasureModal: PropTypes.func
   };
+
   constructor (props) {
     super(props);
-    this.state = {transitioning: false};
+    this.state = {
+      transitioning: false,
+      showModal: false
+    };
   }
 
   componentDidMount () {
@@ -43,9 +50,13 @@ export default class MeasureItemCompressed extends Component {
   }
 
   _onSupportStoreChange () {
-    this.setState({ supportProps: SupportStore.get(this.props.we_vote_id), transitioning: false });
+    this.setState({
+      supportProps: SupportStore.get(this.props.we_vote_id),
+      transitioning: false
+    });
   }
   render () {
+    //console.log("this.props", this.props);
     const { supportProps } = this.state;
     let support_count = 0;
     if (supportProps && supportProps.support_count) {
@@ -64,6 +75,21 @@ export default class MeasureItemCompressed extends Component {
 
     measure_subtitle = capitalizeString(measure_subtitle);
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
+
+    let measure_for_modal = {
+      ballot_item_display_name: ballot_item_display_name,
+      guides_to_follow_list: GuideStore.toFollowListForBallotItemById(this.props.we_vote_id),
+      kind_of_ballot_item: this.props.kind_of_ballot_item,
+      link_to_ballot_item_page: this.props.link_to_ballot_item_page,
+      measure_subtitle: measure_subtitle,
+      measure_text: this.props.measure_text,
+      measure_url: this.props.measure_url,
+      measure_we_vote_id: this.props.we_vote_id,
+      position_list: this.props.position_list
+    };
+    // To get position_list
+    // TODO DALE var measure = MeasureStore.get(this.state.measure_we_vote_id) || {};
+
 
     return <div className="card-main measure-card">
       <div className="card-main__content">
@@ -88,11 +114,10 @@ export default class MeasureItemCompressed extends Component {
         <StarAction we_vote_id={we_vote_id} type="MEASURE"/>
 
         {/* This is the area *under* the measure title */}
-        <table className={ this.props.link_to_ballot_item_page ?
-                "u-cursor--pointer table table-condensed" : "table table-condensed" } >
-          <tbody>
-            <tr>
-              <td className="col-md-6">
+        <div className={"u-flex" + (this.props.link_to_ballot_item_page ?
+                " u-cursor--pointer" : "") } >
+
+              <div className="MeasureItem__summary u-flex-auto u-inline--sm">
                 <div className={ this.props.link_to_ballot_item_page ?
                         "u-cursor--pointer" : null }
                       onClick={ this.props.link_to_ballot_item_page ?
@@ -100,23 +125,24 @@ export default class MeasureItemCompressed extends Component {
                 { this.props.measure_text ?
                   <div className="measure_text">{measure_text}</div> :
                   null }
-              </td>
+              </div>
 
               {/* *** "Positions in your Network" bar OR items you can follow *** */}
-              <td className="col-md-3 u-tr u-inset__minimum-width--100px">
+              <div className="u-flex-none u-justify-end u-inline--sm">
                 <span className={ this.props.link_to_ballot_item_page ?
                         "u-cursor--pointer" :
                         null }
-                      onClick={ this.props.link_to_ballot_item_page ?
-                        goToMeasureLink :
-                        null }
                 >
                 { support_count || oppose_count ?
-                  <span>
-                    <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps}
+                  <span onClick={ this.props.link_to_ballot_item_page ?
+                        ()=>{this.props._toggleMeasureModal(measure_for_modal);} :
+                        null } >
+                    <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={this.state.supportProps}
                                              type="MEASURE" />
                   </span> :
-                  <span>
+                  <span onClick={ this.props.link_to_ballot_item_page ?
+                        ()=>{this.props._toggleMeasureModal(measure_for_modal);} :
+                        null } >
                   {/* Show possible voter guides to follow */}
                   { GuideStore.toFollowListForBallotItemById(we_vote_id) && GuideStore.toFollowListForBallotItemById(we_vote_id).length !== 0 ?
                     <ItemTinyOpinionsToFollow ballotItemWeVoteId={we_vote_id}
@@ -124,20 +150,18 @@ export default class MeasureItemCompressed extends Component {
                     <span /> }
                   </span> }
                 </span>
-              </td>
+              </div>
 
               {/* *** Choose Support or Oppose *** */}
-              <td className="col-md-3 u-inset__minimum-width--120px">
+              <div className="u-flex-none u-justify-end">
                 <ItemActionBar ballot_item_we_vote_id={we_vote_id}
-                               supportProps={supportProps}
+                               supportProps={this.state.supportProps}
                                shareButtonHide
                                commentButtonHide
                                transitioniing={this.state.transitioning}
                                type="MEASURE" />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              </div>
+        </div>
       </div> {/* END .card-main__content */}
     </div>;
   }

@@ -14,7 +14,8 @@
 .u-gray-dark       { color: $gray-dark; }
 .u-gray-darker     { color: $gray-darker; }
 .u-gray-border     { color: $gray-border; }
-
+.u-link-color      { color: $link-color; }
+.u-link-color-light { color: $link-color-light; }
 
 // -------------------------------
 // 'Measure'
@@ -57,14 +58,6 @@
 
 // Alignment
 
-.u-tr {
-  text-align: right;
-}
-
-.u-tc {
-  text-align: center;
-}
-
-.u-tl {
-  text-align: left;
-}
+.u-tr { text-align: right; }
+.u-tc { text-align: center; }
+.u-tl { text-align: left; }
