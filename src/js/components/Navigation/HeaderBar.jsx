@@ -65,6 +65,7 @@ export default class HeaderBar extends Component {
                       <img className="position-statement__avatar"
                             src={voter_photo_url}
                             width="34px"
+                            id="leftAvatar"
                       /> :
                       image_placeholder }
                     <span className="header-slide-out-menu-text-left">Your Voter Guide</span>
@@ -139,7 +140,7 @@ export default class HeaderBar extends Component {
                      <div id="avatarContainer">
                        <img className="position-statement__avatar"
                            src={voter_photo_url}
-                           width="34px"
+                           id="navIcon"
                        />
                        <div>{this.props.voter.full_name || null}</div>
                      </div> :

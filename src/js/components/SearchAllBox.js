@@ -39,12 +39,13 @@ export default class SearchAllBox extends Component {
   }
 
   componentDidMount (){
-    this.siteLogoText = $('.page-logo');
-    this.ballot = document.getElementsByClassName("header-nav__item")[0];
-    this.requests = document.getElementsByClassName("header-nav__item")[1];
-    this.connect = document.getElementsByClassName("header-nav__item")[2];
-    this.about = document.getElementsByClassName("header-nav__item")[3];
-    this.donate = document.getElementsByClassName("header-nav__item")[4];
+    this.siteLogoText = $('.page-logo:nth-child(1)');
+    this.ballot = $('.header-nav__item:nth-child(1)');
+    this.requests = $('.header-nav__item:nth-child(2)');
+    this.connect = $('.header-nav__item:nth-child(3)');
+    this.avatar = $("#avatarContainer");
+    this.about = document.getElementsByClassName('header-nav__item')[3];
+    this.donate = document.getElementsByClassName('header-nav__item')[4];
     // When we first enter we want to retrieve values to have for a click in the search box
     let text_from_search_field = this.props.text_from_search_field;
 
@@ -107,12 +108,14 @@ export default class SearchAllBox extends Component {
     // TODO: convert to flux action
     // for the global nav
    
-    this.siteLogoText.addClass("hidelogo");
-    this.ballot.className += " otherclass";
-    this.about.style.display = "none";
-    this.requests.className += " otherclass";
-    this.donate.style.display = "none";
-    this.connect.className += " otherclass";
+    this.siteLogoText.addClass("hide");
+
+    this.avatar.addClass("otherclass");
+    this.ballot.addClass("otherclass");
+    this.requests.addClass("otherclass");
+    this.connect.addClass("otherclass");
+    this.donate.className += " hide";
+    this.about.className += " hide";
     this.displayResults();
   }
 
@@ -120,10 +123,7 @@ export default class SearchAllBox extends Component {
     // Delay closing the drop down so that a click on the Link can have time to work
     setTimeout(() => {
       $(".otherclass").removeClass("otherclass");
-      $(".hidelogo").removeClass("hidelogo");
-      // this.siteLogoText.css("display", "inline");
-      this.about.style.display = null;
-      this.donate.style.display = null;
+      $(".hide").removeClass("hide");
       this.hideResults();
     }, 250);
   }

@@ -6,15 +6,16 @@ $icon-color-hover: $gray-dark;
 // 2. Display .header-nav, hide .footer-nav
 
 
+
+
 // Header Nav
 // ================================
 .donate,.about,.otherclass,.fullscreen{
-  display: none;
+  display: none ;
   @include breakpoints(nav){ // 2
     display: block;
   }
 }
-
 
 .mobile{
   display:block;
@@ -23,12 +24,9 @@ $icon-color-hover: $gray-dark;
   }
 }
 
-.hidelogo {
+.hide {
   display: none;
 }
-
-
-
 
 
 .header-nav {
