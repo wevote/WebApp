@@ -48,7 +48,7 @@ export default class HeaderBar extends Component {
 
     return <header className="page-header">
       {/* The components/MoreMenu code has to be reproduced here for mobile */}
-      <ReactBurgerMenu pageWrapId={ "" } outerContainerId={ "app" } styles={ menuStyles }>
+      <ReactBurgerMenu className="burgerNav" pageWrapId={ "" } outerContainerId={ "app" } styles={ menuStyles }>
         <div className="device-menu--mobile">
           <ul className="nav nav-stacked">
             <li>
@@ -124,9 +124,13 @@ export default class HeaderBar extends Component {
         </div>
       </ReactBurgerMenu>
       <div className="page-header__content">
-        <Link to="/ballot" className="page-logo h4">
+        <Link to="/ballot" className="page-logo h4 fullscreen">
           We Vote
           <span className="page-logo__version"> alpha</span>
+        </Link>
+
+        <Link to="/ballot" className="page-logo h4 mobile">
+          WV
         </Link>
         
         <NavigatorInHeader pathname={pathname} />

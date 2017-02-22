@@ -66,7 +66,7 @@ const links = {
     var icon = "glyphicon glyphicon-list-alt glyphicon-line-adjustment nav-icon";
 
     var jsx =
-      <Link to="/more/about" className={ "header-nav__item" + (active ? " active-icon" : "")}>
+      <Link to="/more/about" className={ "about header-nav__item" + (active ? " active-icon" : "")}>
            <div>About</div>
         <span className="header-nav__label">
           We Vote
@@ -79,7 +79,7 @@ const links = {
     var icon = "glyphicon glyphicon-list-alt glyphicon-line-adjustment nav-icon";
 
     var jsx =
-      <Link to="/ballot" className={ "header-nav__item" + (active ? " active-icon" : "")}>
+      <Link to="/ballot" className={ "donate header-nav__item" + (active ? " active-icon" : "")}>
         <span className={icon} title="Donate" />
         <span className="header-nav__label">
           Donate

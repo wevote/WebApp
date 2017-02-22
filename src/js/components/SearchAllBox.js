@@ -39,7 +39,10 @@ export default class SearchAllBox extends Component {
   }
 
   componentDidMount (){
-    this.siteLogoText = document.getElementsByClassName("page-logo")[0];
+    this.siteLogoText = $('.page-logo');
+    this.ballot = document.getElementsByClassName("header-nav__item")[0];
+    this.requests = document.getElementsByClassName("header-nav__item")[1];
+    this.connect = document.getElementsByClassName("header-nav__item")[2];
     this.about = document.getElementsByClassName("header-nav__item")[3];
     this.donate = document.getElementsByClassName("header-nav__item")[4];
     // When we first enter we want to retrieve values to have for a click in the search box
@@ -100,21 +103,25 @@ export default class SearchAllBox extends Component {
   onSearchFocus () {
     this.refs.searchAllBox.setSelectionRange(0, 999);
 
-
     // Hide the hamburger navigation and site name
     // TODO: convert to flux action
     // for the global nav
-    this.siteLogoText.style.display = "none";
+   
+    this.siteLogoText.addClass("hidelogo");
+    this.ballot.className += " otherclass";
     this.about.style.display = "none";
+    this.requests.className += " otherclass";
     this.donate.style.display = "none";
+    this.connect.className += " otherclass";
     this.displayResults();
   }
 
   onSearchBlur () {
     // Delay closing the drop down so that a click on the Link can have time to work
     setTimeout(() => {
-      this.siteLogoText.style.display = null;
-      this.siteLogoText.style.display = null;
+      $(".otherclass").removeClass("otherclass");
+      $(".hidelogo").removeClass("hidelogo");
+      // this.siteLogoText.css("display", "inline");
       this.about.style.display = null;
       this.donate.style.display = null;
       this.hideResults();

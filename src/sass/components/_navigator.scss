@@ -8,12 +8,35 @@ $icon-color-hover: $gray-dark;
 
 // Header Nav
 // ================================
+.donate,.about,.otherclass,.fullscreen{
+  display: none;
+  @include breakpoints(nav){ // 2
+    display: block;
+  }
+}
+
+
+.mobile{
+  display:block;
+  @include breakpoints(nav){ // 2
+    display: none;
+  }
+}
+
+.hidelogo {
+  display: none;
+}
+
+
+
+
 
 .header-nav {
-  display: none; // 1
+  display: flex; // 1
   @include breakpoints(nav){ // 2
     display: flex;
   }
+
 
   &__label {
     display: block;
@@ -21,7 +44,7 @@ $icon-color-hover: $gray-dark;
   }
 
   &__item {
-    display: block;
+    // display: block;
     width: 60px;
     margin-top: -.5em; // temporary offsets for .page-header__container padding
     margin-bottom: -.5em;
