@@ -74,6 +74,7 @@ export default class Measure extends Component {
 
   _onMeasureStoreChange (){
     var measure = MeasureStore.get(this.state.measure_we_vote_id) || {};
+    console.log("Measure, _onMeasureStoreChange, measure: ", measure);
     this.setState({ measure: measure });
   }
 
@@ -82,7 +83,7 @@ export default class Measure extends Component {
     const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to follow about this measure.";
 
     if (!this.state.measure.ballot_item_display_name){
-      // TODO DALE If the candidate measure_we_vote_id is not valid, we need to update this with a notice
+      // TODO DALE If the measure_we_vote_id is not valid, we need to update this with a notice
       return <div className="container-fluid well u-stack--md u-inset--md">
                 <div>{LoadingWheel}</div>
                 <br />
@@ -97,11 +98,13 @@ export default class Measure extends Component {
               meta={[{"name": "description", "content": description_text}]}
               />
           <MeasureItem {...this.state.measure}
-                       commentButtonHide />
+                       commentButtonHide
+                       showPositionsInYourNetworkBreakdown />
           <div className="card__additional">
             { this.state.measure.position_list ?
               <div>
                 <PositionList position_list={this.state.measure.position_list}
+                              hideSimpleSupportOrOppose
                               ballot_item_display_name={this.state.measure.ballot_item_display_name} />
               </div> :
               null

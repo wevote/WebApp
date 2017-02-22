@@ -45,8 +45,7 @@ export default class Candidate extends Component {
     SupportActions.retrievePositionsCountsForOneBallotItem(candidate_we_vote_id);
 
     // Display the candidate's name in the search box
-    var { candidate } = this.state;
-    var searchBoxText = candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
+    var searchBoxText = this.state.candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
     SearchAllActions.exitSearch(searchBoxText); // TODO: still not used :)
   }
 
@@ -113,11 +112,13 @@ export default class Candidate extends Component {
           <CandidateItem {...candidate}
                          commentButtonHide
                          contest_office_name={candidate.contest_office_name}
-                         hideOpinionsToFollow />
+                         hideOpinionsToFollow
+                         showPositionsInYourNetworkBreakdown />
           <div className="card__additional">
             { candidate.position_list ?
               <div>
                 <PositionList position_list={candidate.position_list}
+                              hideSimpleSupportOrOppose
                               ballot_item_display_name={candidate.ballot_item_display_name} />
               </div> :
               null

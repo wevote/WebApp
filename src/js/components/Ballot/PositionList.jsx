@@ -3,35 +3,52 @@ import PositionItem from "./PositionItem";
 
 export default class PositionList extends Component {
   static propTypes = {
+    ballot_item_display_name: PropTypes.string.isRequired,
     position_list: PropTypes.array.isRequired,
-    ballot_item_display_name: PropTypes.string.isRequired
+    hideSimpleSupportOrOppose: PropTypes.bool
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      position_list: this.props.position_list,
+      position_list: this.props.position_list
     };
   }
 
   componentWillReceiveProps (nextProps){
-    //if (nextProps.instantRefreshOn ) {
-    // NOTE: We might want to turn this off because we don't want the organization to disappear from the
-    // "More opinions" list when clicked
     this.setState({
-      position_list: nextProps.position_list,
+      position_list: nextProps.position_list
     });
-    //}
   }
 
   render () {
-    return <div><ul className="card-child__list-group">
-      { this.state.position_list.map( item =>
-          <PositionItem key={item.position_we_vote_id}
-                        ballot_item_display_name={this.props.ballot_item_display_name}
-                        position={item}
-          /> )
-      }
-    </ul></div>;
+    if (!this.state.position_list) {
+      return null;
+    }
+    if (this.props.hideSimpleSupportOrOppose) {
+      // Only show a position if it has a comment associated with it
+      return <div>
+        <ul className="card-child__list-group">
+          { this.state.position_list.map(one_position =>
+            <span key={one_position.position_we_vote_id} >
+            { one_position.statement_text ?
+              <PositionItem ballot_item_display_name={this.props.ballot_item_display_name}
+                            position={one_position} /> :
+              null }
+            </span>)
+          }
+        </ul>
+      </div>;
+    } else {
+      return <div>
+        <ul className="card-child__list-group">
+          { this.state.position_list.map(one_position =>
+            <PositionItem key={one_position.position_we_vote_id}
+                          ballot_item_display_name={this.props.ballot_item_display_name}
+                          position={one_position} />)
+          }
+        </ul>
+      </div>;
+    }
   }
 }
