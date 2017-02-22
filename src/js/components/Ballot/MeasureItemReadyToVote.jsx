@@ -91,18 +91,18 @@ export default class MeasureItemReadyToVote extends Component {
           //     className="card-main__position-icon" width="24" height="24" />
         }
         {
-          supportProps && !supportProps.is_support && supportProps.support_count > supportProps.oppose_count ?
-          <span className="star-action ml1"> Your network supports </span> :
+          supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count > supportProps.oppose_count ?
+          <span className="vote-ready-support"> Your network supports </span> :
           null
         }
         {
-          supportProps && !supportProps.is_oppose && supportProps.support_count < supportProps.oppose_count ?
-          <span className="star-action ml1"> Your network opposes </span> :
+          supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count < supportProps.oppose_count ?
+          <span className="vote-ready-support"> Your network opposes </span> :
           null
         }
         {
-          supportProps && (supportProps.support_count === 0 && supportProps.oppose_count === 0)?
-          <span className="star-action ml1"> Your network is undecided </span> :
+          supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count === supportProps.oppose_count ?
+          <span className="vote-ready-support"> Your network is undecided </span> :
           null
         }
 

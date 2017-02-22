@@ -8,10 +8,6 @@ import StarAction from "../../components/Widgets/StarAction";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
-//HIDE: support/oppose buttons, position bar, bookmark, description of the measure
-// SHOW CANDIDATE IF TRUE: "Supported by you", and hide all other candidates
-// //OTHERWISE, IF THERE IS A CLEAR WINNER IN YOUR NETWORK SHOW: "Your network supports", and hide all other candidates
-// OTHERWISE, SHOW NO CANDIDATES: "Your network is undecided"
 
 export default class OfficeItemReadyToVote extends Component {
   static propTypes = {
@@ -53,12 +49,26 @@ export default class OfficeItemReadyToVote extends Component {
     // console.log("_onSupportStoreChange");
   }
 
+
   render () {
     let { ballot_item_display_name, we_vote_id } = this.props;
     let officeLink = "/office/" + we_vote_id;
     let goToOfficeLink = function () { browserHistory.push(officeLink); };
+    let isSupport = [];
+    let networkSupport = null;
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
+
+    this.props.candidate_list.forEach((candidate) => {
+      SupportStore.get(candidate.we_vote_id) && SupportStore.get(candidate.we_vote_id).is_support ?
+          isSupport.push(candidate.ballot_item_display_name) :
+          null
+      });
+
+    this.props.candidate_list.forEach((candidate) => {
+      isSupport.length === 0 && SupportStore.get(candidate.we_vote_id) && SupportStore.get(candidate.we_vote_id).support_count > SupportStore.get(candidate.we_vote_id).oppose_count ? networkSupport = candidate.ballot_item_display_name :
+        null
+      });
 
     return <div className="card-main office-item">
       <div className="card-main__content">
@@ -78,11 +88,17 @@ export default class OfficeItemReadyToVote extends Component {
 
               { SupportStore.get(one_candidate.we_vote_id) && SupportStore.get(one_candidate.we_vote_id).is_support ?
                 <td className="col-md-12" onClick={ this.props.link_to_ballot_item_page ?
-                goToOfficeLink : null }>
-                {one_candidate.ballot_item_display_name}<span className="support-vote-ready">Supported by you</span>
-                 </td>:
-                 null }
-
+                  goToOfficeLink : null }>
+                  {one_candidate.ballot_item_display_name}<span className="vote-ready-support">Supported by you</span>
+                </td> :
+                  networkSupport === one_candidate.ballot_item_display_name ?
+                <td className="col-md-12" onClick={ this.props.link_to_ballot_item_page ?
+                  goToOfficeLink : null }>
+                  {one_candidate.ballot_item_display_name}<span className="vote-ready-support">Your network supports</span>
+                </td> :
+                  isSupport === 0 && networkSupport !== one_candidate.ballot_item_display_name ?
+                <td><span className="vote-ready-support">Your network is undecided</span></td> :
+                  null}
               {/* *** "Positions in your Network" bar OR items you can follow *** */}
 
             </tr>)
