@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
 import GuideStore from "../../stores/GuideStore";
-import ItemActionBar from "../../components/Widgets/ItemActionBar";
-import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
-import ItemTinyOpinionsToFollow from "../../components/VoterGuide/ItemTinyOpinionsToFollow";
-import StarAction from "../../components/Widgets/StarAction";
+//import ItemActionBar from "../../components/Widgets/ItemActionBar";
+//import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
+//import ItemTinyOpinionsToFollow from "../../components/VoterGuide/ItemTinyOpinionsToFollow";
+//import StarAction from "../../components/Widgets/StarAction";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
@@ -49,7 +49,6 @@ export default class OfficeItemReadyToVote extends Component {
     // console.log("_onSupportStoreChange");
   }
 
-
   render () {
     let { ballot_item_display_name, we_vote_id } = this.props;
     let officeLink = "/office/" + we_vote_id;
@@ -62,12 +61,12 @@ export default class OfficeItemReadyToVote extends Component {
     this.props.candidate_list.forEach((candidate) => {
       SupportStore.get(candidate.we_vote_id) && SupportStore.get(candidate.we_vote_id).is_support ?
           isSupport.push(candidate.ballot_item_display_name) :
-          null
+          null;
       });
 
     this.props.candidate_list.forEach((candidate) => {
       isSupport.length === 0 && SupportStore.get(candidate.we_vote_id) && SupportStore.get(candidate.we_vote_id).support_count > SupportStore.get(candidate.we_vote_id).oppose_count ? networkSupport = candidate.ballot_item_display_name :
-        null
+        null;
       });
 
     return <div className="card-main office-item">

@@ -154,7 +154,7 @@ export default class Ballot extends Component {
       <Tooltip id="modal-tooltip">
         wow.
       </Tooltip>;
-      const PopupModal = (
+      const PopupModal =
       <Modal show={this.state.showModal} onHide={()=>{this._togglePopup(null)}}>
           <Modal.Header closeButton>
             <Modal.Title>{this.state.modalMessage}</Modal.Title>
@@ -183,8 +183,7 @@ export default class Ballot extends Component {
           <Modal.Footer>
             <Button onClick={()=>{this._togglePopup(null)}}>Close</Button>
           </Modal.Footer>
-        </Modal>
-      );
+        </Modal>;
 
 
     const showIntroStory = !cookies.getItem("intro_story_watched");

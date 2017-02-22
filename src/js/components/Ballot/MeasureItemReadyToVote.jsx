@@ -1,17 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
 import GuideStore from "../../stores/GuideStore";
-import ItemActionBar from "../../components/Widgets/ItemActionBar";
-import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
-import ItemTinyOpinionsToFollow from "../../components/VoterGuide/ItemTinyOpinionsToFollow";
-import StarAction from "../../components/Widgets/StarAction";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
-//HIDE: support/oppose buttons, position bar, bookmark, description of the measure
-//SHOW IF TRUE: "Supported by you" or "Opposed by you",
- //OTHERWISE, IF THERE IS A CLEAR WINNER SHOW: "Your network supports" or "Your network opposes"
- //OTHERWISE, SHOW: "Your network is undecided" or "Your network has no opinion"
 
 export default class MeasureItemReadyToVote extends Component {
   static propTypes = {
@@ -54,23 +46,11 @@ export default class MeasureItemReadyToVote extends Component {
   }
   render () {
     const { supportProps } = this.state;
-    let support_count = 0;
-    if (supportProps && supportProps.support_count) {
-      // Only show ItemSupportOpposeCounts if your network has something to say
-      support_count = supportProps.support_count;
-    }
 
-    let oppose_count = 0;
-    if (supportProps && supportProps.oppose_count) {
-      // Only show ItemSupportOpposeCounts if your network has something to say
-      oppose_count = supportProps.oppose_count;
-    }
-    let { ballot_item_display_name, measure_subtitle,
-          measure_text, we_vote_id } = this.props;
+    let { ballot_item_display_name,
+        we_vote_id } = this.props;
     let measureLink = "/measure/" + we_vote_id;
-    let goToMeasureLink = function () { browserHistory.push(measureLink); };
 
-    measure_subtitle = capitalizeString(measure_subtitle);
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
     return <div className="card-main measure-card">
@@ -78,14 +58,14 @@ export default class MeasureItemReadyToVote extends Component {
       <div className="card-main__content">
         {
           supportProps && supportProps.is_support ?
-          <span className="star-action ml1"> Supported by you</span> :
+          <span className="vote-ready-support"> Supported by you</span> :
           null
           //<img src="/img/global/svg-icons/thumbs-up-color-icon.svg"
           //     className="card-main__position-icon" width="24" height="24" />
         }
         {
           supportProps && supportProps.is_oppose ?
-          <span className="star-action ml1"> Opposed by you </span> :
+          <span className="vote-ready-support"> Opposed by you </span> :
            null
           //<img src="/img/global/svg-icons/thumbs-down-color-icon.svg"
           //     className="card-main__position-icon" width="24" height="24" />
