@@ -55,13 +55,13 @@ export default class OfficeItemReadyToVote extends Component {
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
     this.props.candidate_list.forEach((candidate) => {
-      SupportStore.get(candidate.we_vote_id) && SupportStore.get(candidate.we_vote_id).is_support ?
+      (SupportStore.get(candidate.we_vote_id) && SupportStore.get(candidate.we_vote_id).is_support) ?
         isSupport.push(candidate.ballot_item_display_name) :
         null
     });
 
     this.props.candidate_list.forEach((candidate) => {
-      SupportStore.get(candidate.we_vote_id) && isSupport.length === 0 && SupportStore.get(candidate.we_vote_id).support_count > SupportStore.get(candidate.we_vote_id).oppose_count ? networkSupport = candidate.ballot_item_display_name :
+      (SupportStore.get(candidate.we_vote_id) && isSupport.length === 0 && SupportStore.get(candidate.we_vote_id).support_count > SupportStore.get(candidate.we_vote_id).oppose_count) ? networkSupport = candidate.ballot_item_display_name :
         null
     });
 

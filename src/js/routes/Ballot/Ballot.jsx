@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Modal, Button, OverlayTrigger, Tooltip, Popover } from "react-bootstrap";
 import { browserHistory, Link } from "react-router";
-import BallotItem from "../../components/Ballot/BallotItem";
 import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 import BallotItemReadyToVote from "../../components/Ballot/BallotItemReadyToVote";
 import BallotStore from "../../stores/BallotStore";
@@ -155,7 +154,7 @@ export default class Ballot extends Component {
         wow.
       </Tooltip>;
       const PopupModal =
-      <Modal show={this.state.showModal} onHide={()=>{this._togglePopup(null)}}>
+      <Modal show={this.state.showModal} onHide={()=>{this._togglePopup(null);}}>
           <Modal.Header closeButton>
             <Modal.Title>{this.state.modalMessage}</Modal.Title>
           </Modal.Header>
@@ -181,7 +180,7 @@ export default class Ballot extends Component {
             <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={()=>{this._togglePopup(null)}}>Close</Button>
+            <Button onClick={()=>{this._togglePopup(null);}}>Close</Button>
           </Modal.Footer>
         </Modal>;
 
