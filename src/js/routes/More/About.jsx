@@ -95,7 +95,7 @@ export default class About extends Component {
 
           <h3 className="h3">We Vote Board Members</h3>
           <div className="row centered">
-            <div className="col-xs-4 col-sm-3 col-md-3">
+            <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
                 <ImageHandler className="img-responsive"
                               imageUrl="/img/global/photos/Jenifer_Fernandez_Ancona-200x200.jpg"
@@ -109,7 +109,7 @@ export default class About extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-xs-4 col-sm-3 col-md-3">
+            <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Tiana_Epps_Johnson-200x200.jpg"
                               alt="Tiana Epps-Johnson"/>
@@ -123,7 +123,7 @@ export default class About extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-xs-4 col-sm-3 col-md-3">
+            <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Debra_Cleaver-200x200.jpg"
                               alt="Debra Cleaver"/>
@@ -138,7 +138,7 @@ export default class About extends Component {
               </div>
             </div>
             <div className="clearfix visible-xs-block"/>
-            <div className="col-xs-4 col-sm-3 col-md-3">
+            <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Tory_Gavito-200x200.jpg"
                               alt="Tory Gavito"/>
@@ -152,7 +152,7 @@ export default class About extends Component {
               </div>
             </div>
             <div className="clearfix visible-sm-block visible-md-block visible-lg-block"/>
-            <div className="col-xs-4 col-sm-3 col-md-3">
+            <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Lawrence_Grodeska-200x200.jpg"
                               alt="Lawrence Grodeska"/>
@@ -165,7 +165,7 @@ export default class About extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-xs-4 col-sm-3 col-md-3">
+            <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Dale_McGrew-200x200.jpg"
                               alt="Dale John McGrew"/>
@@ -179,7 +179,7 @@ export default class About extends Component {
               </div>
             </div>
             <div className="clearfix visible-xs-block"/>
-            <div className="col-xs-4 col-sm-3 col-md-3">
+            <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Barbara_Shannon-200x200.jpg"
                               alt="Barbara Shannon"/>
@@ -192,7 +192,7 @@ export default class About extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-xs-4 col-sm-3 col-md-3">
+            <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Anat_Shenker_Osario-200x200.jpg"
                               alt="Anat Shenker-Osorio"/>
@@ -207,7 +207,7 @@ export default class About extends Component {
               </div>
             </div>
             <div className="clearfix visible-sm-block visible-md-block visible-lg-block"/>
-            <div className="col-xs-4 col-sm-3 col-md-3">
+            <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/William_Winters-200x200.jpg"
                               alt="William Winters"/>
@@ -225,7 +225,7 @@ export default class About extends Component {
 
           <h3 className="h3">We Vote Staff</h3>
           <div className="row centered">
-            <div className="col-xs-4 col-sm-3 col-md-3">
+            <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Sarah_Clements-200x200.jpg"
                               alt="Sarah Clements"/>
@@ -234,7 +234,7 @@ export default class About extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-xs-4 col-sm-3 col-md-3">
+            <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Irene_Florez-200x200.jpg"
                               alt="Irene Florez"/>
@@ -243,7 +243,7 @@ export default class About extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-xs-4 col-sm-3 col-md-3">
+            <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Jeff_French-200x200.jpg"
                               alt="Jeff French"/>
@@ -253,7 +253,7 @@ export default class About extends Component {
               </div>
             </div>
             <div className="clearfix visible-xs-block"/>
-            <div className="col-xs-4 col-sm-3 col-md-3">
+            <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Anisha_Jain-200x200.jpg"
                               alt="Anisha Jain"/>
@@ -263,7 +263,7 @@ export default class About extends Component {
               </div>
             </div>
             <div className="clearfix visible-sm-block visible-md-block visible-lg-block"/>
-            <div className="col-xs-4 col-sm-3 col-md-3">
+            <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Judy_Johnson-200x200.jpg"
                               alt="Judy Johnson"/>
@@ -272,7 +272,7 @@ export default class About extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-xs-4 col-sm-3 col-md-3">
+            <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Neelam_Joshi-200x200.jpg"
                               alt="Neelam Joshi"/>
@@ -282,7 +282,7 @@ export default class About extends Component {
               </div>
             </div>
             <div className="clearfix visible-xs-block"/>
-            <div className="col-xs-4 col-sm-3 col-md-3">
+            <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Ciero_Kilpatrrick-200x200.jpg"
                               alt="Ciero Kilpatrick"/>
@@ -291,7 +291,7 @@ export default class About extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-xs-4 col-sm-3 col-md-3">
+            <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Dale_McGrew-200x200.jpg"
                               alt="Dale John McGrew"/>
@@ -305,7 +305,7 @@ export default class About extends Component {
               </div>
             </div>
             <div className="clearfix visible-sm-block visible-md-block visible-lg-block"/>
-            <div className="col-xs-4 col-sm-3 col-md-3">
+            <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Colette_Phair-200x200.jpg"
                               alt="Colette Phair"/>
@@ -319,7 +319,7 @@ export default class About extends Component {
               </div>
             </div>
             <div className="clearfix visible-xs-block"/>
-            <div className="col-xs-4 col-sm-3 col-md-3">
+            <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Eric_Ogawa-200x200.jpg"
                               alt="Eric"/>

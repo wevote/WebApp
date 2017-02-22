@@ -20,10 +20,14 @@
 
 @include breakpoints(max nav){
   .sidebar-menu {
-    // display: none;
+    // Hacky grid system overrides
+    display: none;
   }
-  .col-xs-8-container {
+  .col-8-container {
+    // Hacky grid system overrides
     width: 100%;
+    max-width: 100%;
+    flex: 0 0 100%;
   }
   .container-main {
     margin-bottom: -72px;
