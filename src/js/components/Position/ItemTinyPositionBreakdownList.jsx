@@ -22,7 +22,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
       position_list: this.props.position_list,
       ballot_item_we_vote_id: ""
     };
-    this.closePopover = this.closePopover.bind(this);
+    this.show_popover = false;
   }
 
   componentDidMount () {
@@ -40,9 +40,20 @@ export default class ItemTinyPositionBreakdownList extends Component {
     });
   }
 
-  closePopover () {
-    // TODO We may need to make the "overlay" refs name dynamic...
-    this.refs.overlay.hide();
+  onTriggerEnter (org_id) {
+    this.refs[`overlay-${org_id}`].show();
+    this.show_popover = true;
+    clearTimeout(this.hide_popover_timer);
+  }
+
+  onTriggerLeave (org_id) {
+    this.show_popover = false;
+    clearTimeout(this.hide_popover_timer);
+    this.hide_popover_timer = setTimeout(() => {
+      if (!this.show_popover) {
+        this.refs[`overlay-${org_id}`].hide();
+      }
+    }, 100);
   }
 
   render () {
@@ -90,8 +101,11 @@ export default class ItemTinyPositionBreakdownList extends Component {
             voter_guide_image_url: one_position.speaker_image_url_https,
             voter_guide_display_name: one_position.speaker_display_name
           };
-          let organizationPopover = <Popover id="popover-trigger-hover-focus"
-                                             onClick={this.closePopover} >
+          let org_id = one_organization.organization_we_vote_id;
+          let organizationPopover = <Popover
+              id={`organization-popover-${org_id}`}
+              onMouseOver={() => this.onTriggerEnter(org_id)}
+              onMouseOut={() => this.onTriggerLeave(org_id)}>
               <section className="card">
                 <div className="card__additional">
                   <div>
@@ -106,14 +120,13 @@ export default class ItemTinyPositionBreakdownList extends Component {
               </section>
             </Popover>;
 
-          let placement = "bottom";
           return <OverlayTrigger
-              key={one_organization.organization_we_vote_id}
-              trigger={["hover", "focus"]}
-              ref="overlay"
-              onExit={this.closePopover}
+              key={`trigger-${org_id}`}
+              ref={`overlay-${org_id}`}
+              onMouseOver={() => this.onTriggerEnter(org_id)}
+              onMouseOut={() => this.onTriggerLeave(org_id)}
               rootClose
-              placement={placement}
+              placement="bottom"
               overlay={organizationPopover}>
             <span className="position-rating__source with-popover">
               <OrganizationTinyDisplay {...one_organization}

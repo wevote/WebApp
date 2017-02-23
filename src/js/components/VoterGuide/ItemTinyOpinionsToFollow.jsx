@@ -57,7 +57,6 @@ export default class ItemTinyOpinionsToFollow extends Component {
     }, 100);
   }
 
-
   render () {
     if (this.state.organizations_to_follow === undefined) {
       return null;
