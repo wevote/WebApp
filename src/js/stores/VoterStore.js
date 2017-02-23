@@ -30,6 +30,11 @@ class VoterStore extends FluxMapStore {
     return this.getState().address.google_civic_election_id;
   }
 
+  alt_election_id () {
+    console.log("VoterStore.alt_election_id - alt_google_civic_election_id " + this.getState().alt_google_civic_election_id);
+    return this.getState().alt_google_civic_election_id;
+  }
+
   getAddress (){
     return this.getState().address.text_for_map_search || "";
   }
@@ -160,10 +165,12 @@ class VoterStore extends FluxMapStore {
 
       case "voterAddressSave":
         if (action.res.status === "SIMPLE_ADDRESS_SAVE") {
+        let alt_google_civic_election_id = this.alt_election_id();
           return {
             ...state,
             address: {
-              text_for_map_search: action.res.text_for_map_search
+              text_for_map_search: action.res.text_for_map_search,
+              google_civic_election_id: alt_google_civic_election_id
             }
           };
         } else {
@@ -176,6 +183,13 @@ class VoterStore extends FluxMapStore {
             }
           };
         }
+
+      case "voterBallotItemsRetrieve":
+        return {
+          ...state,
+          alt_google_civic_election_id: action.res.google_civic_election_id,
+        };
+
       case "voterEmailAddressRetrieve":
         return {
           ...state,

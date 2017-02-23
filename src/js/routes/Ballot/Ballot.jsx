@@ -33,6 +33,7 @@ export default class Ballot extends Component {
       },
       showCandidateModal: false,
       showMeasureModal: false
+      //shouldn't ballot be here?
     };
   }
 
@@ -40,6 +41,7 @@ export default class Ballot extends Component {
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
       browserHistory.push("settings/location");
     } else {
+      //if ballot is found
       let ballot = this.getBallot(this.props);
       // console.log(ballot);
       if (ballot !== undefined) {
@@ -102,6 +104,7 @@ export default class Ballot extends Component {
   _onBallotStoreChange (){
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0){ // Ballot is found but ballot is empty
       browserHistory.push("ballot/empty");
+      console.log("_onBallotStoreChange: ballot is empty");
     } else {
       let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
       this.setState({ballot: this.getBallot(this.props), ballot_type: ballot_type });
@@ -258,8 +261,7 @@ export default class Ballot extends Component {
         </Modal.Body>
       </Modal>;
 
-    const ballot = this.state.ballot;
-
+    let ballot = this.state.ballot;
     var voter_address = VoterStore.getAddress();
     if (!ballot) {
       // Old approach - to be removed after consideration
@@ -273,6 +275,7 @@ export default class Ballot extends Component {
           </div>
         </div>;
       } else {
+        console.log("Loading Wheel " + "voter_address " + voter_address + " ballot " + ballot + " location " + this.props.location);
         return LoadingWheel;
       }
     }
