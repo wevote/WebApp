@@ -14,6 +14,9 @@ export default class ItemTinyOpinionsToFollow extends Component {
 
   constructor (props) {
     super(props);
+
+    this.show_popover = false;
+
     this.state = {
       organizations_to_follow: this.props.organizationsToFollow,
       ballot_item_we_vote_id: ""
@@ -38,13 +41,24 @@ export default class ItemTinyOpinionsToFollow extends Component {
     //}
   }
 
-  closePopover () {
-    // TODO We may need to make the "overlay" refs name dynamic...
-    this.refs.overlay.hide();
+  onTriggerEnter (org_id) {
+    this.refs[`overlay-${org_id}`].show();
+    this.show_popover = true;
+    clearTimeout(this.hide_popover_timer);
   }
 
+  onTriggerLeave (org_id) {
+    this.show_popover = false;
+    clearTimeout(this.hide_popover_timer);
+    this.hide_popover_timer = setTimeout(() => {
+      if (!this.show_popover) {
+        this.refs[`overlay-${org_id}`].hide();
+      }
+    }, 100);
+  }
+
+
   render () {
-    // console.log("ItemTinyOpinionsToFollow, render");
     if (this.state.organizations_to_follow === undefined) {
       return null;
     }
@@ -58,6 +72,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
     }
     const organizations_to_display = this.state.organizations_to_follow.map( (one_organization) => {
       local_counter++;
+      let org_id = one_organization.organization_we_vote_id;
       if (local_counter > MAXIMUM_ORGANIZATION_DISPLAY) {
         if (local_counter === MAXIMUM_ORGANIZATION_DISPLAY + 1) {
           // If here we want to show how many organizations there are to follow
@@ -66,7 +81,6 @@ export default class ItemTinyOpinionsToFollow extends Component {
           return "";
         }
       } else {
-        // console.log("ItemTinyOpinionsToFollow, one_organization: ", one_organization);
         one_organization_for_organization_card = {
             organization_name: one_organization.voter_guide_display_name,
             organization_photo_url: one_organization.voter_guide_image_url,
@@ -76,22 +90,23 @@ export default class ItemTinyOpinionsToFollow extends Component {
             twitter_followers_count: one_organization.twitter_followers_count,
           };
 
-        // onClick={this.closePopover}
-        let organizationPopover = <Popover id="popover-trigger-hover-focus" >
+        let organizationPopover = <Popover
+            id={`organization-popover-${org_id}`}
+            onMouseOver={() => this.onTriggerEnter(org_id)}
+            onMouseOut={() => this.onTriggerLeave(org_id)}>
             <div className="card">
               <div className="card-main">
-                {/* <FollowToggle we_vote_id={one_organization.organization_we_vote_id} /> */}
                 <OrganizationCard organization={one_organization_for_organization_card} />
               </div>
             </div>
           </Popover>;
 
         let placement = "bottom";
-        //     onExit={this.closePopover}
         return <OverlayTrigger
-            key={one_organization.organization_we_vote_id}
-            trigger={["hover", "focus"]}
-            ref="overlay"
+            key={`trigger-${org_id}`}
+            ref={`overlay-${org_id}`}
+            onMouseOver={() => this.onTriggerEnter(org_id)}
+            onMouseOut={() => this.onTriggerLeave(org_id)}
             rootClose
             placement={placement}
             overlay={organizationPopover}>
