@@ -93,7 +93,8 @@ export default class ItemTinyOpinionsToFollow extends Component {
         let organizationPopover = <Popover
             id={`organization-popover-${org_id}`}
             onMouseOver={() => this.onTriggerEnter(org_id)}
-            onMouseOut={() => this.onTriggerLeave(org_id)}>
+            onMouseOut={() => this.onTriggerLeave(org_id)}
+            className="card-popover">
             <div className="card">
               <div className="card-main">
                 <OrganizationCard organization={one_organization_for_organization_card} />
