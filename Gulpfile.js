@@ -13,7 +13,8 @@ const del = require("del");
 const server = require("./server");
 
 const config = {
-    bootstrapDir: './node_modules/bootstrap-sass'
+    bootstrapDir: './node_modules/bootstrap-sass',
+    bootstrap4Dir: './node_modules/bootstrap'
 };
 
 const PRODUCTION = process.env.NODE_ENV === "production";
@@ -73,7 +74,8 @@ gulp.task("server", PRODUCTION ? () => server(PRODUCTION) : function () {
 gulp.task('compile-bootstrap', function() {
     return gulp.src('./src/sass/bootstrap.scss')
     .pipe(sass({
-        includePaths: [config.bootstrapDir + '/assets/stylesheets'],
+        includePaths: [config.bootstrapDir + '/assets/stylesheets',
+                      config.bootstrap4Dir]
     }))
     .pipe(gulp.dest("./build/css/"));
 });

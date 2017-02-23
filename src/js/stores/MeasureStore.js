@@ -22,6 +22,7 @@ class MeasureStore extends FluxMapStore {
         return state.set(key, merged_properties );
 
       case "positionListForBallotItem":
+        // TODO DALE We need to filter this to only store if the ballot item is a measure
         key = action.res.ballot_item_we_vote_id;
         var position_list = action.res.position_list;
         merged_properties = assign({}, state.get(key), {position_list: position_list} );
@@ -34,9 +35,7 @@ class MeasureStore extends FluxMapStore {
       default:
         return state;
     }
-
   }
-
 }
 
 module.exports = new MeasureStore(Dispatcher);

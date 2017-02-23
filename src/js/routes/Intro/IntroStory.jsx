@@ -6,7 +6,7 @@ import AnimationStory2 from "../../components/Animation/AnimationStory2";
 import AnimationStory3 from "../../components/Animation/AnimationStory3";
 import AnimationStory4 from "../../components/Animation/AnimationStory4";
 import AnimationStory5 from "../../components/Animation/AnimationStory5";
-import AnimationStory6 from "../../components/Animation/AnimationStory6";
+// import AnimationStory6 from "../../components/Animation/AnimationStory6";
 import AnimationStory7 from "../../components/Animation/AnimationStory7";
 import cookies from "../../utils/cookies";
 var Slider = require("react-slick");
@@ -50,11 +50,10 @@ export default class IntroStory extends Component {
   }
 
   render () {
-
-//These are GreenSock animation instances
+    //These are GreenSock animation instances
     var timeline = new TimelineLite();
 
-//These are settings for the react-slick slider
+    //These are settings for the react-slick slider
     var settings = {
       dots: true,
       infinite: false,
@@ -73,16 +72,14 @@ export default class IntroStory extends Component {
     return <div>
       <Helmet title="Welcome to We Vote" />
       <div className="intro-story container-fluid well u-inset--md">
-        {/*<span onClick={this.next} className="glyphicon glyphicon-menu-right intro-story__menu-right" aria-hidden="true"/>*/}
-        {/*<span onClick={this.previous} className="glyphicon glyphicon-menu-left intro-story__menu-left" aria-hidden="true"/>*/}
         <img src={"/img/global/icons/x-close.png"} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
         <Slider ref="slider" {...settings}>
           <div key={1}><AnimationStory1 next={this.next}/></div>
-          <div key={4}><AnimationStory2 next={this.next}/></div>
-          <div key={2}><AnimationStory3 next={this.next}/></div>
-          <div key={3}><AnimationStory4 next={this.next}/></div>
+          <div key={2}><AnimationStory2 next={this.next}/></div>
+          <div key={3}><AnimationStory3 next={this.next}/></div>
+          <div key={4}><AnimationStory4 next={this.next}/></div>
           <div key={5}><AnimationStory5 next={this.next}/></div>
-          <div key={6}><AnimationStory6 next={this.next}/></div>
+          {/*<div key={6}><AnimationStory6 next={this.next}/></div>*/}
           <div key={7}><AnimationStory7 next={this.next} timeline={timeline}/></div>
        </Slider>
       </div>
