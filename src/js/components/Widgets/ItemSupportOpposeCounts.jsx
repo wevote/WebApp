@@ -20,6 +20,7 @@ export default class ItemSupportOpposeCounts extends Component {
   }
 
   render () {
+
     if (this.state.supportProps === undefined){
       return null;
     }

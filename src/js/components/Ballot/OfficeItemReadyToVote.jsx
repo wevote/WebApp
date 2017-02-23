@@ -50,7 +50,7 @@ export default class OfficeItemReadyToVote extends Component {
     let officeLink = "/office/" + we_vote_id;
     let goToOfficeLink = function () { browserHistory.push(officeLink); };
     let is_support_array = [];
-    let networkSupport = null;
+    let candidate_with_most_support = null;
     let supportProps;
     let is_support;
 
@@ -69,14 +69,27 @@ export default class OfficeItemReadyToVote extends Component {
       }
     });
 
+    /*This function finds the highest support count for each office but does not handle ties. If two candidates have the
+    same network support count, only the first candidate will be displayed.*/
+    let largest_support_count;
+
     if (is_support_array.length === 0){
+      let network_support_count;
+      let network_oppose_count;
+
       this.props.candidate_list.forEach((candidate) => {
 
+        largest_support_count = 0;
         supportProps = SupportStore.get(candidate.we_vote_id);
+        network_support_count = supportProps.support_count;
+        network_oppose_count = supportProps.oppose_count;
 
         if (supportProps) {
-          if (supportProps.support_count > supportProps.oppose_count){
-            networkSupport = candidate.ballot_item_display_name;
+          if (network_support_count > network_oppose_count) {
+            if (network_support_count > largest_support_count) {
+              largest_support_count = network_support_count;
+              candidate_with_most_support = candidate.ballot_item_display_name;
+            }
           }
         }
       });
@@ -101,15 +114,16 @@ export default class OfficeItemReadyToVote extends Component {
               { SupportStore.get(one_candidate.we_vote_id) && SupportStore.get(one_candidate.we_vote_id).is_support ?
                 <td className="col-md-12" onClick={ this.props.link_to_ballot_item_page ?
                   goToOfficeLink : null }>
-                  {one_candidate.ballot_item_display_name}<span className="vote-ready-support">Supported by you</span>
+                  {one_candidate.ballot_item_display_name}<span className="pull-right">Supported by you &nbsp; <img src="/img/global/svg-icons/thumbs-up-color-icon.svg"
+               className="card-main__position-icon" width="24" height="24" /></span>
                 </td> :
-                  networkSupport === one_candidate.ballot_item_display_name ?
+                  candidate_with_most_support === one_candidate.ballot_item_display_name ?
                 <td className="col-md-12" onClick={ this.props.link_to_ballot_item_page ?
                   goToOfficeLink : null }>
-                  {one_candidate.ballot_item_display_name}<span className="vote-ready-support">Your network supports</span>
+                  {one_candidate.ballot_item_display_name}<span className="pull-right">Your network supports &nbsp; <img src="/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" /></span>
                 </td> :
-                  is_support_array === 0 && networkSupport !== one_candidate.ballot_item_display_name ?
-                <td><span className="vote-ready-support">Your network is undecided</span></td> :
+                  is_support_array === 0 && candidate_with_most_support !== one_candidate.ballot_item_display_name ?
+                <td><span className="pull-right">Your network is undecided</span></td> :
                   null}
 
               {/* *** "Positions in your Network" bar OR items you can follow *** */}

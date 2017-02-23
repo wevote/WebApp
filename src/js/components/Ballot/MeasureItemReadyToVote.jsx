@@ -58,31 +58,28 @@ export default class MeasureItemReadyToVote extends Component {
       <div className="card-main__content">
         {
           supportProps && supportProps.is_support ?
-          <span className="vote-ready-support"> Supported by you</span> :
+         <span className="pull-right"> Supported by you &nbsp; <img src="/img/global/svg-icons/thumbs-up-color-icon.svg"
+               className="card-main__position-icon" width="24" height="24" /></span> :
           null
-          //<img src="/img/global/svg-icons/thumbs-up-color-icon.svg"
-          //     className="card-main__position-icon" width="24" height="24" />
         }
         {
           supportProps && supportProps.is_oppose ?
-          <span className="vote-ready-support"> Opposed by you </span> :
-           null
-          //<img src="/img/global/svg-icons/thumbs-down-color-icon.svg"
-          //     className="card-main__position-icon" width="24" height="24" />
+            <span className="pull-right"> Opposed by you &nbsp; <img src="/img/global/svg-icons/thumbs-down-color-icon.svg" className="card-main__position-icon" width="24" height="24" /></span> :
+              null
         }
         {
           supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count > supportProps.oppose_count ?
-          <span className="vote-ready-support"> Your network supports </span> :
+          <span className="pull-right"> Your network supports &nbsp; <img src= "/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" /></span> :
           null
         }
         {
           supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count < supportProps.oppose_count ?
-          <span className="vote-ready-support"> Your network opposes </span> :
+          <span className="pull-right"> Your network opposes &nbsp; <img src= "/img/global/icons/down-arrow-color-icon.svg" className="network-positions__oppose-icon" width="20" height="20" /></span> :
           null
         }
         {
           supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count === supportProps.oppose_count ?
-          <span className="vote-ready-support"> Your network is undecided </span> :
+          <span className="pull-right"> Your network is undecided &nbsp; </span> :
           null
         }
 
