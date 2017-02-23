@@ -11,7 +11,7 @@
       "type": "clickElement",
       "locator": {
         "type": "css selector",
-        "value": "button.btn.btn-info"
+        "value": "button.btn.btn-success"
       }
     },
     {

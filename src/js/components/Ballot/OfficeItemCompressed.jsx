@@ -53,7 +53,6 @@ export default class OfficeItemCompressed extends Component {
   render () {
     let { ballot_item_display_name, we_vote_id } = this.props;
     let officeLink = "/office/" + we_vote_id;
-    let goToOfficeLink = function () { browserHistory.push(officeLink); };
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
@@ -67,66 +66,66 @@ export default class OfficeItemCompressed extends Component {
         </h2>
         <StarAction we_vote_id={we_vote_id} type="OFFICE"/>
 
-        <table className={ this.props.link_to_ballot_item_page ?
-                "table table-condensed" : "table table-condensed" } >
-          <tbody>
+        <div className={this.props.link_to_ballot_item_page ?
+                "u-cursor--pointer" : null } >
           { this.props.candidate_list.map( (one_candidate) =>
-            <tr key={one_candidate.we_vote_id}>
-              {/* *** Candidate name *** */}
-              <td className="col-md-6 u-cursor--pointer"
-                  onClick={ this.props.link_to_ballot_item_page ?
-                            ()=>{browserHistory.push("/candidate/" + one_candidate.we_vote_id);} :
-                            null }>
-                <span className="hidden-xs">
-                  <ImageHandler className="card-main__avatar"
-                                sizeClassName="icon-candidate-small "
-                                imageUrl={one_candidate.candidate_photo_url}
-                                alt="candidate-photo"
-                                kind_of_ballot_item="CANDIDATE" />
-                </span>
-                {one_candidate.ballot_item_display_name}
-              </td>
-
-              {/* *** "Positions in your Network" bar OR items you can follow *** */}
-              <td className="col-md-3 u-tr u-inset__minimum-width--100px">
-                {/* Decide whether to show the "Positions in your network" bar or the options of voter guides to follow */}
-                { SupportStore.get(one_candidate.we_vote_id) && ( SupportStore.get(one_candidate.we_vote_id).oppose_count || SupportStore.get(one_candidate.we_vote_id).support_count) ?
-                  <span className="u-cursor--pointer"
-                        onClick={ this.props.link_to_ballot_item_page ?
-                        ()=>{this.props._toggleCandidateModal(one_candidate);} :
-                        null } >
-                    <ItemSupportOpposeCounts we_vote_id={one_candidate.we_vote_id}
-                                             supportProps={SupportStore.get(one_candidate.we_vote_id)}
-                                             type="CANDIDATE"/>
-                  </span> :
-                  <span>
-                    {/* Show possible voter guides to follow */}
-                    { GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id) && GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id).length !== 0 ?
-                      <span className="u-cursor--pointer"
-                            onClick={ this.props.link_to_ballot_item_page ?
-                            ()=>{this.props._toggleCandidateModal(one_candidate);} :
-                            null } >
-                        <ItemTinyOpinionsToFollow ballotItemWeVoteId={one_candidate.we_vote_id}
-                                                  organizationsToFollow={GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id)}/>
-                      </span> :
-                      <span /> }
+            <div key={one_candidate.we_vote_id} className="u-stack--md">
+              <div className="u-flex u-items-center">
+                {/* *** Candidate name *** */}
+                <div className="u-flex-auto u-inline--sm u-cursor--pointer"
+                    onClick={ this.props.link_to_ballot_item_page ?
+                              ()=>{browserHistory.push("/candidate/" + one_candidate.we_vote_id);} :
+                              null }>
+                  <span className="hidden-xs">
+                    <ImageHandler className="card-main__avatar"
+                                  sizeClassName="icon-candidate-small "
+                                  imageUrl={one_candidate.candidate_photo_url}
+                                  alt="candidate-photo"
+                                  kind_of_ballot_item="CANDIDATE" />
                   </span>
-                }
-              </td>
+                  <span className="h5">{one_candidate.ballot_item_display_name}</span>
+                </div>
 
-              {/* *** Choose Support or Oppose *** */}
-              <td className="col-md-3 u-inset__minimum-width--120px u-cursor--pointer">
-                <ItemActionBar ballot_item_we_vote_id={one_candidate.we_vote_id}
-                               supportProps={SupportStore.get(one_candidate.we_vote_id)}
-                               shareButtonHide
-                               commentButtonHide
-                               transitioniing={this.state.transitioning}
-                               type="CANDIDATE" />
-              </td>
-            </tr>)
+                {/* *** "Positions in your Network" bar OR items you can follow *** */}
+                <div className="u-flex-none u-justify-end u-inline--sm">
+                  {/* Decide whether to show the "Positions in your network" bar or the options of voter guides to follow */}
+                  { SupportStore.get(one_candidate.we_vote_id) && ( SupportStore.get(one_candidate.we_vote_id).oppose_count || SupportStore.get(one_candidate.we_vote_id).support_count) ?
+                    <span className="u-cursor--pointer"
+                          onClick={ this.props.link_to_ballot_item_page ?
+                          ()=>{this.props._toggleCandidateModal(one_candidate);} :
+                          null } >
+                      <ItemSupportOpposeCounts we_vote_id={one_candidate.we_vote_id}
+                                               supportProps={SupportStore.get(one_candidate.we_vote_id)}
+                                               type="CANDIDATE"/>
+                    </span> :
+                    <span>
+                      {/* Show possible voter guides to follow */}
+                      { GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id) && GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id).length !== 0 ?
+                        <span className="u-cursor--pointer"
+                              onClick={ this.props.link_to_ballot_item_page ?
+                              ()=>{this.props._toggleCandidateModal(one_candidate);} :
+                              null } >
+                          <ItemTinyOpinionsToFollow ballotItemWeVoteId={one_candidate.we_vote_id}
+                                                    organizationsToFollow={GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id)}/>
+                        </span> :
+                        <span /> }
+                    </span>
+                  }
+                </div>
+
+                {/* *** Choose Support or Oppose *** */}
+                <div className="u-flex-none u-cursor--pointer">
+                  <ItemActionBar ballot_item_we_vote_id={one_candidate.we_vote_id}
+                                 supportProps={SupportStore.get(one_candidate.we_vote_id)}
+                                 shareButtonHide
+                                 commentButtonHide
+                                 transitioniing={this.state.transitioning}
+                                 type="CANDIDATE" />
+                </div>
+              </div>{/* end .row */}
+            </div>)
           }
-          </tbody>
-        </table>
+        </div>
       </div>
     </div>;
   }

@@ -14,7 +14,7 @@ export default class BallotElectionList extends Component {
   }
 
   updateBallot (google_civic_election_id, original_text_for_map_search, simple_save) {
-    VoterActions.voterAddressSave(original_text_for_map_search, simple_save);
+    VoterActions.voterAddressSave(google_civic_election_id, original_text_for_map_search, simple_save);
     BallotActions.voterBallotItemsRetrieve(google_civic_election_id);
     browserHistory.push("/ballot");
   }
@@ -32,8 +32,6 @@ export default class BallotElectionList extends Component {
             onClick={this.updateBallot.bind(this, item.google_civic_election_id, item.original_text_for_map_search, simple_save)}>
             {item.election_description_text + " on " + this.formattedDate(item.election_date)}</dd>
          )}
-          <dd className="ballot-election-list__li" role="button"
-            onClick={this.updateBallot.bind(this, 4189, "Ohio", simple_save)}>Test Ohio Primary Election</dd>
         </dl>
   </div>;
   }

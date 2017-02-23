@@ -88,7 +88,7 @@ class GuideStore extends FluxMapStore {
         return state;
 
       case "voterGuidesToFollowRetrieve":
-        console.log("voterGuidesToFollowRetrieve");
+        // console.log("voterGuidesToFollowRetrieve");
         voter_guides = action.res.voter_guides;
         let is_empty = voter_guides.length === 0;
         let is_search = action.res.search_string !== "";

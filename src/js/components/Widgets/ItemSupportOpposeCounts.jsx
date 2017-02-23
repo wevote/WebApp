@@ -20,6 +20,7 @@ export default class ItemSupportOpposeCounts extends Component {
   }
 
   render () {
+
     if (this.state.supportProps === undefined){
       return null;
     }
@@ -62,7 +63,7 @@ export default class ItemSupportOpposeCounts extends Component {
         }
       </div>*/}
       <div className="network-positions__support">
-        <img src={!isEmpty && isMajoritySupport ? "/img/global/icons/up-arrow-color-icon.svg" : "/img/global/icons/up-arrow-gray-icon.svg"} className="network-positions__support-icon" width="20" height="20" />
+        <img src={!isEmpty && isMajoritySupport ? "/img/global/icons/up-arrow-color-icon.svg" : "/img/global/icons/up-arrow-gray-icon.svg"} className="network-positions__support-icon u-inline--xs" width="20" height="20" />
         <div className="network-positions__count">
           {!isEmpty ? support_count : null}
           <span className="sr-only"> Support</span>
@@ -80,11 +81,11 @@ export default class ItemSupportOpposeCounts extends Component {
       </div>
 
       <div className="network-positions__oppose">
-        <img src={!isEmpty && !isMajoritySupport ? "/img/global/icons/down-arrow-color-icon.svg" : "/img/global/icons/down-arrow-gray-icon.svg"} className="network-positions__oppose-icon" width="20" height="20" />
-        <div className="network-positions__count">
+        <div className="network-positions__count u-inline--xs">
           {!isEmpty ? oppose_count : null}
           <span className="sr-only"> Oppose</span>
         </div>
+        <img src={!isEmpty && !isMajoritySupport ? "/img/global/icons/down-arrow-color-icon.svg" : "/img/global/icons/down-arrow-gray-icon.svg"} className="network-positions__oppose-icon" width="20" height="20" />
       </div>
     </div>;
   }

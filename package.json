@@ -58,6 +58,7 @@
     "babel-preset-stage-0": "^6.16.0",
     "babelify": "^7.3.0",
     "blue-tape": "^1.0.0",
+    "bootstrap": "^4.0.0-alpha.6",
     "bootstrap-sass": "^3.3.7",
     "browser-sync": "^2.18.6",
     "browserify": "^13.3.0",
