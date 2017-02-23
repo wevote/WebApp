@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { Link } from "react-router";
 import ImageHandler from "../../components/ImageHandler";
 import LoadingWheel from "../../components/LoadingWheel";
 import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
@@ -25,19 +26,24 @@ export default class OrganizationCard extends Component {
 
     const {organization_twitter_handle, twitter_description, twitter_followers_count,
       organization_photo_url, organization_website,
-      organization_name} = this.props.organization;
+      organization_name, organization_we_vote_id} = this.props.organization;
 
     // If the displayName is in the twitterDescription, remove it from twitterDescription
     let displayName = organization_name ? organization_name : "";
     let twitterDescription = twitter_description ? twitter_description : "";
     let twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
+    var voterGuideLink = organization_twitter_handle ? "/" + organization_twitter_handle : "/voterguide/" + organization_we_vote_id;
 
     return <div className="card-main__media-object">
       <div className="card-main__media-object-anchor">
-        <ImageHandler imageUrl={organization_photo_url} className="card-main__org-avatar" sizeClassName="icon-lg "/>
+        <Link to={voterGuideLink} className="u-no-underline">
+          <ImageHandler imageUrl={organization_photo_url} className="card-main__org-avatar" sizeClassName="icon-lg "/>
+        </Link>
       </div>
       <div className="card-main__media-object-content">
-        <div className="card-main__display-name">{displayName}</div>
+        <Link to={voterGuideLink}>
+          <div className="card-main__display-name">{displayName}</div>
+        </Link>
         { twitterDescriptionMinusName && !this.props.turn_off_description ?
           <p className="card-main__description">{twitterDescriptionMinusName}</p> :
           <p className="card-main__description" />

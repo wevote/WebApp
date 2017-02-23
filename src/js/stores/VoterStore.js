@@ -159,15 +159,23 @@ class VoterStore extends FluxMapStore {
         };
 
       case "voterAddressSave":
-        BallotActions.voterBallotItemsRetrieve();
-        return {
-          ...state,
-          address: {
-            text_for_map_search: action.res.text_for_map_search,
-            google_civic_election_id: action.res.google_civic_election_id
-          }
-        };
-
+        if (action.res.status === "SIMPLE_ADDRESS_SAVE") {
+          return {
+            ...state,
+            address: {
+              text_for_map_search: action.res.text_for_map_search
+            }
+          };
+        } else {
+          BallotActions.voterBallotItemsRetrieve();
+          return {
+            ...state,
+            address: {
+              text_for_map_search: action.res.text_for_map_search,
+              google_civic_election_id: action.res.google_civic_election_id
+            }
+          };
+        }
       case "voterEmailAddressRetrieve":
         return {
           ...state,

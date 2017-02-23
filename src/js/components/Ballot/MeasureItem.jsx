@@ -3,6 +3,7 @@ import { Link, browserHistory } from "react-router";
 import ItemActionBar from "../../components/Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../../components/Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
+import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPositionBreakdownList";
 import ReadMore from "../../components/Widgets/ReadMore";
 import StarAction from "../../components/Widgets/StarAction";
 import SupportStore from "../../stores/SupportStore";
@@ -21,8 +22,10 @@ export default class MeasureItem extends Component {
     measure_url: PropTypes.string,
     state_code: PropTypes.string,
     election_display_name: PropTypes.string,
+    position_list: PropTypes.array,
     regional_display_name: PropTypes.string,
-    state_display_name: PropTypes.string
+    state_display_name: PropTypes.string,
+    showPositionsInYourNetworkBreakdown: PropTypes.bool
   };
   constructor (props) {
     super(props);
@@ -54,6 +57,8 @@ export default class MeasureItem extends Component {
     let num_of_lines = 2;
     measure_subtitle = capitalizeString(measure_subtitle);
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
+
+    let positions_in_your_network = SupportStore.get(we_vote_id) && ( SupportStore.get(we_vote_id).oppose_count || SupportStore.get(we_vote_id).support_count);
 
     return <div className="card-main">
       <div className="card-main__content">
@@ -92,7 +97,7 @@ export default class MeasureItem extends Component {
           }
 
           <div className="row" style={{ paddingBottom: "0.5rem" }}>
-            <div className="col-xs-12" />
+            <div className="col-12" />
           </div>
           <span className={ this.props.link_to_ballot_item_page ?
                   "u-cursor--pointer" :
@@ -101,8 +106,28 @@ export default class MeasureItem extends Component {
                   goToMeasureLink :
                   null }
           >
-              <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps} transitioning={transitioning} type="MEASURE" />
-            </span>
+              <ItemSupportOpposeCounts we_vote_id={we_vote_id}
+                                       supportProps={supportProps}
+                                       transitioning={transitioning}
+                                       type="MEASURE" />
+                 {/* Show a break-down of the positions in your network */}
+              { positions_in_your_network && this.props.showPositionsInYourNetworkBreakdown ?
+                <span>
+                  {/* In desktop mode, align left with position bar */}
+                  {/* In mobile mode, turn on green up-arrow before icons */}
+                  <ItemTinyPositionBreakdownList ballotItemWeVoteId={we_vote_id}
+                                                 position_list={this.props.position_list}
+                                                 showSupport
+                                                 supportProps={this.state.supportProps} />
+                  {/* In desktop mode, align right with position bar */}
+                  {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
+                  <ItemTinyPositionBreakdownList ballotItemWeVoteId={we_vote_id}
+                                                 position_list={this.props.position_list}
+                                                 showOppose
+                                                 supportProps={this.state.supportProps} />
+                </span> :
+                null }
+       </span>
           </div> {/* END .card-main__content */}
           <div className="card-main__actions">
             <ItemActionBar ballot_item_we_vote_id={we_vote_id}

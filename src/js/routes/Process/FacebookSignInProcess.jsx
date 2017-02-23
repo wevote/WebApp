@@ -84,7 +84,7 @@ export default class FacebookSignInProcess extends Component {
     browserHistory.push({
       pathname: "/more/sign_in",
       state: {
-        message: "Your have successfully signed into Facebook.",
+        message: "You have successfully signed in with Facebook.",
         message_type: "success"
       }
     });

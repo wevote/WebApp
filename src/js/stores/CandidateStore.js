@@ -31,6 +31,7 @@ class CandidateStore extends FluxMapStore {
 
       case "positionListForBallotItem":
         key = action.res.ballot_item_we_vote_id;
+        // TODO DALE We need to filter this to only store if the ballot item is a candidate
         var position_list = action.res.position_list;
         merged_properties = assign({}, state.get(key), {position_list: position_list} );
         return state.set(key, merged_properties );

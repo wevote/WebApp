@@ -1,13 +1,20 @@
 import React, { Component, PropTypes } from "react";
-import { Modal, Button, OverlayTrigger, Tooltip, Popover } from "react-bootstrap";
+import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { browserHistory, Link } from "react-router";
+import BallotActions from "../../actions/BallotActions";
+import BallotItem from "../../components/Ballot/BallotItem";
 import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 import BallotItemReadyToVote from "../../components/Ballot/BallotItemReadyToVote";
 import BallotStore from "../../stores/BallotStore";
 import BallotFilter from "../../components/Navigation/BallotFilter";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import cookies from "../../utils/cookies";
+import GuideActions from "../../actions/GuideActions";
+import GuideList from "../../components/VoterGuide/GuideList";
+import GuideStore from "../../stores/GuideStore";
 import Helmet from "react-helmet";
+import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
+import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPositionBreakdownList";
 import LoadingWheel from "../../components/LoadingWheel";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
@@ -20,7 +27,18 @@ export default class Ballot extends Component {
 
   constructor (props){
     super(props);
-    this.state = {showModal: false};
+    this.state = {
+      candidate_for_modal: {
+        guides_to_follow_list: [],
+        position_list: []
+      },
+      measure_for_modal: {
+        guides_to_follow_list: [],
+        position_list: []
+      },
+      showCandidateModal: false,
+      showMeasureModal: false
+    };
   }
 
   componentDidMount () {
@@ -34,13 +52,16 @@ export default class Ballot extends Component {
         this.setState({ballot: ballot, ballot_type: ballot_type});
       }
       // We need a ballotStoreListener here because we want the ballot to display before positions are received
-      this.ballotStoreListener = BallotStore.addListener(this._onChange.bind(this));
+      this.ballotStoreListener = BallotStore.addListener(this._onBallotStoreChange.bind(this));
       // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
       // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
-      this._togglePopup = this._togglePopup.bind(this);
+      this._toggleCandidateModal = this._toggleCandidateModal.bind(this);
+      this._toggleMeasureModal = this._toggleMeasureModal.bind(this);
       SupportActions.voterAllPositionsRetrieve();
       SupportActions.positionsCountForAllBallotItems();
-      this.supportStoreListener = SupportStore.addListener(this._onChange.bind(this));
+      BallotActions.voterBallotListRetrieve();
+      this.supportStoreListener = SupportStore.addListener(this._onBallotStoreChange.bind(this));
+      this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
     }
   }
 
@@ -49,6 +70,7 @@ export default class Ballot extends Component {
       // No ballot found
     } else {
       this.ballotStoreListener.remove();
+      this.guideStoreListener.remove();
       this.supportStoreListener.remove();
     }
   }
@@ -58,19 +80,53 @@ export default class Ballot extends Component {
     this.setState({ballot: this.getBallot(nextProps), ballot_type: ballot_type });
   }
 
-    _togglePopup (modalMessage) {
-     this.setState({
-        showModal: !this.state.showModal,
-        modalMessage: modalMessage
-      });
+  _toggleCandidateModal (candidateForModal) {
+    if (candidateForModal) {
+      GuideActions.retrieveGuidesToFollowByBallotItem(candidateForModal.we_vote_id, "CANDIDATE");
+      candidateForModal.guides_to_follow_list = GuideStore.toFollowListForBallotItemById(candidateForModal.we_vote_id);
+    }
+
+    this.setState({
+      candidate_for_modal: candidateForModal,
+      showCandidateModal: !this.state.showCandidateModal
+    });
   }
 
-  _onChange (){
+  _toggleMeasureModal (measureForModal) {
+    if (measureForModal) {
+      GuideActions.retrieveGuidesToFollowByBallotItem(measureForModal.measure_we_vote_id, "MEASURE");
+    }
+    this.setState({
+      measure_for_modal: measureForModal,
+      showMeasureModal: !this.state.showMeasureModal
+    });
+  }
+
+  _onBallotStoreChange (){
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0){ // Ballot is found but ballot is empty
       browserHistory.push("ballot/empty");
     } else {
       let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
       this.setState({ballot: this.getBallot(this.props), ballot_type: ballot_type });
+    }
+  }
+
+  _onGuideStoreChange (){
+    // Update the data for the modal to include the position of the organization related to this ballot item
+    if (this.state.candidate_for_modal) {
+      this.setState({
+        candidate_for_modal: {
+          ...this.state.candidate_for_modal,
+          guides_to_follow_list: GuideStore.toFollowListForBallotItem()
+        }
+      });
+    } else if (this.state.measure_for_modal) {
+      this.setState({
+        measure_for_modal: {
+          ...this.state.measure_for_modal,
+          guides_to_follow_list: GuideStore.toFollowListForBallotItem()
+        }
+      });
     }
   }
 
@@ -145,66 +201,140 @@ export default class Ballot extends Component {
   }
 
   render () {
-      const popover =
-      <Popover id="modal-popover" title="popover">
-        very popover. such engagement
-      </Popover>;
-    const tooltip =
-      <Tooltip id="modal-tooltip">
-        wow.
-      </Tooltip>;
-      const PopupModal =
-      <Modal show={this.state.showModal} onHide={()=>{this._togglePopup(null);}}>
-          <Modal.Header closeButton>
-            <Modal.Title>{this.state.modalMessage}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-          <h4>Text in a modal</h4>
-            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
 
-            <h4>Popover in a modal</h4>
-            <p>there is a <OverlayTrigger overlay={popover}><a href="#">popover</a></OverlayTrigger> here</p>
+    const show_intro_story = !cookies.getItem("intro_story_watched");
+    if (show_intro_story) {
 
-            <h4>Tooltips in a modal</h4>
-            <p>there is a <OverlayTrigger overlay={tooltip}><a href="#">tooltip</a></OverlayTrigger> here</p>
-            <hr />
-            <h4>Overflowing text to show scroll behavior</h4>
-            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={()=>{this._togglePopup(null);}}>Close</Button>
-          </Modal.Footer>
-        </Modal>;
-
-
-    const showIntroStory = !cookies.getItem("intro_story_watched");
-
-    if (showIntroStory) {
       browserHistory.push("/intro/story");
       return LoadingWheel;
     }
+
+    // We create this modal to pop up and show voter guides that the voter can follow relating to this Candidate.
+    const CandidateModal = <Modal show={this.state.showCandidateModal} onHide={()=>{this._toggleCandidateModal(null);}}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            { this.state.candidate_for_modal ?
+              "Opinions about " + this.state.candidate_for_modal.ballot_item_display_name :
+              null }
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          { this.state.candidate_for_modal ?
+            <section className="card">
+              {/* Show positions in your network with the tiny icons */}
+              COMING SOON - POSITIONS IN YOUR NETWORK
+              { this.state.candidate_for_modal.position_list ?
+                <span>
+                  <ItemSupportOpposeCounts we_vote_id={this.state.candidate_for_modal.we_vote_id}
+                                           supportProps={SupportStore.get(this.state.candidate_for_modal.we_vote_id)}
+                                           type="CANDIDATE" />
+                  {/* Show a break-down of the positions in your network */}
+                  { SupportStore.get(this.state.candidate_for_modal.we_vote_id) && ( SupportStore.get(this.state.candidate_for_modal.we_vote_id).oppose_count || SupportStore.get(this.state.candidate_for_modal.we_vote_id).support_count) ?
+                    <span>
+                      {/* In desktop mode, align left with position bar */}
+                      {/* In mobile mode, turn on green up-arrow before icons */}
+                      <ItemTinyPositionBreakdownList ballotItemWeVoteId={this.state.candidate_for_modal.we_vote_id}
+                                                     position_list={this.state.candidate_for_modal.position_list}
+                                                     showSupport
+                                                     supportProps={SupportStore.get(this.state.candidate_for_modal.we_vote_id)} />
+                      {/* In desktop mode, align right with position bar */}
+                      {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
+                      <ItemTinyPositionBreakdownList ballotItemWeVoteId={this.state.candidate_for_modal.we_vote_id}
+                                                     position_list={this.state.candidate_for_modal.position_list}
+                                                     showOppose
+                                                     supportProps={SupportStore.get(this.state.candidate_for_modal.we_vote_id)} />
+                    </span> :
+                    null }
+                </span> :
+                null }
+              {/* Show voter guides to follow that relate to this candidate */}
+              <div className="card__additional">
+                {this.state.candidate_for_modal.guides_to_follow_list.length === 0 ?
+                  null :
+                  <span>
+                    <p className="card__no-additional">
+                      <strong>Follow</strong> the voter guides of organizations and people you trust.<br />
+                      <strong>Ignore</strong> voter guides that don't share your values.
+                    </p>
+                    <GuideList ballotItemWeVoteId={this.state.candidate_for_modal.we_vote_id}
+                               organizationsToFollow={this.state.candidate_for_modal.guides_to_follow_list}/>
+                  </span>
+                }
+              </div>
+            </section> :
+            null }
+        </Modal.Body>
+      </Modal>;
+
+    // We create this modal to pop up and show voter guides that the voter can follow relating to this Measure.
+    const MeasureModal = <Modal show={this.state.showMeasureModal} onHide={()=>{this._toggleMeasureModal(null);}}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            { this.state.measure_for_modal ?
+              "Opinions about " + this.state.measure_for_modal.ballot_item_display_name :
+              null }
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          { this.state.measure_for_modal ?
+            <section className="card">
+              {/* Show positions in your network with the tiny icons */}
+              COMING SOON - POSITIONS IN YOUR NETWORK
+              { this.state.measure_for_modal.position_list ?
+                <span>
+                  <ItemSupportOpposeCounts we_vote_id={this.state.measure_for_modal.measure_we_vote_id}
+                                           supportProps={SupportStore.get(this.state.measure_for_modal.measure_we_vote_id)}
+                                           type="MEASURE" />
+                  {/* Show a break-down of the positions in your network */}
+                  { SupportStore.get(this.state.measure_for_modal.measure_we_vote_id) && ( SupportStore.get(this.state.measure_for_modal.measure_we_vote_id).oppose_count || SupportStore.get(this.state.measure_for_modal.measure_we_vote_id).support_count) ?
+                    <span>
+                      {/* In desktop mode, align left with position bar */}
+                      {/* In mobile mode, turn on green up-arrow before icons */}
+                      <ItemTinyPositionBreakdownList ballotItemWeVoteId={this.state.measure_for_modal.measure_we_vote_id}
+                                                     position_list={this.state.measure_for_modal.position_list}
+                                                     showSupport
+                                                     supportProps={SupportStore.get(this.state.measure_for_modal.measure_we_vote_id)} />
+                      {/* In desktop mode, align right with position bar */}
+                      {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
+                      <ItemTinyPositionBreakdownList ballotItemWeVoteId={this.state.measure_for_modal.measure_we_vote_id}
+                                                     position_list={this.state.measure_for_modal.position_list}
+                                                     showOppose
+                                                     supportProps={SupportStore.get(this.state.measure_for_modal.measure_we_vote_id)} />
+                    </span> :
+                    null }
+                </span> :
+                null }
+              {/* Show voter guides to follow that relate to this measure */}
+              <div className="card__additional">
+                {this.state.measure_for_modal.guides_to_follow_list.length === 0 ?
+                  null :
+                  <span>
+                    <p className="card__no-additional">
+                      <strong>Follow</strong> the voter guides of organizations and people you trust.<br />
+                      <strong>Ignore</strong> voter guides that don't share your values.
+                    </p>
+                    <GuideList ballotItemWeVoteId={this.state.measure_for_modal.measure_we_vote_id}
+                               organizationsToFollow={this.state.measure_for_modal.guides_to_follow_list}/>
+                  </span>
+                }
+              </div>
+            </section> :
+            null }
+        </Modal.Body>
+      </Modal>;
 
     const ballot = this.state.ballot;
 
     var voter_address = VoterStore.getAddress();
     if (!ballot) {
+      // Old approach - to be removed after consideration
       if (voter_address.length === 0) {
         return <div className="ballot">
           <div className="ballot__header">
-            <Helmet title="Ballot - We Vote" />
             <BrowserPushMessage incomingProps={this.props} />
-            <h1 className="h1">Please enter your address so we can find your ballot.</h1>
-            <Link to="/settings/location">
-                <Button bsStyle="primary">Enter an Address</Button>
-            </Link>
+            <p className="ballot__date_location">
+              Loading your ballot... (<Link to="/settings/location">Edit Address</Link>)
+            </p>
           </div>
         </div>;
       } else {
@@ -240,12 +370,14 @@ export default class Ballot extends Component {
     let in_ready_to_vote_mode = this.getFilterType() === "filterReadyToVote";
 
     return <div className="ballot">
-    {this.state.showModal ? PopupModal : null}
+      { this.state.showMeasureModal ? MeasureModal : null }
+      { this.state.showCandidateModal ? CandidateModal : null }
       <div className="ballot__heading u-stack--lg">
         <Helmet title="Ballot - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
         <OverlayTrigger placement="top" overlay={electionTooltip} >
-          <h1 className="h1 ballot__election-name">{election_name}</h1>
+          <h1 className="h1 ballot__election-name">{election_name}
+            <span className="ballotList__edit"> (<Link to="/ballot/select_ballot">Edit</Link>)</span></h1>
         </OverlayTrigger>
         <p className="ballot__date_location">
           {voter_address}
@@ -254,15 +386,19 @@ export default class Ballot extends Component {
         <div className="ballot__filter"><BallotFilter ballot_type={this.getBallotType()} /></div>
       </div>
       {/* TO BE DISCUSSED ballot_caveat !== "" ?
-        <div className="alert alert alert-info alert-dismissible" role="alert">
+        <div className="alert alert alert-info alert-dismissible" role="alert">n
           <button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           {ballot_caveat}
         </div> : null
       */}
       {emptyBallot}
+
       { in_ready_to_vote_mode ?
         ballot.map( (item) => <BallotItemReadyToVote key={item.we_vote_id} {...item} />) :
-        ballot.map( (item) => <BallotItemCompressed _togglePopup = {this._togglePopup} key={item.we_vote_id} {...item} />)
+        ballot.map( (item) => <BallotItemCompressed _toggleCandidateModal={this._toggleCandidateModal}
+                                                    _toggleMeasureModal={this._toggleMeasureModal}
+                                                    key={item.we_vote_id}
+                                                    {...item} />)
       }
       </div>;
   }

@@ -105,7 +105,7 @@ export default class Application extends Component {
 
     // If looking at these paths, we want to enter theater mode
     var in_theater_mode = false;
-    if (pathname === "/intro/story" || pathname === "/intro/sample_ballot" || pathname === "/intro/get_started") {
+    if (pathname === "/intro/story" || pathname === "/intro/sample_ballot" || pathname === "/intro/get_started" || pathname === "/ballot/select_ballot") {
       in_theater_mode = true;
     }
 
@@ -114,7 +114,7 @@ export default class Application extends Component {
         <div className="page-content-container">
           <div className="container-fluid">
             <div className="row">
-              <div className="col-xs-12 container-main">
+              <div className="col-12 container-main">
                 { this.props.children }
               </div>
             </div>
@@ -132,10 +132,10 @@ export default class Application extends Component {
       <div className="page-content-container">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-xs-4 sidebar-menu">
+            <div className="col-4 sidebar-menu">
               { voter.is_signed_in ? <MoreMenu {...voter} /> : <MoreMenu /> }
             </div>
-            <div className="col-xs-8-container col-xs-8 container-main">
+            <div className="col-8-container col-8 container-main">
               { this.props.children }
             </div>
           </div>

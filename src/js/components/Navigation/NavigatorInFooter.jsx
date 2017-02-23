@@ -7,7 +7,7 @@ const links = {
     var icon = "glyphicon glyphicon-list-alt glyphicon-line-adjustment nav-icon";
 
     var jsx =
-      <div className="col-xs-3 center-block text-center">
+      <div className="col-3 center-block text-center">
         <Link to="/ballot" className={ "footer-nav__item" + (active ? " active-icon" : "")}>
 
           <span className={icon} title="Ballot" />
@@ -25,7 +25,7 @@ const links = {
     var icon = "glyphicon glyphicon-inbox glyphicon-line-adjustment nav-icon";
 
     var jsx =
-      <div className="col-xs-3 center-block text-center">
+      <div className="col-3 center-block text-center">
         <Link to="/requests" className={ "footer-nav__item" + (active ? " active-icon" : "")}>
           <span className={icon} title="Requests">
             {number_of_incoming_friend_requests ?
@@ -46,7 +46,7 @@ const links = {
     var icon = "glyphicon icon-icon-connect-1-3 nav-icon";
 
     var jsx =
-      <div className="col-xs-3 center-block text-center">
+      <div className="col-3 center-block text-center">
         <Link to="/more/connect" className={ "footer-nav__item" + (active ? " active-icon" : "")}>
           <span className={icon} title="Connect" />
           <br/>
@@ -63,7 +63,7 @@ const links = {
     var icon = "glyphicon icon-icon-activity-1-4 nav-icon";
 
     var jsx =
-      <div className="col-xs-3 center-block text-center">
+      <div className="col-3 center-block text-center">
         <Link to="/activity" className={ "footer-nav__item" + (active ? " active-icon" : "")}>
           <span className={icon} title="Activity" />
           <br/>
