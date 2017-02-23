@@ -4,6 +4,7 @@ import { browserHistory, Link } from "react-router";
 import BallotActions from "../../actions/BallotActions";
 import BallotItem from "../../components/Ballot/BallotItem";
 import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
+import BallotItemReadyToVote from "../../components/Ballot/BallotItemReadyToVote";
 import BallotStore from "../../stores/BallotStore";
 import BallotFilter from "../../components/Navigation/BallotFilter";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
@@ -155,6 +156,8 @@ export default class Ballot extends Component {
         return BallotStore.ballot_remaining_choices;
       case "filterSupport":
         return BallotStore.ballot_supported;
+      case "filterReadyToVote":
+        return BallotStore.ballot;
       default :
         return BallotStore.ballot;
     }
@@ -166,6 +169,8 @@ export default class Ballot extends Component {
         return "CHOICES_REMAINING";
       case "filterSupport":
         return "WHAT_I_SUPPORT";
+      case "filterReadyToVote":
+        return "READY_TO_VOTE";
       default :
         return "ALL_BALLOT_ITEMS";
     }
@@ -177,6 +182,8 @@ export default class Ballot extends Component {
         return "filterRemaining";
       case "filterSupport":
         return "filterSupport";
+      case "filterReadyToVote":
+        return "filterReadyToVote";
       default :
         return "none";
     }
@@ -194,8 +201,10 @@ export default class Ballot extends Component {
   }
 
   render () {
+
     const show_intro_story = !cookies.getItem("intro_story_watched");
     if (show_intro_story) {
+
       browserHistory.push("/intro/story");
       return LoadingWheel;
     }
@@ -358,7 +367,7 @@ export default class Ballot extends Component {
 
     const electionTooltip = election_date ? <Tooltip id="tooltip">Ballot for {election_date}</Tooltip> : <span />;
 
-    let show_expanded_ballot_items = false;
+    let in_ready_to_vote_mode = this.getFilterType() === "filterReadyToVote";
 
     return <div className="ballot">
       { this.state.showMeasureModal ? MeasureModal : null }
@@ -377,14 +386,15 @@ export default class Ballot extends Component {
         <div className="ballot__filter"><BallotFilter ballot_type={this.getBallotType()} /></div>
       </div>
       {/* TO BE DISCUSSED ballot_caveat !== "" ?
-        <div className="alert alert alert-info alert-dismissible" role="alert">
+        <div className="alert alert alert-info alert-dismissible" role="alert">n
           <button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           {ballot_caveat}
         </div> : null
       */}
       {emptyBallot}
-      { show_expanded_ballot_items ?
-        ballot.map( (item) => <BallotItem key={item.we_vote_id} {...item} />) :
+
+      { in_ready_to_vote_mode ?
+        ballot.map( (item) => <BallotItemReadyToVote key={item.we_vote_id} {...item} />) :
         ballot.map( (item) => <BallotItemCompressed _toggleCandidateModal={this._toggleCandidateModal}
                                                     _toggleMeasureModal={this._toggleMeasureModal}
                                                     key={item.we_vote_id}
