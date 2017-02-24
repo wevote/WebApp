@@ -145,4 +145,5 @@ export default class Application extends Component {
   }
 }
 
-  //    <NavigatorInFooter pathname={pathname} />
+
+//

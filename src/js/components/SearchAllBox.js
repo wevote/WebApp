@@ -110,7 +110,7 @@ export default class SearchAllBox extends Component {
    
     this.siteLogoText.addClass("hide");
 
-    this.avatar.addClass("otherclass");
+    // this.avatar.addClass("otherclass");
     this.ballot.addClass("otherclass");
     this.requests.addClass("otherclass");
     this.connect.addClass("otherclass");

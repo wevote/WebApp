@@ -10,15 +10,20 @@ $icon-color-hover: $gray-dark;
 
 // Header Nav
 // ================================
-.donate,.about,.otherclass,.fullscreen{
-  display: none ;
+.donate,.about,.otherclass,.fullscreen,#desktopAvatar{
+  display: none;
   @include breakpoints(nav){ // 2
     display: block;
   }
 }
 
-.mobile{
-  display:block;
+.mobile {
+  display:none;
+
+  @include breakpoints(iphone5){ // 2
+    display: block;
+  }
+
   @include breakpoints(nav){ // 2
     display: none;
   }
@@ -46,7 +51,7 @@ $icon-color-hover: $gray-dark;
     width: 60px;
     margin-top: -.5em; // temporary offsets for .page-header__container padding
     margin-bottom: -.5em;
-    padding: 8px 10px;
+    /* padding: /*8px 10px*/;
     color: #fff;
     opacity: .8;
     text-align: center;
@@ -107,4 +112,17 @@ $icon-color-hover: $gray-dark;
     font-family: $body-font-stack;
     background-color: #db4437; // Override for Bootstrap class .badge
   }
+}
+
+
+
+div#mobileAvatar {
+  bottom: 20px;
+  position: relative;
+  right: 10px;
+}
+
+
+div#avatarName {
+    font-size: 10px;
 }
