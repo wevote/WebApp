@@ -55,7 +55,7 @@ module.exports = {
     Dispatcher.loadEndpoint("voterEmailAddressRetrieve", {});
   },
 
-  voterAddressSave: function (text, simple_save = false, google_civic_election_id){
+  voterAddressSave: function (text, simple_save = false, google_civic_election_id = 0){
     Dispatcher.loadEndpoint("voterAddressSave", { text_for_map_search: text, simple_save: simple_save, google_civic_election_id: google_civic_election_id});
   },
 
