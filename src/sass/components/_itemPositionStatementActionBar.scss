@@ -11,9 +11,13 @@
     border-radius: 3px;
     background: #fff;
     // // height: 34px;
-    width: 26px;
+    width: 36px;
     display: inline-block;
     flex-shrink: 0;
+
+    @include breakpoints(nav){ // 2
+      width: 26px;
+    }
   
   }
 
