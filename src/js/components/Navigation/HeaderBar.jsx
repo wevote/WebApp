@@ -72,7 +72,6 @@ export default class HeaderBar extends Component {
                       src={voter_photo_url}
                       id="navIcon"
                   />
-            <div id = "avatarName">{ elipses("sdfsdfsdfsdfsfsdfdsf" || this.props.voter.full_name, true) || null}</div>
             </div> : image_placeholder}
              </div> } className="burgerNav" pageWrapId={ "" } outerContainerId={ "app" } styles={ menuStyles } right>
         <div className="device-menu--mobile">
