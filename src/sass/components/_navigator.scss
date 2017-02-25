@@ -80,6 +80,14 @@ $icon-color-hover: $gray-dark;
 
     &.donate {
       padding: 0px;
+      &>img.glyphicon{
+        max-width: 100%;
+        width: 27px;
+      }
+    }
+
+    &.about>#aboutIcon{
+       padding: 2px;
     }
 
   }
@@ -123,7 +131,7 @@ $icon-color-hover: $gray-dark;
   }
 }
 
-// Header Nav
+// Avatars!
 // ================================
 
 div {
@@ -132,24 +140,20 @@ div {
     position: relative;
     right: 10px;
   }
-  &#avatarName {
-    font-size: 10px;
-    color: white;
-  }
   &#avatarContainer {
     width: 36px;
+    &>#avatarName {
+      font-size: 10px;
+      color: white;
+    }
   }
+}
+
+#leftAvatar {
+  max-width: 100%;
+  width: 27px;
 }
 
 #navIcon {
   margin-right: 0px;
-}
-
-div#aboutIcon {
-  padding: 2px;
-}
-
-img.glyphicon, #leftAvatar {
-  max-width: 100%;
-  width: 27px;
 }
