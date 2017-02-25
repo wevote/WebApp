@@ -32,6 +32,7 @@ export default class SearchAllBox extends Component {
     this.onSearchFieldTextChange = this.onSearchFieldTextChange.bind(this);
     this.onSearchKeyDown = this.onSearchKeyDown.bind(this);
     this.onSearchResultMouseOver = this.onSearchResultMouseOver.bind(this);
+    this.onSearchResultClick = this.onSearchResultClick.bind(this);
     this.onSearchFormSubmit = this.onSearchFormSubmit.bind(this);
     this.navigateToSelectedLink = this.navigateToSelectedLink.bind(this);
 
@@ -114,6 +115,7 @@ export default class SearchAllBox extends Component {
 
   onSearchFormSubmit (e) {
     e.preventDefault();
+    this.updateSearchText();
     //Remove focus from search bar
     document.getElementById("SearchAllBox-input").blur();
     this.navigateToSelectedLink();
@@ -149,6 +151,17 @@ export default class SearchAllBox extends Component {
   onSearchResultMouseOver (e) {
     let idx = parseInt(e.currentTarget.getAttribute("data-idx"), 10);
     this.setState({selected_index: idx});
+  }
+
+  onSearchResultClick (e) {
+    this.updateSearchText();
+  }
+
+  updateSearchText () {
+    let selectedResultText = this.state.search_results[this.state.selected_index].result_title;
+    this.setState({text_from_search_field: selectedResultText})
+    //Update the search results to the selected query
+    SearchAllActions.searchAll(selectedResultText);
   }
 
   clearSearch () {
@@ -205,7 +218,8 @@ export default class SearchAllBox extends Component {
                            data-idx={idx}
                            to={this.links[idx]}
                            onMouseOver={this.onSearchResultMouseOver}
-                           className="search-container__links">
+                           className="search-container__links"
+                           onClick={this.onSearchResultClick}>
                 <div className={search_result_classes}>
                   <span>
                     <ImageHandler imageUrl={one_result.result_image}
