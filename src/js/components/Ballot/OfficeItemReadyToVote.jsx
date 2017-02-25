@@ -57,9 +57,7 @@ export default class OfficeItemReadyToVote extends Component {
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
     this.props.candidate_list.forEach((candidate) => {
-
       supportProps = SupportStore.get(candidate.we_vote_id);
-
       if (supportProps) {
         is_support = supportProps.is_support;
 
@@ -69,26 +67,31 @@ export default class OfficeItemReadyToVote extends Component {
       }
     });
 
-    /*This function finds the highest support count for each office but does not handle ties. If two candidates have the
-    same network support count, only the first candidate will be displayed.*/
+    /* This function finds the highest support count for each office but does not handle ties. If two candidates have the
+    same network support count, only the first candidate will be displayed. */
     let largest_support_count;
+    let at_least_one_candidate_chosen = false;
+    let voter_supports_at_least_one_candidate;
 
     if (is_support_array.length === 0){
       let network_support_count;
       let network_oppose_count;
 
       this.props.candidate_list.forEach((candidate) => {
-
         largest_support_count = 0;
         supportProps = SupportStore.get(candidate.we_vote_id);
-        network_support_count = supportProps.support_count;
-        network_oppose_count = supportProps.oppose_count;
-
         if (supportProps) {
+          if (!voter_supports_at_least_one_candidate) {
+            voter_supports_at_least_one_candidate = supportProps.is_support;
+          }
+          network_support_count = supportProps.support_count;
+          network_oppose_count = supportProps.oppose_count;
+
           if (network_support_count > network_oppose_count) {
             if (network_support_count > largest_support_count) {
               largest_support_count = network_support_count;
               candidate_with_most_support = candidate.ballot_item_display_name;
+              at_least_one_candidate_chosen = true;
             }
           }
         }
@@ -130,6 +133,11 @@ export default class OfficeItemReadyToVote extends Component {
 
             </tr>)
           }
+          { !at_least_one_candidate_chosen && !voter_supports_at_least_one_candidate ?
+            <tr><td>
+              <span className="pull-right">Your network is undecided</span>
+            </td></tr> :
+            null }
           </tbody>
         </table>
       </div>

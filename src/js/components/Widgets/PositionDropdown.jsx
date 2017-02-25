@@ -39,9 +39,9 @@ export default class PositionDropdown extends Component {
         {positionIcon} {positionText} <span className="caret" />
       </button>
       {this.state.open &&
-        <ul className="dropdown-menu">
+        <ul className="dropdown-menu" onClick={removePositionFunction}>
           <li>
-            <a autoFocus onClick={removePositionFunction}>
+            <a autoFocus>
                 Remove Position
             </a>
           </li>

@@ -119,12 +119,14 @@ export default class MeasureItem extends Component {
                                                  position_list={this.props.position_list}
                                                  showSupport
                                                  supportProps={this.state.supportProps} />
-                  {/* In desktop mode, align right with position bar */}
-                  {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
-                  <ItemTinyPositionBreakdownList ballotItemWeVoteId={we_vote_id}
-                                                 position_list={this.props.position_list}
-                                                 showOppose
-                                                 supportProps={this.state.supportProps} />
+                  <span className="pull-right">
+                    {/* In desktop mode, align right with position bar */}
+                    {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
+                    <ItemTinyPositionBreakdownList ballotItemWeVoteId={we_vote_id}
+                                                   position_list={this.props.position_list}
+                                                   showOppose
+                                                   supportProps={this.state.supportProps} />
+                  </span>
                 </span> :
                 null }
        </span>
