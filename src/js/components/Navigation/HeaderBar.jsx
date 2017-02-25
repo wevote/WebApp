@@ -150,18 +150,18 @@ export default class HeaderBar extends Component {
         </div>
       </ReactBurgerMenu>
       <div id = "desktopAvatar">
-      { voter_photo_url ?
-          <div id="avatarContainer">
-            <img
-              className="position-statement__avatar"
-              src={voter_photo_url}
-              width="34px"
-              id="leftAvatar"
-            />
-            <div id = "avatarName">{elipses(this.props.voter.full_name) || null}</div>
-          </div> :
-          image_placeholder }
-          </div>
+        { voter_photo_url ?
+            <div id="avatarContainer">
+              <img
+                className="position-statement__avatar"
+                src={voter_photo_url}
+                width="34px"
+                id="leftAvatar"
+              />
+              <div id="avatarName">{elipses(this.props.voter.full_name) || null}</div>
+            </div> :
+            image_placeholder }
+        </div>
       </div>
     </header>;
   }
