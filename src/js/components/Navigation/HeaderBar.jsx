@@ -64,16 +64,23 @@ export default class HeaderBar extends Component {
         <NavigatorInHeader pathname={pathname} />
         <SearchAllBox />
 
-      <ReactBurgerMenu customBurgerIcon={
-        <div id ="mobileAvatar">
-          {voter_photo_url ?
-            <div id="avatarContainer">
-                <img className="position-statement__avatar"
-                      src={voter_photo_url}
-                      id="navIcon"
-                  />
-            </div> : image_placeholder}
-             </div> } className="burgerNav" pageWrapId={ "" } outerContainerId={ "app" } styles={ menuStyles } right>
+      <ReactBurgerMenu
+          customBurgerIcon={
+              <div id ="mobileAvatar">
+                {voter_photo_url ?
+                  <div id="avatarContainer">
+                      <img className="position-statement__avatar"
+                            src={voter_photo_url}
+                            id="navIcon"
+                        />
+                  </div> : image_placeholder}
+               </div> }
+             className="burgerNav"
+             pageWrapId={ "" }
+             outerContainerId={ "app" }
+             styles={ menuStyles }
+             right
+        >
         <div className="device-menu--mobile">
           <ul className="nav nav-stacked">
             <li>
@@ -166,10 +173,3 @@ export default class HeaderBar extends Component {
     </header>;
   }
 }
-
-
-// { }
-
-/* <Link to="/ballot" className="page-logo h4 mobile">
-        //   WV
-        // </Link> */

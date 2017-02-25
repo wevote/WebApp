@@ -109,8 +109,6 @@ export default class SearchAllBox extends Component {
     // for the global nav
    
     this.siteLogoText.addClass("hide");
-
-    // this.avatar.addClass("otherclass");
     this.ballot.addClass("otherclass");
     this.requests.addClass("otherclass");
     this.connect.addClass("otherclass");
