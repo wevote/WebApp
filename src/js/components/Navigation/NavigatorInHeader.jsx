@@ -67,7 +67,7 @@ const links = {
 
     var jsx =
       <Link to="/more/about" className={ "about header-nav__item" + (active ? " active-icon" : "")}>
-           <div>About</div>
+           <div id='aboutIcon'>About</div>
         <span className="header-nav__label">
           We Vote
           </span>
@@ -80,7 +80,7 @@ const links = {
 
     var jsx =
       <Link to="/ballot" className={ "donate header-nav__item" + (active ? " active-icon" : "")}>
-        <span className={icon} title="Donate" />
+        <img className = "glyphicon" src="/img/global/svg-icons/glyphicons-20-heart-empty.svg" />
         <span className="header-nav__label">
           Donate
           </span>
@@ -132,3 +132,9 @@ export default class NavigatorInHeader extends Component {
       return navigator;
   }
 }
+
+
+
+//<span className={icon} title="Donate" />
+
+

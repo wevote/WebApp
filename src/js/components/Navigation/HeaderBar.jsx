@@ -158,7 +158,7 @@ export default class HeaderBar extends Component {
               width="34px"
               id="leftAvatar"
             />
-            <div id = "avatarName">{elipses("sdfsdfsdfsdfsfsdfdsf" || this.props.voter.full_name) || null}</div>
+            <div id = "avatarName">{elipses(this.props.voter.full_name) || null}</div>
           </div> :
           image_placeholder }
           </div>
