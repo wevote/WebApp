@@ -61,6 +61,32 @@ const links = {
       </Link>;
 
     return jsx;
+  },
+  about: function (active) {
+    var icon = "glyphicon glyphicon-list-alt glyphicon-line-adjustment nav-icon";
+
+    var jsx =
+      <Link to="/more/about" className={ "about header-nav__item" + (active ? " active-icon" : "")}>
+           <div id='aboutIcon'>About</div>
+        <span className="header-nav__label">
+          We Vote
+          </span>
+      </Link>;
+
+    return jsx;
+  },
+  donate: function (active) {
+    var icon = "glyphicon glyphicon-list-alt glyphicon-line-adjustment nav-icon";
+
+    var jsx =
+      <Link to="/ballot" className={ "donate header-nav__item" + (active ? " active-icon" : "")}>
+        <img className = "glyphicon" src="/img/global/svg-icons/glyphicons-20-heart-empty.svg" />
+        <span className="header-nav__label">
+          Donate
+          </span>
+      </Link>;
+
+    return jsx;
   }
 };
 
@@ -92,16 +118,23 @@ export default class NavigatorInHeader extends Component {
 
   render () {
     var { props: { pathname } } = this;
-    var { ballot, requests, connect, activity } = links;
+    var { ballot, requests, connect, activity, about, donate } = links;
     let number_of_incoming_friend_requests = this.state.friend_invitations_sent_to_me.length;
     const navigator =
       <div className="header-nav">
         {ballot(pathname === "/ballot")}
         {requests(pathname === "/requests", number_of_incoming_friend_requests)}
         {connect(pathname === "/more/connect")}
-        {activity(pathname === "/activity")}
+        {about(pathname === "/more/about")}
+        {donate(pathname === "/more/connect")}
       </div>;
 
       return navigator;
   }
 }
+
+
+
+//<span className={icon} title="Donate" />
+
+

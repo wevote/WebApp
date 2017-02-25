@@ -39,7 +39,13 @@ export default class SearchAllBox extends Component {
   }
 
   componentDidMount (){
-    this.siteLogoText = document.getElementsByClassName("page-logo")[0];
+    this.siteLogoText = $('.page-logo:nth-child(1)');
+    this.ballot = $('.header-nav__item:nth-child(1)');
+    this.requests = $('.header-nav__item:nth-child(2)');
+    this.connect = $('.header-nav__item:nth-child(3)');
+    this.avatar = $("#avatarContainer");
+    this.about = document.getElementsByClassName('header-nav__item')[3];
+    this.donate = document.getElementsByClassName('header-nav__item')[4];
     // When we first enter we want to retrieve values to have for a click in the search box
     let text_from_search_field = this.props.text_from_search_field;
 
@@ -64,6 +70,7 @@ export default class SearchAllBox extends Component {
   }
 
   _onSearchAllStoreChange (){
+    console.log("_onSearchAllStoreChange");
     var new_state = {};
 
     if (SearchAllStore.getSearchResults()) {
@@ -100,14 +107,23 @@ export default class SearchAllBox extends Component {
     // Hide the hamburger navigation and site name
     // TODO: convert to flux action
     // for the global nav
-    this.siteLogoText.style.display = "none";
+   
+    this.siteLogoText.addClass("hide");
+
+    // this.avatar.addClass("otherclass");
+    this.ballot.addClass("otherclass");
+    this.requests.addClass("otherclass");
+    this.connect.addClass("otherclass");
+    this.donate.className += " hide";
+    this.about.className += " hide";
     this.displayResults();
   }
 
   onSearchBlur () {
     // Delay closing the drop down so that a click on the Link can have time to work
     setTimeout(() => {
-      this.siteLogoText.style.display = null;
+      $(".otherclass").removeClass("otherclass");
+      $(".hide").removeClass("hide");
       this.hideResults();
     }, 250);
   }

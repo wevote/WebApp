@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import NavigatorInHeader from "./NavigatorInHeader";
 import SearchAllBox from "../SearchAllBox";
+import { elipses } from  "../../utils/textFormat";
 var Icon = require("react-svg-icons");
 const ReactBurgerMenu = require("react-burger-menu").push;
 
@@ -38,9 +39,9 @@ export default class HeaderBar extends Component {
     let image_placeholder = "";
     let speaker_type = "V";  // TODO DALE make this dynamic
     if (speaker_type === "O") {
-        image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
+        image_placeholder = <span id= "anonIcon" className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
     } else {
-        image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
+        image_placeholder = <span id= "anonIcon" className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
     }
 
     let show_your_page_from_twitter = signed_in_twitter && twitter_screen_name;
@@ -48,7 +49,31 @@ export default class HeaderBar extends Component {
 
     return <header className="page-header">
       {/* The components/MoreMenu code has to be reproduced here for mobile */}
-      <ReactBurgerMenu pageWrapId={ "" } outerContainerId={ "app" } styles={ menuStyles }>
+
+      <div className="page-header__content">
+        <Link to="/ballot" className="page-logo h4 fullscreen">
+          We Vote
+          <span className="page-logo__version"> alpha</span>
+        </Link>
+
+
+        <Link to="/ballot" className="page-logo h4 mobile">
+          WV
+        </Link>
+        
+        <NavigatorInHeader pathname={pathname} />
+        <SearchAllBox />
+
+      <ReactBurgerMenu customBurgerIcon={
+        <div id ="mobileAvatar">
+          {voter_photo_url ?
+            <div id="avatarContainer">
+                <img className="position-statement__avatar"
+                      src={voter_photo_url}
+                      id="navIcon"
+                  />
+            </div> : image_placeholder}
+             </div> } className="burgerNav" pageWrapId={ "" } outerContainerId={ "app" } styles={ menuStyles } right>
         <div className="device-menu--mobile">
           <ul className="nav nav-stacked">
             <li>
@@ -65,6 +90,7 @@ export default class HeaderBar extends Component {
                       <img className="position-statement__avatar"
                             src={voter_photo_url}
                             width="34px"
+                            id="leftAvatar"
                       /> :
                       image_placeholder }
                     <span className="header-slide-out-menu-text-left">Your Voter Guide</span>
@@ -123,14 +149,27 @@ export default class HeaderBar extends Component {
           </span>
         </div>
       </ReactBurgerMenu>
-      <div className="page-header__content">
-        <Link to="/ballot" className="page-logo h4">
-          We Vote
-          <span className="page-logo__version"> alpha</span>
-        </Link>
-        <SearchAllBox />
-        <NavigatorInHeader pathname={pathname} />
+      <div id = "desktopAvatar">
+      { voter_photo_url ?
+          <div id="avatarContainer">
+            <img
+              className="position-statement__avatar"
+              src={voter_photo_url}
+              width="34px"
+              id="leftAvatar"
+            />
+            <div id = "avatarName">{elipses(this.props.voter.full_name) || null}</div>
+          </div> :
+          image_placeholder }
+          </div>
       </div>
     </header>;
   }
 }
+
+
+// { }
+
+/* <Link to="/ballot" className="page-logo h4 mobile">
+        //   WV
+        // </Link> */

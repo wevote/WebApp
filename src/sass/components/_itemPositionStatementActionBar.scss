@@ -10,10 +10,13 @@
     overflow: hidden;
     border-radius: 3px;
     background: #fff;
-    height: 34px;
-    width: 34px;
+    // // height: 34px;
+    //  LAST width: 32px;
     display: inline-block;
     flex-shrink: 0;
+    // @include breakpoints(nav){ // 2
+    //   width: 26px;
+    // }
   }
 
   &__container {
@@ -84,3 +87,25 @@
     z-index: 5;
   }
 }
+
+
+
+
+#navIcon {
+  margin-right: 0px;
+}
+
+div#aboutIcon {
+  padding: 2px;
+}
+
+img.glyphicon, #leftAvatar {
+  max-width: 100%;
+  width: 27px;
+}
+
+a.donate.header-nav__item {
+  padding: 0px;
+}
+
+

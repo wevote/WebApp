@@ -6,14 +6,40 @@ $icon-color-hover: $gray-dark;
 // 2. Display .header-nav, hide .footer-nav
 
 
+
+
 // Header Nav
 // ================================
+.donate,.about,.otherclass,.fullscreen,#desktopAvatar{
+  display: none;
+  @include breakpoints(nav){ // 2
+    display: block;
+  }
+}
+
+.mobile {
+  display:none;
+
+  @include breakpoints(iphone5){ // 2
+    display: block;
+  }
+
+  @include breakpoints(nav){ // 2
+    display: none;
+  }
+}
+
+.hide {
+  display: none;
+}
+
 
 .header-nav {
-  display: none; // 1
+  display: flex; // 1
   @include breakpoints(nav){ // 2
     display: flex;
   }
+
 
   &__label {
     display: block;
@@ -21,11 +47,11 @@ $icon-color-hover: $gray-dark;
   }
 
   &__item {
-    display: block;
+    // display: block;
     width: 60px;
     margin-top: -.5em; // temporary offsets for .page-header__container padding
     margin-bottom: -.5em;
-    padding: 8px 10px;
+    padding: 8px;
     color: #fff;
     opacity: .8;
     text-align: center;
@@ -85,5 +111,31 @@ $icon-color-hover: $gray-dark;
     top: -7px;
     font-family: $body-font-stack;
     background-color: #db4437; // Override for Bootstrap class .badge
+  }
+}
+
+
+
+div#mobileAvatar {
+  bottom: 20px;
+  position: relative;
+  right: 10px;
+}
+
+
+div#avatarName {
+  font-size: 10px;
+  color: white;
+}
+
+
+div#avatarContainer {
+    width: 36px;
+}
+
+.site-search__input-field::placeholder{
+   opacity:0;
+   @include breakpoints(mid-small){ // 2
+    opacity:1;
   }
 }

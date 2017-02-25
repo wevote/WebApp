@@ -106,3 +106,10 @@ export function removeTwitterNameFromDescription (displayName, twitterDescriptio
     }
     return twitterDescriptionMinusName;
 }
+
+export function elipses (name, mobile){
+  function cut (position){
+    return name.length < position ? name : `${name.slice(0, position)}...`;
+  }
+  return mobile ? cut(3) : cut(8);
+}

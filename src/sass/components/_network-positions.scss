@@ -11,9 +11,14 @@
   align-items: center;
   flex: 5 0 130px;
   min-width: 130px; // flex-basis not being respected (Chrome)
+  left: 65px;
+   @include breakpoints(mid-small){
+     left:0px;
+    }
+  
 
   &__bar-well {
-    display: block;
+    display: none;
     position: relative;
     margin-right: $space-sm;
     margin-left: $space-sm;
@@ -22,7 +27,11 @@
     border-radius: 3em;
     background-color: $gray-light;
     overflow: hidden;
+    @include breakpoints(mid-small){
+      display: block;
+    }
   }
+  
 
   &__bar-label {
     position: absolute;
