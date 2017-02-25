@@ -19,11 +19,9 @@ $icon-color-hover: $gray-dark;
 
 .mobile {
   display:none;
-
   @include breakpoints(iphone5){ // 2
     display: block;
   }
-
   @include breakpoints(nav){ // 2
     display: none;
   }
@@ -32,10 +30,6 @@ $icon-color-hover: $gray-dark;
 .hideItem {
   display: none;
 }
-
-
-
-
 
 
 .header-nav {
@@ -152,8 +146,4 @@ div {
 #leftAvatar {
   max-width: 100%;
   width: 27px;
-}
-
-#navIcon {
-  margin-right: 0px;
 }
