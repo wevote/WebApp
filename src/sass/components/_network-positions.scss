@@ -12,10 +12,9 @@
   flex: 5 0 130px;
   min-width: 130px; // flex-basis not being respected (Chrome)
   left: 65px;
-   @include breakpoints(mid-small){
-     left:0px;
+    @include breakpoints(mid-small){
+      left:0px;
     }
-  
 
   &__bar-well {
     display: none;
@@ -27,9 +26,9 @@
     border-radius: 3em;
     background-color: $gray-light;
     overflow: hidden;
-    @include breakpoints(mid-small){
-      display: block;
-    }
+      @include breakpoints(mid-small){
+        display: block;
+      }
   }
   
 
@@ -39,9 +38,9 @@
     width: 100%;
     text-align: center;
     color: $gray-mid;
-    @include breakpoints(max 300px){
-      display: none;
-    }
+      @include breakpoints(max 300px){
+        display: none;
+      }
   }
 
   &__bar {
