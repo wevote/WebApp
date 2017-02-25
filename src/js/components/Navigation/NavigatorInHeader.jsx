@@ -63,7 +63,7 @@ const links = {
     return jsx;
   },
   about: function (active) {
-    var icon = "glyphicon glyphicon-list-alt glyphicon-line-adjustment nav-icon";
+    var icon  = "glyphicon glyphicon-list-alt glyphicon-line-adjustment nav-icon";
 
     var jsx =
       <Link to="/more/about" className={ "about header-nav__item" + (active ? " active-icon" : "")}>
