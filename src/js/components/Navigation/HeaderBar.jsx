@@ -56,30 +56,28 @@ export default class HeaderBar extends Component {
           <span className="page-logo__version"> alpha</span>
         </Link>
 
-
         <Link to="/ballot" className="page-logo h4 mobile">
           WV
-        </Link>
-        
+        </Link>   
         <NavigatorInHeader pathname={pathname} />
         <SearchAllBox />
 
       <ReactBurgerMenu
-          customBurgerIcon={
-              <div id ="mobileAvatar">
-                {voter_photo_url ?
-                  <div id="avatarContainer">
-                      <img className="position-statement__avatar"
-                            src={voter_photo_url}
-                            id="navIcon"
-                        />
-                  </div> : image_placeholder}
-               </div> }
-             className="burgerNav"
-             pageWrapId={ "" }
-             outerContainerId={ "app" }
-             styles={ menuStyles }
-             right
+        customBurgerIcon={
+            <div id ="mobileAvatar">
+              {voter_photo_url ?
+                <div id="avatarContainer">
+                    <img className="position-statement__avatar"
+                          src={voter_photo_url}
+                          id="navIcon"
+                     />
+                </div> : image_placeholder}
+             </div> }
+           className="burgerNav"
+           pageWrapId={ "" }
+           outerContainerId={ "app" }
+           styles={ menuStyles }
+           right
         >
         <div className="device-menu--mobile">
           <ul className="nav nav-stacked">
@@ -94,10 +92,11 @@ export default class HeaderBar extends Component {
                 <Link onClick={this.hide.bind(this)} to={"/" + twitter_screen_name}>
                   <div>
                     { voter_photo_url ?
-                      <img className="position-statement__avatar"
-                            src={voter_photo_url}
-                            width="34px"
-                            id="leftAvatar"
+                      <img 
+                        className="position-statement__avatar"
+                        src={voter_photo_url}
+                        width="34px"
+                        id="leftAvatar"
                       /> :
                       image_placeholder }
                     <span className="header-slide-out-menu-text-left">Your Voter Guide</span>

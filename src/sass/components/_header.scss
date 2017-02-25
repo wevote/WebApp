@@ -86,7 +86,7 @@
   &__input-field::placeholder{
      opacity:0;
      @include breakpoints(mid-small){ // 2
-      opacity:1;
+       opacity:1;
      }
   }
 }

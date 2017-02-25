@@ -116,7 +116,7 @@ export default class NavigatorInHeader extends Component {
 
   render () {
     var { props: { pathname } } = this;
-    var { ballot, requests, connect, activity, about, donate } = links;
+    var { ballot, requests, connect, about, donate } = links;
     let number_of_incoming_friend_requests = this.state.friend_invitations_sent_to_me.length;
     const navigator =
       <div className="header-nav">
