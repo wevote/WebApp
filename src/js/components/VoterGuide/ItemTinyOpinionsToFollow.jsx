@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { OverlayTrigger, Popover } from "react-bootstrap";
-// import FollowToggle from "../../components/Widgets/FollowToggle";
+import FollowToggle from "../../components/Widgets/FollowToggle";
 import OrganizationCard from "./OrganizationCard";
 import OrganizationTinyDisplay from "./OrganizationTinyDisplay";
 
@@ -96,6 +96,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
             className="card-popover">
             <div className="card">
               <div className="card-main">
+                <FollowToggle we_vote_id={one_organization.organization_we_vote_id} />
                 <OrganizationCard organization={one_organization_for_organization_card} />
               </div>
             </div>

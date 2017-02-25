@@ -240,12 +240,14 @@ export default class Ballot extends Component {
                                                      position_list={this.state.candidate_for_modal.position_list}
                                                      showSupport
                                                      supportProps={SupportStore.get(this.state.candidate_for_modal.we_vote_id)} />
-                      {/* In desktop mode, align right with position bar */}
-                      {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
-                      <ItemTinyPositionBreakdownList ballotItemWeVoteId={this.state.candidate_for_modal.we_vote_id}
-                                                     position_list={this.state.candidate_for_modal.position_list}
-                                                     showOppose
-                                                     supportProps={SupportStore.get(this.state.candidate_for_modal.we_vote_id)} />
+                      <span className="pull-right">
+                        {/* In desktop mode, align right with position bar */}
+                        {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
+                        <ItemTinyPositionBreakdownList ballotItemWeVoteId={this.state.candidate_for_modal.we_vote_id}
+                                                       position_list={this.state.candidate_for_modal.position_list}
+                                                       showOppose
+                                                       supportProps={SupportStore.get(this.state.candidate_for_modal.we_vote_id)} />
+                      </span>
                     </span> :
                     null }
                 </span> :
@@ -297,12 +299,14 @@ export default class Ballot extends Component {
                                                      position_list={this.state.measure_for_modal.position_list}
                                                      showSupport
                                                      supportProps={SupportStore.get(this.state.measure_for_modal.measure_we_vote_id)} />
-                      {/* In desktop mode, align right with position bar */}
-                      {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
-                      <ItemTinyPositionBreakdownList ballotItemWeVoteId={this.state.measure_for_modal.measure_we_vote_id}
-                                                     position_list={this.state.measure_for_modal.position_list}
-                                                     showOppose
-                                                     supportProps={SupportStore.get(this.state.measure_for_modal.measure_we_vote_id)} />
+                      <span className="pull-right">
+                        {/* In desktop mode, align right with position bar */}
+                        {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
+                        <ItemTinyPositionBreakdownList ballotItemWeVoteId={this.state.measure_for_modal.measure_we_vote_id}
+                                                       position_list={this.state.measure_for_modal.position_list}
+                                                       showOppose
+                                                       supportProps={SupportStore.get(this.state.measure_for_modal.measure_we_vote_id)} />
+                      </span>
                     </span> :
                     null }
                 </span> :
@@ -329,19 +333,25 @@ export default class Ballot extends Component {
     let ballot = this.state.ballot;
     var voter_address = VoterStore.getAddress();
     if (!ballot) {
-      // Old approach - to be removed after consideration
       if (voter_address.length === 0) {
         return <div className="ballot">
           <div className="ballot__header">
             <BrowserPushMessage incomingProps={this.props} />
             <p className="ballot__date_location">
-              Loading your ballot... (<Link to="/settings/location">Edit Address</Link>)
+              Your ballot could not be found. Please <Link to="/settings/location">change your address</Link>.
             </p>
           </div>
         </div>;
       } else {
-        console.log("Loading Wheel " + "voter_address " + voter_address + " ballot " + ballot + " location " + this.props.location);
-        return LoadingWheel;
+        // console.log("Loading Wheel " + "voter_address " + voter_address + " ballot " + ballot + " location " + this.props.location);
+        return <div className="ballot">
+            <div className="ballot__header">
+              <p className="ballot__date_location">
+                Your ballot could not be found. Please <Link to="/settings/location">change your address</Link>.
+              </p>
+              {LoadingWheel}
+            </div>
+          </div>;
       }
     }
     const missing_address = this.props.location === null;
