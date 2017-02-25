@@ -140,10 +140,9 @@ div {
       font-size: 10px;
       color: white;
     }
+    &>#leftAvatar {
+      max-width: 100%;
+      width: 27px;
+    }
   }
-}
-
-#leftAvatar {
-  max-width: 100%;
-  width: 27px;
 }
