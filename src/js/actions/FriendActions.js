@@ -29,9 +29,13 @@ module.exports = {
     } );
   },
 
-  friendInvitationByEmailSend: function (email_addresses, invitation_message, sender_email_address) {
+  friendInvitationByEmailSend: function ( email_address_array, first_name_array, last_name_array, email_addresses,
+                                          invitation_message, sender_email_address) {
     Dispatcher.loadEndpoint("friendInvitationByEmailSend",
       {
+        email_address_array: email_address_array,
+        first_name_array: first_name_array,
+        last_name_array: last_name_array,
         email_addresses_raw: email_addresses,
         invitation_message: invitation_message,
         sender_email_address: sender_email_address
