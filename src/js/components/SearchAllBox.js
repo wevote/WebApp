@@ -109,9 +109,9 @@ export default class SearchAllBox extends Component {
     // for the global nav
    
     this.siteLogoText.addClass("hide");
-    this.ballot.addClass("otherclass");
-    this.requests.addClass("otherclass");
-    this.connect.addClass("otherclass");
+    this.ballot.addClass("deskOnly");
+    this.requests.addClass("deskOnly");
+    this.connect.addClass("deskOnly");
     this.donate.className += " hide";
     this.about.className += " hide";
     this.displayResults();
@@ -120,7 +120,7 @@ export default class SearchAllBox extends Component {
   onSearchBlur () {
     // Delay closing the drop down so that a click on the Link can have time to work
     setTimeout(() => {
-      $(".otherclass").removeClass("otherclass");
+      $(".deskOnly").removeClass("deskOnly");
       $(".hide").removeClass("hide");
       this.hideResults();
     }, 250);

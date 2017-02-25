@@ -10,7 +10,7 @@ $icon-color-hover: $gray-dark;
 
 // Header Nav
 // ================================
-.donate,.about,.otherclass,.fullscreen,#desktopAvatar{
+.donate,.about,.deskOnly,.fullscreen,#desktopAvatar{
   display: none;
   @include breakpoints(nav){ // 2
     display: block;
