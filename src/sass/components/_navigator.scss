@@ -34,6 +34,10 @@ $icon-color-hover: $gray-dark;
 }
 
 
+
+
+
+
 .header-nav {
   display: flex; // 1
   @include breakpoints(nav){ // 2
@@ -73,6 +77,11 @@ $icon-color-hover: $gray-dark;
     &:hover {
       background-color: rgba(0,0,0,.3);
     }
+
+    &.donate {
+      padding: 0px;
+    }
+
   }
   .nav-icon {
     font-size: 1rem;
@@ -114,29 +123,21 @@ $icon-color-hover: $gray-dark;
   }
 }
 
+// Header Nav
+// ================================
 
-
-div#mobileAvatar {
-  bottom: 20px;
-  position: relative;
-  right: 10px;
-}
-
-
-div#avatarName {
-  font-size: 10px;
-  color: white;
-}
-
-
-div#avatarContainer {
+div {
+  &#mobileAvatar {
+    bottom: 20px;
+    position: relative;
+    right: 10px;
+  }
+  &#avatarName {
+    font-size: 10px;
+    color: white;
+  }
+  &#avatarContainer {
     width: 36px;
-}
-
-.site-search__input-field::placeholder{
-   opacity:0;
-   @include breakpoints(mid-small){ // 2
-    opacity:1;
   }
 }
 
@@ -152,8 +153,3 @@ img.glyphicon, #leftAvatar {
   max-width: 100%;
   width: 27px;
 }
-
-a.donate.header-nav__item {
-  padding: 0px;
-}
-

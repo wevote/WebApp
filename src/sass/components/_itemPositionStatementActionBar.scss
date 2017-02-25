@@ -10,13 +10,8 @@
     overflow: hidden;
     border-radius: 3px;
     background: #fff;
-    // // height: 34px;
-    //  LAST width: 32px;
     display: inline-block;
     flex-shrink: 0;
-    // @include breakpoints(nav){ // 2
-    //   width: 26px;
-    // }
   }
 
   &__container {
