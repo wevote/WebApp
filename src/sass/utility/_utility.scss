@@ -4,17 +4,3 @@
 .u-cursor--pointer:hover {
   cursor: pointer;
 }
-
-.desktopDesc {
-  display: none;
-  @include breakpoints(mid-small){
-    display: block;
-  }
-}
-
-.mobile-subtitle {
-  display: block;
-  @include breakpoints(mid-small){
-    display: none;
-  }
-}
