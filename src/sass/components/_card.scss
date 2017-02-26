@@ -27,7 +27,7 @@
 
     &__content {
       position: relative;
-      & .h5.mobileCandName{
+      & .h5.mobileCandName {
         @include breakpoints(mid-small){
           display: none;
         }
