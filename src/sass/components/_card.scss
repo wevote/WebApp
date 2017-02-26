@@ -27,6 +27,17 @@
 
     &__content {
       position: relative;
+      & .h5.mobileCandName{
+        @include breakpoints(mid-small){
+          display: none;
+        }
+      }
+       & .desktopCandName {
+          display: none;
+          @include breakpoints(mid-small){
+            display: block;
+          }
+        }
     }
 
     &__media_object {
@@ -279,3 +290,6 @@
 .card-popover {
   max-width: 350px;
 }
+
+
+
