@@ -70,7 +70,6 @@ export default class SearchAllBox extends Component {
   }
 
   _onSearchAllStoreChange (){
-    console.log("_onSearchAllStoreChange");
     var new_state = {};
 
     if (SearchAllStore.getSearchResults()) {
