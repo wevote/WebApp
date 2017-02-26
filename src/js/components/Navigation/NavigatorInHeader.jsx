@@ -77,7 +77,7 @@ const links = {
   donate: function (active) {
 
     var jsx =
-      <Link to="/ballot" className={ "donate header-nav__item" + (active ? " active-icon" : "")}>
+      <Link to="/more/donate" className={ "donate header-nav__item" + (active ? " active-icon" : "")}>
         <img className = "glyphicon" src="/img/global/svg-icons/glyphicons-20-heart-empty.svg" />
         <span className="header-nav__label">
           Donate
@@ -124,7 +124,7 @@ export default class NavigatorInHeader extends Component {
         {requests(pathname === "/requests", number_of_incoming_friend_requests)}
         {connect(pathname === "/more/connect")}
         {about(pathname === "/more/about")}
-        {donate(pathname === "/more/connect")}
+        {donate(pathname === "/more/donate")}
       </div>;
 
       return navigator;
