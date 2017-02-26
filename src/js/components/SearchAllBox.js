@@ -39,13 +39,13 @@ export default class SearchAllBox extends Component {
   }
 
   componentDidMount (){
-    this.siteLogoText = $('.page-logo:nth-child(1)');
-    this.ballot = $('.header-nav__item:nth-child(1)');
-    this.requests = $('.header-nav__item:nth-child(2)');
-    this.connect = $('.header-nav__item:nth-child(3)');
+    this.siteLogoText = $(".page-logo:nth-child(1)");
+    this.ballot = $(".header-nav__item:nth-child(1)");
+    this.requests = $(".header-nav__item:nth-child(2)");
+    this.connect = $(".header-nav__item:nth-child(3)");
     this.avatar = $("#avatarContainer");
-    this.about = document.getElementsByClassName('header-nav__item')[3];
-    this.donate = document.getElementsByClassName('header-nav__item')[4];
+    this.about = document.getElementsByClassName("header-nav__item")[3];
+    this.donate = document.getElementsByClassName("header-nav__item")[4];
     // When we first enter we want to retrieve values to have for a click in the search box
     let text_from_search_field = this.props.text_from_search_field;
 

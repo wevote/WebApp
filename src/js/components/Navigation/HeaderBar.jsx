@@ -57,7 +57,7 @@ export default class HeaderBar extends Component {
 
         <Link to="/ballot" className="page-logo h4 mobile">
           WV
-        </Link>   
+        </Link>
         <NavigatorInHeader pathname={pathname} />
         <SearchAllBox />
 
