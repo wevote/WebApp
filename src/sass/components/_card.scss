@@ -20,6 +20,7 @@
   // Card 'Main'
   // the main subject of the card (candidate, measure, organizations, etc.)
 
+
   &-main { // primary subject of card
     position: relative;
     padding: 15px $item-padding 10px;
@@ -27,6 +28,24 @@
 
     &__content {
       position: relative;
+      & .h5.mobileCandName {
+        @include breakpoints(mid-small){
+          display: none;
+        }
+      }
+       & .desktopCandName, .desktop-subtitle {
+          display: none;
+          @include breakpoints(mid-small){
+            display: block;
+          }
+        }
+
+        & .mobile-subtitle {
+          display: block;
+            @include breakpoints(mid-small){
+              display: none;
+            }
+       }
     }
 
     &__media_object {
@@ -279,3 +298,6 @@
 .card-popover {
   max-width: 350px;
 }
+
+
+

@@ -141,7 +141,6 @@ export default class Application extends Component {
           </div>
         </div>
       </div>
-      <NavigatorInFooter pathname={pathname} />
     </div>;
   }
 }
