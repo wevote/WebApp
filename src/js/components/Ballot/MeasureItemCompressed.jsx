@@ -113,11 +113,14 @@ export default class MeasureItemCompressed extends Component {
         </h2>
         <StarAction we_vote_id={we_vote_id} type="MEASURE"/>
           {/*Mobile ballot info*/}
-        <div className={ this.props.link_to_ballot_item_page ?
-              "u-cursor--pointer mobile-subtitle" : null }
-              onClick={ this.props.link_to_ballot_item_page ?
-              goToMeasureLink : null }>{measure_subtitle}
-          </div>
+        <div
+          className={ this.props.link_to_ballot_item_page ?
+          "u-cursor--pointer mobile-subtitle" : null }
+          onClick={ this.props.link_to_ballot_item_page ?
+          goToMeasureLink : null }
+        >
+          {measure_subtitle}
+        </div>
 
         {/* This is the area *under* the measure title */}
         <div className={"u-flex" + (this.props.link_to_ballot_item_page ?

@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import NavigatorInHeader from "./NavigatorInHeader";
 import SearchAllBox from "../SearchAllBox";
-import { elipses } from  "../../utils/textFormat";
 var Icon = require("react-svg-icons");
 const ReactBurgerMenu = require("react-burger-menu").push;
 
