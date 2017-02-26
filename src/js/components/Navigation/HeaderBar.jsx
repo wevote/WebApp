@@ -47,8 +47,6 @@ export default class HeaderBar extends Component {
     let show_your_page_from_facebook = signed_in_facebook && linked_organization_we_vote_id && !show_your_page_from_twitter;
 
     return <header className="page-header">
-      {/* The components/MoreMenu code has to be reproduced here for mobile */}
-
       <div className="page-header__content">
         <Link to="/ballot" className="page-logo h4 fullscreen">
           We Vote
@@ -137,13 +135,17 @@ export default class HeaderBar extends Component {
                 </div>
               </Link>
             </li>
-          </ul>
-          <h4 className="text-left" />
-          <ul className="nav nav-stacked">
-            <li>
+            <li className="mobile">
               <Link onClick={this.hide.bind(this)} to="/more/about">
                 <div>
                   <span className="header-slide-out-menu-text-left">About <strong>We Vote</strong></span>
+                </div>
+              </Link>
+            </li>
+            <li className="mobile">
+              <Link onClick={this.hide.bind(this)} to="/more/donate">
+                <div>
+                  <span className="header-slide-out-menu-text-left">Donate</span>
                 </div>
               </Link>
             </li>
