@@ -72,7 +72,6 @@
     height: 100vh !important; // override
     z-index: 3 !important; // to cover site-search TODO: try using descriptive variables for z-index values
   }
-
 }
 
 @include breakpoints(nav) {

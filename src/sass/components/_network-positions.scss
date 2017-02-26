@@ -12,8 +12,6 @@
   flex: 5 0 130px;
   min-width: 130px; // flex-basis not being respected (Chrome)
   
-
-
   &__bar-well {
     display: block;
     position: relative;
@@ -24,11 +22,7 @@
     border-radius: 3em;
     background-color: $gray-light;
     overflow: hidden;
-      // @include breakpoints(mid-small){
-      //   display: block;
-      // }
   }
-  
 
   &__bar-label {
     position: absolute;
