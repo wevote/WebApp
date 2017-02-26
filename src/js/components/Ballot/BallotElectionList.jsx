@@ -13,8 +13,8 @@ export default class BallotElectionList extends Component {
     this.state = {};
   }
 
-  updateBallot (google_civic_election_id, original_text_for_map_search, simple_save) {
-    VoterActions.voterAddressSave(google_civic_election_id, original_text_for_map_search, simple_save);
+  updateBallot (original_text_for_map_search, simple_save, google_civic_election_id) {
+    VoterActions.voterAddressSave(original_text_for_map_search, simple_save, google_civic_election_id);
     BallotActions.voterBallotItemsRetrieve(google_civic_election_id);
     browserHistory.push("/ballot");
   }
@@ -29,7 +29,7 @@ export default class BallotElectionList extends Component {
     return <div>
         <dl className="list-unstyled">{this.props.ballot_election_list.map((item, index) =>
           <dd className="ballot-election-list__li" role="button" key={index}
-            onClick={this.updateBallot.bind(this, item.google_civic_election_id, item.original_text_for_map_search, simple_save)}>
+            onClick={this.updateBallot.bind(this, item.original_text_for_map_search, simple_save, item.google_civic_election_id)}>
             {item.election_description_text + " on " + this.formattedDate(item.election_date)}</dd>
          )}
         </dl>
