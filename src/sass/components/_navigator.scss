@@ -81,7 +81,7 @@ $icon-color-hover: $gray-dark;
     }
 
     &.about>#aboutIcon{
-       padding: 2px;
+       padding: 1px;
     }
 
   }
@@ -136,13 +136,15 @@ div {
   }
   &#avatarContainer {
     width: 36px;
-    &>#avatarName {
-      font-size: 10px;
-      color: white;
-    }
     &>#leftAvatar {
       max-width: 100%;
-      width: 27px;
+      width: 33px;
     }
   }
+  &#desktopAvatar {
+    top: 2px;
+    position: relative;
+  }
 }
+
+
