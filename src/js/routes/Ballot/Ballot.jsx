@@ -225,12 +225,14 @@ export default class Ballot extends Component {
           { this.state.candidate_for_modal ?
             <section className="card">
               {/* Show positions in your network with the tiny icons */}
-              COMING SOON - POSITIONS IN YOUR NETWORK
+              <p className="card__no-additional">
+                This is a summary of the positions of those you are following.
+              </p>
+              <ItemSupportOpposeCounts we_vote_id={this.state.candidate_for_modal.we_vote_id}
+                                       supportProps={SupportStore.get(this.state.candidate_for_modal.we_vote_id)}
+                                       type="CANDIDATE" />
               { this.state.candidate_for_modal.position_list ?
                 <span>
-                  <ItemSupportOpposeCounts we_vote_id={this.state.candidate_for_modal.we_vote_id}
-                                           supportProps={SupportStore.get(this.state.candidate_for_modal.we_vote_id)}
-                                           type="CANDIDATE" />
                   {/* Show a break-down of the positions in your network */}
                   { SupportStore.get(this.state.candidate_for_modal.we_vote_id) && ( SupportStore.get(this.state.candidate_for_modal.we_vote_id).oppose_count || SupportStore.get(this.state.candidate_for_modal.we_vote_id).support_count) ?
                     <span>
@@ -284,12 +286,14 @@ export default class Ballot extends Component {
           { this.state.measure_for_modal ?
             <section className="card">
               {/* Show positions in your network with the tiny icons */}
-              COMING SOON - POSITIONS IN YOUR NETWORK
+              <p className="card__no-additional">
+                This is a summary of the positions of those you are following.
+              </p>
+              <ItemSupportOpposeCounts we_vote_id={this.state.measure_for_modal.measure_we_vote_id}
+                                       supportProps={SupportStore.get(this.state.measure_for_modal.measure_we_vote_id)}
+                                       type="MEASURE" />
               { this.state.measure_for_modal.position_list ?
                 <span>
-                  <ItemSupportOpposeCounts we_vote_id={this.state.measure_for_modal.measure_we_vote_id}
-                                           supportProps={SupportStore.get(this.state.measure_for_modal.measure_we_vote_id)}
-                                           type="MEASURE" />
                   {/* Show a break-down of the positions in your network */}
                   { SupportStore.get(this.state.measure_for_modal.measure_we_vote_id) && ( SupportStore.get(this.state.measure_for_modal.measure_we_vote_id).oppose_count || SupportStore.get(this.state.measure_for_modal.measure_we_vote_id).support_count) ?
                     <span>
