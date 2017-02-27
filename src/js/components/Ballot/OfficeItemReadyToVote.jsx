@@ -51,6 +51,7 @@ export default class OfficeItemReadyToVote extends Component {
     let goToOfficeLink = function () { browserHistory.push(officeLink); };
     let is_support_array = [];
     let candidate_with_most_support = null;
+    let voter_supports_at_least_one_candidate = false;
     let supportProps;
     let is_support;
 
@@ -63,6 +64,7 @@ export default class OfficeItemReadyToVote extends Component {
 
         if (is_support) {
           is_support_array.push(candidate.ballot_item_display_name);
+          voter_supports_at_least_one_candidate = true;
         }
       }
     });
@@ -71,7 +73,6 @@ export default class OfficeItemReadyToVote extends Component {
     same network support count, only the first candidate will be displayed. */
     let largest_support_count;
     let at_least_one_candidate_chosen = false;
-    let voter_supports_at_least_one_candidate;
 
     if (is_support_array.length === 0){
       let network_support_count;
@@ -81,9 +82,6 @@ export default class OfficeItemReadyToVote extends Component {
         largest_support_count = 0;
         supportProps = SupportStore.get(candidate.we_vote_id);
         if (supportProps) {
-          if (!voter_supports_at_least_one_candidate) {
-            voter_supports_at_least_one_candidate = supportProps.is_support;
-          }
           network_support_count = supportProps.support_count;
           network_oppose_count = supportProps.oppose_count;
 
@@ -117,15 +115,21 @@ export default class OfficeItemReadyToVote extends Component {
               { SupportStore.get(one_candidate.we_vote_id) && SupportStore.get(one_candidate.we_vote_id).is_support ?
                 <td className="col-md-12" onClick={ this.props.link_to_ballot_item_page ?
                   goToOfficeLink : null }>
-                  {one_candidate.ballot_item_display_name}<span className="pull-right">Supported by you &nbsp; <img src="/img/global/svg-icons/thumbs-up-color-icon.svg"
+                  <h2 className="card-main__display-name">
+                    {one_candidate.ballot_item_display_name}
+                  </h2>
+                  <span className="pull-right">Supported by you &nbsp; <img src="/img/global/svg-icons/thumbs-up-color-icon.svg"
                className="card-main__position-icon" width="24" height="24" /></span>
                 </td> :
                   candidate_with_most_support === one_candidate.ballot_item_display_name ?
                 <td className="col-md-12" onClick={ this.props.link_to_ballot_item_page ?
                   goToOfficeLink : null }>
-                  {one_candidate.ballot_item_display_name}<span className="pull-right">Your network supports &nbsp; <img src="/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" /></span>
+                  <h2 className="card-main__display-name">
+                  {one_candidate.ballot_item_display_name}
+                  </h2>
+                  <span className="pull-right">Your network supports &nbsp; <img src="/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" /></span>
                 </td> :
-                  is_support_array === 0 && candidate_with_most_support !== one_candidate.ballot_item_display_name ?
+                  is_support_array === 0 && candidate_with_most_support !== one_candidate.ballot_item_display_name && !voter_supports_at_least_one_candidate ?
                 <td><span className="pull-right">Your network is undecided</span></td> :
                   null}
 
@@ -133,11 +137,13 @@ export default class OfficeItemReadyToVote extends Component {
 
             </tr>)
           }
-          { !at_least_one_candidate_chosen && !voter_supports_at_least_one_candidate ?
+          { voter_supports_at_least_one_candidate ?
+            null :
             <tr><td>
-              <span className="pull-right">Your network is undecided</span>
-            </td></tr> :
-            null }
+              { at_least_one_candidate_chosen ?
+                null :
+                <span className="pull-right">Your network is undecided</span> }
+            </td></tr> }
           </tbody>
         </table>
       </div>
