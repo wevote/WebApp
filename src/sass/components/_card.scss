@@ -91,6 +91,10 @@
       margin-right: 5px;
       vertical-align: text-bottom;
     }
+    &__position-icon-vote {
+      display: inline-block;
+      margin-right: 5px;
+    }
 
     &__display-name {
       font-family: $heading-font-stack;
@@ -102,11 +106,21 @@
       @include breakpoints(mid-small) {
         font-size: 24px;
       }
+        &--ready-to-vote {
+          font-family: $heading-font-stack;
+          display: inline-block;
+          font-size: 18px;
+          margin-left: -12px;
+          @include breakpoints(mid-small) {
+            font-size: 24px;
+          }
+        }
     }
 
     &__description {
       color: $gray-dark;
     }
+
 
     &__description-container {
 
@@ -297,6 +311,12 @@
 
 .card-popover {
   max-width: 350px;
+}
+
+.card-span-padding {
+  padding-top: 4px;
+  padding-bottom: 10px;
+  float: right !important;
 }
 
 

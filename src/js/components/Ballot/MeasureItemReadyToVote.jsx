@@ -58,28 +58,29 @@ export default class MeasureItemReadyToVote extends Component {
       <div className="card-main__content">
         {
           supportProps && supportProps.is_support ?
-         <span className="pull-right"> Supported by you &nbsp; <img src="/img/global/svg-icons/thumbs-up-color-icon.svg"
-               className="card-main__position-icon" width="24" height="24" /></span> :
+         <span className="card-span-padding"> Supported by you &nbsp; <img src="/img/global/svg-icons/thumbs-up-color-icon.svg"
+               className="card-main__position-icon-vote" width="24" height="24" /></span> :
           null
         }
         {
           supportProps && supportProps.is_oppose ?
-            <span className="pull-right"> Opposed by you &nbsp; <img src="/img/global/svg-icons/thumbs-down-color-icon.svg" className="card-main__position-icon" width="24" height="24" /></span> :
+            <span className="card-span-padding"> Opposed by you &nbsp; <img src="/img/global/svg-icons/thumbs-down-color-icon.svg" className="card-main__position-icon-vote" width="24" height="24" /></span> :
               null
         }
         {
           supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count > supportProps.oppose_count ?
-          <span className="pull-right"> Your network supports &nbsp; <img src= "/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" /></span> :
+          <span className="card-span-padding"> Your network supports &nbsp; <img src= "/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" /></span> :
           null
         }
         {
           supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count < supportProps.oppose_count ?
-          <span className="pull-right"> Your network opposes &nbsp; <img src= "/img/global/icons/down-arrow-color-icon.svg" className="network-positions__oppose-icon" width="20" height="20" /></span> :
+          <span className="card-span-padding">
+            <span> Your network opposes &nbsp; <img src= "/img/global/icons/down-arrow-color-icon.svg" className="network-positions__oppose-icon"  width="20" height="20" /></span> </span>:
           null
         }
         {
           supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count === supportProps.oppose_count ?
-          <span className="pull-right"> Your network is undecided &nbsp; </span> :
+          <span className="card-span-padding"> Your network is undecided &nbsp; </span> :
           null
         }
 
