@@ -69,7 +69,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
     if (this.state.position_list && this.state.position_list.length > MAXIMUM_ORGANIZATION_DISPLAY) {
       orgs_not_shown_count = this.state.position_list.length - MAXIMUM_ORGANIZATION_DISPLAY;
     }
-    let organizations_to_display;
+    let organizations_to_display = [];
     if (this.state.position_list) {
       organizations_to_display = this.state.position_list.map((one_position) => {
         // Filter out the positions that we don't want to display

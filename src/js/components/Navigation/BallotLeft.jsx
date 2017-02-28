@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
 var Icon = require("react-svg-icons");
 
-export default class MoreMenu extends Component {
+export default class BallotLeft extends Component {
   static propTypes = {
     email: PropTypes.string,
     first_name: PropTypes.string,
@@ -83,9 +83,6 @@ export default class MoreMenu extends Component {
           {this.menuLink("/more/sign_in", "Your Account")}
         </ul>
         <h4 className="text-left" />
-        <ul className="list-group">
-        {this.menuLink("/more/about", "About We Vote")}
-        </ul>
         <span className="terms-and-privacy">
           <br />
           <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy Policy</Link>

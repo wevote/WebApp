@@ -27,6 +27,11 @@ export default class BallotFilter extends Component {
       <Link to="/bookmarks" className={ ballot_type === "BOOKMARKS" ? "active btn btn-default" : "btn btn-default"}>
         <span>Bookmarked</span>
       </Link>
+
+      <Link to={{ pathname: "/ballot", query: { type: "filterReadyToVote" } }} className={ ballot_type === "READY_TO_VOTE" ? "active btn btn-default" : "btn btn-default"}>
+        <span>Ready to Vote</span>
+      </Link>
+
     </div>;
   }
 }

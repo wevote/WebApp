@@ -6,14 +6,38 @@ $icon-color-hover: $gray-dark;
 // 2. Display .header-nav, hide .footer-nav
 
 
+
+
 // Header Nav
 // ================================
+.donate,.about,.deskOnly,.fullscreen,#desktopAvatar{
+  display: none;
+  @include breakpoints(nav){ // 2
+    display: block;
+  }
+}
+
+.mobile {
+  display:none;
+  @include breakpoints(iphone5){ // 2
+    display: block;
+  }
+  @include breakpoints(nav){ // 2
+    display: none;
+  }
+}
+
+.hideItem {
+  display: none;
+}
+
 
 .header-nav {
-  display: none; // 1
+  display: flex; // 1
   @include breakpoints(nav){ // 2
     display: flex;
   }
+
 
   &__label {
     display: block;
@@ -21,11 +45,11 @@ $icon-color-hover: $gray-dark;
   }
 
   &__item {
-    display: block;
+    // display: block;
     width: 60px;
     margin-top: -.5em; // temporary offsets for .page-header__container padding
     margin-bottom: -.5em;
-    padding: 8px 10px;
+    padding: 8px;
     color: #fff;
     opacity: .8;
     text-align: center;
@@ -47,6 +71,19 @@ $icon-color-hover: $gray-dark;
     &:hover {
       background-color: rgba(0,0,0,.3);
     }
+
+    &.donate {
+      padding: 0px;
+      &>img.glyphicon{
+        max-width: 100%;
+        width: 29px;
+      }
+    }
+
+    &.about>#aboutIcon{
+       padding: 1px;
+    }
+
   }
   .nav-icon {
     font-size: 1rem;
@@ -87,3 +124,27 @@ $icon-color-hover: $gray-dark;
     background-color: #db4437; // Override for Bootstrap class .badge
   }
 }
+
+// Avatars!
+// ================================
+
+div {
+  &#mobileAvatar {
+    bottom: 20px;
+    position: relative;
+    right: 10px;
+  }
+  &#avatarContainer {
+    width: 36px;
+    &>#leftAvatar {
+      max-width: 100%;
+      width: 33px;
+    }
+  }
+  &#desktopAvatar {
+    top: 2px;
+    position: relative;
+  }
+}
+
+

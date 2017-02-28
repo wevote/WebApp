@@ -102,7 +102,7 @@ export default class About extends Component {
           <br />
 
           <strong>What does We Vote cost?</strong><br />
-            It’s free! If you like We Vote, please donate so we can do more to help voters.<br />
+            It’s free! If you like We Vote, <Link to="/more/donate">please donate</Link> so we can do more to help voters.<br />
           <br />
 
           <strong>How do you make money?</strong><br />
