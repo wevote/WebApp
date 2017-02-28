@@ -2,11 +2,9 @@ import React, { Component, PropTypes } from "react";
 import { browserHistory } from "react-router";
 import BallotActions from "../../actions/BallotActions";
 import VoterActions from "../../actions/VoterActions";
+let moment = require('moment');
 
 export default class BallotElectionList extends Component {
-//  static propTypes = {
-//    ballot_election_listlist: propTypes.array
-//  };
 
   constructor (props){
     super(props);
@@ -16,23 +14,38 @@ export default class BallotElectionList extends Component {
   updateBallot (original_text_for_map_search, simple_save, google_civic_election_id) {
     VoterActions.voterAddressSave(original_text_for_map_search, simple_save, google_civic_election_id);
     BallotActions.voterBallotItemsRetrieve(google_civic_election_id);
-    browserHistory.push("/ballot");
-  }
-
-  formattedDate (election_date) {
-    let formatted_date = election_date.slice(5, 7) + "/" + election_date.slice(8) + "/" + election_date.slice(0, 4);
-    return formatted_date;
+    this.props._toggleSelectBallotModal();
   }
 
   render () {
+    let currentDate = moment().format("YYYY-MM-DD");
+    const electionList = this.props.ballot_election_list.map((item, index) =>
+      item.election_date > currentDate ?
+      <div key={index}>
+        <p>(Upcoming Election)</p>
+        <dl className="list-unstyled text-center">
+          <button type="button" className="btn btn-success"
+            onClick={this.updateBallot.bind(this, item.original_text_for_map_search, simple_save, item.google_civic_election_id)}>
+            See {item.election_description_text} <span><img src={"/img/global/icons/Circle-Arrow.png"}/></span><br />
+            <span className="ballot-election-list__h2 pull-left"> {moment(item.election_date).format("MMMM Do, YYYY")}</span>
+          </button>
+        </dl>
+      </div> :
+      <div key={index}>
+      <p>(Click to switch to your previous ballot and see election results)</p>
+        <dl className="list-unstyled text-center">
+          <button type="button" className="btn btn-success"
+            onClick={this.updateBallot.bind(this, item.original_text_for_map_search, simple_save, item.google_civic_election_id)}>
+            See {item.election_description_text} <span><img src={"/img/global/icons/Circle-Arrow.png"}/></span><br />
+            <span className="ballot-election-list__h2 pull-left"> {moment(item.election_date).format("MMMM Do, YYYY")}</span>
+          </button>
+        </dl>
+      </div>
+     );
+
   let simple_save = true;
     return <div>
-        <dl className="list-unstyled">{this.props.ballot_election_list.map((item, index) =>
-          <dd className="ballot-election-list__li" role="button" key={index}
-            onClick={this.updateBallot.bind(this, item.original_text_for_map_search, simple_save, item.google_civic_election_id)}>
-            {item.election_description_text + " on " + this.formattedDate(item.election_date)}</dd>
-         )}
-        </dl>
-  </div>;
+      {electionList}
+    </div>;
   }
 }

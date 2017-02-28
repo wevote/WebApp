@@ -13,8 +13,12 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
 }
 
-@media (max-width: 767px){
-  .h1 {
-    font-size: 24px;
+
+.h1 {
+  @media (max-width: 767px){
+    font-size: 22px;
+  }
+  @media (min-width: 768px) and (max-width: 1024px){
+    font-size: 28px;
   }
 }
