@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from "react";
+import BallotLeft from "./components/Navigation/BallotLeft";
 import FriendActions from "./actions/FriendActions";
 import HeaderBar from "./components/Navigation/HeaderBar";
 import Headroom from "react-headroom";
-import MoreMenu from "./components/Navigation/MoreMenu";
-import NavigatorInFooter from "./components/Navigation/NavigatorInFooter";
 import StarActions from "./actions/StarActions";
 import VoterActions from "./actions/VoterActions";
 import SearchAllActions from "./actions/SearchAllActions";
@@ -133,7 +132,8 @@ export default class Application extends Component {
         <div className="container-fluid">
           <div className="row">
             <div className="col-4 sidebar-menu">
-              { voter.is_signed_in ? <MoreMenu {...voter} /> : <MoreMenu /> }
+              {/* Depending on which page we are on, show a different left area. */}
+              { pathname === "/ballot" ? <BallotLeft /> : null }
             </div>
             <div className="col-8-container col-8 container-main">
               { this.props.children }
@@ -141,7 +141,6 @@ export default class Application extends Component {
           </div>
         </div>
       </div>
-      <NavigatorInFooter pathname={pathname} />
     </div>;
   }
 }

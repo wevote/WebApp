@@ -70,6 +70,7 @@ export default class OfficeItemCompressed extends Component {
                 "u-cursor--pointer" : null } >
           { this.props.candidate_list.map( (one_candidate) =>
             <div key={one_candidate.we_vote_id} className="u-stack--md">
+              <span className="h5 mobileCandName">{one_candidate.ballot_item_display_name}</span>
               <div className="u-flex u-items-center">
                 {/* *** Candidate name *** */}
                 <div className="u-flex-auto u-inline--sm u-cursor--pointer"
@@ -83,7 +84,7 @@ export default class OfficeItemCompressed extends Component {
                                   alt="candidate-photo"
                                   kind_of_ballot_item="CANDIDATE" />
                   </span>
-                  <span className="h5">{one_candidate.ballot_item_display_name}</span>
+              <span className="h5 desktopCandName">{one_candidate.ballot_item_display_name}</span>
                 </div>
 
                 {/* *** "Positions in your Network" bar OR items you can follow *** */}

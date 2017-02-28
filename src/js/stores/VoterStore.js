@@ -163,7 +163,8 @@ class VoterStore extends FluxMapStore {
           return {
             ...state,
             address: {
-              text_for_map_search: action.res.text_for_map_search
+              text_for_map_search: action.res.text_for_map_search,
+              google_civic_election_id: action.res.google_civic_election_id
             }
           };
         } else {
@@ -176,6 +177,7 @@ class VoterStore extends FluxMapStore {
             }
           };
         }
+
       case "voterEmailAddressRetrieve":
         return {
           ...state,

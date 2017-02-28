@@ -27,7 +27,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 15px;
   }
 
   &__search {
@@ -83,6 +82,12 @@
   &__button {
     border: none; // override Bootstrap
     height: 34px;
+  }
+  &__input-field::placeholder{
+     opacity:0;
+     @include breakpoints(mid-small){ // 2
+       opacity:1;
+     }
   }
 }
 

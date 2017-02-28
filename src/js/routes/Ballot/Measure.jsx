@@ -74,7 +74,7 @@ export default class Measure extends Component {
 
   _onMeasureStoreChange (){
     var measure = MeasureStore.get(this.state.measure_we_vote_id) || {};
-    console.log("Measure, _onMeasureStoreChange, measure: ", measure);
+    // console.log("Measure, _onMeasureStoreChange, measure: ", measure);
     this.setState({ measure: measure });
   }
 

@@ -4,6 +4,7 @@ import { browserHistory, Link } from "react-router";
 import BallotActions from "../../actions/BallotActions";
 import BallotItem from "../../components/Ballot/BallotItem";
 import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
+import BallotItemReadyToVote from "../../components/Ballot/BallotItemReadyToVote";
 import BallotStore from "../../stores/BallotStore";
 import BallotFilter from "../../components/Navigation/BallotFilter";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
@@ -37,6 +38,7 @@ export default class Ballot extends Component {
       },
       showCandidateModal: false,
       showMeasureModal: false
+      //shouldn't ballot be here?
     };
   }
 
@@ -44,6 +46,7 @@ export default class Ballot extends Component {
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
       browserHistory.push("settings/location");
     } else {
+      //if ballot is found
       let ballot = this.getBallot(this.props);
       // console.log(ballot);
       if (ballot !== undefined) {
@@ -104,6 +107,7 @@ export default class Ballot extends Component {
   _onBallotStoreChange (){
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0){ // Ballot is found but ballot is empty
       browserHistory.push("ballot/empty");
+      console.log("_onBallotStoreChange: ballot is empty");
     } else {
       let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
       this.setState({ballot: this.getBallot(this.props), ballot_type: ballot_type });
@@ -155,6 +159,8 @@ export default class Ballot extends Component {
         return BallotStore.ballot_remaining_choices;
       case "filterSupport":
         return BallotStore.ballot_supported;
+      case "filterReadyToVote":
+        return BallotStore.ballot;
       default :
         return BallotStore.ballot;
     }
@@ -166,6 +172,8 @@ export default class Ballot extends Component {
         return "CHOICES_REMAINING";
       case "filterSupport":
         return "WHAT_I_SUPPORT";
+      case "filterReadyToVote":
+        return "READY_TO_VOTE";
       default :
         return "ALL_BALLOT_ITEMS";
     }
@@ -177,6 +185,8 @@ export default class Ballot extends Component {
         return "filterRemaining";
       case "filterSupport":
         return "filterSupport";
+      case "filterReadyToVote":
+        return "filterReadyToVote";
       default :
         return "none";
     }
@@ -194,8 +204,10 @@ export default class Ballot extends Component {
   }
 
   render () {
+
     const show_intro_story = !cookies.getItem("intro_story_watched");
     if (show_intro_story) {
+
       browserHistory.push("/intro/story");
       return LoadingWheel;
     }
@@ -213,12 +225,14 @@ export default class Ballot extends Component {
           { this.state.candidate_for_modal ?
             <section className="card">
               {/* Show positions in your network with the tiny icons */}
-              COMING SOON - POSITIONS IN YOUR NETWORK
+              <p className="card__no-additional">
+                This is a summary of the positions of those you are following.
+              </p>
+              <ItemSupportOpposeCounts we_vote_id={this.state.candidate_for_modal.we_vote_id}
+                                       supportProps={SupportStore.get(this.state.candidate_for_modal.we_vote_id)}
+                                       type="CANDIDATE" />
               { this.state.candidate_for_modal.position_list ?
                 <span>
-                  <ItemSupportOpposeCounts we_vote_id={this.state.candidate_for_modal.we_vote_id}
-                                           supportProps={SupportStore.get(this.state.candidate_for_modal.we_vote_id)}
-                                           type="CANDIDATE" />
                   {/* Show a break-down of the positions in your network */}
                   { SupportStore.get(this.state.candidate_for_modal.we_vote_id) && ( SupportStore.get(this.state.candidate_for_modal.we_vote_id).oppose_count || SupportStore.get(this.state.candidate_for_modal.we_vote_id).support_count) ?
                     <span>
@@ -228,12 +242,14 @@ export default class Ballot extends Component {
                                                      position_list={this.state.candidate_for_modal.position_list}
                                                      showSupport
                                                      supportProps={SupportStore.get(this.state.candidate_for_modal.we_vote_id)} />
-                      {/* In desktop mode, align right with position bar */}
-                      {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
-                      <ItemTinyPositionBreakdownList ballotItemWeVoteId={this.state.candidate_for_modal.we_vote_id}
-                                                     position_list={this.state.candidate_for_modal.position_list}
-                                                     showOppose
-                                                     supportProps={SupportStore.get(this.state.candidate_for_modal.we_vote_id)} />
+                      <span className="pull-right">
+                        {/* In desktop mode, align right with position bar */}
+                        {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
+                        <ItemTinyPositionBreakdownList ballotItemWeVoteId={this.state.candidate_for_modal.we_vote_id}
+                                                       position_list={this.state.candidate_for_modal.position_list}
+                                                       showOppose
+                                                       supportProps={SupportStore.get(this.state.candidate_for_modal.we_vote_id)} />
+                      </span>
                     </span> :
                     null }
                 </span> :
@@ -270,12 +286,14 @@ export default class Ballot extends Component {
           { this.state.measure_for_modal ?
             <section className="card">
               {/* Show positions in your network with the tiny icons */}
-              COMING SOON - POSITIONS IN YOUR NETWORK
+              <p className="card__no-additional">
+                This is a summary of the positions of those you are following.
+              </p>
+              <ItemSupportOpposeCounts we_vote_id={this.state.measure_for_modal.measure_we_vote_id}
+                                       supportProps={SupportStore.get(this.state.measure_for_modal.measure_we_vote_id)}
+                                       type="MEASURE" />
               { this.state.measure_for_modal.position_list ?
                 <span>
-                  <ItemSupportOpposeCounts we_vote_id={this.state.measure_for_modal.measure_we_vote_id}
-                                           supportProps={SupportStore.get(this.state.measure_for_modal.measure_we_vote_id)}
-                                           type="MEASURE" />
                   {/* Show a break-down of the positions in your network */}
                   { SupportStore.get(this.state.measure_for_modal.measure_we_vote_id) && ( SupportStore.get(this.state.measure_for_modal.measure_we_vote_id).oppose_count || SupportStore.get(this.state.measure_for_modal.measure_we_vote_id).support_count) ?
                     <span>
@@ -285,12 +303,14 @@ export default class Ballot extends Component {
                                                      position_list={this.state.measure_for_modal.position_list}
                                                      showSupport
                                                      supportProps={SupportStore.get(this.state.measure_for_modal.measure_we_vote_id)} />
-                      {/* In desktop mode, align right with position bar */}
-                      {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
-                      <ItemTinyPositionBreakdownList ballotItemWeVoteId={this.state.measure_for_modal.measure_we_vote_id}
-                                                     position_list={this.state.measure_for_modal.position_list}
-                                                     showOppose
-                                                     supportProps={SupportStore.get(this.state.measure_for_modal.measure_we_vote_id)} />
+                      <span className="pull-right">
+                        {/* In desktop mode, align right with position bar */}
+                        {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
+                        <ItemTinyPositionBreakdownList ballotItemWeVoteId={this.state.measure_for_modal.measure_we_vote_id}
+                                                       position_list={this.state.measure_for_modal.position_list}
+                                                       showOppose
+                                                       supportProps={SupportStore.get(this.state.measure_for_modal.measure_we_vote_id)} />
+                      </span>
                     </span> :
                     null }
                 </span> :
@@ -314,22 +334,28 @@ export default class Ballot extends Component {
         </Modal.Body>
       </Modal>;
 
-    const ballot = this.state.ballot;
-
+    let ballot = this.state.ballot;
     var voter_address = VoterStore.getAddress();
     if (!ballot) {
-      // Old approach - to be removed after consideration
       if (voter_address.length === 0) {
         return <div className="ballot">
           <div className="ballot__header">
             <BrowserPushMessage incomingProps={this.props} />
             <p className="ballot__date_location">
-              Loading your ballot... (<Link to="/settings/location">Edit Address</Link>)
+              Your ballot could not be found. Please <Link to="/settings/location">change your address</Link>.
             </p>
           </div>
         </div>;
       } else {
-        return LoadingWheel;
+        // console.log("Loading Wheel " + "voter_address " + voter_address + " ballot " + ballot + " location " + this.props.location);
+        return <div className="ballot">
+            <div className="ballot__header">
+              <p className="ballot__date_location">
+                Your ballot could not be found. Please <Link to="/settings/location">change your address</Link>.
+              </p>
+              {LoadingWheel}
+            </div>
+          </div>;
       }
     }
     const missing_address = this.props.location === null;
@@ -358,7 +384,7 @@ export default class Ballot extends Component {
 
     const electionTooltip = election_date ? <Tooltip id="tooltip">Ballot for {election_date}</Tooltip> : <span />;
 
-    let show_expanded_ballot_items = false;
+    let in_ready_to_vote_mode = this.getFilterType() === "filterReadyToVote";
 
     return <div className="ballot">
       { this.state.showMeasureModal ? MeasureModal : null }
@@ -377,14 +403,15 @@ export default class Ballot extends Component {
         <div className="ballot__filter"><BallotFilter ballot_type={this.getBallotType()} /></div>
       </div>
       {/* TO BE DISCUSSED ballot_caveat !== "" ?
-        <div className="alert alert alert-info alert-dismissible" role="alert">
+        <div className="alert alert alert-info alert-dismissible" role="alert">n
           <button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           {ballot_caveat}
         </div> : null
       */}
       {emptyBallot}
-      { show_expanded_ballot_items ?
-        ballot.map( (item) => <BallotItem key={item.we_vote_id} {...item} />) :
+
+      { in_ready_to_vote_mode ?
+        ballot.map( (item) => <BallotItemReadyToVote key={item.we_vote_id} {...item} />) :
         ballot.map( (item) => <BallotItemCompressed _toggleCandidateModal={this._toggleCandidateModal}
                                                     _toggleMeasureModal={this._toggleMeasureModal}
                                                     key={item.we_vote_id}

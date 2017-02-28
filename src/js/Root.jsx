@@ -15,6 +15,7 @@ import Candidate from "./routes/Ballot/Candidate";
 import ClaimYourPage from "./routes/Settings/ClaimYourPage";
 import Connect from "./routes/Connect";
 import Credits from "./routes/More/Credits";
+import Donate from "./routes/More/Donate";
 import EmailBallot from "./routes/More/EmailBallot";
 import EmptyBallot from "./routes/Ballot/EmptyBallot";
 import FacebookSignInProcess from "./routes/Process/FacebookSignInProcess";
@@ -88,6 +89,7 @@ const routes = () =>
     <Route path="/more/email_ballot" component={EmailBallot} />
     <Route path="/more/credits" component={Credits} />
     <Route path="/more/about" component={About} />
+    <Route path="/more/donate" component={Donate} />
     <Route path="/more/faq" component={FAQ} />
     <Route path="/more/connect" component={Connect} />
     <Route path="/more/privacy" component={Privacy} />
