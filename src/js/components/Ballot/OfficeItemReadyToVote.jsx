@@ -108,7 +108,7 @@ export default class OfficeItemReadyToVote extends Component {
       <div className={ this.props.link_to_ballot_item_page ?
                 "u-cursor--pointer" : null } >
           { this.props.candidate_list.map( (one_candidate) =>
-            <div key={one_candidate.we_vote_id} className="u-stack--md">
+            <div key={one_candidate.we_vote_id}>
               {/* *** Candidate name *** */}
 
               { SupportStore.get(one_candidate.we_vote_id) && SupportStore.get(one_candidate.we_vote_id).is_support ?
@@ -129,7 +129,7 @@ export default class OfficeItemReadyToVote extends Component {
                   <span className="card-span-padding">Your network supports &nbsp; <img src="/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" /></span>
                 </span> :
                   is_support_array === 0 && candidate_with_most_support !== one_candidate.ballot_item_display_name && !voter_supports_at_least_one_candidate ?
-                  <span className="card-span-padding">Your network is undecided</span>:
+                  <span className="card-span-padding">Your network is undecided</span> :
                     null}
 
               {/* *** "Positions in your Network" bar OR items you can follow *** */}

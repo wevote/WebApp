@@ -75,7 +75,7 @@ export default class MeasureItemReadyToVote extends Component {
         {
           supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count < supportProps.oppose_count ?
           <span className="card-span-padding">
-            <span> Your network opposes &nbsp; <img src= "/img/global/icons/down-arrow-color-icon.svg" className="network-positions__oppose-icon"  width="20" height="20" /></span> </span>:
+            <span> Your network opposes &nbsp; <img src= "/img/global/icons/down-arrow-color-icon.svg" className="network-positions__oppose-icon" width="20" height="20" /></span> </span> :
           null
         }
         {
