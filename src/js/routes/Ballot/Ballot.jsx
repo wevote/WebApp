@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { browserHistory, Link } from "react-router";
 import BallotActions from "../../actions/BallotActions";
+import BallotElectionList from "../../components/Ballot/BallotElectionList";
 import BallotItem from "../../components/Ballot/BallotItem";
 import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 import BallotItemReadyToVote from "../../components/Ballot/BallotItemReadyToVote";
@@ -37,8 +38,9 @@ export default class Ballot extends Component {
         position_list: []
       },
       showCandidateModal: false,
-      showMeasureModal: false
-      //shouldn't ballot be here?
+      showMeasureModal: false,
+      showSelectBallotModal: false,
+      ballot_election_list: []
     };
   }
 
@@ -59,6 +61,7 @@ export default class Ballot extends Component {
       // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
       this._toggleCandidateModal = this._toggleCandidateModal.bind(this);
       this._toggleMeasureModal = this._toggleMeasureModal.bind(this);
+      this._toggleSelectBallotModal = this._toggleSelectBallotModal.bind(this);
       SupportActions.voterAllPositionsRetrieve();
       SupportActions.positionsCountForAllBallotItems();
       BallotActions.voterBallotListRetrieve();
@@ -104,6 +107,12 @@ export default class Ballot extends Component {
     });
   }
 
+  _toggleSelectBallotModal () {
+    this.setState({
+      showSelectBallotModal: !this.state.showSelectBallotModal
+    });
+  }
+
   _onBallotStoreChange (){
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0){ // Ballot is found but ballot is empty
       browserHistory.push("ballot/empty");
@@ -112,6 +121,7 @@ export default class Ballot extends Component {
       let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
       this.setState({ballot: this.getBallot(this.props), ballot_type: ballot_type });
     }
+    this.setState({ ballot_election_list: BallotStore.ballotList() });
   }
 
   _onGuideStoreChange (){
@@ -334,6 +344,18 @@ export default class Ballot extends Component {
         </Modal.Body>
       </Modal>;
 
+    // This modal will show a users ballot guides from previous and current elections.
+    const SelectBallotModal = <Modal show={this.state.showSelectBallotModal} onHide={()=>{this._toggleSelectBallotModal()}}
+      className="ballot-election-list ballot-election-list__modal">
+      <Modal.Header closeButton>
+        <Modal.Title className="ballot-election-list__h1">See Ballot from Another Election</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <BallotElectionList ballot_election_list={this.state.ballot_election_list}
+          _toggleSelectBallotModal={this._toggleSelectBallotModal}/>
+      </Modal.Body>
+    </Modal>
+
     let ballot = this.state.ballot;
     var voter_address = VoterStore.getAddress();
     if (!ballot) {
@@ -389,12 +411,15 @@ export default class Ballot extends Component {
     return <div className="ballot">
       { this.state.showMeasureModal ? MeasureModal : null }
       { this.state.showCandidateModal ? CandidateModal : null }
+      { this.state.showSelectBallotModal ? SelectBallotModal : null}
       <div className="ballot__heading u-stack--lg">
         <Helmet title="Ballot - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
         <OverlayTrigger placement="top" overlay={electionTooltip} >
           <h1 className="h1 ballot__election-name">{election_name}
-            <span className="ballotList__edit"> (<Link to="/ballot/select_ballot">Edit</Link>)</span></h1>
+            {this.state.ballot_election_list.length > 1 ? <span><img src={"/img/global/icons/gear-icon.png"} role="button" onClick={this._toggleSelectBallotModal}
+             alt={"view your ballots"}/></span> : null}
+          </h1>
         </OverlayTrigger>
         <p className="ballot__date_location">
           {voter_address}
