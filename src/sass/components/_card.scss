@@ -91,6 +91,10 @@
       margin-right: 5px;
       vertical-align: text-bottom;
     }
+    &__position-icon-vote {
+      display: inline-block;
+      margin-right: 5px;
+    }
 
     &__display-name {
       font-family: $heading-font-stack;
@@ -107,6 +111,7 @@
     &__description {
       color: $gray-dark;
     }
+
 
     &__description-container {
 
@@ -293,7 +298,6 @@
     margin: 15px $item-padding;
   }
 }
-
 
 .card-popover {
   max-width: 350px;
