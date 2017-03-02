@@ -47,6 +47,8 @@ export default class AddFriendsByEmail extends Component {
         on_friend_invitations_sent_step: false,
         voter: {},
       };
+
+      this.allRowsOpen.bind(this);
   }
 
   componentDidMount () {
@@ -346,30 +348,30 @@ export default class AddFriendsByEmail extends Component {
   }
 
   closeRow2 () {
-    this.setState ({ friend2_email_address: ""});
-    this.setState ({ friend2_first_name: ""});
-    this.setState ({ friend2_last_name: ""});
+    this.setState({ friend2_email_address: ""});
+    this.setState({ friend2_first_name: ""});
+    this.setState({ friend2_last_name: ""});
     this.setState({ row2_open: false});
   }
 
   closeRow3 () {
-    this.setState ({ friend3_email_address: ""});
-    this.setState ({ friend3_first_name: ""});
-    this.setState ({ friend3_last_name: ""});
+    this.setState({ friend3_email_address: ""});
+    this.setState({ friend3_first_name: ""});
+    this.setState({ friend3_last_name: ""});
     this.setState({ row3_open: false});
   }
 
   closeRow4 () {
-    this.setState ({ friend4_email_address: ""});
-    this.setState ({ friend4_first_name: ""});
-    this.setState ({ friend4_last_name: ""});
+    this.setState({ friend4_email_address: ""});
+    this.setState({ friend4_first_name: ""});
+    this.setState({ friend4_last_name: ""});
     this.setState({ row4_open: false});
   }
 
   closeRow5 () {
-   this.setState ({ friend5_email_address: ""});
-    this.setState ({ friend5_first_name: ""});
-    this.setState ({ friend5_last_name: ""});
+   this.setState({ friend5_email_address: ""});
+    this.setState({ friend5_first_name: ""});
+    this.setState({ friend5_last_name: ""});
     this.setState({ row5_open: false});
   }
 
@@ -383,6 +385,10 @@ export default class AddFriendsByEmail extends Component {
       this.setState({ row4_open: true});
     else if (!_state.row5_open)
       this.setState({ row5_open: true});
+  }
+
+  allRowsOpen () {
+    return this.state.row2_open && this.state.row3_open && this.state.row4_open && this.state.row5_open;
   }
 
 	render () {
@@ -411,8 +417,8 @@ export default class AddFriendsByEmail extends Component {
         <div>
           <form onSubmit={this.prepareApiArraysFromForm.bind(this)}>
             <div className="container-fluid">
-              <div className="row">
-                <div className="form-group col-xs-6 col-sm-6 col-md-6">
+              <div className="row invite-inputs">
+                <div className="form-group col-12 col-sm-12 col-md-6">
                   <label>Email Address</label>
                   <div className="input-group">
                     <input type="text" name="friend1_email_address"
@@ -422,7 +428,7 @@ export default class AddFriendsByEmail extends Component {
                       placeholder="name@domain.com"/>
                 </div>
               </div>
-              <div className="form-group col-xs-3 col-sm-3 col-md-3">
+              <div className="form-group col-6 col-sm-6 col-md-3">
                 <label>First Name</label>
                 <div className="input-group">
                   <input type="text" name="friend1_first_name"
@@ -432,7 +438,7 @@ export default class AddFriendsByEmail extends Component {
                      placeholder="Optional"/>
                 </div>
               </div>
-              <div className="form-group col-xs-3 col-sm-3 col-md-3">
+              <div className="form-group col-6 col-sm-6 col-md-3">
                 <label>Last Name</label>
                 <div className="input-group">
                   <input type="text" name="friend1_last_name"
@@ -444,9 +450,8 @@ export default class AddFriendsByEmail extends Component {
               </div>
             </div>
             {this.state.row2_open ?
-              <div className="row">
-                <span className="close right" name="row2_open" aria-label="Close" onClick={this.closeRow2.bind(this)}><span aria-hidden="true">&times;</span></span>
-                <div className="form-group col-xs-6 col-sm-6 col-md-6">
+              <div className="row invite-inputs">
+                <div className="form-group col-12 col-sm-12 col-md-6">
                   <label>Email Address</label>
                   <div className="input-group">
                     <input type="text" name="friend2_email_address"
@@ -456,7 +461,7 @@ export default class AddFriendsByEmail extends Component {
                        placeholder="name@domain.com"/>
                   </div>
                 </div>
-                <div className="form-group col-xs-3 col-sm-3 col-md-3">
+                <div className="form-group col-6 col-sm-6 col-md-3">
                   <label>First Name</label>
                     <div className="input-group">
                       <input type="text" name="friend2_first_name"
@@ -466,7 +471,7 @@ export default class AddFriendsByEmail extends Component {
                         placeholder="Optional"/>
                     </div>
                   </div>
-                <div className="form-group col-xs-3 col-sm-3 col-md-3">
+                <div className="form-group col-6 col-sm-6 col-md-3">
                   <label>Last Name</label>
                   <div className="input-group">
                     <input type="text" name="friend2_last_name"
@@ -476,12 +481,12 @@ export default class AddFriendsByEmail extends Component {
                       placeholder="Optional"/>
                   </div>
                 </div>
+                <span className="close close-on-right" name="row2_open" aria-label="Close" onClick={this.closeRow2.bind(this)}><span aria-hidden="true">&times;</span></span>
               </div> :
             null}
             {this.state.row3_open ?
-              <div className="row">
-                <span className="close right" aria-label="Close" onClick={this.closeRow3.bind(this)}><span aria-hidden="true">&times;</span></span>
-                <div className="form-group col-xs-6 col-sm-6 col-md-6">
+              <div className="row invite-inputs">
+                <div className="form-group col-12 col-sm-12 col-md-6">
                   <label>Email Address</label>
                   <div className="input-group">
                     <input type="text" name="friend3_email_address"
@@ -491,7 +496,7 @@ export default class AddFriendsByEmail extends Component {
                        placeholder="name@domain.com"/>
                   </div>
                 </div>
-                <div className="form-group col-xs-3 col-sm-3 col-md-3">
+                <div className="form-group col-6 col-sm-6 col-md-3">
                   <label>First Name</label>
                     <div className="input-group">
                       <input type="text" name="friend3_first_name"
@@ -501,7 +506,7 @@ export default class AddFriendsByEmail extends Component {
                         placeholder="Optional"/>
                     </div>
                   </div>
-                <div className="form-group col-xs-3 col-sm-3 col-md-3">
+                <div className="form-group col-6 col-sm-6 col-md-3">
                   <label>Last Name</label>
                   <div className="input-group">
                     <input type="text" name="friend3_last_name"
@@ -511,12 +516,12 @@ export default class AddFriendsByEmail extends Component {
                       placeholder="Optional"/>
                   </div>
                 </div>
+                <span className="close close-on-right" aria-label="Close" onClick={this.closeRow3.bind(this)}><span aria-hidden="true">&times;</span></span>
               </div> :
             null}
             {this.state.row4_open ?
-              <div className="row">
-                <span className="close right" aria-label="Close" onClick={this.closeRow4.bind(this)}><span aria-hidden="true">&times;</span></span>
-                <div className="form-group col-xs-6 col-sm-6 col-md-6">
+              <div className="row invite-inputs">
+                <div className="form-group col-12 col-sm-12 col-md-6">
                   <label>Email Address</label>
                   <div className="input-group">
                     <input type="text" name="friend4_email_address"
@@ -526,7 +531,7 @@ export default class AddFriendsByEmail extends Component {
                        placeholder="name@domain.com"/>
                   </div>
                 </div>
-                <div className="form-group col-xs-3 col-sm-3 col-md-3">
+                <div className="form-group col-6 col-sm-6 col-md-3">
                   <label>First Name</label>
                     <div className="input-group">
                       <input type="text" name="friend4_first_name"
@@ -536,7 +541,7 @@ export default class AddFriendsByEmail extends Component {
                         placeholder="Optional"/>
                     </div>
                   </div>
-                <div className="form-group col-xs-3 col-sm-3 col-md-3">
+                <div className="form-group col-6 col-sm-6 col-md-3">
                   <label>Last Name</label>
                   <div className="input-group">
                     <input type="text" name="friend4_last_name"
@@ -546,12 +551,12 @@ export default class AddFriendsByEmail extends Component {
                       placeholder="Optional"/>
                   </div>
                 </div>
+                <span className="close close-on-right" aria-label="Close" onClick={this.closeRow4.bind(this)}><span aria-hidden="true">&times;</span></span>
               </div> :
             null}
             {this.state.row5_open ?
-              <div className="row">
-                <span className="close right" aria-label="Close" onClick={this.closeRow5.bind(this)}><span aria-hidden="true">&times;</span></span>
-                <div className="form-group col-xs-6 col-sm-6 col-md-6">
+              <div className="row invite-inputs">
+                <div className="form-group col-12 col-sm-12 col-md-6">
                   <label>Email Address</label>
                   <div className="input-group">
                     <input type="text" name="friend5_email_address"
@@ -561,7 +566,7 @@ export default class AddFriendsByEmail extends Component {
                        placeholder="name@domain.com"/>
                   </div>
                 </div>
-                <div className="form-group col-xs-3 col-sm-3 col-md-3">
+                <div className="form-group col-6 col-sm-6 col-md-3">
                   <label>First Name</label>
                     <div className="input-group">
                       <input type="text" name="friend5_first_name"
@@ -571,7 +576,7 @@ export default class AddFriendsByEmail extends Component {
                         placeholder="Optional"/>
                     </div>
                   </div>
-                <div className="form-group col-xs-3 col-sm-3 col-md-3">
+                <div className="form-group col-6 col-sm-6 col-md-3">
                   <label>Last Name</label>
                   <div className="input-group">
                     <input type="text" name="friend5_last_name"
@@ -581,17 +586,18 @@ export default class AddFriendsByEmail extends Component {
                       placeholder="Optional"/>
                   </div>
                 </div>
+                <span className="close close-on-right" aria-label="Close" onClick={this.closeRow5.bind(this)}><span aria-hidden="true">&times;</span></span>
               </div> :
             null}
-            <span>
+            <div className="row invite-inputs">
               <Button
                 tabIndex="0"
                 onClick={this.addAnotherInvitation.bind(this)}
-                disabled={!this.state.friend1_email_address}
+                disabled={!this.state.friend1_email_address || this.allRowsOpen()}
               >
                 <span>+ Add another invitation</span>
               </Button>
-            </span>
+            </div>
           </div>
 
           </form>

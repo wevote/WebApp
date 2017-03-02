@@ -105,47 +105,49 @@ export default class OfficeItemReadyToVote extends Component {
           }
         </h2>
 
-        <table className={ this.props.link_to_ballot_item_page ?
-                "u-cursor--pointer table table-condensed" : "table table-condensed" } >
-          <tbody>
+      <div className={ this.props.link_to_ballot_item_page ?
+                "u-cursor--pointer" : null } >
           { this.props.candidate_list.map( (one_candidate) =>
-            <tr key={one_candidate.we_vote_id}>
+            <div key={one_candidate.we_vote_id}>
               {/* *** Candidate name *** */}
-
               { SupportStore.get(one_candidate.we_vote_id) && SupportStore.get(one_candidate.we_vote_id).is_support ?
-                <td className="col-md-12" onClick={ this.props.link_to_ballot_item_page ?
+                <div className="u-flex u-items-center">
+                  <div className="u-flex-auto u-inline--sm u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
                   goToOfficeLink : null }>
-                  <h2 className="card-main__display-name">
+                    <h2 className="h5 desktopCandName">
                     {one_candidate.ballot_item_display_name}
-                  </h2>
-                  <span className="pull-right">Supported by you &nbsp; <img src="/img/global/svg-icons/thumbs-up-color-icon.svg"
-               className="card-main__position-icon" width="24" height="24" /></span>
-                </td> :
+                    </h2>
+                  </div>
+
+                  <div className="u-flex-none u-justify-end u-inline--sm">Supported by you &nbsp; <img src="/img/global/svg-icons/thumbs-up-color-icon.svg"
+                    className="card-main__position-icon-vote" width="24" height="24" /></div>
+                </div> :
+
                   candidate_with_most_support === one_candidate.ballot_item_display_name ?
-                <td className="col-md-12" onClick={ this.props.link_to_ballot_item_page ?
-                  goToOfficeLink : null }>
-                  <h2 className="card-main__display-name">
-                  {one_candidate.ballot_item_display_name}
-                  </h2>
-                  <span className="pull-right">Your network supports &nbsp; <img src="/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" /></span>
-                </td> :
+
+                <div className="u-flex u-items-center">
+                  <div className="u-flex-auto u-inline--sm u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
+                    goToOfficeLink : null }>
+                    <h2 className="h5 desktopCandName">
+                      {one_candidate.ballot_item_display_name}
+                    </h2>
+                  </div>
+                  <div className="u-flex-none u-justify-end u-inline--sm">Your network supports &nbsp; <img src="/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" /></div>
+                </div> :
                   is_support_array === 0 && candidate_with_most_support !== one_candidate.ballot_item_display_name && !voter_supports_at_least_one_candidate ?
-                <td><span className="pull-right">Your network is undecided</span></td> :
-                  null}
-
+                  <div className="u-flex-none u-justify-end u-inline--sm">Your network is undecided</div> :
+                    null}
               {/* *** "Positions in your Network" bar OR items you can follow *** */}
-
-            </tr>)
+          </div>)
           }
           { voter_supports_at_least_one_candidate ?
             null :
-            <tr><td>
+            <span>
               { at_least_one_candidate_chosen ?
                 null :
-                <span className="pull-right">Your network is undecided</span> }
-            </td></tr> }
-          </tbody>
-        </table>
+                <div className="pull-right">Your network is undecided</div> }
+            </span> }
+        </div>
       </div>
     </div>;
   }
