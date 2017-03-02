@@ -56,42 +56,47 @@ export default class MeasureItemReadyToVote extends Component {
     return <div className="card-main measure-card">
 
       <div className="card-main__content">
+        <div className="u-flex u-items-center">
+
+        <div className="u-flex-auto u-inline--sm u-cursor--pointer">
+          <h2 className="card-main__display-name">
+            { this.props.link_to_ballot_item_page ?
+              <Link to={measureLink}>{ballot_item_display_name}</Link> :
+                ballot_item_display_name
+            }
+          </h2>
+        </div>
+
         {
           supportProps && supportProps.is_support ?
-         <span className="pull-right"> Supported by you &nbsp; <img src="/img/global/svg-icons/thumbs-up-color-icon.svg"
-               className="card-main__position-icon" width="24" height="24" /></span> :
+         <div className="u-flex-none u-justify-end u-inline--sm"> Supported by you &nbsp; <img src="/img/global/svg-icons/thumbs-up-color-icon.svg"
+               className="card-main__position-icon-vote" width="24" height="24" /></div> :
           null
         }
         {
           supportProps && supportProps.is_oppose ?
-            <span className="pull-right"> Opposed by you &nbsp; <img src="/img/global/svg-icons/thumbs-down-color-icon.svg" className="card-main__position-icon" width="24" height="24" /></span> :
+            <div className="u-flex-none u-justify-end u-inline--sm"> Opposed by you &nbsp; <img src="/img/global/svg-icons/thumbs-down-color-icon.svg" className="card-main__position-icon-vote" width="24" height="24" /></div> :
               null
         }
         {
           supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count > supportProps.oppose_count ?
-          <span className="pull-right"> Your network supports &nbsp; <img src= "/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" /></span> :
+          <div className="u-flex-none u-justify-end u-inline--sm"> Your network supports &nbsp; <img src= "/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" /></div> :
           null
         }
         {
           supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count < supportProps.oppose_count ?
-          <span className="pull-right"> Your network opposes &nbsp; <img src= "/img/global/icons/down-arrow-color-icon.svg" className="network-positions__oppose-icon" width="20" height="20" /></span> :
+          <div className="u-flex-none u-justify-end u-inline--sm">
+             Your network opposes &nbsp; <img src= "/img/global/icons/down-arrow-color-icon.svg" className="network-positions__oppose-icon" width="20" height="20" /></div> :
           null
         }
         {
           supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count === supportProps.oppose_count ?
-          <span className="pull-right"> Your network is undecided &nbsp; </span> :
+          <div className="u-flex-none u-justify-end u-inline--sm"> Your network is undecided &nbsp; </div> :
           null
         }
 
-        <h2 className="card-main__display-name">
-          { this.props.link_to_ballot_item_page ?
-            <Link to={measureLink}>{ballot_item_display_name}</Link> :
-              ballot_item_display_name
-          }
-        </h2>
-
         {/* This is the area *under* the measure title */}
-
+      </div>
       </div> {/* END .card-main__content */}
     </div>;
   }
