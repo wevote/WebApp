@@ -47,6 +47,8 @@ export default class AddFriendsByEmail extends Component {
         on_friend_invitations_sent_step: false,
         voter: {},
       };
+
+      this.allRowsOpen.bind(this);
   }
 
   componentDidMount () {
@@ -385,6 +387,10 @@ export default class AddFriendsByEmail extends Component {
       this.setState({ row5_open: true});
   }
 
+  allRowsOpen () {
+    return this.state.row2_open && this.state.row3_open && this.state.row4_open && this.state.row5_open;
+  }
+
 	render () {
 
     var { loading } = this.state;
@@ -587,7 +593,7 @@ export default class AddFriendsByEmail extends Component {
               <Button
                 tabIndex="0"
                 onClick={this.addAnotherInvitation.bind(this)}
-                disabled={!this.state.friend1_email_address}
+                disabled={!this.state.friend1_email_address || this.allRowsOpen()}
               >
                 <span>+ Add another invitation</span>
               </Button>
