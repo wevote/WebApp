@@ -583,7 +583,7 @@ export default class AddFriendsByEmail extends Component {
                 <span className="close close-on-right" aria-label="Close" onClick={this.closeRow5.bind(this)}><span aria-hidden="true">&times;</span></span>
               </div> :
             null}
-            <span>
+            <div className="row invite-inputs">
               <Button
                 tabIndex="0"
                 onClick={this.addAnotherInvitation.bind(this)}
@@ -591,7 +591,7 @@ export default class AddFriendsByEmail extends Component {
               >
                 <span>+ Add another invitation</span>
               </Button>
-            </span>
+            </div>
           </div>
 
           </form>
