@@ -346,30 +346,30 @@ export default class AddFriendsByEmail extends Component {
   }
 
   closeRow2 () {
-    this.setState ({ friend2_email_address: ""});
-    this.setState ({ friend2_first_name: ""});
-    this.setState ({ friend2_last_name: ""});
+    this.setState({ friend2_email_address: ""});
+    this.setState({ friend2_first_name: ""});
+    this.setState({ friend2_last_name: ""});
     this.setState({ row2_open: false});
   }
 
   closeRow3 () {
-    this.setState ({ friend3_email_address: ""});
-    this.setState ({ friend3_first_name: ""});
-    this.setState ({ friend3_last_name: ""});
+    this.setState({ friend3_email_address: ""});
+    this.setState({ friend3_first_name: ""});
+    this.setState({ friend3_last_name: ""});
     this.setState({ row3_open: false});
   }
 
   closeRow4 () {
-    this.setState ({ friend4_email_address: ""});
-    this.setState ({ friend4_first_name: ""});
-    this.setState ({ friend4_last_name: ""});
+    this.setState({ friend4_email_address: ""});
+    this.setState({ friend4_first_name: ""});
+    this.setState({ friend4_last_name: ""});
     this.setState({ row4_open: false});
   }
 
   closeRow5 () {
-   this.setState ({ friend5_email_address: ""});
-    this.setState ({ friend5_first_name: ""});
-    this.setState ({ friend5_last_name: ""});
+   this.setState({ friend5_email_address: ""});
+    this.setState({ friend5_first_name: ""});
+    this.setState({ friend5_last_name: ""});
     this.setState({ row5_open: false});
   }
 
