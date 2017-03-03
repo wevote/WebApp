@@ -417,15 +417,15 @@ export default class Ballot extends Component {
         <BrowserPushMessage incomingProps={this.props} />
         <OverlayTrigger placement="top" overlay={electionTooltip} >
           <h1 className="h1 ballot__election-name">{election_name}
-            {this.state.ballot_election_list.length > 1 ? <span><img src={"/img/global/icons/gear-icon.png"} role="button" onClick={this._toggleSelectBallotModal}
-             alt={"view your ballots"}/></span> : null}
+            {this.state.ballot_election_list.length > 1 ? <img src={"/img/global/icons/gear-icon.png"} className="hidden-print" role="button" onClick={this._toggleSelectBallotModal}
+             alt={"view your ballots"}/> : null}
           </h1>
         </OverlayTrigger>
         <p className="ballot__date_location">
           {voter_address}
-          <span> (<Link to="/settings/location">Edit</Link>)</span>
+          <span className="hidden-print"> (<Link to="/settings/location">Edit</Link>)</span>
         </p>
-        <div className="ballot__filter"><BallotFilter ballot_type={this.getBallotType()} /></div>
+        <div className="ballot__filter hidden-print"><BallotFilter ballot_type={this.getBallotType()} /></div>
       </div>
       {/* TO BE DISCUSSED ballot_caveat !== "" ?
         <div className="alert alert alert-info alert-dismissible" role="alert">n
@@ -434,14 +434,15 @@ export default class Ballot extends Component {
         </div> : null
       */}
       {emptyBallot}
-
-      { in_ready_to_vote_mode ?
-        ballot.map( (item) => <BallotItemReadyToVote key={item.we_vote_id} {...item} />) :
-        ballot.map( (item) => <BallotItemCompressed _toggleCandidateModal={this._toggleCandidateModal}
-                                                    _toggleMeasureModal={this._toggleMeasureModal}
-                                                    key={item.we_vote_id}
-                                                    {...item} />)
-      }
-      </div>;
+      <div className="BallotList">
+        { in_ready_to_vote_mode ?
+          ballot.map( (item) => <BallotItemReadyToVote key={item.we_vote_id} {...item} />) :
+          ballot.map( (item) => <BallotItemCompressed _toggleCandidateModal={this._toggleCandidateModal}
+                                                      _toggleMeasureModal={this._toggleMeasureModal}
+                                                      key={item.we_vote_id}
+                                                      {...item} />)
+        }
+      </div>
+    </div>;
   }
 }
