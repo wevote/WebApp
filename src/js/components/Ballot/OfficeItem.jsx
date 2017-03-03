@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
-import StarAction from "../../components/Widgets/StarAction";
+import BookmarkAction from "../../components/Widgets/BookmarkAction";
 import { capitalizeString } from "../../utils/textFormat";
 
 export default class OfficeItem extends Component {
@@ -32,7 +32,7 @@ export default class OfficeItem extends Component {
               ballot_item_display_name
           }
         </h2>
-        <StarAction we_vote_id={we_vote_id} type="OFFICE"/>
+        <BookmarkAction we_vote_id={we_vote_id} type="OFFICE"/>
 
         <div className={ this.props.link_to_ballot_item_page ?
                 "u-cursor--pointer" : null }

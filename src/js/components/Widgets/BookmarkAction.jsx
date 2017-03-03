@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from "react";
-import StarStore from "../../stores/StarStore";
-import StarActions from "../../actions/StarActions";
+import BookmarkStore from "../../stores/BookmarkStore";
+import BookmarkActions from "../../actions/BookmarkActions";
 var Icon = require("react-svg-icons");
 
-export default class StarAction extends Component {
+export default class BookmarkAction extends Component {
   static propTypes = {
     we_vote_id: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired
@@ -19,42 +19,42 @@ export default class StarAction extends Component {
   }
 
   componentDidMount (){
-    this.token = StarStore.addListener(this._onChange.bind(this));
+    this.token = BookmarkStore.addListener(this._onChange.bind(this));
     this._onChange();
   }
 
   _onChange (){
-    this.setState({ is_starred: StarStore.get(this.props.we_vote_id) || false});
+    this.setState({ is_bookmarked: BookmarkStore.get(this.props.we_vote_id) || false});
   }
 
 
-  starClick () {
+  BookmarkClick () {
     var we_vote_id = this.props.we_vote_id;
-    var starred = this.state.is_starred;
+    var bookmarked = this.state.is_bookmarked;
 
-    if ( starred )
-      StarActions.voterStarOffSave(we_vote_id, this.props.type);
+    if ( bookmarked )
+      BookmarkActions.voterBookmarkOffSave(we_vote_id, this.props.type);
     else
-      StarActions.voterStarOnSave(we_vote_id, this.props.type);
+      BookmarkActions.voterBookmarkOnSave(we_vote_id, this.props.type);
   }
 
-  starKeyDown (e) {
+  BookmarkKeyDown (e) {
     let enterAndSpaceKeyCodes = [13, 32];
     if (enterAndSpaceKeyCodes.includes(e.keyCode)) {
-      this.starClick().bind(this);
+      this.BookmarkClick().bind(this);
     }
   }
 
 	render () {
-    if (this.state.is_starred === undefined){
-      return <span className="star-action" />;
+    if (this.state.is_bookmarked === undefined){
+      return <span className="bookmark-action" />;
     }
     return <span tabIndex="0"
-                 className="star-action ml1"
-                 onClick={this.starClick.bind(this)}
-                 onKeyDown={this.starKeyDown.bind(this)}
+                 className="bookmark-action ml1"
+                 onClick={this.BookmarkClick.bind(this)}
+                 onKeyDown={this.BookmarkKeyDown.bind(this)}
                  title="Bookmark for later">
-              {this.state.is_starred ?
+              {this.state.is_bookmarked ?
                 <Icon alt="Is Bookmarked" name="bookmark-icon" width={24} height={24} fill="#999" stroke="none" /> :
                 <Icon alt="Bookmark for later" name="bookmark-icon" width={24} height={24} fill="none" stroke="#ccc" strokeWidth={2} />
               }

@@ -5,7 +5,7 @@ import ImageHandler from "../../components/ImageHandler";
 import ItemActionBar from "../../components/Widgets/ItemActionBar";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
 import ItemTinyOpinionsToFollow from "../../components/VoterGuide/ItemTinyOpinionsToFollow";
-import StarAction from "../../components/Widgets/StarAction";
+import BookmarkAction from "../../components/Widgets/BookmarkAction";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
@@ -64,7 +64,7 @@ export default class OfficeItemCompressed extends Component {
               ballot_item_display_name
           }
         </h2>
-        <StarAction we_vote_id={we_vote_id} type="OFFICE"/>
+        <BookmarkAction we_vote_id={we_vote_id} type="OFFICE"/>
 
         <div className={this.props.link_to_ballot_item_page ?
                 "u-cursor--pointer" : null } >
