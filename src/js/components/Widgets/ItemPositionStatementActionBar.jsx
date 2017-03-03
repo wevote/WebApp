@@ -181,12 +181,12 @@ export default class ItemPositionStatementActionBar extends Component {
 
     if (youtube_url) {
       video_url = youtube_url;
-      statement_text_to_be_saved = "";
+      statement_text_to_be_saved = statement_text_to_be_saved.replace(video_url, '');
     }
 
     if (vimeo_url) {
       video_url = vimeo_url[0];
-      statement_text_to_be_saved = "";
+      statement_text_to_be_saved = statement_text_to_be_saved.replace(video_url, '');
     }
 
     return <div className="position-statement__container">
