@@ -102,6 +102,7 @@ export default class SearchAllBox extends Component {
   }
 
   onSearchFocus () {
+
     this.refs.searchAllBox.setSelectionRange(0, 999);
 
     // Hide the hamburger navigation and site name
@@ -201,6 +202,7 @@ export default class SearchAllBox extends Component {
     return <div className="page-header__search">
         <form onSubmit={this.onSearchFormSubmit} role="search">
           <div className="input-group site-search">
+
             <input type="text"
                    id="SearchAllBox-input"
                    className="form-control site-search__input-field"
@@ -214,7 +216,7 @@ export default class SearchAllBox extends Component {
                    value={this.state.text_from_search_field}
                    ref="searchAllBox" />
             <div className="input-group-btn">
-              <button className="site-search__button btn btn-default" type="submit"><i className="glyphicon glyphicon-search" /></button>
+              <button onFocus={this.onSearchFocus} className="site-search__button btn btn-default" type="submit"><i className="glyphicon glyphicon-search" /></button>
             </div>
           </div>
         </form>

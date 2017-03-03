@@ -7,7 +7,7 @@ import PositionInformationOnlySnippet from "../../components/Widgets/PositionInf
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
 import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
-import StarAction from "../../components/Widgets/StarAction";
+import BookmarkAction from "../../components/Widgets/BookmarkAction";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
@@ -122,7 +122,7 @@ export default class VoterPositionItem extends Component {
       political_party = position.ballot_item_political_party;
     }
     return <li className="position-item card-child">
-      <StarAction we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
+      <BookmarkAction we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
       <div className="card-child__media-object-anchor">
         <Link to={ ballotItemLink }
               className="u-no-underline"

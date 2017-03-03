@@ -1,7 +1,7 @@
 var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
 
-class StarStore extends FluxMapStore {
+class BookmarkStore extends FluxMapStore {
 
   reduce (state, action) {
 
@@ -13,20 +13,21 @@ class StarStore extends FluxMapStore {
 
     switch (action.type) {
 
-      case "voterAllStarsStatusRetrieve":
+      case "voterAllBookmarksStatusRetrieve":
         let newState = {};
-        action.res.star_list.forEach(el =>{
-          newState[el.ballot_item_we_vote_id] = el.star_on;
+        console.log(action.res);
+        action.res.bookmark_list.forEach(el =>{
+          newState[el.ballot_item_we_vote_id] = el.bookmark_on;
         });
         return state.merge(newState);
 
-      case "voterStarOnSave":
+      case "voterBookmarkOnSave":
         return state.set(key, true);
 
-      case "voterStarOffSave":
+      case "voterBookmarkOffSave":
         return state.set(key, false);
 
-      case "error-StarRetrieve" || "error-voterStarOnSave" || "error-voterStarOnSave":
+      case "error-BookmarkRetrieve" || "error-voterBookmarkOnSave" || "error-voterBookmarkOnSave":
         console.log(action.res);
         return state;
 
@@ -38,4 +39,4 @@ class StarStore extends FluxMapStore {
 
 }
 
-module.exports = new StarStore(Dispatcher);
+module.exports = new BookmarkStore(Dispatcher);
