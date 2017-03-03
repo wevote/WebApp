@@ -49,6 +49,8 @@
 .icon-icon-person-placeholder-6-1:before {
     content: "b";
     vertical-align: middle;
+    position: relative;
+    bottom: 0.5rem;
 }
 i.icon-candidate-small.icon-main.icon-icon-person-placeholder-6-1 {
     vertical-align: middle;
@@ -81,7 +83,10 @@ i.icon-candidate-small.icon-main.icon-icon-person-placeholder-6-1 {
 }
 
 .icon-office-child {
-  font-size: 80px;
+  font-size: 24px;
+  @include breakpoints (mid-small){
+      font-size: 48px;
+    }
 }
 
 .icon-candidate-large {
@@ -93,7 +98,10 @@ i.icon-candidate-small.icon-main.icon-icon-person-placeholder-6-1 {
 }
 
 .icon-candidate-small {
-  font-size: 80px;
+  font-size: 24px;
+  @include breakpoints (mid-small){
+      font-size: 48px;
+    }
 }
 
 .icon-lg {
