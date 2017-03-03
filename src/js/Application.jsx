@@ -3,7 +3,7 @@ import BallotLeft from "./components/Navigation/BallotLeft";
 import FriendActions from "./actions/FriendActions";
 import HeaderBar from "./components/Navigation/HeaderBar";
 import Headroom from "react-headroom";
-import StarActions from "./actions/StarActions";
+import BookmarkActions from "./actions/BookmarkActions";
 import VoterActions from "./actions/VoterActions";
 import SearchAllActions from "./actions/SearchAllActions";
 import VoterStore from "./stores/VoterStore";
@@ -63,7 +63,7 @@ export default class Application extends Component {
     // console.log("Application, componentDidMount, voter_device_id:", voter_device_id);
     if (voter_device_id && voter_device_id !== "") {
       VoterActions.voterEmailAddressRetrieve();
-      StarActions.voterAllStarsStatusRetrieve();
+      BookmarkActions.voterAllBookmarksStatusRetrieve();
       FriendActions.friendInvitationsSentToMe();
     }
 

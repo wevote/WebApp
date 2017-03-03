@@ -5,7 +5,7 @@ import ImageHandler from "../../components/ImageHandler";
 import ItemActionBar from "../../components/Widgets/ItemActionBar";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
 import ItemTinyOpinionsToFollow from "../../components/VoterGuide/ItemTinyOpinionsToFollow";
-import StarAction from "../../components/Widgets/StarAction";
+import BookmarkAction from "../../components/Widgets/BookmarkAction";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
@@ -64,13 +64,23 @@ export default class OfficeItemCompressed extends Component {
               ballot_item_display_name
           }
         </h2>
-        <StarAction we_vote_id={we_vote_id} type="OFFICE"/>
+        <BookmarkAction we_vote_id={we_vote_id} type="OFFICE"/>
 
         <div className={this.props.link_to_ballot_item_page ?
                 "u-cursor--pointer" : null } >
           { this.props.candidate_list.map( (one_candidate) =>
             <div key={one_candidate.we_vote_id} className="u-stack--md">
-              <span className="h5 mobileCandName">{one_candidate.ballot_item_display_name}</span>
+              <span onClick={ this.props.link_to_ballot_item_page ?
+                              ()=>{browserHistory.push("/candidate/" + one_candidate.we_vote_id);} :
+                              null }
+                    className="h5 mobileCandName">
+                <ImageHandler className="card-main__avatar"
+                              sizeClassName="icon-candidate-small "
+                              imageUrl={one_candidate.candidate_photo_url}
+                              alt="candidate-photo"
+                              kind_of_ballot_item="CANDIDATE" />
+                 <span className="mobileCandNameText">{one_candidate.ballot_item_display_name}</span>
+              </span>
               <div className="u-flex u-items-center">
                 {/* *** Candidate name *** */}
                 <div className="u-flex-auto u-inline--sm u-cursor--pointer"

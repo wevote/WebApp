@@ -8,7 +8,7 @@ import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeC
 import ItemTinyOpinionsToFollow from "../../components/VoterGuide/ItemTinyOpinionsToFollow";
 import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPositionBreakdownList";
 import OfficeNameText from "../../components/Widgets/OfficeNameText";
-import StarAction from "../../components/Widgets/StarAction";
+import BookmarkAction from "../../components/Widgets/BookmarkAction";
 import SupportStore from "../../stores/SupportStore";
 import {abbreviateNumber} from "../../utils/textFormat";
 import {numberWithCommas} from "../../utils/textFormat";
@@ -137,7 +137,7 @@ export default class CandidateItem extends Component {
               ballot_item_display_name
             }
           </h2>
-          <StarAction we_vote_id={we_vote_id} type="CANDIDATE"/>
+          <BookmarkAction we_vote_id={we_vote_id} type="CANDIDATE"/>
           <p className={this.props.link_to_ballot_item_page ?
               "u-gray-darker u-cursor--pointer" :
               "u-gray-darker"

@@ -8,7 +8,7 @@ import PositionInformationOnlySnippet from "../../components/Widgets/PositionInf
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
 import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
-import StarAction from "../../components/Widgets/StarAction";
+import BookmarkAction from "../../components/Widgets/BookmarkAction";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
@@ -193,7 +193,7 @@ export default class OrganizationPositionItem extends Component {
                 className="organization-position-item-toggle"/> :
                 <FriendsOnlyIndicator isFriendsOnly={!is_public_position}/>
               }
-              <StarAction we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
+              <BookmarkAction we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
             </div>
             { position.kind_of_ballot_item === "CANDIDATE" && contest_office_name !== undefined ?
             <OfficeNameText political_party={political_party} contest_office_name={contest_office_name} /> :

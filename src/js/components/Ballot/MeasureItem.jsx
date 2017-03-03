@@ -5,7 +5,7 @@ import ItemPositionStatementActionBar from "../../components/Widgets/ItemPositio
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
 import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPositionBreakdownList";
 import ReadMore from "../../components/Widgets/ReadMore";
-import StarAction from "../../components/Widgets/StarAction";
+import BookmarkAction from "../../components/Widgets/BookmarkAction";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
@@ -76,7 +76,7 @@ export default class MeasureItem extends Component {
               ballot_item_display_name
           }
         </h2>
-        <StarAction we_vote_id={we_vote_id} type="MEASURE"/>
+        <BookmarkAction we_vote_id={we_vote_id} type="MEASURE"/>
         <div className="card-main__measure-election u-bold u-gray-darker">
           <p>{ election_display_name ? election_display_name : "Appearing on the ballot in " }
             { election_display_name ? <span> &middot; </span> : null }
