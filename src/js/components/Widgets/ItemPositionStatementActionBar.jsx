@@ -173,8 +173,8 @@ export default class ItemPositionStatementActionBar extends Component {
     };
 
     var video_url = "";
-    var vimeo_reg = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/;
     var youtube_reg = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?/;
+    var vimeo_reg = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/;
 
     var youtube_url = statement_text_to_be_saved.match(youtube_reg);
     var vimeo_url = statement_text_to_be_saved.match(vimeo_reg);
@@ -234,8 +234,9 @@ export default class ItemPositionStatementActionBar extends Component {
               <span className="u-bold">{speaker_display_name} <br /></span> :
               null }
             <ReadMore text_to_display={statement_text_to_be_saved} />
-            <ReactPlayer url={`${video_url}`} width="300px" height="231px"/>
-
+            { video_url ?
+              <ReactPlayer url={`${video_url}`} width="300px" height="231px"/> :
+              null }
 
             { short_version ?
               <span tabIndex="0" onKeyDown={onKeyDown}
