@@ -36,7 +36,7 @@
        & .desktopCandName, .desktop-subtitle {
           display: none;
           @include breakpoints(mid-small){
-            display: block;
+            display: initial;
           }
         }
 
@@ -62,11 +62,12 @@
     }
 
     &__avatar {
-      max-width: 50px;
+      max-width: 24px;
       border-radius: 2px;
+      max-width: 24px;
       .card-main & {
         @include breakpoints(mid-small) {
-          max-width: 80px;
+          max-width: 48px;
         }
         border-radius: 10em;
       }
