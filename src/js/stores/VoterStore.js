@@ -5,7 +5,7 @@ import FacebookStore from "../stores/FacebookStore";
 import FluxMapStore from "flux/lib/FluxMapStore";
 import FriendActions from "../actions/FriendActions";
 import GuideActions from "../actions/GuideActions";
-import StarActions from "../actions/StarActions";
+import BookmarkActions from "../actions/BookmarkActions";
 import SupportActions from "../actions/SupportActions";
 import VoterActions from "../actions/VoterActions";
 const cookies = require("../utils/cookies");
@@ -246,7 +246,7 @@ class VoterStore extends FluxMapStore {
         //  refresh a lot of data
         VoterActions.voterRetrieve();
         VoterActions.voterEmailAddressRetrieve();
-        StarActions.voterAllStarsStatusRetrieve();
+        BookmarkActions.voterAllBookmarksStatusRetrieve();
         FriendActions.currentFriends();
         FriendActions.friendInvitationsSentByMe();
         FriendActions.friendInvitationsSentToMe();
@@ -302,7 +302,7 @@ class VoterStore extends FluxMapStore {
       case "voterSignOut":
         VoterActions.voterRetrieve();
         VoterActions.voterEmailAddressRetrieve();
-        StarActions.voterAllStarsStatusRetrieve();
+        BookmarkActions.voterAllBookmarksStatusRetrieve();
         FriendActions.currentFriends();
         FriendActions.friendInvitationsSentByMe();
         FriendActions.friendInvitationsSentToMe();
