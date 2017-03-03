@@ -55,6 +55,10 @@
 i.icon-candidate-small.icon-main.icon-icon-person-placeholder-6-1 {
     vertical-align: middle;
 }
+.icon-icon-person-placeholder-6-1 + span.mobileCandNameText {
+    bottom: 2px;
+    position: relative;
+}
 .icon-icon-org-placeholder-6-2:before {
     content: "c";
 }
