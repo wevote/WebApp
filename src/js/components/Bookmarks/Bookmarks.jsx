@@ -13,25 +13,24 @@ export default class Bookmarks extends Component {
 
   constructor (props){
     super(props);
-    this.state = {};
+    this.state = { bookmarks: [] };
   }
 
   componentDidMount () {
-    this.ballotStoreListener = BallotStore.addListener(this._onChange.bind(this));
-    this._onChange();
+    this.ballotStoreListener = BallotStore.addListener(this._onBallotStoreChange.bind(this));
+    this._onBallotStoreChange();
   }
 
   componentWillUnmount (){
     this.ballotStoreListener.remove();
   }
 
-  _onChange (){
+  _onBallotStoreChange (){
     this.setState({bookmarks: BallotStore.bookmarks });
   }
 
   render () {
-    const {bookmarks} = this.state;
-    if (!bookmarks){
+    if (!this.state.bookmarks){
       return LoadingWheel;
     }
     var voter_address = VoterStore.getAddress();
@@ -51,11 +50,11 @@ export default class Bookmarks extends Component {
         <div className="ballot__filter"><BallotFilter ballot_type="BOOKMARKS" /></div>
       </div>
       {
-        bookmarks.length === 0 && <p>No bookmarks yet</p>
+        this.state.bookmarks.length === 0 && <p>No bookmarks yet</p>
       }
       <div className="bookmarks-list">
         {
-          bookmarks.map(bookmark => {
+          this.state.bookmarks.map(bookmark => {
             return <BookmarkItem key={bookmark.ballot_item_display_name} bookmark={bookmark}/>;
           })
         }
