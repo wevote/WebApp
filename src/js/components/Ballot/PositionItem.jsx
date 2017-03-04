@@ -59,29 +59,7 @@ export default class PositionItem extends Component {
     }
 
     var show_position = true;
-    // For now, do not show the voter's own position. We will show a voter's position when can have comments.
-    // if (position.speaker_type === "V")  // TO BE REFACTORED
-    //     show_position = false;
-
     var nothing_to_display = null;
-
-    // var edit_mode = false;  // TODO DALE Convert this to be dynamically set
-    // const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
-    // Only allow editing if the position we are passing in has a we_vote_id
-    // TODO DALE I need to think through passing in organization below
-    // const edit_position_description = edit_mode && position !== undefined ?
-    //   <span>
-    //     <span className="edit-position-action"
-    //           onClick={onEditPositionClick}
-    //           title="Edit this position">
-    //       { position_description }
-    //     </span>
-    //     <EditPositionAboutCandidateModal show={this.state.showEditPositionModal}
-    //                                      onHide={this.closeEditPositionModal.bind(this)}
-    //                                      position={position}
-    //                                      organization={this.props.organization}/>
-    //   </span> :
-    //   null;
 
     var one_position_on_this_candidate = <li className="card-child position-item">
       {/* One Position on this Candidate */}
