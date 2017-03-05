@@ -114,7 +114,7 @@ export default class OfficeItemReadyToVote extends Component {
                 <div className="u-flex u-items-center">
                   <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
                   goToOfficeLink : null }>
-                    <h2 className="h5 hidden-xs">
+                    <h2 className="h5">
                     {one_candidate.ballot_item_display_name}
                     </h2>
                   </div>
@@ -130,7 +130,7 @@ export default class OfficeItemReadyToVote extends Component {
                 <div className="u-flex u-items-center">
                   <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
                     goToOfficeLink : null }>
-                    <h2 className="h5 hidden-xs">
+                    <h2 className="h5">
                       {one_candidate.ballot_item_display_name}
                     </h2>
                   </div>
