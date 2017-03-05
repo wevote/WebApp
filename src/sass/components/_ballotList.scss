@@ -1,3 +1,9 @@
+.BallotList {
+  @include print {
+    column-count: 2;
+  }
+}
+
 .BallotItem {
   position: relative;
   margin-bottom: 1em;

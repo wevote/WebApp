@@ -73,28 +73,29 @@ export default class OfficeItemCompressed extends Component {
               <span onClick={ this.props.link_to_ballot_item_page ?
                               ()=>{browserHistory.push("/candidate/" + one_candidate.we_vote_id);} :
                               null }
-                    className="h5 mobileCandName">
-                <ImageHandler className="card-main__avatar"
-                              sizeClassName="icon-candidate-small "
+                    className="visible-xs u-stack--sm">
+                <ImageHandler className="card-main__avatar u-inline--sm"
+                              sizeClassName="icon-candidate-small u-inline--sm "
                               imageUrl={one_candidate.candidate_photo_url}
                               alt="candidate-photo"
                               kind_of_ballot_item="CANDIDATE" />
-                 <span className="mobileCandNameText">{one_candidate.ballot_item_display_name}</span>
+                 <span className="h5">{one_candidate.ballot_item_display_name}</span>
               </span>
               <div className="u-flex u-items-center">
                 {/* *** Candidate name *** */}
-                <div className="u-flex-auto u-inline--sm u-cursor--pointer"
+                <div className="u-flex u-flex-auto u-inline--sm u-cursor--pointer"
                     onClick={ this.props.link_to_ballot_item_page ?
                               ()=>{browserHistory.push("/candidate/" + one_candidate.we_vote_id);} :
                               null }>
-                  <span className="hidden-xs">
-                    <ImageHandler className="card-main__avatar"
-                                  sizeClassName="icon-candidate-small "
+                  <div className="hidden-xs">
+                    <ImageHandler className="card-main__avatar u-inline--sm"
+                                  sizeClassName="icon-candidate-small u-inline--sm "
                                   imageUrl={one_candidate.candidate_photo_url}
                                   alt="candidate-photo"
                                   kind_of_ballot_item="CANDIDATE" />
-                  </span>
-              <span className="h5 desktopCandName">{one_candidate.ballot_item_display_name}</span>
+
+              <span className="h5">{one_candidate.ballot_item_display_name}</span>
+              </div>
                 </div>
 
                 {/* *** "Positions in your Network" bar OR items you can follow *** */}

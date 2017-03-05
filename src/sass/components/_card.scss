@@ -25,27 +25,16 @@
     position: relative;
     padding: 15px $item-padding 10px;
     font-size: 14px; // remove once global defaults are set
+    @include print {
+      padding: 0;
+    }
 
     &__content {
       position: relative;
-      & .h5.mobileCandName {
-        @include breakpoints(mid-small){
-          display: none;
-        }
+      @include print {
+        border-top: 1px solid $gray-mid;
+        padding-top: 1em;
       }
-       & .desktopCandName, .desktop-subtitle {
-          display: none;
-          @include breakpoints(mid-small){
-            display: initial;
-          }
-        }
-
-        & .mobile-subtitle {
-          display: block;
-            @include breakpoints(mid-small){
-              display: none;
-            }
-       }
     }
 
     &__media_object {
@@ -92,10 +81,6 @@
       margin-right: 5px;
       vertical-align: text-bottom;
     }
-    &__position-icon-vote {
-      display: inline-block;
-      margin-right: 5px;
-    }
 
     &__display-name {
       font-family: $heading-font-stack;
@@ -106,6 +91,9 @@
       vertical-align: middle;
       @include breakpoints(mid-small) {
         font-size: 24px;
+      }
+      @include print {
+        font-size: 18px;
       }
     }
 
@@ -307,4 +295,3 @@
 .bm-burger-button button {
   color:red;
 }
-

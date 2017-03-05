@@ -112,30 +112,35 @@ export default class OfficeItemReadyToVote extends Component {
               {/* *** Candidate name *** */}
               { SupportStore.get(one_candidate.we_vote_id) && SupportStore.get(one_candidate.we_vote_id).is_support ?
                 <div className="u-flex u-items-center">
-                  <div className="u-flex-auto u-inline--sm u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
+                  <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
                   goToOfficeLink : null }>
-                    <h2 className="h5 desktopCandName">
+                    <h2 className="h5 hidden-xs">
                     {one_candidate.ballot_item_display_name}
                     </h2>
                   </div>
 
-                  <div className="u-flex-none u-justify-end u-inline--sm">Supported by you &nbsp; <img src="/img/global/svg-icons/thumbs-up-color-icon.svg"
-                    className="card-main__position-icon-vote" width="24" height="24" /></div>
+                  <div className="u-flex-none u-justify-end">
+                    <span className="u-inline--xs">Supported by you</span>
+                    <img src="/img/global/svg-icons/thumbs-up-color-icon.svg" width="24" height="24" />
+                  </div>
                 </div> :
 
                   candidate_with_most_support === one_candidate.ballot_item_display_name ?
 
                 <div className="u-flex u-items-center">
-                  <div className="u-flex-auto u-inline--sm u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
+                  <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
                     goToOfficeLink : null }>
-                    <h2 className="h5 desktopCandName">
+                    <h2 className="h5 hidden-xs">
                       {one_candidate.ballot_item_display_name}
                     </h2>
                   </div>
-                  <div className="u-flex-none u-justify-end u-inline--sm">Your network supports &nbsp; <img src="/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" /></div>
+                  <div className="u-flex-none u-justify-end">
+                    <span className="u-inline--xs">Your network supports</span>
+                    <img src="/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" />
+                  </div>
                 </div> :
                   is_support_array === 0 && candidate_with_most_support !== one_candidate.ballot_item_display_name && !voter_supports_at_least_one_candidate ?
-                  <div className="u-flex-none u-justify-end u-inline--sm">Your network is undecided</div> :
+                  <div className="u-flex-none u-justify-end">Your network is undecided</div> :
                     null}
               {/* *** "Positions in your Network" bar OR items you can follow *** */}
           </div>)
@@ -145,7 +150,7 @@ export default class OfficeItemReadyToVote extends Component {
             <span>
               { at_least_one_candidate_chosen ?
                 null :
-                <div className="pull-right">Your network is undecided</div> }
+                <div className="u-tr">Your network is undecided</div> }
             </span> }
         </div>
       </div>
