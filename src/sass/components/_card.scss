@@ -31,28 +31,10 @@
 
     &__content {
       position: relative;
-      & .h5.mobileCandName {
-        @include breakpoints(mid-small){
-          display: none;
-        }
+      @include print {
+        border-top: 1px solid $gray-mid;
+        padding-top: 1em;
       }
-       & .desktopCandName, .desktop-subtitle {
-          display: none;
-          @include breakpoints(mid-small){
-            display: initial;
-          }
-        }
-
-        & .mobile-subtitle {
-          display: block;
-            @include breakpoints(mid-small){
-              display: none;
-            }
-       }
-       @include print {
-         border-top: 1px solid $gray-mid;
-         padding-top: 1em;
-       }
     }
 
     &__media_object {
@@ -98,10 +80,6 @@
       display: inline-block;
       margin-right: 5px;
       vertical-align: text-bottom;
-    }
-    &__position-icon-vote {
-      display: inline-block;
-      margin-right: 5px;
     }
 
     &__display-name {

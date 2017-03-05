@@ -345,7 +345,7 @@ export default class Ballot extends Component {
       </Modal>;
 
     // This modal will show a users ballot guides from previous and current elections.
-    const SelectBallotModal = <Modal show={this.state.showSelectBallotModal} onHide={()=>{this._toggleSelectBallotModal()}}
+    const SelectBallotModal = <Modal show={this.state.showSelectBallotModal} onHide={()=>{this._toggleSelectBallotModal();}}
       className="ballot-election-list ballot-election-list__modal">
       <Modal.Header closeButton>
         <Modal.Title className="ballot-election-list__h1">See Ballot from Another Election</Modal.Title>
@@ -354,7 +354,7 @@ export default class Ballot extends Component {
         <BallotElectionList ballot_election_list={this.state.ballot_election_list}
           _toggleSelectBallotModal={this._toggleSelectBallotModal}/>
       </Modal.Body>
-    </Modal>
+    </Modal>;
 
     let ballot = this.state.ballot;
     var voter_address = VoterStore.getAddress();
@@ -416,7 +416,8 @@ export default class Ballot extends Component {
         <Helmet title="Ballot - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
         <OverlayTrigger placement="top" overlay={electionTooltip} >
-          <h1 className="h1 ballot__election-name">{election_name}
+          <h1 className="h1 ballot__election-name">
+            <span className="u-inline--sm">{election_name}</span>
             {this.state.ballot_election_list.length > 1 ? <img src={"/img/global/icons/gear-icon.png"} className="hidden-print" role="button" onClick={this._toggleSelectBallotModal}
              alt={"view your ballots"}/> : null}
           </h1>

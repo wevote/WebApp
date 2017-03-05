@@ -108,7 +108,7 @@ export default class SearchAllBox extends Component {
     // Hide the hamburger navigation and site name
     // TODO: convert to flux action
     // for the global nav
-   
+
     this.siteLogoText.addClass("hideItem");
     this.ballot.addClass("deskOnly");
     this.requests.addClass("deskOnly");
