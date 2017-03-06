@@ -34,6 +34,7 @@ export default class SearchAllBox extends Component {
     this.onSearchResultMouseOver = this.onSearchResultMouseOver.bind(this);
     this.onSearchResultClick = this.onSearchResultClick.bind(this);
     this.onSearchFormSubmit = this.onSearchFormSubmit.bind(this);
+    this.searchHasContent = this.searchHasContent.bind(this);
     this.navigateToSelectedLink = this.navigateToSelectedLink.bind(this);
 
     this.searchAllListener = SearchAllStore.addListener(this._onSearchAllStoreChange.bind(this));
@@ -129,10 +130,16 @@ export default class SearchAllBox extends Component {
 
   onSearchFormSubmit (e) {
     e.preventDefault();
-    this.updateSearchText();
-    //Remove focus from search bar
-    document.getElementById("SearchAllBox-input").blur();
-    this.navigateToSelectedLink();
+    if (this.searchHasContent()) {
+      this.updateSearchText();
+      this.navigateToSelectedLink();
+      //Remove focus from search bar to close it
+      document.getElementById("SearchAllBox-input").blur();
+    } else if (!this.state.open) {
+      //add focus from search bar, so a search logo tap opens/closes
+      document.getElementById("SearchAllBox-input").focus();
+    }
+
     return false;
   }
 
@@ -178,6 +185,10 @@ export default class SearchAllBox extends Component {
     SearchAllActions.searchAll(selectedResultText);
   }
 
+  searchHasContent () {
+    return this.state.search_results.length > 0;
+  }
+
   clearSearch () {
     setTimeout(() => {
       this.setState({open: false, text_from_search_field: "", selected_index: 0, search_results: []});
@@ -216,7 +227,7 @@ export default class SearchAllBox extends Component {
                    value={this.state.text_from_search_field}
                    ref="searchAllBox" />
             <div className="input-group-btn">
-              <button onFocus={this.onSearchFocus} className="site-search__button btn btn-default" type="submit"><i className="glyphicon glyphicon-search" /></button>
+              <button className="site-search__button btn btn-default" type="submit"><i className="glyphicon glyphicon-search" /></button>
             </div>
           </div>
         </form>
