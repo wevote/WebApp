@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
+import BallotStore from "../../stores/BallotStore";
 import NavigatorInHeader from "./NavigatorInHeader";
 import SearchAllBox from "../SearchAllBox";
+import BookmarkStore from "../../stores/BookmarkStore";
 var Icon = require("react-svg-icons");
 const ReactBurgerMenu = require("react-burger-menu").push;
 
@@ -19,12 +21,23 @@ export default class HeaderBar extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = { bookmarks: [] };
   }
 
-  componentDidMount () {}
+  componentDidMount () {
+    this.ballotStoreListener = BallotStore.addListener(this._onBallotStoreChange.bind(this));
+    this.bookmarkStoreListener = BookmarkStore.addListener(this._onBallotStoreChange.bind(this));
+    this._onBallotStoreChange();
+  }
 
-  componentWillUnmount () {}
+  componentWillUnmount (){
+    this.ballotStoreListener.remove();
+    this.bookmarkStoreListener.remove();
+  }
+
+  _onBallotStoreChange (){
+    this.setState({bookmarks: BallotStore.bookmarks });
+  }
 
   hide () {
     const menuButton = document.querySelector(".bm-burger-button > button");
@@ -135,6 +148,15 @@ export default class HeaderBar extends Component {
                 </div>
               </Link>
             </li>
+            { this.state.bookmarks && this.state.bookmarks.length ?
+              <li>
+                <Link onClick={this.hide.bind(this)} to="/bookmarks">
+                  <div>
+                    <span className="header-slide-out-menu-text-left">Your Bookmarked Items</span>
+                  </div>
+                </Link>
+              </li> :
+              null }
             <li className="mobile">
               <Link onClick={this.hide.bind(this)} to="/more/about">
                 <div>

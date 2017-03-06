@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { browserHistory } from "react-router";
 import BallotActions from "../../actions/BallotActions";
 import VoterActions from "../../actions/VoterActions";
-let moment = require('moment');
+let moment = require("moment");
 
 export default class BallotElectionList extends Component {
 
