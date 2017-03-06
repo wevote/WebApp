@@ -59,3 +59,11 @@
   overflow: hidden;
   white-space: nowrap;
 }
+
+// Print mixin
+
+@mixin print {
+  @media print {
+    @content;
+  }
+}

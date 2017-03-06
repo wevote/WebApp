@@ -1,0 +1,21 @@
+@media print {
+  body {
+    background-color: #fff !important;
+    color: #000;
+  }
+  .headroom-wrapper,
+  .page-header__container,
+  .sidebar-menu {
+    display: none;
+  }
+  .container-main {
+    width: 100%;
+  }
+  // 'No print' utility class from Bootstrap is .hidden-print
+  %hidden-print {
+    display: none;
+  }
+  a[href]::after {
+    content: ""; // Override Bootstrap styles adding href
+  }
+}
