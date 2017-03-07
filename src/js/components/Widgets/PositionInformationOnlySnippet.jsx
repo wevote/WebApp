@@ -130,10 +130,10 @@ export default class PositionInformationOnlySnippet extends Component {
                    className="u-gray-mid">
                   view source <i className="fa fa-external-link" aria-hidden="true" />
                 </a>
-            {/* link for mobile browser: open in bootstrap modal */}
-            {/*<a onClick={onViewSourceClick}>
-              (view source)
-            </a> */}
+                {/* link for mobile browser: open in bootstrap modal */}
+                {/*<a onClick={onViewSourceClick}>
+                  (view source)
+                </a> */}
               </div> :
               null }
           </span>
