@@ -25,7 +25,7 @@ export default class ItemSupportOpposeCounts extends Component {
       return null;
     }
 
-    var {support_count, oppose_count, is_support, is_oppose, voter_statement_text } = this.state.supportProps;
+    var {support_count, oppose_count, is_support, is_oppose } = this.state.supportProps;
     if (support_count === undefined || oppose_count === undefined || is_support === undefined || is_oppose === undefined){
       return null;
     }

@@ -123,19 +123,18 @@ export default class PositionInformationOnlySnippet extends Component {
               <ReactPlayer url={`${video_url}`} width="300px" height="231px"/> :
               null }
             {more_info_url ?
-               <div>
-                  <div className="hidden-xs">
-                    {/* default: open in new tab*/}
-                    <a href={more_info_url}
-                       target="_blank"
-                       className="u-gray-mid">
-                      view source <i className="fa fa-external-link" aria-hidden="true" />
-                    </a>
-                {/* link for mobile browser: open in bootstrap modal */}
-                {/*<a onClick={onViewSourceClick}>
-                  (view source)
-                </a> */}
-              </div></div> :
+              <div className="hidden-xs">
+                {/* default: open in new tab*/}
+                <a href={more_info_url}
+                   target="_blank"
+                   className="u-gray-mid">
+                  view source <i className="fa fa-external-link" aria-hidden="true" />
+                </a>
+            {/* link for mobile browser: open in bootstrap modal */}
+            {/*<a onClick={onViewSourceClick}>
+              (view source)
+            </a> */}
+              </div> :
               null }
           </span>
         }
