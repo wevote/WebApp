@@ -10,7 +10,7 @@ $icon-color-hover: $gray-dark;
 
 // Header Nav
 // ================================
-.donate,.about,.deskOnly,.fullscreen,#desktopAvatar{
+.donate,.about,.deskOnly,.fullscreen {
   display: none;
   @include breakpoints(nav){ // 2
     display: block;
@@ -31,6 +31,54 @@ $icon-color-hover: $gray-dark;
   display: none;
 }
 
+.account-menu {
+  max-width: 320px;
+  position: absolute;
+  right: 0;
+  top: 50px;
+  background-color: #fff;
+  opacity: 0;
+  padding: 1rem;
+  transition: opacity 0.25s ease-in-out;
+  z-index: 2;
+}
+
+.account-menu:before{
+    content:'';
+    display:block;
+    width:0;
+    height:0;
+    position:absolute;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid #fff;
+    border-right:8px solid transparent;
+    border-left:8px solid transparent;
+    right:10px;
+    top:-16px;
+}
+
+.page-overlay {
+  position: fixed;
+  width: 200vw;
+  height: 200vh;
+  top: -10px;
+  left: -10px;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 2;
+  pointer-events: none;
+  transition: opacity 0.4s ease-in-out;
+  opacity: 0;
+}
+
+.account-menu-open .page-overlay {
+  display: block;
+  opacity: 1;
+  pointer-events: all;
+}
+
+.account-menu-open .account-menu {
+  opacity: 1;
+}
 
 .header-nav {
   display: flex; // 1
@@ -129,10 +177,10 @@ $icon-color-hover: $gray-dark;
 // ================================
 
 div {
-  &#mobileAvatar {
+  &#avatar {
     bottom: 20px;
-    position: relative;
     right: 10px;
+    z-index: 3; //to float above the account menu option grey div
   }
   &#avatarContainer {
     width: 36px;
@@ -141,15 +189,4 @@ div {
       width: 33px;
     }
   }
-  &#desktopAvatar {
-    top: 2px;
-    position: relative;
-  }
-}
-
-.bm-burger-button button {
-    left: -10px !important;
-    top: -20px !important;
-    width: 32px !important;
-    height: 32px !important;
 }

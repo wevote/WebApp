@@ -34,7 +34,6 @@
     "object-assign": "^4.0.1",
     "react": "^15.4.2",
     "react-bootstrap-toggle": "^1.2.19",
-    "react-burger-menu": "^1.10.10",
     "react-copy-to-clipboard": "^4.2.3",
     "react-dom": "^15.4.2",
     "react-headroom": "^2.1.3",
