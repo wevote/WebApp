@@ -84,11 +84,9 @@ export default class PositionInformationOnlySnippet extends Component {
       stance_display_off = this.props.stance_display_off ? true : false;
     }
     let comment_text_off = false;
-
     if (this.props.comment_text_off !== undefined) {
       comment_text_off = this.props.comment_text_off ? true : false;
     }
-
     if (more_info_url) {
       if (more_info_url.toLowerCase().startsWith("http")) {
         more_info_url = more_info_url;

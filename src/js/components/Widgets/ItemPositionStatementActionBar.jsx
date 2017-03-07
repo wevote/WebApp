@@ -178,7 +178,6 @@ export default class ItemPositionStatementActionBar extends Component {
 
     var youtube_url;
     var vimeo_url;
-
     if (statement_text_to_be_saved) {
       youtube_url = statement_text_to_be_saved.match(youtube_reg);
       vimeo_url = statement_text_to_be_saved.match(vimeo_reg);
@@ -242,6 +241,7 @@ export default class ItemPositionStatementActionBar extends Component {
             { video_url ?
               <ReactPlayer url={`${video_url}`} width="300px" height="231px"/> :
               null }
+
             { short_version ?
               <span tabIndex="0" onKeyDown={onKeyDown}
                     className="position-statement__edit-position-pseudo"
