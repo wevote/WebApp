@@ -64,7 +64,7 @@ export default class AddFriendsByFacebook extends Component {
 
   friendInvitationByEmailSend (e) {
     e.preventDefault();
-    FriendActions.friendInvitationByEmailSend("", "", "",this.state.email_addresses, this.state.add_friends_message);
+    FriendActions.friendInvitationByEmailSend("", "", "", this.state.email_addresses, this.state.add_friends_message);
     this.setState({
       loading: true,
       email_addresses: "",

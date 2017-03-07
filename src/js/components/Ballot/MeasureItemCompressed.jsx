@@ -115,7 +115,7 @@ export default class MeasureItemCompressed extends Component {
           {/*Mobile ballot info*/}
         <div
           className={ this.props.link_to_ballot_item_page ?
-          "u-cursor--pointer mobile-subtitle" : null }
+          "u-cursor--pointer visible-xs" : null }
           onClick={ this.props.link_to_ballot_item_page ?
           goToMeasureLink : null }
         >
@@ -128,7 +128,7 @@ export default class MeasureItemCompressed extends Component {
 
               <div className="MeasureItem__summary u-flex-auto u-inline--sm">
                 <div className={ this.props.link_to_ballot_item_page ?
-                        "u-cursor--pointer desktop-subtitle" : null }
+                        "u-cursor--pointer hidden-xs" : null }
                       onClick={ this.props.link_to_ballot_item_page ?
                         goToMeasureLink : null }>{measure_subtitle}</div>
                 { this.props.measure_text ?

@@ -97,8 +97,6 @@ export default class Connect extends Component {
       <FollowingFilter following_type={this.getFollowingType()} />
 			<div className="container-fluid well u-stack--md u-inset--md">
         <h4 className="text-left">{add_friends_header}</h4>
-        <div className="ballot__filter"><AddFriendsFilter add_friends_type={this.state.add_friends_type}
-                                                          changeAddFriendsTypeFunction={this.changeAddFriendsType.bind(this)} /></div>
         {add_friends_html}
       </div>
 
