@@ -178,19 +178,20 @@ export default class ItemPositionStatementActionBar extends Component {
 
     var youtube_url;
     var vimeo_url;
+
     if (statement_text_to_be_saved) {
       youtube_url = statement_text_to_be_saved.match(youtube_reg);
       vimeo_url = statement_text_to_be_saved.match(vimeo_reg);
     }
 
     if (youtube_url) {
-      video_url = youtube_url;
-      statement_text_to_be_saved = statement_text_to_be_saved.replace(video_url, '');
+      video_url = youtube_url[0];
+      statement_text_to_be_saved = statement_text_to_be_saved.replace(video_url, "");
     }
 
     if (vimeo_url) {
       video_url = vimeo_url[0];
-      statement_text_to_be_saved = statement_text_to_be_saved.replace(video_url, '');
+      statement_text_to_be_saved = statement_text_to_be_saved.replace(video_url, "");
     }
 
     return <div className="position-statement__container">
@@ -241,7 +242,6 @@ export default class ItemPositionStatementActionBar extends Component {
             { video_url ?
               <ReactPlayer url={`${video_url}`} width="300px" height="231px"/> :
               null }
-
             { short_version ?
               <span tabIndex="0" onKeyDown={onKeyDown}
                     className="position-statement__edit-position-pseudo"

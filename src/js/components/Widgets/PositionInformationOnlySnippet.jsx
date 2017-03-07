@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import ReactPlayer from "react-player";
 import ReadMore from "../../components/Widgets/ReadMore";
 var Icon = require("react-svg-icons");
 // import ViewSourceModal from "../../components/Widgets/ViewSourceModal";
@@ -44,6 +45,36 @@ export default class PositionInformationOnlySnippet extends Component {
     // onViewSourceClick is onClick function for view source modal in mobile browser
     // const onViewSourceClick = this.state.showViewSourceModal ? this.closeViewSourceModal.bind(this) : this.openViewSourceModal.bind(this);
 
+    var video_url = "";
+    var youtube_reg = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?/;
+    var vimeo_reg = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/;
+
+    var youtube_url;
+    var vimeo_url;
+    var statement_text_no_url;
+
+    if (more_info_url) {
+      youtube_url = more_info_url.match(youtube_reg);
+      vimeo_url = more_info_url.match(vimeo_reg);
+    }
+
+    if (statement_text) {
+      youtube_url = statement_text.match(youtube_reg);
+      vimeo_url = statement_text.match(vimeo_reg);
+    }
+
+    if (youtube_url) {
+      video_url = youtube_url;
+      statement_text_no_url = statement_text.replace(video_url[0], "");
+      statement_text_html = <ReadMore text_to_display={statement_text_no_url} />;
+    }
+
+    if (vimeo_url) {
+      video_url = vimeo_url[0];
+      statement_text_no_url = statement_text.replace(video_url, "");
+      statement_text_html = <ReadMore text_to_display={statement_text_no_url} />;
+    }
+
     className = "position-rating__icon position-rating__icon--no-position";
     alt = "Neutral Rating";
     positionLabel = "About";
@@ -53,9 +84,11 @@ export default class PositionInformationOnlySnippet extends Component {
       stance_display_off = this.props.stance_display_off ? true : false;
     }
     let comment_text_off = false;
+
     if (this.props.comment_text_off !== undefined) {
       comment_text_off = this.props.comment_text_off ? true : false;
     }
+
     if (more_info_url) {
       if (more_info_url.toLowerCase().startsWith("http")) {
         more_info_url = more_info_url;
@@ -86,19 +119,23 @@ export default class PositionInformationOnlySnippet extends Component {
           <span>
             <span>{statement_text_html}</span>
             {/* if there's an external source for the explicit position/endorsement, show it */}
+            {video_url ?
+              <ReactPlayer url={`${video_url}`} width="300px" height="231px"/> :
+              null }
             {more_info_url ?
-              <div className="hidden-xs">
-                {/* default: open in new tab*/}
-                <a href={more_info_url}
-                   target="_blank"
-                   className="u-gray-mid">
-                  view source <i className="fa fa-external-link" aria-hidden="true" />
-                </a>
+               <div>
+                  <div className="hidden-xs">
+                    {/* default: open in new tab*/}
+                    <a href={more_info_url}
+                       target="_blank"
+                       className="u-gray-mid">
+                      view source <i className="fa fa-external-link" aria-hidden="true" />
+                    </a>
                 {/* link for mobile browser: open in bootstrap modal */}
                 {/*<a onClick={onViewSourceClick}>
                   (view source)
                 </a> */}
-              </div> :
+              </div></div> :
               null }
           </span>
         }
