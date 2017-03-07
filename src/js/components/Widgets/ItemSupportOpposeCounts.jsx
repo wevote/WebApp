@@ -55,7 +55,6 @@ export default class ItemSupportOpposeCounts extends Component {
       backgroundBarClassName = "network-positions__bar-well";
     }
 
-
     return <div className="network-positions">
       {/*<div className="network-positions__bar-label">
         {!isEmpty ?
