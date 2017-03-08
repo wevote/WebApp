@@ -4,7 +4,6 @@ import { Button } from "react-bootstrap";
 import AddFriendsByEmail from "../components/Friends/AddFriendsByEmail";
 import AddFriendsByFacebook from "../components/Friends/AddFriendsByFacebook";
 import AddFriendsByTwitter from "../components/Friends/AddFriendsByTwitter";
-import AddFriendsFilter from "../components/Navigation/AddFriendsFilter";
 import FollowingFilter from "../components/Navigation/FollowingFilter";
 import FriendActions from "../actions/FriendActions";
 import FriendList from "../components/Friends/FriendList";
