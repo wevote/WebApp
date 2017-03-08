@@ -41,6 +41,7 @@ $icon-color-hover: $gray-dark;
   padding: 1rem;
   transition: opacity 0.25s ease-in-out;
   z-index: 2;
+  pointer-events: none;
 }
 
 .account-menu:before{
@@ -71,13 +72,13 @@ $icon-color-hover: $gray-dark;
 }
 
 .account-menu-open .page-overlay {
-  display: block;
   opacity: 1;
   pointer-events: all;
 }
 
 .account-menu-open .account-menu {
   opacity: 1;
+  pointer-events: all;
 }
 
 .header-nav {
