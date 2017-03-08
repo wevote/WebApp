@@ -1,3 +1,4 @@
+/* global google */
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 import { browserHistory } from "react-router";

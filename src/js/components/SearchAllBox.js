@@ -1,3 +1,4 @@
+/* global $ */
 import React, {Component, PropTypes} from "react";
 import classNames from "classnames";
 import { browserHistory, Link } from "react-router";

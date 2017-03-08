@@ -3,7 +3,6 @@ import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { browserHistory, Link } from "react-router";
 import BallotActions from "../../actions/BallotActions";
 import BallotElectionList from "../../components/Ballot/BallotElectionList";
-import BallotItem from "../../components/Ballot/BallotItem";
 import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 import BallotItemReadyToVote from "../../components/Ballot/BallotItemReadyToVote";
 import BallotStore from "../../stores/BallotStore";

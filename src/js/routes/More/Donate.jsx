@@ -12,7 +12,6 @@ export default class Donate extends Component {
   }
 
   render () {
-    let supportProps = { is_public_position: false };
     return <div>
       <Helmet title="About Us - We Vote"/>
       <div className="container-fluid card">

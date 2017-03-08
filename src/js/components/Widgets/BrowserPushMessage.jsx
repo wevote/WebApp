@@ -3,7 +3,8 @@ import { Alert } from "react-bootstrap";
 
 export default class BrowserPushMessage extends Component {
   static propTypes = {
-    type: PropTypes.string
+    type: PropTypes.string,
+    incomingProps: PropTypes.object //needs more specificity
   };
 
   constructor (props) {
