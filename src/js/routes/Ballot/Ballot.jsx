@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { browserHistory, Link } from "react-router";
+import AddressBox from "../../components/AddressBox";
 import BallotActions from "../../actions/BallotActions";
 import BallotElectionList from "../../components/Ballot/BallotElectionList";
 import BallotItem from "../../components/Ballot/BallotItem";
@@ -19,6 +20,7 @@ import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPos
 import LoadingWheel from "../../components/LoadingWheel";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
+import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
 
 export default class Ballot extends Component {
@@ -40,6 +42,7 @@ export default class Ballot extends Component {
       showCandidateModal: false,
       showMeasureModal: false,
       showSelectBallotModal: false,
+      showSelectAddressModal: false,
       ballot_election_list: []
     };
   }
@@ -62,6 +65,7 @@ export default class Ballot extends Component {
       this._toggleCandidateModal = this._toggleCandidateModal.bind(this);
       this._toggleMeasureModal = this._toggleMeasureModal.bind(this);
       this._toggleSelectBallotModal = this._toggleSelectBallotModal.bind(this);
+      this._toggleSelectAddressModal= this._toggleSelectAddressModal.bind(this);
       SupportActions.voterAllPositionsRetrieve();
       SupportActions.positionsCountForAllBallotItems();
       BallotActions.voterBallotListRetrieve();
@@ -112,6 +116,13 @@ export default class Ballot extends Component {
       showSelectBallotModal: !this.state.showSelectBallotModal
     });
   }
+
+    _toggleSelectAddressModal () {
+    this.setState({
+      showSelectAddressModal: !this.state.showSelectAddressModal
+    });
+  }
+
 
   _onBallotStoreChange (){
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0){ // Ballot is found but ballot is empty
@@ -356,6 +367,28 @@ export default class Ballot extends Component {
       </Modal.Body>
     </Modal>
 
+
+
+  const SelectAddressModal = <Modal show={this.state.showSelectAddressModal} onHide={()=>{this._toggleSelectAddressModal()}}
+      className="ballot-election-list ballot-election-list__modal">
+      <Modal.Header closeButton>
+        <Modal.Title className="ballot-election-list__h1">Enter address where you are registered to vote</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <AddressBox 
+          {...this.props} 
+          saveUrl={"/ballot"} 
+          _toggleSelectAddressModal={this._toggleSelectAddressModal}
+        />
+        <br/>
+        <br/>
+      </Modal.Body>
+    </Modal>
+
+
+
+
+
     let ballot = this.state.ballot;
     var voter_address = VoterStore.getAddress();
     if (!ballot) {
@@ -412,6 +445,7 @@ export default class Ballot extends Component {
       { this.state.showMeasureModal ? MeasureModal : null }
       { this.state.showCandidateModal ? CandidateModal : null }
       { this.state.showSelectBallotModal ? SelectBallotModal : null}
+      { this.state.showSelectAddressModal ? SelectAddressModal : null}
       <div className="ballot__heading u-stack--lg">
         <Helmet title="Ballot - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
@@ -423,7 +457,7 @@ export default class Ballot extends Component {
         </OverlayTrigger>
         <p className="ballot__date_location">
           {voter_address}
-          <span> (<Link to="/settings/location">Edit</Link>)</span>
+          <span> (<a onClick={this._toggleSelectAddressModal}>Edit</a>)</span>
         </p>
         <div className="ballot__filter"><BallotFilter ballot_type={this.getBallotType()} /></div>
       </div>

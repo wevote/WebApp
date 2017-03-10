@@ -92,3 +92,9 @@
 // ===============================================
 
 @import 'overrides/overrides.scss';
+
+/* an override */
+
+.pac-container {
+  z-index: 10005 !important;
+}

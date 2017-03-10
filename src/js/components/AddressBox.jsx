@@ -35,6 +35,10 @@ export default class AddressBox extends Component {
   }
 
   _onVoterStoreChange () {
+
+    if(this.props._toggleSelectAddressModal){
+      this.props._toggleSelectAddressModal();
+    }
     if (this.state.voter_address){
       browserHistory.push(this.props.saveUrl);
     } else {
@@ -66,6 +70,7 @@ export default class AddressBox extends Component {
   handleKeyPress (event) {
     const ENTER_KEY_CODE = 13;
     if (event.keyCode === ENTER_KEY_CODE) {
+      console.log("searched!");
       event.preventDefault();
       setTimeout(() => {
         VoterActions.voterAddressSave(this.state.voter_address);
@@ -103,7 +108,8 @@ export default class AddressBox extends Component {
             className="pull-right"
             onClick={this.voterAddressSave}
             bsStyle="primary">
-            Save</Button>
+            Save
+          </Button>
         </div>
       </div>;
   }

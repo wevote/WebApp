@@ -46,7 +46,7 @@ export default class Bookmarks extends Component {
         </OverlayTrigger>
         <p className="ballot__date_location">
           {voter_address}
-          <span> (<Link to="/settings/location">Edit</Link>)</span>
+          <span> (<Link to="/settings/location">EditMe</Link>)</span>
         </p>
         <div className="ballot__filter"><BallotFilter ballot_type="BOOKMARKS" /></div>
       </div>
