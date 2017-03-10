@@ -93,7 +93,7 @@ export default class About extends Component {
           className="fa fa-external-link"/></a>, we use technology to
           make democracy stronger by increasing voter turnout.<br />
 
-          <h3 className="h3">We Vote Board Members</h3>
+          <h3 className="h3">We Vote Board Members &amp; Advisers</h3>
           <div className="row centered">
             <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
@@ -114,7 +114,7 @@ export default class About extends Component {
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Tiana_Epps_Johnson-200x200.jpg"
                               alt="Tiana Epps-Johnson"/>
                 <div className="media-body">
-                  <h3><strong>Tiana Epps-Johnson</strong>, c3 Board Chair</h3>
+                  <h3><strong>Tiana Epps-Johnson</strong>, Senior Adviser</h3>
                 <span className="xx-small hidden-xs">
                   Exec. Dir. of CTCL, software for local election administrators. Former Voting Info Project &amp;
                   Harvard Ash Center for Democratic Governance and Innovation.<br />
