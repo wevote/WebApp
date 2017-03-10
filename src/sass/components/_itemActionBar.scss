@@ -17,13 +17,13 @@
 // This style is for when the item-actionbar is added to a line with other elements (like for a candidate on ballot page)
 .item-actionbar--inline {
   display: flex;
-  padding-top: 0px;
+  padding-top: 0;
   justify-content: flex-end;
   flex: auto;
 
   &__position-btn-label {
     //@include breakpoints (max large) {
-      display: none; // Hide Support/Oppose button labels on all screens
+    display: none; // Hide Support/Oppose button labels on all screens
     //}
   }
   .btn-group {

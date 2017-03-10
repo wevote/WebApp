@@ -2,32 +2,31 @@
   font-size: 12px;
   text-align: center;
   .modal-header {
-  border-bottom: 0;
+    border-bottom: 0;
   }
-  @include breakpoints (max large){
+  @include breakpoints (max large) {
     width: 100%;
   }
   &__modal {
-   position: absolute;
-   top: 20%;
-   right: 0;
-   bottom: 0;
-   left: 0;
-   overflow: auto;
-   overflow-y: auto;
+    position: absolute;
+    top: 20%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: auto;
+    overflow-y: auto;
   }
   &__h1 {
     font-family: $heading-font-stack;
     font-size: 30px;
-    @include breakpoints (max large){
+    @include breakpoints (max large) {
       font-size: 22px;
     }
-    @include breakpoints (small mid-small){
+    @include breakpoints (small mid-small) {
       font-size: 16px;
     }
   }
-   &__h2 {
+  &__h2 {
     font-size: 12px;
   }
 }
-

@@ -9,16 +9,19 @@
 // TODO Create Bootstrap overrides partial
 
 // Overrides - needs to be rethought - allow margin-top when following another element (* + h1, etc. ?)
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin-top: 0;
 }
 
 
-.h1 {
-  @media (max-width: 767px){
-    font-size: 22px;
-  }
-  @media (min-width: 768px) and (max-width: 1024px){
+.h1 { // TODO: replace this custom hack with responsive set of typographic classes
+  font-size: 22px;
+  @include breakpoints(medium) {
     font-size: 28px;
   }
 }

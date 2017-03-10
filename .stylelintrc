@@ -4,5 +4,19 @@
     "stylelint-declaration-use-variable"
   ],
   "rules": {
-  }
+    "at-rule-empty-line-before": null,
+    "block-closing-brace-newline-after": ["always-multi-line", {
+      "ignoreAtRules": ["if", "else"]
+    }],
+    "block-opening-brace-space-before": "always-multi-line",
+    "color-hex-case": "lower",
+    "declaration-empty-line-before": null,
+    "max-empty-lines": 3,
+    "number-leading-zero": "never",
+    "rule-empty-line-before": null,
+    "shorthand-property-no-redundant-values": null
+  },
+  "ignoreFiles": [
+    "**/vendor/**/*.scss"
+  ]
 }

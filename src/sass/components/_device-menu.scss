@@ -18,7 +18,7 @@
   }
 }
 
-@include breakpoints(max nav){
+@include breakpoints(max nav) {
   .sidebar-menu {
     // Hacky grid system overrides
     display: none;
@@ -47,13 +47,13 @@
 
 .we-vote-promise {
   color: $gray-mid;
-  font-size: 0.9em;
+  font-size: .9em;
   font-weight: 400;
 }
 
 .terms-and-privacy,
 .terms-and-privacy a {
   color: $gray-mid;
-  font-size: 0.9em;
+  font-size: .9em;
   font-weight: 400;
 }

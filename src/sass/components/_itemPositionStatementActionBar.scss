@@ -12,22 +12,16 @@
     background: #fff;
     display: inline-block;
     flex-shrink: 0;
-    height:33px;
-      &#navIcon {
-        margin-right: 0px;
-      }
+    height: 33px;
+    &#navIcon {
+      margin-right: 0;
+    }
   }
 
   &__container {
     background-color: $gray-pale;
-    margin-top: 0px;
-    padding-top: 10px;
-    padding-right: 15px;
-    padding-bottom: 10px;
-    padding-left: 15px;
-    margin-right: -15px;
-    margin-bottom: -10px;
-    margin-left: -15px;
+    padding: 10px 15px;
+    margin: 0 -15px -10px -15px;
   }
 
   &--truncated {
@@ -40,7 +34,7 @@
     line-height: $line-height;
 
     &::before {
-      content:"";
+      content: "";
       float: left;
       width: 5px;
       height: $text-container-height;
@@ -49,7 +43,8 @@
     > *:first-child {
       float: right;
       width: 100%;
-      margin-left: -5px; }
+      margin-left: -5px;
+    }
 
     &::after {
       content: "\00A0 Edit";
@@ -64,7 +59,7 @@
       padding-right: 5px;
       text-align: right;
       background-size: 100% 100%;
-      background: linear-gradient(to right, rgba(255, 255, 255, 0), white 15%, white);
+      background: linear-gradient(to right, rgba(255, 255, 255, 0), white 15%, white); // stylelint-disable-line declaration-block-no-shorthand-property-overrides
       font-style: normal;
       color: $link-color;
       cursor: pointer;
