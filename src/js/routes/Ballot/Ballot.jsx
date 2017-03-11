@@ -117,7 +117,7 @@ export default class Ballot extends Component {
     });
   }
 
-    _toggleSelectAddressModal () {
+  _toggleSelectAddressModal () {
     this.setState({
       showSelectAddressModal: !this.state.showSelectAddressModal
     });
@@ -356,7 +356,7 @@ export default class Ballot extends Component {
       </Modal>;
 
     // This modal will show a users ballot guides from previous and current elections.
-    const SelectBallotModal = <Modal show={this.state.showSelectBallotModal} onHide={()=>{this._toggleSelectBallotModal()}}
+    const SelectBallotModal = <Modal show={this.state.showSelectBallotModal} onHide={()=>{this._toggleSelectBallotModal();}}
       className="ballot-election-list ballot-election-list__modal">
       <Modal.Header closeButton>
         <Modal.Title className="ballot-election-list__h1">See Ballot from Another Election</Modal.Title>
@@ -367,7 +367,7 @@ export default class Ballot extends Component {
       </Modal.Body>
     </Modal>
 
-
+// This modal will allow users to change their addresses
 
   const SelectAddressModal = <Modal show={this.state.showSelectAddressModal} onHide={()=>{this._toggleSelectAddressModal()}}
       className="ballot-election-list ballot-election-list__modal">
@@ -450,16 +450,18 @@ export default class Ballot extends Component {
         <Helmet title="Ballot - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
         <OverlayTrigger placement="top" overlay={electionTooltip} >
-          <h1 className="h1 ballot__election-name">{election_name}
-            {this.state.ballot_election_list.length > 1 ? <span><img src={"/img/global/icons/gear-icon.png"} role="button" onClick={this._toggleSelectBallotModal}
-             alt={"view your ballots"}/></span> : null}
+          <h1 className="h1 ballot__election-name">
+             <span className="u-inline--sm">{election_name}</span>
+             {this.state.ballot_election_list.length > 1 ? <img src={"/img/global/icons/gear-icon.png"} className="hidden-print" role="button" onClick={this._toggleSelectBallotModal}
+              alt={"view your ballots"}/> : null}
+
           </h1>
         </OverlayTrigger>
         <p className="ballot__date_location">
           {voter_address}
           <span> (<a onClick={this._toggleSelectAddressModal}>Edit</a>)</span>
         </p>
-        <div className="ballot__filter"><BallotFilter ballot_type={this.getBallotType()} /></div>
+        <div className="ballot__filter hidden-print"><BallotFilter ballot_type={this.getBallotType()} /></div>
       </div>
       {/* TO BE DISCUSSED ballot_caveat !== "" ?
         <div className="alert alert alert-info alert-dismissible" role="alert">n
