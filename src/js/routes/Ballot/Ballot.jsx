@@ -454,7 +454,6 @@ export default class Ballot extends Component {
              <span className="u-inline--sm">{election_name}</span>
              {this.state.ballot_election_list.length > 1 ? <img src={"/img/global/icons/gear-icon.png"} className="hidden-print" role="button" onClick={this._toggleSelectBallotModal}
               alt={"view your ballots"}/> : null}
-
           </h1>
         </OverlayTrigger>
         <p className="ballot__date_location">
