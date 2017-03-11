@@ -36,6 +36,9 @@ export default class AddressBox extends Component {
   }
 
   _onVoterStoreChange () {
+    if(this.props._toggleSelectAddressModal){
+       this.props._toggleSelectAddressModal();
+     }
     if (this.state.voter_address){
       browserHistory.push(this.props.saveUrl);
     } else {
