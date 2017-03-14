@@ -63,7 +63,7 @@ export default class Ballot extends Component {
       this._toggleCandidateModal = this._toggleCandidateModal.bind(this);
       this._toggleMeasureModal = this._toggleMeasureModal.bind(this);
       this._toggleSelectBallotModal = this._toggleSelectBallotModal.bind(this);
-      this._toggleSelectAddressModal= this._toggleSelectAddressModal.bind(this);
+      this._toggleSelectAddressModal = this._toggleSelectAddressModal.bind(this);
       SupportActions.voterAllPositionsRetrieve();
       SupportActions.positionsCountForAllBallotItems();
       BallotActions.voterBallotListRetrieve();
@@ -363,25 +363,21 @@ export default class Ballot extends Component {
         <BallotElectionList ballot_election_list={this.state.ballot_election_list}
           _toggleSelectBallotModal={this._toggleSelectBallotModal}/>
       </Modal.Body>
-    </Modal>
+    </Modal>;
 
 // This modal will allow users to change their addresses
 
-  const SelectAddressModal = <Modal show={this.state.showSelectAddressModal} onHide={()=>{this._toggleSelectAddressModal()}}
+  const SelectAddressModal = <Modal show={this.state.showSelectAddressModal} onHide={()=>{this._toggleSelectAddressModal();}}
       className="ballot-election-list ballot-election-list__modal">
       <Modal.Header closeButton>
         <Modal.Title className="ballot-election-list__h1">Enter address where you are registered to vote</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <AddressBox 
-          {...this.props} 
-          saveUrl={"/ballot"} 
-          _toggleSelectAddressModal={this._toggleSelectAddressModal}
-        />
+        <AddressBox {...this.props} saveUrl={"/ballot"} _toggleSelectAddressModal={this._toggleSelectAddressModal} />
         <br/>
         <br/>
       </Modal.Body>
-    </Modal>
+    </Modal>;
 
     let ballot = this.state.ballot;
     var voter_address = VoterStore.getAddress();
