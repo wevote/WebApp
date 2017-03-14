@@ -4,7 +4,6 @@ import { browserHistory, Link } from "react-router";
 import AddressBox from "../../components/AddressBox";
 import BallotActions from "../../actions/BallotActions";
 import BallotElectionList from "../../components/Ballot/BallotElectionList";
-import BallotItem from "../../components/Ballot/BallotItem";
 import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 import BallotItemReadyToVote from "../../components/Ballot/BallotItemReadyToVote";
 import BallotStore from "../../stores/BallotStore";
@@ -20,7 +19,6 @@ import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPos
 import LoadingWheel from "../../components/LoadingWheel";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
-import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
 
 export default class Ballot extends Component {
@@ -385,10 +383,6 @@ export default class Ballot extends Component {
       </Modal.Body>
     </Modal>
 
-
-
-
-
     let ballot = this.state.ballot;
     var voter_address = VoterStore.getAddress();
     if (!ballot) {
@@ -458,7 +452,7 @@ export default class Ballot extends Component {
         </OverlayTrigger>
         <p className="ballot__date_location">
           {voter_address}
-          <span> (<a onClick={this._toggleSelectAddressModal}>Edit</a>)</span>
+          <span className="hidden-print"> (<a onClick={this._toggleSelectAddressModal}>Edit</a>)</span>
         </p>
         <div className="ballot__filter hidden-print"><BallotFilter ballot_type={this.getBallotType()} /></div>
       </div>
@@ -469,14 +463,15 @@ export default class Ballot extends Component {
         </div> : null
       */}
       {emptyBallot}
-
-      { in_ready_to_vote_mode ?
-        ballot.map( (item) => <BallotItemReadyToVote key={item.we_vote_id} {...item} />) :
-        ballot.map( (item) => <BallotItemCompressed _toggleCandidateModal={this._toggleCandidateModal}
-                                                    _toggleMeasureModal={this._toggleMeasureModal}
-                                                    key={item.we_vote_id}
-                                                    {...item} />)
-      }
+        <div className="BallotList">
+        { in_ready_to_vote_mode ?
+          ballot.map( (item) => <BallotItemReadyToVote key={item.we_vote_id} {...item} />) :
+          ballot.map( (item) => <BallotItemCompressed _toggleCandidateModal={this._toggleCandidateModal}
+                                                      _toggleMeasureModal={this._toggleMeasureModal}
+                                                      key={item.we_vote_id}
+                                                      {...item} />)
+        }
+        </div>
       </div>;
   }
 }
