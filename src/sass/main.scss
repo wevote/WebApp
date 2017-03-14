@@ -94,3 +94,8 @@
 
 @import 'overrides/overrides.scss';
 @import 'overrides/print.scss';
+
+// Required because Google Auto-complete needs to appear above modal: https://github.com/twbs/bootstrap/issues/4160
+.pac-container {
+   z-index: 1051 !important;
+ }
