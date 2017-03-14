@@ -1,1 +1,9 @@
 // Overrides - for app-wide overrides. Isolated overrides can be left in contextually appropriate places.
+
+
+.h1 { // TODO: replace this custom hack with responsive set of typographic classes
+  font-size: 22px;
+  @include breakpoints(medium) {
+    font-size: 28px;
+  }
+}

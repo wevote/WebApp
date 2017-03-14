@@ -15,13 +15,5 @@ h3,
 h4,
 h5,
 h6 {
-  margin-top: 0;
-}
-
-
-.h1 { // TODO: replace this custom hack with responsive set of typographic classes
-  font-size: 22px;
-  @include breakpoints(medium) {
-    font-size: 28px;
-  }
+  margin-top: $space-none;
 }
