@@ -75,7 +75,7 @@ export default class Network extends Component {
           </Link>
           &nbsp;&nbsp;&nbsp;
 
-          <Link to="/friends/invitebyemail" className="btn btn-social btn-lg btn-email">
+          <Link to="/friends/invitebyemail" className="btn btn-social btn-lg btn--email">
             <i className="fa fa-envelope" />Invite Friends&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </Link>
           <br />

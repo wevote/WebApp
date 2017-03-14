@@ -85,6 +85,9 @@ $radius-rounded: 100rem;
 // Colors
 // ===========================================
 
+$white: #fff;
+$black: #000;
+
 // Grays
 $gray-pale:    #f8f8f8 !default;
 $gray-lighter: #eee !default;
@@ -97,12 +100,14 @@ $gray-darker:  #333 !default;
 
 /// Main brand color
 /// @type Color
-$brand-color: #1c1a33 !default;
+$brand-color: #1c1a33 !default; // I'm guessing this probably wasn't intended to abstract to 'brand' color and was just put here to update the navbar. I've left this but unlinked the value for $page-header-color.  —Jeff
 
 /// Link color
 /// @type Color
 $link-color: #00749e !default; // mirrors Bootstrap variable - TODO: set single value globally
 $link-color-light: #969dff !default;
+
+$app-background-color: #ebecee;
 
 
 /// Popover Link Color
@@ -118,6 +123,8 @@ $text-color: $gray-darker !default;
 /// tentative color (can be adjusted)
 
 $selected-color: #0d546f !default;
+
+$modal-backdrop-color: rgba($black, .7);
 
 
 // ===========================================

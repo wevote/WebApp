@@ -276,7 +276,7 @@ export default class SearchAllBox extends Component {
               let capitalized_title = capitalizeString(one_result.result_title);
               let search_result_classes = classNames({
                 "search-container__results": true,
-                "search-container__results__highlighted": idx === this.state.selected_index
+                "search-container__results--highlighted": idx === this.state.selected_index
               });
 
               return <Link key={one_result.we_vote_id}

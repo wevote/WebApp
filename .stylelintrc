@@ -16,9 +16,10 @@
     "rule-empty-line-before": null,
     "selector-no-id": true,
     "shorthand-property-no-redundant-values": null,
-    "sh-waqar/declaration-use-variable": [["border-radius"]]
+    "sh-waqar/declaration-use-variable": [["border-radius", "/color/"]]
   },
   "ignoreFiles": [
-    "**/vendor/**/*.scss"
+    "**/vendor/**/*.scss",
+    "**/_normalize.scss"
   ]
 }

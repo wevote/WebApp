@@ -3,7 +3,7 @@
   padding: 0;
   height: 600px;
   width: 100%;
-  color: #fff;
+  color: $white;
   text-align: center;
   @include breakpoints (max large) {
     height: 100vh;
@@ -197,7 +197,7 @@
   top: 10px;
   right: 10px;
   z-index: 2;
-  color: #fff;
+  color: $white;
   @include breakpoints (small mid-small) {
     height: 30px;
     width: 30px;

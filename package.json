@@ -115,6 +115,8 @@
   },
   "repository": "https://github.com/wevote/webapp.git",
   "pre-commit": [
-    "test"
+    "test",
+    "lint",
+    "lint-css"
   ]
 }

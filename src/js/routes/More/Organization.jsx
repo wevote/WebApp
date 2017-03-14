@@ -23,9 +23,9 @@ export default class Organization extends Component {
             <span className="fa fa-facebook"/>
           </a>
 
-          <a className="btn btn-email" href="http://eepurl.com/cx_frP" target="_blank">
+          <a className="btn btn--email" href="http://eepurl.com/cx_frP" target="_blank">
             <span>
-              <span className="btn-email__icon glyphicon glyphicon-envelope"/> Join Newsletter
+              <span className="btn--email__icon glyphicon glyphicon-envelope"/> Join Newsletter
             </span>
           </a>
 
@@ -33,7 +33,7 @@ export default class Organization extends Component {
             <span className="fa fa-github"/>
           </a>
 
-          <a className="btn btn-social-icon btn-medium" href="https://medium.com/@WeVote" target="_blank">
+          <a className="btn btn-social-icon btn--medium" href="https://medium.com/@WeVote" target="_blank">
             <span className="fa fa-medium"/>
           </a>
         </div>

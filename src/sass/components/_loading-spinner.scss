@@ -4,6 +4,8 @@ $loader-delay-increment: -120ms;
 $loader-size: .8rem;
 
 .u-loading-spinner {
+  $dark-spinner: rgba($gray-dark, .7);
+  $light-spinner: rgba($white, .7);
   margin: 0 auto ($loader-size * 2) auto;
   position: relative;
   text-indent: -9999em;
@@ -23,13 +25,13 @@ $loader-size: .8rem;
     animation-timing-function: cubic-bezier(.5, 0, .5, 1);
     animation-iteration-count: infinite;
     animation-fill-mode: both;
-    color: rgba($gray-dark, .7);
+    color: $dark-spinner;
   }
   &--light {
     &,
     &::before,
     &::after {
-      color: rgba(#fff, .7);
+      color: $light-spinner;
     }
   }
   &::before {
