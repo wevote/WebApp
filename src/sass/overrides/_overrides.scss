@@ -1,1 +1,16 @@
 // Overrides - for app-wide overrides. Isolated overrides can be left in contextually appropriate places.
+
+
+.h1 { // TODO: replace this custom hack with responsive set of typographic classes
+  font-size: 22px;
+  @include breakpoints(medium) {
+    font-size: 28px;
+  }
+}
+
+
+// Required because Google Auto-complete needs to appear above modal: https://github.com/twbs/bootstrap/issues/4160
+// This is used for the address auto-complete field (.pac-container is injected via Google)
+.pac-container {
+  z-index: 1051 !important;
+}

@@ -12,7 +12,7 @@
     font-family: $heading-font-stack;
     font-size: 24px;
     color: $gray-dark;
-    @include breakpoints(max mid-small){
+    @include breakpoints(max mid-small) {
       font-size: 18px;
       max-width: 100%;
       padding-right: 30px; // TODO: adjust for bookmark icon

@@ -93,12 +93,12 @@ $gray-darker:  #333 !default;
 
 /// Main brand color
 /// @type Color
-$brand-color: #4F5F6F !default;
+$brand-color: #4f5f6f !default;
 
 /// Link color
 /// @type Color
-$link-color: #00749E !default; // mirrors Bootstrap variable - TODO: set single value globally
-$link-color-light: #969DFF !default;
+$link-color: #00749e !default; // mirrors Bootstrap variable - TODO: set single value globally
+$link-color-light: #969dff !default;
 
 
 /// Popover Link Color
@@ -113,7 +113,7 @@ $text-color: $gray-darker !default;
 /// @type Color
 /// tentative color (can be adjusted)
 
-$selected-color: #0D546F !default;
+$selected-color: #0d546f !default;
 
 
 // ===========================================
@@ -142,7 +142,6 @@ $breakpoints: (
   'wide': 1024px,
   'nav': 695px,
   'iphone5':375px
-  
 ) !default;
 
 

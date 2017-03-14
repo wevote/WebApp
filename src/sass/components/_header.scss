@@ -1,28 +1,24 @@
 
 .headroom {
   &--pinned {
-    box-shadow: 0 2px 4px rgba(0,0,0, .2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
   }
 }
 
 .page-header {
   // required overrides for Bootstrap :(
-  margin: 0;
-  padding-bottom: 0;
   border: none;
-
-  &__container {
-    background-color: $brand-color;
-    // border-bottom: 1px solid $gray-border;
-    padding: .5em;
-  }
-
   @include clearfix;
   padding-bottom: 0; // override to avoid Bootstrap collision
   margin: 0 auto;
   max-width: $max-page-container-width;
   position: relative;
 
+  &__container {
+    background-color: $brand-color;
+    // border-bottom: 1px solid $gray-border;
+    padding: .5em;
+  }
   &__content { // additional element to exclue Burger Menu element
     display: flex;
     justify-content: space-between;
@@ -31,7 +27,7 @@
 
   &__search {
     margin: 0;
-    padding: 0.2em 0 0 0;
+    padding: .2em 0 0 0;
     position: relative;
     width: 100%;
   }
@@ -57,7 +53,7 @@
   &__version {
     color: #fff;
     opacity: .5;
-    font-size: 0.7em;
+    font-size: .7em;
     margin-left: .3em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -83,11 +79,11 @@
     border: none; // override Bootstrap
     height: 34px;
   }
-  &__input-field::placeholder{
-     opacity:0;
-     @include breakpoints(mid-small){ // 2
-       opacity:1;
-     }
+  &__input-field::placeholder {
+    opacity: 0;
+    @include breakpoints(mid-small) { // 2
+      opacity: 1;
+    }
   }
 }
 
@@ -134,7 +130,7 @@
   width: 30px;
   font-size: 30px;
   margin: 0 12px 0 0;
-  height:30px;
+  height: 30px;
   &__filler {
     padding: 0 21px;
   }
@@ -142,7 +138,3 @@
     display: none;
   }
 }
-  .CANDIDATE {
-    border-radius: 15px;
-  }
-
