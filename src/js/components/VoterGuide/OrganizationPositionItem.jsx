@@ -168,7 +168,7 @@ export default class OrganizationPositionItem extends Component {
             <ImageHandler
               className="card-child__avatar-round"
               sizeClassName="icon-lg "
-              imageUrl={position.ballot_item_image_url_https}
+              imageUrl={position.ballot_item_image_url_https_large}
               alt="candidate-photo"
               kind_of_ballot_item={position.kind_of_ballot_item}/>
           </Link>

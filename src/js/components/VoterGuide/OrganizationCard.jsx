@@ -25,7 +25,7 @@ export default class OrganizationCard extends Component {
     }
 
     const {organization_twitter_handle, twitter_description, twitter_followers_count,
-      organization_photo_url, organization_website,
+      organization_photo_url_large, organization_website,
       organization_name, organization_we_vote_id} = this.props.organization;
 
     // If the displayName is in the twitterDescription, remove it from twitterDescription
@@ -37,7 +37,7 @@ export default class OrganizationCard extends Component {
     return <div className="card-main__media-object">
       <div className="card-main__media-object-anchor">
         <Link to={voterGuideLink} className="u-no-underline">
-          <ImageHandler imageUrl={organization_photo_url} className="card-main__org-avatar" sizeClassName="icon-lg "/>
+          <ImageHandler imageUrl={organization_photo_url_large} className="card-main__org-avatar" sizeClassName="icon-lg "/>
         </Link>
       </div>
       <div className="card-main__media-object-content">

@@ -113,7 +113,8 @@ export default class VerifyThisIsMe extends Component {
       return <span>
         <Helmet title="Claim This Page - We Vote" />
         <section className="card">
-          <CandidateItem {...candidate} />
+          <CandidateItem {...candidate}
+                         showLargeImage />
         </section>
         <div>
           <br />
