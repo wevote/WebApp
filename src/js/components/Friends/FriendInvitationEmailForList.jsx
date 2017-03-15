@@ -11,7 +11,7 @@ export default class FriendInvitationEmailForList extends Component {
     children: PropTypes.array,
     invitationsSentByMe: PropTypes.bool,
     voter_we_vote_id: PropTypes.string,
-    voter_photo_url: PropTypes.string,
+    voter_photo_url_medium: PropTypes.string,
     voter_display_name: PropTypes.string,
     voter_twitter_handle: PropTypes.string,
     voter_twitter_description: PropTypes.string,

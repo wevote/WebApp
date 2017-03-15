@@ -25,7 +25,7 @@ export default class ItemPositionStatementActionBar extends Component {
       statement_text_to_be_saved: "",
       is_public_position: false,
       transitioning: false,
-      voter_photo_url: ""
+      voter_photo_url_medium: ""
     };
   }
   componentDidMount () {
@@ -37,7 +37,7 @@ export default class ItemPositionStatementActionBar extends Component {
     }
     this.setState({
       voter_full_name: VoterStore.getFullName(),
-      voter_photo_url: VoterStore.getVoterPhotoUrl()
+      voter_photo_url_medium: VoterStore.getVoterPhotoUrlMedium()
     });
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
@@ -65,7 +65,7 @@ export default class ItemPositionStatementActionBar extends Component {
   _onVoterStoreChange () {
     this.setState({
       voter_full_name: VoterStore.getFullName(),
-      voter_photo_url: VoterStore.getVoterPhotoUrl() });
+      voter_photo_url_medium: VoterStore.getVoterPhotoUrlMedium() });
   }
 
   updateStatementTextToBeSaved (e) {
@@ -98,7 +98,7 @@ export default class ItemPositionStatementActionBar extends Component {
     }
 
     var {is_support, is_oppose} = this.props.supportProps;
-    var {statement_text_to_be_saved, voter_full_name, voter_photo_url} = this.state;
+    var {statement_text_to_be_saved, voter_full_name, voter_photo_url_medium} = this.state;
     statement_text_to_be_saved = statement_text_to_be_saved.length === 0 ? null : statement_text_to_be_saved;
 
     var statement_placeholder_text;
@@ -147,7 +147,7 @@ export default class ItemPositionStatementActionBar extends Component {
     //   post_button_text = <span>Post</span>;
     // }
 
-    let speaker_image_url_https = voter_photo_url;
+    let speaker_image_url_https = voter_photo_url_medium;
     let speaker_display_name = voter_full_name;
 
     let image_placeholder = "";

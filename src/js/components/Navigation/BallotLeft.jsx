@@ -11,7 +11,7 @@ export default class BallotLeft extends Component {
     is_signed_in: PropTypes.bool,
     signed_in_twitter: PropTypes.bool,
     twitter_screen_name: PropTypes.string,
-    voter_photo_url: PropTypes.string
+    voter_photo_url_medium: PropTypes.string
   };
 
   menuLink (url, label){
@@ -24,7 +24,7 @@ export default class BallotLeft extends Component {
   }
 
   render () {
-    var { linked_organization_we_vote_id, voter_photo_url } = this.props;
+    var { linked_organization_we_vote_id, voter_photo_url_medium } = this.props;
 
     let image_placeholder = "";
     let speaker_type = "V";  // TODO DALE make this dynamic
@@ -51,9 +51,9 @@ export default class BallotLeft extends Component {
           { show_your_page_from_twitter ?
             <li className={"/" + this.props.twitter_screen_name === currentUrl ? "active-link list-group-item" : "list-group-item"}>
               <Link to={"/" + this.props.twitter_screen_name}><div>
-                { voter_photo_url ?
+                { voter_photo_url_medium ?
                   <img className="position-statement__avatar"
-                        src={voter_photo_url}
+                        src={voter_photo_url_medium}
                         width="34px"
                   /> :
                   image_placeholder }
@@ -65,9 +65,9 @@ export default class BallotLeft extends Component {
           { show_your_page_from_facebook ?
             <li className={"/voterguide/" + linked_organization_we_vote_id === currentUrl ? "active-link list-group-item" : "list-group-item"}>
               <Link to={"/voterguide/" + linked_organization_we_vote_id}><div>
-                { voter_photo_url ?
+                { voter_photo_url_medium ?
                   <img className="position-statement__avatar"
-                        src={voter_photo_url}
+                        src={voter_photo_url_medium}
                         width="34px"
                   /> :
                   image_placeholder }

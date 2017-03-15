@@ -82,7 +82,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
       } else {
         one_organization_for_organization_card = {
             organization_name: one_organization.voter_guide_display_name,
-            organization_photo_url: one_organization.voter_guide_image_url,
+            organization_photo_url_tiny: one_organization.voter_guide_image_url_tiny,
             organization_twitter_handle: one_organization.twitter_handle,
             // organization_website: one_organization.,
             twitter_description: one_organization.twitter_description,

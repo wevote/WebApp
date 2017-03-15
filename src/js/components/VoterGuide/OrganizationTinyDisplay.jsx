@@ -6,7 +6,7 @@ import ImageHandler from "../../components/ImageHandler";
 export default class OrganizationTinyDisplay extends Component {
   static propTypes = {
     showPlaceholderImage: PropTypes.bool,
-    voter_guide_image_url: PropTypes.string,
+    voter_guide_image_url_tiny: PropTypes.string,
     voter_guide_display_name: PropTypes.string,
   };
 
@@ -19,7 +19,7 @@ export default class OrganizationTinyDisplay extends Component {
           <ImageHandler className=""
                         sizeClassName="organization-image-tiny"
                         hidePlaceholder={hide_placeholder}
-                        imageUrl={this.props.voter_guide_image_url}
+                        imageUrl={this.props.voter_guide_image_url_tiny}
                         alt={voter_guide_display_name} />
     </span>;
   }

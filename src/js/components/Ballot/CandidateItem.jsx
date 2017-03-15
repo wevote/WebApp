@@ -16,7 +16,9 @@ import {numberWithCommas} from "../../utils/textFormat";
 export default class CandidateItem extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string.isRequired,
-    candidate_photo_url: PropTypes.string.isRequired,
+    candidate_photo_url_large: PropTypes.string.isRequired,
+    candidate_photo_url_medium: PropTypes.string,
+    showLargeImage: PropTypes.bool,
     commentButtonHide: PropTypes.bool,
     hideOpinionsToFollow: PropTypes.bool,
     hidePositionStatement: PropTypes.bool,
@@ -74,7 +76,6 @@ export default class CandidateItem extends Component {
   render () {
     let {
       ballot_item_display_name,
-      candidate_photo_url,
       party,
       we_vote_id,
       twitter_description,
@@ -88,6 +89,14 @@ export default class CandidateItem extends Component {
     // TwitterHandle-based link
     let candidateLink = twitter_handle ? "/" + twitter_handle : "/candidate/" + we_vote_id;
     let goToCandidateLink = function () { browserHistory.push(candidateLink); };
+    let candidate_photo_url;
+    if (this.props.showLargeImage) {
+      if (this.props.candidate_photo_url_large) {
+        candidate_photo_url = this.props.candidate_photo_url_large;
+      }
+    } else if (this.props.candidate_photo_url_medium) {
+      candidate_photo_url = this.props.candidate_photo_url_medium;
+    }
     let candidate_photo_url_html;
     if (candidate_photo_url) {
       candidate_photo_url_html = <ImageHandler className="card-main__avatar"
