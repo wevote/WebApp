@@ -173,7 +173,8 @@ export default class ItemPositionStatementActionBar extends Component {
     };
 
     var video_url = "";
-    var youtube_reg = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?/;
+    var url_text = null;
+    var youtube_reg = /(http:|https:)?\/\/(www\.)?(youtube.com|youtu.be)\/(watch)?(\?v=)?(\S+)?/;
     var vimeo_reg = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/;
 
     var youtube_url;
@@ -185,12 +186,12 @@ export default class ItemPositionStatementActionBar extends Component {
 
     if (youtube_url) {
       video_url = youtube_url[0];
-      statement_text_to_be_saved = statement_text_to_be_saved.replace(video_url, "");
+      url_text = statement_text_to_be_saved.replace(video_url, "");
     }
 
     if (vimeo_url) {
       video_url = vimeo_url[0];
-      statement_text_to_be_saved = statement_text_to_be_saved.replace(video_url, "");
+      url_text = statement_text_to_be_saved.replace(video_url, "");
     }
 
     return <div className="position-statement__container">
@@ -237,7 +238,10 @@ export default class ItemPositionStatementActionBar extends Component {
             { speaker_display_name ?
               <span className="u-bold">{speaker_display_name} <br /></span> :
               null }
-            <ReadMore text_to_display={statement_text_to_be_saved} />
+            { url_text ?
+              <ReadMore text_to_display={url_text} /> :
+              <ReadMore text_to_display={statement_text_to_be_saved} />
+            }
             { video_url ?
               <ReactPlayer url={`${video_url}`} width="300px" height="231px"/> :
               null }
