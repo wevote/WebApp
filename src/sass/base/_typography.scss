@@ -1,11 +1,21 @@
 $base-font-size: 16px;
 $html-base-size: 16px;
 
-h1, h2, h3, h4, h5, h6 {
-  font-size: $base-font-size
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: $base-font-size;
 }
 
-.h1, .h2, .h3, .h4, .h5, .h6 {
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
   font-family: $heading-font-stack;
 }
 
@@ -14,7 +24,7 @@ html {
 }
 
 body {
-    color: $gray-darker;
-    font-family: $body-font-stack;
-    line-height: 1.4;
+  color: $gray-darker;
+  font-family: $body-font-stack;
+  line-height: 1.4;
 }

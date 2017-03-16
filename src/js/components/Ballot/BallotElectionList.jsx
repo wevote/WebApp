@@ -1,10 +1,14 @@
 import React, { Component, PropTypes } from "react";
-import { browserHistory } from "react-router";
 import BallotActions from "../../actions/BallotActions";
 import VoterActions from "../../actions/VoterActions";
 let moment = require("moment");
 
 export default class BallotElectionList extends Component {
+
+  static propTypes = {
+    ballot_election_list: PropTypes.array.isRequired,
+    _toggleSelectBallotModal: PropTypes.func.isRequired,
+  }
 
   constructor (props){
     super(props);
@@ -19,6 +23,7 @@ export default class BallotElectionList extends Component {
 
   render () {
     let currentDate = moment().format("YYYY-MM-DD");
+    let simple_save = true;
     const electionList = this.props.ballot_election_list.map((item, index) =>
       item.election_date > currentDate ?
       <div key={index}>
@@ -43,7 +48,6 @@ export default class BallotElectionList extends Component {
       </div>
      );
 
-  let simple_save = true;
     return <div>
       {electionList}
     </div>;

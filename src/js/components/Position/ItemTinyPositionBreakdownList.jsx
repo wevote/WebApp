@@ -98,7 +98,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
           // If we made it to here, then we want to display the organization in a popover
           one_organization = {
             organization_we_vote_id: one_position.speaker_we_vote_id,
-            voter_guide_image_url: one_position.speaker_image_url_https,
+            voter_guide_image_url_tiny: one_position.speaker_image_url_https_tiny,
             voter_guide_display_name: one_position.speaker_display_name
           };
           let org_id = one_organization.organization_we_vote_id;
@@ -147,7 +147,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
       if (show_voter_position) {
         one_organization = {
           organization_we_vote_id: this.state.voter.we_vote_id,
-          voter_guide_image_url: this.state.voter.voter_photo_url,
+          voter_guide_image_url_tiny: this.state.voter.voter_photo_url_tiny,
           voter_guide_display_name: this.state.voter.full_name
         };
         let voter_organization_tiny_display = <OrganizationTinyDisplay key={one_organization.organization_we_vote_id}

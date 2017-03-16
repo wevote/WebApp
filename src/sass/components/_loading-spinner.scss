@@ -20,7 +20,7 @@ $loader-size: .8rem;
     animation-name: bouncedelay;
     animation-duration: $loader-duration;
     animation-timing-function: ease-in-out;
-    animation-timing-function: cubic-bezier(.5,0,.5,1);
+    animation-timing-function: cubic-bezier(.5, 0, .5, 1);
     animation-iteration-count: infinite;
     animation-fill-mode: both;
     color: rgba($gray-dark, .7);

@@ -65,10 +65,10 @@ export default class PositionItem extends Component {
       {/* One Position on this Candidate */}
         <div className="card-child__media-object-anchor">
           <Link to={speakerLink} className="u-no-underline">
-            { position.speaker_image_url_https ?
+            { position.speaker_image_url_https_large ?
               <ImageHandler className="card-child__avatar"
                     sizeClassName="icon-lg "
-                    imageUrl={position.speaker_image_url_https}
+                    imageUrl={position.speaker_image_url_https_large}
               /> :
             image_placeholder }
           </Link>
