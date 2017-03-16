@@ -5,14 +5,14 @@
   width: 100%;
   color: #fff;
   text-align: center;
-  @include breakpoints (max large){
+  @include breakpoints (max large) {
     height: 100vh;
   }
   &__h1 {
     font-weight: 700;
     font-size: 30px;
-    padding: 40px 0px 20px;
-    @include breakpoints (max large){
+    padding: 40px 0 20px;
+    @include breakpoints (max large) {
       font-size: 22px;
     }
   }
@@ -20,7 +20,7 @@
     font-weight: 700;
     font-size: 30px;
     padding-top: 40px;
-    @include breakpoints (max large){
+    @include breakpoints (max large) {
       font-size: 22px;
     }
   }
@@ -28,7 +28,7 @@
   &__h2 {
     padding-top: 20px;
     font-size: 20px;
-    @include breakpoints (max large){
+    @include breakpoints (max large) {
       font-size: 18px;
     }
   }
@@ -60,22 +60,22 @@
 
   &__img-height {
     height: 200px;
-      @include breakpoints (max mid-small) {
-        height: 165px;
+    @include breakpoints (max mid-small) {
+      height: 165px;
     }
   }
 
   &__img-height--extra {
     height: 225px;
-      @include breakpoints (max mid-small) {
-        height: 175px;
+    @include breakpoints (max mid-small) {
+      height: 175px;
     }
   }
 
   &__img-width {
     width: 250px;
-      @include breakpoints (max mid-small) {
-        width: 200px;
+    @include breakpoints (max mid-small) {
+      width: 200px;
     }
   }
 
@@ -98,7 +98,7 @@
     top: 45%;
     right: 0;
     position: absolute;
-    @include breakpoints (max mid-small){
+    @include breakpoints (max mid-small) {
       display: none;
     }
   }
@@ -108,7 +108,7 @@
     top: 45%;
     left: 0;
     position: absolute;
-    @include breakpoints (max mid-small){
+    @include breakpoints (max mid-small) {
       display: none;
     }
   }
@@ -117,7 +117,7 @@
     position: absolute;
     bottom: 20%;
     width: 100%;
-    @include breakpoints (mid-small){
+    @include breakpoints (mid-small) {
       bottom: 10%;
     }
   }
@@ -139,7 +139,7 @@
   @include breakpoints (small) {
     background-image: url("/img/global/intro-story/slide2-lady-liberty-698x600.jpg");
   }
-    @include breakpoints (large) {
+  @include breakpoints (large) {
     background-image: url("/img/global/intro-story/slide2-lady-liberty-1000x600.jpg");
   }
 }
@@ -147,8 +147,8 @@
 .background--image3 {
   @include breakpoints (small) {
     background-image: url("/img/global/intro-story/slide3-historic-place-698x600.jpg");
-   }
-    @include breakpoints (large) {
+  }
+  @include breakpoints (large) {
     background-image: url("/img/global/intro-story/slide3-historic-place-1000x600.jpg");
   }
 }
@@ -157,7 +157,7 @@
   @include breakpoints (small) {
     background-image: url("/img/global/intro-story/slide4-working-together-698x600.jpg");
   }
-    @include breakpoints (large) {
+  @include breakpoints (large) {
     background-image: url("/img/global/intro-story/slide4-working-together-1000x600.jpg");
   }
 }
@@ -166,7 +166,7 @@
   @include breakpoints (small) {
     background-image: url("/img/global/intro-story/slide5-flagpole-698x600.jpg");
   }
-    @include breakpoints (large) {
+  @include breakpoints (large) {
     background-image: url("/img/global/intro-story/slide5-flagpole-1000x600.jpg");
   }
 }
@@ -175,7 +175,7 @@
   @include breakpoints (small) {
     background-image: url("/img/global/intro-story/slide6-flag-building-698x600.jpg");
   }
-    @include breakpoints (large) {
+  @include breakpoints (large) {
     background-image: url("/img/global/intro-story/slide6-flag-building-1000x600.jpg");
   }
 }
@@ -184,7 +184,7 @@
   @include breakpoints (small) {
     background-image: url("/img/global/intro-story/slide7-american-bicycle-698x600.jpg");
   }
-    @include breakpoints (large) {
+  @include breakpoints (large) {
     background-image: url("/img/global/intro-story/slide7-american-bicycle-1000x600.jpg");
   }
 }
@@ -209,9 +209,9 @@
 
 .story-view {
   .container-main {
-    margin: 0px;
+    margin: 0;
     min-height: 100%;
-    padding: 0px;
+    padding: 0;
   }
 
   .well {

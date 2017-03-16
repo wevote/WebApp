@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import ReactPlayer from "react-player";
 import ReadMore from "../../components/Widgets/ReadMore";
 // import ViewSourceModal from "../../components/Widgets/ViewSourceModal";
 
@@ -44,6 +45,31 @@ export default class PositionSupportOpposeSnippet extends Component {
     var statement_text_html = <ReadMore text_to_display={statement_text} />;
     // onViewSourceClick is onClick function for view source modal in mobile browser
     // const onViewSourceClick = this.state.showViewSourceModal ? this.closeViewSourceModal.bind(this) : this.openViewSourceModal.bind(this);
+
+    var youtube_reg = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?/;
+    var vimeo_reg = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/;
+
+    var video_url = "";
+    var youtube_url;
+    var vimeo_url;
+    var statement_text_no_url;
+
+    if (statement_text) {
+      youtube_url = statement_text.match(youtube_reg);
+      vimeo_url = statement_text.match(vimeo_reg);
+    }
+
+    if (youtube_url) {
+      video_url = youtube_url;
+      statement_text_no_url = statement_text.replace(video_url[0], "");
+      statement_text_html = <ReadMore text_to_display={statement_text_no_url} />;
+    }
+
+    if (vimeo_url) {
+      video_url = vimeo_url[0];
+      statement_text_no_url = statement_text.replace(video_url, "");
+      statement_text_html = <ReadMore text_to_display={statement_text_no_url} />;
+    }
 
     if (this.props.is_support){
       stance_icon_src = "/img/global/svg-icons/thumbs-up-color-icon.svg";
@@ -99,6 +125,9 @@ export default class PositionSupportOpposeSnippet extends Component {
           <span>
             <span>{statement_text_html}</span>
             {/* if there's an external source for the explicit position/endorsement, show it */}
+            {video_url ?
+              <ReactPlayer url={`${video_url}`} width="300px" height="231px"/> :
+              null }
             {more_info_url ?
               <div className="hidden-xs">
                 {/* default: open in new tab*/}

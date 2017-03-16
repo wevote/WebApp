@@ -92,6 +92,17 @@ gulp.task("sass", function () {
   .pipe(browserSync.stream());
 });
 
+gulp.task('lint-css', function lintCssTask() {
+  const gulpStylelint = require('gulp-stylelint');
+  return gulp
+    .src('./src/sass/**/*.scss')
+    .pipe(gulpStylelint({
+      reporters: [
+        {formatter: 'string', console: true}
+      ]
+    }));
+});
+
 // Clean out Build directory
 gulp.task("clean:build", function () {
   return del.sync(["./build/**"]);
@@ -113,7 +124,7 @@ gulp.task("copy-index", function () {
 
 // Copy CSS files to Build directory
 gulp.task("copy-css", function () {
-  return gulp.src("./src/css/**/*.css")
+  return gulp.src("./src/css/**/*.scss")
     .pipe(gulp.dest("./build/css"))
     .pipe(browserSync.stream());
 });
@@ -133,7 +144,8 @@ gulp.task("watch", ["build"], PRODUCTION ? ()=>{} : function () {
   gulp.watch(["./src/index.html"], ["copy-index"]);
   gulp.watch(["./src/sass/base/base/fonts/**"], ["copy-fonts"]);
   gulp.watch(["./src/sass/bootstrap/**"], ["compile-bootstrap"]);
-  gulp.watch(["./src/css/**/*.css"], ["copy-css"]);
+  gulp.watch(["./src/css/**/*.scss"], ["copy-css"]);
+  gulp.watch(["./src/css/**/*.scss"], ["lint-css"]);
   gulp.watch(["./src/img/**/*"], ["copy-img"]);
   gulp.watch(["./src/sass/**/*.scss"], ["sass"]);
   gulp.watch(["./src/js/**/*.js?(x)"], ["browserify"]);

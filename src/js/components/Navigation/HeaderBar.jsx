@@ -144,7 +144,7 @@ export default class HeaderBar extends Component {
 
   render () {
     var { pathname } = this.props;
-    var { voter_photo_url } = this.props.voter;
+    var { voter_photo_url_medium } = this.props.voter;
     let speaker_type = "V";  // TODO DALE make this dynamic
 
     return (
@@ -162,10 +162,10 @@ export default class HeaderBar extends Component {
           <SearchAllBox />
 
           <div id="avatar" onClick={this.toggleAccountMenu}>
-            {voter_photo_url ?
+            {voter_photo_url_medium ?
               <div id="avatarContainer">
                   <img className="position-statement__avatar"
-                        src={voter_photo_url}
+                        src={voter_photo_url_medium}
                         id="navIcon"
                    />
               </div> : this.imagePlaceholder(speaker_type)}

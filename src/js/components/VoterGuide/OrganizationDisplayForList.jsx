@@ -13,7 +13,7 @@ import ReadMore from "../../components/Widgets/ReadMore";
 export default class OrganizationDisplayForList extends Component {
   static propTypes = {
     organization_we_vote_id: PropTypes.string,
-    voter_guide_image_url: PropTypes.string,
+    voter_guide_image_url_large: PropTypes.string,
     voter_guide_display_name: PropTypes.string,
     candidate_name: PropTypes.string,
     speaker_display_name: PropTypes.string,
@@ -38,7 +38,7 @@ export default class OrganizationDisplayForList extends Component {
     const {
       twitter_followers_count,
       organization_we_vote_id,
-      voter_guide_image_url,
+      voter_guide_image_url_large,
     } = this.props;
     let num_of_lines = 2;
     let voter_guide_display_name = this.props.voter_guide_display_name ? this.props.voter_guide_display_name : "";
@@ -63,7 +63,7 @@ export default class OrganizationDisplayForList extends Component {
     return <div className="card-child card-child--not-followed">
       <div className="card-child__media-object-anchor">
         <Link to={voterGuideLink} className="u-no-underline">
-          <ImageHandler className="card-child__avatar" sizeClassName="icon-lg " imageUrl={voter_guide_image_url} />
+          <ImageHandler className="card-child__avatar" sizeClassName="icon-lg " imageUrl={voter_guide_image_url_large} />
         </Link>
       </div>
       <div className="card-child__media-object-content">

@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import Helmet from "react-helmet";
 import {Link} from "react-router";
+import DonationForm from "../../components/DonationForm";
+
 
 export default class Donate extends Component {
   constructor (props) {
@@ -12,7 +14,6 @@ export default class Donate extends Component {
   }
 
   render () {
-    let supportProps = { is_public_position: false };
     return <div>
       <Helmet title="About Us - We Vote"/>
       <div className="container-fluid card">
@@ -20,9 +21,10 @@ export default class Donate extends Component {
 
         <br />
         <div className="Donate">
-          <strong>Coming Soon</strong><br />
+          {/*<strong>Coming Soon</strong><br />
           We will be adding a way to donate to We Vote here soon. Thank you!
-          <br />
+          <br />*/}
+          <DonationForm />
 
           <h3 className="h3">A Nonprofit Startup</h3>
           We Vote is made of two 501(c)(3) and 501(c)(4) nonpartisan nonprofit organizations based in

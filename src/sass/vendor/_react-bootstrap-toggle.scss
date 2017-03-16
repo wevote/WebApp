@@ -28,8 +28,8 @@
   top: 0;
   bottom: 0;
   left: 0;
-  transition: left 0.35s;
-  -webkit-transition: left 0.35s;
+  transition: left .35s;
+  -webkit-transition: left .35s;
   -moz-user-select: none;
   -webkit-user-select: none;
 }
@@ -59,10 +59,10 @@
 .toggle-handle {
   position: relative;
   margin: 0 auto;
-  padding-top: 0px;
-  padding-bottom: 0px;
+  padding-top: 0;
+  padding-bottom: 0;
   height: 100%;
-  width: 0px;
+  width: 0;
   border-width: 0 1px;
   &.btn {
     padding-right: 10px; // override

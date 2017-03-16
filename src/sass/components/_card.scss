@@ -9,7 +9,7 @@
   box-shadow: $default-box-shadow;
   margin-bottom: 20px;
   @include clearfix;
-  @include breakpoints(max mid-small){
+  @include breakpoints(max mid-small) {
     margin-right: -15px;
     margin-bottom: 10px;
     margin-left: -15px;
@@ -53,7 +53,6 @@
     &__avatar {
       max-width: 24px;
       border-radius: 2px;
-      max-width: 24px;
       .card-main & {
         @include breakpoints(mid-small) {
           max-width: 48px;
@@ -114,7 +113,7 @@
         line-height: $line-height;
 
         &::before {
-          content:"";
+          content: "";
           float: left;
           width: 5px;
           height: $text-container-height;
@@ -123,11 +122,11 @@
         > *:first-child {
           float: right;
           width: 100%;
-          margin-left: -5px; }
+          margin-left: -5px;
+        }
 
         &::after {
           content: "\00A0 Read More";
-
           box-sizing: content-box;
           float: right;
           position: relative;
@@ -138,7 +137,7 @@
           padding-right: 5px;
           text-align: right;
           background-size: 100% 100%;
-          background: linear-gradient(to right, rgba(255, 255, 255, 0), white 15%, white);
+          background: linear-gradient(to right, rgba(255, 255, 255, 0), white 15%, white); // stylelint-disable-line declaration-block-no-shorthand-property-overrides
           font-style: normal;
           color: $link-color;
         }
@@ -170,7 +169,7 @@
     background-color: $gray-pale;
     border-top: 1px solid $gray-lighter;
     border-bottom: 1px solid $gray-lighter;
-    @include breakpoints(max mid-small){
+    @include breakpoints(max mid-small) {
       margin-left: -$item-padding;
       margin-right: -$item-padding;
     }
@@ -178,11 +177,11 @@
     &__list-group {
       padding: 0;
       margin: 0;
-      @include breakpoints(max mid-small){
+      @include breakpoints(max mid-small) {
         padding: 0 $item-padding;
       }
       .card__additional-heading {
-        @include breakpoints(max mid-small){
+        @include breakpoints(max mid-small) {
           margin-right: 0;
           margin-left: 0;
         }
@@ -293,5 +292,5 @@
 }
 
 .bm-burger-button button {
-  color:red;
+  color: red;
 }

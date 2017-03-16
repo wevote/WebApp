@@ -7,22 +7,24 @@ $icon-color-hover: $gray-dark;
 
 
 
-
 // Header Nav
 // ================================
-.donate,.about,.deskOnly,.fullscreen {
+.donate,
+.about,
+.deskOnly,
+.fullscreen {
   display: none;
-  @include breakpoints(nav){ // 2
+  @include breakpoints(nav) { // 2
     display: block;
   }
 }
 
 .mobile {
-  display:none;
-  @include breakpoints(iphone5){ // 2
+  display: none;
+  @include breakpoints(iphone5) { // 2
     display: block;
   }
-  @include breakpoints(nav){ // 2
+  @include breakpoints(nav) { // 2
     display: none;
   }
 }
@@ -39,22 +41,23 @@ $icon-color-hover: $gray-dark;
   background-color: #fff;
   opacity: 0;
   padding: 1rem;
-  transition: opacity 0.25s ease-in-out;
+  transition: opacity .25s ease-in-out;
   z-index: 2;
+  pointer-events: none;
 }
 
-.account-menu:before{
-    content:'';
-    display:block;
-    width:0;
-    height:0;
-    position:absolute;
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid #fff;
-    border-right:8px solid transparent;
-    border-left:8px solid transparent;
-    right:10px;
-    top:-16px;
+.account-menu::before {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  position: absolute;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid #fff;
+  border-right: 8px solid transparent;
+  border-left: 8px solid transparent;
+  right: 10px;
+  top: -16px;
 }
 
 .page-overlay {
@@ -63,33 +66,33 @@ $icon-color-hover: $gray-dark;
   height: 200vh;
   top: -10px;
   left: -10px;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, .7);
   z-index: 2;
   pointer-events: none;
-  transition: opacity 0.4s ease-in-out;
+  transition: opacity .4s ease-in-out;
   opacity: 0;
 }
 
 .account-menu-open .page-overlay {
-  display: block;
   opacity: 1;
   pointer-events: all;
 }
 
 .account-menu-open .account-menu {
   opacity: 1;
+  pointer-events: all;
 }
 
 .header-nav {
   display: flex; // 1
-  @include breakpoints(nav){ // 2
+  @include breakpoints(nav) { // 2
     display: flex;
   }
 
 
   &__label {
     display: block;
-    font-size: 10px
+    font-size: 10px;
   }
 
   &__item {
@@ -113,25 +116,24 @@ $icon-color-hover: $gray-dark;
 
     &:active,
     &.active-icon {
-      background-color: rgba(0,0,0,.1);
+      background-color: rgba(0, 0, 0, .1);
     }
 
     &:hover {
-      background-color: rgba(0,0,0,.3);
+      background-color: rgba(0, 0, 0, .3);
     }
 
     &.donate {
-      padding: 0px;
-      &>img.glyphicon{
+      padding: 0;
+      & > img.glyphicon {
         max-width: 100%;
         width: 29px;
       }
     }
 
-    &.about>#aboutIcon{
-       padding: 1px;
+    &.about > #aboutIcon {
+      padding: 1px;
     }
-
   }
   .nav-icon {
     font-size: 1rem;
@@ -142,7 +144,7 @@ $icon-color-hover: $gray-dark;
 // ================================
 
 .footer-nav {
-  @include breakpoints(nav){
+  @include breakpoints(nav) {
     display: none; // 2
   }
   .nav-icon {
@@ -184,7 +186,7 @@ div {
   }
   &#avatarContainer {
     width: 36px;
-    &>#leftAvatar {
+    & > #leftAvatar {
       max-width: 100%;
       width: 33px;
     }

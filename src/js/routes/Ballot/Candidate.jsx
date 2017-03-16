@@ -113,6 +113,7 @@ export default class Candidate extends Component {
                          commentButtonHide
                          contest_office_name={candidate.contest_office_name}
                          hideOpinionsToFollow
+                         showLargeImage
                          showPositionsInYourNetworkBreakdown />
           <div className="card__additional">
             { candidate.position_list ?

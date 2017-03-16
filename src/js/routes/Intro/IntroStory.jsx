@@ -1,3 +1,4 @@
+/* global TimelineLite */
 import React, { Component } from "react";
 import { browserHistory } from "react-router";
 import Helmet from "react-helmet";
@@ -86,4 +87,3 @@ export default class IntroStory extends Component {
     </div>;
   }
 }
-

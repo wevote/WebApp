@@ -76,7 +76,7 @@ export default class OfficeItemCompressed extends Component {
                     className="visible-xs u-stack--sm">
                 <ImageHandler className="card-main__avatar u-inline--sm"
                               sizeClassName="icon-candidate-small u-inline--sm "
-                              imageUrl={one_candidate.candidate_photo_url}
+                              imageUrl={one_candidate.candidate_photo_url_large}
                               alt="candidate-photo"
                               kind_of_ballot_item="CANDIDATE" />
                  <span className="h5">{one_candidate.ballot_item_display_name}</span>
@@ -90,7 +90,7 @@ export default class OfficeItemCompressed extends Component {
                   <div className="hidden-xs">
                     <ImageHandler className="card-main__avatar u-inline--sm"
                                   sizeClassName="icon-candidate-small u-inline--sm "
-                                  imageUrl={one_candidate.candidate_photo_url}
+                                  imageUrl={one_candidate.candidate_photo_url_large}
                                   alt="candidate-photo"
                                   kind_of_ballot_item="CANDIDATE" />
 

@@ -11,7 +11,7 @@ import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/
 export default class VoterGuideItem extends Component {
   static propTypes = {
     voter_guide_display_name: PropTypes.string,
-    voter_guide_image_url: PropTypes.string,
+    voter_guide_image_url_large: PropTypes.string,
     google_civic_election_id: PropTypes.number,
     we_vote_id: PropTypes.string,               // voter_guide we_vote_id
     voter_guide_owner_type: PropTypes.string,
@@ -42,7 +42,7 @@ export default class VoterGuideItem extends Component {
     return <div className="card-child">
       <div className="card-child__media-object-avatar">
         <Link to={voterGuideLink} className="u-no-underline">
-          <ImageHandler className="card-child__avatar" sizeClassName="icon-lg " imageUrl={this.props.voter_guide_image_url} />
+          <ImageHandler className="card-child__avatar" sizeClassName="icon-lg " imageUrl={this.props.voter_guide_image_url_large} />
         </Link>
       </div>
       <div className="card-child__media-object-content">
