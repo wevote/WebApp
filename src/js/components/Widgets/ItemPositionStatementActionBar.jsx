@@ -245,7 +245,6 @@ export default class ItemPositionStatementActionBar extends Component {
             { video_url ?
               <ReactPlayer url={`${video_url}`} width="300px" height="231px"/> :
               null }
-
             { short_version ?
               <span tabIndex="0" onKeyDown={onKeyDown}
                     className="position-statement__edit-position-pseudo"

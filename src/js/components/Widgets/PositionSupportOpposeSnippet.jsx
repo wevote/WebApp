@@ -67,7 +67,7 @@ export default class PositionSupportOpposeSnippet extends Component {
     if (vimeo_url) {
       video_url = vimeo_url[0];
       statement_text_no_url = statement_text.replace(video_url, "");
-      statement_text_html = statement_text_no_url;
+      statement_text_html = <ReadMore text_to_display={statement_text_no_url} />;
     }
 
     if (this.props.is_support){
