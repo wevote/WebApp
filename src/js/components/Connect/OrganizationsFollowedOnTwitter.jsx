@@ -1,15 +1,13 @@
 import React, { Component, PropTypes } from "react";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import FollowToggle from "../../components/Widgets/FollowToggle";
-import OrganizationCard from "./OrganizationCard";
-import OrganizationTinyDisplay from "./OrganizationTinyDisplay";
+import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
+import OrganizationTinyDisplay from "../../components/VoterGuide/OrganizationTinyDisplay";
 
-export default class ItemTinyOpinionsToFollow extends Component {
+export default class OrganizationsFollowedOnTwitter extends Component {
 
   static propTypes = {
-    ballotItemWeVoteId: PropTypes.string,
-    organizationsToFollow: PropTypes.array,
-    instantRefreshOn: PropTypes.bool
+    organizationsFollowedOnTwitter: PropTypes.array,
   };
 
   constructor (props) {
@@ -18,25 +16,22 @@ export default class ItemTinyOpinionsToFollow extends Component {
     this.show_popover = false;
 
     this.state = {
-      organizations_to_follow: this.props.organizationsToFollow,
-      ballot_item_we_vote_id: ""
+      organizations_followed_on_twitter: this.props.organizationsFollowedOnTwitter,
     };
   }
 
   componentDidMount () {
     this.setState({
-      organizations_to_follow: this.props.organizationsToFollow,
-      ballot_item_we_vote_id: this.props.ballotItemWeVoteId
+      organizations_followed_on_twitter: this.props.organizationsFollowedOnTwitter,
     });
   }
 
   componentWillReceiveProps (nextProps){
-    // console.log("ItemTinyOpinionsToFollow, componentWillReceiveProps, nextProps.organizationsToFollow:", nextProps.organizationsToFollow);
+    // console.log("OrganizationsFollowedOnTwitter, componentWillReceiveProps, nextProps.organizationsFollowedOnTwitter:", nextProps.organizationsFollowedOnTwitter);
     //if (nextProps.instantRefreshOn ) {
       // NOTE: This is off because we don't want the organization to disappear from the "More opinions" list when clicked
       this.setState({
-        organizations_to_follow: nextProps.organizationsToFollow,
-        ballot_item_we_vote_id: nextProps.ballotItemWeVoteId
+        organizations_followed_on_twitter: nextProps.organizationsFollowedOnTwitter,
       });
     //}
   }
@@ -58,7 +53,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
   }
 
   render () {
-    if (this.state.organizations_to_follow === undefined) {
+    if (this.state.organizations_followed_on_twitter === undefined) {
       return null;
     }
 
@@ -66,10 +61,10 @@ export default class ItemTinyOpinionsToFollow extends Component {
     let local_counter = 0;
     let orgs_not_shown_count = 0;
     let one_organization_for_organization_card;
-    if (this.state.organizations_to_follow && this.state.organizations_to_follow.length > MAXIMUM_ORGANIZATION_DISPLAY) {
-      orgs_not_shown_count = this.state.organizations_to_follow.length - MAXIMUM_ORGANIZATION_DISPLAY;
+    if (this.state.organizations_followed_on_twitter && this.state.organizations_followed_on_twitter.length > MAXIMUM_ORGANIZATION_DISPLAY) {
+      orgs_not_shown_count = this.state.organizations_followed_on_twitter.length - MAXIMUM_ORGANIZATION_DISPLAY;
     }
-    const organizations_to_display = this.state.organizations_to_follow.map( (one_organization) => {
+    const organizations_to_display = this.state.organizations_followed_on_twitter.map( (one_organization) => {
       local_counter++;
       let org_id = one_organization.organization_we_vote_id;
       if (local_counter > MAXIMUM_ORGANIZATION_DISPLAY) {
@@ -81,11 +76,11 @@ export default class ItemTinyOpinionsToFollow extends Component {
         }
       } else {
         one_organization_for_organization_card = {
-            organization_name: one_organization.voter_guide_display_name,
+            organization_name: one_organization.organization_name,
             organization_photo_url_large: one_organization.organization_photo_url_large,
-            organization_photo_url_tiny: one_organization.voter_guide_image_url_tiny,
-            organization_twitter_handle: one_organization.twitter_handle,
-            // organization_website: one_organization.organization_website,
+            organization_photo_url_tiny: one_organization.organization_photo_url_tiny,
+            organization_twitter_handle: one_organization.organization_twitter_handle,
+            organization_website: one_organization.organization_website,
             twitter_description: one_organization.twitter_description,
             twitter_followers_count: one_organization.twitter_followers_count,
           };
@@ -126,3 +121,4 @@ export default class ItemTinyOpinionsToFollow extends Component {
   }
 
 }
+
