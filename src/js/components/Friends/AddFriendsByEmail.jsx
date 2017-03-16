@@ -590,13 +590,16 @@ export default class AddFriendsByEmail extends Component {
               </div> :
             null}
             <div className="row invite-inputs">
+
+            {!this.state.friend1_email_address || this.allRowsOpen() ?
+             null :
               <Button
                 tabIndex="0"
                 onClick={this.addAnotherInvitation.bind(this)}
                 disabled={!this.state.friend1_email_address || this.allRowsOpen()}
               >
                 <span>+ Add another invitation</span>
-              </Button>
+              </Button> }
             </div>
           </div>
 
