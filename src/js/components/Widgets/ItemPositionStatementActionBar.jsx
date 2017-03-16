@@ -176,9 +176,9 @@ export default class ItemPositionStatementActionBar extends Component {
     var statement_text_no_url = null;
     var youtube_reg = /(http:|https:)?\/\/(www\.)?(youtube.com|youtu.be)\/(watch)?(\?v=)?(\S+)?/;
     var vimeo_reg = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/;
-
     var youtube_url;
     var vimeo_url;
+    
     if (statement_text_to_be_saved) {
       youtube_url = statement_text_to_be_saved.match(youtube_reg);
       vimeo_url = statement_text_to_be_saved.match(vimeo_reg);

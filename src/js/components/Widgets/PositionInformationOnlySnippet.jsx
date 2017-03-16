@@ -48,7 +48,6 @@ export default class PositionInformationOnlySnippet extends Component {
     var video_url = "";
     var youtube_reg = /(http:|https:)?\/\/(www\.)?(youtube.com|youtu.be)\/(watch)?(\?v=)?(\S+)?/;
     var vimeo_reg = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/;
-
     var youtube_url;
     var vimeo_url;
     var statement_text_no_url;
