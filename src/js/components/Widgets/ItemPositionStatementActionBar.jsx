@@ -173,7 +173,7 @@ export default class ItemPositionStatementActionBar extends Component {
     };
 
     var video_url = "";
-    var display_text_no_url = null;
+    var statement_text_no_url = null;
     var youtube_reg = /(http:|https:)?\/\/(www\.)?(youtube.com|youtu.be)\/(watch)?(\?v=)?(\S+)?/;
     var vimeo_reg = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/;
 
@@ -186,12 +186,12 @@ export default class ItemPositionStatementActionBar extends Component {
 
     if (youtube_url) {
       video_url = youtube_url[0];
-      display_text_no_url = statement_text_to_be_saved.replace(video_url, "");
+      statement_text_no_url = statement_text_to_be_saved.replace(video_url, "");
     }
 
     if (vimeo_url) {
       video_url = vimeo_url[0];
-      display_text_no_url = statement_text_to_be_saved.replace(video_url, "");
+      statement_text_no_url = statement_text_to_be_saved.replace(video_url, "");
     }
 
     return <div className="position-statement__container">
@@ -238,8 +238,8 @@ export default class ItemPositionStatementActionBar extends Component {
             { speaker_display_name ?
               <span className="u-bold">{speaker_display_name} <br /></span> :
               null }
-            { display_text_no_url ?
-              <ReadMore text_to_display={display_text_no_url} /> :
+            { statement_text_no_url ?
+              <ReadMore text_to_display={statement_text_no_url} /> :
               <ReadMore text_to_display={statement_text_to_be_saved} />
             }
             { video_url ?
