@@ -22,7 +22,8 @@ export default class OfficeItemCompressed extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      transitioning: false
+      transitioning: false,
+      maximum_organization_display: 5
     };
   }
 
@@ -118,7 +119,8 @@ export default class OfficeItemCompressed extends Component {
                               ()=>{this.props._toggleCandidateModal(one_candidate);} :
                               null } >
                           <ItemTinyOpinionsToFollow ballotItemWeVoteId={one_candidate.we_vote_id}
-                                                    organizationsToFollow={GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id)}/>
+                                                    organizationsToFollow={GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id)}
+                                                    maximumOrganizationDisplay={this.state.maximum_organization_display}/>
                         </span> :
                         <span /> }
                     </span>
