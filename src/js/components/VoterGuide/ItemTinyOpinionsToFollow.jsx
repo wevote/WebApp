@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { Link } from "react-router";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import OrganizationCard from "./OrganizationCard";
@@ -9,7 +10,8 @@ export default class ItemTinyOpinionsToFollow extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     organizationsToFollow: PropTypes.array,
-    instantRefreshOn: PropTypes.bool
+    instantRefreshOn: PropTypes.bool,
+    maximumOrganizationDisplay: PropTypes.number,
   };
 
   constructor (props) {
@@ -19,14 +21,16 @@ export default class ItemTinyOpinionsToFollow extends Component {
 
     this.state = {
       organizations_to_follow: this.props.organizationsToFollow,
-      ballot_item_we_vote_id: ""
+      ballot_item_we_vote_id: "",
+      maximum_organization_display: this.props.maximumOrganizationDisplay,
     };
   }
 
   componentDidMount () {
     this.setState({
       organizations_to_follow: this.props.organizationsToFollow,
-      ballot_item_we_vote_id: this.props.ballotItemWeVoteId
+      ballot_item_we_vote_id: this.props.ballotItemWeVoteId,
+      maximum_organization_display: this.props.maximumOrganizationDisplay,
     });
   }
 
@@ -36,7 +40,8 @@ export default class ItemTinyOpinionsToFollow extends Component {
       // NOTE: This is off because we don't want the organization to disappear from the "More opinions" list when clicked
       this.setState({
         organizations_to_follow: nextProps.organizationsToFollow,
-        ballot_item_we_vote_id: nextProps.ballotItemWeVoteId
+        ballot_item_we_vote_id: nextProps.ballotItemWeVoteId,
+        maximum_organization_display: nextProps.maximumOrganizationDisplay,
       });
     //}
   }
@@ -62,27 +67,29 @@ export default class ItemTinyOpinionsToFollow extends Component {
       return null;
     }
 
-    const MAXIMUM_ORGANIZATION_DISPLAY = 4;
     let local_counter = 0;
     let orgs_not_shown_count = 0;
     let one_organization_for_organization_card;
-    if (this.state.organizations_to_follow && this.state.organizations_to_follow.length > MAXIMUM_ORGANIZATION_DISPLAY) {
-      orgs_not_shown_count = this.state.organizations_to_follow.length - MAXIMUM_ORGANIZATION_DISPLAY;
+    if (this.state.organizations_to_follow &&
+      this.state.organizations_to_follow.length > this.state.maximum_organization_display) {
+      orgs_not_shown_count = this.state.organizations_to_follow.length - this.state.maximum_organization_display;
     }
     const organizations_to_display = this.state.organizations_to_follow.map( (one_organization) => {
       local_counter++;
       let org_id = one_organization.organization_we_vote_id;
-      if (local_counter > MAXIMUM_ORGANIZATION_DISPLAY) {
-        if (local_counter === MAXIMUM_ORGANIZATION_DISPLAY + 1) {
+      if (local_counter > this.state.maximum_organization_display) {
+        if (local_counter === this.state.maximum_organization_display + 1) {
           // If here we want to show how many organizations there are to follow
-          return <span key={one_organization.organization_we_vote_id}> +{orgs_not_shown_count}</span>;
+          return <span key={one_organization.organization_we_vote_id}>
+            <Link to="/opinions"> +{orgs_not_shown_count}</Link>
+          </span>;
         } else {
           return "";
         }
       } else {
         one_organization_for_organization_card = {
             organization_name: one_organization.voter_guide_display_name,
-            organization_photo_url_large: one_organization.organization_photo_url_large,
+            organization_photo_url_large: one_organization.voter_guide_image_url_large,
             organization_photo_url_tiny: one_organization.voter_guide_image_url_tiny,
             organization_twitter_handle: one_organization.twitter_handle,
             // organization_website: one_organization.organization_website,
@@ -103,6 +110,9 @@ export default class ItemTinyOpinionsToFollow extends Component {
             </div>
           </Popover>;
 
+       var voterGuideLink = one_organization.organization_twitter_handle ?
+          "/" + one_organization.organization_twitter_handle :
+          "/voterguide/" + one_organization.organization_we_vote_id;
         let placement = "bottom";
         return <OverlayTrigger
             key={`trigger-${org_id}`}
@@ -113,8 +123,10 @@ export default class ItemTinyOpinionsToFollow extends Component {
             placement={placement}
             overlay={organizationPopover}>
           <span className="position-rating__source with-popover">
-            <OrganizationTinyDisplay {...one_organization}
-                                     showPlaceholderImage />
+            <Link to={voterGuideLink}>
+              <OrganizationTinyDisplay {...one_organization}
+                                      showPlaceholderImage />
+            </Link>
           </span>
         </OverlayTrigger>;
       }

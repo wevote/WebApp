@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { Link } from "react-router";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
@@ -8,6 +9,7 @@ export default class OrganizationsFollowedOnTwitter extends Component {
 
   static propTypes = {
     organizationsFollowedOnTwitter: PropTypes.array,
+    maximumOrganizationDisplay: PropTypes.number,
   };
 
   constructor (props) {
@@ -17,12 +19,14 @@ export default class OrganizationsFollowedOnTwitter extends Component {
 
     this.state = {
       organizations_followed_on_twitter: this.props.organizationsFollowedOnTwitter,
+      maximum_organization_display: this.props.maximumOrganizationDisplay,
     };
   }
 
   componentDidMount () {
     this.setState({
       organizations_followed_on_twitter: this.props.organizationsFollowedOnTwitter,
+      maximum_organization_display: this.props.maximumOrganizationDisplay,
     });
   }
 
@@ -32,6 +36,7 @@ export default class OrganizationsFollowedOnTwitter extends Component {
       // NOTE: This is off because we don't want the organization to disappear from the "More opinions" list when clicked
       this.setState({
         organizations_followed_on_twitter: nextProps.organizationsFollowedOnTwitter,
+        maximum_organization_display: nextProps.maximumOrganizationDisplay,
       });
     //}
   }
@@ -57,20 +62,22 @@ export default class OrganizationsFollowedOnTwitter extends Component {
       return null;
     }
 
-    const MAXIMUM_ORGANIZATION_DISPLAY = 4;
     let local_counter = 0;
     let orgs_not_shown_count = 0;
     let one_organization_for_organization_card;
-    if (this.state.organizations_followed_on_twitter && this.state.organizations_followed_on_twitter.length > MAXIMUM_ORGANIZATION_DISPLAY) {
-      orgs_not_shown_count = this.state.organizations_followed_on_twitter.length - MAXIMUM_ORGANIZATION_DISPLAY;
+    if (this.state.organizations_followed_on_twitter &&
+      this.state.organizations_followed_on_twitter.length > this.state.maximum_organization_display) {
+      orgs_not_shown_count = this.state.organizations_followed_on_twitter.length - this.state.maximum_organization_display;
     }
     const organizations_to_display = this.state.organizations_followed_on_twitter.map( (one_organization) => {
       local_counter++;
       let org_id = one_organization.organization_we_vote_id;
-      if (local_counter > MAXIMUM_ORGANIZATION_DISPLAY) {
-        if (local_counter === MAXIMUM_ORGANIZATION_DISPLAY + 1) {
+      if (local_counter > this.state.maximum_organization_display) {
+        if (local_counter === this.state.maximum_organization_display + 1) {
           // If here we want to show how many organizations there are to follow
-          return <span key={one_organization.organization_we_vote_id}> +{orgs_not_shown_count}</span>;
+          return <span key={one_organization.organization_we_vote_id}>
+            <Link to="/opinions_followed"> +{orgs_not_shown_count}</Link>
+          </span>;
         } else {
           return "";
         }
@@ -97,7 +104,9 @@ export default class OrganizationsFollowedOnTwitter extends Component {
               </div>
             </div>
           </Popover>;
-
+        var voterGuideLink = one_organization.organization_twitter_handle ?
+          "/" + one_organization.organization_twitter_handle :
+          "/voterguide/" + one_organization.organization_we_vote_id;
         let placement = "bottom";
         return <OverlayTrigger
             key={`trigger-${org_id}`}
@@ -108,8 +117,10 @@ export default class OrganizationsFollowedOnTwitter extends Component {
             placement={placement}
             overlay={organizationPopover}>
           <span className="position-rating__source with-popover">
-            <OrganizationTinyDisplay {...one_organization}
-                                     showPlaceholderImage />
+            <Link to={voterGuideLink}>
+              <OrganizationTinyDisplay {...one_organization}
+                                      showPlaceholderImage />
+            </Link>
           </span>
         </OverlayTrigger>;
       }
