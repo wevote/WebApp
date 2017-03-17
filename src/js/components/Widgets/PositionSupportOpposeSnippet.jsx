@@ -46,9 +46,8 @@ export default class PositionSupportOpposeSnippet extends Component {
     // onViewSourceClick is onClick function for view source modal in mobile browser
     // const onViewSourceClick = this.state.showViewSourceModal ? this.closeViewSourceModal.bind(this) : this.openViewSourceModal.bind(this);
 
-    var youtube_reg = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?/;
-    var vimeo_reg = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/;
-
+    var youtube_reg = /(http:|https:)?\/\/(www\.)?(youtube.com|youtu.be)\/(watch)?(\?v=)?(\S+)?/;
+    var vimeo_reg = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/g;
     var video_url = "";
     var youtube_url;
     var vimeo_url;
@@ -60,8 +59,8 @@ export default class PositionSupportOpposeSnippet extends Component {
     }
 
     if (youtube_url) {
-      video_url = youtube_url;
-      statement_text_no_url = statement_text.replace(video_url[0], "");
+      video_url = youtube_url[0];
+      statement_text_no_url = statement_text.replace(video_url, "");
       statement_text_html = <ReadMore text_to_display={statement_text_no_url} />;
     }
 
