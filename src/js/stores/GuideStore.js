@@ -11,11 +11,13 @@ class GuideStore extends FluxMapStore {
     return {
       ballot_has_guides: true,
       following: [],
+      followingOnTwitter: [],
       ignoring: [],
       to_follow: [],
       to_follow_list_for_ballot_item: [],
       to_follow_list_for_all_ballot_items: [],
-      all_cached_voter_guides: {}
+      all_cached_voter_guides: {},
+      all_cached_organizations_followed: {}
     };
   }
 
@@ -33,6 +35,22 @@ class GuideStore extends FluxMapStore {
       });
     }
     return filtered_voter_guides;
+  }
+
+    // Given a list of ids, retrieve the complete all_cached_organizations_followed with all attributes and return as array
+  returnOrganizationsFollowedFromListOfIds (list_of_organization_we_vote_ids) {
+    const state = this.getState();
+    let filtered_organizations_followed = [];
+    if (list_of_organization_we_vote_ids) {
+      // organizationsFollowedRetrieve API returns more than one voter guide per organization some times.
+      let uniq_arr = list_of_organization_we_vote_ids.filter((value, index, self) => {
+        return self.indexOf(value) === index;
+      });
+      uniq_arr.forEach(organization_we_vote_id => {
+        filtered_organizations_followed.push(state.all_cached_organizations_followed[organization_we_vote_id]);
+      });
+    }
+    return filtered_organizations_followed;
   }
 
   ballotHasGuides (){
@@ -56,6 +74,10 @@ class GuideStore extends FluxMapStore {
     return this.returnVoterGuidesFromListOfIds(this.getState().following) || [];
   }
 
+  followedOnTwitterList (){
+    return this.returnOrganizationsFollowedFromListOfIds(this.getState().followingOnTwitter) || [];
+  }
+
   ignoredList (){
     return this.returnVoterGuidesFromListOfIds(this.getState().ignoring);
   }
@@ -68,6 +90,8 @@ class GuideStore extends FluxMapStore {
     let voter_guides;
     let all_cached_voter_guides;
     let id;
+    let organizations_followed_on_twitter_list;
+    let all_cached_organizations_followed;
 
     switch (action.type) {
 
@@ -192,6 +216,22 @@ class GuideStore extends FluxMapStore {
           ignoring: ignoring,
           all_cached_voter_guides: all_cached_voter_guides
         };
+
+      case "organizationsFollowedRetrieve":
+        if (action.res.auto_followed_from_twitter_suggestion) {
+          organizations_followed_on_twitter_list = action.res.organization_list;
+          all_cached_organizations_followed = state.all_cached_organizations_followed;
+          var followingOnTwitter = [];
+          organizations_followed_on_twitter_list.forEach( one_organization => {
+            all_cached_organizations_followed[one_organization.organization_we_vote_id] = one_organization;
+            followingOnTwitter.push(one_organization.organization_we_vote_id);
+          });
+          }
+          return {
+            ...state,
+            followingOnTwitter: followingOnTwitter,
+            all_cached_organizations_followed: all_cached_organizations_followed
+          };
 
       case "organizationFollow":
         GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter follows a new org, update list

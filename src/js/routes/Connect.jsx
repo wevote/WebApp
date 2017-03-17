@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import { Link } from "react-router";
 import { Button } from "react-bootstrap";
 import AddFriendsByEmail from "../components/Friends/AddFriendsByEmail";
-import AddFriendsByFacebook from "../components/Friends/AddFriendsByFacebook";
-import AddFriendsByTwitter from "../components/Friends/AddFriendsByTwitter";
+import GuideActions from "../actions/GuideActions";
+import GuideStore from "../stores/GuideStore";
 import FollowingFilter from "../components/Navigation/FollowingFilter";
 import FriendActions from "../actions/FriendActions";
-import FriendList from "../components/Friends/FriendList";
 import FriendStore from "../stores/FriendStore";
 import Helmet from "react-helmet";
+import OrganizationsFollowedOnTwitter from "../components/Connect/OrganizationsFollowedOnTwitter";
+import ItemTinyOpinionsToFollow from "../components/VoterGuide/ItemTinyOpinionsToFollow";
 
 /* VISUAL DESIGN HERE: https://invis.io/E45246B2C */
 
@@ -21,11 +22,19 @@ export default class Connect extends Component {
 		super(props);
     this.state = {
       add_friends_type: "ADD_FRIENDS_BY_EMAIL",
-      current_friend_list: FriendStore.currentFriends()
+      current_friend_list: FriendStore.currentFriends(),
+      organizations_to_follow_list: GuideStore.toFollowList(),
+      organizations_followed_on_twitter_list: GuideStore.followedOnTwitterList(),
+      maximum_organization_display: 5
     };
 	}
 
   componentDidMount () {
+    if (this.state.organizations_followed_on_twitter_list) {
+      GuideActions.organizationsFollowedRetrieve();
+    }
+    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+
     if (this.state.current_friend_list) {
       FriendActions.currentFriends();
     }
@@ -38,8 +47,20 @@ export default class Connect extends Component {
     });
   }
 
+  _onGuideStoreChange (){
+    var organizations_followed_on_twitter_list = GuideStore.followedOnTwitterList();
+    var organizations_to_follow_list = GuideStore.toFollowList();
+    if (organizations_followed_on_twitter_list !== undefined && organizations_followed_on_twitter_list.length > 0){
+      this.setState({ organizations_followed_on_twitter_list: GuideStore.followedOnTwitterList() });
+    }
+    if (organizations_to_follow_list !== undefined && organizations_to_follow_list.length > 0){
+      this.setState({ organizations_to_follow_list: GuideStore.toFollowList() });
+    }
+  }
+
   componentWillUnmount (){
     this.friendStoreListener.remove();
+    this.guideStoreListener.remove();
   }
 
 	static getProps () {
@@ -76,45 +97,44 @@ export default class Connect extends Component {
   }
 
 	render () {
-    const { current_friend_list } = this.state;
-    let add_friends_header;
-    let add_friends_html;
-    if (this.state.add_friends_type === "ADD_FRIENDS_BY_TWITTER") {
-      add_friends_header = "Add Friends By Twitter Handle";
-      add_friends_html = <AddFriendsByTwitter />;
-    } else if (this.state.add_friends_type === "ADD_FRIENDS_BY_FACEBOOK") {
-      add_friends_header = "Add Friends From Facebook";
-      add_friends_html = <AddFriendsByFacebook />;
-    } else {
-      add_friends_header = "Add Friends By Email";
-      add_friends_html = <AddFriendsByEmail />;
-    }
-
 		return <div>
-			<Helmet title={add_friends_header} />
-      <h1 className="h1">Build Your Network</h1>
+			<Helmet title="Build Your We Vote Network" />
+      <h1 className="h1">Build Your We Vote Network</h1>
       <FollowingFilter following_type={this.getFollowingType()} />
-			<div className="container-fluid well u-stack--md u-inset--md">
-        <h4 className="text-left">{add_friends_header}</h4>
-        {add_friends_html}
-      </div>
+
+      { this.state.organizations_to_follow_list && this.state.organizations_to_follow_list.length ?
+        <div className="container-fluid well u-stack--md u-inset--md">
+          <h4 className="text-left">Organizations to Follow</h4>
+          <p>Follow organizations to see what they recommend</p>
+          <div className="card-child__list-group">
+            {
+              <ItemTinyOpinionsToFollow
+                    organizationsToFollow={this.state.organizations_to_follow_list}
+                    maximumOrganizationDisplay={this.state.maximum_organization_display} />
+            }
+            <Link className="pull-right" to="/opinions">See all</Link>
+          </div>
+        </div> : null }
+
+
+      { this.state.organizations_followed_on_twitter_list && this.state.organizations_followed_on_twitter_list.length ?
+        <div className="container-fluid well u-stack--md u-inset--md">
+          <h4 className="text-left">Organizations you follow on Twitter</h4>
+          <div className="card-child__list-group">
+            {
+              <OrganizationsFollowedOnTwitter
+                    organizationsFollowedOnTwitter={this.state.organizations_followed_on_twitter_list}
+                    maximumOrganizationDisplay={this.state.maximum_organization_display} />
+            }
+            <Link className="pull-right" to="/opinions_followed">See all organizations you follow </Link>
+          </div>
+        </div> : null }
 
 			<div className="container-fluid well u-stack--md u-inset--md">
-        <a className="fa-pull-right"
-						tabIndex="0"
-						onKeyDown={this.onKeyDownEditMode.bind(this)}
-						onClick={this.toggleEditMode.bind(this)}>
-          {this.state.editMode ? "Done Editing" : "Edit"}
-        </a>
-        <div>
-          <p>Your Friends</p>
-          <div className="card">
-            <FriendList friendList={current_friend_list}
-                        editMode={this.state.editMode}
-                        />
-          </div>
-        </div>
+        <h4 className="text-left">Add Friends by Email</h4>
+        <AddFriendsByEmail />
       </div>
+
       <Link to="/requests">
         <Button bsStyle="link">
           See Friend Requests

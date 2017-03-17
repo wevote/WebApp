@@ -5,6 +5,11 @@ module.exports = {
     Dispatcher.loadEndpoint("organizationFollow", { organization_we_vote_id: organization_we_vote_id} );
   },
 
+  organizationsFollowedRetrieve: function () {
+    Dispatcher.loadEndpoint("organizationsFollowedRetrieve", {
+      auto_followed_from_twitter_suggestion: true} );
+  },
+
   organizationFollowIgnore: function (organization_we_vote_id) {
     Dispatcher.loadEndpoint("organizationFollowIgnore", { organization_we_vote_id: organization_we_vote_id} );
   },

@@ -27,7 +27,8 @@ export default class MeasureItemCompressed extends Component {
     super(props);
     this.state = {
       transitioning: false,
-      showModal: false
+      showModal: false,
+      maximum_organization_display: 5
     };
   }
 
@@ -155,7 +156,8 @@ export default class MeasureItemCompressed extends Component {
                   {/* Show possible voter guides to follow */}
                   { GuideStore.toFollowListForBallotItemById(we_vote_id) && GuideStore.toFollowListForBallotItemById(we_vote_id).length !== 0 ?
                     <ItemTinyOpinionsToFollow ballotItemWeVoteId={we_vote_id}
-                                              organizationsToFollow={GuideStore.toFollowListForBallotItemById(we_vote_id)}/> :
+                                              organizationsToFollow={GuideStore.toFollowListForBallotItemById(we_vote_id)}
+                                              maximumOrganizationDisplay={this.state.maximum_organization_display}/> :
                     <span /> }
                   </span> }
                 </span>

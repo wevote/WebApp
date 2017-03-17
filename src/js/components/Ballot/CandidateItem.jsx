@@ -37,7 +37,8 @@ export default class CandidateItem extends Component {
     super(props);
     this.state = {
      hide_position_statement: this.props.hidePositionStatement,
-     transitioning: false
+     transitioning: false,
+     maximum_organization_display: 5
     };
   }
 
@@ -214,7 +215,8 @@ export default class CandidateItem extends Component {
                   "More Opinions to Follow." :
                   "Opinions to Follow." }
                 <ItemTinyOpinionsToFollow ballotItemWeVoteId={we_vote_id}
-                                          organizationsToFollow={GuideStore.toFollowListForBallotItemById(we_vote_id)} />
+                                          organizationsToFollow={GuideStore.toFollowListForBallotItemById(we_vote_id)}
+                                          maximumOrganizationDisplay={this.state.maximum_organization_display} />
               </span> :
               <span /> }
           </div>
