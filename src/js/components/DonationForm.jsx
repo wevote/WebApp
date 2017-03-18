@@ -1,10 +1,12 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 const web_app_config = require("../config");
 import DonateActions from "../actions/DonateActions";
 
 export default class DonationForm extends Component {
   static propTypes = {
+    donationAmount: PropTypes.number,
+    donateButtonText: PropTypes.string
   };
 
   constructor (props) {
@@ -40,16 +42,19 @@ export default class DonationForm extends Component {
       name: "We Vote",
       description: "Donation",
       zipCode: true,
-      amount: 2000
+      amount: this.props.donationAmount,
     });
     event.preventDefault();
   }
 
 	render () {
-
-		return <div>
-      <Button bsStyle="primary" onClick={this._openStripeModal}>
-        Donate Now
+    let donate_button_text = "Donate Now";
+    if (this.props.donateButtonText) {
+      donate_button_text = this.props.donateButtonText;
+    }
+		return <span>
+      <Button bsStyle="success" onClick={this._openStripeModal}>
+        {donate_button_text}
       </Button>
     {/*<form onSubmit={this.getToken}>
       <FormGroup controlId="cardElement">
@@ -62,6 +67,6 @@ export default class DonationForm extends Component {
         </Button>
     </form>*/}
 
-  </div>;
+  </span>;
 	}
 }
