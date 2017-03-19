@@ -1,5 +1,5 @@
 // dependencies
-const watchify = require('watchify');
+const watchify = require("watchify");
 const gulp = require("gulp");
 const sass = require("gulp-sass");
 const autoprefixer = require('gulp-autoprefixer');
@@ -12,7 +12,7 @@ const source = require("vinyl-source-stream");
 const buffer = require("vinyl-buffer");
 const del = require("del");
 const server = require("./server");
-const assign = require('lodash.assign');
+const assign = require("lodash.assign");
 
 const config = {
     bootstrapDir: './node_modules/bootstrap-sass',
