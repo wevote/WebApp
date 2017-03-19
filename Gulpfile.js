@@ -1,4 +1,5 @@
 // dependencies
+const watchify = require('watchify');
 const gulp = require("gulp");
 const sass = require("gulp-sass");
 const autoprefixer = require('gulp-autoprefixer');
@@ -11,6 +12,7 @@ const source = require("vinyl-source-stream");
 const buffer = require("vinyl-buffer");
 const del = require("del");
 const server = require("./server");
+const assign = require('lodash.assign');
 
 const config = {
     bootstrapDir: './node_modules/bootstrap-sass',
@@ -28,6 +30,9 @@ gulp.task("browserify", function () {
     transform: [babelify]
   };
 
+  var opts = assign({}, watchify.args, ops);
+  var b = watchify(browserify(opts));
+
   function err (e){
     console.error(e.toString());
     this.emit("end");
@@ -36,7 +41,7 @@ gulp.task("browserify", function () {
   return PRODUCTION ?
 
   // production build with minification
-  browserify(ops)
+  b
     .bundle()
     .on("error", err)
     .pipe(source("bundle.js"))
@@ -45,7 +50,7 @@ gulp.task("browserify", function () {
     .pipe(gulp.dest("./build/js")) :
 
   // development build... no minification
-  browserify(ops)
+  b
     .bundle()
     .on("error", err)
     .pipe(source("bundle.js"))
