@@ -30,8 +30,8 @@ gulp.task("browserify", function () {
     transform: [babelify]
   };
 
-  var opts = assign({}, watchify.args, ops);
-  var b = watchify(browserify(opts));
+  var opsWatchify = assign({}, watchify.args, ops);
+  var b = watchify(browserify(opsWatchify));
 
   function err (e){
     console.error(e.toString());
