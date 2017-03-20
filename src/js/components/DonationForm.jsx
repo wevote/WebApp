@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 const web_app_config = require("../config");
-import DonateActions from "../actions/DonateActions";
+// import DonateActions from "../actions/DonateActions";
 
 export default class DonationForm extends Component {
   static propTypes = {
