@@ -1,6 +1,5 @@
 import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
-import FollowingFilter from "../components/Navigation/FollowingFilter";
 import Helmet from "react-helmet";
 import GuideStore from "../stores/GuideStore";
 import GuideActions from "../actions/GuideActions";
@@ -68,7 +67,6 @@ export default class OpinionsFollowed extends Component {
     return <div className="opinions-followed__container">
       <Helmet title="Organizations You Follow - We Vote" />
       <h1 className="h1">Build Your Network</h1>
-      <FollowingFilter following_type={this.getFollowingType()} />
       <a className="fa-pull-right"
          tabIndex="0"
          onKeyDown={this.onKeyDownEditMode.bind(this)}
