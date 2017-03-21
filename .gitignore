@@ -167,6 +167,7 @@ sftp-config.json
 /**/migrations/*.py
 !/**/migrations/__init__.py
 config/environment_variables.json
+src/js/config.js
 web_app/build/*
 
 # Heroku Related #

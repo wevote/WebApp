@@ -30,8 +30,8 @@ gulp.task("browserify", function () {
     transform: [babelify]
   };
 
-  var opsWatchify = assign({}, watchify.args, ops);
-  var b = watchify(browserify(opsWatchify));
+  var opsWatchify = assign({ cache: {}, packageCache: {} }, watchify.args, ops);
+  var browserifyWithWatchify = watchify(browserify(opsWatchify));
 
   function err (e){
     console.error(e.toString());
@@ -41,7 +41,7 @@ gulp.task("browserify", function () {
   return PRODUCTION ?
 
   // production build with minification
-  b
+  browserifyWithWatchify
     .bundle()
     .on("error", err)
     .pipe(source("bundle.js"))
@@ -50,7 +50,7 @@ gulp.task("browserify", function () {
     .pipe(gulp.dest("./build/js")) :
 
   // development build... no minification
-  b
+  browserifyWithWatchify
     .bundle()
     .on("error", err)
     .pipe(source("bundle.js"))
