@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Link } from "react-router";
 import { Button } from "react-bootstrap";
 import AddFriendsByEmail from "../components/Friends/AddFriendsByEmail";
+import CurrentFriends from "../components/Connect/CurrentFriends";
 import GuideActions from "../actions/GuideActions";
 import GuideStore from "../stores/GuideStore";
-import FollowingFilter from "../components/Navigation/FollowingFilter";
 import FriendActions from "../actions/FriendActions";
 import FriendStore from "../stores/FriendStore";
 import Helmet from "react-helmet";
@@ -22,7 +22,7 @@ export default class Connect extends Component {
 		super(props);
     this.state = {
       add_friends_type: "ADD_FRIENDS_BY_EMAIL",
-      current_friend_list: FriendStore.currentFriends(),
+      current_friends_list: FriendStore.currentFriends(),
       organizations_to_follow_list: GuideStore.toFollowList(),
       organizations_followed_on_twitter_list: GuideStore.followedOnTwitterList(),
       maximum_organization_display: 5
@@ -35,7 +35,7 @@ export default class Connect extends Component {
     }
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
 
-    if (this.state.current_friend_list) {
+    if (this.state.current_friends_list) {
       FriendActions.currentFriends();
     }
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
@@ -43,7 +43,7 @@ export default class Connect extends Component {
 
   _onFriendStoreChange () {
     this.setState({
-      current_friend_list: FriendStore.currentFriends()
+      current_friends_list: FriendStore.currentFriends()
     });
   }
 
@@ -100,7 +100,6 @@ export default class Connect extends Component {
 		return <div>
 			<Helmet title="Build Your We Vote Network" />
       <h1 className="h1">Build Your We Vote Network</h1>
-      <FollowingFilter following_type={this.getFollowingType()} />
 
       { this.state.organizations_to_follow_list && this.state.organizations_to_follow_list.length ?
         <div className="container-fluid well u-stack--md u-inset--md">
@@ -134,6 +133,19 @@ export default class Connect extends Component {
         <h4 className="text-left">Add Friends by Email</h4>
         <AddFriendsByEmail />
       </div>
+
+      { this.state.current_friends_list && this.state.current_friends_list.length ?
+        <div className="container-fluid well u-stack--md u-inset--md">
+          <h4 className="text-left">Your Current Friends</h4>
+          <div className="card-child__list-group">
+            {
+              <CurrentFriends
+                    currentFriendsList={this.state.current_friends_list}
+                    maximumFriendDisplay={this.state.maximum_friend_display} />
+            }
+            <Link className="pull-right" to="/friends">See Full Friend List</Link>
+          </div>
+        </div> : null }
 
       <Link to="/requests">
         <Button bsStyle="link">

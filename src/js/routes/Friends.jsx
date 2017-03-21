@@ -1,7 +1,6 @@
 import React, {Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router";
-import FollowingFilter from "../components/Navigation/FollowingFilter";
 import FriendList from "../components/Friends/FriendList";
 import FriendActions from "../actions/FriendActions";
 import FriendStore from "../stores/FriendStore";
@@ -60,7 +59,6 @@ export default class Friends extends Component {
     return <div className="opinion-view">
       <Helmet title="Your Friends - We Vote" />
       <h1 className="h1">Build Your Network</h1>
-      <FollowingFilter following_type={this.getFollowingType()} />
       <a className="fa-pull-right"
          onClick={this.toggleEditMode.bind(this)}>
         {this.state.editMode ? "Done Editing" : "Edit"}
