@@ -25,7 +25,7 @@
     "deps:missing": "dependency-check package.json",
     "deps:extra": "dependency-check package.json --extra --no-dev --ignore",
     "build:doc": "doctoc --github --title \"## Contents\" ./",
-    "autoTest": " mocha --compilers js:babel-core/register --require autoTests/index.js \"./autoTests/tests.js\" && npm run lint"
+    "autoTest": " mocha --compilers js:babel-core/register --require tests/component/index.js \"./tests/component/tests.js\" && npm run lint"
   },
   "dependencies": {
     "gulp-uglify": "^2.0.0",
