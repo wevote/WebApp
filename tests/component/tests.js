@@ -1,7 +1,7 @@
 import React from 'react';
 import {render} from 'enzyme';
 import {expect} from 'chai';
-import NavigatorInHeader from '../src/js/components/Navigation/NavigatorInHeader.jsx';
+import NavigatorInHeader from '../../src/js/components/Navigation/NavigatorInHeader.jsx';
 
 
 describe('NavigatorInHeader', () => {
