@@ -18,5 +18,7 @@ module.exports = {
         text_for_map_search: ""
     },
 
-    FACEBOOK_APP_ID: ""
+    FACEBOOK_APP_ID: "",
+
+    STRIPE_API_KEY: ""
 };

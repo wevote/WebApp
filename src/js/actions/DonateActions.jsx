@@ -2,7 +2,7 @@ import Dispatcher from "../dispatcher/Dispatcher";
 
 module.exports = {
 
-  donationWithStripe: function (token) {
-    Dispatcher.loadEndpoint("donationWithStripe", { token: token });
+  donationWithStripe: function (token, donationAmount, monthlyDonation = false) {
+    Dispatcher.loadEndpoint("donationWithStripe", { token: token, donationAmount: donationAmount, monthlyDonation: monthlyDonation });
   }
 };
