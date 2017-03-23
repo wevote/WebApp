@@ -180,7 +180,15 @@ export default class SearchAllBox extends Component {
   }
 
   updateSearchText () {
-    let selectedResultText = this.state.search_results[this.state.selected_index].result_title;
+    let selectedResultElement = this.state.search_results[this.state.selected_index];
+    let selectedResultText = "";
+
+    if (selectedResultElement) {
+      selectedResultText = selectedResultElement.result_title;
+    } else {
+      return;
+    }
+
     this.setState({text_from_search_field: selectedResultText});
     //Update the search results to the selected query
     SearchAllActions.searchAll(selectedResultText);
