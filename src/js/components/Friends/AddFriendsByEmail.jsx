@@ -607,7 +607,7 @@ export default class AddFriendsByEmail extends Component {
         </div>
 
           <form onSubmit={this.AddFriendsByEmailStepsManager.bind(this)} className="u-stack--md">
-          {this.state.email_address_array ?
+          {this.state.email_address_array && validateEmail(this.state.friend1_email_address, this.state.friend2_email_address, this.state.friend3_email_address, this.state.friend4_email_address, this.state.friend5_email_address) ?
             <span>
               <label htmlFor="last-name">Include a Message <span className="small">(Optional)</span></label><br />
               <input type="text" name="add_friends_message"
