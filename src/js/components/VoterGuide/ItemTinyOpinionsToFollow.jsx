@@ -18,6 +18,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
     super(props);
 
     this.show_popover = false;
+    this.mobile = "ontouchstart" in document.documentElement;
 
     this.state = {
       organizations_to_follow: this.props.organizationsToFollow,
@@ -97,6 +98,17 @@ export default class ItemTinyOpinionsToFollow extends Component {
             twitter_followers_count: one_organization.twitter_followers_count,
           };
 
+        let voterGuideLink = one_organization.organization_twitter_handle ?
+           "/" + one_organization.organization_twitter_handle :
+           "/voterguide/" + one_organization.organization_we_vote_id;
+
+        if (this.mobile) {
+          return <Link key={`tiny-link-${org_id}`} to={voterGuideLink} className="u-no-underline">
+            <OrganizationTinyDisplay {...one_organization}
+                                    showPlaceholderImage />
+          </Link>;
+        }
+
         let organizationPopover = <Popover
             id={`organization-popover-${org_id}`}
             onMouseOver={() => this.onTriggerEnter(org_id)}
@@ -110,20 +122,14 @@ export default class ItemTinyOpinionsToFollow extends Component {
             </div>
           </Popover>;
 
-       var voterGuideLink = one_organization.organization_twitter_handle ?
-          "/" + one_organization.organization_twitter_handle :
-          "/voterguide/" + one_organization.organization_we_vote_id;
-        let placement = "bottom";
         return <OverlayTrigger
             key={`trigger-${org_id}`}
             ref={`overlay-${org_id}`}
-            onMouseOver={() => this.onTriggerEnter(org_id)}
-            onMouseOut={() => this.onTriggerLeave(org_id)}
             rootClose
-            placement={placement}
+            placement="bottom"
             overlay={organizationPopover}>
           <span className="position-rating__source with-popover">
-            <Link to={voterGuideLink}>
+            <Link key={`tiny-link-${org_id}`} to={voterGuideLink} className="u-no-underline">
               <OrganizationTinyDisplay {...one_organization}
                                       showPlaceholderImage />
             </Link>

@@ -47,6 +47,15 @@
   text-decoration: none;
 }
 
+// necessary to override bootstrap defaults
+:hover,
+:focus,
+:active {
+  &.u-no-underline {
+    text-decoration: none;
+  }
+}
+
 .u-uppercase {
   text-transform: uppercase;
 }
