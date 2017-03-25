@@ -25,7 +25,7 @@ export default class Connect extends Component {
       current_friends_list: FriendStore.currentFriends(),
       organizations_to_follow_list: GuideStore.toFollowList(),
       organizations_followed_on_twitter_list: GuideStore.followedOnTwitterList(),
-      maximum_organization_display: 5
+      maximum_organization_display: 25
     };
 	}
 
@@ -103,8 +103,10 @@ export default class Connect extends Component {
 
       { this.state.organizations_to_follow_list && this.state.organizations_to_follow_list.length ?
         <div className="container-fluid well u-stack--md u-inset--md">
-          <h4 className="text-left">Organizations to Follow</h4>
-          <p>Follow organizations to see what they recommend</p>
+          <Link className="u-cursor--pointer u-no-underline" to="/opinions">
+            <h4 className="text-left">Organizations to Follow</h4>
+            <p>Follow organizations to see what they recommend</p>
+          </Link>
           <div className="card-child__list-group">
             {
               <ItemTinyOpinionsToFollow
@@ -136,7 +138,9 @@ export default class Connect extends Component {
 
       { this.state.current_friends_list && this.state.current_friends_list.length ?
         <div className="container-fluid well u-stack--md u-inset--md">
-          <h4 className="text-left">Your Current Friends</h4>
+          <Link className="u-cursor--pointer u-no-underline" to="/friends">
+            <h4 className="text-left">Your Current Friends</h4>
+          </Link>
           <div className="card-child__list-group">
             {
               <CurrentFriends

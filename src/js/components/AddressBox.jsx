@@ -8,6 +8,7 @@ import VoterStore from "../stores/VoterStore";
 
 export default class AddressBox extends Component {
   static propTypes = {
+    _toggleSelectAddressModal: PropTypes.func,
     saveUrl: PropTypes.string.isRequired
   };
 
