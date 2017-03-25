@@ -41,11 +41,8 @@ gulp.task("browserify", function () {
   if (PRODUCTION){
 
   // production build with minification
-<<<<<<< HEAD
+
   return browserifyWithWatchify
-=======
-  browserify(ops)
->>>>>>> 875f94e9bc5f7c6d893bcdaec8dd3d4c9c484091
     .bundle()
     .on("error", err)
     .pipe(source("bundle.js"))
