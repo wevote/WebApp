@@ -42,7 +42,7 @@ gulp.task("browserify", function () {
 
   // production build with minification
 
-  return browserifyWithWatchify
+  return browserify(ops)
     .bundle()
     .on("error", err)
     .pipe(source("bundle.js"))
