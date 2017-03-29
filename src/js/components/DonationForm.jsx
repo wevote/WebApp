@@ -66,7 +66,6 @@ export default class DonationForm extends Component {
           Submit
         </Button>
     </form>*/}
-
   </span>;
 	}
 }
