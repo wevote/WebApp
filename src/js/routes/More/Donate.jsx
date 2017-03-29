@@ -11,11 +11,11 @@ export default class Donate extends Component {
       showCustomInput: false,
       custom_amount: "",
       donateMonthly: false
-    }
+    };
 
-    this._toggleCustomAmount = this._toggleCustomAmount.bind(this)
-    this._updateCustomAmount = this._updateCustomAmount.bind(this)
-    this._toggleDonateMonthly = this._toggleDonateMonthly.bind(this)
+    this._toggleCustomAmount = this._toggleCustomAmount.bind(this);
+    this._updateCustomAmount = this._updateCustomAmount.bind(this);
+    this._toggleDonateMonthly = this._toggleDonateMonthly.bind(this);
   }
 
   static getProps () {
@@ -60,18 +60,24 @@ export default class Donate extends Component {
           <Button bsStyle="success" onClick={this._toggleCustomAmount}>
             Other Amount
           </Button><br />&nbsp;
-          {this.state.showCustomInput ? null : <span><form className="form-check-inline">
+          {/*{this.state.showCustomInput ? null : <span><form className="form-check-inline">
             <input className="form-check-input" type="checkbox" checked={this.state.donateMonthly} onChange={this._toggleDonateMonthly}/>Donate Monthly
-          </form></span>}
+          </form></span>}*/}
+          <span>
+            <form className="form-check-inline">
+              <input className="form-check-input" type="checkbox" checked={this.state.donateMonthly}
+              onChange={this._toggleDonateMonthly}/>Donate Monthly
+            </form>
+          </span>
           <br />
            {this.state.showCustomInput ? <span>
              <form className="form-inline">
               <div className="input-group">
                <span className="input-group-addon">$</span>
                 <input className="form-control form-control mb-2 mr-sm-2 mb-sm-0" value={this.state.custom_amount}
-                type="text" placeholder="$50.00" onChange={this._updateCustomAmount} />
+                type="text" placeholder="250.00" onChange={this._updateCustomAmount} />
               </div>&nbsp;
-                <DonationForm donationAmount={parseFloat(this.state.custom_amount.replace(/[^0-9\.]+/g,"")) * 100}
+                <DonationForm donationAmount={parseFloat(this.state.custom_amount.replace(/[^0-9\.]+/g, "")) * 100}
                 donateButtonText="Go" />
              </form></span> : null}
 
