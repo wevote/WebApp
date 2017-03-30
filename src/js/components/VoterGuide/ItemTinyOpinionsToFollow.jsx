@@ -17,7 +17,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
   constructor (props) {
     super(props);
 
-    this.show_popover = false;
+    this.popover_state = {};
     this.mobile = "ontouchstart" in document.documentElement;
 
     this.state = {
@@ -49,15 +49,15 @@ export default class ItemTinyOpinionsToFollow extends Component {
 
   onTriggerEnter (org_id) {
     this.refs[`overlay-${org_id}`].show();
-    this.show_popover = true;
-    clearTimeout(this.hide_popover_timer);
+    clearTimeout(this.popover_state[org_id].timer);
+    this.popover_state[org_id].show = true;
   }
 
   onTriggerLeave (org_id) {
-    this.show_popover = false;
-    clearTimeout(this.hide_popover_timer);
-    this.hide_popover_timer = setTimeout(() => {
-      if (!this.show_popover) {
+    this.popover_state[org_id].show = false;
+    clearTimeout(this.popover_state[org_id].timer);
+    this.popover_state[org_id].timer = setTimeout(() => {
+      if (!this.popover_state[org_id].show) {
         this.refs[`overlay-${org_id}`].hide();
       }
     }, 100);
@@ -78,6 +78,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
     const organizations_to_display = this.state.organizations_to_follow.map( (one_organization) => {
       local_counter++;
       let org_id = one_organization.organization_we_vote_id;
+
       if (local_counter > this.state.maximum_organization_display) {
         if (local_counter === this.state.maximum_organization_display + 1) {
           // If here we want to show how many organizations there are to follow
@@ -102,6 +103,8 @@ export default class ItemTinyOpinionsToFollow extends Component {
            "/" + one_organization.organization_twitter_handle :
            "/voterguide/" + one_organization.organization_we_vote_id;
 
+        this.popover_state[org_id] = {show: false, timer: null};
+
         if (this.mobile) {
           return <Link key={`tiny-link-${org_id}`} to={voterGuideLink} className="u-no-underline">
             <OrganizationTinyDisplay {...one_organization}
@@ -125,6 +128,8 @@ export default class ItemTinyOpinionsToFollow extends Component {
         return <OverlayTrigger
             key={`trigger-${org_id}`}
             ref={`overlay-${org_id}`}
+            onMouseOver={() => this.onTriggerEnter(org_id)}
+            onMouseOut={() => this.onTriggerLeave(org_id)}
             rootClose
             placement="bottom"
             overlay={organizationPopover}>
