@@ -4,12 +4,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title> We Vote </title>
   <meta charset="utf-8">
-  <link href="/css/bootstrap.css" rel="stylesheet" />
-  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" />
-  <link href="//cdn.bootcss.com/bootstrap-social/4.12.0/bootstrap-social.min.css" rel="stylesheet" />
-  <link href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" rel="stylesheet"/>
-  <link href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" rel="stylesheet" />
-  <link href="/css/main.css" rel="stylesheet" />
   <meta property="og:url"           content="https://WeVote.US" />
   <meta property="og:type"          content="website" />
   <meta property="og:title"         content="We Vote" />
@@ -44,11 +38,17 @@
           align-items: center;
           font-size: 30px;
           color: #fff;
-          flex-direction: column;">
+          flex-direction: column;">Loading We Vote
         </div>
       </div>
     </div>
     <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script>
+    const cssTags = ['<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" />', '<link href="/css/bootstrap.css" rel="stylesheet" />', '<link href="//cdn.bootcss.com/bootstrap-social/4.12.0/bootstrap-social.min.css" rel="stylesheet" />', '<link href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" rel="stylesheet"/>', '<link href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" rel="stylesheet" />', '<link href="/css/main.css" rel="stylesheet" />'];
+    (function(rest) {
+      $("head").append(...rest);
+    })(cssTags);
+    </script>
     <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyA_EFCwt863dYRD8hmqAogdQS16FAlNAeM&libraries=places"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/plugins/CSSPlugin.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/easing/EasePack.min.js"></script>
@@ -62,7 +62,6 @@
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
       ga('create', 'UA-53643204-3', 'auto');
       ga('send', 'pageview');
     </script>
