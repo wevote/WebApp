@@ -13,6 +13,7 @@ const buffer = require("vinyl-buffer");
 const del = require("del");
 const server = require("./server");
 const assign = require("lodash.assign");
+const cssmin = require('gulp-cssmin');
 
 const config = {
     bootstrapDir: './node_modules/bootstrap-sass',
@@ -82,6 +83,7 @@ gulp.task('compile-bootstrap', function() {
         includePaths: [config.bootstrapDir + '/assets/stylesheets',
                       config.bootstrap4Dir]
     }))
+    .pipe(cssmin())
     .pipe(gulp.dest("./build/css/"));
 });
 
@@ -93,6 +95,7 @@ gulp.task("sass", function () {
   .pipe(sass({ style: 'expanded' }))
   .pipe(autoprefixer('last 2 version'))
   .pipe(sourcemaps.write())
+  .pipe(cssmin())
   .pipe(gulp.dest("./build/css"))
   .pipe(browserSync.stream());
 });
