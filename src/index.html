@@ -3,13 +3,13 @@
   <head>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title> We Vote </title>
+  <script type="text/javascript">
+   document.addEventListener("DOMContentLoaded", function(event) { 
+    console.log("1111Logging to test speed");
+   });
+   console.log("logging external to test speed");
+  </script>
   <meta charset="utf-8">
-  <link href="/css/bootstrap.css" rel="stylesheet" />
-  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" />
-  <link href="//cdn.bootcss.com/bootstrap-social/4.12.0/bootstrap-social.min.css" rel="stylesheet" />
-  <link href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" rel="stylesheet"/>
-  <link href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" rel="stylesheet" />
-  <link href="/css/main.css" rel="stylesheet" />
   <meta property="og:url"           content="https://WeVote.US" />
   <meta property="og:type"          content="website" />
   <meta property="og:title"         content="We Vote" />
@@ -32,7 +32,9 @@
     <!-- End Google Tag Manager (noscript) -->
     <div id="app" class="app-wrapper">
       <div className="loading-screen">
-        <div className="u-loading-spinner u-loading-spinner--light" style="
+        <div 
+        className="u-loading-spinner u-loading-spinner--light" 
+        style="
           display: flex;
           position: fixed;
           height: 100vh;
@@ -44,11 +46,21 @@
           align-items: center;
           font-size: 30px;
           color: #fff;
-          flex-direction: column;">
+          flex-direction: column;">Loading
         </div>
       </div>
     </div>
+    
     <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script>
+       $("head").append('<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" />');
+       $("head").append('<link href="/css/bootstrap.css" rel="stylesheet" />');
+       $("head").append('<link href="//cdn.bootcss.com/bootstrap-social/4.12.0/bootstrap-social.min.css" rel="stylesheet" />');
+       $("head").append('<link href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" rel="stylesheet"/>');
+       $("head").append('<link href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" rel="stylesheet"/>');
+       $("head").append('<link href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" rel="stylesheet" />');
+       $("head").append('<link href="/css/main.css" rel="stylesheet" />');
+      </script>
     <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyA_EFCwt863dYRD8hmqAogdQS16FAlNAeM&libraries=places"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/plugins/CSSPlugin.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/easing/EasePack.min.js"></script>

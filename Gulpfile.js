@@ -31,26 +31,28 @@ gulp.task("browserify", function () {
   };
 
   var opsWatchify = assign({ cache: {}, packageCache: {} }, watchify.args, ops);
-  var browserifyWithWatchify = watchify(browserify(opsWatchify));
+  var browserifyWithWatchify = watchify(browserify(opsWatchify), {poll: true});
 
   function err (e){
     console.error(e.toString());
     this.emit("end");
   }
 
-  return PRODUCTION ?
+  if (PRODUCTION){
 
   // production build with minification
-  browserify(ops)
+
+  return browserify(ops)
     .bundle()
     .on("error", err)
     .pipe(source("bundle.js"))
     .pipe(buffer())
     .pipe(uglify({ preserveComments: false, mangle: false }))
-    .pipe(gulp.dest("./build/js")) :
+    .pipe(gulp.dest("./build/js"));
+  }
 
   // development build... no minification
-  browserifyWithWatchify
+  return browserifyWithWatchify
     .bundle()
     .on("error", err)
     .pipe(source("bundle.js"))
