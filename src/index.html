@@ -9,6 +9,7 @@
   <meta property="og:title"         content="We Vote" />
   <meta property="og:description"   content="Putting you in the driver's seat of American democracy." />
   <meta property="og:image"         content="https://raw.githubusercontent.com/wevote/WebApp/develop/wevotelogo.png" />
+  <link href="/css/loading-screen.css" rel="stylesheet" />
   <script>
     <!-- Google Tag Manager -->
     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -37,8 +38,19 @@
           justify-content: center;
           align-items: center;
           font-size: 30px;
-          color: #fff;
-          flex-direction: column;">Loading We Vote
+          color: #337ec9;
+          flex-direction: column;
+          font-family: "Roboto Slab", sans-serif;
+          text-align: center;
+          ">
+          <h1 style="
+            font-family: 'Roboto Slab', sans-serif;
+            font-size: 32px;
+            font-weight: normal;
+            color: #fff;
+            ">We Vote
+          </h1>
+          <div class="u-loading-spinner u-loading-spinner--light">Loading We Vote...</div>
         </div>
       </div>
     </div>

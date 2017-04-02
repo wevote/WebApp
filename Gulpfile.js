@@ -89,7 +89,7 @@ gulp.task('compile-bootstrap', function() {
 
 // Compile main stylesheet and copy to Build directory
 gulp.task("sass", function () {
-  return gulp.src("./src/sass/main.scss")
+  return gulp.src("./src/sass/{main,loading-screen}.scss")
   .pipe(sourcemaps.init())
   .on("error", function (err) { console.error(err); })
   .pipe(sass({ style: 'expanded' }))

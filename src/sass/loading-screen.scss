@@ -1,0 +1,30 @@
+@import 'base/variables';
+@import 'base/mixins';
+@import 'components/loading-spinner';
+@import url(https://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
+
+
+$loading-screen-color: #337ec9;
+
+.loading-screen {
+  display: flex;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  background-color: $loading-screen-color;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  color: #fff;
+  flex-direction: column;
+
+  .h1 {
+    font-family: $heading-font-stack;
+    font-size: 22px;
+    font-weight: normal;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+}
