@@ -33,10 +33,9 @@ $icon-color-hover: $gray-dark;
   display: none;
 }
 
-.account-menu {
+.account-menu, .about-menu {
   max-width: 320px;
   position: absolute;
-  right: 0;
   top: 50px;
   background-color: #fff;
   opacity: 0;
@@ -46,7 +45,14 @@ $icon-color-hover: $gray-dark;
   pointer-events: none;
 }
 
-.account-menu::before {
+.account-menu {
+  right: 0;
+}
+.about-menu {
+  left: 150px;
+}
+
+.account-menu::before,.about-menu::before  {
   content: '';
   display: block;
   width: 0;
@@ -73,12 +79,12 @@ $icon-color-hover: $gray-dark;
   opacity: 0;
 }
 
-.account-menu-open .page-overlay {
+.account-menu-open .page-overlay, .about-menu-open .page-overlay{
   opacity: 1;
   pointer-events: all;
 }
 
-.account-menu-open .account-menu {
+.account-menu-open .account-menu, .about-menu-open .about-menu{
   opacity: 1;
   pointer-events: all;
 }
