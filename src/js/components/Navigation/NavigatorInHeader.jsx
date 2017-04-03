@@ -123,7 +123,7 @@ export default class NavigatorInHeader extends Component {
           <ul className="nav nav-stacked">
          
               <li>
-                <Link onClick={this.toggleAboutMenu} to={"/more/HowToUse"}>
+                <Link onClick={this.toggleAboutMenu} to={"/more/howtouse"}>
                   <div>
                     <span className="header-slide-out-menu-text-left">How to use We Vote</span>
                   </div>
@@ -132,7 +132,7 @@ export default class NavigatorInHeader extends Component {
           
       
               <li>
-                <Link onClick={this.toggleAboutMenu} to={"/more/Vision"}>
+                <Link onClick={this.toggleAboutMenu} to={"/more/vision"}>
                   <div>
                     <span className="header-slide-out-menu-text-left">Vision</span>
                   </div>
@@ -140,7 +140,7 @@ export default class NavigatorInHeader extends Component {
               </li> 
            
               <li>
-                <Link onClick={this.toggleAboutMenu} to={"/more/Organization"}>
+                <Link onClick={this.toggleAboutMenu} to={"/more/organization"}>
                   <div>
                     <span className="header-slide-out-menu-text-left">Organization</span>
                   </div>
@@ -148,7 +148,7 @@ export default class NavigatorInHeader extends Component {
               </li> 
 
             <li>
-              <Link onClick={this.toggleAboutMenu} to={"/more/Team"}>
+              <Link onClick={this.toggleAboutMenu} to={"/more/team"}>
                 <div>
                   <span className="header-slide-out-menu-text-left">Team</span>
                 </div>
@@ -172,7 +172,7 @@ export default class NavigatorInHeader extends Component {
         {requests(pathname === "/requests", number_of_incoming_friend_requests)}
         {connect(pathname === "/more/connect")}
 
-      <Link onClick={this.toggleAboutMenu} to="/more/about" className={ "about header-nav__item" + ((pathname === "/more/about") ? " active-icon" : "")}>
+      <Link onClick={this.toggleAboutMenu}  className={ "about header-nav__item" + ((pathname === "/more/about") ? " active-icon" : "")}>
            <div id="aboutIcon">About</div>
         <span  className="header-nav__label">
           We Vote

@@ -23,7 +23,7 @@ import FAQ from "./routes/More/FAQ";
 import Friends from "./routes/Friends";
 import GetStarted from "./routes/Intro/GetStarted";
 import GuidePositionList from "./routes/Guide/GuidePositionList";
-import HowToUse from "./routes/More/HowToUse";
+import HowToUse from "./routes/More/howtouse";
 import Intro from "./routes/Intro/Intro";
 import IntroContests from "./routes/Intro/IntroContests";
 import IntroOpinions from "./routes/Intro/IntroOpinions";
@@ -35,7 +35,7 @@ import Office from "./routes/Ballot/Office";
 import Opinions from "./routes/Opinions";
 import OpinionsFollowed from "./routes/OpinionsFollowed";
 import OpinionsIgnored from "./routes/OpinionsIgnored";
-import Organization from "./routes/More/Organization";
+import Organization from "./routes/More/organization";
 import Privacy from "./routes/More/Privacy";
 import Requests from "./routes/Requests";
 import SampleBallot from "./routes/Intro/SampleBallot";
@@ -43,14 +43,14 @@ import Settings from "./routes/Settings/Settings";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
 import SignIn from "./routes/More/SignIn";
 import SignInEmailProcess from "./routes/Process/SignInEmailProcess";
-import Team from "./routes/More/Team";
+import Team from "./routes/More/team";
 import TermsOfService from "./routes/More/TermsOfService";
 import TwitterSignInProcess from "./routes/Process/TwitterSignInProcess";
 import TwitterSignInProcessOld from "./routes/Process/TwitterSignInProcessOld";
 import VerifyEmailProcess from "./routes/Process/VerifyEmailProcess";
 import FriendInvitationByEmailVerifyProcess from "./routes/Process/FriendInvitationByEmailVerifyProcess";
 import VerifyThisIsMe from "./routes/Guide/VerifyThisIsMe";
-import Vision from "./routes/More/Vision";
+import Vision from "./routes/More/vision";
 import YourPage from "./routes/YourPage";
 
 const firstVisit = !cookies.getItem("voter_device_id");
@@ -98,10 +98,10 @@ const routes = () =>
     <Route path="/more/privacy" component={Privacy} />
     <Route path="/more/terms" component={TermsOfService} />
 
-    <Route path="/more/Organization" component={Organization} />
-    <Route path="/more/Vision" component={Vision} />
-    <Route path="/more/HowToUse" component={HowToUse} />
-    <Route path="/more/Team" component={Team} />
+    <Route path="/more/organization" component={Organization} />
+    <Route path="/more/vision" component={Vision} />
+    <Route path="/more/howtouse" component={HowToUse} />
+    <Route path="/more/team" component={Team} />
 
     {/* Voter Guide Pages */}
     <Route path="/voterguide/:organization_we_vote_id" component={GuidePositionList} />
