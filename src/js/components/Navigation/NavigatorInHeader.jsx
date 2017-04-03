@@ -110,7 +110,6 @@ export default class NavigatorInHeader extends Component {
   }
   aboutMenu () {
 
-
     let aboutMenuOpen = this.state.about_menu_open ? "about-menu-open" : "";
 
     return (
