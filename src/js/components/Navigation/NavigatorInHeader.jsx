@@ -62,18 +62,7 @@ const links = {
 
     return jsx;
   },
-  about: function (active) {
 
-    var jsx =
-      <Link to="/more/about" className={ "about header-nav__item" + (active ? " active-icon" : "")}>
-           <div id="aboutIcon">About</div>
-        <span className="header-nav__label">
-          We Vote
-          </span>
-      </Link>;
-
-    return jsx;
-  },
   donate: function (active) {
 
     var jsx =
@@ -96,8 +85,11 @@ export default class NavigatorInHeader extends Component {
   constructor (props) {
       super(props);
       this.state = {
-        friend_invitations_sent_to_me: FriendStore.friendInvitationsSentToMe()
+        friend_invitations_sent_to_me: FriendStore.friendInvitationsSentToMe(),
+        about_menu_open: false
       };
+      this.toggleAboutMenu = this.toggleAboutMenu.bind(this);
+      this.aboutMenu = this.aboutMenu.bind(this);
   }
 
   componentDidMount () {
@@ -113,20 +105,77 @@ export default class NavigatorInHeader extends Component {
       friend_invitations_sent_to_me: FriendStore.friendInvitationsSentToMe()
     });
   }
+  toggleAboutMenu () {
+    this.setState({about_menu_open: !this.state.about_menu_open});
+  }
+  aboutMenu () {
+
+    let aboutMenuOpen = this.state.about_menu_open ? "about-menu-open" : "";
+
+    return (
+      <div className={aboutMenuOpen}>
+      <div className="page-overlay" onClick={this.toggleAboutMenu} />
+      <div className="about-menu">
+
+          <ul className="nav nav-stacked">
+              <li>
+                <Link onClick={this.toggleAboutMenu} to={"/more/howtouse"}>
+                  <div>
+                    <span className="header-slide-out-menu-text-left">How to use We Vote</span>
+                  </div>
+                </Link>
+              </li>
+              <li>
+                <Link onClick={this.toggleAboutMenu} to={"/more/vision"}>
+                  <div>
+                    <span className="header-slide-out-menu-text-left">Vision</span>
+                  </div>
+                </Link>
+              </li>
+              <li>
+                <Link onClick={this.toggleAboutMenu} to={"/more/organization"}>
+                  <div>
+                    <span className="header-slide-out-menu-text-left">Organization</span>
+                  </div>
+                </Link>
+              </li>
+            <li>
+              <Link onClick={this.toggleAboutMenu} to={"/more/team"}>
+                <div>
+                  <span className="header-slide-out-menu-text-left">Team</span>
+                </div>
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    );
+  }
 
   render () {
+    //console.log(this.props.accountMenu);
     var { props: { pathname } } = this;
-    var { ballot, requests, connect, about, donate } = links;
+    var { ballot, requests, connect, donate } = links;
     let number_of_incoming_friend_requests = this.state.friend_invitations_sent_to_me.length;
     const navigator =
       <div className="header-nav">
         {ballot(pathname === "/ballot")}
         {requests(pathname === "/requests", number_of_incoming_friend_requests)}
         {connect(pathname === "/more/connect")}
-        {about(pathname === "/more/about")}
+
+      <Link onClick={this.toggleAboutMenu} className={ "about header-nav__item" + (pathname === "/more/about" ? " active-icon" : "")}>
+           <div id="aboutIcon">About</div>
+        <span className="header-nav__label">
+          We Vote
+          </span>
+          <div>{this.aboutMenu()}</div>
+      </Link>;
+
         {donate(pathname === "/more/donate")}
       </div>;
 
       return navigator;
   }
 }
+
+
