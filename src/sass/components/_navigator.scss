@@ -33,7 +33,7 @@ $icon-color-hover: $gray-dark;
   display: none;
 }
 
-.account-menu,.about-menu {
+.account-menu, .about-menu {
   max-width: 320px;
   position: absolute;
   top: 50px;
@@ -45,10 +45,10 @@ $icon-color-hover: $gray-dark;
   pointer-events: none;
 }
 
-.account-menu{
+.account-menu {
   right: 0;
 }
-.about-menu{
+.about-menu {
   left: 150px;
 }
 
@@ -80,7 +80,7 @@ $icon-color-hover: $gray-dark;
   opacity: 0;
 }
 
-.account-menu-open .page-overlay,.about-menu-open .page-overlay{
+.account-menu-open .page-overlay, .about-menu-open .page-overlay{
   opacity: 1;
   pointer-events: all;
 }

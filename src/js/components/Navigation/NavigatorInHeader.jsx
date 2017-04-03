@@ -132,7 +132,7 @@ export default class NavigatorInHeader extends Component {
                     <span className="header-slide-out-menu-text-left">Vision</span>
                   </div>
                 </Link>
-              </li>  
+              </li>
               <li>
                 <Link onClick={this.toggleAboutMenu} to={"/more/organization"}>
                   <div>
@@ -164,7 +164,7 @@ export default class NavigatorInHeader extends Component {
         {requests(pathname === "/requests", number_of_incoming_friend_requests)}
         {connect(pathname === "/more/connect")}
 
-      <Link onClick={this.toggleAboutMenu} className={ "about header-nav__item" + ((pathname === "/more/about") ? " active-icon" : "")}>
+      <Link onClick={this.toggleAboutMenu} className={ "about header-nav__item" + (pathname === "/more/about" ? " active-icon" : "")}>
            <div id="aboutIcon">About</div>
         <span className="header-nav__label">
           We Vote
