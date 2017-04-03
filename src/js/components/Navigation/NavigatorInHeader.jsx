@@ -123,7 +123,7 @@ export default class NavigatorInHeader extends Component {
           <ul className="nav nav-stacked">
          
               <li>
-                <Link onClick={""} to={"/"}>
+                <Link onClick={this.toggleAboutMenu} to={"/more/HowToUse"}>
                   <div>
                     <span className="header-slide-out-menu-text-left">How to use We Vote</span>
                   </div>
@@ -132,7 +132,7 @@ export default class NavigatorInHeader extends Component {
           
       
               <li>
-                <Link onClick={""} to={"/voterguide/"}>
+                <Link onClick={this.toggleAboutMenu} to={"/more/Vision"}>
                   <div>
                     <span className="header-slide-out-menu-text-left">Vision</span>
                   </div>
@@ -140,7 +140,7 @@ export default class NavigatorInHeader extends Component {
               </li> 
            
               <li>
-                <Link onClick={""} to="/yourpage">
+                <Link onClick={this.toggleAboutMenu} to={"/more/Organization"}>
                   <div>
                     <span className="header-slide-out-menu-text-left">Organization</span>
                   </div>
@@ -148,7 +148,7 @@ export default class NavigatorInHeader extends Component {
               </li> 
 
             <li>
-              <Link onClick={""} to="/more/sign_in">
+              <Link onClick={this.toggleAboutMenu} to={"/more/Team"}>
                 <div>
                   <span className="header-slide-out-menu-text-left">Team</span>
                 </div>
