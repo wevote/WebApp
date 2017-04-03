@@ -86,11 +86,10 @@ export default class NavigatorInHeader extends Component {
       super(props);
       this.state = {
         friend_invitations_sent_to_me: FriendStore.friendInvitationsSentToMe(),
-        about_menu_open: false,
+        about_menu_open: false
       };
       this.toggleAboutMenu = this.toggleAboutMenu.bind(this);
-      this.accountMenu = this.accountMenu.bind(this);
-
+      this.aboutMenu = this.aboutMenu.bind(this);
   }
 
   componentDidMount () {
@@ -109,13 +108,13 @@ export default class NavigatorInHeader extends Component {
   toggleAboutMenu () {
     this.setState({about_menu_open: !this.state.about_menu_open});
   }
-  accountMenu () {
+  aboutMenu () {
 
 
-    let accountMenuOpen = this.state.about_menu_open ? "about-menu-open" : "";
+    let aboutMenuOpen = this.state.about_menu_open ? "about-menu-open" : "";
 
     return (
-      <div className={accountMenuOpen}>
+      <div className={aboutMenuOpen}>
       <div className="page-overlay" onClick={this.toggleAboutMenu} />
       <div className="about-menu">
 
@@ -170,7 +169,7 @@ export default class NavigatorInHeader extends Component {
         <span className="header-nav__label">
           We Vote
           </span>
-          <div>{this.accountMenu()}</div>
+          <div>{this.aboutMenu()}</div>
       </Link>;
 
         {donate(pathname === "/more/donate")}
