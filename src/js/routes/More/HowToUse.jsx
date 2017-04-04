@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import Helmet from "react-helmet";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
 
-export default class About extends Component {
+export default class HowToUse extends Component {
   constructor (props) {
     super(props);
   }
