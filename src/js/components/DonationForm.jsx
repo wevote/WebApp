@@ -3,7 +3,6 @@ import { Button } from "react-bootstrap";
 import { browserHistory } from "react-router";
 import DonateActions from "../actions/DonateActions";
 const web_app_config = require("../config");
-import VoterStore from "../stores/VoterStore";
 
 export default class DonationForm extends Component {
   static propTypes = {
@@ -22,7 +21,6 @@ export default class DonationForm extends Component {
 
   componentDidMount () {
     let self = this;
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     this.stripeHandler = window.StripeCheckout.configure({
       key: web_app_config.STRIPE_API_KEY,
       image: "https://stripe.com/img/documentation/checkout/marketplace.png",
@@ -36,34 +34,16 @@ export default class DonationForm extends Component {
   }
 
   componentWillUnmount () {
-    if (this.stripehandler) {
-        this.stripehandler.close();
-    }
-  }
-
-  _onVoterStoreChange () {
-    this.setState({
-      voter_email_address_list: VoterStore.getEmailAddressList()
-    });
-  }
-
-  _getToken (token) {
-    this.setState({ token: token });
-  }
-
-  _voterEmailAddress () {
-    if (this.state.voter_email_address_list.length > 0) {
-      return this.state.voter_email_address_list[0].normalized_email_address
-    } else {
-      return ""
+    if (this.stripeHandler) {
+        this.stripeHandler.close();
     }
   }
 
   _donationDescription () {
     if (this.props.donateMonthly) {
-      return "Donate Monthly"
+      return "Donate Monthly";
     } else {
-      return "Donation"
+      return "Donation";
     }
   }
 
