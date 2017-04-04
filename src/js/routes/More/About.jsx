@@ -4,7 +4,6 @@ import {Link} from "react-router";
 import ReactPlayer from "react-player";
 import ImageHandler from "../../components/ImageHandler";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
-// const Icon = require("react-svg-icons");
 
 export default class About extends Component {
   constructor (props) {
@@ -34,10 +33,6 @@ export default class About extends Component {
             <span>
               <span className="btn-email__icon glyphicon glyphicon-envelope"/> Join Newsletter
             </span>
-          </a>
-
-          <a className="btn btn-social-icon btn-github" href="https://github.com/WeVote" target="_blank">
-            <span className="fa fa-github"/>
           </a>
 
           <a className="btn btn-social-icon btn-medium" href="https://medium.com/@WeVote" target="_blank">
@@ -101,7 +96,7 @@ export default class About extends Component {
                               imageUrl="/img/global/photos/Jenifer_Fernandez_Ancona-200x200.jpg"
                               alt="Jenifer Fernandez Ancona"/>
                 <div className="media-body">
-                  <h3><strong>Jenifer Fernandez Ancona</strong>, Co-founder &amp; Board Chair</h3>
+                  <h3><strong>Jenifer Fernandez Ancona</strong>, Co-Founder &amp; Board Chair</h3>
                 <span className="xx-small hidden-xs">
                   VP, Strategy &amp; Member Engagement at the Women Donors Network.<br />
                   <br />
@@ -116,7 +111,7 @@ export default class About extends Component {
                 <div className="media-body">
                   <h3><strong>Tiana Epps-Johnson</strong>, Senior Adviser</h3>
                 <span className="xx-small hidden-xs">
-                  Exec. Dir. of CTCL, software for local election administrators. Former Voting Info Project &amp;
+                  Exec. Dir. of CTCL, software for election administrators. Former Voting Info Project &amp;
                   Harvard Ash Center for Democratic Governance and Innovation.<br />
                   <br />
                 </span>
@@ -130,7 +125,7 @@ export default class About extends Component {
                 <div className="media-body">
                   <h3><strong>Debra Cleaver</strong>, c3 Board Member</h3>
               <span className="xx-small hidden-xs">
-                Founder &amp; Exec. Dir. of VOTE.org, the web's most heavily trafficked site for accurate voting
+                Founder &amp; CEO of VOTE.org, the web's most heavily trafficked site for accurate voting
                 information.<br />
                 <br />
               </span>
@@ -170,7 +165,7 @@ export default class About extends Component {
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Dale_McGrew-200x200.jpg"
                               alt="Dale John McGrew"/>
                 <div className="media-body">
-                  <h3><strong>Dale John McGrew</strong>, Exec. Dir. &amp; c3 + c4 Board Member</h3>
+                  <h3><strong>Dale John McGrew</strong>, Co-Founder / CTO &amp; c3 + c4 Board Member</h3>
               <span className="xx-small hidden-xs">
                 Managed large software projects for companies like Disney and over 60 nonprofits.<br />
                 <br />
@@ -296,29 +291,11 @@ export default class About extends Component {
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Dale_McGrew-200x200.jpg"
                               alt="Dale John McGrew"/>
                 <div className="media-body">
-                  <h3><strong>Dale John McGrew</strong>, Executive Director</h3>
-              <span className="xx-small hidden-xs">
-                Managed large software projects for companies like Disney and over 60 nonprofits.<br />
-              <br />
-              </span>
+                  <h3><strong>Dale John McGrew</strong>, Co-Founder / CTO</h3>
                 </div>
               </div>
             </div>
-            <div className="clearfix visible-sm-block visible-md-block visible-lg-block"/>
-            <div className="col-4 col-sm-3 col-md-3">
-              <div className="media">
-                <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Colette_Phair-200x200.jpg"
-                              alt="Colette Phair"/>
-                <div className="media-body">
-                  <h3><strong>Colette Phair</strong>, Manager of Communications and Community Outreach</h3>
-              <span className="xx-small hidden-xs">
-              Formerly Tides &amp; Pachamama Alliance. Studied political science at the University of California and Paris Institute of Political Studies.<br />
-              <br />
-              </span>
-                </div>
-              </div>
-            </div>
-            <div className="clearfix visible-xs-block"/>
+            <div className="clearfix visible-xs-block visible-sm-block visible-md-block visible-lg-block"/>
             <div className="col-4 col-sm-3 col-md-3">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Eric_Ogawa-200x200.jpg"

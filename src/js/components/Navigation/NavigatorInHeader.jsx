@@ -116,19 +116,18 @@ export default class NavigatorInHeader extends Component {
       <div className={aboutMenuOpen}>
       <div className="page-overlay" onClick={this.toggleAboutMenu} />
       <div className="about-menu">
-
           <ul className="nav nav-stacked">
               <li>
                 <Link onClick={this.toggleAboutMenu} to={"/more/howtouse"}>
                   <div>
-                    <span className="header-slide-out-menu-text-left">How to use We Vote</span>
+                    <span className="header-slide-out-menu-text-left">Using We Vote</span>
                   </div>
                 </Link>
               </li>
               <li>
                 <Link onClick={this.toggleAboutMenu} to={"/more/vision"}>
                   <div>
-                    <span className="header-slide-out-menu-text-left">Vision</span>
+                    <span className="header-slide-out-menu-text-left">Our Vision</span>
                   </div>
                 </Link>
               </li>
@@ -142,7 +141,7 @@ export default class NavigatorInHeader extends Component {
             <li>
               <Link onClick={this.toggleAboutMenu} to={"/more/team"}>
                 <div>
-                  <span className="header-slide-out-menu-text-left">Team</span>
+                  <span className="header-slide-out-menu-text-left">Our Team</span>
                 </div>
               </Link>
             </li>
@@ -169,7 +168,7 @@ export default class NavigatorInHeader extends Component {
           We Vote
           </span>
           <div>{this.aboutMenu()}</div>
-      </Link>;
+      </Link>
 
         {donate(pathname === "/more/donate")}
       </div>;
