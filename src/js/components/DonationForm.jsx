@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 import { browserHistory } from "react-router";
+import DonateActions from "../actions/DonateActions";
 const web_app_config = require("../config");
 import VoterStore from "../stores/VoterStore";
-
-// import DonateActions from "../actions/DonateActions";
 
 export default class DonationForm extends Component {
   static propTypes = {
@@ -16,23 +15,21 @@ export default class DonationForm extends Component {
   constructor (props) {
     super(props);
 
-    this.state={
-      voter_email_address_list: []
-    }
     this._openStripeModal = this._openStripeModal.bind(this);
     this._voterEmailAddress = this._voterEmailAddress.bind(this);
     this._donationDescription = this._donationDescription.bind(this);
   }
 
   componentDidMount () {
+    let self = this;
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     this.stripeHandler = window.StripeCheckout.configure({
       key: web_app_config.STRIPE_API_KEY,
       image: "https://stripe.com/img/documentation/checkout/marketplace.png",
       locale: "auto",
       token: function (token) {
-        console.log("token generated " + token.id + " token.email " + token.email);
-//        DonateActions.donationWithStripe(token, token.email, this.props.donationAmount, this.props.donateMonthly);
+//        console.log("token generated " + token.id + " token.email " + token.email);
+        DonateActions.donationWithStripe(token.id, token.email, self.props.donationAmount, self.props.donateMonthly);
         browserHistory.push("/more/donate_thank_you");
       }
     });

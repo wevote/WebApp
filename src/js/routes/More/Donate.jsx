@@ -78,7 +78,7 @@ export default class Donate extends Component {
                 type="text" placeholder="250.00" onChange={this._updateCustomAmount} />
               </div>&nbsp;
                 <DonationForm donationAmount={parseFloat(this.state.custom_amount.replace(/[^0-9\.]+/g, "")) * 100}
-                donateButtonText="Go" />
+                donateMonthly={this.state.donateMonthly} donateButtonText="Go" />
              </form></span> : null}
 
             {isNaN(this.state.custom_amount) || this.state.custom_amount == "0" ?
