@@ -16,6 +16,7 @@ import ClaimYourPage from "./routes/Settings/ClaimYourPage";
 import Connect from "./routes/Connect";
 import Credits from "./routes/More/Credits";
 import Donate from "./routes/More/Donate";
+import DonateThankYou from "./routes/More/DonateThankYou";
 import EmailBallot from "./routes/More/EmailBallot";
 import EmptyBallot from "./routes/Ballot/EmptyBallot";
 import FacebookSignInProcess from "./routes/Process/FacebookSignInProcess";
@@ -93,6 +94,7 @@ const routes = () =>
     <Route path="/more/credits" component={Credits} />
     <Route path="/more/about" component={About} />
     <Route path="/more/donate" component={Donate} />
+    <Route path="/more/donate_thank_you" component={DonateThankYou} />
     <Route path="/more/faq" component={FAQ} />
     <Route path="/more/connect" component={Connect} />
     <Route path="/more/privacy" component={Privacy} />
@@ -125,6 +127,7 @@ const routes = () =>
     <Route path="activity" component={Activity} />
 
     <Route path="/facebook_sign_in" component={FacebookSignInProcess} />
+
 
     <Route path="/twittersigninprocess/:sign_in_step/:incoming_twitter_handle" component={TwitterSignInProcessOld} />
     <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcessOld} />
