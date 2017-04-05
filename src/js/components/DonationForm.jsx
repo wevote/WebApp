@@ -15,7 +15,6 @@ export default class DonationForm extends Component {
     super(props);
 
     this._openStripeModal = this._openStripeModal.bind(this);
-    this._voterEmailAddress = this._voterEmailAddress.bind(this);
     this._donationDescription = this._donationDescription.bind(this);
   }
 
