@@ -61,12 +61,12 @@ export default class Donate extends Component {
             Other Amount
           </Button><br />&nbsp;
           {/*{this.state.showCustomInput ? null : <span><form className="form-check-inline">
-            <input className="form-check-input" type="checkbox" checked={this.state.donateMonthly} onChange={this._toggleDonateMonthly}/>Donate Monthly
+            <input className="form-check-input" type="checkbox" checked={this.state.donateMonthly} onChange={this._toggleDonateMonthly}/> Donate Monthly
           </form></span>}*/}
           <span>
             <form className="form-check-inline">
               <input className="form-check-input" type="checkbox" checked={this.state.donateMonthly}
-              onChange={this._toggleDonateMonthly}/>Donate Monthly
+              onChange={this._toggleDonateMonthly}/> Donate Monthly
             </form>
           </span>
           <br />
@@ -81,11 +81,11 @@ export default class Donate extends Component {
                 donateMonthly={this.state.donateMonthly} donateButtonText="Go" />
              </form></span> : null}
 
-            {isNaN(this.state.custom_amount) || this.state.custom_amount == "0" ?
+            {isNaN(this.state.custom_amount) || this.state.custom_amount === "0" ?
             <span><p>Please enter a valid number</p></span> : null}
           <br />
           <br />
-          Contributions or gifts are not tax deductible. We Vote is a 501(c)(4) nonprofit.
+          Contributions or gifts are not tax deductible. We Vote is a 501(c)(4) nonprofit.<br />
         </div>
       </div>
     </div>;
