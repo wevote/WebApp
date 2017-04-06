@@ -47,6 +47,7 @@ export default class BallotLeft extends Component {
           </li>
         </ul>
         <h4 className="text-left" />
+        {/*
         <ul className="list-group">
           { show_your_page_from_twitter ?
             <li className={"/" + this.props.twitter_screen_name === currentUrl ? "active-link list-group-item" : "list-group-item"}>
@@ -82,6 +83,7 @@ export default class BallotLeft extends Component {
           }
           {this.menuLink("/more/sign_in", "Your Account")}
         </ul>
+        */}
         <h4 className="text-left" />
         <span className="terms-and-privacy">
           <br />

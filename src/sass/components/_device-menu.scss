@@ -23,7 +23,8 @@
     // Hacky grid system overrides
     display: none;
   }
-  .col-8-container {
+  .col-8-container,
+  .col-12-container {
     // Hacky grid system overrides
     width: 100%;
     max-width: 100%;

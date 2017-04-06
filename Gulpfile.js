@@ -31,8 +31,9 @@ gulp.task("browserify", function () {
     transform: [babelify]
   };
 
-  var opsWatchify = assign({ cache: {}, packageCache: {} }, watchify.args, ops);
-  var browserifyWithWatchify = watchify(browserify(opsWatchify));
+  // 2017-04-05 Watchify is causing too many problems, so we are turning it off until we can resolve Issue 757
+  // var opsWatchify = assign({ cache: {}, packageCache: {} }, watchify.args, ops);
+  // var browserifyWithWatchify = watchify(browserify(opsWatchify));
 
   function err (e){
     console.error(e.toString());
@@ -51,7 +52,8 @@ gulp.task("browserify", function () {
     .pipe(gulp.dest("./build/js")) :
 
   // development build... no minification
-  browserifyWithWatchify
+  // browserifyWithWatchify
+  browserify(ops)
     .bundle()
     .on("error", err)
     .pipe(source("bundle.js"))
