@@ -86,6 +86,7 @@ export default class Donate extends Component {
           <br />
           <br />
           Contributions or gifts are not tax deductible. We Vote is a 501(c)(4) nonprofit.<br />
+          <br />
         </div>
       </div>
     </div>;
