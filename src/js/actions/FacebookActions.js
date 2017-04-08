@@ -53,6 +53,16 @@ module.exports = {
     });
   },
 
+  getFacebookInvitableFriendsList: function (picture_width, picture_height) {
+    let fb_api_for_invitable_friends = `/me?fields=invitable_friends.limit(100){name,id,picture.width(${picture_width}).height(${picture_height})}`;
+    window.FB.api(fb_api_for_invitable_friends, (response) => {
+      Dispatcher.dispatch({
+          type: FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS,
+          data: response
+      });
+    });
+  },
+
   login: function () {
     if (!web_app_config.FACEBOOK_APP_ID) {
       console.log("Missing FACEBOOK_APP_ID from src/js/config.js");

@@ -8,7 +8,8 @@ class FacebookStore extends FluxMapStore {
   getInitialState (){
     return {
       authData: {},
-      emailData: {}
+      emailData: {},
+      facebookInvitableFriendsList: {}
     };
   }
 
@@ -69,6 +70,25 @@ class FacebookStore extends FluxMapStore {
     return this.facebookAuthData.authResponse.accessToken;
   }
 
+  facebookFriendsList (){
+      return this.getDataFromArr(this.getState().facebook_friends_list) || {};
+  }
+
+  facebookInvitableFriendsList (){
+    return this.getDataFromArr(this.getState().facebookInvitableFriendsList) || {};
+  }
+
+  getDataFromArr (arr) {
+    if (arr === undefined) {
+      return [];
+    }
+    let data_list = [];
+    for (var i = 0, len = arr.length; i < len; i++) {
+      data_list.push( arr[i] );
+    }
+    return data_list;
+  }
+
   reduce (state, action) {
     switch (action.type) {
 
@@ -89,6 +109,14 @@ class FacebookStore extends FluxMapStore {
         return {
           ...state,
           emailData: action.data
+        };
+
+      case FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS:
+        // Cache the data in the API server
+        // FacebookActions.getFacebookInvitableFriendsList(action.data.id);
+        return {
+          ...state,
+          facebookInvitableFriendsList: action.data.invitable_friends.data
         };
 
       case "voterFacebookSignInRetrieve":
@@ -115,6 +143,7 @@ class FacebookStore extends FluxMapStore {
           // facebook_middle_name: action.res.facebook_middle_name,
           // facebook_last_name: action.res.facebook_last_name,
           facebook_profile_image_url_https: action.res.facebook_profile_image_url_https,
+          facebook_friends_list: action.res.facebook_friends_list,
         };
 
       case "voterFacebookSignInSave":
@@ -133,6 +162,12 @@ class FacebookStore extends FluxMapStore {
           pictureData: {},
           emailData: {}
         };
+
+      case "facebookFriendsAction":
+        return {
+          ...state,
+          facebook_friends_list: action.res.facebook_friends_list,
+         };
 
       case FacebookConstants.FACEBOOK_SIGN_IN_DISCONNECT:
         this.disconnectFromFacebook();

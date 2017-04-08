@@ -8,6 +8,8 @@ export default class CurrentFriendTinyDisplay extends Component {
     showPlaceholderImage: PropTypes.bool,
     voter_photo_url_tiny: PropTypes.string,
     voter_display_name: PropTypes.string,
+    facebook_user_profile_url_https: PropTypes.string,
+    facebook_user_name: PropTypes.string,
   };
 
   render () {
@@ -15,6 +17,8 @@ export default class CurrentFriendTinyDisplay extends Component {
     let display_name;
     if (this.props.voter_display_name) {
       display_name = this.props.voter_display_name;
+    } else if (this.props.facebook_user_name) {
+      display_name = this.props.facebook_user_name;
     } else {
       display_name = "";
     }
@@ -22,6 +26,8 @@ export default class CurrentFriendTinyDisplay extends Component {
     let image_url_tiny;
     if (this.props.voter_photo_url_tiny) {
       image_url_tiny = this.props.voter_photo_url_tiny;
+    } else if (this.props.facebook_user_profile_url_https) {
+      image_url_tiny = this.props.facebook_user_profile_url_https;
     } else {
       image_url_tiny = "";
     }
