@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import ReactPlayer from "react-player";
 import ReadMore from "../../components/Widgets/ReadMore";
-import {vimeo_reg_PSOS, youtube_reg} from "../../utils/textFormat"
+import {vimeo_reg_PSOS, youtube_reg} from "../../utils/textFormat";
 // import ViewSourceModal from "../../components/Widgets/ViewSourceModal";
 export default class PositionSupportOpposeSnippet extends Component {
   static propTypes = {

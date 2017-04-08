@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import ReactPlayer from "react-player";
 import ReadMore from "../../components/Widgets/ReadMore";
-import {vimeo_reg, youtube_reg} from "../../utils/textFormat"
+import {vimeo_reg, youtube_reg} from "../../utils/textFormat";
 var Icon = require("react-svg-icons");
 // import ViewSourceModal from "../../components/Widgets/ViewSourceModal";
 

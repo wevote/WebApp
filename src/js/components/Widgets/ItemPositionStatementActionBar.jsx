@@ -6,7 +6,7 @@ import ReactPlayer from "react-player";
 import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
-import {vimeo_reg, youtube_reg} from "../../utils/textFormat"
+import {vimeo_reg, youtube_reg} from "../../utils/textFormat";
 var Icon = require("react-svg-icons");
 
 export default class ItemPositionStatementActionBar extends Component {
