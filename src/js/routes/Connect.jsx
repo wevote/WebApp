@@ -7,8 +7,11 @@ import GuideActions from "../actions/GuideActions";
 import GuideStore from "../stores/GuideStore";
 import FriendActions from "../actions/FriendActions";
 import FriendStore from "../stores/FriendStore";
+import FacebookActions from "../actions/FacebookActions";
+import FacebookStore from "../stores/FacebookStore";
 import Helmet from "react-helmet";
 import OrganizationsFollowedOnTwitter from "../components/Connect/OrganizationsFollowedOnTwitter";
+import AddFacebookFriends from "../components/Connect/AddFacebookFriends";
 import ItemTinyOpinionsToFollow from "../components/VoterGuide/ItemTinyOpinionsToFollow";
 
 /* VISUAL DESIGN HERE: https://invis.io/E45246B2C */
@@ -23,9 +26,13 @@ export default class Connect extends Component {
     this.state = {
       add_friends_type: "ADD_FRIENDS_BY_EMAIL",
       current_friends_list: FriendStore.currentFriends(),
+      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriendsList(),
       organizations_to_follow_list: GuideStore.toFollowList(),
       organizations_followed_on_twitter_list: GuideStore.followedOnTwitterList(),
-      maximum_organization_display: 25
+      maximum_organization_display: 25,
+      maximum_friend_display: 25,
+      facebook_invitable_friends_image_width: 24,
+      facebook_invitable_friends_image_height: 24,
     };
 	}
 
@@ -39,6 +46,13 @@ export default class Connect extends Component {
       FriendActions.currentFriends();
     }
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
+
+    this._onFacebookStoreChange.bind(this);
+    this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
+    if (this.state.facebook_invitable_friends_list) {
+      FacebookActions.getFacebookInvitableFriendsList(this.state.facebook_invitable_friends_image_width,
+        this.state.facebook_invitable_friends_image_height);
+    }
   }
 
   _onFriendStoreChange () {
@@ -58,9 +72,16 @@ export default class Connect extends Component {
     }
   }
 
+  _onFacebookStoreChange () {
+    this.setState({
+      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriendsList(),
+    });
+  }
+
   componentWillUnmount (){
     this.friendStoreListener.remove();
     this.guideStoreListener.remove();
+    this.facebookStoreListener.remove();
   }
 
 	static getProps () {
@@ -117,6 +138,19 @@ export default class Connect extends Component {
           </div>
         </div> : null }
 
+      <div className="container-fluid well u-stack--md u-inset--md">
+        <h4 className="text-left">Add Friends from Facebook</h4>
+        <div className="card-child__list-group">
+          {
+            <AddFacebookFriends
+                    facebookInvitableFriendsList={this.state.facebook_invitable_friends_list}
+                    facebookInvitableFriendsImageWidth={this.state.facebook_invitable_friends_image_width}
+                    facebookInvitableFriendsImageHeight={this.state.facebook_invitable_friends_image_height}
+                    maximumFriendDisplay={this.state.maximum_friend_display} />
+          }
+          <Link className="pull-right" to="/facebook_invitable_friends">See all</Link>
+        </div>
+      </div>
 
       { this.state.organizations_followed_on_twitter_list && this.state.organizations_followed_on_twitter_list.length ?
         <div className="container-fluid well u-stack--md u-inset--md">

@@ -40,18 +40,18 @@ export default class CurrentFriends extends Component {
     //}
   }
 
-  onTriggerEnter (org_id) {
-    this.refs[`overlay-${org_id}`].show();
+  onTriggerEnter (friend_id) {
+    this.refs[`overlay-${friend_id}`].show();
     this.show_popover = true;
     clearTimeout(this.hide_popover_timer);
   }
 
-  onTriggerLeave (org_id) {
+  onTriggerLeave (friend_id) {
     this.show_popover = false;
     clearTimeout(this.hide_popover_timer);
     this.hide_popover_timer = setTimeout(() => {
       if (!this.show_popover) {
-        this.refs[`overlay-${org_id}`].hide();
+        this.refs[`overlay-${friend_id}`].hide();
       }
     }, 100);
   }

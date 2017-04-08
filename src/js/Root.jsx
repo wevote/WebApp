@@ -21,6 +21,7 @@ import EmailBallot from "./routes/More/EmailBallot";
 import EmptyBallot from "./routes/Ballot/EmptyBallot";
 import FacebookSignInProcess from "./routes/Process/FacebookSignInProcess";
 import FAQ from "./routes/More/FAQ";
+import FacebookInvitableFriends from "./routes/FacebookInvitableFriends";
 import Friends from "./routes/Friends";
 import GetStarted from "./routes/Intro/GetStarted";
 import GuidePositionList from "./routes/Guide/GuidePositionList";
@@ -87,6 +88,7 @@ const routes = () =>
       <Route path="add" component={Connect} />
       <Route path="remove" />
     </Route>
+    <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
 
     {/* More Menu Pages */}
     <Route path="/more/sign_in" component={SignIn} />
