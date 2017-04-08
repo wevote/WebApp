@@ -96,7 +96,7 @@ export default class About extends Component {
                               imageUrl="/img/global/photos/Jenifer_Fernandez_Ancona-200x200.jpg"
                               alt="Jenifer Fernandez Ancona"/>
                 <div className="media-body">
-                  <h4><strong>Jenifer Fernandez Ancona</strong>, Co-Founder &amp; Board Chair</h4>
+                  <h4><strong>Jenifer Fernandez Ancona</strong>, Co-Founder &amp; c4 Board Chair</h4>
                 <h5 className="xx-small hidden-xs">
                   VP, Strategy &amp; Member Engagement at the Women Donors Network.<br />
                   <br />
