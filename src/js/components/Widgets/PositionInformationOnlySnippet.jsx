@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import ReactPlayer from "react-player";
 import ReadMore from "../../components/Widgets/ReadMore";
+import {vimeo_reg, youtube_reg} from "../../utils/textFormat"
 var Icon = require("react-svg-icons");
 // import ViewSourceModal from "../../components/Widgets/ViewSourceModal";
 
@@ -46,8 +47,6 @@ export default class PositionInformationOnlySnippet extends Component {
     // const onViewSourceClick = this.state.showViewSourceModal ? this.closeViewSourceModal.bind(this) : this.openViewSourceModal.bind(this);
 
     var video_url = "";
-    var youtube_reg = /(http:|https:)?\/\/(www\.)?(youtube.com|youtu.be)\/(watch)?(\?v=)?(\S+)?/;
-    var vimeo_reg = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/;
     var youtube_url;
     var vimeo_url;
     var statement_text_no_url;

@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import ReactPlayer from "react-player";
 import ReadMore from "../../components/Widgets/ReadMore";
+import {vimeo_reg_PSOS, youtube_reg} from "../../utils/textFormat"
 // import ViewSourceModal from "../../components/Widgets/ViewSourceModal";
-
 export default class PositionSupportOpposeSnippet extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string,
@@ -46,8 +46,6 @@ export default class PositionSupportOpposeSnippet extends Component {
     // onViewSourceClick is onClick function for view source modal in mobile browser
     // const onViewSourceClick = this.state.showViewSourceModal ? this.closeViewSourceModal.bind(this) : this.openViewSourceModal.bind(this);
 
-    var youtube_reg = /(http:|https:)?\/\/(www\.)?(youtube.com|youtu.be)\/(watch)?(\?v=)?(\S+)?/;
-    var vimeo_reg = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/g;
     var video_url = "";
     var youtube_url;
     var vimeo_url;
@@ -55,7 +53,7 @@ export default class PositionSupportOpposeSnippet extends Component {
 
     if (statement_text) {
       youtube_url = statement_text.match(youtube_reg);
-      vimeo_url = statement_text.match(vimeo_reg);
+      vimeo_url = statement_text.match(vimeo_reg_PSOS);
     }
 
     if (youtube_url) {

@@ -6,6 +6,7 @@ import ReactPlayer from "react-player";
 import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
+import {vimeo_reg, youtube_reg} from "../../utils/textFormat"
 var Icon = require("react-svg-icons");
 
 export default class ItemPositionStatementActionBar extends Component {
@@ -174,8 +175,6 @@ export default class ItemPositionStatementActionBar extends Component {
 
     var video_url = "";
     var statement_text_no_url = null;
-    var youtube_reg = /(http:|https:)?\/\/(www\.)?(youtube.com|youtu.be)\/(watch)?(\?v=)?(\S+)?/;
-    var vimeo_reg = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/;
     var youtube_url;
     var vimeo_url;
 
