@@ -223,3 +223,13 @@
 .slick-dots {
   bottom: 2em;
 }
+
+
+#facebookIntroConnect,
+#twitterIntroConnect {
+  -webkit-box-flex: initial;
+  -webkit-flex: 0 0 33.333333%;
+  -ms-flex: 0 0 33.333333%;
+  flex: initial;
+  max-width: initial;
+}
