@@ -73,7 +73,7 @@ export default class SignIn extends Component {
           <div className="intro-story__padding--btm">It's not required but it helps<br />you get started faster.</div>
           {this.state.voter.signed_in_facebook ?
             null :
-            <div id = "row1" className="row">
+            <div className="row">
               <div id = "facebookIntroConnect" className="col-md-4 col-md-offset-4 xs-block form-group">
                 <FacebookSignIn /><br />
                 Sign in with Facebook so you can<br />
