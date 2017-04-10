@@ -113,3 +113,6 @@ export function elipses (name, mobile){
   }
   return mobile ? cut(3) : cut(8);
 }
+
+export let youtube_reg = /(http:|https:)?\/\/(www\.)?(youtube.com|youtu.be)\/(watch)?(\?v=)?(\S+)?/;
+export let vimeo_reg = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/;
