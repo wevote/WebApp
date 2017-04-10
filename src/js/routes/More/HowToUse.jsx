@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import Helmet from "react-helmet";
+import {Link} from "react-router";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
 
 export default class HowToUse extends Component {
@@ -49,6 +50,11 @@ export default class HowToUse extends Component {
 
           <h3 className="h3"><a href="https://help.wevote.us/hc/en-us/categories/115000098688-Using-We-Vote" target="_blank">Visit our help center for answers to more common questions.&nbsp;<i
             className="fa fa-external-link"/></a></h3>
+          <span className="terms-and-privacy">
+            <br />
+            <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy Policy</Link>
+          </span>
+          <br />
           <br />
         </div>
       </div>

@@ -108,14 +108,21 @@ export default class HeaderBar extends Component {
                 </Link>
               </li> :
               null }
-            <li className="">
-              <Link onClick={this.hideAccountMenu.bind(this)} to="/more/about">
+            <li className="visible-xs-block">
+              <Link onClick={this.hideAccountMenu.bind(this)} to="/more/howtouse">
                 <div>
-                  <span className="header-slide-out-menu-text-left">About <strong>We Vote</strong></span>
+                  <span className="header-slide-out-menu-text-left">Using We Vote</span>
                 </div>
               </Link>
             </li>
-            <li className="">
+            <li className="visible-xs-block">
+              <Link onClick={this.hideAccountMenu.bind(this)} to="/more/about">
+                <div>
+                  <span className="header-slide-out-menu-text-left">About We Vote</span>
+                </div>
+              </Link>
+            </li>
+            <li className="visible-xs-block">
               <Link onClick={this.hideAccountMenu.bind(this)} to="/more/donate">
                 <div>
                   <span className="header-slide-out-menu-text-left">Donate</span>

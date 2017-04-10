@@ -1,6 +1,5 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 import FluxMapStore from "flux/lib/FluxMapStore";
-const cookies = require("../utils/cookies");
 
 class DonateStore extends FluxMapStore {
 

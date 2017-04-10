@@ -3,7 +3,6 @@ import Helmet from "react-helmet";
 import {Link} from "react-router";
 import ReactPlayer from "react-player";
 import ImageHandler from "../../components/ImageHandler";
-import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
 
 export default class About extends Component {
   constructor (props) {
@@ -15,7 +14,6 @@ export default class About extends Component {
   }
 
   render () {
-    let supportProps = { is_public_position: false };
     return <div className="about-us">
       <Helmet title="About Us - We Vote"/>
       <div className="container-fluid card">
@@ -42,42 +40,7 @@ export default class About extends Component {
 
         <br />
         <ReactPlayer url="https://player.vimeo.com/video/121315141" width="300px" height="231px"/>
-        <br />
         <div className="our-story">
-          <strong>Vote with Confidence</strong><br />
-          We Vote is the place to find your network's opinions on candidates and propositions before you vote, and share
-          what you believe:
-          <ul>
-            <li>
-              follow the <strong>voter guides</strong> of trusted groups and thought leaders
-            </li>
-            <li>
-              see voting recommendations <strong>all the way down your ballot</strong>
-            </li>
-            <li>
-              easily <strong>create your own voter guide</strong>, showing which candidates and propositions you support
-            </li>
-            <li>
-              discuss your views <strong>with friends</strong>
-            </li>
-          </ul>
-          <br />
-          <strong>What about privacy?</strong><br />
-          When you support or oppose a ballot item, your position is friends-only
-          by default. Use the privacy button (sample below) to switch your views to public, or back to private.
-          <PositionPublicToggle ballot_item_we_vote_id="null"
-                                className="null"
-                                type="MEASURE"
-                                supportProps={supportProps}
-          />
-          <br />
-
-          <strong>Get Help Using We Vote</strong><br />
-          <a href="https://help.wevote.us/hc/en-us/" target="_blank">Visit our help center for answers to common questions.&nbsp;<i
-            className="fa fa-external-link"/></a><br />
-          <br />
-          More questions? <Link to="/more/faq">Visit our frequently asked questions page</Link> for answers.<br />
-
           <h3 className="h3">A Nonprofit Startup</h3>
           We Vote is made of two 501(c)(3) and 501(c)(4) nonpartisan nonprofit organizations based in
           Oakland, California. This site is managed by the 501(c)(4), We Vote USA. Our
@@ -321,9 +284,6 @@ export default class About extends Component {
           <Link to="/more/credits/">We are thankful for our volunteers, our board of directors, and the
             organizations</Link> that are critical to our work.<br />
 
-          <h3 className="h3">Help Make We Vote Better</h3>
-          <a href="https://goo.gl/forms/B6P0iE44R21t36L42" target="_blank">We would love to hear how you think we can improve We Vote.&nbsp;<i
-            className="fa fa-external-link"/></a><br />
           <br />
         </div>
       </div>
