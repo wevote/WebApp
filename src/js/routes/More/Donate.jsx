@@ -2,7 +2,8 @@ import React, {Component} from "react";
 import { Button } from "react-bootstrap";
 import Helmet from "react-helmet";
 import DonationForm from "../../components/DonationForm";
-
+import DonationError from "../../components/DonationError";
+import DonateStore from "../stores/DonateStore";
 
 export default class Donate extends Component {
   constructor (props) {
@@ -10,7 +11,8 @@ export default class Donate extends Component {
     this.state = {
       showCustomInput: false,
       custom_amount: "",
-      donateMonthly: false
+      donateMonthly: false,
+      donationErrorMessage: ""
     };
 
     this._toggleCustomAmount = this._toggleCustomAmount.bind(this);
@@ -23,6 +25,13 @@ export default class Donate extends Component {
   }
 
   ComponentDidMount () {
+    this.donateStoreListener = DonateStore.addListener(this._onDonateStoreChange.bind(this));
+  }
+
+  _onDonateStoreChange () {
+    if(!DonateStore.donation_success) {
+      this.setState({donationErrorMessage: DonateStore.donation_error});
+    }
   }
 
   _toggleDonateMonthly () {
@@ -49,7 +58,9 @@ export default class Donate extends Component {
         <h1 className="h4">Your donations keep us going. Thank you!</h1>
 
         <div className="Donate">
-          If you like We Vote, please give what you can to help us reach more voters.<br />
+           {this.state.donationError.length > 0 ? <DonationError errorMessage={this.state.donationErrorMessage}> :
+           <p>If you like We Vote, please give what you can to help us reach more voters.</p>}
+          <br />
           <br />
           Select an Amount<br />
           <DonationForm donationAmount={500} donateButtonText="$5" donateMonthly={this.state.donateMonthly} /> &nbsp;
@@ -60,9 +71,6 @@ export default class Donate extends Component {
           <Button bsStyle="success" onClick={this._toggleCustomAmount}>
             Other Amount
           </Button><br />&nbsp;
-          {/*{this.state.showCustomInput ? null : <span><form className="form-check-inline">
-            <input className="form-check-input" type="checkbox" checked={this.state.donateMonthly} onChange={this._toggleDonateMonthly}/> Donate Monthly
-          </form></span>}*/}
           <span>
             <form className="form-check-inline">
               <input className="form-check-input" type="checkbox" checked={this.state.donateMonthly}

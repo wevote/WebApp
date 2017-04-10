@@ -27,7 +27,7 @@ export default class DonationForm extends Component {
       token: function (token) {
 //        console.log("token generated " + token.id + " token.email " + token.email);
         DonateActions.donationWithStripe(token.id, token.email, self.props.donationAmount, self.props.donateMonthly);
-        browserHistory.push("/more/donate_thank_you");
+        browserHistory.push("/more/processing_donation");
       }
     });
   }

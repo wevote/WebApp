@@ -3,6 +3,14 @@ import FluxMapStore from "flux/lib/FluxMapStore";
 
 class DonateStore extends FluxMapStore {
 
+  donation_success () {
+    return this.getState().success;
+  }
+
+  donation_error () {
+    return this.getState().error_message_for_voter;
+  }
+
   reduce (state, action) {
 
     switch (action.type) {
