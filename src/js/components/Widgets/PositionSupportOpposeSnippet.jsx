@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import ReactPlayer from "react-player";
 import ReadMore from "../../components/Widgets/ReadMore";
-import {vimeo_reg_PSOS, youtube_reg} from "../../utils/textFormat";
+import {vimeo_reg, youtube_reg} from "../../utils/textFormat";
 // import ViewSourceModal from "../../components/Widgets/ViewSourceModal";
 export default class PositionSupportOpposeSnippet extends Component {
   static propTypes = {
@@ -53,7 +53,7 @@ export default class PositionSupportOpposeSnippet extends Component {
 
     if (statement_text) {
       youtube_url = statement_text.match(youtube_reg);
-      vimeo_url = statement_text.match(vimeo_reg_PSOS);
+      vimeo_url = statement_text.match(vimeo_reg);
     }
 
     if (youtube_url) {
