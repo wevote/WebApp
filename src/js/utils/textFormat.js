@@ -116,4 +116,3 @@ export function elipses (name, mobile){
 
 export let youtube_reg = /(http:|https:)?\/\/(www\.)?(youtube.com|youtu.be)\/(watch)?(\?v=)?(\S+)?/;
 export let vimeo_reg = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/;
-export let vimeo_reg_PSOS = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/g;
