@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import { Button } from "react-bootstrap";
+import { browserHistory } from "react-router";
 import Helmet from "react-helmet";
 import DonationForm from "../../components/DonationForm";
 import DonationError from "../../components/DonationError";
-import DonateStore from "../stores/DonateStore";
+import DonateStore from "../../stores/DonateStore";
 
 export default class Donate extends Component {
   constructor (props) {
@@ -18,19 +19,27 @@ export default class Donate extends Component {
     this._toggleCustomAmount = this._toggleCustomAmount.bind(this);
     this._updateCustomAmount = this._updateCustomAmount.bind(this);
     this._toggleDonateMonthly = this._toggleDonateMonthly.bind(this);
+    this._donateStoreChange = this._donateStoreChange.bind(this);
   }
 
   static getProps () {
     return {};
   }
 
-  ComponentDidMount () {
-    this.donateStoreListener = DonateStore.addListener(this._onDonateStoreChange.bind(this));
+  componentDidMount () {
+    this.donateStoreListener = DonateStore.addListener(this._donateStoreChange);
   }
 
-  _onDonateStoreChange () {
-    if(!DonateStore.donation_success) {
-      this.setState({donationErrorMessage: DonateStore.donation_error});
+  componentWillUnmount (){
+    this.donateStoreListener.remove();
+  }
+
+  _donateStoreChange () {
+    this.setState({loading: false});
+    if (!DonateStore.donation_success()) {
+      this.setState({donationErrorMessage: DonateStore.donation_error()});
+    } else {
+      browserHistory.push("/more/donate_thank_you");
     }
   }
 
@@ -51,22 +60,21 @@ export default class Donate extends Component {
   }
 
   render () {
-
     return <div>
       <Helmet title="Donate - We Vote"/>
       <div className="container-fluid card">
         <h1 className="h4">Your donations keep us going. Thank you!</h1>
 
         <div className="Donate">
-           {this.state.donationError.length > 0 ? <DonationError errorMessage={this.state.donationErrorMessage}> :
+           {this.state.donationErrorMessage.length > 0 ? <DonationError errorMessage={this.state.donationErrorMessage} /> :
            <p>If you like We Vote, please give what you can to help us reach more voters.</p>}
           <br />
           <br />
           Select an Amount<br />
           <DonationForm donationAmount={500} donateButtonText="$5" donateMonthly={this.state.donateMonthly} /> &nbsp;
           <DonationForm donationAmount={1500} donateButtonText="$15" donateMonthly={this.state.donateMonthly} /> &nbsp;
-          <DonationForm donationAmount={2700} donateButtonText="$27" donateMonthly={this.state.donateMonthly} /> &nbsp;
-          <DonationForm donationAmount={5000} donateButtonText="$50" donateMonthly={this.state.donateMonthly} /> &nbsp;
+          <DonationForm donationAmount={2700} donateButtonText="$27" donateMonthly={this.state.donateMonthly}  /> &nbsp;
+          <DonationForm donationAmount={5000} donateButtonText="$50" donateMonthly={this.state.donateMonthly}  /> &nbsp;
           <DonationForm donationAmount={10000} donateButtonText="$100" donateMonthly={this.state.donateMonthly} /> &nbsp;
           <Button bsStyle="success" onClick={this._toggleCustomAmount}>
             Other Amount

@@ -39,7 +39,6 @@ import OpinionsFollowed from "./routes/OpinionsFollowed";
 import OpinionsIgnored from "./routes/OpinionsIgnored";
 import Organization from "./routes/More/Organization";
 import Privacy from "./routes/More/Privacy";
-import ProcessingDonation from "./routes/More/ProcessingDonation";
 import Requests from "./routes/Requests";
 import SampleBallot from "./routes/Intro/SampleBallot";
 import Settings from "./routes/Settings/Settings";
@@ -101,7 +100,6 @@ const routes = () =>
     <Route path="/more/faq" component={FAQ} />
     <Route path="/more/connect" component={Connect} />
     <Route path="/more/privacy" component={Privacy} />
-    <Route path="/more/processing_donation" component={ProcessingDonation} />
     <Route path="/more/terms" component={TermsOfService} />
 
     <Route path="/more/organization" component={Organization} />
