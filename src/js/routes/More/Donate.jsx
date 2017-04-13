@@ -1,8 +1,10 @@
 import React, {Component} from "react";
 import { Button } from "react-bootstrap";
+import { browserHistory } from "react-router";
 import Helmet from "react-helmet";
 import DonationForm from "../../components/DonationForm";
-
+import DonationError from "../../components/DonationError";
+import DonateStore from "../../stores/DonateStore";
 
 export default class Donate extends Component {
   constructor (props) {
@@ -10,19 +12,33 @@ export default class Donate extends Component {
     this.state = {
       showCustomInput: false,
       custom_amount: "",
-      donateMonthly: false
+      donateMonthly: false,
+      donationErrorMessage: ""
     };
 
     this._toggleCustomAmount = this._toggleCustomAmount.bind(this);
     this._updateCustomAmount = this._updateCustomAmount.bind(this);
     this._toggleDonateMonthly = this._toggleDonateMonthly.bind(this);
+    this._donateStoreChange = this._donateStoreChange.bind(this);
   }
 
   static getProps () {
     return {};
   }
 
-  ComponentDidMount () {
+  componentDidMount () {
+  this._donateStoreChange();
+    this.donateStoreListener = DonateStore.addListener(this._donateStoreChange);
+  }
+
+  componentWillUnmount (){
+    this.donateStoreListener.remove();
+  }
+
+  _donateStoreChange () {
+    if (!DonateStore.donation_success()) {
+      this.setState({donationErrorMessage: DonateStore.donation_error()});
+    }
   }
 
   _toggleDonateMonthly () {
@@ -42,27 +58,25 @@ export default class Donate extends Component {
   }
 
   render () {
-
     return <div>
       <Helmet title="Donate - We Vote"/>
       <div className="container-fluid card">
         <h1 className="h4">Your donations keep us going. Thank you!</h1>
 
         <div className="Donate">
-          If you like We Vote, please give what you can to help us reach more voters.<br />
+           {this.state.donationErrorMessage.length > 0 ? <DonationError errorMessage={this.state.donationErrorMessage} /> :
+           <p>If you like We Vote, please give what you can to help us reach more voters.</p>}
+          <br />
           <br />
           Select an Amount<br />
           <DonationForm donationAmount={500} donateButtonText="$5" donateMonthly={this.state.donateMonthly} /> &nbsp;
           <DonationForm donationAmount={1500} donateButtonText="$15" donateMonthly={this.state.donateMonthly} /> &nbsp;
-          <DonationForm donationAmount={2700} donateButtonText="$27" donateMonthly={this.state.donateMonthly} /> &nbsp;
-          <DonationForm donationAmount={5000} donateButtonText="$50" donateMonthly={this.state.donateMonthly} /> &nbsp;
+          <DonationForm donationAmount={2700} donateButtonText="$27" donateMonthly={this.state.donateMonthly}  /> &nbsp;
+          <DonationForm donationAmount={5000} donateButtonText="$50" donateMonthly={this.state.donateMonthly}  /> &nbsp;
           <DonationForm donationAmount={10000} donateButtonText="$100" donateMonthly={this.state.donateMonthly} /> &nbsp;
           <Button bsStyle="success" onClick={this._toggleCustomAmount}>
             Other Amount
           </Button><br />&nbsp;
-          {/*{this.state.showCustomInput ? null : <span><form className="form-check-inline">
-            <input className="form-check-input" type="checkbox" checked={this.state.donateMonthly} onChange={this._toggleDonateMonthly}/> Donate Monthly
-          </form></span>}*/}
           <span>
             <form className="form-check-inline">
               <input className="form-check-input" type="checkbox" checked={this.state.donateMonthly}

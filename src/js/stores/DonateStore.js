@@ -3,6 +3,18 @@ import FluxMapStore from "flux/lib/FluxMapStore";
 
 class DonateStore extends FluxMapStore {
 
+  donation_success () {
+    return this.getState().success;
+  }
+
+  donation_error () {
+    return this.getState().error_message_for_voter || '';
+  }
+
+  donation_response_received () {
+    return this.getState().donation_response_received;
+  }
+
   reduce (state, action) {
 
     switch (action.type) {
@@ -14,6 +26,7 @@ class DonateStore extends FluxMapStore {
           monthly_donation: action.res.monthly_donation,
           saved_stripe_donation: action.res.saved_stripe_donation,
           success: action.res.success,
+          donation_response_received: true
         };
 
       case "error-donateRetrieve":
