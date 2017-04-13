@@ -27,6 +27,7 @@ export default class Donate extends Component {
   }
 
   componentDidMount () {
+  this._donateStoreChange();
     this.donateStoreListener = DonateStore.addListener(this._donateStoreChange);
   }
 
@@ -35,11 +36,8 @@ export default class Donate extends Component {
   }
 
   _donateStoreChange () {
-    this.setState({loading: false});
     if (!DonateStore.donation_success()) {
       this.setState({donationErrorMessage: DonateStore.donation_error()});
-    } else {
-      browserHistory.push("/more/donate_thank_you");
     }
   }
 
