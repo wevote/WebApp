@@ -44,6 +44,16 @@ export function capitalizeString (raw_string) {
   }
 }
 
+export function cleanArray (actual) {
+  var newArray = [];
+  for (var i = 0; i < actual.length; i++) {
+    if (actual[i]) {
+      newArray.push(actual[i]);
+    }
+  }
+  return newArray;
+}
+
 export function extractTwitterHandleFromTextString (raw_string) {
   if (raw_string === undefined) {
     return "";

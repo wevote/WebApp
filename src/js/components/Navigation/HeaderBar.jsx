@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import BallotStore from "../../stores/BallotStore";
+import BookmarkStore from "../../stores/BookmarkStore";
 import NavigatorInHeader from "./NavigatorInHeader";
 import SearchAllBox from "../SearchAllBox";
-import BookmarkStore from "../../stores/BookmarkStore";
+import VoterSessionActions from "../../actions/VoterSessionActions";
 var Icon = require("react-svg-icons");
 
 export default class HeaderBar extends Component {
@@ -39,6 +40,11 @@ export default class HeaderBar extends Component {
   }
 
   hideAccountMenu () {
+    this.setState({accountMenuOpen: false});
+  }
+
+  signOutAndHideAccountMenu () {
+    VoterSessionActions.voterSignOut();
     this.setState({accountMenuOpen: false});
   }
 
@@ -92,13 +98,31 @@ export default class HeaderBar extends Component {
               </li> :
               null
             }
-            <li>
-              <Link onClick={this.hideAccountMenu.bind(this)} to="/more/sign_in">
-                <div>
-                  <span className="header-slide-out-menu-text-left">Your Account</span>
-                </div>
-              </Link>
-            </li>
+            { this.props.voter && this.props.voter.is_signed_in ?
+              <li>
+                <Link onClick={this.hideAccountMenu.bind(this)} to="/more/sign_in">
+                  <div>
+                    <span className="header-slide-out-menu-text-left">Your Account</span>
+                  </div>
+                </Link>
+              </li> :
+              <li>
+                <Link onClick={this.hideAccountMenu.bind(this)} to="/more/sign_in">
+                  <div>
+                    <span className="header-slide-out-menu-text-left">Sign In</span>
+                  </div>
+                </Link>
+              </li> }
+            { this.props.voter && this.props.voter.is_signed_in ?
+              <li>
+                <Link onClick={this.signOutAndHideAccountMenu.bind(this)} to="/more/sign_in">
+                  <div>
+                    <span className="header-slide-out-menu-text-left">Sign Out</span>
+                  </div>
+                </Link>
+              </li> :
+              null
+            }
             { this.state.bookmarks && this.state.bookmarks.length ?
               <li>
                 <Link onClick={this.hideAccountMenu.bind(this)} to="/bookmarks">
