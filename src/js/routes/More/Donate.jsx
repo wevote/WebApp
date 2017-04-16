@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import { Button } from "react-bootstrap";
-import { browserHistory } from "react-router";
 import Helmet from "react-helmet";
 import DonationForm from "../../components/DonationForm";
 import DonationError from "../../components/DonationError";
@@ -71,8 +70,8 @@ export default class Donate extends Component {
           Select an Amount<br />
           <DonationForm donationAmount={500} donateButtonText="$5" donateMonthly={this.state.donateMonthly} /> &nbsp;
           <DonationForm donationAmount={1500} donateButtonText="$15" donateMonthly={this.state.donateMonthly} /> &nbsp;
-          <DonationForm donationAmount={2700} donateButtonText="$27" donateMonthly={this.state.donateMonthly}  /> &nbsp;
-          <DonationForm donationAmount={5000} donateButtonText="$50" donateMonthly={this.state.donateMonthly}  /> &nbsp;
+          <DonationForm donationAmount={2700} donateButtonText="$27" donateMonthly={this.state.donateMonthly} /> &nbsp;
+          <DonationForm donationAmount={5000} donateButtonText="$50" donateMonthly={this.state.donateMonthly} /> &nbsp;
           <DonationForm donationAmount={10000} donateButtonText="$100" donateMonthly={this.state.donateMonthly} /> &nbsp;
           <Button bsStyle="success" onClick={this._toggleCustomAmount}>
             Other Amount

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import BallotActions from "../../actions/BallotActions";
 import VoterActions from "../../actions/VoterActions";
+import { cleanArray } from "../../utils/textFormat";
 let moment = require("moment");
 
 export default class BallotElectionList extends Component {
@@ -24,10 +25,9 @@ export default class BallotElectionList extends Component {
   render () {
     let currentDate = moment().format("YYYY-MM-DD");
     let simple_save = true;
-    const electionList = this.props.ballot_election_list.map((item, index) =>
+    let upcomingElectionList = this.props.ballot_election_list.map((item, index) =>
       item.election_date > currentDate ?
       <div key={index}>
-        <p>(Upcoming Election)</p>
         <dl className="list-unstyled text-center">
           <button type="button" className="btn btn-success"
             onClick={this.updateBallot.bind(this, item.original_text_for_map_search, simple_save, item.google_civic_election_id)}>
@@ -36,8 +36,14 @@ export default class BallotElectionList extends Component {
           </button>
         </dl>
       </div> :
+      null
+     );
+    upcomingElectionList = cleanArray(upcomingElectionList);
+
+    let priorElectionList = this.props.ballot_election_list.map((item, index) =>
+      item.election_date > currentDate ?
+      null :
       <div key={index}>
-      <p>(Click to switch to your previous ballot and see election results)</p>
         <dl className="list-unstyled text-center">
           <button type="button" className="btn btn-success"
             onClick={this.updateBallot.bind(this, item.original_text_for_map_search, simple_save, item.google_civic_election_id)}>
@@ -47,9 +53,18 @@ export default class BallotElectionList extends Component {
         </dl>
       </div>
      );
+    priorElectionList = cleanArray(priorElectionList);
 
     return <div>
-      {electionList}
+      { upcomingElectionList && upcomingElectionList.length > 0 ?
+        <h4 className="h4">Upcoming Election(s)</h4> :
+        null }
+      {upcomingElectionList}
+
+      { priorElectionList && priorElectionList.length > 0 ?
+        <h4 className="h4">Prior Election(s)</h4> :
+        null }
+      {priorElectionList}
     </div>;
   }
 }

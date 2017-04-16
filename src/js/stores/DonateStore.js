@@ -8,7 +8,7 @@ class DonateStore extends FluxMapStore {
   }
 
   donation_error () {
-    return this.getState().error_message_for_voter || '';
+    return this.getState().error_message_for_voter || "";
   }
 
   donation_response_received () {

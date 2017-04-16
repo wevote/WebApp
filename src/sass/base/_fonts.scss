@@ -2,7 +2,7 @@
 // This file contains all @font-face declarations, if any.
 // ----------------------------------------------------------------------------
 
-@import url(https://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro);
 
 
 @font-face {
@@ -58,6 +58,8 @@ i.icon-candidate-small.icon-main.icon-icon-person-placeholder-6-1 {
 }
 .icon-icon-org-placeholder-6-2::before {
   content: "c";
+  vertical-align: middle;
+  font-size: 1.6em;
 }
 .icon-icon-more-opinions-2-2::before {
   content: "d";
@@ -99,9 +101,9 @@ i.icon-candidate-small.icon-main.icon-icon-person-placeholder-6-1 {
 }
 
 .icon-candidate-small {
-  font-size: 24px;
+  font-size: 40px;
   @include breakpoints (mid-small) {
-    font-size: 48px;
+    font-size: 40px;
   }
 }
 

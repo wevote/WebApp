@@ -1,19 +1,17 @@
-import React, {Component, PropTypes} from "react";
-import { Panel, Label } from "react-bootstrap";
-import Helmet from "react-helmet";
-
+import React, { Component, PropTypes } from "react";
+import { Label } from "react-bootstrap";
 
 export default class DonationError extends Component {
-  static getProps = {
-    errorMessage: PropTypes.string
-  }
+
+  static propTypes = {
+    errorMessage: PropTypes.string.isRequired
+  };
 
   constructor (props) {
     super(props);
-
   }
-  render () {
 
+  render () {
     return <div>
       <Label bsStyle="warning">{this.props.errorMessage}</Label>
     </div>;

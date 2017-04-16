@@ -9,7 +9,7 @@
 
 /// Heading font family
 /// @type List
-$heading-font-stack: 'Roboto Slab', serif;
+$heading-font-stack: 'Source Sans Pro', sans-serif;
 
 /// Regular font family
 /// @type List
@@ -29,7 +29,7 @@ $code-font-stack: 'Courier New', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono',
 $space-none:   0;
 $space-xxs:  2px;
 $space-xs:   4px;
-$space-sm:   8px;
+$space-sm:  12px;
 $space-md:  16px;
 $space-lg:  32px;
 $space-xl:  64px;
@@ -93,7 +93,7 @@ $gray-darker:  #333 !default;
 
 /// Main brand color
 /// @type Color
-$brand-color: #4f5f6f !default;
+$brand-color: #1c1a33 !default;
 
 /// Link color
 /// @type Color

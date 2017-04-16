@@ -109,7 +109,7 @@ export default class Application extends Component {
       in_theater_mode = true;
     } else if (pathname === "/bookmarks" || pathname === "/friends" || pathname === "/more/about" || pathname === "/more/connect" ||
       pathname === "/more/donate" || pathname === "/more/howtouse" || pathname === "/more/organization" ||
-      pathname === "/more/privacy" || pathname === "/more/signin" || pathname === "/more/team" ||
+      pathname === "/more/privacy" || pathname === "/more/sign_in" || pathname === "/more/team" ||
       pathname === "/more/terms" || pathname === "/more/vision" || pathname === "/opinions" ||
       pathname === "/requests") {
       content_full_width_mode = true;
