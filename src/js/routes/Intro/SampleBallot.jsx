@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {browserHistory} from "react-router";
+import cookies from "../../utils/cookies";
 import Helmet from "react-helmet";
 
 export default class SampleBallot extends Component {
@@ -17,6 +18,7 @@ export default class SampleBallot extends Component {
   componentWillMount () {
     document.body.style.backgroundColor = "#A3A3A3";
     document.body.className = "story-view";
+    cookies.setItem("voter_orientation_complete", "1", Infinity, "/");
   }
 
   componentWillUnmount () {

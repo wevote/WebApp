@@ -1,12 +1,12 @@
 import React from 'react';
 import {render} from 'enzyme';
 import {expect} from 'chai';
-import NavigatorInHeader from '../../src/js/components/Navigation/NavigatorInHeader.jsx';
+import HeaderBar from '../../src/js/components/Navigation/HeaderBar.jsx';
 
 
-describe('NavigatorInHeader', () => {
+describe('HeaderBar', () => {
   it('Should have appropriate classname', () => {
-    const wrapper = render(<NavigatorInHeader />);
-    expect(wrapper).to.have.className('header-nav');
+    const wrapper = render(<HeaderBar />);
+    expect(wrapper).to.have.className('page-header');
   });
 });

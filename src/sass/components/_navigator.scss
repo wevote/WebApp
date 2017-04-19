@@ -99,10 +99,13 @@ $icon-color-hover: $gray-dark;
     display: flex;
   }
 
-
   &__label {
     display: block;
     font-size: 10px;
+  }
+
+  &__sign-in-label {
+    font-size: 14px;
   }
 
   &__item {

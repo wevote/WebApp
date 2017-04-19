@@ -43,6 +43,20 @@ export default class Vision extends Component {
         <br />
         <ReactPlayer url="https://player.vimeo.com/video/121315141" width="400px" height="308px"/>
         <br />
+        We Vote is building the next generation of voting tech. We're creating a digital voter guide
+        informed by issues you care about and people you trust. Through our nonpartisan, open source platform,
+        we'll help you become a better voter, up and down the ballot.<br />
+        <br />
+        You have alot of decisions to make when you vote, and political campaigns don't always tell the
+        whole truth. With fake news and misinformation, it's hard to tell which candidate or ballot initiative
+        is on your side. Does that candidate for state legislature care about the same issues that you do?
+        Does the awkwardly-worded ballot initiative support what you believe or is it the exact opposite
+        (and was it purposely written to be so confusing?!)<br />
+        <br />
+        We Vote cuts through the clutter to help you understand what's on your ballot.
+        Our open platform empowers voters to create and share voter guides that aggregate information
+        and opinions across personal networks. So you can help your friends be better voters too.<br />
+        <br />
       </div>
     </div>;
   }

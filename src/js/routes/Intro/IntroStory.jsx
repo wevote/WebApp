@@ -41,8 +41,6 @@ export default class IntroStory extends Component {
 
     // Once you have visited this page, set a cookie recording that you have visited this page
     cookies.setItem("intro_story_watched", "1", Infinity, "/");
-
-
   }
 
   componentWillUnmount () {

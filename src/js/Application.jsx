@@ -107,11 +107,12 @@ export default class Application extends Component {
     var content_full_width_mode = false;
     if (pathname === "/intro/story" || pathname === "/intro/sample_ballot" || pathname === "/intro/get_started") {
       in_theater_mode = true;
-    } else if (pathname === "/bookmarks" || pathname === "/friends" || pathname === "/more/about" || pathname === "/more/connect" ||
+    } else if (pathname === "/bookmarks" || pathname === "/friends" || pathname === "/intro" ||
+      pathname === "/more/about" || pathname === "/more/connect" ||
       pathname === "/more/donate" || pathname === "/more/howtouse" || pathname === "/more/organization" ||
       pathname === "/more/privacy" || pathname === "/more/sign_in" || pathname === "/more/team" ||
       pathname === "/more/terms" || pathname === "/more/vision" || pathname === "/opinions" ||
-      pathname === "/requests") {
+      pathname === "/requests" || pathname === "/welcome") {
       content_full_width_mode = true;
     }
 

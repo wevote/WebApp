@@ -54,8 +54,10 @@ import VerifyEmailProcess from "./routes/Process/VerifyEmailProcess";
 import FriendInvitationByEmailVerifyProcess from "./routes/Process/FriendInvitationByEmailVerifyProcess";
 import VerifyThisIsMe from "./routes/Guide/VerifyThisIsMe";
 import Vision from "./routes/More/Vision";
+import Welcome from "./routes/Welcome";
 import YourPage from "./routes/YourPage";
 
+// See /js/components/Navigation/HeaderBar.jsx for voter_orientation_complete cookie
 const firstVisit = !cookies.getItem("voter_device_id");
 
 const routes = () =>
@@ -64,14 +66,14 @@ const routes = () =>
     { firstVisit ?
       <IndexRedirect to="/intro/story" /> :
       <IndexRedirect to="/ballot" /> }
+    <Route path="/welcome" component={Welcome} />
 
-    <Route path="/intro" component={Intro}>
-      <Route path="/intro/contests" component={IntroContests} />
-      <Route path="/intro/opinions" component={IntroOpinions} />
-      <Route path="/intro/story" component={IntroStory} />
-      <Route path="/intro/sample_ballot" component={SampleBallot} />
-      <Route path="/intro/get_started" component={GetStarted} />
-    </Route>
+    <Route path="/intro" component={Intro} />
+    <Route path="/intro/contests" component={IntroContests} />
+    <Route path="/intro/opinions" component={IntroOpinions} />
+    <Route path="/intro/story" component={IntroStory} />
+    <Route path="/intro/sample_ballot" component={SampleBallot} />
+    <Route path="/intro/get_started" component={GetStarted} />
 
     {/* Settings go in this structure... */}
     <Route path="/settings" component={SettingsDashboard}>
