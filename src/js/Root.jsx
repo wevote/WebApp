@@ -64,8 +64,8 @@ const routes = () =>
   <Route path="/" component={Application}>
     <Route component={Intro} />
     { firstVisit ?
-      <IndexRedirect to="/intro/story" /> :
-      <IndexRedirect to="/ballot" /> }
+      <IndexRedirect to="/welcome" /> :
+      <IndexRedirect to="/welcome" /> }
     <Route path="/welcome" component={Welcome} />
 
     <Route path="/intro" component={Intro} />
