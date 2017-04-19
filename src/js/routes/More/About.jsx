@@ -144,7 +144,7 @@ export default class About extends Component {
                 <div className="media-body">
                   <h4><strong>Barbara Shannon</strong>, c3 Board Member</h4>
               <h5 className="xx-small hidden-xs">
-                Advisor to entrepreneurs and C-level Fortune 500 leaders. MBA The Wharton School.<br />
+                Adviser to entrepreneurs and C-level Fortune 500 leaders. MBA The Wharton School.<br />
                 <br />
               </h5>
                 </div>
@@ -172,7 +172,7 @@ export default class About extends Component {
                 <div className="media-body">
                   <h4><strong>William Winters</strong>, c4 Board Member</h4>
               <h5 className="xx-small hidden-xs">
-                Campaign Manager at Color Of Change.
+                Campaign Manager at Color Of Change, CEL &amp; Change.org.
                 <br />
                 <br />
               </h5>
@@ -185,6 +185,24 @@ export default class About extends Component {
           <div className="row centered team-members-list">
             <div className="col-4 col-sm-3 col-md-3 team-member">
               <div className="media">
+                <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Alicia_Prevost-200x200.jpg"
+                              alt="Alicia Prevost"/>
+                <div className="media-body">
+                  <h4><strong>Alicia Prevost</strong>, Executive Director</h4>
+                </div>
+              </div>
+            </div>
+            <div className="col-4 col-sm-3 col-md-3 team-member">
+              <div className="media">
+                <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Dale_McGrew-200x200.jpg"
+                              alt="Dale John McGrew"/>
+                <div className="media-body">
+                  <h4><strong>Dale John McGrew</strong>, Co-Founder / CTO</h4>
+                </div>
+              </div>
+            </div>
+            <div className="col-4 col-sm-3 col-md-3 team-member">
+              <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Sarah_Clements-200x200.jpg"
                               alt="Sarah Clements"/>
                 <div className="media-body">
@@ -192,6 +210,7 @@ export default class About extends Component {
                 </div>
               </div>
             </div>
+            <div className="clearfix visible-xs-block"/>{/* After every 3 */}
             <div className="col-4 col-sm-3 col-md-3 team-member">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Irene_Florez-200x200.jpg"
@@ -201,6 +220,7 @@ export default class About extends Component {
                 </div>
               </div>
             </div>
+            <div className="clearfix visible-xs-block visible-sm-block visible-md-block visible-lg-block"/>{/* After every 4 */}
             <div className="col-4 col-sm-3 col-md-3 team-member">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Jeff_French-200x200.jpg"
@@ -210,17 +230,16 @@ export default class About extends Component {
                 </div>
               </div>
             </div>
-            <div className="clearfix visible-xs-block"/>
             <div className="col-4 col-sm-3 col-md-3 team-member">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Anisha_Jain-200x200.jpg"
                               alt="Anisha Jain"/>
                 <div className="media-body">
-                  <h4><strong>Anisha Jain</strong>, Engineering Intern</h4>
+                  <h4><strong>Anisha Jain</strong>, Sr. Software Engineer</h4>
                 </div>
               </div>
             </div>
-            <div className="clearfix visible-sm-block visible-md-block visible-lg-block"/>
+            <div className="clearfix visible-xs-block"/>{/* After every 3 */}
             <div className="col-4 col-sm-3 col-md-3 team-member">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Judy_Johnson-200x200.jpg"
@@ -235,30 +254,21 @@ export default class About extends Component {
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Neelam_Joshi-200x200.jpg"
                               alt="Neelam Joshi"/>
                 <div className="media-body">
-                  <h4><strong>Neelam Joshi</strong>, Engineering Intern</h4>
+                  <h4><strong>Neelam Joshi</strong>, Sr. Software Engineer</h4>
                 </div>
               </div>
             </div>
-            <div className="clearfix visible-xs-block"/>
+            <div className="clearfix visible-xs-block visible-sm-block visible-md-block visible-lg-block"/>{/* After every 4 */}
             <div className="col-4 col-sm-3 col-md-3 team-member">
               <div className="media">
-                <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Ciero_Kilpatrrick-200x200.jpg"
+                <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Ciero_Kilpatrick-200x200.jpg"
                               alt="Ciero Kilpatrick"/>
                 <div className="media-body">
-                  <h4><strong>Ciero Kilpatrick</strong>, User Experience Intern</h4>
+                  <h4><strong>Ciero Kilpatrick</strong>, User Experience Design Intern</h4>
                 </div>
               </div>
             </div>
-            <div className="col-4 col-sm-3 col-md-3 team-member">
-              <div className="media">
-                <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Dale_McGrew-200x200.jpg"
-                              alt="Dale John McGrew"/>
-                <div className="media-body">
-                  <h4><strong>Dale John McGrew</strong>, Co-Founder / CTO</h4>
-                </div>
-              </div>
-            </div>
-            <div className="clearfix visible-xs-block visible-sm-block visible-md-block visible-lg-block"/>
+            <div className="clearfix visible-xs-block"/>{/* After every 3 */}
             <div className="col-4 col-sm-3 col-md-3 team-member">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Eric_Ogawa-200x200.jpg"

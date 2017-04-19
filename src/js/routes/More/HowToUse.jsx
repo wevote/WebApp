@@ -15,48 +15,58 @@ export default class HowToUse extends Component {
   render () {
     let supportProps = { is_public_position: false };
     return <div>
-      <Helmet title="Using We Vote"/>
+      <Helmet title="How to Use We Vote"/>
       <div className="container-fluid card">
-        <h1 className="h1">Using We Vote</h1>
+        <h1 className="h1">How To Use We Vote</h1>
 
+        <h3 className="h3">Step 1: Follow Voter Guides</h3>
+        <Link to="/opinions">Find organizations</Link> that you trust, and follow those
+        organizations. <strong>Why?</strong> When you follow an
+        organization's voter guide, their recommendations will show up on your ballot.
+        This will make it easier for you to make choices all the way down your ballot.<br />
+
+        <h3 className="h3">Step 2: Support or Oppose Candidates</h3>
+        <Link to="/ballot">Look at the politicians on your ballot</Link>. Support the candidates you know you
+        agree with. <strong>Why?</strong> See how easy it is to take a stance, and then work through your ballot.<br />
         <br />
-        <div className="Our-Story">
-          <strong>What is We Vote?</strong><br />
-          We Vote is the place to find your network's opinions on candidates and propositions before you vote, and share
-          what you believe:
-          <ul>
-            <li>
-              follow the <strong>voter guides</strong> of trusted groups and thought leaders
-            </li>
-            <li>
-              see voting recommendations <strong>all the way down your ballot</strong>
-            </li>
-            <li>
-              easily <strong>create your own voter guide</strong>, showing candidates and propositions you support
-            </li>
-            <li>
-              discuss your views <strong>with friends</strong>
-            </li>
-          </ul>
+        <strong>What about privacy?</strong> When you support or oppose a ballot item, your position is friends-only
+        by default. Use the privacy button (sample below) to switch your views to public, or back to only being
+        visible to your We Vote friends.
+        <PositionPublicToggle ballot_item_we_vote_id="null"
+                              className="null"
+                              type="MEASURE"
+                              supportProps={supportProps}
+        />
 
-          <strong>What about privacy?</strong><br />
-          When you support or oppose a ballot item, your position is friends-only
-          by default. Use the privacy button (sample below) to switch your views to public, or back to private.
-          <PositionPublicToggle ballot_item_we_vote_id="null"
-                                className="null"
-                                type="MEASURE"
-                                supportProps={supportProps}
-          />
+        <h3 className="h3">Step 3: Sign In</h3>
+        <Link to="/more/sign_in">Sign in with Twitter, Facebook, or your email
+        address</Link>. <strong>Why?</strong> Signing in with Twitter makes it
+        easier to find groups you already trust. Signing in with Facebook makes it easier to find friends
+        to ask for advice.<br />
 
-          <h3 className="h3"><a href="https://help.wevote.us/hc/en-us/categories/115000098688-Using-We-Vote" target="_blank">Visit our help center for answers to more common questions.&nbsp;<i
-            className="fa fa-external-link"/></a></h3>
-          <span className="terms-and-privacy">
-            <br />
-            <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy Policy</Link>
-          </span>
+        <h3 className="h3">Step 4: Invite a Few Friends</h3>
+        <Link to="/more/connect">Invite friends</Link> so you can discuss your views with
+        friends. <strong>Why?</strong> You will make better voting decisions with help from the friends
+        you trust and respect.<br />
+
+        <h3 className="h3">Step 5: Share your Views</h3>
+        Easily create your own voter guide, showing candidates and propositions you
+        support. <strong>Why?</strong> By sharing your views with your friends, you are helping them learn how
+        to make their voices heard. When more people vote, we get better outcomes.<br />
+
+        <h3 className="h3">Step 6: Share the Love</h3>
+        If you like We Vote, please <Link to="/more/donate">give what you can</Link> to help us reach more voters.
+        Since we are a nonprofit, your donations make our work possible! Thank you.<br />
+
+        <h3 className="h3"><a href="https://help.wevote.us/hc/en-us/categories/115000098688-Using-We-Vote"
+                              target="_blank">Visit our help center for answers to common questions.&nbsp;<i
+          className="fa fa-external-link"/></a></h3>
+        <span className="terms-and-privacy">
           <br />
-          <br />
-        </div>
+          <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy Policy</Link>
+        </span>
+        <br />
+        <br />
       </div>
     </div>;
   }
