@@ -35,6 +35,7 @@ export default class SearchAllBox extends Component {
     this.onSearchResultMouseOver = this.onSearchResultMouseOver.bind(this);
     this.onSearchResultClick = this.onSearchResultClick.bind(this);
     this.onSearchFormSubmit = this.onSearchFormSubmit.bind(this);
+    this.onClearSearch = this.onClearSearch.bind(this);
     this.searchHasContent = this.searchHasContent.bind(this);
     this.navigateToSelectedLink = this.navigateToSelectedLink.bind(this);
 
@@ -179,6 +180,14 @@ export default class SearchAllBox extends Component {
     this.updateSearchText();
   }
 
+  onClearSearch () {
+    this.setState({text_from_search_field: "", open: true, selected_index: 0, search_results: []});
+
+    setTimeout(() => {
+      this.refs.searchAllBox.focus();
+    }, 0);
+  }
+
   updateSearchText () {
     let selectedResultElement = this.state.search_results[this.state.selected_index];
     let selectedResultText = "";
@@ -218,6 +227,12 @@ export default class SearchAllBox extends Component {
       "search-container__hidden": !this.state.open,
       "search-container": true
     });
+    let clear_button_classes = classNames({
+      "site-search__clear": true,
+      "btn": true,
+      "btn-default": true,
+      "site-search__clear__hidden": !this.state.text_from_search_field.length
+    });
 
     return <div className="page-header__search">
         <form onSubmit={this.onSearchFormSubmit} role="search">
@@ -236,6 +251,7 @@ export default class SearchAllBox extends Component {
                    value={this.state.text_from_search_field}
                    ref="searchAllBox" />
             <div className="input-group-btn">
+              <button className={clear_button_classes} onClick={this.onClearSearch}><i className="glyphicon glyphicon-remove" /></button>
               <button className="site-search__button btn btn-default" type="submit"><i className="glyphicon glyphicon-search" /></button>
             </div>
           </div>

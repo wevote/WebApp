@@ -75,10 +75,16 @@
     border: none; // override Bootstrap
   }
 
-  &__button {
+  &__button,
+  &__clear {
     border: none; // override Bootstrap
     height: 34px;
+
+    &__hidden {
+      display: none;
+    }
   }
+
   &__input-field::placeholder {
     opacity: 0;
     @include breakpoints(mid-small) { // 2
