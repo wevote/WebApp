@@ -122,8 +122,14 @@ export default class SearchAllBox extends Component {
   }
 
   onSearchBlur () {
+    if (this.clearing_search) {
+      this.clearing_search = false;
+      return;
+    }
+
     // Delay closing the drop down so that a click on the Link can have time to work
     setTimeout(() => {
+      // TODO: these need to move to a global flux action
       $(".deskOnly").removeClass("deskOnly");
       $(".hideItem").removeClass("hideItem");
       this.hideResults();
@@ -180,7 +186,12 @@ export default class SearchAllBox extends Component {
     this.updateSearchText();
   }
 
-  onClearSearch () {
+  onClearSearch (e) {
+    this.clearing_search = true;
+
+    e.preventDefault();
+    e.stopPropagation();
+
     this.setState({text_from_search_field: "", open: true, selected_index: 0, search_results: []});
 
     setTimeout(() => {
