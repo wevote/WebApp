@@ -13,7 +13,7 @@ const links = {
     var icon = "glyphicon glyphicon-list-alt glyphicon-line-adjustment nav-icon";
 
     var jsx =
-      <Link to="/ballot" className={ "header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
+      <Link to="/ballot" className={ "ballot-header-icon header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
         <span className={icon} title="Ballot" />
         <span className="header-nav__label">
           Ballot
@@ -27,7 +27,7 @@ const links = {
     var icon = "glyphicon glyphicon-inbox glyphicon-line-adjustment nav-icon";
 
     var jsx =
-      <Link to="/requests" className={ "header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
+      <Link to="/requests" className={ "requests-header-icon header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
         <span className={icon} title="Requests">
           {number_of_incoming_friend_requests ?
             <span className="badge-total badge">{number_of_incoming_friend_requests}</span> :
@@ -45,7 +45,7 @@ const links = {
     var icon = "glyphicon icon-icon-connect-1-3 glyphicon-line-adjustment nav-icon";
 
     var jsx =
-      <Link to="/more/connect" className={ "header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
+      <Link to="/more/connect" className={ "connect-header-icon header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
         <span className={icon} title="Connect" />
         <span className="header-nav__label">
           Connect
@@ -72,7 +72,7 @@ const links = {
   donate: function (active) {
 
     var jsx =
-      <Link to="/more/donate" className={ "header-nav__item header-nav__item--has-icon hidden-xs" + (active ? " active-icon" : "")}>
+      <Link to="/more/donate" className={ "donate-header-icon header-nav__item header-nav__item--has-icon hidden-xs" + (active ? " active-icon" : "")}>
         <img className = "glyphicon" src="/img/global/svg-icons/glyphicons-20-heart-empty.svg" />
         <span className="header-nav__label">
           Donate
@@ -326,15 +326,15 @@ export default class HeaderBar extends Component {
     return (
       <header className="page-header">
         <div className="page-header__content">
-          <Link to="/welcome" className="page-logo h4 hidden-xs">
+          <Link to="/welcome" className="page-logo page-logo-full-size h4 hidden-xs">
             We Vote
             <span className="page-logo__version"> alpha</span>
           </Link>
 
-          { voter_orientation_complete ? <Link to="/welcome" className="page-logo h4 visible-xs">
+          { voter_orientation_complete ? <Link to="/welcome" className="page-logo page-logo-short h4 visible-xs">
               WV
             </Link> :
-            <Link to="/welcome" className="page-logo h4 visible-xs">
+            <Link to="/welcome" className="page-logo page-logo-short h4 visible-xs">
               We Vote
               <span className="page-logo__version"> alpha</span>
             </Link> }
@@ -347,7 +347,7 @@ export default class HeaderBar extends Component {
             { voter_orientation_complete ? connect(pathname === "/more/connect") : null }
 
             { voter_orientation_complete ?
-              <Link onClick={this.toggleAboutMenu} className={ "header-nav__item header-nav__item--has-icon hidden-xs" + (pathname === "/more/about" ? " active-icon" : "")}>
+              <Link onClick={this.toggleAboutMenu} className={ "about-header-icon header-nav__item header-nav__item--has-icon hidden-xs" + (pathname === "/more/about" ? " active-icon" : "")}>
                 <span className="header-nav__icon--about">About</span>
                 <span className="header-nav__label">
                 We Vote
@@ -355,7 +355,7 @@ export default class HeaderBar extends Component {
                 <div>{this.aboutMenu()}</div>
               </Link> :
               <div>
-                <Link to="/more/about" className={ "header-nav__item" + (pathname === "/more/about" ? " active-icon" : "")}>
+                <Link to="/more/about" className={ "about-header-icon header-nav__item" + (pathname === "/more/about" ? " active-icon" : "")}>
                   <span className="header-nav__icon--about">About</span>
                   <span className="header-nav__label">
                   We Vote
