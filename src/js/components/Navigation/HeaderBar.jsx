@@ -72,7 +72,7 @@ const links = {
   donate: function (active) {
 
     var jsx =
-      <Link to="/more/donate" className={ "donate-header-icon header-nav__item header-nav__item--has-icon hidden-xs" + (active ? " active-icon" : "")}>
+      <Link to="/more/donate" className={ "header-nav__item--donate header-nav__item header-nav__item--has-icon hidden-xs" + (active ? " active-icon" : "")}>
         <img className = "glyphicon" src="/img/global/svg-icons/glyphicons-20-heart-empty.svg" />
         <span className="header-nav__label">
           Donate
@@ -347,7 +347,7 @@ export default class HeaderBar extends Component {
             { voter_orientation_complete ? connect(pathname === "/more/connect") : null }
 
             { voter_orientation_complete ?
-              <Link onClick={this.toggleAboutMenu} className={ "about-header-icon header-nav__item header-nav__item--has-icon hidden-xs" + (pathname === "/more/about" ? " active-icon" : "")}>
+              <Link onClick={this.toggleAboutMenu} className={ "header-nav__item header-nav__item--about header-nav__item--has-icon hidden-xs" + (pathname === "/more/about" ? " active-icon" : "")}>
                 <span className="header-nav__icon--about">About</span>
                 <span className="header-nav__label">
                 We Vote
@@ -355,7 +355,7 @@ export default class HeaderBar extends Component {
                 <div>{this.aboutMenu()}</div>
               </Link> :
               <div>
-                <Link to="/more/about" className={ "about-header-icon header-nav__item" + (pathname === "/more/about" ? " active-icon" : "")}>
+                <Link to="/more/about" className={ "header-nav__item header-nav__item--about" + (pathname === "/more/about" ? " active-icon" : "")}>
                   <span className="header-nav__icon--about">About</span>
                   <span className="header-nav__label">
                   We Vote
@@ -382,7 +382,7 @@ export default class HeaderBar extends Component {
 
           { voter_orientation_complete ? <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
             {voter_photo_url_medium ?
-              <div className="header-nav__avatar-container">
+              <div id="js-header-avatar" className="header-nav__avatar-container">
                   <img className="header-nav__avatar"
                         src={voter_photo_url_medium}
                         height={34}
