@@ -1,10 +1,4 @@
 
-.headroom {
-  &--pinned {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
-  }
-}
-
 .page-header {
   // required overrides for Bootstrap :(
   border: none;
@@ -136,5 +130,24 @@
   }
   @include breakpoints(max nav) {
     display: none;
+  }
+}
+
+.headroom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  transform: translateY(0);
+  transition: all .2s ease-in-out;
+  &--pinned {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+  }
+  &--slide-up {
+    background-color: red;
+  }
+  &--slide-down {
+    background-color: blue;
   }
 }
