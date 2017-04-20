@@ -5,7 +5,7 @@ import { browserHistory, Link } from "react-router";
 import SearchAllActions from "../actions/SearchAllActions";
 import SearchAllStore from "../stores/SearchAllStore";
 import { makeSearchLink } from "../utils/search-functions";
-import { capitalizeString } from "../utils/textFormat";
+import { capitalizeString, removeClass } from "../utils/textFormat";
 import ImageHandler from "../components/ImageHandler";
 
 export default class SearchAllBox extends Component {
@@ -48,8 +48,8 @@ export default class SearchAllBox extends Component {
     this.requests = $(".header-nav__item:nth-child(2)");
     this.connect = $(".header-nav__item:nth-child(3)");
     this.avatar = $("#avatarContainer");
-    this.about = document.getElementsByClassName("header-nav__item")[3];
-    this.donate = document.getElementsByClassName("header-nav__item")[4];
+    this.about = document.getElementsByClassName("about-header-icon")[0];
+    this.donate = document.getElementsByClassName("donate-header-icon")[0];
     // When we first enter we want to retrieve values to have for a click in the search box
     let text_from_search_field = this.props.text_from_search_field;
 
@@ -114,10 +114,10 @@ export default class SearchAllBox extends Component {
 
     this.siteLogoText.addClass("hidden");
     this.ballot.addClass("hidden-xs");
-    this.requests.addClass("hidden-xs");
     this.connect.addClass("hidden-xs");
-    this.donate.className += " hidden";
+    this.requests.addClass("hidden-xs");
     this.about.className += " hidden";
+    this.donate.className += " hidden";
     this.displayResults();
   }
 
@@ -129,9 +129,12 @@ export default class SearchAllBox extends Component {
 
     // Delay closing the drop down so that a click on the Link can have time to work
     setTimeout(() => {
-
-      $(".hidden-xs").removeClass("hidden-xs");
-      $(".hidden").removeClass("hidden");
+      $(".page-logo-full-size").removeClass("hidden");
+      $(".ballot-header-icon").removeClass("hidden-xs");
+      $(".connect-header-icon").removeClass("hidden-xs");
+      $(".requests-header-icon").removeClass("hidden-xs");
+      $(".about-header-icon").removeClass("hidden");
+      $(".donate-header-icon").removeClass("hidden");
       this.hideResults();
     }, 250);
   }
@@ -187,6 +190,9 @@ export default class SearchAllBox extends Component {
   }
 
   onClearSearch (e) {
+    // Close up the search box and reset the navigation
+    this.onSearchBlur();
+
     this.clearing_search = true;
 
     e.preventDefault();
@@ -194,9 +200,9 @@ export default class SearchAllBox extends Component {
 
     this.setState({text_from_search_field: "", open: true, selected_index: 0, search_results: []});
 
-    setTimeout(() => {
-      this.refs.searchAllBox.focus();
-    }, 0);
+    //setTimeout(() => {
+    //   this.refs.searchAllBox.focus();
+    // }, 0);
   }
 
   updateSearchText () {
@@ -209,7 +215,7 @@ export default class SearchAllBox extends Component {
       return;
     }
 
-    this.setState({text_from_search_field: selectedResultText});
+    this.setState({text_from_search_field: selectedResultText, open: false});
     //Update the search results to the selected query
     SearchAllActions.searchAll(selectedResultText);
   }
@@ -262,7 +268,7 @@ export default class SearchAllBox extends Component {
                    value={this.state.text_from_search_field}
                    ref="searchAllBox" />
             <div className="input-group-btn">
-              <button className={clear_button_classes} onClick={this.onClearSearch}><i className="glyphicon glyphicon-remove" /></button>
+              <button className={clear_button_classes} onClick={this.onClearSearch}><i className="glyphicon glyphicon-remove-circle" /></button>
               <button className="site-search__button btn btn-default" type="submit"><i className="glyphicon glyphicon-search" /></button>
             </div>
           </div>
