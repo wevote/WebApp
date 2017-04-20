@@ -63,6 +63,19 @@ export default class ItemTinyOpinionsToFollow extends Component {
     }, 100);
   }
 
+  onTriggerToggle (e, org_id) {
+    if (this.mobile) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (this.popover_state[org_id].show) {
+        this.onTriggerLeave(org_id);
+      } else {
+        this.onTriggerEnter(org_id);
+      }
+    }
+  }
+
   render () {
     if (this.state.organizations_to_follow === undefined) {
       return null;
@@ -99,22 +112,11 @@ export default class ItemTinyOpinionsToFollow extends Component {
             twitter_followers_count: one_organization.twitter_followers_count,
           };
 
-        let voterGuideLink = one_organization.organization_twitter_handle ?
-           "/" + one_organization.organization_twitter_handle :
-           "/voterguide/" + one_organization.organization_we_vote_id;
-
         this.popover_state[org_id] = {show: false, timer: null};
 
-        let voterGuideInlineDisplay;
-
-        if (this.mobile) {
-          voterGuideInlineDisplay = <OrganizationTinyDisplay {...one_organization} showPlaceholderImage />
-        } else {
-          voterGuideInlineDisplay = <Link key={`tiny-link-${org_id}`} to={voterGuideLink} className="u-no-underline">
-            <OrganizationTinyDisplay {...one_organization}
-                                    showPlaceholderImage />
-          </Link>;
-        }
+        let voterGuideLink = one_organization.organization_twitter_handle ?
+                                  "/" + one_organization.organization_twitter_handle :
+                                  "/voterguide/" + one_organization.organization_we_vote_id;
 
         let organizationPopover = <Popover
             id={`organization-popover-${org_id}`}
@@ -140,7 +142,9 @@ export default class ItemTinyOpinionsToFollow extends Component {
             placement="bottom"
             overlay={organizationPopover}>
           <span className="position-rating__source with-popover">
-            {voterGuideInlineDisplay}
+            <Link key={`tiny-link-${org_id}`} to={voterGuideLink} onClick={(e) => this.onTriggerToggle(e, org_id)} className="u-no-underline">
+              <OrganizationTinyDisplay {...one_organization} showPlaceholderImage />
+            </Link>
           </span>
         </OverlayTrigger>;
       }
