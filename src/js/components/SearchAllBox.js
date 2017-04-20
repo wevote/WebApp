@@ -47,9 +47,9 @@ export default class SearchAllBox extends Component {
     this.ballot = $(".header-nav__item:nth-child(1)");
     this.requests = $(".header-nav__item:nth-child(2)");
     this.connect = $(".header-nav__item:nth-child(3)");
-    this.avatar = $("#avatarContainer");
-    this.about = document.getElementsByClassName("about-header-icon")[0];
-    this.donate = document.getElementsByClassName("donate-header-icon")[0];
+    this.avatar = $("#js-header-avatar");
+    this.about = document.getElementsByClassName("header-nav__item--about")[0];
+    this.donate = document.getElementsByClassName("header-nav__item--donate")[0];
     // When we first enter we want to retrieve values to have for a click in the search box
     let text_from_search_field = this.props.text_from_search_field;
 
@@ -133,8 +133,8 @@ export default class SearchAllBox extends Component {
       $(".ballot-header-icon").removeClass("hidden-xs");
       $(".connect-header-icon").removeClass("hidden-xs");
       $(".requests-header-icon").removeClass("hidden-xs");
-      $(".about-header-icon").removeClass("hidden");
-      $(".donate-header-icon").removeClass("hidden");
+      $(".header-nav__item--about").removeClass("hidden");
+      $(".header-nav__item--donate").removeClass("hidden");
       this.hideResults();
     }, 250);
   }
