@@ -14,6 +14,7 @@
     "max-empty-lines": 3,
     "number-leading-zero": "never",
     "rule-empty-line-before": null,
+    "selector-no-id": true,
     "shorthand-property-no-redundant-values": null
   },
   "ignoreFiles": [

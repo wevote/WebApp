@@ -112,12 +112,12 @@ export default class SearchAllBox extends Component {
     // TODO: convert to flux action
     // for the global nav
 
-    this.siteLogoText.addClass("hideItem");
-    this.ballot.addClass("deskOnly");
-    this.requests.addClass("deskOnly");
-    this.connect.addClass("deskOnly");
-    this.donate.className += " hideItem";
-    this.about.className += " hideItem";
+    this.siteLogoText.addClass("hidden");
+    this.ballot.addClass("hidden-xs");
+    this.requests.addClass("hidden-xs");
+    this.connect.addClass("hidden-xs");
+    this.donate.className += " hidden";
+    this.about.className += " hidden";
     this.displayResults();
   }
 
@@ -129,9 +129,9 @@ export default class SearchAllBox extends Component {
 
     // Delay closing the drop down so that a click on the Link can have time to work
     setTimeout(() => {
-      // TODO: these need to move to a global flux action
-      $(".deskOnly").removeClass("deskOnly");
-      $(".hideItem").removeClass("hideItem");
+
+      $(".hidden-xs").removeClass("hidden-xs");
+      $(".hidden").removeClass("hidden");
       this.hideResults();
     }, 250);
   }

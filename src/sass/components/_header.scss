@@ -9,7 +9,9 @@
   // required overrides for Bootstrap :(
   border: none;
   @include clearfix;
+  padding-right: 15px; // $grid-gutter-width/2
   padding-bottom: 0; // override to avoid Bootstrap collision
+  padding-left: 15px; // $grid-gutter-width/2
   margin: 0 auto;
   max-width: $max-page-container-width;
   position: relative;
@@ -17,7 +19,7 @@
   &__container {
     background-color: $brand-color;
     // border-bottom: 1px solid $gray-border;
-    padding: .5em;
+    padding: .5em 0;
   }
   &__content { // additional element to exclue Burger Menu element
     display: flex;
@@ -27,7 +29,6 @@
 
   &__search {
     margin: 0;
-    padding: .2em 0 0 0;
     position: relative;
     width: 100%;
   }
