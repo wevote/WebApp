@@ -46,10 +46,11 @@ export default class Credits extends Component {
             <li>Dale McGrew - Oakland, CA</li>
             <li>Jenifer Fernandez Ancona - Oakland, CA</li>
             <li>Rob Simpson - Warrenton, VA</li>
-            <li>Jeff French - Oakland, CA</li>
             <li>Anisha Jain - San Jose, CA</li>
+            <li>Jeff French - Oakland, CA</li>
             <li>Sarah Clements - San Francisco, CA</li>
             <li>Zach Monteith - San Francisco, CA</li>
+            <li>Neelam Joshi - Columbus, OH</li>
             <li>Lisa Cho - San Francisco, CA</li>
             <li>Nicolas Fiorini - Arlington, VA</li>
             <li>Colette Phair - Oakland, CA</li>
@@ -57,7 +58,6 @@ export default class Credits extends Component {
             <li>Joe Evans - Santa Cruz, CA</li>
             <li>Andrea Moed - San Francisco, CA</li>
             <li>Ciero Kilpatrick - Washington, DC</li>
-            <li>Neelam Joshi - Columbus, OH</li>
             <li>Eric Ogawa - San Francisco, CA</li>
             <li>Mary O'Connor - Sebastopol, CA</li>
             <li>Harsha Dronamraju - San Francisco, CA</li>
@@ -68,7 +68,11 @@ export default class Credits extends Component {
             <li>Aaron Borden - San Francisco, CA</li>
             <li>Judy Johnson - Oakland, CA</li>
             <li>Udi Davidovich - Walnut Creek, CA</li>
-            <li>Krishan Arya - San Francisco, CA</li>
+            <li>Chris Arya - San Francisco, CA</li>
+            <li>Tom Furlong - Menlo Park, CA</li>
+            <li>Eric Olivera - San Francisco, CA</li>
+            <li>Emily Hittle - San Francisco, CA</li>
+            <li>Irene Florez - San Francisco, CA</li>
             <li>Mikel Duffy - San Francisco, CA</li>
             <li>Robin Braverman - Walnut Creek, CA</li>
             <li>Mike McConnell - San Francisco, CA</li>
@@ -81,19 +85,16 @@ export default class Credits extends Component {
             <li>Kad Smith - Berkeley, CA</li>
             <li>Courtney Gonzales - Benicia, CA</li>
             <li>Jenna Haywood - Berkeley, CA</li>
-            <li>Tom Furlong - Menlo Park, CA</li>
-            <li>Emily Hittle - San Francisco, CA</li>
             <li>Jayadev Akkiraju - Santa Clara, CA</li>
             <li>Raphael Merx - San Francisco, CA</li>
             <li>Susan Clark - Oakland, CA</li>
             <li>Kim Anderson - San Francisco, CA</li>
-            <li>Sarah Clements - San Francisco, CA</li>
+            <li>Betsy Neely Sikma - Taylors, SC</li>
             <li>Jesse Aldridge - San Francisco, CA</li>
             <li>Josh Levinger - Oakland, CA</li>
             <li>Leslie Castellanos - San Francisco, CA</li>
             <li>Miguel Elasmar - Sarasota, FL</li>
             <li>Cindy Cruz - Daly City, CA</li>
-            <li>Irene Florez - San Francisco, CA</li>
             <li>Nicole Shanahan - Palo Alto, CA</li>
             <li>Steve Whetstone - San Francisco, CA</li>
             <li>Brian Bordley - Berkeley, CA</li>

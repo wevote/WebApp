@@ -92,8 +92,8 @@ export default class Application extends Component {
     if (voter === undefined || location === undefined ) {
       return <div style={loadingScreenStyles}>
                 <div>
-                  <h1 className="h1">We Vote</h1>
-                  <div className="u-loading-spinner u-loading-spinner--light">Loading...</div>
+                  <h1 className="h1">Loading We Vote...</h1>
+                  <div className="u-loading-spinner u-loading-spinner--light" />
                 </div>
               </div>;
     }
@@ -104,8 +104,16 @@ export default class Application extends Component {
 
     // If looking at these paths, we want to enter theater mode
     var in_theater_mode = false;
+    var content_full_width_mode = false;
     if (pathname === "/intro/story" || pathname === "/intro/sample_ballot" || pathname === "/intro/get_started") {
       in_theater_mode = true;
+    } else if (pathname === "/bookmarks" || pathname === "/friends" || pathname === "/intro" ||
+      pathname === "/more/about" || pathname === "/more/connect" ||
+      pathname === "/more/donate" || pathname === "/more/howtouse" || pathname === "/more/organization" ||
+      pathname === "/more/privacy" || pathname === "/more/sign_in" || pathname === "/more/team" ||
+      pathname === "/more/terms" || pathname === "/more/vision" || pathname === "/opinions" ||
+      pathname === "/requests" || pathname === "/welcome") {
+      content_full_width_mode = true;
     }
 
     if (in_theater_mode) {
@@ -130,15 +138,21 @@ export default class Application extends Component {
       </Headroom>
       <div className="page-content-container">
         <div className="container-fluid">
-          <div className="row">
-            <div className="col-4 sidebar-menu">
-              {/* Depending on which page we are on, show a different left area. */}
-              { pathname === "/ballot" ? <BallotLeft /> : null }
-            </div>
-            <div className="col-8-container col-8 container-main">
-              { this.props.children }
-            </div>
-          </div>
+          { content_full_width_mode ?
+            <div className="row">
+              <div className="col-12-container col-12 container-main">
+                { this.props.children }
+              </div>
+            </div> :
+            <div className="row">
+              <div className="col-4 sidebar-menu">
+                {/* Depending on which page we are on, show a different left area. */}
+                { pathname === "/ballot" ? <BallotLeft /> : null }
+              </div>
+              <div className="col-8-container col-8 container-main">
+                { this.props.children }
+              </div>
+            </div> }
         </div>
       </div>
     </div>;

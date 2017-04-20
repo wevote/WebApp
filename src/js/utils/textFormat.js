@@ -44,6 +44,16 @@ export function capitalizeString (raw_string) {
   }
 }
 
+export function cleanArray (actual) {
+  var newArray = [];
+  for (var i = 0; i < actual.length; i++) {
+    if (actual[i]) {
+      newArray.push(actual[i]);
+    }
+  }
+  return newArray;
+}
+
 export function extractTwitterHandleFromTextString (raw_string) {
   if (raw_string === undefined) {
     return "";
@@ -113,3 +123,6 @@ export function elipses (name, mobile){
   }
   return mobile ? cut(3) : cut(8);
 }
+
+export let youtube_reg = /(http:|https:)?\/\/(www\.)?(youtube.com|youtu.be)\/(watch)?(\?v=)?(\S+)?/;
+export let vimeo_reg = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/;

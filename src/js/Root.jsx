@@ -16,13 +16,16 @@ import ClaimYourPage from "./routes/Settings/ClaimYourPage";
 import Connect from "./routes/Connect";
 import Credits from "./routes/More/Credits";
 import Donate from "./routes/More/Donate";
+import DonateThankYou from "./routes/More/DonateThankYou";
 import EmailBallot from "./routes/More/EmailBallot";
 import EmptyBallot from "./routes/Ballot/EmptyBallot";
 import FacebookSignInProcess from "./routes/Process/FacebookSignInProcess";
 import FAQ from "./routes/More/FAQ";
+import FacebookInvitableFriends from "./routes/FacebookInvitableFriends";
 import Friends from "./routes/Friends";
 import GetStarted from "./routes/Intro/GetStarted";
 import GuidePositionList from "./routes/Guide/GuidePositionList";
+import HowToUse from "./routes/More/HowToUse";
 import Intro from "./routes/Intro/Intro";
 import IntroContests from "./routes/Intro/IntroContests";
 import IntroOpinions from "./routes/Intro/IntroOpinions";
@@ -34,37 +37,43 @@ import Office from "./routes/Ballot/Office";
 import Opinions from "./routes/Opinions";
 import OpinionsFollowed from "./routes/OpinionsFollowed";
 import OpinionsIgnored from "./routes/OpinionsIgnored";
+import Organization from "./routes/More/Organization";
 import Privacy from "./routes/More/Privacy";
+import ProcessingDonation from "./routes/More/ProcessingDonation";
 import Requests from "./routes/Requests";
 import SampleBallot from "./routes/Intro/SampleBallot";
 import Settings from "./routes/Settings/Settings";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
 import SignIn from "./routes/More/SignIn";
 import SignInEmailProcess from "./routes/Process/SignInEmailProcess";
+import Team from "./routes/More/Team";
 import TermsOfService from "./routes/More/TermsOfService";
 import TwitterSignInProcess from "./routes/Process/TwitterSignInProcess";
 import TwitterSignInProcessOld from "./routes/Process/TwitterSignInProcessOld";
 import VerifyEmailProcess from "./routes/Process/VerifyEmailProcess";
 import FriendInvitationByEmailVerifyProcess from "./routes/Process/FriendInvitationByEmailVerifyProcess";
 import VerifyThisIsMe from "./routes/Guide/VerifyThisIsMe";
+import Vision from "./routes/More/Vision";
+import Welcome from "./routes/Welcome";
 import YourPage from "./routes/YourPage";
 
+// See /js/components/Navigation/HeaderBar.jsx for voter_orientation_complete cookie
 const firstVisit = !cookies.getItem("voter_device_id");
 
 const routes = () =>
   <Route path="/" component={Application}>
     <Route component={Intro} />
     { firstVisit ?
-      <IndexRedirect to="/intro/story" /> :
-      <IndexRedirect to="/ballot" /> }
+      <IndexRedirect to="/welcome" /> :
+      <IndexRedirect to="/welcome" /> }
+    <Route path="/welcome" component={Welcome} />
 
-    <Route path="/intro" component={Intro}>
-      <Route path="/intro/contests" component={IntroContests} />
-      <Route path="/intro/opinions" component={IntroOpinions} />
-      <Route path="/intro/story" component={IntroStory} />
-      <Route path="/intro/sample_ballot" component={SampleBallot} />
-      <Route path="/intro/get_started" component={GetStarted} />
-    </Route>
+    <Route path="/intro" component={Intro} />
+    <Route path="/intro/contests" component={IntroContests} />
+    <Route path="/intro/opinions" component={IntroOpinions} />
+    <Route path="/intro/story" component={IntroStory} />
+    <Route path="/intro/sample_ballot" component={SampleBallot} />
+    <Route path="/intro/get_started" component={GetStarted} />
 
     {/* Settings go in this structure... */}
     <Route path="/settings" component={SettingsDashboard}>
@@ -82,6 +91,7 @@ const routes = () =>
       <Route path="add" component={Connect} />
       <Route path="remove" />
     </Route>
+    <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
 
     {/* More Menu Pages */}
     <Route path="/more/sign_in" component={SignIn} />
@@ -89,10 +99,17 @@ const routes = () =>
     <Route path="/more/credits" component={Credits} />
     <Route path="/more/about" component={About} />
     <Route path="/more/donate" component={Donate} />
+    <Route path="/more/donate_thank_you" component={DonateThankYou} />
     <Route path="/more/faq" component={FAQ} />
     <Route path="/more/connect" component={Connect} />
     <Route path="/more/privacy" component={Privacy} />
+    <Route path="/more/processing_donation" component={ProcessingDonation} />
     <Route path="/more/terms" component={TermsOfService} />
+
+    <Route path="/more/organization" component={Organization} />
+    <Route path="/more/vision" component={Vision} />
+    <Route path="/more/howtouse" component={HowToUse} />
+    <Route path="/more/team" component={Team} />
 
     {/* Voter Guide Pages */}
     <Route path="/voterguide/:organization_we_vote_id" component={GuidePositionList} />
@@ -116,6 +133,7 @@ const routes = () =>
     <Route path="activity" component={Activity} />
 
     <Route path="/facebook_sign_in" component={FacebookSignInProcess} />
+
 
     <Route path="/twittersigninprocess/:sign_in_step/:incoming_twitter_handle" component={TwitterSignInProcessOld} />
     <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcessOld} />

@@ -61,10 +61,15 @@ export default class OfficeItemCompressed extends Component {
       <div className="card-main__content">
         <h2 className="card-main__display-name">
           { this.props.link_to_ballot_item_page ?
-            <Link to={officeLink}>{ballot_item_display_name}</Link> :
+            <span>
+              <Link to={officeLink}>
+              {ballot_item_display_name}
+              </Link>
+            </span> :
               ballot_item_display_name
           }
         </h2>
+        <Link to={officeLink}><span className="card-main__office-read-more-link">learn more</span></Link>
         <BookmarkAction we_vote_id={we_vote_id} type="OFFICE"/>
 
         <div className={this.props.link_to_ballot_item_page ?
@@ -75,7 +80,7 @@ export default class OfficeItemCompressed extends Component {
                               ()=>{browserHistory.push("/candidate/" + one_candidate.we_vote_id);} :
                               null }
                     className="visible-xs u-stack--sm">
-                <ImageHandler className="card-main__avatar u-inline--sm"
+                <ImageHandler className="card-main__avatar-compressed u-inline--sm"
                               sizeClassName="icon-candidate-small u-inline--sm "
                               imageUrl={one_candidate.candidate_photo_url_large}
                               alt="candidate-photo"
@@ -89,13 +94,14 @@ export default class OfficeItemCompressed extends Component {
                               ()=>{browserHistory.push("/candidate/" + one_candidate.we_vote_id);} :
                               null }>
                   <div className="hidden-xs">
-                    <ImageHandler className="card-main__avatar u-inline--sm"
+                    <ImageHandler className="card-main__avatar-compressed u-inline--sm"
                                   sizeClassName="icon-candidate-small u-inline--sm "
                                   imageUrl={one_candidate.candidate_photo_url_large}
                                   alt="candidate-photo"
                                   kind_of_ballot_item="CANDIDATE" />
 
-              <span className="h5">{one_candidate.ballot_item_display_name}</span>
+              <span className="card-main__candidate-name">{one_candidate.ballot_item_display_name}</span>
+              <span className="card-main__candidate-read-more-link">learn more</span>
               </div>
                 </div>
 
