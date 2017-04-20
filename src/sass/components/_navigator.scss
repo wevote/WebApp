@@ -9,48 +9,19 @@ $icon-color-hover: $gray-dark;
 
 // Header Nav
 // ================================
-.donate,
-.about,
-.deskOnly,
-.fullscreen {
-  display: none;
-  @include breakpoints(nav) { // 2
-    display: block;
-  }
-}
-
-.mobile {
-  display: none;
-  @include breakpoints(iphone5) { // 2
-    display: block;
-  }
-  @include breakpoints(nav) { // 2
-    display: none;
-  }
-}
-
-.hideItem {
-  display: none;
-}
 
 .account-menu,
 .about-menu {
   max-width: 320px;
   position: absolute;
   top: 50px;
+  right: 15px;
   background-color: #fff;
   opacity: 0;
   padding: 1rem;
   transition: opacity .25s ease-in-out;
   z-index: 2;
   pointer-events: none;
-}
-
-.account-menu {
-  right: 10px;
-}
-.about-menu {
-  left: 175px;
 }
 
 .account-menu::before,
@@ -94,10 +65,8 @@ $icon-color-hover: $gray-dark;
 }
 
 .header-nav {
-  display: flex; // 1
-  @include breakpoints(nav) { // 2
   display: flex;
-  }
+  align-items: center;
 
   &__label {
     display: block;
@@ -109,14 +78,21 @@ $icon-color-hover: $gray-dark;
   }
 
   &__item {
-    // display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
     width: 60px;
+    height: 54px;
     margin-top: -.5em; // temporary offsets for .page-header__container padding
     margin-bottom: -.5em;
     padding: 8px;
     color: #fff;
     opacity: .8;
     text-align: center;
+    &--has-icon {
+      justify-content: space-between;
+    }
 
     &:active,
     &.active-icon,

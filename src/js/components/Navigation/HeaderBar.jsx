@@ -13,7 +13,7 @@ const links = {
     var icon = "glyphicon glyphicon-list-alt glyphicon-line-adjustment nav-icon";
 
     var jsx =
-      <Link to="/ballot" className={ "header-nav__item" + (active ? " active-icon" : "")}>
+      <Link to="/ballot" className={ "header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
         <span className={icon} title="Ballot" />
         <span className="header-nav__label">
           Ballot
@@ -27,7 +27,7 @@ const links = {
     var icon = "glyphicon glyphicon-inbox glyphicon-line-adjustment nav-icon";
 
     var jsx =
-      <Link to="/requests" className={ "header-nav__item" + (active ? " active-icon" : "")}>
+      <Link to="/requests" className={ "header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
         <span className={icon} title="Requests">
           {number_of_incoming_friend_requests ?
             <span className="badge-total badge">{number_of_incoming_friend_requests}</span> :
@@ -45,7 +45,7 @@ const links = {
     var icon = "glyphicon icon-icon-connect-1-3 glyphicon-line-adjustment nav-icon";
 
     var jsx =
-      <Link to="/more/connect" className={ "header-nav__item" + (active ? " active-icon" : "")}>
+      <Link to="/more/connect" className={ "header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
         <span className={icon} title="Connect" />
         <span className="header-nav__label">
           Connect
@@ -59,7 +59,7 @@ const links = {
     var icon = "glyphicon icon-icon-activity-1-4 glyphicon-line-adjustment nav-icon";
 
     var jsx =
-      <Link to="/activity" className={ "header-nav__item" + (active ? " active-icon" : "")}>
+      <Link to="/activity" className={ "header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
         <span className={icon} title="Activity" />
         <span className="header-nav__label">
           Activity
@@ -72,7 +72,7 @@ const links = {
   donate: function (active) {
 
     var jsx =
-      <Link to="/more/donate" className={ "donate header-nav__item" + (active ? " active-icon" : "")}>
+      <Link to="/more/donate" className={ "header-nav__item header-nav__item--has-icon hidden-xs" + (active ? " active-icon" : "")}>
         <img className = "glyphicon" src="/img/global/svg-icons/glyphicons-20-heart-empty.svg" />
         <span className="header-nav__label">
           Donate
@@ -302,9 +302,9 @@ export default class HeaderBar extends Component {
   imagePlaceholder (speaker_type) {
     let image_placeholder = "";
     if (speaker_type === "O") {
-        image_placeholder = <span id= "anonIcon" className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
+        image_placeholder = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} /></div>;
     } else {
-        image_placeholder = <span id= "anonIcon" className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
+        image_placeholder = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} /></div>;
     }
     return image_placeholder;
   }
@@ -326,15 +326,15 @@ export default class HeaderBar extends Component {
     return (
       <header className="page-header">
         <div className="page-header__content">
-          <Link to="/welcome" className="page-logo h4 fullscreen">
+          <Link to="/welcome" className="page-logo h4 hidden-xs">
             We Vote
             <span className="page-logo__version"> alpha</span>
           </Link>
 
-          { voter_orientation_complete ? <Link to="/welcome" className="page-logo h4 mobile">
+          { voter_orientation_complete ? <Link to="/welcome" className="page-logo h4 visible-xs">
               WV
             </Link> :
-            <Link to="/welcome" className="page-logo h4 mobile">
+            <Link to="/welcome" className="page-logo h4 visible-xs">
               We Vote
               <span className="page-logo__version"> alpha</span>
             </Link> }
@@ -347,16 +347,16 @@ export default class HeaderBar extends Component {
             { voter_orientation_complete ? connect(pathname === "/more/connect") : null }
 
             { voter_orientation_complete ?
-              <Link onClick={this.toggleAboutMenu} className={ "about header-nav__item" + (pathname === "/more/about" ? " active-icon" : "")}>
-                <div id="aboutIcon">About</div>
+              <Link onClick={this.toggleAboutMenu} className={ "header-nav__item header-nav__item--has-icon hidden-xs" + (pathname === "/more/about" ? " active-icon" : "")}>
+                <span className="header-nav__icon--about">About</span>
                 <span className="header-nav__label">
                 We Vote
                 </span>
                 <div>{this.aboutMenu()}</div>
               </Link> :
               <div>
-                <Link to="/more/about" className={ "about header-nav__item" + (pathname === "/more/about" ? " active-icon" : "")}>
-                  <div id="aboutIcon">About</div>
+                <Link to="/more/about" className={ "header-nav__item" + (pathname === "/more/about" ? " active-icon" : "")}>
+                  <span className="header-nav__icon--about">About</span>
                   <span className="header-nav__label">
                   We Vote
                   </span>
@@ -373,21 +373,20 @@ export default class HeaderBar extends Component {
             { voter_orientation_complete ?
               null :
               <Link to="/more/sign_in" className="sign_in header-nav__item">
-                  <div>
-                    <span className="header-nav__sign-in-label">Sign In</span>
-                  </div>
-                </Link>
+                Sign In
+              </Link>
             }
           </div>
 
           { voter_orientation_complete ? <SearchAllBox /> : null }
 
-          { voter_orientation_complete ? <div id="avatar" onClick={this.toggleAccountMenu}>
+          { voter_orientation_complete ? <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
             {voter_photo_url_medium ?
-              <div id="avatarContainer">
-                  <img className="position-statement__avatar"
+              <div className="header-nav__avatar-container">
+                  <img className="header-nav__avatar"
                         src={voter_photo_url_medium}
-                        id="navIcon"
+                        height={34}
+                        width={34}
                    />
               </div> : this.imagePlaceholder(speaker_type)}
            </div> :
