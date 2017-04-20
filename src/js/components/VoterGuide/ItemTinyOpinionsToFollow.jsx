@@ -105,8 +105,12 @@ export default class ItemTinyOpinionsToFollow extends Component {
 
         this.popover_state[org_id] = {show: false, timer: null};
 
+        let voterGuideInlineDisplay;
+
         if (this.mobile) {
-          return <Link key={`tiny-link-${org_id}`} to={voterGuideLink} className="u-no-underline">
+          voterGuideInlineDisplay = <OrganizationTinyDisplay {...one_organization} showPlaceholderImage />
+        } else {
+          voterGuideInlineDisplay = <Link key={`tiny-link-${org_id}`} to={voterGuideLink} className="u-no-underline">
             <OrganizationTinyDisplay {...one_organization}
                                     showPlaceholderImage />
           </Link>;
@@ -130,14 +134,13 @@ export default class ItemTinyOpinionsToFollow extends Component {
             ref={`overlay-${org_id}`}
             onMouseOver={() => this.onTriggerEnter(org_id)}
             onMouseOut={() => this.onTriggerLeave(org_id)}
+            onExiting={() => this.onTriggerLeave(org_id)}
+            trigger={["focus", "hover"]}
             rootClose
             placement="bottom"
             overlay={organizationPopover}>
           <span className="position-rating__source with-popover">
-            <Link key={`tiny-link-${org_id}`} to={voterGuideLink} className="u-no-underline">
-              <OrganizationTinyDisplay {...one_organization}
-                                      showPlaceholderImage />
-            </Link>
+            {voterGuideInlineDisplay}
           </span>
         </OverlayTrigger>;
       }
