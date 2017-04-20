@@ -96,7 +96,7 @@ $icon-color-hover: $gray-dark;
 .header-nav {
   display: flex; // 1
   @include breakpoints(nav) { // 2
-    display: flex;
+  display: flex;
   }
 
   &__label {
@@ -143,13 +143,23 @@ $icon-color-hover: $gray-dark;
         width: 29px;
       }
     }
-
-    &.about > #aboutIcon {
-      padding: 1px;
-    }
   }
   .nav-icon {
     font-size: 1rem;
+  }
+  &__icon--about {
+    padding: 1px;
+  }
+
+  &__avatar {
+    border-radius: 3px;
+    background: #fff;
+    overflow: hidden;
+    height: 34px;
+    display: block;
+  }
+  &__avatar-wrapper {
+    z-index: 3; //to float above the account menu option grey div
   }
 }
 
@@ -185,23 +195,5 @@ $icon-color-hover: $gray-dark;
     top: -7px;
     font-family: $body-font-stack;
     background-color: #db4437; // Override for Bootstrap class .badge
-  }
-}
-
-// Avatars!
-// ================================
-
-div {
-  &#avatar {
-    bottom: 20px;
-    right: 10px;
-    z-index: 3; //to float above the account menu option grey div
-  }
-  &#avatarContainer {
-    width: 36px;
-    & > #leftAvatar {
-      max-width: 100%;
-      width: 33px;
-    }
   }
 }
