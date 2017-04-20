@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="https://wevote.us/" />
+<title>searchbar</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">searchbar</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>https://wevote.us</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Ballot</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=SearchAllBox-input</td>
+	<td>engineer</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=SearchAllBox-input</td>
+	<td>president</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=SearchAllBox-input</td>
+	<td>karina</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=SearchAllBox-input</td>
+	<td>oakland</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=SearchAllBox-input</td>
+	<td>california</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='app-base-id']/div/div/div/header/div[2]/div/div/a[4]/div</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

@@ -37,6 +37,7 @@ export default class Office extends Component {
       this.setState({office_we_vote_id: nextProps.params.office_we_vote_id});
       OfficeActions.officeRetrieve(nextProps.params.office_we_vote_id);
     } else {
+      OfficeActions.officeRetrieve(nextProps.params.office_we_vote_id);
       this.setState({office: office, office_we_vote_id: nextProps.params.office_we_vote_id});
     }
 
