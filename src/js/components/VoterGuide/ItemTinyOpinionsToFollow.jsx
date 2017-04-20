@@ -19,7 +19,6 @@ export default class ItemTinyOpinionsToFollow extends Component {
 
     this.popover_state = {};
     this.mobile = "ontouchstart" in document.documentElement;
-    this.onOrgClick = this.onOrgClick.bind(this);
 
     this.state = {
       organizations_to_follow: this.props.organizationsToFollow,
@@ -64,10 +63,16 @@ export default class ItemTinyOpinionsToFollow extends Component {
     }, 100);
   }
 
-  onOrgClick (e) {
+  onTriggerToggle (e, org_id) {
     if (this.mobile) {
       e.preventDefault();
       e.stopPropagation();
+
+      if (this.popover_state[org_id].show) {
+        this.onTriggerLeave(org_id);
+      } else {
+        this.onTriggerEnter(org_id);
+      }
     }
   }
 
@@ -137,7 +142,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
             placement="bottom"
             overlay={organizationPopover}>
           <span className="position-rating__source with-popover">
-            <Link key={`tiny-link-${org_id}`} to={voterGuideLink} onClick={this.onOrgClick} className="u-no-underline">
+            <Link key={`tiny-link-${org_id}`} to={voterGuideLink} onClick={(e) => this.onTriggerToggle(e, org_id)} className="u-no-underline">
               <OrganizationTinyDisplay {...one_organization} showPlaceholderImage />
             </Link>
           </span>
