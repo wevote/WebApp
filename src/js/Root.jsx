@@ -30,8 +30,10 @@ import Intro from "./routes/Intro/Intro";
 import IntroContests from "./routes/Intro/IntroContests";
 import IntroOpinions from "./routes/Intro/IntroOpinions";
 import IntroStory from "./routes/Intro/IntroStory";
+import InviteByEmail from "./routes/Friends/InviteByEmail";
 import Location from "./routes/Settings/Location";
 import Measure from "./routes/Ballot/Measure";
+import Network from "./routes/Network";
 import NotFound from "./routes/NotFound";
 import Office from "./routes/Ballot/Office";
 import Opinions from "./routes/Opinions";
@@ -40,7 +42,6 @@ import OpinionsIgnored from "./routes/OpinionsIgnored";
 import Organization from "./routes/More/Organization";
 import Privacy from "./routes/More/Privacy";
 import ProcessingDonation from "./routes/More/ProcessingDonation";
-import Requests from "./routes/Requests";
 import SampleBallot from "./routes/Intro/SampleBallot";
 import Settings from "./routes/Settings/Settings";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
@@ -86,11 +87,14 @@ const routes = () =>
     <Route path="/opinions" component={Opinions} />
     <Route path="/opinions_followed" component={OpinionsFollowed} />
     <Route path="/opinions_ignored" component={OpinionsIgnored} />
+
+    {/* Friend related Pages */}
     <Route path="/friends" >
       <IndexRoute component={Friends} />
       <Route path="add" component={Connect} />
       <Route path="remove" />
     </Route>
+    <Route path="/friends/invitebyemail" component={InviteByEmail} />
     <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
 
     {/* More Menu Pages */}
@@ -126,9 +130,9 @@ const routes = () =>
 
     <Route path="ballot/empty" component={EmptyBallot} />
 
-    <Route path="requests" component={Requests} />
-    <Route path="requests/:invitation_secret_key" component={FriendInvitationByEmailVerifyProcess} />
-    <Route path="requests/:invitation_secret_key/ignore" component={FriendInvitationByEmailVerifyProcess} />
+    <Route path="/more/network" component={Network} />
+    <Route path="/more/network/:invitation_secret_key" component={FriendInvitationByEmailVerifyProcess} />
+    <Route path="/more/network/:invitation_secret_key/ignore" component={FriendInvitationByEmailVerifyProcess} />
 
     <Route path="activity" component={Activity} />
 

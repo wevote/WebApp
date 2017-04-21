@@ -47,43 +47,14 @@ export default class BallotLeft extends Component {
           </li>
         </ul>
         <h4 className="text-left" />
-        {/*
         <ul className="list-group">
-          { show_your_page_from_twitter ?
-            <li className={"/" + this.props.twitter_screen_name === currentUrl ? "active-link list-group-item" : "list-group-item"}>
-              <Link to={"/" + this.props.twitter_screen_name}><div>
-                { voter_photo_url_medium ?
-                  <img className="position-statement__avatar"
-                        src={voter_photo_url_medium}
-                        width="34px"
-                  /> :
-                  image_placeholder }
-                <span className="header-menu-text-left">Your Voter Guide</span>
-              </div></Link>
-            </li> :
-            null
-          }
-          { show_your_page_from_facebook ?
-            <li className={"/voterguide/" + linked_organization_we_vote_id === currentUrl ? "active-link list-group-item" : "list-group-item"}>
-              <Link to={"/voterguide/" + linked_organization_we_vote_id}><div>
-                { voter_photo_url_medium ?
-                  <img className="position-statement__avatar"
-                        src={voter_photo_url_medium}
-                        width="34px"
-                  /> :
-                  image_placeholder }
-                <span className="header-menu-text-left">Your Voter Guide</span>
-              </div></Link>
-            </li> :
-            null
-          }
-          { !show_your_page_from_twitter && !show_your_page_from_facebook ?
-            this.menuLink("/yourpage", "Your Voter Guide") :
-            null
-          }
-          {this.menuLink("/more/sign_in", "Your Account")}
+          <li className="list-group-item">
+            <h3 className="h3">Step 1: Find Trusted Advisers</h3>
+            <strong><Link to="/opinions">Find organizations</Link> that you trust, and follow them.</strong><br />
+            <br />
+            When you follow an organization, their advice will make it easier for you to make decisions.
+          </li>
         </ul>
-        */}
         <h4 className="text-left" />
         <span className="terms-and-privacy">
           <br />

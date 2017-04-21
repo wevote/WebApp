@@ -7,6 +7,6 @@ import HeaderBar from '../../src/js/components/Navigation/HeaderBar.jsx';
 describe('HeaderBar', () => {
   it('Should have appropriate classname', () => {
     const wrapper = render(<HeaderBar />);
-    expect(wrapper).to.have.className('page-header');
+    expect(wrapper.find('header')).to.have.className('page-header');
   });
 });
