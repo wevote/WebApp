@@ -13,7 +13,7 @@ const links = {
     var icon = "glyphicon glyphicon-list-alt glyphicon-line-adjustment nav-icon";
 
     var jsx =
-      <Link to="/ballot" className={ "ballot-header-icon header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
+      <Link to="/ballot" className={ "header-nav__item--ballot header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
         <span className={icon} title="Ballot" />
         <span className="header-nav__label">
           Ballot
@@ -23,46 +23,18 @@ const links = {
     return jsx;
   },
 
-  requests: function (active, number_of_incoming_friend_requests) {
-    var icon = "glyphicon glyphicon-inbox glyphicon-line-adjustment nav-icon";
+  network: function (active, number_of_incoming_friend_requests) {
+    var icon = "glyphicon icon-icon-connect-1-3 glyphicon-line-adjustment nav-icon";
 
     var jsx =
-      <Link to="/requests" className={ "requests-header-icon header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
-        <span className={icon} title="Requests">
+      <Link to="/more/network" className={ "header-nav__item--network header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
+        <span className={icon} title="Network">
           {number_of_incoming_friend_requests ?
             <span className="badge-total badge">{number_of_incoming_friend_requests}</span> :
             null }
         </span>
         <span className="header-nav__label">
-          Requests
-          </span>
-      </Link>;
-
-    return jsx;
-  },
-
-  connect: function (active) {
-    var icon = "glyphicon icon-icon-connect-1-3 glyphicon-line-adjustment nav-icon";
-
-    var jsx =
-      <Link to="/more/connect" className={ "connect-header-icon header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
-        <span className={icon} title="Connect" />
-        <span className="header-nav__label">
-          Connect
-          </span>
-      </Link>;
-
-    return jsx;
-  },
-
-  activity: function (active) {
-    var icon = "glyphicon icon-icon-activity-1-4 glyphicon-line-adjustment nav-icon";
-
-    var jsx =
-      <Link to="/activity" className={ "header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
-        <span className={icon} title="Activity" />
-        <span className="header-nav__label">
-          Activity
+          Network
           </span>
       </Link>;
 
@@ -318,7 +290,7 @@ export default class HeaderBar extends Component {
     let { pathname } = this.props;
     let { voter_photo_url_medium } = this.props.voter;
     let speaker_type = "V";  // TODO DALE make this dynamic
-    let { ballot, requests, connect, donate } = links;
+    let { ballot, network, donate } = links;
     let number_of_incoming_friend_requests = this.state.friend_invitations_sent_to_me.length;
     let voter_is_signed_in = this.props.voter && this.props.voter.is_signed_in;
     let voter_orientation_complete = cookies.getItem("voter_orientation_complete") || voter_is_signed_in;
@@ -342,9 +314,7 @@ export default class HeaderBar extends Component {
           <div className="header-nav">
             { voter_orientation_complete ? ballot(pathname === "/ballot") : null }
 
-            { voter_orientation_complete ? requests(pathname === "/requests", number_of_incoming_friend_requests) : null }
-
-            { voter_orientation_complete ? connect(pathname === "/more/connect") : null }
+            { voter_orientation_complete ? network(pathname === "/more/network", number_of_incoming_friend_requests) : null }
 
             { voter_orientation_complete ?
               <Link onClick={this.toggleAboutMenu} className={ "header-nav__item header-nav__item--about header-nav__item--has-icon hidden-xs" + (pathname === "/more/about" ? " active-icon" : "")}>

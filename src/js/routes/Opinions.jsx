@@ -91,6 +91,7 @@ export default class Opinions extends Component {
       <Helmet title="Build Your Network - We Vote" />
         <h1 className="h1">Build Your Network</h1>
           {guides}
+        <Link className="pull-right" to="/opinions_ignored">Organizations you are ignoring</Link><br />
       </div>;
   }
 }
