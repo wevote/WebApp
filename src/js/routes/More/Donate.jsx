@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { Button } from "react-bootstrap";
+import { Button, FormGroup, Radio  } from "react-bootstrap";
 import Helmet from "react-helmet";
 import DonationForm from "../../components/DonationForm";
 import DonationError from "../../components/DonationError";
@@ -11,8 +11,9 @@ export default class Donate extends Component {
     this.state = {
       showCustomInput: false,
       custom_amount: "",
-      donateMonthly: false,
-      donationErrorMessage: ""
+      donateMonthly: true,
+      donationErrorMessage: "",
+      radioSelected: "monthly"
     };
 
     this._toggleCustomAmount = this._toggleCustomAmount.bind(this);
@@ -40,10 +41,16 @@ export default class Donate extends Component {
     }
   }
 
-  _toggleDonateMonthly () {
-    this.setState({
-      donateMonthly: !this.state.donateMonthly
-    });
+  _toggleDonateMonthly (event) {
+    if (event.target.value === "once") {
+        this.setState({
+          donateMonthly: false, radioSelected: "once"
+        });
+    } else {
+      this.setState({
+        donateMonthly: true, radioSelected: "monthly"
+      });
+    }
   }
 
   _toggleCustomAmount () {
@@ -67,7 +74,21 @@ export default class Donate extends Component {
            <p>If you like We Vote, please give what you can to help us reach more voters.</p>}
           <br />
           <br />
-          Select an Amount<br />
+          Gift Type:
+          <FormGroup>
+            <Radio name="radioGroup" bsClass="radio" value="monthly" onChange={this._toggleDonateMonthly} inline
+            checked={this.state.radioSelected === "monthly"}>
+              Monthly
+            </Radio>
+            {" "}
+            <Radio name="radioGroup" bsClass="radio" value="once" onChange={this._toggleDonateMonthly} inline
+            checked={this.state.radioSelected === "once"}>
+              One-Time
+            </Radio>
+            {" "}
+          </FormGroup>
+          Select an Amount:
+          <br />
           <DonationForm donationAmount={500} donateButtonText="$5" donateMonthly={this.state.donateMonthly} /> &nbsp;
           <DonationForm donationAmount={1500} donateButtonText="$15" donateMonthly={this.state.donateMonthly} /> &nbsp;
           <DonationForm donationAmount={2700} donateButtonText="$27" donateMonthly={this.state.donateMonthly} /> &nbsp;
@@ -76,12 +97,12 @@ export default class Donate extends Component {
           <Button bsStyle="success" onClick={this._toggleCustomAmount}>
             Other Amount
           </Button><br />&nbsp;
-          <span>
+          {/*<span>
             <form className="form-check-inline">
               <input className="form-check-input" type="checkbox" checked={this.state.donateMonthly}
               onChange={this._toggleDonateMonthly}/> Donate Monthly
             </form>
-          </span>
+          </span>*/}
           <br />
            {this.state.showCustomInput ? <span>
              <form className="form-inline">
