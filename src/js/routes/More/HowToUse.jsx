@@ -15,9 +15,10 @@ export default class HowToUse extends Component {
   render () {
     let supportProps = { is_public_position: false };
     return <div>
-      <Helmet title="How to Use We Vote"/>
+      <Helmet title="Getting Started"/>
       <div className="container-fluid card">
-        <h1 className="h1">How To Use We Vote</h1>
+        <h1 className="h1">Getting Started</h1>
+        Here are the top 6 things to try.
 
         <h3 className="h3">Step 1: Follow Voter Guides</h3>
         <Link to="/opinions">Find organizations</Link> that you trust, and follow those

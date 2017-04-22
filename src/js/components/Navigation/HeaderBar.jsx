@@ -109,7 +109,7 @@ export default class HeaderBar extends Component {
               <li>
                 <Link onClick={this.toggleAboutMenu} to={"/more/howtouse"}>
                   <div>
-                    <span className="header-slide-out-menu-text-left">Using We Vote</span>
+                    <span className="header-slide-out-menu-text-left">Getting Started</span>
                   </div>
                 </Link>
               </li>
@@ -226,7 +226,7 @@ export default class HeaderBar extends Component {
             <li className="visible-xs-block">
               <Link onClick={this.hideAccountMenu.bind(this)} to="/more/howtouse">
                 <div>
-                  <span className="header-slide-out-menu-text-left">How to Use We Vote</span>
+                  <span className="header-slide-out-menu-text-left">Getting Started</span>
                 </div>
               </Link>
             </li>
