@@ -29,7 +29,6 @@ export default class ItemActionBar extends Component {
   }
 
   supportItem (is_support) {
-    console.log("is_support", is_support);
     if (is_support) {this.stopSupportingItem(); return;}
     if (this.state.transitioning){ return; }
     SupportActions.voterSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
@@ -37,14 +36,12 @@ export default class ItemActionBar extends Component {
   }
 
   stopSupportingItem () {
-    console.log("Runnning stopSupportingItem", this.state.transitioning);
     if (this.state.transitioning){ return; }
     SupportActions.voterStopSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
   }
 
   opposeItem (is_oppose) {
-    console.log("is_oppose", is_oppose);
     if (is_oppose) {this.stopOpposingItem(); return;}
     if (this.state.transitioning){ return; }
     SupportActions.voterOpposingSave(this.props.ballot_item_we_vote_id, this.props.type);
@@ -64,7 +61,6 @@ export default class ItemActionBar extends Component {
     }
 
     var {support_count, oppose_count, is_support, is_oppose } = this.props.supportProps;
-   // console.log(this.props.commentButtonHide, this.props.shareButtonHide, support_count, oppose_count, is_support, is_oppose );
     if (support_count === undefined || oppose_count === undefined || is_support === undefined || is_oppose === undefined){
       // console.log("support_count: ", support_count, ", oppose_count: ", oppose_count, ", is_support: ", is_support, ", is_oppose: ", is_oppose);
       return null;
