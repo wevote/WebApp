@@ -28,19 +28,24 @@ export default class ItemActionBar extends Component {
     this.setState({transitioning: false});
   }
 
-  supportItem () {
+  supportItem (is_support) {
+    console.log("is_support", is_support);
+    if (is_support) {this.stopSupportingItem(); return;}
     if (this.state.transitioning){ return; }
     SupportActions.voterSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
   }
 
   stopSupportingItem () {
+    console.log("Runnning stopSupportingItem", this.state.transitioning);
     if (this.state.transitioning){ return; }
     SupportActions.voterStopSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
   }
 
-  opposeItem () {
+  opposeItem (is_oppose) {
+    console.log("is_oppose", is_oppose);
+    if (is_oppose) {this.stopOpposingItem(); return;}
     if (this.state.transitioning){ return; }
     SupportActions.voterOpposingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
@@ -59,11 +64,12 @@ export default class ItemActionBar extends Component {
     }
 
     var {support_count, oppose_count, is_support, is_oppose } = this.props.supportProps;
+   // console.log(this.props.commentButtonHide, this.props.shareButtonHide, support_count, oppose_count, is_support, is_oppose );
     if (support_count === undefined || oppose_count === undefined || is_support === undefined || is_oppose === undefined){
       // console.log("support_count: ", support_count, ", oppose_count: ", oppose_count, ", is_support: ", is_support, ", is_oppose: ", is_oppose);
       return null;
     }
-
+    const stance_button_class = "item-actionbar__btn item-actionbar__btn--oppose btn btn-default";
     const icon_size = 18;
     var icon_color = "#999";
     var url_being_shared;
@@ -72,32 +78,22 @@ export default class ItemActionBar extends Component {
     } else {
       url_being_shared = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/measure/" + this.props.ballot_item_we_vote_id;
     }
-    const remove_position_function = is_support ? this.stopSupportingItem.bind(this) : this.stopOpposingItem.bind(this);
-    const position_text = is_support ? "Support" : "Oppose";
-    const position_icon = is_support ?
-      <span className="btn__icon"><Icon name="thumbs-up-icon" width={icon_size} height={icon_size} color={icon_color} /></span> :
-      <span className="btn__icon"><Icon name="thumbs-down-icon" width={icon_size} height={icon_size} color={icon_color} /></span>;
     const share_icon = <span className="btn__icon"><Icon name="share-icon" width={icon_size} height={icon_size} color={icon_color} /></span>;
     return <div className={ this.props.shareButtonHide ? "item-actionbar--inline" : "item-actionbar" }>
-      { //Show the position voter has taken
-        is_oppose || is_support ?
-        <PositionDropdown removePositionFunction={remove_position_function} positionIcon={position_icon} positionText={position_text}/> :
-        // Voter hasn't supported or opposed, show both options
-        <div className={"btn-group" + (!this.props.shareButtonHide ? " u-inline--sm" : "")}>
-          <button className="item-actionbar__btn item-actionbar__btn--support btn btn-default" onClick={this.supportItem.bind(this)}>
-            <span className="btn__icon">
-              <Icon name="thumbs-up-icon" width={icon_size} height={icon_size} color={icon_color} />
-            </span>
-            <span className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label" }>Support</span>
-          </button>
-          <button className="item-actionbar__btn item-actionbar__btn--oppose btn btn-default" onClick={this.opposeItem.bind(this)}>
-            <span className="btn__icon">
-              <Icon name="thumbs-down-icon" width={icon_size} height={icon_size} color={icon_color} />
-            </span>
-            <span className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label" }>Oppose</span>
-          </button>
-        </div>
-      }
+            <div className={"btn-group" + (!this.props.shareButtonHide ? " u-inline--sm" : "")}>
+              <button className={is_support ? `${stance_button_class} highlight_thumb_green` : stance_button_class} onClick={this.supportItem.bind(this, is_support)}>
+                <span className="btn__icon">
+                  <Icon name="thumbs-up-icon" width={icon_size} height={icon_size} color={icon_color} />
+                </span>
+                <span className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label" }>Support</span>
+              </button>
+              <button className={is_oppose ? `${stance_button_class} highlight_thumb_red` : stance_button_class} onClick={this.opposeItem.bind(this, is_oppose)}>
+                <span className="btn__icon">
+                  <Icon name="thumbs-down-icon" width={icon_size} height={icon_size} color={icon_color} />
+                </span>
+                <span className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label" }>Oppose</span>
+              </button>
+            </div>
       { this.props.commentButtonHide ?
         null :
          <button className="item-actionbar__btn item-actionbar__btn--comment btn btn-default u-inline--sm" onClick={this.props.toggleFunction}>
