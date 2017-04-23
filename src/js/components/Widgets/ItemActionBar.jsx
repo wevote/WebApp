@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import SupportActions from "../../actions/SupportActions";
-import PositionDropdown from "./PositionDropdown";
 import ShareButtonDropdown from "./ShareButtonDropdown";
 
 var Icon = require("react-svg-icons");
