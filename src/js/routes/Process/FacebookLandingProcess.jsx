@@ -72,7 +72,7 @@ export default class FacebookLandingProcess extends Component {
     // This process starts when we return from attempting friendInvitationByFacebookVerify
     if (!this.state.invitation_status.invitation_found) {
       browserHistory.push({
-        pathname: "/requests",
+        pathname: "/more/network",
         state: {
           message: "Invitation not found. You may have already accepted this invitation. Invitation links may only be used once.",
           message_type: "warning"
@@ -83,7 +83,7 @@ export default class FacebookLandingProcess extends Component {
 
     if (this.state.invitation_status.attempted_to_approve_own_invitation) {
       browserHistory.push({
-        pathname: "/requests",
+        pathname: "/more/network",
         state: {
           message: "You are not allowed to approve your own invitation.",
           message_type: "danger"
@@ -95,7 +95,7 @@ export default class FacebookLandingProcess extends Component {
     if (this.state.invitation_status.invitation_found) {
       FacebookActions.deleteFacebookAppRequest(this.state.invitation_status.facebook_request_id);
       browserHistory.push({
-        pathname: "/requests",
+        pathname: "/more/network",
         state: {
           message: "You have accepted your friend's invitation. Visit your ballot to see what your friends are supporting or opposing.",
           message_type: "success"
