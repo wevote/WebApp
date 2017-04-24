@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 import CheckBox from "../components/Connect/CheckBox";
 import ImageHandler from "../components/ImageHandler";
 import FacebookActions from "../actions/FacebookActions";
+import FriendActions from "../actions/FriendActions";
 import FacebookStore from "../stores/FacebookStore";
 import Helmet from "react-helmet";
 
@@ -24,14 +25,14 @@ export default class FacebookInvitableFriends extends Component {
 
   componentDidMount () {
     this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
-    if (this.state.facebook_friends_list) {
+    if (this.state.facebook_invitable_friends_list) {
       FacebookActions.getFacebookInvitableFriendsList(this.state.facebook_invitable_friends_image_width,
         this.state.facebook_invitable_friends_image_height);
     }
   }
 
   componentWillMount () {
-    this.selectedCheckBoxes = new Set();
+    this.selectedCheckBoxes = [];
   }
 
   componentWillUnmount (){
@@ -49,33 +50,54 @@ export default class FacebookInvitableFriends extends Component {
     return current_route;
   }
 
-  toggleCheckBox (facebook_invitable_friend_id) {
-    if (this.selectedCheckBoxes.has(facebook_invitable_friend_id)) {
-      this.selectedCheckBoxes.delete(facebook_invitable_friend_id);
+  toggleCheckBox (facebook_invitable_friend_id, facebook_invitable_friend_name) {
+    const friend_selected_checkbox = {id: facebook_invitable_friend_id, name: facebook_invitable_friend_name};
+    if (this.selectedCheckBoxes.length === 0) {
+      this.selectedCheckBoxes.push(friend_selected_checkbox);
     } else {
-      this.selectedCheckBoxes.add(facebook_invitable_friend_id);
+      for (const checkBox of this.selectedCheckBoxes) {
+        var checkBoxNotAdded = false;
+        if ( checkBox.id === facebook_invitable_friend_id ) {
+          const index = this.selectedCheckBoxes.indexOf(checkBox);
+          this.selectedCheckBoxes.splice(index, 1);
+          break;
+        } else {
+          checkBoxNotAdded = true;
+        }
+      }
+      if (checkBoxNotAdded) {
+        this.selectedCheckBoxes.push(friend_selected_checkbox);
+      }
     }
+    console.log("Selected Check Boxes: ", this.selectedCheckBoxes);
   }
 
   sendInviteRequestToFacebookFriends = formSubmitEvent => {
     formSubmitEvent.preventDefault();
-    let to_selected_facebook_friends = [];
+    let selected_facebook_friends_ids = [];
+    let selected_facebook_friends_names = [];
     for (const checkbox of this.selectedCheckBoxes) {
-      to_selected_facebook_friends.push(checkbox);
+      selected_facebook_friends_ids.push(checkbox.id);
+      selected_facebook_friends_names.push(checkbox.name);
     }
-     this.sendFacebookAppRequest(to_selected_facebook_friends);
+     this.sendFacebookAppRequest(selected_facebook_friends_ids, selected_facebook_friends_names);
   }
 
-  sendFacebookAppRequest (to_selected_facebook_friends) {
+  sendFacebookAppRequest (selected_facebook_friends_ids, selected_facebook_friends_names) {
       window.FB.ui({
+        title: "We Vote USA",
+        redirect_uri: "http://localhost:3000/ballot",
         method: "apprequests",
         message: "Invite your Facebook Friends to join WeVote",
-        to: to_selected_facebook_friends,
+        to: selected_facebook_friends_ids,
       }, function (response) {
         if ( response.error_code === 4201 ) {
           console.log("User Canceled the request");
         } else if ( response ) {
-          console.log("Successfully Invited", response);
+          console.log("Successfully Invited", response, selected_facebook_friends_names);
+          const data = {request_id: response.request, recipients_facebook_id_array: response.to, recipients_facebook_name_array: selected_facebook_friends_names};
+          console.log("Final data for all invitations", data);
+          FriendActions.friendInvitationByFacebookSend(data);
         } else {
           console.log("Failed To Invite");
         }
@@ -83,13 +105,15 @@ export default class FacebookInvitableFriends extends Component {
   }
 
   render () {
+
     const { facebook_invitable_friends_list } = this.state;
     const facebook_friend_list_for_display = facebook_invitable_friends_list.map( (friend) => {
       return <div key={friend.id} className="card-child card-child--not-followed">
-          <CheckBox
-            value={friend.id}
-            handleCheckboxChange={this.toggleCheckBox.bind(this)}
-          />
+        <CheckBox
+          friendId={friend.id}
+          friendName={friend.name}
+          handleCheckboxChange={this.toggleCheckBox.bind(this)}
+        />
         &nbsp;
         <div className="card-main__media-object-anchor">
           <ImageHandler imageUrl={friend.picture.data.url}

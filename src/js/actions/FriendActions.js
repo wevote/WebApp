@@ -42,6 +42,15 @@ module.exports = {
       });
   },
 
+  friendInvitationByFacebookSend: function (data) {
+    console.log("FacebookActions friendInvitationByFacebookSend", data);
+    Dispatcher.loadEndpoint("friendInvitationByFacebookSend", {
+      facebook_request_id: data.request_id || false,
+      recipients_facebook_id_array: data.recipients_facebook_id_array || false,
+      recipients_facebook_name_array: data.recipients_facebook_name_array || false,
+    });
+  },
+
   friendInvitationByWeVoteIdSend: function (other_voter_we_vote_id) {
     Dispatcher.loadEndpoint("friendInvitationByWeVoteIdSend",
       {
@@ -82,6 +91,15 @@ module.exports = {
   friendInvitationByEmailVerify: function (invitation_secret_key){
     Dispatcher.loadEndpoint("friendInvitationByEmailVerify", {
       invitation_secret_key: invitation_secret_key
+    });
+  },
+
+  friendInvitationByFacebookVerify: function (facebook_request_id, recipient_facebook_id, sender_facebook_id){
+    console.log("friendInvitationByFacebookVerify", facebook_request_id);
+    Dispatcher.loadEndpoint("friendInvitationByFacebookVerify", {
+      facebook_request_id: facebook_request_id,
+      recipient_facebook_id: recipient_facebook_id,
+      sender_facebook_id: sender_facebook_id
     });
   },
 

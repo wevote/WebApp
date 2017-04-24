@@ -3,6 +3,7 @@ import FacebookConstants from "../constants/FacebookConstants";
 import FacebookActions from "../actions/FacebookActions";
 import Dispatcher from "../dispatcher/Dispatcher";
 import VoterActions from "../actions/VoterActions";
+import FriendActions from "../actions/FriendActions";
 
 class FacebookStore extends FluxMapStore {
   getInitialState (){
@@ -93,7 +94,7 @@ class FacebookStore extends FluxMapStore {
     switch (action.type) {
 
       case FacebookConstants.FACEBOOK_LOGGED_IN:
-        // console.log("FACEBOOK_LOGGED_IN action.data:", action.data);
+        console.log("FACEBOOK_LOGGED_IN action.data:", action.data);
         FacebookActions.voterFacebookSignInAuth(action.data.authResponse);
         FacebookActions.getFacebookData();
         return {
@@ -114,9 +115,27 @@ class FacebookStore extends FluxMapStore {
       case FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS:
         // Cache the data in the API server
         // FacebookActions.getFacebookInvitableFriendsList(action.data.id);
+        console.log("FACEBOOK_RECEIVED_INVITABLE_FRIENDS: ", action.data.invitable_friends);
         return {
           ...state,
           facebookInvitableFriendsList: action.data.invitable_friends.data
+        };
+
+      case FacebookConstants.FACEBOOK_READ_APP_REQUESTS:
+        if (action.data.apprequests) {
+          let apprequests_data = action.data.apprequests.data[0];
+          let recipient_facebook_user_id = apprequests_data.to.id;
+          let sender_facebook_id = apprequests_data.from.id;
+          let facebook_request_id = apprequests_data.id;
+          FriendActions.friendInvitationByFacebookVerify(facebook_request_id, recipient_facebook_user_id, sender_facebook_id);
+        }
+        return {
+          ...state,
+        };
+
+      case FacebookConstants.FACEBOOK_DELETE_APP_REQUEST:
+        return {
+          ...state,
         };
 
       case "voterFacebookSignInRetrieve":
