@@ -26,8 +26,17 @@
     display: none; // Hide Support/Oppose button labels on all screens
     //}
   }
+  
   .btn-group {
     display: flex;
     flex-wrap: nowrap;
+  }
+
+  .highlight_thumb_green {
+    border: 4px solid green;
+  }
+
+  .highlight_thumb_red {
+    border: 4px solid red;
   }
 }
