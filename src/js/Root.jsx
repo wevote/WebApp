@@ -46,6 +46,8 @@ import SampleBallot from "./routes/Intro/SampleBallot";
 import Settings from "./routes/Settings/Settings";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
 import SignIn from "./routes/More/SignIn";
+import FacebookLandingProcess from "./routes/Process/FacebookLandingProcess";
+import FacebookRedirectToWeVote from "./routes/More/FacebookRedirectToWeVote";
 import SignInEmailProcess from "./routes/Process/SignInEmailProcess";
 import Team from "./routes/More/Team";
 import TermsOfService from "./routes/More/TermsOfService";
@@ -114,6 +116,8 @@ const routes = () =>
     <Route path="/more/vision" component={Vision} />
     <Route path="/more/howtouse" component={HowToUse} />
     <Route path="/more/team" component={Team} />
+    <Route path="/more/facebooklandingprocess" component={FacebookLandingProcess} />
+    <Route path="/more/facebookredirecttowevote" component={FacebookRedirectToWeVote} />
 
     {/* Voter Guide Pages */}
     <Route path="/voterguide/:organization_we_vote_id" component={GuidePositionList} />

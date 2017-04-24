@@ -36,6 +36,10 @@ class FriendStore extends FluxMapStore {
     return this.getState().invitation_status;
   }
 
+  getInvitationFromFacebookStatus (){
+    return this.getState().facebook_invitation_status;
+  }
+
   isFriend (voter_we_vote_id) {
     let current_friends_index = this.currentFriendsIndexed();  // TODO DALE THIS NEEDS TO BE TESTED
     return current_friends_index[voter_we_vote_id] !== undefined;
@@ -170,6 +174,18 @@ class FriendStore extends FluxMapStore {
             invitation_found: action.res.invitation_found,
             attempted_to_approve_own_invitation: action.res.attempted_to_approve_own_invitation,
             invitation_secret_key_belongs_to_this_voter: action.res.invitation_secret_key_belongs_to_this_voter,
+          }
+        };
+
+      case "friendInvitationByFacebookVerify":
+        return {
+          ...state,
+          facebook_invitation_status: {
+            voter_device_id: action.res.voter_device_id,
+            voter_has_data_to_preserve: action.res.voter_has_data_to_preserve,
+            invitation_found: action.res.invitation_found,
+            attempted_to_approve_own_invitation: action.res.attempted_to_approve_own_invitation,
+            facebook_request_id: action.res.facebook_request_id,
           }
         };
 
