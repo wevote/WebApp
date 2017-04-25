@@ -28,7 +28,7 @@ export default class MeasureItemCompressed extends Component {
     this.state = {
       transitioning: false,
       showModal: false,
-      maximum_organization_display: 5
+      maximum_organization_display: 4,
     };
   }
 

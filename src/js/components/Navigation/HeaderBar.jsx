@@ -141,7 +141,7 @@ export default class HeaderBar extends Component {
   }
 
   accountMenu () {
-    var { linked_organization_we_vote_id, signed_in_facebook, signed_in_twitter, twitter_screen_name } = this.props.voter;
+    var { is_signed_in, linked_organization_we_vote_id, signed_in_facebook, signed_in_twitter, twitter_screen_name } = this.props.voter;
 
     let show_your_page_from_twitter = signed_in_twitter && twitter_screen_name;
     let show_your_page_from_facebook = signed_in_facebook && linked_organization_we_vote_id && !show_your_page_from_twitter;
@@ -179,7 +179,7 @@ export default class HeaderBar extends Component {
               </li> :
               null
             }
-            { !show_your_page_from_twitter && !show_your_page_from_facebook ?
+            { !show_your_page_from_twitter && !show_your_page_from_facebook && is_signed_in ?
               <li>
                 <Link onClick={this.hideAccountMenu.bind(this)} to="/yourpage">
                   <div>
