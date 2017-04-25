@@ -16,7 +16,7 @@ export default class BallotFilter extends Component {
         <span>All Items</span>
       </Link>
 
-      <Link to={{ pathname: "/ballot", query: { type: "filterRemaining" } }} className={ ballot_type === "CHOICES_REMAINING" ? "active btn btn-default" : "btn btn-default"}>
+      <Link to={{ pathname: "/ballot", query: { type: "filterRemaining" } }} className={"hidden-xs " + (ballot_type === "CHOICES_REMAINING" ? "active btn btn-default" : "btn btn-default")}>
         <span>Remaining Decisions</span>
       </Link>
 

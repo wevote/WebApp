@@ -23,7 +23,7 @@ export default class OfficeItemCompressed extends Component {
     super(props);
     this.state = {
       transitioning: false,
-      maximum_organization_display: 5
+      maximum_organization_display: 4
     };
   }
 
@@ -69,7 +69,7 @@ export default class OfficeItemCompressed extends Component {
               ballot_item_display_name
           }
         </h2>
-        <Link to={officeLink}><span className="card-main__office-read-more-link">learn more</span></Link>
+        <Link to={officeLink}><span className="card-main__office-read-more-link hidden-xs">learn more</span></Link>
         <BookmarkAction we_vote_id={we_vote_id} type="OFFICE"/>
 
         <div className={this.props.link_to_ballot_item_page ?
