@@ -89,7 +89,7 @@ export default class Application extends Component {
 
         // Initialize headroom element
         let headerHeadroom = new Headroom(this.headerEl, {
-          "offset": 10,
+          "offset": 50,
           "tolerance": 1,
           "classes": {
             "initial": "headroom--animated",

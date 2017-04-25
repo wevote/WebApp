@@ -145,9 +145,9 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
   }
   &--slide-up {
-    background-color: red;
+    transform: translateY(-100%);
   }
   &--slide-down {
-    background-color: blue;
+    transform: translateY(0);
   }
 }
