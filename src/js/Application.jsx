@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import BallotLeft from "./components/Navigation/BallotLeft";
 import FriendActions from "./actions/FriendActions";
 import HeaderBar from "./components/Navigation/HeaderBar";
-import Headroom from "react-headroom";
+import Headroom from "headroom.js";
 import BookmarkActions from "./actions/BookmarkActions";
 import VoterActions from "./actions/VoterActions";
 import SearchAllActions from "./actions/SearchAllActions";
@@ -35,6 +35,9 @@ export default class Application extends Component {
     super(props);
     this.state = {};
     this.initFacebook();
+
+    // Stores the header HTML element, which will be used to initialize a headroom object once
+    this.headerEl = "";
   }
 
   initFacebook (){
@@ -68,10 +71,35 @@ export default class Application extends Component {
     }
 
     this.voterStoreListener = VoterStore.addListener(this._onChange.bind(this));
+
   }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
+  }
+
+  componentDidUpdate () {
+    // If this.headerEl is not defined yet, try to define it and init Headroom
+    if (!this.headerEl) {
+      this.headerEl = document.getElementById("page-header");
+      if (this.headerEl) {
+        // Fix wrapper height so header doesn't overlap page elements
+        let headerHeight = document.querySelector(".page-header__container").clientHeight + "px";
+        document.querySelector(".headroom-wrapper").setAttribute("style", "height: " + headerHeight);
+
+        // Initialize headroom element
+        let headerHeadroom = new Headroom(this.headerEl, {
+          "offset": 50,
+          "tolerance": 1,
+          "classes": {
+            "initial": "headroom--animated",
+            "pinned": "headroom--slide-down",
+            "unpinned": "headroom--slide-up"
+          }
+        });
+        headerHeadroom.init();
+      }
+    }
   }
 
   _onChange () {
@@ -134,11 +162,11 @@ export default class Application extends Component {
     }
 
     return <div className="app-base" id="app-base-id">
-      <Headroom>
-        <div className="page-header__container">
+      <div className="headroom-wrapper">
+        <div className="page-header__container headroom" id="page-header">
           <HeaderBar pathname={pathname} voter={voter} />
         </div>
-      </Headroom>
+      </div>
       <div className="page-content-container">
         <div className="container-fluid">
           { content_full_width_mode ?
