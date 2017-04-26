@@ -35,6 +35,7 @@ export default class SearchAllBox extends Component {
     this.onSearchResultMouseOver = this.onSearchResultMouseOver.bind(this);
     this.onSearchResultClick = this.onSearchResultClick.bind(this);
     this.onSearchFormSubmit = this.onSearchFormSubmit.bind(this);
+    this.onClearSearch = this.onClearSearch.bind(this);
     this.searchHasContent = this.searchHasContent.bind(this);
     this.navigateToSelectedLink = this.navigateToSelectedLink.bind(this);
 
@@ -44,11 +45,10 @@ export default class SearchAllBox extends Component {
   componentDidMount (){
     this.siteLogoText = $(".page-logo:nth-child(1)");
     this.ballot = $(".header-nav__item:nth-child(1)");
-    this.requests = $(".header-nav__item:nth-child(2)");
-    this.connect = $(".header-nav__item:nth-child(3)");
-    this.avatar = $("#avatarContainer");
-    this.about = document.getElementsByClassName("header-nav__item")[3];
-    this.donate = document.getElementsByClassName("header-nav__item")[4];
+    this.network = $(".header-nav__item:nth-child(2)");
+    this.avatar = $("#js-header-avatar");
+    this.about = document.getElementsByClassName("header-nav__item--about")[0];
+    this.donate = document.getElementsByClassName("header-nav__item--donate")[0];
     // When we first enter we want to retrieve values to have for a click in the search box
     let text_from_search_field = this.props.text_from_search_field;
 
@@ -111,20 +111,27 @@ export default class SearchAllBox extends Component {
     // TODO: convert to flux action
     // for the global nav
 
-    this.siteLogoText.addClass("hideItem");
-    this.ballot.addClass("deskOnly");
-    this.requests.addClass("deskOnly");
-    this.connect.addClass("deskOnly");
-    this.donate.className += " hideItem";
-    this.about.className += " hideItem";
+    this.siteLogoText.addClass("hidden");
+    this.ballot.addClass("hidden-xs");
+    this.network.addClass("hidden-xs");
+    this.about.className += " hidden";
+    this.donate.className += " hidden";
     this.displayResults();
   }
 
   onSearchBlur () {
+    if (this.clearing_search) {
+      this.clearing_search = false;
+      return;
+    }
+
     // Delay closing the drop down so that a click on the Link can have time to work
     setTimeout(() => {
-      $(".deskOnly").removeClass("deskOnly");
-      $(".hideItem").removeClass("hideItem");
+      $(".page-logo-full-size").removeClass("hidden");
+      $(".header-nav__item--ballot").removeClass("hidden-xs");
+      $(".header-nav__item--network").removeClass("hidden-xs");
+      $(".header-nav__item--about").removeClass("hidden");
+      $(".header-nav__item--donate").removeClass("hidden");
       this.hideResults();
     }, 250);
   }
@@ -179,6 +186,22 @@ export default class SearchAllBox extends Component {
     this.updateSearchText();
   }
 
+  onClearSearch (e) {
+    // Close up the search box and reset the navigation
+    this.onSearchBlur();
+
+    this.clearing_search = true;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    this.setState({text_from_search_field: "", open: true, selected_index: 0, search_results: []});
+
+    //setTimeout(() => {
+    //   this.refs.searchAllBox.focus();
+    // }, 0);
+  }
+
   updateSearchText () {
     let selectedResultElement = this.state.search_results[this.state.selected_index];
     let selectedResultText = "";
@@ -189,7 +212,7 @@ export default class SearchAllBox extends Component {
       return;
     }
 
-    this.setState({text_from_search_field: selectedResultText});
+    this.setState({text_from_search_field: selectedResultText, open: false});
     //Update the search results to the selected query
     SearchAllActions.searchAll(selectedResultText);
   }
@@ -218,6 +241,12 @@ export default class SearchAllBox extends Component {
       "search-container__hidden": !this.state.open,
       "search-container": true
     });
+    let clear_button_classes = classNames({
+      "site-search__clear": true,
+      "btn": true,
+      "btn-default": true,
+      "site-search__clear__hidden": !this.state.text_from_search_field.length
+    });
 
     return <div className="page-header__search">
         <form onSubmit={this.onSearchFormSubmit} role="search">
@@ -236,6 +265,7 @@ export default class SearchAllBox extends Component {
                    value={this.state.text_from_search_field}
                    ref="searchAllBox" />
             <div className="input-group-btn">
+              <button className={clear_button_classes} onClick={this.onClearSearch}><i className="glyphicon glyphicon-remove-circle u-gray-light" /></button>
               <button className="site-search__button btn btn-default" type="submit"><i className="glyphicon glyphicon-search" /></button>
             </div>
           </div>

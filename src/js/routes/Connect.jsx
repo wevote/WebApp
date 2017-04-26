@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router";
-import { Button } from "react-bootstrap";
 import AddFriendsByEmail from "../components/Friends/AddFriendsByEmail";
 import CurrentFriends from "../components/Connect/CurrentFriends";
 import GuideActions from "../actions/GuideActions";
@@ -185,11 +184,6 @@ export default class Connect extends Component {
           </div>
         </div> : null }
 
-      <Link to="/requests">
-        <Button bsStyle="link">
-          See Friend Requests
-        </Button>
-      </Link>
 		</div>;
 	}
 }

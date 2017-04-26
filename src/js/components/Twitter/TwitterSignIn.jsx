@@ -5,7 +5,8 @@ const web_app_config = require("../../config");
 
 export default class TwitterSignIn extends Component {
   static propTypes = {
-    params: PropTypes.object
+    params: PropTypes.object,
+    buttonText: PropTypes.string
   };
 
   constructor (props) {
@@ -54,11 +55,15 @@ export default class TwitterSignIn extends Component {
   }
 
   render () {
+    let button_text = "Sign In";
+    if (this.props.buttonText) {
+      button_text = this.props.buttonText;
+    }
 
     return <a tabIndex="0" onKeyDown={this.onKeyDown.bind(this)}
               className="btn btn-social btn-lg btn-twitter"
               onClick={this.twitterSignInStart} >
-      <i className="fa fa-twitter" />Sign in
+      <i className="fa fa-twitter" />{ button_text }
     </a>;
   }
 }

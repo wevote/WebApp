@@ -5,11 +5,13 @@ import BrowserPushMessage from "../components/Widgets/BrowserPushMessage";
 import FriendInvitationList from "../components/Friends/FriendInvitationList";
 import FriendActions from "../actions/FriendActions";
 import FriendStore from "../stores/FriendStore";
-import SuggestedFriendList from "../components/Friends/SuggestedFriendList";
 import Helmet from "react-helmet";
-// import FriendInvitationProcessedList from "../components/Friends/FriendInvitationProcessedList";
+import LoadingWheel from "../components/LoadingWheel";
+import SuggestedFriendList from "../components/Friends/SuggestedFriendList";
+import TwitterSignIn from "../components/Twitter/TwitterSignIn";
+import VoterStore from "../stores/VoterStore";
 
-export default class RequestsPage extends Component {
+export default class Network extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -26,11 +28,14 @@ export default class RequestsPage extends Component {
     FriendActions.friendInvitationsSentToMe();
     FriendActions.friendInvitationsProcessed();
     FriendActions.suggestedFriendList();
+    this._onVoterStoreChange();
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount (){
     this.friendStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   _onFriendStoreChange () {
@@ -42,22 +47,48 @@ export default class RequestsPage extends Component {
     });
   }
 
+  _onVoterStoreChange () {
+    this.setState({ voter: VoterStore.getVoter() });
+  }
+
   render () {
+    if (!this.state.voter){
+      return LoadingWheel;
+    }
     return <span>
-      <Helmet title="Friend Requests - We Vote" />
+      <Helmet title="Your Network - We Vote" />
       <BrowserPushMessage incomingProps={this.props} />
+      <section className="card">
+        <div className="card-main">
+          <h3 className="h3">Build Your We Vote Network</h3>
+
+          { this.state.voter.signed_in_twitter ?
+            null :
+            <span>
+              <TwitterSignIn buttonText="Find Voter Guides" />
+              &nbsp;&nbsp;&nbsp;
+            </span>
+          }
+
+          <Link to="/facebook_invitable_friends" className="btn btn-social btn-lg btn-facebook">
+            <i className="fa fa-facebook" />Choose Friends&nbsp;&nbsp;&nbsp;
+          </Link>
+          &nbsp;&nbsp;&nbsp;
+
+          <Link to="/friends/invitebyemail" className="btn btn-social btn-lg btn-email">
+            <i className="fa fa-envelope" />Invite Friends&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </Link>
+          <br />
+          <Link to="/opinions_followed">Organizations you are following</Link>
+        </div>
+      </section>
       <section className="card">
         <div className="card-main">
           <h3 className="h3">Friend Requests</h3>
           { this.state.friend_invitations_sent_to_me.length ?
             <p>Accept invitations from your friends so you can collaborate on how to vote.</p> :
-            <p><span>Invitations from your friends will be shown here. </span>
-              { this.state.friend_invitations_sent_by_me.length ?
-                null :
-                <span>
-                  <Link to="/more/connect">Send invitations</Link> to your friends so you can collaborate on how to vote.
-                </span> }
-              <span> <Link to="/more/connect">See your friends.</Link></span>
+            <p><span>Invitations from your friends are shown here. </span>
+            <span> <Link to="/friends">See your friends.</Link></span>
             </p> }
         </div>
         <div className="card__additional">

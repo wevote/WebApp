@@ -66,26 +66,34 @@ export default class OpinionsFollowed extends Component {
   render () {
     return <div className="opinions-followed__container">
       <Helmet title="Organizations You Follow - We Vote" />
-      <h1 className="h1">Build Your Network</h1>
-      <a className="fa-pull-right"
-         tabIndex="0"
-         onKeyDown={this.onKeyDownEditMode.bind(this)}
-         onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit"}</a>
-        <p>
-          Organizations, public figures and other voters you currently follow. <em>We will never sell your email</em>.
-        </p>
-      <div className="voter-guide-list card">
-        <div className="card-child__list-group">
-          {
-            this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length ?
-            <OpinionsFollowedList organizationsFollowed={this.state.voter_guide_followed_list}
-                                  editMode={this.state.editMode}
-                                  instantRefreshOn /> :
-              null
-          }
+      <section className="card">
+        <div className="card-main">
+          <h1 className="h1">Who You're Following</h1>
+          <a className="fa-pull-right"
+             tabIndex="0"
+             onKeyDown={this.onKeyDownEditMode.bind(this)}
+             onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit"}</a>
+            <p>
+              Organizations, public figures and other voters you currently follow. <em>We will never sell your email</em>.
+            </p>
+          <div className="voter-guide-list card">
+            <div className="card-child__list-group">
+              {
+                this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length ?
+                <OpinionsFollowedList organizationsFollowed={this.state.voter_guide_followed_list}
+                                      editMode={this.state.editMode}
+                                      instantRefreshOn /> :
+                  null
+              }
+            </div>
+          </div>
+
+          <Link className="pull-left" to="/opinions">Find organizations to follow</Link>
+
+          <Link className="pull-right" to="/opinions_ignored">Organizations you are ignoring</Link><br />
+          <br />
         </div>
-      </div>
-      <Link className="pull-right" to="/opinions_ignored">See who you're ignoring</Link>
+      </section>
     </div>;
   }
 }

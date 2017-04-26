@@ -54,12 +54,35 @@ module.exports = {
   },
 
   getFacebookInvitableFriendsList: function (picture_width, picture_height) {
-    let fb_api_for_invitable_friends = `/me?fields=invitable_friends.limit(100){name,id,picture.width(${picture_width}).height(${picture_height})}`;
+    let fb_api_for_invitable_friends = `/me?fields=invitable_friends.limit(1000){name,id,picture.width(${picture_width}).height(${picture_height})}`;
     window.FB.api(fb_api_for_invitable_friends, (response) => {
+      console.log("getFacebookInvitableFriendsList", response);
       Dispatcher.dispatch({
           type: FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS,
           data: response
       });
+    });
+  },
+
+  readFacebookAppRequests: function () {
+    let fb_api_for_reading_app_requests = "me?fields=apprequests.limit(10){from,to,created_time,id}";
+    window.FB.api(fb_api_for_reading_app_requests, (response) => {
+      console.log("readFacebookAppRequests", response);
+      Dispatcher.dispatch({
+          type: FacebookConstants.FACEBOOK_READ_APP_REQUESTS,
+          data: response
+      });
+    });
+  },
+
+  deleteFacebookAppRequest: function (requestId) {
+    console.log("deleteFacebookAppRequest requestId: ", requestId);
+    window.FB.api(requestId, "delete", (response) => {
+      console.log("deleteFacebookAppRequest response", response);
+       Dispatcher.dispatch({
+          type: FacebookConstants.FACEBOOK_DELETE_APP_REQUEST,
+          data: response
+       });
     });
   },
 

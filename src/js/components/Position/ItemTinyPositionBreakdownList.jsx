@@ -70,8 +70,30 @@ export default class ItemTinyPositionBreakdownList extends Component {
       orgs_not_shown_count = this.state.position_list.length - MAXIMUM_ORGANIZATION_DISPLAY;
     }
     let organizations_to_display = [];
+    let temp_organizations_to_display = [];
+    // Put the voter's icon first
+    if (this.props.supportProps && this.state.voter) {
+      let show_voter_position = false;
+      if (this.props.supportProps.is_support && this.props.showSupport) {
+        show_voter_position = true;
+      } else if (this.props.supportProps.is_oppose && this.props.showOppose) {
+        show_voter_position = true;
+      }
+      if (show_voter_position) {
+        one_organization = {
+          organization_we_vote_id: this.state.voter.we_vote_id,
+          voter_guide_image_url_tiny: this.state.voter.voter_photo_url_tiny,
+          voter_guide_display_name: this.state.voter.full_name
+        };
+        let voter_organization_tiny_display = <OrganizationTinyDisplay key={one_organization.organization_we_vote_id}
+                                                                       showPlaceholderImage
+                                                                       {...one_organization} />;
+        organizations_to_display.push(voter_organization_tiny_display);
+      }
+    }
+    // Add the icons of other organizations now
     if (this.state.position_list) {
-      organizations_to_display = this.state.position_list.map((one_position) => {
+      temp_organizations_to_display = this.state.position_list.map((one_position) => {
         // Filter out the positions that we don't want to display
         if (this.props.showSupport && one_position.is_support_or_positive_rating) {
           // When in showSupport mode, continue if it is a positive position
@@ -135,26 +157,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
           </OverlayTrigger>;
         }
       });
-    }
-    // Now weave in the voter's position
-    if (this.props.supportProps && this.state.voter) {
-      let show_voter_position = false;
-      if (this.props.supportProps.is_support && this.props.showSupport) {
-        show_voter_position = true;
-      } else if (this.props.supportProps.is_oppose && this.props.showOppose) {
-        show_voter_position = true;
-      }
-      if (show_voter_position) {
-        one_organization = {
-          organization_we_vote_id: this.state.voter.we_vote_id,
-          voter_guide_image_url_tiny: this.state.voter.voter_photo_url_tiny,
-          voter_guide_display_name: this.state.voter.full_name
-        };
-        let voter_organization_tiny_display = <OrganizationTinyDisplay key={one_organization.organization_we_vote_id}
-                                                                       showPlaceholderImage
-                                                                       {...one_organization} />;
-        organizations_to_display.push(voter_organization_tiny_display);
-      }
+      organizations_to_display.push(temp_organizations_to_display);
     }
 
     return <span className="guidelist card-child__list-group">

@@ -63,7 +63,7 @@ export default class Team extends Component {
                 </div>
               </div>
             </div>
-            <div className="clearfix visible-xs-block"/>
+            <div className="clearfix visible-xs-block"/>{/* After every 3 */}
             <div className="col-4 col-sm-3 col-md-3 team-member">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Tory_Gavito-200x200.jpg"
@@ -77,7 +77,7 @@ export default class Team extends Component {
                 </div>
               </div>
             </div>
-            <div className="clearfix visible-sm-block visible-md-block visible-lg-block"/>
+            <div className="clearfix visible-sm-block visible-md-block visible-lg-block"/>{/* After every 4 */}
             <div className="col-4 col-sm-3 col-md-3 team-member">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Lawrence_Grodeska-200x200.jpg"
@@ -104,7 +104,7 @@ export default class Team extends Component {
                 </div>
               </div>
             </div>
-            <div className="clearfix visible-xs-block"/>
+            <div className="clearfix visible-xs-block"/>{/* After every 3 */}
             <div className="col-4 col-sm-3 col-md-3 team-member">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Barbara_Shannon-200x200.jpg"
@@ -132,7 +132,21 @@ export default class Team extends Component {
                 </div>
               </div>
             </div>
-            <div className="clearfix visible-sm-block visible-md-block visible-lg-block"/>
+            <div className="clearfix visible-sm-block visible-md-block visible-lg-block"/>{/* After every 4 */}
+            <div className="col-4 col-sm-3 col-md-3 team-member">
+              <div className="media">
+                <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Betsy_Sikma-200x200.jpg"
+                              alt="Betsy Sikma"/>
+                <div className="media-body">
+                  <h4><strong>Betsy Sikma</strong>, c3 Board Member</h4>
+              <h5 className="xx-small hidden-xs">
+                <br />
+                <br />
+              </h5>
+                </div>
+              </div>
+            </div>
+            <div className="clearfix visible-xs-block"/>{/* After every 3 */}
             <div className="col-4 col-sm-3 col-md-3 team-member">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/William_Winters-200x200.jpg"
@@ -188,7 +202,7 @@ export default class Team extends Component {
                 </div>
               </div>
             </div>
-            <div className="clearfix visible-xs-block visible-sm-block visible-md-block visible-lg-block"/>{/* After every 4 */}
+            <div className="clearfix visible-sm-block visible-md-block visible-lg-block"/>{/* After every 4 */}
             <div className="col-4 col-sm-3 col-md-3 team-member">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Jeff_French-200x200.jpg"
@@ -226,7 +240,7 @@ export default class Team extends Component {
                 </div>
               </div>
             </div>
-            <div className="clearfix visible-xs-block visible-sm-block visible-md-block visible-lg-block"/>{/* After every 4 */}
+            <div className="clearfix visible-sm-block visible-md-block visible-lg-block"/>{/* After every 4 */}
             <div className="col-4 col-sm-3 col-md-3 team-member">
               <div className="media">
                 <ImageHandler className="img-responsive" imageUrl="/img/global/photos/Ciero_Kilpatrick-200x200.jpg"

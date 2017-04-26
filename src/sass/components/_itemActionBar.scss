@@ -1,4 +1,7 @@
 
+$green: #76d00b;
+$red: #ff4921;
+
 // This style is for when the item-actionbar is on its own line
 .item-actionbar {
   display: flex;
@@ -10,6 +13,18 @@
     @include breakpoints (max mid-small) {
       display: none; // Hide Support/Oppose button labels on small screens
     }
+
+    &__position-at-state {
+      color: $gray-pale;
+    }
+  }
+
+  .support-at-state {
+    background-color: $green;
+  }
+
+  .oppose-at-state {
+    background-color: $red;
   }
 }
 
@@ -26,8 +41,17 @@
     display: none; // Hide Support/Oppose button labels on all screens
     //}
   }
+
   .btn-group {
     display: flex;
     flex-wrap: nowrap;
+  }
+
+  .support-at-state {
+    background-color: $green;
+  }
+
+  .oppose-at-state {
+    background-color: $red;
   }
 }

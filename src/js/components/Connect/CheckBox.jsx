@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from "react";
 
 export default class CheckBox extends Component {
   static propTypes = {
-    value: PropTypes.string.isRequired,
+    friendId: PropTypes.string.isRequired,
+    friendName: PropTypes.string.isRequired,
     handleCheckboxChange: PropTypes.func.isRequired,
   };
 
@@ -11,22 +12,22 @@ export default class CheckBox extends Component {
   }
 
   toggleCheckboxChange = () => {
-    const { value } = this.props;
+    const { friendId, friendName } = this.props;
     this.setState(({ isChecked }) => (
       {
         isChecked: !isChecked,
       }
     ));
-    this.props.handleCheckboxChange(value);
+    this.props.handleCheckboxChange(friendId, friendName);
   }
 
   render () {
-    const { value } = this.props;
+    const { friendId } = this.props;
     const { isChecked } = this.state;
     return (
       <div className="card-main__media-object">
         <input type="checkbox"
-          value={value}
+          value={friendId}
           checked={isChecked}
           onChange={this.toggleCheckboxChange}
         />
