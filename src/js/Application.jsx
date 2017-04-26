@@ -37,7 +37,7 @@ export default class Application extends Component {
     this.initFacebook();
 
     // Stores the header HTML element, which will be used to initialize a headroom object once
-    this.headerEl;
+    this.headerEl = "";
   }
 
   initFacebook (){
@@ -78,7 +78,7 @@ export default class Application extends Component {
     this.voterStoreListener.remove();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate () {
     // If this.headerEl is not defined yet, try to define it and init Headroom
     if (!this.headerEl) {
       this.headerEl = document.getElementById("page-header");
@@ -97,7 +97,7 @@ export default class Application extends Component {
             "unpinned": "headroom--slide-up"
           }
         });
-        headerHeadroom.init();    
+        headerHeadroom.init();
       }
     }
   }
