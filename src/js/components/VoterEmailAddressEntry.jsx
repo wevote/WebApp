@@ -290,14 +290,14 @@ export default class VoterEmailAddressEntry extends Component {
           { this.state.edit_verified_emails_on ?
             <span>
               <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-              <span className="account-edit-action" tabIndex="0" onClick={this.editVerifiedEmailsOff.bind(this)} >
+              <span className="pull-right" tabIndex="0" onClick={this.editVerifiedEmailsOff.bind(this)} >
                 stop editing
               </span>
             </span> :
             <span>
               { verified_email_exists_that_is_not_primary ? <span>
                   <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                  <span className="account-edit-action" tabIndex="0" onClick={this.editVerifiedEmailsOn.bind(this)} >
+                  <span className="pull-right" tabIndex="0" onClick={this.editVerifiedEmailsOn.bind(this)} >
                     edit
                   </span>
                 </span> :
@@ -316,13 +316,13 @@ export default class VoterEmailAddressEntry extends Component {
           { this.state.edit_emails_to_verify_on ?
             <span>
               <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-              <span className="account-edit-action" tabIndex="0" onClick={this.editEmailsToVerifyOff.bind(this)} >
+              <span className="pull-right" tabIndex="0" onClick={this.editEmailsToVerifyOff.bind(this)} >
                 stop editing
               </span>
             </span> :
             <span>
               <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-              <span className="account-edit-action" tabIndex="0" onClick={this.editEmailsToVerifyOn.bind(this)} >
+              <span className="pull-right" tabIndex="0" onClick={this.editEmailsToVerifyOn.bind(this)} >
                 edit
               </span>
             </span> }
