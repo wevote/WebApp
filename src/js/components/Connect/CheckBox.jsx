@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from "react";
+import ImageHandler from "../ImageHandler";
 
 export default class CheckBox extends Component {
   static propTypes = {
     friendId: PropTypes.string.isRequired,
-    friendName: PropTypes.string.isRequired,
+    friendName: PropTypes.string,
+    friendImage: PropTypes.string,
     handleCheckboxChange: PropTypes.func.isRequired,
   };
 
@@ -22,16 +24,17 @@ export default class CheckBox extends Component {
   }
 
   render () {
-    const { friendId } = this.props;
+    const { friendId, friendName, friendImage } = this.props;
     const { isChecked } = this.state;
-    return (
-      <div className="card-main__media-object">
+    return <div onClick={this.toggleCheckboxChange}>
         <input type="checkbox"
           value={friendId}
           checked={isChecked}
-          onChange={this.toggleCheckboxChange}
         />
-      </div>
-    );
+        &nbsp;
+        <ImageHandler imageUrl={friendImage} className="" sizeClassName="icon-lg" />
+        &nbsp;
+        {friendName}
+      </div>;
   }
 }

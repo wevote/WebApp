@@ -10,7 +10,9 @@ class FacebookStore extends FluxMapStore {
     return {
       authData: {},
       emailData: {},
-      facebookInvitableFriendsList: {}
+      facebookInvitableFriendsList: [],
+      appRequestAlreadyProcessed: false,
+      facebookFriendsNotExist: false
     };
   }
 
@@ -76,7 +78,15 @@ class FacebookStore extends FluxMapStore {
   }
 
   facebookInvitableFriendsList (){
-    return this.getDataFromArr(this.getState().facebookInvitableFriendsList) || {};
+    return this.getDataFromArr(this.getState().facebookInvitableFriendsList);
+  }
+
+  facebookFriendsNotExist () {
+    return this.getState().facebookFriendsNotExist;
+  }
+
+  facebookAppRequestAlreadyProcessed (){
+    return this.getState().appRequestAlreadyProcessed;
   }
 
   getDataFromArr (arr) {
@@ -115,22 +125,36 @@ class FacebookStore extends FluxMapStore {
       case FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS:
         // Cache the data in the API server
         // FacebookActions.getFacebookInvitableFriendsList(action.data.id);
-        console.log("FACEBOOK_RECEIVED_INVITABLE_FRIENDS: ", action.data.invitable_friends);
+        let facebook_friends_not_exist = false;
+        let facebook_invitable_friends_list = [];
+        if (action.data.invitable_friends) {
+          facebook_invitable_friends_list = action.data.invitable_friends.data;
+        } else {
+          facebook_friends_not_exist = true;
+        }
+        console.log("FACEBOOK_RECEIVED_INVITABLE_FRIENDS: ", facebook_invitable_friends_list);
         return {
           ...state,
-          facebookInvitableFriendsList: action.data.invitable_friends.data
+          facebookInvitableFriendsList: facebook_invitable_friends_list,
+          facebookFriendsNotExist: facebook_friends_not_exist
         };
 
       case FacebookConstants.FACEBOOK_READ_APP_REQUESTS:
+        console.log("FacebookStore appreqests:", action.data.apprequests);
+        let app_request_already_processed = false;
         if (action.data.apprequests) {
           let apprequests_data = action.data.apprequests.data[0];
           let recipient_facebook_user_id = apprequests_data.to.id;
           let sender_facebook_id = apprequests_data.from.id;
           let facebook_request_id = apprequests_data.id;
           FriendActions.friendInvitationByFacebookVerify(facebook_request_id, recipient_facebook_user_id, sender_facebook_id);
+        } else {
+          app_request_already_processed = true;
         }
+        console.log("app_request_already_processed", app_request_already_processed);
         return {
           ...state,
+          appRequestAlreadyProcessed: app_request_already_processed
         };
 
       case FacebookConstants.FACEBOOK_DELETE_APP_REQUEST:
