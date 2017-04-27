@@ -128,7 +128,7 @@ export default class SignIn extends Component {
                 <span className="h3">Currently Signed In</span>
                 <span>&nbsp;&nbsp;&nbsp;</span>
                 <span className="account-edit-action" tabIndex="0" onKeyDown={this.twitterLogOutOnKeyDown.bind(this)}>
-                  <a onClick={VoterSessionActions.voterSignOut}>Sign Out</a>
+                  <a className="pull-right" onClick={VoterSessionActions.voterSignOut}>Sign Out</a>
                 </span>
 
                 <br />
