@@ -322,7 +322,7 @@ export default class VoterEmailAddressEntry extends Component {
             </span> :
             <span>
               <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-              <span className="account-edit-action" tabIndex="0" onClick={this.editEmailsToVerifyOn.bind(this)} >
+              <span className="account-edit-action pull-right" tabIndex="0" onClick={this.editEmailsToVerifyOn.bind(this)} >
                 edit
               </span>
             </span> }
