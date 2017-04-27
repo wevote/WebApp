@@ -34,10 +34,8 @@ export default class Application extends Component {
   constructor (props) {
     super(props);
     this.state = {};
+    this.loadedHeader = false;
     this.initFacebook();
-
-    // Stores the header HTML element, which will be used to initialize a headroom object once
-    this.headerEl = "";
   }
 
   initFacebook (){
@@ -76,30 +74,25 @@ export default class Application extends Component {
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
+    this.loadedHeader = false;
   }
 
-  componentDidUpdate () {
-    // If this.headerEl is not defined yet, try to define it and init Headroom
-    if (!this.headerEl) {
-      this.headerEl = document.getElementById("page-header");
-      if (this.headerEl) {
-        // Fix wrapper height so header doesn't overlap page elements
-        let headerHeight = document.querySelector(".page-header__container").clientHeight + "px";
-        document.querySelector(".headroom-wrapper").setAttribute("style", "height: " + headerHeight);
+  componentDidUpdate() {
+    if (this.loadedHeader) return;
+    if (!this.refs.pageHeader) return;
 
-        // Initialize headroom element
-        let headerHeadroom = new Headroom(this.headerEl, {
-          "offset": 50,
-          "tolerance": 1,
-          "classes": {
-            "initial": "headroom--animated",
-            "pinned": "headroom--slide-down",
-            "unpinned": "headroom--slide-up"
-          }
-        });
-        headerHeadroom.init();
+    // Initialize headroom element
+    new Headroom(this.refs.pageHeader, {
+      "offset": 50,
+      "tolerance": 1,
+      "classes": {
+        "initial": "headroom--animated",
+        "pinned": "headroom--slide-down",
+        "unpinned": "headroom--slide-up"
       }
-    }
+    }).init();
+
+    this.loadedHeader = true;
   }
 
   _onChange () {
@@ -163,7 +156,7 @@ export default class Application extends Component {
 
     return <div className="app-base" id="app-base-id">
       <div className="headroom-wrapper">
-        <div className="page-header__container headroom" id="page-header">
+        <div ref="pageHeader" className="page-header__container headroom">
           <HeaderBar pathname={pathname} voter={voter} />
         </div>
       </div>

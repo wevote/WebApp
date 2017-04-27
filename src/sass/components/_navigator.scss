@@ -1,6 +1,7 @@
 $icon-color-base: $gray-mid;
 $icon-color-active: $link-color;
 $icon-color-hover: $gray-dark;
+$header-height: 54px;
 
 // 1. Display .footer-nav, hide .header-nav
 // 2. Display .header-nav, hide .footer-nav
@@ -62,6 +63,10 @@ $icon-color-hover: $gray-dark;
   pointer-events: all;
 }
 
+.headroom-wrapper {
+  margin-top: $header-height;
+}
+
 .header-nav {
   display: flex;
   align-items: center;
@@ -81,7 +86,7 @@ $icon-color-hover: $gray-dark;
     justify-content: center;
     position: relative;
     width: 60px;
-    height: 54px;
+    height: $header-height;
     margin-top: -.5em; // temporary offsets for .page-header__container padding
     margin-bottom: -.5em;
     padding: 8px;
