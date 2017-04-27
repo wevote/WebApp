@@ -1,12 +1,12 @@
 import React from 'react';
 import {render} from 'enzyme';
 import {expect} from 'chai';
-import HeaderBar from '../../src/js/components/Navigation/HeaderBar.jsx';
+import FriendsOnlyIndicator from '../../src/js/components/Widgets/FriendsOnlyIndicator.jsx';
 
 
-describe('HeaderBar', () => {
+describe('FriendsOnlyIndicator', () => {
   it('Should have appropriate classname', () => {
-    const wrapper = render(<HeaderBar />);
-    expect(wrapper.find('header')).to.have.className('page-header');
+    const wrapper = render(<FriendsOnlyIndicator />);
+    expect(wrapper.find('div')).to.have.className('public-friends-indicator');
   });
 });
