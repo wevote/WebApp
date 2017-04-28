@@ -18,13 +18,6 @@
       "type": "clickElement",
       "locator": {
         "type": "xpath",
-        "value": "//div[@class='slick-track']/div[2]/div/div[4]/button"
-      }
-    },
-    {
-      "type": "clickElement",
-      "locator": {
-        "type": "xpath",
         "value": "//div[@class='slick-track']/div[3]/div/div[4]/button"
       }
     },

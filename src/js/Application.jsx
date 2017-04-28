@@ -77,7 +77,7 @@ export default class Application extends Component {
     this.loadedHeader = false;
   }
 
-  componentDidUpdate() {
+  componentDidUpdate () {
     if (this.loadedHeader) return;
     if (!this.refs.pageHeader) return;
 

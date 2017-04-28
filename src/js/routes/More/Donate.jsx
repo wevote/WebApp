@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { Button, FormGroup, Radio  } from "react-bootstrap";
+import { Button, FormGroup, Radio } from "react-bootstrap";
 import Helmet from "react-helmet";
 import DonationForm from "../../components/DonationForm";
 import DonationError from "../../components/DonationError";
