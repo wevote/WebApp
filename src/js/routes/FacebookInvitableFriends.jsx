@@ -1,11 +1,13 @@
 import React, {Component, PropTypes } from "react";
+import { browserHistory } from "react-router";
 import { Button } from "react-bootstrap";
 import CheckBox from "../components/Connect/CheckBox";
-import ImageHandler from "../components/ImageHandler";
+import LoadingWheel from "../components/LoadingWheel";
 import FacebookActions from "../actions/FacebookActions";
 import FriendActions from "../actions/FriendActions";
 import FacebookStore from "../stores/FacebookStore";
 import Helmet from "react-helmet";
+const web_app_config = require("../config");
 
 export default class FacebookInvitableFriends extends Component {
   static propTypes = {
@@ -18,8 +20,10 @@ export default class FacebookInvitableFriends extends Component {
     this.state = {
       isChecked: false,
       facebook_invitable_friends_list: FacebookStore.facebookInvitableFriendsList(),
+      facebook_friends_not_exist: FacebookStore.facebookFriendsNotExist(),
       facebook_invitable_friends_image_width: 48,
       facebook_invitable_friends_image_height: 48,
+      saving: false,
     };
   }
 
@@ -28,6 +32,7 @@ export default class FacebookInvitableFriends extends Component {
     if (this.state.facebook_invitable_friends_list) {
       FacebookActions.getFacebookInvitableFriendsList(this.state.facebook_invitable_friends_image_width,
         this.state.facebook_invitable_friends_image_height);
+      this.setState({saving: true});
     }
   }
 
@@ -41,13 +46,10 @@ export default class FacebookInvitableFriends extends Component {
 
   _onFacebookStoreChange () {
     this.setState({
-      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriendsList()
+      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriendsList(),
+      facebook_friends_not_exist: FacebookStore.facebookFriendsNotExist(),
+      saving: false
     });
-  }
-
-  getCurrentRoute (){
-    var current_route = "/facebook_invitable_friends";
-    return current_route;
   }
 
   toggleCheckBox (facebook_invitable_friend_id, facebook_invitable_friend_name) {
@@ -86,7 +88,7 @@ export default class FacebookInvitableFriends extends Component {
   sendFacebookAppRequest (selected_facebook_friends_ids, selected_facebook_friends_names) {
       window.FB.ui({
         title: "We Vote USA",
-        redirect_uri: "http://localhost:3000/ballot",
+        redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/more/network",
         method: "apprequests",
         message: "Invite your Facebook Friends to join WeVote",
         to: selected_facebook_friends_ids,
@@ -98,6 +100,13 @@ export default class FacebookInvitableFriends extends Component {
           const data = {request_id: response.request, recipients_facebook_id_array: response.to, recipients_facebook_name_array: selected_facebook_friends_names};
           console.log("Final data for all invitations", data);
           FriendActions.friendInvitationByFacebookSend(data);
+          browserHistory.push({
+            pathname: "/more/network",
+            state: {
+              message: "You have successfully sent Invitation to your friends.",
+              message_type: "success"
+            }
+          });
         } else {
           console.log("Failed To Invite");
         }
@@ -106,46 +115,54 @@ export default class FacebookInvitableFriends extends Component {
 
   render () {
 
-    const { facebook_invitable_friends_list } = this.state;
-    const facebook_friend_list_for_display = facebook_invitable_friends_list.map( (friend) => {
+    if (this.state.saving || !this.state.facebook_invitable_friends_list) {
+      return LoadingWheel;
+    }
+
+    console.log("Facebook friends list", this.state.facebook_invitable_friends_list);
+    console.log("facebook friends not exist:", this.state.facebook_friends_not_exist);
+    if (this.state.facebook_friends_not_exist) {
+      browserHistory.push({
+        pathname: "/more/network",
+        state: {
+          message: "You don't have friends on Facebook.",
+          message_type: "success"
+        }
+      });
+      return LoadingWheel;
+    }
+
+    const facebook_friend_list_for_display = this.state.facebook_invitable_friends_list.map( (friend) => {
       return <div key={friend.id} className="card-child card-child--not-followed">
         <CheckBox
           friendId={friend.id}
           friendName={friend.name}
+          friendImage={friend.picture.data.url}
           handleCheckboxChange={this.toggleCheckBox.bind(this)}
         />
-        &nbsp;
-        <div className="card-main__media-object-anchor">
-          <ImageHandler imageUrl={friend.picture.data.url}
-                      className="" sizeClassName="icon-lg" />
-        </div>
-        <div className="card-main__media-object-content">
-          {friend.name}
-        </div>
       </div>;
     });
 
-    return <div className="facebook-friends-view">
+    return <div className="opinion-view">
       <Helmet title="Your Facebook Friends - We Vote" />
-      <h1 className="h1">Build Your Network - We Vote</h1>
-      <h4 className="h4">Add Friends from Facebook</h4>
-      <div>
-        <p>
-            See how your friends are voting and who they recommend.
-            The friends you invite to We Vote will see what you support and oppose.
-            We recommend you only invite friends that you would like to talk politics with.
-        </p>
-        <span className="u-bold">Select: </span>
-        <form onSubmit={this.sendInviteRequestToFacebookFriends.bind(this)}>
-          <div className="card">
-            <div className="card-child__list-group">
+      <section className="card">
+        <div className="card-main">
+          <h1 className="h1">Build Your Network - We Vote</h1>
+          <h4 className="h4">Add Friends from Facebook</h4>
+          <div>
+            <p>
+                See how your friends are voting and who they recommend.
+                The friends you invite to We Vote will see what you support and oppose.
+                We recommend you only invite friends that you would like to talk politics with.
+            </p>
+            <form onSubmit={this.sendInviteRequestToFacebookFriends.bind(this)}>
               {facebook_friend_list_for_display}
-            </div>
+              <br />
+              <Button bsStyle="primary" type="submit">Send</Button>
+            </form>
           </div>
-          <br />
-          <Button bsStyle="primary" type="submit">Send</Button>
-        </form>
-      </div>
+        </div>
+      </section>
     </div>;
   }
 }
