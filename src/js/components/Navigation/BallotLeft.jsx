@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
-var Icon = require("react-svg-icons");
 
 export default class BallotLeft extends Component {
   static propTypes = {
@@ -24,20 +23,18 @@ export default class BallotLeft extends Component {
   }
 
   render () {
-    var { linked_organization_we_vote_id, voter_photo_url_medium } = this.props;
+    // let image_placeholder = "";
+    // let speaker_type = "V";  // TODO DALE make this dynamic
+    // if (speaker_type === "O") {
+    //     image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
+    // } else {
+    //     image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
+    // }
 
-    let image_placeholder = "";
-    let speaker_type = "V";  // TODO DALE make this dynamic
-    if (speaker_type === "O") {
-        image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
-    } else {
-        image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
-    }
-
-    let search = window.location.search ? window.location.search : "";
-    let currentUrl = window.location.pathname + search;
-    let show_your_page_from_twitter = this.props.signed_in_twitter && this.props.twitter_screen_name;
-    let show_your_page_from_facebook = this.props.signed_in_facebook && linked_organization_we_vote_id && !show_your_page_from_twitter;
+    // let search = window.location.search ? window.location.search : "";
+    // let currentUrl = window.location.pathname + search;
+    // let show_your_page_from_twitter = this.props.signed_in_twitter && this.props.twitter_screen_name;
+    // let show_your_page_from_facebook = this.props.signed_in_facebook && linked_organization_we_vote_id && !show_your_page_from_twitter;
 
     return <div>
       <div className="device-menu--large">
