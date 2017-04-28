@@ -6,27 +6,6 @@
     {
       "type": "get",
       "url": "https://wevote.us/"
-    },
-    {
-      "type": "clickElement",
-      "locator": {
-        "type": "css selector",
-        "value": "button.btn.btn-success"
-      }
-    },
-    {
-      "type": "clickElement",
-      "locator": {
-        "type": "xpath",
-        "value": "//div[@class='slick-track']/div[3]/div/div[4]/button"
-      }
-    },
-    {
-      "type": "clickElement",
-      "locator": {
-        "type": "xpath",
-        "value": "//div[@class='slick-track']/div[4]/div/div[4]/button"
-      }
     }
   ],
   "data": {
