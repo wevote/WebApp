@@ -116,7 +116,7 @@ export default class MeasureItemCompressed extends Component {
           {/*Mobile ballot info*/}
         <div
           className={ this.props.link_to_ballot_item_page ?
-          "u-cursor--pointer visible-xs" : null }
+          "u-cursor--pointer visible-xs u-stack--sm" : null }
           onClick={ this.props.link_to_ballot_item_page ?
           goToMeasureLink : null }
         >
@@ -127,51 +127,54 @@ export default class MeasureItemCompressed extends Component {
         <div className={"u-flex" + (this.props.link_to_ballot_item_page ?
                 " u-cursor--pointer" : "") } >
 
-              <div className="MeasureItem__summary u-flex-auto u-inline--sm">
-                <div className={ this.props.link_to_ballot_item_page ?
-                        "u-cursor--pointer hidden-xs" : null }
-                      onClick={ this.props.link_to_ballot_item_page ?
-                        goToMeasureLink : null }>{measure_subtitle}</div>
-                { this.props.measure_text ?
-                  <div className="measure_text">{measure_text}</div> :
-                  null }
-              </div>
+          <div className="MeasureItem__summary u-flex-auto u-inline--sm">
+            <div className={ this.props.link_to_ballot_item_page ?
+                    "u-cursor--pointer hidden-xs" : null }
+                  onClick={ this.props.link_to_ballot_item_page ?
+                    goToMeasureLink : null }>{measure_subtitle}</div>
+            { this.props.measure_text ?
+              <div className="measure_text">{measure_text}</div> :
+              null }
+          </div>
 
-              {/* *** "Positions in your Network" bar OR items you can follow *** */}
-              <div className="u-flex-none u-justify-end u-inline--sm">
-                <span className={ this.props.link_to_ballot_item_page ?
-                        "u-cursor--pointer" :
-                        null }
-                >
-                { support_count || oppose_count ?
-                  <span onClick={ this.props.link_to_ballot_item_page ?
-                        ()=>{this.props._toggleMeasureModal(measure_for_modal);} :
-                        null } >
-                    <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={this.state.supportProps}
-                                             type="MEASURE" />
-                  </span> :
-                  <span onClick={ this.props.link_to_ballot_item_page ?
-                        ()=>{this.props._toggleMeasureModal(measure_for_modal);} :
-                        null } >
-                  {/* Show possible voter guides to follow */}
-                  { GuideStore.toFollowListForBallotItemById(we_vote_id) && GuideStore.toFollowListForBallotItemById(we_vote_id).length !== 0 ?
-                    <ItemTinyOpinionsToFollow ballotItemWeVoteId={we_vote_id}
-                                              organizationsToFollow={GuideStore.toFollowListForBallotItemById(we_vote_id)}
-                                              maximumOrganizationDisplay={this.state.maximum_organization_display}/> :
-                    <span /> }
-                  </span> }
-                </span>
-              </div>
 
-              {/* *** Choose Support or Oppose *** */}
-              <div className="u-flex-none u-justify-end">
-                <ItemActionBar ballot_item_we_vote_id={we_vote_id}
-                               supportProps={this.state.supportProps}
-                               shareButtonHide
-                               commentButtonHide
-                               transitioniing={this.state.transitioning}
-                               type="MEASURE" />
-              </div>
+          <div className="u-flex u-items-center">
+            {/* *** "Positions in your Network" bar OR items you can follow *** */}
+            <div className="u-flex-none u-justify-end u-inline--md">
+              <span className={ this.props.link_to_ballot_item_page ?
+                      "u-cursor--pointer" :
+                      null }
+              >
+              { support_count || oppose_count ?
+                <span onClick={ this.props.link_to_ballot_item_page ?
+                      ()=>{this.props._toggleMeasureModal(measure_for_modal);} :
+                      null } >
+                  <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={this.state.supportProps}
+                                           type="MEASURE" />
+                </span> :
+                <span onClick={ this.props.link_to_ballot_item_page ?
+                      ()=>{this.props._toggleMeasureModal(measure_for_modal);} :
+                      null } >
+                {/* Show possible voter guides to follow */}
+                { GuideStore.toFollowListForBallotItemById(we_vote_id) && GuideStore.toFollowListForBallotItemById(we_vote_id).length !== 0 ?
+                  <ItemTinyOpinionsToFollow ballotItemWeVoteId={we_vote_id}
+                                            organizationsToFollow={GuideStore.toFollowListForBallotItemById(we_vote_id)}
+                                            maximumOrganizationDisplay={this.state.maximum_organization_display}/> :
+                  <span /> }
+                </span> }
+              </span>
+            </div>
+
+            {/* *** Choose Support or Oppose *** */}
+            <div className="u-flex-none u-justify-end">
+              <ItemActionBar ballot_item_we_vote_id={we_vote_id}
+                             supportProps={this.state.supportProps}
+                             shareButtonHide
+                             commentButtonHide
+                             transitioniing={this.state.transitioning}
+                             type="MEASURE" />
+            </div>
+          </div>
         </div>
       </div> {/* END .card-main__content */}
     </div>;

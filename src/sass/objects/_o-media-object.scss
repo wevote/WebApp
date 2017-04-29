@@ -1,0 +1,24 @@
+
+%media-object {
+  display: flex;
+  position: relative;
+  flex: auto;
+}
+.o-media-object {
+  @extend %media-object;
+  align-items: flex-start;
+  &--center {
+    @extend %media-object;
+    align-items: center;
+  }
+  &--end {
+    @extend %media-object;
+    align-items: flex-end;
+  }
+  &__anchor {
+    display: flex;
+  }
+  &__body {
+    flex: 1;
+  }
+}

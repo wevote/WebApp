@@ -35,16 +35,19 @@
 // 4. Utility & Helpers
 // ===============================================
 
-@import 'utility/utility';
-@import 'utility/u-bg-colors';
-@import 'utility/u-flexbox';
-@import 'utility/u-typography';
-@import 'utility/u-layout';
+@import 'utilities/utility';
+@import 'utilities/u-bg-colors';
+@import 'utilities/u-flexbox';
+@import 'utilities/u-typography';
+@import 'utilities/u-layout';
 
 
 // ===============================================
 // 5. Objects, Components, Sections, Templates
 // ===============================================
+
+
+@import 'objects/o-media-object';
 
 // -------------------------------
 // Smaller Elements

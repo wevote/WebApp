@@ -28,18 +28,24 @@ export default class Intro extends Component {
 
     return <div>
       <Helmet title="Welcome to We Vote" />
+      <div className="u-f1">Heading One</div>
+      <div className="u-f2">Heading Two</div>
+      <div className="u-f3">Heading Three</div>
+      <div className="u-f4">Heading Four</div>
+      <div className="u-f5">Heading Five</div>
+      <div className="u-f6">Heading Six</div>
+
+
       <h1 className="h1">Welcome to We Vote!</h1>
-      We Vote is building the next generation of voting tech. We're creating a digital voter guide
+      <p>We Vote is building the next generation of voting tech. We're creating a digital voter guide
       informed by issues you care about and people you trust. Through this nonpartisan, open source
-      platform, we'll help you become a better voter, up and down the ballot.<br />
-      <br />
-      This website is still a work-in-progress, but please feel free to explore.<br />
-      <br />
-      <button type="button" className="btn btn-sm btn-success"
-                  onClick={this.goToGetStarted}>Get Started ></button><br />
-      <br />
-      If you are looking for more information, <a href="http://www.WeVoteUSA.org" target="_blank">our
-      public website can be found here</a>.
-      </div>;
+      platform, we'll help you become a better voter, up and down the ballot.</p>
+      <p><strong>This website is still a work-in-progress, but please feel free to explore.</strong></p>
+
+      <button type="button" className="btn btn-sm btn-success u-stack--md"
+                  onClick={this.goToGetStarted}>Get Started</button>
+      <p>If you are looking for more information, <a href="http://www.WeVoteUSA.org" target="_blank">our
+      public website can be found here</a>.</p>
+    </div>;
   }
 }

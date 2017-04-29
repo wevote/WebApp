@@ -4,6 +4,62 @@
 
 
 // -------------------------------
+// Font Sizes
+// -------------------------------
+
+// !!! These font size helpers are a work in progress. Please avoid using or use sparingly for now.
+
+.u-f1,
+.u-f2,
+.u-f3,
+.u-f4,
+.u-f5,
+.u-f6 {
+  font-family: $heading-font-stack;
+}
+
+.u-f1,
+.h1 {
+  font-size: 2rem;
+  @include breakpoints(medium) {
+    // font-size: 2.5rem;
+  }
+}
+.u-f2,
+.h2 {
+  font-size: 1.5rem;
+  @include breakpoints(medium) {
+    // font-size: 2rem;
+  }
+}
+.u-f3,
+.h3 {
+  font-size: 1.25rem;
+  @include breakpoints(medium) {
+    // font-size: 1.75rem;
+  }
+}
+.u-f4,
+.h4 {
+  font-size: 1.125rem;
+  @include breakpoints(medium) {
+    // font-size: 1.5rem;
+  }
+}
+.u-f5,
+.h5 {
+  font-size: 1.1rem;
+  @include breakpoints(medium) {
+    // font-size: 1.25rem;
+  }
+}
+.u-f6,
+.h6 {
+  font-size: 1rem;
+}
+
+
+// -------------------------------
 // Colors
 // -------------------------------
 
