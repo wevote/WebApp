@@ -5,7 +5,7 @@
 .card {
   $item-padding: 15px;
   background-color: #fff;
-  border-radius: 2px;
+  border-radius: $radius-xs;
   box-shadow: $default-box-shadow;
   margin-bottom: 20px;
   @include clearfix;
@@ -13,7 +13,7 @@
     margin-right: -15px;
     margin-bottom: 10px;
     margin-left: -15px;
-    border-radius: 0;
+    border-radius: $radius-none;
   }
 
   // ----------------------------------------
@@ -52,23 +52,23 @@
 
     &__avatar {
       max-width: 60px;
-      border-radius: 2px;
+      border-radius: $radius-xs;
       .card-main & {
         @include breakpoints(mid-small) {
           max-width: 60px;
         }
-        border-radius: 10em;
+        border-radius: $radius-rounded;
       }
     }
 
     &__avatar-compressed {
       max-width: 40px;
-      border-radius: 2px;
+      border-radius: $radius-xs;
       .card-main & {
         @include breakpoints(mid-small) {
           max-width: 40px;
         }
-        border-radius: 10em;
+        border-radius: $radius-rounded;
       }
     }
 
@@ -241,7 +241,7 @@
     &__avatar { // placed on the actual image
       max-width: 50px;
       &-round {
-        border-radius: 25px;
+        border-radius: $radius-rounded;
         max-width: 50px;
       }
     }

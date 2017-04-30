@@ -73,9 +73,12 @@ $space-stack-xl:   0 0 $space-xl 0;  // 64px
 
 // Border Radii
 // * Uses a slightly shifted scale to acknowledge smaller common values
-$border-radius-xs: 2px;
-$border-radius-sm: 4px;
-$border-radius-md: 8px;
+$radius-none: 0; // for overrides
+$radius-xs: 2px;
+$radius-sm: 4px;
+$radius-md: 8px;
+$radius-rounded: 100rem;
+
 
 
 // ===========================================

@@ -8,7 +8,7 @@
 
   &__avatar {
     overflow: hidden;
-    border-radius: 3px;
+    border-radius: $radius-sm;
     background: #fff;
     display: inline-block;
     flex-shrink: 0;

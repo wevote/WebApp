@@ -14,7 +14,7 @@ $loader-size: .8rem;
   &,
   &::before,
   &::after {
-    border-radius: 50%;
+    border-radius: $radius-rounded;
     width: $loader-size;
     height: $loader-size;
     animation-name: bouncedelay;

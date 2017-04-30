@@ -27,7 +27,7 @@
 .organization-image-tiny {
   margin-left: 3px;
   width: 30px;
-  border-radius: 3px;
+  border-radius: $radius-sm;
   @include breakpoints(small) {
     // TODO DALE this seems to always get set
     // max-width: 20px;

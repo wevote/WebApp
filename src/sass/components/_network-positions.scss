@@ -19,7 +19,7 @@ $red: #ff4921;
     margin-left: $space-sm;
     flex: 5 0 48px;
     height: $bar-height;
-    border-radius: 3em;
+    border-radius: $radius-rounded;
     background-color: $gray-light;
     overflow: hidden;
   }

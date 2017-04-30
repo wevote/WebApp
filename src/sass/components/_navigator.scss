@@ -131,7 +131,7 @@ $header-height: 54px;
   }
 
   &__avatar {
-    border-radius: 3px;
+    border-radius: $radius-sm;
     background: #fff;
     overflow: hidden;
     height: 34px;

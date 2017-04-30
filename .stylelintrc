@@ -15,7 +15,8 @@
     "number-leading-zero": "never",
     "rule-empty-line-before": null,
     "selector-no-id": true,
-    "shorthand-property-no-redundant-values": null
+    "shorthand-property-no-redundant-values": null,
+    "sh-waqar/declaration-use-variable": [["border-radius"]]
   },
   "ignoreFiles": [
     "**/vendor/**/*.scss"
