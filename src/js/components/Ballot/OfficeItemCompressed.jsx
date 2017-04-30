@@ -63,12 +63,12 @@ export default class OfficeItemCompressed extends Component {
           <h2 className="u-f3">
             { this.props.link_to_ballot_item_page ?
               <Link to={officeLink}>
-              {ballot_item_display_name}
-              </Link>:
+                {ballot_item_display_name}
+                <span className="card-main__office-read-more-link hidden-xs">learn&nbsp;more</span>
+              </Link> :
               ballot_item_display_name
             }
           </h2>
-          <Link to={officeLink}><span className="card-main__office-read-more-link hidden">learn more</span></Link>
           <BookmarkAction we_vote_id={we_vote_id} type="OFFICE" />
         </div>
           <div className={this.props.link_to_ballot_item_page ?
@@ -89,8 +89,9 @@ export default class OfficeItemCompressed extends Component {
                                     alt="candidate-photo"
                                     kind_of_ballot_item="CANDIDATE" />
                       <div className="o-media-object__body">
-                        <h4 className="card-main__candidate-name u-f4"><a>{one_candidate.ballot_item_display_name}</a></h4>
-                        <span className="hidden">Learn&nbsp;more</span>
+                        <h4 className="card-main__candidate-name u-f4"><a>{one_candidate.ballot_item_display_name}
+                          <span className="card-main__candidate-read-more-link hidden-xs">learn&nbsp;more</span></a></h4>
+
                       </div>
                     </div>
                   </div>

@@ -94,49 +94,35 @@ export default class MeasureItemCompressed extends Component {
 
     return <div className="card-main measure-card">
       <div className="card-main__content">
-        {/* Reuse this?
-        {
-          supportProps && supportProps.is_support ?
-          <img src="/img/global/svg-icons/thumbs-up-color-icon.svg"
-               className="card-main__position-icon" width="24" height="24" /> : null
-        }
-        {
-          supportProps && supportProps.is_oppose ?
-          <img src="/img/global/svg-icons/thumbs-down-color-icon.svg"
-               className="card-main__position-icon" width="24" height="24" /> : null
-        }
-        */}
         <h2 className="card-main__display-name">
           { this.props.link_to_ballot_item_page ?
-            <Link to={measureLink}>{ballot_item_display_name}</Link> :
+            <div>
+              <Link to={measureLink}>{ballot_item_display_name}
+              <span className="card-main__measure-read-more-link">learn&nbsp;more</span></Link>
+            </div> :
               ballot_item_display_name
           }
         </h2>
         <BookmarkAction we_vote_id={we_vote_id} type="MEASURE"/>
-          {/*Mobile ballot info*/}
+        {/* Measure information */}
         <div
           className={ this.props.link_to_ballot_item_page ?
-          "u-cursor--pointer visible-xs u-stack--sm" : null }
+          "u-cursor--pointer" : null }
           onClick={ this.props.link_to_ballot_item_page ?
           goToMeasureLink : null }
         >
           {measure_subtitle}
         </div>
+        { this.props.measure_text ?
+          <div className="measure_text">{measure_text}</div> :
+          null }
 
-        {/* This is the area *under* the measure title */}
+        {/* This is the area *under* the measure title/text */}
         <div className={"u-flex" + (this.props.link_to_ballot_item_page ?
                 " u-cursor--pointer" : "") } >
 
-          <div className="MeasureItem__summary u-flex-auto u-inline--sm">
-            <div className={ this.props.link_to_ballot_item_page ?
-                    "u-cursor--pointer hidden-xs" : null }
-                  onClick={ this.props.link_to_ballot_item_page ?
-                    goToMeasureLink : null }>{measure_subtitle}</div>
-            { this.props.measure_text ?
-              <div className="measure_text">{measure_text}</div> :
-              null }
-          </div>
-
+          {/* Needed to force following flex area to the right */}
+          <div className="MeasureItem__summary u-flex-auto" />
 
           <div className="u-flex u-items-center">
             {/* *** "Positions in your Network" bar OR items you can follow *** */}

@@ -160,9 +160,11 @@ export default class ItemTinyPositionBreakdownList extends Component {
       organizations_to_display.push(temp_organizations_to_display);
     }
 
-    return <div>
+    // Since we often have two ItemTinyPositionBreakdownList components side-by-side, this needs to be a span so
+    // the second ItemTinyPositionBreakdownList doesn't get pushed onto a new line.
+    return <span>
           {organizations_to_display}
-      </div>;
+      </span>;
   }
 
 }

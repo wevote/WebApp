@@ -114,7 +114,7 @@ export default class MeasureItem extends Component {
              </div>
                  {/* Show a break-down of the positions in your network */}
               { positions_in_your_network && this.props.showPositionsInYourNetworkBreakdown ?
-                <div className="u-flex u-justify-between">
+                <div className="u-flex u-justify-between u-inset__v--xs">
                   {/* In desktop mode, align left with position bar */}
                   {/* In mobile mode, turn on green up-arrow before icons */}
                   <ItemTinyPositionBreakdownList ballotItemWeVoteId={we_vote_id}

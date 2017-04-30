@@ -190,22 +190,20 @@ export default class CandidateItem extends Component {
               <span /> }
             {/* Show a break-down of the positions in your network */}
             { positions_in_your_network && this.props.showPositionsInYourNetworkBreakdown ?
-              <span>
+              <div className="u-flex u-justify-between u-inset__v--xs">
                 {/* In desktop mode, align left with position bar */}
                 {/* In mobile mode, turn on green up-arrow before icons */}
                 <ItemTinyPositionBreakdownList ballotItemWeVoteId={we_vote_id}
                                                position_list={this.props.position_list}
                                                showSupport
                                                supportProps={this.state.supportProps} />
-                <span className="pull-right">
-                  {/* In desktop mode, align right with position bar */}
-                  {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
-                  <ItemTinyPositionBreakdownList ballotItemWeVoteId={we_vote_id}
-                                                 position_list={this.props.position_list}
-                                                 showOppose
-                                                 supportProps={this.state.supportProps} />
-                </span>
-              </span> :
+                {/* In desktop mode, align right with position bar */}
+                {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
+                <ItemTinyPositionBreakdownList ballotItemWeVoteId={we_vote_id}
+                                               position_list={this.props.position_list}
+                                               showOppose
+                                               supportProps={this.state.supportProps} />
+              </div> :
               null }
             {/* Show possible voter guides to follow */}
             { !this.props.hideOpinionsToFollow &&
