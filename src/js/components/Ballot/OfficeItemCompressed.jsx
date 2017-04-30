@@ -59,93 +59,87 @@ export default class OfficeItemCompressed extends Component {
 
     return <div className="card-main office-item">
       <div className="card-main__content">
-        <h2 className="card-main__display-name">
-          { this.props.link_to_ballot_item_page ?
-            <span>
+        <div className="u-flex u-stack--sm">
+          <h2 className="u-f3">
+            { this.props.link_to_ballot_item_page ?
               <Link to={officeLink}>
               {ballot_item_display_name}
-              </Link>
-            </span> :
+              </Link>:
               ballot_item_display_name
-          }
-        </h2>
-        <Link to={officeLink}><span className="card-main__office-read-more-link hidden-xs">learn more</span></Link>
-        <BookmarkAction we_vote_id={we_vote_id} type="OFFICE"/>
-
-        <div className={this.props.link_to_ballot_item_page ?
+            }
+          </h2>
+          <Link to={officeLink}><span className="card-main__office-read-more-link hidden">learn more</span></Link>
+          <BookmarkAction we_vote_id={we_vote_id} type="OFFICE" />
+        </div>
+          <div className={this.props.link_to_ballot_item_page ?
                 "u-cursor--pointer" : null } >
           { this.props.candidate_list.map( (one_candidate) =>
             <div key={one_candidate.we_vote_id} className="u-stack--md">
-              <span onClick={ this.props.link_to_ballot_item_page ?
-                              ()=>{browserHistory.push("/candidate/" + one_candidate.we_vote_id);} :
-                              null }
-                    className="visible-xs u-stack--sm">
-                <ImageHandler className="card-main__avatar-compressed u-inline--sm"
-                              sizeClassName="icon-candidate-small u-inline--sm "
-                              imageUrl={one_candidate.candidate_photo_url_large}
-                              alt="candidate-photo"
-                              kind_of_ballot_item="CANDIDATE" />
-                 <span className="h5">{one_candidate.ballot_item_display_name}</span>
-              </span>
-              <div className="u-flex u-items-center">
+              <div className="u-flex u-items-center u-flex-wrap u-justify-between">
                 {/* *** Candidate name *** */}
-                <div className="u-flex u-flex-auto u-inline--sm u-cursor--pointer"
+                <div className="u-flex u-cursor--pointer u-min-50"
                     onClick={ this.props.link_to_ballot_item_page ?
                               ()=>{browserHistory.push("/candidate/" + one_candidate.we_vote_id);} :
                               null }>
-                  <div className="hidden-xs">
-                    <ImageHandler className="card-main__avatar-compressed u-inline--sm"
-                                  sizeClassName="icon-candidate-small u-inline--sm "
-                                  imageUrl={one_candidate.candidate_photo_url_large}
-                                  alt="candidate-photo"
-                                  kind_of_ballot_item="CANDIDATE" />
+                  <div className="u-inline--sm u-stack--sm">
+                    <div className="o-media-object--center">
+                      <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-self-start u-inline--sm"
+                                    sizeClassName="icon-candidate-small u-inline--sm "
+                                    imageUrl={one_candidate.candidate_photo_url_large}
+                                    alt="candidate-photo"
+                                    kind_of_ballot_item="CANDIDATE" />
+                      <div className="o-media-object__body">
+                        <h4 className="card-main__candidate-name u-f4"><a>{one_candidate.ballot_item_display_name}</a></h4>
+                        <span className="hidden">Learn&nbsp;more</span>
+                      </div>
+                    </div>
+                  </div>
 
-              <span className="card-main__candidate-name">{one_candidate.ballot_item_display_name}</span>
-              <span className="card-main__candidate-read-more-link">learn more</span>
-              </div>
                 </div>
 
                 {/* *** "Positions in your Network" bar OR items you can follow *** */}
-                <div className="u-flex-none u-justify-end u-inline--sm">
-                  {/* Decide whether to show the "Positions in your network" bar or the options of voter guides to follow */}
-                  { SupportStore.get(one_candidate.we_vote_id) && ( SupportStore.get(one_candidate.we_vote_id).oppose_count || SupportStore.get(one_candidate.we_vote_id).support_count) ?
-                    <span className="u-cursor--pointer"
-                          onClick={ this.props.link_to_ballot_item_page ?
-                          ()=>{this.props._toggleCandidateModal(one_candidate);} :
-                          null } >
-                      <ItemSupportOpposeCounts we_vote_id={one_candidate.we_vote_id}
-                                               supportProps={SupportStore.get(one_candidate.we_vote_id)}
-                                               type="CANDIDATE"/>
-                    </span> :
-                    <span>
-                      {/* Show possible voter guides to follow */}
-                      { GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id) && GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id).length !== 0 ?
-                        <span className="u-cursor--pointer"
-                              onClick={ this.props.link_to_ballot_item_page ?
-                              ()=>{this.props._toggleCandidateModal(one_candidate);} :
-                              null } >
-                          <ItemTinyOpinionsToFollow ballotItemWeVoteId={one_candidate.we_vote_id}
-                                                    organizationsToFollow={GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id)}
-                                                    maximumOrganizationDisplay={this.state.maximum_organization_display}/>
-                        </span> :
-                        <span /> }
-                    </span>
-                  }
-                </div>
+                <div className="u-flex u-flex-auto u-justify-end u-items-center u-min-50">
+                  <div className="u-flex-none u-justify-end u-inline--sm">
+                    {/* Decide whether to show the "Positions in your network" bar or the options of voter guides to follow */}
+                    { SupportStore.get(one_candidate.we_vote_id) && ( SupportStore.get(one_candidate.we_vote_id).oppose_count || SupportStore.get(one_candidate.we_vote_id).support_count) ?
+                      <span className="u-cursor--pointer"
+                            onClick={ this.props.link_to_ballot_item_page ?
+                            ()=>{this.props._toggleCandidateModal(one_candidate);} :
+                            null } >
+                        <ItemSupportOpposeCounts we_vote_id={one_candidate.we_vote_id}
+                                                 supportProps={SupportStore.get(one_candidate.we_vote_id)}
+                                                 type="CANDIDATE"/>
+                      </span> :
+                      <span>
+                        {/* Show possible voter guides to follow */}
+                        { GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id) && GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id).length !== 0 ?
+                          <span className="u-cursor--pointer"
+                                onClick={ this.props.link_to_ballot_item_page ?
+                                ()=>{this.props._toggleCandidateModal(one_candidate);} :
+                                null } >
+                            <ItemTinyOpinionsToFollow ballotItemWeVoteId={one_candidate.we_vote_id}
+                                                      organizationsToFollow={GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id)}
+                                                      maximumOrganizationDisplay={this.state.maximum_organization_display}/>
+                          </span> :
+                          <span /> }
+                      </span>
+                    }
+                  </div>
 
-                {/* *** Choose Support or Oppose *** */}
-                <div className="u-flex-none u-cursor--pointer">
-                  <ItemActionBar ballot_item_we_vote_id={one_candidate.we_vote_id}
-                                 supportProps={SupportStore.get(one_candidate.we_vote_id)}
-                                 shareButtonHide
-                                 commentButtonHide
-                                 transitioniing={this.state.transitioning}
-                                 type="CANDIDATE" />
+                  {/* *** Choose Support or Oppose *** */}
+                  <div className="u-flex-none u-cursor--pointer">
+                    <ItemActionBar ballot_item_we_vote_id={one_candidate.we_vote_id}
+                                   supportProps={SupportStore.get(one_candidate.we_vote_id)}
+                                   shareButtonHide
+                                   commentButtonHide
+                                   transitioniing={this.state.transitioning}
+                                   type="CANDIDATE" />
+                  </div>
                 </div>
-              </div>{/* end .row */}
+              </div>
             </div>)
           }
-        </div>
+          </div>
       </div>
     </div>;
   }

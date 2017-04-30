@@ -99,7 +99,7 @@ export default class HeaderBar extends Component {
   }
 
   aboutMenu () {
-    let aboutMenuOpen = this.state.about_menu_open ? "about-menu-open" : "";
+    let aboutMenuOpen = this.state.about_menu_open ? "about-menu--open" : "";
 
     return (
       <div className={aboutMenuOpen}>
@@ -146,7 +146,7 @@ export default class HeaderBar extends Component {
     let show_your_page_from_twitter = signed_in_twitter && twitter_screen_name;
     let show_your_page_from_facebook = signed_in_facebook && linked_organization_we_vote_id && !show_your_page_from_twitter;
 
-    let accountMenuOpen = this.state.accountMenuOpen ? "account-menu-open" : "";
+    let accountMenuOpen = this.state.accountMenuOpen ? "account-menu--open" : "";
 
     return (
       <div className={accountMenuOpen}>

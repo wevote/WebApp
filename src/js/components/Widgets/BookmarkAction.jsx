@@ -50,7 +50,7 @@ export default class BookmarkAction extends Component {
       return <span className="bookmark-action" />;
     }
     return <span tabIndex="0"
-                 className="bookmark-action ml1"
+                 className="bookmark-action"
                  onClick={this.BookmarkClick.bind(this)}
                  onKeyDown={this.BookmarkKeyDown.bind(this)}
                  title="Bookmark for later">

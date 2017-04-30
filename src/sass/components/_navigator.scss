@@ -51,14 +51,14 @@ $header-height: 54px;
   opacity: 0;
 }
 
-.account-menu-open .page-overlay,
-.about-menu-open .page-overlay {
+.account-menu--open .page-overlay,
+.about-menu--open .page-overlay {
   opacity: 1;
   pointer-events: all;
 }
 
-.account-menu-open .account-menu,
-.about-menu-open .about-menu {
+.account-menu--open .account-menu,
+.about-menu--open .about-menu {
   opacity: 1;
   pointer-events: all;
 }

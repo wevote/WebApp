@@ -99,37 +99,38 @@ export default class MeasureItem extends Component {
           <div className="row" style={{ paddingBottom: "0.5rem" }}>
             <div className="col-12" />
           </div>
-          <span className={ this.props.link_to_ballot_item_page ?
+          <div className={ this.props.link_to_ballot_item_page ?
                   "u-cursor--pointer" :
                   null }
                 onClick={ this.props.link_to_ballot_item_page ?
                   goToMeasureLink :
                   null }
           >
-              <ItemSupportOpposeCounts we_vote_id={we_vote_id}
-                                       supportProps={supportProps}
-                                       transitioning={transitioning}
-                                       type="MEASURE" />
+              <div className="u-stack--md">
+                <ItemSupportOpposeCounts we_vote_id={we_vote_id}
+                                         supportProps={supportProps}
+                                         transitioning={transitioning}
+                                         type="MEASURE" />
+             </div>
                  {/* Show a break-down of the positions in your network */}
               { positions_in_your_network && this.props.showPositionsInYourNetworkBreakdown ?
-                <span>
+                <div className="u-flex u-justify-between">
                   {/* In desktop mode, align left with position bar */}
                   {/* In mobile mode, turn on green up-arrow before icons */}
                   <ItemTinyPositionBreakdownList ballotItemWeVoteId={we_vote_id}
                                                  position_list={this.props.position_list}
                                                  showSupport
                                                  supportProps={this.state.supportProps} />
-                  <span className="pull-right">
-                    {/* In desktop mode, align right with position bar */}
-                    {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
-                    <ItemTinyPositionBreakdownList ballotItemWeVoteId={we_vote_id}
-                                                   position_list={this.props.position_list}
-                                                   showOppose
-                                                   supportProps={this.state.supportProps} />
-                  </span>
-                </span> :
+
+                  {/* In desktop mode, align right with position bar */}
+                  {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
+                  <ItemTinyPositionBreakdownList ballotItemWeVoteId={we_vote_id}
+                                                 position_list={this.props.position_list}
+                                                 showOppose
+                                                 supportProps={this.state.supportProps} />
+                </div> :
                 null }
-       </span>
+       </div>
           </div> {/* END .card-main__content */}
           <div className="card-main__actions">
             <ItemActionBar ballot_item_we_vote_id={we_vote_id}

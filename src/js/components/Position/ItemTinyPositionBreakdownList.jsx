@@ -160,9 +160,9 @@ export default class ItemTinyPositionBreakdownList extends Component {
       organizations_to_display.push(temp_organizations_to_display);
     }
 
-    return <span className="guidelist card-child__list-group">
+    return <div>
           {organizations_to_display}
-      </span>;
+      </div>;
   }
 
 }
