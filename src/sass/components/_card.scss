@@ -161,10 +161,22 @@
     }
 
     &__candidate-read-more-link {
-      left: 0;
       margin-left: 10px;
       top: 0;
-      font-weight: lighter;
+      font-family: $body-font-stack;
+      font-size: 14px;
+      font-weight: 100 !important;
+      color: $link-color;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    &__measure-read-more-link {
+      margin-left: 10px;
+      font-family: $body-font-stack;
+      font-size: 14px;
+      font-weight: 100 !important;
       color: $link-color;
       width: 100%;
       height: 100%;
@@ -172,7 +184,8 @@
     }
 
     &__office-read-more-link {
-      margin-left: -13px;
+      margin-left: 10px;
+      font-family: $body-font-stack;
       font-size: 14px;
       font-weight: 100 !important;
       color: $link-color;
