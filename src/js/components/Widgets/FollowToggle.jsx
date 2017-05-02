@@ -53,7 +53,6 @@ export default class FollowToggle extends Component {
 
     const followFunc = GuideActions.organizationFollow.bind(this, we_vote_id);
     const stopFollowingFunc = GuideActions.organizationStopFollowing.bind(this, we_vote_id);
-    const floatRight = { float: "right"};
 
     var stopFollowingInstantly = function () {
       is_following = false;
@@ -65,15 +64,13 @@ export default class FollowToggle extends Component {
       followFunc();
     };
 
-    return <span style={floatRight}>
-      {is_following ?
+    return is_following ?
         <Button bsStyle="warning"
                 bsSize="small"
+                className="pull-right"
                 onClick={stopFollowingInstantly}>
                 <span>Unfollow</span>
         </Button> :
-        <Button bsStyle="info" bsSize="small" onClick={followInstantly}><span>Follow</span></Button>
-      }
-      </span>;
+        <Button bsStyle="info" bsSize="small" className="pull-right" onClick={followInstantly}><span>Follow</span></Button>;
   }
 }

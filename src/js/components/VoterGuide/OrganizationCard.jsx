@@ -42,7 +42,7 @@ export default class OrganizationCard extends Component {
       </div>
       <div className="card-main__media-object-content">
         <Link to={voterGuideLink}>
-          <div className="card-main__display-name">{displayName}</div>
+          <h3 className="card-main__display-name">{displayName}</h3>
         </Link>
         { twitterDescriptionMinusName && !this.props.turn_off_description ?
           <p className="card-main__description">{twitterDescriptionMinusName}</p> :
