@@ -123,12 +123,8 @@ export default class ItemTinyOpinionsToFollow extends Component {
             onMouseOver={() => this.onTriggerEnter(org_id)}
             onMouseOut={() => this.onTriggerLeave(org_id)}
             className="card-popover">
-            <div className="card">
-              <div className="card-main">
-                <FollowToggle we_vote_id={one_organization.organization_we_vote_id} />
-                <OrganizationCard organization={one_organization_for_organization_card} />
-              </div>
-            </div>
+            <FollowToggle we_vote_id={one_organization.organization_we_vote_id} />
+            <OrganizationCard organization={one_organization_for_organization_card} />
           </Popover>;
 
         return <OverlayTrigger
