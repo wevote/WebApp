@@ -17,7 +17,7 @@ export default class BallotLeft extends Component {
     let search = window.location.search ? window.location.search : "";
     let currentUrl = window.location.pathname + search;
 
-    return <li className={url === currentUrl ? "active-link list-group-item" : "list-group-item"}>
+    return <li className={"list-group-item" + (url === currentUrl ? " is-active" : "")}>
         <Link to={url}><div><span className="header-menu-text-left">{label}</span></div></Link>
       </li>;
   }
@@ -36,28 +36,26 @@ export default class BallotLeft extends Component {
     // let show_your_page_from_twitter = this.props.signed_in_twitter && this.props.twitter_screen_name;
     // let show_your_page_from_facebook = this.props.signed_in_facebook && linked_organization_we_vote_id && !show_your_page_from_twitter;
 
-    return <div>
-      <div className="device-menu--large">
-        <ul className="list-group">
-          <li className="list-group-item">
-            <span className="we-vote-promise">Our Promise: We'll never sell your email.</span>
-          </li>
-        </ul>
-        <h4 className="text-left" />
-        <ul className="list-group">
-          <li className="list-group-item">
-            <h3 className="h3">Step 1: Find Trusted Advisers</h3>
-            <strong><Link to="/opinions">Find organizations</Link> that you trust, and follow them.</strong><br />
-            <br />
-            When you follow an organization, their advice will make it easier for you to make decisions.
-          </li>
-        </ul>
-        <h4 className="text-left" />
-        <span className="terms-and-privacy">
+    return <div className="u-inset__v--md">
+      <ul className="list-group">
+        <li className="list-group-item">
+          <span className="we-vote-promise">Our Promise: We'll never sell your email.</span>
+        </li>
+      </ul>
+      <h4 className="text-left" />
+      <ul className="list-group">
+        <li className="list-group-item">
+          <h3 className="h3">Step 1: Find Trusted Advisers</h3>
+          <strong><Link to="/opinions">Find organizations</Link> that you trust, and follow them.</strong><br />
           <br />
-          <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy Policy</Link>
-        </span>
-      </div>
-      </div>;
+          When you follow an organization, their advice will make it easier for you to make decisions.
+        </li>
+      </ul>
+      <h4 className="text-left" />
+      <span className="terms-and-privacy">
+        <br />
+        <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy Policy</Link>
+      </span>
+    </div>;
   }
 }

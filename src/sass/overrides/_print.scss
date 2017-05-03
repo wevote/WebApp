@@ -1,7 +1,7 @@
 @media print {
   body {
-    background-color: #fff !important;
-    color: #000;
+    background-color: $white !important;
+    color: $black;
   }
   .headroom-wrapper,
   .page-header__container,

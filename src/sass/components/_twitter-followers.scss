@@ -8,14 +8,14 @@
     color: $gray-mid;
     display: inline-block;
     line-height: $size;
-    padding: 5px 0;
+    padding: $space-xs 0;
     white-space: nowrap;
   }
 
   &__icon {
     font-size: $size;
     color: $gray-light;
-    margin-right: 3px;
+    margin-right: $space-xs;
     vertical-align: bottom;
   }
 }

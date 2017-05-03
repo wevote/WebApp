@@ -15,7 +15,7 @@ $header-height: 54px;
   position: absolute;
   top: 50px;
   right: 15px;
-  background-color: #fff;
+  background-color: $white;
   opacity: 0;
   padding: 1rem;
   transition: opacity .25s ease-in-out;
@@ -44,7 +44,7 @@ $header-height: 54px;
   height: 200vh;
   top: -10px;
   left: -10px;
-  background: rgba(0, 0, 0, .7);
+  background-color: $modal-backdrop-color;
   z-index: 2;
   pointer-events: none;
   transition: opacity .4s ease-in-out;
@@ -68,6 +68,8 @@ $header-height: 54px;
 }
 
 .header-nav {
+  $nav-item-hover-color: darken($page-header-color, 5%);
+  $nav-item-active-color: darken($page-header-color, 10%);
   display: flex;
   align-items: center;
 
@@ -89,8 +91,8 @@ $header-height: 54px;
     height: $header-height;
     margin-top: -.5em; // temporary offsets for .page-header__container padding
     margin-bottom: -.5em;
-    padding: 8px;
-    color: #fff;
+    padding: $space-sm;
+    color: $white;
     opacity: .8;
     text-align: center;
     &--has-icon {
@@ -101,22 +103,22 @@ $header-height: 54px;
     &.active-icon,
     &:focus,
     &:hover {
-      color: #fff;
+      color: $white;
       opacity: 1;
       text-decoration: none;
     }
 
     &:active,
     &.active-icon {
-      background-color: rgba(0, 0, 0, .1);
+      background-color: $nav-item-active-color;
     }
 
     &:hover {
-      background-color: rgba(0, 0, 0, .3);
+      background-color: $nav-item-hover-color;
     }
 
     &.donate {
-      padding: 0;
+      padding: $space-none;
       & > img.glyphicon {
         max-width: 100%;
         width: 29px;
@@ -169,10 +171,11 @@ $header-height: 54px;
 .header-nav,
 .footer-nav {
   .badge-total {
+    $badge-color: #db4437;
     left: 1em;
     position: absolute;
     top: -7px;
     font-family: $body-font-stack;
-    background-color: #db4437; // Override for Bootstrap class .badge
+    background-color: $badge-color; // Override for Bootstrap class .badge
   }
 }

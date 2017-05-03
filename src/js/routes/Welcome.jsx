@@ -28,13 +28,12 @@ export default class Intro extends Component {
 
     return <div>
       <Helmet title="Welcome to We Vote" />
-      <div className="u-f1">Heading One</div>
+      {/* <div className="u-f1">Heading One</div>
       <div className="u-f2">Heading Two</div>
       <div className="u-f3">Heading Three</div>
       <div className="u-f4">Heading Four</div>
       <div className="u-f5">Heading Five</div>
-      <div className="u-f6">Heading Six</div>
-
+      <div className="u-f6">Heading Six</div> */}
 
       <h1 className="h1">Welcome to We Vote!</h1>
       <p>We Vote is building the next generation of voting tech. We're creating a digital voter guide

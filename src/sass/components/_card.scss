@@ -4,7 +4,7 @@
 
 .card {
   $item-padding: 15px;
-  background-color: #fff;
+  background-color: $white;
   border-radius: $radius-xs;
   box-shadow: $default-box-shadow;
   margin-bottom: 20px;
@@ -339,8 +339,4 @@
 
 .card-popover {
   max-width: 350px;
-}
-
-.bm-burger-button button {
-  color: red;
 }

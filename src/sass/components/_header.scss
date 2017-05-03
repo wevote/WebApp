@@ -1,3 +1,4 @@
+$page-header-color: #1c1a33;
 
 .page-header {
   // required overrides for Bootstrap :(
@@ -11,9 +12,8 @@
   position: relative;
 
   &__container {
-    background-color: $brand-color;
-    // border-bottom: 1px solid $gray-border;
-    padding: .5em 0;
+    background-color: $page-header-color;
+    padding: $space-sm 0;
   }
   &__content { // additional element to exclue Burger Menu element
     display: flex;
@@ -30,26 +30,26 @@
 
 .page-logo {
   white-space: nowrap;
-  margin: 0 1em 0 0; // zeros to override Bootstrap h4
-  margin-top: -.5em;
-  margin-bottom: -.5em;
-  padding: 10px 8px;
+  margin: 0 $space-md 0 0; // zeros to override Bootstrap h4
+  margin-top: -$space-sm;
+  margin-bottom: -$space-sm;
+  padding: $space-sm;
   &,
   &:hover,
   &:focus,
   &:active {
-    color: #fff;
+    color: $white;
     text-decoration: none;
   }
   &:hover {
-    text-shadow: 0 0 3px rgba(255, 255, 255, .3);
+    text-shadow: 0 0 3px rgba($white, .3);
   }
 
   &__version {
-    color: #fff;
+    color: $white;
     opacity: .5;
     font-size: .7em;
-    margin-left: .3em;
+    margin-left: $space-xs;
     text-transform: uppercase;
     white-space: nowrap;
   }
@@ -64,7 +64,7 @@
 }
 
 .site-search {
-  padding: 0 1em;
+  padding: 0 $space-md;
 
   &__input-field {
     border: none; // override Bootstrap
@@ -89,7 +89,8 @@
 }
 
 .search-container {
-  background: #fff;
+  $search-result-highlight-color: #d9edf7;
+  background-color: $white;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, .2);
   margin: 0 1em;
   position: absolute;
@@ -104,15 +105,14 @@
   }
 
   &__results {
-    background: #fff;
-    margin-bottom: .5em;
-    padding: .75em;
+    background-color: $white;
+    padding: $space-md;
     display: flex;
     font-size: 1rem;
     align-items: center;
 
-    &__highlighted {
-      background: #d9edf7;
+    &--highlighted {
+      background-color: $search-result-highlight-color;
     }
   }
 

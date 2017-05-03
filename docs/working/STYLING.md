@@ -33,7 +33,7 @@ Use these prefixes for any custom classes. This helps keep classes scoped and id
 - `c-` Components - For reusable components
 - `js-` Javascript hooks - Use a unique class when a script needs it for manipulation
 - `analytics-` Tracking hooks for analytics (use shorter prefix?)
-- `is-` UI states (e.g. `.is-selected`, `.is-active`)
+- `is-` UI states (e.g. `.nav-item.is-selected`, `.dropdown-menu.is-active`) Declarations must be chained or scoped to element or component classes
 
 ### BEM Naming Conventions
 Components, Objects, and small scoped sections should use the BEM naming convention: (`component__child--modifier`).

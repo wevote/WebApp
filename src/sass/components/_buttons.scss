@@ -1,21 +1,24 @@
 
 
 // Social button cusotmizations (on About page)
-.btn-email {
-  color: #fff;
-  background-color: #f0ad4e;
-  border-color: #d38312;
+.btn--email {
+  $email-btn-color: #f0ad4e;
+  $email-btn-border-color: darken($email-btn-color, 15%);
+  $email-btn-hover-color: darken($email-btn-color, 10%);
+  color: $white;
+  background-color: $email-btn-color;
+  border-color: $email-btn-border-color;
   &:hover {
-    background-color: #eda135;
-    color: #fff;
+    background-color: $email-btn-hover-color;
+    color: $white;
   }
   &__icon {
     height: 20px;
   }
 }
 
-.btn-medium {
-  border-color: #999;
+.btn--medium {
+  border-color: $gray-mid;
 }
 
 // For icons on buttons

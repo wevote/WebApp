@@ -1,14 +1,15 @@
 .loading-screen {
+  $loading-screen-color: #337ec9;
   display: flex;
   position: fixed;
   height: 100vh;
   width: 100vw;
   top: 0;
   left: 0;
-  background-color: #337ec9;
+  background-color: $loading-screen-color;
   justify-content: center;
   align-items: center;
   font-size: 30px;
-  color: #fff;
+  color: $white;
   flex-direction: column;
 }
