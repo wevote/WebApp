@@ -49,6 +49,8 @@ export default class About extends Component {
           make democracy stronger by increasing voter turnout.
         </p>
 
+        <section>
+          <h1 className="h1">Our Team</h1>
           <h3 className="h3">We Vote Board Members &amp; Advisers</h3>
           <div className="row">
             <div className="col-4 col-sm-3">
@@ -296,7 +298,9 @@ export default class About extends Component {
               </div>
             </div>
           </div>
+        </section>
 
+        <section>
           <h3 className="h3">Our Story</h3>
           <p>
             After meeting in Oakland in the spring of 2013, We Vote co-founders Dale McGrew, Jenifer Fernandez Ancona, Dan Ancona, and their families became fast friends and bought a home together, forming an intentional community. Through daily conversations, the idea of a nonprofit social voter network was born.
@@ -305,10 +309,14 @@ export default class About extends Component {
             from a communal home of people concerned about where this country is heading. Being an open
             source, volunteer-driven project means anyone can contribute. Kind of like democracy.
           </p>
+        </section>
+
+        <section>
           <h3 className="h3">Credits &amp; Gratitude</h3>
           <p>
             <Link to="/more/credits/">We are thankful for our volunteers, our board of directors, and the organizations</Link> that are critical to our work.
           </p>
+        </section>
 
         </div>
       </div>
