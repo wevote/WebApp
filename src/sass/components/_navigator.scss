@@ -3,9 +3,6 @@ $icon-color-active: $link-color;
 $icon-color-hover: $gray-dark;
 $header-height: 54px;
 
-// 1. Display .footer-nav, hide .header-nav
-// 2. Display .header-nav, hide .footer-nav
-
 // Header Nav
 // ================================
 
@@ -127,6 +124,10 @@ $header-height: 54px;
   }
   .nav-icon {
     font-size: 1rem;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   &__icon--about {
     padding: 1px;
@@ -144,32 +145,9 @@ $header-height: 54px;
   }
 }
 
-// Footer Nav
-// ================================
-
-.footer-nav {
-  @include breakpoints(nav) {
-    display: none; // 2
-  }
-  .nav-icon {
-    font-size: 1.25rem;
-    color: $icon-color-base;
-  }
-  .active-icon,
-  .active-icon:hover {
-    .nav-icon {
-      color: $icon-color-active;
-    }
-  }
-
-  a:hover .nav-icon {
-    color: $icon-color-hover;
-  }
-}
 
 // Custom styling for ba
-.header-nav,
-.footer-nav {
+.header-nav {
   .badge-total {
     $badge-color: #db4437;
     left: 1em;
