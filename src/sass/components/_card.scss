@@ -3,17 +3,22 @@
 @include media-object('.card-main__media-object', '.card-main__media-object-anchor', '.card-main__media-object-content');
 
 .card {
-  $item-padding: 15px;
+  $item-padding: $space-md;
   background-color: $white;
   border-radius: $radius-xs;
   box-shadow: $default-box-shadow;
-  margin-bottom: 20px;
+  margin-bottom: $space-md;
   @include clearfix;
   @include breakpoints(max mid-small) {
-    margin-right: -15px;
-    margin-bottom: 10px;
-    margin-left: -15px;
+    margin-bottom: $space-sm;
     border-radius: $radius-none;
+    [class^='col'] & {
+      margin-right: $gutter-offset;
+      margin-left: $gutter-offset;
+    }
+  }
+  &__body {
+    padding: $space-md;
   }
 
   // ----------------------------------------
@@ -23,17 +28,17 @@
 
   &-main { // primary subject of card
     position: relative;
-    padding: 15px $item-padding 10px;
+    padding: $space-md $item-padding $space-sm;
     font-size: 14px; // remove once global defaults are set
     @include print {
-      padding: 0;
+      padding: $space-none;
     }
 
     &__content {
       position: relative;
       @include print {
         border-top: 1px solid $gray-mid;
-        padding-top: 1em;
+        padding-top: $space-md;
       }
     }
 
@@ -88,7 +93,7 @@
 
     &__position-icon {
       display: inline-block;
-      margin-right: 5px;
+      margin-right: $space-xs;
       vertical-align: text-bottom;
     }
 
@@ -101,8 +106,8 @@
       display: inline-block;
       font-size: 18px;
       font-weight: 700;
-      margin-right: 24px; // space for bookmark button
-      margin-bottom: $space-md;
+      // margin-right: 24px; // space for bookmark button
+      margin-bottom: $space-sm;
       vertical-align: middle;
       @include breakpoints(mid-small) {
         font-size: 18px;
@@ -123,6 +128,7 @@
         $line-height: 25px;
         $text-container-height: $line-height * 2;
         $read-more-width: 7em;
+        $truncated-text-spacer: $space-xs;
         overflow: hidden;
         position: relative;
         height: $text-container-height;
@@ -131,14 +137,14 @@
         &::before {
           content: '';
           float: left;
-          width: 5px;
+          width: $truncated-text-spacer;
           height: $text-container-height;
         }
 
         > *:first-child {
           float: right;
           width: 100%;
-          margin-left: -5px;
+          margin-left: -($truncated-text-spacer); // stylelint-disable-line sh-waqar/declaration-use-variable
         }
 
         &::after {
@@ -146,11 +152,11 @@
           box-sizing: content-box;
           float: right;
           position: relative;
-          top: -$line-height;
+          top: -($line-height);
           left: 100%;
           width: $read-more-width;
-          margin-left: -$read-more-width;
-          padding-right: 5px;
+          margin-left: -($read-more-width);  // stylelint-disable-line sh-waqar/declaration-use-variable
+          padding-right: $space-xs;
           text-align: right;
           background-size: 100% 100%;
           background: linear-gradient(to right, rgba(255, 255, 255, 0), white 15%, white); // stylelint-disable-line declaration-block-no-shorthand-property-overrides
@@ -161,7 +167,7 @@
     }
 
     &__candidate-read-more-link {
-      margin-left: 10px;
+      margin-left: $space-sm;
       top: 0;
       font-family: $body-font-stack;
       font-size: 14px;
@@ -173,7 +179,7 @@
     }
 
     &__measure-read-more-link {
-      margin-left: 10px;
+      margin-left: $space-sm;
       font-family: $body-font-stack;
       font-size: 14px;
       font-weight: 100 !important;
@@ -184,7 +190,7 @@
     }
 
     &__office-read-more-link {
-      margin-left: 10px;
+      margin-left: $space-sm;
       font-family: $body-font-stack;
       font-size: 14px;
       font-weight: 100 !important;
@@ -215,25 +221,25 @@
   .card-child {
     position: relative;
     padding: $item-padding;
-    margin-top: -1px;
+    margin-top: -1px; // stylelint-disable-line sh-waqar/declaration-use-variable
     background-color: $gray-pale;
     border-top: 1px solid $gray-lighter;
     border-bottom: 1px solid $gray-lighter;
     @include breakpoints(max mid-small) {
-      margin-left: -$item-padding;
-      margin-right: -$item-padding;
+      margin-left: -($item-padding); // stylelint-disable-line sh-waqar/declaration-use-variable
+      margin-right: -($item-padding); // stylelint-disable-line sh-waqar/declaration-use-variable
     }
 
     &__list-group {
-      padding: 0;
-      margin: 0;
+      padding: $space-none;
+      margin: $space-none;
       @include breakpoints(max mid-small) {
-        padding: 0 $item-padding;
+        padding: $space-none $item-padding;
       }
       .card__additional-heading {
         @include breakpoints(max mid-small) {
-          margin-right: 0;
-          margin-left: 0;
+          margin-right: $space-none;
+          margin-left: $space-none;
         }
       }
     }
@@ -265,7 +271,7 @@
     &__display-name {
       font-family: $heading-font-stack;
       // font-size: 18px;
-      margin-bottom: .2em;
+      margin-bottom: $space-xs;
       flex: auto;
     }
 
@@ -273,34 +279,34 @@
       display: flex;
       align-items: flex-end;
       .btn {
-        margin: 0 5px 0 0;
+        margin: $space-none $space-xs $space-none $space-none;
       }
       .twitter-followers__badge {
-        margin: 5px 0;
+        margin: $space-xs $space-none;
       }
       @include breakpoints(medium) {
         flex-direction: column;
         .btn {
-          margin: 0 0 5px;
+          margin: $space-none $space-none $space-xs;
         }
         .twitter-followers__badge {
-          margin: 0;
+          margin: $space-none;
         }
       }
     }
 
     &__additional {
       display: flex;
-      margin-top: .5em;
+      margin-top: $space-sm;
       @include breakpoints(medium) {
         flex-direction: column;
-        padding-left: 1em;
-        margin-top: inherit;
+        padding-left: $space-md;
+        margin-top: inherit; // stylelint-disable-line sh-waqar/declaration-use-variable
         text-align: right;
       }
     }
     &--not-followed &__additional {
-      margin-top: 1em; // for follow buttons
+      margin-top: $space-md; // for follow buttons
     }
 
     .bookmark-action {
@@ -329,11 +335,11 @@
   &__additional-heading {
     font-family: $heading-font-stack;
     font-size: 18px;
-    margin: 20px $item-padding 15px;
+    margin: $space-md $item-padding;
   }
 
   &__no-additional {
-    margin: 15px $item-padding;
+    margin: $space-md $item-padding;
   }
 }
 

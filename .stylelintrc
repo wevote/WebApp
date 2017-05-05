@@ -19,7 +19,12 @@
       "ignoreTypes": ["a"]
     }],
     "shorthand-property-no-redundant-values": null,
-    "sh-waqar/declaration-use-variable": [["border-radius", "/color/"]],
+    "sh-waqar/declaration-use-variable": [[
+      "border-radius",
+      "/color/",
+      "/margin/",
+      "/padding/"
+    ]],
     "string-quotes": "single",
   },
   "ignoreFiles": [

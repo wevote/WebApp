@@ -9,15 +9,15 @@
   &__avatar {
     overflow: hidden;
     border-radius: $radius-sm;
-    background: #fff;
+    background-color: $white;
     display: inline-block;
     flex-shrink: 0;
   }
 
   &__container {
     background-color: $gray-pale;
-    padding: 10px 15px;
-    margin: 0 -15px -10px -15px;
+    padding: $space-sm $space-md;
+    margin: $space-none (-$space-md) (-$space-sm);
   }
 
   &--truncated {
@@ -39,7 +39,7 @@
     > *:first-child {
       float: right;
       width: 100%;
-      margin-left: -5px;
+      margin-left: -($space-xs); // stylelint-disable-line sh-waqar/declaration-use-variable
     }
 
     &::after {
@@ -51,11 +51,11 @@
       top: -$line-height;
       left: 100%;
       width: $edit-position-width;
-      margin-left: -$edit-position-width;
-      padding-right: 5px;
+      margin-left: -($edit-position-width); // stylelint-disable-line sh-waqar/declaration-use-variable
+      padding-right: $space-xs;
       text-align: right;
       background-size: 100% 100%;
-      background: linear-gradient(to right, rgba(255, 255, 255, 0), white 15%, white); // stylelint-disable-line declaration-block-no-shorthand-property-overrides
+      background: linear-gradient(to right, rgba($white, 0), $white 15%, $white); // stylelint-disable-line declaration-block-no-shorthand-property-overrides
       font-style: normal;
       color: $link-color;
       cursor: pointer;

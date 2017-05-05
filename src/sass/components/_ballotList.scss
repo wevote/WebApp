@@ -6,7 +6,7 @@
 
 .BallotItem {
   position: relative;
-  margin-bottom: 1em;
+  margin-bottom: $space-md;
 
   &__display-name {
     font-family: $heading-font-stack;
@@ -15,7 +15,7 @@
     @include breakpoints(max mid-small) {
       font-size: 18px;
       max-width: 100%;
-      padding-right: 30px; // TODO: adjust for bookmark icon
+      // padding-right: 30px; // TODO: adjust for bookmark icon
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -25,7 +25,7 @@
 
 // For display of tiny thumbnail images for organizational voter guides
 .organization-image-tiny {
-  margin-left: 3px;
+  margin-left: $space-xs;
   width: 30px;
   border-radius: $radius-sm;
   @include breakpoints(small) {

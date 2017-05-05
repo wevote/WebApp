@@ -1,6 +1,6 @@
 .intro-story {
   background-color: $gray-dark;
-  padding: 0;
+  padding: $space-none;
   height: 600px;
   width: 100%;
   color: $white;
@@ -11,7 +11,7 @@
   &__h1 {
     font-weight: 700;
     font-size: 30px;
-    padding: 40px 0 20px;
+    padding: $space-lg $space-none $space-md;
     @include breakpoints (max large) {
       font-size: 22px;
     }
@@ -19,14 +19,14 @@
   &__h1--alt {
     font-weight: 700;
     font-size: 30px;
-    padding-top: 40px;
+    padding-top: $space-lg;
     @include breakpoints (max large) {
       font-size: 22px;
     }
   }
 
   &__h2 {
-    padding-top: 20px;
+    padding-top: $space-md;
     font-size: 20px;
     @include breakpoints (max large) {
       font-size: 18px;
@@ -34,27 +34,27 @@
   }
 
   &__padding {
-    padding: 20px;
+    padding: $space-md;
     @include breakpoints (max large) {
-      padding-top: 20px;
-      padding-bottom: 15px;
+      padding-top: $space-md;
+      padding-bottom: $space-md;
     }
   }
 
   &__padding-top {
-    padding-top: 15px;
+    padding-top: $space-md;
   }
 
   &__padding--btm {
-    padding-bottom: 30px;
+    padding-bottom: $space-lg;
   }
 
   &__padding-btn {
-    padding-top: 40px;
-    padding-bottom: 50px;
+    padding-top: $space-lg;
+    padding-bottom: $space-lg;
     @include breakpoints (max large) {
-      padding-top: 30px;
-      padding-bottom: 15px;
+      padding-top: $space-lg;
+      padding-bottom: $space-md;
     }
   }
 
@@ -201,7 +201,7 @@
   @include breakpoints (small mid-small) {
     height: 30px;
     width: 30px;
-    padding: 5px;
+    padding: $space-xs;
   }
 }
 
@@ -209,14 +209,14 @@
 
 .story-view {
   .container-main {
-    margin: 0;
+    margin: $space-none;
     min-height: 100%;
-    padding: 0;
+    padding: $space-none;
   }
 
   .well {
-    margin-bottom: 0;
-    border: 0;
+    margin-bottom: $space-none;
+    border: none;
   }
 }
 
