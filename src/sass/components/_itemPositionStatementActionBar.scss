@@ -1,5 +1,5 @@
 
-@include media-object(".position-statement", ".position-statement__avatar", ".position-statement__input-group");
+@include media-object('.position-statement', '.position-statement__avatar', '.position-statement__input-group');
 
 .position-statement {
   display: flex;
@@ -30,7 +30,7 @@
     line-height: $line-height;
 
     &::before {
-      content: "";
+      content: '';
       float: left;
       width: 5px;
       height: $text-container-height;
@@ -43,7 +43,7 @@
     }
 
     &::after {
-      content: "\00A0 Edit";
+      content: '\00A0 Edit';
 
       box-sizing: content-box;
       float: right;

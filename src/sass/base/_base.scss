@@ -1,3 +1,5 @@
+// stylelint-disable selector-no-type
+
 html {
   box-sizing: border-box;
   height: 100%;
@@ -41,3 +43,5 @@ a {
 img {
   max-width: 100%;
 }
+
+// stylelint-enable

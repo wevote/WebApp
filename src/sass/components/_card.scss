@@ -129,7 +129,7 @@
         line-height: $line-height;
 
         &::before {
-          content: "";
+          content: '';
           float: left;
           width: 5px;
           height: $text-container-height;
@@ -142,7 +142,7 @@
         }
 
         &::after {
-          content: "\00A0 Read More";
+          content: '\00A0 Read More';
           box-sizing: content-box;
           float: right;
           position: relative;

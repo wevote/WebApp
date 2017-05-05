@@ -15,11 +15,16 @@
     "number-leading-zero": "never",
     "rule-empty-line-before": null,
     "selector-no-id": true,
+    "selector-no-type": [true, {
+      "ignoreTypes": ["a"]
+    }],
     "shorthand-property-no-redundant-values": null,
-    "sh-waqar/declaration-use-variable": [["border-radius", "/color/"]]
+    "sh-waqar/declaration-use-variable": [["border-radius", "/color/"]],
+    "string-quotes": "single",
   },
   "ignoreFiles": [
     "**/vendor/**/*.scss",
-    "**/_normalize.scss"
+    "**/_normalize.scss",
+    "**/overrides/_print.scss"
   ]
 }

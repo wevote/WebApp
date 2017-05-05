@@ -43,7 +43,7 @@ $mappy-queries: () !default;
 // $query : <string> from $mappy-queries key
 @mixin mappy-query($query, $mappy-queries: $mappy-queries) {
   @if not map-has-key($mappy-queries, $query) {
-    @error "#{$mappy-queries} does not contain #{$query}";
+    @error '#{$mappy-queries} does not contain #{$query}';
   }
 
   $mappy-map: map-get($mappy-queries, $query);
@@ -74,11 +74,11 @@ $mappy-queries: () !default;
   @each $key, $value in $media-map {
     @if $value and $value != 0 {
       @if $media-string == (()) {
-        $media-string: append($media-string, unquote("(#{$key}: #{$value})"));
+        $media-string: append($media-string, unquote('(#{$key}: #{$value})'));
       }
 
       @else {
-        $media-string: append($media-string, unquote("and (#{$key}: #{$value})"));
+        $media-string: append($media-string, unquote('and (#{$key}: #{$value})'));
       }
     }
   }
@@ -175,7 +175,7 @@ $mappy-queries: () !default;
     }
 
     @else if $_key {
-      @warn unquote('"Mappy Breakpoints is missing value for media feature "#{$_key}""');
+      @warn unquote(''Mappy Breakpoints is missing value for media feature '#{$_key}''');
     }
     $_i: $_i + 1;
   }
@@ -187,7 +187,7 @@ $mappy-queries: () !default;
 // Checks if $query given is one of the following:
 // 1) Is a $key in the $breakpoints map
 // 2) Is a number
-// 3) Is a "max", "max-width" or "max-height" string
+// 3) Is a 'max', 'max-width' or 'max-height' string
 @function mappy-validate($query, $breakpoints) {
   $_return: null;
 
@@ -199,7 +199,7 @@ $mappy-queries: () !default;
     $_return: $query;
   }
 
-  @else if $query == "max" or $query == "max-height" or $query == "max-width" {
+  @else if $query == 'max' or $query == 'max-height' or $query == 'max-width' {
     $_return: 0;
   }
 
@@ -214,14 +214,14 @@ $mappy-queries: () !default;
 // Checks and converts px values to em. Leave other units untouched.
 
 // @function mappy-convert-to-em($val) {
-//   @if unit($val) == "px" or $val == 0 {
+//   @if unit($val) == 'px' or $val == 0 {
 //     @return mappy-em($val);
-//   } @else if unit($val) == "em" {
+//   } @else if unit($val) == 'em' {
 //     @return $val;
-//   } @else if unit($val) == "rem" {
+//   } @else if unit($val) == 'rem' {
 //     @return mappy-strip-unit($val) * 1em;
 //   } @else {
-//     @error unquote("Breakpoint value must have a unit if it's a number");
+//     @error unquote('Breakpoint value must have a unit if it's a number');
 //   }
 // }
 
@@ -250,10 +250,10 @@ $mappy-queries: () !default;
   @for $i from 1 through $len {
     $e: nth($list, $i);
     @if $i == $len {
-      $res: unquote("#{$res}#{$e}");
+      $res: unquote('#{$res}#{$e}');
     }
     @else {
-      $res: unquote("#{$res}#{$e}#{$glue}");
+      $res: unquote('#{$res}#{$e}#{$glue}');
     }
   }
 
