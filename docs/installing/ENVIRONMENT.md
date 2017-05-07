@@ -32,10 +32,10 @@ Now activate this new virtual environment:
 Confirm the versions of your main packages are >= to these versions:
 
     (WebAppEnv) $ node -v
-    v5.3.0
+    v7.9.0
 
     (WebAppEnv) $ npm -v
-    3.3.12
+    4.5.0
     
 IF you find that your node or npm versions are below that, run this command:
 

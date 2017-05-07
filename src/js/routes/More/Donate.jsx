@@ -4,6 +4,7 @@ import Helmet from "react-helmet";
 import DonationForm from "../../components/DonationForm";
 import DonationError from "../../components/DonationError";
 import DonateStore from "../../stores/DonateStore";
+import DonationListForm from "../../components/DonationListForm";
 
 export default class Donate extends Component {
   constructor (props) {
@@ -121,6 +122,7 @@ export default class Donate extends Component {
           <br />
           Contributions or gifts are not tax deductible. We Vote is a 501(c)(4) nonprofit.<br />
           <br />
+          <DonationListForm />
         </div>
       </div>
     </div>;

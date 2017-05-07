@@ -77,6 +77,11 @@ class VoterStore extends FluxMapStore {
     return this.getState().voter.voter_photo_url_tiny;
   }
 
+  // Voter's donation history
+  getVoterDonationHistory (){
+    return this.getState().voter.voter_donation_history_list;
+  }
+
   voterDeviceId () {
     return this.getState().voter.voter_device_id || cookies.getItem("voter_device_id");
   }
