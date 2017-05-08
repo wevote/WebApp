@@ -12,7 +12,8 @@ class FacebookStore extends FluxMapStore {
       emailData: {},
       facebookInvitableFriendsList: [],
       appRequestAlreadyProcessed: false,
-      facebookFriendsNotExist: false
+      facebookFriendsNotExist: false,
+      facebookInvitableFriendsRetrieved: false
     };
   }
 
@@ -77,12 +78,12 @@ class FacebookStore extends FluxMapStore {
       return this.getDataFromArr(this.getState().facebook_friends_list) || {};
   }
 
-  facebookInvitableFriendsList (){
-    return this.getDataFromArr(this.getState().facebookInvitableFriendsList);
-  }
-
-  facebookFriendsNotExist () {
-    return this.getState().facebookFriendsNotExist;
+  facebookInvitableFriends () {
+    return {
+      facebook_invitable_friends_list: this.getDataFromArr(this.getState().facebookInvitableFriendsList),
+      facebook_friends_not_exist: this.getState().facebookFriendsNotExist,
+      facebook_invitable_friends_retrieved: this.getState().facebookInvitableFriendsRetrieved
+    };
   }
 
   facebookAppRequestAlreadyProcessed (){
@@ -126,6 +127,7 @@ class FacebookStore extends FluxMapStore {
         // Cache the data in the API server
         // FacebookActions.getFacebookInvitableFriendsList(action.data.id);
         let facebook_friends_not_exist = false;
+        let facebook_invitable_friends_retrieved = true;
         let facebook_invitable_friends_list = [];
         if (action.data.invitable_friends) {
           facebook_invitable_friends_list = action.data.invitable_friends.data;
@@ -136,7 +138,8 @@ class FacebookStore extends FluxMapStore {
         return {
           ...state,
           facebookInvitableFriendsList: facebook_invitable_friends_list,
-          facebookFriendsNotExist: facebook_friends_not_exist
+          facebookFriendsNotExist: facebook_friends_not_exist,
+          facebookInvitableFriendsRetrieved: facebook_invitable_friends_retrieved
         };
 
       case FacebookConstants.FACEBOOK_READ_APP_REQUESTS:
