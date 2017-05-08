@@ -1,14 +1,21 @@
+.team-member {
+  margin-bottom: $space-md;
+  &__photo {
+    border-radius: $radius-sm;
+    margin-bottom: $space-sm;
+  }
+  &__name {
+    line-height: 1.2;
+  }
+  &__title {
+    font-style: italic;
+  }
+}
 .team-members-list {
-  padding: 0 5px;
+  padding-right: $space-xs;
+  padding-left: $space-xs;
   .team-member {
-    padding: 0 5px;
-    h4 {
-      font-size: 14px;
-    }
-    h5 {
-      font-size: 12px;
-      font-weight: normal;
-      line-height: 1.4;
-    }
+    padding-right: $space-xs;
+    padding-left: $space-xs;
   }
 }

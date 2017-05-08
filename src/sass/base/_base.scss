@@ -1,3 +1,5 @@
+// stylelint-disable selector-no-type
+
 html {
   box-sizing: border-box;
   height: 100%;
@@ -12,20 +14,20 @@ body {
   min-height: 100%;
   position: relative;
   @include breakpoints($max-page-container-width) {
-    margin: 0 auto;
+    margin: $space-none $space-auto;
   }
 }
 
 .page-content-container {
-  margin: 0 auto;
+  margin: $space-none $space-auto;
   max-width: $max-page-container-width;
   position: relative;
   z-index: 0;
 }
 
 .container-main {
-  padding-top: 15px;
-  padding-bottom: 3em;
+  padding-top: $space-md;
+  padding-bottom: $space-xl;
 }
 
 *,
@@ -41,3 +43,5 @@ a {
 img {
   max-width: 100%;
 }
+
+// stylelint-enable

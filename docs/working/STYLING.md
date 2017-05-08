@@ -45,7 +45,7 @@ Styles that reference React components should use the same Camel Case naming con
 
 ## Helpers
 
-1. Avoid using raw (numeric) values for style declarations. Always try to use a context-appropriate 'token' or variable instead.
+1. Avoid using raw (numeric) values for style declarations. Always try to use a context-appropriate 'token' or variable instead. (Linter rules are in place to require variables for certain properties.)
 
 
 ### Use Tokens/Variables (avoid raw values)

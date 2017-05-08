@@ -6,8 +6,8 @@ $red: #ff4921;
 .item-actionbar {
   display: flex;
   border-top: 1px solid $gray-lighter;
-  margin: 1em 0;
-  padding-top: 10px;
+  margin: $space-md $space-none;
+  padding-top: $space-sm;
 
   &__position-btn-label {
     @include breakpoints (max mid-small) {
@@ -32,7 +32,7 @@ $red: #ff4921;
 // This style is for when the item-actionbar is added to a line with other elements (like for a candidate on ballot page)
 .item-actionbar--inline {
   display: flex;
-  padding-top: 0;
+  padding-top: $space-none;
   justify-content: flex-end;
   flex: auto;
 

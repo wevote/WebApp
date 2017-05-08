@@ -2,8 +2,8 @@
 // This file contains all application-wide Sass mixins.
 // ----------------------------------------------------------------------------
 
-@import "./mixins/breakpoints";
-@import "./mixins/media-object";
+@import './mixins/breakpoints';
+@import './mixins/media-object';
 
 
 /// Event wrapper
@@ -43,7 +43,7 @@
 @mixin clearfix {
   &::before,
   &::after {
-    content: " ";
+    content: ' ';
     display: table;
   }
   &::after {

@@ -6,7 +6,7 @@ $loader-size: .8rem;
 .u-loading-spinner {
   $dark-spinner: rgba($gray-dark, .7);
   $light-spinner: rgba($white, .7);
-  margin: 0 auto ($loader-size * 2) auto;
+  margin: $space-none $space-auto ($loader-size * 2) $space-auto;
   position: relative;
   text-indent: -9999em;
   transform: translateZ(0);
@@ -49,7 +49,7 @@ $loader-size: .8rem;
   }
   &__wrapper {
     @include clearfix;
-    margin: 20px auto 40px auto;
+    margin: $space-md $space-auto $space-lg $space-auto;
   }
 }
 

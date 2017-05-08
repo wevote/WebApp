@@ -34,6 +34,7 @@ $space-sm:   8px;
 $space-md:  16px;
 $space-lg:  32px;
 $space-xl:  64px;
+$space-auto: auto; // this is currently required because the 'declaration-use-variable' linter doesn't allow for specific value exceptions when requriing variables
 
 
 // Inset: padding
@@ -80,6 +81,10 @@ $radius-md: 8px;
 $radius-rounded: 100rem;
 
 
+// Misc spacing
+$gutter-width: 30px; // from Bootstrap
+$half-gutter-width: $gutter-width/2; // from Bootstrap
+$gutter-offset: -$gutter-width/2;
 
 // ===========================================
 // Colors

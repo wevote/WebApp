@@ -4,16 +4,16 @@ $page-header-color: #1c1a33;
   // required overrides for Bootstrap :(
   border: none;
   @include clearfix;
-  padding-right: 15px; // $grid-gutter-width/2
-  padding-bottom: 0; // override to avoid Bootstrap collision
-  padding-left: 15px; // $grid-gutter-width/2
-  margin: 0 auto;
+  padding-right: $half-gutter-width;
+  padding-bottom: $space-none; // override to avoid Bootstrap collision
+  padding-left: $half-gutter-width; // $grid-gutter-width/2
+  margin: $space-none auto;
   max-width: $max-page-container-width;
   position: relative;
 
   &__container {
     background-color: $page-header-color;
-    padding: $space-sm 0;
+    padding: $space-sm $space-none;
   }
   &__content { // additional element to exclue Burger Menu element
     display: flex;
@@ -22,7 +22,7 @@ $page-header-color: #1c1a33;
   }
 
   &__search {
-    margin: 0;
+    margin: $space-none;
     position: relative;
     width: 100%;
   }
@@ -30,9 +30,9 @@ $page-header-color: #1c1a33;
 
 .page-logo {
   white-space: nowrap;
-  margin: 0 $space-md 0 0; // zeros to override Bootstrap h4
-  margin-top: -$space-sm;
-  margin-bottom: -$space-sm;
+  margin: $space-none $space-md $space-none $space-none; // zeros to override Bootstrap h4
+  margin-top: -$space-sm; // stylelint-disable-line sh-waqar/declaration-use-variable
+  margin-bottom: -$space-sm; // stylelint-disable-line sh-waqar/declaration-use-variable
   padding: $space-sm;
   &,
   &:hover,
@@ -64,7 +64,7 @@ $page-header-color: #1c1a33;
 }
 
 .site-search {
-  padding: 0 $space-md;
+  padding: $space-none $space-md;
 
   &__input-field {
     border: none; // override Bootstrap
@@ -92,7 +92,7 @@ $page-header-color: #1c1a33;
   $search-result-highlight-color: #d9edf7;
   background-color: $white;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, .2);
-  margin: 0 1em;
+  margin: $space-none $space-md;
   position: absolute;
   top: 36px;
   right: 0;
@@ -130,10 +130,10 @@ $page-header-color: #1c1a33;
   display: inline-block;
   width: 30px;
   font-size: 30px;
-  margin: 0 12px 0 0;
+  margin-right: $space-md;
   height: 30px;
   &__filler {
-    padding: 0 21px;
+    padding: $space-none $space-md;
   }
   @include breakpoints(max nav) {
     display: none;

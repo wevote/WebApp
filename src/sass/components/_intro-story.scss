@@ -1,6 +1,6 @@
 .intro-story {
   background-color: $gray-dark;
-  padding: 0;
+  padding: $space-none;
   height: 600px;
   width: 100%;
   color: $white;
@@ -11,7 +11,7 @@
   &__h1 {
     font-weight: 700;
     font-size: 30px;
-    padding: 40px 0 20px;
+    padding: $space-lg $space-none $space-md;
     @include breakpoints (max large) {
       font-size: 22px;
     }
@@ -19,14 +19,14 @@
   &__h1--alt {
     font-weight: 700;
     font-size: 30px;
-    padding-top: 40px;
+    padding-top: $space-lg;
     @include breakpoints (max large) {
       font-size: 22px;
     }
   }
 
   &__h2 {
-    padding-top: 20px;
+    padding-top: $space-md;
     font-size: 20px;
     @include breakpoints (max large) {
       font-size: 18px;
@@ -34,27 +34,27 @@
   }
 
   &__padding {
-    padding: 20px;
+    padding: $space-md;
     @include breakpoints (max large) {
-      padding-top: 20px;
-      padding-bottom: 15px;
+      padding-top: $space-md;
+      padding-bottom: $space-md;
     }
   }
 
   &__padding-top {
-    padding-top: 15px;
+    padding-top: $space-md;
   }
 
   &__padding--btm {
-    padding-bottom: 30px;
+    padding-bottom: $space-lg;
   }
 
   &__padding-btn {
-    padding-top: 40px;
-    padding-bottom: 50px;
+    padding-top: $space-lg;
+    padding-bottom: $space-lg;
     @include breakpoints (max large) {
-      padding-top: 30px;
-      padding-bottom: 15px;
+      padding-top: $space-lg;
+      padding-bottom: $space-md;
     }
   }
 
@@ -126,66 +126,66 @@
 
 .background--image1 {
   @include breakpoints (small) {
-    background-image: url("/img/global/intro-story/slide1-flagpole-mountains-698x600.jpg");
+    background-image: url('/img/global/intro-story/slide1-flagpole-mountains-698x600.jpg');
   }
   @include breakpoints (large) {
     //Image for desktop has to be a very specific size otherwise it will tile or wrap
     // onto the next slide (due to div width of react-slick carousel) - approx 1000 width works fine
-    background-image: url("/img/global/intro-story/slide1-flagpole-mountains-1000x600.jpg");
+    background-image: url('/img/global/intro-story/slide1-flagpole-mountains-1000x600.jpg');
   }
 }
 
 .background--image2 {
   @include breakpoints (small) {
-    background-image: url("/img/global/intro-story/slide2-lady-liberty-698x600.jpg");
+    background-image: url('/img/global/intro-story/slide2-lady-liberty-698x600.jpg');
   }
   @include breakpoints (large) {
-    background-image: url("/img/global/intro-story/slide2-lady-liberty-1000x600.jpg");
+    background-image: url('/img/global/intro-story/slide2-lady-liberty-1000x600.jpg');
   }
 }
 
 .background--image3 {
   @include breakpoints (small) {
-    background-image: url("/img/global/intro-story/slide3-historic-place-698x600.jpg");
+    background-image: url('/img/global/intro-story/slide3-historic-place-698x600.jpg');
   }
   @include breakpoints (large) {
-    background-image: url("/img/global/intro-story/slide3-historic-place-1000x600.jpg");
+    background-image: url('/img/global/intro-story/slide3-historic-place-1000x600.jpg');
   }
 }
 
 .background--image4 {
   @include breakpoints (small) {
-    background-image: url("/img/global/intro-story/slide4-working-together-698x600.jpg");
+    background-image: url('/img/global/intro-story/slide4-working-together-698x600.jpg');
   }
   @include breakpoints (large) {
-    background-image: url("/img/global/intro-story/slide4-working-together-1000x600.jpg");
+    background-image: url('/img/global/intro-story/slide4-working-together-1000x600.jpg');
   }
 }
 
 .background--image5 {
   @include breakpoints (small) {
-    background-image: url("/img/global/intro-story/slide5-flagpole-698x600.jpg");
+    background-image: url('/img/global/intro-story/slide5-flagpole-698x600.jpg');
   }
   @include breakpoints (large) {
-    background-image: url("/img/global/intro-story/slide5-flagpole-1000x600.jpg");
+    background-image: url('/img/global/intro-story/slide5-flagpole-1000x600.jpg');
   }
 }
 
 .background--image6 {
   @include breakpoints (small) {
-    background-image: url("/img/global/intro-story/slide6-flag-building-698x600.jpg");
+    background-image: url('/img/global/intro-story/slide6-flag-building-698x600.jpg');
   }
   @include breakpoints (large) {
-    background-image: url("/img/global/intro-story/slide6-flag-building-1000x600.jpg");
+    background-image: url('/img/global/intro-story/slide6-flag-building-1000x600.jpg');
   }
 }
 
 .background--image7 {
   @include breakpoints (small) {
-    background-image: url("/img/global/intro-story/slide7-american-bicycle-698x600.jpg");
+    background-image: url('/img/global/intro-story/slide7-american-bicycle-698x600.jpg');
   }
   @include breakpoints (large) {
-    background-image: url("/img/global/intro-story/slide7-american-bicycle-1000x600.jpg");
+    background-image: url('/img/global/intro-story/slide7-american-bicycle-1000x600.jpg');
   }
 }
 
@@ -201,7 +201,7 @@
   @include breakpoints (small mid-small) {
     height: 30px;
     width: 30px;
-    padding: 5px;
+    padding: $space-xs;
   }
 }
 
@@ -209,14 +209,14 @@
 
 .story-view {
   .container-main {
-    margin: 0;
+    margin: $space-none;
     min-height: 100%;
-    padding: 0;
+    padding: $space-none;
   }
 
   .well {
-    margin-bottom: 0;
-    border: 0;
+    margin-bottom: $space-none;
+    border: none;
   }
 }
 

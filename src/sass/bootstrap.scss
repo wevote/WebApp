@@ -9,6 +9,8 @@
 // TODO Create Bootstrap overrides partial
 
 // Overrides - needs to be rethought - allow margin-top when following another element (* + h1, etc. ?)
+
+// stylelint-disable selector-no-type
 h1,
 h2,
 h3,
@@ -17,3 +19,4 @@ h5,
 h6 {
   margin: $space-none;
 }
+// stylelint-enable

@@ -35,7 +35,7 @@
     }
     #{unquote($img)} {
       float: $position;
-      img { display: block; }
+      display: block;
       @if $margin > 0 {
         @if $position == 'left' {
           margin-right: $margin;

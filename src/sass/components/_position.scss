@@ -6,11 +6,11 @@
 @include media-object('.explicit-position', '.explicit-position__icon', '.explicit-position__text', $margin: 5px);
 
 .explicit-position__icon {
-  margin-top: 2px;
+  margin-top: $space-xxs;
 }
 
 .explicit-position__text {
-  padding-top: .2em;
+  padding-top: $space-xs;
   color: $gray-dark;
 }
 

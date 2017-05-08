@@ -17,7 +17,7 @@ $header-height: 54px;
   right: 15px;
   background-color: $white;
   opacity: 0;
-  padding: 1rem;
+  padding: $space-md;
   transition: opacity .25s ease-in-out;
   z-index: 2;
   pointer-events: none;
@@ -89,12 +89,13 @@ $header-height: 54px;
     position: relative;
     width: 60px;
     height: $header-height;
-    margin-top: -.5em; // temporary offsets for .page-header__container padding
-    margin-bottom: -.5em;
     padding: $space-sm;
     color: $white;
     opacity: .8;
     text-align: center;
+    // temporary offsets for .page-header__container padding
+    margin-top: -.5em; // stylelint-disable-line sh-waqar/declaration-use-variable
+    margin-bottom: -.5em; // stylelint-disable-line sh-waqar/declaration-use-variable
     &--has-icon {
       justify-content: space-between;
     }
@@ -119,7 +120,7 @@ $header-height: 54px;
 
     &.donate {
       padding: $space-none;
-      & > img.glyphicon {
+      & > .glyphicon {
         max-width: 100%;
         width: 29px;
       }
@@ -129,7 +130,7 @@ $header-height: 54px;
     font-size: 1rem;
   }
   &__icon--about {
-    padding: 1px;
+    padding: $space-xxs;
   }
 
   &__avatar {
