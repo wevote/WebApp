@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 import { browserHistory } from "react-router";
-import DonateActions from "../actions/DonateActions";
-const web_app_config = require("../config");
+import DonateActions from "../../actions/DonateActions";
+const web_app_config = require("../../config");
 
 export default class DonationForm extends Component {
   static propTypes = {
@@ -69,16 +69,6 @@ export default class DonationForm extends Component {
       <Button bsStyle="success" onClick={this._openStripeModal}>
         {donate_button_text}
       </Button>
-    {/*<form onSubmit={this.getToken}>
-      <FormGroup controlId="cardElement">
-        <ControlLabel htmlFor="cardElement">Card
-          <span className="field" ref="cardElement" value={this.state.card} onChange={this.updateCard} ></span>
-        </ControlLabel>
-      </FormGroup>
-        <Button className="pull-right" bsStyle="primary" type="submit">
-          Submit
-        </Button>
-    </form>*/}
   </span>;
 	}
 }
