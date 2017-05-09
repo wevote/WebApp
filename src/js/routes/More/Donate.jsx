@@ -1,10 +1,10 @@
 import React, {Component} from "react";
 import { Button, FormGroup, Radio } from "react-bootstrap";
 import Helmet from "react-helmet";
-import DonationForm from "../../components/DonationForm";
-import DonationError from "../../components/DonationError";
+import DonationForm from "../../components/Donation/DonationForm";
+import DonationError from "../../components/Donation/DonationError";
 import DonateStore from "../../stores/DonateStore";
-import DonationListForm from "../../components/DonationListForm";
+import DonationListForm from "../../components/Donation/DonationListForm";
 
 export default class Donate extends Component {
   constructor (props) {
