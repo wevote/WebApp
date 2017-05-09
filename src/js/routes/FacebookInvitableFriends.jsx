@@ -103,7 +103,7 @@ export default class FacebookInvitableFriends extends Component {
         title: "We Vote USA",
         redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/more/network",
         method: "apprequests",
-        message: "Invite your Facebook Friends to join WeVote",
+        message: "Invite your Facebook Friends to join We Vote",
         to: selected_facebook_friends_ids,
       }, function (response) {
         if ( response.error_code === 4201 ) {
@@ -155,7 +155,7 @@ export default class FacebookInvitableFriends extends Component {
       browserHistory.push({
         pathname: "/more/network",
         state: {
-          message: "You don't have friends on Facebook who are not on WeVote.",
+          message: "You don't have friends on Facebook who are not on We Vote.",
           message_type: "success"
         }
       });
