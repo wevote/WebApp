@@ -6,6 +6,7 @@ import LoadingWheel from "../components/LoadingWheel";
 import FacebookActions from "../actions/FacebookActions";
 import FriendActions from "../actions/FriendActions";
 import FacebookStore from "../stores/FacebookStore";
+import VoterStore from "../stores/VoterStore";
 import Helmet from "react-helmet";
 const web_app_config = require("../config");
 
@@ -19,8 +20,8 @@ export default class FacebookInvitableFriends extends Component {
     super(props);
     this.state = {
       isChecked: false,
-      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriendsList(),
-      facebook_friends_not_exist: FacebookStore.facebookFriendsNotExist(),
+      facebook_logged_in: false,
+      facebook_invitable_friends: FacebookStore.facebookInvitableFriends(),
       facebook_invitable_friends_image_width: 48,
       facebook_invitable_friends_image_height: 48,
       saving: false,
@@ -28,12 +29,10 @@ export default class FacebookInvitableFriends extends Component {
   }
 
   componentDidMount () {
+    this._onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this._onFacebookStoreChange();
     this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
-    if (this.state.facebook_invitable_friends_list) {
-      FacebookActions.getFacebookInvitableFriendsList(this.state.facebook_invitable_friends_image_width,
-        this.state.facebook_invitable_friends_image_height);
-      this.setState({saving: true});
-    }
   }
 
   componentWillMount () {
@@ -44,12 +43,26 @@ export default class FacebookInvitableFriends extends Component {
     this.facebookStoreListener.remove();
   }
 
+  _onVoterStoreChange () {
+    this.setState({ voter: VoterStore.getVoter() });
+  }
+
   _onFacebookStoreChange () {
     this.setState({
-      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriendsList(),
-      facebook_friends_not_exist: FacebookStore.facebookFriendsNotExist(),
+      facebook_logged_in: FacebookStore.loggedIn,
+      facebook_invitable_friends: FacebookStore.facebookInvitableFriends(),
       saving: false
     });
+  }
+
+  facebookLogin () {
+    FacebookActions.login();
+  }
+
+  getFacebookInvitableFriends () {
+    FacebookActions.getFacebookInvitableFriendsList(this.state.facebook_invitable_friends_image_width,
+      this.state.facebook_invitable_friends_image_height);
+    this.setState({saving: true});
   }
 
   toggleCheckBox (facebook_invitable_friend_id, facebook_invitable_friend_name) {
@@ -90,7 +103,7 @@ export default class FacebookInvitableFriends extends Component {
         title: "We Vote USA",
         redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/more/network",
         method: "apprequests",
-        message: "Invite your Facebook Friends to join WeVote",
+        message: "Invite your Facebook Friends to join We Vote",
         to: selected_facebook_friends_ids,
       }, function (response) {
         if ( response.error_code === 4201 ) {
@@ -114,25 +127,44 @@ export default class FacebookInvitableFriends extends Component {
   }
 
   render () {
-
-    if (this.state.saving || !this.state.facebook_invitable_friends_list) {
+    //console.log("this.state.voter", this.state.voter);
+    if (!this.state.voter || this.state.saving) {
+      // Show a loading wheel while this component's data is loading
       return LoadingWheel;
     }
 
-    console.log("Facebook friends list", this.state.facebook_invitable_friends_list);
-    console.log("facebook friends not exist:", this.state.facebook_friends_not_exist);
-    if (this.state.facebook_friends_not_exist) {
+    //console.log("Got voter", this.state.voter);
+    console.log("facebook logged in: ", this.state.facebook_logged_in);
+    if (!this.state.facebook_logged_in ) {
+      console.log("Voter is not logged in through facebook");
+      this.facebookLogin();
+      return LoadingWheel;
+    } else {
+      console.log("Voter is signed in through facebook: ", this.state.facebook_invitable_friends);
+      if (!this.state.facebook_invitable_friends.facebook_invitable_friends_retrieved) {
+        // If facebook log in finished successfully then get facebook invitable friends
+        console.log("Get facebook invitable friends");
+        this.getFacebookInvitableFriends();
+        return LoadingWheel;
+      }
+    }
+
+    console.log("Facebook friends list", this.state.facebook_invitable_friends.facebook_invitable_friends_list);
+    console.log("facebook friends not exist:", this.state.facebook_invitable_friends.facebook_friends_not_exist);
+    if (this.state.facebook_invitable_friends.facebook_friends_not_exist) {
       browserHistory.push({
         pathname: "/more/network",
         state: {
-          message: "You don't have friends on Facebook.",
+          message: "You don't have friends on Facebook who are not on We Vote.",
           message_type: "success"
         }
       });
       return LoadingWheel;
     }
 
-    const facebook_friend_list_for_display = this.state.facebook_invitable_friends_list.map( (friend) => {
+
+    const facebook_invitable_friends_list = this.state.facebook_invitable_friends.facebook_invitable_friends_list;
+    const facebook_friend_list_for_display = facebook_invitable_friends_list.map( (friend) => {
       return <div key={friend.id} className="card-child card-child--not-followed">
         <CheckBox
           friendId={friend.id}
