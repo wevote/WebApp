@@ -39,7 +39,7 @@ export default class TwitterSignInProcess extends Component {
 
   cancelMergeFunction () {
     browserHistory.push({
-      pathname: "/more/sign_in",
+      pathname: "/more/network",
       state: {
       }
     });
@@ -51,7 +51,7 @@ export default class TwitterSignInProcess extends Component {
     VoterActions.voterMergeTwoAccountsByTwitterKey(twitter_secret_key);
     if (voter_has_data_to_preserve) {
       browserHistory.push({
-        pathname: "/more/sign_in",
+        pathname: "/more/network",
         state: {
           message: "Your accounts have been merged.",
           message_type: "success"
@@ -71,7 +71,7 @@ export default class TwitterSignInProcess extends Component {
   voterTwitterSaveToCurrentAccount () {
     VoterActions.voterTwitterSaveToCurrentAccount();
     browserHistory.push({
-      pathname: "/more/sign_in",
+      pathname: "/more/network",
       state: {
         message: "You have successfully signed in with Twitter.",
         message_type: "success"

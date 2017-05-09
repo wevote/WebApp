@@ -11,6 +11,8 @@ class FacebookStore extends FluxMapStore {
       authData: {},
       emailData: {},
       appRequestAlreadyProcessed: false,
+      facebookFriendsNotExist: false,
+      facebookInvitableFriendsRetrieved: false
     };
   }
 
@@ -75,11 +77,11 @@ class FacebookStore extends FluxMapStore {
       return this.getDataFromArr(this.getState().facebook_friends_list) || {};
   }
 
-  facebookInvitableFriends (){
+  facebookInvitableFriends () {
     return {
-      facebook_invitable_friends_list: this.getDataFromArr(this.getState().facebookInvitableFriendsList) || {},
-      facebook_invitable_friends_retrieved: this.getState().facebookInvitableFriendsRetrieved || false,
-      facebook_friends_not_exist: this.getState().facebookFriendsNotExist || false
+      facebook_invitable_friends_list: this.getDataFromArr(this.getState().facebookInvitableFriendsList),
+      facebook_friends_not_exist: this.getState().facebookFriendsNotExist,
+      facebook_invitable_friends_retrieved: this.getState().facebookInvitableFriendsRetrieved
     };
   }
 
@@ -135,8 +137,8 @@ class FacebookStore extends FluxMapStore {
         return {
           ...state,
           facebookInvitableFriendsList: facebook_invitable_friends_list,
-          facebookInvitableFriendsRetrieved: facebook_invitable_friends_retrieved,
-          facebookFriendsNotExist: facebook_friends_not_exist
+          facebookFriendsNotExist: facebook_friends_not_exist,
+          facebookInvitableFriendsRetrieved: facebook_invitable_friends_retrieved
         };
 
       case FacebookConstants.FACEBOOK_READ_APP_REQUESTS:

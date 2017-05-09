@@ -21,6 +21,7 @@ export default class FacebookInvitableFriends extends Component {
     this.state = {
       isChecked: false,
       facebook_logged_in: false,
+      facebook_auth_response: {},
       facebook_invitable_friends: FacebookStore.facebookInvitableFriends(),
       facebook_invitable_friends_image_width: 48,
       facebook_invitable_friends_image_height: 48,
@@ -41,6 +42,11 @@ export default class FacebookInvitableFriends extends Component {
 
   componentWillUnmount (){
     this.facebookStoreListener.remove();
+    this.voterStoreListener.remove();
+  }
+
+  _onVoterStoreChange () {
+    this.setState({ voter: VoterStore.getVoter() });
   }
 
   _onVoterStoreChange () {
@@ -50,6 +56,7 @@ export default class FacebookInvitableFriends extends Component {
   _onFacebookStoreChange () {
     this.setState({
       facebook_logged_in: FacebookStore.loggedIn,
+      facebook_auth_response: FacebookStore.getFacebookAuthResponse(),
       facebook_invitable_friends: FacebookStore.facebookInvitableFriends(),
       saving: false
     });
@@ -127,13 +134,28 @@ export default class FacebookInvitableFriends extends Component {
   }
 
   render () {
-    //console.log("this.state.voter", this.state.voter);
+    console.log("this.state.voter", this.state.voter);
     if (!this.state.voter || this.state.saving) {
       // Show a loading wheel while this component's data is loading
       return LoadingWheel;
     }
 
-    //console.log("Got voter", this.state.voter);
+    console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
+    if (!this.state.voter.signed_in_facebook && this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
+      console.log("SignIn.jsx facebook_retrieve_attempted");
+      browserHistory.push("/facebook_sign_in");
+      // return <span>SignIn.jsx facebook_retrieve_attempted</span>;
+      return LoadingWheel;
+    } else {
+      console.log("Voter is signed in through facebook: ", this.state.facebook_invitable_friends);
+      if (!this.state.facebook_invitable_friends.facebook_invitable_friends_retrieved) {
+        // If facebook log in finished successfully then get facebook invitable friends
+        console.log("Get facebook invitable friends");
+        this.getFacebookInvitableFriends();
+        return LoadingWheel;
+      }
+    }
+
     console.log("facebook logged in: ", this.state.facebook_logged_in);
     if (!this.state.facebook_logged_in ) {
       console.log("Voter is not logged in through facebook");

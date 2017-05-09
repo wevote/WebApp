@@ -41,7 +41,7 @@ export default class FacebookSignInProcess extends Component {
 
   cancelMergeFunction () {
     browserHistory.push({
-      pathname: "/more/sign_in",
+      pathname: "/more/network",
       state: {
       }
     });
@@ -61,7 +61,7 @@ export default class FacebookSignInProcess extends Component {
     }
     if (voter_has_data_to_preserve) {
       browserHistory.push({
-        pathname: "/more/sign_in",
+        pathname: "/more/network",
         state: {
           message: "Your accounts have been merged.",
           message_type: "success"
@@ -82,7 +82,7 @@ export default class FacebookSignInProcess extends Component {
     // console.log("In voterFacebookSaveToCurrentAccount");
     VoterActions.voterFacebookSaveToCurrentAccount();
     browserHistory.push({
-      pathname: "/more/sign_in",
+      pathname: "/more/network",
       state: {
         message: "You have successfully signed in with Facebook.",
         message_type: "success"
