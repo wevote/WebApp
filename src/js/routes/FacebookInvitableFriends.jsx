@@ -49,6 +49,10 @@ export default class FacebookInvitableFriends extends Component {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
+  _onVoterStoreChange () {
+    this.setState({ voter: VoterStore.getVoter() });
+  }
+
   _onFacebookStoreChange () {
     this.setState({
       facebook_logged_in: FacebookStore.loggedIn,
@@ -106,7 +110,7 @@ export default class FacebookInvitableFriends extends Component {
         title: "We Vote USA",
         redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/more/network",
         method: "apprequests",
-        message: "Invite your Facebook Friends to join WeVote",
+        message: "Invite your Facebook Friends to join We Vote",
         to: selected_facebook_friends_ids,
       }, function (response) {
         if ( response.error_code === 4201 ) {
@@ -142,6 +146,14 @@ export default class FacebookInvitableFriends extends Component {
       browserHistory.push("/facebook_sign_in");
       // return <span>SignIn.jsx facebook_retrieve_attempted</span>;
       return LoadingWheel;
+    } else {
+      console.log("Voter is signed in through facebook: ", this.state.facebook_invitable_friends);
+      if (!this.state.facebook_invitable_friends.facebook_invitable_friends_retrieved) {
+        // If facebook log in finished successfully then get facebook invitable friends
+        console.log("Get facebook invitable friends");
+        this.getFacebookInvitableFriends();
+        return LoadingWheel;
+      }
     }
 
     console.log("facebook logged in: ", this.state.facebook_logged_in);
@@ -165,7 +177,7 @@ export default class FacebookInvitableFriends extends Component {
       browserHistory.push({
         pathname: "/more/network",
         state: {
-          message: "You don't have friends on Facebook who are not on WeVote.",
+          message: "You don't have friends on Facebook who are not on We Vote.",
           message_type: "success"
         }
       });

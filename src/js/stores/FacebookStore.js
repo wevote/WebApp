@@ -10,7 +10,6 @@ class FacebookStore extends FluxMapStore {
     return {
       authData: {},
       emailData: {},
-      facebookInvitableFriendsList: [],
       appRequestAlreadyProcessed: false,
       facebookFriendsNotExist: false,
       facebookInvitableFriendsRetrieved: false
