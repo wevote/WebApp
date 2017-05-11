@@ -128,8 +128,6 @@ export default class NotFound extends Component {
                 </Link>
                 <br />
                 <br />
-                <br />
-                <img src="https://github.com/wevote/WebApp/raw/develop/unclesamewevote.jpg" width="210" height="450" />
             </div>;
     }
   }
