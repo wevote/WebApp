@@ -8,18 +8,27 @@ import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 import LoadingWheel from "../../components/LoadingWheel";
 import TwitterActions from "../../actions/TwitterActions";
 import TwitterSignIn from "../../components/Twitter/TwitterSignIn";
+import VoterActions from "../../actions/VoterActions";
 import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import VoterStore from "../../stores/VoterStore";
 
 const debug_mode = false;
+const delay_before_user_name_update_api_call = 1200;
 export default class SignIn extends Component {
 
   constructor (props) {
     super(props);
     this.state = {
-      facebook_auth_response: {}
+      facebook_auth_response: {},
+      first_name: "",
+      last_name: "",
+      initial_name_loaded: false,
+      name_saved_status: ""
     };
+
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.updateVoterName = this.updateVoterName.bind(this);
   }
 
   componentDidMount () {
@@ -32,10 +41,20 @@ export default class SignIn extends Component {
   componentWillUnmount () {
     this.facebookListener.remove();
     this.voterStoreListener.remove();
+    this.timer = null;
   }
 
   _onVoterStoreChange () {
-    this.setState({ voter: VoterStore.getVoter() });
+    if (VoterStore.isVoterFound() && !this.state.initial_name_loaded) {
+      this.setState({
+        first_name: VoterStore.getFirstName(),
+        last_name: VoterStore.getLastName(),
+        initial_name_loaded: true,
+        voter: VoterStore.getVoter()
+      });
+    } else {
+      this.setState({voter: VoterStore.getVoter()});
+    }
   }
 
   _onFacebookChange () {
@@ -55,6 +74,28 @@ export default class SignIn extends Component {
     let enterAndSpaceKeyCodes = [13, 32];
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       TwitterActions.appLogout();
+    }
+  }
+
+  handleKeyPress () {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      VoterActions.voterNameSave(this.state.first_name, this.state.last_name);
+      this.setState({name_saved_status: "Saved"});
+    }, delay_before_user_name_update_api_call);
+  }
+
+  updateVoterName (event) {
+    if (event.target.name === "first_name") {
+      this.setState({
+        first_name: event.target.value,
+        name_saved_status: "Saving First Name..."
+      });
+    } else if (event.target.name === "last_name") {
+      this.setState({
+        last_name: event.target.value,
+        name_saved_status: "Saving Last Name..."
+      });
     }
   }
 
@@ -99,13 +140,43 @@ export default class SignIn extends Component {
       <BrowserPushMessage incomingProps={this.props} />
       <div className="card">
         <div className="card-main">
+          {voter.is_signed_in ?
+            <div className="card">
+              <span className="h3">Your Account</span>
+              <br />
+              <label htmlFor="last-name">First Name
+              <input type="text"
+                     className="form-control"
+                     name="first_name"
+                     placeholder="First Name"
+                     onKeyDown={this.handleKeyPress}
+                     onChange={this.updateVoterName}
+                     value={this.state.first_name}
+              /> </label>
+              <br />
+              <label htmlFor="last-name">Last Name
+              <input type="text"
+                     className="form-control"
+                     name="last_name"
+                     placeholder="Last Name"
+                     onKeyDown={this.handleKeyPress}
+                     onChange={this.updateVoterName}
+                     value={this.state.last_name}
+              /> </label>
+              <br />
+              <span className="pull-right u-gray-mid">{this.state.name_saved_status}</span>
+            </div> :
+            null
+          }
           {voter.signed_in_twitter && voter.signed_in_facebook ?
             null :
-            <h1 className="h3">{voter.is_signed_in ? <span>{your_account_title}</span> : <span>Your Account</span>}</h1> }
+            <h1 className="h3">{voter.is_signed_in ? <span>{your_account_title}</span> : <span>Your Account</span>}</h1>
+          }
           {voter.is_signed_in ?
             <span>{your_account_explanation}</span> :
             <div>Before you can share, either publicly or with friends, please sign in. Don't worry, we won't post anything automatically.<br />
-            <br /></div>
+            <br />
+            </div>
           }
           {!voter.signed_in_twitter || !voter.signed_in_facebook ?
             <div>
@@ -121,7 +192,8 @@ export default class SignIn extends Component {
               <br />
               <br />
             </div> :
-            null }
+            null
+          }
           <div>
             {voter.is_signed_in ?
               <div>
