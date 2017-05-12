@@ -18,7 +18,8 @@ class VoterStore extends FluxMapStore {
       address: {},
       email_address_status: {},
       email_sign_in_status: {},
-      facebook_sign_in_status: {}
+      facebook_sign_in_status: {},
+      voter_found: false,
     };
   }
 
@@ -52,6 +53,14 @@ class VoterStore extends FluxMapStore {
 
   getFacebookSignInStatus (){
     return this.getState().facebook_sign_in_status;
+  }
+
+  getFirstName (){
+    return this.getState().voter.first_name;
+  }
+
+  getLastName (){
+    return this.getState().voter.last_name;
   }
 
   getFullName (){
@@ -99,6 +108,17 @@ class VoterStore extends FluxMapStore {
       data_list.push( arr[i] );
     }
     return data_list;
+  }
+
+  getInterfaceFlagState (flag) {
+    // Look in js/Constants/VoterConstants.js for list of flag constant definitions
+    let interfaceStatusFlags = this.getState().voter.interface_status_flags;
+    // (1 << flag), sets the flag'th bit. and & with interfaceStatusFlags tell if the flag'th bit is set
+    return interfaceStatusFlags & 1 << flag !== 0;
+  }
+
+  isVoterFound () {
+    return this.getState().voter_found;
   }
 
   reduce (state, action) {
@@ -311,8 +331,9 @@ class VoterStore extends FluxMapStore {
 
         return {
           ...state,
-          voter: action.res
-      };
+          voter: action.res,
+          voter_found: action.res.voter_found,
+        };
 
       case "voterSignOut":
         VoterActions.voterRetrieve();

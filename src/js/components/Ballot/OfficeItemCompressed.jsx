@@ -17,7 +17,8 @@ export default class OfficeItemCompressed extends Component {
     ballot_item_display_name: PropTypes.string.isRequired,
     link_to_ballot_item_page: PropTypes.bool,
     candidate_list: PropTypes.array,
-    _toggleCandidateModal: PropTypes.func
+    _toggleCandidateModal: PropTypes.func,
+    _toggleSupportOrOpposeHelpModal: PropTypes.func
   };
   constructor (props) {
     super(props);
@@ -134,7 +135,8 @@ export default class OfficeItemCompressed extends Component {
                                    shareButtonHide
                                    commentButtonHide
                                    transitioniing={this.state.transitioning}
-                                   type="CANDIDATE" />
+                                   type="CANDIDATE"
+                                   _toggleSupportOrOpposeHelpModal={this.props._toggleSupportOrOpposeHelpModal} />
                   </div>
                 </div>
               </div>

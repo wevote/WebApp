@@ -41,6 +41,8 @@ export default class Ballot extends Component {
       showMeasureModal: false,
       showSelectBallotModal: false,
       showSelectAddressModal: false,
+      showSupportOrOpposeHelpModal: false,
+      showSupportOrOpposeHelpModalTitle: "",
       ballot_election_list: []
     };
   }
@@ -61,6 +63,7 @@ export default class Ballot extends Component {
       // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
       // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
       this._toggleCandidateModal = this._toggleCandidateModal.bind(this);
+      this._toggleSupportOrOpposeHelpModal = this._toggleSupportOrOpposeHelpModal.bind(this);
       this._toggleMeasureModal = this._toggleMeasureModal.bind(this);
       this._toggleSelectBallotModal = this._toggleSelectBallotModal.bind(this);
       this._toggleSelectAddressModal = this._toggleSelectAddressModal.bind(this);
@@ -96,6 +99,13 @@ export default class Ballot extends Component {
     this.setState({
       candidate_for_modal: candidateForModal,
       showCandidateModal: !this.state.showCandidateModal
+    });
+  }
+
+   _toggleSupportOrOpposeHelpModal (supportOrOpposeTitle) {
+    this.setState({
+      showSupportOrOpposeHelpModal: !this.state.showSupportOrOpposeHelpModal,
+      showSupportOrOpposeHelpModalTitle: supportOrOpposeTitle
     });
   }
 
@@ -353,6 +363,22 @@ export default class Ballot extends Component {
         </Modal.Body>
       </Modal>;
 
+    // We create this modal to pop up and show voter guides that the voter can follow relating to this Measure.
+    const SupportOrOpposeHelpModal = <Modal show={this.state.showSupportOrOpposeHelpModal} onHide={()=>{this._toggleSupportOrOpposeHelpModal();}}>
+      <Modal.Header closeButton>
+        <Modal.Title>
+          Support/Oppose Title here.
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <section className="card">
+          <p className="card__no-additional">
+            Help info after first {this.state.showSupportOrOpposeHelpModalTitle} click
+          </p>
+        </section>
+      </Modal.Body>
+    </Modal>;
+
     // This modal will show a users ballot guides from previous and current elections.
     const SelectBallotModal = <Modal show={this.state.showSelectBallotModal} onHide={()=>{this._toggleSelectBallotModal();}}
       className="ballot-election-list ballot-election-list__modal">
@@ -436,6 +462,7 @@ export default class Ballot extends Component {
       { this.state.showCandidateModal ? CandidateModal : null }
       { this.state.showSelectBallotModal ? SelectBallotModal : null}
       { this.state.showSelectAddressModal ? SelectAddressModal : null}
+      { this.state.showSupportOrOpposeHelpModal ? SupportOrOpposeHelpModal : null}
       <div className="ballot__heading u-stack--lg">
         <Helmet title="Ballot - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
@@ -464,6 +491,7 @@ export default class Ballot extends Component {
           ballot.map( (item) => <BallotItemReadyToVote key={item.we_vote_id} {...item} />) :
           ballot.map( (item) => <BallotItemCompressed _toggleCandidateModal={this._toggleCandidateModal}
                                                       _toggleMeasureModal={this._toggleMeasureModal}
+                                                      _toggleSupportOrOpposeHelpModal={this._toggleSupportOrOpposeHelpModal}
                                                       key={item.we_vote_id}
                                                       {...item} />)
         }

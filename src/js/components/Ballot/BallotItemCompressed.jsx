@@ -14,7 +14,8 @@ export default class BallotItemCompressed extends Component {
     kind_of_ballot_item: PropTypes.string.isRequired,
     we_vote_id: PropTypes.string.isRequired,
     _toggleCandidateModal: PropTypes.func,
-    _toggleMeasureModal: PropTypes.func
+    _toggleMeasureModal: PropTypes.func,
+    _toggleSupportOrOpposeHelpModal: PropTypes.func
   };
 
   isMeasure () {

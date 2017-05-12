@@ -136,7 +136,22 @@ module.exports = {
       });
   },
 
+  voterNameSave: function (first_name, last_name) {
+    Dispatcher.loadEndpoint("voterUpdate",
+      {
+        first_name: first_name,
+        last_name: last_name
+      });
+  },
+
   voterRetrieve: function () {
     Dispatcher.loadEndpoint("voterRetrieve");
-  }
+  },
+
+  voterUpdateStatusFlags: function (flag_integer_to_set) {
+    Dispatcher.loadEndpoint("voterUpdate",
+      {
+        flag_integer_to_set: flag_integer_to_set,
+      });
+  },
 };

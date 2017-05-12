@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import SupportActions from "../../actions/SupportActions";
 import ShareButtonDropdown from "./ShareButtonDropdown";
+import VoterActions from "../../actions/VoterActions";
+import VoterConstants from "../../constants/VoterConstants";
+import VoterStore from "../../stores/VoterStore";
 
 var Icon = require("react-svg-icons");
 
@@ -13,7 +16,8 @@ export default class ItemActionBar extends Component {
     shareButtonHide: PropTypes.bool,
     supportProps: PropTypes.object,
     toggleFunction: PropTypes.func,
-    type: PropTypes.string.isRequired
+    type: PropTypes.string.isRequired,
+    _toggleSupportOrOpposeHelpModal: PropTypes.func
   };
 
   constructor (props) {
@@ -30,6 +34,11 @@ export default class ItemActionBar extends Component {
   supportItem (is_support) {
     if (is_support) {this.stopSupportingItem(); return;}
     if (this.state.transitioning){ return; }
+    let support_help_modal_on = true; // VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
+    if (!support_help_modal_on) {
+      this.props._toggleSupportOrOpposeHelpModal("Support");
+      VoterActions.voterUpdateStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
+    }
     SupportActions.voterSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
   }
@@ -43,6 +52,11 @@ export default class ItemActionBar extends Component {
   opposeItem (is_oppose) {
     if (is_oppose) {this.stopOpposingItem(); return;}
     if (this.state.transitioning){ return; }
+    let oppose_help_modal_on = true; // VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
+    if (!oppose_help_modal_on) {
+      this.props._toggleSupportOrOpposeHelpModal("Oppose");
+      VoterActions.voterUpdateStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
+    }
     SupportActions.voterOpposingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
   }
