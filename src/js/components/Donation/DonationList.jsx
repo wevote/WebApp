@@ -50,7 +50,7 @@ export default class DonationPaymentList extends Component {
           </tr>
           </thead>
           <tbody> {this.state.data.map(function (item, key) {
-            if ( item.record_enum === "PAYMENT_FROM_UI" || item.record_enum === "PAYMENT_AUTO_SUBS") {
+            if ( item.record_enum === "PAYMENT_FROM_UI" || item.record_enum === "PAYMENT_AUTO_SUBSCRIPTION") {
               return <tr key={key}>
                 <td style={styles.td}>{moment.utc(item.created).format("MMM D, YYYY")}</td>
                 <td style={styles.td}>{item.amount}</td>
@@ -89,10 +89,12 @@ export default class DonationPaymentList extends Component {
           </tr>
           </thead>
           <tbody> {this.state.data.map(function (item, key) {
-            if ( item.record_enum === "SUBS_SETUP_AND_INITIAL") {
-              let active = item.subs_canceled_at === null || item.subs_ended_at !== null;
-              let ended = item.subs_ended_at !== null ? moment.utc(item.subs_ended_at).format("MMM D, YYYY") : "";
-              let cancel = item.subs_canceled_at !== null ? moment.utc(item.subs_canceled_at).format("MMM D, YYYY") :"";
+            if ( item.record_enum === "SUBSCRIPTION_SETUP_AND_INITIAL") {
+              let active = item.subscription_canceled_at === null || item.subscription_ended_at !== null;
+              let ended = item.subscription_ended_at !== null ? moment.utc(item.subscription_ended_at).
+                format("MMM D, YYYY") : "";
+              let cancel = item.subscription_canceled_at !== null ? moment.utc(item.subscription_canceled_at).
+                format("MMM D, YYYY") : "";
               return <tr key={key}>
                 <td style={styles.td}>{active ? "Active" : "----"}</td>
                 <td style={styles.td}>{moment.utc(item.created).format("MMM D, YYYY")}</td>
