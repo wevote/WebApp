@@ -20,7 +20,7 @@ export default class FacebookFriendsDisplay extends Component {
     this.show_popover = false;
 
     this.state = {
-      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriendsList(),
+      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
       facebook_invitable_friends_image_width: this.props.facebookInvitableFriendsImageWidth,
       facebook_invitable_friends_image_height: this.props.facebookInvitableFriendsImageHeight,
       maximum_friend_display: this.props.maximumFriendDisplay,
@@ -48,7 +48,7 @@ export default class FacebookFriendsDisplay extends Component {
 
   _onFacebookStoreChange () {
     this.setState({
-      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriendsList(),
+      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
     });
   }
 

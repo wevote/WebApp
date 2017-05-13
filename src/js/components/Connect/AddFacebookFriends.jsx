@@ -18,7 +18,7 @@ export default class AddFacebookFriends extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriendsList(),
+      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
       maximum_friend_display: this.props.maximumFriendDisplay,
       facebook_invitable_friends_image_width: this.props.facebookInvitableFriendsImageWidth,
       facebook_invitable_friends_image_height: this.props.facebookInvitableFriendsImageHeight,
@@ -47,7 +47,7 @@ export default class AddFacebookFriends extends Component {
 
   _onFacebookStoreChange () {
     this.setState({
-      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriendsList(),
+      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
     });
   }
 

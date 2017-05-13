@@ -7,6 +7,9 @@ import FacebookActions from "../actions/FacebookActions";
 import FriendActions from "../actions/FriendActions";
 import FacebookStore from "../stores/FacebookStore";
 import VoterStore from "../stores/VoterStore";
+import VoterActions from "../actions/VoterActions";
+import WouldYouLikeToMergeAccounts from "../components/WouldYouLikeToMergeAccounts";
+
 import Helmet from "react-helmet";
 const web_app_config = require("../config");
 
@@ -26,6 +29,8 @@ export default class FacebookInvitableFriends extends Component {
       facebook_invitable_friends_image_width: 48,
       facebook_invitable_friends_image_height: 48,
       saving: false,
+      yes_please_merge_accounts: false,
+      merging_two_accounts: false
     };
   }
 
@@ -60,6 +65,35 @@ export default class FacebookInvitableFriends extends Component {
       facebook_invitable_friends: FacebookStore.facebookInvitableFriends(),
       saving: false
     });
+  }
+
+  cancelMergeFunction () {
+    browserHistory.push({
+      pathname: "/more/network",
+      state: {
+      }
+    });
+  }
+
+  voterMergeTwoAccountsByFacebookKey (facebook_secret_key, voter_has_data_to_preserve = true) {
+    // console.log("In voterMergeTwoAccountsByFacebookKey, facebook_secret_key: ", facebook_secret_key, ",  voter_has_data_to_preserve: ", voter_has_data_to_preserve);
+    if (this.state.merging_two_accounts) {
+      //console.log("In process of merging_two_accounts");
+    } else {
+      console.log("About to make API call");
+      VoterActions.voterMergeTwoAccountsByFacebookKey(facebook_secret_key);
+      // Prevent voterMergeTwoAccountsByFacebookKey from being called multiple times
+      this.setState({merging_two_accounts: true});
+    }
+  }
+
+  voterFacebookSaveToCurrentAccount () {
+    // console.log("In voterFacebookSaveToCurrentAccount");
+    VoterActions.voterFacebookSaveToCurrentAccount();
+  }
+
+  yesPleaseMergeAccounts () {
+    this.setState({yes_please_merge_accounts: true});
   }
 
   facebookLogin () {
@@ -140,35 +174,66 @@ export default class FacebookInvitableFriends extends Component {
       return LoadingWheel;
     }
 
-    console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
-    if (!this.state.voter.signed_in_facebook && this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
-      console.log("SignIn.jsx facebook_retrieve_attempted");
-      browserHistory.push("/facebook_sign_in");
-      // return <span>SignIn.jsx facebook_retrieve_attempted</span>;
-      return LoadingWheel;
-    } else {
-      console.log("Voter is signed in through facebook: ", this.state.facebook_invitable_friends);
-      if (!this.state.facebook_invitable_friends.facebook_invitable_friends_retrieved) {
-        // If facebook log in finished successfully then get facebook invitable friends
-        console.log("Get facebook invitable friends");
-        this.getFacebookInvitableFriends();
-        return LoadingWheel;
-      }
-    }
-
     console.log("facebook logged in: ", this.state.facebook_logged_in);
     if (!this.state.facebook_logged_in ) {
       console.log("Voter is not logged in through facebook");
       this.facebookLogin();
       return LoadingWheel;
-    } else {
-      console.log("Voter is signed in through facebook: ", this.state.facebook_invitable_friends);
-      if (!this.state.facebook_invitable_friends.facebook_invitable_friends_retrieved) {
-        // If facebook log in finished successfully then get facebook invitable friends
-        console.log("Get facebook invitable friends");
-        this.getFacebookInvitableFriends();
+    }
+
+    if (this.state.facebook_auth_response.facebook_sign_in_failed) {
+      // console.log("Facebook sign in failed - push to /more/sign_in");
+      browserHistory.push({
+        pathname: "/more/network",
+        state: {
+          message: "Facebook sign in failed. Please try again.",
+          message_type: "success"
+        }
+      });
+      return LoadingWheel;
+    }
+
+    console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
+    if (!this.state.voter.signed_in_facebook && this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
+      console.log("SignIn.jsx facebook_retrieve_attempted");
+      let { facebook_secret_key } = this.state.facebook_auth_response;
+
+      if (this.state.yes_please_merge_accounts) {
+        // Go ahead and merge this voter record with the voter record that the facebook_secret_key belongs to
+        console.log("this.voterMergeTwoAccountsByFacebookKey -- yes please merge accounts");
+        this.voterMergeTwoAccountsByFacebookKey(facebook_secret_key);
         return LoadingWheel;
       }
+
+      // Is there a collision of two accounts?
+      if (this.state.facebook_auth_response.existing_facebook_account_found) {
+        // Is there anything to save from this voter account?
+        if (this.state.facebook_auth_response.voter_has_data_to_preserve) {
+          console.log("FacebookSignInProcess voter_has_data_to_preserve is TRUE");
+          const cancel_merge_function = this.cancelMergeFunction.bind(this);
+          const please_merge_accounts_function = this.yesPleaseMergeAccounts.bind(this);
+          // Display the question of whether to merge accounts or not
+          return <WouldYouLikeToMergeAccounts cancelMergeFunction={cancel_merge_function}
+                                            pleaseMergeAccountsFunction={please_merge_accounts_function} />;
+        } else {
+          // Go ahead and merge the accounts, which means deleting the current voter and switching to the facebook-linked account
+          console.log("FacebookSignInProcess this.voterMergeTwoAccountsByFacebookKey - No data to merge");
+          this.voterMergeTwoAccountsByFacebookKey(facebook_secret_key, this.state.facebook_auth_response.voter_has_data_to_preserve);
+          return LoadingWheel;
+        }
+      } else {
+        console.log("Setting up new Facebook entry - voterFacebookSaveToCurrentAccount");
+        this.voterFacebookSaveToCurrentAccount();
+        return LoadingWheel;
+      }
+    }
+
+    console.log("Voter is signed in through facebook facebook_invitable_friends: ", this.state.facebook_invitable_friends);
+    if (!this.state.facebook_invitable_friends.facebook_invitable_friends_retrieved) {
+      // If facebook log in finished successfully then get facebook invitable friends
+      console.log("Get facebook invitable friends");
+      this.getFacebookInvitableFriends();
+      return LoadingWheel;
     }
 
     console.log("Facebook friends list", this.state.facebook_invitable_friends.facebook_invitable_friends_list);
