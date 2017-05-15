@@ -107,7 +107,7 @@ export default class SearchAllBox extends Component {
 
     this.refs.searchAllBox.setSelectionRange(0, 999);
 
-    // Hide the hamburger navigation and site name
+    // Hide the site name
     // TODO: convert to flux action
     // for the global nav
 
