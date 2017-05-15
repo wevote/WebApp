@@ -28,6 +28,7 @@ export default class FacebookInvitableFriends extends Component {
       facebook_invitable_friends: FacebookStore.facebookInvitableFriends(),
       facebook_invitable_friends_image_width: 48,
       facebook_invitable_friends_image_height: 48,
+      add_friends_message: "Please join me in preparing for the upcoming election.",
       saving: false,
       yes_please_merge_accounts: false,
       merging_two_accounts: false
@@ -139,12 +140,18 @@ export default class FacebookInvitableFriends extends Component {
      this.sendFacebookAppRequest(selected_facebook_friends_ids, selected_facebook_friends_names);
   }
 
+  cacheAddFriendsByFacebookMessage (e) {
+    this.setState({
+      add_friends_message: e.target.value
+    });
+  }
+
   sendFacebookAppRequest (selected_facebook_friends_ids, selected_facebook_friends_names) {
       window.FB.ui({
         title: "We Vote USA",
         redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/more/network",
         method: "apprequests",
-        message: "Invite your Facebook Friends to join We Vote",
+        message: this.state.add_friends_message,
         to: selected_facebook_friends_ids,
       }, function (response) {
         if ( response.error_code === 4201 ) {
@@ -276,6 +283,15 @@ export default class FacebookInvitableFriends extends Component {
             </p>
             <form onSubmit={this.sendInviteRequestToFacebookFriends.bind(this)}>
               {facebook_friend_list_for_display}
+              <br />
+              <span>
+                <label htmlFor="message">Message </label>
+                <br />
+                <input type="text" name="add_friends_message"
+                       className="form-control"
+                       onChange={this.cacheAddFriendsByFacebookMessage.bind(this)}
+                       defaultValue="Please join me in preparing for the upcoming election." />
+              </span>
               <br />
               <Button bsStyle="primary" type="submit">Send</Button>
             </form>
