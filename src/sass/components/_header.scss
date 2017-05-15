@@ -10,15 +10,13 @@ $page-header-color: #1c1a33;
   margin: $space-none auto;
   max-width: $max-page-container-width;
   position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   &__container {
     background-color: $page-header-color;
     padding: $space-sm $space-none;
-  }
-  &__content { // additional element to exclue Burger Menu element
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
   }
 
   &__search {
