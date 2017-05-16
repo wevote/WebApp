@@ -223,13 +223,13 @@ export default class Ballot extends Component {
   }
 
   render () {
-
-    const show_intro_story = !cookies.getItem("intro_story_watched");
-    if (show_intro_story) {
-
-      browserHistory.push("/intro/story");
-      return LoadingWheel;
-    }
+    // DALE 2017-05-13 Turning off intro_story for now
+    // const show_intro_story = !cookies.getItem("intro_story_watched");
+    // if (show_intro_story) {
+    //
+    //   browserHistory.push("/intro/story");
+    //   return LoadingWheel;
+    // }
 
     // We create this modal to pop up and show voter guides that the voter can follow relating to this Candidate.
     const CandidateModal = <Modal show={this.state.showCandidateModal} onHide={()=>{this._toggleCandidateModal(null);}}>

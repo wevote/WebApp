@@ -1,10 +1,11 @@
 @import 'base/variables';
+
 $bootstrap-sass-asset-helper: false !default;
 
 //== Colors
 //
 
-$brand-primary:         $brand-color;
+$brand-primary:         $page-header-color;
 
 //== Scaffolding
 //
