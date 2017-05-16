@@ -364,13 +364,14 @@ class VoterStore extends FluxMapStore {
         };
 
       case "voterUpdate":
-        const {first_name, last_name, email} = action.res;
+        const {first_name, last_name, email, interface_status_flags} = action.res;
         return {
           ...state,
           voter: {...state.voter,
             first_name: first_name ? first_name : state.voter.first_name,
             last_name: last_name ? last_name : state.voter.last_name,
             facebook_email: email ? email : state.voter.email,
+            interface_status_flags: interface_status_flags ? interface_status_flags : state.voter.interface_status_flags,
           }
         };
 
