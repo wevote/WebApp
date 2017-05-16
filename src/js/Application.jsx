@@ -128,15 +128,17 @@ export default class Application extends Component {
     var content_full_width_mode = false;
     if (pathname === "/intro/story" || pathname === "/intro/sample_ballot" || pathname === "/intro/get_started") {
       in_theater_mode = true;
-    } else if (pathname === "/bookmarks" ||
-      pathname === "/facebook_invitable_friends" || pathname === "/friends" || pathname === "/friends/invitebyemail" ||
-      pathname === "/intro" ||
-      pathname === "/more/about" || pathname === "/more/connect" ||
-      pathname === "/more/donate" || pathname === "/more/howtouse" || pathname === "/more/organization" ||
-      pathname === "/more/privacy" || pathname === "/more/sign_in" || pathname === "/more/team" ||
-      pathname === "/more/terms" || pathname === "/more/vision" ||
-      pathname === "/opinions" || pathname === "/opinions_followed" || pathname === "/opinions_ignored" ||
-      pathname === "/more/network" || pathname === "/welcome") {
+      // } else if (pathname === "/bookmarks" ||
+      //   pathname === "/facebook_invitable_friends" || pathname === "/friends" || pathname === "/friends/invitebyemail" ||
+      //   pathname === "/intro" ||
+      //   pathname === "/more/about" || pathname === "/more/connect" ||
+      //   pathname === "/more/donate" || pathname === "/more/howtouse" || pathname === "/more/organization" ||
+      //   pathname === "/more/privacy" || pathname === "/more/sign_in" || pathname === "/more/team" ||
+      //   pathname === "/more/terms" || pathname === "/more/vision" ||
+      //   pathname === "/opinions" || pathname === "/opinions_followed" || pathname === "/opinions_ignored" ||
+      //   pathname === "/more/network" || pathname === "/welcome") {
+    } else {
+      // DALE 2017-05-13 For now we are turning off the BallotLeft area completely
       content_full_width_mode = true;
     }
 
