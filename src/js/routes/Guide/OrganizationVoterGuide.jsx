@@ -5,7 +5,6 @@ import { capitalizeString } from "../../utils/textFormat";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import HeaderBar from "../../components/Navigation/HeaderBar";
 import Helmet from "react-helmet";
-import ImageHandler from "../../components/ImageHandler";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationVoterGuideCard from "../../components/VoterGuide/OrganizationVoterGuideCard";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
@@ -13,17 +12,6 @@ import OrganizationStore from "../../stores/OrganizationStore";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterStore from "../../stores/VoterStore";
 import OrganizationVoterGuideTabs from "./OrganizationVoterGuideTabs";
-
-/* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/94226088 */
-var loadingScreenStyles = {
-  position: "fixed",
-  padding: "20px 7px",
-  background: '',
-  height: "100vh",
-  width: "100vw",
-  top: 0,
-  left: 0,
-};
 
 export default class OrganizationVoterGuide extends Component {
   static propTypes = {
@@ -71,7 +59,7 @@ export default class OrganizationVoterGuide extends Component {
     if (!this.state.organization || !this.state.voter){
       return <div>{LoadingWheel}</div>;
     }
-    const { organization_id, position_list_for_one_election, position_list_for_all_except_one_election } = this.state.organization;
+    const { organization_id } = this.state.organization;
 
     if (!organization_id) {
       var floatRight = {

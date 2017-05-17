@@ -138,7 +138,6 @@ export default class Application extends Component {
       pathname === "/more/terms" || pathname === "/more/vision" ||
       pathname === "/opinions" || pathname === "/opinions_followed" || pathname === "/opinions_ignored" ||
       pathname === "/more/network" || pathname === "/welcome") {
-      console.log("content_full_width_mode")
       content_full_width_mode = true;
     } else {
       voter_guide_mode = true;
@@ -160,7 +159,7 @@ export default class Application extends Component {
       console.log("vote_guide_mode", voter_guide_mode);
       return <div className="app-base" id="app-base-id">
         { this.props.children }
-      </div>
+      </div>;
     }
 
     return <div className="app-base" id="app-base-id">

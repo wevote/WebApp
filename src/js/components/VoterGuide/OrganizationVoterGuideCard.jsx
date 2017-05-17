@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
-import ImageHandler from "../../components/ImageHandler";
 import LoadingWheel from "../../components/LoadingWheel";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";

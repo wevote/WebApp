@@ -101,13 +101,11 @@ export default class NotFound extends Component {
       // this.organizationCreateFromTwitter(voter.twitter_screen_name);
     }
 
-    console.log("kind_of_owner", this.state.kind_of_owner)
     if (this.state.kind_of_owner === "CANDIDATE"){
       this.props.params.candidate_we_vote_id = this.state.owner_we_vote_id;
       return <Candidate candidate_we_vote_id {...this.props} />;
     } else if (this.state.kind_of_owner === "ORGANIZATION"){
       this.props.params.organization_we_vote_id = this.state.owner_we_vote_id;
-      console.log("looking_at_positions_for_friends_only", looking_at_positions_for_friends_only);
       if (looking_at_positions_for_friends_only) {
         return <PositionListForFriends we_vote_id {...this.props} />;
       } else {
