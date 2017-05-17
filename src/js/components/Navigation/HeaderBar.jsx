@@ -24,11 +24,10 @@ const links = {
   },
 
   network: function (active, number_of_incoming_friend_requests) {
-    var icon = "glyphicon icon-icon-connect-1-3 glyphicon-line-adjustment nav-icon";
-
     var jsx =
       <Link to="/more/network" className={ "header-nav__item--network header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
-        <span className={icon} title="Network">
+        <span title="Network">
+          <img className="glyphicon" src="/img/global/svg-icons/network-icon.svg" />
           {number_of_incoming_friend_requests ?
             <span className="badge-total badge">{number_of_incoming_friend_requests}</span> :
             null }
@@ -45,7 +44,7 @@ const links = {
 
     var jsx =
       <Link to="/more/donate" className={ "header-nav__item--donate header-nav__item header-nav__item--has-icon hidden-xs" + (active ? " active-icon" : "")}>
-        <img className = "glyphicon" src="/img/global/svg-icons/glyphicons-20-heart-empty.svg" />
+        <img className="glyphicon" src="/img/global/svg-icons/glyphicons-20-heart-empty.svg" />
         <span className="header-nav__label">
           Donate
           </span>
