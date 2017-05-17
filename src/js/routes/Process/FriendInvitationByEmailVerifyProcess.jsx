@@ -34,7 +34,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
   cancelMergeFunction () {
     browserHistory.push({
-      pathname: "/requests",
+      pathname: "/more/network",
       state: {
       }
     });
@@ -53,7 +53,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   voterMergeTwoAccountsByInvitationKey (invitation_secret_key) {
     VoterActions.voterMergeTwoAccountsByInvitationKey(invitation_secret_key);
     browserHistory.push({
-      pathname: "/requests",
+      pathname: "/more/network",
       state: {
         message: "You have successfully signed in.",
         message_type: "success"
@@ -91,7 +91,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     // This process starts when we return from attempting friendInvitationByEmailVerify
     if (!this.state.invitation_status.invitation_found) {
       browserHistory.push({
-        pathname: "/requests",
+        pathname: "/more/network",
         state: {
           message: "Invitation not found. You may have already accepted this invitation. Invitation links may only be used once.",
           message_type: "warning"
@@ -102,7 +102,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
     if (this.state.invitation_status.attempted_to_approve_own_invitation) {
       browserHistory.push({
-        pathname: "/requests",
+        pathname: "/more/network",
         state: {
           message: "You are not allowed to approve your own invitation.",
           message_type: "danger"
@@ -114,7 +114,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     if (this.state.invitation_status.invitation_secret_key_belongs_to_this_voter) {
       // We don't need to do anything more except redirect to the email management page
       browserHistory.push({
-        pathname: "/requests",
+        pathname: "/more/network",
         state: {
           message: "You have accepted your friend's invitation. Visit your ballot to see what your friends are supporting or opposing.",
           message_type: "success"

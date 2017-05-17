@@ -35,13 +35,19 @@ export default class FriendInvitationList extends Component {
     }
 
     let invitations_sent_by_me = this.props.invitationsSentByMe;
+    let simple_key_counter = 0;
 
     const friend_list = this.state.friend_invitations_list.map( (friend) => {
+      simple_key_counter++;
       if (friend.voter_we_vote_id && friend.voter_we_vote_id !== "") {
-        return <FriendInvitationDisplayForList key={friend.voter_we_vote_id} {...friend}
+        return <FriendInvitationDisplayForList key={friend.voter_we_vote_id}
+                                               id={friend.voter_we_vote_id}
+                                               {...friend}
                                                invitationsSentByMe={invitations_sent_by_me} />;
       } else {
-        return <FriendInvitationEmailForList key={friend.voter_email_address} {...friend}
+        return <FriendInvitationEmailForList key={simple_key_counter}
+                                             id={simple_key_counter}
+                                             {...friend}
                                              invitationsSentByMe={invitations_sent_by_me} />;
       }
     });
