@@ -16,7 +16,9 @@ const styles = {
     textAlign: "center"
   },
   Panel: {
-    borderTopColor: "transparent"
+    borderTopColor: "transparent",
+    height: "500",
+    overflowY: "auto"
   }
 };
 
@@ -118,4 +120,3 @@ export default class DonationPaymentList extends Component {
     }
   }
 }
-
