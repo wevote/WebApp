@@ -55,6 +55,7 @@ import TwitterSignInProcess from "./routes/Process/TwitterSignInProcess";
 import TwitterSignInProcessOld from "./routes/Process/TwitterSignInProcessOld";
 import VerifyEmailProcess from "./routes/Process/VerifyEmailProcess";
 import FriendInvitationByEmailVerifyProcess from "./routes/Process/FriendInvitationByEmailVerifyProcess";
+import VoterGuidesFollowing from "./routes/VoterGuidesFollowing";
 import VerifyThisIsMe from "./routes/Guide/VerifyThisIsMe";
 import Vision from "./routes/More/Vision";
 import Welcome from "./routes/Welcome";
@@ -155,6 +156,8 @@ const routes = () =>
 
     {/* Any route that is not found -> @return NotFound component */}
     <Route path=":twitter_handle" component={NotFound} />
+    <Route path=":twitter_handle/following" component={VoterGuidesFollowing} />
+
   </Route>;
 
 

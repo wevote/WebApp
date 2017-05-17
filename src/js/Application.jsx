@@ -126,20 +126,21 @@ export default class Application extends Component {
     // If looking at these paths, we want to enter theater mode
     var in_theater_mode = false;
     var content_full_width_mode = false;
+    var voter_guide_mode = false;
     if (pathname === "/intro/story" || pathname === "/intro/sample_ballot" || pathname === "/intro/get_started") {
       in_theater_mode = true;
-      // } else if (pathname === "/bookmarks" ||
-      //   pathname === "/facebook_invitable_friends" || pathname === "/friends" || pathname === "/friends/invitebyemail" ||
-      //   pathname === "/intro" ||
-      //   pathname === "/more/about" || pathname === "/more/connect" ||
-      //   pathname === "/more/donate" || pathname === "/more/howtouse" || pathname === "/more/organization" ||
-      //   pathname === "/more/privacy" || pathname === "/more/sign_in" || pathname === "/more/team" ||
-      //   pathname === "/more/terms" || pathname === "/more/vision" ||
-      //   pathname === "/opinions" || pathname === "/opinions_followed" || pathname === "/opinions_ignored" ||
-      //   pathname === "/more/network" || pathname === "/welcome") {
-    } else {
-      // DALE 2017-05-13 For now we are turning off the BallotLeft area completely
+    } else if (pathname === "/bookmarks" ||
+      pathname === "/facebook_invitable_friends" || pathname === "/friends" || pathname === "/friends/invitebyemail" ||
+      pathname === "/intro" ||
+      pathname === "/more/about" || pathname === "/more/connect" ||
+      pathname === "/more/donate" || pathname === "/more/howtouse" || pathname === "/more/organization" ||
+      pathname === "/more/privacy" || pathname === "/more/sign_in" || pathname === "/more/team" ||
+      pathname === "/more/terms" || pathname === "/more/vision" ||
+      pathname === "/opinions" || pathname === "/opinions_followed" || pathname === "/opinions_ignored" ||
+      pathname === "/more/network" || pathname === "/welcome") {
       content_full_width_mode = true;
+    } else {
+      voter_guide_mode = true;
     }
 
     if (in_theater_mode) {
@@ -153,6 +154,11 @@ export default class Application extends Component {
             </div>
           </div>
         </div>
+      </div>;
+    } else if (voter_guide_mode) {
+      console.log("vote_guide_mode", voter_guide_mode);
+      return <div className="app-base" id="app-base-id">
+        { this.props.children }
       </div>;
     }
 
