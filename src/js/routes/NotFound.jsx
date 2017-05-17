@@ -5,6 +5,7 @@ import Candidate from "./Ballot/Candidate";
 import Helmet from "react-helmet";
 import LoadingWheel from "../components/LoadingWheel";
 import GuidePositionList from "./Guide/GuidePositionList";
+import OrganizationVoterGuide from "./Guide/OrganizationVoterGuide";
 import OrganizationActions from "../actions/OrganizationActions";
 import PositionListForFriends from "./Guide/PositionListForFriends";
 import TwitterActions from "../actions/TwitterActions";
@@ -100,15 +101,18 @@ export default class NotFound extends Component {
       // this.organizationCreateFromTwitter(voter.twitter_screen_name);
     }
 
+    console.log("kind_of_owner", this.state.kind_of_owner)
     if (this.state.kind_of_owner === "CANDIDATE"){
       this.props.params.candidate_we_vote_id = this.state.owner_we_vote_id;
       return <Candidate candidate_we_vote_id {...this.props} />;
     } else if (this.state.kind_of_owner === "ORGANIZATION"){
       this.props.params.organization_we_vote_id = this.state.owner_we_vote_id;
+      console.log("looking_at_positions_for_friends_only", looking_at_positions_for_friends_only);
       if (looking_at_positions_for_friends_only) {
         return <PositionListForFriends we_vote_id {...this.props} />;
       } else {
-        return <GuidePositionList we_vote_id {...this.props} />;
+          //return <OrganizationVoterGuide we_vote_id {...this.props} />;
+          return <GuidePositionList we_vote_id {...this.props} />;
       }
     } else if (this.state.kind_of_owner === "TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE"){
       return <UnknownTwitterAccount {...this.state} />;
@@ -128,6 +132,8 @@ export default class NotFound extends Component {
                 </Link>
                 <br />
                 <br />
+                <br />
+                <img src="https://github.com/wevote/WebApp/raw/develop/unclesamewevote.jpg" width="210" height="450" />
             </div>;
     }
   }
