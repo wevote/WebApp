@@ -259,7 +259,7 @@ export default class FacebookInvitableFriends extends Component {
 
     const facebook_invitable_friends_list = this.state.facebook_invitable_friends.facebook_invitable_friends_list;
     const facebook_friend_list_for_display = facebook_invitable_friends_list.map( (friend) => {
-      return <div key={friend.id} className="card-child card-child--not-followed">
+      return <div key={friend.id} className="card-child">
         <CheckBox
           friendId={friend.id}
           friendName={friend.name}
@@ -282,7 +282,11 @@ export default class FacebookInvitableFriends extends Component {
                 We recommend you only invite friends that you would like to talk politics with.
             </p>
             <form onSubmit={this.sendInviteRequestToFacebookFriends.bind(this)}>
-              {facebook_friend_list_for_display}
+              <div className="display-in-column-with-vertical-scroll-contain">
+                <div className="display-in-column-with-vertical-scroll">
+                  {facebook_friend_list_for_display}
+                </div>
+              </div>
               <br />
               <span>
                 <label htmlFor="message">Message </label>
