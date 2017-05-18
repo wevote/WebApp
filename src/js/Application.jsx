@@ -67,9 +67,7 @@ export default class Application extends Component {
       BookmarkActions.voterAllBookmarksStatusRetrieve();
       FriendActions.friendInvitationsSentToMe();
     }
-
-    this.voterStoreListener = VoterStore.addListener(this._onChange.bind(this));
-
+    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
@@ -95,7 +93,7 @@ export default class Application extends Component {
     this.loadedHeader = true;
   }
 
-  _onChange () {
+  _onVoterStoreChange () {
     this.setState({
       voter: VoterStore.getVoter(),
       location: VoterStore.getAddress()
@@ -118,26 +116,22 @@ export default class Application extends Component {
                 </div>
               </div>;
     }
-    // console.log("voter:", voter);
-    // let voter_device_id = VoterStore.voterDeviceId();
-    // console.log("voter_device_id:", voter_device_id);
-    // console.log("pathname:", pathname);
-
     // If looking at these paths, we want to enter theater mode
     var in_theater_mode = false;
     var content_full_width_mode = false;
     var voter_guide_mode = false;
     if (pathname === "/intro/story" || pathname === "/intro/sample_ballot" || pathname === "/intro/get_started") {
       in_theater_mode = true;
-    } else if (pathname === "/bookmarks" ||
+    } else if (pathname === "/ballot" || pathname === "/bookmarks" || pathname.startsWith("/candidate/") ||
       pathname === "/facebook_invitable_friends" || pathname === "/friends" || pathname === "/friends/invitebyemail" ||
       pathname === "/intro" ||
       pathname === "/more/about" || pathname === "/more/connect" ||
-      pathname === "/more/donate" || pathname === "/more/howtouse" || pathname === "/more/organization" ||
+      pathname === "/more/donate" || pathname === "/more/howtouse" || pathname.startsWith("/office/") ||
+      pathname === "/more/network" || pathname === "/more/organization" ||
       pathname === "/more/privacy" || pathname === "/more/sign_in" || pathname === "/more/team" ||
       pathname === "/more/terms" || pathname === "/more/vision" ||
       pathname === "/opinions" || pathname === "/opinions_followed" || pathname === "/opinions_ignored" ||
-      pathname === "/more/network" || pathname === "/welcome") {
+      pathname === "/settings/location" || pathname === "/welcome") {
       content_full_width_mode = true;
     } else {
       voter_guide_mode = true;
@@ -156,8 +150,13 @@ export default class Application extends Component {
         </div>
       </div>;
     } else if (voter_guide_mode) {
-      console.log("vote_guide_mode", voter_guide_mode);
+      console.log("voter_guide_mode", voter_guide_mode);
       return <div className="app-base" id="app-base-id">
+        <div className="headroom-wrapper">
+          <div ref="pageHeader" className="page-header__container headroom">
+            <HeaderBar pathname={pathname} voter={voter} />
+          </div>
+        </div>
         { this.props.children }
       </div>;
     }

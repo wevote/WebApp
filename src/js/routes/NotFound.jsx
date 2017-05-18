@@ -5,7 +5,7 @@ import Candidate from "./Ballot/Candidate";
 import Helmet from "react-helmet";
 import LoadingWheel from "../components/LoadingWheel";
 import GuidePositionList from "./Guide/GuidePositionList";
-import OrganizationVoterGuide from "./Guide/OrganizationVoterGuide";
+// import OrganizationVoterGuide from "./Guide/OrganizationVoterGuide";
 import OrganizationActions from "../actions/OrganizationActions";
 import PositionListForFriends from "./Guide/PositionListForFriends";
 import TwitterActions from "../actions/TwitterActions";
@@ -131,7 +131,6 @@ export default class NotFound extends Component {
                 <br />
                 <br />
                 <br />
-                <img src="https://github.com/wevote/WebApp/raw/develop/unclesamewevote.jpg" width="210" height="450" />
             </div>;
     }
   }

@@ -49,6 +49,12 @@ class BallotStore extends FluxMapStore {
     return this.getState().ballots[civicId].election_date;
   }
 
+  get currentBallotPollingLocationSource () {
+    if (!this.isLoaded()){ return undefined; }
+    let civicId = VoterStore.election_id();
+    return this.getState().ballots[civicId].polling_location_we_vote_id_source;
+  }
+
   get bookmarks (){
     let civicId = VoterStore.election_id();
     if (!this.getState().ballots || !this.getState().ballots[civicId] ){ return undefined; }
@@ -100,7 +106,7 @@ class BallotStore extends FluxMapStore {
     });
   }
 
-//Filters the ballot items which are type OFFICE
+  //Filters the ballot items which are type OFFICE
   ballot_filtered_unsupported_candidates (){
     return this.ballot.map( item =>{
       let is_office = item.kind_of_ballot_item === "OFFICE";
@@ -108,7 +114,7 @@ class BallotStore extends FluxMapStore {
     });
   }
 
-//Filters out the unsupported candidates from a ballot_item where type is OFFICE
+  //Filters out the unsupported candidates from a ballot_item where type is OFFICE
   filtered_ballot_item (ballot_item){
     let filtered_list = ballot_item.candidate_list.filter(candidate => {
       return SupportStore.supportList[candidate.we_vote_id] ? true : false;

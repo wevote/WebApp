@@ -9,7 +9,6 @@ import BallotItemReadyToVote from "../../components/Ballot/BallotItemReadyToVote
 import BallotStore from "../../stores/BallotStore";
 import BallotFilter from "../../components/Navigation/BallotFilter";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
-import cookies from "../../utils/cookies";
 import GuideActions from "../../actions/GuideActions";
 import GuideList from "../../components/VoterGuide/GuideList";
 import GuideStore from "../../stores/GuideStore";
@@ -20,6 +19,7 @@ import LoadingWheel from "../../components/LoadingWheel";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
+const web_app_config = require("../../config");
 
 export default class Ballot extends Component {
   static propTypes = {
@@ -41,7 +41,7 @@ export default class Ballot extends Component {
       showMeasureModal: false,
       showSelectBallotModal: false,
       showSelectAddressModal: false,
-      ballot_election_list: []
+      ballot_election_list: [],
     };
   }
 
@@ -67,8 +67,9 @@ export default class Ballot extends Component {
       SupportActions.voterAllPositionsRetrieve();
       SupportActions.positionsCountForAllBallotItems();
       BallotActions.voterBallotListRetrieve();
-      this.supportStoreListener = SupportStore.addListener(this._onBallotStoreChange.bind(this));
       this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+      this.supportStoreListener = SupportStore.addListener(this._onBallotStoreChange.bind(this));
+      this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     }
   }
 
@@ -79,12 +80,19 @@ export default class Ballot extends Component {
       this.ballotStoreListener.remove();
       this.guideStoreListener.remove();
       this.supportStoreListener.remove();
+      this.voterStoreListener.remove();
     }
   }
 
   componentWillReceiveProps (nextProps){
     let ballot_type = nextProps.location.query ? nextProps.location.query.type : "all";
     this.setState({ballot: this.getBallot(nextProps), ballot_type: ballot_type });
+  }
+
+  _onVoterStoreChange () {
+    this.setState({
+      voter: VoterStore.getVoter(),
+    });
   }
 
   _toggleCandidateModal (candidateForModal) {
@@ -223,14 +231,6 @@ export default class Ballot extends Component {
   }
 
   render () {
-    // DALE 2017-05-13 Turning off intro_story for now
-    // const show_intro_story = !cookies.getItem("intro_story_watched");
-    // if (show_intro_story) {
-    //
-    //   browserHistory.push("/intro/story");
-    //   return LoadingWheel;
-    // }
-
     // We create this modal to pop up and show voter guides that the voter can follow relating to this Candidate.
     const CandidateModal = <Modal show={this.state.showCandidateModal} onHide={()=>{this._toggleCandidateModal(null);}}>
         <Modal.Header closeButton>
@@ -365,8 +365,7 @@ export default class Ballot extends Component {
       </Modal.Body>
     </Modal>;
 
-// This modal will allow users to change their addresses
-
+  // This modal will allow users to change their addresses
   const SelectAddressModal = <Modal show={this.state.showSelectAddressModal} onHide={()=>{this._toggleSelectAddressModal();}}
       className="ballot-election-list ballot-election-list__modal">
       <Modal.Header closeButton>
@@ -407,6 +406,8 @@ export default class Ballot extends Component {
     // const ballot_caveat = BallotStore.ballot_properties.ballot_caveat;
     const election_name = BallotStore.currentBallotElectionName;
     const election_date = BallotStore.currentBallotElectionDate;
+    const polling_location_we_vote_id_source = BallotStore.currentBallotPollingLocationSource;
+    let ballot_returned_admin_edit_url = web_app_config.WE_VOTE_SERVER_ROOT_URL + "b/" + polling_location_we_vote_id_source + "/list_edit_by_polling_location/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
 
     const emptyBallotButton = this.getFilterType() !== "none" && !missing_address ?
         <span>
@@ -468,6 +469,14 @@ export default class Ballot extends Component {
                                                       {...item} />)
         }
         </div>
+        {/* Show links to this candidate in the admin tools */}
+        { this.state.voter && polling_location_we_vote_id_source && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ?
+          <span>Admin:
+            <a href={ballot_returned_admin_edit_url} target="_blank">
+              Ballot copied from this polling location: {polling_location_we_vote_id_source}
+            </a></span> :
+          null
+        }
       </div>;
   }
 }
