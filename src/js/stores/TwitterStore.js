@@ -79,8 +79,7 @@ class TwitterStore extends FluxMapStore {
       case "twitterSignInRetrieve":
         if (action.res.twitter_sign_in_verified) {
           VoterActions.voterRetrieve();
-          VoterActions.organizationSuggestionTasks("UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW",
-          "FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
+          VoterActions.twitterRetrieveIdsIfollow();
         }
         return {
           ...state,

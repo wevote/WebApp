@@ -143,15 +143,13 @@ class VoterStore extends FluxMapStore {
 
       case "organizationSuggestionTasks":
         if (action.res.success) {
-          // Check to see what was updated.
-          console.log("organizationSuggestionTasks complete.");
           if (action.res.kind_of_follow_task === "FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW") {
-            console.log("FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
+            console.log("organizationSuggestionTasks FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
             GuideActions.retrieveGuidesToFollow(this.election_id());
             GuideActions.voterGuidesFollowedRetrieve(this.election_id());
             SupportActions.positionsCountForAllBallotItems(this.election_id());
           } else if (action.res.kind_of_suggestion_task === "UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW") {
-            console.log("UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
+            console.log("organizationSuggestionTasks UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
             GuideActions.retrieveGuidesToFollow(this.election_id());
           }
         }
@@ -186,6 +184,14 @@ class VoterStore extends FluxMapStore {
             }
           };
         }
+
+      case "twitterRetrieveIdsIFollow":
+        //console.log("twitterRetrieveIdsIFollow")
+        if (action.res.success) {
+          VoterActions.organizationSuggestionTasks("UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW",
+          "FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
+        }
+        return state;
 
       case "voterAddressRetrieve":
         return {
