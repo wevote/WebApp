@@ -137,7 +137,7 @@ export default class Candidate extends Component {
                       kind_of_owner="POLITICIAN" />
         <br />
       {/* Show links to this candidate in the admin tools */}
-      { voter.is_admin ?
+      { voter.is_admin || voter.is_verified_volunteer ?
         <span>Admin: <a href={candidate_admin_edit_url} target="_blank">edit {candidate_name}</a></span> :
         null
       }

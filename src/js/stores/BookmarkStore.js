@@ -15,7 +15,6 @@ class BookmarkStore extends FluxMapStore {
 
       case "voterAllBookmarksStatusRetrieve":
         let newState = {};
-        console.log(action.res);
         action.res.bookmark_list.forEach(el =>{
           newState[el.ballot_item_we_vote_id] = el.bookmark_on;
         });

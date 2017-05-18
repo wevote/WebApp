@@ -23,7 +23,7 @@ export default class DonationListForm extends Component {
         </Tabs>
       );
     } else {
-      return (<div />);
+      return <div />;
     }
   }
 }
