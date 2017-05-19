@@ -47,6 +47,10 @@ module.exports = {
     });
   },
 
+  twitterRetrieveIdsIfollow: function () {
+    Dispatcher.loadEndpoint("twitterRetrieveIdsIFollow", {});
+  },
+
   voterAddressRetrieve: function (id){
     Dispatcher.loadEndpoint("voterAddressRetrieve", { voter_device_id: id});
   },
