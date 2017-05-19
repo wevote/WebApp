@@ -38,7 +38,7 @@ export default class OrganizationVoterGuideCard extends Component {
         <Link to={voterGuideLink} className="u-no-underline">
           <img src={organization_photo_url_large} width="180" height="180"/>
         </Link>
-
+        <br />
         <Link to={voterGuideLink}>
           <h3 className="card-main__display-name">{displayName}</h3>
         </Link>
@@ -48,7 +48,6 @@ export default class OrganizationVoterGuideCard extends Component {
         }
         <FollowToggle we_vote_id={organization_we_vote_id} />
         <br />
-        &nbsp;&nbsp;
         { twitterDescriptionMinusName && !this.props.turn_off_description ?
           <p className="card-main__description">{twitterDescriptionMinusName}</p> :
           <p className="card-main__description" />
