@@ -1,5 +1,4 @@
 import React, {Component, PropTypes } from "react";
-import { Link } from "react-router";
 import Helmet from "react-helmet";
 import GuideStore from "../stores/GuideStore";
 import GuideActions from "../actions/GuideActions";
@@ -77,11 +76,6 @@ export default class VoterGuidesFollowing extends Component {
               }
             </div>
           </div>
-
-          <Link className="pull-left" to="/opinions">Find organizations to follow</Link>
-
-          <Link className="pull-right" to="/opinions_ignored">Organizations you are ignoring</Link><br />
-          <br />
         </div>
       </section>
     </div>;

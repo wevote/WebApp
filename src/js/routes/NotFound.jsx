@@ -5,7 +5,7 @@ import Candidate from "./Ballot/Candidate";
 import Helmet from "react-helmet";
 import LoadingWheel from "../components/LoadingWheel";
 import GuidePositionList from "./Guide/GuidePositionList";
-// import OrganizationVoterGuide from "./Guide/OrganizationVoterGuide";
+import OrganizationVoterGuide from "./Guide/OrganizationVoterGuide";
 import OrganizationActions from "../actions/OrganizationActions";
 import PositionListForFriends from "./Guide/PositionListForFriends";
 import TwitterActions from "../actions/TwitterActions";
@@ -109,8 +109,8 @@ export default class NotFound extends Component {
       if (looking_at_positions_for_friends_only) {
         return <PositionListForFriends we_vote_id {...this.props} />;
       } else {
-          //return <OrganizationVoterGuide we_vote_id {...this.props} />;
-          return <GuidePositionList we_vote_id {...this.props} />;
+          return <OrganizationVoterGuide we_vote_id {...this.props} />;
+          // return <GuidePositionList we_vote_id {...this.props} />;
       }
     } else if (this.state.kind_of_owner === "TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE"){
       return <UnknownTwitterAccount {...this.state} />;

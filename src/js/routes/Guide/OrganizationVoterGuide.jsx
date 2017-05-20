@@ -1,10 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import { Button } from "react-bootstrap";
-import { capitalizeString } from "../../utils/textFormat";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import HeaderBar from "../../components/Navigation/HeaderBar";
-import Helmet from "react-helmet";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationVoterGuideCard from "../../components/VoterGuide/OrganizationVoterGuideCard";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
@@ -79,9 +77,6 @@ export default class OrganizationVoterGuide extends Component {
     }
 
     var { organization_we_vote_id } = this.state;
-    let organization_name = capitalizeString(this.state.organization.organization_name);
-    let title_text = organization_name + " - We Vote";
-    let description_text = "See endorsements and opinions from " + organization_name + " for the November election";
 
     return <div>
       <div className="headroom-wrapper">
@@ -97,28 +92,25 @@ export default class OrganizationVoterGuide extends Component {
             </div>
           </div>
           <div className="row">
-            <div className="col-md-4" >
+            <div className="col-md-4 hidden-xs" >
               <div className="card">
-                  <div className="card-main">
-                    <OrganizationVoterGuideCard organization={this.state.organization} />
-                  </div>
-                </div>
-             </div>
-            <div className="col-md-8">
-              <span>
-              <Helmet title={title_text}
-                      meta={[{"name": "description", "content": description_text}]}
-                      />
-                <div className="card">
-                  <div className="card-main">
-                    <FollowToggle we_vote_id={organization_we_vote_id} />
-                    <OrganizationCard organization={this.state.organization} />
-                  </div>
+                <div className="card-main">
+                  <OrganizationVoterGuideCard organization={this.state.organization} />
                 </div>
                 <br />
-              </span>
-              <OrganizationVoterGuideTabs />
+              </div>
+            </div>
 
+            <div className="col-md-12 visible-xs">
+              <div className="card">
+                <div className="card-main">
+                  <FollowToggle we_vote_id={organization_we_vote_id} />
+                  <OrganizationCard organization={this.state.organization} />
+                </div>
+              </div>
+            </div>
+            <div className="col-md-8">
+              <OrganizationVoterGuideTabs />
             </div>
           </div>
         </div>
