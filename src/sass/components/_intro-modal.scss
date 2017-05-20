@@ -1,7 +1,7 @@
 .intro-modal {
   background-color: $gray-dark;
   padding: $space-none;
-  height: 600px;
+  height: 300px;
   width: 100%;
   color: $white;
   text-align: center;
@@ -86,7 +86,7 @@
       background-size: cover;
     }
     @include breakpoints (large) {
-      height: 600px;
+      height: 300px;
       width: 100%;
       float: left; //This is important to ensure proper alignment with the parent div.
     }
