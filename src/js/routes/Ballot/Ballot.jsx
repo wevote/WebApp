@@ -6,6 +6,10 @@ import BallotActions from "../../actions/BallotActions";
 import BallotElectionList from "../../components/Ballot/BallotElectionList";
 import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 import BallotItemReadyToVote from "../../components/Ballot/BallotItemReadyToVote";
+import BallotIntroMission from "../../components/Ballot/BallotIntroMission";
+import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
+import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
+import BallotIntroPositionBar from "../../components/Ballot/BallotIntroPositionBar";
 import BallotStore from "../../stores/BallotStore";
 import BallotFilter from "../../components/Navigation/BallotFilter";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
@@ -16,9 +20,13 @@ import Helmet from "react-helmet";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
 import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPositionBreakdownList";
 import LoadingWheel from "../../components/LoadingWheel";
+import Slider from "react-slick";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
+import VoterActions from "../../actions/VoterActions";
+import VoterConstants from "../../constants/VoterConstants";
+
 const web_app_config = require("../../config");
 
 export default class Ballot extends Component {
@@ -38,6 +46,7 @@ export default class Ballot extends Component {
         position_list: []
       },
       showCandidateModal: false,
+      showBallotIntroModal: false,
       showMeasureModal: false,
       showSelectBallotModal: false,
       showSelectAddressModal: false,
@@ -64,6 +73,7 @@ export default class Ballot extends Component {
       this._toggleMeasureModal = this._toggleMeasureModal.bind(this);
       this._toggleSelectBallotModal = this._toggleSelectBallotModal.bind(this);
       this._toggleSelectAddressModal = this._toggleSelectAddressModal.bind(this);
+      this._next = this._next.bind(this);
       SupportActions.voterAllPositionsRetrieve();
       SupportActions.positionsCountForAllBallotItems();
       BallotActions.voterBallotListRetrieve();
@@ -92,6 +102,7 @@ export default class Ballot extends Component {
   _onVoterStoreChange () {
     this.setState({
       voter: VoterStore.getVoter(),
+      showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
     });
   }
 
@@ -105,6 +116,14 @@ export default class Ballot extends Component {
       candidate_for_modal: candidateForModal,
       showCandidateModal: !this.state.showCandidateModal
     });
+  }
+
+  _toggleBallotIntroModal () {
+    if (this.state.showBallotIntroModal) {
+      // Saved to the voter record that the ballot introduction has been seen
+      VoterActions.voterUpdateStatusFlags(VoterConstants.BALLOT_INTRO_MODAL_SHOWN);
+    }
+    this.setState({ showBallotIntroModal: !this.state.showBallotIntroModal });
   }
 
   _toggleMeasureModal (measureForModal) {
@@ -128,7 +147,6 @@ export default class Ballot extends Component {
       showSelectAddressModal: !this.state.showSelectAddressModal
     });
   }
-
 
   _onBallotStoreChange (){
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0){ // Ballot is found but ballot is empty
@@ -158,6 +176,10 @@ export default class Ballot extends Component {
         }
       });
     }
+  }
+
+  _next () {
+    this.refs.slider.slickNext();
   }
 
   componentDidUpdate (){
@@ -231,36 +253,61 @@ export default class Ballot extends Component {
   }
 
   render () {
+    var settings = {
+      dots: true,
+      infinite: false,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      swipe: true,
+      accessibility: true,
+      //react-slick default left & right nav arrows
+      arrows: true,
+    };
+
+    // This Modal is shown to the user, when user visits the ballot page for first time only
+    const BallotIntroModal = <Modal show={this.state.showBallotIntroModal} onHide={()=>{this._toggleBallotIntroModal(null);}}>
+      <Modal.Header closeButton />
+      <Modal.Body>
+        <Slider ref="slider" {...settings}>
+          <div key={1}><BallotIntroMission next={this._next}/></div>
+          <div key={2}><BallotIntroFollowIssues next={this._next}/></div>
+          <div key={3}><BallotIntroFollowAdvisers next={this._next}/></div>
+          <div key={4}><BallotIntroPositionBar next={this._next}/></div>
+        </Slider>
+      </Modal.Body>
+    </Modal>;
+
     // We create this modal to pop up and show voter guides that the voter can follow relating to this Candidate.
     const CandidateModal = <Modal show={this.state.showCandidateModal} onHide={()=>{this._toggleCandidateModal(null);}}>
-        <Modal.Header closeButton>
-          <Modal.Title>
-            { this.state.candidate_for_modal ?
-              "Opinions about " + this.state.candidate_for_modal.ballot_item_display_name :
-              null }
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+      <Modal.Header closeButton>
+        <Modal.Title>
           { this.state.candidate_for_modal ?
-            <section className="card">
-              {/* Show positions in your network with the tiny icons */}
-              <p className="card__no-additional">
-                This is a summary of the positions of those you are following.
-              </p>
-              <ItemSupportOpposeCounts we_vote_id={this.state.candidate_for_modal.we_vote_id}
-                                       supportProps={SupportStore.get(this.state.candidate_for_modal.we_vote_id)}
-                                       type="CANDIDATE" />
-              { this.state.candidate_for_modal.position_list ?
-                <span>
+            "Opinions about " + this.state.candidate_for_modal.ballot_item_display_name :
+            null }
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        { this.state.candidate_for_modal ?
+          <section className="card">
+            {/* Show positions in your network with the tiny icons */}
+            <p className="card__no-additional">
+              This is a summary of the positions of those you are following.
+            </p>
+            <ItemSupportOpposeCounts we_vote_id={this.state.candidate_for_modal.we_vote_id}
+                                     supportProps={SupportStore.get(this.state.candidate_for_modal.we_vote_id)}
+                                     type="CANDIDATE" />
+            { this.state.candidate_for_modal.position_list ?
+              <span>
                   {/* Show a break-down of the positions in your network */}
-                  { SupportStore.get(this.state.candidate_for_modal.we_vote_id) && ( SupportStore.get(this.state.candidate_for_modal.we_vote_id).oppose_count || SupportStore.get(this.state.candidate_for_modal.we_vote_id).support_count) ?
-                    <span>
+                { SupportStore.get(this.state.candidate_for_modal.we_vote_id) && ( SupportStore.get(this.state.candidate_for_modal.we_vote_id).oppose_count || SupportStore.get(this.state.candidate_for_modal.we_vote_id).support_count) ?
+                  <span>
                       {/* In desktop mode, align left with position bar */}
-                      {/* In mobile mode, turn on green up-arrow before icons */}
-                      <ItemTinyPositionBreakdownList ballotItemWeVoteId={this.state.candidate_for_modal.we_vote_id}
-                                                     position_list={this.state.candidate_for_modal.position_list}
-                                                     showSupport
-                                                     supportProps={SupportStore.get(this.state.candidate_for_modal.we_vote_id)} />
+                    {/* In mobile mode, turn on green up-arrow before icons */}
+                    <ItemTinyPositionBreakdownList ballotItemWeVoteId={this.state.candidate_for_modal.we_vote_id}
+                                                   position_list={this.state.candidate_for_modal.position_list}
+                                                   showSupport
+                                                   supportProps={SupportStore.get(this.state.candidate_for_modal.we_vote_id)} />
                       <span className="pull-right">
                         {/* In desktop mode, align right with position bar */}
                         {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
@@ -270,14 +317,14 @@ export default class Ballot extends Component {
                                                        supportProps={SupportStore.get(this.state.candidate_for_modal.we_vote_id)} />
                       </span>
                     </span> :
-                    null }
+                  null }
                 </span> :
-                null }
-              {/* Show voter guides to follow that relate to this candidate */}
-              <div className="card__additional">
-                {this.state.candidate_for_modal.guides_to_follow_list.length === 0 ?
-                  null :
-                  <span>
+              null }
+            {/* Show voter guides to follow that relate to this candidate */}
+            <div className="card__additional">
+              {this.state.candidate_for_modal.guides_to_follow_list.length === 0 ?
+                null :
+                <span>
                     <p className="card__no-additional">
                       <strong>Follow</strong> the voter guides of organizations and people you trust.<br />
                       <strong>Ignore</strong> voter guides that don't share your values.
@@ -285,12 +332,13 @@ export default class Ballot extends Component {
                     <GuideList ballotItemWeVoteId={this.state.candidate_for_modal.we_vote_id}
                                organizationsToFollow={this.state.candidate_for_modal.guides_to_follow_list}/>
                   </span>
-                }
-              </div>
-            </section> :
-            null }
-        </Modal.Body>
-      </Modal>;
+              }
+            </div>
+          </section> :
+          null }
+      </Modal.Body>
+    </Modal>;
+
 
     // We create this modal to pop up and show voter guides that the voter can follow relating to this Measure.
     const MeasureModal = <Modal show={this.state.showMeasureModal} onHide={()=>{this._toggleMeasureModal(null);}}>
@@ -365,8 +413,8 @@ export default class Ballot extends Component {
       </Modal.Body>
     </Modal>;
 
-  // This modal will allow users to change their addresses
-  const SelectAddressModal = <Modal show={this.state.showSelectAddressModal} onHide={()=>{this._toggleSelectAddressModal();}}
+    // This modal will allow users to change their addresses
+    const SelectAddressModal = <Modal show={this.state.showSelectAddressModal} onHide={()=>{this._toggleSelectAddressModal();}}
       className="ballot-election-list ballot-election-list__modal">
       <Modal.Header closeButton>
         <Modal.Title className="ballot-election-list__h1">Enter address where you are registered to vote</Modal.Title>
@@ -433,10 +481,11 @@ export default class Ballot extends Component {
     let in_ready_to_vote_mode = this.getFilterType() === "filterReadyToVote";
 
     return <div className="ballot">
+      { this.state.showBallotIntroModal ? BallotIntroModal : null }
       { this.state.showMeasureModal ? MeasureModal : null }
       { this.state.showCandidateModal ? CandidateModal : null }
-      { this.state.showSelectBallotModal ? SelectBallotModal : null}
-      { this.state.showSelectAddressModal ? SelectAddressModal : null}
+      { this.state.showSelectBallotModal ? SelectBallotModal : null }
+      { this.state.showSelectAddressModal ? SelectAddressModal : null }
       <div className="ballot__heading u-stack--lg">
         <Helmet title="Ballot - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />

@@ -114,7 +114,7 @@ class VoterStore extends FluxMapStore {
     // Look in js/Constants/VoterConstants.js for list of flag constant definitions
     let interfaceStatusFlags = this.getState().voter.interface_status_flags;
     // (1 << flag), sets the flag'th bit. and & with interfaceStatusFlags tell if the flag'th bit is set
-    return interfaceStatusFlags & 1 << flag !== 0;
+    return (interfaceStatusFlags & 1 << flag) !== 0;
   }
 
   isVoterFound () {
