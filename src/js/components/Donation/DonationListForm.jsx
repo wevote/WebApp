@@ -15,7 +15,7 @@ export default class DonationListForm extends Component {
   }
 
   render () {
-    if (this.state.data.length > 0) {
+    if (this.state.data && this.state.data.length > 0) {
       return (
         <Tabs defaultActiveKey={1} id="tabbed_donation_history">
           <Tab eventKey={1} title="Donations"><DonationList displayDonations /></Tab> {/*={true}*/}

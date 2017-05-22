@@ -169,7 +169,6 @@ sftp-config.json
 config/environment_variables.json
 src/js/config.js
 web_app/build/*
-src/js/config.js
 
 
 # Heroku Related #

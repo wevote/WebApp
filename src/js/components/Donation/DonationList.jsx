@@ -17,7 +17,7 @@ const styles = {
   },
   Panel: {
     borderTopColor: "transparent",
-    height: "500",
+    height: "500px",
     overflowY: "auto"
   }
 };
@@ -51,7 +51,7 @@ export default class DonationPaymentList extends Component {
             <th style={styles.th}>Info</th>
           </tr>
           </thead>
-          <tbody> {this.state.data.map(function (item, key) {
+          <tbody>{this.state.data.map(function (item, key) {
             if ( item.record_enum === "PAYMENT_FROM_UI" || item.record_enum === "PAYMENT_AUTO_SUBSCRIPTION") {
               return <tr key={key}>
                 <td style={styles.td}>{moment.utc(item.created).format("MMM D, YYYY")}</td>
@@ -66,7 +66,7 @@ export default class DonationPaymentList extends Component {
                 <td style={styles.td}><Button bsSize="small" disabled>Details</Button></td>
               </tr>;
             } else {
-              return "";
+              return;
             }
           })}
           </tbody>
@@ -90,7 +90,7 @@ export default class DonationPaymentList extends Component {
             <th style={styles.th}>Info</th>
           </tr>
           </thead>
-          <tbody> {this.state.data.map(function (item, key) {
+          <tbody>{this.state.data.map(function (item, key) {
             if ( item.record_enum === "SUBSCRIPTION_SETUP_AND_INITIAL") {
               let active = item.subscription_canceled_at === null || item.subscription_ended_at !== null;
               let ended = item.subscription_ended_at !== null ? moment.utc(item.subscription_ended_at).
@@ -111,7 +111,7 @@ export default class DonationPaymentList extends Component {
                 <td style={styles.td}><Button bsSize="small" disabled>Details</Button></td>
               </tr>;
             } else {
-              return "";
+              return;
             }
           })}
           </tbody>
