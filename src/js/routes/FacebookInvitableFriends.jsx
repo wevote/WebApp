@@ -186,18 +186,19 @@ export default class FacebookInvitableFriends extends Component {
         search_term: "",
         facebook_invitable_friends_filtered_by_search: [],
       });
-    }
-    let search_term_lowercase = search_term.toLowerCase();
-    var searched_friends_list = _.filter(this.state.facebook_invitable_friends.facebook_invitable_friends_list,
-      function (user) {
-          return user.name.toLowerCase().includes(search_term_lowercase);
-        });
+    } else {
+      let search_term_lowercase = search_term.toLowerCase();
+      var searched_friends_list = _.filter(this.state.facebook_invitable_friends.facebook_invitable_friends_list,
+        function (user) {
+            return user.name.toLowerCase().includes(search_term_lowercase);
+          });
 
-    this.setState({
-      search_filter: true,
-      search_term: search_term,
-      facebook_invitable_friends_filtered_by_search: searched_friends_list,
-    });
+      this.setState({
+        search_filter: true,
+        search_term: search_term,
+        facebook_invitable_friends_filtered_by_search: searched_friends_list,
+      });
+    }
   }
 
   render () {
