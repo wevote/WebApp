@@ -9,6 +9,7 @@ import FacebookStore from "../stores/FacebookStore";
 import VoterStore from "../stores/VoterStore";
 import VoterActions from "../actions/VoterActions";
 import WouldYouLikeToMergeAccounts from "../components/WouldYouLikeToMergeAccounts";
+var _ = require("lodash");
 
 import Helmet from "react-helmet";
 const web_app_config = require("../config");
@@ -30,6 +31,9 @@ export default class FacebookInvitableFriends extends Component {
       facebook_invitable_friends_image_height: 48,
       add_friends_message: "Please join me in preparing for the upcoming election.",
       saving: false,
+      search_filter: false,
+      search_term: "",
+      facebook_invitable_friends_filtered_by_search: [],
       yes_please_merge_accounts: false,
       merging_two_accounts: false
     };
@@ -174,6 +178,29 @@ export default class FacebookInvitableFriends extends Component {
       });
   }
 
+  searchFacebookFriends (event) {
+    let search_term = event.target.value;
+    if (search_term.length === 0) {
+      this.setState({
+        search_filter: false,
+        search_term: "",
+        facebook_invitable_friends_filtered_by_search: [],
+      });
+    } else {
+      let search_term_lowercase = search_term.toLowerCase();
+      var searched_friends_list = _.filter(this.state.facebook_invitable_friends.facebook_invitable_friends_list,
+        function (user) {
+            return user.name.toLowerCase().includes(search_term_lowercase);
+          });
+
+      this.setState({
+        search_filter: true,
+        search_term: search_term,
+        facebook_invitable_friends_filtered_by_search: searched_friends_list,
+      });
+    }
+  }
+
   render () {
     console.log("this.state.voter", this.state.voter);
     if (!this.state.voter || this.state.saving) {
@@ -257,17 +284,23 @@ export default class FacebookInvitableFriends extends Component {
     }
 
 
-    const facebook_invitable_friends_list = this.state.facebook_invitable_friends.facebook_invitable_friends_list;
+    var facebook_invitable_friends_list = [];
+    if (!this.state.search_filter) {
+      facebook_invitable_friends_list = this.state.facebook_invitable_friends.facebook_invitable_friends_list;
+    } else {
+      facebook_invitable_friends_list = this.state.facebook_invitable_friends_filtered_by_search;
+    }
+
     const facebook_friend_list_for_display = facebook_invitable_friends_list.map( (friend) => {
-      return <div key={friend.id} className="card-child">
-        <CheckBox
-          friendId={friend.id}
-          friendName={friend.name}
-          friendImage={friend.picture.data.url}
-          handleCheckboxChange={this.toggleCheckBox.bind(this)}
-        />
-      </div>;
-    });
+        return <div key={friend.id} className="card-child">
+          <CheckBox
+            friendId={friend.id}
+            friendName={friend.name}
+            friendImage={friend.picture.data.url}
+            handleCheckboxChange={this.toggleCheckBox.bind(this)}
+          />
+        </div>;
+      });
 
     return <div className="opinion-view">
       <Helmet title="Your Facebook Friends - We Vote" />
@@ -281,10 +314,18 @@ export default class FacebookInvitableFriends extends Component {
                 The friends you invite to We Vote will see what you support and oppose.
                 We recommend you only invite friends that you would like to talk politics with.
             </p>
+            <input type="text"
+                   className="form-control"
+                   name="search_facebook_friends_text"
+                   placeholder="Search for facebook friends."
+                   onChange={this.searchFacebookFriends.bind(this)} />
             <form onSubmit={this.sendInviteRequestToFacebookFriends.bind(this)}>
               <div className="display-in-column-with-vertical-scroll-contain">
                 <div className="display-in-column-with-vertical-scroll">
-                  {facebook_friend_list_for_display}
+                  { facebook_invitable_friends_list.length > 0 ?
+                    facebook_friend_list_for_display :
+                    <h4>No friends found with the search string '{this.state.search_term}'.</h4>
+                  }
                 </div>
               </div>
               <br />
