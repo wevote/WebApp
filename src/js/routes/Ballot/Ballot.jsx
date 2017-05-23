@@ -520,9 +520,8 @@ export default class Ballot extends Component {
         </div>
         {/* Show links to this candidate in the admin tools */}
         { this.state.voter && polling_location_we_vote_id_source && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ?
-          <span>Admin:
-            <a href={ballot_returned_admin_edit_url} target="_blank">
-              Ballot copied from this polling location: {polling_location_we_vote_id_source}
+          <span>Admin: <a href={ballot_returned_admin_edit_url} target="_blank">
+              Ballot copied from polling location "{polling_location_we_vote_id_source}"
             </a></span> :
           null
         }
