@@ -45,14 +45,15 @@ export default class Credits extends Component {
           <ul>
             <li>Dale McGrew - Oakland, CA</li>
             <li>Jenifer Fernandez Ancona - Oakland, CA</li>
-            <li>Rob Simpson - Warrenton, VA</li>
             <li>Anisha Jain - San Jose, CA</li>
+            <li>Rob Simpson - Warrenton, VA</li>
             <li>Jeff French - Oakland, CA</li>
             <li>Sarah Clements - San Francisco, CA</li>
             <li>Zach Monteith - San Francisco, CA</li>
             <li>Neelam Joshi - Columbus, OH</li>
             <li>Lisa Cho - San Francisco, CA</li>
             <li>Nicolas Fiorini - Arlington, VA</li>
+            <li>Bharath D N Reddy - Mountain View, CA</li>
             <li>Colette Phair - Oakland, CA</li>
             <li>Jennifer Holmes - Pacifica, CA</li>
             <li>Joe Evans - Santa Cruz, CA</li>
