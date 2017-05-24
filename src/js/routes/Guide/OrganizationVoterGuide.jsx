@@ -76,8 +76,6 @@ export default class OrganizationVoterGuide extends Component {
         </div>;
     }
 
-    var { organization_we_vote_id } = this.state;
-
     return <div>
       <div className="headroom-wrapper">
         <div ref="pageHeader" className="page-header__container headroom">
@@ -104,13 +102,13 @@ export default class OrganizationVoterGuide extends Component {
             <div className="col-md-12 visible-xs">
               <div className="card">
                 <div className="card-main">
-                  <FollowToggle we_vote_id={organization_we_vote_id} />
+                  <FollowToggle we_vote_id={this.state.organization.organization_we_vote_id} />
                   <OrganizationCard organization={this.state.organization} />
                 </div>
               </div>
             </div>
             <div className="col-md-8">
-              <OrganizationVoterGuideTabs />
+              <OrganizationVoterGuideTabs organization_we_vote_id={this.state.organization.organization_we_vote_id} />
             </div>
           </div>
         </div>
