@@ -86,7 +86,10 @@ export default class OrganizationVoterGuide extends Component {
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-12">
-              <img src={this.state.organization.organization_banner_url} />
+              { this.state.organization.organization_banner_url !== "" ?
+                <img src={this.state.organization.organization_banner_url} /> :
+                <div className="organization-banner-image-non-twitter-users" />
+              }
             </div>
           </div>
           <div className="row">
