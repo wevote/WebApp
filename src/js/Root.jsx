@@ -25,6 +25,7 @@ import FacebookInvitableFriends from "./routes/FacebookInvitableFriends";
 import Friends from "./routes/Friends";
 import GetStarted from "./routes/Intro/GetStarted";
 import GuidePositionList from "./routes/Guide/GuidePositionList";
+import OrganizationVoterGuide from "./routes/Guide/OrganizationVoterGuide";
 import HowToUse from "./routes/More/HowToUse";
 import Intro from "./routes/Intro/Intro";
 import IntroContests from "./routes/Intro/IntroContests";
@@ -121,7 +122,7 @@ const routes = () =>
     <Route path="/more/facebookredirecttowevote" component={FacebookRedirectToWeVote} />
 
     {/* Voter Guide Pages */}
-    <Route path="/voterguide/:organization_we_vote_id" component={GuidePositionList} />
+    <Route path="/voterguide/:organization_we_vote_id" component={OrganizationVoterGuide} />
     <Route path="/yourpage" component={YourPage} />
 
     <Route path="/ballot" component={BallotIndex}>
