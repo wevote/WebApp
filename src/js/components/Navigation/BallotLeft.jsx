@@ -23,32 +23,16 @@ export default class BallotLeft extends Component {
   }
 
   render () {
-    // let image_placeholder = "";
-    // let speaker_type = "V";  // TODO DALE make this dynamic
-    // if (speaker_type === "O") {
-    //     image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
-    // } else {
-    //     image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
-    // }
-
-    // let search = window.location.search ? window.location.search : "";
-    // let currentUrl = window.location.pathname + search;
-    // let show_your_page_from_twitter = this.props.signed_in_twitter && this.props.twitter_screen_name;
-    // let show_your_page_from_facebook = this.props.signed_in_facebook && linked_organization_we_vote_id && !show_your_page_from_twitter;
-
     return <div className="u-inset__v--md">
+      {/* Temporary "spacing" to be replaced by actual styles */}
+      <h4 className="text-left" >&nbsp;</h4>
+      <h4 className="text-left" >&nbsp;</h4>
+      <h4 className="text-left" >Summary of Ballot Items</h4>
       <ul className="list-group">
         <li className="list-group-item">
-          <span className="we-vote-promise">Our Promise: We'll never sell your email.</span>
-        </li>
-      </ul>
-      <h4 className="text-left" />
-      <ul className="list-group">
-        <li className="list-group-item">
-          <h3 className="h3">Step 1: Find Trusted Advisers</h3>
-          <strong><Link to="/opinions">Find organizations</Link> that you trust, and follow them.</strong><br />
-          <br />
-          When you follow an organization, their advice will make it easier for you to make decisions.
+          <h3 className="h3"><Link to="/ballot">Office 1</Link></h3>
+          <h3 className="h3"><Link to="/ballot">Office 2</Link></h3>
+          <h3 className="h3"><Link to="/ballot">Measure 1</Link></h3>
         </li>
       </ul>
       <h4 className="text-left" />

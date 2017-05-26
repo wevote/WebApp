@@ -122,7 +122,7 @@ export default class Application extends Component {
     var voter_guide_mode = false;
     if (pathname === "/intro/story" || pathname === "/intro/sample_ballot" || pathname === "/intro/get_started") {
       in_theater_mode = true;
-    } else if (pathname === "/ballot" || pathname === "/bookmarks" || pathname.startsWith("/candidate/") ||
+    } else if (pathname === "/bookmarks" || pathname.startsWith("/candidate/") ||
       pathname === "/facebook_invitable_friends" || pathname === "/friends" || pathname === "/friends/invitebyemail" ||
       pathname === "/intro" ||
       pathname === "/more/about" || pathname === "/more/connect" ||
@@ -133,6 +133,8 @@ export default class Application extends Component {
       pathname === "/opinions" || pathname === "/opinions_followed" || pathname === "/opinions_ignored" ||
       pathname === "/settings/location" || pathname === "/welcome") {
       content_full_width_mode = true;
+    } else if (pathname === "/ballot") {
+      content_full_width_mode = false;
     } else {
       voter_guide_mode = true;
     }
