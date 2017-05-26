@@ -65,7 +65,7 @@ When styling, try to use the largest, appropriate pattern/component available in
 
 #### Inline
 *Inline helpers apply spacing to the right of an element to aid in spacing items in a row or displayed inline.*
-ex: `.u-inline--xs { margin-right: $space-xs; } // 4px`
+ex: `.u-push--xs { margin-right: $space-xs; } // 4px`
 
 #### Stack
 *Stack helpers apply vertical spacing beneath elements.*

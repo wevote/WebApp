@@ -81,10 +81,10 @@ export default class OfficeItemCompressed extends Component {
                     onClick={ this.props.link_to_ballot_item_page ?
                               ()=>{browserHistory.push("/candidate/" + one_candidate.we_vote_id);} :
                               null }>
-                  <div className="u-inline--sm u-stack--sm">
+                  <div className="u-push--sm u-stack--sm">
                     <div className="o-media-object--center">
-                      <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-self-start u-inline--sm"
-                                    sizeClassName="icon-candidate-small u-inline--sm "
+                      <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
+                                    sizeClassName="icon-candidate-small u-push--sm "
                                     imageUrl={one_candidate.candidate_photo_url_large}
                                     alt="candidate-photo"
                                     kind_of_ballot_item="CANDIDATE" />
@@ -100,7 +100,7 @@ export default class OfficeItemCompressed extends Component {
 
                 {/* *** "Positions in your Network" bar OR items you can follow *** */}
                 <div className="u-flex u-flex-auto u-justify-end u-items-center u-min-50">
-                  <div className="u-flex-none u-justify-end u-inline--sm">
+                  <div className="u-flex-none u-justify-end u-push--sm">
                     {/* Decide whether to show the "Positions in your network" bar or the options of voter guides to follow */}
                     { SupportStore.get(one_candidate.we_vote_id) && ( SupportStore.get(one_candidate.we_vote_id).oppose_count || SupportStore.get(one_candidate.we_vote_id).support_count) ?
                       <span className="u-cursor--pointer"
