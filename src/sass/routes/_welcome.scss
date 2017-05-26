@@ -1,0 +1,60 @@
+.welcome-page {
+  $cta-color: #fb2f2f;
+  .cta-button {
+    background-color: $cta-color;
+  }
+  .hero-section {
+    position: relative;
+    background-image: url('/img/welcome/header-image-desktop.png');
+    background-size: cover;
+    color: $white;
+    padding-top: $space-xl;
+    padding-bottom: $space-xl;
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: rgba($gray-dark, .8); // stylelint-disable-line sh-waqar/declaration-use-variable
+    }
+  }
+
+  .features-section {
+    background-color: $brand-blue;
+    color: $white;
+    padding-top: $space-xl;
+    padding-bottom: $space-xl;
+  }
+  .features__block {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: center;
+    margin-bottom: $space-xl;
+    min-height: 120px;
+  }
+  .features__image {
+    margin-bottom: $space-md;
+    height: auto;
+  }
+  .features__text {
+    font-size: 16px;
+  }
+
+  .network-section {
+    padding-top: $space-xl;
+    padding-bottom: $space-xl;
+    text-align: center;
+  }
+
+  .footer-section {
+    background-color: tint($brand-blue, 50%); // stylelint-disable-line sh-waqar/declaration-use-variable
+    padding-top: $space-xl;
+    padding-bottom: $space-xl;
+    text-align: center;
+  }
+}
