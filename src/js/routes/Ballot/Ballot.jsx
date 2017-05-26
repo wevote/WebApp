@@ -100,6 +100,8 @@ export default class Ballot extends Component {
   }
 
   _onVoterStoreChange () {
+    // 5/25/17 Warning: setState(...): Can only update a mounted or mounting component. This usually means you called setState() on an unmounted component. This is a no-op. Please check the code for the Ballot component.
+    console.log("Warning often thrown here by _onVoterStoreChange () in Ballot.jsx");
     this.setState({
       voter: VoterStore.getVoter(),
       showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
