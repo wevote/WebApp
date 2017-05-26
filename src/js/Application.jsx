@@ -124,7 +124,7 @@ export default class Application extends Component {
       in_theater_mode = true;
     } else if (pathname === "/ballot" || pathname === "/bookmarks" || pathname.startsWith("/candidate/") ||
       pathname === "/facebook_invitable_friends" || pathname === "/friends" || pathname === "/friends/invitebyemail" ||
-      pathname === "/intro" ||
+      pathname === "/intro" || pathname.startsWith("/measure/") ||
       pathname === "/more/about" || pathname === "/more/connect" ||
       pathname === "/more/donate" || pathname === "/more/donate_thank_you" || pathname === "/more/howtouse" ||
       pathname.startsWith("/office/") || pathname === "/more/network" || pathname === "/more/organization" ||
