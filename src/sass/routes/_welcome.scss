@@ -8,7 +8,7 @@
     background-image: url('/img/welcome/header-image-desktop.png');
     background-size: cover;
     color: $white;
-    padding-top: $space-xl;
+    padding-top: $space-lg;
     padding-bottom: $space-xl;
     &::before {
       content: '';
@@ -43,6 +43,7 @@
   }
   .features__text {
     font-size: 16px;
+    line-height: 1.25;
   }
 
   .network-section {
@@ -51,10 +52,12 @@
     text-align: center;
   }
 
+
   .footer-section {
-    background-color: tint($brand-blue, 50%); // stylelint-disable-line sh-waqar/declaration-use-variable
+    background-color: #476480; // stylelint-disable-line sh-waqar/declaration-use-variable
     padding-top: $space-xl;
     padding-bottom: $space-xl;
     text-align: center;
+    color: $white;
   }
 }

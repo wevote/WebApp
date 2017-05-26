@@ -32,27 +32,30 @@ export default class Intro extends Component {
       <Helmet title="Welcome to We Vote" />
       <section className="hero-section">
         <div className="container">
-          <h1 className="u-f1 u-bold u-stack--lg">
-            View your ballot.<br />
-            Learn from friends.<br />
-            Share your vision.
-          </h1>
+          <Row>
+            <div className="col-md-11 push-md-1">
+              <h1 className="u-f1 u-bold u-stack--lg">
+                View your ballot.<br />
+                Learn from friends.<br />
+                Share your vision.
+              </h1>
 
-          <h2 className="u-f3">Launching Fall 2017!</h2>
-          <p>Sign up for updates and be the first to use We Vote</p>
+              <h2 className="u-f3 u-stack--md">Launching Fall 2017!</h2>
+              <p>Sign up for updates and be the first to use We Vote</p>
 
-          <form className="form-inline">
-            <FormGroup className="u-inline--sm">
-              <label className="sr-only" htmlFor="name">Name</label>
-              <input className="form-control" type="text" name="name" id="" placeholder="Name" />
-            </FormGroup>
-            <FormGroup className="u-inline--sm">
-              <label className="sr-only" htmlFor="exampleEmail">Email</label>
-              <input className="form-control" type="email" name="email" id="" placeholder="Email Address" />
-            </FormGroup>
-            <Button bsStyle="danger" type="submit">Sign Up</Button>
-          </form>
-
+              <form className="form-inline">
+                <FormGroup className="u-inline--sm">
+                  <label className="sr-only" htmlFor="name">Name</label>
+                  <input className="form-control" type="text" name="name" id="" placeholder="Name" />
+                </FormGroup>
+                <FormGroup className="u-inline--sm">
+                  <label className="sr-only" htmlFor="exampleEmail">Email</label>
+                  <input className="form-control" type="email" name="email" id="" placeholder="Email Address" />
+                </FormGroup>
+                <Button bsStyle="danger" type="submit">Sign Up</Button>
+              </form>
+            </div>
+          </Row>
         </div>
       </section>
 
@@ -110,19 +113,29 @@ export default class Intro extends Component {
 
       <section className="footer-section">
         <div className="container">
-          <p>Share or Donate to help us reach more voters.</p>
-          <button className="btn btn-social btn-facebook u-inline--sm">
-            <span className="fa fa-facebook" /> Facebook
-          </button>
-          <button className="btn btn-social btn-twitter u-inline--sm">
-            <span className="fa fa-twitter" /> Twitter
-          </button>
-          <button className="btn btn-social u-inline--sm">
-            <span className="fa fa-envelope" /> Email
-          </button>
-          <button className="btn btn-social u-inline--sm">
-            <span className="fa fa-heart" /> Donate
-          </button>
+          <h3 className="u-f3 u-stack--lg">Share or Donate to help us reach more voters.</h3>
+          <div className="u-stack--xl">
+            <button className="btn btn-social btn-facebook u-inline--sm">
+              <span className="fa fa-facebook" /> Facebook
+            </button>
+            <button className="btn btn-social btn-twitter u-inline--sm">
+              <span className="fa fa-twitter" /> Twitter
+            </button>
+            <button className="btn btn-social btn--email u-inline--sm">
+              <span className="fa fa-envelope" /> Email
+            </button>
+            <button className="btn btn-social btn-danger u-inline--sm">
+              <span className="fa fa-heart" /> Donate
+            </button>
+          </div>
+
+          <div className="u-f--small">
+            <p>
+              WeVote.US is brought to you be registered 501(c)(3) and 501(c)(4) nonprofit organizations.<br />
+              We do not support or oppose any political candidate or party. The software that powers We Vote is open source.
+            </p>
+          </div>
+
         </div>
       </section>
 
