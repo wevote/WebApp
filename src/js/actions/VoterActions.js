@@ -140,6 +140,10 @@ module.exports = {
       });
   },
 
+  voterRetrieve: function () {
+    Dispatcher.loadEndpoint("voterRetrieve");
+  },
+
   voterNameSave: function (first_name, last_name) {
     Dispatcher.loadEndpoint("voterUpdate",
       {
@@ -148,14 +152,17 @@ module.exports = {
       });
   },
 
-  voterRetrieve: function () {
-    Dispatcher.loadEndpoint("voterRetrieve");
-  },
-
   voterUpdateStatusFlags: function (flag_integer_to_set) {
     Dispatcher.loadEndpoint("voterUpdate",
       {
         flag_integer_to_set: flag_integer_to_set,
+      });
+  },
+
+  voterRefreshDonations: function () {
+    Dispatcher.loadEndpoint("voterUpdate",
+      {
+        send_journal_list: true
       });
   },
 };

@@ -112,7 +112,8 @@ export default class Donate extends Component {
                 <input className="form-control form-control mb-2 mr-sm-2 mb-sm-0" value={this.state.custom_amount}
                 type="text" placeholder="250.00" onChange={this._updateCustomAmount} />
               </div>&nbsp;
-                <DonationForm donationAmount={parseFloat(this.state.custom_amount.replace(/[^0-9\.]+/g, "")) * 100}
+                <DonationForm donationAmount={parseInt(parseFloat(
+                  this.state.custom_amount.replace(/[^0-9\.]+/g, "")) * 100)}
                 donateMonthly={this.state.donateMonthly} donateButtonText="Go" />
              </form></span> : null}
 

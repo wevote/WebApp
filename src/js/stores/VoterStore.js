@@ -20,6 +20,7 @@ class VoterStore extends FluxMapStore {
       email_sign_in_status: {},
       facebook_sign_in_status: {},
       voter_found: false,
+      voter_donation_history_list: {},
     };
   }
 
@@ -323,7 +324,8 @@ class VoterStore extends FluxMapStore {
 
       case "voterRetrieve":
         if (!action.res.voter_found) {
-          // This voter_device_id is no good, so delete it.
+          // This voter_device_id is no good, so delete it.  Keep this log until we resolve https://github.com/wevote/WebApp/issues/834
+          console.log("This voter_device_id is no good, so delete it.");
           cookies.setItem("voter_device_id", "", -1, "/");
           // ...and then ask for a new voter. When it returns a voter with a new voter_device_id, we will set new cookie
           VoterActions.voterRetrieve();
@@ -373,7 +375,7 @@ class VoterStore extends FluxMapStore {
         };
 
       case "voterUpdate":
-        const {first_name, last_name, email, interface_status_flags} = action.res;
+        const {first_name, last_name, email, interface_status_flags, voter_donation_history_list} = action.res;
         return {
           ...state,
           voter: {...state.voter,
@@ -381,6 +383,7 @@ class VoterStore extends FluxMapStore {
             last_name: last_name ? last_name : state.voter.last_name,
             facebook_email: email ? email : state.voter.email,
             interface_status_flags: interface_status_flags ? interface_status_flags : state.voter.interface_status_flags,
+            voter_donation_history_list: voter_donation_history_list ? voter_donation_history_list: state.voter.voter_donation_history_list,
           }
         };
 
