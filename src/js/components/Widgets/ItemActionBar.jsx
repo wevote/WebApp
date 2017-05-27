@@ -127,7 +127,7 @@ export default class ItemActionBar extends Component {
     </Modal>;
 
     return <div className={ this.props.shareButtonHide ? "item-actionbar--inline" : "item-actionbar" }>
-            <div className={"btn-group" + (!this.props.shareButtonHide ? " u-inline--sm" : "")}>
+            <div className={"btn-group" + (!this.props.shareButtonHide ? " u-push--sm" : "")}>
               {/* Start of Support Button */}
               <button className={"item-actionbar__btn item-actionbar__btn--support btn btn-default" + (is_support ? " support-at-state" : "")} onClick={this.supportItem.bind(this, is_support)}>
                 <span className="btn__icon">
@@ -155,7 +155,7 @@ export default class ItemActionBar extends Component {
             </div>
       { this.props.commentButtonHide ?
         null :
-         <button className="item-actionbar__btn item-actionbar__btn--comment btn btn-default u-inline--sm" onClick={this.props.toggleFunction}>
+         <button className="item-actionbar__btn item-actionbar__btn--comment btn btn-default u-push--sm" onClick={this.props.toggleFunction}>
             <span className="btn__icon">
               <Icon name="comment-icon" width={icon_size} height={icon_size} color={icon_color} />
             </span>

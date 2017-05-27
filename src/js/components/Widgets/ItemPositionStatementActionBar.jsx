@@ -196,7 +196,7 @@ export default class ItemPositionStatementActionBar extends Component {
     return <div className="position-statement__container">
 
       <div className="position-statement__overview u-flex items-center u-stack--sm">
-      { is_support || is_oppose ? <Icon className="u-inline--xs" name={user_position_icon} width={24} height={24} /> : null }
+      { is_support || is_oppose ? <Icon className="u-push--xs" name={user_position_icon} width={24} height={24} /> : null }
       { user_position_text }
         <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
                               type={this.props.type}
@@ -217,7 +217,7 @@ export default class ItemPositionStatementActionBar extends Component {
               <span className="position-statement__input-group u-flex u-items-start">
                 <Textarea onChange={this.updateStatementTextToBeSaved.bind(this)}
                   name="statement_text_to_be_saved"
-                  className="position-statement__input u-inline--sm form-control"
+                  className="position-statement__input u-push--sm form-control"
                   placeholder={statement_placeholder_text}
                   defaultValue={statement_text_to_be_saved}
                   />

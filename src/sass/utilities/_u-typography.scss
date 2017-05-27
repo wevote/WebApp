@@ -16,6 +16,7 @@
 .u-f5,
 .u-f6 {
   font-family: $heading-font-stack;
+  line-height: 1.25;
 }
 
 .u-f1,
@@ -56,6 +57,15 @@
 .u-f6,
 .h6 {
   font-size: 1rem;
+}
+
+.u-f7 {
+  font-size: .875rem;
+}
+
+.u-f8,
+.u-f--small {
+  font-size: .75rem;
 }
 
 

@@ -120,7 +120,7 @@ export default class OfficeItemReadyToVote extends Component {
                   </div>
 
                   <div className="u-flex-none u-justify-end">
-                    <span className="u-inline--xs">Supported by you</span>
+                    <span className="u-push--xs">Supported by you</span>
                     <img src="/img/global/svg-icons/thumbs-up-color-icon.svg" width="24" height="24" />
                   </div>
                 </div> :
@@ -135,7 +135,7 @@ export default class OfficeItemReadyToVote extends Component {
                     </h2>
                   </div>
                   <div className="u-flex-none u-justify-end">
-                    <span className="u-inline--xs">Your network supports</span>
+                    <span className="u-push--xs">Your network supports</span>
                     <img src="/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" />
                   </div>
                 </div> :

@@ -126,7 +126,7 @@ export default class MeasureItemCompressed extends Component {
 
           <div className="u-flex u-items-center">
             {/* *** "Positions in your Network" bar OR items you can follow *** */}
-            <div className="u-flex-none u-justify-end u-inline--md">
+            <div className="u-flex-none u-justify-end u-push--md">
               <span className={ this.props.link_to_ballot_item_page ?
                       "u-cursor--pointer" :
                       null }

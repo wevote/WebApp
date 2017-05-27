@@ -169,25 +169,25 @@ export default class Application extends Component {
           <HeaderBar pathname={pathname} voter={voter} />
         </div>
       </div>
-      <div className="page-content-container">
-        <div className="container-fluid">
-          { content_full_width_mode ?
-            <div className="row">
-              <div className="col-12-container col-12 container-main">
+      { pathname === "/welcome" ? <div>{ this.props.children }</div> :
+        <div className="page-content-container">
+          <div className="container-fluid">
+            { content_full_width_mode ?
+              <div className="container-main">
                 { this.props.children }
-              </div>
-            </div> :
-            <div className="row">
-              <div className="col-md-4 hidden-xs sidebar-menu">
-                {/* Depending on which page we are on, show a different left area. */}
-                { pathname === "/ballot" ? <BallotLeft /> : null }
-              </div>
-              <div className="col-md-8 container-main">
-                { this.props.children }
-              </div>
-            </div> }
+              </div> :
+              <div className="row">
+                <div className="col-md-4 hidden-xs sidebar-menu">
+                  {/* Depending on which page we are on, show a different left area. */}
+                  { pathname === "/ballot" ? <BallotLeft /> : null }
+                </div>
+                <div className="col-md-8 container-main">
+                  { this.props.children }
+                </div>
+              </div> }
+          </div>
         </div>
-      </div>
+      }
     </div>;
   }
 }

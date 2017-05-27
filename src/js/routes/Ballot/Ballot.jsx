@@ -493,7 +493,7 @@ export default class Ballot extends Component {
         <BrowserPushMessage incomingProps={this.props} />
         <OverlayTrigger placement="top" overlay={electionTooltip} >
           <h1 className="h1 ballot__election-name">
-             <span className="u-inline--sm">{election_name}</span>
+             <span className="u-push--sm">{election_name}</span>
              {this.state.ballot_election_list.length > 1 ? <img src={"/img/global/icons/gear-icon.png"} className="hidden-print" role="button" onClick={this._toggleSelectBallotModal}
               alt={"view your ballots"}/> : null}
           </h1>

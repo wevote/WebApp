@@ -102,14 +102,8 @@ $gray-mid:     #999 !default;
 $gray-dark:    #555 !default;
 $gray-darker:  #333 !default;
 
-
-/// Main brand color
-/// @type Color
-// I'm guessing this probably wasn't intended to abstract to 'brand' color and was just put here
-// to update the navbar. I've left this but unlinked the value for $page-header-color.  —Jeff
-// DALE 2017-05-13 We are deprecating this in favor of "$page-header-color"
-// $brand-color: #1c1a33 !default;
-$page-header-color: #1c2f4b;
+$brand-blue: #1c2f4b;
+$page-header-color: $brand-blue;
 
 /// Link color
 /// @type Color
