@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Alert, Button} from "react-bootstrap";
+import {Alert, Button, FormGroup} from "react-bootstrap";
 import LoadingWheel from "../components/LoadingWheel";
 import VoterActions from "../actions/VoterActions";
 import VoterStore from "../stores/VoterStore";
@@ -84,8 +84,7 @@ export default class VoterEmailAddressEntry extends Component {
 
   sendSignInLinkEmail (event) {
     event.preventDefault();
-    var {voter_email_address} = this.state;
-    VoterActions.sendSignInLinkEmail(voter_email_address);
+    VoterActions.sendSignInLinkEmail(this.state.voter_email_address);
     this.setState({
       email_address_status: {
         email_address_already_owned_by_other_voter: false,
@@ -111,16 +110,17 @@ export default class VoterEmailAddressEntry extends Component {
 
   voterEmailAddressSave (event) {
     event.preventDefault();
-    var { voter_email_address } = this.state;
-    VoterActions.voterEmailAddressSave(voter_email_address);
+    let send_link_to_sign_in = true;
+    VoterActions.voterEmailAddressSave(this.state.voter_email_address, send_link_to_sign_in);
     this.setState({loading: true});
   }
 
   render () {
-    var { loading, voter_email_address } = this.state;
-    if (loading){
+    if (this.state.loading){
       return LoadingWheel;
     }
+    //console.log("Entering VoterEmailAddressEntry.jsx");
+
     const email_address_status_html = <span>
       { this.state.email_address_status.email_address_already_owned_by_other_voter &&
         !this.state.email_address_status.link_to_sign_in_email_sent ?
@@ -146,36 +146,41 @@ export default class VoterEmailAddressEntry extends Component {
         null }
       </span>;
 
+    let enter_email_title = "Sign In With Email";
+    let enter_email_explanation = "You will receive a magic link in your email inbox. Click that link to be signed into your We Vote account.";
+    if (this.state.voter && this.state.voter.is_signed_in) {
+      enter_email_title = "Add New Email";
+      enter_email_explanation = "You will receive a magic link in your email inbox. Click that link to verify this new email.";
+    }
     const enter_email_html = <div>
-      {email_address_status_html}
-          <form onSubmit={this.voterEmailAddressSave.bind(this)}>
-            <div className="input-group">
-              <input
-              type="text"
-              onChange={this.updateVoterEmailAddress.bind(this)}
-              name="voter_email_address"
-              value={voter_email_address}
-              className="form-control"
-              placeholder="Sign in with email address"
-            />
-            <span className="input-group-btn">
-              <Button onClick={this.voterEmailAddressSave.bind(this)}
-                      bsStyle="primary">
-                Go</Button>
-              </span>
-            </div>
+      <h3 className="h3">{enter_email_title}</h3>
+      <div>{enter_email_explanation}</div>
+          <form className="form-inline" onSubmit={this.voterEmailAddressSave.bind(this)}>
+            <FormGroup className="u-push--sm">
+              <label className="sr-only" htmlFor="exampleEmail">Email</label>
+              <input className="form-control"
+                     type="email"
+                     name="voter_email_address"
+                     id=""
+                     value={this.state.voter_email_address}
+                     onChange={this.updateVoterEmailAddress.bind(this)}
+                     placeholder="Email Address"/>
+            </FormGroup>
+            <Button bsStyle="primary"
+                    type="submit"
+                    onClick={this.voterEmailAddressSave.bind(this)}
+                    >Send Verification Link</Button>
           </form>
 
       </div>;
 
     const send_link_to_login_html = <div>
-      {email_address_status_html}
         <form onSubmit={this.sendSignInLinkEmail.bind(this)} className="u-stack--md">
           <input
             type="text"
             onChange={this.updateVoterEmailAddress.bind(this)}
             name="voter_email_address"
-            value={voter_email_address}
+            value={this.state.voter_email_address}
             className="form-control text-center"
             placeholder="Sign in with email address"
           />
@@ -245,7 +250,7 @@ export default class VoterEmailAddressEntry extends Component {
       }
     });
 
-    // ///////////////////////////////////
+    // ////////////////////////////////////
     // LIST OF EMAILS TO VERIFY
     let unverified_emails_found = false;
     const to_verify_email_list_html = this.state.voter_email_address_list.map( (voter_email_address_from_list) => {
@@ -284,6 +289,7 @@ export default class VoterEmailAddressEntry extends Component {
     });
 
     return <div className="guidelist card-child__list-group">
+      {email_address_status_html}
       {verified_emails_found ?
         <div>
           <span className="h3">Your Emails</span>
@@ -305,7 +311,6 @@ export default class VoterEmailAddressEntry extends Component {
             </span>
           }
           <br />
-          {email_address_status_html}
           {verified_email_list_html}
         </div> :
         null }
@@ -327,14 +332,13 @@ export default class VoterEmailAddressEntry extends Component {
               </span>
             </span> }
           <br />
-          {email_address_status_html}
           {to_verify_email_list_html}
         </div> :
         null }
-      { this.state.email_address_status.email_address_already_owned_by_other_voter ?
+      {/* this.state.email_address_status.email_address_already_owned_by_other_voter ?
         send_link_to_login_html :
-        null }
-      <span><br />{ enter_email_html }</span>
+        null */}
+      <span>{ enter_email_html }</span>
     </div>;
   }
 }

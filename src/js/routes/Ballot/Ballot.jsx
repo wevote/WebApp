@@ -123,7 +123,7 @@ export default class Ballot extends Component {
   _toggleBallotIntroModal () {
     if (this.state.showBallotIntroModal) {
       // Saved to the voter record that the ballot introduction has been seen
-      VoterActions.voterUpdateStatusFlags(VoterConstants.BALLOT_INTRO_MODAL_SHOWN);
+      VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.BALLOT_INTRO_MODAL_SHOWN);
     }
     this.setState({ showBallotIntroModal: !this.state.showBallotIntroModal });
   }

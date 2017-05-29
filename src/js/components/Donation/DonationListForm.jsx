@@ -13,7 +13,7 @@ export default class DonationListForm extends Component {
     this.state = {};
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     VoterActions.voterRefreshDonations();

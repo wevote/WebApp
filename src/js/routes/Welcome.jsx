@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { browserHistory } from "react-router";
 import Helmet from "react-helmet";
 import { Button, FormGroup, Row} from "react-bootstrap";
+import VoterActions from "../actions/VoterActions";
+import VoterConstants from "../constants/VoterConstants";
+import VoterStore from "../stores/VoterStore";
 
 
 export default class Intro extends Component {
@@ -19,6 +22,16 @@ export default class Intro extends Component {
   }
 
   componentDidMount () {
+    this._onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+  }
+
+  componentWillUnmount () {
+    this.voterStoreListener.remove();
+  }
+
+  _onVoterStoreChange () {
+    this.setState({voter: VoterStore.getVoter()});
   }
 
   goToGetStarted () {
@@ -26,7 +39,35 @@ export default class Intro extends Component {
     browserHistory.push(getStartedNow);
   }
 
+  updateVoterFullName (event) {
+    this.setState({
+      voter_full_name: event.target.value
+    });
+  }
+
+  updateVoterEmailAddress (event) {
+    this.setState({
+      voter_email_address: event.target.value
+    });
+  }
+
+  voterEmailAddressSignUpSave (event) {
+    event.preventDefault();
+    let send_link_to_sign_in = true;
+    VoterActions.voterEmailAddressSave(this.state.voter_email_address, send_link_to_sign_in);
+    VoterActions.voterFullNameSoftSave("", "", this.state.voter_full_name);
+    VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
+    this.setState({loading: true});
+  }
+
   render () {
+    let newsletter_opt_in_true = VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
+    let actual_full_name = "";
+    if (this.state.voter) {
+      if (this.state.voter.first_name || this.state.voter.last_name) {
+        actual_full_name = this.state.voter.full_name;
+      }
+    }
 
     return <div className="welcome-page">
       <Helmet title="Welcome to We Vote" />
@@ -41,19 +82,43 @@ export default class Intro extends Component {
               </h1>
 
               <h2 className="u-f3 u-stack--md">Launching Fall 2017!</h2>
-              <p>Sign up for updates and be the first to use We Vote</p>
+              { newsletter_opt_in_true ?
+                <span>
+                  <h1 className="u-f1 u-bold u-stack--lg">
+                    Welcome Back{ actual_full_name ? ", " + actual_full_name : ""}.
+                  </h1>
+                </span> :
+                <div>
+                  <p>Sign up for updates and be the first to use We Vote</p>
 
-              <form className="form-inline">
-                <FormGroup className="u-push--sm">
-                  <label className="sr-only" htmlFor="name">Name</label>
-                  <input className="form-control" type="text" name="name" id="" placeholder="Name" />
-                </FormGroup>
-                <FormGroup className="u-push--sm">
-                  <label className="sr-only" htmlFor="exampleEmail">Email</label>
-                  <input className="form-control" type="email" name="email" id="" placeholder="Email Address" />
-                </FormGroup>
-                <Button bsStyle="danger" type="submit">Sign Up</Button>
-              </form>
+                  <form className="form-inline" onSubmit={this.voterEmailAddressSignUpSave.bind(this)}>
+                    <FormGroup className="u-push--sm">
+                      <label className="sr-only" htmlFor="name">Name</label>
+                      <input className="form-control"
+                             type="text"
+                             name="voter_full_name"
+                             id=""
+                             value={this.state.voter_full_name}
+                             onChange={this.updateVoterFullName.bind(this)}
+                             placeholder="Name"/>
+                    </FormGroup>
+                    <FormGroup className="u-push--sm">
+                      <label className="sr-only" htmlFor="exampleEmail">Email</label>
+                      <input className="form-control"
+                             type="email"
+                             name="voter_email_address"
+                             id=""
+                             value={this.state.voter_email_address}
+                             onChange={this.updateVoterEmailAddress.bind(this)}
+                             placeholder="Email Address"/>
+                    </FormGroup>
+                    <Button bsStyle="danger"
+                            type="submit"
+                            onClick={this.voterEmailAddressSignUpSave.bind(this)}
+                            >Sign Up</Button>
+                  </form>
+                </div>
+              }
             </div>
           </Row>
         </div>
@@ -71,19 +136,19 @@ export default class Intro extends Component {
             <div className="col-sm-6 col-md-4 u-flex u-justify-center">
               <div className="features__block">
                 <img className="features__image" src="/img/welcome/benefits/learn-from-orgs.png" width="50%" height="50%" />
-                <h3 className="features__text">Learn from Organizations</h3>
+                <h3 className="features__text">Learn From Organizations</h3>
               </div>
             </div>
             <div className="col-sm-6 col-md-4 u-flex u-justify-center">
               <div className="features__block">
                 <img className="features__image" src="/img/welcome/benefits/see-position.png" width="50%" height="50%" />
-                <h3 className="features__text">See your Network's Positions</h3>
+                <h3 className="features__text">See Your Network's Positions</h3>
               </div>
             </div>
             <div className="col-sm-6 col-md-4 u-flex u-justify-center">
               <div className="features__block">
                 <img className="features__image" src="/img/welcome/benefits/choose-friends.png" width="50%" height="50%" />
-                <h3 className="features__text">Invite Friends to your Network</h3>
+                <h3 className="features__text">Invite Friends to Your We&nbsp;Vote Network</h3>
               </div>
             </div>
             <div className="col-sm-6 col-md-4 u-flex u-justify-center">
@@ -131,8 +196,8 @@ export default class Intro extends Component {
 
           <div className="u-f--small">
             <p>
-              WeVote.US is brought to you be registered 501(c)(3) and 501(c)(4) nonprofit organizations.<br />
-              We do not support or oppose any political candidate or party. The software that powers We Vote is open source.
+              WeVote.US is brought to you by a partnership between two registered nonprofit organizations, one 501(c)(3) and one 501(c)(4).<br />
+              We do not support or oppose any political candidate or party. <a href="https://github.com/WeVote" target="_blank">&nbsp;</a>The software that powers We Vote is open source and built by volunteers.
             </p>
           </div>
 
