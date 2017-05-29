@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {Button} from "react-bootstrap";
 import Helmet from "react-helmet";
 import { browserHistory } from "react-router";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
@@ -24,7 +25,8 @@ export default class SignIn extends Component {
       first_name: "",
       last_name: "",
       initial_name_loaded: false,
-      name_saved_status: ""
+      name_saved_status: "",
+      show_twitter_disconnect: false
     };
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -77,6 +79,16 @@ export default class SignIn extends Component {
     }
   }
 
+  toggleTwitterDisconnectOpen () {
+    console.log("toggleTwitterDisconnectOpen");
+    this.setState({show_twitter_disconnect: true});
+  }
+
+  toggleTwitterDisconnectClose () {
+    console.log("toggleTwitterDisconnectClose");
+    this.setState({show_twitter_disconnect: false});
+  }
+
   handleKeyPress () {
     clearTimeout(this.timer);
     this.timer = setTimeout(() => {
@@ -114,6 +126,7 @@ export default class SignIn extends Component {
     if (!voter){
       return LoadingWheel;
     }
+    console.log("SignIn.jsx render start");
 
     // console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
     if (!voter.signed_in_facebook && this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
@@ -189,8 +202,6 @@ export default class SignIn extends Component {
                 null :
                 <FacebookSignIn />
               }
-              <br />
-              <br />
             </div> :
             null
           }
@@ -207,7 +218,7 @@ export default class SignIn extends Component {
                 {voter.signed_in_twitter ?
                   <span>
                     <span className="btn btn-social btn-lg btn-twitter" href="#">
-                      <i className="fa fa-twitter" />@{voter.twitter_screen_name}</span><span>&nbsp;</span>
+                      <i className="fa fa-twitter"/>@{voter.twitter_screen_name}</span><span>&nbsp;</span>
                   </span> :
                   null
                 }
@@ -230,10 +241,19 @@ export default class SignIn extends Component {
               </div> :
               null
             }
+            {/* TODO DALE This code to be moved */}
+            {/*this.state.show_twitter_disconnect ?
+              <span>
+                <Button bsStyle="danger"
+                    type="submit"
+                    onClick={this.toggleTwitterDisconnectClose.bind(this)}
+                    >Disconnect @{voter.twitter_screen_name}</Button>
+              </span> :
+              <span onClick={this.toggleTwitterDisconnectOpen.bind(this)}>edit</span>
+            */}
           </div>
-          <br />
-            <br />
-            <VoterEmailAddressEntry />
+
+          <VoterEmailAddressEntry />
 
           {debug_mode &&
           <div className="text-center">

@@ -63,9 +63,10 @@ module.exports = {
     Dispatcher.loadEndpoint("voterAddressSave", { text_for_map_search: text, simple_save: simple_save, google_civic_election_id: google_civic_election_id});
   },
 
-  voterEmailAddressSave: function (voter_email_address){
+  voterEmailAddressSave: function (voter_email_address, send_link_to_sign_in = false){
     Dispatcher.loadEndpoint("voterEmailAddressSave", {
       text_for_email_address: voter_email_address,
+      send_link_to_sign_in: send_link_to_sign_in,
       make_primary_email: true
     });
   },
@@ -152,10 +153,29 @@ module.exports = {
       });
   },
 
-  voterUpdateStatusFlags: function (flag_integer_to_set) {
+  // Tell the server to only save this name if a name does not currently exist
+  voterFullNameSoftSave: function (first_name, last_name, full_name = "") {
+    Dispatcher.loadEndpoint("voterUpdate",
+      {
+        first_name: first_name,
+        last_name: last_name,
+        full_name: full_name,
+        name_save_only_if_no_existing_names: true,
+      });
+  },
+
+  voterUpdateInterfaceStatusFlags: function (flag_integer_to_set) {
     Dispatcher.loadEndpoint("voterUpdate",
       {
         flag_integer_to_set: flag_integer_to_set,
+      });
+  },
+
+  voterUpdateNotificationSettingsFlags: function (flag_integer_to_set, flag_integer_to_unset = "") {
+    Dispatcher.loadEndpoint("voterUpdate",
+      {
+        notification_flag_integer_to_set: flag_integer_to_set,
+        notification_flag_integer_to_unset: flag_integer_to_unset,
       });
   },
 

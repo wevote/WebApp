@@ -114,11 +114,22 @@ class VoterStore extends FluxMapStore {
   getInterfaceFlagState (flag) {
     // Look in js/Constants/VoterConstants.js for list of flag constant definitions
     let interfaceStatusFlags = this.getState().voter.interface_status_flags;
-    // return if bit specified by the flag is also set in interfaceStatusFlags
+    // return True if bit specified by the flag is also set in interfaceStatusFlags (voter.interface_status_flags)
     // Eg: if interfaceStatusFlags = 5, then we can confirm that bits representing 1 and 4 are set (i.e., 0101)
     // so for value of flag = 1 and 4, we return a positive integer,
     // but, the bit representing 2 and 8 are not set, so for flag = 2 and 8, we return zero
     return interfaceStatusFlags & flag;
+  }
+
+  getNotificationSettingsFlagState (flag) {
+    // Look in js/Constants/VoterConstants.js for list of flag constant definitions
+    let notificationSettingsFlags = this.getState().voter.notification_settings_flags;
+    // return True if bit specified by the flag is also set
+    //  in notificationSettingsFlags (voter.notification_settings_flags)
+    // Eg: if interfaceStatusFlags = 5, then we can confirm that bits representing 1 and 4 are set (i.e., 0101)
+    // so for value of flag = 1 and 4, we return a positive integer,
+    // but, the bit representing 2 and 8 are not set, so for flag = 2 and 8, we return zero
+    return notificationSettingsFlags & flag;
   }
 
   isVoterFound () {
@@ -375,15 +386,18 @@ class VoterStore extends FluxMapStore {
         };
 
       case "voterUpdate":
-        const {first_name, last_name, email, interface_status_flags, voter_donation_history_list} = action.res;
+        const {first_name, last_name, email, interface_status_flags, notification_settings_flags, voter_donation_history_list} = action.res;
         return {
           ...state,
           voter: {...state.voter,
+            // With this we are only updating the values we change with a voterUpdate call. Wouldn't it be better to
+            //  update *all* voter values, even if not updated by voterUpdate?
             first_name: first_name ? first_name : state.voter.first_name,
             last_name: last_name ? last_name : state.voter.last_name,
             facebook_email: email ? email : state.voter.email,
             interface_status_flags: interface_status_flags ? interface_status_flags : state.voter.interface_status_flags,
-            voter_donation_history_list: voter_donation_history_list ? voter_donation_history_list: state.voter.voter_donation_history_list,
+            notification_settings_flags: notification_settings_flags ? notification_settings_flags : state.voter.notification_settings_flags,
+            voter_donation_history_list: voter_donation_history_list ? voter_donation_history_list : state.voter.voter_donation_history_list,
           }
         };
 
