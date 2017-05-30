@@ -65,5 +65,12 @@
     padding-bottom: $space-xl;
     text-align: center;
     color: $white;
+    a {
+      color: $white;
+      text-decoration: underline;
+      &:hover {
+        color: $white;
+      }
+    }
   }
 }
