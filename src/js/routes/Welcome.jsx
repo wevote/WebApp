@@ -173,12 +173,18 @@ export default class Intro extends Component {
       <section className="network-section">
         <div className="container">
           <h2 className="h2">Our Network</h2>
+          <div className="partner-logos">
+              <img className="partner-logo u-push--lg u-stack--lg" src="/img/welcome/partners/google-logo.svg" alt="Google" width="150" />
+              <img className="partner-logo u-push--lg u-stack--lg" src="/img/welcome/partners/center-for-technology.png" alt="Center for Technology and Civic Life" width="200" />
+              <img className="partner-logo u-push--lg u-stack--lg" src="/img/welcome/partners/vote-org.png" alt="Vote.org" width="169" />
+              <img className="partner-logo u-push--lg u-stack--lg" src="/img/welcome/partners/voting-information-project.png" alt="Voting Information Project" width="193" />
+          </div>
         </div>
       </section>
 
       <section className="footer-section">
         <div className="container">
-          <h3 className="u-f3 u-stack--lg">Share or Donate to help us reach more voters.</h3>
+          {/* <h3 className="u-f3 u-stack--lg">Share or Donate to help us reach more voters.</h3>
           <div className="u-stack--xl">
             <button className="btn btn-social btn-facebook u-push--sm">
               <span className="fa fa-facebook" /> Facebook
@@ -192,7 +198,7 @@ export default class Intro extends Component {
             <button className="btn btn-social btn-danger u-push--sm">
               <span className="fa fa-heart" /> Donate
             </button>
-          </div>
+          </div> */}
 
           <div className="u-f--small">
             <p>
