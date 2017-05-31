@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { browserHistory } from "react-router";
+import { browserHistory, Link } from "react-router";
 import Helmet from "react-helmet";
 import { Button, FormGroup, Row} from "react-bootstrap";
 import VoterActions from "../actions/VoterActions";
@@ -127,25 +127,25 @@ export default class Intro extends Component {
       <section className="features-section">
         <div className="container">
           <Row className="u-stack--lg">
-            <div className="col-sm-6 col-md-4 u-flex u-justify-center">
+            <div className="col-6 col-md-4 u-flex u-justify-center">
               <div className="features__block">
                 <img className="features__image" src="/img/welcome/benefits/view-your-ballot.png" width="50%" height="50%" />
                 <h3 className="features__text">View Your Ballot</h3>
               </div>
             </div>
-            <div className="col-sm-6 col-md-4 u-flex u-justify-center">
+            <div className="col-6 col-md-4 u-flex u-justify-center">
               <div className="features__block">
                 <img className="features__image" src="/img/welcome/benefits/learn-from-orgs.png" width="50%" height="50%" />
                 <h3 className="features__text">Learn From Organizations</h3>
               </div>
             </div>
-            <div className="col-sm-6 col-md-4 u-flex u-justify-center">
+            <div className="col-6 col-md-4 u-flex u-justify-center">
               <div className="features__block">
                 <img className="features__image" src="/img/welcome/benefits/see-position.png" width="50%" height="50%" />
                 <h3 className="features__text">See Your Network's Positions</h3>
               </div>
             </div>
-            <div className="col-sm-6 col-md-4 u-flex u-justify-center">
+            <div className="col-6 col-md-4 u-flex u-justify-center">
               <div className="features__block">
                 <img className="features__image" src="/img/welcome/benefits/choose-friends.png" width="50%" height="50%" />
                 <h3 className="features__text">Invite Friends to Your We&nbsp;Vote Network</h3>
@@ -172,13 +172,19 @@ export default class Intro extends Component {
 
       <section className="network-section">
         <div className="container">
-          <h2 className="h2">Our Network</h2>
+          <h2 className="u-f2 u-stack--lg">Our Network</h2>
+          <div className="partner-logos">
+              <img className="partner-logo u-push--lg u-stack--lg" src="/img/welcome/partners/google-logo.svg" alt="Google" width="150" />
+              <img className="partner-logo u-push--lg u-stack--lg" src="/img/welcome/partners/center-for-technology.png" alt="Center for Technology and Civic Life" width="200" />
+              <img className="partner-logo u-push--lg u-stack--lg" src="/img/welcome/partners/vote-org.png" alt="Vote.org" width="169" />
+              <img className="partner-logo u-push--lg u-stack--lg" src="/img/welcome/partners/voting-information-project.png" alt="Voting Information Project" width="193" />
+          </div>
         </div>
       </section>
 
       <section className="footer-section">
         <div className="container">
-          <h3 className="u-f3 u-stack--lg">Share or Donate to help us reach more voters.</h3>
+          {/* <h3 className="u-f3 u-stack--lg">Share or Donate to help us reach more voters.</h3>
           <div className="u-stack--xl">
             <button className="btn btn-social btn-facebook u-push--sm">
               <span className="fa fa-facebook" /> Facebook
@@ -192,14 +198,48 @@ export default class Intro extends Component {
             <button className="btn btn-social btn-danger u-push--sm">
               <span className="fa fa-heart" /> Donate
             </button>
-          </div>
+          </div> */}
 
-          <div className="u-f--small">
+
+          <ul className="footer-nav u-f4 list-unstyled list-inline u-stack--xl">
+            <li className="u-push--md u-stack--lg">
+              <Link to={"/more/about"}>About</Link>
+            </li>
+              <li className="u-push--md u-stack--lg">
+                <Link to={"/more/vision"}>Our Vision</Link>
+              </li>
+            <li className="u-push--md u-stack--lg">
+              <Link to={"/more/team"}>Our Team</Link>
+            </li>
+            <li className="u-push--md u-stack--lg">
+              <Link to={"/intro/sample_ballot"}>Get Started</Link>
+            </li>
+            <li className="u-push--md u-stack--lg">
+              <Link to={"/more/sign_in"}>Sign In</Link>
+            </li>
+          </ul>
+
+
+          <div className="u-f--small u-stack--lg">
             <p>
-              WeVote.US is brought to you by a partnership between two registered nonprofit organizations, one 501(c)(3) and one 501(c)(4).<br />
-              We do not support or oppose any political candidate or party. <a href="https://github.com/WeVote" target="_blank">&nbsp;</a>The software that powers We Vote is open source and built by volunteers.
+              WeVote.US is brought to you by a partnership between two registered nonprofit organizations, one <nobr>501(c)(3)</nobr> and one <nobr>501(c)(4)</nobr>.
+            </p>
+            <p>
+              We do not support or oppose any political candidate or party. <a href="https://github.com/WeVote" target="_blank">The software that powers We Vote is open source and built by volunteers.</a>
             </p>
           </div>
+
+          <ul className="u-tc list-unstyled list-inline">
+            <li className="u-push--lg">
+              <Link>Privacy Policy</Link>
+            </li>
+            <li className="u-push--lg">
+              <Link>Terms of Use</Link>
+            </li>
+            <li>
+              <Link>Contact</Link>
+            </li>
+          </ul>
 
         </div>
       </section>

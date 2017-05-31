@@ -47,11 +47,17 @@
   }
 
   .network-section {
-    padding-top: $space-xl;
+    padding-top: $space-lg;
     padding-bottom: $space-xl;
     text-align: center;
+    background-color: $white;
   }
 
+  .partner-logos {
+    margin: $space-none;
+    text-align: center;
+    list-style: none;
+  }
 
   .footer-section {
     background-color: #476480; // stylelint-disable-line sh-waqar/declaration-use-variable
@@ -59,5 +65,12 @@
     padding-bottom: $space-xl;
     text-align: center;
     color: $white;
+    a {
+      color: $white;
+      text-decoration: underline;
+      &:hover {
+        color: $white;
+      }
+    }
   }
 }

@@ -22,4 +22,3 @@ module.exports = {
 
     STRIPE_API_KEY: ""
 };
- 
