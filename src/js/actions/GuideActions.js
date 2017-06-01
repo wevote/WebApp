@@ -34,6 +34,10 @@ module.exports = {
     Dispatcher.loadEndpoint("voterGuidesFollowedRetrieve");
   },
 
+  voterGuidesFollowedByOrganizationRetrieve: function (organization_we_vote_id) {
+    Dispatcher.loadEndpoint("voterGuidesFollowedByOrganizationRetrieve", { organization_we_vote_id: organization_we_vote_id} );
+  },
+
   voterGuidesIgnoredRetrieve: function () {
     Dispatcher.loadEndpoint("voterGuidesIgnoredRetrieve");
   }

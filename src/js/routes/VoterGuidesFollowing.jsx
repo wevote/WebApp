@@ -2,25 +2,27 @@ import React, {Component, PropTypes } from "react";
 import Helmet from "react-helmet";
 import GuideStore from "../stores/GuideStore";
 import GuideActions from "../actions/GuideActions";
-import OpinionsFollowedList from "../components/VoterGuide/OpinionsFollowedList";
+import GuideList from "../components/VoterGuide/GuideList";
 
 /* VISUAL DESIGN HERE: https://invis.io/8F53FDX9G */
 
 export default class VoterGuidesFollowing extends Component {
   static propTypes = {
-    children: PropTypes.object,
-    history: PropTypes.object
+    organization: PropTypes.object.isRequired,
   };
 
   constructor (props) {
     super(props);
-    this.state = {voter_guide_followed_list: GuideStore.followedList(),
-                  editMode: false};
+    this.state = {voter_guide_followed_list: GuideStore.followedByOrganizationList(),
+                  editMode: false,
+                  organization_we_vote_id: this.props.organization.organization_we_vote_id,
+                  organization_name: this.props.organization.organization_name,
+    };
   }
 
   componentDidMount () {
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
-    GuideActions.voterGuidesFollowedRetrieve();
+    GuideActions.voterGuidesFollowedByOrganizationRetrieve(this.state.organization_we_vote_id);
   }
 
   componentWillUnmount (){
@@ -28,16 +30,11 @@ export default class VoterGuidesFollowing extends Component {
   }
 
   _onGuideStoreChange (){
-    var list = GuideStore.followedList();
+    var list = GuideStore.followedByOrganizationList();
 
     if (list !== undefined && list.length > 0){
-      this.setState({ voter_guide_followed_list: GuideStore.followedList() });
+      this.setState({ voter_guide_followed_list: GuideStore.followedByOrganizationList() });
     }
-  }
-
-  getCurrentRoute (){
-    var current_route = "/opinions_followed";
-    return current_route;
   }
 
   toggleEditMode (){
@@ -56,27 +53,21 @@ export default class VoterGuidesFollowing extends Component {
     return <div className="opinions-followed__container">
       <Helmet title="Organizations You Follow - We Vote" />
       <section className="card">
-        <div className="card-main">
-          <h1 className="h1">Who You're Following</h1>
-          <a className="fa-pull-right"
-             tabIndex="0"
-             onKeyDown={this.onKeyDownEditMode.bind(this)}
-             onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit"}</a>
-            <p>
-              Organizations, public figures and other voters you currently follow. <em>We will never sell your email</em>.
-            </p>
-          <div className="voter-guide-list card">
-            <div className="card-child__list-group">
-              {
-                this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length ?
-                <OpinionsFollowedList organizationsFollowed={this.state.voter_guide_followed_list}
-                                      editMode={this.state.editMode}
-                                      instantRefreshOn /> :
-                  null
-              }
+        { this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length ?
+          <div className="card-main">
+            <h3 className="card-main__display-name">
+              {this.state.organization_name} is Following
+            </h3>
+            <div className="voter-guide-list card">
+              <div className="card-child__list-group">
+                <GuideList organizationsToFollow={this.state.voter_guide_followed_list} instantRefreshOn />
+              </div>
             </div>
+          </div> :
+          <div className="card-main">
+            <p> {this.state.organization_name} is not following anyone. </p>
           </div>
-        </div>
+        }
       </section>
     </div>;
   }

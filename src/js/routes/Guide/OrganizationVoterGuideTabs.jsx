@@ -7,7 +7,7 @@ import { Tabs, Tab } from "react-bootstrap";
 
 export default class OrganizationVoterGuideTabs extends Component {
   static propTypes = {
-    organization_we_vote_id: PropTypes.string.isRequired,
+    organization: PropTypes.object.isRequired,
   };
 
   constructor (props) {
@@ -19,11 +19,11 @@ export default class OrganizationVoterGuideTabs extends Component {
     return (
       <Tabs defaultActiveKey={1} id="tabbed_donation_history">
         <Tab eventKey={1} title="POSITIONS">
-          <VoterGuidesPositions organization_we_vote_id={this.props.organization_we_vote_id} />
+          <VoterGuidesPositions organization_we_vote_id={this.props.organization.organization_we_vote_id} />
         </Tab>
 
         <Tab eventKey={2} title="FOLLOWING">
-          <VoterGuidesFollowing />
+          <VoterGuidesFollowing organization={this.props.organization} />
         </Tab>
 
         <Tab eventKey={3} title="FOLLOWERS">
