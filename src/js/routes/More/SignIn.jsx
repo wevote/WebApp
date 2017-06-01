@@ -122,7 +122,7 @@ export default class SignIn extends Component {
   // }
 
   render () {
-    var { voter} = this.state;
+    var {voter} = this.state;
     if (!voter){
       return LoadingWheel;
     }
@@ -136,9 +136,11 @@ export default class SignIn extends Component {
       return LoadingWheel;
     }
 
+    let page_title = "Sign In - We Vote";
     let your_account_title = "Your Account";
     let your_account_explanation = "";
     if (voter.is_signed_in) {
+      page_title = "Your Account - We Vote";
       if (voter.signed_in_facebook && !voter.signed_in_twitter) {
         your_account_title = "Have Twitter Too?";
         your_account_explanation = "By adding your Twitter account to your We Vote profile, you get access to the voter guides of everyone you follow.";
@@ -149,7 +151,7 @@ export default class SignIn extends Component {
     }
 
     return <div className="">
-      <Helmet title="Sign In - We Vote" />
+      <Helmet title={page_title} />
       <BrowserPushMessage incomingProps={this.props} />
       <div className="card">
         <div className="card-main">

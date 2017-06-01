@@ -390,8 +390,7 @@ class VoterStore extends FluxMapStore {
         return {
           ...state,
           voter: {...state.voter,
-            // With this we are only updating the values we change with a voterUpdate call. Wouldn't it be better to
-            //  update *all* voter values, even if not updated by voterUpdate?
+            // With this we are only updating the values we change with a voterUpdate call.
             first_name: first_name ? first_name : state.voter.first_name,
             last_name: last_name ? last_name : state.voter.last_name,
             facebook_email: email ? email : state.voter.email,
