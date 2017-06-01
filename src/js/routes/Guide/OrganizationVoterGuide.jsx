@@ -111,7 +111,7 @@ export default class OrganizationVoterGuide extends Component {
               </div>
             </div>
             <div className="col-md-8">
-              <OrganizationVoterGuideTabs organization_we_vote_id={this.state.organization.organization_we_vote_id} />
+              <OrganizationVoterGuideTabs organization={this.state.organization} />
             </div>
           </div>
         </div>
