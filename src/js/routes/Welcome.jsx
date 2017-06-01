@@ -63,7 +63,9 @@ export default class Intro extends Component {
   render () {
     let newsletter_opt_in_true = VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
     let actual_full_name = "";
+    let voter_signed_in = false;
     if (this.state.voter) {
+      voter_signed_in = true;
       if (this.state.voter.first_name || this.state.voter.last_name) {
         actual_full_name = this.state.voter.full_name;
       }
@@ -84,9 +86,15 @@ export default class Intro extends Component {
               <h2 className="u-f3 u-stack--md">Launching Fall 2017!</h2>
               { newsletter_opt_in_true ?
                 <span>
-                  <h1 className="u-f1 u-bold u-stack--lg">
-                    Welcome Back{ actual_full_name ? ", " + actual_full_name : ""}.
-                  </h1>
+                    { voter_signed_in ?
+                      <h1 className="u-f1 u-bold u-stack--lg">{ actual_full_name ?
+                        "Welcome Back, " + actual_full_name + "." :
+                        <Button bsStyle="danger" bsSize="large" className="u-stack--md center-block" onClick={this.goToGetStarted}>
+                          Get Started
+                        </Button>
+                      }</h1> :
+                      <h1 className="u-f1 u-bold u-stack--lg">Your request to sign up has been sent.</h1>
+                    }
                 </span> :
                 <div>
                   <p>Sign up for updates and be the first to use We Vote</p>
@@ -184,7 +192,7 @@ export default class Intro extends Component {
 
       <section className="footer-section">
         <div className="container">
-          {/* <h3 className="u-f3 u-stack--lg">Share or Donate to help us reach more voters.</h3>
+          <h3 className="u-f3 u-stack--lg">Please share or donate to help us reach more voters.</h3>
           <div className="u-stack--xl">
             <button className="btn btn-social btn-facebook u-push--sm">
               <span className="fa fa-facebook" /> Facebook
@@ -195,10 +203,12 @@ export default class Intro extends Component {
             <button className="btn btn-social btn--email u-push--sm">
               <span className="fa fa-envelope" /> Email
             </button>
-            <button className="btn btn-social btn-danger u-push--sm">
-              <span className="fa fa-heart" /> Donate
-            </button>
-          </div> */}
+            <Link to="/more/donate">
+              <button className="btn btn-social btn-danger u-push--sm">
+                <span className="fa fa-heart" /> Donate
+              </button>
+            </Link>
+          </div>
 
 
           <ul className="footer-nav u-f4 list-unstyled list-inline u-stack--xl">
@@ -231,20 +241,19 @@ export default class Intro extends Component {
 
           <ul className="u-tc list-unstyled list-inline">
             <li className="u-push--lg">
-              <Link>Privacy Policy</Link>
+              <Link to="/more/privacy">Privacy Policy</Link>
             </li>
             <li className="u-push--lg">
-              <Link>Terms of Use</Link>
+              <Link to="/more/terms">Terms of Use</Link>
             </li>
             <li>
-              <Link>Contact</Link>
+              <a href="https://help.wevote.us/hc/en-us/requests/new" target="_blank">Contact</a>
             </li>
           </ul>
 
         </div>
       </section>
-
-
+      
     </div>;
   }
 }
