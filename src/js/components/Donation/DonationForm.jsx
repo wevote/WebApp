@@ -46,7 +46,7 @@ export default class DonationForm extends Component {
     }
   }
 
-  _openStripeModal (event:Object) {
+  _openStripeModal (event) {
     event.preventDefault();
     this.stripeHandler.open({
       name: "We Vote",
@@ -54,8 +54,6 @@ export default class DonationForm extends Component {
       zipCode: true,
       amount: this.props.donationAmount,
       panelLabel: "Donate ",
-//      dataCurrency: "" <-- we might want to enable this with some sort of geocoding(default is usd)
-// stripe doesn't support editable pre-filled email fields nor optional email fields (they are required)
     });
   }
 

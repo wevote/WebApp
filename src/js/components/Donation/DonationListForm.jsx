@@ -21,20 +21,32 @@ export default class DonationListForm extends Component {
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
-  }
+   }
 
   _onVoterStoreChange () {
     this.setState({journal: VoterStore.getVoterDonationHistory()});
   }
 
+  handleSelect (selectedKey) {
+    this.setState({
+      activeKey: selectedKey
+    });
+    if ( selectedKey === 2) {
+      // It takes a 2 to 30 seconds for the charge to come back from the first charge on a subscription,
+      VoterActions.voterRefreshDonations();
+    }
+  }
 
   render () {
     if (this.state.journal && this.state.journal.length > 0) {
       return (
-        <Tabs defaultActiveKey={1} id="tabbed_donation_history">
-          <Tab eventKey={1} title="Donations"><DonationList displayDonations/></Tab>
-          <Tab eventKey={2} title="Subscriptions"><DonationList displayDonations={false}/></Tab>
-        </Tabs>
+        <div>
+          <input type="hidden" value={this.state.activeKey} />
+          <Tabs defaultActiveKey={1} activeKey={this.state.activeKey} onSelect={this.handleSelect} id="tabbed_donation_history">
+              <Tab eventKey={1} title="Donations"><DonationList displayDonations/></Tab>
+              <Tab eventKey={2} title="Subscriptions"><DonationList displayDonations={false}/></Tab>
+          </Tabs>
+        </div>
       );
     } else {
       return <span />;

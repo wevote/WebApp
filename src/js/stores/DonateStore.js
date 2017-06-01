@@ -15,6 +15,18 @@ class DonateStore extends FluxMapStore {
     return this.getState().donation_response_received;
   }
 
+  donation_cancel_has_completed () {
+    this.setState({ donation_cancel_completed: true });
+  }
+
+  donation_refund_has_completed () {
+    this.setState({ donation_refund_completed: true });
+  }
+
+  donation_subscription_has_been_updated () {
+    this.setState({ donation_subscription_updated: true });
+  }
+
   reduce (state, action) {
 
     switch (action.type) {
@@ -30,8 +42,22 @@ class DonateStore extends FluxMapStore {
         };
 
       case "error-donateRetrieve":
-        console.log(action);
+        console.log("error-donateRetrieve" + action);
         return state;
+
+      case "donationCancelSubscription":
+        console.log("donationCancelSubscription: " + action);
+        return {
+          subscription_id: action.res.subscription_id,
+          donation_cancel_completed: false,
+        };
+
+      case "donationRefund":
+        console.log("donationRefund: " + action);
+        return {
+          charge: action.res.charge,
+          donation_refund_completed: false,
+        };
 
       default:
         return state;

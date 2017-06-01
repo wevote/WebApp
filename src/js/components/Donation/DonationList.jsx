@@ -3,6 +3,7 @@ import {Table, Button, Panel} from "react-bootstrap";
 import moment from "moment";
 import VoterStore from "../../stores/VoterStore";
 import VoterActions from "../../actions/VoterActions";
+import DonationCancelSubscription from "./DonationCancelSubscription";
 
 const styles = {
   table: {
@@ -67,8 +68,10 @@ export default class DonationList extends Component {
             </thead>
             <tbody>{this.state.journal.map(function (item, key) {
               if (item.record_enum === "PAYMENT_FROM_UI" || item.record_enum === "PAYMENT_AUTO_SUBSCRIPTION") {
+                let refundDays = parseInt(item.refund_days_limit);
+                let active =  moment.utc(item.created).local().isAfter(moment(new Date()).subtract(refundDays, "days"));
                 return <tr key={key}>
-                  <td style={styles.td}>{moment.utc(item.created).format("MMM D, YYYY")}</td>
+                  <td style={styles.td}>{moment.utc(item.created).local().format("MMM D, YYYY")}</td>
                   <td style={styles.td}>{item.amount}</td>
                   <td style={styles.td}>{item.record_enum === "PAYMENT_FROM_UI" ? "One time" :
                     "Subscription"}</td>
@@ -77,7 +80,7 @@ export default class DonationList extends Component {
                   <td style={styles.td}>{item.last4}</td>
                   <td style={styles.td}>{item.exp_month + "/" + item.exp_year}</td>
                   <td style={styles.td}>{item.stripe_status === "succeeded" ? "Paid" : item.stripe_status}</td>
-                  <td style={styles.td}><Button bsSize="small" disabled>Details</Button></td>
+                  <td style={styles.td}>{active ? <Button bsSize="small" disabled>Details</Button> : null}</td>
                 </tr>;
               } else {
                 return null;
@@ -106,21 +109,23 @@ export default class DonationList extends Component {
             </thead>
             <tbody>{this.state.journal.map(function (item, key) {
               if (item.record_enum === "SUBSCRIPTION_SETUP_AND_INITIAL") {
-                let active = item.subscription_canceled_at === null || item.subscription_ended_at !== null;
-                let ended = item.subscription_ended_at !== null ? moment.utc(item.subscription_ended_at).format("MMM D, YYYY") : "";
-                let cancel = item.subscription_canceled_at !== null ? moment.utc(item.subscription_canceled_at).format("MMM D, YYYY") : "";
+                let active = item.subscription_canceled_at === "None" && item.subscription_ended_at === "None";
+                let ended = item.subscription_ended_at !== "None" ?
+                  moment.utc(item.subscription_ended_at).format("MMM D, YYYY") : "";
+                let cancel = item.subscription_canceled_at !== "None" ?
+                  moment.utc(item.subscription_canceled_at).format("MMM D, YYYY") : "";
+                let waiting = item.amount === "0.00";
                 return <tr key={key}>
                   <td style={styles.td}>{active ? "Active" : "----"}</td>
                   <td style={styles.td}>{moment.utc(item.created).format("MMM D, YYYY")}</td>
-                  <td style={styles.td}>{item.amount}</td>
-                  <td style={styles.td}>{item.funding}</td>
-                  <td style={styles.td}>{item.brand}</td>
-                  <td style={styles.td}>{item.last4}</td>
-                  <td style={styles.td}>{item.exp_month + "/" + item.exp_year}</td>
-                  <td style={styles.td}>{item.stripe_status === "succeeded" ? "Paid" : item.stripe_status}</td>
+                  <td style={styles.td}>{!waiting ? item.amount : "waiting"}</td>
+                  <td style={styles.td}>{!waiting ? item.funding : "waiting"}</td>
+                  <td style={styles.td}>{!waiting ? item.brand : "waiting"}</td>
+                  <td style={styles.td}>{!waiting ? item.last4 : "waiting"}</td>
+                  <td style={styles.td}>{!waiting > 0 ? item.exp_month + "/" + item.exp_year : "waiting"}</td>
                   <td style={styles.td}>{ended}</td>
                   <td style={styles.td}>{cancel}</td>
-                  <td style={styles.td}><Button bsSize="small" disabled>Details</Button></td>
+                  <td style={styles.td}>{active ? <DonationCancelSubscription item={item}/> : null}</td>
                 </tr>;
               } else {
                 return null;
