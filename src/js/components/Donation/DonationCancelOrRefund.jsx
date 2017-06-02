@@ -4,9 +4,10 @@ import DonateActions from "../../actions/DonateActions";
 import moment from "moment";
 
 
-export default class DonationCancelSubscription extends Component {
+export default class DonationCancelOrRefund extends Component {
   static propTypes = {
     item: PropTypes.object,
+    refundDonation: PropTypes.bool,   // true for refund donation, false for cancel subscription
   };
 
   constructor (props) {
@@ -14,6 +15,7 @@ export default class DonationCancelSubscription extends Component {
     this.state = {
       showModal: false,
       cancelling: false,
+      refundDonation: true,
     };
   }
 
@@ -25,32 +27,38 @@ export default class DonationCancelSubscription extends Component {
     this.setState({ showModal: true });
   }
 
-  cancel (subscription_id) {
+  cancel (item) {
     this.setState({ cancelling: true });
     console.log("CANCEL");
-    DonateActions.donationCancelSubscriptionAction(subscription_id);
+    if (this.cancelSubscription)
+      DonateActions.donationCancelSubscriptionAction(item.subscription_id);
+    else
+      DonateActions.donationRefund(item.charge_id);
     this.setState({ showModal: false });
   }
 
   render () {
-    const {item} = this.props;
+    const {item, refundDonation} = this.props;
+    let label = refundDonation ? "Refund Donation" : "Cancel Subscription";
       return <div>
-        <Button bsSize="small" onClick={this.open.bind(this)} >
-          Cancel Subscription
-        </Button>
+        <Button bsSize="small" onClick={this.open.bind(this)} >{label}</Button>
 
         <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
           <Modal.Header closeButton>
-            <Modal.Title>Cancel Subscription</Modal.Title>
+            <Modal.Title>{label}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
+            <p>
+              WeVote is a nonprofit and nonpartisan organization that relies the generous support from voters like you.
+            </p>
+            <h1>&nbsp;</h1>
             <Table striped condensed hover responsive>
                <tbody>
                   <tr>
-                    <td>Created:</td><td>{moment.utc(item.created).local().format("MMM D, h:mm a")}</td>
+                    <td>Created:</td><td>{moment.utc(item.created).local().format("MMM D, YYYY,  h:mm a")}</td>
                   </tr>
                   <tr>
-                    <td>Monthly payment:</td><td>{item.amount}</td>
+                    <td>{refundDonation ? "Amount" : "Monthly payment"}</td><td>{item.amount}</td>
                   </tr>
                   <tr>
                     <td>Funding:</td><td>{item.funding}</td>
@@ -69,10 +77,11 @@ export default class DonationCancelSubscription extends Component {
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.close.bind(this)}>I changed my mind</Button>
-            <Button onClick={this.cancel.bind(this, item.subscription_id)}>Cancel this subscription</Button>
+            <Button onClick={this.cancel.bind(this, item)}>
+              {refundDonation ? "Cancel this donation" : "Cancel this subscription"}</Button>
           </Modal.Footer>
         </Modal>
       </div>;
   }
 }
-//item.subscription_id
+

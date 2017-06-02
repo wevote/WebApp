@@ -335,9 +335,10 @@ class VoterStore extends FluxMapStore {
 
       case "voterRetrieve":
         if (!action.res.voter_found) {
-          // This voter_device_id is no good, so delete it.  Keep this log until we resolve https://github.com/wevote/WebApp/issues/834
-          console.log("This voter_device_id is no good, so delete it.");
-          cookies.setItem("voter_device_id", "", -1, "/");
+          console.log("This voter_device_id is not in the db and is invalid, so delete it: " +
+            cookies.getItem("voter_device_id"));
+          cookies.removeItem("voter_device_id");
+
           // ...and then ask for a new voter. When it returns a voter with a new voter_device_id, we will set new cookie
           VoterActions.voterRetrieve();
         } else {
