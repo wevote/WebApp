@@ -49,7 +49,7 @@ export default class DonationCancelOrRefund extends Component {
           </Modal.Header>
           <Modal.Body>
             <p>
-              WeVote is a nonprofit and nonpartisan organization that relies the generous support from voters like you.
+              We Vote is a nonprofit and nonpartisan organization that relies the generous support from voters like you. Thank you!
             </p>
             <h1>&nbsp;</h1>
             <Table striped condensed hover responsive>
