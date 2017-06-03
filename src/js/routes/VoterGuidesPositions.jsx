@@ -98,12 +98,7 @@ export default class VoterGuidesPositions extends Component {
                 <span>
                   <h4 className="card__additional-heading">Positions for Other Elections</h4>
                 </span> :
-                <div style={{margin: 10}}>
-                  <span style={floatRight}>
-                    <Link to="/opinions"><Button bsStyle="primary">Next &#x21AC;</Button></Link>
-                  </span>
-                  <p>Find voter guides you can follow. These voter guides have been created by nonprofits, public figures, your friends, and more.</p>
-                </div>
+                null
               }
               { position_list_for_all_except_one_election.map( item => {
                 return <OrganizationPositionItem key={item.position_we_vote_id}
@@ -113,6 +108,17 @@ export default class VoterGuidesPositions extends Component {
               }) }
             </span> :
             <div>{LoadingWheel}</div>
+          }
+          { position_list_for_one_election && position_list_for_all_except_one_election &&
+            position_list_for_one_election.length === 0 && position_list_for_all_except_one_election.length === 0 ?
+            <div style={{margin: 10}}>
+              <span style={floatRight}>
+                <p>  Find voter guides you can follow.
+                  These voter guides have been created by nonprofits, public figures, your friends, and more.</p>
+                <Link to="/opinions"><Button bsStyle="primary">Next &#x21AC;</Button></Link>
+              </span>
+            </div> :
+            null
           }
           </ul>
       </div>
