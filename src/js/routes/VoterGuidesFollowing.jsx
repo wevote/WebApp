@@ -3,6 +3,9 @@ import Helmet from "react-helmet";
 import GuideStore from "../stores/GuideStore";
 import GuideActions from "../actions/GuideActions";
 import GuideList from "../components/VoterGuide/GuideList";
+import LoadingWheel from "../components/LoadingWheel";
+import VoterStore from "../stores/VoterStore";
+var _ = require("lodash");
 
 /* VISUAL DESIGN HERE: https://invis.io/8F53FDX9G */
 
@@ -13,21 +16,32 @@ export default class VoterGuidesFollowing extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {voter_guide_followed_list: GuideStore.followedByOrganizationList(),
-                  editMode: false,
-                  organization_we_vote_id: this.props.organization.organization_we_vote_id,
-                  organization_name: this.props.organization.organization_name,
+    this.state = {
+      voter_guide_followed_list: [],
+      organization_we_vote_id: this.props.organization.organization_we_vote_id,
+      organization_name: this.props.organization.organization_name,
+      search_filter: false,
+      search_term: "",
+      voter_guide_followed_list_filtered_by_search: [],
     };
   }
 
   componentDidMount () {
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+    this._onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     GuideActions.voterGuidesFollowedByOrganizationRetrieve(this.state.organization_we_vote_id);
+    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
   }
 
   componentWillUnmount (){
     this.guideStoreListener.remove();
+    this.voterStoreListener.remove();
   }
+
+  _onVoterStoreChange () {
+    this.setState({
+      voter: VoterStore.getVoter()});
+   }
 
   _onGuideStoreChange (){
     var list = GuideStore.followedByOrganizationList();
@@ -37,38 +51,82 @@ export default class VoterGuidesFollowing extends Component {
     }
   }
 
-  toggleEditMode (){
-    this.setState({editMode: !this.state.editMode});
-  }
+  searchFollowingVoterGuides (event) {
+    let search_term = event.target.value;
+    if (search_term.length === 0) {
+      this.setState({
+        search_filter: false,
+        search_term: "",
+        voter_guide_followed_list_filtered_by_search: [],
+      });
+    } else {
+      let search_term_lowercase = search_term.toLowerCase();
+      var searched_followed_list = _.filter(this.state.voter_guide_followed_list,
+        function (user) {
+            return user.voter_guide_display_name.toLowerCase().includes(search_term_lowercase);
+          });
 
-  onKeyDownEditMode (event) {
-    let enterAndSpaceKeyCodes = [13, 32];
-    let scope = this;
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      scope.setState({editMode: !this.state.editMode});
+      this.setState({
+        search_filter: true,
+        search_term: search_term,
+        voter_guide_followed_list_filtered_by_search: searched_followed_list,
+      });
     }
   }
 
+
   render () {
+    if (!this.state.voter) {
+      return <div>{LoadingWheel}</div>;
+    }
+
+    var voter_guide_followed_list = [];
+    if (!this.state.search_filter) {
+      voter_guide_followed_list = this.state.voter_guide_followed_list;
+    } else {
+      voter_guide_followed_list = this.state.voter_guide_followed_list_filtered_by_search;
+    }
+
     return <div className="opinions-followed__container">
-      <Helmet title="Organizations You Follow - We Vote" />
-      <section className="card">
-        { this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length ?
-          <div className="card-main">
-            <h3 className="card-main__display-name">
-              {this.state.organization_name} is Following
-            </h3>
-            <div className="voter-guide-list card">
-              <div className="card-child__list-group">
-                <GuideList organizationsToFollow={this.state.voter_guide_followed_list} instantRefreshOn />
-              </div>
-            </div>
-          </div> :
-          <div className="card-main">
-            <p> {this.state.organization_name} is not following anyone. </p>
-          </div>
-        }
-      </section>
+      <Helmet title="Organizations You Following - We Vote" />
+      { this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length > 0 ?
+        <input type="text"
+             className="form-control"
+             name="search_following_voter_guides_text"
+             placeholder="Search for following voter guides."
+             onChange={this.searchFollowingVoterGuides.bind(this)} /> : null
+      }
+      <div className="card">
+        <ul className="card-child__list-group">
+          { this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length > 0 ?
+            <span>
+              { !this.state.search_filter ?
+                <span>
+                  {this.state.voter.linked_organization_we_vote_id === this.state.organization_we_vote_id ?
+                    <h4 className="card__additional-heading">Who You're Following</h4> :
+                    <h4 className="card__additional-heading">{this.state.organization_name} is Following</h4>
+                  }
+                </span> :
+                <span>
+                  { voter_guide_followed_list.length === 0 ?
+                    <h4 className="card__additional-heading">{this.state.search_term} not found</h4> :
+                    null
+                  }
+                </span>
+              }
+              <span>
+                  <GuideList organizationsToFollow={voter_guide_followed_list} instantRefreshOn />
+              </span>
+            </span> :
+            <span>
+              {this.state.voter.linked_organization_we_vote_id === this.state.organization_we_vote_id ?
+                <h4 className="card__additional-heading">You're not following anyone.</h4> :
+                <h4 className="card__additional-heading">{this.state.organization_name} is not following anyone.</h4>
+              }
+            </span>
+          }
+        </ul>
+      </div>
     </div>;
   }
 }

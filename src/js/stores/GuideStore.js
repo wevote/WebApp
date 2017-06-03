@@ -12,6 +12,7 @@ class GuideStore extends FluxMapStore {
       ballot_has_guides: true,
       following: [],
       followingByOrganization: [],
+      followers: [],
       followingOnTwitter: [],
       ignoring: [],
       to_follow: [],
@@ -77,6 +78,10 @@ class GuideStore extends FluxMapStore {
 
   followedByOrganizationList (){
     return this.returnVoterGuidesFromListOfIds(this.getState().followingByOrganization) || [];
+  }
+
+  followersList (){
+    return this.returnVoterGuidesFromListOfIds(this.getState().followers) || [];
   }
 
   followedOnTwitterList (){
@@ -219,6 +224,20 @@ class GuideStore extends FluxMapStore {
         return {
           ...state,
           followingByOrganization: followingByOrganization,
+          all_cached_voter_guides: all_cached_voter_guides
+        };
+
+      case "voterGuideFollowersRetrieve":
+        voter_guides = action.res.voter_guides;
+        all_cached_voter_guides = state.all_cached_voter_guides;
+        var followers = [];
+        voter_guides.forEach( one_voter_guide => {
+          all_cached_voter_guides[one_voter_guide.organization_we_vote_id] = one_voter_guide;
+          followers.push(one_voter_guide.organization_we_vote_id);
+        });
+        return {
+          ...state,
+          followers: followers,
           all_cached_voter_guides: all_cached_voter_guides
         };
 
