@@ -72,7 +72,7 @@ export default class Donate extends Component {
 
         <div className="Donate">
            {this.state.donationErrorMessage.length > 0 ? <DonationError errorMessage={this.state.donationErrorMessage} /> :
-           <p>If you like We Vote, please give what you can to help us reach more voters.</p>}
+           <p>Please give what you can to help us reach more voters.</p>}
           <br />
           <br />
           Gift Type:
