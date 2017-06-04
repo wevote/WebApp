@@ -14,7 +14,9 @@ class VoterStore extends FluxMapStore {
 
   getInitialState () {
     return {
-      voter: {},
+      voter: {
+        interface_status_flags: 0,
+      },
       address: {},
       email_address_status: {},
       email_sign_in_status: {},
@@ -49,7 +51,7 @@ class VoterStore extends FluxMapStore {
   }
 
   getFacebookPhoto (){
-    return this.getState().voter.facebook_profile_image_url_https;
+    return this.getState().voter.facebook_profile_image_url_https || "";
   }
 
   getFacebookSignInStatus (){
@@ -57,15 +59,15 @@ class VoterStore extends FluxMapStore {
   }
 
   getFirstName (){
-    return this.getState().voter.first_name;
+    return this.getState().voter.first_name || "";
   }
 
   getLastName (){
-    return this.getState().voter.last_name;
+    return this.getState().voter.last_name || "";
   }
 
   getFullName (){
-    return this.getState().voter.full_name;
+    return this.getState().voter.full_name || "";
   }
 
   getTwitterHandle (){
@@ -74,17 +76,17 @@ class VoterStore extends FluxMapStore {
 
   // Could be either Facebook photo or Twitter photo
   getVoterPhotoUrlLarge (){
-    return this.getState().voter.voter_photo_url_large;
+    return this.getState().voter.voter_photo_url_large || "";
   }
 
     // Could be either Facebook photo or Twitter photo
   getVoterPhotoUrlMedium (){
-    return this.getState().voter.voter_photo_url_medium;
+    return this.getState().voter.voter_photo_url_medium || "";
   }
 
   // Could be either Facebook photo or Twitter photo
   getVoterPhotoUrlTiny (){
-    return this.getState().voter.voter_photo_url_tiny;
+    return this.getState().voter.voter_photo_url_tiny || "";
   }
 
   // Voter's donation history
@@ -97,6 +99,7 @@ class VoterStore extends FluxMapStore {
   }
 
   setVoterDeviceIdCookie (id){
+    cookies.removeItem("voter_device_id");
     cookies.setItem("voter_device_id", id, Infinity, "/");
   }
 
@@ -113,7 +116,7 @@ class VoterStore extends FluxMapStore {
 
   getInterfaceFlagState (flag) {
     // Look in js/Constants/VoterConstants.js for list of flag constant definitions
-    let interfaceStatusFlags = this.getState().voter.interface_status_flags;
+    let interfaceStatusFlags = this.getState().voter.interface_status_flags || 0;
     // return True if bit specified by the flag is also set in interfaceStatusFlags (voter.interface_status_flags)
     // Eg: if interfaceStatusFlags = 5, then we can confirm that bits representing 1 and 4 are set (i.e., 0101)
     // so for value of flag = 1 and 4, we return a positive integer,
@@ -123,7 +126,7 @@ class VoterStore extends FluxMapStore {
 
   getNotificationSettingsFlagState (flag) {
     // Look in js/Constants/VoterConstants.js for list of flag constant definitions
-    let notificationSettingsFlags = this.getState().voter.notification_settings_flags;
+    let notificationSettingsFlags = this.getState().voter.notification_settings_flags || 0;
     // return True if bit specified by the flag is also set
     //  in notificationSettingsFlags (voter.notification_settings_flags)
     // Eg: if interfaceStatusFlags = 5, then we can confirm that bits representing 1 and 4 are set (i.e., 0101)
@@ -334,20 +337,28 @@ class VoterStore extends FluxMapStore {
         };
 
       case "voterRetrieve":
+        let current_voter_device_id = cookies.getItem("voter_device_id");
         if (!action.res.voter_found) {
-          // This voter_device_id is no good, so delete it.  Keep this log until we resolve https://github.com/wevote/WebApp/issues/834
-          console.log("This voter_device_id is no good, so delete it.");
-          cookies.setItem("voter_device_id", "", -1, "/");
+          console.log("This voter_device_id is not in the db and is invalid, so delete it: " + current_voter_device_id);
+          cookies.removeItem("voter_device_id");
+
           // ...and then ask for a new voter. When it returns a voter with a new voter_device_id, we will set new cookie
           VoterActions.voterRetrieve();
         } else {
           voter_device_id = action.res.voter_device_id;
-          this.setVoterDeviceIdCookie(voter_device_id);
-          VoterActions.voterAddressRetrieve(voter_device_id);
-          const url = action.res.facebook_profile_image_url_https;
-          if (action.res.signed_in_facebook && (url === null || url === "")) {
-            const userId = FacebookStore.userId;
-            FacebookActions.getFacebookProfilePicture(userId);
+          if (voter_device_id) {
+            if (current_voter_device_id !== voter_device_id) {
+              console.log("Setting new voter_device_id");
+              this.setVoterDeviceIdCookie(voter_device_id);
+            }
+            VoterActions.voterAddressRetrieve(voter_device_id);
+            const url = action.res.facebook_profile_image_url_https;
+            if (action.res.signed_in_facebook && (url === null || url === "")) {
+              const userId = FacebookStore.userId;
+              FacebookActions.getFacebookProfilePicture(userId);
+            }
+          } else {
+              console.log("voter_device_id not returned by voterRetrieve");
           }
         }
 

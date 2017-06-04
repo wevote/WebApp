@@ -80,12 +80,15 @@ export default class SignIn extends Component {
   }
 
   toggleTwitterDisconnectOpen () {
-    console.log("toggleTwitterDisconnectOpen");
     this.setState({show_twitter_disconnect: true});
   }
 
   toggleTwitterDisconnectClose () {
-    console.log("toggleTwitterDisconnectClose");
+    this.setState({show_twitter_disconnect: false});
+  }
+
+  voterSplitIntoTwoAccounts () {
+    VoterActions.voterSplitIntoTwoAccounts();
     this.setState({show_twitter_disconnect: false});
   }
 
@@ -111,22 +114,11 @@ export default class SignIn extends Component {
     }
   }
 
-  // getFacebookAuthResponse () {
-  //   return {
-  //     accessToken: FacebookStore.accessToken,
-  //     facebookIsLoggedIn: FacebookStore.loggedIn,
-  //     userId: FacebookStore.userId,
-  //     facebookPictureStatus: FacebookStore.facebookPictureStatus,
-  //     facebookPictureUrl: FacebookStore.facebookPictureUrl
-  //   };
-  // }
-
   render () {
     var {voter} = this.state;
     if (!voter){
       return LoadingWheel;
     }
-    console.log("SignIn.jsx render start");
 
     // console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
     if (!voter.signed_in_facebook && this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
@@ -155,6 +147,32 @@ export default class SignIn extends Component {
       <BrowserPushMessage incomingProps={this.props} />
       <div className="card">
         <div className="card-main">
+          {voter.signed_in_twitter && voter.signed_in_facebook ?
+            null :
+            <h1 className="h3">{voter.is_signed_in ? <span>{your_account_title}</span> : null}</h1>
+          }
+          {voter.is_signed_in ?
+            <span>{your_account_explanation}</span> :
+            <div>Before you can share, either publicly or with friends, please sign in. Don't worry, we won't post anything automatically.<br />
+            <br />
+            </div>
+          }
+          {!voter.signed_in_twitter || !voter.signed_in_facebook ?
+            <div>
+              {voter.signed_in_twitter ?
+                null :
+                <TwitterSignIn />
+              }
+              <span>&nbsp;</span>
+              {voter.signed_in_facebook ?
+                null :
+                <FacebookSignIn />
+              }
+              <br />
+              <br />
+            </div> :
+            null
+          }
           {voter.is_signed_in ?
             <div className="card">
               <span className="h3">Your Account</span>
@@ -183,30 +201,16 @@ export default class SignIn extends Component {
             </div> :
             null
           }
-          {voter.signed_in_twitter && voter.signed_in_facebook ?
+          {/*voter.signed_in_twitter && voter.signed_in_facebook ?
             null :
             <h1 className="h3">{voter.is_signed_in ? <span>{your_account_title}</span> : <span>Your Account</span>}</h1>
-          }
-          {voter.is_signed_in ?
+          */}
+          {/*voter.is_signed_in ?
             <span>{your_account_explanation}</span> :
             <div>Before you can share, either publicly or with friends, please sign in. Don't worry, we won't post anything automatically.<br />
             <br />
             </div>
-          }
-          {!voter.signed_in_twitter || !voter.signed_in_facebook ?
-            <div>
-              {voter.signed_in_twitter ?
-                null :
-                <TwitterSignIn />
-              }
-              <span>&nbsp;</span>
-              {voter.signed_in_facebook ?
-                null :
-                <FacebookSignIn />
-              }
-            </div> :
-            null
-          }
+          */}
           <div>
             {voter.is_signed_in ?
               <div>
@@ -217,42 +221,48 @@ export default class SignIn extends Component {
                 </span>
 
                 <br />
-                {voter.signed_in_twitter ?
-                  <span>
-                    <span className="btn btn-social btn-lg btn-twitter" href="#">
-                      <i className="fa fa-twitter"/>@{voter.twitter_screen_name}</span><span>&nbsp;</span>
-                  </span> :
-                  null
-                }
-                {voter.signed_in_facebook ?
-                  <span>
-                    <span className="btn btn-social-icon btn-lg btn-facebook">
-                      <span className="fa fa-facebook" />
-                    </span>
-                    <span>&nbsp;</span>
-                  </span> :
-                  null
-                }
-                {voter.signed_in_with_email ?
-                  <span>
-                    <span className="btn btn-warning btn-lg">
-                    <span className="glyphicon glyphicon-envelope" /></span>
-                  </span> :
+                <div>
+                  {voter.signed_in_twitter ?
+                    <span>
+                      <span className="btn btn-social btn-lg btn-twitter" href="#">
+                        <i className="fa fa-twitter"/>@{voter.twitter_screen_name}</span><span>&nbsp;</span>
+                    </span> :
+                    null
+                  }
+                  {voter.signed_in_facebook ?
+                    <span>
+                      <span className="btn btn-social-icon btn-lg btn-facebook">
+                        <span className="fa fa-facebook" />
+                      </span>
+                      <span>&nbsp;</span>
+                    </span> :
+                    null
+                  }
+                  {voter.signed_in_with_email ?
+                    <span>
+                      <span className="btn btn-warning btn-lg">
+                      <span className="glyphicon glyphicon-envelope" /></span>
+                    </span> :
+                    null
+                  }
+                </div>
+                {voter.signed_in_twitter && (voter.signed_in_facebook || voter.signed_in_with_email) ?
+                  <span>{this.state.show_twitter_disconnect ?
+                    <div>
+                      <Button bsStyle="danger"
+                          type="submit"
+                          onClick={this.voterSplitIntoTwoAccounts.bind(this)}
+                          >Disconnect @{voter.twitter_screen_name} from this account</Button>
+                    </div> :
+                    <div>
+                      <span onClick={this.toggleTwitterDisconnectOpen.bind(this)}>un-link twitter</span>
+                    </div>
+                  }</span> :
                   null
                 }
               </div> :
               null
             }
-            {/* TODO DALE This code to be moved */}
-            {/*this.state.show_twitter_disconnect ?
-              <span>
-                <Button bsStyle="danger"
-                    type="submit"
-                    onClick={this.toggleTwitterDisconnectClose.bind(this)}
-                    >Disconnect @{voter.twitter_screen_name}</Button>
-              </span> :
-              <span onClick={this.toggleTwitterDisconnectOpen.bind(this)}>edit</span>
-            */}
           </div>
 
           <VoterEmailAddressEntry />

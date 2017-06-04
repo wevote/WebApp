@@ -45,8 +45,8 @@ export default class Ballot extends Component {
         guides_to_follow_list: [],
         position_list: []
       },
-      showCandidateModal: false,
       showBallotIntroModal: false,
+      showCandidateModal: false,
       showMeasureModal: false,
       showSelectBallotModal: false,
       showSelectAddressModal: false,
@@ -69,6 +69,7 @@ export default class Ballot extends Component {
       this.ballotStoreListener = BallotStore.addListener(this._onBallotStoreChange.bind(this));
       // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
       // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
+      this._toggleBallotIntroModal = this._toggleBallotIntroModal.bind(this);
       this._toggleCandidateModal = this._toggleCandidateModal.bind(this);
       this._toggleMeasureModal = this._toggleMeasureModal.bind(this);
       this._toggleSelectBallotModal = this._toggleSelectBallotModal.bind(this);
@@ -79,6 +80,7 @@ export default class Ballot extends Component {
       BallotActions.voterBallotListRetrieve();
       this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
       this.supportStoreListener = SupportStore.addListener(this._onBallotStoreChange.bind(this));
+      this._onVoterStoreChange(); // We call this to properly set showBallotIntroModal
       this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     }
   }
@@ -100,8 +102,6 @@ export default class Ballot extends Component {
   }
 
   _onVoterStoreChange () {
-    // 5/25/17 Warning: setState(...): Can only update a mounted or mounting component. This usually means you called setState() on an unmounted component. This is a no-op. Please check the code for the Ballot component.
-    console.log("Warning often thrown here by _onVoterStoreChange () in Ballot.jsx");
     this.setState({
       voter: VoterStore.getVoter(),
       showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
@@ -268,7 +268,7 @@ export default class Ballot extends Component {
     };
 
     // This Modal is shown to the user, when user visits the ballot page for first time only
-    const BallotIntroModal = <Modal show={this.state.showBallotIntroModal} onHide={()=>{this._toggleBallotIntroModal(null);}}>
+    let BallotIntroModal = <Modal show={this.state.showBallotIntroModal} onHide={()=>{this._toggleBallotIntroModal(this);}}>
       <Modal.Header closeButton />
       <Modal.Body>
         <Slider ref="slider" {...settings}>
@@ -433,19 +433,21 @@ export default class Ballot extends Component {
     if (!ballot) {
       if (voter_address.length === 0) {
         return <div className="ballot">
+          { this.state.showBallotIntroModal ? BallotIntroModal : null }
           <div className="ballot__header">
             <BrowserPushMessage incomingProps={this.props} />
             <p className="ballot__date_location">
-              Your ballot could not be found. Please <Link to="/settings/location">change your address</Link>.
+              If your ballot does not appear momentarily, please <Link to="/settings/location">change your address</Link>.
             </p>
           </div>
         </div>;
       } else {
         // console.log("Loading Wheel " + "voter_address " + voter_address + " ballot " + ballot + " location " + this.props.location);
         return <div className="ballot">
+          { this.state.showBallotIntroModal ? BallotIntroModal : null }
             <div className="ballot__header">
               <p className="ballot__date_location">
-                Your ballot could not be found. Please <Link to="/settings/location">change your address</Link>.
+                If your ballot does not appear momentarily, please <Link to="/settings/location">change your address</Link>.
               </p>
               {LoadingWheel}
             </div>
