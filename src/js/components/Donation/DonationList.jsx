@@ -3,7 +3,7 @@ import {Table, Button, Panel} from "react-bootstrap";
 import moment from "moment";
 import VoterStore from "../../stores/VoterStore";
 import VoterActions from "../../actions/VoterActions";
-import DonationCancelSubscription from "./DonationCancelSubscription";
+import DonationCancelOrRefund from "./DonationCancelOrRefund";
 
 const styles = {
   table: {
@@ -50,7 +50,9 @@ export default class DonationList extends Component {
 
   render () {
     if (this.state.journal && this.state.journal.length > 0) {
-      if (this.props.displayDonations) {
+      let donations = this.props.displayDonations;
+
+      if (donations) {
         return <Panel style={styles.Panel}>
           <Table striped condensed hover responsive>
             <thead>
@@ -80,7 +82,8 @@ export default class DonationList extends Component {
                   <td style={styles.td}>{item.last4}</td>
                   <td style={styles.td}>{item.exp_month + "/" + item.exp_year}</td>
                   <td style={styles.td}>{item.stripe_status === "succeeded" ? "Paid" : item.stripe_status}</td>
-                  <td style={styles.td}>{active ? <Button bsSize="small" disabled>Details</Button> : null}</td>
+                  <td style={styles.td}>
+                    {active ? <DonationCancelOrRefund item={item} refundDonation={donations}/> : null}</td>
                 </tr>;
               } else {
                 return null;
@@ -101,7 +104,6 @@ export default class DonationList extends Component {
               <th style={styles.th}>Card</th>
               <th style={styles.th}>Ends with</th>
               <th style={styles.th}>Expires</th>
-              <th style={styles.th}>Status</th>
               <th style={styles.th}>Ended</th>
               <th style={styles.th}>Canceled</th>
               <th style={styles.th}>Info</th>
@@ -125,7 +127,8 @@ export default class DonationList extends Component {
                   <td style={styles.td}>{!waiting > 0 ? item.exp_month + "/" + item.exp_year : "waiting"}</td>
                   <td style={styles.td}>{ended}</td>
                   <td style={styles.td}>{cancel}</td>
-                  <td style={styles.td}>{active ? <DonationCancelSubscription item={item}/> : null}</td>
+                  <td style={styles.td}>
+                    {active ? <DonationCancelOrRefund item={item} refundDonation={donations}/> : null}</td>
                 </tr>;
               } else {
                 return null;
