@@ -59,7 +59,7 @@ export default class FriendInvitationEmailForList extends Component {
     }
 
     let voterGuideLink = this.props.voter_twitter_handle ? "/" + this.props.voter_twitter_handle : null;
-    let voter_image = <ImageHandler sizeClassName="icon-lg " imageUrl="" kind_of_ballot_item="CANDIDATE" />;
+    let voter_image = <ImageHandler sizeClassName="image-lg " imageUrl="" kind_of_ballot_item="CANDIDATE" />;
     let voter_display_name_formatted = <h4 className="card-child__display-name">{voter_email_address}</h4>;
 
     return <div className="position-item card-child card-child--not-followed">
