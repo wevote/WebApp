@@ -6,6 +6,7 @@ import VoterActions from "../actions/VoterActions";
 import VoterConstants from "../constants/VoterConstants";
 import VoterStore from "../stores/VoterStore";
 
+const web_app_config = require("../config");
 
 export default class Intro extends Component {
   static propTypes = {
@@ -58,6 +59,32 @@ export default class Intro extends Component {
     VoterActions.voterFullNameSoftSave("", "", this.state.voter_full_name);
     VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
     this.setState({loading: true});
+  }
+
+  shareToFacebookButton () {
+      window.FB.ui({
+        display: "popup",
+        redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/welcome",
+        method: "share",
+        mobile_iframe: true,
+        href: "https://wevote.us",
+        quote: "Check out https://WeVote.US! View your ballot. Learn from friends. Share your vision. @WeVote #Voting #WeVote",
+      }, function (response) {
+        console.log("response:", response);
+        if ( response.error_code === 4201 ) {
+          console.log("User Canceled the share request");
+        }
+      });
+  }
+
+  popupForSharingOnTwitter () {
+    let url = "https://twitter.com/share?text=Check%20out%20https%3A%2F%2FWeVote.Us%2F!%20View%20you%20ballot.%20Learn%20from%20friends.%20Share%20your%20vision.%20@WeVote&hashtags=Voting,WeVote";
+    let title = "Share On Twitter";
+    let w = 600;
+    let h = 600;
+    var left = (screen.width / 2) - (w / 2);
+    var top = (screen.height / 2) - (h / 2);
+    return window.open(url, title, 'toolbar=no, width=' + w + ', height=' + h + ', top=' + top + ' left=' + left);
   }
 
   render () {
@@ -194,12 +221,17 @@ export default class Intro extends Component {
         <div className="container">
           <h3 className="u-f3 u-stack--lg">Please share or donate to help us reach more voters.</h3>
           <div className="u-stack--xl">
-            <button className="btn btn-social btn-facebook u-push--sm">
+            <Button className="btn btn-social btn-facebook u-push--sm"
+                bsStyle="danger"
+                type="submit"
+                onClick={this.shareToFacebookButton}>
               <span className="fa fa-facebook" /> Facebook
-            </button>
-            <button className="btn btn-social btn-twitter u-push--sm">
+            </Button>
+            <Button className="btn btn-social btn-twitter u-push--sm"
+                bsStyle="danger"
+                onClick={this.popupForSharingOnTwitter}>
               <span className="fa fa-twitter" /> Twitter
-            </button>
+            </Button>
             <button className="btn btn-social btn--email u-push--sm">
               <span className="fa fa-envelope" /> Email
             </button>
