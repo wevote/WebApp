@@ -185,4 +185,11 @@ module.exports = {
         send_journal_list: true
       });
   },
+
+  voterSplitIntoTwoAccounts: function () {
+    Dispatcher.loadEndpoint("voterSplitIntoTwoAccounts",
+      {
+        split_off_twitter: true
+      });
+  },
 };
