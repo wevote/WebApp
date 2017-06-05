@@ -77,7 +77,7 @@ export default class Intro extends Component {
       });
   }
 
-  popupForSharingOnTwitter () {
+  shareToTwitterButton () {
     let url = "https://twitter.com/share?text=Check%20out%20https%3A%2F%2FWeVote.Us%2F!%20View%20you%20ballot.%20Learn%20from%20friends.%20Share%20your%20vision.%20@WeVote&hashtags=Voting,WeVote";
     let title = "Share On Twitter";
     let w = 600;
@@ -229,7 +229,7 @@ export default class Intro extends Component {
             </Button>
             <Button className="btn btn-social btn-twitter u-push--sm"
                 bsStyle="danger"
-                onClick={this.popupForSharingOnTwitter}>
+                onClick={this.shareToTwitterButton}>
               <span className="fa fa-twitter" /> Twitter
             </Button>
             <button className="btn btn-social btn--email u-push--sm">
