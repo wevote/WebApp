@@ -339,7 +339,7 @@ class VoterStore extends FluxMapStore {
       case "voterRetrieve":
         let current_voter_device_id = cookies.getItem("voter_device_id");
         if (!action.res.voter_found) {
-          console.log("This voter_device_id is not in the db and is invalid, so delete it: " + cookies.getItem("voter_device_id"));
+          console.log("This voter_device_id is not in the db and is invalid, so delete it: " + current_voter_device_id);
           cookies.removeItem("voter_device_id");
 
           // ...and then ask for a new voter. When it returns a voter with a new voter_device_id, we will set new cookie
