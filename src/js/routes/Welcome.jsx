@@ -67,12 +67,13 @@ export default class Intro extends Component {
         redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/welcome",
         method: "share",
         mobile_iframe: true,
-        href: "https://wevote.us",
+        href: web_app_config.WE_VOTE_HOSTNAME,
         quote: "Check out https://WeVote.US! View your ballot. Learn from friends. Share your vision. @WeVote #Voting #WeVote",
       }, function (response) {
-        console.log("response:", response);
-        if ( response.error_code === 4201 ) {
+        if ( response === undefined || response.error_code === 4201 ) {
           console.log("User Canceled the share request");
+        } else if ( response ) {
+          //console.log("Successfully Shared", response);
         }
       });
   }
@@ -85,6 +86,13 @@ export default class Intro extends Component {
     var left = (screen.width / 2) - (w / 2);
     var top = (screen.height / 2) - (h / 2);
     return window.open(url, title, 'toolbar=no, width=' + w + ', height=' + h + ', top=' + top + ' left=' + left);
+  }
+
+  shareToEmailButton () {
+    let subject = "Check out WeVote https://WeVote.US!";
+    let body = "Check out https://WeVote.US! View your ballot. Learn from friends. Share your vision. @WeVote #Voting #WeVote";
+    var link = "mailto:" + "&subject=" + subject + "&body=" + body;
+    window.location.href = link;
   }
 
   render () {
@@ -232,9 +240,11 @@ export default class Intro extends Component {
                 onClick={this.shareToTwitterButton}>
               <span className="fa fa-twitter" /> Twitter
             </Button>
-            <button className="btn btn-social btn--email u-push--sm">
+            <Button className="btn btn-social btn--email u-push--sm"
+                bsStyle="danger"
+                onClick={this.shareToEmailButton}>
               <span className="fa fa-envelope" /> Email
-            </button>
+            </Button>
             <Link to="/more/donate">
               <button className="btn btn-social btn-danger u-push--sm">
                 <span className="fa fa-heart" /> Donate
