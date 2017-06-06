@@ -14,8 +14,6 @@ export default class DonationCancelOrRefund extends Component {
     super(props);
     this.state = {
       showModal: false,
-      cancelling: false,
-      refundDonation: true,
     };
   }
 
@@ -28,13 +26,13 @@ export default class DonationCancelOrRefund extends Component {
   }
 
   cancel (item) {
-    this.setState({ cancelling: true });
-    console.log("CANCEL");
-    if (this.cancelSubscription)
-      DonateActions.donationCancelSubscriptionAction(item.subscription_id);
-    else
+    console.log("cancel Subscription" + item);
+    if (this.props.refundDonation) {
       DonateActions.donationRefund(item.charge_id);
-    this.setState({ showModal: false });
+    } else {
+      DonateActions.donationCancelSubscriptionAction(item.subscription_id);
+    }
+    this.setState({showModal: false});
   }
 
   render () {
@@ -78,7 +76,7 @@ export default class DonationCancelOrRefund extends Component {
           <Modal.Footer>
             <Button onClick={this.close.bind(this)}>I changed my mind</Button>
             <Button onClick={this.cancel.bind(this, item)}>
-              {refundDonation ? "Cancel this donation" : "Cancel this subscription"}</Button>
+              {refundDonation ? "Refund this donation" : "Cancel this subscription"}</Button>
           </Modal.Footer>
         </Modal>
       </div>;
