@@ -55,7 +55,7 @@ export default class FriendInvitationDisplayForList extends Component {
 
     // TwitterHandle-based link
     var voterGuideLink = this.props.voter_twitter_handle ? "/" + this.props.voter_twitter_handle : null;
-    let voter_image = <ImageHandler sizeClassName="icon-lg " imageUrl={voter_photo_url_medium} kind_of_ballot_item="CANDIDATE" />;
+    let voter_image = <ImageHandler sizeClassName="image-lg " imageUrl={voter_photo_url_medium} kind_of_ballot_item="CANDIDATE" />;
     let voter_display_name_formatted = <span className="card-child__display-name">{voter_display_name}</span>;
     // console.log("FriendInvitationDisplayForList, this.props.voter_we_vote_id:", this.props.voter_we_vote_id);
 

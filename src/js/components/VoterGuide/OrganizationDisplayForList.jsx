@@ -63,7 +63,7 @@ export default class OrganizationDisplayForList extends Component {
     return <div className="card-child card-child--not-followed">
       <div className="card-child__media-object-anchor">
         <Link to={voterGuideLink} className="u-no-underline">
-          <ImageHandler className="card-child__avatar" sizeClassName="icon-lg " imageUrl={voter_guide_image_url_large} />
+          <ImageHandler className="card-child__avatar" sizeClassName="image-lg " imageUrl={voter_guide_image_url_large} />
         </Link>
       </div>
       <div className="card-child__media-object-content">
