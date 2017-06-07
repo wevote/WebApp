@@ -12,7 +12,7 @@ export default class SignIn extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      facebook_auth_response: {}
+      facebook_auth_response: {},
     };
   }
 
@@ -35,11 +35,13 @@ export default class SignIn extends Component {
   componentWillUnmount () {
     document.body.style.backgroundColor = null;
     document.body.className = "";
+    this.facebookListener.remove();
+    this.voterStoreListener.remove();
   }
 
   _onVoterStoreChange () {
     this.setState({
-      voter: VoterStore.getVoter()
+      voter: VoterStore.getVoter(),
     });
   }
 
@@ -50,7 +52,7 @@ export default class SignIn extends Component {
   }
 
   render () {
-    if (!this.state.voter){
+    if (!this.state.voter) {
       return LoadingWheel;
     }
 
@@ -59,7 +61,8 @@ export default class SignIn extends Component {
       return LoadingWheel;
     }
 
-    if (!this.state.voter.signed_in_facebook && this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
+    if (!this.state.voter.signed_in_facebook && this.state.facebook_auth_response &&
+        this.state.facebook_auth_response.facebook_retrieve_attempted) {
       console.log("GetStarted.jsx facebook_retrieve_attempted");
       browserHistory.push("/facebook_sign_in");
       return LoadingWheel;
@@ -93,7 +96,8 @@ export default class SignIn extends Component {
               </div>
             </div> }
           <footer className="intro-story__footer">
-            <button type="button" className="btn btn-lg btn-success" onClick={this.goToBallotLink}>Skip Sign In&nbsp;&nbsp;&gt;</button><br />
+            <button type="button" className="btn btn-lg btn-success"
+                    onClick={this.goToBallotLink}>Skip Sign In&nbsp;&nbsp;&gt;</button><br />
             Check out We Vote first
           </footer>
         </div>

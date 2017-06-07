@@ -44,6 +44,7 @@ export default class DonationList extends Component {
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
+    this.donateStoreListener.remove();
   }
 
   _onDonateStoreChange () {
