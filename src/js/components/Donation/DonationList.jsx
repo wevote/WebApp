@@ -39,7 +39,7 @@ export default class DonationList extends Component {
     this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     this.donateStoreListener = DonateStore.addListener(this._onDonateStoreChange.bind(this));
-    VoterActions.voterRefreshDonations();
+    // VoterActions.voterRefreshDonations();
   }
 
   componentWillUnmount () {
@@ -47,12 +47,10 @@ export default class DonationList extends Component {
   }
 
   _onDonateStoreChange () {
-    console.log("_onDonateStoreChange");
     VoterActions.voterRefreshDonations();
   }
 
   _onVoterStoreChange () {
-    console.log("_onVoterStoreChange");
     this.setState({ journal: VoterStore.getVoterDonationHistory() });
   }
 
@@ -63,7 +61,7 @@ export default class DonationList extends Component {
 
       if (donations) {
         return <Panel style={styles.Panel}>
-          <Table striped condensed hover responsive>    { /* Donations */ }
+          <Table striped condensed hover responsive>{ /* Donations */ }
             <thead>
             <tr>
               <th style={styles.th}>Date</th>
@@ -105,7 +103,7 @@ export default class DonationList extends Component {
         </Panel>;
       } else {
         return <Panel style={styles.Panel}>
-          <Table striped condensed hover responsive>    { /* Subscriptions */ }
+          <Table striped condensed hover responsive>{ /* Subscriptions */ }
             <thead>
             <tr>
               <th style={styles.th}>Active</th>

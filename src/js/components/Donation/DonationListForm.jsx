@@ -16,7 +16,7 @@ export default class DonationListForm extends Component {
   componentDidMount () {
     this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    VoterActions.voterRefreshDonations();
+    // VoterActions.voterRefreshDonations();
   }
 
   componentWillUnmount () {
