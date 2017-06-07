@@ -3,8 +3,8 @@ import { Link } from "react-router";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import OrganizationCard from "./OrganizationCard";
+import OrganizationsNotShownList from "./OrganizationsNotShownList";
 import OrganizationTinyDisplay from "./OrganizationTinyDisplay";
-
 export default class ItemTinyOpinionsToFollow extends Component {
 
   static propTypes = {
@@ -83,10 +83,12 @@ export default class ItemTinyOpinionsToFollow extends Component {
 
     let local_counter = 0;
     let orgs_not_shown_count = 0;
+    let orgs_not_shown_list = [];
     let one_organization_for_organization_card;
     if (this.state.organizations_to_follow &&
       this.state.organizations_to_follow.length > this.state.maximum_organization_display) {
       orgs_not_shown_count = this.state.organizations_to_follow.length - this.state.maximum_organization_display;
+      orgs_not_shown_list = this.state.organizations_to_follow.slice(this.state.maximum_organization_display);
     }
     const organizations_to_display = this.state.organizations_to_follow.map( (one_organization) => {
       local_counter++;
@@ -95,9 +97,29 @@ export default class ItemTinyOpinionsToFollow extends Component {
       if (local_counter > this.state.maximum_organization_display) {
         if (local_counter === this.state.maximum_organization_display + 1) {
           // If here we want to show how many organizations there are to follow
-          return <span key={one_organization.organization_we_vote_id}>
-            <Link to="/opinions"> +{orgs_not_shown_count}</Link>
-          </span>;
+          this.popover_state[orgs_not_shown_count] = {show: false, timer: null};
+          let organizationPopover = <Popover
+              id={`organization-popover-${orgs_not_shown_count}`}
+              onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
+              onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
+              className="card-popover">
+              <OrganizationsNotShownList orgs_not_shown_list={orgs_not_shown_list} />
+            </Popover>;
+
+          return <OverlayTrigger
+              key={`trigger-${orgs_not_shown_count}`}
+              ref={`overlay-${orgs_not_shown_count}`}
+              onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
+              onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
+              onExiting={() => this.onTriggerLeave(orgs_not_shown_count)}
+              trigger={["focus", "hover"]}
+              rootClose
+              placement="bottom"
+              overlay={organizationPopover}>
+            <span className="position-rating__source with-popover">
+              <Link to="/opinions"> +{orgs_not_shown_count}</Link>
+            </span>
+          </OverlayTrigger>;
         } else {
           return "";
         }

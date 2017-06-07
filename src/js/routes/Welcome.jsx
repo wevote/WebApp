@@ -79,7 +79,7 @@ export default class Intro extends Component {
   }
 
   shareToTwitterButton () {
-    let url = "https://twitter.com/share?text=Check%20out%20https%3A%2F%2FWeVote.Us%2F!%20View%20you%20ballot.%20Learn%20from%20friends.%20Share%20your%20vision.%20@WeVote&hashtags=Voting,WeVote";
+    let url = "https://twitter.com/share?url=https%3A%2F%2FWeVote.Us%2F%20&text=Check%20out%20https%3A%2F%2FWeVote.Us%2F!%20View%20you%20ballot.%20Learn%20from%20friends.%20Share%20your%20vision.%20@WeVote&hashtags=Voting,WeVote";
     let title = "Share On Twitter";
     let w = 600;
     let h = 600;
@@ -92,7 +92,7 @@ export default class Intro extends Component {
     let subject = "Check out WeVote https://WeVote.US!";
     let body = "Check out https://WeVote.US! View your ballot. Learn from friends. Share your vision. @WeVote #Voting #WeVote";
     var link = "mailto:" + "&subject=" + subject + "&body=" + body;
-    window.location.href = link;
+    window.top.location.href = link;
   }
 
   render () {
