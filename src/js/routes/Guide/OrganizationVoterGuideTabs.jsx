@@ -3,6 +3,7 @@ import GuideStore from "../../stores/GuideStore";
 import VoterGuidesFollowers from "../../routes/VoterGuidesFollowers";
 import VoterGuidesFollowing from "../../routes/VoterGuidesFollowing";
 import VoterGuidesPositions from "../../routes/VoterGuidesPositions";
+import VoterStore from "../../stores/VoterStore";
 import { Tabs, Tab } from "react-bootstrap";
 
 
@@ -20,11 +21,15 @@ export default class OrganizationVoterGuideTabs extends Component {
   }
 
   componentDidMount () {
+    console.log("OrganizationVoterGuideTabs, componentDidMount");
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+    this._onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount (){
     this.guideStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   _onGuideStoreChange (){
@@ -34,16 +39,37 @@ export default class OrganizationVoterGuideTabs extends Component {
     });
   }
 
+  _onVoterStoreChange () {
+    this.setState({
+      voter: VoterStore.getVoter()});
+   }
 
   render () {
-    var following_title = this.state.voter_guide_followed_list.length === 0 ?
-                  "FOLLOWING" : this.state.voter_guide_followed_list.length + " FOLLOWING";
-    var followers_title = this.state.voter_guide_followers_list.length === 0 ?
-                  "FOLLOWERS" : this.state.voter_guide_followers_list.length + " FOLLOWERS";
+    let looking_at_self = false;
+    if (this.state.voter) {
+      looking_at_self = this.state.voter.linked_organization_we_vote_id === this.props.organization.organization_we_vote_id;
+    }
+    let positions_title = "";
+    let following_title = "";
+    // let following_count = 0;
+    let followers_title = "";
+    // let followers_count = this.state.voter_guide_followers_list.length;
+    if (looking_at_self) {
+      positions_title = "YOUR POSITIONS";
+      following_title = "YOU ARE FOLLOWING";
+      followers_title = this.state.voter_guide_followers_list.length === 0 ?
+        "FOLLOWERS" : this.state.voter_guide_followers_list.length + "FOLLOWERS";
+    } else {
+      positions_title = "POSITIONS";
+      following_title = this.state.voter_guide_followed_list.length === 0 ?
+        "FOLLOWING" : this.state.voter_guide_followed_list.length + " FOLLOWING";
+      followers_title = this.state.voter_guide_followers_list.length === 0 ?
+        "FOLLOWERS" : this.state.voter_guide_followers_list.length + " FOLLOWERS";
+    }
 
     return (
       <Tabs defaultActiveKey={1} id="tabbed_voter_guide_details">
-        <Tab eventKey={1} title="POSITION">
+        <Tab eventKey={1} title={positions_title}>
           <VoterGuidesPositions organization_we_vote_id={this.props.organization.organization_we_vote_id} />
         </Tab>
 

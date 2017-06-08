@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { Button } from "react-bootstrap";
 import { capitalizeString } from "../utils/textFormat";
 import Helmet from "react-helmet";
+import BallotStore from "../stores/BallotStore";
 import OrganizationActions from "../actions/OrganizationActions";
 import OrganizationStore from "../stores/OrganizationStore";
 import OrganizationPositionItem from "../components/VoterGuide/OrganizationPositionItem";
@@ -65,6 +66,7 @@ export default class VoterGuidesPositions extends Component {
         </div>;
     }
 
+    const election_name = BallotStore.currentBallotElectionName;
     let organization_name = capitalizeString(this.state.organization.organization_name);
     let title_text = organization_name + " - We Vote";
     let description_text = "See endorsements and opinions from " + organization_name + " for the November election";
@@ -79,7 +81,7 @@ export default class VoterGuidesPositions extends Component {
             <span>
               { position_list_for_one_election.length ?
                 <span>
-                  <h4 className="card__additional-heading">Position for Election</h4>
+                  <h4 className="card__additional-heading">{election_name}</h4>
                 </span> :
                 null
               }

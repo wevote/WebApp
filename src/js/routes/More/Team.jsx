@@ -84,7 +84,7 @@ export default class Team extends Component {
                               alt="Lawrence Grodeska"/>
                 <div className="media-body">
                   <h4 className="team-member__name"><strong>Lawrence Grodeska</strong></h4>
-                  <p className="team-member__title">c3 Board Member</p>
+                  <p className="team-member__title">c3 Board Chair</p>
                   <p className="xx-small hidden-xs">
                     Civic Tech communications and innovation at CivicMakers. Formerly at Change.org.
                   </p>

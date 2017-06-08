@@ -4,6 +4,8 @@ import BallotStore from "../../stores/BallotStore";
 import BookmarkStore from "../../stores/BookmarkStore";
 import cookies from "../../utils/cookies";
 import FriendStore from "../../stores/FriendStore";
+import GuideActions from "../../actions/GuideActions";
+import OrganizationActions from "../../actions/OrganizationActions";
 import SearchAllBox from "../SearchAllBox";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 var Icon = require("react-svg-icons");
@@ -160,7 +162,7 @@ export default class HeaderBar extends Component {
           <ul className="nav nav-stacked">
             { show_your_page_from_twitter ?
               <li>
-                <Link onClick={this.hideAccountMenu.bind(this)} to={"/" + twitter_screen_name}>
+                <Link onClick={this.transitionToYourVoterGuide.bind(this)} to={"/" + twitter_screen_name}>
                   <div>
                     <span className="header-slide-out-menu-text-left">Your Voter Guide</span>
                   </div>
@@ -170,7 +172,7 @@ export default class HeaderBar extends Component {
             }
             { show_your_page_from_facebook ?
               <li>
-                <Link onClick={this.hideAccountMenu.bind(this)} to={"/voterguide/" + linked_organization_we_vote_id}>
+                <Link onClick={this.transitionToYourVoterGuide.bind(this)} to={"/voterguide/" + linked_organization_we_vote_id}>
                   <div>
                     <span className="header-slide-out-menu-text-left">Your Voter Guide</span>
                   </div>
@@ -180,7 +182,7 @@ export default class HeaderBar extends Component {
             }
             { !show_your_page_from_twitter && !show_your_page_from_facebook && is_signed_in ?
               <li>
-                <Link onClick={this.hideAccountMenu.bind(this)} to="/yourpage">
+                <Link onClick={this.transitionToYourVoterGuide.bind(this)} to="/yourpage">
                   <div>
                     <span className="header-slide-out-menu-text-left">Your Voter Guide</span>
                   </div>
@@ -267,6 +269,16 @@ export default class HeaderBar extends Component {
 
   signOutAndHideAccountMenu () {
     VoterSessionActions.voterSignOut();
+    this.setState({accountMenuOpen: false});
+  }
+
+  transitionToYourVoterGuide () {
+    // Positions for this organization, for this voter / election
+    OrganizationActions.retrievePositions(this.props.voter.linked_organization_we_vote_id, true);
+    // Positions for this organization, NOT including for this voter / election
+    OrganizationActions.retrievePositions(this.props.voter.linked_organization_we_vote_id, false, true);
+    GuideActions.voterGuideFollowersRetrieve(this.props.voter.linked_organization_we_vote_id);
+    GuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.voter.linked_organization_we_vote_id);
     this.setState({accountMenuOpen: false});
   }
 

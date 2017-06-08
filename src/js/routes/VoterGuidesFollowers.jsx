@@ -109,7 +109,7 @@ export default class VoterGuidesFollowers extends Component {
                 </span> :
                 <span>
                   { voter_guide_followers_list.length === 0 ?
-                    <h4 className="card__additional-heading">{this.state.search_term} not found</h4> :
+                    <h4 className="card__additional-heading">"{this.state.search_term}" not found</h4> :
                     null
                   }
                 </span>
@@ -120,8 +120,8 @@ export default class VoterGuidesFollowers extends Component {
             </span> :
             <span>
               {this.state.voter.linked_organization_we_vote_id === this.state.organization_we_vote_id ?
-                <h4 className="card__additional-heading">No one follows you.</h4> :
-                <h4 className="card__additional-heading">No one follows {this.state.organization_name}.</h4>
+                <h4 className="card__additional-heading">No one is following you yet.</h4> :
+                <h4 className="card__additional-heading">No one is following {this.state.organization_name} yet.</h4>
               }
             </span>
           }
