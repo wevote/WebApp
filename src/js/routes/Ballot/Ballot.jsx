@@ -306,14 +306,16 @@ export default class Ballot extends Component {
                   <span>
                       {/* In desktop mode, align left with position bar */}
                     {/* In mobile mode, turn on green up-arrow before icons */}
-                    <ItemTinyPositionBreakdownList ballotItemWeVoteId={this.state.candidate_for_modal.we_vote_id}
+                    <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.candidate_for_modal.ballot_item_display_name}
+                                                   ballotItemWeVoteId={this.state.candidate_for_modal.we_vote_id}
                                                    position_list={this.state.candidate_for_modal.position_list}
                                                    showSupport
                                                    supportProps={SupportStore.get(this.state.candidate_for_modal.we_vote_id)} />
                       <span className="pull-right">
                         {/* In desktop mode, align right with position bar */}
                         {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
-                        <ItemTinyPositionBreakdownList ballotItemWeVoteId={this.state.candidate_for_modal.we_vote_id}
+                        <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.candidate_for_modal.ballot_item_display_name}
+                                                       ballotItemWeVoteId={this.state.candidate_for_modal.we_vote_id}
                                                        position_list={this.state.candidate_for_modal.position_list}
                                                        showOppose
                                                        supportProps={SupportStore.get(this.state.candidate_for_modal.we_vote_id)} />
@@ -368,14 +370,16 @@ export default class Ballot extends Component {
                     <span>
                       {/* In desktop mode, align left with position bar */}
                       {/* In mobile mode, turn on green up-arrow before icons */}
-                      <ItemTinyPositionBreakdownList ballotItemWeVoteId={this.state.measure_for_modal.measure_we_vote_id}
+                      <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.measure_for_modal.ballot_item_display_name}
+                                                     ballotItemWeVoteId={this.state.measure_for_modal.measure_we_vote_id}
                                                      position_list={this.state.measure_for_modal.position_list}
                                                      showSupport
                                                      supportProps={SupportStore.get(this.state.measure_for_modal.measure_we_vote_id)} />
                       <span className="pull-right">
                         {/* In desktop mode, align right with position bar */}
                         {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
-                        <ItemTinyPositionBreakdownList ballotItemWeVoteId={this.state.measure_for_modal.measure_we_vote_id}
+                        <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.measure_for_modal.ballot_item_display_name}
+                                                       ballotItemWeVoteId={this.state.measure_for_modal.measure_we_vote_id}
                                                        position_list={this.state.measure_for_modal.position_list}
                                                        showOppose
                                                        supportProps={SupportStore.get(this.state.measure_for_modal.measure_we_vote_id)} />

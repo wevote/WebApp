@@ -5,6 +5,7 @@ import FollowToggle from "../../components/Widgets/FollowToggle";
 import OrganizationCard from "./OrganizationCard";
 import OrganizationsNotShownList from "./OrganizationsNotShownList";
 import OrganizationTinyDisplay from "./OrganizationTinyDisplay";
+
 export default class ItemTinyOpinionsToFollow extends Component {
 
   static propTypes = {
