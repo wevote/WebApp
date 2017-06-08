@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import {Table, Button, Panel} from "react-bootstrap";
+import {Table, Panel} from "react-bootstrap";
 import moment from "moment";
 import VoterStore from "../../stores/VoterStore";
 import DonateStore from "../../stores/DonateStore";

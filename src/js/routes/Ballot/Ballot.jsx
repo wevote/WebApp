@@ -493,25 +493,28 @@ export default class Ballot extends Component {
       <div className="ballot__heading u-stack--lg">
         <Helmet title="Ballot - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
-        <OverlayTrigger placement="top" overlay={electionTooltip} >
-          <h1 className="h1 ballot__election-name">
-             <span className="u-push--sm">{election_name}</span>
-             {this.state.ballot_election_list.length > 1 ? <img src={"/img/global/icons/gear-icon.png"} className="hidden-print" role="button" onClick={this._toggleSelectBallotModal}
-              alt={"view your ballots"}/> : null}
-          </h1>
-        </OverlayTrigger>
-        <p className="ballot__date_location">
-          {voter_address}
-          <span className="hidden-print"> (<a onClick={this._toggleSelectAddressModal}>Edit</a>)</span>
-        </p>
-        <div className="ballot__filter hidden-print"><BallotFilter ballot_type={this.getBallotType()} /></div>
+        { election_name ?
+          <OverlayTrigger placement="top" overlay={electionTooltip} >
+            <h1 className="h1 ballot__election-name">
+               <span className="u-push--sm">{election_name}</span>
+               {this.state.ballot_election_list.length > 1 ? <img src={"/img/global/icons/gear-icon.png"} className="hidden-print" role="button" onClick={this._toggleSelectBallotModal}
+                alt={"view your ballots"}/> : null}
+            </h1>
+          </OverlayTrigger> :
+          null }
+        {voter_address ?
+          <p className="ballot__date_location">
+            {voter_address}
+            <span className="hidden-print"> (<a onClick={this._toggleSelectAddressModal}>Edit</a>)</span>
+          </p> :
+          <p className="ballot__date_location">
+            In order to see your ballot, please enter your address.
+            <span className="hidden-print"> (<a onClick={this._toggleSelectAddressModal}>Add Your Address</a>)</span>
+          </p> }
+        {voter_address ?
+          <div className="ballot__filter hidden-print"><BallotFilter ballot_type={this.getBallotType()} /></div> :
+          null}
       </div>
-      {/* TO BE DISCUSSED ballot_caveat !== "" ?
-        <div className="alert alert alert-info alert-dismissible" role="alert">n
-          <button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          {ballot_caveat}
-        </div> : null
-      */}
       {emptyBallot}
         <div className="BallotList">
         { in_ready_to_vote_mode ?

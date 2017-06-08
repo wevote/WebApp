@@ -110,7 +110,6 @@ export default class NotFound extends Component {
         return <PositionListForFriends we_vote_id {...this.props} />;
       } else {
           return <OrganizationVoterGuide we_vote_id {...this.props} />;
-          // return <GuidePositionList we_vote_id {...this.props} />;
       }
     } else if (this.state.kind_of_owner === "TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE"){
       return <UnknownTwitterAccount {...this.state} />;

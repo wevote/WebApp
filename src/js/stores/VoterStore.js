@@ -345,7 +345,12 @@ class VoterStore extends FluxMapStore {
           cookies.removeItem("voter_device_id");
 
           // ...and then ask for a new voter. When it returns a voter with a new voter_device_id, we will set new cookie
-          VoterActions.voterRetrieve();
+          if (!cookies.getItem("voter_device_id")) {
+            console.log("voter_device_id gone -- calling voterRetrieve");
+            VoterActions.voterRetrieve();
+          } else {
+            console.log("voter_device_id still exists -- did not call voterRetrieve");
+          }
         } else {
           voter_device_id = action.res.voter_device_id;
           if (voter_device_id) {

@@ -89,13 +89,6 @@ export default class VoterGuidesFollowing extends Component {
 
     return <div className="opinions-followed__container">
       <Helmet title="Organizations You Following - We Vote" />
-      { this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length > 0 ?
-        <input type="text"
-             className="form-control"
-             name="search_following_voter_guides_text"
-             placeholder="Search for following voter guides."
-             onChange={this.searchFollowingVoterGuides.bind(this)} /> : null
-      }
       <div className="card">
         <ul className="card-child__list-group">
           { this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length > 0 ?
@@ -107,12 +100,23 @@ export default class VoterGuidesFollowing extends Component {
                     <h4 className="card__additional-heading">{this.state.organization_name} is Following</h4>
                   }
                 </span> :
+                <h4 className="card__additional-heading">Search Results</h4>
+              }
+              { this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length > 0 ?
+                <input type="text"
+                     className="form-control"
+                     name="search_following_voter_guides_text"
+                     placeholder="Search for following voter guides."
+                     onChange={this.searchFollowingVoterGuides.bind(this)} /> : null
+              }
+              { this.state.search_filter ?
                 <span>
                   { voter_guide_followed_list.length === 0 ?
-                    <h4 className="card__additional-heading">{this.state.search_term} not found</h4> :
+                    <h4 className="card__additional-heading">"{this.state.search_term}" not found</h4> :
                     null
                   }
-                </span>
+                </span> :
+                null
               }
               <span>
                   <GuideList organizationsToFollow={voter_guide_followed_list} instantRefreshOn />
