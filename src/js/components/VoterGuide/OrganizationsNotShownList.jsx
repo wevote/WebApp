@@ -36,6 +36,7 @@ export default class OrganizationsNotShownList extends Component {
           </Link>
           <br/>
         </div>
+        &nbsp;&nbsp;
         <div className="card-main__media-object-content">
           <Link to={voterGuideLink}>
             <h3 className="card-main__display-name">{displayName}</h3>

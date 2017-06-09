@@ -2,12 +2,14 @@ import React, { Component, PropTypes } from "react";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
 import PositionItem from "../Ballot/PositionItem";
+import PositionsNotShownList from "../Ballot/PositionsNotShownList";
 import VoterStore from "../../stores/VoterStore";
 
 // This component can be used to show either supporters, opposers, or groups with info only
 export default class ItemTinyPositionBreakdownList extends Component {
 
   static propTypes = {
+    ballot_item_display_name: PropTypes.string.isRequired,
     ballotItemWeVoteId: PropTypes.string.isRequired,
     position_list: PropTypes.array,
     showInfoOnly: PropTypes.bool,
@@ -65,10 +67,10 @@ export default class ItemTinyPositionBreakdownList extends Component {
     const MAXIMUM_ORGANIZATION_DISPLAY = 4;
     let local_counter = 0;
     let orgs_not_shown_count = 0;
+    let positions_not_shown_list = [];
+    let support_positions_list = [];
+    let oppose_positions_list = [];
     let one_organization;
-    if (this.state.position_list && this.state.position_list.length > MAXIMUM_ORGANIZATION_DISPLAY) {
-      orgs_not_shown_count = this.state.position_list.length - MAXIMUM_ORGANIZATION_DISPLAY;
-    }
     let organizations_to_display = [];
     let temp_organizations_to_display = [];
     // Put the voter's icon first
@@ -93,6 +95,25 @@ export default class ItemTinyPositionBreakdownList extends Component {
     }
     // Add the icons of other organizations now
     if (this.state.position_list) {
+      this.state.position_list.map((one_position) => {
+        // Filter out the positions that we don't want to display
+        if (this.props.showSupport && one_position.is_support_or_positive_rating) {
+          support_positions_list.push(one_position);
+        } else if (this.props.showOppose && one_position.is_oppose_or_negative_rating) {
+          oppose_positions_list.push(one_position);
+        } else if (this.props.showInfoOnly && !one_position.is_support_or_positive_rating && !one_position.is_oppose_or_negative_rating) {
+          // When in showInfoOnly mode, continue if it is NOT positive or negative
+        }
+      });
+
+      if (support_positions_list && support_positions_list.length > MAXIMUM_ORGANIZATION_DISPLAY) {
+        orgs_not_shown_count = support_positions_list.length - MAXIMUM_ORGANIZATION_DISPLAY;
+        positions_not_shown_list = support_positions_list.slice(MAXIMUM_ORGANIZATION_DISPLAY);
+      } else if (oppose_positions_list && oppose_positions_list.length > MAXIMUM_ORGANIZATION_DISPLAY) {
+        orgs_not_shown_count = oppose_positions_list.length - MAXIMUM_ORGANIZATION_DISPLAY;
+        positions_not_shown_list = oppose_positions_list.slice(MAXIMUM_ORGANIZATION_DISPLAY);
+      }
+
       temp_organizations_to_display = this.state.position_list.map((one_position) => {
         // Filter out the positions that we don't want to display
         if (this.props.showSupport && one_position.is_support_or_positive_rating) {
@@ -112,7 +133,25 @@ export default class ItemTinyPositionBreakdownList extends Component {
         if (local_counter > MAXIMUM_ORGANIZATION_DISPLAY) {
           if (local_counter === MAXIMUM_ORGANIZATION_DISPLAY + 1) {
             // If here we want to show how many organizations there are to follow
-            return <span key={one_position.speaker_we_vote_id}> +{orgs_not_shown_count}</span>;
+            let organizationPopover = <Popover
+                id={`organization-popover-${orgs_not_shown_count}`}
+                onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
+                onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
+                className="card-popover">
+                <PositionsNotShownList positions_not_shown_list={positions_not_shown_list} />
+              </Popover>;
+
+            return <OverlayTrigger
+                key={`trigger-${orgs_not_shown_count}`}
+                ref={`overlay-${orgs_not_shown_count}`}
+                onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
+                onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
+                trigger={["focus", "hover"]}
+                rootClose
+                placement="bottom"
+                overlay={organizationPopover}>
+                <span className="position-rating__source with-popover"> +{orgs_not_shown_count} </span>
+            </OverlayTrigger>;
           } else {
             return null;
           }
