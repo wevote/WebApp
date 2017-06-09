@@ -88,17 +88,11 @@ export default class Intro extends Component {
     return window.open(url, title, 'toolbar=no, width=' + w + ', height=' + h + ', top=' + top + ' left=' + left);
   }
 
-  shareToEmailButton () {
-    let subject = "Check out WeVote https://WeVote.US!";
-    let body = "Check out https://WeVote.US! View your ballot. Learn from friends. Share your vision. @WeVote #Voting #WeVote";
-    var link = "mailto:" + "&subject=" + subject + "&body=" + body;
-    window.top.location.href = link;
-  }
-
   render () {
     let newsletter_opt_in_true = VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
     let actual_full_name = "";
     let voter_signed_in = false;
+    let mailto_url =  "mailto:" + "&subject=Check out WeVote https://WeVote.US!" + "&body=Check out https://WeVote.US! View your ballot. Learn from friends. Share your vision. @WeVote #Voting #WeVote";
     if (this.state.voter) {
       voter_signed_in = true;
       if (this.state.voter.first_name || this.state.voter.last_name) {
@@ -240,11 +234,11 @@ export default class Intro extends Component {
                 onClick={this.shareToTwitterButton}>
               <span className="fa fa-twitter" /> Twitter
             </Button>
-            <Button className="btn btn-social btn--email u-push--sm"
-                bsStyle="danger"
-                onClick={this.shareToEmailButton}>
-              <span className="fa fa-envelope" /> Email
-            </Button>
+            <a href={mailto_url} title="Submit this to Email">
+              <button className="btn btn-social btn--email u-push--sm">
+                <span className="fa fa-envelope" />Email
+              </button>
+            </a>
             <Link to="/more/donate">
               <button className="btn btn-social btn-danger u-push--sm">
                 <span className="fa fa-heart" /> Donate
