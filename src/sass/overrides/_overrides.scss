@@ -14,3 +14,13 @@
 .pac-container {
   z-index: 1051 !important;
 }
+
+@media all and (max-width: 320px) {
+  .nav {
+    > li {
+      > a {
+        padding: 10px 5px;
+      }
+    }
+  }
+}
