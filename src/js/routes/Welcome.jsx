@@ -92,7 +92,7 @@ export default class Intro extends Component {
     let newsletter_opt_in_true = VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
     let actual_full_name = "";
     let voter_signed_in = false;
-    let mailto_url =  "mailto:" + "&subject=Check out WeVote https://WeVote.US!" + "&body=Check out https://WeVote.US! View your ballot. Learn from friends. Share your vision. @WeVote #Voting #WeVote";
+    let mailto_url = "mailto:" + "&subject=Check out WeVote https://WeVote.US!" + "&body=Check out https://WeVote.US! View your ballot. Learn from friends. Share your vision. @WeVote #Voting #WeVote";
     if (this.state.voter) {
       voter_signed_in = true;
       if (this.state.voter.first_name || this.state.voter.last_name) {
