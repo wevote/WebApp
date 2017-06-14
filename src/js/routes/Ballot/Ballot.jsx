@@ -1,8 +1,10 @@
 import React, { Component, PropTypes } from "react";
 import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { browserHistory, Link } from "react-router";
+import Helmet from "react-helmet";
+import Slider from "react-slick";
+
 import AddressBox from "../../components/AddressBox";
-import BallotActions from "../../actions/BallotActions";
 import BallotElectionList from "../../components/Ballot/BallotElectionList";
 import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 import BallotItemReadyToVote from "../../components/Ballot/BallotItemReadyToVote";
@@ -10,21 +12,20 @@ import BallotIntroMission from "../../components/Ballot/BallotIntroMission";
 import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
 import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
 import BallotIntroPositionBar from "../../components/Ballot/BallotIntroPositionBar";
-import BallotStore from "../../stores/BallotStore";
 import BallotFilter from "../../components/Navigation/BallotFilter";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
-import GuideActions from "../../actions/GuideActions";
 import GuideList from "../../components/VoterGuide/GuideList";
-import GuideStore from "../../stores/GuideStore";
-import Helmet from "react-helmet";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
 import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPositionBreakdownList";
 import LoadingWheel from "../../components/LoadingWheel";
-import Slider from "react-slick";
+import BallotActions from "../../actions/BallotActions";
+import GuideActions from "../../actions/GuideActions";
+import VoterActions from "../../actions/VoterActions";
 import SupportActions from "../../actions/SupportActions";
+import BallotStore from "../../stores/BallotStore";
+import GuideStore from "../../stores/GuideStore";
 import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
-import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 
 const web_app_config = require("../../config");
