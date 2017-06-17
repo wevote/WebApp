@@ -55,16 +55,16 @@ export default class OrganizationVoterGuideTabs extends Component {
     let followers_title = "";
     // let followers_count = this.state.voter_guide_followers_list.length;
     if (looking_at_self) {
-      positions_title = "YOUR POSITIONS";
-      following_title = "YOU ARE FOLLOWING";
+      positions_title = "Your Positions";
+      following_title = "You Are Following";
       followers_title = this.state.voter_guide_followers_list.length === 0 ?
-        "FOLLOWERS" : this.state.voter_guide_followers_list.length + "FOLLOWERS";
+        "Followers" : this.state.voter_guide_followers_list.length + "Followers";
     } else {
-      positions_title = "POSITIONS";
+      positions_title = "Positions";
       following_title = this.state.voter_guide_followed_list.length === 0 ?
-        "FOLLOWING" : this.state.voter_guide_followed_list.length + " FOLLOWING";
+        "Following" : this.state.voter_guide_followed_list.length + " Following";
       followers_title = this.state.voter_guide_followers_list.length === 0 ?
-        "FOLLOWERS" : this.state.voter_guide_followers_list.length + " FOLLOWERS";
+        "Followers" : this.state.voter_guide_followers_list.length + " Followers";
     }
 
     return (
