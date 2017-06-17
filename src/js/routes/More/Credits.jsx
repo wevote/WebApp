@@ -48,9 +48,10 @@ export default class Credits extends Component {
             <li>Anisha Jain - San Jose, CA</li>
             <li>Rob Simpson - Warrenton, VA</li>
             <li>Jeff French - Oakland, CA</li>
+            <li>Neelam Joshi - Columbus, OH</li>
+            <li>Alicia Kolar Prevost - Washington, DC</li>
             <li>Sarah Clements - San Francisco, CA</li>
             <li>Zach Monteith - San Francisco, CA</li>
-            <li>Neelam Joshi - Columbus, OH</li>
             <li>Lisa Cho - San Francisco, CA</li>
             <li>Nicolas Fiorini - Arlington, VA</li>
             <li>Bharath D N Reddy - Mountain View, CA</li>
@@ -62,6 +63,8 @@ export default class Credits extends Component {
             <li>Eric Ogawa - San Francisco, CA</li>
             <li>Mary O'Connor - Sebastopol, CA</li>
             <li>Harsha Dronamraju - San Francisco, CA</li>
+            <li>Steve Podell - Oakland, CA</li>
+            <li>Rohan Bhambhoria - Mississauga, Ontario, Canada</li>
             <li>Nitin Garg - San Francisco, CA</li>
             <li>Niko Barry - Berkeley, CA</li>
             <li>Adam Barry - San Francisco, CA</li>
@@ -71,6 +74,8 @@ export default class Credits extends Component {
             <li>Udi Davidovich - Walnut Creek, CA</li>
             <li>Chris Arya - San Francisco, CA</li>
             <li>Tom Furlong - Menlo Park, CA</li>
+            <li>Paul A. "Dash" McLean - E. Palo Alto, CA</li>
+            <li>YuanHsin Chang - San Francisco, CA</li>
             <li>Eric Olivera - San Francisco, CA</li>
             <li>Emily Hittle - San Francisco, CA</li>
             <li>Irene Florez - San Francisco, CA</li>

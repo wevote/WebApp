@@ -71,7 +71,7 @@ export default class Intro extends Component {
         quote: "Check out https://WeVote.US! View your ballot. Learn from friends. Share your vision. @WeVote #Voting #WeVote",
       }, function (response) {
         if ( response === undefined || response.error_code === 4201 ) {
-          console.log("User Canceled the share request");
+          console.log("Voter Canceled the share request");
         } else if ( response ) {
           //console.log("Successfully Shared", response);
         }
@@ -79,13 +79,13 @@ export default class Intro extends Component {
   }
 
   shareToTwitterButton () {
-    let url = "https://twitter.com/share?url=https%3A%2F%2FWeVote.Us%2F%20&text=Check%20out%20https%3A%2F%2FWeVote.Us%2F!%20View%20you%20ballot.%20Learn%20from%20friends.%20Share%20your%20vision.%20@WeVote&hashtags=Voting,WeVote";
+    let url = "https://twitter.com/share?url=https%3A%2F%2FWeVote.US%2F%20&text=Check%20out%20https%3A%2F%2FWeVote.US%2F!%20View%20your%20ballot.%20Learn%20from%20friends.%20Share%20your%20vision.%20@WeVote&hashtags=Voting,WeVote";
     let title = "Share On Twitter";
-    let w = 600;
-    let h = 600;
-    var left = (screen.width / 2) - (w / 2);
-    var top = (screen.height / 2) - (h / 2);
-    return window.open(url, title, 'toolbar=no, width=' + w + ', height=' + h + ', top=' + top + ' left=' + left);
+    let default_width = 600;
+    let default_height = 600;
+    var left = (screen.width / 2) - (default_width / 2);
+    var top = (screen.height / 2) - (default_height / 2);
+    return window.open(url, title, "toolbar=no, width=" + default_width + ", height=" + default_height + ", top=" + top + " left=" + left);
   }
 
   render () {

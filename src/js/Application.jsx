@@ -125,7 +125,7 @@ export default class Application extends Component {
     } else if (pathname === "/bookmarks" || pathname.startsWith("/candidate/") ||
       pathname === "/facebook_invitable_friends" || pathname === "/friends" || pathname === "/friends/invitebyemail" ||
       pathname === "/intro" || pathname.startsWith("/measure/") ||
-      pathname === "/more/about" || pathname === "/more/connect" ||
+      pathname === "/more/about" || pathname === "/more/connect" || pathname === "/more/credits" ||
       pathname === "/more/donate" || pathname === "/more/donate_thank_you" || pathname === "/more/howtouse" ||
       pathname.startsWith("/office/") || pathname === "/more/network" || pathname === "/more/organization" ||
       pathname === "/more/privacy" || pathname === "/more/sign_in" || pathname === "/more/team" ||
