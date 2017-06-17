@@ -55,6 +55,10 @@ class BallotStore extends FluxMapStore {
     return this.getState().ballots[civicId].polling_location_we_vote_id_source;
   }
 
+  getBallotCaveat() {
+    return this.getState().ballotCaveat || "";
+  }
+
   get bookmarks (){
     let civicId = VoterStore.election_id();
     if (!this.getState().ballots || !this.getState().ballots[civicId] ){ return undefined; }
@@ -130,6 +134,7 @@ class BallotStore extends FluxMapStore {
 
     let key;
     let newBallot = {};
+    let ballotCaveat = '';
 
     switch (action.type) {
 
@@ -162,10 +167,14 @@ class BallotStore extends FluxMapStore {
         } else {
           key = action.res.google_civic_election_id;
           newBallot[key] = action.res;
+          if (newBallot[key].ballot_found === false ) {
+            ballotCaveat = newBallot[key].ballot_caveat;
+          }
 
           return {
             ...state,
-            ballots: assign({}, state.ballots, newBallot )
+            ballots: assign({}, state.ballots, newBallot ),
+            ballotCaveat: ballotCaveat
           };
         }
 
