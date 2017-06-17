@@ -81,8 +81,12 @@ ex:
 - `.u-inset__stretch--sm { padding: $space-sm $space-xs; } // 8px 4px`
 - `.u-inset__v--sm { padding-top: $space-sm; padding-bottom: $space-sm; } // 8px 0`
 
+### Style Linters
+
+In order to maintain some basic styling standards there are some linters in place using (Stylelint)[https://stylelint.io/]. It builds off the (standard config)[https://github.com/stylelint/stylelint-config-standard/blob/master/index.js] with rules defined in .stylelintrc. In rare cases, it's justified to disable the linters for specific lines but in general they should be adhered to.
+
+
+
 # To Do:
 - [ ] Add typographic + heading utility classes
 - [ ] Clean up colors (remove old and add new)
-- [ ] Replace length literals with variables/tokens
-- [ ] Add Sass linter
