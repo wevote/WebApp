@@ -5,6 +5,7 @@ import { browserHistory } from "react-router";
 import LoadingWheel from "../components/LoadingWheel";
 import VoterActions from "../actions/VoterActions";
 import VoterStore from "../stores/VoterStore";
+import BallotStore from "../stores/BallotStore";
 
 export default class AddressBox extends Component {
   static propTypes = {
@@ -16,7 +17,8 @@ export default class AddressBox extends Component {
       super(props);
       this.state = {
         loading: false,
-        voter_address: ""
+        voter_address: "",
+        ballotCaveat: "",
       };
 
     this.updateVoterAddress = this.updateVoterAddress.bind(this);
@@ -25,14 +27,19 @@ export default class AddressBox extends Component {
   }
 
   componentDidMount () {
-    this.setState({ voter_address: VoterStore.getAddress() });
+    this.setState({
+      voter_address: VoterStore.getAddress(),
+      ballotCaveat: BallotStore.getBallotCaveat()
+    });
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.ballotStoreListener = BallotStore.addListener(this._onBallotStoreChange.bind(this));
     let addressAutocomplete = new google.maps.places.Autocomplete(this.refs.autocomplete);
     this.googleAutocompleteListener = addressAutocomplete.addListener("place_changed", this._placeChanged.bind(this, addressAutocomplete));
   }
 
   componentWillUnmount (){
     this.voterStoreListener.remove();
+    this.ballotStoreListener.remove();
     this.googleAutocompleteListener.remove();
   }
 
@@ -45,6 +52,10 @@ export default class AddressBox extends Component {
     } else {
       this.setState({ voter_address: VoterStore.getAddress(), loading: false });
     }
+  }
+
+  _onBallotStoreChange () {
+      this.setState({ ballotCaveat: BallotStore.getBallotCaveat() });
   }
 
   _ballotLoaded (){
@@ -91,18 +102,17 @@ export default class AddressBox extends Component {
     }
     return <div>
         <form onSubmit={this.voterAddressSave}>
-        <input
-          type="text"
-          value={this.state.voter_address}
-          onKeyDown={this.handleKeyPress}
-          onChange={this.updateVoterAddress}
-          name="address"
-          className="form-control"
-          ref="autocomplete"
-          placeholder="Enter address where you are registered to vote"
-        />
+          <input
+            type="text"
+            value={this.state.voter_address}
+            onKeyDown={this.handleKeyPress}
+            onChange={this.updateVoterAddress}
+            name="address"
+            className="form-control"
+            ref="autocomplete"
+            placeholder="Enter address where you are registered to vote"
+          />
         </form>
-
         <div>
           <Button
             className="pull-right"
@@ -110,6 +120,7 @@ export default class AddressBox extends Component {
             bsStyle="primary">
             Save</Button>
         </div>
+      <p/><h4>{this.state.ballotCaveat}</h4>
       </div>;
   }
 }
