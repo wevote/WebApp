@@ -523,7 +523,7 @@ export default class Ballot extends Component {
             <span className="hidden-print"> (<a onClick={this._toggleSelectAddressModal}>Add Your Address</a>)</span>
           </p> }
         {voter_address ?
-          <div className="ballot__filter hidden-print"><BallotFilter ballot_type={this.getBallotType()} /></div> :
+          <div className="ballot__filter hidden-print"><BallotFilter ballot_type={this.getBallotType()} /> (<a onClick={this._toggleBallotIntroModal}>show issues</a>)</div> :
           null}
       </div>
       {emptyBallot}
