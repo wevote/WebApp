@@ -51,10 +51,12 @@ export default class Ballot extends Component {
       showSelectBallotModal: false,
       showSelectAddressModal: false,
       ballot_election_list: [],
+      mounted: false,
     };
   }
 
   componentDidMount () {
+    this.setState({mounted: true});
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
       browserHistory.push("settings/location");
     } else {
@@ -86,6 +88,7 @@ export default class Ballot extends Component {
   }
 
   componentWillUnmount (){
+    this.setState({mounted: false});
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){
       // No ballot found
     } else {
@@ -102,10 +105,12 @@ export default class Ballot extends Component {
   }
 
   _onVoterStoreChange () {
-    this.setState({
-      voter: VoterStore.getVoter(),
-      showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
-    });
+    if (this.state.mounted) {
+      this.setState({
+        voter: VoterStore.getVoter(),
+        showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
+      });
+    }
   }
 
   _toggleCandidateModal (candidateForModal) {
@@ -151,14 +156,16 @@ export default class Ballot extends Component {
   }
 
   _onBallotStoreChange (){
-    if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0){ // Ballot is found but ballot is empty
-      browserHistory.push("ballot/empty");
-      console.log("_onBallotStoreChange: ballot is empty");
-    } else {
-      let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
-      this.setState({ballot: this.getBallot(this.props), ballot_type: ballot_type });
+    if (this.state.mounted) {
+      if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) { // Ballot is found but ballot is empty
+        browserHistory.push("ballot/empty");
+        console.log("_onBallotStoreChange: ballot is empty");
+      } else {
+        let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
+        this.setState({ballot: this.getBallot(this.props), ballot_type: ballot_type});
+      }
+      this.setState({ballot_election_list: BallotStore.ballotList()});
     }
-    this.setState({ ballot_election_list: BallotStore.ballotList() });
   }
 
   _onGuideStoreChange (){
