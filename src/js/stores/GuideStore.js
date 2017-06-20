@@ -55,6 +55,12 @@ class GuideStore extends FluxMapStore {
     return filtered_organizations_followed;
   }
 
+  retrieveGuidesToFollowByIssueFilter () {
+    // This method is work in progress
+    let voter_guides = [];
+    return voter_guides;
+  }
+
   ballotHasGuides (){
     return this.getState().ballot_has_guides;
   }

@@ -45,5 +45,12 @@ module.exports = {
         friends_vs_public: "FRIENDS_ONLY",
         kind_of_opinion_maker: "ORGANIZATION"
       });
-  }
+  },
+
+  organizationFollowForVoter: function (organization_we_vote_id) {
+    Dispatcher.loadEndpoint("organizationFollow", {
+      organization_we_vote_id: organization_we_vote_id
+    });
+  },
+
 };
