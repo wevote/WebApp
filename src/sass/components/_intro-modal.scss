@@ -11,7 +11,7 @@
   &__h1 {
     font-weight: 700;
     font-size: 30px;
-    padding: $space-lg $space-none $space-md;
+    padding: $space-none $space-none $space-none;
     @include breakpoints (max large) {
       font-size: 22px;
     }
@@ -56,6 +56,11 @@
       padding-top: $space-lg;
       padding-bottom: $space-md;
     }
+  }
+  &__btn-center {
+    text-align: center;
+    position: absolute;
+    top: 50%;
   }
 
   &__img-height {
@@ -123,6 +128,20 @@
   }
 }
 
+.intro-modal-vertical-scroll {
+  padding: $space-md;
+  -webkit-column-count: 1;
+  -moz-column-count: 1;
+  column-count: 1;
+  -webkit-column-gap: 0;
+  -moz-column-gap: 0;
+  column-gap: 0;
+}
+
+.intro-modal-vertical-scroll-contain {
+  height: 175px;
+  overflow-y: auto;
+}
 
 .background--image1 {
   @include breakpoints (small) {

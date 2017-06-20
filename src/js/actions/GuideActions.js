@@ -30,6 +30,12 @@ module.exports = {
     });
   },
 
+  retrieveGuidesToFollowByIssueFilter: function () {
+    Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", {
+      filter_voter_guides_by_issue: true
+    });
+  },
+
   voterGuidesFollowedRetrieve: function () {
     Dispatcher.loadEndpoint("voterGuidesFollowedRetrieve");
   },
