@@ -32,7 +32,7 @@ module.exports = {
 
   retrieveGuidesToFollowByIssueFilter: function () {
     Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", {
-      issue_filter_flag_for_voter_guides: true
+      filter_voter_guides_by_issue: true
     });
   },
 
