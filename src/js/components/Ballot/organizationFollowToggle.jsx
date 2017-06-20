@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import OrganizationActions from "../../actions/OrganizationActions";
+import GuideActions from "../../actions/GuideActions";
 
 export default class OrganizationFollowToggle extends Component {
   static propTypes = {
@@ -23,7 +23,7 @@ export default class OrganizationFollowToggle extends Component {
   onStartFollowing () {
     console.log("user chose to follow " + this.props.organization_name );
     this.setState({ is_following: true });
-    OrganizationActions.organizationFollowForVoter(this.props.organization_we_vote_id);
+    GuideActions.organizationFollow(this.props.organization_we_vote_id);
   }
 
   onStopFollowing () {
