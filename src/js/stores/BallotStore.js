@@ -55,7 +55,7 @@ class BallotStore extends FluxMapStore {
     return this.getState().ballots[civicId].polling_location_we_vote_id_source;
   }
 
-  getBallotCaveat() {
+  getBallotCaveat () {
     return this.getState().ballotCaveat || "";
   }
 
@@ -134,7 +134,7 @@ class BallotStore extends FluxMapStore {
 
     let key;
     let newBallot = {};
-    let ballotCaveat = '';
+    let ballotCaveat = "";
 
     switch (action.type) {
 

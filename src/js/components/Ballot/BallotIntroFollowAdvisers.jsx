@@ -6,7 +6,7 @@ import GuideStore from "../../stores/GuideStore";
 
 const NEXT_BUTTON_TEXT = "Next >";
 const SKIP_BUTTON_TEXT = "Skip >";
-const PREVIOUS_ADVISERS_PROMPT_TEXT= "Follow three or more advisers to get recommendations on your ballot.";
+const PREVIOUS_ADVISERS_PROMPT_TEXT = "Follow three or more advisers to get recommendations on your ballot.";
 const SELECT_ORGANIZATION_PROMPT = "Are you sure you don't want to follow at least one organization that shares your values? Following will show you recommendations on your ballot.";
 
 
@@ -29,8 +29,8 @@ export default class BallotIntroFollowAdvisers extends Component {
   componentDidMount () {
     GuideActions.retrieveGuidesToFollowByIssueFilter();
     this._onGuideStoreChange();
-    this.onOrganizationStartFollow = this.onOrganizationStartFollow.bind(this);
-    this.onOrganizationStopFollow = this.onOrganizationStopFollow.bind(this);
+    this.onOrganizationFollow = this.onOrganizationFollow.bind(this);
+    this.onOrganizationStopFollowing = this.onOrganizationStopFollowing.bind(this);
     this.onNext = this.onNext.bind(this);
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
   }
@@ -43,7 +43,7 @@ export default class BallotIntroFollowAdvisers extends Component {
     this.setState({ organizations: GuideStore.retrieveGuidesToFollowByIssueFilter() });
   }
 
-  onOrganizationStartFollow (organization_we_vote_id) {
+  onOrganizationFollow (organization_we_vote_id) {
     let index = this.state.followed_organizations.indexOf(organization_we_vote_id);
     if (index === -1) {
       var new_followed_organizations = this.state.followed_organizations;
@@ -56,7 +56,7 @@ export default class BallotIntroFollowAdvisers extends Component {
     }
   }
 
-  onOrganizationStopFollow (organization_we_vote_id) {
+  onOrganizationStopFollowing (organization_we_vote_id) {
     let index = this.state.followed_organizations.indexOf(organization_we_vote_id);
     if (index > -1) {
       var new_followed_organizations = this.state.followed_organizations;
@@ -75,15 +75,15 @@ export default class BallotIntroFollowAdvisers extends Component {
     }
   }
 
-  onNext() {
+  onNext () {
     var organization_followed_length = this.state.followed_organizations.length;
-    if (organization_followed_length  > 0 || this.state.next_button_text === SKIP_BUTTON_TEXT) {
+    if (organization_followed_length > 0 || this.state.next_button_text === SKIP_BUTTON_TEXT) {
       this.props.next();
     } else if (organization_followed_length === 0) {
       this.setState({
         description_text: SELECT_ORGANIZATION_PROMPT,
         next_button_text: SKIP_BUTTON_TEXT,
-      })
+      });
     }
   }
 
@@ -98,8 +98,8 @@ export default class BallotIntroFollowAdvisers extends Component {
         <OrganizationFollowToggle
           organization_we_vote_id={organization.organization_we_vote_id}
           organization_name={organization.voter_guide_display_name}
-          on_start_follow={this.onOrganizationStartFollow}
-          on_stop_follow={this.onOrganizationStopFollow}
+          on_organization_follow={this.onOrganizationFollow}
+          on_organization_stop_following={this.onOrganizationStopFollowing}
           organization_image_url={organization.voter_guide_image_url_medium}
         />
         <br />

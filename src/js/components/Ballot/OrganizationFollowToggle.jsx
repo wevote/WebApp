@@ -7,8 +7,8 @@ export default class OrganizationFollowToggle extends Component {
   static propTypes = {
     organization_we_vote_id: PropTypes.string.isRequired,
     organization_name: PropTypes.string.isRequired,
-    on_start_follow: PropTypes.func.isRequired,
-    on_stop_follow: PropTypes.func.isRequired,
+    on_organization_follow: PropTypes.func.isRequired,
+    on_organization_stop_following: PropTypes.func.isRequired,
     organization_image_url: PropTypes.string.isRequired,
   };
 
@@ -19,24 +19,24 @@ export default class OrganizationFollowToggle extends Component {
     };
   }
 
-  componentDidMount() {
-    this.onStartFollowing = this.onStartFollowing.bind(this);
-    this.onStopFollowing = this.onStopFollowing.bind(this);
+  componentDidMount () {
+    this.onOrganizationFollow = this.onOrganizationFollow.bind(this);
+    this.onOrganizationStopFollowing = this.onOrganizationStopFollowing.bind(this);
   }
 
-  onStartFollowing () {
+  onOrganizationFollow () {
     // This check is necessary as we enable follow when user clicks on Issue text
     if (!this.state.is_following) {
       this.setState({is_following: true});
       GuideActions.organizationFollow(this.props.organization_we_vote_id);
-      this.props.on_start_follow(this.props.organization_we_vote_id);
+      this.props.on_organization_follow(this.props.organization_we_vote_id);
     }
   }
 
-  onStopFollowing () {
+  onOrganizationStopFollowing () {
     this.setState({is_following: false});
     GuideActions.organizationStopFollowing(this.props.organization_we_vote_id);
-    this.props.on_start_follow(this.props.organization_we_vote_id);
+    this.props.on_organization_stop_following(this.props.organization_we_vote_id);
   }
 
   render () {
@@ -50,13 +50,13 @@ export default class OrganizationFollowToggle extends Component {
         { this.state.is_following ?
           <div className="o-media-object__body">
             <span>{this.props.organization_name}</span>
-            <Button bsStyle="warning" bsSize="small" className="pull-right" onClick={this.onStopFollowing}>
+            <Button bsStyle="warning" bsSize="small" className="pull-right" onClick={this.onOrganizationStopFollowing}>
               <span>Following</span>
             </Button>
           </div> :
           <div className="o-media-object__body">
-            <span onClick={this.onStartFollowing}>{this.props.organization_name}</span>
-            <Button bsStyle="info" bsSize="small" className="pull-right" onClick={this.onStartFollowing}>
+            <span onClick={this.onOrganizationFollow}>{this.props.organization_name}</span>
+            <Button bsStyle="info" bsSize="small" className="pull-right" onClick={this.onOrganizationFollow}>
               <span>Follow</span>
             </Button>
           </div>
