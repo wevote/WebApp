@@ -7,7 +7,7 @@ import IssueStore from "../../stores/IssueStore";
 const NEXT_BUTTON_TEXT = "Next >";
 const SKIP_BUTTON_TEXT = "Skip >";
 const INITIAL_DESCRIPTION_TEXT = "After you follow the issues you care about, we will suggest some groups that have opinions about these issues.";
-const SELECT_ISSUES_PROMPT_TEXT= "Are you sure you don't want to choose an issue or two (above)? Choosing issues will help you find organizations that share your values.";
+const SELECT_ISSUES_PROMPT_TEXT = "Are you sure you don't want to choose an issue or two (above)? Choosing issues will help you find organizations that share your values.";
 const NEXT_SCREEN_PROMPT_TEXT = "On the next screen, we will help you find organizations that share your values.";
 
 export default class BallotIntroFollowIssues extends Component {
@@ -29,8 +29,8 @@ export default class BallotIntroFollowIssues extends Component {
   componentDidMount () {
     IssueActions.issuesRetrieve();
     this._onIssueStoreChange();
-    this.onIssueStartFollow = this.onIssueStartFollow.bind(this);
-    this.onIssueStopFollow = this.onIssueStopFollow.bind(this);
+    this.onIssueFollow = this.onIssueFollow.bind(this);
+    this.onIssueStopFollowing = this.onIssueStopFollowing.bind(this);
     this.onNext = this.onNext.bind(this);
     this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange.bind(this));
   }
@@ -43,7 +43,7 @@ export default class BallotIntroFollowIssues extends Component {
     this.setState({ issues: IssueStore.getIssues() });
   }
 
-  onIssueStartFollow (issue_we_vote_id) {
+  onIssueFollow (issue_we_vote_id) {
     let index = this.state.followed_issues.indexOf(issue_we_vote_id);
     if (index === -1) {
       var new_followed_issues = this.state.followed_issues;
@@ -56,7 +56,7 @@ export default class BallotIntroFollowIssues extends Component {
     }
   }
 
-  onIssueStopFollow (issue_we_vote_id) {
+  onIssueStopFollowing (issue_we_vote_id) {
     let index = this.state.followed_issues.indexOf(issue_we_vote_id);
     if (index > -1) {
       var new_followed_issues = this.state.followed_issues;
@@ -75,15 +75,15 @@ export default class BallotIntroFollowIssues extends Component {
     }
   }
 
-  onNext() {
+  onNext () {
     var issues_followed_length = this.state.followed_issues.length;
-    if (issues_followed_length  > 0 || this.state.next_button_text === SKIP_BUTTON_TEXT) {
+    if (issues_followed_length > 0 || this.state.next_button_text === SKIP_BUTTON_TEXT) {
       this.props.next();
     } else if (issues_followed_length === 0) {
       this.setState({
         description_text: SELECT_ISSUES_PROMPT_TEXT,
         next_button_text: SKIP_BUTTON_TEXT,
-      })
+      });
     }
   }
 
@@ -98,8 +98,8 @@ export default class BallotIntroFollowIssues extends Component {
         <IssueFollowToggle
           issue_we_vote_id={issue.issue_we_vote_id}
           issue_name={issue.issue_name}
-          on_start_follow={this.onIssueStartFollow}
-          on_stop_follow={this.onIssueStopFollow}
+          on_issue_follow={this.onIssueFollow}
+          on_issue_stop_following={this.onIssueStopFollowing}
         />
         <br />
       </div>;
