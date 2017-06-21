@@ -93,7 +93,7 @@ export default class BallotIntroFollowAdvisers extends Component {
       organization_list = this.state.organizations;
     }
 
-    const organization_list_for_display = this.state.organizations.map((organization) => {
+    const organization_list_for_display = organization_list.map((organization) => {
       return <div key={organization.organization_we_vote_id}>
         <OrganizationFollowToggle
           organization_we_vote_id={organization.organization_we_vote_id}
