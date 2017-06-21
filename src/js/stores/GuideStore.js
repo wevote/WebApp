@@ -56,9 +56,7 @@ class GuideStore extends FluxMapStore {
   }
 
   retrieveGuidesToFollowByIssueFilter () {
-    // This method is work in progress
-    let voter_guides = [];
-    return voter_guides;
+    return this.getState().to_follow_list_for_voter_issues;
   }
 
   ballotHasGuides (){
@@ -134,6 +132,7 @@ class GuideStore extends FluxMapStore {
         let is_search = action.res.search_string !== "";
         let is_this_ballot = action.res.google_civic_election_id !== 0;
         let is_candidate_opinions = action.res.ballot_item_we_vote_id !== "";
+        let filter_voter_guides_by_issue = action.res.filter_voter_guides_by_issue;
 
         // If no voter guides found , and it's not a search query, retrieve results for all elections
         if (is_empty && is_this_ballot && !is_search ){
@@ -151,10 +150,10 @@ class GuideStore extends FluxMapStore {
         // Now store the voter_guide information by ballot_item (i.e., which organizations have positions on each ballot_item)
         // let existing_voter_guide_ids_for_one_ballot_item;
         let updated_voter_guide_ids_for_one_ballot_item = [];
-        let to_follow_list_for_all_ballot_items_updated = [];
+        let to_follow_list_for_voter_issues = [];
+        // Start with previous list
+        let to_follow_list_for_all_ballot_items_updated = state.to_follow_list_for_all_ballot_items;
         if (action.res.ballot_item_we_vote_id) {
-          // Start with previous list
-          to_follow_list_for_all_ballot_items_updated = state.to_follow_list_for_all_ballot_items;
           // Go through each of the voter_guides that was just returned. If the existing_voter_guides does not contain
           //  that voter_guide organization_we_vote_id, then add it.
           voter_guides.forEach( one_voter_guide => {
@@ -175,23 +174,33 @@ class GuideStore extends FluxMapStore {
           let current_list = [];
           let new_list = [];
           let ballot_item_we_vote_ids_this_org_supports;
+          let guide_we_vote_ids_processed = [];
+
           voter_guides.forEach( one_voter_guide => {
             ballot_item_we_vote_ids_this_org_supports = one_voter_guide.ballot_item_we_vote_ids_this_org_supports;
             if (ballot_item_we_vote_ids_this_org_supports) {
-              ballot_item_we_vote_ids_this_org_supports.forEach(one_ballot_item_id => {
-                // console.log("one_ballot_item_id: ", one_ballot_item_id);
-                // Do we have an entry in this.state.to_follow_list_for_all_ballot_items[one_ballot_item_id]
-                if (ballot_items_we_are_tracking.includes(one_ballot_item_id)) {
-                  current_list = to_follow_list_for_all_ballot_items_updated[one_ballot_item_id];
+              ballot_item_we_vote_ids_this_org_supports.forEach(one_ballot_item_we_vote_id => {
+                // console.log("one_ballot_item_we_vote_id: ", one_ballot_item_we_vote_id);
+                // Do we have an entry in this.state.to_follow_list_for_all_ballot_items[one_ballot_item_we_vote_id]
+                if (ballot_items_we_are_tracking.includes(one_ballot_item_we_vote_id)) {
+                  current_list = to_follow_list_for_all_ballot_items_updated[one_ballot_item_we_vote_id];
                   current_list.push(one_voter_guide.organization_we_vote_id);
-                  to_follow_list_for_all_ballot_items_updated[one_ballot_item_id] = current_list;
+                  to_follow_list_for_all_ballot_items_updated[one_ballot_item_we_vote_id] = current_list;
                 } else {
                   new_list = [];
                   new_list.push(one_voter_guide.organization_we_vote_id);
-                  to_follow_list_for_all_ballot_items_updated[one_ballot_item_id] = new_list;
+                  to_follow_list_for_all_ballot_items_updated[one_ballot_item_we_vote_id] = new_list;
                 }
                 ballot_items_we_are_tracking = Object.keys(to_follow_list_for_all_ballot_items_updated);
               });
+            }
+
+            if (filter_voter_guides_by_issue) {
+              let organization_we_vote_id = one_voter_guide.organization_we_vote_id;
+              if (guide_we_vote_ids_processed.indexOf(organization_we_vote_id) === -1) {
+                to_follow_list_for_voter_issues.push(one_voter_guide);
+                guide_we_vote_ids_processed.push(organization_we_vote_id);
+              }
             }
           });
         }
@@ -202,6 +211,7 @@ class GuideStore extends FluxMapStore {
           to_follow: is_candidate_opinions ? state.to_follow : filtered_voter_guide_ids,
           to_follow_list_for_ballot_item: is_candidate_opinions ? filtered_voter_guide_ids : state.to_follow_list_for_ballot_item,
           to_follow_list_for_all_ballot_items: to_follow_list_for_all_ballot_items_updated,
+          to_follow_list_for_voter_issues: to_follow_list_for_voter_issues,
           all_cached_voter_guides: all_cached_voter_guides
         };
 
