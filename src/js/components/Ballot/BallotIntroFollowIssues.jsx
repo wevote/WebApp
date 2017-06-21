@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import IssueActions from "../../actions/issueActions";
+import IssueActions from "../../actions/IssueActions";
 import IssueFollowToggle from "./IssueFollowToggle";
-import IssueStore from "../../stores/issueStore";
+import IssueStore from "../../stores/IssueStore";
 
 const NEXT_BUTTON_TEXT = "Next >";
 const SKIP_BUTTON_TEXT = "Skip >";
@@ -29,13 +29,13 @@ export default class BallotIntroFollowIssues extends Component {
   componentDidMount () {
     IssueActions.issuesRetrieve();
     this._onIssueStoreChange();
-    this.onIssueFollow = this.onIssueFollow.bind(this);
-    this.onIssueUnfollow = this.onIssueUnfollow.bind(this);
+    this.onIssueStartFollow = this.onIssueStartFollow.bind(this);
+    this.onIssueStopFollow = this.onIssueStopFollow.bind(this);
     this.onNext = this.onNext.bind(this);
     this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange.bind(this));
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.issueStoreListener.remove();
   }
 
@@ -43,7 +43,7 @@ export default class BallotIntroFollowIssues extends Component {
     this.setState({ issues: IssueStore.getIssues() });
   }
 
-  onIssueFollow (issue_we_vote_id) {
+  onIssueStartFollow (issue_we_vote_id) {
     let index = this.state.followed_issues.indexOf(issue_we_vote_id);
     if (index === -1) {
       var new_followed_issues = this.state.followed_issues;
@@ -56,7 +56,7 @@ export default class BallotIntroFollowIssues extends Component {
     }
   }
 
-  onIssueUnfollow (issue_we_vote_id) {
+  onIssueStopFollow (issue_we_vote_id) {
     let index = this.state.followed_issues.indexOf(issue_we_vote_id);
     if (index > -1) {
       var new_followed_issues = this.state.followed_issues;
@@ -98,8 +98,8 @@ export default class BallotIntroFollowIssues extends Component {
         <IssueFollowToggle
           issue_we_vote_id={issue.issue_we_vote_id}
           issue_name={issue.issue_name}
-          on_follow={this.onIssueFollow}
-          on_unfollow={this.onIssueUnfollow}
+          on_start_follow={this.onIssueStartFollow}
+          on_stop_follow={this.onIssueStopFollow}
         />
         <br />
       </div>;

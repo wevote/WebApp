@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import IssueActions from "../../actions/issueActions";
+import IssueActions from "../../actions/IssueActions";
 
 export default class IssueFollowToggle extends Component {
   static propTypes = {
     issue_we_vote_id: PropTypes.string.isRequired,
     issue_name: PropTypes.string.isRequired,
-    on_follow: PropTypes.func.isRequired,
-    on_unfollow: PropTypes.func.isRequired,
+    on_start_follow: PropTypes.func.isRequired,
+    on_stop_follow: PropTypes.func.isRequired,
   };
 
   constructor (props) {
@@ -27,14 +27,14 @@ export default class IssueFollowToggle extends Component {
     if (!this.state.is_following) {
       this.setState({is_following: true});
       IssueActions.issueFollow(this.props.issue_we_vote_id);
-      this.props.on_follow(this.props.issue_we_vote_id);
+      this.props.on_start_follow(this.props.issue_we_vote_id);
     }
   }
 
   onStopFollowing () {
     this.setState({ is_following: false });
     IssueActions.issueUnFollow(this.props.issue_we_vote_id);
-    this.props.on_unfollow(this.props.issue_we_vote_id);
+    this.props.on_stop_follow(this.props.issue_we_vote_id);
   }
 
   render () {
@@ -45,11 +45,11 @@ export default class IssueFollowToggle extends Component {
       <div className="card-child">
         {this.props.issue_name} &nbsp;
         <Button bsStyle="warning" bsSize="small" className="pull-right" onClick={this.onStopFollowing}>
-          <span>UnFollow</span>
+          <span>Following</span>
         </Button>
       </div> :
       <div>
-        {this.props.issue_name} &nbsp; onClick={this.onStartFollowing}
+        <span onClick={this.onStartFollowing}>{this.props.issue_name} &nbsp;</span>
         <Button bsStyle="info" bsSize="small" className="pull-right" onClick={this.onStartFollowing}>
           <span>Follow</span>
         </Button>
