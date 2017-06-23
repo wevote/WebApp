@@ -174,29 +174,29 @@ export default class VoterEmailAddressEntry extends Component {
 
       </div>;
 
-    const send_link_to_login_html = <div>
-        <form onSubmit={this.sendSignInLinkEmail.bind(this)} className="u-stack--md">
-          <input
-            type="text"
-            onChange={this.updateVoterEmailAddress.bind(this)}
-            name="voter_email_address"
-            value={this.state.voter_email_address}
-            className="form-control text-center"
-            placeholder="Sign in with email address"
-          />
-        </form>
-
-        <div className="u-stack--md">
-          <Button onClick={this.resetEmailForm.bind(this)}
-                  bsStyle="default"
-                  bsSize="small">
-            Cancel
-          </Button>
-          <Button onClick={this.sendSignInLinkEmail.bind(this)}
-                  bsStyle="primary">
-            Send Sign In Link in an Email</Button>
-        </div>
-      </div>;
+    // const send_link_to_login_html = <div>
+    //     <form onSubmit={this.sendSignInLinkEmail.bind(this)} className="u-stack--md">
+    //       <input
+    //         type="text"
+    //         onChange={this.updateVoterEmailAddress.bind(this)}
+    //         name="voter_email_address"
+    //         value={this.state.voter_email_address}
+    //         className="form-control text-center"
+    //         placeholder="Sign in with email address"
+    //       />
+    //     </form>
+    //
+    //     <div className="u-stack--md">
+    //       <Button onClick={this.resetEmailForm.bind(this)}
+    //               bsStyle="default"
+    //               bsSize="small">
+    //         Cancel
+    //       </Button>
+    //       <Button onClick={this.sendSignInLinkEmail.bind(this)}
+    //               bsStyle="primary">
+    //         Send Sign In Link in an Email</Button>
+    //     </div>
+    //   </div>;
 
     let allow_remove_email;
     let email_ownership_is_verified;

@@ -83,8 +83,12 @@ export default class Intro extends Component {
     let title = "Share On Twitter";
     let default_width = 600;
     let default_height = 600;
-    var left = (screen.width / 2) - (default_width / 2);
-    var top = (screen.height / 2) - (default_height / 2);
+    let half_screen_width = screen.width / 2;
+    let half_default_width = default_width / 2;
+    let half_screen_height = screen.height / 2;
+    let half_default_height = default_height / 2;
+    var left = half_screen_width - half_default_width;
+    var top = half_screen_height - half_default_height;
     return window.open(url, title, "toolbar=no, width=" + default_width + ", height=" + default_height + ", top=" + top + " left=" + left);
   }
 
