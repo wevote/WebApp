@@ -40,8 +40,8 @@ export default class ItemActionBar extends Component {
   supportItem (is_support) {
     if (is_support) {this.stopSupportingItem(); return;}
     if (this.state.transitioning){ return; }
-    let support_help_modal_on = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
-    if (!support_help_modal_on) {
+    let support_oppose_modal_has_been_shown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
+    if (!support_oppose_modal_has_been_shown) {
       this.toggleSupportOrOpposeHelpModal();
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
     }
@@ -58,8 +58,8 @@ export default class ItemActionBar extends Component {
   opposeItem (is_oppose) {
     if (is_oppose) {this.stopOpposingItem(); return;}
     if (this.state.transitioning){ return; }
-    let oppose_help_modal_on = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
-    if (!oppose_help_modal_on) {
+    let support_oppose_modal_has_been_shown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
+    if (!support_oppose_modal_has_been_shown) {
       this.toggleSupportOrOpposeHelpModal();
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
     }
@@ -107,21 +107,23 @@ export default class ItemActionBar extends Component {
     const SupportOrOpposeHelpModal = <Modal show={this.state.showSupportOrOpposeHelpModal} onHide={()=>{this.toggleSupportOrOpposeHelpModal();}}>
       <Modal.Header closeButton>
         <Modal.Title>
-          Support or Oppose
+          <div className="text-center">Support or Oppose</div>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <section className="card">
-          <p className="card__no-additional">
-            When you support or oppose a ballot item, your position is friends-only
-            by default. Use the privacy button on the ballot item detail page to switch your views to public, or back to only being
-            visible to your We Vote friends. Test the toggle here:
+          <div className="text-center">
+            Your position is only visible to your We Vote friends. Change the privacy toggle to make your views public.
+            Test the toggle here:<br />
+            <br />
             <PositionPublicToggle ballot_item_we_vote_id="null"
                                   className="null"
                                   type="MEASURE"
                                   supportProps={modalSupportProps}
+                                  inTestMode
             />
-          </p>
+            <br />
+          </div>
         </section>
       </Modal.Body>
     </Modal>;

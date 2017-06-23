@@ -9,7 +9,8 @@ export default class PositionPublicToggle extends Component {
     ballot_item_we_vote_id: PropTypes.string.isRequired,
     className: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
-    supportProps: PropTypes.object
+    supportProps: PropTypes.object,
+    inTestMode: PropTypes.bool
   };
 
   showItemToFriendsOnly () {
@@ -24,25 +25,38 @@ export default class PositionPublicToggle extends Component {
     if (this.props.supportProps === undefined){
       return <div className="undefined-props" />;
     }
+    let in_test_mode = false;
+    if (this.props !== undefined && this.props.inTestMode !== undefined && this.props.inTestMode) {
+      in_test_mode = true;
+    }
 
     var { is_public_position } = this.props.supportProps;
     let visibilityPublic = "Currently visible to public";
     let visibilityFriendsOnly = "Currently shared with We Vote friends only";
     const publicIcon = <Icon alt="Visible to Public" name="public-icon" color="#fff" width={18} height={18} />;
     const friendsIcon = <Icon alt="Visible to Friends Only" name="group-icon" color="#555" width={18} height={18} />;
-    const tooltip = <Tooltip id="visibility-tooltip">{is_public_position ? visibilityPublic : visibilityFriendsOnly}</Tooltip>;
+    let tooltip = <Tooltip id="visibility-tooltip">{is_public_position ? visibilityPublic : visibilityFriendsOnly}</Tooltip>;
+    let no_tooltip = <span />;
 
     var onChange;
     var that = this;
     if (is_public_position) {
       onChange = function () {
         is_public_position = false;
-        that.showItemToFriendsOnly();
+        if (in_test_mode) {
+          // TODO Somehow cause the tooltip to update
+        } else {
+          that.showItemToFriendsOnly();
+        }
       };
     } else {
       onChange = function () {
         is_public_position = true;
-        that.showItemToPublic();
+        if (in_test_mode) {
+          // TODO Somehow cause the tooltip to update
+        } else {
+          that.showItemToPublic();
+        }
       };
     }
 // this onKeyDown function is for accessibility: the parent div of the toggle
@@ -58,7 +72,7 @@ export default class PositionPublicToggle extends Component {
     const positionPublicToggle =
     <div className={this.props.className}>
       <div style={{display: "inline-block"}}>
-        <OverlayTrigger className="trigger" placement="top" overlay={tooltip}>
+        <OverlayTrigger className="trigger" placement="top" overlay={in_test_mode ? no_tooltip : tooltip}>
           <div tabIndex="0" onKeyDown={onKeyDown}> {/*tabIndex and onKeyDown are for accessibility*/}
             <ReactBootstrapToggle on={publicIcon} off={friendsIcon}
                                     active={is_public_position}

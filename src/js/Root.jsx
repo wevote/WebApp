@@ -24,7 +24,6 @@ import FAQ from "./routes/More/FAQ";
 import FacebookInvitableFriends from "./routes/FacebookInvitableFriends";
 import Friends from "./routes/Friends";
 import GetStarted from "./routes/Intro/GetStarted";
-import GuidePositionList from "./routes/Guide/GuidePositionList";
 import OrganizationVoterGuide from "./routes/Guide/OrganizationVoterGuide";
 import HowToUse from "./routes/More/HowToUse";
 import Intro from "./routes/Intro/Intro";

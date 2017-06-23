@@ -4,7 +4,6 @@ import { Link } from "react-router";
 import Candidate from "./Ballot/Candidate";
 import Helmet from "react-helmet";
 import LoadingWheel from "../components/LoadingWheel";
-import GuidePositionList from "./Guide/GuidePositionList";
 import OrganizationVoterGuide from "./Guide/OrganizationVoterGuide";
 import OrganizationActions from "../actions/OrganizationActions";
 import PositionListForFriends from "./Guide/PositionListForFriends";

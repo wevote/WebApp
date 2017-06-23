@@ -80,12 +80,8 @@ export default class FacebookInvitableFriends extends Component {
     });
   }
 
-  voterMergeTwoAccountsByFacebookKey (facebook_secret_key, voter_has_data_to_preserve = true) {
-    // console.log("In voterMergeTwoAccountsByFacebookKey, facebook_secret_key: ", facebook_secret_key, ",  voter_has_data_to_preserve: ", voter_has_data_to_preserve);
-    if (this.state.merging_two_accounts) {
-      //console.log("In process of merging_two_accounts");
-    } else {
-      console.log("About to make API call");
+  voterMergeTwoAccountsByFacebookKey (facebook_secret_key, voter_has_data_to_preserve = false) {
+    if (!this.state.merging_two_accounts) {
       VoterActions.voterMergeTwoAccountsByFacebookKey(facebook_secret_key);
       // Prevent voterMergeTwoAccountsByFacebookKey from being called multiple times
       this.setState({merging_two_accounts: true});
@@ -93,7 +89,6 @@ export default class FacebookInvitableFriends extends Component {
   }
 
   voterFacebookSaveToCurrentAccount () {
-    // console.log("In voterFacebookSaveToCurrentAccount");
     VoterActions.voterFacebookSaveToCurrentAccount();
   }
 
