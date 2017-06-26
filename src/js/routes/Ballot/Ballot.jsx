@@ -275,8 +275,10 @@ export default class Ballot extends Component {
     };
 
     // This Modal is shown to the user, when user visits the ballot page for first time only
-    const BallotIntroModal = <Modal show={this.state.showBallotIntroModal} onHide={()=>{this._toggleBallotIntroModal(this);}}>
-      <Modal.Body bsClass="modal-body__background">
+    const BallotIntroModal = <Modal bsClass="background-brand-blue modal"
+                                    show={this.state.showBallotIntroModal}
+                                    onHide={()=>{this._toggleBallotIntroModal(this);}}>
+      <Modal.Body>
         <Slider ref="slider" {...settings}>
           <div key={1}><BallotIntroMission next={this._next}/></div>
           <div key={2}><BallotIntroFollowIssues next={this._next}/></div>
