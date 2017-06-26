@@ -12,7 +12,7 @@ export default class BallotIntroMission extends Component {
   }
 
   render () {
-    return <div className="">
+    return <div className="intro-modal">
       <div className="intro-modal__h1">Your Mission</div>
       <div className="intro-modal__h2">Make the world a better place.</div>
       <div>We Vote helps you decide how to vote your values, based on advice from organizations and friends you trust.</div>

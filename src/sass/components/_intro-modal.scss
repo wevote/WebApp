@@ -1,13 +1,9 @@
 .intro-modal {
-  background-color: $gray-dark;
   padding: $space-none;
   height: 300px;
   width: 100%;
   color: $white;
   text-align: center;
-  @include breakpoints (max large) {
-    height: 100vh;
-  }
   &__h1 {
     font-weight: 700;
     font-size: 30px;
