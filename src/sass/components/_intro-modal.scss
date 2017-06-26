@@ -7,7 +7,7 @@
   &__h1 {
     font-weight: 700;
     font-size: 30px;
-    padding: $space-none $space-none $space-none;
+    padding: $space-lg $space-none $space-sm;
     @include breakpoints (max large) {
       font-size: 22px;
     }
@@ -22,11 +22,29 @@
   }
 
   &__h2 {
-    padding-top: $space-md;
     font-size: 20px;
     @include breakpoints (max large) {
       font-size: 18px;
     }
+  }
+
+  &-features {
+    padding: $space-lg $space-none;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    &__image {
+      display: inline-block;
+      margin-bottom: $space-md;
+    }
+    &__text {
+      font-size: 12px;
+      font-weight: 700;
+    }
+  }
+
+  &__p {
+    font-size: $base-font-size;
   }
 
   &__padding {
@@ -243,4 +261,10 @@
 .twitter-intro-connect {
   flex: initial;
   max-width: initial;
+}
+
+.calc-height {
+  @include breakpoints (max mid-small) {
+    height: calc(100vh - 52px);
+  }
 }

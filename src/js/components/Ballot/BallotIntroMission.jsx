@@ -13,17 +13,19 @@ export default class BallotIntroMission extends Component {
 
   render () {
     return <div className="intro-modal">
-      <div className="intro-modal__h1">Your Mission</div>
+      <div className="intro-modal__h1">Your Mission:</div>
       <div className="intro-modal__h2">Make the world a better place.</div>
-      <div>We Vote helps you decide how to vote your values, based on advice from organizations and friends you trust.</div>
-      <div>
-        1. Follow Issues
-        <br/>
-        2. Follow Advisers
-        <br/>
-        3. See Position Bars
-        <br/>
+      <div className="intro-modal-features">
+        <div className="intro-modal-features__block">
+          <img className="intro-modal-features__image" src="/img/welcome/benefits/learn-from-orgs.png" width="50%" height="50%" />
+          <h3 className="intro-modal-features__text">Follow Organizations</h3>
+        </div>
+        <div className="intro-modal-features__block">
+          <img className="intro-modal-features__image" src="/img/welcome/benefits/choose-friends.png" width="50%" height="50%" />
+          <h3 className="intro-modal-features__text">Follow Friends</h3>
+        </div>
       </div>
+      <p className="intro-modal__p">We Vote helps you decide how to vote your values, based on advice from organizations and friends you trust.</p>
       <div className="intro-modal__padding-btn">
         <button type="button" className="btn btn-success" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
       </div>

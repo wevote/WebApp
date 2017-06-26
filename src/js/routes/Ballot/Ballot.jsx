@@ -279,7 +279,7 @@ export default class Ballot extends Component {
                                     show={this.state.showBallotIntroModal}
                                     onHide={()=>{this._toggleBallotIntroModal(this);}}>
       <Modal.Body>
-        <Slider ref="slider" {...settings}>
+        <Slider className="calc-height" ref="slider" {...settings}>
           <div key={1}><BallotIntroMission next={this._next}/></div>
           <div key={2}><BallotIntroFollowIssues next={this._next}/></div>
           <div key={3}><BallotIntroFollowAdvisers next={this._next}/></div>
