@@ -140,7 +140,8 @@
     }
   }
 
-  // modifies slick default selector type dot styles
+  // Modifies slick default selector type dot styles
+  // We need to disable stylelint type selector rule because we need to override existing slick package styles.
   /* stylelint-disable selector-no-type  */
   &__gray-dots li button::before {
     color: $gray-pale;
