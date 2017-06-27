@@ -105,7 +105,7 @@ export default class BallotIntroFollowIssues extends Component {
       </div>;
     });
 
-    return <div className="">
+    return <div className="intro-modal">
       <div className="intro-modal__h1">Follow Issues You Care About</div>
       <div className="intro-modal-vertical-scroll-contain">
         <div className="intro-modal-vertical-scroll">

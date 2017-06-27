@@ -106,7 +106,7 @@ export default class BallotIntroFollowAdvisers extends Component {
       </div>;
     });
 
-    return <div className="">
+    return <div className="intro-modal">
       <div className="intro-modal__h1">Follow Organizations or People</div>
       <div className="intro-story__h2">Great work! Based on your issues, these are organizations or people that might share your values. Follow them to see their recommendations.</div>
       <br/>
