@@ -1,17 +1,12 @@
 .intro-modal {
-  background-color: $gray-dark;
   padding: $space-none;
-  height: 300px;
   width: 100%;
   color: $white;
   text-align: center;
-  @include breakpoints (max large) {
-    height: 100vh;
-  }
   &__h1 {
     font-weight: 700;
     font-size: 30px;
-    padding: $space-none $space-none $space-none;
+    padding: $space-lg $space-none $space-sm;
     @include breakpoints (max large) {
       font-size: 22px;
     }
@@ -26,11 +21,29 @@
   }
 
   &__h2 {
-    padding-top: $space-md;
     font-size: 20px;
     @include breakpoints (max large) {
       font-size: 18px;
     }
+  }
+
+  &-features {
+    padding: $space-lg $space-none;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    &__image {
+      display: inline-block !important;
+      margin-bottom: $space-md;
+    }
+    &__text {
+      font-size: 12px;
+      font-weight: 700;
+    }
+  }
+
+  &__p {
+    font-size: $base-font-size;
   }
 
   &__padding {
@@ -126,6 +139,19 @@
       bottom: 10%;
     }
   }
+
+  // Modifies slick default selector type dot styles
+  // We need to disable stylelint type selector rule because we need to override existing slick package styles.
+  /* stylelint-disable selector-no-type  */
+  &__gray-dots li button::before {
+    color: $gray-pale;
+    font-size: 12px;
+  }
+  &__gray-dots li.slick-active button::before {
+    color: $white;
+    opacity: 1;
+  }
+  /* stylelint-enable */
 }
 
 .intro-modal-vertical-scroll {
@@ -247,4 +273,10 @@
 .twitter-intro-connect {
   flex: initial;
   max-width: initial;
+}
+
+.calc-height {
+  @include breakpoints (max mid-small) {
+    height: calc(100vh - 52px);
+  }
 }

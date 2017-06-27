@@ -271,13 +271,15 @@ export default class Ballot extends Component {
       swipe: true,
       accessibility: true,
       //react-slick default left & right nav arrows
-      arrows: true,
+      arrows: false,
     };
 
     // This Modal is shown to the user, when user visits the ballot page for first time only
-    let BallotIntroModal = <Modal show={this.state.showBallotIntroModal} onHide={()=>{this._toggleBallotIntroModal(this);}}>
+    const BallotIntroModal = <Modal bsClass="background-brand-blue modal"
+                                    show={this.state.showBallotIntroModal}
+                                    onHide={()=>{this._toggleBallotIntroModal(this);}}>
       <Modal.Body>
-        <Slider ref="slider" {...settings}>
+        <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...settings}>
           <div key={1}><BallotIntroMission next={this._next}/></div>
           <div key={2}><BallotIntroFollowIssues next={this._next}/></div>
           <div key={3}><BallotIntroFollowAdvisers next={this._next}/></div>

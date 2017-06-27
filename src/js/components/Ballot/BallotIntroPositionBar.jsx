@@ -12,7 +12,7 @@ export default class BallotIntroPositionBar extends Component {
   }
 
   render () {
-    return <div className="">
+    return <div className="intro-modal">
       <div className="intro-modal__h1">Congratulations!</div>
       <div className="intro-story__h2">Now that you have a network of advisers, you will see a position bar next to ballot items..</div>
       <div className="intro-story__h2">Position Bar</div>
