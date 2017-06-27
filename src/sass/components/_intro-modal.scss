@@ -140,6 +140,18 @@
       bottom: 10%;
     }
   }
+
+  // modifies slick default selector type dot styles
+  /* stylelint-disable selector-no-type  */
+  &__gray-dots li button::before {
+    color: $gray-pale;
+    font-size: 12px;
+  }
+  &__gray-dots li.slick-active button::before {
+    color: $white;
+    opacity: 1;
+  }
+  /* stylelint-enable */
 }
 
 .intro-modal-vertical-scroll {
