@@ -136,7 +136,7 @@ export default class About extends Component {
           className="fa fa-external-link"/></a>.<br />
           <br />
 
-          <Link to="/ballot/">Let's get started!</Link><br />
+          <Link to="/ballot">Let's get started!</Link><br />
 
           <br /><br />
 

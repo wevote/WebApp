@@ -60,7 +60,10 @@ export default class Organization extends Component {
           from a communal home of people concerned about where this country is heading. Being an open
           source, volunteer-driven project means anyone can contribute. Kind of like democracy.<br />
           <br />
-        </div>
+         <h3 className="h3"><a href="https://help.wevote.us/hc/en-us/sections/115000140947-What-is-We-Vote-"
+                            target="_blank">Visit our help center to learn more about We Vote.&nbsp;<i
+          className="fa fa-external-link"/></a></h3>
+       </div>
       </div>
     </div>;
   }
