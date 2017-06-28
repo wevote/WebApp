@@ -270,8 +270,13 @@ export default class Team extends Component {
 
         <section>
           <h3 className="h3">Credits &amp; Gratitude</h3>
-          <Link to="/more/credits/">We are thankful for our volunteers, our board of directors, and the
+          <Link to="/more/credits">We are thankful for our volunteers, our board of directors, and the
             organizations</Link> that are critical to our work.<br />
+          <br />
+          <h3 className="h3"><a href="https://help.wevote.us/hc/en-us/sections/115000140947-What-is-We-Vote-"
+                            target="_blank">Visit our help center to learn more about We Vote.&nbsp;<i
+          className="fa fa-external-link"/></a></h3>
+
         </section>
       </div>
     </div>;

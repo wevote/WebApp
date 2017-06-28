@@ -57,7 +57,10 @@ export default class Vision extends Component {
         Our open platform empowers voters to create and share voter guides that aggregate information
         and opinions across personal networks. So you can help your friends be better voters too.<br />
         <br />
-      </div>
+        <h3 className="h3"><a href="https://help.wevote.us/hc/en-us/sections/115000140947-What-is-We-Vote-"
+                            target="_blank">Visit our help center to learn more about We Vote.&nbsp;<i
+          className="fa fa-external-link"/></a></h3>
+     </div>
     </div>;
   }
 }

@@ -314,8 +314,11 @@ export default class About extends Component {
         <section>
           <h3 className="h3">Credits &amp; Gratitude</h3>
           <p>
-            <Link to="/more/credits/">We are thankful for our volunteers, our board of directors, and the organizations</Link> that are critical to our work.
+            <Link to="/more/credits">We are thankful for our volunteers, our board of directors, and the organizations</Link> that are critical to our work.
           </p>
+          <h3 className="h3"><a href="https://help.wevote.us/hc/en-us/sections/115000140947-What-is-We-Vote-"
+                            target="_blank">Visit our help center to learn more about We Vote.&nbsp;<i
+          className="fa fa-external-link"/></a></h3>
         </section>
 
         </div>
