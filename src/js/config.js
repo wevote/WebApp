@@ -19,7 +19,7 @@ WE_VOTE_SERVER_API_ROOT_URL: "http://localhost:8000/apis/v1/",
   },
 
   location: {
-    text_for_map_search: ""
+    text_for_map_search: "",
   },
 
   FACEBOOK_APP_ID: "",
