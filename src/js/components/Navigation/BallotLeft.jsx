@@ -67,8 +67,11 @@ export default class BallotLeft extends Component {
         <ul className="list-group">
              {this.state.ballot.map(function (item, key) {
                if (item.kind_of_ballot_item === "OFFICE" || item.kind_of_ballot_item === "MEASURE") {
+                 const url = (item.kind_of_ballot_item === "OFFICE") ?  "/office/" + item.we_vote_id : "/measure/" +
+                   item.we_vote_id;
+
                  return <div key={key}>
-                   <MenuLink url={"/measure/" + item.we_vote_id} label={item.ballot_item_display_name}
+                   <MenuLink url={url} label={item.ballot_item_display_name}
                                   subtitle={item.measure_subtitle}/>
                  </div>;
                } else {
