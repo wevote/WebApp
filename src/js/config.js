@@ -1,4 +1,3 @@
-
 // Note that we import these values into "web_app_config" (so we can search for it)
 module.exports = {
     WE_VOTE_URL_PROTOCOL: "http://",  // "http://" for local dev or "https://" for live server
