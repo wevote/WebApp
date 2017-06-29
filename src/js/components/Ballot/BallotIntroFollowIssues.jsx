@@ -94,33 +94,31 @@ export default class BallotIntroFollowIssues extends Component {
     }
 
     const issue_list_for_display = issue_list.map((issue) => {
-      return <div key={issue.issue_we_vote_id}>
-        <IssueFollowToggle
-          issue_we_vote_id={issue.issue_we_vote_id}
-          issue_name={issue.issue_name}
-          on_issue_follow={this.onIssueFollow}
-          on_issue_stop_following={this.onIssueStopFollowing}
-        />
-        <br />
-      </div>;
+      return <IssueFollowToggle
+        key={issue.issue_we_vote_id}
+        issue_we_vote_id={issue.issue_we_vote_id}
+        issue_name={issue.issue_name}
+        on_issue_follow={this.onIssueFollow}
+        on_issue_stop_following={this.onIssueStopFollowing}
+      />;
     });
 
     return <div className="intro-modal">
       <div className="intro-modal__h1">Follow Issues You Care About</div>
       <div className="intro-modal-vertical-scroll-contain">
-        <div className="intro-modal-vertical-scroll">
+        <div className="intro-modal-vertical-scroll card">
           { issue_list.length > 0 ?
             issue_list_for_display :
             <h4>No issues to display</h4>
           }
         </div>
       </div>
-      <div className="intro-story__h2">
+      <div className="intro-modal__p intro-modal__height-min-100 intro-modal__padding-top">
         { this.state.description_text }
       </div>
       <br/>
-      <div className="intro-modal__padding-btn__btn-center">
-        <Button type="submit" className="btn btn-success" onClick={this.onNext}>
+      <div className="intro-modal__padding-btn__btn-center intro-modal__button-wrap">
+        <Button type="submit" className="btn btn-success intro-modal__button" onClick={this.onNext}>
           <span>{this.state.next_button_text}</span>
         </Button>
       </div>

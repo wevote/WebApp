@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 import IssueActions from "../../actions/IssueActions";
+import ImageHandler from "../ImageHandler";
 
 export default class IssueFollowToggle extends Component {
   static propTypes = {
@@ -42,15 +43,31 @@ export default class IssueFollowToggle extends Component {
     let is_following = this.state.is_following;
 
     return is_following ?
-      <div className="card-child">
-        {this.props.issue_name} &nbsp;
-        <Button bsStyle="warning" bsSize="small" className="pull-right" onClick={this.onIssueStopFollowing}>
+      <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
+        <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
+          sizeClassName="icon-candidate-small u-push--sm "
+          alt="issue-photo"
+          kind_of_ballot_item="CANDIDATE"
+        />
+        <span>
+          <h4 className="card-main__candidate-name">{this.props.issue_name} &nbsp;</h4>
+          <p className="intro-modal__small">This is a test blah blah...</p>
+        </span>
+        <Button bsStyle="warning" bsSize="small" onClick={this.onIssueStopFollowing}>
           <span>Following</span>
         </Button>
       </div> :
-      <div>
-        <span onClick={this.onIssueFollow}>{this.props.issue_name} &nbsp;</span>
-        <Button bsStyle="info" bsSize="small" className="pull-right" onClick={this.onIssueFollow}>
+      <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
+        <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
+          sizeClassName="icon-candidate-small u-push--sm "
+          alt="issue-photo"
+          kind_of_ballot_item="CANDIDATE"
+        />
+        <span>
+          <h4 className="card-main__candidate-name" onClick={this.onIssueFollow}>{this.props.issue_name} &nbsp;</h4>
+          <p className="intro-modal__small">This is a test blah blah...</p>
+        </span>
+        <Button bsStyle="info" bsSize="small" onClick={this.onIssueFollow}>
           <span>Follow</span>
         </Button>
       </div>;

@@ -1,12 +1,13 @@
 .intro-modal {
   padding: $space-none;
+  height: 100%;
   width: 100%;
   color: $white;
   text-align: center;
   &__h1 {
     font-weight: 700;
     font-size: 30px;
-    padding: $space-lg $space-none $space-sm;
+    padding: $space-sm $space-none $space-md;
     @include breakpoints (max large) {
       font-size: 22px;
     }
@@ -42,8 +43,30 @@
     }
   }
 
+  &__height-min-100 {
+    min-height: 100px;
+  }
+
+  &__height-full {
+    height: 100%;
+  }
+
+  &__small {
+    font-size: 12px;
+  }
+
   &__p {
     font-size: $base-font-size;
+  }
+
+  &__button {
+    position: absolute;
+    bottom: 42px;
+  }
+
+  &__button-wrap {
+    display: flex;
+    justify-content: center;
   }
 
   &__padding {
@@ -140,6 +163,10 @@
     }
   }
 
+  &__text-dark {
+    color: $gray-darker;
+  }
+
   // Modifies slick default selector type dot styles
   // We need to disable stylelint type selector rule because we need to override existing slick package styles.
   /* stylelint-disable selector-no-type  */
@@ -152,20 +179,41 @@
     opacity: 1;
   }
   /* stylelint-enable */
+
+  &__bottom-sm {
+    bottom: 1em !important;
+  }
 }
 
 .intro-modal-vertical-scroll {
-  padding: $space-md;
+  // padding: $space-md;
   -webkit-column-count: 1;
   -moz-column-count: 1;
   column-count: 1;
   -webkit-column-gap: 0;
   -moz-column-gap: 0;
   column-gap: 0;
+  .card-main {
+    &:hover {
+      cursor: pointer;
+      background: $selected-color-bright;
+      .card-main__candidate-name,
+      .intro-modal__small {
+        color: $gray-pale;
+      }
+    }
+  }
+}
+
+.child-height-full > :first-child {
+  height: 100%;
+  > :first-child {
+    height: 100%;
+  }
 }
 
 .intro-modal-vertical-scroll-contain {
-  height: 175px;
+  max-height: 45vh;
   overflow-y: auto;
 }
 
