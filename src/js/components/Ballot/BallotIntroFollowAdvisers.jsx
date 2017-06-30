@@ -94,16 +94,15 @@ export default class BallotIntroFollowAdvisers extends Component {
     }
 
     const organization_list_for_display = organization_list.map((organization) => {
-      return <div key={organization.organization_we_vote_id}>
-        <OrganizationFollowToggle
-          organization_we_vote_id={organization.organization_we_vote_id}
-          organization_name={organization.voter_guide_display_name}
-          on_organization_follow={this.onOrganizationFollow}
-          on_organization_stop_following={this.onOrganizationStopFollowing}
-          organization_image_url={organization.voter_guide_image_url_medium}
-        />
-        <br />
-      </div>;
+      return <OrganizationFollowToggle
+        key={organization.organization_we_vote_id}
+        organization_we_vote_id={organization.organization_we_vote_id}
+        organization_name={organization.voter_guide_display_name}
+        organization_description={organization.twitter_description}
+        organization_image_url={organization.voter_guide_image_url_medium}
+        on_organization_follow={this.onOrganizationFollow}
+        on_organization_stop_following={this.onOrganizationStopFollowing}
+        />;
     });
 
     return <div className="intro-modal">
@@ -111,7 +110,7 @@ export default class BallotIntroFollowAdvisers extends Component {
       <div className="intro-story__h2">Great work! Based on your issues, these are organizations or people that might share your values. Follow them to see their recommendations.</div>
       <br/>
       <div className="intro-modal-vertical-scroll-contain">
-        <div className="intro-modal-vertical-scroll">
+        <div className="intro-modal-vertical-scroll card">
           { organization_list.length > 0 ?
             organization_list_for_display :
             <h4>No organizations to display</h4>

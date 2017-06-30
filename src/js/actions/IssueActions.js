@@ -2,17 +2,19 @@ import Dispatcher from "../dispatcher/Dispatcher";
 
 module.exports = {
 
-  issuesRetrieve: function (){
-    Dispatcher.loadEndpoint("issuesRetrieve");
+  retrieveIssuesToFollow: function () {
+    Dispatcher.loadEndpoint("retrieveIssuesToFollow");
   },
 
-  issueFollow: function (issue_we_vote_id) {
-    console.log("User follows issue " + issue_we_vote_id);
+  retrieveIssuesForVoter: function () {
+    Dispatcher.loadEndpoint("issuesRetrieve", {voter_issues_only: true, include_voter_follow_status: true});
+  },
+
+  issueFollow: function (issue_we_vote_id ) {
     Dispatcher.loadEndpoint("issueFollow", {issue_we_vote_id: issue_we_vote_id, follow: true, ignore: false} );
   },
 
   issueStopFollowing: function (issue_we_vote_id) {
-    console.log("User Unfollows issue " + issue_we_vote_id);
     Dispatcher.loadEndpoint("issueFollow", {issue_we_vote_id: issue_we_vote_id, follow: false, ignore: false} );
   },
 };

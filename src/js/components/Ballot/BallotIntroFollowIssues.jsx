@@ -27,7 +27,8 @@ export default class BallotIntroFollowIssues extends Component {
   }
 
   componentDidMount () {
-    IssueActions.issuesRetrieve();
+    IssueActions.retrieveIssuesForVoter();
+    IssueActions.retrieveIssuesToFollow();
     this._onIssueStoreChange();
     this.onIssueFollow = this.onIssueFollow.bind(this);
     this.onIssueStopFollowing = this.onIssueStopFollowing.bind(this);
@@ -40,7 +41,15 @@ export default class BallotIntroFollowIssues extends Component {
   }
 
   _onIssueStoreChange () {
-    this.setState({ issues: IssueStore.getIssues() });
+    // update followed_issues only for first time, subsequent updates will be made locally
+    if (this.state.followed_issues.length === 0) {
+      this.setState({
+        issues: IssueStore.getIssues(),
+        followed_issues: IssueStore.getVoterFollowIssueWeVoteIdList(),
+      });
+    } else {
+      this.setState({ issues: IssueStore.getIssues() });
+    }
   }
 
   onIssueFollow (issue_we_vote_id) {
@@ -98,9 +107,10 @@ export default class BallotIntroFollowIssues extends Component {
         key={issue.issue_we_vote_id}
         issue_we_vote_id={issue.issue_we_vote_id}
         issue_name={issue.issue_name}
+        issue_description={issue.issue_description}
+        issue_image_url={issue.issue_photo_url_medium}
         on_issue_follow={this.onIssueFollow}
         on_issue_stop_following={this.onIssueStopFollowing}
-        issue_description={issue.issue_description}
       />;
     });
 

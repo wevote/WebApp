@@ -288,7 +288,11 @@ class GuideStore extends FluxMapStore {
           };
 
       case "organizationFollow":
-        GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter follows a new org, update list
+        if (action.res.organization_follow_based_on_issue) {
+          GuideActions.retrieveGuidesToFollowByIssueFilter();  // Whenever a voter follows a new org, update list
+        } else {
+          GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter follows a new org, update list
+        }
         SupportActions.positionsCountForAllBallotItems();  // Following one org can change the support/oppose count for many items
         id = action.res.organization_we_vote_id;
         return {
