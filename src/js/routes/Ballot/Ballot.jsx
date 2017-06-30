@@ -76,7 +76,7 @@ export default class Ballot extends Component {
       this._toggleMeasureModal = this._toggleMeasureModal.bind(this);
       this._toggleSelectBallotModal = this._toggleSelectBallotModal.bind(this);
       this._toggleSelectAddressModal = this._toggleSelectAddressModal.bind(this);
-      this._next = this._next.bind(this);
+      this._nextSliderPage = this._nextSliderPage.bind(this);
       SupportActions.voterAllPositionsRetrieve();
       SupportActions.positionsCountForAllBallotItems();
       BallotActions.voterBallotListRetrieve();
@@ -187,7 +187,7 @@ export default class Ballot extends Component {
     }
   }
 
-  _next () {
+  _nextSliderPage () {
     this.refs.slider.slickNext();
   }
 
@@ -262,7 +262,7 @@ export default class Ballot extends Component {
   }
 
   render () {
-    var settings = {
+    var slider_settings = {
       dots: true,
       infinite: false,
       speed: 500,
@@ -279,11 +279,11 @@ export default class Ballot extends Component {
                                     show={this.state.showBallotIntroModal}
                                     onHide={()=>{this._toggleBallotIntroModal(this);}}>
       <Modal.Body>
-        <Slider dotsClass="slick-dots intro-modal__gray-dots intro-modal__bottom-sm" className="calc-height intro-modal__height-full child-height-full" ref="slider" {...settings}>
-          <div className="intro-modal__height-full" key={1}><BallotIntroMission next={this._next}/></div>
-          <div className="intro-modal__height-full" key={2}><BallotIntroFollowIssues next={this._next}/></div>
-          <div className="intro-modal__height-full" key={3}><BallotIntroFollowAdvisers next={this._next}/></div>
-          <div className="intro-modal__height-full" key={4}><BallotIntroPositionBar next={this._next}/></div>
+        <Slider dotsClass="slick-dots intro-modal__gray-dots intro-modal__bottom-sm" className="calc-height intro-modal__height-full child-height-full" ref="slider" {...slider_settings}>
+          <div className="intro-modal__height-full" key={1}><BallotIntroMission next={this._nextSliderPage}/></div>
+          <div className="intro-modal__height-full" key={2}><BallotIntroFollowIssues next={this._nextSliderPage}/></div>
+          <div className="intro-modal__height-full" key={3}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div>
+          <div className="intro-modal__height-full" key={4}><BallotIntroPositionBar next={this._nextSliderPage}/></div>
         </Slider>
       </Modal.Body>
     </Modal>;
@@ -524,7 +524,7 @@ export default class Ballot extends Component {
             <span className="hidden-print"> (<a onClick={this._toggleSelectAddressModal}>Add Your Address</a>)</span>
           </p> }
         {voter_address ?
-          <div className="ballot__filter hidden-print"><BallotFilter ballot_type={this.getBallotType()} /> (<a onClick={this._toggleBallotIntroModal}>show issues</a>)</div> :
+          <div className="ballot__filter hidden-print"><BallotFilter ballot_type={this.getBallotType()} /> (<a onClick={this._toggleBallotIntroModal}>show intro</a>)</div> :
           null}
       </div>
       {emptyBallot}
