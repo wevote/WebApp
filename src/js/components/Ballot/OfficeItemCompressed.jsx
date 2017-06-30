@@ -58,6 +58,7 @@ export default class OfficeItemCompressed extends Component {
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
     return <div className="card-main office-item">
+      <a name={we_vote_id} />
       <div className="card-main__content">
         <div className="u-flex u-stack--sm">
           <h2 className="u-f3">
