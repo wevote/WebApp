@@ -46,28 +46,32 @@ export default class IssueFollowToggle extends Component {
 
     return is_following ?
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
-        <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
-          sizeClassName="icon-candidate-small u-push--sm "
-          alt="issue-photo"
-          kind_of_image="ISSUE"
-        />
-        <span>
-          <h4 className="card-main__candidate-name">{this.props.issue_name} &nbsp;</h4>
-          <p className="intro-modal__small">{issue_description}</p>
+        <div className="intro-modal__hide-sm intro-modal__margin-right">
+          <ImageHandler className="intro-modal__hide-sm hidden-sm card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
+            sizeClassName="icon-candidate-small u-push--sm "
+            alt="issue-photo"
+            kind_of_image="ISSUE"
+          />
+        </div>
+        <span className="intro-modal__span intro-modal__margin-right">
+          <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue_name}</h4>
+          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{issue_description}</p>
         </span>
         <Button bsStyle="warning" bsSize="small" onClick={this.onIssueStopFollowing}>
           <span>Following</span>
         </Button>
       </div> :
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
-        <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
-          sizeClassName="icon-candidate-small u-push--sm "
-          alt="issue-photo"
-          kind_of_image="ISSUE"
-        />
-        <span>
-          <h4 className="card-main__candidate-name" onClick={this.onIssueFollow}>{this.props.issue_name} &nbsp;</h4>
-          <p className="intro-modal__small">{issue_description}</p>
+        <div className="intro-modal__hide-sm intro-modal__margin-right">
+          <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
+            sizeClassName="icon-candidate-small u-push--sm "
+            alt="issue-photo"
+            kind_of_image="ISSUE"
+          />
+        </div>
+        <span className="intro-modal__span intro-modal__margin-right">
+          <h4 className="card-main__candidate-name intro-modal__white-space" onClick={this.onIssueFollow}>{this.props.issue_name}</h4>
+          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{issue_description}</p>
         </span>
         <Button bsStyle="info" bsSize="small" onClick={this.onIssueFollow}>
           <span>Follow</span>

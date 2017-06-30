@@ -53,6 +53,7 @@
 
   &__small {
     font-size: 12px;
+    margin: $space-none;
   }
 
   &__p {
@@ -67,6 +68,31 @@
   &__button-wrap {
     display: flex;
     justify-content: center;
+  }
+
+  &__span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: start;
+  }
+
+  &__margin-right {
+    margin-right: $space-sm;
+  }
+
+  &__hide-sm {
+    @include breakpoints (max mid-small) {
+      display: none;
+    }
+  }
+
+  &__white-space {
+    white-space: normal;
+  }
+
+  &__ellipsis {
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   &__padding {
@@ -187,6 +213,7 @@
 
 .intro-modal-vertical-scroll {
   // padding: $space-md;
+  border-radius: $radius-sm;
   -webkit-column-count: 1;
   -moz-column-count: 1;
   column-count: 1;
