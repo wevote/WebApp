@@ -158,3 +158,60 @@ $header-height: 54px;
     background-color: $badge-color; // Override for Bootstrap class .badge
   }
 }
+
+.header-getting-started-nav {
+  $nav-item-getting-started-background-hover-color: darken($page-header-getting-started-background-color, 5%);
+  $nav-item-getting-started-background-active-color: darken($page-header-getting-started-background-color, 10%);
+  display: flex;
+  align-items: center;
+
+  &__label {
+    display: block;
+    color: $gray-dark;
+    font-size: 10px;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    width: 60px;
+    height: $header-height;
+    padding: $space-sm;
+    color: $gray-dark;
+    opacity: .8;
+    text-align: center;
+    // temporary offsets for .page-header__container padding
+    margin-top: -.5em; // stylelint-disable-line sh-waqar/declaration-use-variable
+    margin-bottom: -.5em; // stylelint-disable-line sh-waqar/declaration-use-variable
+    &--has-icon {
+      justify-content: space-between;
+    }
+
+    &:active,
+    &.active-icon,
+    &:focus,
+    &:hover {
+      color: $gray-dark;
+      opacity: 1;
+      text-decoration: none;
+    }
+
+    &:active,
+    &.active-icon {
+      background-color: $nav-item-getting-started-background-active-color;
+    }
+
+    &:hover {
+      background-color: $nav-item-getting-started-background-hover-color;
+    }
+  }
+  .nav-icon {
+    font-size: 1rem;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

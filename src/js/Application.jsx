@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import BallotLeft from "./components/Navigation/BallotLeft";
 import FriendActions from "./actions/FriendActions";
 import HeaderBar from "./components/Navigation/HeaderBar";
+import HeaderGettingStartedBar from "./components/Navigation/HeaderGettingStartedBar";
 import Headroom from "headroom.js";
 import BookmarkActions from "./actions/BookmarkActions";
 import VoterActions from "./actions/VoterActions";
@@ -167,6 +168,9 @@ export default class Application extends Component {
       <div className="headroom-wrapper">
         <div ref="pageHeader" className="page-header__container headroom">
           <HeaderBar pathname={pathname} voter={voter} />
+          { pathname === "/ballot" ?
+            <HeaderGettingStartedBar pathname={pathname} voter={voter}/> :
+            null }
         </div>
       </div>
       { pathname === "/welcome" ? <div>{ this.props.children }</div> :

@@ -26,6 +26,22 @@
   }
 }
 
+.page-getting-started-header {
+  // required overrides for Bootstrap :(
+  border: none;
+  @include clearfix;
+  background-color: $brand-white;
+  padding-right: $half-gutter-width;
+  padding-bottom: $space-none; // override to avoid Bootstrap collision
+  padding-left: $half-gutter-width; // $grid-gutter-width/2
+  margin: $space-none auto;
+  max-width: $max-page-container-width;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .page-logo {
   white-space: nowrap;
   margin: $space-none $space-md $space-none $space-none; // zeros to override Bootstrap h4
