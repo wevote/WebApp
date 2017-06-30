@@ -7,6 +7,7 @@ export default class ImageHandler extends Component {
     hidePlaceholder: PropTypes.bool,
     imageUrl: PropTypes.string,
     kind_of_ballot_item: PropTypes.string,
+    kind_of_image: PropTypes.string,
     sizeClassName: PropTypes.string,
   };
 
@@ -26,14 +27,26 @@ export default class ImageHandler extends Component {
     let sizeClassName = this.props.sizeClassName || "";
     let show_placeholder_if_image_missing = !this.props.hidePlaceholder;
     let place_holder_image_url = "";
-    if (this.props.kind_of_ballot_item === "CANDIDATE") {
-      replacementClass = "icon-main image-person-placeholder";
-      place_holder_image_url = "/img/global/svg-icons/avatar-generic.svg";
-    } else if (this.props.kind_of_ballot_item === "MEASURE" || this.props.kind_of_ballot_item === "OFFICE"){
-      return <i className="search-image__filler" />;
-    } else {
-      replacementClass = "icon-main image-organization-placeholder";
-      place_holder_image_url = "/img/global/svg-icons/organization-icon.svg";
+    const {kind_of_ballot_item} = this.props;
+    const kind_of_image = this.props.kind_of_image ? this.props.kind_of_image : kind_of_ballot_item;
+
+    //handles setting the placeholder image by "kind_of_image" or "ballot item" type.
+    switch (kind_of_image) {
+      case "CANDIDATE":
+        replacementClass = "icon-main image-person-placeholder";
+        place_holder_image_url = "/img/global/svg-icons/avatar-generic.svg";
+        break;
+      case "MEASURE" || "OFFICE":
+        // TODO: Refactor to remove font icons
+        return <i className="search-image__filler" />;
+      case "ISSUE":
+        replacementClass = "icon-main image-person-placeholder";
+        place_holder_image_url = "/img/global/svg-icons/issue-generic.svg";
+        break;
+      default:
+        replacementClass = "icon-main image-organization-placeholder";
+        place_holder_image_url = "/img/global/svg-icons/organization-icon.svg";
+        break;
     }
 
     if (show_placeholder_if_image_missing) {

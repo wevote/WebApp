@@ -1,11 +1,13 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 import IssueActions from "../../actions/IssueActions";
+import ImageHandler from "../ImageHandler";
 
 export default class IssueFollowToggle extends Component {
   static propTypes = {
     issue_we_vote_id: PropTypes.string.isRequired,
     issue_name: PropTypes.string.isRequired,
+    issue_description: PropTypes.string,
     on_issue_follow: PropTypes.func.isRequired,
     on_issue_stop_following: PropTypes.func.isRequired,
   };
@@ -40,17 +42,38 @@ export default class IssueFollowToggle extends Component {
   render () {
     if (!this.state) { return <div />; }
     let is_following = this.state.is_following;
+    const {issue_description} = this.props;
 
     return is_following ?
-      <div className="card-child">
-        {this.props.issue_name} &nbsp;
-        <Button bsStyle="warning" bsSize="small" className="pull-right" onClick={this.onIssueStopFollowing}>
+      <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
+        <div className="intro-modal__hide-sm intro-modal__margin-right">
+          <ImageHandler className="intro-modal__hide-sm hidden-sm card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
+            sizeClassName="icon-candidate-small u-push--sm "
+            alt="issue-photo"
+            kind_of_image="ISSUE"
+          />
+        </div>
+        <span className="intro-modal__span intro-modal__margin-right">
+          <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue_name}</h4>
+          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{issue_description}</p>
+        </span>
+        <Button bsStyle="warning" bsSize="small" onClick={this.onIssueStopFollowing}>
           <span>Following</span>
         </Button>
       </div> :
-      <div>
-        <span onClick={this.onIssueFollow}>{this.props.issue_name} &nbsp;</span>
-        <Button bsStyle="info" bsSize="small" className="pull-right" onClick={this.onIssueFollow}>
+      <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
+        <div className="intro-modal__hide-sm intro-modal__margin-right">
+          <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
+            sizeClassName="icon-candidate-small u-push--sm "
+            alt="issue-photo"
+            kind_of_image="ISSUE"
+          />
+        </div>
+        <span className="intro-modal__span intro-modal__margin-right">
+          <h4 className="card-main__candidate-name intro-modal__white-space" onClick={this.onIssueFollow}>{this.props.issue_name}</h4>
+          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{issue_description}</p>
+        </span>
+        <Button bsStyle="info" bsSize="small" onClick={this.onIssueFollow}>
           <span>Follow</span>
         </Button>
       </div>;
