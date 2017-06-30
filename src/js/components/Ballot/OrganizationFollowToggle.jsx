@@ -1,15 +1,16 @@
 import React, {Component, PropTypes} from "react";
 import {Button} from "react-bootstrap";
 import GuideActions from "../../actions/GuideActions";
-import ImageHandler from "../../components/ImageHandler";
+import ImageHandler from "../ImageHandler";
 
 export default class OrganizationFollowToggle extends Component {
   static propTypes = {
     organization_we_vote_id: PropTypes.string.isRequired,
     organization_name: PropTypes.string.isRequired,
+    organization_description: PropTypes.string,
+    organization_image_url: PropTypes.string,
     on_organization_follow: PropTypes.func.isRequired,
     on_organization_stop_following: PropTypes.func.isRequired,
-    organization_image_url: PropTypes.string.isRequired,
   };
 
   constructor (props) {
@@ -28,7 +29,8 @@ export default class OrganizationFollowToggle extends Component {
     // This check is necessary as we enable follow when user clicks on Issue text
     if (!this.state.is_following) {
       this.setState({is_following: true});
-      GuideActions.organizationFollow(this.props.organization_we_vote_id);
+      let organization_follow_based_on_issue = true;
+      GuideActions.organizationFollow(this.props.organization_we_vote_id, organization_follow_based_on_issue);
       this.props.on_organization_follow(this.props.organization_we_vote_id);
     }
   }
@@ -40,28 +42,40 @@ export default class OrganizationFollowToggle extends Component {
   }
 
   render () {
-    return <div className="u-push--sm u-stack--sm">
-      <div className="o-media-object--center">
-          <span>
-          <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
-                        imageUrl={this.props.organization_image_url}
-                        alt="organization-photo"/>
-          </span>
-        { this.state.is_following ?
-          <div className="o-media-object__body">
-            <span>{this.props.organization_name}</span>
-            <Button bsStyle="warning" bsSize="small" className="pull-right" onClick={this.onOrganizationStopFollowing}>
-              <span>Following</span>
-            </Button>
-          </div> :
-          <div className="o-media-object__body">
-            <span onClick={this.onOrganizationFollow}>{this.props.organization_name}</span>
-            <Button bsStyle="info" bsSize="small" className="pull-right" onClick={this.onOrganizationFollow}>
-              <span>Follow</span>
-            </Button>
-          </div>
-        }
-      </div>
-    </div>;
+    if (!this.state) { return <div />; }
+
+    return this.state.is_following ?
+      <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
+        <div className="intro-modal__hide-sm intro-modal__margin-right">
+          <ImageHandler className="intro-modal__hide-sm hidden-sm card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
+                        sizeClassName="icon-org-small u-push--sm "
+                        alt="organization-photo"
+                        kind_of_image="ORGANIZATION"
+          />
+        </div>
+        <span className="intro-modal__span intro-modal__margin-right">
+          <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.organization_name}</h4>
+          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.organization_description}</p>
+        </span>
+        <Button bsStyle="warning" bsSize="small" onClick={this.onOrganizationStopFollowing}>
+          <span>Following</span>
+        </Button>
+      </div> :
+      <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
+        <div className="intro-modal__hide-sm intro-modal__margin-right">
+          <ImageHandler className="intro-modal__hide-sm hidden-sm card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
+                        sizeClassName="icon-org-small u-push--sm "
+                        alt="organization-photo"
+                        kind_of_image="ORGANIZATION"
+          />
+        </div>
+        <span className="intro-modal__span intro-modal__margin-right" onClick={this.onOrganizationFollow}>
+          <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.organization_name}</h4>
+          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.organization_description}</p>
+        </span>
+        <Button bsStyle="info" bsSize="small" onClick={this.onOrganizationFollow}>
+          <span>Follow</span>
+        </Button>
+      </div>;
   }
 }

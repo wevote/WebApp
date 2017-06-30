@@ -8,6 +8,7 @@ export default class IssueFollowToggle extends Component {
     issue_we_vote_id: PropTypes.string.isRequired,
     issue_name: PropTypes.string.isRequired,
     issue_description: PropTypes.string,
+    issue_image_url: PropTypes.string,
     on_issue_follow: PropTypes.func.isRequired,
     on_issue_stop_following: PropTypes.func.isRequired,
   };
@@ -41,10 +42,8 @@ export default class IssueFollowToggle extends Component {
 
   render () {
     if (!this.state) { return <div />; }
-    let is_following = this.state.is_following;
-    const {issue_description} = this.props;
 
-    return is_following ?
+    return this.state.is_following ?
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
         <div className="intro-modal__hide-sm intro-modal__margin-right">
           <ImageHandler className="intro-modal__hide-sm hidden-sm card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
@@ -55,7 +54,7 @@ export default class IssueFollowToggle extends Component {
         </div>
         <span className="intro-modal__span intro-modal__margin-right">
           <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue_name}</h4>
-          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{issue_description}</p>
+          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.issue_description}</p>
         </span>
         <Button bsStyle="warning" bsSize="small" onClick={this.onIssueStopFollowing}>
           <span>Following</span>
@@ -69,9 +68,9 @@ export default class IssueFollowToggle extends Component {
             kind_of_image="ISSUE"
           />
         </div>
-        <span className="intro-modal__span intro-modal__margin-right">
-          <h4 className="card-main__candidate-name intro-modal__white-space" onClick={this.onIssueFollow}>{this.props.issue_name}</h4>
-          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{issue_description}</p>
+        <span className="intro-modal__span intro-modal__margin-right" onClick={this.onIssueFollow}>
+          <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue_name}</h4>
+          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.issue_description}</p>
         </span>
         <Button bsStyle="info" bsSize="small" onClick={this.onIssueFollow}>
           <span>Follow</span>
