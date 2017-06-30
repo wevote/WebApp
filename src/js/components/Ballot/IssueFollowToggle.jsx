@@ -7,6 +7,7 @@ export default class IssueFollowToggle extends Component {
   static propTypes = {
     issue_we_vote_id: PropTypes.string.isRequired,
     issue_name: PropTypes.string.isRequired,
+    issue_description: PropTypes.string,
     on_issue_follow: PropTypes.func.isRequired,
     on_issue_stop_following: PropTypes.func.isRequired,
   };
@@ -41,17 +42,18 @@ export default class IssueFollowToggle extends Component {
   render () {
     if (!this.state) { return <div />; }
     let is_following = this.state.is_following;
+    const {issue_description} = this.props;
 
     return is_following ?
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
         <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
           sizeClassName="icon-candidate-small u-push--sm "
           alt="issue-photo"
-          kind_of_ballot_item="CANDIDATE"
+          kind_of_image="ISSUE"
         />
         <span>
           <h4 className="card-main__candidate-name">{this.props.issue_name} &nbsp;</h4>
-          <p className="intro-modal__small">This is a test blah blah...</p>
+          <p className="intro-modal__small">{issue_description}</p>
         </span>
         <Button bsStyle="warning" bsSize="small" onClick={this.onIssueStopFollowing}>
           <span>Following</span>
@@ -61,11 +63,11 @@ export default class IssueFollowToggle extends Component {
         <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
           sizeClassName="icon-candidate-small u-push--sm "
           alt="issue-photo"
-          kind_of_ballot_item="CANDIDATE"
+          kind_of_image="ISSUE"
         />
         <span>
           <h4 className="card-main__candidate-name" onClick={this.onIssueFollow}>{this.props.issue_name} &nbsp;</h4>
-          <p className="intro-modal__small">This is a test blah blah...</p>
+          <p className="intro-modal__small">{issue_description}</p>
         </span>
         <Button bsStyle="info" bsSize="small" onClick={this.onIssueFollow}>
           <span>Follow</span>

@@ -100,6 +100,7 @@ export default class BallotIntroFollowIssues extends Component {
         issue_name={issue.issue_name}
         on_issue_follow={this.onIssueFollow}
         on_issue_stop_following={this.onIssueStopFollowing}
+        issue_description={issue.issue_description}
       />;
     });
 
