@@ -1,5 +1,8 @@
 import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
+import BallotStore from "../../stores/BallotStore";
+import MenuLink from "./MenuLink";
+
 
 export default class BallotLeft extends Component {
   static propTypes = {
@@ -13,33 +16,78 @@ export default class BallotLeft extends Component {
     voter_photo_url_medium: PropTypes.string
   };
 
-  menuLink (url, label){
-    let search = window.location.search ? window.location.search : "";
-    let currentUrl = window.location.pathname + search;
+  constructor (props) {
+    super(props);
+    this.state = {};
+  }
 
-    return <li className={"list-group-item" + (url === currentUrl ? " is-active" : "")}>
-        <Link to={url}><div><span className="header-menu-text-left">{label}</span></div></Link>
-      </li>;
+  componentDidMount () {
+    this._onBallotStoreChange();
+    this.ballotStoreListener = BallotStore.addListener(this._onBallotStoreChange.bind(this));
+  }
+
+  componentWillUnmount () {
+    this.ballotStoreListener.remove();
+  }
+
+  _onBallotStoreChange () {
+    let unsorted = BallotStore.ballot;
+    if ( unsorted && unsorted.length > 0) {
+      this.setState({ballot: this._sortBallots(unsorted)});
+    }
+  }
+
+  _sortBallots (unsorted) {
+    // temporary array holds objects with position and sort-value
+    let mapped = unsorted.map(function (item, i) {
+      return { index: i, value: item };
+    });
+
+    // sorting the mapped array based on local_ballot_order which came from the server
+    mapped.sort(function (a, b) {
+      return +(parseInt(a.value.local_ballot_order) > parseInt(b.value.local_ballot_order)) ||
+        +(parseInt(a.value.local_ballot_order) === parseInt(b.value.local_ballot_order)) - 1;
+    });
+
+    let orderedArray = [];
+    for (let element of mapped) {
+      orderedArray.push(element.value);
+    }
+
+    return orderedArray;
   }
 
   render () {
-    return <div className="u-inset__v--md">
-      {/* Temporary "spacing" to be replaced by actual styles */}
-      <h4 className="text-left" >&nbsp;</h4>
-      <h4 className="text-left" >&nbsp;</h4>
-      <h4 className="text-left" >Summary of Ballot Items</h4>
-      <ul className="list-group">
-        <li className="list-group-item">
-          <h3 className="h3"><Link to="/ballot">Office 1</Link></h3>
-          <h3 className="h3"><Link to="/ballot">Office 2</Link></h3>
-          <h3 className="h3"><Link to="/ballot">Measure 1</Link></h3>
-        </li>
-      </ul>
-      <h4 className="text-left" />
-      <span className="terms-and-privacy">
-        <br />
-        <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy Policy</Link>
-      </span>
-    </div>;
+    if (this.state.ballot && this.state.ballot.length > 0) {
+      return <div className="u-inset__v--md">
+        {/* Temporary "spacing" to be replaced by actual styles */}
+        <h4 className="text-left" >&nbsp;</h4>
+        <h4 className="text-left" >&nbsp;</h4>
+        <h4 className="text-left" >Summary of Ballot Items</h4>
+        <ul className="list-group">
+             {this.state.ballot.map(function (item, key) {
+               if (item.kind_of_ballot_item === "OFFICE" || item.kind_of_ballot_item === "MEASURE") {
+                 const url = item.kind_of_ballot_item === "OFFICE" ? "/office/" + item.we_vote_id : "/measure/" +
+                   item.we_vote_id;
+
+                 return <div key={key}>
+                   <MenuLink url={url} label={item.ballot_item_display_name}
+                                  subtitle={item.measure_subtitle}/>
+                 </div>;
+               } else {
+                 return <span />;
+               }
+             }
+          )}
+        </ul>
+        <h4 className="text-left" />
+        <span className="terms-and-privacy">
+          <br />
+          <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy Policy</Link>
+        </span>
+      </div>;
+    } else {
+      return <span />;
+    }
   }
 }

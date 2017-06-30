@@ -34,6 +34,7 @@ export default class AddressBox extends Component {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     this.ballotStoreListener = BallotStore.addListener(this._onBallotStoreChange.bind(this));
     let addressAutocomplete = new google.maps.places.Autocomplete(this.refs.autocomplete);
+    addressAutocomplete.setComponentRestrictions({country: "us"});
     this.googleAutocompleteListener = addressAutocomplete.addListener("place_changed", this._placeChanged.bind(this, addressAutocomplete));
   }
 
