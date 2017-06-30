@@ -68,7 +68,7 @@ export default class DonationList extends Component {
               <th style={styles.th}>Date</th>
               <th style={styles.th}>Amount</th>
               <th style={styles.th}>Payment</th>
-              <th style={styles.th}>Funding</th>
+              {/* tentatively removed 6/29/17 <th style={styles.th}>Funding</th> */}
               <th style={styles.th}>Card</th>
               <th style={styles.th}>Ends with</th>
               <th style={styles.th}>Expires</th>
@@ -87,9 +87,9 @@ export default class DonationList extends Component {
                   <td style={styles.td}>{item.amount}</td>
                   <td style={styles.td}>{item.record_enum === "PAYMENT_FROM_UI" ? "One time" :
                     "Subscription"}</td>
-                  <td style={styles.td}>{item.funding}</td>
+                    {/* tentatively removed 6/29/17 <td style={styles.td}>{item.funding}</td> */}
                   <td style={styles.td}>{item.brand}</td>
-                  <td style={styles.td}>{item.last4}</td>
+                  <td style={styles.td}>{"... " + item.last4}</td>
                   <td style={styles.td}>{item.exp_month + "/" + item.exp_year}</td>
                   <td style={styles.td}>{item.stripe_status === "succeeded" ? "Paid" : item.stripe_status}</td>
                   <td style={styles.td}>
@@ -110,11 +110,12 @@ export default class DonationList extends Component {
               <th style={styles.th}>Active</th>
               <th style={styles.th}>Started</th>
               <th style={styles.th}>Monthly</th>
-              <th style={styles.th}>Funding</th>
+              {/* tentatively removed 6/29/17 <th style={styles.th}>Funding</th> */}
+              <th style={styles.th}>Last Charged</th>
               <th style={styles.th}>Card</th>
               <th style={styles.th}>Ends with</th>
               <th style={styles.th}>Expires</th>
-              <th style={styles.th}>Ended</th>
+               {/* tentatively removed 6/29/17 <th style={styles.th}>Ended</th>  */}
               <th style={styles.th}>Canceled</th>
               <th style={styles.th}>Info</th>
             </tr>
@@ -127,18 +128,20 @@ export default class DonationList extends Component {
                 let cancel = item.subscription_canceled_at !== "None" ?
                   moment.utc(item.subscription_canceled_at).format("MMM D, YYYY") : "";
                 let waiting = item.amount === "0.00";
+                //let lastcharged = "tbd"; // Temporary stub 6/29/17
                 return <tr key={key}>
                   <td style={styles.td}>{active ? "Active" : "----"}</td>
                   <td style={styles.td}>{moment.utc(item.created).format("MMM D, YYYY")}</td>
                   <td style={styles.td}>{!waiting ? item.amount : "waiting"}</td>
-                  <td style={styles.td}>{!waiting ? item.funding : "waiting"}</td>
+                    <td style={styles.td}>{/*!lastcharged ? item.lastcharged : "waiting"*/}</td>
+                  {/* tentatively removed 6/29/17 <td style={styles.td}>{!waiting ? item.funding : "waiting"}</td>  */}
                   <td style={styles.td}>{!waiting ? item.brand : "waiting"}</td>
-                  <td style={styles.td}>{!waiting ? item.last4 : "waiting"}</td>
+                  <td style={styles.td}>{!waiting ? "... " + item.last4 : "waiting"}</td>
                   <td style={styles.td}>{!waiting > 0 ? item.exp_month + "/" + item.exp_year : "waiting"}</td>
-                  <td style={styles.td}>{ended}</td>
+                  {/* tentatively removed 6/29/17  <td style={styles.td}>{ended}</td>  */}
                   <td style={styles.td}>{cancel}</td>
                   <td style={styles.td}>
-                    {active ? <DonationCancelOrRefund item={item} refundDonation={donations}/> : null}</td>
+                    {active ? <DonationCancelOrRefund item={item} refundDonation={donations}/> : cancel.length > 0 ? "canceled" : null}</td>
                 </tr>;
               } else {
                 return null;

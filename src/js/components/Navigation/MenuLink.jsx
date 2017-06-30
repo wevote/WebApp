@@ -16,13 +16,18 @@ export default class MenuLink extends React.Component {
   render () {
     const search = window.location.search ? window.location.search : "";
     const currentUrl = window.location.pathname + search;
+    // The final shortening will be done in css, this is just so we can see the layout better until then
+    let shortened = this.props.subtitle;
+    if (shortened && shortened.length > 50) {
+      shortened = shortened.substring(0, 49) + "...";
+    }
 
     return <li className={"list-group-item" + (this.props.url === currentUrl ? " is-active" : "")}>
       <div>
-        <Link to={this.props.url}>
+        <a href={this.props.url}>
           <span className="header-menu-text-left">{this.props.label}</span>
-        </Link>
-        <p className="text-left">{this.props.subtitle}</p>
+        </a>
+        <p className="text-left">{shortened}</p>
       </div>
     </li>;
   }

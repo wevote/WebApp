@@ -93,6 +93,7 @@ export default class MeasureItemCompressed extends Component {
 
 
     return <div className="card-main measure-card">
+      <a name={we_vote_id} />
       <div className="card-main__content">
         <h2 className="card-main__display-name">
           { this.props.link_to_ballot_item_page ?
