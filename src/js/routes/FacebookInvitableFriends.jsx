@@ -84,6 +84,7 @@ export default class FacebookInvitableFriends extends Component {
     if (!this.state.merging_two_accounts) {
       VoterActions.voterMergeTwoAccountsByFacebookKey(facebook_secret_key);
       // Prevent voterMergeTwoAccountsByFacebookKey from being called multiple times
+      console.log("voter_has_data_to_preserve: ", voter_has_data_to_preserve);
       this.setState({merging_two_accounts: true});
     }
   }

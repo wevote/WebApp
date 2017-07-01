@@ -1,10 +1,10 @@
 import React, { PropTypes, Component } from "react";
 import { Link } from "react-router";
 import BallotStore from "../../stores/BallotStore";
-import MenuLink from "./MenuLink";
+import BallotSideBarLink from "./BallotSideBarLink";
 
 
-export default class BallotLeft extends Component {
+export default class BallotSideBar extends Component {
   static propTypes = {
     email: PropTypes.string,
     first_name: PropTypes.string,
@@ -65,8 +65,8 @@ export default class BallotLeft extends Component {
           {this.state.ballot.map(function (item, key) {
             if (item.kind_of_ballot_item === "OFFICE" || item.kind_of_ballot_item === "MEASURE") {
               return <div key={key}>
-                <MenuLink url={"#" + item.we_vote_id} label={item.ballot_item_display_name}
-                          subtitle={item.measure_subtitle}/>
+                <BallotSideBarLink url={"#" + item.we_vote_id} label={item.ballot_item_display_name}
+                                   subtitle={item.measure_subtitle}/>
               </div>;
             } else {
               return <span />;
