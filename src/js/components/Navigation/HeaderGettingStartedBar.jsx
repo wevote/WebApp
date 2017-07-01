@@ -77,6 +77,51 @@ export default class HeaderGettingStartedBar extends Component {
                   Issues
                   </span>
               </Link>
+              {/* Organizations Icon & Modal */}
+              <Link onClick={this._toggleIssuesIntroModal} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
+                <span title="Organizations">
+                  <img className="glyphicon" src="/img/global/svg-icons/organizations-v2-31x26.svg" />
+                </span>
+                <span className="header-getting-started-nav__label">
+                  Organizations
+                  </span>
+              </Link>
+              {/* Stance Icon & Modal */}
+              <Link onClick={this._toggleIssuesIntroModal} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
+                <span title="Stance">
+                  <img className="glyphicon" src="/img/global/svg-icons/stance-v1-59x32.svg" />
+                </span>
+                <span className="header-getting-started-nav__label">
+                  Stance
+                  </span>
+              </Link>
+              {/* Friends Icon & Modal */}
+              <Link onClick={this._toggleIssuesIntroModal} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
+                <span title="Friends">
+                  <img className="glyphicon" src="/img/global/svg-icons/friends-v2-59x28.svg" />
+                </span>
+                <span className="header-getting-started-nav__label">
+                  Friends
+                  </span>
+              </Link>
+              {/* Share Icon & Modal */}
+              <Link onClick={this._toggleIssuesIntroModal} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
+                <span title="Share">
+                  <img className="glyphicon" src="/img/global/svg-icons/share-v2-28x24.svg" />
+                </span>
+                <span className="header-getting-started-nav__label">
+                  Share
+                  </span>
+              </Link>
+              {/* Vote Icon & Modal */}
+              <Link onClick={this._toggleIssuesIntroModal} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
+                <span title="Vote">
+                  <img className="glyphicon" src="/img/global/svg-icons/vote-v6-25x25.svg" />
+                </span>
+                <span className="header-getting-started-nav__label">
+                  Vote
+                  </span>
+              </Link>
             </div>
           </header> :
           null
