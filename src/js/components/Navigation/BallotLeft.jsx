@@ -60,31 +60,28 @@ export default class BallotLeft extends Component {
   render () {
     if (this.state.ballot && this.state.ballot.length > 0) {
       return <div className="u-inset__v--md">
-        {/* Temporary "spacing" to be replaced by actual styles */}
-        <h4 className="text-left" >&nbsp;</h4>
-        <h4 className="text-left" >&nbsp;</h4>
-        <h4 className="text-left" >Summary of Ballot Items</h4>
-        <ul className="list-group">
-             {this.state.ballot.map(function (item, key) {
-               if (item.kind_of_ballot_item === "OFFICE" || item.kind_of_ballot_item === "MEASURE") {
-                 return <div key={key}>
-                   <MenuLink url={"#" + item.we_vote_id} label={item.ballot_item_display_name}
-                                  subtitle={item.measure_subtitle}/>
-                 </div>;
-               } else {
-                 return <span />;
-               }
-             }
-          )}
-        </ul>
-        <h4 className="text-left" />
-        <span className="terms-and-privacy">
-          <br />
-          <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy Policy</Link>
-        </span>
+        <div className="container-fluid card">
+          <div className="BallotItem__summary-title">Summary of Ballot Items</div>
+          {this.state.ballot.map(function (item, key) {
+            if (item.kind_of_ballot_item === "OFFICE" || item.kind_of_ballot_item === "MEASURE") {
+              return <div key={key}>
+                <MenuLink url={"#" + item.we_vote_id} label={item.ballot_item_display_name}
+                          subtitle={item.measure_subtitle}/>
+              </div>;
+            } else {
+              return <span />;
+            }
+          })}
+          <h4 className="text-left" />
+          <span className="terms-and-privacy">
+            <br />
+            <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy Policy</Link>
+          </span>
+        </div>
       </div>;
     } else {
-      return <span />;
+      return <div />;
     }
   }
 }
+

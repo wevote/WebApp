@@ -1,4 +1,5 @@
-import React, { PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
+
 
 export default class MenuLink extends React.Component {
   static propTypes = {
@@ -13,21 +14,15 @@ export default class MenuLink extends React.Component {
   }
 
   render () {
-    const search = window.location.search ? window.location.search : "";
-    const currentUrl = window.location.pathname + search;
-    // The final shortening will be done in css, this is just so we can see the layout better until then
-    let shortened = this.props.subtitle;
-    if (shortened && shortened.length > 50) {
-      shortened = shortened.substring(0, 49) + "...";
-    }
-
-    return <li className={"list-group-item" + (this.props.url === currentUrl ? " is-active" : "")}>
+    return <div className="BallotItem__summary-item-container">
       <div>
         <a href={this.props.url}>
-          <span className="header-menu-text-left">{this.props.label}</span>
+          <span className="BallotItem__summary-display-name">{this.props.label}</span>
         </a>
-        <p className="text-left">{shortened}</p>
+        <div className="BallotItem__summary-item">
+          {this.props.subtitle}
+        </div>
       </div>
-    </li>;
+    </div>;
   }
 }

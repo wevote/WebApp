@@ -123,8 +123,8 @@ export default class DonationList extends Component {
             <tbody>{this.state.journal.map(function (item, key) {
               if (item.record_enum === "SUBSCRIPTION_SETUP_AND_INITIAL") {
                 let active = item.subscription_canceled_at === "None" && item.subscription_ended_at === "None";
-                let ended = item.subscription_ended_at !== "None" ?
-                  moment.utc(item.subscription_ended_at).format("MMM D, YYYY") : "";
+                //let ended = item.subscription_ended_at !== "None" ?
+                //  moment.utc(item.subscription_ended_at).format("MMM D, YYYY") : "";
                 let cancel = item.subscription_canceled_at !== "None" ?
                   moment.utc(item.subscription_canceled_at).format("MMM D, YYYY") : "";
                 let waiting = item.amount === "0.00";
