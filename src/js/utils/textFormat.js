@@ -44,6 +44,29 @@ export function capitalizeString (raw_string) {
   }
 }
 
+export function sentenceCaseString (raw_string_incoming) {
+  if (raw_string_incoming === undefined) {
+    return "";
+  }
+  var raw_string = raw_string_incoming.toLowerCase();
+  var string_array = raw_string.split(".");
+  var final_string = "";
+  var count;
+  var count2;
+  for (count = 0; count < string_array.length; count++) {
+     var spaceput = "";
+     var spaceCount = string_array[count].replace(/^(\s*).*$/, "$1").length;
+     string_array[count] = string_array[count].replace(/^\s+/, "");
+     var new_string = string_array[count].charAt(string_array[count]).toUpperCase() + string_array[count].slice(1);
+     for (count2 = 0; count2 < spaceCount; count2++) {
+       spaceput = spaceput + " ";
+     }
+     final_string = final_string + spaceput + new_string + ".";
+  }
+  final_string = final_string.substring(0, final_string.length - 1);
+  return final_string;
+}
+
 export function cleanArray (actual) {
   var newArray = [];
   for (var i = 0; i < actual.length; i++) {

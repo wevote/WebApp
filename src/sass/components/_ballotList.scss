@@ -22,49 +22,38 @@
     }
   }
 
-  // These are for the summary pane, originally called BallotLeft.jsx (but we're moving it to the right!)
+  // //////////////////////////////////////////////
+  // These are for the BallotSideBar summary pane
+  // //////////////////////////////////////////////
 
   &__summary-title {
     font-family: $heading-font-stack;
-    font-size: 24px;
+    font-size: 18px;
     color: $gray-dark;
     padding-bottom: $space-md;
-    padding-top: $space-md;
+    padding-top: $space-sm;
   }
 
   &__summary-item-container {
     align-items: center;
-    box-sizing: border-box;
-    display: flex;
-    flex-basis: auto;
-    flex-grow: 1;
-    flex-shrink: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; // Not working currently
     position: relative;
-    margin-top: $space-sm;
-    margin-bottom: $space-lg;
+    margin-top: $space-none;
+    margin-bottom: $space-md;
   }
 
   &__summary-display-name {
     font-family: $heading-font-stack;
-    font-size: 18px;
+    font-size: 15px;
     color: $link-color;
   }
 
   &__summary-item {
-    align-items: flex-start;
-    box-sizing: border-box;
     color: $gray-mid;
-    display: block;
-    flex-basis: auto;
-    flex-grow: 1;
-    flex-shrink: 1;
     line-height: 19.6px;
-    overflow: hidden;
     position: relative;
-    text-size-adjust: 100%;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 250px;     // This is a hack: overflow, white-space, and text-overflow -- alone, should handle the shortening
     font-size: 14px;  // If width is still set above, this size interacts with the width size set.
   }
 }

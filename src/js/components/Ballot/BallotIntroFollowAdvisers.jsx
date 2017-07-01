@@ -6,7 +6,7 @@ import GuideStore from "../../stores/GuideStore";
 
 const NEXT_BUTTON_TEXT = "Next >";
 const SKIP_BUTTON_TEXT = "Skip >";
-const PREVIOUS_ADVISERS_PROMPT_TEXT = "Follow three or more advisers to get recommendations on your ballot.";
+// const PREVIOUS_ADVISERS_PROMPT_TEXT = "Follow three or more advisers to get recommendations on your ballot.";
 const SELECT_ORGANIZATION_PROMPT = "Are you sure you don't want to follow at least one organization that shares your values? Following will show you recommendations on your ballot.";
 
 
