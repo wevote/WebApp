@@ -26,7 +26,7 @@ export default class BallotItem extends Component {
             <MeasureItem {...this.props}
                      link_to_ballot_item_page /> :
           <span>
-            <h2 className="BallotItem__display-name">
+            <h2 className="BallotItem__summary-display-name">
               { this.props.ballot_item_display_name }
             </h2>
             <BookmarkAction
