@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import GuideStore from "../../stores/GuideStore";
-import VoterGuidesFollowers from "../../routes/VoterGuidesFollowers";
-import VoterGuidesFollowing from "../../routes/VoterGuidesFollowing";
-import VoterGuidesPositions from "../../routes/VoterGuidesPositions";
+import VoterGuideFollowers from "./VoterGuideFollowers";
+import VoterGuideFollowing from "./VoterGuideFollowing";
+import VoterGuidePositions from "./VoterGuidePositions";
 import VoterStore from "../../stores/VoterStore";
 import { Tabs, Tab } from "react-bootstrap";
 
@@ -21,7 +21,7 @@ export default class OrganizationVoterGuideTabs extends Component {
   }
 
   componentDidMount () {
-    console.log("OrganizationVoterGuideTabs, componentDidMount");
+    // console.log("OrganizationVoterGuideTabs, componentDidMount");
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
     this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
@@ -70,15 +70,15 @@ export default class OrganizationVoterGuideTabs extends Component {
     return (
       <Tabs defaultActiveKey={1} id="tabbed_voter_guide_details">
         <Tab eventKey={1} title={positions_title}>
-          <VoterGuidesPositions organization_we_vote_id={this.props.organization.organization_we_vote_id} />
+          <VoterGuidePositions organization_we_vote_id={this.props.organization.organization_we_vote_id} />
         </Tab>
 
         <Tab eventKey={2} title={following_title}>
-          <VoterGuidesFollowing organization={this.props.organization} />
+          <VoterGuideFollowing organization={this.props.organization} />
         </Tab>
 
         <Tab eventKey={3} title={followers_title}>
-          <VoterGuidesFollowers organization={this.props.organization} />
+          <VoterGuideFollowers organization={this.props.organization} />
         </Tab>
       </Tabs>
     );

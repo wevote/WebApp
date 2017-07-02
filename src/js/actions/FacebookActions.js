@@ -8,7 +8,6 @@ import FacebookConstants from "../constants/FacebookConstants";
 const web_app_config = require("../config");
 
 module.exports = {
-  // TODO Convert this to sign out of just Facebook
   appLogout: function (){
     VoterSessionActions.voterSignOut();
     VoterActions.voterRetrieve();

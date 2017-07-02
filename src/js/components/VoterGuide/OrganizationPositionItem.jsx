@@ -59,14 +59,6 @@ export default class OrganizationPositionItem extends Component {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-  // closeEditPositionModal () {
-  //   this.setState({ showEditPositionModal: false });
-  // }
-  //
-  // openEditPositionModal () {
-  //   this.setState({ showEditPositionModal: true });
-  // }
-
   render (){
     var position = this.props.position;
     let organization = this.props.organization;
@@ -83,22 +75,22 @@ export default class OrganizationPositionItem extends Component {
       organization_facebook_id_being_viewed = organization.facebook_id !== undefined ? organization.facebook_id : 0;
       organization_we_vote_id = organization.we_vote_id;
     }
-    var {voter} = this.state;
-    var signed_in_twitter = voter === undefined ? false : voter.signed_in_twitter;
+    var signed_in_twitter = this.state.voter === undefined ? false : this.state.voter.signed_in_twitter;
     var signed_in_with_this_twitter_account = false;
     if (signed_in_twitter) {
-      signed_in_with_this_twitter_account = voter.twitter_screen_name.toLowerCase() === organization_twitter_handle_being_viewed.toLowerCase();
+      signed_in_with_this_twitter_account = this.state.voter.twitter_screen_name.toLowerCase() === organization_twitter_handle_being_viewed.toLowerCase();
     }
-    var signed_in_facebook = voter === undefined ? false : voter.signed_in_facebook;
+    var signed_in_facebook = this.state.voter === undefined ? false : this.state.voter.signed_in_facebook;
     var signed_in_with_this_facebook_account = false;
     if (signed_in_facebook) {
-      signed_in_with_this_facebook_account = voter.facebook_id === organization_facebook_id_being_viewed;
+      signed_in_with_this_facebook_account = this.state.voter.facebook_id === organization_facebook_id_being_viewed;
     }
-    var signed_in_with_email = voter === undefined ? false : voter.signed_in_with_email;
+    var signed_in_with_email = this.state.voter === undefined ? false : this.state.voter.signed_in_with_email;
     var signed_in_with_this_email_account = false;
-    if (signed_in_with_email && voter.linked_organization_we_vote_id && organization_we_vote_id) {
-      signed_in_with_this_email_account = voter.linked_organization_we_vote_id === organization_we_vote_id;
+    if (signed_in_with_email && this.state.voter.linked_organization_we_vote_id && organization_we_vote_id) {
+      signed_in_with_this_email_account = this.state.voter.linked_organization_we_vote_id === organization_we_vote_id;
     }
+    // console.log("sign_in_with_this twitter:", signed_in_with_this_twitter_account, " facebook:", signed_in_with_this_facebook_account, "email: ", signed_in_with_this_email_account);
 
     var statement_text;
     var is_public_position;
@@ -196,23 +188,10 @@ export default class OrganizationPositionItem extends Component {
               <BookmarkAction we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
             </div>
             { position.kind_of_ballot_item === "CANDIDATE" && contest_office_name !== undefined ?
-            <OfficeNameText political_party={political_party} contest_office_name={contest_office_name} /> :
+              <OfficeNameText political_party={political_party} contest_office_name={contest_office_name} /> :
               null
             }
-          {/* show explicit position, if available, otherwise show rating */}
-          {/* this.props.link_to_edit_modal_off ?
-            position_description :
-            <span>
-              <span className="edit-position-action"
-                    onClick={onEditPositionClick}
-                    title="Edit this position">
-                { position_description }
-              </span>
-              { GET WORKING WITH MEASURES <EditPositionAboutCandidateModal show={this.state.showEditPositionModal}
-                                               onHide={this.closeEditPositionModal.bind(this)}
-                                               position={position}
-                                               organization={organization}/>}
-            </span> */}
+            {/* show explicit position, if available, otherwise show rating */}
             { position_description }
         </div>
       </div>

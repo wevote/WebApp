@@ -1,15 +1,15 @@
 import React, {Component, PropTypes } from "react";
 import Helmet from "react-helmet";
-import GuideStore from "../stores/GuideStore";
-import GuideActions from "../actions/GuideActions";
-import GuideList from "../components/VoterGuide/GuideList";
-import LoadingWheel from "../components/LoadingWheel";
-import VoterStore from "../stores/VoterStore";
+import GuideStore from "../../stores/GuideStore";
+import GuideActions from "../../actions/GuideActions";
+import GuideList from "../../components/VoterGuide/GuideList";
+import LoadingWheel from "../../components/LoadingWheel";
+import VoterStore from "../../stores/VoterStore";
 var _ = require("lodash");
 
 /* VISUAL DESIGN HERE: https://invis.io/8F53FDX9G */
 
-export default class VoterGuidesFollowing extends Component {
+export default class VoterGuideFollowing extends Component {
   static propTypes = {
     organization: PropTypes.object.isRequired,
   };

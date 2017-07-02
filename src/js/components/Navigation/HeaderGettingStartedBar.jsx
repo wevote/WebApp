@@ -15,14 +15,14 @@ export default class HeaderGettingStartedBar extends Component {
 
   constructor (props){
     super(props);
+    this._toggleIssuesIntroModal = this._toggleIssuesIntroModal.bind(this);
+    this._nextSliderPage = this._nextSliderPage.bind(this);
     this.state = {
       showIssuesIntroModal: false,
     };
   }
 
   componentDidMount () {
-      this._toggleIssuesIntroModal = this._toggleIssuesIntroModal.bind(this);
-      this._nextSliderPage = this._nextSliderPage.bind(this);
   }
 
   componentWillUnmount (){
