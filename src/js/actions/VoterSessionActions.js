@@ -5,7 +5,9 @@ module.exports = {
   voterSignOut: function () {
     Dispatcher.loadEndpoint("voterSignOut", { sign_out_all_devices: false });
     cookies.removeItem("voter_device_id");
+    cookies.removeItem("voter_device_id", "/");
     cookies.removeItem("voter_orientation_complete");
+    cookies.removeItem("voter_orientation_complete", "/");
   },
 
   setVoterDeviceIdCookie: function (id) {

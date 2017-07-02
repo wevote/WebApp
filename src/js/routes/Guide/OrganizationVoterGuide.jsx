@@ -71,7 +71,8 @@ export default class OrganizationVoterGuide extends Component {
             <span style={floatRight}>
               <Link to="/opinions"><Button bsStyle="primary">Next &#x21AC;</Button></Link>
             </span>
-            <p>Find voter guides you can follow. These voter guides have been created by nonprofits, public figures, your friends, and more.</p>
+            <p>Find voter guides you can follow.
+              These voter guides have been created by nonprofits, public figures, your friends, and more. (OrganizationVoterGuide)</p>
           </div>
         </div>;
     }

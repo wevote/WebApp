@@ -100,6 +100,7 @@ class VoterStore extends FluxMapStore {
 
   setVoterDeviceIdCookie (id){
     cookies.removeItem("voter_device_id");
+    cookies.removeItem("voter_device_id", "/");
     cookies.setItem("voter_device_id", id, Infinity, "/");
   }
 
@@ -343,6 +344,7 @@ class VoterStore extends FluxMapStore {
                       cookies.getItem("voter_device_id"));
 
           cookies.removeItem("voter_device_id");
+          cookies.removeItem("voter_device_id", "/");
 
           // ...and then ask for a new voter. When it returns a voter with a new voter_device_id, we will set new cookie
           if (!cookies.getItem("voter_device_id")) {
