@@ -54,7 +54,7 @@
     color: $gray-mid;
     line-height: 19.6px;
     position: relative;
-    font-size: 14px;  // If width is still set above, this size interacts with the width size set.
+    font-size: 14px;
   }
 }
 
@@ -73,4 +73,8 @@
   position: relative;
   // top: 20%;
   transform: translateY(-50%);
+}
+
+.BallotHeader {
+  float: right;
 }

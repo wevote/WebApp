@@ -10,6 +10,7 @@ import BallotIntroMission from "../../components/Ballot/BallotIntroMission";
 import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
 import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
 import BallotIntroPositionBar from "../../components/Ballot/BallotIntroPositionBar";
+import BallotSideBar from "../../components/Navigation/BallotSideBar";
 import BallotStore from "../../stores/BallotStore";
 import BallotFilter from "../../components/Navigation/BallotFilter";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
@@ -26,6 +27,7 @@ import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
+
 
 const web_app_config = require("../../config");
 
@@ -50,6 +52,7 @@ export default class Ballot extends Component {
       showMeasureModal: false,
       showSelectBallotModal: false,
       showSelectAddressModal: false,
+      showBallotSummaryModal: false,
       ballot_election_list: [],
       mounted: false,
     };
@@ -76,6 +79,7 @@ export default class Ballot extends Component {
       this._toggleMeasureModal = this._toggleMeasureModal.bind(this);
       this._toggleSelectBallotModal = this._toggleSelectBallotModal.bind(this);
       this._toggleSelectAddressModal = this._toggleSelectAddressModal.bind(this);
+      this._toggleBallotSummaryModal = this._toggleBallotSummaryModal.bind(this);
       this._nextSliderPage = this._nextSliderPage.bind(this);
       SupportActions.voterAllPositionsRetrieve();
       SupportActions.positionsCountForAllBallotItems();
@@ -152,6 +156,12 @@ export default class Ballot extends Component {
   _toggleSelectAddressModal () {
     this.setState({
       showSelectAddressModal: !this.state.showSelectAddressModal
+    });
+  }
+
+  _toggleBallotSummaryModal () {
+    this.setState({
+      showBallotSummaryModal: !this.state.showBallotSummaryModal
     });
   }
 
@@ -416,7 +426,8 @@ export default class Ballot extends Component {
       </Modal>;
 
     // This modal will show a users ballot guides from previous and current elections.
-    const SelectBallotModal = <Modal show={this.state.showSelectBallotModal} onHide={()=>{this._toggleSelectBallotModal();}}
+    const SelectBallotModal = <Modal show={this.state.showSelectBallotModal}
+                                     onHide={()=>{this._toggleSelectBallotModal();}}
       className="ballot-election-list ballot-election-list__modal">
       <Modal.Header closeButton>
         <Modal.Title className="ballot-election-list__h1">See Ballot from Another Election</Modal.Title>
@@ -426,6 +437,19 @@ export default class Ballot extends Component {
           _toggleSelectBallotModal={this._toggleSelectBallotModal}/>
       </Modal.Body>
     </Modal>;
+
+    // This modal shows the ballot summary
+    const BallotSummaryModal =
+      <Modal show={this.state.showBallotSummaryModal}
+             onHide={()=>{this._toggleBallotSummaryModal();}} >
+        <Modal.Header closeButton>
+          <Modal.Title>Summary of Ballot Items</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+         <BallotSideBar displayTitle={false} displaySubtitles={false}
+                        onClick={this._toggleBallotSummaryModal} />
+        </Modal.Body>
+      </Modal>;
 
     // This modal will allow users to change their addresses
     const SelectAddressModal = <Modal show={this.state.showSelectAddressModal} onHide={()=>{this._toggleSelectAddressModal();}}
@@ -502,6 +526,8 @@ export default class Ballot extends Component {
       { this.state.showCandidateModal ? CandidateModal : null }
       { this.state.showSelectBallotModal ? SelectBallotModal : null }
       { this.state.showSelectAddressModal ? SelectAddressModal : null }
+      { this.state.showBallotSummaryModal ? BallotSummaryModal : null }
+
       <div className="ballot__heading u-stack--lg">
         <Helmet title="Ballot - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
@@ -526,6 +552,12 @@ export default class Ballot extends Component {
         {voter_address ?
           <div className="ballot__filter hidden-print"><BallotFilter ballot_type={this.getBallotType()} /> (<a onClick={this._toggleBallotIntroModal}>show intro</a>)</div> :
           null}
+          <div className="visible-xs-block">
+            <div className="BallotHeader u-stack--md">
+              <Button className="btn btn-default" onClick={this._toggleBallotSummaryModal}>Summary</Button>
+            </div>
+            <div className="u-stack--xs">&nbsp;</div>
+          </div>
       </div>
       {emptyBallot}
         <div className="BallotList">
