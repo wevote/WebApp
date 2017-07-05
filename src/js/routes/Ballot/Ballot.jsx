@@ -293,7 +293,7 @@ export default class Ballot extends Component {
           <div className="intro-modal__height-full" key={1}><BallotIntroMission next={this._nextSliderPage}/></div>
           <div className="intro-modal__height-full" key={2}><BallotIntroFollowIssues next={this._nextSliderPage}/></div>
           <div className="intro-modal__height-full" key={3}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div>
-          <div className="intro-modal__height-full" key={4}><BallotIntroPositionBar next={this._nextSliderPage}/></div>
+          <div className="intro-modal__height-full" key={4}><BallotIntroPositionBar next={this._toggleBallotIntroModal}/></div>
         </Slider>
       </Modal.Body>
     </Modal>;
