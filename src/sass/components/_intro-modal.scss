@@ -60,6 +60,32 @@
     font-size: $base-font-size;
   }
 
+  &__position-wrap {
+    min-height: 200px;
+    display: flex;
+    flex: 0 0 100%;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  &__position-img {
+    width: 85%;
+    max-width: 256px;
+  }
+
+  &__position-description-wrap {
+    justify-content: space-between;
+    display: flex;
+    padding-top: $space-md;
+    .intro-modal__p:first-child {
+      flex: 0 1 36%;
+    }
+    .intro-modal__p:last-child {
+      flex: 0 1 25%;
+    }
+  }
+
   &__button {
     position: absolute;
     bottom: 42px;
