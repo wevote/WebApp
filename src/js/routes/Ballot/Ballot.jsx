@@ -24,9 +24,9 @@ import LoadingWheel from "../../components/LoadingWheel";
 import Slider from "react-slick";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
-import VoterStore from "../../stores/VoterStore";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
+import VoterStore from "../../stores/VoterStore";
 
 
 const web_app_config = require("../../config");
@@ -552,11 +552,10 @@ export default class Ballot extends Component {
         {voter_address ?
           <div className="ballot__filter hidden-print"><BallotFilter ballot_type={this.getBallotType()} /> (<a onClick={this._toggleBallotIntroModal}>show intro</a>)</div> :
           null}
-          <div className="visible-xs-block">
-            <div className="BallotHeader u-stack--md">
-              <Button className="btn btn-default" onClick={this._toggleBallotSummaryModal}>Summary</Button>
+          <div className="visible-xs-block hidden-print">
+            <div className="BallotItemsSummary">
+              <a onClick={this._toggleBallotSummaryModal}>Summary of Ballot Items</a>
             </div>
-            <div className="u-stack--xs">&nbsp;</div>
           </div>
       </div>
       {emptyBallot}

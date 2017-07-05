@@ -18,23 +18,35 @@ export default class OrganizationVoterGuide extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { organization_we_vote_id: this.props.params.organization_we_vote_id };
+    this.state = {
+      organization_we_vote_id: this.props.params.organization_we_vote_id,
+      voter: VoterStore.getVoter()
+    };
   }
 
   componentDidMount (){
-    this._onVoterStoreChange();
+    // console.log("OrganizationVoterGuide, componentDidMount, this.props.params.organization_we_vote_id: ", this.props.params.organization_we_vote_id);
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this._onOrganizationStoreChange();
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
-    var { organization_we_vote_id } = this.state;
-
-    OrganizationActions.organizationRetrieve(organization_we_vote_id);
+    OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
+    // Positions for this organization, for this voter / election
+    OrganizationActions.retrievePositions(this.props.params.organization_we_vote_id, true);
+    // Positions for this organization, NOT including for this voter / election
+    OrganizationActions.retrievePositions(this.props.params.organization_we_vote_id, false, true);
   }
 
   componentWillReceiveProps (nextProps) {
-    // When a new candidate is passed in, update this component to show the new data
+    // When a new organization is passed in, update this component to show the new data
+    // console.log("OrganizationVoterGuide, componentWillReceiveProps, nextProps.params: ", nextProps.params);
     this.setState({organization_we_vote_id: nextProps.params.organization_we_vote_id});
 
+    // We refresh the data for all three tabs here on the top level
     OrganizationActions.organizationRetrieve(nextProps.params.organization_we_vote_id);
+    // Positions for this organization, for this voter / election
+    OrganizationActions.retrievePositions(nextProps.params.organization_we_vote_id, true);
+    // Positions for this organization, NOT including for this voter / election
+    OrganizationActions.retrievePositions(nextProps.params.organization_we_vote_id, false, true);
   }
 
   componentWillUnmount (){
@@ -44,16 +56,17 @@ export default class OrganizationVoterGuide extends Component {
 
   _onVoterStoreChange () {
     this.setState({
-      voter: VoterStore.getVoter()});
-   }
+      voter: VoterStore.getVoter()
+    });
+  }
 
   _onOrganizationStoreChange (){
-    var { organization_we_vote_id } = this.state;
-    this.setState({ organization: OrganizationStore.get(organization_we_vote_id)});
+    this.setState({
+      organization: OrganizationStore.get(this.state.organization_we_vote_id)
+    });
   }
 
   render () {
-
     if (!this.state.organization || !this.state.voter){
       return <div>{LoadingWheel}</div>;
     }
