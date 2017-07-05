@@ -1,7 +1,6 @@
 import React, {Component, PropTypes } from "react";
 import Helmet from "react-helmet";
 import GuideStore from "../../stores/GuideStore";
-import GuideActions from "../../actions/GuideActions";
 import GuideList from "../../components/VoterGuide/GuideList";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterStore from "../../stores/VoterStore";
@@ -18,8 +17,7 @@ export default class VoterGuideFollowers extends Component {
     super(props);
     this.state = {
       voter_guide_followers_list: [],
-      organization_we_vote_id: this.props.organization.organization_we_vote_id,
-      organization_name: this.props.organization.organization_name,
+      organization: this.props.organization,
       search_filter: false,
       search_term: "",
       voter_guide_followers_list_filtered_by_search: [],
@@ -29,8 +27,13 @@ export default class VoterGuideFollowers extends Component {
   componentDidMount () {
     this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    GuideActions.voterGuideFollowersRetrieve(this.state.organization_we_vote_id);
+    // GuideActions.voterGuideFollowersRetrieve(this.props.organization.organization_we_vote_id);
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+  }
+
+  componentWillReceiveProps (nextProps) {
+    // When a new organization is passed in, update this component to show the new data
+    this.setState({organization: nextProps.organization});
   }
 
   componentWillUnmount (){
@@ -89,22 +92,15 @@ export default class VoterGuideFollowers extends Component {
 
     return <div className="opinions-followed__container">
       <Helmet title="Followers of Your Organization - We Vote" />
-      { this.state.voter_guide_followers_list && this.state.voter_guide_followers_list.length > 0 ?
-        <input type="text"
-             className="form-control"
-             name="search_followers_voter_guides_text"
-             placeholder="Search for followers."
-             onChange={this.searchFollowers.bind(this)} /> : null
-      }
       <div className="card">
         <ul className="card-child__list-group">
           { this.state.voter_guide_followers_list && this.state.voter_guide_followers_list.length > 0 ?
             <span>
               { !this.state.search_filter ?
                 <span>
-                  {this.state.voter.linked_organization_we_vote_id === this.state.organization_we_vote_id ?
-                    <h4 className="card__additional-heading">Your Followers:</h4> :
-                    <h4 className="card__additional-heading">Followers of {this.state.organization_name}:</h4>
+                  {this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id ?
+                    <h4 className="card__additional-heading">Your Followers</h4> :
+                    <h4 className="card__additional-heading">Followers of {this.state.organization.organization_name}</h4>
                   }
                 </span> :
                 <span>
@@ -114,14 +110,21 @@ export default class VoterGuideFollowers extends Component {
                   }
                 </span>
               }
+              { this.state.voter_guide_followers_list && this.state.voter_guide_followers_list.length > 0 ?
+                <input type="text"
+                     className="form-control"
+                     name="search_followers_voter_guides_text"
+                     placeholder="Search these followers"
+                     onChange={this.searchFollowers.bind(this)} /> : null
+              }
               <span>
                   <GuideList organizationsToFollow={voter_guide_followers_list} instantRefreshOn />
               </span>
             </span> :
             <span>
-              {this.state.voter.linked_organization_we_vote_id === this.state.organization_we_vote_id ?
+              {this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id ?
                 <h4 className="card__additional-heading">No one is following you yet.</h4> :
-                <h4 className="card__additional-heading">No one is following {this.state.organization_name} yet.</h4>
+                <h4 className="card__additional-heading">No one is following {this.state.organization.organization_name} yet.</h4>
               }
             </span>
           }

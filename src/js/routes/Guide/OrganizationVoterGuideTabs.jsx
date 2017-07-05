@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from "react";
+import GuideActions from "../../actions/GuideActions";
 import GuideStore from "../../stores/GuideStore";
+import LoadingWheel from "../../components/LoadingWheel";
 import VoterGuideFollowers from "./VoterGuideFollowers";
 import VoterGuideFollowing from "./VoterGuideFollowing";
 import VoterGuidePositions from "./VoterGuidePositions";
@@ -15,16 +17,28 @@ export default class OrganizationVoterGuideTabs extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      organization: this.props.organization,
       voter_guide_followed_list: GuideStore.followedByOrganizationList(),
       voter_guide_followers_list: GuideStore.followersList(),
     };
   }
 
   componentDidMount () {
-    // console.log("OrganizationVoterGuideTabs, componentDidMount");
+    // console.log("OrganizationVoterGuideTabs, componentDidMount, organization: ", this.props.organization);
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
     this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+  }
+
+  componentWillReceiveProps (nextProps) {
+    // When a new organization is passed in, update this component to show the new data
+    GuideActions.voterGuidesFollowedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id);
+    GuideActions.voterGuideFollowersRetrieve(nextProps.organization.organization_we_vote_id);
+    this.setState({
+      organization: nextProps.organization,
+      voter_guide_followed_list: GuideStore.followedByOrganizationList(),
+      voter_guide_followers_list: GuideStore.followersList(),
+    });
   }
 
   componentWillUnmount (){
@@ -45,9 +59,13 @@ export default class OrganizationVoterGuideTabs extends Component {
    }
 
   render () {
+    if (!this.state.organization){
+      return <div>{LoadingWheel}</div>;
+    }
+
     let looking_at_self = false;
     if (this.state.voter) {
-      looking_at_self = this.state.voter.linked_organization_we_vote_id === this.props.organization.organization_we_vote_id;
+      looking_at_self = this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id;
     }
     let positions_title = "";
     let following_title = "";
@@ -70,15 +88,15 @@ export default class OrganizationVoterGuideTabs extends Component {
     return (
       <Tabs defaultActiveKey={1} id="tabbed_voter_guide_details">
         <Tab eventKey={1} title={positions_title}>
-          <VoterGuidePositions organization_we_vote_id={this.props.organization.organization_we_vote_id} />
+          <VoterGuidePositions organization={this.state.organization} />
         </Tab>
 
         <Tab eventKey={2} title={following_title}>
-          <VoterGuideFollowing organization={this.props.organization} />
+          <VoterGuideFollowing organization={this.state.organization} />
         </Tab>
 
         <Tab eventKey={3} title={followers_title}>
-          <VoterGuideFollowers organization={this.props.organization} />
+          <VoterGuideFollowers organization={this.state.organization} />
         </Tab>
       </Tabs>
     );

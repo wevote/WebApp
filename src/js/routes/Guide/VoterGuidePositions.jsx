@@ -4,33 +4,35 @@ import { capitalizeString } from "../../utils/textFormat";
 import Helmet from "react-helmet";
 import BallotStore from "../../stores/BallotStore";
 import LoadingWheel from "../../components/LoadingWheel";
-import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
 import VoterStore from "../../stores/VoterStore";
 
 export default class VoterGuidePositions extends Component {
   static propTypes = {
-    organization_we_vote_id: PropTypes.string.isRequired,
+    organization: PropTypes.object.isRequired,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      organization_we_vote_id: this.props.organization_we_vote_id,
+      organization: this.props.organization,
+      voter: VoterStore.getVoter(),
     };
   }
 
   componentDidMount (){
+    this._onOrganizationStoreChange();
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
 
-    var { organization_we_vote_id } = this.state;
-    // Positions for this organization, for this voter / election
-    OrganizationActions.retrievePositions(organization_we_vote_id, true);
-    // Positions for this organization, NOT including for this voter / election
-    OrganizationActions.retrievePositions(organization_we_vote_id, false, true);
     this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+  }
+
+  componentWillReceiveProps (nextProps) {
+    // console.log("VoterGuidePositions, componentWillReceiveProps, nextProps.organization: ", nextProps.organization);
+    // When a new organization is passed in, update this component to show the new data
+    this.setState({organization: nextProps.organization});
   }
 
   componentWillUnmount (){
@@ -40,19 +42,17 @@ export default class VoterGuidePositions extends Component {
 
   _onOrganizationStoreChange (){
     this.setState({
-      organization: OrganizationStore.get(this.state.organization_we_vote_id),
+      organization: OrganizationStore.get(this.state.organization.organization_we_vote_id),
     });
   }
 
   _onVoterStoreChange () {
     this.setState({
-      voter: VoterStore.getVoter()});
+      voter: VoterStore.getVoter()
+    });
    }
 
   render () {
-    if (!this.state.organization || !this.state.voter){
-      return <div>{LoadingWheel}</div>;
-    }
     let looking_at_self = false;
     if (this.state.voter) {
       looking_at_self = this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id;
@@ -72,7 +72,7 @@ export default class VoterGuidePositions extends Component {
     let title_text = organization_name + " - We Vote";
     let description_text = "See endorsements and opinions from " + organization_name + " for the November election";
     const at_least_one_position_found_for_this_election = position_list_for_one_election && position_list_for_one_election.length !== 0;
-    // console.log("at_least_one_position_found_for_this_election: ", at_least_one_position_found_for_this_election);
+    console.log("at_least_one_position_found_for_this_election: ", at_least_one_position_found_for_this_election);
 
     return <div className="opinions-followed__container">
       <Helmet title={title_text}

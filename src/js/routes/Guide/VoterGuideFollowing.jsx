@@ -7,8 +7,6 @@ import LoadingWheel from "../../components/LoadingWheel";
 import VoterStore from "../../stores/VoterStore";
 var _ = require("lodash");
 
-/* VISUAL DESIGN HERE: https://invis.io/8F53FDX9G */
-
 export default class VoterGuideFollowing extends Component {
   static propTypes = {
     organization: PropTypes.object.isRequired,
@@ -17,20 +15,28 @@ export default class VoterGuideFollowing extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      voter_guide_followed_list: [],
-      organization_we_vote_id: this.props.organization.organization_we_vote_id,
-      organization_name: this.props.organization.organization_name,
+      organization: this.props.organization,
       search_filter: false,
       search_term: "",
+      voter: VoterStore.getVoter(),
+      voter_guide_followed_list: GuideStore.followedByOrganizationList(),
       voter_guide_followed_list_filtered_by_search: [],
     };
   }
 
   componentDidMount () {
-    this._onVoterStoreChange();
+    // this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    GuideActions.voterGuidesFollowedByOrganizationRetrieve(this.state.organization_we_vote_id);
+    GuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.organization.organization_we_vote_id);
+    // this._onGuideStoreChange();
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+  }
+
+  componentWillReceiveProps (nextProps) {
+    // When a new organization is passed in, update this component to show the new data
+    if (this.state.organization.organization_we_vote_id !== nextProps.organization.organization_we_vote_id)
+      GuideActions.voterGuidesFollowedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id);
+    this.setState({organization: nextProps.organization});
   }
 
   componentWillUnmount (){
@@ -79,6 +85,7 @@ export default class VoterGuideFollowing extends Component {
     if (!this.state.voter) {
       return <div>{LoadingWheel}</div>;
     }
+    // console.log("VoterGuideFollowing, linked_organization_we_vote_id: ", this.state.voter.linked_organization_we_vote_id, "organization: ", this.state.organization.organization_we_vote_id);
 
     var voter_guide_followed_list = [];
     if (!this.state.search_filter) {
@@ -95,9 +102,9 @@ export default class VoterGuideFollowing extends Component {
             <span>
               { !this.state.search_filter ?
                 <span>
-                  {this.state.voter.linked_organization_we_vote_id === this.state.organization_we_vote_id ?
+                  {this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id ?
                     <h4 className="card__additional-heading">Who You're Following</h4> :
-                    <h4 className="card__additional-heading">{this.state.organization_name} is Following</h4>
+                    <h4 className="card__additional-heading">{this.state.organization.organization_name} is Following</h4>
                   }
                 </span> :
                 <h4 className="card__additional-heading">Search Results</h4>
@@ -106,7 +113,7 @@ export default class VoterGuideFollowing extends Component {
                 <input type="text"
                      className="form-control"
                      name="search_following_voter_guides_text"
-                     placeholder="Search for following voter guides."
+                     placeholder="Search these voter guides"
                      onChange={this.searchFollowingVoterGuides.bind(this)} /> : null
               }
               { this.state.search_filter ?
@@ -123,9 +130,9 @@ export default class VoterGuideFollowing extends Component {
               </span>
             </span> :
             <span>
-              {this.state.voter.linked_organization_we_vote_id === this.state.organization_we_vote_id ?
+              {this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id ?
                 <h4 className="card__additional-heading">You're not following anyone.</h4> :
-                <h4 className="card__additional-heading">{this.state.organization_name} is not following anyone.</h4>
+                <h4 className="card__additional-heading">{this.state.organization.organization_name} is not following anyone.</h4>
               }
             </span>
           }

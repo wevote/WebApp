@@ -75,6 +75,11 @@
   transform: translateY(-50%);
 }
 
-.BallotHeader {
-  float: right;
+.BallotItemsSummary {
+  padding-top: $space-md;
+  // Has the result of float center
+  //float: right;
+  //position: relative;
+  //left: -50%;
+  //text-align: left;
 }
