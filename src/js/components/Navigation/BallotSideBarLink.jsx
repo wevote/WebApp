@@ -7,6 +7,8 @@ export default class BallotSideBarLink extends Component {
     url: PropTypes.string,
     label: PropTypes.string,
     subtitle: PropTypes.string,
+    displaySubtitles: PropTypes.bool,
+    onClick: PropTypes.func,
   };
 
   constructor (props) {
@@ -17,11 +19,12 @@ export default class BallotSideBarLink extends Component {
   render () {
     let subtitle_in_sentence_case = sentenceCaseString(this.props.subtitle);
 
-    return <div className="BallotItem__summary-item-container">
+    return <div className="BallotItem__summary-item-container" onClick={this.props.onClick.bind(this) }>
       <div>
-        <a href={this.props.url}>
+        <a href={this.props.url} >
           <span className="BallotItem__summary-display-name">{this.props.label}</span>
-          <span className="BallotItem__summary-item"> {subtitle_in_sentence_case}</span>
+          { this.props.displaySubtitles ?
+            <span className="BallotItem__summary-item"> {subtitle_in_sentence_case}</span> : null }
         </a>
       </div>
     </div>;

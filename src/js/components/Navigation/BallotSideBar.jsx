@@ -6,19 +6,16 @@ import BallotSideBarLink from "./BallotSideBarLink";
 
 export default class BallotSideBar extends Component {
   static propTypes = {
-    email: PropTypes.string,
-    first_name: PropTypes.string,
-    linked_organization_we_vote_id: PropTypes.string,
-    signed_in_facebook: PropTypes.bool,
-    is_signed_in: PropTypes.bool,
-    signed_in_twitter: PropTypes.bool,
-    twitter_screen_name: PropTypes.string,
-    voter_photo_url_medium: PropTypes.string
+    displayTitle: PropTypes.bool,
+    displaySubtitles: PropTypes.bool,
+    onClick: PropTypes.func,
   };
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+    };
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount () {
@@ -57,17 +54,30 @@ export default class BallotSideBar extends Component {
     return orderedArray;
   }
 
+  handleClick () {
+    // Fullscreen mode won't pass an onClick function, since the BallotSideBar does not go away after a click
+    if (this.props.onClick) {
+      this.props.onClick();
+    }
+  }
+
   render () {
+    let displaySubtitles = this.props.displaySubtitles;
+    let click = this.handleClick;
     if (this.state.ballot && this.state.ballot.length > 0) {
-      return <div className="u-inset__v--md">
+      return <div className="u-inset__v--md" >
         <div className="container-fluid card">
-          <div className="BallotItem__summary-title">Summary of Ballot Items</div>
+          {this.props.displayTitle ?
+            <div className="BallotItem__summary-title" >Summary of Ballot Items</div > : null }
           {this.state.ballot.map(function (item, key) {
             if (item.kind_of_ballot_item === "OFFICE" || item.kind_of_ballot_item === "MEASURE") {
               return <div key={key}>
-                <BallotSideBarLink url={"#" + item.we_vote_id} label={item.ballot_item_display_name}
-                                   subtitle={item.measure_subtitle}/>
-              </div>;
+                <BallotSideBarLink url={"#" + item.we_vote_id}
+                                   label={item.ballot_item_display_name}
+                                   subtitle={item.measure_subtitle}
+                                   displaySubtitles={displaySubtitles}
+                                   onClick={click} />
+            </div>;
             } else {
               return <span />;
             }
