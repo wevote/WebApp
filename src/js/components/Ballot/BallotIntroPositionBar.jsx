@@ -4,6 +4,7 @@ export default class BallotIntroPositionBar extends Component {
   static propTypes = {
     history: PropTypes.object,
     next: PropTypes.func.isRequired,
+    close: PropTypes.func.isRequired,
   };
 
   constructor (props) {
@@ -13,6 +14,11 @@ export default class BallotIntroPositionBar extends Component {
 
   render () {
     return <div className="intro-modal">
+      <div className="intro-modal__close">
+        <a onClick={this.props.close} className="intro-modal__close-anchor">
+          <img src="/img/global/icons/x-close.png" alt="close" />
+        </a>
+      </div>
       <div className="intro-modal__h1">Congratulations!</div>
       <div className="intro-story__h2">Now that you have a network of advisers, you will see a position bar next to ballot items..</div>
       <div className="intro-modal__position-wrap">

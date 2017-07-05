@@ -51,6 +51,21 @@
     height: 100%;
   }
 
+  &__close {
+    position: relative;
+    width: 100%;
+  }
+
+  &__close-anchor {
+    position: absolute;
+    top: $space-none;
+    right: $space-none;
+    width: $space-lg;
+    @include breakpoints (max mid-small) {
+      width: $space-md;
+    }
+  }
+
   &__small {
     font-size: 12px;
     margin: $space-none;
@@ -79,10 +94,10 @@
     display: flex;
     padding-top: $space-md;
     .intro-modal__p:first-child {
-      flex: 0 1 36%;
+      flex: 0 1 45%;
     }
     .intro-modal__p:last-child {
-      flex: 0 1 25%;
+      flex: 0 1 35%;
     }
   }
 
