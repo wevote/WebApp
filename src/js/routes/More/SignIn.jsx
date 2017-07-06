@@ -13,6 +13,7 @@ import VoterActions from "../../actions/VoterActions";
 import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import VoterStore from "../../stores/VoterStore";
+import VoterConstants from "../../constants/VoterConstants";
 
 const debug_mode = false;
 const delay_before_user_name_update_api_call = 1200;
@@ -26,11 +27,14 @@ export default class SignIn extends Component {
       last_name: "",
       initial_name_loaded: false,
       name_saved_status: "",
-      show_twitter_disconnect: false
+      show_twitter_disconnect: false,
+      newsletter_opt_in: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
+      notifications_saved_status: ""
     };
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.updateVoterName = this.updateVoterName.bind(this);
+    this.updateNewsletterOptIn = this.updateNewsletterOptIn.bind(this);
   }
 
   componentDidMount () {
@@ -52,7 +56,8 @@ export default class SignIn extends Component {
         first_name: VoterStore.getFirstName(),
         last_name: VoterStore.getLastName(),
         initial_name_loaded: true,
-        voter: VoterStore.getVoter()
+        voter: VoterStore.getVoter(),
+        newsletter_opt_in: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN)
       });
     } else {
       this.setState({voter: VoterStore.getVoter()});
@@ -111,6 +116,20 @@ export default class SignIn extends Component {
         last_name: event.target.value,
         name_saved_status: "Saving Last Name..."
       });
+    }
+  }
+
+  updateNewsletterOptIn (event) {
+    if (event.target.name === "newsletter_opt_in") {
+      if (event.target.checked) {
+        VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
+        this.setState({ newsletter_opt_in: true });
+      } else {
+        VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_ZERO, VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
+        this.setState({ newsletter_opt_in: false });
+      }
+
+      this.setState({ notifications_saved_status: "Saved" });
     }
   }
 
@@ -174,30 +193,46 @@ export default class SignIn extends Component {
             null
           }
           {voter.is_signed_in ?
-            <div className="card">
-              <span className="h3">Your Account</span>
-              <br />
-              <label htmlFor="last-name">First Name
-              <input type="text"
-                     className="form-control"
-                     name="first_name"
-                     placeholder="First Name"
-                     onKeyDown={this.handleKeyPress}
-                     onChange={this.updateVoterName}
-                     value={this.state.first_name}
-              /> </label>
-              <br />
-              <label htmlFor="last-name">Last Name
-              <input type="text"
-                     className="form-control"
-                     name="last_name"
-                     placeholder="Last Name"
-                     onKeyDown={this.handleKeyPress}
-                     onChange={this.updateVoterName}
-                     value={this.state.last_name}
-              /> </label>
-              <br />
-              <span className="pull-right u-gray-mid">{this.state.name_saved_status}</span>
+            <div>
+              <div className="card">
+                <span className="h3">Your Account</span>
+                <br />
+                <label htmlFor="last-name">First Name
+                <input type="text"
+                       className="form-control"
+                       name="first_name"
+                       placeholder="First Name"
+                       onKeyDown={this.handleKeyPress}
+                       onChange={this.updateVoterName}
+                       value={this.state.first_name}
+                /> </label>
+                <br />
+                <label htmlFor="last-name">Last Name
+                <input type="text"
+                       className="form-control"
+                       name="last_name"
+                       placeholder="Last Name"
+                       onKeyDown={this.handleKeyPress}
+                       onChange={this.updateVoterName}
+                       value={this.state.last_name}
+                /> </label>
+                <br />
+                <span className="pull-right u-gray-mid">{this.state.name_saved_status}</span>
+              </div>
+
+              <div className="card">
+                <span className="h3">Notification Settings</span>
+                <br />
+                <input id="newsletter_opt_in"
+                       type="checkbox"
+                       name="newsletter_opt_in"
+                       onChange={this.updateNewsletterOptIn}
+                       checked={this.state.newsletter_opt_in}
+                />
+                { " " }
+                <label htmlFor="newsletter_opt_in">I would like to receive the We Vote newsletter</label>
+                <span className="pull-right u-gray-mid">{this.state.notifications_saved_status}</span>
+              </div>
             </div> :
             null
           }

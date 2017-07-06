@@ -12,6 +12,7 @@ const VoterConstants = {
   BALLOT_INTRO_VOTE_COMPLETED: 128, // ...the voter learned about casting their vote (no need for intro)
 
   // Used for notification_settings bits. Which notification options has the voter chosen?
+  NOTIFICATION_ZERO: 0,
   NOTIFICATION_NEWSLETTER_OPT_IN: 1, // "I would like to receive the We Vote newsletter"
 };
 
