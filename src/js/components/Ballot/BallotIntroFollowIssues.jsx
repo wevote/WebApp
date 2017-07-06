@@ -14,6 +14,7 @@ export default class BallotIntroFollowIssues extends Component {
   static propTypes = {
     history: PropTypes.object,
     next: PropTypes.func.isRequired,
+    close: PropTypes.func.isRequired,
   };
 
   constructor (props) {
@@ -115,6 +116,11 @@ export default class BallotIntroFollowIssues extends Component {
     });
 
     return <div className="intro-modal">
+      <div className="intro-modal__close">
+        <a onClick={this.props.close} className="intro-modal__close-anchor">
+          <img src="/img/global/icons/x-close.png" alt="close" />
+        </a>
+      </div>
       <div className="intro-modal__h1">Follow Issues You Care About</div>
       <div className="intro-modal-vertical-scroll-contain">
         <div className="intro-modal-vertical-scroll card">
@@ -128,7 +134,7 @@ export default class BallotIntroFollowIssues extends Component {
         { this.state.description_text }
       </div>
       <br/>
-      <div className="intro-modal__padding-btn__btn-center intro-modal__button-wrap">
+      <div className="intro-modal__button-wrap">
         <Button type="submit" className="btn btn-success intro-modal__button" onClick={this.onNext}>
           <span>{this.state.next_button_text}</span>
         </Button>

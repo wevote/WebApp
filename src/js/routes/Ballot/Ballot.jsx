@@ -290,10 +290,10 @@ export default class Ballot extends Component {
                                     onHide={()=>{this._toggleBallotIntroModal(this);}}>
       <Modal.Body>
         <Slider dotsClass="slick-dots intro-modal__gray-dots intro-modal__bottom-sm" className="calc-height intro-modal__height-full child-height-full" ref="slider" {...slider_settings}>
-          <div className="intro-modal__height-full" key={1}><BallotIntroMission next={this._nextSliderPage}/></div>
-          <div className="intro-modal__height-full" key={2}><BallotIntroFollowIssues next={this._nextSliderPage}/></div>
-          <div className="intro-modal__height-full" key={3}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div>
-          <div className="intro-modal__height-full" key={4}><BallotIntroPositionBar next={this._nextSliderPage}/></div>
+          <div className="intro-modal__height-full" key={1}><BallotIntroMission next={this._nextSliderPage} close={this._toggleBallotIntroModal}/></div>
+          <div className="intro-modal__height-full" key={2}><BallotIntroFollowIssues next={this._nextSliderPage} close={this._toggleBallotIntroModal}/></div>
+          <div className="intro-modal__height-full" key={3}><BallotIntroFollowAdvisers next={this._nextSliderPage} close={this._toggleBallotIntroModal}/></div>
+          <div className="intro-modal__height-full" key={4}><BallotIntroPositionBar next={this._toggleBallotIntroModal} close={this._toggleBallotIntroModal}/></div>
         </Slider>
       </Modal.Body>
     </Modal>;

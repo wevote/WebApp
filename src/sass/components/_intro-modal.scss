@@ -51,6 +51,21 @@
     height: 100%;
   }
 
+  &__close {
+    position: relative;
+    width: 100%;
+  }
+
+  &__close-anchor {
+    position: absolute;
+    top: $space-none;
+    right: $space-none;
+    width: $space-lg;
+    @include breakpoints (max mid-small) {
+      width: $space-md;
+    }
+  }
+
   &__small {
     font-size: 12px;
     margin: $space-none;
@@ -58,6 +73,32 @@
 
   &__p {
     font-size: $base-font-size;
+  }
+
+  &__position-wrap {
+    min-height: 200px;
+    display: flex;
+    flex: 0 0 100%;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  &__position-img {
+    width: 85%;
+    max-width: 256px;
+  }
+
+  &__position-description-wrap {
+    justify-content: space-between;
+    display: flex;
+    padding-top: $space-md;
+    .intro-modal__p:first-child {
+      flex: 0 1 45%;
+    }
+    .intro-modal__p:last-child {
+      flex: 0 1 35%;
+    }
   }
 
   &__button {
@@ -73,7 +114,9 @@
   &__span {
     white-space: nowrap;
     overflow: hidden;
-    text-align: start;
+    @include breakpoints (max mid-small) {
+      text-align: start;
+    }
   }
 
   &__margin-right {
