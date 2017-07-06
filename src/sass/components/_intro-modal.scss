@@ -114,7 +114,9 @@
   &__span {
     white-space: nowrap;
     overflow: hidden;
-    text-align: start;
+    @include breakpoints (max mid-small) {
+      text-align: start;
+    }
   }
 
   &__margin-right {
