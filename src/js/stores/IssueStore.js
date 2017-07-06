@@ -1,33 +1,49 @@
 var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
 import GuideActions from "../actions/GuideActions";
-const assign = require("object-assign");
 
 class IssueStore extends FluxMapStore {
 
-  getIssues () {
-    var issues_to_follow = this.getDataFromArr(this.getState().issues_to_follow);
+  // The store keeps nested attributes of issues in all_cached_voter_guides, whereas the followed,
+  // ignoring, to_follow are just lists of issue_we_vote_id.
+  getInitialState () {
+    return {
+      following: [],
+      ignoring: [],
+      to_follow: [],
+      all_cached_issues: {},
+    };
+  }
+
+  getAllIssues () {
+    let all_issue_we_vote_id_list = Object.keys(this.getState().all_cached_issues);
+    var issues_to_follow = this.getIssuesFromListOfWeVoteIds(all_issue_we_vote_id_list);
     return issues_to_follow;
   }
 
-  getVoterFollowIssueWeVoteIdList () {
-    var voter_issues = this.getDataFromArr(this.getState().voter_issues);
-    var voter_we_vote_id_list = [];
-    for (var voter_issue of voter_issues) {
-      voter_we_vote_id_list.push(voter_issue.issue_we_vote_id);
-    }
-    return voter_we_vote_id_list;
+  followingList () {
+    var following_issue_list = this.getIssuesFromListOfWeVoteIds(this.getState().following);
+    return following_issue_list;
   }
 
-  getDataFromArr (arr) {
-    if (arr === undefined) {
-      return [];
-    }
-    let data_list = [];
-    for (var i = 0, len = arr.length; i < len; i++) {
-      data_list.push( arr[i] );
-    }
-    return data_list;
+  toFollowList () {
+    var to_follow_list = this.getIssuesFromListOfWeVoteIds(this.getState().to_follow);
+    return to_follow_list;
+  }
+
+  getIssuesFromListOfWeVoteIds (list_of_issue_we_vote_ids) {
+    let all_cached_issues = this.getState().all_cached_issues;
+    // make sure that list_of_issue_we_vote_ids has unique values
+    let uniq_list_of_issue_we_vote_ids = list_of_issue_we_vote_ids.filter((value, index, self) => {
+      return self.indexOf(value) === index;
+    });
+
+    let issues_list = [];
+    uniq_list_of_issue_we_vote_ids.forEach(issue_we_vote_id => {
+      issues_list.push(all_cached_issues[issue_we_vote_id]);
+    });
+
+    return issues_list;
   }
 
   reduce (state, action) {
@@ -39,35 +55,57 @@ class IssueStore extends FluxMapStore {
     switch (action.type) {
 
       case "issueFollow":
-        // Whenever a voter follows or unfollows an issue, update the voter guide list
+        // When a voter follows or unfollows an issue on the ballot intro modal screen, update the voter guide list
         GuideActions.retrieveGuidesToFollowByIssueFilter();
         return state;
 
       case "retrieveIssuesToFollow":
-        let issues_to_follow = action.res.issue_list;
+        let issues = action.res.issue_list;
+        var all_cached_issues = state.all_cached_issues;
+        var to_follow = [];
+        issues.forEach( issue => {
+          all_cached_issues[issue.issue_we_vote_id] = issue;
+          to_follow.push(issue.issue_we_vote_id);
+        });
+
+        // if a issue_we_vote_id in following list is also in ignoring list, then remove the id from ignoring list
+        var ignoring = state.ignoring;
+        ignoring = ignoring.filter(issue_we_vote_id => !to_follow.includes(issue_we_vote_id));
+
         return {
           ...state,
-          issues_to_follow: assign([], state.issues_to_follow, issues_to_follow )
+          all_cached_issues: all_cached_issues,
+          to_follow: to_follow,
+          ignoring: ignoring,
         };
 
       case "issuesRetrieve":
-        // Update voter_issues if voter_issues_only flag is set, else update the issue_list
+        issues = action.res.issue_list;
+        var following = [];
+        all_cached_issues = state.all_cached_issues;
+        // Update following if voter_issues_only flag is set, else update the all_cached_issues
         if (action.res.voter_issues_only) {
-          let voter_issues = action.res.issue_list;
+          issues.forEach(issue => {
+            all_cached_issues[issue.issue_we_vote_id] = issue;
+            following.push(issue.issue_we_vote_id);
+          });
+          ignoring = state.ignoring;
+          ignoring = ignoring.filter(issue_we_vote_id => !following.includes(issue_we_vote_id));
           return {
             ...state,
-            voter_issues: assign([], state.voter_issues, voter_issues )
+            all_cached_issues: all_cached_issues,
+            following: following,
+            ignoring: ignoring,
           };
         } else {
-          let issues = action.res.issue_list;
+          issues.forEach(issue => {
+            all_cached_issues[issue.issue_we_vote_id] = issue;
+          });
           return {
             ...state,
-            issues: assign([], state.issues, issues)
+            all_cached_issues: all_cached_issues,
           };
         }
-
-      case "error-issuesRetrieve":
-        return state;
 
       default:
         return state;
