@@ -32,8 +32,10 @@ export default class BallotIntroMission extends Component {
         </div>
       </div>
       <p className="intro-modal__p">We Vote helps you decide how to vote your values, based on advice from organizations and friends you trust.</p>
-      <div className="intro-modal__padding-btn">
-        <button type="button" className="btn btn-success" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
+      <div className="intro-modal__button-wrap">
+        <button type="button" className="btn btn-success intro-modal__button" onClick={this.props.next}>
+          <span>Next ></span>
+        </button>
       </div>
     </div>;
   }

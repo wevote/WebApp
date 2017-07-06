@@ -134,7 +134,7 @@ export default class BallotIntroFollowIssues extends Component {
         { this.state.description_text }
       </div>
       <br/>
-      <div className="intro-modal__padding-btn__btn-center intro-modal__button-wrap">
+      <div className="intro-modal__button-wrap">
         <Button type="submit" className="btn btn-success intro-modal__button" onClick={this.onNext}>
           <span>{this.state.next_button_text}</span>
         </Button>

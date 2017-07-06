@@ -28,7 +28,7 @@ export default class BallotIntroPositionBar extends Component {
           <p className="intro-modal__p">Opposers in your network</p>
         </div>
       </div>
-      <div className="intro-modal__padding-btn__btn-center intro-modal__button-wrap">
+      <div className="intro-modal__button-wrap">
         <button type="button" className="btn btn-success intro-modal__button" onClick={this.props.next}>See Your Ballot &nbsp;&nbsp;&gt;</button>
       </div>
     </div>;
