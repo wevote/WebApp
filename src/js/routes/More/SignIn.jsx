@@ -56,7 +56,8 @@ export default class SignIn extends Component {
         first_name: VoterStore.getFirstName(),
         last_name: VoterStore.getLastName(),
         initial_name_loaded: true,
-        voter: VoterStore.getVoter()
+        voter: VoterStore.getVoter(),
+        newsletter_opt_in: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN)
       });
     } else {
       this.setState({voter: VoterStore.getVoter()});
