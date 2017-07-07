@@ -1,7 +1,10 @@
 import React, { Component, PropTypes } from "react";
 import SupportActions from "../../actions/SupportActions";
-import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
 import ReactBootstrapToggle from "react-bootstrap-toggle";
+import VoterActions from "../../actions/VoterActions";
+import VoterConstants from "../../constants/VoterConstants";
+// import VoterStore from "../../stores/VoterStore";
 const Icon = require("react-svg-icons");
 
 export default class PositionPublicToggle extends Component {
@@ -13,12 +16,32 @@ export default class PositionPublicToggle extends Component {
     inTestMode: PropTypes.bool
   };
 
+  constructor (props) {
+    super(props);
+    this.state = {
+      showPositionPublicHelpModal: false,
+      transitioning: false,
+    };
+  }
+
   showItemToFriendsOnly () {
     SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, "FRIENDS_ONLY");
   }
 
   showItemToPublic () {
-    SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, "SHOW_PUBLIC");
+    let position_public_toggle_modal_has_been_shown = false; // VoterStore.getInterfaceFlagState(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
+    if (!position_public_toggle_modal_has_been_shown) {
+      this.togglePositionPublicHelpModal();
+      VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
+    } else {
+      SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, "SHOW_PUBLIC");
+    }
+  }
+
+  togglePositionPublicHelpModal () {
+    this.setState({
+      showPositionPublicHelpModal: !this.state.showPositionPublicHelpModal,
+    });
   }
 
   render () {
@@ -69,8 +92,33 @@ export default class PositionPublicToggle extends Component {
       }
     };
 
-    const positionPublicToggle =
-    <div className={this.props.className}>
+    // This modal is shown when user clicks on public position toggle without being signed in.
+    let modalSupportProps = { is_public_position: false };
+    const PositionPublicToggleHelpModal = <Modal show={this.state.showPositionPublicHelpModal} onHide={()=>{this.togglePositionPublicHelpModal();}}>
+      <Modal.Header closeButton>
+        <Modal.Title>
+          <div className="text-center">Notice</div>
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <section className="card">
+          <div className="text-center">
+            Your position is only visible to your We Vote friends. Sign in to make your views public.
+            Test the toggle here:<br />
+            <br />
+            <PositionPublicToggle ballot_item_we_vote_id="null"
+                                  className="null"
+                                  type="MEASURE"
+                                  supportProps={modalSupportProps}
+                                  inTestMode
+            />
+            <br />
+          </div>
+        </section>
+      </Modal.Body>
+    </Modal>;
+
+    return <div className={this.props.className}>
       <div style={{display: "inline-block"}}>
         <OverlayTrigger className="trigger" placement="top" overlay={in_test_mode ? no_tooltip : tooltip}>
           <div tabIndex="0" onKeyDown={onKeyDown}> {/*tabIndex and onKeyDown are for accessibility*/}
@@ -81,7 +129,7 @@ export default class PositionPublicToggle extends Component {
                                     onChange={onChange} /></div>
                                   </OverlayTrigger>
                                 </div>
+                                { this.state.showPositionPublicHelpModal ? PositionPublicToggleHelpModal : null}
                               </div>;
-    return positionPublicToggle;
   }
 }
