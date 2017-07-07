@@ -49,7 +49,7 @@ export default class VoterGuideFollowers extends Component {
   _onGuideStoreChange (){
     var list = GuideStore.followersList();
 
-    if (list !== undefined && list.length > 0){
+    if (list !== undefined){
       this.setState({ voter_guide_followers_list: GuideStore.followersList() });
     }
   }
