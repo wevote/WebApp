@@ -64,7 +64,7 @@ export default class DonationForm extends Component {
     }
 
 		return <span>
-      <Button bsStyle="success" onClick={this._openStripeModal}>
+      <Button className="btn_donate" bsStyle="success" onClick={this._openStripeModal}>
         {donate_button_text}
       </Button>
   </span>;
