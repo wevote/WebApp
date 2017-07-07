@@ -92,6 +92,7 @@ export default class Donate extends Component {
             {" "}
           </FormGroup>
           Select an Amount:
+
           <br/>
 
           <DonationForm donationAmount={500} donateButtonText="$5"
@@ -104,6 +105,7 @@ export default class Donate extends Component {
                         donateMonthly={this.state.donateMonthly} />
           <DonationForm donationAmount={10000} donateButtonText="$100"
                         donateMonthly={this.state.donateMonthly} />
+
           <Button className="btn_donate" bsStyle="success" onClick={this._toggleCustomAmount}>
             Other Amount
           </Button>
