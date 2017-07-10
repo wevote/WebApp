@@ -103,11 +103,12 @@ export default class Donate extends Component {
                         donateMonthly={this.state.donateMonthly} />
           <DonationForm donationAmount={10000} donateButtonText="$100"
                         donateMonthly={this.state.donateMonthly} />
+
           <Button className="btn_donate" bsStyle="success" onClick={this._toggleCustomAmount}>
             Other Amount
           </Button>
           <div className="hidden-xs">
-            <br/>&nbsp;
+            <br />
             <br />
           </div>
            {this.state.showCustomInput ? <span>
@@ -120,11 +121,11 @@ export default class Donate extends Component {
               </div>&nbsp;
                 <DonationForm donationAmount={parseInt(parseFloat(
                   this.state.custom_amount.replace(/[^0-9.]+/g, "")) * 100)}
-                donateMonthly={this.state.donateMonthly} donateButtonText="Go" />
+                  donateMonthly={this.state.donateMonthly} donateButtonText="Go" />
              </form></span> : null}
 
             {isNaN(this.state.custom_amount) || this.state.custom_amount === "0" ?
-            <span><p>Please enter a valid number</p></span> : null}
+              <span><p>Please enter a valid number</p></span> : null}
           <div className="hidden-xs"><br /></div>
           <br />
           Contributions or gifts are not tax deductible. We Vote is a 501(c)(4) nonprofit.<br />
