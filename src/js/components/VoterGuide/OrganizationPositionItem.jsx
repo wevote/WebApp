@@ -133,10 +133,12 @@ export default class OrganizationPositionItem extends Component {
 
     const is_on_ballot_item_page = false;
     if (position.vote_smart_rating) {
+      // console.log("PositionRatingSnippet");
       position_description = <PositionRatingSnippet {...position}
                                                      popover_off={popover_off}
                                                      placement={placement} />;
     } else if (is_support || is_oppose) {
+      // console.log("PositionSupportOpposeSnippet");
       // We overwrite the "statement_text" passed in with position
       position_description = <PositionSupportOpposeSnippet {...position}
                                                            statement_text={statement_text}
@@ -146,6 +148,7 @@ export default class OrganizationPositionItem extends Component {
                                                            stance_display_off={stance_display_off}
                                                            comment_text_off={comment_text_off} />;
     } else {
+      // console.log("PositionInformationOnlySnippet");
       position_description = <PositionInformationOnlySnippet {...position}
                                                              is_on_ballot_item_page={is_on_ballot_item_page}
                                                              stance_display_off={stance_display_off}
@@ -215,6 +218,7 @@ export default class OrganizationPositionItem extends Component {
                 null :
                 <ItemPositionStatementActionBar ballot_item_we_vote_id={position.ballot_item_we_vote_id}
                                                 ballot_item_display_name={position.ballot_item_display_name}
+                                                comment_edit_mode_on
                                                 stance_display_off
                                                 supportProps={supportProps}
                                                 transitioning={this.state.transitioning}
