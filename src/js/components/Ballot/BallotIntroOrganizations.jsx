@@ -14,7 +14,6 @@ export default class BallotIntroFollowAdvisers extends Component {
   static propTypes = {
     history: PropTypes.object,
     next: PropTypes.func.isRequired,
-    close: PropTypes.func
   };
 
   constructor (props) {
@@ -107,11 +106,6 @@ export default class BallotIntroFollowAdvisers extends Component {
     });
 
     return <div className="intro-modal">
-      <div className="intro-modal__close">
-        <a onClick={this.props.close} className="intro-modal__close-anchor">
-          <img src="/img/global/icons/x-close.png" alt="close" />
-        </a>
-      </div>
       <div className="intro-modal__h1">Follow Organizations or People</div>
       <div className="intro-story__h2">These are organizations or people that might share your values. Follow them to see their recommendations.</div>
       <br/>
