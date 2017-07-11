@@ -4,6 +4,7 @@ export default class BallotIntroPositions extends Component {
   static propTypes = {
     history: PropTypes.object,
     next: PropTypes.func.isRequired,
+    close: PropTypes.func
   };
 
   constructor (props) {
@@ -13,6 +14,11 @@ export default class BallotIntroPositions extends Component {
 
   render () {
     return <div className="intro-modal">
+      <div className="intro-modal__close">
+        <a onClick={this.props.close} className="intro-modal__close-anchor">
+          <img src="/img/global/icons/x-close.png" alt="close" />
+        </a>
+      </div>
       <div className="intro-modal__h1">Taking a Position</div>
       <div className="intro-modal__h2">Text text text text.</div>
       <p className="intro-modal__p">We Vote helps you decide how to vote your values, based on advice from organizations and friends you trust.</p>
