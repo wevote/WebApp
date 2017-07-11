@@ -61,6 +61,7 @@
     top: $space-none;
     right: $space-none;
     width: $space-lg;
+    z-index: 9999;
     @include breakpoints (max mid-small) {
       width: $space-md;
     }
