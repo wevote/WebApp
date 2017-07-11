@@ -118,7 +118,9 @@ export default class VoterGuideFollowers extends Component {
                      onChange={this.searchFollowers.bind(this)} /> : null
               }
               <span>
-                  <GuideList organizationsToFollow={voter_guide_followers_list} instantRefreshOn />
+                  <GuideList organizationsToFollow={voter_guide_followers_list}
+                             hide_ignore_button
+                             instantRefreshOn />
               </span>
             </span> :
             <span>

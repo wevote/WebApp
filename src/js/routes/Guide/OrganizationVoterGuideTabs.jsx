@@ -76,7 +76,7 @@ export default class OrganizationVoterGuideTabs extends Component {
       positions_title = "Your Positions";
       following_title = "You Are Following";
       followers_title = this.state.voter_guide_followers_list.length === 0 ?
-        "Followers" : this.state.voter_guide_followers_list.length + "Followers";
+        "Followers" : this.state.voter_guide_followers_list.length + " Followers";
     } else {
       positions_title = "Positions";
       following_title = this.state.voter_guide_followed_list.length === 0 ?

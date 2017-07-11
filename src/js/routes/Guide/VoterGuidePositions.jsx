@@ -16,6 +16,7 @@ export default class VoterGuidePositions extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      editMode: false,
       organization: this.props.organization,
       voter: VoterStore.getVoter(),
     };
@@ -52,6 +53,18 @@ export default class VoterGuidePositions extends Component {
     });
    }
 
+  toggleEditMode (){
+    this.setState({editMode: !this.state.editMode});
+  }
+
+  onKeyDownEditMode (event) {
+    let enterAndSpaceKeyCodes = [13, 32];
+    let scope = this;
+    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+      scope.setState({editMode: !this.state.editMode});
+    }
+  }
+
   render () {
     let looking_at_self = false;
     if (this.state.voter) {
@@ -80,6 +93,12 @@ export default class VoterGuidePositions extends Component {
               />
       <div className="card">
         <ul className="card-child__list-group">
+          { looking_at_self ?
+            <a className="fa-pull-right u-push--md"
+               tabIndex="0"
+               onKeyDown={this.onKeyDownEditMode.bind(this)}
+               onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit"}</a> :
+            null }
           {/*  <OverlayTrigger placement="top" overlay={electionTooltip} >*/}
             <h4 className="h4 card__additional-heading">
                <span className="u-push--sm">{ election_name ? election_name : "This Election"}</span>
@@ -91,9 +110,10 @@ export default class VoterGuidePositions extends Component {
             <span>
               { position_list_for_one_election.map( item => {
                 return <OrganizationPositionItem key={item.position_we_vote_id}
-                                               position={item}
-                                               organization={this.state.organization}
-                                                />;
+                                                 position={item}
+                                                 organization={this.state.organization}
+                                                 editMode={this.state.editMode}
+                       />;
               }) }
             </span> :
             <div>{LoadingWheel}</div>
@@ -127,7 +147,8 @@ export default class VoterGuidePositions extends Component {
                 return <OrganizationPositionItem key={item.position_we_vote_id}
                                                  position={item}
                                                  organization={this.state.organization}
-                                                  />;
+                                                 editMode={this.state.editMode}
+                       />;
               }) }
             </span> :
             null
