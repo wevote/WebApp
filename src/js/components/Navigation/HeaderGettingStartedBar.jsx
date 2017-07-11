@@ -120,9 +120,9 @@ export default class HeaderGettingStartedBar extends Component {
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
-            <div key={1}><BallotIntroFollowIssues next={this._nextSliderPage} close={this._toggleBallotIntroFollowIssues}/></div>
-            <div key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage} close={this._toggleBallotIntroFollowIssues}/></div>
-            <div key={3}><BallotIntroPositionBar next={this._nextSliderPage} close={this._toggleBallotIntroFollowIssues}/></div>
+            <div key={1}><BallotIntroFollowIssues next={this._nextSliderPage}/></div>
+            <div key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div>
+            <div key={3}><BallotIntroPositionBar next={this._nextSliderPage}/></div>
           </Slider>
         </Modal.Body>
       </Modal>;
@@ -137,8 +137,8 @@ export default class HeaderGettingStartedBar extends Component {
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
-            <div key={1}><BallotIntroOrganizations next={this._nextSliderPage} close={this._toggleBallotIntroOrganizations}/></div>
-            <div key={2}><BallotIntroPositionBar next={this._nextSliderPage} close={this._toggleBallotIntroOrganizations}/></div>
+            <div key={1}><BallotIntroOrganizations next={this._nextSliderPage}/></div>
+            <div key={2}><BallotIntroPositionBar next={this._nextSliderPage}/></div>
           </Slider>
         </Modal.Body>
       </Modal>;
@@ -153,8 +153,8 @@ export default class HeaderGettingStartedBar extends Component {
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
-            <div key={1}><BallotIntroPositions next={this._nextSliderPage} close={this._toggleBallotIntroPositions}/></div>
-            <div key={2}><BallotIntroPositionBar next={this._nextSliderPage} close={this._toggleBallotIntroPositions}/></div>
+            <div key={1}><BallotIntroPositions next={this._nextSliderPage}/></div>
+            <div key={2}><BallotIntroPositionBar next={this._nextSliderPage}/></div>
           </Slider>
         </Modal.Body>
       </Modal>;
@@ -169,8 +169,8 @@ export default class HeaderGettingStartedBar extends Component {
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
-            <div key={1}><BallotIntroFriends next={this._nextSliderPage} close={this._toggleBallotIntroFriends}/></div>
-            <div key={2}><BallotIntroPositionBar next={this._nextSliderPage} close={this._toggleBallotIntroFriends}/></div>
+            <div key={1}><BallotIntroFriends next={this._nextSliderPage}/></div>
+            <div key={2}><BallotIntroPositionBar next={this._nextSliderPage}/></div>
           </Slider>
         </Modal.Body>
       </Modal>;
@@ -185,8 +185,8 @@ export default class HeaderGettingStartedBar extends Component {
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
-            <div key={1}><BallotIntroShare next={this._nextSliderPage} close={this._toggleBallotIntroShare}/></div>
-            <div key={2}><BallotIntroPositionBar next={this._nextSliderPage} close={this._toggleBallotIntroShare}/></div>
+            <div key={1}><BallotIntroShare next={this._nextSliderPage}/></div>
+            <div key={2}><BallotIntroPositionBar next={this._nextSliderPage}/></div>
           </Slider>
         </Modal.Body>
       </Modal>;
@@ -201,8 +201,8 @@ export default class HeaderGettingStartedBar extends Component {
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
-            <div key={1}><BallotIntroVote next={this._nextSliderPage} close={this._toggleBallotIntroVote}/></div>
-            <div key={2}><BallotIntroPositionBar next={this._nextSliderPage} close={this._toggleBallotIntroVote}/></div>
+            <div key={1}><BallotIntroVote next={this._nextSliderPage}/></div>
+            <div key={2}><BallotIntroPositionBar next={this._nextSliderPage}/></div>
           </Slider>
         </Modal.Body>
       </Modal>;
