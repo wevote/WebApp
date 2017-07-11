@@ -107,14 +107,14 @@ export default class DonationList extends Component {
           <Table striped condensed hover responsive>{ /* Subscriptions */ }
             <thead>
             <tr>
-              <th className={"hidden-xs"} style={styles.td}>Active</th>
+              <th className={"hidden-xs"} style={styles.th}>Active</th>
               <th style={styles.th}>Started</th>
               <th style={styles.th}>Monthly</th>
-              <th className={"hidden-xs"} style={styles.td}>Last Charged</th>
-              <th className={"hidden-xs"} style={styles.td}>Card</th>
-              <th className={"hidden-xs"} style={styles.td}>Ends with</th>
-              <th className={"hidden-xs"} style={styles.td}>Expires</th>
-              <th className={"hidden-xs"} style={styles.td}>Canceled</th>
+              <th className={"hidden-xs"} style={styles.th}>Last Charged</th>
+              <th className={"hidden-xs"} style={styles.th}>Card</th>
+              <th className={"hidden-xs"} style={styles.th}>Ends with</th>
+              <th className={"hidden-xs"} style={styles.th}>Expires</th>
+              <th className={"hidden-xs"} style={styles.th}>Canceled</th>
               <th style={styles.th}>Info</th>
             </tr>
             </thead>
@@ -123,16 +123,18 @@ export default class DonationList extends Component {
                 let active = item.subscription_canceled_at === "None" && item.subscription_ended_at === "None";
                 let cancel = item.subscription_canceled_at !== "None" ?
                   moment.utc(item.subscription_canceled_at).format("MMM D, YYYY") : "";
+                let lastcharged = item.last_charged === "None" ? "" :
+                  moment.utc(item.last_charged).format("MMM D, YYYY");
                 let waiting = item.amount === "0.00";
                 return <tr key={key}>
                   <td className={"hidden-xs"} style={styles.td}>{active ? "Active" : "----"}</td>
                   <td style={styles.td}>{moment.utc(item.created).format("MMM D, YYYY")}</td>
                   <td style={styles.td}>{!waiting ? item.amount : "waiting"}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{/*!lastcharged ? item.lastcharged : "waiting"*/}</td>
+                  <td className={"hidden-xs"} style={styles.td}>{!waiting ? lastcharged : "waiting"}</td>
                   <td className={"hidden-xs"} style={styles.td}>{!waiting ? item.brand : "waiting"}</td>
                   <td className={"hidden-xs"} style={styles.td}>{!waiting ? "... " + item.last4 : "waiting"}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{!waiting > 0 ? item.exp_month + "/" + item.exp_year :
-                    "waiting"}</td>
+                  <td className={"hidden-xs"} style={styles.td}>{!waiting > 0 ?
+                    item.exp_month + "/" + item.exp_year : "waiting"}</td>
                   <td className={"hidden-xs"} style={styles.td}>{cancel}</td>
                   <td style={styles.td}>
                     {active ? <DonationCancelOrRefund item={item} refundDonation={donations}/> :

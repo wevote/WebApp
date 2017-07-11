@@ -92,9 +92,7 @@ export default class Donate extends Component {
             {" "}
           </FormGroup>
           Select an Amount:
-
           <br/>
-
           <DonationForm donationAmount={500} donateButtonText="$5"
                         donateMonthly={this.state.donateMonthly} />
           <DonationForm donationAmount={1500} donateButtonText="$15"
