@@ -103,9 +103,9 @@ export default class PositionSupportOpposeSnippet extends Component {
 
     return <div className="explicit-position">
       { stance_display_off ? null : <img src={stance_icon_src} width="24" height="24" className={className} alt={alt} /> }
-      <div className="explicit-position__text">
-        { stance_display_off ?
-          null :
+      { stance_display_off ?
+        null :
+        <div className="explicit-position__text">
           <span>
             {this.props.is_on_ballot_item_page ?
               <span>
@@ -118,32 +118,32 @@ export default class PositionSupportOpposeSnippet extends Component {
               </span> }
             <br />
           </span>
-        }
-        { comment_text_off ? null :
-          <span>
-            <span>{statement_text_html}</span>
-            {/* if there's an external source for the explicit position/endorsement, show it */}
-            {video_url ?
-              <ReactPlayer url={`${video_url}`} width="300px" height="231px"/> :
-              null }
-            {more_info_url ?
-              <div className="hidden-xs">
-                {/* default: open in new tab*/}
-                <a href={more_info_url}
-                   target="_blank"
-                   className="u-gray-mid">
-                  view source <i className="fa fa-external-link" aria-hidden="true" />
-                </a>
-                {/* link for mobile browser: open in bootstrap modal */}
-                {/*
-                <a onClick={onViewSourceClick}>
-                  (view source)
-                </a> */}
-              </div> :
-              null }
-          </span>
-        }
-      </div>
+          { comment_text_off ? null :
+            <span>
+              <span>{statement_text_html}</span>
+              {/* if there's an external source for the explicit position/endorsement, show it */}
+              {video_url ?
+                <ReactPlayer url={`${video_url}`} width="300px" height="231px"/> :
+                null }
+              {more_info_url ?
+                <div className="hidden-xs">
+                  {/* default: open in new tab*/}
+                  <a href={more_info_url}
+                     target="_blank"
+                     className="u-gray-mid">
+                    view source <i className="fa fa-external-link" aria-hidden="true" />
+                  </a>
+                  {/* link for mobile browser: open in bootstrap modal */}
+                  {/*
+                  <a onClick={onViewSourceClick}>
+                    (view source)
+                  </a> */}
+                </div> :
+                null }
+            </span>
+          }
+        </div>
+      }
       {/*<ViewSourceModal show={this.state.showViewSourceModal}
                      onHide={this.closeViewSourceModal.bind(this)}
                      url={this.props.more_info_url} /> */}

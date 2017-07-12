@@ -64,7 +64,7 @@ export default class DonationList extends Component {
           <Table striped condensed hover responsive>{ /* Donations */ }
             <thead>
             <tr>
-              <th style={styles.th}>Date</th>
+              <th style={styles.td}>Date</th>
               <th style={styles.th}>Amount</th>
               <th className={"hidden-xs"} style={styles.th}>Payment</th>
               <th className={"hidden-xs"} style={styles.th}>Card</th>

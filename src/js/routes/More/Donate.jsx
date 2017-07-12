@@ -114,11 +114,12 @@ export default class Donate extends Component {
                         donateMonthly={this.state.donateMonthly} />
           <DonationForm donationAmount={10000} donateButtonText="$100"
                         donateMonthly={this.state.donateMonthly} />
+
           <Button className="btn_donate" bsStyle="success" onClick={this._toggleCustomAmount}>
             Other Amount
           </Button>
           <div className="hidden-xs">
-            <br/>&nbsp;
+            <br />
             <br />
           </div>
 
@@ -148,7 +149,6 @@ export default class Donate extends Component {
             <span>
               <p>Please enter a valid number</p>
             </span> : null}
-
           <div className="hidden-xs"><br /></div>
           <br />
           Contributions or gifts are not tax deductible. We Vote is a 501(c)(4) nonprofit.<br />

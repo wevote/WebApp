@@ -14,7 +14,9 @@ export default class ItemPositionStatementActionBar extends Component {
     ballot_item_we_vote_id: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string,
     type: PropTypes.string.isRequired,
+    comment_edit_mode_on: PropTypes.bool,
     supportProps: PropTypes.object,
+    stance_display_off: PropTypes.bool,
     //saveUrl: PropTypes.string.isRequired
   };
 
@@ -22,15 +24,15 @@ export default class ItemPositionStatementActionBar extends Component {
     super(props);
     this.state = {
       loading: false,
-      showEditPositionStatementInput: false,
-      statement_text_to_be_saved: "",
-      is_public_position: false,
+      showEditPositionStatementInput: this.props.comment_edit_mode_on,
+      statement_text_to_be_saved: this.props.supportProps.voter_statement_text || "",
+      is_public_position: this.props.supportProps.is_public_position || "",
       transitioning: false,
       voter_photo_url_medium: ""
     };
   }
   componentDidMount () {
-    if (this.props.supportProps !== undefined) {
+    if (this.props.supportProps) {
       this.setState({
         statement_text_to_be_saved: this.props.supportProps.voter_statement_text,
         is_public_position: this.props.supportProps.is_public_position,
@@ -60,7 +62,12 @@ export default class ItemPositionStatementActionBar extends Component {
   }
 
   _onSupportStoreChange () {
-    this.setState({ supportProps: SupportStore.get(this.props.ballot_item_we_vote_id), transitioning: false });
+    this.setState({
+      supportProps: SupportStore.get(this.props.ballot_item_we_vote_id),
+      statement_text_to_be_saved: SupportStore.get(this.props.ballot_item_we_vote_id).voter_statement_text,
+      is_public_position: SupportStore.get(this.props.ballot_item_we_vote_id).is_public_position,
+      transitioning: false,
+    });
   }
 
   _onVoterStoreChange () {
@@ -194,15 +201,16 @@ export default class ItemPositionStatementActionBar extends Component {
     }
 
     return <div className="position-statement__container">
-
-      <div className="position-statement__overview u-flex items-center u-stack--sm">
-      { is_support || is_oppose ? <Icon className="u-push--xs" name={user_position_icon} width={24} height={24} /> : null }
-      { user_position_text }
-        <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
-                              type={this.props.type}
-                              supportProps={this.props.supportProps}
-                              className="u-flex-auto u-tr" />
-      </div>
+      { this.props.stance_display_off ?
+        null :
+        <div className="position-statement__overview u-flex items-center u-stack--sm">
+        { is_support || is_oppose ? <Icon className="u-push--xs" name={user_position_icon} width={24} height={24} /> : null }
+        { user_position_text }
+          <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
+                                type={this.props.type}
+                                supportProps={this.props.supportProps}
+                                className="u-flex-auto u-tr" />
+        </div> }
 
       { // Show the edit box (Viewing self)
         edit_mode ?

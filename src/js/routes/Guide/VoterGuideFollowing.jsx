@@ -52,7 +52,7 @@ export default class VoterGuideFollowing extends Component {
   _onGuideStoreChange (){
     var list = GuideStore.followedByOrganizationList();
 
-    if (list !== undefined && list.length > 0){
+    if (list !== undefined){
       this.setState({ voter_guide_followed_list: GuideStore.followedByOrganizationList() });
     }
   }
@@ -85,6 +85,10 @@ export default class VoterGuideFollowing extends Component {
     if (!this.state.voter) {
       return <div>{LoadingWheel}</div>;
     }
+    let looking_at_self = false;
+    if (this.state.organization) {
+      looking_at_self = this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id;
+    }
     // console.log("VoterGuideFollowing, linked_organization_we_vote_id: ", this.state.voter.linked_organization_we_vote_id, "organization: ", this.state.organization.organization_we_vote_id);
 
     var voter_guide_followed_list = [];
@@ -93,6 +97,7 @@ export default class VoterGuideFollowing extends Component {
     } else {
       voter_guide_followed_list = this.state.voter_guide_followed_list_filtered_by_search;
     }
+    let hide_stop_following_button = !looking_at_self;
 
     return <div className="opinions-followed__container">
       <Helmet title="Organizations You Following - We Vote" />
@@ -126,7 +131,10 @@ export default class VoterGuideFollowing extends Component {
                 null
               }
               <span>
-                  <GuideList organizationsToFollow={voter_guide_followed_list} instantRefreshOn />
+                  <GuideList organizationsToFollow={voter_guide_followed_list}
+                             hide_stop_following_button={hide_stop_following_button}
+                             hide_ignore_button
+                             instantRefreshOn />
               </span>
             </span> :
             <span>
