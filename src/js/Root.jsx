@@ -30,6 +30,8 @@ import Intro from "./routes/Intro/Intro";
 import IntroContests from "./routes/Intro/IntroContests";
 import IntroOpinions from "./routes/Intro/IntroOpinions";
 import IntroStory from "./routes/Intro/IntroStory";
+import IssuesToFollow from "./routes/IssuesToFollow";
+import IssuesFollowed from "./routes/IssuesToFollow";
 import InviteByEmail from "./routes/Friends/InviteByEmail";
 import Location from "./routes/Settings/Location";
 import Measure from "./routes/Ballot/Measure";
@@ -90,6 +92,8 @@ const routes = () =>
     <Route path="/opinions" component={Opinions} />
     <Route path="/opinions_followed" component={OpinionsFollowed} />
     <Route path="/opinions_ignored" component={OpinionsIgnored} />
+    <Route path="/issues_to_follow" component={IssuesToFollow} />
+    <Route path="/issues_followed" component={IssuesFollowed} />
 
     {/* Friend related Pages */}
     <Route path="/friends" >

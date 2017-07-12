@@ -80,6 +80,8 @@ export default class Network extends Component {
           </Link>
           <br />
           <Link to="/opinions_followed">Organizations you are following</Link>
+          <br />
+          <Link to="/issues_followed">Issues you are following</Link>
         </div>
       </section>
       <section className="card">

@@ -9,8 +9,9 @@ export default class IssueFollowToggle extends Component {
     issue_name: PropTypes.string.isRequired,
     issue_description: PropTypes.string,
     issue_image_url: PropTypes.string,
-    on_issue_follow: PropTypes.func.isRequired,
-    on_issue_stop_following: PropTypes.func.isRequired,
+    on_issue_follow: PropTypes.func,
+    on_issue_stop_following: PropTypes.func,
+    edit_mode: PropTypes.bool,
   };
 
   constructor (props) {
@@ -56,9 +57,11 @@ export default class IssueFollowToggle extends Component {
           <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue_name}</h4>
           <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.issue_description}</p>
         </span>
+        { this.props.edit_mode ?
         <Button bsStyle="warning" bsSize="small" onClick={this.onIssueStopFollowing}>
           <span>Following</span>
-        </Button>
+        </Button> :
+        null }
       </div> :
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
         <div className="intro-modal__hide-sm intro-modal__margin-right">
@@ -68,13 +71,15 @@ export default class IssueFollowToggle extends Component {
             kind_of_image="ISSUE"
           />
         </div>
-        <span className="intro-modal__span intro-modal__margin-right" onClick={this.onIssueFollow}>
+        <span className="intro-modal__span intro-modal__margin-right" onClick={ this.props.edit_mode ? this.onIssueFollow: null } >
           <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue_name}</h4>
           <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.issue_description}</p>
         </span>
-        <Button bsStyle="info" bsSize="small" onClick={this.onIssueFollow}>
-          <span>Follow</span>
-        </Button>
+        { this.props.edit_mode ?
+          <Button bsStyle="info" bsSize="small" onClick={this.onIssueFollow}>
+            <span>Follow</span>
+          </Button> :
+        null }
       </div>;
   }
 }
