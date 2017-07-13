@@ -56,6 +56,7 @@ class GuideStore extends FluxMapStore {
   }
 
   retrieveGuidesToFollowByIssueFilter () {
+    // Issues are stored slightly differently in the state variable than voter guides
     return this.getState().to_follow_list_for_voter_issues;
   }
 

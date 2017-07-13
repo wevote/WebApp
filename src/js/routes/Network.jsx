@@ -78,10 +78,10 @@ export default class Network extends Component {
           <Link to="/friends/invitebyemail" className="btn btn-social btn-lg btn--email">
             <i className="fa fa-envelope" />Invite Friends&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </Link>
-          <br />
-          <Link to="/opinions_followed">Organizations you are following</Link>
-          <br />
-          <Link to="/issues_followed">Issues you are following</Link>
+          <div className="u-inset__v--md">
+            <Link to="/opinions_followed" className="u-push--lg">Organizations you are following</Link>
+            <Link to="/issues_followed" className="u-push--lg">Issues you are following</Link>
+          </div>
         </div>
       </section>
       <section className="card">
