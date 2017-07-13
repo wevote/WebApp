@@ -9,20 +9,27 @@ export default class IssueFollowToggle extends Component {
     issue_name: PropTypes.string.isRequired,
     issue_description: PropTypes.string,
     issue_image_url: PropTypes.string,
-    on_issue_follow: PropTypes.func.isRequired,
-    on_issue_stop_following: PropTypes.func.isRequired,
+    on_issue_follow: PropTypes.func,
+    on_issue_stop_following: PropTypes.func,
+    edit_mode: PropTypes.bool,
+    is_following: PropTypes.bool,
   };
 
   constructor (props) {
     super(props);
+
+    let is_following = false;
+    if (this.props.is_following) {
+      is_following = this.props.is_following;
+    }
     this.state = {
-      is_following: false,
+      is_following: is_following,
     };
+    this.onIssueFollow = this.onIssueFollow.bind(this);
+    this.onIssueStopFollowing = this.onIssueStopFollowing.bind(this);
   }
 
   componentDidMount () {
-    this.onIssueFollow = this.onIssueFollow.bind(this);
-    this.onIssueStopFollowing = this.onIssueStopFollowing.bind(this);
   }
 
   onIssueFollow () {
@@ -30,14 +37,18 @@ export default class IssueFollowToggle extends Component {
     if (!this.state.is_following) {
       this.setState({is_following: true});
       IssueActions.issueFollow(this.props.issue_we_vote_id);
-      this.props.on_issue_follow(this.props.issue_we_vote_id);
+      if (this.props.on_issue_follow) {
+        this.props.on_issue_follow(this.props.issue_we_vote_id);
+      }
     }
   }
 
   onIssueStopFollowing () {
     this.setState({ is_following: false });
     IssueActions.issueStopFollowing(this.props.issue_we_vote_id);
-    this.props.on_issue_stop_following(this.props.issue_we_vote_id);
+    if (this.props.on_issue_stop_following) {
+      this.props.on_issue_stop_following(this.props.issue_we_vote_id);
+    }
   }
 
   render () {
@@ -56,9 +67,11 @@ export default class IssueFollowToggle extends Component {
           <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue_name}</h4>
           <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.issue_description}</p>
         </span>
+        { this.props.edit_mode ?
         <Button bsStyle="warning" bsSize="small" onClick={this.onIssueStopFollowing}>
           <span>Following</span>
-        </Button>
+        </Button> :
+        null }
       </div> :
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
         <div className="intro-modal__hide-sm intro-modal__margin-right">
@@ -68,13 +81,23 @@ export default class IssueFollowToggle extends Component {
             kind_of_image="ISSUE"
           />
         </div>
-        <span className="intro-modal__span intro-modal__margin-right" onClick={this.onIssueFollow}>
-          <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue_name}</h4>
-          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.issue_description}</p>
-        </span>
-        <Button bsStyle="info" bsSize="small" onClick={this.onIssueFollow}>
-          <span>Follow</span>
-        </Button>
+
+        { this.props.edit_mode ?
+          <span className="intro-modal__span intro-modal__margin-right" onClick={ this.props.edit_mode ? this.onIssueFollow: null }>
+            <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue_name}</h4>
+            <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.issue_description}</p>
+          </span> :
+          <span className="intro-modal__span intro-modal__margin-right">
+            <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue_name}</h4>
+            <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.issue_description}</p>
+          </span>
+        }
+
+        { this.props.edit_mode ?
+          <Button bsStyle="info" bsSize="small" onClick={this.onIssueFollow}>
+            <span>Follow</span>
+          </Button> :
+        null }
       </div>;
   }
 }

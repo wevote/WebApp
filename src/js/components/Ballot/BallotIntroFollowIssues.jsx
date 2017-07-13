@@ -102,6 +102,7 @@ export default class BallotIntroFollowIssues extends Component {
       issue_list = this.state.issues;
     }
 
+    let edit_mode = true;
     const issue_list_for_display = issue_list.map((issue) => {
       return <IssueFollowToggle
         key={issue.issue_we_vote_id}
@@ -111,6 +112,7 @@ export default class BallotIntroFollowIssues extends Component {
         issue_image_url={issue.issue_photo_url_medium}
         on_issue_follow={this.onIssueFollow}
         on_issue_stop_following={this.onIssueStopFollowing}
+        edit_mode={edit_mode}
       />;
     });
 
