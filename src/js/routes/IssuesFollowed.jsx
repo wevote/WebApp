@@ -76,13 +76,14 @@ export default class IssuesFollowed extends Component {
       <Helmet title="Issues You Follow - We Vote" />
       <section className="card">
         <div className="card-main">
-          <h1 className="h1">Issues You're Following</h1>
+          <h1 className="h1">Issues You Are Following</h1>
           <a className="fa-pull-right"
              tabIndex="0"
              onKeyDown={this.onKeyDownEditMode.bind(this)}
              onClick={this.toggleEditMode.bind(this)}>{this.state.edit_mode ? "Done Editing" : "Edit"}</a>
             <p>
-              Issues you currently follow. <em>We will never sell your email</em>.
+              These are the issues you currently follow. We recommend organizations that you might want to learn from 
+              based on these issues.
             </p>
           <div className="voter-guide-list card">
             <div className="card-child__list-group">

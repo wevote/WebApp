@@ -1,4 +1,5 @@
 import React, {Component, PropTypes } from "react";
+import { Link } from "react-router";
 import Helmet from "react-helmet";
 import IssueActions from "../actions/IssueActions";
 import IssueFollowToggle from "../components/Ballot/IssueFollowToggle";
@@ -60,7 +61,9 @@ export default class IssuesFollowed extends Component {
         <div className="card-main">
           <h1 className="h1">Issues You Can Follow</h1>
           <p>
-            Choose Issues to follow. <em>We will never sell your email</em>.
+            Follow all of the issues that you care about, so we can recommend organizations that you might want
+            to learn from. Most organizations focus on certain issues, and by choosing the issues that matter most to
+            you, we are able to highlight the organizations that care about the same issues that you do.
           </p>
           <div className="voter-guide-list card">
             <div className="card-child__list-group">
@@ -71,6 +74,7 @@ export default class IssuesFollowed extends Component {
               }
             </div>
           </div>
+          <Link className="pull-left" to="/issues_followed">Issues you are following</Link>
           <br />
         </div>
       </section>
