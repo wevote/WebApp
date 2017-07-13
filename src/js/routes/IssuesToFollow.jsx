@@ -1,5 +1,4 @@
 import React, {Component, PropTypes } from "react";
-import { Link } from "react-router";
 import Helmet from "react-helmet";
 import IssueActions from "../actions/IssueActions";
 import IssueFollowToggle from "../components/Ballot/IssueFollowToggle";
@@ -15,13 +14,13 @@ export default class IssuesFollowed extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      edit_mode: false,
+      edit_mode: true,
       issues_to_follow: []
     };
   }
 
   componentDidMount () {
-    IssueActions.retrieveIssuesForVoter();
+    IssueActions.retrieveIssuesToFollow();
     this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange.bind(this));
   }
 
@@ -30,28 +29,11 @@ export default class IssuesFollowed extends Component {
   }
 
   _onIssueStoreChange () {
-    let issue_list = IssueStore.followingList();
+    let issue_list = IssueStore.toFollowList();
     if (issue_list.length > 0) {
       this.setState({
-        issues_to_follow: IssueStore.followingList(),
+        issues_to_follow: IssueStore.toFollowList(),
       });
-    }
-  }
-
-  getCurrentRoute () {
-    var current_route = "/issues_followed";
-    return current_route;
-  }
-
-  toggleEditMode () {
-    this.setState({edit_mode: !this.state.edit_mode});
-  }
-
-  onKeyDownEditMode (event) {
-    let enterAndSpaceKeyCodes = [13, 32];
-    let scope = this;
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      scope.setState({edit_mode: !this.state.edit_mode});
     }
   }
 
@@ -76,14 +58,10 @@ export default class IssuesFollowed extends Component {
       <Helmet title="Issues You Follow - We Vote" />
       <section className="card">
         <div className="card-main">
-          <h1 className="h1">Issues You're Following</h1>
-          <a className="fa-pull-right"
-             tabIndex="0"
-             onKeyDown={this.onKeyDownEditMode.bind(this)}
-             onClick={this.toggleEditMode.bind(this)}>{this.state.edit_mode ? "Done Editing" : "Edit"}</a>
-            <p>
-              Issues you currently follow. <em>We will never sell your email</em>.
-            </p>
+          <h1 className="h1">Issues You Can Follow</h1>
+          <p>
+            Choose Issues to follow. <em>We will never sell your email</em>.
+          </p>
           <div className="voter-guide-list card">
             <div className="card-child__list-group">
               {
@@ -93,7 +71,6 @@ export default class IssuesFollowed extends Component {
               }
             </div>
           </div>
-          <Link className="pull-left" to="/issues_to_follow">Find Issues to follow</Link>
           <br />
         </div>
       </section>

@@ -31,7 +31,7 @@ import IntroContests from "./routes/Intro/IntroContests";
 import IntroOpinions from "./routes/Intro/IntroOpinions";
 import IntroStory from "./routes/Intro/IntroStory";
 import IssuesToFollow from "./routes/IssuesToFollow";
-import IssuesFollowed from "./routes/IssuesToFollow";
+import IssuesFollowed from "./routes/IssuesFollowed";
 import InviteByEmail from "./routes/Friends/InviteByEmail";
 import Location from "./routes/Settings/Location";
 import Measure from "./routes/Ballot/Measure";
