@@ -22,11 +22,18 @@ export default class ItemPositionStatementActionBar extends Component {
 
   constructor (props) {
     super(props);
+    let supportProps = this.props.supportProps;
+    let statement_text_to_be_saved = "";
+    let is_public_position = "";
+    if (supportProps) {
+      statement_text_to_be_saved = supportProps.voter_statement_text;
+      is_public_position = supportProps.is_public_position;
+    }
     this.state = {
       loading: false,
       showEditPositionStatementInput: this.props.comment_edit_mode_on,
-      statement_text_to_be_saved: this.props.supportProps.voter_statement_text || "",
-      is_public_position: this.props.supportProps.is_public_position || "",
+      statement_text_to_be_saved: statement_text_to_be_saved,
+      is_public_position: is_public_position,
       transitioning: false,
       voter_photo_url_medium: ""
     };
@@ -62,10 +69,17 @@ export default class ItemPositionStatementActionBar extends Component {
   }
 
   _onSupportStoreChange () {
+    let supportProps = SupportStore.get(this.props.ballot_item_we_vote_id);
+    let statement_text_to_be_saved = "";
+    let is_public_position = "";
+    if (supportProps) {
+      statement_text_to_be_saved = supportProps.voter_statement_text;
+      is_public_position = supportProps.is_public_position;
+    }
     this.setState({
-      supportProps: SupportStore.get(this.props.ballot_item_we_vote_id),
-      statement_text_to_be_saved: SupportStore.get(this.props.ballot_item_we_vote_id).voter_statement_text,
-      is_public_position: SupportStore.get(this.props.ballot_item_we_vote_id).is_public_position,
+      supportProps: supportProps,
+      statement_text_to_be_saved: statement_text_to_be_saved,
+      is_public_position: is_public_position,
       transitioning: false,
     });
   }

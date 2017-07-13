@@ -229,6 +229,7 @@ class VoterStore extends FluxMapStore {
           };
         } else {
           BallotActions.voterBallotItemsRetrieve();
+          SupportActions.positionsCountForAllBallotItems(action.res.google_civic_election_id);
           return {
             ...state,
             address: {
