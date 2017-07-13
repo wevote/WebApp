@@ -4,7 +4,6 @@ export default class BallotIntroMission extends Component {
   static propTypes = {
     history: PropTypes.object,
     next: PropTypes.func.isRequired,
-    close: PropTypes.func.isRequired,
   };
 
   constructor (props) {
@@ -14,11 +13,6 @@ export default class BallotIntroMission extends Component {
 
   render () {
     return <div className="intro-modal">
-      <div className="intro-modal__close">
-        <a onClick={this.props.close} className="intro-modal__close-anchor">
-          <img src="/img/global/icons/x-close.png" alt="close" />
-        </a>
-      </div>
       <div className="intro-modal__h1">Your Mission:</div>
       <div className="intro-modal__h2">Make the world a better place.</div>
       <div className="intro-modal-features">

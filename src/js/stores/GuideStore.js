@@ -11,7 +11,7 @@ class GuideStore extends FluxMapStore {
     return {
       ballot_has_guides: true,
       following: [],
-      followingByOrganization: [],
+      followedByOrganization: [],
       followers: [],
       followingOnTwitter: [],
       ignoring: [],
@@ -56,6 +56,7 @@ class GuideStore extends FluxMapStore {
   }
 
   retrieveGuidesToFollowByIssueFilter () {
+    // Issues are stored slightly differently in the state variable than voter guides
     return this.getState().to_follow_list_for_voter_issues;
   }
 
@@ -81,7 +82,7 @@ class GuideStore extends FluxMapStore {
   }
 
   followedByOrganizationList (){
-    return this.returnVoterGuidesFromListOfIds(this.getState().followingByOrganization) || [];
+    return this.returnVoterGuidesFromListOfIds(this.getState().followedByOrganization) || [];
   }
 
   followersList (){
@@ -232,14 +233,14 @@ class GuideStore extends FluxMapStore {
       case "voterGuidesFollowedByOrganizationRetrieve":
         voter_guides = action.res.voter_guides;
         all_cached_voter_guides = state.all_cached_voter_guides;
-        var followingByOrganization = [];
+        var followedByOrganization = [];
         voter_guides.forEach( one_voter_guide => {
           all_cached_voter_guides[one_voter_guide.organization_we_vote_id] = one_voter_guide;
-          followingByOrganization.push(one_voter_guide.organization_we_vote_id);
+          followedByOrganization.push(one_voter_guide.organization_we_vote_id);
         });
         return {
           ...state,
-          followingByOrganization: followingByOrganization,
+          followedByOrganization: followedByOrganization,
           all_cached_voter_guides: all_cached_voter_guides
         };
 
@@ -288,42 +289,48 @@ class GuideStore extends FluxMapStore {
           };
 
       case "organizationFollow":
+        var organization_we_vote_id = action.res.organization_we_vote_id;
         if (action.res.organization_follow_based_on_issue) {
           GuideActions.retrieveGuidesToFollowByIssueFilter();  // Whenever a voter follows a new org, update list
         } else {
           GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter follows a new org, update list
         }
+        GuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
+        GuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
         SupportActions.positionsCountForAllBallotItems();  // Following one org can change the support/oppose count for many items
-        id = action.res.organization_we_vote_id;
         return {
           ...state,
-          following: state.following.concat(id),
-          to_follow: state.to_follow.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== id; }),
-          to_follow_list_for_ballot_item: state.to_follow_list_for_ballot_item.filter(existing_org_we_vote_id => {return existing_org_we_vote_id !== id; }),
+          following: state.following.concat(organization_we_vote_id),
+          to_follow: state.to_follow.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; }),
+          to_follow_list_for_ballot_item: state.to_follow_list_for_ballot_item.filter(existing_org_we_vote_id => {return existing_org_we_vote_id !== organization_we_vote_id; }),
           // Add to_follow_list_for_all_ballot_items here
-          ignoring: state.ignoring.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== id; })
+          ignoring: state.ignoring.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; })
         };
 
       case "organizationStopFollowing":
+        var organization_we_vote_id = action.res.organization_we_vote_id;
         GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter stops following an org, update list
+        GuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
+        GuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
         SupportActions.positionsCountForAllBallotItems();
-        id = action.res.organization_we_vote_id;
         return {
           ...state,
-          following: state.following.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== id; }),
+          following: state.following.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; }),
           to_follow: state.to_follow.concat(id)
         };
 
       case "organizationFollowIgnore":
+        var organization_we_vote_id = action.res.organization_we_vote_id;
         GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter ignores an org, update list
-        id = action.res.organization_we_vote_id;
+        GuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
+        GuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
         return {
           ...state,
-          ignoring: state.ignoring.concat(id),
-          to_follow: state.to_follow.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== id; }),
-          to_follow_list_for_ballot_item: state.to_follow_list_for_ballot_item.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== id; }),
+          ignoring: state.ignoring.concat(organization_we_vote_id),
+          to_follow: state.to_follow.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; }),
+          to_follow_list_for_ballot_item: state.to_follow_list_for_ballot_item.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; }),
           // Add to_follow_list_for_all_ballot_items here
-          following: state.following.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== id; })
+          following: state.following.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; })
         };
 
       case "error-organizationFollowIgnore" || "error-organizationFollow":

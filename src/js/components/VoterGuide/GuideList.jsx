@@ -9,7 +9,9 @@ export default class GuideList extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     organizationsToFollow: PropTypes.array,
-    instantRefreshOn: PropTypes.bool
+    instantRefreshOn: PropTypes.bool,
+    hide_stop_following_button: PropTypes.bool,
+    hide_ignore_button: PropTypes.bool
   };
 
   constructor (props) {
@@ -50,12 +52,15 @@ export default class GuideList extends Component {
     const orgs = this.state.organizations_to_follow.map( (org) => {
 
       return <OrganizationDisplayForList key={org.organization_we_vote_id} {...org}>
-            <FollowToggle we_vote_id={org.organization_we_vote_id} />
-            <button className="btn btn-default btn-sm"
-                    onClick={this.handleIgnore.bind(this, org.organization_we_vote_id)}>
-              Ignore
-            </button>
-          </OrganizationDisplayForList>;
+          <FollowToggle we_vote_id={org.organization_we_vote_id} 
+                        hide_stop_following_button={this.props.hide_stop_following_button} />
+        { this.props.hide_ignore_button ?
+          null :
+          <button className="btn btn-default btn-sm"
+                  onClick={this.handleIgnore.bind(this, org.organization_we_vote_id)}>
+            Ignore
+          </button> }
+        </OrganizationDisplayForList>;
     });
 
     return <div className="guidelist card-child__list-group">

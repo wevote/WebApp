@@ -49,7 +49,7 @@ export default class VoterGuideFollowers extends Component {
   _onGuideStoreChange (){
     var list = GuideStore.followersList();
 
-    if (list !== undefined && list.length > 0){
+    if (list !== undefined){
       this.setState({ voter_guide_followers_list: GuideStore.followersList() });
     }
   }
@@ -118,7 +118,9 @@ export default class VoterGuideFollowers extends Component {
                      onChange={this.searchFollowers.bind(this)} /> : null
               }
               <span>
-                  <GuideList organizationsToFollow={voter_guide_followers_list} instantRefreshOn />
+                  <GuideList organizationsToFollow={voter_guide_followers_list}
+                             hide_ignore_button
+                             instantRefreshOn />
               </span>
             </span> :
             <span>

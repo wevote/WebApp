@@ -14,7 +14,6 @@ export default class BallotIntroFollowIssues extends Component {
   static propTypes = {
     history: PropTypes.object,
     next: PropTypes.func.isRequired,
-    close: PropTypes.func.isRequired,
   };
 
   constructor (props) {
@@ -45,11 +44,11 @@ export default class BallotIntroFollowIssues extends Component {
     // update followed_issues only for first time, subsequent updates will be made locally
     if (this.state.followed_issues.length === 0) {
       this.setState({
-        issues: IssueStore.getIssues(),
-        followed_issues: IssueStore.getVoterFollowIssueWeVoteIdList(),
+        issues: IssueStore.toFollowList(),
+        followed_issues: IssueStore.followingList(),
       });
     } else {
-      this.setState({ issues: IssueStore.getIssues() });
+      this.setState({ issues: IssueStore.toFollowList() });
     }
   }
 
@@ -103,6 +102,7 @@ export default class BallotIntroFollowIssues extends Component {
       issue_list = this.state.issues;
     }
 
+    let edit_mode = true;
     const issue_list_for_display = issue_list.map((issue) => {
       return <IssueFollowToggle
         key={issue.issue_we_vote_id}
@@ -112,15 +112,11 @@ export default class BallotIntroFollowIssues extends Component {
         issue_image_url={issue.issue_photo_url_medium}
         on_issue_follow={this.onIssueFollow}
         on_issue_stop_following={this.onIssueStopFollowing}
+        edit_mode={edit_mode}
       />;
     });
 
     return <div className="intro-modal">
-      <div className="intro-modal__close">
-        <a onClick={this.props.close} className="intro-modal__close-anchor">
-          <img src="/img/global/icons/x-close.png" alt="close" />
-        </a>
-      </div>
       <div className="intro-modal__h1">Follow Issues You Care About</div>
       <div className="intro-modal-vertical-scroll-contain">
         <div className="intro-modal-vertical-scroll card">

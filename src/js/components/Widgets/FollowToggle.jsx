@@ -7,6 +7,7 @@ import VoterStore from "../../stores/VoterStore";
 export default class FollowToggle extends Component {
   static propTypes = {
     we_vote_id: PropTypes.string.isRequired,
+    hide_stop_following_button: PropTypes.bool
   };
 
   constructor (props) {
@@ -65,12 +66,16 @@ export default class FollowToggle extends Component {
     };
 
     return is_following ?
+        <span>
+      { this.props.hide_stop_following_button ?
+        null :
         <Button bsStyle="warning"
                 bsSize="small"
                 className="pull-right"
                 onClick={stopFollowingInstantly}>
                 <span>Unfollow</span>
-        </Button> :
+        </Button> }
+        </span>:
         <Button bsStyle="info" bsSize="small" className="pull-right" onClick={followInstantly}><span>Follow</span></Button>;
   }
 }

@@ -8,7 +8,8 @@ export default class DonationForm extends Component {
   static propTypes = {
     donationAmount: PropTypes.number,
     donateButtonText: PropTypes.string,
-    donateMonthly: PropTypes.bool
+    donateMonthly: PropTypes.bool,
+    donateOther: PropTypes.bool,
   };
 
   constructor (props) {
@@ -25,7 +26,7 @@ export default class DonationForm extends Component {
       image: "https://stripe.com/img/documentation/checkout/marketplace.png",
       locale: "auto",
       token: function (token) {
-//        console.log("token generated " + token.id + " token.email " + token.email);
+        // console.log("token generated " + token.id + " token.email " + token.email);
         DonateActions.donationWithStripe(token.id, token.email, self.props.donationAmount, self.props.donateMonthly);
         browserHistory.push("/more/processing_donation");
       }
@@ -64,7 +65,8 @@ export default class DonationForm extends Component {
     }
 
 		return <span>
-      <Button bsStyle="success" onClick={this._openStripeModal}>
+      <Button className={this.props.donateOther ? "" : "btn_donate"} bsStyle="success"
+              onClick={this._openStripeModal}>
         {donate_button_text}
       </Button>
   </span>;
