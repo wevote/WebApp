@@ -1,6 +1,7 @@
 var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
 import GuideActions from "../actions/GuideActions";
+import IssueActions from "../actions/IssueActions";
 
 class IssueStore extends FluxMapStore {
 
@@ -57,6 +58,7 @@ class IssueStore extends FluxMapStore {
       case "issueFollow":
         // When a voter follows or unfollows an issue on the ballot intro modal screen, update the voter guide list
         GuideActions.retrieveGuidesToFollowByIssueFilter();
+        IssueActions.retrieveIssuesForVoter();
         return state;
 
       case "retrieveIssuesToFollow":
