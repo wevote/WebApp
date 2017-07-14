@@ -75,7 +75,7 @@ export default class FollowToggle extends Component {
                 onClick={stopFollowingInstantly}>
                 <span>Unfollow</span>
         </Button> }
-        </span>:
+        </span> :
         <Button bsStyle="info" bsSize="small" className="pull-right" onClick={followInstantly}><span>Follow</span></Button>;
   }
 }

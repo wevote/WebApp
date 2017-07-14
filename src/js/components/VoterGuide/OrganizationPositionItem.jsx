@@ -85,7 +85,7 @@ export default class OrganizationPositionItem extends Component {
       organization_twitter_handle_being_viewed = organization.organization_twitter_handle !== undefined ? organization.organization_twitter_handle : "";
       organization_facebook_id_being_viewed = organization.facebook_id !== undefined ? organization.facebook_id : 0;
       organization_we_vote_id = organization.organization_we_vote_id;
-      signed_in_with_this_organization = this.state.voter && this.state.voter.linked_organization_we_vote_id == organization_we_vote_id;
+      signed_in_with_this_organization = this.state.voter && this.state.voter.linked_organization_we_vote_id === organization_we_vote_id;
     }
     // console.log("signed_in_with_this_organization: ", signed_in_with_this_organization);
     var signed_in_twitter = this.state.voter === undefined ? false : this.state.voter.signed_in_twitter;
@@ -98,8 +98,6 @@ export default class OrganizationPositionItem extends Component {
     if (signed_in_facebook) {
       signed_in_with_this_facebook_account = this.state.voter.facebook_id === organization_facebook_id_being_viewed;
     }
-    var signed_in_with_email = this.state.voter === undefined ? false : this.state.voter.signed_in_with_email;
-    // console.log("sign_in_with_this twitter:", signed_in_with_this_twitter_account, " facebook:", signed_in_with_this_facebook_account, "org: ", signed_in_with_this_organization);
 
     var statement_text;
     var is_public_position;

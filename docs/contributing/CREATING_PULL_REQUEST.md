@@ -23,6 +23,8 @@
 # Creating a Pull Request
 
 If you have never created a pull request, please read “[What the Heck is a Pull Request?](PULL_REQUEST_BACKGROUND.md)
+We also created [this handy chart](https://docs.google.com/drawings/d/1ED4X3Gpy_UruGDSiO8FjjxQeGOmQqIApguodHDo6-ok/edit) 
+to show the various steps working with pull requests.
 
 ## Get Your Command Line Ready
 

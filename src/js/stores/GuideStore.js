@@ -105,6 +105,7 @@ class GuideStore extends FluxMapStore {
     let voter_guides;
     let all_cached_voter_guides;
     let id;
+    let organization_we_vote_id;
     let organizations_followed_on_twitter_list;
     let all_cached_organizations_followed;
 
@@ -197,7 +198,7 @@ class GuideStore extends FluxMapStore {
             }
 
             if (filter_voter_guides_by_issue) {
-              let organization_we_vote_id = one_voter_guide.organization_we_vote_id;
+              organization_we_vote_id = one_voter_guide.organization_we_vote_id;
               if (guide_we_vote_ids_processed.indexOf(organization_we_vote_id) === -1) {
                 to_follow_list_for_voter_issues.push(one_voter_guide);
                 guide_we_vote_ids_processed.push(organization_we_vote_id);
@@ -289,7 +290,7 @@ class GuideStore extends FluxMapStore {
           };
 
       case "organizationFollow":
-        var organization_we_vote_id = action.res.organization_we_vote_id;
+        organization_we_vote_id = action.res.organization_we_vote_id;
         if (action.res.organization_follow_based_on_issue) {
           GuideActions.retrieveGuidesToFollowByIssueFilter();  // Whenever a voter follows a new org, update list
         } else {
@@ -308,7 +309,7 @@ class GuideStore extends FluxMapStore {
         };
 
       case "organizationStopFollowing":
-        var organization_we_vote_id = action.res.organization_we_vote_id;
+        organization_we_vote_id = action.res.organization_we_vote_id;
         GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter stops following an org, update list
         GuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
         GuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
@@ -320,7 +321,7 @@ class GuideStore extends FluxMapStore {
         };
 
       case "organizationFollowIgnore":
-        var organization_we_vote_id = action.res.organization_we_vote_id;
+        organization_we_vote_id = action.res.organization_we_vote_id;
         GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter ignores an org, update list
         GuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
         GuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
