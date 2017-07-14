@@ -42,7 +42,7 @@ export default class ThisIsMeAction extends Component {
     var {voter} = this.state;
     var signed_in_twitter = voter === undefined ? false : voter.signed_in_twitter;
     var signed_in_with_this_twitter_account = false;
-    if (signed_in_twitter) {
+    if (signed_in_twitter && voter.twitter_screen_name && twitter_handle_being_viewed) {
       signed_in_with_this_twitter_account = voter.twitter_screen_name.toLowerCase() === twitter_handle_being_viewed.toLowerCase();
     }
     var this_is_me_action_text;
