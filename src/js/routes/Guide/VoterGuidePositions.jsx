@@ -85,15 +85,16 @@ export default class VoterGuidePositions extends Component {
     let title_text = organization_name + " - We Vote";
     let description_text = "See endorsements and opinions from " + organization_name + " for the November election";
     const at_least_one_position_found_for_this_election = position_list_for_one_election && position_list_for_one_election.length !== 0;
-    // console.log("at_least_one_position_found_for_this_election: ", at_least_one_position_found_for_this_election);
+    const at_least_one_position_found_for_other_elections = position_list_for_all_except_one_election && position_list_for_all_except_one_election.length !== 0;
 
     return <div className="opinions-followed__container">
+      {/* Since VoterGuidePositions, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
       <Helmet title={title_text}
               meta={[{"name": "description", "content": description_text}]}
               />
       <div className="card">
         <ul className="card-child__list-group">
-          { looking_at_self ?
+          { looking_at_self && (at_least_one_position_found_for_this_election || at_least_one_position_found_for_other_elections) ?
             <a className="fa-pull-right u-push--md"
                tabIndex="0"
                onKeyDown={this.onKeyDownEditMode.bind(this)}

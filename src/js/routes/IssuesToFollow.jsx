@@ -15,7 +15,6 @@ export default class IssuesFollowed extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      edit_mode: true,
       issues_to_follow: []
     };
   }
@@ -30,12 +29,9 @@ export default class IssuesFollowed extends Component {
   }
 
   _onIssueStoreChange () {
-    let issue_list = IssueStore.toFollowList();
-    if (issue_list.length > 0) {
-      this.setState({
+    this.setState({
         issues_to_follow: IssueStore.toFollowList(),
-      });
-    }
+    });
   }
 
   render () {
@@ -43,7 +39,8 @@ export default class IssuesFollowed extends Component {
     if (this.state.issues_to_follow) {
       issue_list = this.state.issues_to_follow;
     }
-
+    let edit_mode = true;
+    let is_following = false;
     const issue_list_for_display = issue_list.map((issue) => {
       return <IssueFollowToggle
         key={issue.issue_we_vote_id}
@@ -51,7 +48,8 @@ export default class IssuesFollowed extends Component {
         issue_name={issue.issue_name}
         issue_description={issue.issue_description}
         issue_image_url={issue.issue_photo_url_medium}
-        edit_mode={this.state.edit_mode}
+        edit_mode={edit_mode}
+        is_following={is_following}
       />;
     });
 

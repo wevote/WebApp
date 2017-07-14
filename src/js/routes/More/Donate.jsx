@@ -69,8 +69,8 @@ export default class Donate extends Component {
   causes a page reload, and you lose context.  So swallow the 'Enter' keystroke event while in
   the InputGroup.
    */
-  _handleKeyPress(event) {
-    if (event.key == 'Enter') {
+  _handleKeyPress (event) {
+    if (event.key === "Enter") {
       event.preventDefault();
     }
   }

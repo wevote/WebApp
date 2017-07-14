@@ -22,7 +22,7 @@ export default class BallotIntroFollowAdvisers extends Component {
       description_text: "",
       followed_organizations: [],
       organization_list_from_issues: GuideStore.retrieveGuidesToFollowByIssueFilter(),
-      organization_list_to_follow:  GuideStore.toFollowList(),
+      organization_list_to_follow: GuideStore.toFollowList(),
       next_button_text: NEXT_BUTTON_TEXT
     };
   }

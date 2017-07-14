@@ -16,7 +16,7 @@ export default class IssuesFollowed extends Component {
     super(props);
     this.state = {
       edit_mode: false,
-      issues_to_follow: []
+      issues_followed: []
     };
   }
 
@@ -30,12 +30,9 @@ export default class IssuesFollowed extends Component {
   }
 
   _onIssueStoreChange () {
-    let issue_list = IssueStore.followingList();
-    if (issue_list.length > 0) {
-      this.setState({
-        issues_to_follow: IssueStore.followingList(),
-      });
-    }
+    this.setState({
+      issues_followed: IssueStore.followingList(),
+    });
   }
 
   getCurrentRoute () {
@@ -57,10 +54,11 @@ export default class IssuesFollowed extends Component {
 
   render () {
     var issue_list = [];
-    if (this.state.issues_to_follow) {
-      issue_list = this.state.issues_to_follow;
+    if (this.state.issues_followed) {
+      issue_list = this.state.issues_followed;
     }
 
+    let is_following = true;
     const issue_list_for_display = issue_list.map((issue) => {
       return <IssueFollowToggle
         key={issue.issue_we_vote_id}
@@ -69,6 +67,7 @@ export default class IssuesFollowed extends Component {
         issue_description={issue.issue_description}
         issue_image_url={issue.issue_photo_url_medium}
         edit_mode={this.state.edit_mode}
+        is_following={is_following}
       />;
     });
 
@@ -82,13 +81,13 @@ export default class IssuesFollowed extends Component {
              onKeyDown={this.onKeyDownEditMode.bind(this)}
              onClick={this.toggleEditMode.bind(this)}>{this.state.edit_mode ? "Done Editing" : "Edit"}</a>
             <p>
-              These are the issues you currently follow. We recommend organizations that you might want to learn from 
+              These are the issues you currently follow. We recommend organizations that you might want to learn from
               based on these issues.
             </p>
           <div className="voter-guide-list card">
             <div className="card-child__list-group">
               {
-                this.state.issues_to_follow && this.state.issues_to_follow.length ?
+                this.state.issues_followed.length > 0 ?
                   issue_list_for_display :
                   null
               }

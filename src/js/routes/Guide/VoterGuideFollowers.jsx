@@ -91,7 +91,8 @@ export default class VoterGuideFollowers extends Component {
     }
 
     return <div className="opinions-followed__container">
-      <Helmet title="Followers of Your Organization - We Vote" />
+      {/* Since VoterGuidePositions, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
+      <Helmet title={this.state.organization.organization_name + " - We Vote"} />
       <div className="card">
         <ul className="card-child__list-group">
           { this.state.voter_guide_followers_list && this.state.voter_guide_followers_list.length > 0 ?

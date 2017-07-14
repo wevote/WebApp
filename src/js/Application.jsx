@@ -196,7 +196,7 @@ export default class Application extends Component {
                     <div>
                       <br />
                       <br />
-                      <BallotSideBar displayTitle  displaySubtitles />
+                      <BallotSideBar displayTitle displaySubtitles />
                     </div> :
                     null }
                 </div>
