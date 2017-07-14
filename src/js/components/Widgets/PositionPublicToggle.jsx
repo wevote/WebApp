@@ -4,7 +4,7 @@ import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
 import ReactBootstrapToggle from "react-bootstrap-toggle";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
-// import VoterStore from "../../stores/VoterStore";
+import VoterStore from "../../stores/VoterStore";
 const Icon = require("react-svg-icons");
 
 export default class PositionPublicToggle extends Component {
@@ -24,17 +24,34 @@ export default class PositionPublicToggle extends Component {
     };
   }
 
+  componentDidMount () {
+    this._onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+  }
+
+  componentWillUnmount (){
+    this.voterStoreListener.remove();
+  }
+
+  _onVoterStoreChange () {
+    this.setState({ voter: VoterStore.getVoter() });
+  }
+
   showItemToFriendsOnly () {
     SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, "FRIENDS_ONLY");
   }
 
   showItemToPublic () {
-    let position_public_toggle_modal_has_been_shown = false; // VoterStore.getInterfaceFlagState(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
-    if (!position_public_toggle_modal_has_been_shown) {
-      this.togglePositionPublicHelpModal();
-      VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
-    } else {
+    var voter = this.state.voter;
+    if (voter && voter.is_signed_in) {
       SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, "SHOW_PUBLIC");
+      let position_public_toggle_modal_has_been_shown = VoterStore.getInterfaceFlagState(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
+      if (!position_public_toggle_modal_has_been_shown) {
+        this.togglePositionPublicHelpModal();
+        VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
+      }
+    } else {
+      this.togglePositionPublicHelpModal();
     }
   }
 
@@ -92,7 +109,9 @@ export default class PositionPublicToggle extends Component {
       }
     };
 
-    // This modal is shown when user clicks on public position toggle without being signed in.
+    // This modal is shown when the user clicks on public position toggle either when not signed in
+    // or for the first time after being signed in.
+    var voter = this.state.voter;
     let modalSupportProps = { is_public_position: false };
     const PositionPublicToggleHelpModal = <Modal show={this.state.showPositionPublicHelpModal} onHide={()=>{this.togglePositionPublicHelpModal();}}>
       <Modal.Header closeButton>
@@ -103,9 +122,9 @@ export default class PositionPublicToggle extends Component {
       <Modal.Body>
         <section className="card">
           <div className="text-center">
-            Your position is only visible to your We Vote friends. Sign in to make your views public.
-            Test the toggle here:<br />
+            {voter && voter.is_signed_in ? "By clicking this toggle, you have just made your position visible to anyone on We Vote. If you do NOT want to share your position publicly, you may click the toggle again to restrict visibility to We Vote friends only." : "Clicking this toggle will make your position visible to anyone on We Vote. In order to change this toggle, you need to sign in first."}<br />
             <br />
+            Test the toggle here:<br />
             <PositionPublicToggle ballot_item_we_vote_id="null"
                                   className="null"
                                   type="MEASURE"
