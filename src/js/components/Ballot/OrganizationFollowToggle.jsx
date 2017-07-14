@@ -57,7 +57,7 @@ export default class OrganizationFollowToggle extends Component {
           <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.organization_name}</h4>
           <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.organization_description}</p>
         </span>
-        <Button bsStyle="warning" bsSize="small" onClick={this.onOrganizationStopFollowing}>
+        <Button bsStyle="warning" bsSize="small" onClick={this.onOrganizationStopFollowing.bind(this)}>
           <span>Following</span>
         </Button>
       </div> :
@@ -69,11 +69,11 @@ export default class OrganizationFollowToggle extends Component {
                         kind_of_image="ORGANIZATION"
           />
         </div>
-        <span className="intro-modal__span intro-modal__margin-right" onClick={this.onOrganizationFollow}>
+        <span className="intro-modal__span intro-modal__margin-right" onClick={this.onOrganizationFollow.bind(this)}>
           <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.organization_name}</h4>
           <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.organization_description}</p>
         </span>
-        <Button bsStyle="info" bsSize="small" onClick={this.onOrganizationFollow}>
+        <Button bsStyle="info" bsSize="small" onClick={this.onOrganizationFollow.bind(this)}>
           <span>Follow</span>
         </Button>
       </div>;

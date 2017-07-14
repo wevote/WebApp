@@ -100,7 +100,8 @@ export default class VoterGuideFollowing extends Component {
     let hide_stop_following_button = !looking_at_self;
 
     return <div className="opinions-followed__container">
-      <Helmet title="Organizations You Following - We Vote" />
+      {/* Since VoterGuidePositions, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
+      <Helmet title={this.state.organization.organization_name + " - We Vote"} />
       <div className="card">
         <ul className="card-child__list-group">
           { this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length > 0 ?
@@ -108,7 +109,7 @@ export default class VoterGuideFollowing extends Component {
               { !this.state.search_filter ?
                 <span>
                   {this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id ?
-                    <h4 className="card__additional-heading">Who You're Following</h4> :
+                    <h4 className="card__additional-heading">You Are Following<span className={"hidden-xs"}> {this.state.voter_guide_followed_list.length} Organizations or People</span></h4> :
                     <h4 className="card__additional-heading">{this.state.organization.organization_name} is Following</h4>
                   }
                 </span> :

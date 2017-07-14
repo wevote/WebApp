@@ -68,18 +68,21 @@ export default class OrganizationVoterGuideTabs extends Component {
       looking_at_self = this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id;
     }
     let positions_title = "";
-    let following_title = "";
+    let following_title_long = "";
+    let following_title_short = "";
     let followers_title = "";
     if (looking_at_self) {
       positions_title = "Your Positions";
-      following_title = this.state.voter_guide_followed_list.length === 0 ?
+      following_title_long = this.state.voter_guide_followed_list.length === 0 ?
         "You Are Following" : "You Are Following " + this.state.voter_guide_followed_list.length;
+      following_title_short = "Following";
       followers_title = this.state.voter_guide_followers_list.length === 0 ?
         "Followers" : this.state.voter_guide_followers_list.length + " Followers";
     } else {
       positions_title = "Positions";
-      following_title = this.state.voter_guide_followed_list.length === 0 ?
+      following_title_long = this.state.voter_guide_followed_list.length === 0 ?
         "Following" : "Following " + this.state.voter_guide_followed_list.length;
+      following_title_short = "Following";
       followers_title = this.state.voter_guide_followers_list.length === 0 ?
         "Followers" : this.state.voter_guide_followers_list.length + " Followers";
     }
@@ -90,7 +93,7 @@ export default class OrganizationVoterGuideTabs extends Component {
           <VoterGuidePositions organization={this.state.organization} />
         </Tab>
 
-        <Tab eventKey={2} title={following_title}>
+        <Tab eventKey={2} title={<span><span className="hidden-xs">{following_title_long}</span><span className="visible-xs">{following_title_short}</span></span>}>
           <VoterGuideFollowing organization={this.state.organization} />
         </Tab>
 
