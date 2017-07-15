@@ -154,6 +154,10 @@ export default class Ballot extends Component {
   }
 
   _toggleSelectAddressModal () {
+    // Clear out any # from anchors in the URL
+    if (!this.state.showSelectAddressModal)
+      browserHistory.push("/ballot");
+
     this.setState({
       showSelectAddressModal: !this.state.showSelectAddressModal
     });
@@ -168,7 +172,7 @@ export default class Ballot extends Component {
   _onBallotStoreChange (){
     if (this.state.mounted) {
       if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) { // Ballot is found but ballot is empty
-        browserHistory.push("ballot/empty");
+        browserHistory.push("/ballot/empty");
         console.log("_onBallotStoreChange: ballot is empty");
       } else {
         let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
@@ -389,7 +393,9 @@ export default class Ballot extends Component {
               { this.state.measure_for_modal.position_list ?
                 <span>
                   {/* Show a break-down of the positions in your network */}
-                  { SupportStore.get(this.state.measure_for_modal.measure_we_vote_id) && ( SupportStore.get(this.state.measure_for_modal.measure_we_vote_id).oppose_count || SupportStore.get(this.state.measure_for_modal.measure_we_vote_id).support_count) ?
+                  { SupportStore.get(this.state.measure_for_modal.measure_we_vote_id) &&
+                    ( SupportStore.get(this.state.measure_for_modal.measure_we_vote_id).oppose_count ||
+                      SupportStore.get(this.state.measure_for_modal.measure_we_vote_id).support_count) ?
                     <span>
                       {/* In desktop mode, align left with position bar */}
                       {/* In mobile mode, turn on green up-arrow before icons */}
@@ -562,8 +568,8 @@ export default class Ballot extends Component {
               <a onClick={this._toggleBallotSummaryModal}>Summary of Ballot Items</a>
             </div>
           </div>
-      </div>
-      {emptyBallot}
+        </div>
+        {emptyBallot}
         <div className="BallotList">
         { in_ready_to_vote_mode ?
           ballot.map( (item) => <BallotItemReadyToVote key={item.we_vote_id} {...item} />) :

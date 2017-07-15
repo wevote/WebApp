@@ -69,8 +69,11 @@ export default class MeasureItemCompressed extends Component {
       // Only show ItemSupportOpposeCounts if your network has something to say
       oppose_count = supportProps.oppose_count;
     }
-    let { ballot_item_display_name, measure_subtitle,
-          measure_text, we_vote_id } = this.props;
+
+    let ballot_item_display_name = this.props.ballot_item_display_name;
+    let measure_subtitle = this.props.measure_subtitle;
+    let measure_text = this.props.measure_text;  // Not currently defined
+    let we_vote_id  = this.props.we_vote_id;
     let measureLink = "/measure/" + we_vote_id;
     let goToMeasureLink = function () { browserHistory.push(measureLink); };
 
