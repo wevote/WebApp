@@ -209,7 +209,7 @@ export default class HeaderGettingStartedBar extends Component {
         </Modal.Body>
       </Modal>;
 
-    return <div>
+    return <div className="page-getting-started-header-background">
       { voter_thorough_orientation_complete ?
         null :
         <header className="page-getting-started-header">

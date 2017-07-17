@@ -164,6 +164,11 @@ $header-height: 54px;
   $nav-item-getting-started-background-active-color: darken($page-header-getting-started-background-color, 10%);
   display: flex;
   align-items: center;
+  margin-left: $space-logo-sm;
+  @include breakpoints(medium) {
+    margin-left: $space-logo-lg;
+  }
+
 
   &__label {
     display: block;

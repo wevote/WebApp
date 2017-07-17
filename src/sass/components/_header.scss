@@ -38,8 +38,21 @@
   max-width: $max-page-container-width;
   position: relative;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+}
+
+.page-getting-started-header-background {
+  margin-top: $space-md;
+  &::before {
+    content: '';
+    position: absolute;
+    background-color: $brand-white;
+    z-index: -1;
+    height: 56px;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+  }
 }
 
 .page-logo {

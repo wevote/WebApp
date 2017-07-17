@@ -35,7 +35,9 @@ $space-md:  16px;
 $space-lg:  32px;
 $space-xl:  64px;
 $space-auto: auto; // this is currently required because the 'declaration-use-variable' linter doesn't allow for specific value exceptions when requriing variables
-
+// these are spaces to indent the size of the we vote logo sizes on small and large screens
+$space-logo-sm: 55px;
+$space-logo-lg: 133px;
 
 // Inset: padding
 $space-inset-xs: $space-xs; // 4px
