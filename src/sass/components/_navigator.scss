@@ -2,6 +2,7 @@ $icon-color-base: $gray-mid;
 $icon-color-active: $link-color;
 $icon-color-hover: $gray-dark;
 $header-height: 54px;
+$header-height-getting-started: 112px;
 
 // Header Nav
 // ================================
@@ -61,7 +62,7 @@ $header-height: 54px;
 }
 
 .headroom-wrapper {
-  margin-top: $header-height;
+  margin-top: $header-height-getting-started;
 }
 
 .header-nav {
