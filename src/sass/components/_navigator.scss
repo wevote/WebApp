@@ -181,6 +181,9 @@ $header-height: 54px;
     justify-content: center;
     position: relative;
     max-width: 60px;
+    @include breakpoints(medium) {
+      width: 60px;
+    }
     height: $header-height;
     padding: $space-sm;
     color: $gray-dark;
