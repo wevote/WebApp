@@ -164,7 +164,6 @@ $header-height: 54px;
   $nav-item-getting-started-background-active-color: darken($page-header-getting-started-background-color, 10%);
   display: flex;
   align-items: center;
-  margin-left: $space-logo-sm;
   @include breakpoints(medium) {
     margin-left: $space-logo-lg;
   }
@@ -181,7 +180,7 @@ $header-height: 54px;
     flex-direction: column;
     justify-content: center;
     position: relative;
-    width: 60px;
+    max-width: 60px;
     height: $header-height;
     padding: $space-sm;
     color: $gray-dark;
