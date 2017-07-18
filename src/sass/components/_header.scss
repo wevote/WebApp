@@ -30,15 +30,16 @@
   // required overrides for Bootstrap :(
   border: none;
   @include clearfix;
+  @include breakpoints(medium) {
+    padding-right: $half-gutter-width;
+    padding-left: $half-gutter-width; // $grid-gutter-width/2
+  }
+  padding: $space-none;
   background-color: $brand-white;
-  padding-right: $half-gutter-width;
-  padding-bottom: $space-none; // override to avoid Bootstrap collision
-  padding-left: $half-gutter-width; // $grid-gutter-width/2
-  margin: $space-none auto;
-  max-width: $max-page-container-width;
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .page-getting-started-header-background {
@@ -48,7 +49,7 @@
     position: absolute;
     background-color: $brand-white;
     z-index: -1;
-    height: 56px;
+    height: 48px;
     width: 100%;
     bottom: 0;
     left: 0;
