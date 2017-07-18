@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { browserHistory } from "react-router";
 import TwitterActions from "../../actions/TwitterActions";
 import TwitterStore from "../../stores/TwitterStore";
+import VoterStore from "../../stores/VoterStore";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterActions from "../../actions/VoterActions";
 import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
@@ -77,6 +78,10 @@ export default class TwitterSignInProcess extends Component {
         message_type: "success"
       }
     });
+    if (VoterStore.getVoterPhotoUrlMedium().length === 0) {
+      // This only fires once, for brand new users on their very first login
+      VoterActions.voterRetrieve();
+    }
   }
 
   twitterSignInRetrieve () {
