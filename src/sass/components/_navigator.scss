@@ -196,6 +196,10 @@ $header-height-getting-started: 112px;
     // temporary offsets for .page-header__container padding
     margin: -8px $space-none; // stylelint-disable-line sh-waqar/declaration-use-variable
 
+    &-image-wrapper {
+      height: 29px;
+    }
+
     &:active,
     &.active-icon,
     &:focus,

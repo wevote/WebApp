@@ -216,7 +216,7 @@ export default class HeaderGettingStartedBar extends Component {
           <div className="header-getting-started-nav">
             {/* Issues Icon & Modal */}
             <Link onClick={this._toggleBallotIntroFollowIssues} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
-              <span title="Issues">
+              <span className="header-getting-started-nav__item-image-wrapper" title="Issues">
                 <img className="glyphicon nav-getting-started__image" src="/img/global/svg-icons/issues-v1-64x42.svg" />
               </span>
               <span className="header-getting-started-nav__label">
@@ -225,7 +225,7 @@ export default class HeaderGettingStartedBar extends Component {
             </Link>
             {/* Organizations Icon & Modal */}
             <Link onClick={this._toggleBallotIntroOrganizations} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
-              <span title="Organizations">
+              <span className="header-getting-started-nav__item-image-wrapper" title="Organizations">
                 <img className="glyphicon nav-getting-started__image" src="/img/global/svg-icons/organizations-v2-31x26.svg" />
               </span>
               <span className="header-getting-started-nav__label">
@@ -234,7 +234,7 @@ export default class HeaderGettingStartedBar extends Component {
             </Link>
             {/* Positions Icon & Modal */}
             <Link onClick={this._toggleBallotIntroPositions} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
-              <span title="Positions">
+              <span className="header-getting-started-nav__item-image-wrapper" title="Positions">
                 <img className="glyphicon nav-getting-started__image" src="/img/global/svg-icons/stance-v1-59x32.svg" />
               </span>
               <span className="header-getting-started-nav__label">
@@ -243,7 +243,7 @@ export default class HeaderGettingStartedBar extends Component {
             </Link>
             {/* Friends Icon & Modal */}
             <Link onClick={this._toggleBallotIntroFriends} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
-              <span title="Friends">
+              <span className="header-getting-started-nav__item-image-wrapper" title="Friends">
                 <img className="glyphicon nav-getting-started__image" src="/img/global/svg-icons/friends-v2-59x28.svg" />
               </span>
               <span className="header-getting-started-nav__label">
@@ -252,7 +252,7 @@ export default class HeaderGettingStartedBar extends Component {
             </Link>
             {/* Share Icon & Modal */}
             <Link onClick={this._toggleBallotIntroShare} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
-              <span title="Share">
+              <span className="header-getting-started-nav__item-image-wrapper" title="Share">
                 <img className="glyphicon nav-getting-started__image" src="/img/global/svg-icons/share-v2-28x24.svg" />
               </span>
               <span className="header-getting-started-nav__label">
@@ -261,8 +261,8 @@ export default class HeaderGettingStartedBar extends Component {
             </Link>
             {/* Vote Icon & Modal */}
             <Link onClick={this._toggleBallotIntroVote} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon hidden-xs"}>
-              <span title="Vote">
-                <img className="glyphicon nav-getting-started__image" src="/img/global/svg-icons/vote-v6-25x25.svg" />
+              <span className="header-getting-started-nav__item-image-wrapper" title="Vote">
+                <img className="glyphicon nav-getting-started__image" src="/img/global/svg-icons/vote-v6-28x28.svg" />
               </span>
               <span className="header-getting-started-nav__label">
                 Vote{ this.state.ballot_intro_vote_completed ? "*" : null }
