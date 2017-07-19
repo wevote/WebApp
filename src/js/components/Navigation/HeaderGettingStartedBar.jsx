@@ -209,15 +209,15 @@ export default class HeaderGettingStartedBar extends Component {
         </Modal.Body>
       </Modal>;
 
-    return <div>
+    return <div className="page-getting-started-header-background">
       { voter_thorough_orientation_complete ?
         null :
         <header className="page-getting-started-header">
           <div className="header-getting-started-nav">
             {/* Issues Icon & Modal */}
             <Link onClick={this._toggleBallotIntroFollowIssues} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
-              <span title="Issues">
-                <img className="glyphicon" src="/img/global/svg-icons/issues-v1-64x42.svg" />
+              <span className="header-getting-started-nav__item-image-wrapper" title="Issues">
+                <img className="glyphicon nav-getting-started__image" src="/img/global/svg-icons/issues-v1-64x42.svg" />
               </span>
               <span className="header-getting-started-nav__label">
                 Issues{ this.state.ballot_intro_issues_completed ? "*" : null }
@@ -225,8 +225,8 @@ export default class HeaderGettingStartedBar extends Component {
             </Link>
             {/* Organizations Icon & Modal */}
             <Link onClick={this._toggleBallotIntroOrganizations} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
-              <span title="Organizations">
-                <img className="glyphicon" src="/img/global/svg-icons/organizations-v2-31x26.svg" />
+              <span className="header-getting-started-nav__item-image-wrapper" title="Organizations">
+                <img className="glyphicon nav-getting-started__image" src="/img/global/svg-icons/organizations-v2-31x26.svg" />
               </span>
               <span className="header-getting-started-nav__label">
                 Organizations{ this.state.ballot_intro_organizations_completed ? "*" : null }
@@ -234,8 +234,8 @@ export default class HeaderGettingStartedBar extends Component {
             </Link>
             {/* Positions Icon & Modal */}
             <Link onClick={this._toggleBallotIntroPositions} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
-              <span title="Positions">
-                <img className="glyphicon" src="/img/global/svg-icons/stance-v1-59x32.svg" />
+              <span className="header-getting-started-nav__item-image-wrapper" title="Positions">
+                <img className="glyphicon nav-getting-started__image" src="/img/global/svg-icons/stance-v1-59x32.svg" />
               </span>
               <span className="header-getting-started-nav__label">
                 Positions{ this.state.ballot_intro_positions_completed ? "*" : null }
@@ -243,8 +243,8 @@ export default class HeaderGettingStartedBar extends Component {
             </Link>
             {/* Friends Icon & Modal */}
             <Link onClick={this._toggleBallotIntroFriends} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
-              <span title="Friends">
-                <img className="glyphicon" src="/img/global/svg-icons/friends-v2-59x28.svg" />
+              <span className="header-getting-started-nav__item-image-wrapper" title="Friends">
+                <img className="glyphicon nav-getting-started__image" src="/img/global/svg-icons/friends-v2-59x28.svg" />
               </span>
               <span className="header-getting-started-nav__label">
                 Friends{ this.state.ballot_intro_friends_completed ? "*" : null }
@@ -252,17 +252,17 @@ export default class HeaderGettingStartedBar extends Component {
             </Link>
             {/* Share Icon & Modal */}
             <Link onClick={this._toggleBallotIntroShare} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
-              <span title="Share">
-                <img className="glyphicon" src="/img/global/svg-icons/share-v2-28x24.svg" />
+              <span className="header-getting-started-nav__item-image-wrapper" title="Share">
+                <img className="glyphicon nav-getting-started__image" src="/img/global/svg-icons/share-v2-28x24.svg" />
               </span>
               <span className="header-getting-started-nav__label">
                 Share{ this.state.ballot_intro_share_completed ? "*" : null }
                 </span>
             </Link>
             {/* Vote Icon & Modal */}
-            <Link onClick={this._toggleBallotIntroVote} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
-              <span title="Vote">
-                <img className="glyphicon" src="/img/global/svg-icons/vote-v6-25x25.svg" />
+            <Link onClick={this._toggleBallotIntroVote} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon hidden-xs"}>
+              <span className="header-getting-started-nav__item-image-wrapper" title="Vote">
+                <img className="glyphicon nav-getting-started__image" src="/img/global/svg-icons/vote-v6-28x28.svg" />
               </span>
               <span className="header-getting-started-nav__label">
                 Vote{ this.state.ballot_intro_vote_completed ? "*" : null }

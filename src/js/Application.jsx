@@ -82,7 +82,7 @@ export default class Application extends Component {
 
     // Initialize headroom element
     new Headroom(this.refs.pageHeader, {
-      "offset": 50,
+      "offset": 20,
       "tolerance": 1,
       "classes": {
         "initial": "headroom--animated",
@@ -108,6 +108,9 @@ export default class Application extends Component {
   render () {
     var { location: { pathname }} = this.props;
     var { voter, location } = this.state;
+    const headRoomSize = pathname === "/ballot" ?
+      "headroom-getting-started__margin" :
+      "headroom-wrapper";
 
     if (voter === undefined || location === undefined ) {
       return <div style={loadingScreenStyles}>
@@ -166,7 +169,7 @@ export default class Application extends Component {
     }
 
     return <div className="app-base" id="app-base-id">
-      <div className="headroom-wrapper">
+      <div className={headRoomSize}>
         <div ref="pageHeader" className="page-header__container headroom">
           <HeaderBar pathname={pathname} voter={voter} />
           { pathname === "/ballot" ?
@@ -183,19 +186,12 @@ export default class Application extends Component {
               </div> :
               <div className="row">
                 <div className="col-md-8 container-main">
-                  { pathname === "/ballot" ?
-                    <div>
-                      <br />
-                    </div> :
-                    null }
                   { this.props.children }
                 </div>
                 <div className="col-md-4 hidden-xs sidebar-menu">
                   {/* Depending on which page we are on, show a different left area. */}
                   { pathname === "/ballot" ?
                     <div>
-                      <br />
-                      <br />
                       <BallotSideBar displayTitle displaySubtitles />
                     </div> :
                     null }

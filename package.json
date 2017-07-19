@@ -29,9 +29,10 @@
   },
   "dependencies": {
     "gulp-uglify": "^2.0.0",
+    "headroom.js": "^0.9.3",
     "history": "^3.2.1",
     "keymirror": "^0.1.1",
-    "headroom.js": "^0.9.3",
+    "lodash": "^4.17.4",
     "lodash.assign": "^4.2.0",
     "moment": "^2.17.1",
     "moment-timezone": "^0.5.11",
