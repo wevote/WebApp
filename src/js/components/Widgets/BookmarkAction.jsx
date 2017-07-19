@@ -44,20 +44,15 @@ export default class BookmarkAction extends Component {
   BookmarkClick () {
     var we_vote_id = this.props.we_vote_id;
     var bookmarked = this.state.is_bookmarked;
-    var voter = this.state.voter;
-    if (voter && voter.is_signed_in) {
-      if (bookmarked) {
-        BookmarkActions.voterBookmarkOffSave(we_vote_id, this.props.type);
-      } else {
-        BookmarkActions.voterBookmarkOnSave(we_vote_id, this.props.type);
-        let bookmark_action_modal_has_been_shown = VoterStore.getInterfaceFlagState(VoterConstants.BOOKMARK_ACTION_MODAL_SHOWN);
-        if (!bookmark_action_modal_has_been_shown) {
-          this.toggleBookmarkActionHelpModal();
-          VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.BOOKMARK_ACTION_MODAL_SHOWN);
-        }
-      }
+    if (bookmarked) {
+      BookmarkActions.voterBookmarkOffSave(we_vote_id, this.props.type);
     } else {
-      this.toggleBookmarkActionHelpModal();
+      BookmarkActions.voterBookmarkOnSave(we_vote_id, this.props.type);
+      let bookmark_action_modal_has_been_shown = false; // VoterStore.getInterfaceFlagState(VoterConstants.BOOKMARK_ACTION_MODAL_SHOWN);
+      if (!bookmark_action_modal_has_been_shown) {
+        this.toggleBookmarkActionHelpModal();
+        VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.BOOKMARK_ACTION_MODAL_SHOWN);
+      }
     }
   }
 
@@ -79,9 +74,7 @@ export default class BookmarkAction extends Component {
       return <span className="bookmark-action" />;
     }
 
-    // This modal is shown when the user bookmarks a candidate either when not signed in
-    // or for the first time after being signed in.
-    let voter = this.state.voter;
+    // This modal is shown when the user bookmarks a ballot item for the first time.
     let modalSupportProps = { is_public_position: false };
     const BookmarkActionHelpModal = <Modal show={this.state.showBookmarkActionHelpModal} onHide={()=>{this.toggleBookmarkActionHelpModal();}}>
       <Modal.Header closeButton>
@@ -92,7 +85,7 @@ export default class BookmarkAction extends Component {
       <Modal.Body>
         <section className="card">
           <div className="text-center">
-            { voter && voter.is_signed_in ? "You have just bookmarked this candidate to your We Vote account. If you want to undo this action, you may click the icon again." : "To bookmark this candidate, please sign in first." }<br />
+            You have just bookmarked this ballot item. If you want to undo this action, you may click the icon again.<br />
             <br />
           </div>
         </section>
