@@ -48,7 +48,7 @@ export default class BookmarkAction extends Component {
       BookmarkActions.voterBookmarkOffSave(we_vote_id, this.props.type);
     } else {
       BookmarkActions.voterBookmarkOnSave(we_vote_id, this.props.type);
-      let bookmark_action_modal_has_been_shown = false; // VoterStore.getInterfaceFlagState(VoterConstants.BOOKMARK_ACTION_MODAL_SHOWN);
+      let bookmark_action_modal_has_been_shown = VoterStore.getInterfaceFlagState(VoterConstants.BOOKMARK_ACTION_MODAL_SHOWN);
       if (!bookmark_action_modal_has_been_shown) {
         this.toggleBookmarkActionHelpModal();
         VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.BOOKMARK_ACTION_MODAL_SHOWN);
