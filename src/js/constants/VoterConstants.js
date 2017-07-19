@@ -11,6 +11,7 @@ const VoterConstants = {
   BALLOT_INTRO_SHARE_COMPLETED: 64, // ...the voter has shared at least one item (no need for intro)
   BALLOT_INTRO_VOTE_COMPLETED: 128, // ...the voter learned about casting their vote (no need for intro)
   POSITION_PUBLIC_MODAL_SHOWN: 256, // ...the voter has seen the initial public position modal
+  BOOKMARK_ACTION_MODAL_SHOWN: 512, // ...the voter has seen the initial bookmark action modal
 
   // Used for notification_settings bits. Which notification options has the voter chosen?
   NOTIFICATION_ZERO: 0,
