@@ -82,7 +82,7 @@ export default class Application extends Component {
 
     // Initialize headroom element
     new Headroom(this.refs.pageHeader, {
-      "offset": 50,
+      "offset": 20,
       "tolerance": 1,
       "classes": {
         "initial": "headroom--animated",
