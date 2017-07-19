@@ -63,9 +63,7 @@ export default class Ballot extends Component {
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
       browserHistory.push("settings/location");
     } else {
-      //if ballot is found
       let ballot = this.getBallot(this.props);
-      // console.log(ballot);
       if (ballot !== undefined) {
         let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
         this.setState({ballot: ballot, ballot_type: ballot_type});
@@ -106,15 +104,6 @@ export default class Ballot extends Component {
   componentWillReceiveProps (nextProps){
     let ballot_type = nextProps.location.query ? nextProps.location.query.type : "all";
     this.setState({ballot: this.getBallot(nextProps), ballot_type: ballot_type });
-  }
-
-  _onVoterStoreChange () {
-    if (this.state.mounted) {
-      this.setState({
-        voter: VoterStore.getVoter(),
-        showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
-      });
-    }
   }
 
   _toggleCandidateModal (candidateForModal) {
@@ -169,9 +158,19 @@ export default class Ballot extends Component {
     });
   }
 
+  _onVoterStoreChange () {
+    if (this.state.mounted) {
+      this.setState({
+        voter: VoterStore.getVoter(),
+        showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
+      });
+    }
+  }
+
   _onBallotStoreChange (){
     if (this.state.mounted) {
-      if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) { // Ballot is found but ballot is empty
+      if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) {
+        // Ballot is found but ballot is empty
         browserHistory.push("/ballot/empty");
         console.log("_onBallotStoreChange: ballot is empty");
       } else {
