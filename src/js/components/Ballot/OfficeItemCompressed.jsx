@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
 import GuideStore from "../../stores/GuideStore";
-import ImageHandler from "../../components/ImageHandler";
-import ItemActionBar from "../../components/Widgets/ItemActionBar";
-import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
-import ItemTinyOpinionsToFollow from "../../components/VoterGuide/ItemTinyOpinionsToFollow";
-import BookmarkAction from "../../components/Widgets/BookmarkAction";
+import ImageHandler from "../ImageHandler";
+import ItemActionBar from "../Widgets/ItemActionBar";
+import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
+import ItemTinyOpinionsToFollow from "../VoterGuide/ItemTinyOpinionsToFollow";
+import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
@@ -83,7 +83,7 @@ export default class OfficeItemCompressed extends Component {
               ballot_item_display_name
             }
           </h2>
-          <BookmarkAction we_vote_id={we_vote_id} type="OFFICE" />
+          <BookmarkToggle we_vote_id={we_vote_id} type="OFFICE" />
         </div>
           <div className={this.props.link_to_ballot_item_page ?
                 "u-cursor--pointer" : null } >
@@ -158,12 +158,12 @@ export default class OfficeItemCompressed extends Component {
           { !this.state.display_all_candidates_flag && remaining_candidates_to_display_count > 0 ?
             <Link onClick={this.toggleDisplayAllCandidates}>
               <span className="u-items-center">
-                Click&nbsp;to&nbsp;see&nbsp;{remaining_candidates_to_display_count}&nbsp;more&nbsp;additional&nbsp;{ballot_item_display_name}s</span>
+                Click&nbsp;to&nbsp;show&nbsp;{remaining_candidates_to_display_count}&nbsp;more&nbsp;candidates...</span>
             </Link> : null
           }
           { this.state.display_all_candidates_flag && this.props.candidate_list.length > NUMBER_OF_CANDIDATES_TO_DISPLAY ?
             <Link onClick={this.toggleDisplayAllCandidates}>
-              <span className="u-items-center">view&nbsp;less...</span>
+              <span className="u-items-center">Click&nbsp;to&nbsp;show&nbsp;fewer&nbsp;candidates...</span>
             </Link> : null
           }
       </div>

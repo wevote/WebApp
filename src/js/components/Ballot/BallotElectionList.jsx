@@ -16,6 +16,7 @@ export default class BallotElectionList extends Component {
   }
 
   updateBallot (original_text_for_map_search, simple_save, google_civic_election_id) {
+    console.log("BallotElectionList.jsx updateBallot, google_civic_election_id: ", google_civic_election_id);
     VoterActions.voterAddressSave(original_text_for_map_search, simple_save, google_civic_election_id);
     // Not necessary here: BallotActions.voterBallotItemsRetrieve(google_civic_election_id);
     this.props._toggleSelectBallotModal();

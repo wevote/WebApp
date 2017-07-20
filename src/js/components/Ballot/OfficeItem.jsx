@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
-import BookmarkAction from "../../components/Widgets/BookmarkAction";
+import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import { capitalizeString } from "../../utils/textFormat";
 
 export default class OfficeItem extends Component {
@@ -32,7 +32,7 @@ export default class OfficeItem extends Component {
               ballot_item_display_name
           }
         </h2>
-        <BookmarkAction we_vote_id={we_vote_id} type="OFFICE"/>
+        <BookmarkToggle we_vote_id={we_vote_id} type="OFFICE"/>
 
         <div className={ this.props.link_to_ballot_item_page ?
                 "u-cursor--pointer" : null }

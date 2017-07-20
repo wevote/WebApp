@@ -1,14 +1,14 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
 import GuideStore from "../../stores/GuideStore";
-import ImageHandler from "../../components/ImageHandler";
-import ItemActionBar from "../../components/Widgets/ItemActionBar";
-import ItemPositionStatementActionBar from "../../components/Widgets/ItemPositionStatementActionBar";
-import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
-import ItemTinyOpinionsToFollow from "../../components/VoterGuide/ItemTinyOpinionsToFollow";
-import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPositionBreakdownList";
-import OfficeNameText from "../../components/Widgets/OfficeNameText";
-import BookmarkAction from "../../components/Widgets/BookmarkAction";
+import ImageHandler from "../ImageHandler";
+import ItemActionBar from "../Widgets/ItemActionBar";
+import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
+import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
+import ItemTinyOpinionsToFollow from "../VoterGuide/ItemTinyOpinionsToFollow";
+import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdownList";
+import OfficeNameText from "../Widgets/OfficeNameText";
+import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import SupportStore from "../../stores/SupportStore";
 import {abbreviateNumber} from "../../utils/textFormat";
 import {numberWithCommas} from "../../utils/textFormat";
@@ -147,7 +147,7 @@ export default class CandidateItem extends Component {
               ballot_item_display_name
             }
           </h2>
-          <BookmarkAction we_vote_id={we_vote_id} type="CANDIDATE"/>
+          <BookmarkToggle we_vote_id={we_vote_id} type="CANDIDATE"/>
           <p className={this.props.link_to_ballot_item_page ?
               "u-gray-darker u-cursor--pointer" :
               "u-gray-darker"

@@ -1,16 +1,16 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
-import ImageHandler from "../../components/ImageHandler";
-import ItemActionBar from "../../components/Widgets/ItemActionBar";
-import ItemPositionStatementActionBar from "../../components/Widgets/ItemPositionStatementActionBar";
-import FriendsOnlyIndicator from "../../components/Widgets/FriendsOnlyIndicator";
+import ImageHandler from "../ImageHandler";
+import ItemActionBar from "../Widgets/ItemActionBar";
+import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
+import FriendsOnlyIndicator from "../Widgets/FriendsOnlyIndicator";
 import VoterStore from "../../stores/VoterStore";
-import OfficeNameText from "../../components/Widgets/OfficeNameText";
-import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
-import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
-import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
-import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
-import BookmarkAction from "../../components/Widgets/BookmarkAction";
+import OfficeNameText from "../Widgets/OfficeNameText";
+import PositionInformationOnlySnippet from "../Widgets/PositionInformationOnlySnippet";
+import PositionRatingSnippet from "../Widgets/PositionRatingSnippet";
+import PositionPublicToggle from "../Widgets/PositionPublicToggle";
+import PositionSupportOpposeSnippet from "../Widgets/PositionSupportOpposeSnippet";
+import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
@@ -195,7 +195,7 @@ export default class OrganizationPositionItem extends Component {
                 className="organization-position-item-toggle"/> :
                 <FriendsOnlyIndicator isFriendsOnly={!is_public_position}/>
             }
-            <BookmarkAction we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
+            <BookmarkToggle we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
           </div>
           { position.kind_of_ballot_item === "CANDIDATE" && contest_office_name !== undefined ?
             <OfficeNameText political_party={political_party} contest_office_name={contest_office_name} /> :

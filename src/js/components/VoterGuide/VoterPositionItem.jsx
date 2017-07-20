@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
-import ImageHandler from "../../components/ImageHandler";
+import ImageHandler from "../ImageHandler";
 import VoterStore from "../../stores/VoterStore";
-import OfficeNameText from "../../components/Widgets/OfficeNameText";
-import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
-import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
-import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
-import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
-import BookmarkAction from "../../components/Widgets/BookmarkAction";
+import OfficeNameText from "../Widgets/OfficeNameText";
+import PositionInformationOnlySnippet from "../Widgets/PositionInformationOnlySnippet";
+import PositionRatingSnippet from "../Widgets/PositionRatingSnippet";
+import PositionPublicToggle from "../Widgets/PositionPublicToggle";
+import PositionSupportOpposeSnippet from "../Widgets/PositionSupportOpposeSnippet";
+import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
@@ -122,7 +122,7 @@ export default class VoterPositionItem extends Component {
       political_party = position.ballot_item_political_party;
     }
     return <li className="position-item card-child">
-      <BookmarkAction we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
+      <BookmarkToggle we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
       <div className="card-child__media-object-anchor">
         <Link to={ ballotItemLink }
               className="u-no-underline"
