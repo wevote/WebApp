@@ -116,15 +116,22 @@ export default class PositionPublicToggle extends Component {
     const PositionPublicToggleHelpModal = <Modal show={this.state.showPositionPublicHelpModal} onHide={()=>{this.togglePositionPublicHelpModal();}}>
       <Modal.Header closeButton>
         <Modal.Title>
-          <div className="text-center">Notice</div>
+          <div className="text-center">Make Your Positions Public</div>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <section className="card">
           <div className="text-center">
-            {voter && voter.is_signed_in ? "By clicking this toggle, you have just made your position visible to anyone on We Vote. If you do NOT want to share your position publicly, you may click the toggle again to restrict visibility to We Vote friends only." : "Clicking this toggle will make your position visible to anyone on We Vote. In order to change this toggle, you need to sign in first."}<br />
+            {voter && voter.is_signed_in ?
+              "By clicking this toggle, you have just made your position visible to anyone on We Vote. " +
+              "If you do NOT want to share your position publicly, you may click the toggle again to restrict " +
+              "visibility to We Vote friends only." :
+              "Clicking this toggle will make your position visible to anyone on We Vote. " +
+              "In order to change this toggle, you need to sign in first."}<br />
             <br />
-            Test the toggle here:<br />
+            We Vote makes it easy to share your views either publicly, or privately with your We Vote friends.<br />
+            <br />
+            Test the privacy toggle here:<br />
             <PositionPublicToggle ballot_item_we_vote_id="null"
                                   className="null"
                                   type="MEASURE"

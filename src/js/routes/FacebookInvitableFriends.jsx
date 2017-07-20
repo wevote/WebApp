@@ -84,7 +84,7 @@ export default class FacebookInvitableFriends extends Component {
     if (!this.state.merging_two_accounts) {
       VoterActions.voterMergeTwoAccountsByFacebookKey(facebook_secret_key);
       // Prevent voterMergeTwoAccountsByFacebookKey from being called multiple times
-      console.log("voter_has_data_to_preserve: ", voter_has_data_to_preserve);
+      // console.log("voter_has_data_to_preserve: ", voter_has_data_to_preserve);
       this.setState({merging_two_accounts: true});
     }
   }
@@ -126,7 +126,7 @@ export default class FacebookInvitableFriends extends Component {
         this.selectedCheckBoxes.push(friend_selected_checkbox);
       }
     }
-    console.log("Selected Check Boxes: ", this.selectedCheckBoxes);
+    // console.log("Selected Check Boxes: ", this.selectedCheckBoxes);
   }
 
   sendInviteRequestToFacebookFriends = formSubmitEvent => {
@@ -155,11 +155,11 @@ export default class FacebookInvitableFriends extends Component {
         to: selected_facebook_friends_ids,
       }, function (response) {
         if ( response.error_code === 4201 ) {
-          console.log("User Canceled the request");
+          // console.log("User Canceled the request");
         } else if ( response ) {
-          console.log("Successfully Invited", response, selected_facebook_friends_names);
+          // console.log("Successfully Invited", response, selected_facebook_friends_names);
           const data = {request_id: response.request, recipients_facebook_id_array: response.to, recipients_facebook_name_array: selected_facebook_friends_names};
-          console.log("Final data for all invitations", data);
+          // console.log("Final data for all invitations", data);
           FriendActions.friendInvitationByFacebookSend(data);
           browserHistory.push({
             pathname: "/more/network",
@@ -169,7 +169,7 @@ export default class FacebookInvitableFriends extends Component {
             }
           });
         } else {
-          console.log("Failed To Invite");
+          // console.log("Failed To Invite");
         }
       });
   }
@@ -198,15 +198,15 @@ export default class FacebookInvitableFriends extends Component {
   }
 
   render () {
-    console.log("this.state.voter", this.state.voter);
+    // console.log("this.state.voter", this.state.voter);
     if (!this.state.voter || this.state.saving) {
       // Show a loading wheel while this component's data is loading
       return LoadingWheel;
     }
 
-    console.log("facebook logged in: ", this.state.facebook_logged_in);
+    // console.log("facebook logged in: ", this.state.facebook_logged_in);
     if (!this.state.facebook_logged_in ) {
-      console.log("Voter is not logged in through facebook");
+      // console.log("Voter is not logged in through facebook");
       this.facebookLogin();
       return LoadingWheel;
     }
@@ -223,14 +223,14 @@ export default class FacebookInvitableFriends extends Component {
       return LoadingWheel;
     }
 
-    console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
+    // console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
     if (!this.state.voter.signed_in_facebook && this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
-      console.log("SignIn.jsx facebook_retrieve_attempted");
+      // console.log("SignIn.jsx facebook_retrieve_attempted");
       let { facebook_secret_key } = this.state.facebook_auth_response;
 
       if (this.state.yes_please_merge_accounts) {
         // Go ahead and merge this voter record with the voter record that the facebook_secret_key belongs to
-        console.log("this.voterMergeTwoAccountsByFacebookKey -- yes please merge accounts");
+        // console.log("this.voterMergeTwoAccountsByFacebookKey -- yes please merge accounts");
         this.voterMergeTwoAccountsByFacebookKey(facebook_secret_key);
         return LoadingWheel;
       }
@@ -239,7 +239,7 @@ export default class FacebookInvitableFriends extends Component {
       if (this.state.facebook_auth_response.existing_facebook_account_found) {
         // Is there anything to save from this voter account?
         if (this.state.facebook_auth_response.voter_has_data_to_preserve) {
-          console.log("FacebookSignInProcess voter_has_data_to_preserve is TRUE");
+          // console.log("FacebookSignInProcess voter_has_data_to_preserve is TRUE");
           const cancel_merge_function = this.cancelMergeFunction.bind(this);
           const please_merge_accounts_function = this.yesPleaseMergeAccounts.bind(this);
           // Display the question of whether to merge accounts or not
@@ -247,27 +247,27 @@ export default class FacebookInvitableFriends extends Component {
                                             pleaseMergeAccountsFunction={please_merge_accounts_function} />;
         } else {
           // Go ahead and merge the accounts, which means deleting the current voter and switching to the facebook-linked account
-          console.log("FacebookSignInProcess this.voterMergeTwoAccountsByFacebookKey - No data to merge");
+          // console.log("FacebookSignInProcess this.voterMergeTwoAccountsByFacebookKey - No data to merge");
           this.voterMergeTwoAccountsByFacebookKey(facebook_secret_key, this.state.facebook_auth_response.voter_has_data_to_preserve);
           return LoadingWheel;
         }
       } else {
-        console.log("Setting up new Facebook entry - voterFacebookSaveToCurrentAccount");
+        // console.log("Setting up new Facebook entry - voterFacebookSaveToCurrentAccount");
         this.voterFacebookSaveToCurrentAccount();
         return LoadingWheel;
       }
     }
 
-    console.log("Voter is signed in through facebook facebook_invitable_friends: ", this.state.facebook_invitable_friends);
+    // console.log("Voter is signed in through facebook facebook_invitable_friends: ", this.state.facebook_invitable_friends);
     if (!this.state.facebook_invitable_friends.facebook_invitable_friends_retrieved) {
       // If facebook log in finished successfully then get facebook invitable friends
-      console.log("Get facebook invitable friends");
+      // console.log("Get facebook invitable friends");
       this.getFacebookInvitableFriends();
       return LoadingWheel;
     }
 
-    console.log("Facebook friends list", this.state.facebook_invitable_friends.facebook_invitable_friends_list);
-    console.log("facebook friends not exist:", this.state.facebook_invitable_friends.facebook_friends_not_exist);
+    // console.log("Facebook friends list", this.state.facebook_invitable_friends.facebook_invitable_friends_list);
+    // console.log("facebook friends not exist:", this.state.facebook_invitable_friends.facebook_friends_not_exist);
     if (this.state.facebook_invitable_friends.facebook_friends_not_exist) {
       browserHistory.push({
         pathname: "/more/network",
@@ -302,13 +302,11 @@ export default class FacebookInvitableFriends extends Component {
       <Helmet title="Your Facebook Friends - We Vote" />
       <section className="card">
         <div className="card-main">
-          <h1 className="h1">Build Your Network - We Vote</h1>
           <h4 className="h4">Add Friends from Facebook</h4>
           <div>
             <p>
-                See how your friends are voting and who they recommend.
-                The friends you invite to We Vote will see what you support and oppose.
-                We recommend you only invite friends that you would like to talk politics with.
+                See the candidates and measures your friends recommend.
+                Friends will see what you support and oppose.
             </p>
             <input type="text"
                    className="form-control"
@@ -331,7 +329,7 @@ export default class FacebookInvitableFriends extends Component {
                 <input type="text" name="add_friends_message"
                        className="form-control"
                        onChange={this.cacheAddFriendsByFacebookMessage.bind(this)}
-                       defaultValue="Please join me in preparing for the upcoming election." />
+                       defaultValue="Please join me on We Vote." />
               </span>
               <br />
               <Button bsStyle="primary" type="submit">Send</Button>
