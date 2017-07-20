@@ -71,6 +71,9 @@ $header-height-getting-started: 112px;
 
 .nav-getting-started__image {
   height: 26px;
+  &-fade {
+    opacity: .3;
+  }
 }
 
 .header-nav {
@@ -180,6 +183,9 @@ $header-height-getting-started: 112px;
     display: block;
     color: $gray-dark;
     font-size: 10px;
+    &-fade {
+      opacity: .3;
+    }
   }
 
   &__item {
@@ -225,4 +231,12 @@ $header-height-getting-started: 112px;
     justify-content: center;
     align-items: center;
   }
+}
+
+.intro-checked {
+  height: 16px;
+  top: 2px;
+  position: absolute;
+  z-index: 999;
+  right: 12px;
 }

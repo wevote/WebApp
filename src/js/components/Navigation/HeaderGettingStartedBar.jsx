@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import { Modal } from "react-bootstrap";
-import { Link } from "react-router";
 import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
 import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
 import BallotIntroFriends from "../../components/Ballot/BallotIntroFriends";
@@ -9,6 +8,7 @@ import BallotIntroPositions from "../../components/Ballot/BallotIntroPositions";
 import BallotIntroPositionBar from "../../components/Ballot/BallotIntroPositionBar";
 import BallotIntroShare from "../../components/Ballot/BallotIntroShare";
 import BallotIntroVote from "../../components/Ballot/BallotIntroVote";
+import GettingStartedBarItem from "./GettingStartedBarItem";
 import cookies from "../../utils/cookies";
 import Slider from "react-slick";
 import VoterConstants from "../../constants/VoterConstants";
@@ -30,12 +30,12 @@ export default class HeaderGettingStartedBar extends Component {
     this._toggleBallotIntroVote = this._toggleBallotIntroVote.bind(this);
     this._nextSliderPage = this._nextSliderPage.bind(this);
     this.state = {
-      ballot_intro_issues_completed: false,
-      ballot_intro_organizations_completed: false,
-      ballot_intro_positions_completed: false,
-      ballot_intro_friends_completed: false,
-      ballot_intro_share_completed: false,
-      ballot_intro_vote_completed: false,
+      ballot_intro_issues_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ISSUES_COMPLETED),
+      ballot_intro_organizations_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ORGANIZATIONS_COMPLETED),
+      ballot_intro_positions_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_POSITIONS_COMPLETED),
+      ballot_intro_friends_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_FRIENDS_COMPLETED),
+      ballot_intro_share_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_SHARE_COMPLETED),
+      ballot_intro_vote_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_VOTE_COMPLETED),
       showBallotIntroFollowIssues: false,
       showBallotIntroOrganizations: false,
       showBallotIntroPositions: false,
@@ -215,59 +215,35 @@ export default class HeaderGettingStartedBar extends Component {
         <header className="page-getting-started-header">
           <div className="header-getting-started-nav">
             {/* Issues Icon & Modal */}
-            <Link onClick={this._toggleBallotIntroFollowIssues} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
-              <span className="header-getting-started-nav__item-image-wrapper" title="Issues">
-                <img className="glyphicon nav-getting-started__image" src="/img/global/svg-icons/issues-v1-64x42.svg" />
-              </span>
-              <span className="header-getting-started-nav__label">
-                Issues{ this.state.ballot_intro_issues_completed ? "*" : null }
-                </span>
-            </Link>
+            <GettingStartedBarItem show={this._toggleBallotIntroFollowIssues}
+              source="/img/global/svg-icons/issues-v1-64x42.svg"
+              title="Issues"
+              completed={this.state.ballot_intro_issues_completed} />
             {/* Organizations Icon & Modal */}
-            <Link onClick={this._toggleBallotIntroOrganizations} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
-              <span className="header-getting-started-nav__item-image-wrapper" title="Organizations">
-                <img className="glyphicon nav-getting-started__image" src="/img/global/svg-icons/organizations-v2-31x26.svg" />
-              </span>
-              <span className="header-getting-started-nav__label">
-                Organizations{ this.state.ballot_intro_organizations_completed ? "*" : null }
-                </span>
-            </Link>
+            <GettingStartedBarItem show={this._toggleBallotIntroOrganizations}
+              source="/img/global/svg-icons/organizations-v2-31x26.svg"
+              title="Organizations"
+              completed={this.state.ballot_intro_organizations_completed} />
             {/* Positions Icon & Modal */}
-            <Link onClick={this._toggleBallotIntroPositions} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
-              <span className="header-getting-started-nav__item-image-wrapper" title="Positions">
-                <img className="glyphicon nav-getting-started__image" src="/img/global/svg-icons/stance-v1-59x32.svg" />
-              </span>
-              <span className="header-getting-started-nav__label">
-                Positions{ this.state.ballot_intro_positions_completed ? "*" : null }
-                </span>
-            </Link>
+            <GettingStartedBarItem show={this._toggleBallotIntroPositions}
+              source="/img/global/svg-icons/stance-v1-59x32.svg"
+              title="Positions"
+              completed={this.state.ballot_intro_positions_completed} />
             {/* Friends Icon & Modal */}
-            <Link onClick={this._toggleBallotIntroFriends} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
-              <span className="header-getting-started-nav__item-image-wrapper" title="Friends">
-                <img className="glyphicon nav-getting-started__image" src="/img/global/svg-icons/friends-v2-59x28.svg" />
-              </span>
-              <span className="header-getting-started-nav__label">
-                Friends{ this.state.ballot_intro_friends_completed ? "*" : null }
-                </span>
-            </Link>
+            <GettingStartedBarItem show={this._toggleBallotIntroFriends}
+              source="/img/global/svg-icons/friends-v2-59x28.svg"
+              title="Friends"
+              completed={this.state.ballot_intro_friends_completed} />
             {/* Share Icon & Modal */}
-            <Link onClick={this._toggleBallotIntroShare} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
-              <span className="header-getting-started-nav__item-image-wrapper" title="Share">
-                <img className="glyphicon nav-getting-started__image" src="/img/global/svg-icons/share-v2-28x24.svg" />
-              </span>
-              <span className="header-getting-started-nav__label">
-                Share{ this.state.ballot_intro_share_completed ? "*" : null }
-                </span>
-            </Link>
+            <GettingStartedBarItem show={this._toggleBallotIntroShare}
+              source="/img/global/svg-icons/share-v2-28x24.svg"
+              title="Share"
+              completed={this.state.ballot_intro_share_completed} />
             {/* Vote Icon & Modal */}
-            <Link onClick={this._toggleBallotIntroVote} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon hidden-xs"}>
-              <span className="header-getting-started-nav__item-image-wrapper" title="Vote">
-                <img className="glyphicon nav-getting-started__image" src="/img/global/svg-icons/vote-v6-28x28.svg" />
-              </span>
-              <span className="header-getting-started-nav__label">
-                Vote{ this.state.ballot_intro_vote_completed ? "*" : null }
-                </span>
-            </Link>
+            <GettingStartedBarItem show={this._toggleBallotIntroVote}
+              source="/img/global/svg-icons/vote-v6-28x28.svg"
+              title="Vote"
+              completed={this.state.ballot_intro_vote_completed} />
           </div>
         </header>
       }
