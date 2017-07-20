@@ -7,7 +7,7 @@ import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
 var Icon = require("react-svg-icons");
 
-export default class BookmarkAction extends Component {
+export default class BookmarkToggle extends Component {
   static propTypes = {
     we_vote_id: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired
@@ -16,7 +16,7 @@ export default class BookmarkAction extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      showBookmarkActionHelpModal: false,
+      showBookmarkToggleHelpModal: false,
     };
   }
 
@@ -50,7 +50,7 @@ export default class BookmarkAction extends Component {
       BookmarkActions.voterBookmarkOnSave(we_vote_id, this.props.type);
       let bookmark_action_modal_has_been_shown = VoterStore.getInterfaceFlagState(VoterConstants.BOOKMARK_ACTION_MODAL_SHOWN);
       if (!bookmark_action_modal_has_been_shown) {
-        this.toggleBookmarkActionHelpModal();
+        this.toggleBookmarkToggleHelpModal();
         VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.BOOKMARK_ACTION_MODAL_SHOWN);
       }
     }
@@ -63,9 +63,9 @@ export default class BookmarkAction extends Component {
     }
   }
 
-  toggleBookmarkActionHelpModal () {
+  toggleBookmarkToggleHelpModal () {
     this.setState({
-      showBookmarkActionHelpModal: !this.state.showBookmarkActionHelpModal,
+      showBookmarkToggleHelpModal: !this.state.showBookmarkToggleHelpModal,
     });
   }
 
@@ -75,17 +75,18 @@ export default class BookmarkAction extends Component {
     }
 
     // This modal is shown when the user bookmarks a ballot item for the first time.
-    let modalSupportProps = { is_public_position: false };
-    const BookmarkActionHelpModal = <Modal show={this.state.showBookmarkActionHelpModal} onHide={()=>{this.toggleBookmarkActionHelpModal();}}>
+    const BookmarkToggleHelpModal = <Modal show={this.state.showBookmarkToggleHelpModal} onHide={()=>{this.toggleBookmarkToggleHelpModal();}}>
       <Modal.Header closeButton>
         <Modal.Title>
-          <div className="text-center">Notice</div>
+          <div className="text-center">Bookmark</div>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <section className="card">
           <div className="text-center">
-            You have just bookmarked this ballot item. If you want to undo this action, you may click the icon again.<br />
+            You have just bookmarked this ballot item.<br />
+            <br />
+            Find 'Your Bookmarked Items' by clicking the profile photo or icon in the upper right corner of the top navigation.<br />
             <br />
           </div>
         </section>
@@ -103,7 +104,7 @@ export default class BookmarkAction extends Component {
                 <Icon alt="Bookmark for later" name="bookmark-icon" width={24} height={24} fill="none" stroke="#ccc" strokeWidth={2} />
               }
             </span>
-            { this.state.showBookmarkActionHelpModal ? BookmarkActionHelpModal : null }
+            { this.state.showBookmarkToggleHelpModal ? BookmarkToggleHelpModal : null }
           </div>;
 	}
 }

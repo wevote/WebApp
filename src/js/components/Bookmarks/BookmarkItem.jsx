@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
-import BookmarkAction from "../Widgets/BookmarkAction";
+import BookmarkToggle from "./BookmarkToggle";
 import SupportStore from "../../stores/SupportStore";
 
 export default class Bookmarks extends Component {
@@ -62,7 +62,7 @@ export default class Bookmarks extends Component {
     return <div className="bookmark-item card">
       <div className="card-main">
         <div className="card-main__content">
-          <BookmarkAction we_vote_id={we_vote_id} type={kind_of_ballot_item}/>
+          <BookmarkToggle we_vote_id={we_vote_id} type={kind_of_ballot_item}/>
           <div className="card-main__display-name">
             <Link to={bookmark_link} onlyActiveOnIndex={false}>
               {ballot_item_display_name}

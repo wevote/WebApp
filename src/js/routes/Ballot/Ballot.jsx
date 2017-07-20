@@ -47,7 +47,7 @@ export default class Ballot extends Component {
         guides_to_follow_list: [],
         position_list: []
       },
-      showBallotIntroModal: false,
+      showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
       showCandidateModal: false,
       showMeasureModal: false,
       showSelectBallotModal: false,

@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
-import ItemActionBar from "../../components/Widgets/ItemActionBar";
-import ItemPositionStatementActionBar from "../../components/Widgets/ItemPositionStatementActionBar";
-import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
-import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPositionBreakdownList";
-import ReadMore from "../../components/Widgets/ReadMore";
-import BookmarkAction from "../../components/Widgets/BookmarkAction";
+import ItemActionBar from "../Widgets/ItemActionBar";
+import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
+import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
+import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdownList";
+import ReadMore from "../Widgets/ReadMore";
+import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
@@ -76,7 +76,7 @@ export default class MeasureItem extends Component {
               ballot_item_display_name
           }
         </h2>
-        <BookmarkAction we_vote_id={we_vote_id} type="MEASURE"/>
+        <BookmarkToggle we_vote_id={we_vote_id} type="MEASURE"/>
         <div className="card-main__measure-election u-bold u-gray-darker">
           <p>{ election_display_name ? election_display_name : "Appearing on the ballot in " }
             { election_display_name ? <span> &middot; </span> : null }

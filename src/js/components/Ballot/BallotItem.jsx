@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
-import CandidateList from "../../components/Ballot/CandidateList";
-import MeasureItem from "../../components/Ballot/MeasureItem";
-import BookmarkAction from "../../components/Widgets/BookmarkAction";
+import CandidateList from "../Ballot/CandidateList";
+import MeasureItem from "../Ballot/MeasureItem";
+import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 
 const TYPES = require("keymirror")({
   OFFICE: null,
@@ -29,7 +29,7 @@ export default class BallotItem extends Component {
             <h2 className="BallotItem__summary-display-name">
               { this.props.ballot_item_display_name }
             </h2>
-            <BookmarkAction
+            <BookmarkToggle
               we_vote_id={ this.props.we_vote_id }
               type={ this.props.kind_of_ballot_item } />
             <CandidateList children={this.props.candidate_list}

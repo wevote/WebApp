@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
 import GuideStore from "../../stores/GuideStore";
-import ItemActionBar from "../../components/Widgets/ItemActionBar";
-import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
-import ItemTinyOpinionsToFollow from "../../components/VoterGuide/ItemTinyOpinionsToFollow";
-import BookmarkAction from "../../components/Widgets/BookmarkAction";
+import ItemActionBar from "../Widgets/ItemActionBar";
+import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
+import ItemTinyOpinionsToFollow from "../VoterGuide/ItemTinyOpinionsToFollow";
+import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
@@ -107,7 +107,7 @@ export default class MeasureItemCompressed extends Component {
               ballot_item_display_name
           }
         </h2>
-        <BookmarkAction we_vote_id={we_vote_id} type="MEASURE"/>
+        <BookmarkToggle we_vote_id={we_vote_id} type="MEASURE"/>
         {/* Measure information */}
         <div
           className={ this.props.link_to_ballot_item_page ?
