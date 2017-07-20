@@ -35,13 +35,18 @@
   }
 
   &__summary-item-container {
-    align-items: center;
-    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; // Not working currently
+    align-items: center;
     position: relative;
     margin-top: $space-none;
     margin-bottom: $space-md;
+  }
+
+  &__summary-item {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; // Not working currently
   }
 
   &__summary-display-name {
