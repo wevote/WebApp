@@ -9,6 +9,8 @@ import BookmarkAction from "../../components/Widgets/BookmarkAction";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
+const NUMBER_OF_CANDIDATES_TO_DISPLAY = 3;
+
 export default class OfficeItemCompressed extends Component {
   static propTypes = {
     key: PropTypes.string,
@@ -19,19 +21,22 @@ export default class OfficeItemCompressed extends Component {
     candidate_list: PropTypes.array,
     _toggleCandidateModal: PropTypes.func,
   };
+
   constructor (props) {
     super(props);
     this.state = {
       transitioning: false,
-      maximum_organization_display: 4
+      maximum_organization_display: 4,
+      display_all_candidates_flag: false,
     };
+
+    this.toggleDisplayAllCandidates = this.toggleDisplayAllCandidates.bind(this);
   }
 
   componentDidMount () {
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
     this._onGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
-    // console.log("OfficeItemCompressed, this.props.we_vote_id: ", this.props.we_vote_id);
   }
 
   componentWillUnmount () {
@@ -40,15 +45,15 @@ export default class OfficeItemCompressed extends Component {
   }
 
   _onGuideStoreChange (){
-    // We just want to trigger a re-render
     this.setState({ transitioning: false });
-    // console.log("_onGuideStoreChange");
   }
 
   _onSupportStoreChange () {
-    // We just want to trigger a re-render
     this.setState({ transitioning: false });
-    // console.log("_onSupportStoreChange");
+  }
+
+  toggleDisplayAllCandidates () {
+    this.setState({ display_all_candidates_flag: !this.state.display_all_candidates_flag });
   }
 
   render () {
@@ -56,6 +61,14 @@ export default class OfficeItemCompressed extends Component {
     let officeLink = "/office/" + we_vote_id;
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
+
+    var candidate_list_to_display = this.props.candidate_list;
+    var remaining_candidates_to_display_count = 0;
+
+    if (!this.state.display_all_candidates_flag && this.props.candidate_list.length > NUMBER_OF_CANDIDATES_TO_DISPLAY) {
+      candidate_list_to_display = this.props.candidate_list.slice(0, NUMBER_OF_CANDIDATES_TO_DISPLAY);
+      remaining_candidates_to_display_count = this.props.candidate_list.length - NUMBER_OF_CANDIDATES_TO_DISPLAY;
+    }
 
     return <div className="card-main office-item">
       <a name={we_vote_id} />
@@ -74,7 +87,7 @@ export default class OfficeItemCompressed extends Component {
         </div>
           <div className={this.props.link_to_ballot_item_page ?
                 "u-cursor--pointer" : null } >
-          { this.props.candidate_list.map( (one_candidate) =>
+          { candidate_list_to_display.map( (one_candidate) =>
             <div key={one_candidate.we_vote_id} className="u-stack--md">
               <div className="u-flex u-items-center u-flex-wrap u-justify-between">
                 {/* *** Candidate name *** */}
@@ -96,7 +109,6 @@ export default class OfficeItemCompressed extends Component {
                       </div>
                     </div>
                   </div>
-
                 </div>
 
                 {/* *** "Positions in your Network" bar OR items you can follow *** */}
@@ -142,6 +154,18 @@ export default class OfficeItemCompressed extends Component {
             </div>)
           }
           </div>
+
+          { !this.state.display_all_candidates_flag && remaining_candidates_to_display_count > 0 ?
+            <Link onClick={this.toggleDisplayAllCandidates}>
+              <span className="u-items-center">
+                Click&nbsp;to&nbsp;see&nbsp;{remaining_candidates_to_display_count}&nbsp;more&nbsp;additional&nbsp;{ballot_item_display_name}s</span>
+            </Link> : null
+          }
+          { this.state.display_all_candidates_flag && this.props.candidate_list.length > NUMBER_OF_CANDIDATES_TO_DISPLAY ?
+            <Link onClick={this.toggleDisplayAllCandidates}>
+              <span className="u-items-center">view&nbsp;less...</span>
+            </Link> : null
+          }
       </div>
     </div>;
   }

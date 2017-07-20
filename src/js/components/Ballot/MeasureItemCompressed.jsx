@@ -73,7 +73,7 @@ export default class MeasureItemCompressed extends Component {
     let ballot_item_display_name = this.props.ballot_item_display_name;
     let measure_subtitle = this.props.measure_subtitle;
     let measure_text = this.props.measure_text;  // Not currently defined
-    let we_vote_id  = this.props.we_vote_id;
+    let we_vote_id = this.props.we_vote_id;
     let measureLink = "/measure/" + we_vote_id;
     let goToMeasureLink = function () { browserHistory.push(measureLink); };
 
