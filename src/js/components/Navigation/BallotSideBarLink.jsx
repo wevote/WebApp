@@ -21,10 +21,10 @@ export default class BallotSideBarLink extends Component {
 
     return <div className="BallotItem__summary-item-container" onClick={this.props.onClick.bind(this) }>
       <div>
-        <a href={this.props.url} >
+        <a href={this.props.url} className="BallotItem__summary-item" >
           <span className="BallotItem__summary-display-name">{this.props.label}</span>
           { this.props.displaySubtitles ?
-            <span className="BallotItem__summary-item"> {subtitle_in_sentence_case}</span> : null }
+            <span className="BallotItem__summary-subtitle"> {subtitle_in_sentence_case}</span> : null }
         </a>
       </div>
     </div>;
