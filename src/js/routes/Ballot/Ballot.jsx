@@ -122,6 +122,9 @@ export default class Ballot extends Component {
     if (this.state.showBallotIntroModal) {
       // Saved to the voter record that the ballot introduction has been seen
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.BALLOT_INTRO_MODAL_SHOWN);
+    } else {
+      // Clear out any # from anchors in the URL
+      browserHistory.push("/ballot");
     }
     this.setState({ showBallotIntroModal: !this.state.showBallotIntroModal });
   }
