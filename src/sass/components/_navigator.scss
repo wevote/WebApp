@@ -71,6 +71,22 @@ $header-height-getting-started: 112px;
 
 .nav-getting-started__image {
   height: 26px;
+  &-fade {
+    @extend .nav-getting-started__image;
+    opacity: .3;
+  }
+  &-checked {
+    height: 16px;
+    top: 2px;
+    position: absolute;
+    z-index: 999;
+    right: 12px;
+    border-radius: $radius-md;
+    box-shadow: 2px 3px 4px 0 rgba(0, 0, 0, .4);
+    @include breakpoints(max iphone5) {
+      right: $space-none;
+    }
+  }
 }
 
 .header-nav {
@@ -180,6 +196,10 @@ $header-height-getting-started: 112px;
     display: block;
     color: $gray-dark;
     font-size: 10px;
+    &-fade {
+      @extend .header-getting-started-nav__label;
+      opacity: .3;
+    }
   }
 
   &__item {
