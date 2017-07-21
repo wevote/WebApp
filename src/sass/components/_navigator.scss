@@ -75,6 +75,15 @@ $header-height-getting-started: 112px;
     @extend .nav-getting-started__image;
     opacity: .3;
   }
+  &-checked {
+    height: 16px;
+    top: 2px;
+    position: absolute;
+    z-index: 999;
+    right: 12px;
+    border-radius: $radius-md;
+    box-shadow: 2px 3px 4px 0 rgba(0, 0, 0, .4);
+  }
 }
 
 .header-nav {
@@ -233,14 +242,4 @@ $header-height-getting-started: 112px;
     justify-content: center;
     align-items: center;
   }
-}
-
-.intro-checked {
-  height: 16px;
-  top: 2px;
-  position: absolute;
-  z-index: 999;
-  right: 12px;
-  border-radius: $radius-md;
-  box-shadow: 2px 3px 4px 0 rgba(0, 0, 0, .4);
 }

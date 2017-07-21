@@ -5,7 +5,7 @@ const GettingStartedBarItem = props =>
   <Link onClick={props.show} className={ "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
     <span className="header-getting-started-nav__item-image-wrapper" title="Issues">
       { props.completed ?
-        <img className="glyphicon nav-getting-started__image intro-checked"
+        <img className="glyphicon nav-getting-started__image-checked"
           src="/img/global/svg-icons/check-mark-v2-21x21.svg" /> :
         null
       }
