@@ -6,6 +6,7 @@ import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
 import ItemTinyOpinionsToFollow from "../VoterGuide/ItemTinyOpinionsToFollow";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
+import BallotSideBarLink from "../Navigation/BallotSideBarLink";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
@@ -162,9 +163,10 @@ export default class OfficeItemCompressed extends Component {
             </Link> : null
           }
           { this.state.display_all_candidates_flag && this.props.candidate_list.length > NUMBER_OF_CANDIDATES_TO_DISPLAY ?
-            <Link onClick={this.toggleDisplayAllCandidates}>
-              <span className="u-items-center">Click&nbsp;to&nbsp;show&nbsp;fewer&nbsp;candidates...</span>
-            </Link> : null
+            <BallotSideBarLink url={"#" + this.props.we_vote_id}
+                               label={"Click to show fewer candidates..."}
+                               displaySubtitles={false}
+                               onClick={this.toggleDisplayAllCandidates} /> : null
           }
       </div>
     </div>;
