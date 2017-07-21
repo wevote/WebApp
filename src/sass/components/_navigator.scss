@@ -83,6 +83,9 @@ $header-height-getting-started: 112px;
     right: 12px;
     border-radius: $radius-md;
     box-shadow: 2px 3px 4px 0 rgba(0, 0, 0, .4);
+    @include breakpoints(max iphone5) {
+      right: $space-none;
+    }
   }
 }
 
