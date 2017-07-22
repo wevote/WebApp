@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import GuideActions from "../../actions/GuideActions";
 import GuideStore from "../../stores/GuideStore";
-import LoadingWheel from "../../components/LoadingWheel";
+import LoadingWheel from "../LoadingWheel";
 import VoterGuideFollowers from "./VoterGuideFollowers";
 import VoterGuideFollowing from "./VoterGuideFollowing";
 import VoterGuidePositions from "./VoterGuidePositions";

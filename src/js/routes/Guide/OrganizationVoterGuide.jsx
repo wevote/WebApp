@@ -9,7 +9,7 @@ import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterStore from "../../stores/VoterStore";
-import OrganizationVoterGuideTabs from "./OrganizationVoterGuideTabs";
+import OrganizationVoterGuideTabs from "../../components/VoterGuide/OrganizationVoterGuideTabs";
 
 export default class OrganizationVoterGuide extends Component {
   static propTypes = {

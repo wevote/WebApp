@@ -3,9 +3,9 @@ import React, {Component, PropTypes } from "react";
 import { capitalizeString } from "../../utils/textFormat";
 import Helmet from "react-helmet";
 import BallotStore from "../../stores/BallotStore";
-import LoadingWheel from "../../components/LoadingWheel";
+import LoadingWheel from "../LoadingWheel";
 import OrganizationStore from "../../stores/OrganizationStore";
-import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
+import OrganizationPositionItem from "./OrganizationPositionItem";
 import VoterStore from "../../stores/VoterStore";
 
 export default class VoterGuidePositions extends Component {
@@ -98,7 +98,7 @@ export default class VoterGuidePositions extends Component {
             <a className="fa-pull-right u-push--md"
                tabIndex="0"
                onKeyDown={this.onKeyDownEditMode.bind(this)}
-               onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit"}</a> :
+               onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit Positions"}</a> :
             null }
           {/*  <OverlayTrigger placement="top" overlay={electionTooltip} >*/}
             <h4 className="h4 card__additional-heading">
