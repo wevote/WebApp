@@ -57,7 +57,7 @@ import TwitterSignInProcess from "./routes/Process/TwitterSignInProcess";
 import TwitterSignInProcessOld from "./routes/Process/TwitterSignInProcessOld";
 import VerifyEmailProcess from "./routes/Process/VerifyEmailProcess";
 import FriendInvitationByEmailVerifyProcess from "./routes/Process/FriendInvitationByEmailVerifyProcess";
-import VoterGuideFollowing from "./routes/Guide/VoterGuideFollowing";
+import VoterGuideFollowing from "./components/VoterGuide/VoterGuideFollowing";
 import VerifyThisIsMe from "./routes/Guide/VerifyThisIsMe";
 import Vision from "./routes/More/Vision";
 import Welcome from "./routes/Welcome";

@@ -2,8 +2,8 @@ import React, {Component, PropTypes } from "react";
 import Helmet from "react-helmet";
 import GuideStore from "../../stores/GuideStore";
 import GuideActions from "../../actions/GuideActions";
-import GuideList from "../../components/VoterGuide/GuideList";
-import LoadingWheel from "../../components/LoadingWheel";
+import GuideList from "./GuideList";
+import LoadingWheel from "../LoadingWheel";
 import VoterStore from "../../stores/VoterStore";
 var _ = require("lodash");
 
