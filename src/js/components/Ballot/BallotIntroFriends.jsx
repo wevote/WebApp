@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 
-export default class BallotIntroPositions extends Component {
+export default class BallotIntroFriends extends Component {
   static propTypes = {
     history: PropTypes.object,
     next: PropTypes.func.isRequired,
