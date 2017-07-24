@@ -23,6 +23,7 @@ import SupportStore from "../../stores/SupportStore";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
+import EditAddress from "../../components/Widgets/EditAddress";
 
 
 const web_app_config = require("../../config");
@@ -517,15 +518,7 @@ export default class Ballot extends Component {
             </h1>
           </OverlayTrigger> :
           null }
-        {voter_address ?
-          <p className="ballot__date_location">
-            {voter_address}
-            <span className="hidden-print"> (<a onClick={this._toggleSelectAddressModal}>Edit</a>)</span>
-          </p> :
-          <p className="ballot__date_location">
-            In order to see your ballot, please enter your address.
-            <span className="hidden-print"> (<a onClick={this._toggleSelectAddressModal}>Add Your Address</a>)</span>
-          </p> }
+        <EditAddress address={voter_address} _toggleSelectAddressModal={this._toggleSelectAddressModal} />
         {voter_address ?
           <div className="ballot__filter hidden-print"><BallotFilter ballot_type={this.getBallotType()} /> (<a onClick={this._toggleBallotIntroModal}>show intro</a>)</div> :
           null}
