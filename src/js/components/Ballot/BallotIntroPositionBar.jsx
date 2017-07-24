@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from "react";
 
 export default class BallotIntroPositionBar extends Component {
   static propTypes = {
-    history: PropTypes.object,
     next: PropTypes.func.isRequired,
   };
 

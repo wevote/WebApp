@@ -6,10 +6,7 @@ import BallotActions from "../../actions/BallotActions";
 import BallotElectionList from "../../components/Ballot/BallotElectionList";
 import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 import BallotItemReadyToVote from "../../components/Ballot/BallotItemReadyToVote";
-import BallotIntroMission from "../../components/Ballot/BallotIntroMission";
-import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
-import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
-import BallotIntroPositionBar from "../../components/Ballot/BallotIntroPositionBar";
+import BallotIntroModal from "../../components/Ballot/BallotIntroModal";
 import BallotSideBar from "../../components/Navigation/BallotSideBar";
 import BallotStore from "../../stores/BallotStore";
 import BallotFilter from "../../components/Navigation/BallotFilter";
@@ -21,7 +18,6 @@ import Helmet from "react-helmet";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
 import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPositionBreakdownList";
 import LoadingWheel from "../../components/LoadingWheel";
-import Slider from "react-slick";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
 import VoterActions from "../../actions/VoterActions";
@@ -33,7 +29,7 @@ const web_app_config = require("../../config");
 
 export default class Ballot extends Component {
   static propTypes = {
-      location: PropTypes.object
+    location: PropTypes.object
   };
 
   constructor (props){
@@ -78,7 +74,6 @@ export default class Ballot extends Component {
       this._toggleSelectBallotModal = this._toggleSelectBallotModal.bind(this);
       this._toggleSelectAddressModal = this._toggleSelectAddressModal.bind(this);
       this._toggleBallotSummaryModal = this._toggleBallotSummaryModal.bind(this);
-      this._nextSliderPage = this._nextSliderPage.bind(this);
       SupportActions.voterAllPositionsRetrieve();
       SupportActions.positionsCountForAllBallotItems();
       BallotActions.voterBallotListRetrieve();
@@ -203,10 +198,6 @@ export default class Ballot extends Component {
     }
   }
 
-  _nextSliderPage () {
-    this.refs.slider.slickNext();
-  }
-
   componentDidUpdate (){
     this.hashLinkScroll();
   }
@@ -219,7 +210,7 @@ export default class Ballot extends Component {
       // this is required when navigating from a different page so that
       // the element is rendered on the page before trying to getElementById.
       setTimeout(() => {
-        var id = hash.replace("#", "");
+        let id = hash.replace("#", "");
         const element = document.getElementById(id);
         if (element) element.scrollIntoView();
       }, 0);
@@ -278,37 +269,6 @@ export default class Ballot extends Component {
   }
 
   render () {
-    var slider_settings = {
-      dots: true,
-      infinite: false,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      swipe: true,
-      accessibility: true,
-      //react-slick default left & right nav arrows
-      arrows: false,
-    };
-
-    // This Modal is shown to the user, when user visits the ballot page for first time only
-    const BallotIntroModal = <Modal bsClass="background-brand-blue modal"
-                                    show={this.state.showBallotIntroModal}
-                                    onHide={()=>{this._toggleBallotIntroModal(this);}}>
-      <Modal.Body>
-        <div className="intro-modal__close">
-          <a onClick={this._toggleBallotIntroModal} className="intro-modal__close-anchor">
-            <img src="/img/global/icons/x-close.png" alt="close" />
-          </a>
-        </div>
-        <Slider dotsClass="slick-dots intro-modal__gray-dots intro-modal__bottom-sm" className="calc-height intro-modal__height-full child-height-full" ref="slider" {...slider_settings}>
-          <div className="intro-modal__height-full" key={1}><BallotIntroMission next={this._nextSliderPage}/></div>
-          <div className="intro-modal__height-full" key={2}><BallotIntroFollowIssues next={this._nextSliderPage}/></div>
-          <div className="intro-modal__height-full" key={3}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div>
-          <div className="intro-modal__height-full" key={4}><BallotIntroPositionBar next={this._toggleBallotIntroModal}/></div>
-        </Slider>
-      </Modal.Body>
-    </Modal>;
-
     // We create this modal to pop up and show voter guides that the voter can follow relating to this Candidate.
     const CandidateModal = <Modal show={this.state.showCandidateModal} onHide={()=>{this._toggleCandidateModal(null);}}>
       <Modal.Header closeButton>
@@ -459,14 +419,14 @@ export default class Ballot extends Component {
           <Modal.Title>Summary of Ballot Items</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-         <BallotSideBar displayTitle={false} displaySubtitles={false}
-                        onClick={this._toggleBallotSummaryModal} />
+          <BallotSideBar displayTitle={false} displaySubtitles={false}
+                         onClick={this._toggleBallotSummaryModal} />
         </Modal.Body>
       </Modal>;
 
     // This modal will allow users to change their addresses
     const SelectAddressModal = <Modal show={this.state.showSelectAddressModal} onHide={()=>{this._toggleSelectAddressModal();}}
-      className="ballot-election-list ballot-election-list__modal">
+                                      className="ballot-election-list ballot-election-list__modal">
       <Modal.Header closeButton>
         <Modal.Title className="ballot-election-list__h1">Enter address where you are registered to vote</Modal.Title>
       </Modal.Header>
@@ -478,7 +438,7 @@ export default class Ballot extends Component {
     </Modal>;
 
     let ballot = this.state.ballot;
-    var voter_address = VoterStore.getAddress();
+    let voter_address = VoterStore.getAddress();
     if (!ballot) {
       if (voter_address.length === 0) {
         return <div className="ballot">
@@ -534,7 +494,9 @@ export default class Ballot extends Component {
     let in_ready_to_vote_mode = this.getFilterType() === "filterReadyToVote";
 
     return <div className="ballot">
-      { this.state.showBallotIntroModal ? BallotIntroModal : null }
+      { this.state.showBallotIntroModal ?
+        <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this._toggleBallotIntroModal} /> :
+        null }
       { this.state.showMeasureModal ? MeasureModal : null }
       { this.state.showCandidateModal ? CandidateModal : null }
       { this.state.showSelectBallotModal ? SelectBallotModal : null }
@@ -548,8 +510,10 @@ export default class Ballot extends Component {
           <OverlayTrigger placement="top" overlay={electionTooltip} >
             <h1 className="h1 ballot__election-name">
                <span className="u-push--sm">{election_name}</span>
-               {this.state.ballot_election_list.length > 1 ? <img src={"/img/global/icons/gear-icon.png"} className="hidden-print" role="button" onClick={this._toggleSelectBallotModal}
-                alt={"view your ballots"}/> : null}
+               {this.state.ballot_election_list.length > 1 ? <img src={"/img/global/icons/gear-icon.png"}
+                                                                  className="hidden-print" role="button"
+                                                                  onClick={this._toggleSelectBallotModal}
+                                                                  alt={"view your ballots"}/> : null}
             </h1>
           </OverlayTrigger> :
           null }
