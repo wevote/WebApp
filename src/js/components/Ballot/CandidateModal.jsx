@@ -23,9 +23,6 @@ export default class CandidateModal extends Component {
   }
 
   render () {
-    console.log("Got to CandidateModal!");
-
-
     return <Modal show >
       <Modal.Header closeButton onHide={this.props.toggleFunction}>
         <Modal.Title>
