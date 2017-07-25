@@ -11,6 +11,7 @@ import BallotSideBar from "../../components/Navigation/BallotSideBar";
 import BallotStore from "../../stores/BallotStore";
 import BallotFilter from "../../components/Navigation/BallotFilter";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
+import EditAddress from "../../components/Widgets/EditAddress";
 import GuideActions from "../../actions/GuideActions";
 import GuideList from "../../components/VoterGuide/GuideList";
 import GuideStore from "../../stores/GuideStore";
@@ -23,7 +24,6 @@ import SupportStore from "../../stores/SupportStore";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
-import EditAddress from "../../components/Widgets/EditAddress";
 
 
 const web_app_config = require("../../config");
@@ -407,8 +407,8 @@ export default class Ballot extends Component {
         <Modal.Title className="ballot-election-list__h1">See Ballot from Another Election</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <BallotElectionList ballot_election_list={this.state.ballot_election_list}
-          _toggleSelectBallotModal={this._toggleSelectBallotModal}/>
+        <BallotElectionList ballotElectionList={this.state.ballot_election_list}
+                            toggleFunction={this._toggleSelectBallotModal}/>
       </Modal.Body>
     </Modal>;
 
