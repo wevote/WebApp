@@ -19,9 +19,6 @@ export default class BallotSummaryModal extends Component {
 
 
   render () {
-    console.log("Got to SelectBallotModal! 1");
-
-
     return <Modal show={this.props.show}
                   onHide={this.props.toggleFunction} >
         <Modal.Header closeButton>
