@@ -28,7 +28,7 @@ export default class EditAddressPopover extends Component {
     </Popover>;
 
     return (
-      <span>{ this.props.popover_off ? <span className="position-rating__source">&nbsp;&nbsp;<i className="fa fa-exclamation-circle" aria-hidden="true" style={{color: "#fc0d1b"}}></i>&nbsp;&nbsp;</span> :
+      <span>{ this.props.popover_off ? <span className="position-rating__source">&nbsp;&nbsp;<i className="fa fa-exclamation-circle" aria-hidden="true" style={{color: "#fc0d1b"}} />&nbsp;&nbsp;</span> :
         <OverlayTrigger
           trigger="click"
           ref="overlay"
@@ -36,7 +36,7 @@ export default class EditAddressPopover extends Component {
           rootClose
           placement={this.props.placement}
           overlay={AddressPopover}>
-          <span className="position-rating__source with-popover">&nbsp;&nbsp;<i className="fa fa-exclamation-circle" aria-hidden="true" style={{color: "#fc0d1b"}}></i>&nbsp;&nbsp;</span>
+          <span className="position-rating__source with-popover">&nbsp;&nbsp;<i className="fa fa-exclamation-circle" aria-hidden="true" style={{color: "#fc0d1b"}} />&nbsp;&nbsp;</span>
         </OverlayTrigger> }
       </span>
     );
