@@ -9,14 +9,12 @@ export default class BallotSummaryModal extends Component {
   static propTypes = {
     show: PropTypes.bool,
     toggleFunction: PropTypes.func.isRequired,
-    ballotElectionList: PropTypes.array.isRequired,
   };
 
   constructor (props) {
     super(props);
     this.state = {};
   }
-
 
   render () {
     return <Modal show={this.props.show}
@@ -28,7 +26,5 @@ export default class BallotSummaryModal extends Component {
           <BallotSideBar displayTitle={false} displaySubtitles={false} onClick={this.props.toggleFunction} />
         </Modal.Body>
       </Modal>;
-
-
   }
 }
