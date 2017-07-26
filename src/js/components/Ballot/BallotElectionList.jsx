@@ -6,31 +6,31 @@ let moment = require("moment");
 export default class BallotElectionList extends Component {
 
   static propTypes = {
-    ballot_election_list: PropTypes.array.isRequired,
-    _toggleSelectBallotModal: PropTypes.func.isRequired,
-  }
+    ballotElectionList: PropTypes.array.isRequired,
+    toggleFunction: PropTypes.func.isRequired,
+  };
 
   constructor (props){
     super(props);
     this.state = {};
   }
 
-  updateBallot (original_text_for_map_search, simple_save, google_civic_election_id) {
-    console.log("BallotElectionList.jsx updateBallot, google_civic_election_id: ", google_civic_election_id);
-    VoterActions.voterAddressSave(original_text_for_map_search, simple_save, google_civic_election_id);
-    // Not necessary here: BallotActions.voterBallotItemsRetrieve(google_civic_election_id);
-    this.props._toggleSelectBallotModal();
+  updateBallot (originalTextForMapSearch, simpleSave, googleCivicElectionId) {
+    console.log("BallotElectionList.jsx updateBallot, googleCivicElectionId: ", googleCivicElectionId);
+    VoterActions.voterAddressSave(originalTextForMapSearch, simpleSave, googleCivicElectionId);
+    // Not necessary here: BallotActions.voterBallotItemsRetrieve(googleCivicElectionId);
+    this.props.toggleFunction();
   }
 
   render () {
     let currentDate = moment().format("YYYY-MM-DD");
-    let simple_save = true;
-    let upcomingElectionList = this.props.ballot_election_list.map((item, index) =>
+    let simpleSave = true;
+    let upcomingElectionList = this.props.toggleFunction.map((item, index) =>
       item.election_date > currentDate ?
       <div key={index}>
         <dl className="list-unstyled text-center">
           <button type="button" className="btn btn-success"
-            onClick={this.updateBallot.bind(this, item.original_text_for_map_search, simple_save, item.google_civic_election_id)}>
+            onClick={this.updateBallot.bind(this, item.originalTextForMapSearch, simpleSave, item.googleCivicElectionId)}>
             See {item.election_description_text} <span><img src={"/img/global/icons/Circle-Arrow.png"}/></span><br />
             <span className="ballot-election-list__h2 pull-left"> {moment(item.election_date).format("MMMM Do, YYYY")}</span>
           </button>
@@ -40,13 +40,13 @@ export default class BallotElectionList extends Component {
      );
     upcomingElectionList = cleanArray(upcomingElectionList);
 
-    let priorElectionList = this.props.ballot_election_list.map((item, index) =>
+    let priorElectionList = this.props.toggleFunction.map((item, index) =>
       item.election_date > currentDate ?
       null :
       <div key={index}>
         <dl className="list-unstyled text-center">
           <button type="button" className="btn btn-success"
-            onClick={this.updateBallot.bind(this, item.original_text_for_map_search, simple_save, item.google_civic_election_id)}>
+            onClick={this.updateBallot.bind(this, item.originalTextForMapSearch, simpleSave, item.googleCivicElectionId)}>
             See {item.election_description_text} <span><img src={"/img/global/icons/Circle-Arrow.png"}/></span><br />
             <span className="ballot-election-list__h2 pull-left"> {moment(item.election_date).format("MMMM Do, YYYY")}</span>
           </button>
