@@ -21,9 +21,17 @@ Please use descriptive full word variable names.
 current features as painless as possible. We will have many engineers working with this code, 
 and we want to be welcoming to engineers who are new to the project.
 * Short variable names can often create confusion, where a new engineer needs to spend time 
-figuring out what a short variable name actually means. (Ex/ “per” or “p” instead of “person”.) 
+figuring out what a short variable name actually means. (Ex/ Please use “person” instead of “per” or “p”.) 
 For this project please use descriptive full word variable names.
 * Fellow engineers should be able to zoom around the code and not get stopped with riddles created by short names.
+
+## Variable Naming Standards
+
+* Please name variables all lower case with "_" in between words.
+* Please use full words instead of abbreviations (Ex/ Please use “person” instead of “per” or “p”.)
+* Exception: Please use lower case camel case ("camelCaseLettering") for local variables passed into components as 
+properties, unless you are passing a widely used data variable (like "google_civic_election_id"), 
+especially if it is passed around to multiple components.
 
 ## Art Asset Naming
 
