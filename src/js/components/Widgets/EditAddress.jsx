@@ -1,6 +1,16 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 
 export default class EditAddress extends Component {
+  static propTypes = {
+    address: PropTypes.string.isRequired,
+    _toggleSelectAddressModal: PropTypes.func.isRequired,
+  };
+
+  constructor (props) {
+    super(props);
+    this.state = {};
+  }
+
   render () {
     if (this.props.address) {
       return (
