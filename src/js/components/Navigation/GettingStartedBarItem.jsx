@@ -17,8 +17,8 @@ const GettingStartedBarItem = props =>
   </Link>;
 
 GettingStartedBarItem.propTypes = {
-  show: PropTypes.bool.isRequired,
-  completed: PropTypes.bool.isRequired,
+  show: PropTypes.func.isRequired,
+  completed: PropTypes.number.isRequired,
   source: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired
 };

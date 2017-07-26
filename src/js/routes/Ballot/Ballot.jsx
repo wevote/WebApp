@@ -271,6 +271,10 @@ export default class Ballot extends Component {
   render () {
     let ballot = this.state.ballot;
     let voter_address = VoterStore.getAddress();
+    let voter_address_object = VoterStore.getAddressObject();
+    let voter_address_line1 = voter_address_object.normalized_line1;
+    let is_normalized = voter_address_line1 !== undefined && voter_address_line1.length !== 0;
+
     if (!ballot) {
       if (voter_address.length === 0) {
         return <div className="ballot">
@@ -297,6 +301,7 @@ export default class Ballot extends Component {
           </div>;
       }
     }
+
     const missing_address = this.props.location === null;
     // const ballot_caveat = BallotStore.ballot_properties.ballot_caveat;
     const election_name = BallotStore.currentBallotElectionName;
@@ -349,7 +354,7 @@ export default class Ballot extends Component {
             </h1>
           </OverlayTrigger> :
           null }
-        <EditAddress address={voter_address} _toggleSelectAddressModal={this._toggleSelectAddressModal} />
+        <EditAddress address={voter_address} isNormalized={is_normalized} _toggleSelectAddressModal={this._toggleSelectAddressModal} />
         {voter_address ?
           <div className="ballot__filter hidden-print"><BallotFilter ballot_type={this.getBallotType()} /> (<a onClick={this._toggleBallotIntroModal}>show intro</a>)</div> :
           null}
