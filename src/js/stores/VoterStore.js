@@ -38,6 +38,10 @@ class VoterStore extends FluxMapStore {
     return this.getState().address.text_for_map_search || "";
   }
 
+  getAddressObject (){
+    return this.getState().address || {};
+  }
+
   getEmailAddressList (){
     return this.getDataFromArr(this.getState().email_address_list) || {};
   }
