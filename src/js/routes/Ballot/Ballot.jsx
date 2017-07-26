@@ -101,14 +101,14 @@ export default class Ballot extends Component {
     this.setState({ballot: this.getBallot(nextProps), ballot_type: ballot_type });
   }
 
-  _toggleCandidateModal (candidateForModal) {
-    if (candidateForModal) {
-      GuideActions.retrieveGuidesToFollowByBallotItem(candidateForModal.we_vote_id, "CANDIDATE");
-      candidateForModal.guides_to_follow_list = GuideStore.toFollowListForBallotItemById(candidateForModal.we_vote_id);
+  _toggleCandidateModal (candidate_for_modal) {
+    if (candidate_for_modal) {
+      GuideActions.retrieveGuidesToFollowByBallotItem(candidate_for_modal.we_vote_id, "CANDIDATE");
+      candidate_for_modal.guides_to_follow_list = GuideStore.toFollowListForBallotItemById(candidate_for_modal.we_vote_id);
     }
 
     this.setState({
-      candidate_for_modal: candidateForModal,
+      candidate_for_modal: candidate_for_modal,
       showCandidateModal: !this.state.showCandidateModal
     });
   }
@@ -335,7 +335,7 @@ export default class Ballot extends Component {
     return <div className="ballot">
       { this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this._toggleBallotIntroModal} /> : null }
       { this.state.showMeasureModal ? <MeasureModal show={this.state.showMeasureModal} toggleFunction={this._toggleMeasureModal} measure={this.state.measure_for_modal}/> : null }
-      { this.state.showCandidateModal ? <CandidateModal show={this.state.showCandidateModal} toggleFunction={this._toggleCandidateModal} candidate={this.state.candidate}/> : null }
+      { this.state.showCandidateModal ? <CandidateModal show={this.state.showCandidateModal} toggleFunction={this._toggleCandidateModal} candidate={this.state.candidate_for_modal}/> : null }
       { this.state.showSelectBallotModal ? <SelectBallotModal show={this.state.showSelectBallotModal} toggleFunction={this._toggleSelectBallotModal} ballotElectionList={this.state.ballotElectionList} /> : null }
       { this.state.showSelectAddressModal ? <SelectAddressModal show={this.state.showSelectAddressModal} toggleFunction={this._toggleSelectAddressModal} /> : null }
       { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this._toggleBallotSummaryModal} /> : null }

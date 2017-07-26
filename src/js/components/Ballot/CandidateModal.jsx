@@ -8,6 +8,9 @@ import SupportStore from "../../stores/SupportStore";
 export default class CandidateModal extends Component {
   // We create this modal to pop up and show voter guides that the voter can follow relating to this Candidate.
 
+  // July 2017: What triggers CandidateModal and MeasureModal -- it comes from clicking on the position bar (once you
+  // have followed any organizations that have opinions on either the candidate or modal).
+
   static propTypes = {
     show: PropTypes.bool,
     toggleFunction: PropTypes.func.isRequired,
