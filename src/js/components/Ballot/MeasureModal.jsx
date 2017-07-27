@@ -67,7 +67,7 @@ export default class MeasureModal extends Component {
               null }
             {/* Show voter guides to follow that relate to this measure */}
             <div className="card__additional">
-              {this.props.measure.guides_to_follow_list.length === 0 ?
+              {this.props.measure.voter_guides_to_follow_for_ballot_item_id.length === 0 ?
                 null :
                 <span>
                     <p className="card__no-additional">
@@ -75,7 +75,7 @@ export default class MeasureModal extends Component {
                       <strong>Ignore</strong> voter guides that don't share your values.
                     </p>
                     <GuideList ballotItemWeVoteId={this.props.measure.measure_we_vote_id}
-                               organizationsToFollow={this.props.measure.guides_to_follow_list}/>
+                               organizationsToFollow={this.props.measure.voter_guides_to_follow_for_ballot_item_id}/>
                   </span>
               }
             </div>

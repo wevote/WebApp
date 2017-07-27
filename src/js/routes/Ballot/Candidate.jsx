@@ -25,10 +25,10 @@ export default class Candidate extends Component {
     this.state = {
       candidate: {},
       candidate_we_vote_id: this.props.params.candidate_we_vote_id,
-      // Eventually we could use this getVoterGuidesToFollowListByBallotItemId with candidate_we_vote_id, but we can't now
+      // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidate_we_vote_id, but we can't now
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-      // guidesToFollowList: GuideStore.getVoterGuidesToFollowListByBallotItemId(this.props.params.candidate_we_vote_id)
-      guidesToFollowList: GuideStore.getVoterGuidesToFollowListByBallotItem()
+      // guidesToFollowList: GuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.candidate_we_vote_id)
+      voter_guides_to_follow_for_latest_ballot_item: GuideStore.getVoterGuidesToFollowForLatestBallotItem()
     };
   }
 
@@ -76,11 +76,11 @@ export default class Candidate extends Component {
 
   _onGuideStoreChange (){
     let { candidate_we_vote_id } = this.state;
-    // Eventually we could use this getVoterGuidesToFollowListByBallotItemId with candidate_we_vote_id, but we can't now
+    // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidate_we_vote_id, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-    // this.setState({ guidesToFollowList: GuideStore.getVoterGuidesToFollowListByBallotItemId(this.state.candidate_we_vote_id) });
-    this.setState({ guidesToFollowList: GuideStore.getVoterGuidesToFollowListByBallotItem() });
-    // When the guidesToFollowList changes, trigger an update of the candidate so we can get an updated position_list
+    // this.setState({ voter_guides_to_follow_for_latest_ballot_item: GuideStore.getVoterGuidesToFollowForBallotItemId(this.state.candidate_we_vote_id) });
+    this.setState({ voter_guides_to_follow_for_latest_ballot_item: GuideStore.getVoterGuidesToFollowForLatestBallotItem() });
+    // When the voter_guides_to_follow_for_latest_ballot_item changes, trigger an update of the candidate so we can get an updated position_list
     CandidateActions.retrieve(this.state.candidate_we_vote_id);
     // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
     SupportActions.retrievePositionsCountsForOneBallotItem(candidate_we_vote_id);
@@ -89,7 +89,7 @@ export default class Candidate extends Component {
   render () {
     const electionId = VoterStore.election_id();
     const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to follow about this candidate or measure.";
-    var { candidate, guidesToFollowList, candidate_we_vote_id } = this.state;
+    var { candidate, voter_guides_to_follow_for_latest_ballot_item, candidate_we_vote_id } = this.state;
 
     if (!candidate || !candidate.ballot_item_display_name){
       // TODO DALE If the candidate we_vote_id is not valid, we need to update this with a notice
@@ -124,10 +124,10 @@ export default class Candidate extends Component {
               </div> :
               null
             }
-            {guidesToFollowList.length === 0 ?
+            {voter_guides_to_follow_for_latest_ballot_item.length === 0 ?
               <p className="card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
               <div><h3 className="card__additional-heading">{"More opinions about " + candidate.ballot_item_display_name}</h3>
-              <GuideList id={electionId} ballotItemWeVoteId={candidate_we_vote_id} organizationsToFollow={guidesToFollowList}/></div>
+              <GuideList id={electionId} ballotItemWeVoteId={candidate_we_vote_id} organizationsToFollow={voter_guides_to_follow_for_latest_ballot_item}/></div>
             }
           </div>
         </section>

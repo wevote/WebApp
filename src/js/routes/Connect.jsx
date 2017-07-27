@@ -26,7 +26,7 @@ export default class Connect extends Component {
       add_friends_type: "ADD_FRIENDS_BY_EMAIL",
       current_friends_list: FriendStore.currentFriends(),
       facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
-      organizations_to_follow_list: GuideStore.getVoterGuidesToFollowListAll(),
+      voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll(),
       organizations_followed_on_twitter_list: GuideStore.followedOnTwitterList(),
       maximum_organization_display: 25,
       maximum_friend_display: 25,
@@ -62,12 +62,12 @@ export default class Connect extends Component {
 
   _onGuideStoreChange (){
     var organizations_followed_on_twitter_list = GuideStore.followedOnTwitterList();
-    var organizations_to_follow_list = GuideStore.getVoterGuidesToFollowListAll();
+    var voter_guides_to_follow_all = GuideStore.getVoterGuidesToFollowAll();
     if (organizations_followed_on_twitter_list !== undefined && organizations_followed_on_twitter_list.length > 0){
       this.setState({ organizations_followed_on_twitter_list: GuideStore.followedOnTwitterList() });
     }
-    if (organizations_to_follow_list !== undefined && organizations_to_follow_list.length > 0){
-      this.setState({ organizations_to_follow_list: GuideStore.getVoterGuidesToFollowListAll() });
+    if (voter_guides_to_follow_all !== undefined && voter_guides_to_follow_all.length > 0){
+      this.setState({ voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll() });
     }
   }
 
@@ -121,7 +121,7 @@ export default class Connect extends Component {
 			<Helmet title="Build Your We Vote Network" />
       <h1 className="h1">Build Your We Vote Network</h1>
 
-      { this.state.organizations_to_follow_list && this.state.organizations_to_follow_list.length ?
+      { this.state.voter_guides_to_follow_all && this.state.voter_guides_to_follow_all.length ?
         <div className="container-fluid well u-stack--md u-inset--md">
           <Link className="u-cursor--pointer u-no-underline" to="/opinions">
             <h4 className="text-left">Organizations to Follow</h4>
@@ -130,7 +130,7 @@ export default class Connect extends Component {
           <div className="card-child__list-group">
             {
               <ItemTinyOpinionsToFollow
-                    organizationsToFollow={this.state.organizations_to_follow_list}
+                    organizationsToFollow={this.state.voter_guides_to_follow_all}
                     maximumOrganizationDisplay={this.state.maximum_organization_display} />
             }
             <Link className="pull-right" to="/opinions">See all</Link>

@@ -61,19 +61,19 @@ class GuideStore extends FluxMapStore {
     return this.getState().ballot_has_guides;
   }
 
-  getVoterGuidesToFollowListAll () {
+  getVoterGuidesToFollowAll () {
     return this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_to_follow_all) || [];
   }
 
-  getVoterGuidesToFollowListByBallotItem () {
+  getVoterGuidesToFollowForLatestBallotItem () {
     return this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_to_follow_for_latest_ballot_item) || [];
   }
 
-  getVoterGuidesToFollowListByBallotItemId (ballot_item_we_vote_id) {
+  getVoterGuidesToFollowForBallotItemId (ballot_item_we_vote_id) {
     return this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_to_follow_ballot_items_dict[ballot_item_we_vote_id]) || [];
   }
 
-  getVoterGuidesToFollowListByIssuesFollowed () {
+  getVoterGuidesToFollowByIssuesFollowed () {
     return this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_to_follow_by_issues_followed) || [];
   }
 

@@ -36,11 +36,11 @@ export default class Ballot extends Component {
     super(props);
     this.state = {
       candidate_for_modal: {
-        guides_to_follow_list: [],
+        voter_guides_to_follow_for_latest_ballot_item: [],
         position_list: []
       },
       measure_for_modal: {
-        guides_to_follow_list: [],
+        voter_guides_to_follow_for_latest_ballot_item: [],
         position_list: []
       },
       showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
@@ -105,7 +105,7 @@ export default class Ballot extends Component {
   _toggleCandidateModal (candidate_for_modal) {
     if (candidate_for_modal) {
       GuideActions.retrieveGuidesToFollowByBallotItem(candidate_for_modal.we_vote_id, "CANDIDATE");
-      candidate_for_modal.guides_to_follow_list = GuideStore.getVoterGuidesToFollowListByBallotItemId(candidate_for_modal.we_vote_id);
+      candidate_for_modal.voter_guides_to_follow_for_latest_ballot_item = GuideStore.getVoterGuidesToFollowForBallotItemId(candidate_for_modal.we_vote_id);
     }
 
     this.setState({
@@ -186,14 +186,14 @@ export default class Ballot extends Component {
       this.setState({
         candidate_for_modal: {
           ...this.state.candidate_for_modal,
-          guides_to_follow_list: GuideStore.getVoterGuidesToFollowListByBallotItem()
+          voter_guides_to_follow_for_latest_ballot_item: GuideStore.getVoterGuidesToFollowForLatestBallotItem()
         }
       });
     } else if (this.state.measure_for_modal) {
       this.setState({
         measure_for_modal: {
           ...this.state.measure_for_modal,
-          guides_to_follow_list: GuideStore.getVoterGuidesToFollowListByBallotItem()
+          voter_guides_to_follow_for_latest_ballot_item: GuideStore.getVoterGuidesToFollowForLatestBallotItem()
         }
       });
     }
