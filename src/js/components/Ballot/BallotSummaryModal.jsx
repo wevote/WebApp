@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Modal } from "react-bootstrap";
-import BallotSideBar from "../../components/Ballot/BallotElectionList";
+import BallotSideBar from "../Navigation/BallotSideBar";
 
 
 export default class BallotSummaryModal extends Component {

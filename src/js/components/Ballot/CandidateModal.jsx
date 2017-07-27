@@ -5,6 +5,7 @@ import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeC
 import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPositionBreakdownList";
 import SupportStore from "../../stores/SupportStore";
 
+
 export default class CandidateModal extends Component {
   // We create this modal to pop up and show voter guides that the voter can follow relating to this Candidate.
 
