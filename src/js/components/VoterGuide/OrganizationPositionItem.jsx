@@ -30,16 +30,9 @@ export default class OrganizationPositionItem extends Component {
     super(props);
     this.state = {
       hide_position_statement: false,
+      supportProps: SupportStore.get(this.props.position.ballot_item_we_vote_id),
       transitioning: false,
     };
-  }
-
-  componentWillMount () {
-    this.setState({
-      // showEditPositionModal: false,
-      supportProps: SupportStore.get(this.props.position.ballot_item_we_vote_id),
-      transitioning: false
-    });
   }
 
   componentDidMount () {
@@ -54,9 +47,8 @@ export default class OrganizationPositionItem extends Component {
   }
 
   _onSupportStoreChange () {
-    let position = this.props.position;
     this.setState({
-      supportProps: SupportStore.get(position.ballot_item_we_vote_id),
+      supportProps: SupportStore.get(this.props.position.ballot_item_we_vote_id),
       transitioning: false
     });
   }
