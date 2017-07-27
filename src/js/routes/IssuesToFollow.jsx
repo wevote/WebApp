@@ -6,7 +6,7 @@ import IssueFollowToggle from "../components/Ballot/IssueFollowToggle";
 import IssueStore from "../stores/IssueStore";
 
 
-export default class IssuesFollowed extends Component {
+export default class IssuesToFollow extends Component {
   static propTypes = {
     children: PropTypes.object,
     history: PropTypes.object
