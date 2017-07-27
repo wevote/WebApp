@@ -25,7 +25,7 @@ export default class BallotElectionList extends Component {
   render () {
     let currentDate = moment().format("YYYY-MM-DD");
     let simpleSave = true;
-    let upcomingElectionList = this.props.toggleFunction.map((item, index) =>
+    let upcomingElectionList = this.props.ballotElectionList.map((item, index) =>
       item.election_date > currentDate ?
       <div key={index}>
         <dl className="list-unstyled text-center">
@@ -40,7 +40,7 @@ export default class BallotElectionList extends Component {
      );
     upcomingElectionList = cleanArray(upcomingElectionList);
 
-    let priorElectionList = this.props.toggleFunction.map((item, index) =>
+    let priorElectionList = this.props.ballotElectionList.map((item, index) =>
       item.election_date > currentDate ?
       null :
       <div key={index}>
