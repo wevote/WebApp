@@ -3,8 +3,7 @@ import EditAddressPopover from "./EditAddressPopover";
 
 export default class EditAddress extends Component {
   static propTypes = {
-    address: PropTypes.string.isRequired,
-    isNormalized: PropTypes.bool.isRequired,
+    address: PropTypes.object.isRequired,
     _toggleSelectAddressModal: PropTypes.func.isRequired,
   };
 
@@ -14,11 +13,14 @@ export default class EditAddress extends Component {
   }
 
   render () {
-    if (this.props.address) {
+    let address = this.props.address.text_for_map_search || "";
+    let normalized_line1 = this.props.address.normalized_line1 || "";
+
+    if (address.length) {
       return (
         <p className="ballot__date_location">
-          { this.props.address }
-          { this.props.isNormalized ? <span>&nbsp;</span> : <EditAddressPopover popover_off={false} placement={"bottom"} onClick={this.props._toggleSelectAddressModal} /> }
+          { address }
+          { normalized_line1.length ? <span>&nbsp;</span> : <EditAddressPopover popover_off={false} placement={"bottom"} onClick={this.props._toggleSelectAddressModal} /> }
           <span className="hidden-print">(<a onClick={this.props._toggleSelectAddressModal}>Edit</a>)</span>
         </p>
       );
