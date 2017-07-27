@@ -26,7 +26,7 @@ export default class Connect extends Component {
       add_friends_type: "ADD_FRIENDS_BY_EMAIL",
       current_friends_list: FriendStore.currentFriends(),
       facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
-      organizations_to_follow_list: GuideStore.toFollowList(),
+      organizations_to_follow_list: GuideStore.getVoterGuidesToFollowListAll(),
       organizations_followed_on_twitter_list: GuideStore.followedOnTwitterList(),
       maximum_organization_display: 25,
       maximum_friend_display: 25,
@@ -62,12 +62,12 @@ export default class Connect extends Component {
 
   _onGuideStoreChange (){
     var organizations_followed_on_twitter_list = GuideStore.followedOnTwitterList();
-    var organizations_to_follow_list = GuideStore.toFollowList();
+    var organizations_to_follow_list = GuideStore.getVoterGuidesToFollowListAll();
     if (organizations_followed_on_twitter_list !== undefined && organizations_followed_on_twitter_list.length > 0){
       this.setState({ organizations_followed_on_twitter_list: GuideStore.followedOnTwitterList() });
     }
     if (organizations_to_follow_list !== undefined && organizations_to_follow_list.length > 0){
-      this.setState({ organizations_to_follow_list: GuideStore.toFollowList() });
+      this.setState({ organizations_to_follow_list: GuideStore.getVoterGuidesToFollowListAll() });
     }
   }
 

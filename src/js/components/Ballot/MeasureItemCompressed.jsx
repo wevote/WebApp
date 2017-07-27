@@ -82,7 +82,7 @@ export default class MeasureItemCompressed extends Component {
 
     let measure_for_modal = {
       ballot_item_display_name: ballot_item_display_name,
-      guides_to_follow_list: GuideStore.toFollowListForBallotItemById(this.props.we_vote_id),
+      guides_to_follow_list: GuideStore.getVoterGuidesToFollowListByBallotItemId(this.props.we_vote_id),
       kind_of_ballot_item: this.props.kind_of_ballot_item,
       link_to_ballot_item_page: this.props.link_to_ballot_item_page,
       measure_subtitle: measure_subtitle,
@@ -146,9 +146,9 @@ export default class MeasureItemCompressed extends Component {
                       ()=>{this.props._toggleMeasureModal(measure_for_modal);} :
                       null } >
                 {/* Show possible voter guides to follow */}
-                { GuideStore.toFollowListForBallotItemById(we_vote_id) && GuideStore.toFollowListForBallotItemById(we_vote_id).length !== 0 ?
+                { GuideStore.getVoterGuidesToFollowListByBallotItemId(we_vote_id) && GuideStore.getVoterGuidesToFollowListByBallotItemId(we_vote_id).length !== 0 ?
                   <ItemTinyOpinionsToFollow ballotItemWeVoteId={we_vote_id}
-                                            organizationsToFollow={GuideStore.toFollowListForBallotItemById(we_vote_id)}
+                                            organizationsToFollow={GuideStore.getVoterGuidesToFollowListByBallotItemId(we_vote_id)}
                                             maximumOrganizationDisplay={this.state.maximum_organization_display}/> :
                   <span /> }
                 </span> }

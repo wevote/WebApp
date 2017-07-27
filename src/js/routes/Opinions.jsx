@@ -30,7 +30,7 @@ export default class Opinions extends Component {
 
   _onChange () {
     this.setState({
-      guideToFollowList: GuideStore.toFollowList(),
+      guideToFollowList: GuideStore.getVoterGuidesToFollowListAll(),
       ballot_has_guides: GuideStore.ballotHasGuides(),
       address: VoterStore.getAddress() });
   }

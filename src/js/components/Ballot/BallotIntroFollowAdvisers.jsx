@@ -21,19 +21,20 @@ export default class BallotIntroFollowAdvisers extends Component {
     this.state = {
       description_text: "",
       followed_organizations: [],
-      organization_list_from_issues: GuideStore.retrieveGuidesToFollowByIssueFilter(),
-      organization_list_to_follow: GuideStore.toFollowList(),
+      organization_list_from_issues: GuideStore.getVoterGuidesToFollowListByIssuesFollowed(),
+      organization_list_to_follow: GuideStore.getVoterGuidesToFollowListAll(),
       next_button_text: NEXT_BUTTON_TEXT
     };
-  }
 
-  componentDidMount () {
-    GuideActions.retrieveGuidesToFollowByIssueFilter();
-    GuideActions.retrieveGuidesToFollow(VoterStore.election_id());
-    this._onGuideStoreChange();
     this.onOrganizationFollow = this.onOrganizationFollow.bind(this);
     this.onOrganizationStopFollowing = this.onOrganizationStopFollowing.bind(this);
     this.onNext = this.onNext.bind(this);
+  }
+
+  componentDidMount () {
+    GuideActions.retrieveGuidesToFollowByIssuesFollowed();
+    GuideActions.retrieveGuidesToFollow(VoterStore.election_id());
+    this._onGuideStoreChange();
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
   }
 

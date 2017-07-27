@@ -24,10 +24,10 @@ export default class Measure extends Component {
     this.state = {
       measure: {},
       measure_we_vote_id: this.props.params.measure_we_vote_id,
-      // Eventually we could use this toFollowListForBallotItemById with measure_we_vote_id, but we can't now
+      // Eventually we could use this getVoterGuidesToFollowListByBallotItemId with measure_we_vote_id, but we can't now
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-      // guides_to_follow_list: GuideStore.toFollowListForBallotItemById(this.props.params.measure_we_vote_id)
-      guides_to_follow_list: GuideStore.toFollowListForBallotItem()
+      // guides_to_follow_list: GuideStore.getVoterGuidesToFollowListByBallotItemId(this.props.params.measure_we_vote_id)
+      guides_to_follow_list: GuideStore.getVoterGuidesToFollowListByBallotItem()
     };
   }
 
@@ -66,9 +66,9 @@ export default class Measure extends Component {
   }
 
   _onGuideStoreChange (){
-    // Eventually we could use this toFollowListForBallotItemById with measure_we_vote_id, but we can't now
+    // Eventually we could use this getVoterGuidesToFollowListByBallotItemId with measure_we_vote_id, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-    this.setState({ guides_to_follow_list: GuideStore.toFollowListForBallotItem() });
+    this.setState({ guides_to_follow_list: GuideStore.getVoterGuidesToFollowListByBallotItem() });
     MeasureActions.retrieve(this.state.measure_we_vote_id);
   }
 

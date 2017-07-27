@@ -27,7 +27,7 @@ export default class BallotIntroFollowAdvisers extends Component {
   }
 
   componentDidMount () {
-    GuideActions.retrieveGuidesToFollowByIssueFilter();
+    GuideActions.retrieveGuidesToFollowByIssuesFollowed();
     this._onGuideStoreChange();
     this.onOrganizationFollow = this.onOrganizationFollow.bind(this);
     this.onOrganizationStopFollowing = this.onOrganizationStopFollowing.bind(this);
@@ -40,7 +40,7 @@ export default class BallotIntroFollowAdvisers extends Component {
   }
 
   _onGuideStoreChange () {
-    this.setState({ organizations: GuideStore.retrieveGuidesToFollowByIssueFilter() });
+    this.setState({ organizations: GuideStore.getVoterGuidesToFollowListByIssuesFollowed() });
   }
 
   onOrganizationFollow (organization_we_vote_id) {

@@ -25,10 +25,10 @@ export default class Candidate extends Component {
     this.state = {
       candidate: {},
       candidate_we_vote_id: this.props.params.candidate_we_vote_id,
-      // Eventually we could use this toFollowListForBallotItemById with candidate_we_vote_id, but we can't now
+      // Eventually we could use this getVoterGuidesToFollowListByBallotItemId with candidate_we_vote_id, but we can't now
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-      // guidesToFollowList: GuideStore.toFollowListForBallotItemById(this.props.params.candidate_we_vote_id)
-      guidesToFollowList: GuideStore.toFollowListForBallotItem()
+      // guidesToFollowList: GuideStore.getVoterGuidesToFollowListByBallotItemId(this.props.params.candidate_we_vote_id)
+      guidesToFollowList: GuideStore.getVoterGuidesToFollowListByBallotItem()
     };
   }
 
@@ -76,10 +76,10 @@ export default class Candidate extends Component {
 
   _onGuideStoreChange (){
     let { candidate_we_vote_id } = this.state;
-    // Eventually we could use this toFollowListForBallotItemById with candidate_we_vote_id, but we can't now
+    // Eventually we could use this getVoterGuidesToFollowListByBallotItemId with candidate_we_vote_id, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-    // this.setState({ guidesToFollowList: GuideStore.toFollowListForBallotItemById(this.state.candidate_we_vote_id) });
-    this.setState({ guidesToFollowList: GuideStore.toFollowListForBallotItem() });
+    // this.setState({ guidesToFollowList: GuideStore.getVoterGuidesToFollowListByBallotItemId(this.state.candidate_we_vote_id) });
+    this.setState({ guidesToFollowList: GuideStore.getVoterGuidesToFollowListByBallotItem() });
     // When the guidesToFollowList changes, trigger an update of the candidate so we can get an updated position_list
     CandidateActions.retrieve(this.state.candidate_we_vote_id);
     // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems

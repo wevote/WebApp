@@ -52,6 +52,13 @@ export default class Ballot extends Component {
       ballotElectionList: [],
       mounted: false,
     };
+
+    this._toggleBallotIntroModal = this._toggleBallotIntroModal.bind(this);
+    this._toggleCandidateModal = this._toggleCandidateModal.bind(this);
+    this._toggleMeasureModal = this._toggleMeasureModal.bind(this);
+    this._toggleSelectBallotModal = this._toggleSelectBallotModal.bind(this);
+    this._toggleSelectAddressModal = this._toggleSelectAddressModal.bind(this);
+    this._toggleBallotSummaryModal = this._toggleBallotSummaryModal.bind(this);
   }
 
   componentDidMount () {
@@ -68,12 +75,6 @@ export default class Ballot extends Component {
       this.ballotStoreListener = BallotStore.addListener(this._onBallotStoreChange.bind(this));
       // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
       // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
-      this._toggleBallotIntroModal = this._toggleBallotIntroModal.bind(this);
-      this._toggleCandidateModal = this._toggleCandidateModal.bind(this);
-      this._toggleMeasureModal = this._toggleMeasureModal.bind(this);
-      this._toggleSelectBallotModal = this._toggleSelectBallotModal.bind(this);
-      this._toggleSelectAddressModal = this._toggleSelectAddressModal.bind(this);
-      this._toggleBallotSummaryModal = this._toggleBallotSummaryModal.bind(this);
       SupportActions.voterAllPositionsRetrieve();
       SupportActions.positionsCountForAllBallotItems();
       BallotActions.voterBallotListRetrieve();
@@ -104,7 +105,7 @@ export default class Ballot extends Component {
   _toggleCandidateModal (candidate_for_modal) {
     if (candidate_for_modal) {
       GuideActions.retrieveGuidesToFollowByBallotItem(candidate_for_modal.we_vote_id, "CANDIDATE");
-      candidate_for_modal.guides_to_follow_list = GuideStore.toFollowListForBallotItemById(candidate_for_modal.we_vote_id);
+      candidate_for_modal.guides_to_follow_list = GuideStore.getVoterGuidesToFollowListByBallotItemId(candidate_for_modal.we_vote_id);
     }
 
     this.setState({
@@ -185,14 +186,14 @@ export default class Ballot extends Component {
       this.setState({
         candidate_for_modal: {
           ...this.state.candidate_for_modal,
-          guides_to_follow_list: GuideStore.toFollowListForBallotItem()
+          guides_to_follow_list: GuideStore.getVoterGuidesToFollowListByBallotItem()
         }
       });
     } else if (this.state.measure_for_modal) {
       this.setState({
         measure_for_modal: {
           ...this.state.measure_for_modal,
-          guides_to_follow_list: GuideStore.toFollowListForBallotItem()
+          guides_to_follow_list: GuideStore.getVoterGuidesToFollowListByBallotItem()
         }
       });
     }

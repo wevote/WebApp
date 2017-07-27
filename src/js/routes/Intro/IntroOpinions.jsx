@@ -23,7 +23,7 @@ export default class IntroOpinionsPage extends Component {
   }
 
   _onChange () {
-    this.setState({ guideToFollowList: GuideStore.toFollowList(),
+    this.setState({ guideToFollowList: GuideStore.getVoterGuidesToFollowListAll(),
                   ballot_has_guides: GuideStore.ballotHasGuides(),
                   address: VoterStore.getAddress() });
   }

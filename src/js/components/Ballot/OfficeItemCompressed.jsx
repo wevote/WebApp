@@ -127,13 +127,13 @@ export default class OfficeItemCompressed extends Component {
                       </span> :
                       <span>
                         {/* Show possible voter guides to follow */}
-                        { GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id) && GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id).length !== 0 ?
+                        { GuideStore.getVoterGuidesToFollowListByBallotItemId(one_candidate.we_vote_id) && GuideStore.getVoterGuidesToFollowListByBallotItemId(one_candidate.we_vote_id).length !== 0 ?
                           <span className="u-cursor--pointer"
                                 onClick={ this.props.link_to_ballot_item_page ?
                                 ()=>{this.props._toggleCandidateModal(one_candidate);} :
                                 null } >
                             <ItemTinyOpinionsToFollow ballotItemWeVoteId={one_candidate.we_vote_id}
-                                                      organizationsToFollow={GuideStore.toFollowListForBallotItemById(one_candidate.we_vote_id)}
+                                                      organizationsToFollow={GuideStore.getVoterGuidesToFollowListByBallotItemId(one_candidate.we_vote_id)}
                                                       maximumOrganizationDisplay={this.state.maximum_organization_display}/>
                           </span> :
                           <span /> }
