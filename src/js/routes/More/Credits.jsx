@@ -59,11 +59,12 @@ export default class Credits extends Component {
             <li>Jennifer Holmes - Pacifica, CA</li>
             <li>Joe Evans - Santa Cruz, CA</li>
             <li>Andrea Moed - San Francisco, CA</li>
+            <li>Steve Podell - Oakland, CA</li>
             <li>Ciero Kilpatrick - Washington, DC</li>
+            <li>YuanHsin Chang - San Francisco, CA</li>
             <li>Eric Ogawa - San Francisco, CA</li>
             <li>Mary O'Connor - Sebastopol, CA</li>
             <li>Harsha Dronamraju - San Francisco, CA</li>
-            <li>Steve Podell - Oakland, CA</li>
             <li>Rohan Bhambhoria - Mississauga, Ontario, Canada</li>
             <li>Nitin Garg - San Francisco, CA</li>
             <li>Niko Barry - Berkeley, CA</li>
@@ -71,14 +72,13 @@ export default class Credits extends Component {
             <li>Marissa Luna - Lansing, MI</li>
             <li>Aaron Borden - San Francisco, CA</li>
             <li>Judy Johnson - Oakland, CA</li>
+            <li>Irene Florez - San Francisco, CA</li>
             <li>Udi Davidovich - Walnut Creek, CA</li>
             <li>Chris Arya - San Francisco, CA</li>
             <li>Tom Furlong - Menlo Park, CA</li>
             <li>Paul A. "Dash" McLean - E. Palo Alto, CA</li>
-            <li>YuanHsin Chang - San Francisco, CA</li>
             <li>Eric Olivera - San Francisco, CA</li>
             <li>Emily Hittle - San Francisco, CA</li>
-            <li>Irene Florez - San Francisco, CA</li>
             <li>Mikel Duffy - San Francisco, CA</li>
             <li>Robin Braverman - Walnut Creek, CA</li>
             <li>Mike McConnell - San Francisco, CA</li>
@@ -91,17 +91,20 @@ export default class Credits extends Component {
             <li>Kad Smith - Berkeley, CA</li>
             <li>Courtney Gonzales - Benicia, CA</li>
             <li>Jenna Haywood - Berkeley, CA</li>
+            <li>Mansi Desai - San Francisco, CA</li>
             <li>Jayadev Akkiraju - Santa Clara, CA</li>
             <li>Raphael Merx - San Francisco, CA</li>
             <li>Susan Clark - Oakland, CA</li>
             <li>Kim Anderson - San Francisco, CA</li>
             <li>Betsy Neely Sikma - Taylors, SC</li>
+            <li>Keith Underwood - Alameda, CA</li>
             <li>Jesse Aldridge - San Francisco, CA</li>
             <li>Josh Levinger - Oakland, CA</li>
             <li>Leslie Castellanos - San Francisco, CA</li>
             <li>Miguel Elasmar - Sarasota, FL</li>
             <li>Cindy Cruz - Daly City, CA</li>
             <li>Nicole Shanahan - Palo Alto, CA</li>
+            <li>Edward Ly - Gresham, OR</li>
             <li>Steve Whetstone - San Francisco, CA</li>
             <li>Brian Bordley - Berkeley, CA</li>
             <li>Marcus Busby - San Francisco, CA</li>
