@@ -18,19 +18,19 @@ export default class Opinions extends Component {
   constructor (props){
     super(props);
     this.state = {
-      guideToFollowList: [],
+      voter_guides_to_follow_all: [],
       ballot_has_guides: null
     };
   }
 
   componentDidMount () {
-    this._onChange();
-    this.guideStoreListener = GuideStore.addListener(this._onChange.bind(this));
+    this._onGuideStoreChange();
+    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
   }
 
-  _onChange () {
+  _onGuideStoreChange () {
     this.setState({
-      guideToFollowList: GuideStore.toFollowList(),
+      voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll(),
       ballot_has_guides: GuideStore.ballotHasGuides(),
       address: VoterStore.getAddress() });
   }
@@ -55,7 +55,7 @@ export default class Opinions extends Component {
   }
 
   render () {
-    const { ballot_has_guides, guideToFollowList, address } = this.state;
+    const { ballot_has_guides, voter_guides_to_follow_all, address } = this.state;
     let guides;
     var floatRight = {
         float: "right"
@@ -82,7 +82,7 @@ export default class Opinions extends Component {
             <p>There are no organizations with opinions on your ballot. Here are some popular organizations</p>
           }
         <div className="card">
-          <GuideList organizationsToFollow={guideToFollowList} instantRefreshOn />
+          <GuideList organizationsToFollow={voter_guides_to_follow_all} instantRefreshOn />
         </div>
         </div>;
       }

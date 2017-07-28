@@ -31,7 +31,7 @@ module.exports = {
     });
   },
 
-  retrieveGuidesToFollowByIssueFilter: function () {
+  retrieveGuidesToFollowByIssuesFollowed: function () {
     Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", {
       filter_voter_guides_by_issue: true
     });

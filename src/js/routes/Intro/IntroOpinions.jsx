@@ -14,7 +14,7 @@ export default class IntroOpinionsPage extends Component {
 
   constructor (props){
     super(props);
-    this.state = {guideToFollowList: [], ballot_has_guides: null};
+    this.state = {voter_guides_to_follow_all: [], ballot_has_guides: null};
   }
 
   componentDidMount () {
@@ -23,7 +23,7 @@ export default class IntroOpinionsPage extends Component {
   }
 
   _onChange () {
-    this.setState({ guideToFollowList: GuideStore.toFollowList(),
+    this.setState({ voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll(),
                   ballot_has_guides: GuideStore.ballotHasGuides(),
                   address: VoterStore.getAddress() });
   }
@@ -33,8 +33,8 @@ export default class IntroOpinionsPage extends Component {
   }
 
   render () {
-    let { guideToFollowList, ballot_has_guides } = this.state;
-    console.log(ballot_has_guides);
+    let { voter_guides_to_follow_all, ballot_has_guides } = this.state;
+    // console.log(ballot_has_guides);
     var float = {
       right: {
         float: "right"
@@ -70,9 +70,14 @@ export default class IntroOpinionsPage extends Component {
                 <br />
                 <SearchGuidesToFollowBox />
                 <br/>
-                {ballot_has_guides ? null :
-                  <p>There are no organizations with opinions on your ballot. Here are some popular organizations.</p>}
-                {guideToFollowList ? <div className="card"><GuideList organizationsToFollow={guideToFollowList} /></div> : null }
+                {ballot_has_guides ?
+                  null :
+                  <p>There are no organizations with opinions on your ballot. Here are some popular organizations.</p>
+                }
+                {voter_guides_to_follow_all ?
+                  <div className="card"><GuideList organizationsToFollow={voter_guides_to_follow_all} /></div> :
+                  null
+                }
             </div>
         </div>
     <Link style={float.left} to="/intro">

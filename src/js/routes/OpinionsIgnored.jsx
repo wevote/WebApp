@@ -31,7 +31,7 @@ export default class OpinionsIgnored extends Component {
 
     if (list !== undefined && list.length > 0){
       this.setState({ voter_guide_ignored_list: GuideStore.ignoredList() });
-      console.log(this.state.voter_guide_ignored_list);
+      // console.log(this.state.voter_guide_ignored_list);
     }
   }
 

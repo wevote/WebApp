@@ -75,7 +75,7 @@ export default class CandidateModal extends Component {
               null }
             {/* Show voter guides to follow that relate to this candidate */}
             <div className="card__additional">
-              {this.props.candidate.guides_to_follow_list.length === 0 ?
+              {this.props.candidate.voter_guides_to_follow_for_ballot_item_id.length === 0 ?
                 null :
                 <span>
                             <p className="card__no-additional">
@@ -83,7 +83,7 @@ export default class CandidateModal extends Component {
                                 <strong>Ignore</strong> voter guides that don't share your values.
                             </p>
                             <GuideList ballotItemWeVoteId={this.props.candidate.we_vote_id}
-                                       organizationsToFollow={this.props.candidate.guides_to_follow_list}/>
+                                       organizationsToFollow={this.props.candidate.voter_guides_to_follow_for_ballot_item_id}/>
                         </span>
               }
             </div>

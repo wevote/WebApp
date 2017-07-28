@@ -209,13 +209,13 @@ export default class CandidateItem extends Component {
               null }
             {/* Show possible voter guides to follow */}
             { !this.props.hideOpinionsToFollow &&
-              GuideStore.toFollowListForBallotItemById(we_vote_id) && GuideStore.toFollowListForBallotItemById(we_vote_id).length !== 0 ?
+              GuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id) && GuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id).length !== 0 ?
               <span>
                 { positions_in_your_network ?
                   "More Opinions to Follow." :
                   "Opinions to Follow." }
                 <ItemTinyOpinionsToFollow ballotItemWeVoteId={we_vote_id}
-                                          organizationsToFollow={GuideStore.toFollowListForBallotItemById(we_vote_id)}
+                                          organizationsToFollow={GuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id)}
                                           maximumOrganizationDisplay={this.state.maximum_organization_display} />
               </span> :
               <span /> }

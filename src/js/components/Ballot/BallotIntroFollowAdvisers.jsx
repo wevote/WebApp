@@ -21,19 +21,20 @@ export default class BallotIntroFollowAdvisers extends Component {
     this.state = {
       description_text: "",
       followed_organizations: [],
-      organization_list_from_issues: GuideStore.retrieveGuidesToFollowByIssueFilter(),
-      organization_list_to_follow: GuideStore.toFollowList(),
+      voter_guides_to_follow_by_issues_followed: GuideStore.getVoterGuidesToFollowByIssuesFollowed(),
+      voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll(),
       next_button_text: NEXT_BUTTON_TEXT
     };
-  }
 
-  componentDidMount () {
-    GuideActions.retrieveGuidesToFollowByIssueFilter();
-    GuideActions.retrieveGuidesToFollow(VoterStore.election_id());
-    this._onGuideStoreChange();
     this.onOrganizationFollow = this.onOrganizationFollow.bind(this);
     this.onOrganizationStopFollowing = this.onOrganizationStopFollowing.bind(this);
     this.onNext = this.onNext.bind(this);
+  }
+
+  componentDidMount () {
+    GuideActions.retrieveGuidesToFollowByIssuesFollowed();
+    GuideActions.retrieveGuidesToFollow(VoterStore.election_id());
+    this._onGuideStoreChange();
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
   }
 
@@ -43,8 +44,8 @@ export default class BallotIntroFollowAdvisers extends Component {
 
   _onGuideStoreChange () {
     this.setState({
-      organization_list_from_issues: GuideStore.retrieveGuidesToFollowByIssueFilter(),
-      organization_list_to_follow: GuideStore.toFollowList()
+      voter_guides_to_follow_by_issues_followed: GuideStore.getVoterGuidesToFollowByIssuesFollowed(),
+      voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll()
     });
   }
 
@@ -96,35 +97,35 @@ export default class BallotIntroFollowAdvisers extends Component {
 
   render () {
     // These are the organizations that a voter might want to follow based on the issues the voter is following.
-    let organization_list_from_issues = [];
-    if (this.state.organization_list_from_issues) {
-      organization_list_from_issues = this.state.organization_list_from_issues;
+    let voter_guides_to_follow_by_issues_followed = [];
+    if (this.state.voter_guides_to_follow_by_issues_followed) {
+      voter_guides_to_follow_by_issues_followed = this.state.voter_guides_to_follow_by_issues_followed;
     }
 
-    const organization_list_from_issues_for_display = organization_list_from_issues.map((organization) => {
+    const voter_guides_to_follow_by_issues_for_display = voter_guides_to_follow_by_issues_followed.map((voter_guide) => {
       return <OrganizationFollowToggle
-        key={organization.organization_we_vote_id}
-        organization_we_vote_id={organization.organization_we_vote_id}
-        organization_name={organization.voter_guide_display_name}
-        organization_description={organization.twitter_description}
-        organization_image_url={organization.voter_guide_image_url_medium}
+        key={voter_guide.organization_we_vote_id}
+        organization_we_vote_id={voter_guide.organization_we_vote_id}
+        organization_name={voter_guide.voter_guide_display_name}
+        organization_description={voter_guide.twitter_description}
+        organization_image_url={voter_guide.voter_guide_image_url_medium}
         on_organization_follow={this.onOrganizationFollow}
         on_organization_stop_following={this.onOrganizationStopFollowing}
         />;
     });
 
     // These are organizations based on the upcoming election
-    let organization_list_to_follow = [];
-    if (this.state.organization_list_to_follow) {
-      organization_list_to_follow = this.state.organization_list_to_follow;
+    let voter_guides_to_follow_all = [];
+    if (this.state.voter_guides_to_follow_all) {
+      voter_guides_to_follow_all = this.state.voter_guides_to_follow_all;
     }
-    const organization_list_to_follow_for_display = organization_list_to_follow.map((organization) => {
+    const voter_guides_to_follow_all_for_display = voter_guides_to_follow_all.map((voter_guide) => {
       return <OrganizationFollowToggle
-        key={organization.organization_we_vote_id}
-        organization_we_vote_id={organization.organization_we_vote_id}
-        organization_name={organization.voter_guide_display_name}
-        organization_description={organization.twitter_description}
-        organization_image_url={organization.voter_guide_image_url_medium}
+        key={voter_guide.organization_we_vote_id}
+        organization_we_vote_id={voter_guide.organization_we_vote_id}
+        organization_name={voter_guide.voter_guide_display_name}
+        organization_description={voter_guide.twitter_description}
+        organization_image_url={voter_guide.voter_guide_image_url_medium}
         on_organization_follow={this.onOrganizationFollow}
         on_organization_stop_following={this.onOrganizationStopFollowing}
         />;
@@ -132,12 +133,12 @@ export default class BallotIntroFollowAdvisers extends Component {
 
     return <div className="intro-modal">
       <div className="intro-modal__h1">Follow Organizations</div>
-      { organization_list_from_issues_for_display.length > 0 ?
+      { voter_guides_to_follow_by_issues_for_display.length > 0 ?
         <div>
           <div className="intro-modal-vertical-scroll-contain">
             <div className="intro-modal-vertical-scroll card">
-              { organization_list_from_issues_for_display.length > 0 ?
-                organization_list_from_issues_for_display :
+              { voter_guides_to_follow_by_issues_for_display.length > 0 ?
+                voter_guides_to_follow_by_issues_for_display :
                 <h4>No organizations to display</h4>
               }
             </div>
@@ -153,8 +154,8 @@ export default class BallotIntroFollowAdvisers extends Component {
         <div>
           <div className="intro-modal-vertical-scroll-contain">
             <div className="intro-modal-vertical-scroll card">
-              { organization_list_to_follow_for_display.length > 0 ?
-                organization_list_to_follow_for_display :
+              { voter_guides_to_follow_all_for_display.length > 0 ?
+                voter_guides_to_follow_all_for_display :
                 <h4>No organizations to display</h4>
               }
             </div>

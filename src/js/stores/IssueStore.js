@@ -57,7 +57,7 @@ class IssueStore extends FluxMapStore {
 
       case "issueFollow":
         // When a voter follows or unfollows an issue on the ballot intro modal screen, update the voter guide list
-        GuideActions.retrieveGuidesToFollowByIssueFilter();
+        GuideActions.retrieveGuidesToFollowByIssuesFollowed();
         IssueActions.retrieveIssuesForVoter();
         return state;
 

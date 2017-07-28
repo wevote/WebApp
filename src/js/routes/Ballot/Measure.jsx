@@ -24,10 +24,10 @@ export default class Measure extends Component {
     this.state = {
       measure: {},
       measure_we_vote_id: this.props.params.measure_we_vote_id,
-      // Eventually we could use this toFollowListForBallotItemById with measure_we_vote_id, but we can't now
+      // Eventually we could use this getVoterGuidesToFollowForBallotItemId with measure_we_vote_id, but we can't now
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-      // guides_to_follow_list: GuideStore.toFollowListForBallotItemById(this.props.params.measure_we_vote_id)
-      guides_to_follow_list: GuideStore.toFollowListForBallotItem()
+      // guides_to_follow_list: GuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.measure_we_vote_id)
+      voter_guides_to_follow_for_latest_ballot_item: GuideStore.getVoterGuidesToFollowForLatestBallotItem()
     };
   }
 
@@ -66,9 +66,9 @@ export default class Measure extends Component {
   }
 
   _onGuideStoreChange (){
-    // Eventually we could use this toFollowListForBallotItemById with measure_we_vote_id, but we can't now
+    // Eventually we could use this getVoterGuidesToFollowForBallotItemId with measure_we_vote_id, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-    this.setState({ guides_to_follow_list: GuideStore.toFollowListForBallotItem() });
+    this.setState({ voter_guides_to_follow_for_latest_ballot_item: GuideStore.getVoterGuidesToFollowForLatestBallotItem() });
     MeasureActions.retrieve(this.state.measure_we_vote_id);
   }
 
@@ -109,12 +109,12 @@ export default class Measure extends Component {
               </div> :
               null
             }
-            {this.state.guides_to_follow_list.length === 0 ?
+            {this.state.voter_guides_to_follow_for_latest_ballot_item.length === 0 ?
               <p className="card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
               <div><h3 className="card__additional-heading">{"More opinions about " + this.state.measure.ballot_item_display_name}</h3>
               <GuideList id={electionId}
                          ballotItemWeVoteId={this.state.measure_we_vote_id}
-                         organizationsToFollow={this.state.guides_to_follow_list}/></div>
+                         organizationsToFollow={this.state.voter_guides_to_follow_for_latest_ballot_item}/></div>
             }
           </div>
         </section>;
