@@ -214,6 +214,28 @@ export default class About extends Component {
             </div>
             <div className="col-4 col-sm-3">
               <div className="team-member">
+                <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/Rohan_Bhambhoria-200x200.jpg"
+                              alt="Rohan Bhambhoria"/>
+                <div className="media-body">
+                  <h4 className="team-member__name"><strong>Rohan Bhambhoria</strong></h4>
+                  <p className="team-member__title">Engineering Intern</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-4 col-sm-3">
+              <div className="team-member">
+                <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/Yuanhsin_Chang-200x200.jpg"
+                              alt="Yuanhsin Chang"/>
+                <div className="media-body">
+                  <h4 className="team-member__name"><strong>Yuanhsin Chang</strong></h4>
+                  <p className="team-member__title">User Experience Design Intern</p>
+                </div>
+              </div>
+            </div>
+            <div className="clearfix visible-sm-block visible-md-block visible-lg-block"/>{/* After every 4 */}
+            <div className="col-4 col-sm-3">
+              <div className="team-member">
                 <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/Sarah_Clements-200x200.jpg"
                               alt="Sarah Clements"/>
                 <div className="media-body">
@@ -222,7 +244,16 @@ export default class About extends Component {
                 </div>
               </div>
             </div>
-
+            <div className="col-4 col-sm-3">
+              <div className="team-member">
+                <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/Mansi_Desai-200x200.jpg"
+                              alt="Mansi Desai"/>
+                <div className="media-body">
+                  <h4 className="team-member__name"><strong>Mansi Desai</strong></h4>
+                  <p className="team-member__title">Digital Marketing Intern</p>
+                </div>
+              </div>
+            </div>
             <div className="col-4 col-sm-3">
               <div className="team-member">
                 <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/Irene_Florez-200x200.jpg"
@@ -233,7 +264,6 @@ export default class About extends Component {
                 </div>
               </div>
             </div>
-            <div className="clearfix visible-sm-block visible-md-block visible-lg-block"/>{/* After every 4 */}
             <div className="col-4 col-sm-3">
               <div className="team-member">
                 <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/Jeff_French-200x200.jpg"
@@ -244,6 +274,7 @@ export default class About extends Component {
                 </div>
               </div>
             </div>
+            <div className="clearfix visible-sm-block visible-md-block visible-lg-block"/>{/* After every 4 */}
             <div className="col-4 col-sm-3">
               <div className="team-member">
                 <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/Anisha_Jain-200x200.jpg"
@@ -254,7 +285,6 @@ export default class About extends Component {
                 </div>
               </div>
             </div>
-
             <div className="col-4 col-sm-3">
               <div className="team-member">
                 <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/Judy_Johnson-200x200.jpg"
@@ -275,7 +305,6 @@ export default class About extends Component {
                 </div>
               </div>
             </div>
-            <div className="clearfix visible-sm-block visible-md-block visible-lg-block"/>{/* After every 4 */}
             <div className="col-4 col-sm-3">
               <div className="team-member">
                 <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/Ciero_Kilpatrick-200x200.jpg"
@@ -286,14 +315,44 @@ export default class About extends Component {
                 </div>
               </div>
             </div>
-
+            <div className="clearfix visible-sm-block visible-md-block visible-lg-block"/>{/* After every 4 */}
+            <div className="col-4 col-sm-3">
+              <div className="team-member">
+                <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/Edward_Ly-200x200.jpg"
+                              alt="Edward Ly"/>
+                <div className="media-body">
+                  <h4 className="team-member__name"><strong>Edward Ly</strong></h4>
+                  <p className="team-member__title">Engineering Intern</p>
+                </div>
+              </div>
+            </div>
             <div className="col-4 col-sm-3">
               <div className="team-member">
                 <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/Eric_Ogawa-200x200.jpg"
-                              alt="Eric"/>
+                              alt="Eric Ogawa"/>
                 <div className="media-body">
                   <h4 className="team-member__name"><strong>Eric Ogawa</strong></h4>
                   <p className="team-member__title">User Experience Design Intern</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-4 col-sm-3">
+              <div className="team-member">
+                <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/Steve_Podell-200x200.jpg"
+                              alt="Steve Podell"/>
+                <div className="media-body">
+                  <h4 className="team-member__name"><strong>Steve Podell</strong></h4>
+                  <p className="team-member__title">Volunteer</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-4 col-sm-3">
+              <div className="team-member">
+                <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/Bharath_Reddy-200x200.jpg"
+                              alt="Bharath Reddy"/>
+                <div className="media-body">
+                  <h4 className="team-member__name"><strong>Bharath Reddy</strong></h4>
+                  <p className="team-member__title">Engineering Intern</p>
                 </div>
               </div>
             </div>
