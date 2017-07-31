@@ -44,7 +44,7 @@ module.exports = {
 
   // https://developers.facebook.com/docs/graph-api/reference/v2.6/user
   getFacebookData: function (){
-    window.FB.api("/me?fields=id,email,first_name,middle_name,last_name,cover",(response) => {
+    window.FB.api("/me?fields=id,email,first_name,middle_name,last_name,cover", (response) => {
         Dispatcher.dispatch({
             type: FacebookConstants.FACEBOOK_RECEIVED_DATA,
             data: response
@@ -141,7 +141,7 @@ module.exports = {
     console.log("FacebookActions voterFacebookSignInData, data:", data);
     let background = false;
     if (data.cover && data.cover.source)
-      background = data.cover.source
+      background = data.cover.source;
     Dispatcher.loadEndpoint("voterFacebookSignInSave", {
       facebook_user_id: data.id || false,
       facebook_email: data.email || false,
