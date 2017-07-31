@@ -3,7 +3,7 @@ import PropTypes from "react-proptypes";
 
 const ParsedTwitterDescription = (props) => {
 
-  const parseTextForTwitterLinks = (twitter_description) => {
+  const parseTextForTwitterLinks = (text) => {
     let locations = [];
     let parsedLocations = [];
 
@@ -23,7 +23,7 @@ const ParsedTwitterDescription = (props) => {
         }
       }
     };
-    findHttpsTCo(twitter_description, 0);
+    findHttpsTCo(text, 0);
 
     // use these locations of twitter links to make an array marking all areas of text versus links
     let gapPointer = 0;
@@ -46,8 +46,7 @@ const ParsedTwitterDescription = (props) => {
     <p className="card-main__description">
         {parsedTwitterDescription.map((snippet, i) => {
           snippet.type === "text" ?
-            <span key={i}>&nbsp;{props.twitter_description.slice(snippet.location[0], snippet.location[1])}&nbsp;</span>
-          : 
+            <span key={i}>&nbsp;{props.twitter_description.slice(snippet.location[0], snippet.location[1])}&nbsp;</span> :
             <a
               key={i}
               href={props.twitter_description.slice(snippet.location[0], snippet.location[1])}
