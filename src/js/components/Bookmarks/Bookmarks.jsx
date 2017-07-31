@@ -33,7 +33,7 @@ export default class Bookmarks extends Component {
     if (!this.state.bookmarks){
       return LoadingWheel;
     }
-    var voter_address = VoterStore.getAddress();
+    var text_for_map_search = VoterStore.getTextForMapSearch();
     const election_name = BallotStore.currentBallotElectionName;
     const election_date = BallotStore.currentBallotElectionDate;
     const electionTooltip = election_date ? <Tooltip id="tooltip">Ballot for {election_date}</Tooltip> : <span />;
@@ -44,7 +44,7 @@ export default class Bookmarks extends Component {
           <h1 className="h1 ballot__election-name">{election_name}</h1>
         </OverlayTrigger>
         <p className="ballot__date_location">
-          {voter_address}
+          {text_for_map_search}
           <span> (<Link to="/settings/location">Edit</Link>)</span>
         </p>
         <div className="ballot__filter"><BallotFilter ballot_type="BOOKMARKS" /></div>

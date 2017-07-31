@@ -16,7 +16,7 @@ export default class OpinionsFollowed extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      voter_guide_followed_list: GuideStore.followedList(),
+      voter_guide_followed_list: GuideStore.getVoterGuidesVoterIsFollowing(),
       editMode: false
     };
   }
@@ -31,11 +31,9 @@ export default class OpinionsFollowed extends Component {
   }
 
   _onGuideStoreChange (){
-    var list = GuideStore.followedList();
-
-    if (list !== undefined && list.length > 0){
-      this.setState({ voter_guide_followed_list: GuideStore.followedList() });
-    }
+    this.setState({ 
+      voter_guide_followed_list: GuideStore.getVoterGuidesVoterIsFollowing() 
+    });
   }
 
   getCurrentRoute (){

@@ -97,7 +97,7 @@ export default class Application extends Component {
   _onVoterStoreChange () {
     this.setState({
       voter: VoterStore.getVoter(),
-      location: VoterStore.getAddress()
+      text_for_map_search: VoterStore.getTextForMapSearch()
     });
   }
 
@@ -107,7 +107,7 @@ export default class Application extends Component {
 
   render () {
     var { location: { pathname }} = this.props;
-    var { voter, location } = this.state;
+    var { voter, text_for_map_search } = this.state;
     const headRoomSize = pathname === "/ballot" ?
       "headroom-getting-started__margin" :
       "headroom-wrapper";

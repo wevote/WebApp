@@ -47,11 +47,9 @@ export default class VoterGuideFollowers extends Component {
    }
 
   _onGuideStoreChange (){
-    var list = GuideStore.followersList();
-
-    if (list !== undefined){
-      this.setState({ voter_guide_followers_list: GuideStore.followersList() });
-    }
+    this.setState({ 
+      voter_guide_followers_list: GuideStore.getVoterGuidesFollowingLatestOrganization()
+    });
   }
 
   searchFollowers (event) {

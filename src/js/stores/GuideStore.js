@@ -10,8 +10,8 @@ class GuideStore extends FluxMapStore {
   getInitialState () {
     return {
       ballot_has_guides: true,
-      following: [],
-      followedByOrganization: [],
+      organization_we_vote_ids_voter_is_following: [],
+      organization_we_vote_ids_followed_by_latest_organization: [], // organization_we_vote_ids_followed_by_latest_organization
       followers: [],
       followingOnTwitter: [],
       ignoring: [],
@@ -19,6 +19,7 @@ class GuideStore extends FluxMapStore {
       organization_we_vote_ids_to_follow_ballot_items_dict: {}, // This is a dictionary with ballot_item_we_vote_id as key and list of organization we_vote_ids as value
       organization_we_vote_ids_to_follow_for_latest_ballot_item: [], // stores organization_we_vote_ids for latest ballot_item_we_vote_id
       organization_we_vote_ids_to_follow_by_issues_followed: [],
+      organization_we_vote_ids_to_follow_organization_recommendations: {}, // This is a dictionary with organization_we_vote_id as key and list of organization_we_vote_id's as value
       all_cached_voter_guides: {}, // This is a dictionary with organization_we_vote_id as key and the voter_guide as value
       all_cached_organizations_followed: {}
     };
@@ -76,16 +77,20 @@ class GuideStore extends FluxMapStore {
   getVoterGuidesToFollowByIssuesFollowed () {
     return this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_to_follow_by_issues_followed) || [];
   }
-
-  followedList (){
-    return this.returnVoterGuidesFromListOfIds(this.getState().following) || [];
+  
+  getVoterGuidesToFollowByOrganizationRecommendation (recommending_organization_we_vote_id) {
+    return this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_to_follow_organization_recommendations[recommending_organization_we_vote_id]) || [];
   }
 
-  followedByOrganizationList (){
-    return this.returnVoterGuidesFromListOfIds(this.getState().followedByOrganization) || [];
+  getVoterGuidesVoterIsFollowing (){
+    return this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_voter_is_following) || [];
   }
 
-  followersList (){
+  getVoterGuidesFollowedByLatestOrganization (){
+    return this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_followed_by_latest_organization) || [];
+  }
+
+  getVoterGuidesFollowingLatestOrganization (){
     return this.returnVoterGuidesFromListOfIds(this.getState().followers) || [];
   }
 
@@ -98,7 +103,7 @@ class GuideStore extends FluxMapStore {
   }
 
   isFollowing (we_vote_id){
-    return this.getState().following.filter( existing_org_we_vote_id => { return existing_org_we_vote_id === we_vote_id; }).length > 0;
+    return this.getState().organization_we_vote_ids_voter_is_following.filter( existing_org_we_vote_id => { return existing_org_we_vote_id === we_vote_id; }).length > 0;
   }
 
   reduce (state, action) {
@@ -236,28 +241,28 @@ class GuideStore extends FluxMapStore {
       case "voterGuidesFollowedRetrieve":
         voter_guides = action.res.voter_guides;
         all_cached_voter_guides = state.all_cached_voter_guides;
-        var following = [];
+        var organization_we_vote_ids_voter_is_following = [];
         voter_guides.forEach( one_voter_guide => {
           all_cached_voter_guides[one_voter_guide.organization_we_vote_id] = one_voter_guide;
-          following.push(one_voter_guide.organization_we_vote_id);
+          organization_we_vote_ids_voter_is_following.push(one_voter_guide.organization_we_vote_id);
         });
         return {
           ...state,
-          following: following,
+          organization_we_vote_ids_voter_is_following: organization_we_vote_ids_voter_is_following,
           all_cached_voter_guides: all_cached_voter_guides
         };
 
       case "voterGuidesFollowedByOrganizationRetrieve":
         voter_guides = action.res.voter_guides;
         all_cached_voter_guides = state.all_cached_voter_guides;
-        var followedByOrganization = [];
+        var organization_we_vote_ids_followed_by_latest_organization = [];
         voter_guides.forEach( one_voter_guide => {
           all_cached_voter_guides[one_voter_guide.organization_we_vote_id] = one_voter_guide;
-          followedByOrganization.push(one_voter_guide.organization_we_vote_id);
+          organization_we_vote_ids_followed_by_latest_organization.push(one_voter_guide.organization_we_vote_id);
         });
         return {
           ...state,
-          followedByOrganization: followedByOrganization,
+          organization_we_vote_ids_followed_by_latest_organization: organization_we_vote_ids_followed_by_latest_organization,
           all_cached_voter_guides: all_cached_voter_guides
         };
 
@@ -317,7 +322,7 @@ class GuideStore extends FluxMapStore {
         SupportActions.positionsCountForAllBallotItems();  // Following one org can change the support/oppose count for many items
         return {
           ...state,
-          following: state.following.concat(organization_we_vote_id),
+          organization_we_vote_ids_voter_is_following: state.organization_we_vote_ids_voter_is_following.concat(organization_we_vote_id),
           organization_we_vote_ids_to_follow_all: state.organization_we_vote_ids_to_follow_all.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; }),
           organization_we_vote_ids_to_follow_for_latest_ballot_item: state.organization_we_vote_ids_to_follow_for_latest_ballot_item.filter(existing_org_we_vote_id => {return existing_org_we_vote_id !== organization_we_vote_id; }),
           // Add organization_we_vote_ids_to_follow_for_latest_ballot_item here
@@ -332,7 +337,7 @@ class GuideStore extends FluxMapStore {
         SupportActions.positionsCountForAllBallotItems();
         return {
           ...state,
-          following: state.following.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; }),
+          organization_we_vote_ids_voter_is_following: state.organization_we_vote_ids_voter_is_following.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; }),
           organization_we_vote_ids_to_follow_all: state.organization_we_vote_ids_to_follow_all.concat(id)
         };
 
@@ -347,7 +352,7 @@ class GuideStore extends FluxMapStore {
           organization_we_vote_ids_to_follow_all: state.organization_we_vote_ids_to_follow_all.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; }),
           organization_we_vote_ids_to_follow_for_latest_ballot_item: state.organization_we_vote_ids_to_follow_for_latest_ballot_item.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; }),
           // Add organization_we_vote_ids_to_follow_for_latest_ballot_item here
-          following: state.following.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; })
+          organization_we_vote_ids_voter_is_following: state.organization_we_vote_ids_voter_is_following.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; })
         };
 
       case "error-organizationFollowIgnore" || "error-organizationFollow":
