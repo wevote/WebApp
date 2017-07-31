@@ -44,7 +44,7 @@ module.exports = {
 
   // https://developers.facebook.com/docs/graph-api/reference/v2.6/user
   getFacebookData: function (){
-    window.FB.api("/me?fields=id,email,first_name,middle_name,last_name", (response) => {
+    window.FB.api("/me?fields=id,email,first_name,middle_name,last_name,cover", (response) => {
         Dispatcher.dispatch({
             type: FacebookConstants.FACEBOOK_RECEIVED_DATA,
             data: response
@@ -118,6 +118,7 @@ module.exports = {
       });
   },
 
+  // July 2017: Not called from anywhere
   savePhoto: function (url){
     Dispatcher.loadEndpoint("voterPhotoSave", { facebook_profile_image_url_https: url } );
   },
@@ -138,6 +139,9 @@ module.exports = {
   // Save incoming data from Facebook
   voterFacebookSignInData: function (data) {
     console.log("FacebookActions voterFacebookSignInData, data:", data);
+    let background = false;
+    if (data.cover && data.cover.source)
+      background = data.cover.source
     Dispatcher.loadEndpoint("voterFacebookSignInSave", {
       facebook_user_id: data.id || false,
       facebook_email: data.email || false,
@@ -145,6 +149,7 @@ module.exports = {
       facebook_middle_name: data.middle_name || false,
       facebook_last_name: data.last_name || false,
       facebook_profile_image_url_https: data.url || false,
+      facebook_background_image_url_https: background,
       save_auth_data: false,
       save_profile_data: true
     });
