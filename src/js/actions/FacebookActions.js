@@ -44,7 +44,7 @@ module.exports = {
 
   // https://developers.facebook.com/docs/graph-api/reference/v2.6/user
   getFacebookData: function (){
-    window.FB.api("/me?fields=id,email,first_name,middle_name,last_name,cover", (response) => {
+    window.FB.api("/me?fields=id,email,first_name,middle_name,last_name,cover",(response) => {
         Dispatcher.dispatch({
             type: FacebookConstants.FACEBOOK_RECEIVED_DATA,
             data: response
