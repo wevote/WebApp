@@ -271,11 +271,11 @@ export default class Ballot extends Component {
 
   render () {
     let ballot = this.state.ballot;
-    let voter_address = VoterStore.getAddress();
+    let text_for_map_search = VoterStore.getTextForMapSearch();
     let voter_address_object = VoterStore.getAddressObject();
 
     if (!ballot) {
-      if (voter_address.length === 0) {
+      if (text_for_map_search.length === 0) {
         return <div className="ballot">
           { this.state.showBallotIntroModal ?
             <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this._toggleBallotIntroModal} /> : null }
@@ -287,7 +287,7 @@ export default class Ballot extends Component {
           </div>
         </div>;
       } else {
-        // console.log("Loading Wheel " + "voter_address " + voter_address + " ballot " + ballot + " location " + this.props.location);
+        // console.log("Loading Wheel " + "text_for_map_search " + text_for_map_search + " ballot " + ballot + " location " + this.props.location);
         return <div className="ballot">
           { this.state.showBallotIntroModal ?
             <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this._toggleBallotIntroModal} /> : null }
@@ -354,7 +354,7 @@ export default class Ballot extends Component {
           </OverlayTrigger> :
           null }
         <EditAddress address={voter_address_object} _toggleSelectAddressModal={this._toggleSelectAddressModal} />
-        {voter_address ?
+        {text_for_map_search ?
           <div className="ballot__filter hidden-print"><BallotFilter ballot_type={this.getBallotType()} /> (<a onClick={this._toggleBallotIntroModal}>show intro</a>)</div> :
           null}
           <div className="visible-xs-block hidden-print">

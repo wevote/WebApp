@@ -34,7 +34,7 @@ class VoterStore extends FluxMapStore {
     return this.getState().address.google_civic_election_id;
   }
 
-  getAddress (){
+  getTextForMapSearch (){
     return this.getState().address.text_for_map_search || "";
   }
 

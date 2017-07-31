@@ -17,7 +17,7 @@ export default class AddressBox extends Component {
       super(props);
       this.state = {
         loading: false,
-        voter_address: "",
+        text_for_map_search: "",
         ballotCaveat: "",
       };
 
@@ -28,7 +28,7 @@ export default class AddressBox extends Component {
 
   componentDidMount () {
     this.setState({
-      voter_address: VoterStore.getAddress(),
+      text_for_map_search: VoterStore.getTextForMapSearch(),
       ballotCaveat: BallotStore.getBallotCaveat()
     });
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
@@ -48,10 +48,13 @@ export default class AddressBox extends Component {
     if (this.props._toggleSelectAddressModal){
        this.props._toggleSelectAddressModal();
      }
-    if (this.state.voter_address){
+    if (this.state.text_for_map_search){
       browserHistory.push(this.props.saveUrl);
     } else {
-      this.setState({ voter_address: VoterStore.getAddress(), loading: false });
+      this.setState({ 
+        text_for_map_search: VoterStore.getTextForMapSearch(), 
+        loading: false 
+      });
     }
   }
 
@@ -67,17 +70,17 @@ export default class AddressBox extends Component {
     let place = addressAutocomplete.getPlace();
     if (place.formatted_address) {
       this.setState({
-        voter_address: place.formatted_address
+        text_for_map_search: place.formatted_address
       });
     } else {
       this.setState({
-        voter_address: place.name
+        text_for_map_search: place.name
       });
     }
   }
 
   updateVoterAddress (event) {
-    this.setState({voter_address: event.target.value});
+    this.setState({text_for_map_search: event.target.value});
   }
 
   handleKeyPress (event) {
@@ -85,7 +88,7 @@ export default class AddressBox extends Component {
     if (event.keyCode === ENTER_KEY_CODE) {
       event.preventDefault();
       setTimeout(() => {
-        VoterActions.voterAddressSave(this.state.voter_address);
+        VoterActions.voterAddressSave(this.state.text_for_map_search);
         this.setState({loading: true});
       }, 250);
     }
@@ -93,7 +96,7 @@ export default class AddressBox extends Component {
 
   voterAddressSave (event) {
     event.preventDefault();
-    VoterActions.voterAddressSave(this.state.voter_address);
+    VoterActions.voterAddressSave(this.state.text_for_map_search);
     this.setState({loading: true});
   }
 
@@ -105,7 +108,7 @@ export default class AddressBox extends Component {
         <form onSubmit={this.voterAddressSave}>
           <input
             type="text"
-            value={this.state.voter_address}
+            value={this.state.text_for_map_search}
             onKeyDown={this.handleKeyPress}
             onChange={this.updateVoterAddress}
             name="address"

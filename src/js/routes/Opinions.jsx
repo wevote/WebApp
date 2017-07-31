@@ -18,21 +18,22 @@ export default class Opinions extends Component {
   constructor (props){
     super(props);
     this.state = {
-      voter_guides_to_follow_all: [],
-      ballot_has_guides: null
+      ballot_has_guides: GuideStore.ballotHasGuides(),
+      text_for_map_search: VoterStore.getTextForMapSearch(),
+      voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll(),
     };
   }
 
   componentDidMount () {
-    this._onGuideStoreChange();
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
   }
 
   _onGuideStoreChange () {
     this.setState({
-      voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll(),
       ballot_has_guides: GuideStore.ballotHasGuides(),
-      address: VoterStore.getAddress() });
+      text_for_map_search: VoterStore.getTextForMapSearch(),
+      voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll(),
+    });
   }
 
   componentWillUnmount (){
@@ -55,13 +56,13 @@ export default class Opinions extends Component {
   }
 
   render () {
-    const { ballot_has_guides, voter_guides_to_follow_all, address } = this.state;
+    const { ballot_has_guides, voter_guides_to_follow_all, text_for_map_search } = this.state;
     let guides;
     var floatRight = {
         float: "right"
     };
 
-    if ( address === "" ){
+    if ( text_for_map_search === "" ){
       guides = <div>
           <span style={floatRight}>
               <Link to="/settings/location"><Button bsStyle="primary">Enter your address &#x21AC;</Button></Link>

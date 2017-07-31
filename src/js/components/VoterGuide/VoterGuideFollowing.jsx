@@ -19,7 +19,7 @@ export default class VoterGuideFollowing extends Component {
       search_filter: false,
       search_term: "",
       voter: VoterStore.getVoter(),
-      voter_guide_followed_list: GuideStore.followedByOrganizationList(),
+      voter_guide_followed_list: GuideStore.getVoterGuidesFollowedByLatestOrganization(),
       voter_guide_followed_list_filtered_by_search: [],
     };
   }
@@ -50,11 +50,9 @@ export default class VoterGuideFollowing extends Component {
    }
 
   _onGuideStoreChange (){
-    var list = GuideStore.followedByOrganizationList();
-
-    if (list !== undefined){
-      this.setState({ voter_guide_followed_list: GuideStore.followedByOrganizationList() });
-    }
+    this.setState({
+      voter_guide_followed_list: GuideStore.getVoterGuidesFollowedByLatestOrganization()
+    });
   }
 
   searchFollowingVoterGuides (event) {

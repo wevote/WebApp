@@ -18,8 +18,8 @@ export default class OrganizationVoterGuideTabs extends Component {
     super(props);
     this.state = {
       organization: this.props.organization,
-      voter_guide_followed_list: GuideStore.followedByOrganizationList(),
-      voter_guide_followers_list: GuideStore.followersList(),
+      voter_guide_followed_list: GuideStore.getVoterGuidesFollowedByLatestOrganization(),
+      voter_guide_followers_list: GuideStore.getVoterGuidesFollowingLatestOrganization(),
     };
   }
 
@@ -36,8 +36,8 @@ export default class OrganizationVoterGuideTabs extends Component {
     GuideActions.voterGuideFollowersRetrieve(nextProps.organization.organization_we_vote_id);
     this.setState({
       organization: nextProps.organization,
-      voter_guide_followed_list: GuideStore.followedByOrganizationList(),
-      voter_guide_followers_list: GuideStore.followersList(),
+      voter_guide_followed_list: GuideStore.getVoterGuidesFollowedByLatestOrganization(),
+      voter_guide_followers_list: GuideStore.getVoterGuidesFollowingLatestOrganization(),
     });
   }
 
@@ -48,8 +48,8 @@ export default class OrganizationVoterGuideTabs extends Component {
 
   _onGuideStoreChange (){
     this.setState({
-      voter_guide_followed_list: GuideStore.followedByOrganizationList(),
-      voter_guide_followers_list: GuideStore.followersList()
+      voter_guide_followed_list: GuideStore.getVoterGuidesFollowedByLatestOrganization(),
+      voter_guide_followers_list: GuideStore.getVoterGuidesFollowingLatestOrganization()
     });
   }
 

@@ -6,6 +6,7 @@ import BallotStore from "../../stores/BallotStore";
 import LoadingWheel from "../LoadingWheel";
 import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationPositionItem from "./OrganizationPositionItem";
+import VoterGuideRecommendationsFromOneOrganization from "./VoterGuideRecommendationsFromOneOrganization";
 import VoterStore from "../../stores/VoterStore";
 
 export default class VoterGuidePositions extends Component {
@@ -66,11 +67,6 @@ export default class VoterGuidePositions extends Component {
   }
 
   render () {
-    let looking_at_self = false;
-    if (this.state.voter) {
-      looking_at_self = this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id;
-    }
-
     const { organization_id, position_list_for_one_election, position_list_for_all_except_one_election } = this.state.organization;
     if (!organization_id) {
       return <div className="card">
@@ -78,6 +74,11 @@ export default class VoterGuidePositions extends Component {
             <h4 className="h4">Voter guide not found.</h4>
           </div>
         </div>;
+    }
+
+    let looking_at_self = false;
+    if (this.state.voter) {
+      looking_at_self = this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id;
     }
 
     const election_name = BallotStore.currentBallotElectionName;
@@ -94,7 +95,7 @@ export default class VoterGuidePositions extends Component {
               />
       <div className="card">
         <ul className="card-child__list-group">
-          { looking_at_self && (at_least_one_position_found_for_this_election || at_least_one_position_found_for_other_elections) ?
+          { looking_at_self && at_least_one_position_found_for_this_election ?
             <a className="fa-pull-right u-push--md"
                tabIndex="0"
                onKeyDown={this.onKeyDownEditMode.bind(this)}
@@ -125,12 +126,17 @@ export default class VoterGuidePositions extends Component {
             <div className="card-child__content-text">
               { looking_at_self ?
                 <div>You have not taken any positions yet for this election.
-                  Click 'Ballot' in the top navigation bar to see items you can support or oppose.
+                  Click 'Ballot' in the top navigation bar to see items you can support or oppose.<br />
+                  <br />
+                  <span>Until you take positions for this voter guide, we will recommend visitors look at any other voter guides you are following. </span>
+                  <VoterGuideRecommendationsFromOneOrganization organization_we_vote_id={this.state.organization.organization_we_vote_id} />
                 </div> :
                 <div>
                   There are no positions for this election in this voter guide yet.<br />
-                  TODO Add search all<br />
-                  TODO List all elections this organization has a voter guide for.
+                  <br />
+                  <VoterGuideRecommendationsFromOneOrganization organization_we_vote_id={this.state.organization.organization_we_vote_id} />
+                  {/* TODO Add search all */}
+                  {/* TODO List all elections this organization has a voter guide for. */}
                 </div> }
             </div>
           }
@@ -143,6 +149,12 @@ export default class VoterGuidePositions extends Component {
           <ul className="card-child__list-group">
           { position_list_for_all_except_one_election.length && !at_least_one_position_found_for_this_election ?
             <span>
+            { looking_at_self ?
+              <a className="fa-pull-right u-push--md"
+                 tabIndex="0"
+                 onKeyDown={this.onKeyDownEditMode.bind(this)}
+                 onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit Positions"}</a> :
+              null }
               <h4 className="card__additional-heading">Positions for Other Elections</h4>
               { position_list_for_all_except_one_election.map( item => {
                 return <OrganizationPositionItem key={item.position_we_vote_id}
