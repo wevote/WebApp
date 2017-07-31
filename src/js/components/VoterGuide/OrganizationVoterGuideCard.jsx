@@ -36,7 +36,7 @@ export default class OrganizationVoterGuideCard extends Component {
 
     return <div className="card-main">
         <Link to={voterGuideLink} className="u-no-underline">
-          <img src={organization_photo_url_large} width="180" height="180"/>
+          <img src={organization_photo_url_large} height="180"/>
         </Link>
         <br />
         <Link to={voterGuideLink}>
