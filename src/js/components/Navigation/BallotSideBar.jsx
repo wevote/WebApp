@@ -36,12 +36,12 @@ export default class BallotSideBar extends Component {
 
   _sortBallots (unsorted) {
     // temporary array holds objects with position and sort-value
-    let mapped = unsorted.map(function (item, i) {
+    let mapped = unsorted.map( (item, i) => {
       return { index: i, value: item };
     });
 
     // sorting the mapped array based on local_ballot_order which came from the server
-    mapped.sort(function (a, b) {
+    mapped.sort( (a, b) => {
       return +(parseInt(a.value.local_ballot_order) > parseInt(b.value.local_ballot_order)) ||
         +(parseInt(a.value.local_ballot_order) === parseInt(b.value.local_ballot_order)) - 1;
     });
@@ -68,8 +68,8 @@ export default class BallotSideBar extends Component {
       return <div className="u-inset__v--md" >
         <div className="container-fluid card">
           {this.props.displayTitle ?
-            <div className="BallotItem__summary-title" >Summary of Ballot Items</div > : null }
-          {this.state.ballot.map(function (item, key) {
+            <div className="BallotItem__summary-title" >Summary of Ballot Items</div> : null }
+          {this.state.ballot.map( (item, key) => {
             if (item.kind_of_ballot_item === "OFFICE" || item.kind_of_ballot_item === "MEASURE") {
               return <div key={key}>
                 <BallotSideBarLink url={"#" + item.we_vote_id}
@@ -77,7 +77,7 @@ export default class BallotSideBar extends Component {
                                    subtitle={item.measure_subtitle}
                                    displaySubtitles={displaySubtitles}
                                    onClick={click} />
-            </div>;
+              </div>;
             } else {
               return <span />;
             }
@@ -94,4 +94,3 @@ export default class BallotSideBar extends Component {
     }
   }
 }
-
