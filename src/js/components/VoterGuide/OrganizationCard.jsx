@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
+import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
 import ImageHandler from "../../components/ImageHandler";
 import LoadingWheel from "../../components/LoadingWheel";
 import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
@@ -45,7 +46,9 @@ export default class OrganizationCard extends Component {
           <h3 className="card-main__display-name">{displayName}</h3>
         </Link>
         { twitterDescriptionMinusName && !this.props.turn_off_description ?
-          <p className="card-main__description">{twitterDescriptionMinusName}</p> :
+          <ParsedTwitterDescription
+            twitter_description={twitterDescriptionMinusName}
+          /> :
           <p className="card-main__description" />
         }
         <div>
