@@ -353,7 +353,7 @@ export default class Ballot extends Component {
                                                                     onClick={this._toggleSelectBallotModal}
                                                                     alt={"view your ballots"}/> : null}
               </h1>
-              <span className="hidden-xs hidden-print pull-right" style={{marginTop: "24px"}}>
+              <span className="hidden-xs hidden-print pull-right" style={{margin: "28px 28px 0 0"}}>
                 <EditAddress address={voter_address_object} _toggleSelectAddressModal={this._toggleSelectAddressModal} />
               </span>
             </header>
