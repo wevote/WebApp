@@ -5,7 +5,7 @@
 
   &__header-group {
     display: block;
-    border-bottom: 0px solid $black;
+    border-bottom: 0 solid $black;
   }
 
   &__heading {
@@ -17,6 +17,6 @@
   }
 
   &__header-address {
-    margin: 28px 28px 0 0;
+    margin: $space-lg $space-lg 0 0;
   }
 }
