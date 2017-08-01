@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
 import ImageHandler from "../../components/ImageHandler";
 import { abbreviateNumber, numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
 
@@ -35,7 +36,9 @@ export default class TwitterAccountCard extends Component {
             <div className="card-main__media-object-content">
               <div className="card-main__display-name">{displayName}</div>
               { twitterDescriptionMinusName ?
-                <p className="card-main__description">{twitterDescriptionMinusName}</p> :
+                <ParsedTwitterDescription
+                  twitter_description={twitterDescriptionMinusName}
+                /> :
                 null
               }
               { twitter_handle ?
