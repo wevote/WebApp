@@ -345,15 +345,15 @@ export default class Ballot extends Component {
         <BrowserPushMessage incomingProps={this.props} />
         { election_name ?
           <OverlayTrigger placement="top" overlay={electionTooltip} >
-            <header style={{display: "block", borderBottom: "0px solid #000"}}>
-              <h1 className="h1 ballot__election-name" style={{display: "inline-block"}}>
+            <header className="ballot__header-group">
+              <h1 className="h1 ballot__election-name ballot__header-title">
                  <span className="u-push--sm">{election_name}</span>
                  {this.state.ballotElectionList.length > 1 ? <img src={"/img/global/icons/gear-icon.png"}
                                                                     className="hidden-print" role="button"
                                                                     onClick={this._toggleSelectBallotModal}
                                                                     alt={"view your ballots"}/> : null}
               </h1>
-              <span className="hidden-xs hidden-print pull-right" style={{margin: "28px 28px 0 0"}}>
+              <span className="hidden-xs hidden-print pull-right ballot__header-address">
                 <EditAddress address={voter_address_object} _toggleSelectAddressModal={this._toggleSelectAddressModal} />
               </span>
             </header>

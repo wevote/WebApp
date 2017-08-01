@@ -1,0 +1,22 @@
+.ballot {
+  &__election-name {
+    // TODO either add some properties to this class or delete it
+  }
+
+  &__header-group {
+    display: block;
+    border-bottom: 0px solid $black;
+  }
+
+  &__heading {
+    background-color: $white;
+  }
+
+  &__header-title {
+    display: inline-block;
+  }
+
+  &__header-address {
+    margin: 28px 28px 0 0;
+  }
+}

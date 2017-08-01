@@ -81,10 +81,11 @@
 }
 
 .BallotItemsSummary {
+  background-color: $app-background-color;
   padding-top: $space-md;
   // Has the result of float center
-  //float: right;
-  //position: relative;
-  //left: -50%;
+  // float: right;
+  // position: relative;
+  // left: -50%;
   text-align: center;
 }
