@@ -64,30 +64,29 @@ export default class BallotSideBar extends Component {
   render () {
     let displaySubtitles = this.props.displaySubtitles;
     let click = this.handleClick;
-    if (this.state.ballot && this.state.ballot.length > 0) {
-      return <div className="u-inset__v--md" >
-        <div className="container-fluid card">
-          {this.props.displayTitle ?
-            <div className="BallotItem__summary-title" >Summary of Ballot Items</div> : null }
-          {this.state.ballot.map( (item, key) => {
-            if (item.kind_of_ballot_item === "OFFICE" || item.kind_of_ballot_item === "MEASURE") {
-              return <div key={key}>
-                <BallotSideBarLink url={"#" + item.we_vote_id}
-                                   label={item.ballot_item_display_name}
-                                   subtitle={item.measure_subtitle}
-                                   displaySubtitles={displaySubtitles}
-                                   onClick={click} />
-              </div>;
-            } else {
-              return <span />;
-            }
-          })}
-          <h4 className="text-left" />
-          <span className="terms-and-privacy">
-            <br />
-            <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy Policy</Link>
-          </span>
-        </div>
+    let ballot = this.state.ballot;
+    if (ballot && ballot.length) {
+      return <div className="container-fluid card">
+        {this.props.displayTitle ?
+          <div className="BallotItem__summary-title" >Summary of Ballot Items</div> : null }
+        {ballot.map( (item, key) => {
+          if (item.kind_of_ballot_item === "OFFICE" || item.kind_of_ballot_item === "MEASURE") {
+            return <div key={key}>
+              <BallotSideBarLink url={"#" + item.we_vote_id}
+                                 label={item.ballot_item_display_name}
+                                 subtitle={item.measure_subtitle}
+                                 displaySubtitles={displaySubtitles}
+                                 onClick={click} />
+            </div>;
+          } else {
+            return <span />;
+          }
+        })}
+        <h4 className="text-left" />
+        <span className="terms-and-privacy">
+          <br />
+          <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy Policy</Link>
+        </span>
       </div>;
     } else {
       return <div />;
