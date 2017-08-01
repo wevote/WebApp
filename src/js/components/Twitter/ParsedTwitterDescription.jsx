@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const ParsedTwitterDescription = (props) => {
-
+  console.log('the text', props.twitter_description);
   const parseTextForTwitterLinks = (text) => {
     let locations = [];
     let parsedLocations = [];
@@ -27,15 +27,19 @@ const ParsedTwitterDescription = (props) => {
 
     // use these locations of twitter links to make an array marking all areas of text versus links
     let gapPointer = 0;
-    locations.forEach((location) => {
-      if (location[0] !== gapPointer) {
-        parsedLocations.push({type: "text", location: [gapPointer, location[0] - 1]});
+    if (!locations.length) {
+      parsedLocations.push({type: "text", location: [0, text.length]});
+    } else {
+      locations.forEach((location) => {
+        if (location[0] !== gapPointer) {
+          parsedLocations.push({type: "text", location: [gapPointer, location[0] - 1]});
+        }
+        parsedLocations.push({type: "link", location: [location[0], location[1]]});
+        gapPointer = location[1] + 1;
+      });
+      if (locations[locations.length - 1][1] < text.length - 1) {
+        parsedLocations.push({type: "text", location: [locations[locations.length - 1][1] + 1, text.length]});
       }
-      parsedLocations.push({type: "link", location: [location[0], location[1]]});
-      gapPointer = location[1] + 1;
-    });
-    if (locations[locations.length - 1][1] < text.length - 1) {
-      parsedLocations.push({type: "text", location: [locations[locations.length - 1][1] + 1, text.length]});
     }
     return parsedLocations;
   };
@@ -46,14 +50,16 @@ const ParsedTwitterDescription = (props) => {
     <p className="card-main__description">
         {parsedTwitterDescription.map((snippet, i) => (
           snippet.type === "text" ?
-            <span key={i}>&nbsp;{props.twitter_description.slice(snippet.location[0], snippet.location[1])}&nbsp;+checking</span> :
-            <a
-              key={i}
-              href={props.twitter_description.slice(snippet.location[0], snippet.location[1])}
-              target={props.twitter_description.slice(snippet.location[0] + 8, snippet.location[1])}
-            >
-              {props.twitter_description.slice(snippet.location[0], snippet.location[1])}
-            </a>
+            <span key={i}>{props.twitter_description.slice(snippet.location[0], snippet.location[1])}&nbsp;</span> :
+            <span>
+              <a
+                key={i}
+                href={props.twitter_description.slice(snippet.location[0], snippet.location[1])}
+                target={props.twitter_description.slice(snippet.location[0] + 8, snippet.location[1])}
+              >
+                {props.twitter_description.slice(snippet.location[0], snippet.location[1])}
+              </a>&nbsp;
+            </span>
         ))}
     </p>
   );
