@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import BallotSideBar from "./components/Navigation/BallotSideBar";
 import FriendActions from "./actions/FriendActions";
 import HeaderBar from "./components/Navigation/HeaderBar";
 import HeaderGettingStartedBar from "./components/Navigation/HeaderGettingStartedBar";
@@ -185,16 +184,8 @@ export default class Application extends Component {
                 { this.props.children }
               </div> :
               <div className="row">
-                <div className="col-md-8 container-main">
+                <div className="col-md-12 container-main">
                   { this.props.children }
-                </div>
-                <div className="col-md-4 hidden-xs sidebar-menu">
-                  {/* Depending on which page we are on, show a different left area. */}
-                  { pathname === "/ballot" ?
-                    <div>
-                      <BallotSideBar displayTitle displaySubtitles />
-                    </div> :
-                    null }
                 </div>
               </div> }
           </div>
