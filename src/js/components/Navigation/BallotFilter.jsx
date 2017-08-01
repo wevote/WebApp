@@ -11,19 +11,24 @@ export default class BallotFilter extends Component {
   render () {
     const {ballot_type} = this.props;
 
-    return <div className="btn-group">
-      <Link to="/ballot" className={ ballot_type === "ALL_BALLOT_ITEMS" ? "active btn btn-default" : "btn btn-default"}>
-        <span>All Items</span>
-      </Link>
+    return <ul className="nav nav-tabs">
+      <li className="active">
+        <Link to="/ballot" className={ballot_type === "ALL_BALLOT_ITEMS" ? "active btn btn-default" : "btn btn-default"}>
+          <span>All Items</span>
+        </Link>
+      </li>
 
-      <Link to={{ pathname: "/ballot", query: { type: "filterRemaining" } }} className={"hidden-xs " + (ballot_type === "CHOICES_REMAINING" ? "active btn btn-default" : "btn btn-default")}>
-        <span>Remaining Decisions</span>
-      </Link>
+      <li>
+        <Link to={{ pathname: "/ballot", query: { type: "filterRemaining" } }} className={ballot_type === "CHOICES_REMAINING" ? "active btn btn-default" : "btn btn-default"}>
+          <span>Remaining Decisions</span>
+        </Link>
+      </li>
 
-      <Link to={{ pathname: "/ballot", query: { type: "filterReadyToVote" } }} className={ ballot_type === "READY_TO_VOTE" ? "active btn btn-default" : "btn btn-default"}>
-        <span>Vote!</span>
-      </Link>
-
-    </div>;
+      <li>
+        <Link to={{ pathname: "/ballot", query: { type: "filterReadyToVote" } }} className={ ballot_type === "READY_TO_VOTE" ? "active btn btn-default" : "btn btn-default"}>
+          <span>Vote!</span>
+        </Link>
+      </li>
+    </ul>;
   }
 }
