@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const ParsedTwitterDescription = (props) => {
-  console.log('the text', props.twitter_description);
   const parseTextForTwitterLinks = (text) => {
     let locations = [];
     let parsedLocations = [];
@@ -48,19 +47,27 @@ const ParsedTwitterDescription = (props) => {
 
   return (
     <p className="card-main__description">
-        {parsedTwitterDescription.map((snippet, i) => (
+      {
+        //eslint-disable-next-line no-extra-parens
+        parsedTwitterDescription.map((snippet, i) => (
           snippet.type === "text" ?
-            <span key={i}>{props.twitter_description.slice(snippet.location[0], snippet.location[1])}&nbsp;</span> :
-            <span>
+            <span
+              key={i}
+            >
+              {props.twitter_description.slice(snippet.location[0], snippet.location[1])}&nbsp;
+            </span> :
+            <span
+              key={i}
+            >
               <a
-                key={i}
                 href={props.twitter_description.slice(snippet.location[0], snippet.location[1])}
                 target={props.twitter_description.slice(snippet.location[0] + 8, snippet.location[1])}
               >
                 {props.twitter_description.slice(snippet.location[0], snippet.location[1])}
               </a>&nbsp;
             </span>
-        ))}
+        ))
+      }
     </p>
   );
 };
