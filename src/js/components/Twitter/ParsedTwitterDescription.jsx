@@ -8,18 +8,18 @@ const ParsedTwitterDescription = (props) => {
     let parsedLocations = [];
 
     // find all instances of twitter links within the passed text
-    const findHttpsTCo = (text, start) => {
-      let str = text.slice(start);
+    const findHttpsTCo = (fullText, start) => {
+      let str = fullText.slice(start);
       let twitterFound = str.indexOf("https://t.co/");
       if (twitterFound >= 0) {
         str = str.slice(twitterFound);
         let spaceFound = str.indexOf(" ");
         if (spaceFound >= 0) {
           locations.push([start + twitterFound, start + twitterFound + spaceFound]);
-          findHttpsTCo(text, start + twitterFound + spaceFound);
+          findHttpsTCo(fullText, start + twitterFound + spaceFound);
         } else {
-          // if no space is found after twitterFound, assume the link is at the very end of text and use end of text as the endpoint
-          locations.push([start + twitterFound, text.length]);
+          // if no space is found after twitterFound, assume the link is at the very end of fullText and use end of fullText as the endpoint
+          locations.push([start + twitterFound, fullText.length]);
         }
       }
     };
