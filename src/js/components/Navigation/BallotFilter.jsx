@@ -14,7 +14,7 @@ export default class BallotFilter extends Component {
     const {ballot_type, length, length_remaining} = this.props;
 
     return <ul className="nav nav-tabs">
-      <li className="active">
+      <li>
         <Link to="/ballot" className={ballot_type === "ALL_BALLOT_ITEMS" ? "active btn btn-default" : "btn btn-default"}>
           <span>All Items ({length})</span>
         </Link>
