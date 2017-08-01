@@ -327,19 +327,15 @@ export default class HeaderBar extends Component {
           { voter_orientation_complete ? network(pathname === "/more/network", number_of_incoming_friend_requests) : null }
 
           { voter_orientation_complete ?
-            <Link onClick={this.toggleAboutMenu} className={ "header-nav__item header-nav__item--about header-nav__item--has-icon hidden-xs" + (pathname === "/more/about" ? " active-icon" : "")}>
+            <span onClick={this.toggleAboutMenu} className={ "header-nav__item header-nav__item--about header-nav__item--has-icon hidden-xs" + (pathname === "/more/about" ? " active-icon" : "")}>
               <span className="header-nav__icon--about">About</span>
-              <span className="header-nav__label">
-              We Vote
-              </span>
+              <span className="header-nav__label">We Vote</span>
               <div>{this.aboutMenu()}</div>
-            </Link> :
+            </span> :
             <div>
               <Link to="/more/about" className={ "header-nav__item header-nav__item--about" + (pathname === "/more/about" ? " active-icon" : "")}>
                 <span className="header-nav__icon--about">About</span>
-                <span className="header-nav__label">
-                We Vote
-                </span>
+                <span className="header-nav__label">We Vote</span>
               </Link>
             </div> }
 
