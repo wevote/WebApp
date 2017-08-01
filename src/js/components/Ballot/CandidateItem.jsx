@@ -9,6 +9,7 @@ import ItemTinyOpinionsToFollow from "../VoterGuide/ItemTinyOpinionsToFollow";
 import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdownList";
 import OfficeNameText from "../Widgets/OfficeNameText";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
+import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
 import SupportStore from "../../stores/SupportStore";
 import {abbreviateNumber} from "../../utils/textFormat";
 import {numberWithCommas} from "../../utils/textFormat";
@@ -162,11 +163,10 @@ export default class CandidateItem extends Component {
           { twitter_description ?
             <div className={ "u-stack--sm" + (this.props.link_to_ballot_item_page ? " card-main__description-container--truncated" : " card-main__description-container")}>
               <div>
-                <p className="card-main__description">
-                    {twitter_description}
-                </p>
+                <ParsedTwitterDescription
+                  twitter_description={twitter_description}
+                />
               </div>
-
               <Link to={candidateLink}>
                 { this.props.link_to_ballot_item_page ? <span className="card-main__read-more-pseudo" /> : null }
               </Link>
