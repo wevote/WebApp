@@ -8,12 +8,12 @@ const assign = require("object-assign");
 
 class BallotStore extends FluxMapStore {
 
-  isLoaded (){
+  isLoaded () {
     let civicId = VoterStore.election_id();
     return this.getState().ballots && this.getState().ballots[civicId] && SupportStore.supportList ? true : false;
   }
 
-  get ballot_properties (){
+  get ballot_properties () {
     if (!this.isLoaded()){ return undefined; }
     let civicId = VoterStore.election_id();
     let props = assign({}, this.getState().ballots[civicId] );
@@ -21,7 +21,7 @@ class BallotStore extends FluxMapStore {
     return props;
   }
 
-  get ballot_found (){
+  get ballot_found () {
     if (!this.isLoaded()){ return undefined; }
     let civicId = VoterStore.election_id();
     return this.getState().ballots[civicId].ballot_found;
@@ -35,6 +35,10 @@ class BallotStore extends FluxMapStore {
 
   ballotList () {
     return this.getState().ballot_election_list || [];
+  }
+
+  get ballotLength () {
+    return this.ballot.length || 0;
   }
 
   get currentBallotElectionName () {
@@ -59,7 +63,7 @@ class BallotStore extends FluxMapStore {
     return this.getState().ballotCaveat || "";
   }
 
-  get bookmarks (){
+  get bookmarks () {
     let civicId = VoterStore.election_id();
     if (!this.getState().ballots || !this.getState().ballots[civicId] ){ return undefined; }
     let ballot = this.getState().ballots[civicId].ballot_item_list;
@@ -83,7 +87,7 @@ class BallotStore extends FluxMapStore {
     return bookmarks;
   }
 
-  get ballot_remaining_choices (){
+  get ballot_remaining_choices () {
     if (!this.isLoaded()){ return undefined; }
 
     return this.ballot.filter( ballot_item => {
@@ -96,6 +100,10 @@ class BallotStore extends FluxMapStore {
         return !SupportStore.supportList[we_vote_id] && !SupportStore.opposeList[we_vote_id];
       }
     });
+  }
+
+  get ballot_remaining_choices_length () {
+    return this.ballot_remaining_choices.length || 0;
   }
 
   get ballot_supported () {
@@ -111,7 +119,7 @@ class BallotStore extends FluxMapStore {
   }
 
   //Filters the ballot items which are type OFFICE
-  ballot_filtered_unsupported_candidates (){
+  ballot_filtered_unsupported_candidates () {
     return this.ballot.map( item =>{
       let is_office = item.kind_of_ballot_item === "OFFICE";
       return is_office ? this.filtered_ballot_item(item) : item;
@@ -119,7 +127,7 @@ class BallotStore extends FluxMapStore {
   }
 
   //Filters out the unsupported candidates from a ballot_item where type is OFFICE
-  filtered_ballot_item (ballot_item){
+  filtered_ballot_item (ballot_item) {
     let filtered_list = ballot_item.candidate_list.filter(candidate => {
       return SupportStore.supportList[candidate.we_vote_id] ? true : false;
     });
