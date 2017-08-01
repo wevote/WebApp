@@ -113,6 +113,9 @@ export default class SignInEmailProcess extends Component {
         // console.log("this.voterMergeTwoAccountsByEmailKey - go ahead");
         this.voterMergeTwoAccountsByEmailKey(email_secret_key);
       }
+    } else {
+      // console.log("Voter may not be verified yet, redirecting to verfiy page");
+      browserHistory.push("/verify_email/" + email_secret_key);
     }
     return LoadingWheel;
   }

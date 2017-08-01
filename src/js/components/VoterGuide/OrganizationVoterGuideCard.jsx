@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
+import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
 import LoadingWheel from "../../components/LoadingWheel";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
@@ -36,7 +37,7 @@ export default class OrganizationVoterGuideCard extends Component {
 
     return <div className="card-main">
         <Link to={voterGuideLink} className="u-no-underline">
-          <img src={organization_photo_url_large} width="180" height="180"/>
+          <img src={organization_photo_url_large} height="180"/>
         </Link>
         <br />
         <Link to={voterGuideLink}>
@@ -49,7 +50,11 @@ export default class OrganizationVoterGuideCard extends Component {
         <FollowToggle we_vote_id={organization_we_vote_id} />
         <br />
         { twitterDescriptionMinusName && !this.props.turn_off_description ?
-          <p className="card-main__description">{twitterDescriptionMinusName}</p> :
+          <p className="card-main__description">
+            <ParsedTwitterDescription
+              twitter_description={twitterDescriptionMinusName}
+            />
+          </p> :
           <p className="card-main__description" />
         }
 
