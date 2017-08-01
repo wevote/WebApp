@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "react-proptypes";
+import PropTypes from "prop-types";
 
 const ParsedTwitterDescription = (props) => {
 
@@ -44,17 +44,17 @@ const ParsedTwitterDescription = (props) => {
 
   return (
     <p className="card-main__description">
-        {parsedTwitterDescription.map((snippet, i) => {
+        {parsedTwitterDescription.map((snippet, i) => (
           snippet.type === "text" ?
-            <span key={i}>&nbsp;{props.twitter_description.slice(snippet.location[0], snippet.location[1])}&nbsp;</span> :
+            <span key={i}>&nbsp;{props.twitter_description.slice(snippet.location[0], snippet.location[1])}&nbsp;+checking</span> :
             <a
               key={i}
               href={props.twitter_description.slice(snippet.location[0], snippet.location[1])}
               target={props.twitter_description.slice(snippet.location[0] + 8, snippet.location[1])}
             >
               {props.twitter_description.slice(snippet.location[0], snippet.location[1])}
-            </a>;
-        })}
+            </a>
+        ))}
     </p>
   );
 };
