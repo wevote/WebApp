@@ -26,7 +26,7 @@ module.exports = {
       });
   },
 
-  retrievePositions: function (we_vote_id, filter_for_voter, filter_out_voter) {
+  retrievePositions: function (we_vote_id, filter_for_voter, filter_out_voter) { // Calls positionListForOpinionMaker endpoint
     Dispatcher.loadEndpoint("positionListForOpinionMaker",
       {
         opinion_maker_we_vote_id: we_vote_id,
@@ -36,7 +36,7 @@ module.exports = {
       });
   },
 
-  retrieveFriendsPositions: function (we_vote_id, filter_for_voter, filter_out_voter) {
+  retrieveFriendsPositions: function (we_vote_id, filter_for_voter, filter_out_voter) { // Calls positionListForOpinionMaker endpoint
     Dispatcher.loadEndpoint("positionListForOpinionMaker",
       {
         opinion_maker_we_vote_id: we_vote_id,

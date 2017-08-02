@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
+import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import ImageHandler from "../ImageHandler";
 import VoterStore from "../../stores/VoterStore";
 import OfficeNameText from "../Widgets/OfficeNameText";
@@ -7,7 +8,6 @@ import PositionInformationOnlySnippet from "../Widgets/PositionInformationOnlySn
 import PositionRatingSnippet from "../Widgets/PositionRatingSnippet";
 import PositionPublicToggle from "../Widgets/PositionPublicToggle";
 import PositionSupportOpposeSnippet from "../Widgets/PositionSupportOpposeSnippet";
-import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 

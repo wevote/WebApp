@@ -45,6 +45,13 @@ module.exports = {
     Dispatcher.loadEndpoint("voterGuidesFollowedByOrganizationRetrieve", { organization_we_vote_id: organization_we_vote_id} );
   },
 
+  voterGuidesRecommendedByOrganizationRetrieve: function (organization_we_vote_id, google_civic_election_id) {
+    Dispatcher.loadEndpoint("voterGuidesFollowedByOrganizationRetrieve", {
+      organization_we_vote_id: organization_we_vote_id,
+      filter_by_this_google_civic_election_id: google_civic_election_id
+    } );
+  },
+
   voterGuideFollowersRetrieve: function (organization_we_vote_id) {
     Dispatcher.loadEndpoint("voterGuideFollowersRetrieve", { organization_we_vote_id: organization_we_vote_id} );
   },

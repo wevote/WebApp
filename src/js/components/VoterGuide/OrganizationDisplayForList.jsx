@@ -32,6 +32,11 @@ export default class OrganizationDisplayForList extends Component {
   };
 
   render () {
+    // console.log("OrganizationDisplayForList render");
+    if (this.props.organization_we_vote_id === undefined) {
+      // console.log("OrganizationDisplayForList this.props.organization_we_vote_id === undefined");
+      return null;
+    }
     // We package up the above variables to mimic a position
     var position = this.props;
 
