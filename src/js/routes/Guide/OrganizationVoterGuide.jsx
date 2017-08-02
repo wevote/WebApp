@@ -30,10 +30,7 @@ export default class OrganizationVoterGuide extends Component {
     this._onOrganizationStoreChange();
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
     OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
-    // Positions for this organization, for this voter / election
-    OrganizationActions.retrievePositions(this.props.params.organization_we_vote_id, true);
-    // Positions for this organization, NOT including for this voter / election
-    OrganizationActions.retrievePositions(this.props.params.organization_we_vote_id, false, true);
+    // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
   }
 
   componentWillReceiveProps (nextProps) {
@@ -43,10 +40,7 @@ export default class OrganizationVoterGuide extends Component {
 
     // We refresh the data for all three tabs here on the top level
     OrganizationActions.organizationRetrieve(nextProps.params.organization_we_vote_id);
-    // Positions for this organization, for this voter / election
-    OrganizationActions.retrievePositions(nextProps.params.organization_we_vote_id, true);
-    // Positions for this organization, NOT including for this voter / election
-    OrganizationActions.retrievePositions(nextProps.params.organization_we_vote_id, false, true);
+    // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
   }
 
   componentWillUnmount (){

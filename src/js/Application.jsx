@@ -157,7 +157,7 @@ export default class Application extends Component {
         </div>
       </div>;
     } else if (voter_guide_mode) {
-      console.log("voter_guide_mode", voter_guide_mode);
+      // console.log("voter_guide_mode", voter_guide_mode);
       return <div className="app-base" id="app-base-id">
         <div className="headroom-wrapper">
           <div ref="pageHeader" className="page-header__container headroom">
