@@ -1,3 +1,7 @@
+$full-width: 100%;
+$minus-full-width: -$full-width;
+$address-margin: 28px;
+
 .ballot {
   &__election-name {
     // TODO either add some properties to this class or delete it
@@ -10,6 +14,13 @@
 
   &__heading {
     background-color: $white;
+    padding-top: $full-width;
+    margin-top: $minus-full-width;
+    padding-left: $full-width;
+    margin-left: $minus-full-width;
+    padding-right: $full-width;
+    margin-right: $minus-full-width;
+    overflow: hidden;
   }
 
   &__header-title {
@@ -17,6 +28,6 @@
   }
 
   &__header-address {
-    margin: $space-lg $space-lg 0 0;
+    margin: $address-margin $address-margin 0 0;
   }
 }

@@ -340,38 +340,42 @@ export default class Ballot extends Component {
       { this.state.showSelectAddressModal ? <SelectAddressModal show={this.state.showSelectAddressModal} toggleFunction={this._toggleSelectAddressModal} /> : null }
       { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this._toggleBallotSummaryModal} /> : null }
 
-      <div className="ballot__heading u-stack--lg">
-        <Helmet title="Ballot - We Vote" />
-        <BrowserPushMessage incomingProps={this.props} />
-        { election_name ?
-          <OverlayTrigger placement="top" overlay={electionTooltip} >
-            <header className="ballot__header-group">
-              <h1 className="h1 ballot__election-name ballot__header-title">
-                 <span className="u-push--sm">{election_name}</span>
-                 {this.state.ballotElectionList.length > 1 ? <img src={"/img/global/icons/gear-icon.png"}
-                                                                    className="hidden-print" role="button"
-                                                                    onClick={this._toggleSelectBallotModal}
-                                                                    alt={"view your ballots"}/> : null}
-              </h1>
-              <span className="hidden-xs hidden-print pull-right ballot__header-address">
-                <EditAddress address={voter_address_object} _toggleSelectAddressModal={this._toggleSelectAddressModal} />
-              </span>
-            </header>
-          </OverlayTrigger> :
-          null }
-        <div className="visible-xs-block hidden-print">
-          <EditAddress address={voter_address_object} _toggleSelectAddressModal={this._toggleSelectAddressModal} />
-        </div>
-        { text_for_map_search ?
-          <div className="ballot__filter hidden-print">
-            <BallotFilter ballot_type={this.getBallotType()}
-                          length={BallotStore.ballotLength}
-                          length_remaining={BallotStore.ballot_remaining_choices_length} />
-          </div> :
-          null }
-        <div className="visible-xs-block hidden-print">
-          <div className="BallotItemsSummary">
-            <a onClick={this._toggleBallotSummaryModal}>Summary of Ballot Items</a>
+      <div className="row">
+        <div className="col-md-12">
+          <div className="u-stack--lg ballot__heading">
+            <Helmet title="Ballot - We Vote" />
+            <BrowserPushMessage incomingProps={this.props} />
+            { election_name ?
+              <OverlayTrigger placement="top" overlay={electionTooltip} >
+                <header className="ballot__header-group">
+                  <h1 className="h1 ballot__election-name ballot__header-title">
+                     <span className="u-push--sm">{election_name}</span>
+                     {this.state.ballotElectionList.length > 1 ? <img src={"/img/global/icons/gear-icon.png"}
+                                                                        className="hidden-print" role="button"
+                                                                        onClick={this._toggleSelectBallotModal}
+                                                                        alt={"view your ballots"}/> : null}
+                  </h1>
+                  <span className="hidden-xs hidden-print pull-right ballot__header-address">
+                    <EditAddress address={voter_address_object} _toggleSelectAddressModal={this._toggleSelectAddressModal} />
+                  </span>
+                </header>
+              </OverlayTrigger> :
+              null }
+            <div className="visible-xs-block hidden-print">
+              <EditAddress address={voter_address_object} _toggleSelectAddressModal={this._toggleSelectAddressModal} />
+            </div>
+            { text_for_map_search ?
+              <div className="ballot__filter hidden-print">
+                <BallotFilter ballot_type={this.getBallotType()}
+                              length={BallotStore.ballotLength}
+                              length_remaining={BallotStore.ballot_remaining_choices_length} />
+              </div> :
+              null }
+            <div className="visible-xs-block hidden-print">
+              <div className="BallotItemsSummary">
+                <a onClick={this._toggleBallotSummaryModal}>Summary of Ballot Items</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
