@@ -53,6 +53,7 @@ import FacebookRedirectToWeVote from "./routes/More/FacebookRedirectToWeVote";
 import SignInEmailProcess from "./routes/Process/SignInEmailProcess";
 import Team from "./routes/More/Team";
 import TermsOfService from "./routes/More/TermsOfService";
+import ToolsToShareOnOtherWebsites from "./routes/More/ToolsToShareOnOtherWebsites";
 import TwitterSignInProcess from "./routes/Process/TwitterSignInProcess";
 import TwitterSignInProcessOld from "./routes/Process/TwitterSignInProcessOld";
 import VerifyEmailProcess from "./routes/Process/VerifyEmailProcess";
@@ -73,6 +74,16 @@ const routes = () =>
       <IndexRedirect to="/welcome" /> :
       <IndexRedirect to="/welcome" /> }
     <Route path="/welcome" component={Welcome} />
+    <Route path="/activity" component={Activity} />
+    <Route path="/ballot" component={BallotIndex}>
+      <IndexRoute component={Ballot}/>
+      <Route path="/office/:office_we_vote_id" component={Office} />
+      <Route path="/candidate/:candidate_we_vote_id" component={Candidate} />
+      <Route path="/measure/:measure_we_vote_id" component={Measure} />
+    </Route>
+    <Route path="/ballot/empty" component={EmptyBallot} />
+
+    <Route path="bookmarks" component={Bookmarks} />
 
     <Route path="/intro" component={Intro} />
     <Route path="/intro/contests" component={IntroContests} />
@@ -105,48 +116,33 @@ const routes = () =>
     <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
 
     {/* More Menu Pages */}
-    <Route path="/more/sign_in" component={SignIn} />
-    <Route path="/more/email_ballot" component={EmailBallot} />
-    <Route path="/more/credits" component={Credits} />
     <Route path="/more/about" component={About} />
+    <Route path="/more/connect" component={Connect} />
+    <Route path="/more/credits" component={Credits} />
     <Route path="/more/donate" component={Donate} />
     <Route path="/more/donate_thank_you" component={DonateThankYou} />
-    <Route path="/more/faq" component={FAQ} />
-    <Route path="/more/connect" component={Connect} />
-    <Route path="/more/privacy" component={Privacy} />
-    <Route path="/more/processing_donation" component={ProcessingDonation} />
-    <Route path="/more/terms" component={TermsOfService} />
-
-    <Route path="/more/organization" component={Organization} />
-    <Route path="/more/vision" component={Vision} />
-    <Route path="/more/howtouse" component={HowToUse} />
-    <Route path="/more/team" component={Team} />
+    <Route path="/more/email_ballot" component={EmailBallot} />
     <Route path="/more/facebooklandingprocess" component={FacebookLandingProcess} />
     <Route path="/more/facebookredirecttowevote" component={FacebookRedirectToWeVote} />
+    <Route path="/more/faq" component={FAQ} />
+    <Route path="/more/howtouse" component={HowToUse} />
+    <Route path="/more/network" component={Network} />
+    <Route path="/more/network/:invitation_secret_key" component={FriendInvitationByEmailVerifyProcess} />
+    <Route path="/more/network/:invitation_secret_key/ignore" component={FriendInvitationByEmailVerifyProcess} />
+    <Route path="/more/organization" component={Organization} />
+    <Route path="/more/privacy" component={Privacy} />
+    <Route path="/more/processing_donation" component={ProcessingDonation} />
+    <Route path="/more/sign_in" component={SignIn} />
+    <Route path="/more/team" component={Team} />
+    <Route path="/more/tools" component={ToolsToShareOnOtherWebsites} />
+    <Route path="/more/terms" component={TermsOfService} />
+    <Route path="/more/vision" component={Vision} />
 
     {/* Voter Guide Pages */}
     <Route path="/voterguide/:organization_we_vote_id" component={OrganizationVoterGuide} />
     <Route path="/yourpage" component={YourPage} />
 
-    <Route path="/ballot" component={BallotIndex}>
-      <IndexRoute component={Ballot}/>
-      <Route path="/office/:office_we_vote_id" component={Office} />
-      <Route path="/candidate/:candidate_we_vote_id" component={Candidate} />
-      <Route path="/measure/:measure_we_vote_id" component={Measure} />
-    </Route>
-
-    <Route path="bookmarks" component={Bookmarks} />
-
-    <Route path="ballot/empty" component={EmptyBallot} />
-
-    <Route path="/more/network" component={Network} />
-    <Route path="/more/network/:invitation_secret_key" component={FriendInvitationByEmailVerifyProcess} />
-    <Route path="/more/network/:invitation_secret_key/ignore" component={FriendInvitationByEmailVerifyProcess} />
-
-    <Route path="activity" component={Activity} />
-
     <Route path="/facebook_sign_in" component={FacebookSignInProcess} />
-
 
     <Route path="/twittersigninprocess/:sign_in_step/:incoming_twitter_handle" component={TwitterSignInProcessOld} />
     <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcessOld} />

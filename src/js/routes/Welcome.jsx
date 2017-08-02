@@ -267,6 +267,9 @@ export default class Intro extends Component {
             <li className="u-push--md u-stack--lg">
               <Link to={"/more/sign_in"}>Sign In</Link>
             </li>
+            <li className="u-push--md u-stack--lg">
+              <Link to={"/more/tools"}>Tools For Your Website</Link>
+            </li>
           </ul>
 
 
