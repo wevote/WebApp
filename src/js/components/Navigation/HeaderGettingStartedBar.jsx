@@ -9,7 +9,6 @@ import BallotIntroPositionBar from "../../components/Ballot/BallotIntroPositionB
 import BallotIntroShare from "../../components/Ballot/BallotIntroShare";
 import BallotIntroVote from "../../components/Ballot/BallotIntroVote";
 import GettingStartedBarItem from "./GettingStartedBarItem";
-import cookies from "../../utils/cookies";
 import Slider from "react-slick";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
@@ -107,8 +106,6 @@ export default class HeaderGettingStartedBar extends Component {
       arrows: false,
     };
 
-    let voter_is_signed_in = this.props.voter && this.props.voter.is_signed_in;
-    let voter_orientation_complete = cookies.getItem("voter_orientation_complete") || voter_is_signed_in;
     // Have all of the 6 major steps been taken?
     let voter_thorough_orientation_complete = false;
 

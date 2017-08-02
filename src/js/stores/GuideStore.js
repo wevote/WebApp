@@ -20,7 +20,7 @@ class GuideStore extends FluxMapStore {
       organization_we_vote_ids_to_follow_ballot_items_dict: {}, // This is a dictionary with ballot_item_we_vote_id as key and list of organization we_vote_ids as value
       organization_we_vote_ids_to_follow_for_latest_ballot_item: [], // stores organization_we_vote_ids for latest ballot_item_we_vote_id
       organization_we_vote_ids_to_follow_by_issues_followed: [],
-      organization_we_vote_ids_to_follow_organization_recommendations: {}, // This is a dictionary with organization_we_vote_id as key and list of organization_we_vote_id's as value
+      organization_we_vote_ids_to_follow_organization_recommendation_dict: {}, // This is a dictionary with organization_we_vote_id as key and list of organization_we_vote_id's as value
       all_cached_voter_guides: {}, // This is a dictionary with organization_we_vote_id as key and the voter_guide as value
       all_cached_organizations_followed: {}
     };
@@ -80,7 +80,7 @@ class GuideStore extends FluxMapStore {
   }
 
   getVoterGuidesToFollowByOrganizationRecommendation (recommending_organization_we_vote_id) {
-    return this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_to_follow_organization_recommendations[recommending_organization_we_vote_id]) || [];
+    return this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_to_follow_organization_recommendation_dict[recommending_organization_we_vote_id]) || [];
   }
 
   getVoterGuidesVoterIsFollowing (){
@@ -259,26 +259,35 @@ class GuideStore extends FluxMapStore {
 
       case "voterGuidesFollowedByOrganizationRetrieve":
         voter_guides = action.res.voter_guides;
+        let organization_we_vote_id_for_voter_guide_owner = action.res.organization_we_vote_id;
+        let organization_we_vote_ids_to_follow_organization_recommendation_dict = state.organization_we_vote_ids_to_follow_organization_recommendation_dict;
+        // Clear prior recommendations
+        organization_we_vote_ids_to_follow_organization_recommendation_dict[organization_we_vote_id_for_voter_guide_owner] = [];
         if (action.res.filter_by_this_google_civic_election_id) {
-          var organization_we_vote_ids_recommended_by_latest_organization = [];
+          let organization_we_vote_ids_recommended_by_latest_organization = [];
           voter_guides.forEach(one_voter_guide => {
             organization_we_vote_ids_recommended_by_latest_organization.push(one_voter_guide.organization_we_vote_id);
+            organization_we_vote_ids_to_follow_organization_recommendation_dict[organization_we_vote_id_for_voter_guide_owner].push(one_voter_guide.organization_we_vote_id);
           });
+          //
           return {
             ...state,
             organization_we_vote_ids_recommended_by_latest_organization: organization_we_vote_ids_recommended_by_latest_organization,
+            organization_we_vote_ids_to_follow_organization_recommendation_dict: organization_we_vote_ids_to_follow_organization_recommendation_dict,
           };
         } else {
           all_cached_voter_guides = state.all_cached_voter_guides;
-          var organization_we_vote_ids_followed_by_latest_organization = [];
+          let organization_we_vote_ids_followed_by_latest_organization = [];
           voter_guides.forEach(one_voter_guide => {
             all_cached_voter_guides[one_voter_guide.organization_we_vote_id] = one_voter_guide;
             organization_we_vote_ids_followed_by_latest_organization.push(one_voter_guide.organization_we_vote_id);
+            organization_we_vote_ids_to_follow_organization_recommendation_dict[organization_we_vote_id_for_voter_guide_owner].push(one_voter_guide.organization_we_vote_id);
           });
           return {
             ...state,
+            all_cached_voter_guides: all_cached_voter_guides,
             organization_we_vote_ids_followed_by_latest_organization: organization_we_vote_ids_followed_by_latest_organization,
-            all_cached_voter_guides: all_cached_voter_guides
+            organization_we_vote_ids_to_follow_organization_recommendation_dict: organization_we_vote_ids_to_follow_organization_recommendation_dict,
           };
         }
 
