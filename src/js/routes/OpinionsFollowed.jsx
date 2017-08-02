@@ -31,8 +31,8 @@ export default class OpinionsFollowed extends Component {
   }
 
   _onGuideStoreChange (){
-    this.setState({ 
-      voter_guide_followed_list: GuideStore.getVoterGuidesVoterIsFollowing() 
+    this.setState({
+      voter_guide_followed_list: GuideStore.getVoterGuidesVoterIsFollowing()
     });
   }
 

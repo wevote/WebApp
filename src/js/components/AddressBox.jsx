@@ -51,9 +51,9 @@ export default class AddressBox extends Component {
     if (this.state.text_for_map_search){
       browserHistory.push(this.props.saveUrl);
     } else {
-      this.setState({ 
-        text_for_map_search: VoterStore.getTextForMapSearch(), 
-        loading: false 
+      this.setState({
+        text_for_map_search: VoterStore.getTextForMapSearch(),
+        loading: false
       });
     }
   }

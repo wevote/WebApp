@@ -47,7 +47,7 @@ export default class VoterGuideFollowers extends Component {
    }
 
   _onGuideStoreChange (){
-    this.setState({ 
+    this.setState({
       voter_guide_followers_list: GuideStore.getVoterGuidesFollowingLatestOrganization()
     });
   }
