@@ -179,15 +179,9 @@ export default class Application extends Component {
       { pathname === "/welcome" ? <div>{ this.props.children }</div> :
         <div className="page-content-container">
           <div className="container-fluid">
-            { content_full_width_mode ?
-              <div className="container-main">
-                { this.props.children }
-              </div> :
-              <div className="row">
-                <div className="col-md-12 container-main">
-                  { this.props.children }
-                </div>
-              </div> }
+            <div className={ content_full_width_mode ? "container-main" : null }>
+              { this.props.children }
+            </div>
           </div>
         </div>
       }
