@@ -361,7 +361,7 @@ export default class Ballot extends Component {
                 </header>
               </OverlayTrigger> :
               null }
-            <div className="visible-xs-block hidden-print">
+            <div className="visible-xs-block hidden-print ballot__header-address-xs">
               <EditAddress address={voter_address_object} _toggleSelectAddressModal={this._toggleSelectAddressModal} />
             </div>
             { text_for_map_search ?
