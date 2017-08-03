@@ -15,7 +15,7 @@ export default class IntroOpinionsPage extends Component {
   constructor (props){
     super(props);
     this.state = {
-      voter_guides_to_follow_all: [], 
+      voter_guides_to_follow_all: [],
       ballot_has_guides: null
     };
   }
@@ -26,10 +26,10 @@ export default class IntroOpinionsPage extends Component {
   }
 
   _onChange () {
-    this.setState({ 
+    this.setState({
       voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll(),
       ballot_has_guides: GuideStore.ballotHasGuides(),
-      text_for_map_search: VoterStore.getTextForMapSearch() 
+      text_for_map_search: VoterStore.getTextForMapSearch()
     });
   }
 

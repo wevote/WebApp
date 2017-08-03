@@ -1,7 +1,5 @@
-import { Button } from "react-bootstrap";
 import GuideStore from "../../stores/GuideStore";
 import GuideList from "./GuideList";
-import { Link } from "react-router";
 import React, {Component, PropTypes } from "react";
 
 
@@ -13,18 +11,25 @@ export default class VoterGuideRecommendationsFromOneOrganization extends Compon
   constructor (props){
     super(props);
     this.state = {
-      voter_guides_to_follow_organization_recommendation_all_elections:  GuideStore.getVoterGuidesFollowedByLatestOrganization(),
-      voter_guides_to_follow_organization_recommendation_this_election:  GuideStore.getVoterGuidesToFollowByOrganizationRecommendation(this.props.organization_we_vote_id),
+      voter_guides_to_follow_organization_recommendation_all_elections: [],
+      voter_guides_to_follow_organization_recommendation_this_election: [],
+      //voter_guides_to_follow_organization_recommendation_this_election:  GuideStore.getVoterGuidesToFollowByOrganizationRecommendation(this.props.organization_we_vote_id),
     };
   }
 
   componentDidMount () {
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+    this.setState({
+      voter_guides_to_follow_organization_recommendation_all_elections: GuideStore.getVoterGuidesFollowedByLatestOrganization(),
+      //voter_guides_to_follow_organization_recommendation_this_election: GuideStore.getVoterGuidesRecommendedByLatestOrganization(),
+      voter_guides_to_follow_organization_recommendation_this_election: GuideStore.getVoterGuidesToFollowByOrganizationRecommendation(this.props.organization_we_vote_id),
+    });
   }
 
   _onGuideStoreChange () {
     this.setState({
       voter_guides_to_follow_organization_recommendation_all_elections: GuideStore.getVoterGuidesFollowedByLatestOrganization(),
+      //voter_guides_to_follow_organization_recommendation_this_election: GuideStore.getVoterGuidesRecommendedByLatestOrganization(),
       voter_guides_to_follow_organization_recommendation_this_election: GuideStore.getVoterGuidesToFollowByOrganizationRecommendation(this.props.organization_we_vote_id),
     });
   }

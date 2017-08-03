@@ -18,18 +18,20 @@ export default class VoterGuideFollowing extends Component {
       organization: this.props.organization,
       search_filter: false,
       search_term: "",
-      voter: VoterStore.getVoter(),
-      voter_guide_followed_list: GuideStore.getVoterGuidesFollowedByLatestOrganization(),
+      voter: {},
+      voter_guide_followed_list: [],
       voter_guide_followed_list_filtered_by_search: [],
     };
   }
 
   componentDidMount () {
-    // this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     GuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.organization.organization_we_vote_id);
-    // this._onGuideStoreChange();
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+    this.setState({
+      voter: VoterStore.getVoter(),
+      voter_guide_followed_list: GuideStore.getVoterGuidesFollowedByLatestOrganization()
+    });
   }
 
   componentWillReceiveProps (nextProps) {

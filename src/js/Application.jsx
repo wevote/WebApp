@@ -96,7 +96,7 @@ export default class Application extends Component {
   _onVoterStoreChange () {
     this.setState({
       voter: VoterStore.getVoter(),
-      text_for_map_search: VoterStore.getTextForMapSearch()
+      // text_for_map_search: VoterStore.getTextForMapSearch()
     });
   }
 
@@ -106,12 +106,11 @@ export default class Application extends Component {
 
   render () {
     var { location: { pathname }} = this.props;
-    var { voter, text_for_map_search } = this.state;
     const headRoomSize = pathname === "/ballot" ?
       "headroom-getting-started__margin" :
       "headroom-wrapper";
 
-    if (voter === undefined || location === undefined ) {
+    if (this.state.voter === undefined || location === undefined ) {
       return <div style={loadingScreenStyles}>
                 <div>
                   <h1 className="h1">Loading We Vote...</h1>
@@ -156,11 +155,11 @@ export default class Application extends Component {
         </div>
       </div>;
     } else if (voter_guide_mode) {
-      console.log("voter_guide_mode", voter_guide_mode);
+      // console.log("voter_guide_mode", voter_guide_mode);
       return <div className="app-base" id="app-base-id">
         <div className="headroom-wrapper">
           <div ref="pageHeader" className="page-header__container headroom">
-            <HeaderBar pathname={pathname} voter={voter} />
+            <HeaderBar pathname={pathname} voter={this.state.voter} />
           </div>
         </div>
         { this.props.children }
@@ -170,9 +169,9 @@ export default class Application extends Component {
     return <div className="app-base" id="app-base-id">
       <div className={headRoomSize}>
         <div ref="pageHeader" className="page-header__container headroom">
-          <HeaderBar pathname={pathname} voter={voter} />
+          <HeaderBar pathname={pathname} voter={this.state.voter} />
           { pathname === "/ballot" ?
-            <HeaderGettingStartedBar pathname={pathname} voter={voter}/> :
+            <HeaderGettingStartedBar pathname={pathname} voter={this.state.voter}/> :
             null }
         </div>
       </div>

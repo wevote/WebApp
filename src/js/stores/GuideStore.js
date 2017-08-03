@@ -11,7 +11,8 @@ class GuideStore extends FluxMapStore {
     return {
       ballot_has_guides: true,
       organization_we_vote_ids_voter_is_following: [],
-      organization_we_vote_ids_followed_by_latest_organization: [], // organization_we_vote_ids_followed_by_latest_organization
+      organization_we_vote_ids_followed_by_latest_organization: [],
+      organization_we_vote_ids_recommended_by_latest_organization: [],
       followers: [],
       followingOnTwitter: [],
       ignoring: [],
@@ -19,7 +20,7 @@ class GuideStore extends FluxMapStore {
       organization_we_vote_ids_to_follow_ballot_items_dict: {}, // This is a dictionary with ballot_item_we_vote_id as key and list of organization we_vote_ids as value
       organization_we_vote_ids_to_follow_for_latest_ballot_item: [], // stores organization_we_vote_ids for latest ballot_item_we_vote_id
       organization_we_vote_ids_to_follow_by_issues_followed: [],
-      organization_we_vote_ids_to_follow_organization_recommendations: {}, // This is a dictionary with organization_we_vote_id as key and list of organization_we_vote_id's as value
+      organization_we_vote_ids_to_follow_organization_recommendation_dict: {}, // This is a dictionary with organization_we_vote_id as key and list of organization_we_vote_id's as value
       all_cached_voter_guides: {}, // This is a dictionary with organization_we_vote_id as key and the voter_guide as value
       all_cached_organizations_followed: {}
     };
@@ -77,9 +78,9 @@ class GuideStore extends FluxMapStore {
   getVoterGuidesToFollowByIssuesFollowed () {
     return this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_to_follow_by_issues_followed) || [];
   }
-  
+
   getVoterGuidesToFollowByOrganizationRecommendation (recommending_organization_we_vote_id) {
-    return this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_to_follow_organization_recommendations[recommending_organization_we_vote_id]) || [];
+    return this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_to_follow_organization_recommendation_dict[recommending_organization_we_vote_id]) || [];
   }
 
   getVoterGuidesVoterIsFollowing (){
@@ -88,6 +89,10 @@ class GuideStore extends FluxMapStore {
 
   getVoterGuidesFollowedByLatestOrganization (){
     return this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_followed_by_latest_organization) || [];
+  }
+
+  getVoterGuidesRecommendedByLatestOrganization (){
+    return this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_recommended_by_latest_organization) || [];
   }
 
   getVoterGuidesFollowingLatestOrganization (){
@@ -111,6 +116,7 @@ class GuideStore extends FluxMapStore {
     let all_cached_voter_guides;
     let id;
     let organization_we_vote_id;
+    let voter_linked_organization_we_vote_id;
     let organizations_followed_on_twitter_list;
     let all_cached_organizations_followed;
 
@@ -237,7 +243,6 @@ class GuideStore extends FluxMapStore {
 
         }
 
-
       case "voterGuidesFollowedRetrieve":
         voter_guides = action.res.voter_guides;
         all_cached_voter_guides = state.all_cached_voter_guides;
@@ -254,17 +259,37 @@ class GuideStore extends FluxMapStore {
 
       case "voterGuidesFollowedByOrganizationRetrieve":
         voter_guides = action.res.voter_guides;
-        all_cached_voter_guides = state.all_cached_voter_guides;
-        var organization_we_vote_ids_followed_by_latest_organization = [];
-        voter_guides.forEach( one_voter_guide => {
-          all_cached_voter_guides[one_voter_guide.organization_we_vote_id] = one_voter_guide;
-          organization_we_vote_ids_followed_by_latest_organization.push(one_voter_guide.organization_we_vote_id);
-        });
-        return {
-          ...state,
-          organization_we_vote_ids_followed_by_latest_organization: organization_we_vote_ids_followed_by_latest_organization,
-          all_cached_voter_guides: all_cached_voter_guides
-        };
+        let organization_we_vote_id_for_voter_guide_owner = action.res.organization_we_vote_id;
+        let organization_we_vote_ids_to_follow_organization_recommendation_dict = state.organization_we_vote_ids_to_follow_organization_recommendation_dict;
+        // Clear prior recommendations
+        organization_we_vote_ids_to_follow_organization_recommendation_dict[organization_we_vote_id_for_voter_guide_owner] = [];
+        if (action.res.filter_by_this_google_civic_election_id) {
+          let organization_we_vote_ids_recommended_by_latest_organization = [];
+          voter_guides.forEach(one_voter_guide => {
+            organization_we_vote_ids_recommended_by_latest_organization.push(one_voter_guide.organization_we_vote_id);
+            organization_we_vote_ids_to_follow_organization_recommendation_dict[organization_we_vote_id_for_voter_guide_owner].push(one_voter_guide.organization_we_vote_id);
+          });
+          //
+          return {
+            ...state,
+            organization_we_vote_ids_recommended_by_latest_organization: organization_we_vote_ids_recommended_by_latest_organization,
+            organization_we_vote_ids_to_follow_organization_recommendation_dict: organization_we_vote_ids_to_follow_organization_recommendation_dict,
+          };
+        } else {
+          all_cached_voter_guides = state.all_cached_voter_guides;
+          let organization_we_vote_ids_followed_by_latest_organization = [];
+          voter_guides.forEach(one_voter_guide => {
+            all_cached_voter_guides[one_voter_guide.organization_we_vote_id] = one_voter_guide;
+            organization_we_vote_ids_followed_by_latest_organization.push(one_voter_guide.organization_we_vote_id);
+            organization_we_vote_ids_to_follow_organization_recommendation_dict[organization_we_vote_id_for_voter_guide_owner].push(one_voter_guide.organization_we_vote_id);
+          });
+          return {
+            ...state,
+            all_cached_voter_guides: all_cached_voter_guides,
+            organization_we_vote_ids_followed_by_latest_organization: organization_we_vote_ids_followed_by_latest_organization,
+            organization_we_vote_ids_to_follow_organization_recommendation_dict: organization_we_vote_ids_to_follow_organization_recommendation_dict,
+          };
+        }
 
       case "voterGuideFollowersRetrieve":
         voter_guides = action.res.voter_guides;
@@ -311,48 +336,48 @@ class GuideStore extends FluxMapStore {
           };
 
       case "organizationFollow":
-        organization_we_vote_id = action.res.organization_we_vote_id;
+        voter_linked_organization_we_vote_id = action.res.voter_linked_organization_we_vote_id;
         if (action.res.organization_follow_based_on_issue) {
           GuideActions.retrieveGuidesToFollowByIssuesFollowed();  // Whenever a voter follows a new org, update list
         } else {
           GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter follows a new org, update list
         }
-        GuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
-        GuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
+        GuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
+        GuideActions.voterGuideFollowersRetrieve(voter_linked_organization_we_vote_id);
         SupportActions.positionsCountForAllBallotItems();  // Following one org can change the support/oppose count for many items
         return {
           ...state,
-          organization_we_vote_ids_voter_is_following: state.organization_we_vote_ids_voter_is_following.concat(organization_we_vote_id),
-          organization_we_vote_ids_to_follow_all: state.organization_we_vote_ids_to_follow_all.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; }),
-          organization_we_vote_ids_to_follow_for_latest_ballot_item: state.organization_we_vote_ids_to_follow_for_latest_ballot_item.filter(existing_org_we_vote_id => {return existing_org_we_vote_id !== organization_we_vote_id; }),
+          organization_we_vote_ids_voter_is_following: state.organization_we_vote_ids_voter_is_following.concat(voter_linked_organization_we_vote_id),
+          organization_we_vote_ids_to_follow_all: state.organization_we_vote_ids_to_follow_all.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== voter_linked_organization_we_vote_id; }),
+          organization_we_vote_ids_to_follow_for_latest_ballot_item: state.organization_we_vote_ids_to_follow_for_latest_ballot_item.filter(existing_org_we_vote_id => {return existing_org_we_vote_id !== voter_linked_organization_we_vote_id; }),
           // Add organization_we_vote_ids_to_follow_for_latest_ballot_item here
-          ignoring: state.ignoring.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; })
+          ignoring: state.ignoring.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== voter_linked_organization_we_vote_id; })
         };
 
       case "organizationStopFollowing":
-        organization_we_vote_id = action.res.organization_we_vote_id;
+        voter_linked_organization_we_vote_id = action.res.voter_linked_organization_we_vote_id;
         GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter stops following an org, update list
-        GuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
-        GuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
+        GuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
+        GuideActions.voterGuideFollowersRetrieve(voter_linked_organization_we_vote_id);
         SupportActions.positionsCountForAllBallotItems();
         return {
           ...state,
-          organization_we_vote_ids_voter_is_following: state.organization_we_vote_ids_voter_is_following.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; }),
+          organization_we_vote_ids_voter_is_following: state.organization_we_vote_ids_voter_is_following.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== voter_linked_organization_we_vote_id; }),
           organization_we_vote_ids_to_follow_all: state.organization_we_vote_ids_to_follow_all.concat(id)
         };
 
       case "organizationFollowIgnore":
-        organization_we_vote_id = action.res.organization_we_vote_id;
+        voter_linked_organization_we_vote_id = action.res.voter_linked_organization_we_vote_id;
         GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter ignores an org, update list
-        GuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
-        GuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
+        GuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
+        GuideActions.voterGuideFollowersRetrieve(voter_linked_organization_we_vote_id);
         return {
           ...state,
-          ignoring: state.ignoring.concat(organization_we_vote_id),
-          organization_we_vote_ids_to_follow_all: state.organization_we_vote_ids_to_follow_all.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; }),
-          organization_we_vote_ids_to_follow_for_latest_ballot_item: state.organization_we_vote_ids_to_follow_for_latest_ballot_item.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; }),
+          ignoring: state.ignoring.concat(voter_linked_organization_we_vote_id),
+          organization_we_vote_ids_to_follow_all: state.organization_we_vote_ids_to_follow_all.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== voter_linked_organization_we_vote_id; }),
+          organization_we_vote_ids_to_follow_for_latest_ballot_item: state.organization_we_vote_ids_to_follow_for_latest_ballot_item.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== voter_linked_organization_we_vote_id; }),
           // Add organization_we_vote_ids_to_follow_for_latest_ballot_item here
-          organization_we_vote_ids_voter_is_following: state.organization_we_vote_ids_voter_is_following.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; })
+          organization_we_vote_ids_voter_is_following: state.organization_we_vote_ids_voter_is_following.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== voter_linked_organization_we_vote_id; })
         };
 
       case "error-organizationFollowIgnore" || "error-organizationFollow":

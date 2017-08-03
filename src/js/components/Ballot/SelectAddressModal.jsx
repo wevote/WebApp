@@ -14,7 +14,7 @@ export default class SelectAddressModal extends Component {
     super(props);
     this.state = {};
   }
-  
+
   render () {
     return <Modal show onHide={this.props.toggleFunction} className="ballot-election-list ballot-election-list__modal" >
       <Modal.Header closeButton onHide={this.props.toggleFunction}>

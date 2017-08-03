@@ -3,9 +3,11 @@ import React, {Component, PropTypes } from "react";
 import { capitalizeString } from "../../utils/textFormat";
 import Helmet from "react-helmet";
 import BallotStore from "../../stores/BallotStore";
-import LoadingWheel from "../LoadingWheel";
+import GuideActions from "../../actions/GuideActions";
+import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationPositionItem from "./OrganizationPositionItem";
+import SupportStore from "../../stores/SupportStore";
 import VoterGuideRecommendationsFromOneOrganization from "./VoterGuideRecommendationsFromOneOrganization";
 import VoterStore from "../../stores/VoterStore";
 
@@ -17,32 +19,69 @@ export default class VoterGuidePositions extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      current_google_civic_election_id: 0,
+      current_organization_we_vote_id: "",
       editMode: false,
-      organization: this.props.organization,
-      voter: VoterStore.getVoter(),
+      organization: {},
+      voter: {},
     };
   }
 
   componentDidMount (){
-    this._onOrganizationStoreChange();
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
-
-    this._onVoterStoreChange();
+    this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    // console.log("VoterGuidePositions, componentDidMount, this.props.organization: ", this.props.organization);
+    GuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
+    // Positions for this organization, for this voter / election
+    OrganizationActions.retrievePositions(this.props.organization.organization_we_vote_id, true);
+    // Positions for this organization, NOT including for this voter / election
+    OrganizationActions.retrievePositions(this.props.organization.organization_we_vote_id, false, true);
+    this.setState({
+      current_google_civic_election_id: VoterStore.election_id(),
+      current_organization_we_vote_id: this.props.organization.organization_we_vote_id,
+      organization: this.props.organization,
+      voter: VoterStore.getVoter(),
+    });
   }
 
   componentWillReceiveProps (nextProps) {
     // console.log("VoterGuidePositions, componentWillReceiveProps, nextProps.organization: ", nextProps.organization);
     // When a new organization is passed in, update this component to show the new data
-    this.setState({organization: nextProps.organization});
+    let different_election = this.state.current_google_civic_election_id !== VoterStore.election_id();
+    let different_organization = this.state.current_organization_we_vote_id !== nextProps.organization.organization_we_vote_id;
+    // console.log("VoterGuidePositions componentWillReceiveProps-different_election: ", different_election, " different_organization: ", different_organization);
+    if (different_election || different_organization) {
+      GuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id, VoterStore.election_id());
+      // Positions for this organization, for this voter / election
+      OrganizationActions.retrievePositions(nextProps.organization.organization_we_vote_id, true);
+      // Positions for this organization, NOT including for this voter / election
+      OrganizationActions.retrievePositions(nextProps.organization.organization_we_vote_id, false, true);
+      this.setState({
+        current_google_civic_election_id: VoterStore.election_id(),
+        current_organization_we_vote_id: nextProps.organization.organization_we_vote_id,
+        organization: nextProps.organization
+      });
+    } else {
+      this.setState({organization: nextProps.organization});
+    }
   }
 
   componentWillUnmount (){
     this.organizationStoreListener.remove();
+    this.supportStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
   _onOrganizationStoreChange (){
+    this.setState({
+      organization: OrganizationStore.get(this.state.organization.organization_we_vote_id),
+    });
+  }
+
+  _onSupportStoreChange () {
+    // Whenever positions change, we want to make sure to get the latest organization, because it has
+    //  position_list_for_one_election and position_list_for_all_except_one_election attached to it
     this.setState({
       organization: OrganizationStore.get(this.state.organization.organization_we_vote_id),
     });
@@ -67,6 +106,10 @@ export default class VoterGuidePositions extends Component {
   }
 
   render () {
+    if (!this.state.organization) {
+      // Wait until this.state.organization has been set to render
+      return null;
+    }
     const { organization_id, position_list_for_one_election, position_list_for_all_except_one_election } = this.state.organization;
     if (!organization_id) {
       return <div className="card">
@@ -81,6 +124,7 @@ export default class VoterGuidePositions extends Component {
       looking_at_self = this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id;
     }
 
+    // console.log("looking_at_self: ", looking_at_self);
     const election_name = BallotStore.currentBallotElectionName;
     let organization_name = capitalizeString(this.state.organization.organization_name);
     let title_text = organization_name + " - We Vote";
@@ -108,7 +152,7 @@ export default class VoterGuidePositions extends Component {
                 alt={"view your ballots"}/> : null}*/}
             </h4>
           {/* </OverlayTrigger> */}
-          { position_list_for_one_election ?
+          { at_least_one_position_found_for_this_election ?
             <span>
               { position_list_for_one_election.map( item => {
                 return <OrganizationPositionItem key={item.position_we_vote_id}
@@ -118,7 +162,7 @@ export default class VoterGuidePositions extends Component {
                        />;
               }) }
             </span> :
-            <div>{LoadingWheel}</div>
+            null
           }
           {/* If the position_list_for_one_election comes back empty, display a message saying that there aren't any positions for this election. */}
           { at_least_one_position_found_for_this_election ?
@@ -144,7 +188,7 @@ export default class VoterGuidePositions extends Component {
       </div>
 
       {/* We do not display the positions for other elections if we have even one position for this election. */}
-      { position_list_for_all_except_one_election ?
+      { at_least_one_position_found_for_other_elections ?
         <div className="card">
           <ul className="card-child__list-group">
           { position_list_for_all_except_one_election.length && !at_least_one_position_found_for_this_election ?
@@ -168,7 +212,7 @@ export default class VoterGuidePositions extends Component {
           }
           </ul>
         </div> :
-        <div>{LoadingWheel}</div>
+        null
       }
     </div>;
   }
