@@ -18,18 +18,18 @@ export default class EditAddress extends Component {
 
     if (address.length) {
       return (
-        <p className="ballot__date_location">
+        <span className="ballot__date_location">
           { address }
           { normalized_line1.length ? <span>&nbsp;</span> : <EditAddressPopover popover_off={false} placement={"bottom"} onClick={this.props._toggleSelectAddressModal} /> }
           <span className="hidden-print">(<a onClick={this.props._toggleSelectAddressModal}>Edit</a>)</span>
-        </p>
+        </span>
       );
     } else {
       return (
-        <p className="ballot__date_location">
+        <span className="ballot__date_location">
           In order to see your ballot, please enter your address.
           <span className="hidden-print">&nbsp;(<a onClick={this.props._toggleSelectAddressModal}>Add Your Address</a>)</span>
-        </p>
+        </span>
       );
     }
   }

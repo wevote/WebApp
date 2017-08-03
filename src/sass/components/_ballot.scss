@@ -1,0 +1,74 @@
+$full-width: 100%;
+$minus-full-width: -$full-width;
+$address-margin: 26px 26px 0 0;
+$address-margin-xs: -4px 0 8px 0;
+$tab-padding: 0 0 4px 0;
+$tab-spacing: 24px;
+$transparent: transparent !important;
+
+.ballot {
+  &__election-name {
+    // TODO either add some properties to this class or delete it
+  }
+
+  &__filter {
+    // TODO either add some properties to this class or delete it
+  }
+
+  &__header-group {
+    display: block;
+    border-bottom: 0 solid $black;
+  }
+
+  &__heading {
+    background-color: $white;
+    padding-top: $full-width;
+    margin-top: $minus-full-width;
+    padding-left: $full-width;
+    margin-left: $minus-full-width;
+    padding-right: $full-width;
+    margin-right: $minus-full-width;
+    overflow: hidden;
+  }
+
+  &__header-title {
+    display: inline-block;
+  }
+
+  &__header-address {
+    margin: $address-margin;
+  }
+
+  &__header-address-xs {
+    margin: $address-margin-xs;
+  }
+
+  &__tabs {
+    padding-left: $full-width;
+    margin-left: $minus-full-width;
+    padding-right: $full-width;
+    margin-right: $minus-full-width;
+    overflow: hidden;
+    border-bottom: 1px solid #aaa;
+
+    .tab {
+      padding: $tab-padding;
+      margin-right: $tab-spacing;
+      float: left;
+    }
+
+    .tab-active {
+      border-bottom: 2px solid $black;
+      color: $black;
+    }
+
+    .tab-default {
+      color: $gray-mid;
+    }
+
+    a:focus,
+    a:hover {
+      background-color: $transparent;
+    }
+  }
+}

@@ -1,3 +1,6 @@
+$full-width: 100%;
+$minus-full-width: -$full-width;
+
 .BallotList {
   @include print {
     column-count: 2;
@@ -14,7 +17,7 @@
     color: $gray-dark;
     @include breakpoints(max mid-small) {
       font-size: 18px;
-      max-width: 100%;
+      max-width: $full-width;
       // padding-right: 30px; // TODO: adjust for bookmark icon
       white-space: nowrap;
       overflow: hidden;
@@ -81,10 +84,18 @@
 }
 
 .BallotItemsSummary {
+  background-color: $app-background-color;
   padding-top: $space-md;
+  padding-left: $full-width;
+  margin-left: $minus-full-width;
+  padding-right: $full-width;
+  margin-right: $minus-full-width;
+  overflow: hidden;
   // Has the result of float center
-  //float: right;
-  //position: relative;
-  //left: -50%;
-  //text-align: left;
+  // float: right;
+  // position: relative;
+  // left: -50%;
+  text-align: center;
+  text-decoration: underline;
+  font-weight: bold;
 }
