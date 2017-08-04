@@ -19,12 +19,18 @@ export default class OrganizationVoterGuide extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      organization_we_vote_id: this.props.params.organization_we_vote_id,
-      voter: VoterStore.getVoter()
+      organization_we_vote_id: "",
+      organization: {},
+      voter: {},
     };
   }
 
   componentDidMount (){
+    this.state = {
+      organization: OrganizationStore.get(this.state.organization_we_vote_id),
+      organization_we_vote_id: this.props.params.organization_we_vote_id,
+      voter: VoterStore.getVoter(),
+    };
     // console.log("OrganizationVoterGuide, componentDidMount, this.props.params.organization_we_vote_id: ", this.props.params.organization_we_vote_id);
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     this._onOrganizationStoreChange();
@@ -65,6 +71,8 @@ export default class OrganizationVoterGuide extends Component {
       return <div>{LoadingWheel}</div>;
     }
     const { organization_id } = this.state.organization;
+    let is_voter_owner = this.state.organization.public_figure_we_vote_id !== undefined &&
+      this.state.organization.public_figure_we_vote_id === this.state.voter.voter_we_vote_id;
 
     if (!organization_id) {
       var floatRight = {
@@ -104,7 +112,10 @@ export default class OrganizationVoterGuide extends Component {
             <div className="col-md-4 hidden-xs" >
               <div className="card">
                 <div className="card-main">
-                  <OrganizationVoterGuideCard organization={this.state.organization} />
+                  <OrganizationVoterGuideCard
+                    organization={this.state.organization}
+                    is_voter_owner={is_voter_owner}
+                />
                 </div>
                 <br />
               </div>

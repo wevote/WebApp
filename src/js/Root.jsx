@@ -25,6 +25,7 @@ import FacebookInvitableFriends from "./routes/FacebookInvitableFriends";
 import Friends from "./routes/Friends";
 import GetStarted from "./routes/Intro/GetStarted";
 import OrganizationVoterGuide from "./routes/Guide/OrganizationVoterGuide";
+import OrganizationVoterGuideEdit from "./routes/Guide/OrganizationVoterGuideEdit";
 import HowToUse from "./routes/More/HowToUse";
 import Intro from "./routes/Intro/Intro";
 import IntroContests from "./routes/Intro/IntroContests";
@@ -140,6 +141,9 @@ const routes = () =>
 
     {/* Voter Guide Pages */}
     <Route path="/voterguide/:organization_we_vote_id" component={OrganizationVoterGuide} />
+    <Route path="/voterguideedit/:organization_we_vote_id" component={OrganizationVoterGuideEdit} />
+    <Route path="/voterguideedit/:organization_we_vote_id/:edit_mode" component={OrganizationVoterGuideEdit} />
+
     <Route path="/yourpage" component={YourPage} />
 
     <Route path="/facebook_sign_in" component={FacebookSignInProcess} />
