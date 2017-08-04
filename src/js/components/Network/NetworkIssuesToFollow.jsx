@@ -1,12 +1,12 @@
 import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
-import IssueActions from "../actions/IssueActions";
-import IssueFollowToggle from "../components/Ballot/IssueFollowToggle";
-import IssueStore from "../stores/IssueStore";
+import IssueActions from "../../actions/IssueActions";
+import IssueFollowToggle from "../Ballot/IssueFollowToggle";
+import IssueStore from "../../stores/IssueStore";
 
 
-export default class IssuesToFollow extends Component {
+export default class NetworkIssuesToFollow extends Component {
   static propTypes = {
     children: PropTypes.object,
     history: PropTypes.object
@@ -52,12 +52,17 @@ export default class IssuesToFollow extends Component {
         is_following={is_following}
       />;
     });
+    var floatRight = {
+        float: "right"
+    };
 
     return <div className="opinions-followed__container">
       <Helmet title="Issues You Follow - We Vote" />
       <section className="card">
         <div className="card-main">
-          <h1 className="h1">Issues You Can Follow</h1>
+          <span style={floatRight}>
+            <Link to="/issues_followed" className="u-margin-left--md">See issues you are following</Link>
+          </span>
           <p>
             Follow the issues you care about. By choosing the issues that matter most to
             you, we are able to highlight the organizations that care about the same issues you do.

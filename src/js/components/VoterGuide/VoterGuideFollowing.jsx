@@ -15,7 +15,7 @@ export default class VoterGuideFollowing extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      organization: this.props.organization,
+      organization: {},
       search_filter: false,
       search_term: "",
       voter: {},
@@ -29,8 +29,8 @@ export default class VoterGuideFollowing extends Component {
     GuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.organization.organization_we_vote_id);
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
     this.setState({
+      organization: this.props.organization,
       voter: VoterStore.getVoter(),
-      voter_guide_followed_list: GuideStore.getVoterGuidesFollowedByLatestOrganization()
     });
   }
 
@@ -38,7 +38,9 @@ export default class VoterGuideFollowing extends Component {
     // When a new organization is passed in, update this component to show the new data
     if (this.state.organization.organization_we_vote_id !== nextProps.organization.organization_we_vote_id)
       GuideActions.voterGuidesFollowedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id);
-    this.setState({organization: nextProps.organization});
+    this.setState({
+      organization: nextProps.organization
+    });
   }
 
   componentWillUnmount (){
@@ -53,7 +55,7 @@ export default class VoterGuideFollowing extends Component {
 
   _onGuideStoreChange (){
     this.setState({
-      voter_guide_followed_list: GuideStore.getVoterGuidesFollowedByLatestOrganization()
+      voter_guide_followed_list: GuideStore.getVoterGuidesFollowedByOrganization(this.state.organization.organization_we_vote_id)
     });
   }
 

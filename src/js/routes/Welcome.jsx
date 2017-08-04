@@ -15,6 +15,8 @@ export default class Intro extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      newsletter_opt_in_true: false,
+      voter: {}
     };
   }
 
@@ -32,7 +34,10 @@ export default class Intro extends Component {
   }
 
   _onVoterStoreChange () {
-    this.setState({voter: VoterStore.getVoter()});
+    this.setState({
+      newsletter_opt_in_true: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
+      voter: VoterStore.getVoter(),
+    });
   }
 
   goToGetStarted () {
@@ -93,14 +98,16 @@ export default class Intro extends Component {
   }
 
   render () {
-    let newsletter_opt_in_true = VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
     let actual_full_name = "";
     let voter_signed_in = false;
     let mailto_url = "mailto:" + "?subject=Check out We Vote" + "&body=I am using We Vote to discuss what is on my ballot. You can see it at https://WeVote.US too.";
     if (this.state.voter) {
-      voter_signed_in = true;
+      voter_signed_in = this.state.voter.is_signed_in;
       if (this.state.voter.first_name || this.state.voter.last_name) {
         actual_full_name = this.state.voter.full_name;
+        if (actual_full_name.startsWith("voter")) {
+          actual_full_name = "";
+        }
       }
     }
 
@@ -117,48 +124,48 @@ export default class Intro extends Component {
               </h1>
 
               <h2 className="u-f3 u-stack--md">Launching Fall 2017!</h2>
-              { newsletter_opt_in_true ?
+              { voter_signed_in ?
+                <h1 className="u-f1 u-bold u-stack--lg">{ actual_full_name ?
+                  "Welcome Back, " + actual_full_name + "." :
+                  <Button bsStyle="danger" bsSize="large" className="u-stack--md center-block" onClick={this.goToGetStarted}>
+                    Get Started
+                  </Button>
+                }</h1> :
                 <span>
-                    { voter_signed_in ?
-                      <h1 className="u-f1 u-bold u-stack--lg">{ actual_full_name ?
-                        "Welcome Back, " + actual_full_name + "." :
-                        <Button bsStyle="danger" bsSize="large" className="u-stack--md center-block" onClick={this.goToGetStarted}>
-                          Get Started
-                        </Button>
-                      }</h1> :
-                      <h1 className="u-f1 u-bold u-stack--lg">Your request to sign up has been sent.</h1>
-                    }
-                </span> :
-                <div>
-                  <p>Sign up for updates and be the first to use We Vote</p>
+                  { this.state.newsletter_opt_in_true ?
+                    <h1 className="u-f1 u-bold u-stack--lg">Please check your email for a verification link.</h1> :
+                    <div>
+                      <p>Sign up for updates and be the first to use We Vote</p>
 
-                  <form className="form-inline" onSubmit={this.voterEmailAddressSignUpSave.bind(this)}>
-                    <FormGroup className="u-push--sm">
-                      <label className="sr-only" htmlFor="name">Name</label>
-                      <input className="form-control"
-                             type="text"
-                             name="voter_full_name"
-                             id=""
-                             value={this.state.voter_full_name}
-                             onChange={this.updateVoterFullName.bind(this)}
-                             placeholder="Name"/>
-                    </FormGroup>
-                    <FormGroup className="u-push--sm">
-                      <label className="sr-only" htmlFor="exampleEmail">Email</label>
-                      <input className="form-control"
-                             type="email"
-                             name="voter_email_address"
-                             id=""
-                             value={this.state.voter_email_address}
-                             onChange={this.updateVoterEmailAddress.bind(this)}
-                             placeholder="Email Address"/>
-                    </FormGroup>
-                    <Button bsStyle="danger"
-                            type="submit"
-                            onClick={this.voterEmailAddressSignUpSave.bind(this)}
-                            >Sign Up</Button>
-                  </form>
-                </div>
+                      <form className="form-inline" onSubmit={this.voterEmailAddressSignUpSave.bind(this)}>
+                        <FormGroup className="u-push--sm">
+                          <label className="sr-only" htmlFor="name">Name</label>
+                          <input className="form-control"
+                                 type="text"
+                                 name="voter_full_name"
+                                 id=""
+                                 value={this.state.voter_full_name}
+                                 onChange={this.updateVoterFullName.bind(this)}
+                                 placeholder="Name"/>
+                        </FormGroup>
+                        <FormGroup className="u-push--sm">
+                          <label className="sr-only" htmlFor="exampleEmail">Email</label>
+                          <input className="form-control"
+                                 type="email"
+                                 name="voter_email_address"
+                                 id=""
+                                 value={this.state.voter_email_address}
+                                 onChange={this.updateVoterEmailAddress.bind(this)}
+                                 placeholder="Email Address"/>
+                        </FormGroup>
+                        <Button bsStyle="danger"
+                                type="submit"
+                                onClick={this.voterEmailAddressSignUpSave.bind(this)}
+                                >Sign Up</Button>
+                      </form>
+                    </div>
+                  }
+                </span>
               }
             </div>
           </Row>

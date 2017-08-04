@@ -114,11 +114,7 @@ export default class VerifyEmailProcess extends Component {
     if (!this.state.email_sign_in_status.email_ownership_is_verified) {
       console.log("email_ownership_is_verified not true - push to /more/sign_in");
       browserHistory.push({
-        pathname: "/more/sign_in",
-        state: {
-          message: "Your email could not be verified.",
-          message_type: "warning"
-        }
+        pathname: "/more/sign_in"
       });
       return LoadingWheel;
     }

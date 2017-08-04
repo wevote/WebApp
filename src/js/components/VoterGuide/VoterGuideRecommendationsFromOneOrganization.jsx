@@ -1,6 +1,6 @@
+import React, {Component, PropTypes } from "react";
 import GuideStore from "../../stores/GuideStore";
 import GuideList from "./GuideList";
-import React, {Component, PropTypes } from "react";
 
 
 export default class VoterGuideRecommendationsFromOneOrganization extends Component {
@@ -11,26 +11,34 @@ export default class VoterGuideRecommendationsFromOneOrganization extends Compon
   constructor (props){
     super(props);
     this.state = {
+      organization_we_vote_id: "",
       voter_guides_to_follow_organization_recommendation_all_elections: [],
       voter_guides_to_follow_organization_recommendation_this_election: [],
-      //voter_guides_to_follow_organization_recommendation_this_election:  GuideStore.getVoterGuidesToFollowByOrganizationRecommendation(this.props.organization_we_vote_id),
     };
   }
 
   componentDidMount () {
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
     this.setState({
-      voter_guides_to_follow_organization_recommendation_all_elections: GuideStore.getVoterGuidesFollowedByLatestOrganization(),
-      //voter_guides_to_follow_organization_recommendation_this_election: GuideStore.getVoterGuidesRecommendedByLatestOrganization(),
+      organization_we_vote_id: this.props.organization_we_vote_id,
+      voter_guides_to_follow_organization_recommendation_all_elections: GuideStore.getVoterGuidesFollowedByOrganization(this.props.organization_we_vote_id),
       voter_guides_to_follow_organization_recommendation_this_election: GuideStore.getVoterGuidesToFollowByOrganizationRecommendation(this.props.organization_we_vote_id),
+    });
+  }
+
+  componentWillReceiveProps (nextProps) {
+    // When a new organization_we_vote_id is passed in, update this component to show the new data
+    this.setState({
+      organization_we_vote_id: nextProps.organization_we_vote_id,
+      voter_guides_to_follow_organization_recommendation_all_elections: GuideStore.getVoterGuidesFollowedByOrganization(nextProps.organization_we_vote_id),
+      voter_guides_to_follow_organization_recommendation_this_election: GuideStore.getVoterGuidesToFollowByOrganizationRecommendation(nextProps.organization_we_vote_id),
     });
   }
 
   _onGuideStoreChange () {
     this.setState({
-      voter_guides_to_follow_organization_recommendation_all_elections: GuideStore.getVoterGuidesFollowedByLatestOrganization(),
-      //voter_guides_to_follow_organization_recommendation_this_election: GuideStore.getVoterGuidesRecommendedByLatestOrganization(),
-      voter_guides_to_follow_organization_recommendation_this_election: GuideStore.getVoterGuidesToFollowByOrganizationRecommendation(this.props.organization_we_vote_id),
+      voter_guides_to_follow_organization_recommendation_all_elections: GuideStore.getVoterGuidesFollowedByOrganization(this.state.organization_we_vote_id),
+      voter_guides_to_follow_organization_recommendation_this_election: GuideStore.getVoterGuidesToFollowByOrganizationRecommendation(this.state.organization_we_vote_id),
     });
   }
 

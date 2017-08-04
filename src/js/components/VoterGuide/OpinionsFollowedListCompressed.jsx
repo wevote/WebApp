@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import FollowToggle from "../Widgets/FollowToggle";
 import GuideActions from "../../actions/GuideActions";
-import OrganizationDisplayForList from "./OrganizationDisplayForList";
-import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import OrganizationDisplayForListCompressed from "./OrganizationDisplayForListCompressed";
 
-export default class OpinionsFollowedList extends Component {
+export default class OpinionsFollowedListCompressed extends Component {
 
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
@@ -56,19 +55,17 @@ export default class OpinionsFollowedList extends Component {
     // there is probably a more elegant way to do this, but left it this way for now as it works.
     const orgs = this.state.organizations_followed.map( (org) => {
       if (this.props.editMode) {
-        return <OrganizationDisplayForList key={org.organization_we_vote_id} {...org}>
+        return <OrganizationDisplayForListCompressed key={org.organization_we_vote_id} {...org}>
               <FollowToggle we_vote_id={org.organization_we_vote_id} /><span />
-            </OrganizationDisplayForList>;
+            </OrganizationDisplayForListCompressed>;
       } else {
-        return <OrganizationDisplayForList key={org.organization_we_vote_id} {...org}>
-              <span /><span /></OrganizationDisplayForList>;
+        return <OrganizationDisplayForListCompressed key={org.organization_we_vote_id} {...org}>
+              <span /><span /></OrganizationDisplayForListCompressed>;
       }
     });
 
     return <div className="guidelist card-child__list-group">
-        <ReactCSSTransitionGroup transitionName="org-ignore" transitionEnterTimeout={4000} transitionLeaveTimeout={2000}>
           {orgs}
-        </ReactCSSTransitionGroup>
       </div>;
   }
 

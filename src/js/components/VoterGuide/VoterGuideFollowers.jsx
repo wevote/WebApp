@@ -17,7 +17,7 @@ export default class VoterGuideFollowers extends Component {
     super(props);
     this.state = {
       voter_guide_followers_list: [],
-      organization: this.props.organization,
+      organization: {},
       search_filter: false,
       search_term: "",
       voter_guide_followers_list_filtered_by_search: [],
@@ -29,11 +29,16 @@ export default class VoterGuideFollowers extends Component {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     // GuideActions.voterGuideFollowersRetrieve(this.props.organization.organization_we_vote_id);
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+    this.setState({
+      organization: this.props.organization
+    });
   }
 
   componentWillReceiveProps (nextProps) {
     // When a new organization is passed in, update this component to show the new data
-    this.setState({organization: nextProps.organization});
+    this.setState({
+      organization: nextProps.organization
+    });
   }
 
   componentWillUnmount (){
@@ -48,7 +53,7 @@ export default class VoterGuideFollowers extends Component {
 
   _onGuideStoreChange (){
     this.setState({
-      voter_guide_followers_list: GuideStore.getVoterGuidesFollowingLatestOrganization()
+      voter_guide_followers_list: GuideStore.getVoterGuidesFollowingOrganization(this.state.organization.organization_we_vote_id)
     });
   }
 
