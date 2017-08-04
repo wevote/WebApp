@@ -17,10 +17,10 @@ export default class OrganizationVoterGuideTabs extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      current_organization_we_vote_id: this.props.organization.organization_we_vote_id,
-      organization: this.props.organization,
-      voter_guide_followed_list: GuideStore.getVoterGuidesFollowedByLatestOrganization(),
-      voter_guide_followers_list: GuideStore.getVoterGuidesFollowingLatestOrganization(),
+      current_organization_we_vote_id: "",
+      organization: {},
+      voter_guide_followed_list: [],
+      voter_guide_followers_list: [],
     };
   }
 
@@ -31,6 +31,11 @@ export default class OrganizationVoterGuideTabs extends Component {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     GuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.organization.organization_we_vote_id);
     GuideActions.voterGuideFollowersRetrieve(this.props.organization.organization_we_vote_id);
+    GuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
+    this.setState({
+      current_organization_we_vote_id: this.props.organization.organization_we_vote_id,
+      organization: this.props.organization,
+    });
   }
 
   componentWillReceiveProps (nextProps) {
@@ -38,6 +43,7 @@ export default class OrganizationVoterGuideTabs extends Component {
     if (nextProps.organization.organization_we_vote_id !== this.state.current_organization_we_vote_id) {
       GuideActions.voterGuidesFollowedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id);
       GuideActions.voterGuideFollowersRetrieve(nextProps.organization.organization_we_vote_id);
+      GuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id, VoterStore.election_id());
       this.setState({
         current_organization_we_vote_id: nextProps.organization.organization_we_vote_id,
         organization: nextProps.organization,
@@ -52,8 +58,8 @@ export default class OrganizationVoterGuideTabs extends Component {
 
   _onGuideStoreChange (){
     this.setState({
-      voter_guide_followed_list: GuideStore.getVoterGuidesFollowedByLatestOrganization(),
-      voter_guide_followers_list: GuideStore.getVoterGuidesFollowingLatestOrganization()
+      voter_guide_followed_list: GuideStore.getVoterGuidesFollowedByOrganization(this.state.organization.organization_we_vote_id),
+      voter_guide_followers_list: GuideStore.getVoterGuidesFollowingOrganization(this.state.organization.organization_we_vote_id),
     });
   }
 

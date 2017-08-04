@@ -272,7 +272,7 @@ export default class FacebookInvitableFriends extends Component {
       browserHistory.push({
         pathname: "/more/network",
         state: {
-          message: "You don't have friends on Facebook who are not on We Vote.",
+          message: "There are no friends to invite from Facebook. Either there is an error, or you already invited all of your friends on Facebook!",
           message_type: "success"
         }
       });

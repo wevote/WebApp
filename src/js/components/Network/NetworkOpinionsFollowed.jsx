@@ -1,11 +1,10 @@
 import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
-import Helmet from "react-helmet";
-import GuideStore from "../stores/GuideStore";
-import GuideActions from "../actions/GuideActions";
-import OpinionsFollowedList from "../components/VoterGuide/OpinionsFollowedList";
+import GuideStore from "../../stores/GuideStore";
+import GuideActions from "../../actions/GuideActions";
+import OpinionsFollowedListCompressed from "../VoterGuide/OpinionsFollowedListCompressed";
 
-export default class OpinionsFollowed extends Component {
+export default class NetworkOpinionsFollowed extends Component {
   static propTypes = {
     children: PropTypes.object,
     history: PropTypes.object
@@ -22,8 +21,11 @@ export default class OpinionsFollowed extends Component {
   componentDidMount () {
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
     GuideActions.voterGuidesFollowedRetrieve();
+    let voter_guide_followed_list = GuideStore.getVoterGuidesVoterIsFollowing();
+    const OPINIONS_TO_SHOW = 3;
+    let voter_guide_followed_list_limited = voter_guide_followed_list.slice(0, OPINIONS_TO_SHOW);
     this.setState({
-      voter_guide_followed_list: GuideStore.getVoterGuidesVoterIsFollowing()
+      voter_guide_followed_list: voter_guide_followed_list_limited
     });
   }
 
@@ -32,8 +34,11 @@ export default class OpinionsFollowed extends Component {
   }
 
   _onGuideStoreChange (){
+    let voter_guide_followed_list = GuideStore.getVoterGuidesVoterIsFollowing();
+    const OPINIONS_TO_SHOW = 3;
+    let voter_guide_followed_list_limited = voter_guide_followed_list.slice(0, OPINIONS_TO_SHOW);
     this.setState({
-      voter_guide_followed_list: GuideStore.getVoterGuidesVoterIsFollowing()
+      voter_guide_followed_list: voter_guide_followed_list_limited
     });
   }
 
@@ -65,34 +70,25 @@ export default class OpinionsFollowed extends Component {
   }
 
   render () {
-    console.log("OpinionsFollowed, this.state.voter_guide_followed_list: ", this.state.voter_guide_followed_list);
+    // console.log("NetworkOpinionsFollowed, this.state.voter_guide_followed_list: ", this.state.voter_guide_followed_list);
     return <div className="opinions-followed__container">
-      <Helmet title="Organizations You Follow - We Vote" />
       <section className="card">
         <div className="card-main">
-          <h1 className="h1">Who You're Following</h1>
-          <a className="fa-pull-right"
-             tabIndex="0"
-             onKeyDown={this.onKeyDownEditMode.bind(this)}
-             onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit"}</a>
-            <p>
-              Organizations, public figures and other voters you currently follow. <em>We will never sell your email</em>.
-            </p>
+          <h1 className="h4">Who You're Following</h1>
           <div className="voter-guide-list card">
             <div className="card-child__list-group">
               {
                 this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length ?
-                <OpinionsFollowedList organizationsFollowed={this.state.voter_guide_followed_list}
-                                      editMode={this.state.editMode}
-                                      instantRefreshOn /> :
-                  null
+                  <span>
+                    <OpinionsFollowedListCompressed organizationsFollowed={this.state.voter_guide_followed_list}
+                                                    editMode={this.state.editMode}
+                                                    instantRefreshOn />
+                    <Link to="/opinions_followed">See All</Link>
+                  </span>:
+                  <span>You are not following any organizations yet.</span>
               }
             </div>
           </div>
-
-          <Link className="pull-left" to="/opinions">Find organizations to follow</Link>
-
-          <Link className="pull-right" to="/opinions_ignored">Organizations you are ignoring</Link><br />
           <br />
         </div>
       </section>

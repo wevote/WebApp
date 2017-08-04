@@ -118,19 +118,12 @@ export default class OrganizationVoterGuide extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-md-8">
+            <div className="col-md-8 col-sm-12">
               <OrganizationVoterGuideTabs organization={this.state.organization} />
             </div>
           </div>
         </div>
       </div>
-
-      <div className="row">
-        <div className="col-md-4 hidden-xs sidebar-menu">
-          {/* Depending on which page we are on, show a different left area. */}
-        </div>
-      </div>
-
     </div>;
   }
 }

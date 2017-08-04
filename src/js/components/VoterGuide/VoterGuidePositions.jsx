@@ -93,7 +93,7 @@ export default class VoterGuidePositions extends Component {
     });
    }
 
-  toggleEditMode (){
+  toggleEditMode () {
     this.setState({editMode: !this.state.editMode});
   }
 
