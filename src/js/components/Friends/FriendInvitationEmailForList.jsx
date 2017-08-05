@@ -7,7 +7,6 @@ import VoterStore from "../../stores/VoterStore";
 
 export default class FriendInvitationEmailForList extends Component {
   static propTypes = {
-    key: PropTypes.string,
     children: PropTypes.array,
     invitationsSentByMe: PropTypes.bool,
     voter_we_vote_id: PropTypes.string,

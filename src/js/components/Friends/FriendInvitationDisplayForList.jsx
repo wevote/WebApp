@@ -7,7 +7,6 @@ import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/
 
 export default class FriendInvitationDisplayForList extends Component {
   static propTypes = {
-    key: PropTypes.string,
     children: PropTypes.array,  // A list of the tags in FriendDisplayForList when called (e.g. from FriendInvitationList)
     invitationsSentByMe: PropTypes.bool,
     voter_we_vote_id: PropTypes.string,

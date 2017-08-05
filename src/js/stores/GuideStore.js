@@ -262,8 +262,8 @@ class GuideStore extends FluxMapStore {
         let organization_we_vote_ids_followed_by_organization_dict = state.organization_we_vote_ids_followed_by_organization_dict;
         // Clear prior recommendations
         organization_we_vote_ids_to_follow_organization_recommendation_dict[organization_we_vote_id_for_voter_guide_owner] = [];
-        organization_we_vote_ids_followed_by_organization_dict[organization_we_vote_id_for_voter_guide_owner] = [];
-        if (action.res.filter_by_this_google_civic_election_id) {
+        if (action.res.filter_by_this_google_civic_election_id && action.res.filter_by_this_google_civic_election_id !== "") {
+          // console.log("voterGuidesFollowedByOrganizationRetrieve filter_by_this_google_civic_election_id, organization_we_vote_id_for_voter_guide_owner: ", organization_we_vote_id_for_voter_guide_owner);
           voter_guides.forEach(one_voter_guide => {
             organization_we_vote_ids_to_follow_organization_recommendation_dict[organization_we_vote_id_for_voter_guide_owner].push(one_voter_guide.organization_we_vote_id);
             // Don't set when filtered by election_id
@@ -274,7 +274,9 @@ class GuideStore extends FluxMapStore {
             organization_we_vote_ids_to_follow_organization_recommendation_dict: organization_we_vote_ids_to_follow_organization_recommendation_dict,
           };
         } else {
+          // console.log("voterGuidesFollowedByOrganizationRetrieve NO election_id, organization_we_vote_id_for_voter_guide_owner: ", organization_we_vote_id_for_voter_guide_owner);
           all_cached_voter_guides = state.all_cached_voter_guides;
+          organization_we_vote_ids_followed_by_organization_dict[organization_we_vote_id_for_voter_guide_owner] = [];
           voter_guides.forEach(one_voter_guide => {
             all_cached_voter_guides[one_voter_guide.organization_we_vote_id] = one_voter_guide;
             organization_we_vote_ids_to_follow_organization_recommendation_dict[organization_we_vote_id_for_voter_guide_owner].push(one_voter_guide.organization_we_vote_id);
@@ -346,6 +348,10 @@ class GuideStore extends FluxMapStore {
         }
         // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
         GuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
+        // Update who the organization is followed by
+        GuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
+        GuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
+        // Update the guides the voter is following
         GuideActions.voterGuidesFollowedRetrieve();
         // Update the followers of the organization that was just followed: organization_we_vote_id
         GuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
@@ -368,6 +374,10 @@ class GuideStore extends FluxMapStore {
         GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter stops following an org, update list
         // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
         GuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
+        // Update who the organization is followed by
+        GuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
+        GuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
+        // Update the guides the voter is following
         GuideActions.voterGuidesFollowedRetrieve();
         // Update the followers of the organization that was just un-followed: organization_we_vote_id
         GuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
@@ -387,9 +397,14 @@ class GuideStore extends FluxMapStore {
         GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter ignores an org, update list
         // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
         GuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
+        // Update who the organization is followed by
+        GuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
+        GuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
+        // Update the guides the voter is following
         GuideActions.voterGuidesFollowedRetrieve();
         // Update the followers of the organization that was just ignored: organization_we_vote_id
         GuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
+        // Ignoring one org can change the support/oppose count for many ballot items for the voter
         SupportActions.positionsCountForAllBallotItems();
         return {
           ...state,

@@ -11,7 +11,6 @@ import { capitalizeString } from "../../utils/textFormat";
 
 export default class MeasureItem extends Component {
   static propTypes = {
-    key: PropTypes.string,
     commentButtonHide: PropTypes.bool,
     we_vote_id: PropTypes.string.isRequired,
     measure_subtitle: PropTypes.string,

@@ -55,7 +55,7 @@ export default class VerifyThisIsMe extends Component {
     let { owner_we_vote_id } = TwitterStore.get();
     console.log("Entering _onOrganizationStoreChange, owner_we_vote_id: " + owner_we_vote_id);
     this.setState({
-      organization: OrganizationStore.get(owner_we_vote_id),
+      organization: OrganizationStore.getOrganizationByWeVoteId(owner_we_vote_id),
     });
   }
 

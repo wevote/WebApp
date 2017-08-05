@@ -5,7 +5,6 @@ import { capitalizeString } from "../../utils/textFormat";
 
 export default class OfficeItem extends Component {
   static propTypes = {
-    key: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired,
     kind_of_ballot_item: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string.isRequired,

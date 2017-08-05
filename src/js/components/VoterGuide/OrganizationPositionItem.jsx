@@ -178,9 +178,10 @@ export default class OrganizationPositionItem extends Component {
                   {ballot_item_display_name}
             </Link>
 
-            { signed_in_with_this_twitter_account ||
+            { (signed_in_with_this_twitter_account ||
               signed_in_with_this_organization ||
-              signed_in_with_this_facebook_account ?
+              signed_in_with_this_facebook_account) &&
+              this.props.editMode ?
               <PositionPublicToggle ballot_item_we_vote_id={position.ballot_item_we_vote_id}
                 type={position.kind_of_ballot_item}
                 supportProps={supportProps}

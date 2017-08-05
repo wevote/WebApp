@@ -14,7 +14,6 @@ const NUMBER_OF_CANDIDATES_TO_DISPLAY = 3;
 
 export default class OfficeItemCompressed extends Component {
   static propTypes = {
-    key: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired,
     kind_of_ballot_item: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string.isRequired,
