@@ -84,7 +84,7 @@ export default class NetworkOpinionsFollowed extends Component {
                                                     editMode={this.state.editMode}
                                                     instantRefreshOn />
                     <Link to="/opinions_followed">See All</Link>
-                  </span>:
+                  </span> :
                   <span>You are not following any organizations yet.</span>
               }
             </div>

@@ -86,11 +86,13 @@ export default class OrganizationVoterGuideTabs extends Component {
     let following_title_short = "";
     let followers_title = "";
     let voter_guide_followers_list = this.state.voter_guide_followers_list || [];
-    if (this.state.voter.linked_organization_we_vote_id == this.state.organization.organization_we_vote_id) {
+    if (this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id) {
       // If looking at your own voter guide, filter out your own entry as a follower
       voter_guide_followers_list = voter_guide_followers_list.filter(one_voter_guide => {
         if (one_voter_guide.organization_we_vote_id !== this.state.voter.linked_organization_we_vote_id) {
           return one_voter_guide;
+        } else {
+          return null;
         }
       });
     }
