@@ -7,7 +7,6 @@ import { capitalizeString } from "../../utils/textFormat";
 
 export default class MeasureItemReadyToVote extends Component {
   static propTypes = {
-    key: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired,
     measure_subtitle: PropTypes.string,
     measure_text: PropTypes.string,

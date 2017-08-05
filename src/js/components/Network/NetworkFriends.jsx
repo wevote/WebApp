@@ -1,6 +1,6 @@
 import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
-import FriendList from "../Friends/FriendList";
+import FriendListCompressed from "../Friends/FriendListCompressed";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
 import Helmet from "react-helmet";
@@ -101,9 +101,9 @@ export default class NetworkFriends extends Component {
             { this.state.current_friend_list && this.state.current_friend_list.length > 0 ?
               <span>
                 <div className="card">
-                  <FriendList friendList={current_friend_list}
-                          editMode={this.state.editMode}
-                          />
+                  <FriendListCompressed friendList={current_friend_list}
+                                        editMode={this.state.editMode}
+                                        />
                 </div>
                 <Link to="/friends">See All</Link>
               </span> :

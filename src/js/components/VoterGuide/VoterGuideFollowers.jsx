@@ -82,13 +82,22 @@ export default class VoterGuideFollowers extends Component {
 
 
   render () {
-    if (!this.state.voter) {
+    if (!this.state.voter || !this.state.organization) {
       return <div>{LoadingWheel}</div>;
     }
 
     var voter_guide_followers_list = [];
     if (!this.state.search_filter) {
       voter_guide_followers_list = this.state.voter_guide_followers_list;
+      // console.log("VoterGuideFollowers, voter_guide_followers_list: ", voter_guide_followers_list);
+      if (this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id) {
+        // If looking at your own voter guide, filter out your own entry as a follower
+        voter_guide_followers_list = voter_guide_followers_list.filter(one_voter_guide => {
+          if (one_voter_guide.organization_we_vote_id !== this.state.voter.linked_organization_we_vote_id) {
+            return one_voter_guide;
+          }
+        });
+      }
     } else {
       voter_guide_followers_list = this.state.voter_guide_followers_list_filtered_by_search;
     }
@@ -98,7 +107,7 @@ export default class VoterGuideFollowers extends Component {
       <Helmet title={this.state.organization.organization_name + " - We Vote"} />
       <div className="card">
         <ul className="card-child__list-group">
-          { this.state.voter_guide_followers_list && this.state.voter_guide_followers_list.length > 0 ?
+          { voter_guide_followers_list && voter_guide_followers_list.length > 0 ?
             <span>
               { !this.state.search_filter ?
                 <span>
@@ -114,7 +123,7 @@ export default class VoterGuideFollowers extends Component {
                   }
                 </span>
               }
-              { this.state.voter_guide_followers_list && this.state.voter_guide_followers_list.length > 0 ?
+              { voter_guide_followers_list && voter_guide_followers_list.length > 0 ?
                 <input type="text"
                      className="form-control"
                      name="search_followers_voter_guides_text"
@@ -129,8 +138,8 @@ export default class VoterGuideFollowers extends Component {
             </span> :
             <span>
               {this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id ?
-                <h4 className="card__additional-heading">No one is following you yet.</h4> :
-                <h4 className="card__additional-heading">No one is following {this.state.organization.organization_name} yet.</h4>
+                <h4 className="card__additional-heading">No followers can be found.</h4> :
+                <h4 className="card__additional-heading">No followers can be found for {this.state.organization.organization_name}.</h4>
               }
             </span>
           }

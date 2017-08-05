@@ -1,10 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
-import FriendToggle from "../Friends/FriendToggle";
 import ImageHandler from "../../components/ImageHandler";
-import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
 
-export default class FriendDisplayForList extends Component {
+export default class FriendDisplayForListCompressed extends Component {
   static propTypes = {
     children: PropTypes.array,  // A list of the tags in FriendDisplayForList when called (e.g. from FriendInvitationList)
     voter_we_vote_id: PropTypes.string,
@@ -20,16 +18,11 @@ export default class FriendDisplayForList extends Component {
 
   render () {
     const {
-      voter_twitter_followers_count,
-      voter_we_vote_id,
       voter_photo_url_medium,
     } = this.props;
 
     let alternate_voter_display_name = this.props.voter_email_address ? this.props.voter_email_address : this.props.voter_twitter_handle;
     let voter_display_name = this.props.voter_display_name ? this.props.voter_display_name : alternate_voter_display_name;
-    let twitterDescription = this.props.voter_twitter_description ? this.props.voter_twitter_description : "";
-    // If the voter_display_name is in the voter_twitter_description, remove it
-    let twitterDescriptionMinusName = removeTwitterNameFromDescription(voter_display_name, twitterDescription);
 
     // Link to their voter guide
     let twitter_voter_guide_link = this.props.voter_twitter_handle ? "/" + this.props.voter_twitter_handle : null;
@@ -53,22 +46,6 @@ export default class FriendDisplayForList extends Component {
               {voter_display_name_formatted}
             </Link> :
             <span>{voter_display_name_formatted}</span> } is your Friend
-          { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> :
-            null}
-          { voterGuideLink ?
-            <span><br /><Link to={voterGuideLink} className="u-no-underline">See your friend's voter guide.</Link></span> :
-            null}
-        </div>
-        <div className="card-child__additional">
-          <div className="card-child__follow-buttons">
-            { this.props.editMode ? <FriendToggle other_voter_we_vote_id={voter_we_vote_id}/> : null }
-          </div>
-          {voter_twitter_followers_count ?
-            <span className="twitter-followers__badge">
-              <span className="fa fa-twitter twitter-followers__icon" />
-              {numberWithCommas(voter_twitter_followers_count)}
-            </span> :
-            null}
         </div>
       </div>
     </div>;

@@ -46,12 +46,12 @@ export default class VoterGuidePositions extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log("VoterGuidePositions, componentWillReceiveProps, nextProps.organization: ", nextProps.organization);
     // When a new organization is passed in, update this component to show the new data
     let different_election = this.state.current_google_civic_election_id !== VoterStore.election_id();
     let different_organization = this.state.current_organization_we_vote_id !== nextProps.organization.organization_we_vote_id;
     // console.log("VoterGuidePositions componentWillReceiveProps-different_election: ", different_election, " different_organization: ", different_organization);
     if (different_election || different_organization) {
+      // console.log("VoterGuidePositions, componentWillReceiveProps, nextProps.organization: ", nextProps.organization);
       GuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id, VoterStore.election_id());
       // Positions for this organization, for this voter / election
       OrganizationActions.retrievePositions(nextProps.organization.organization_we_vote_id, true);
@@ -63,7 +63,8 @@ export default class VoterGuidePositions extends Component {
         organization: nextProps.organization
       });
     } else {
-      this.setState({organization: nextProps.organization});
+      // console.log("VoterGuidePositions, componentWillReceiveProps, not different");
+      // this.setState({organization: nextProps.organization}); // This causes problems with resetting attached lists
     }
   }
 
@@ -74,8 +75,9 @@ export default class VoterGuidePositions extends Component {
   }
 
   _onOrganizationStoreChange (){
+    // console.log("VoterGuidePositions _onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
     this.setState({
-      organization: OrganizationStore.get(this.state.organization.organization_we_vote_id),
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
     });
   }
 
@@ -83,7 +85,7 @@ export default class VoterGuidePositions extends Component {
     // Whenever positions change, we want to make sure to get the latest organization, because it has
     //  position_list_for_one_election and position_list_for_all_except_one_election attached to it
     this.setState({
-      organization: OrganizationStore.get(this.state.organization.organization_we_vote_id),
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
     });
   }
 

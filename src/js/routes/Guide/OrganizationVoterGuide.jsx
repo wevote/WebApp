@@ -3,13 +3,13 @@ import { Link } from "react-router";
 import { Button } from "react-bootstrap";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import HeaderBar from "../../components/Navigation/HeaderBar";
+import LoadingWheel from "../../components/LoadingWheel";
 import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationVoterGuideCard from "../../components/VoterGuide/OrganizationVoterGuideCard";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
-import LoadingWheel from "../../components/LoadingWheel";
-import VoterStore from "../../stores/VoterStore";
+import OrganizationVoterGuideCard from "../../components/VoterGuide/OrganizationVoterGuideCard";
 import OrganizationVoterGuideTabs from "../../components/VoterGuide/OrganizationVoterGuideTabs";
+import VoterStore from "../../stores/VoterStore";
 
 export default class OrganizationVoterGuide extends Component {
   static propTypes = {
@@ -26,19 +26,15 @@ export default class OrganizationVoterGuide extends Component {
   }
 
   componentDidMount (){
-    this.state = {
-      organization: OrganizationStore.get(this.state.organization_we_vote_id),
-      organization_we_vote_id: this.props.params.organization_we_vote_id,
-      voter: VoterStore.getVoter(),
-    };
     // console.log("OrganizationVoterGuide, componentDidMount, this.props.params.organization_we_vote_id: ", this.props.params.organization_we_vote_id);
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    this._onOrganizationStoreChange();
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
-    let display_facebook_banner = this.state.voter.signed_in_facebook &&
-      this.state.voter.linked_organization_we_vote_id ==this.props.params.organization_we_vote_id;
-    OrganizationActions.organizationRetrieveWithBanner(this.props.params.organization_we_vote_id, display_facebook_banner);
+    OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id); // organizationRetrieveWithBanner
     // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
+    this.setState({
+      organization_we_vote_id: this.props.params.organization_we_vote_id,
+      voter: VoterStore.getVoter(),
+    });
   }
 
   componentWillReceiveProps (nextProps) {
@@ -64,7 +60,7 @@ export default class OrganizationVoterGuide extends Component {
 
   _onOrganizationStoreChange (){
     this.setState({
-      organization: OrganizationStore.get(this.state.organization_we_vote_id)
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization_we_vote_id)
     });
   }
 
@@ -73,8 +69,8 @@ export default class OrganizationVoterGuide extends Component {
       return <div>{LoadingWheel}</div>;
     }
     const { organization_id } = this.state.organization;
-    let is_voter_owner = this.state.organization.public_figure_we_vote_id !== undefined &&
-      this.state.organization.public_figure_we_vote_id === this.state.voter.voter_we_vote_id;
+    let is_voter_owner = this.state.organization.organization_we_vote_id !== undefined &&
+      this.state.organization.organization_we_vote_id === this.state.voter.linked_organization_we_vote_id;
 
     if (!organization_id) {
       var floatRight = {
@@ -114,10 +110,7 @@ export default class OrganizationVoterGuide extends Component {
             <div className="col-md-4 hidden-xs" >
               <div className="card">
                 <div className="card-main">
-                  <OrganizationVoterGuideCard
-                    organization={this.state.organization}
-                    is_voter_owner={is_voter_owner}
-                />
+                  <OrganizationVoterGuideCard organization={this.state.organization} is_voter_owner={is_voter_owner} />
                 </div>
                 <br />
               </div>
