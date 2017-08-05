@@ -29,7 +29,9 @@ export default class OrganizationVoterGuide extends Component {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     this._onOrganizationStoreChange();
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
-    OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
+    let display_facebook_banner = this.state.voter.signed_in_facebook &&
+      this.state.voter.linked_organization_we_vote_id ==this.props.params.organization_we_vote_id;
+    OrganizationActions.organizationRetrieveWithBanner(this.props.params.organization_we_vote_id, display_facebook_banner);
     // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
   }
 
