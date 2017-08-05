@@ -95,6 +95,8 @@ export default class VoterGuideFollowers extends Component {
         voter_guide_followers_list = voter_guide_followers_list.filter(one_voter_guide => {
           if (one_voter_guide.organization_we_vote_id !== this.state.voter.linked_organization_we_vote_id) {
             return one_voter_guide;
+          } else {
+            return null;
           }
         });
       }
