@@ -26,14 +26,6 @@ module.exports = {
       });
   },
 
-  organizationRetrieveWithBanner: function (we_vote_id, display_facebook_banner) {
-    Dispatcher.loadEndpoint("organizationRetrieve",
-      {
-        organization_we_vote_id: we_vote_id,
-        display_facebook_banner: display_facebook_banner,
-      });
-  },
-
   retrievePositions: function (we_vote_id, filter_for_voter, filter_out_voter) { // Calls positionListForOpinionMaker endpoint
     Dispatcher.loadEndpoint("positionListForOpinionMaker",
       {

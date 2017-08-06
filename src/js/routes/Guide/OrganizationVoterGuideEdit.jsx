@@ -156,7 +156,9 @@ export default class OrganizationVoterGuideEdit extends Component {
           <div className="row">
             <div className="col-md-12">
               { this.state.organization.organization_banner_url !== "" ?
-                <img src={this.state.organization.organization_banner_url} /> :
+                <div className="organization-banner-image-div">
+                  <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
+                </div> :
                 <div className="organization-banner-image-non-twitter-users" />
               }
             </div>

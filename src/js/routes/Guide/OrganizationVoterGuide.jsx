@@ -29,7 +29,7 @@ export default class OrganizationVoterGuide extends Component {
     // console.log("OrganizationVoterGuide, componentDidMount, this.props.params.organization_we_vote_id: ", this.props.params.organization_we_vote_id);
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
-    OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id); // organizationRetrieveWithBanner
+    OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
     // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
     this.setState({
       organization_we_vote_id: this.props.params.organization_we_vote_id,
@@ -101,7 +101,9 @@ export default class OrganizationVoterGuide extends Component {
           <div className="row">
             <div className="col-md-12">
               { this.state.organization.organization_banner_url !== "" ?
-                <img src={this.state.organization.organization_banner_url} /> :
+                <div className="organization-banner-image-div">
+                  <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
+                </div> :
                 <div className="organization-banner-image-non-twitter-users" />
               }
             </div>

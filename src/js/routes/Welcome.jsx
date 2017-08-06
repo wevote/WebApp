@@ -283,9 +283,10 @@ export default class Intro extends Component {
           <div className="u-f--small u-stack--lg">
             <p>
               WeVote.US is brought to you by a partnership between two registered nonprofit organizations, one <nobr>501(c)(3)</nobr> and one <nobr>501(c)(4)</nobr>.
+               We do not support or oppose any political candidate or party.
             </p>
             <p>
-              We do not support or oppose any political candidate or party. <a href="https://github.com/WeVote" target="_blank">The software that powers We Vote is open source and built by volunteers.</a>
+              <a href="https://github.com/WeVote" target="_blank">The software that powers We Vote is open source and built by volunteers.</a>
             </p>
           </div>
 
