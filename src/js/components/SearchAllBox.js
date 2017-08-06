@@ -38,8 +38,6 @@ export default class SearchAllBox extends Component {
     this.onClearSearch = this.onClearSearch.bind(this);
     this.searchHasContent = this.searchHasContent.bind(this);
     this.navigateToSelectedLink = this.navigateToSelectedLink.bind(this);
-
-    this.searchAllListener = SearchAllStore.addListener(this._onSearchAllStoreChange.bind(this));
   }
 
   componentDidMount (){
@@ -62,6 +60,7 @@ export default class SearchAllBox extends Component {
       // Search type three - Search in progress
       SearchAllActions.searchAll(text_from_search_field);
     }
+    this.searchAllStoreListener = SearchAllStore.addListener(this._onSearchAllStoreChange.bind(this));
   }
 
   componentWillReceiveProps (){
@@ -69,7 +68,7 @@ export default class SearchAllBox extends Component {
   }
 
   componentWillUnmount (){
-    this.searchAllListener.remove();
+    this.searchAllStoreListener.remove();
   }
 
   _onSearchAllStoreChange (){

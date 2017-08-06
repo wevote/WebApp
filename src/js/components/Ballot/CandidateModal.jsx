@@ -27,6 +27,7 @@ export default class CandidateModal extends Component {
   }
 
   render () {
+    let voter_guides_to_follow_for_ballot_item_id = this.props.candidate.voter_guides_to_follow_for_ballot_item_id || [];
     return <Modal show >
       <Modal.Header closeButton onHide={this.props.toggleFunction}>
         <Modal.Title>
@@ -75,7 +76,7 @@ export default class CandidateModal extends Component {
               null }
             {/* Show voter guides to follow that relate to this candidate */}
             <div className="card__additional">
-              {this.props.candidate.voter_guides_to_follow_for_ballot_item_id.length === 0 ?
+              {voter_guides_to_follow_for_ballot_item_id.length === 0 ?
                 null :
                 <span>
                             <p className="card__no-additional">

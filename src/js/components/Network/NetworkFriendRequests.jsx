@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Button } from "react-bootstrap";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
 import FriendInvitationList from "../Friends/FriendInvitationList";
@@ -96,11 +95,6 @@ export default class NetworkFriendRequests extends Component {
               <p>These are invitations you have sent. Your friends have not replied to them yet.</p>
               <FriendInvitationList friendList={this.state.friend_invitations_sent_by_me}
                                     invitationsSentByMe />
-              <Link to="/more/connect">
-                <Button bsStyle="link">
-                  Invite More Friends
-                </Button>
-              </Link>
             </div> :
             null
           }

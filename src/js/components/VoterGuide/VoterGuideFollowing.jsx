@@ -15,6 +15,7 @@ export default class VoterGuideFollowing extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      editMode: false,
       organization: {},
       search_filter: false,
       search_term: "",
@@ -82,6 +83,17 @@ export default class VoterGuideFollowing extends Component {
     }
   }
 
+  toggleEditMode () {
+    this.setState({editMode: !this.state.editMode});
+  }
+
+  onKeyDownEditMode (event) {
+    let enterAndSpaceKeyCodes = [13, 32];
+    let scope = this;
+    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+      scope.setState({editMode: !this.state.editMode});
+    }
+  }
 
   render () {
     if (!this.state.voter) {
@@ -99,7 +111,7 @@ export default class VoterGuideFollowing extends Component {
     } else {
       voter_guide_followed_list = this.state.voter_guide_followed_list_filtered_by_search;
     }
-    let hide_stop_following_button = !looking_at_self;
+    let hide_stop_following_button = !looking_at_self || !this.state.editMode;
 
     return <div className="opinions-followed__container">
       {/* Since VoterGuidePositions, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
@@ -108,6 +120,12 @@ export default class VoterGuideFollowing extends Component {
         <ul className="card-child__list-group">
           { this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length > 0 ?
             <span>
+            { looking_at_self ?
+              <a className="fa-pull-right u-push--md"
+                 tabIndex="0"
+                 onKeyDown={this.onKeyDownEditMode.bind(this)}
+                 onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit"}</a> :
+              null }
               { !this.state.search_filter ?
                 <span>
                   {this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id ?

@@ -142,6 +142,13 @@ module.exports = {
     let background = false;
     if (data.cover && data.cover.source)
       background = data.cover.source;
+    // For offsets, see https://developers.facebook.com/docs/graph-api/reference/cover-photo/
+    let offset_x = false;
+    if (data.cover && data.cover.offset_x)
+      offset_x = data.cover.offset_x;
+    let offset_y = false;
+    if (data.cover && data.cover.offset_y)
+      offset_y = data.cover.offset_y;
     Dispatcher.loadEndpoint("voterFacebookSignInSave", {
       facebook_user_id: data.id || false,
       facebook_email: data.email || false,
@@ -150,6 +157,8 @@ module.exports = {
       facebook_last_name: data.last_name || false,
       facebook_profile_image_url_https: data.url || false,
       facebook_background_image_url_https: background,
+      facebook_background_image_offset_x: offset_x, // Not supported on API server yet
+      facebook_background_image_offset_y: offset_y, // Not supported on API server yet
       save_auth_data: false,
       save_profile_data: true
     });
