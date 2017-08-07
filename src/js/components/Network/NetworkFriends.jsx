@@ -3,7 +3,6 @@ import { Link } from "react-router";
 import FriendListCompressed from "../Friends/FriendListCompressed";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
-import Helmet from "react-helmet";
 var _ = require("lodash");
 
 export default class NetworkFriends extends Component {
@@ -93,7 +92,6 @@ export default class NetworkFriends extends Component {
     }
 
     return <div className="opinion-view">
-      <Helmet title="Your Friends - We Vote" />
       <section className="card">
         <div className="card-main">
           <h1 className="h4">Your Friends</h1>

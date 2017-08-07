@@ -44,9 +44,12 @@ export default class OrganizationVoterGuideCard extends Component {
     var voterGuideLink = organization_twitter_handle ? "/" + organization_twitter_handle : "/voterguide/" + organization_we_vote_id;
 
     return <div className="card-main">
+      { organization_photo_url_large ?
         <Link to={voterGuideLink} className="u-no-underline">
           <img src={organization_photo_url_large} height="180"/>
-        </Link>
+        </Link> :
+        null
+      }
         <br />
         <Link to={voterGuideLink}>
           <h3 className="card-main__display-name">{displayName}</h3>

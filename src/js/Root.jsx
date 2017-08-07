@@ -128,8 +128,9 @@ const routes = () =>
     <Route path="/more/faq" component={FAQ} />
     <Route path="/more/howtouse" component={HowToUse} />
     <Route path="/more/network" component={Network} />
-    <Route path="/more/network/:invitation_secret_key" component={FriendInvitationByEmailVerifyProcess} />
-    <Route path="/more/network/:invitation_secret_key/ignore" component={FriendInvitationByEmailVerifyProcess} />
+    <Route path="/more/network/key/:invitation_secret_key" component={FriendInvitationByEmailVerifyProcess} />
+    <Route path="/more/network/key/:invitation_secret_key/ignore" component={FriendInvitationByEmailVerifyProcess} />
+    <Route path="/more/network/:edit_mode" component={Network} />
     <Route path="/more/organization" component={Organization} />
     <Route path="/more/privacy" component={Privacy} />
     <Route path="/more/processing_donation" component={ProcessingDonation} />

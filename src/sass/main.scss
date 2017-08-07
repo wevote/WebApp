@@ -85,14 +85,15 @@
 // -------------------------------
 // Larger areas that are not limited to a single component
 
+@import 'components/ballotElectionList';
 @import 'components/device-menu';
 @import 'components/header';
-@import 'components/intro-story';
-@import 'components/modal-content';
 @import 'components/intro-modal';
+@import 'components/intro-story';
 @import 'components/loading-screen';
+@import 'components/modal-content';
 @import 'components/navigator';
-@import 'components/ballotElectionList';
+@import 'components/network';
 @import 'components/voter-guide';
 
 
