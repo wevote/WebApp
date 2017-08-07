@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import { Tabs, Tab } from "react-bootstrap";
+import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
 import BrowserPushMessage from "../components/Widgets/BrowserPushMessage";
 import FriendActions from "../actions/FriendActions";
@@ -16,9 +15,14 @@ import TwitterSignIn from "../components/Twitter/TwitterSignIn";
 import VoterStore from "../stores/VoterStore";
 
 export default class Network extends Component {
+  static propTypes = {
+    params: PropTypes.object,
+  };
+
   constructor (props) {
     super(props);
     this.state = {
+      edit_mode: "",
       friend_invitations_sent_by_me: [],
       friend_invitations_sent_to_me: [],
       friend_invitations_processed: [],
@@ -35,6 +39,15 @@ export default class Network extends Component {
     this._onVoterStoreChange();
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.setState({
+      edit_mode: this.props.params.edit_mode || "organizations",
+    });
+  }
+
+  componentWillReceiveProps (nextProps) {
+    this.setState({
+      edit_mode: nextProps.params.edit_mode || "organizations",
+    });
   }
 
   componentWillUnmount (){
@@ -59,6 +72,21 @@ export default class Network extends Component {
     if (!this.state.voter){
       return LoadingWheel;
     }
+
+    let network_component_to_display = null;
+    switch (this.state.edit_mode) {
+      default:
+      case "organizations":
+        network_component_to_display = <NetworkOpinions />;
+        break;
+      case "friends":
+        network_component_to_display = <NetworkFriendRequests />;
+        break;
+      case "issues":
+        network_component_to_display = <NetworkIssuesToFollow />;
+        break;
+    }
+
     return <span>
       <Helmet title="Your Network - We Vote" />
       <BrowserPushMessage incomingProps={this.props} />
@@ -66,47 +94,78 @@ export default class Network extends Component {
         <div className="card-main">
           <h3 className="h3">Build Your We Vote Network</h3>
 
-          { this.state.voter.signed_in_twitter ?
-            null :
-            <span>
-              <TwitterSignIn buttonText="Find Voter Guides" />
-              &nbsp;&nbsp;&nbsp;
-            </span>
-          }
+          {/* Desktop view */}
+          <span className="hidden-xs">
+            { this.state.voter.signed_in_twitter ?
+              null :
+              <span>
+                <TwitterSignIn buttonText="Find Voter Guides" />
+                &nbsp;&nbsp;&nbsp;
+              </span>
+            }
 
-          <Link to="/facebook_invitable_friends" className="btn btn-social btn-lg btn-facebook">
-            <i className="fa fa-facebook" />Choose Friends&nbsp;&nbsp;&nbsp;
-          </Link>
-          &nbsp;&nbsp;&nbsp;
+            <Link to="/facebook_invitable_friends" className="btn btn-social btn-lg btn-facebook">
+              <i className="fa fa-facebook" />Choose Friends&nbsp;&nbsp;&nbsp;
+            </Link>
+            &nbsp;&nbsp;&nbsp;
 
-          <Link to="/friends/invitebyemail" className="btn btn-social btn-lg btn--email">
-            <i className="fa fa-envelope" />Invite Friends&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          </Link>
+            <Link to="/friends/invitebyemail" className="btn btn-social btn-lg btn--email">
+              <i className="fa fa-envelope" />Invite Friends&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </Link>
+          </span>
+
+          {/* Mobile view */}
+          <span className="visible-xs">
+            { this.state.voter.signed_in_twitter ?
+              null :
+              <span>
+                <TwitterSignIn buttonText="Find" buttonSizeClass="btn-md" />
+                &nbsp;
+              </span>
+            }
+            <Link to="/facebook_invitable_friends" className="btn btn-social btn-md btn-facebook">
+              <i className="fa fa-facebook" />Choose
+            </Link>
+            &nbsp;
+            <Link to="/friends/invitebyemail" className="btn btn-social btn-md btn--email">
+              <i className="fa fa-envelope" />Invite
+            </Link>
+            <div>Get advice from your social networks about your voting decisions.</div>
+          </span>
         </div>
       </section>
-          <div className="row">
-            <div className="col-sm-12 col-md-8">
-              <Tabs defaultActiveKey={1} id="tabbed_voter_guide_details">
-                <Tab eventKey={1} title={"Friend Requests"}>
-                  <NetworkFriendRequests />
-                </Tab>
+      <div className="row">
+        <div className="col-sm-12 col-md-8">
+          <div className="network__tabs-background hidden-print">
+            <ul className="nav network__tabs">
+              <li>
+                <Link to="/more/network/organizations" className={this.state.edit_mode === "organizations" ? "tab tab-active" : "tab tab-default"}>
+                  <span>Organizations to Follow</span>
+                </Link>
+              </li>
 
-                <Tab eventKey={2} title={"Organizations to Follow"}>
-                  <NetworkOpinions />
-                </Tab>
+              <li>
+                <Link to={{ pathname: "/more/network/friends" }} className={this.state.edit_mode === "friends" ? "tab tab-active" : "tab tab-default"}>
+                  <span>Friend Requests</span>
+                </Link>
+              </li>
 
-                <Tab eventKey={3} title={"Issues to Follow"}>
-                  <NetworkIssuesToFollow />
-                </Tab>
-              </Tabs>
-            </div>
-
-            <div className="col-md-4 hidden-xs">
-              <NetworkFriends />
-              <NetworkOpinionsFollowed />
-              <NetworkIssuesFollowed />
-            </div>
+              <li>
+                <Link to={{ pathname: "/more/network/issues" }} className={this.state.edit_mode === "issues" ? "tab tab-active" : "tab tab-default"}>
+                  <span>Issues to Follow</span>
+                </Link>
+              </li>
+            </ul>
           </div>
+          {network_component_to_display}
+        </div>
+
+        <div className="col-md-4 hidden-xs">
+          <NetworkOpinionsFollowed />
+          <NetworkFriends />
+          <NetworkIssuesFollowed />
+        </div>
+      </div>
     </span>;
   }
 }

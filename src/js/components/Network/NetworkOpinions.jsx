@@ -1,4 +1,5 @@
 import { Button } from "react-bootstrap";
+import Helmet from "react-helmet";
 import GuideStore from "../../stores/GuideStore";
 import SearchGuidesToFollowBox from "../SearchGuidesToFollowBox";
 import VoterStore from "../../stores/VoterStore";
@@ -73,17 +74,20 @@ export default class NetworkOpinions extends Component {
       </div>;
     } else {
       return <div className="opinions-followed__container">
+      <Helmet title="Organizations to Follow - We Vote" />
         <section className="card">
           <div className="card-main">
-            <span style={floatRight}>
+            <span style={floatRight} className="hidden-print">
               <Link to="/opinions_followed" className="u-margin-left--md">See organizations you are following</Link>
             </span>
-            <p>
+            <p className="hidden-print">
               Find opinions about your ballot (ordered by Twitter followers).
               Follow those you trust. Unfollow at any time.
               Following won't add you to mailing lists.
             </p>
-            <SearchGuidesToFollowBox />
+            <div className="hidden-print">
+              <SearchGuidesToFollowBox />
+            </div>
             { ballot_has_guides ?
               <p /> :
               <p>There are no organizations with opinions on your ballot. Here are some popular organizations</p>
@@ -92,7 +96,7 @@ export default class NetworkOpinions extends Component {
               <GuideList organizationsToFollow={voter_guides_to_follow_all} instantRefreshOn />
             </div>
           </div>
-          <Link className="pull-right" to="/opinions_ignored">Organizations you are ignoring</Link><br />
+          <Link className="pull-right hidden-print" to="/opinions_ignored">Organizations you are ignoring</Link><br />
         </section>
       </div>;
     }

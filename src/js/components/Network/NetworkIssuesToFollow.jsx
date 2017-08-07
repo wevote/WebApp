@@ -57,7 +57,7 @@ export default class NetworkIssuesToFollow extends Component {
     };
 
     return <div className="opinions-followed__container">
-      <Helmet title="Issues You Follow - We Vote" />
+      <Helmet title="Issues to Follow - We Vote" />
       <section className="card">
         <div className="card-main">
           <span style={floatRight}>
