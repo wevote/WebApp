@@ -130,7 +130,10 @@ export default class Application extends Component {
       pathname.startsWith("/measure/") ||
       pathname === "/more/about" || pathname === "/more/connect" || pathname === "/more/credits" ||
       pathname === "/more/donate" || pathname === "/more/donate_thank_you" || pathname === "/more/howtouse" ||
-      pathname.startsWith("/office/") || pathname === "/more/network" || pathname === "/more/organization" ||
+      pathname.startsWith("/office/") ||
+      pathname === "/more/network" ||
+      pathname === "/more/network/friends" || pathname === "/more/network/issues" || pathname === "/more/network/organizations" ||
+      pathname === "/more/organization" ||
       pathname === "/more/privacy" || pathname === "/more/sign_in" || pathname === "/more/team" ||
       pathname === "/more/terms" || pathname === "/more/vision" ||
       pathname === "/opinions" || pathname === "/opinions_followed" || pathname === "/opinions_ignored" ||
