@@ -305,6 +305,7 @@ export default class HeaderBar extends Component {
     let number_of_incoming_friend_requests = this.state.friend_invitations_sent_to_me.length;
     let voter_is_signed_in = this.props.voter && this.props.voter.is_signed_in;
     let voter_orientation_complete = cookies.getItem("voter_orientation_complete") || voter_is_signed_in;
+    let in_network_section = pathname === "/more/network" || pathname === "/more/network/organizations" || pathname === "/more/network/issues" || pathname === "/more/network/friends";
 
     return (
       <header className="page-header">
@@ -324,7 +325,7 @@ export default class HeaderBar extends Component {
         <div className="header-nav">
           { voter_orientation_complete ? ballot(pathname === "/ballot") : null }
 
-          { voter_orientation_complete ? network(pathname === "/more/network", number_of_incoming_friend_requests) : null }
+          { voter_orientation_complete ? network(in_network_section, number_of_incoming_friend_requests) : null }
 
           { voter_orientation_complete ?
             <span onClick={this.toggleAboutMenu} className={ "header-nav__item header-nav__item--about header-nav__item--has-icon hidden-xs" + (pathname === "/more/about" ? " active-icon" : "")}>
