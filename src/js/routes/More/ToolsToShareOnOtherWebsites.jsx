@@ -1,5 +1,6 @@
 import React from "react";
 import Helmet from "react-helmet";
+import CodeCopier from "./CodeCopierComponent.jsx";
 
 export default class ToolsToShareOnOtherWebsites extends React.Component {
   constructor (props) {
@@ -35,32 +36,63 @@ export default class ToolsToShareOnOtherWebsites extends React.Component {
 
         <h3 className="h3">Other tools you might like</h3>
         <h4 className="h4">Free voter registration tool</h4>
+        <CodeCopier>
+          {`<iframe src="https://register.vote.org/?partner=111111&campaign=free-tools" width="100%" marginheight="0" frameborder="0" id="frame1" scrollable ="no"></iframe>`}
+          {`<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.3/iframeResizer.min.js"></script>`}
+          {`<script type="text/javascript">iFrameResize({ log:true, checkOrigin:false});</script>`}
+        </CodeCopier>
+        
+        {/*
         <textarea id="clipboard_textarea1"> {/* TODO Make ReactJS friendly: <iframe src="https://register.vote.org/?partner=111111&campaign=free-tools" width="100%" marginheight="0" frameborder="0" id="frame1" scrollable ="no"></iframe>
           <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.3/iframeResizer.min.js"></script>
         <script type="text/javascript">iFrameResize({ log:true, checkOrigin:false});</script>*/}
-        </textarea>
+        {/*</textarea>
         <button className="btn-success" data-clipboard-target="clipboard_textarea1">Click to copy code</button>
+        */}
+
+        {/* enclose html within {` and `} to make them literal string in JSX */}
+
 
         <h4 className="h4">Free absentee ballot tool</h4>
-        <textarea id="clipboard_textarea2"> {/* TODO Make ReactJS friendly: <iframe src="https://absentee.vote.org/?partner=111111&campaign=free-tools" width="100%" marginheight="0" frameborder="0" id="frame2" scrollable="no"></iframe>
+        <CodeCopier>
+          {`<iframe src="https://absentee.vote.org/?partner=111111&campaign=free-tools" width="100%" marginheight="0" frameborder="0" id="frame2" scrollable="no"></iframe>`}
+          {`<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.3/iframeResizer.min.js"></script>`}
+          {`<script type="text/javascript">iFrameResize({ log:true, checkOrigin:false});</script>`}
+        </CodeCopier>
+
+
+        {/*<textarea id="clipboard_textarea2"> {/* TODO Make ReactJS friendly: <iframe src="https://absentee.vote.org/?partner=111111&campaign=free-tools" width="100%" marginheight="0" frameborder="0" id="frame2" scrollable="no"></iframe>
           <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.3/iframeResizer.min.js"></script>
           <script type="text/javascript">iFrameResize({ log:true, checkOrigin:false});</script>*/}
-        </textarea>
-        <button className="btn-success" data-clipboard-target="clipboard_textarea2">Click to copy code</button>
+        {/*</textarea>
+        <button className="btn-success" data-clipboard-target="clipboard_textarea2">Click to copy code</button>*/}
 
         <h4 className="h4">Free check registration status tool</h4>
-        <textarea id="clipboard_textarea3"> {/* TODO Make ReactJS friendly: <iframe src="https://verify.vote.org/?partner=111111&campaign=free-tools" width="100%" marginheight="0" frameborder="0" id="frame3" scrollable="no"></iframe>
+        
+        {/*<textarea id="clipboard_textarea3"> {/* TODO Make ReactJS friendly: <iframe src="https://verify.vote.org/?partner=111111&campaign=free-tools" width="100%" marginheight="0" frameborder="0" id="frame3" scrollable="no"></iframe>
           <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.3/iframeResizer.min.js" ></script>
           <script type="text/javascript">iFrameResize({ log:true, checkOrigin:false});</script>*/}
-        </textarea>
-        <button className="btn-success" data-clipboard-target="clipboard_textarea3">Click to copy code</button>
+        {/*</textarea>
+        <button className="btn-success" data-clipboard-target="clipboard_textarea3">Click to copy code</button>*/}
+
+        <CodeCopier>
+          {`<iframe src="https://verify.vote.org/?partner=111111&campaign=free-tools" width="100%" marginheight="0" frameborder="0" id="frame3" scrollable="no"></iframe>`}
+          {`<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.3/iframeResizer.min.js" ></script>`}
+          {`<script type="text/javascript">iFrameResize({ log:true, checkOrigin:false});</script>`}
+        </CodeCopier>
 
         <h4 className="h4">Election reminders tool</h4>
-        <textarea id="clipboard_textarea4"> {/* TODO Make ReactJS friendly: <iframe src="https://reminders.vote.org/?partner=111111&campaign=free-tools" width="100%" marginheight="0" frameborder="0" id="frame1" scrollable ="no"></iframe>
+        {/*<textarea id="clipboard_textarea4"> {/* TODO Make ReactJS friendly: <iframe src="https://reminders.vote.org/?partner=111111&campaign=free-tools" width="100%" marginheight="0" frameborder="0" id="frame1" scrollable ="no"></iframe>
           <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.3/iframeResizer.min.js"></script>
           <script type="text/javascript">iFrameResize({ log:true, checkOrigin:false});</script>*/}
-        </textarea>
-        <button className="btn-success" data-clipboard-target="clipboard_textarea4">Click to copy code</button>
+        {/*</textarea>
+        <button className="btn-success" data-clipboard-target="clipboard_textarea4">Click to copy code</button>*/}
+
+        <CodeCopier>
+          {`<iframe src="https://reminders.vote.org/?partner=111111&campaign=free-tools" width="100%" marginheight="0" frameborder="0" id="frame1" scrollable ="no"></iframe>`}
+          {`<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.3/iframeResizer.min.js"></script>`}
+          {`<script type="text/javascript">iFrameResize({ log:true, checkOrigin:false});</script>`}
+        </CodeCopier>
         <p>&nbsp;</p>
         <p>If you need access to the data gathered via your instance of the Vote.org toolset, <a href="https://vip.vote.org" target="_blank">check out Vote.org premium tools. </a></p>
         <p>&nbsp;</p>
