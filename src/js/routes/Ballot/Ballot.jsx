@@ -365,10 +365,12 @@ export default class Ballot extends Component {
               <EditAddress address={voter_address_object} _toggleSelectAddressModal={this._toggleSelectAddressModal} />
             </div>
             { text_for_map_search ?
-              <div className="ballot__filter hidden-print">
-                <BallotFilter ballot_type={this.getBallotType()}
-                              length={BallotStore.ballotLength}
-                              length_remaining={BallotStore.ballot_remaining_choices_length} />
+              <div className="ballot__filter-container">
+                <div className="ballot__filter hidden-print">
+                  <BallotFilter ballot_type={this.getBallotType()}
+                                length={BallotStore.ballotLength}
+                                length_remaining={BallotStore.ballot_remaining_choices_length} />
+                </div>
               </div> :
               null }
             <div className="visible-xs-block hidden-print">

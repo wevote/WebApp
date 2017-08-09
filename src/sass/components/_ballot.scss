@@ -11,8 +11,15 @@ $transparent: transparent !important;
     // TODO either add some properties to this class or delete it
   }
 
+  &__filter-container {
+    overflow: hidden;
+    height: 27px;
+  }
+
   &__filter {
-    // TODO either add some properties to this class or delete it
+    white-space: nowrap;
+    overflow-x: scroll;
+    height: 47px;
   }
 
   &__header-group {
@@ -51,10 +58,14 @@ $transparent: transparent !important;
     overflow: hidden;
     border-bottom: 1px solid #aaa;
 
+    li {
+      display: inline-block;
+      float: none;
+    }
+
     .tab {
       padding: $tab-padding;
       margin-right: $tab-spacing;
-      float: left;
     }
 
     .tab-active {
