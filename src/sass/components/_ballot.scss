@@ -5,6 +5,9 @@ $address-margin-xs: -4px 0 8px 0;
 $tab-padding: 0 0 4px 0;
 $tab-spacing: 24px;
 $transparent: transparent !important;
+$scrollbar-width: 20px;
+$tab-height: 47px;
+$tab-height-visible: $tab-height - $scrollbar-width;
 
 .ballot {
   // ===========================================
@@ -17,14 +20,14 @@ $transparent: transparent !important;
 
   &__filter-container {
     overflow: hidden;
-    height: 27px;
+    height: $tab-height-visible;
   }
 
   &__filter {
     white-space: nowrap;
     overflow-x: scroll;
     overflow-y: hidden;
-    height: 47px;
+    height: $tab-height;
   }
 
   &__header-group {
@@ -63,7 +66,7 @@ $transparent: transparent !important;
     margin-right: $minus-full-width;
     overflow: hidden;
 
-    li {
+    .tab-item {
       display: inline-block;
       float: none;
     }
