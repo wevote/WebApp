@@ -1,6 +1,10 @@
-import React from "react";
+import React, { PropTypes, Component } from "react";
 
-export default class CodeCopier extends React.Component {
+export default class CodeCopier extends Component {
+  static propTypes = {
+    children: PropTypes.object
+  };
+
   constructor (props){
     super(props);
 
@@ -19,7 +23,9 @@ export default class CodeCopier extends React.Component {
   render () {
     return (
       <div className="code-copier">
-        <textarea ref={(text) => { this.textareaCode = text; }} className="clipboard" defaultValue={this.props.children} />
+        <textarea ref={(text) => { this.textareaCode = text; }}
+                  className="clipboard textarea-clipboard"
+                  defaultValue={this.props.children} />
         <button className="btn-success" onClick={this.copyCode}>Click to copy code</button>
       </div>
     );
