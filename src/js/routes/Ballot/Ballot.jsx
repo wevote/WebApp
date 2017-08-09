@@ -342,7 +342,7 @@ export default class Ballot extends Component {
 
       <div className="row">
         <div className="col-md-12">
-          <div className="u-stack--lg ballot__heading">
+          <div className="ballot__heading">
             <Helmet title="Ballot - We Vote" />
             <BrowserPushMessage incomingProps={this.props} />
             { election_name ?
@@ -373,16 +373,16 @@ export default class Ballot extends Component {
                 </div>
               </div> :
               null }
-            <div className="visible-xs-block hidden-print">
-              <div className="BallotItemsSummary">
-                <a onClick={this._toggleBallotSummaryModal}>Summary of Ballot Items</a>
-              </div>
-            </div>
           </div>
         </div>
       </div>
       {emptyBallot}
-      <div className="row">
+      <div className="visible-xs-block hidden-print">
+        <div className="BallotItemsSummary">
+          <a onClick={this._toggleBallotSummaryModal}>Summary of Ballot Items</a>
+        </div>
+      </div>
+      <div className="row ballot__body">
         <div className="col-xs-12 col-md-8">
           <div className="BallotList">
           { in_ready_to_vote_mode ?

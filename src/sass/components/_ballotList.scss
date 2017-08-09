@@ -1,5 +1,6 @@
 $full-width: 100%;
 $minus-full-width: -$full-width;
+$minus-space-md: -$space-md;
 
 .BallotList {
   @include print {
@@ -84,12 +85,12 @@ $minus-full-width: -$full-width;
 }
 
 .BallotItemsSummary {
-  background-color: $app-background-color;
   padding-top: $space-md;
   padding-left: $full-width;
   margin-left: $minus-full-width;
   padding-right: $full-width;
   margin-right: $minus-full-width;
+  margin-bottom: $minus-space-md;
   overflow: hidden;
   // Has the result of float center
   // float: right;
