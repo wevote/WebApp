@@ -135,7 +135,7 @@ export default class Application extends Component {
       pathname === "/more/network/friends" || pathname === "/more/network/issues" || pathname === "/more/network/organizations" ||
       pathname === "/more/organization" ||
       pathname === "/more/privacy" || pathname === "/more/sign_in" || pathname === "/more/team" ||
-      pathname === "/more/terms" || pathname === "/more/vision" ||
+      pathname === "/more/terms" || pathname === "/more/tools" || pathname === "/more/vision" ||
       pathname === "/opinions" || pathname === "/opinions_followed" || pathname === "/opinions_ignored" ||
       pathname === "/settings/location" || pathname === "/welcome") {
       content_full_width_mode = true;
