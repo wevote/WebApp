@@ -5,14 +5,29 @@ $address-margin-xs: -4px 0 8px 0;
 $tab-padding: 0 0 4px 0;
 $tab-spacing: 24px;
 $transparent: transparent !important;
+$scrollbar-width: 20px;
+$tab-height: 47px;
+$tab-height-visible: $tab-height - $scrollbar-width;
 
 .ballot {
+  // ===========================================
+  // Ballot Header
+  // ===========================================
+
   &__election-name {
     // TODO either add some properties to this class or delete it
   }
 
+  &__filter-container {
+    overflow: hidden;
+    height: $tab-height-visible;
+  }
+
   &__filter {
-    // TODO either add some properties to this class or delete it
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    height: $tab-height;
   }
 
   &__header-group {
@@ -22,6 +37,7 @@ $transparent: transparent !important;
 
   &__heading {
     background-color: $white;
+    border-bottom: 1px solid #aaa;
     padding-top: $full-width;
     margin-top: $minus-full-width;
     padding-left: $full-width;
@@ -49,16 +65,19 @@ $transparent: transparent !important;
     padding-right: $full-width;
     margin-right: $minus-full-width;
     overflow: hidden;
-    border-bottom: 1px solid #aaa;
+
+    .tab-item {
+      display: inline-block;
+      float: none;
+    }
 
     .tab {
       padding: $tab-padding;
       margin-right: $tab-spacing;
-      float: left;
     }
 
     .tab-active {
-      border-bottom: 2px solid $black;
+      border-bottom: 6px solid $black;
       color: $black;
     }
 
@@ -70,5 +89,13 @@ $transparent: transparent !important;
     a:hover {
       background-color: $transparent;
     }
+  }
+
+  // ===========================================
+  // Ballot Body
+  // ===========================================
+
+  &__body {
+    margin-top: $space-lg;
   }
 }

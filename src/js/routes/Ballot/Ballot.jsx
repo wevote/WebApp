@@ -342,7 +342,7 @@ export default class Ballot extends Component {
 
       <div className="row">
         <div className="col-md-12">
-          <div className="u-stack--lg ballot__heading">
+          <div className="ballot__heading">
             <Helmet title="Ballot - We Vote" />
             <BrowserPushMessage incomingProps={this.props} />
             { election_name ?
@@ -365,22 +365,24 @@ export default class Ballot extends Component {
               <EditAddress address={voter_address_object} _toggleSelectAddressModal={this._toggleSelectAddressModal} />
             </div>
             { text_for_map_search ?
-              <div className="ballot__filter hidden-print">
-                <BallotFilter ballot_type={this.getBallotType()}
-                              length={BallotStore.ballotLength}
-                              length_remaining={BallotStore.ballot_remaining_choices_length} />
+              <div className="ballot__filter-container">
+                <div className="ballot__filter hidden-print">
+                  <BallotFilter ballot_type={this.getBallotType()}
+                                length={BallotStore.ballotLength}
+                                length_remaining={BallotStore.ballot_remaining_choices_length} />
+                </div>
               </div> :
               null }
-            <div className="visible-xs-block hidden-print">
-              <div className="BallotItemsSummary">
-                <a onClick={this._toggleBallotSummaryModal}>Summary of Ballot Items</a>
-              </div>
-            </div>
           </div>
         </div>
       </div>
       {emptyBallot}
-      <div className="row">
+      <div className="visible-xs-block hidden-print">
+        <div className="BallotItemsSummary">
+          <a onClick={this._toggleBallotSummaryModal}>Summary of Ballot Items</a>
+        </div>
+      </div>
+      <div className="row ballot__body">
         <div className="col-xs-12 col-md-8">
           <div className="BallotList">
           { in_ready_to_vote_mode ?
