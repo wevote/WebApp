@@ -168,7 +168,7 @@ sftp-config.json
 !/**/migrations/__init__.py
 src/js/config.js
 web_app/build/*
-
+package-lock.json
 
 # Heroku Related #
 ##################
