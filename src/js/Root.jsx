@@ -45,6 +45,10 @@ import OpinionsIgnored from "./routes/OpinionsIgnored";
 import Organization from "./routes/More/Organization";
 import Privacy from "./routes/More/Privacy";
 import ProcessingDonation from "./routes/More/ProcessingDonation";
+
+// Added by me
+import ScratchPad from "./routes/ScratchPad";
+
 import SampleBallot from "./routes/Intro/SampleBallot";
 import Settings from "./routes/Settings/Settings";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
@@ -64,6 +68,7 @@ import VerifyThisIsMe from "./routes/Guide/VerifyThisIsMe";
 import Vision from "./routes/More/Vision";
 import Welcome from "./routes/Welcome";
 import YourPage from "./routes/YourPage";
+
 
 // See /js/components/Navigation/HeaderBar.jsx for voter_orientation_complete cookie
 const firstVisit = !cookies.getItem("voter_device_id");
@@ -158,6 +163,9 @@ const routes = () =>
 
     {/* Confirming that person owns twitter handle */}
     <Route path="/verifythisisme/:twitter_handle" component={VerifyThisIsMe} />
+
+    {/* Temporary scratchpad for component testing */}
+    <Route path="/testing/scratchpad" component={ScratchPad} />
 
     {/* Any route that is not found -> @return NotFound component */}
     <Route path=":twitter_handle" component={NotFound} />
