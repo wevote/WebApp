@@ -1,7 +1,3 @@
-$header-extension-top: 40%;
-$header-extension-side: 40px;
-$minus-header-extension-top: -$header-extension-top;
-$minus-header-extension-side: -$header-extension-side;
 $address-margin: 26px 26px 0 0;
 $address-margin-xs: -4px 0 8px 0;
 $tab-padding: 0 0 4px 0;
@@ -10,6 +6,20 @@ $transparent: transparent !important;
 $scrollbar-width: 20px;
 $tab-height: 47px;
 $tab-height-visible: $tab-height - $scrollbar-width;
+
+@mixin extension-side($length) {
+  padding-left: $length;
+  margin-left: -$length;
+  padding-right: $length;
+  margin-right: -$length;
+  overflow: hidden;
+}
+
+@mixin extension-top($length) {
+  padding-top: $length;
+  margin-top: -$length;
+  overflow: hidden;
+}
 
 .ballot {
   // ===========================================
@@ -40,13 +50,8 @@ $tab-height-visible: $tab-height - $scrollbar-width;
   &__heading {
     background-color: $white;
     border-bottom: 1px solid #aaa;
-    padding-top: $header-extension-top;
-    margin-top: $minus-header-extension-top;
-    padding-left: $header-extension-side;
-    margin-left: $minus-header-extension-side;
-    padding-right: $header-extension-side;
-    margin-right: $minus-header-extension-side;
-    overflow: hidden;
+    @include extension-top(40%);
+    @include extension-side(40px);
   }
 
   &__header-title {
@@ -62,11 +67,7 @@ $tab-height-visible: $tab-height - $scrollbar-width;
   }
 
   &__tabs {
-    padding-left: $header-extension-side;
-    margin-left: $minus-header-extension-side;
-    padding-right: $header-extension-side;
-    margin-right: $minus-header-extension-side;
-    overflow: hidden;
+    @include extension-side(40px);
 
     .tab-item {
       display: inline-block;
