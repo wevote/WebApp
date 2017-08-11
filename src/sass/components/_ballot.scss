@@ -8,14 +8,6 @@ $scrollbar-width: 20px;
 $tab-height: 47px;
 $tab-height-visible: $tab-height - $scrollbar-width;
 
-@mixin extension-side($length) {
-  padding-left: $length;
-  margin-left: -$length;
-  padding-right: $length;
-  margin-right: -$length;
-  overflow: hidden;
-}
-
 @mixin extension-top($length) {
   padding-top: $length;
   margin-top: -$length;
@@ -68,8 +60,6 @@ $tab-height-visible: $tab-height - $scrollbar-width;
   }
 
   &__tabs {
-    @include extension-side(40px);
-
     .tab-item {
       display: inline-block;
       float: none;
