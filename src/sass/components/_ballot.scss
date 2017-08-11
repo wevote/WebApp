@@ -1,3 +1,4 @@
+$full-width: 100%;
 $address-margin: 26px 26px 0 0;
 $address-margin-xs: -4px 0 8px 0;
 $tab-padding: 0 0 4px 0;
@@ -48,10 +49,10 @@ $tab-height-visible: $tab-height - $scrollbar-width;
   }
 
   &__heading {
+    width: $full-width;
     background-color: $white;
     border-bottom: 1px solid #aaa;
     @include extension-top(40%);
-    @include extension-side(40px);
   }
 
   &__header-title {
