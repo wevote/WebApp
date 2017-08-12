@@ -17,4 +17,8 @@ module.exports = {
   issueStopFollowing: function (issue_we_vote_id) {
     Dispatcher.loadEndpoint("issueFollow", {issue_we_vote_id: issue_we_vote_id, follow: false, ignore: false} );
   },
+
+  retrieveIssuesForOrganization: function (organization_we_vote_id) {
+    Dispatcher.loadEndpoint("issuesToLinkToForOrganization", {organization_we_vote_id: organization_we_vote_id});
+  },
 };

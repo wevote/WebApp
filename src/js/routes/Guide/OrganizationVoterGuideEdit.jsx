@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
 import { Button } from "react-bootstrap";
+import VoterGuideEditIssues from "../../components/VoterGuide/VoterGuideEditIssues";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import HeaderBar from "../../components/Navigation/HeaderBar";
 import LoadingWheel from "../../components/LoadingWheel";
@@ -89,7 +90,6 @@ export default class OrganizationVoterGuideEdit extends Component {
 
     let is_voter_owner = this.state.organization.organization_we_vote_id !== undefined &&
       this.state.organization.organization_we_vote_id === this.state.voter.linked_organization_we_vote_id;
-    let edit_mode = this.props.params.edit_mode;
 
     if (!is_voter_owner) {
       return <div>{LoadingWheel}</div>;
@@ -112,6 +112,7 @@ export default class OrganizationVoterGuideEdit extends Component {
         </div>;
 
     let edit_component_to_display = null;
+    let edit_mode = this.props.params.edit_mode;
     switch (edit_mode) {
       case "name":
         edit_component_to_display = <h1 className="card-main__display-name">Edit Names</h1>;
@@ -120,7 +121,9 @@ export default class OrganizationVoterGuideEdit extends Component {
         edit_component_to_display = <h1 className="card-main__display-name">Add Items to voter guide</h1>;
         break;
       case "issues":
-        edit_component_to_display = <h1 className="card-main__display-name">Edit Issues</h1>;
+        edit_component_to_display = <VoterGuideEditIssues
+            params={this.props.params}
+            organization_we_vote_id={this.state.organization_we_vote_id} />;
         break;
       default :
         edit_component_to_display = null;

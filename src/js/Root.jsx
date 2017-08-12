@@ -149,6 +149,7 @@ const routes = () =>
     <Route path="/voterguide/:organization_we_vote_id" component={OrganizationVoterGuide} />
     <Route path="/voterguideedit/:organization_we_vote_id" component={OrganizationVoterGuideEdit} />
     <Route path="/voterguideedit/:organization_we_vote_id/:edit_mode" component={OrganizationVoterGuideEdit} />
+    <Route path="/voterguideedit/:organization_we_vote_id/:edit_mode/:active_tab" component={OrganizationVoterGuideEdit} />
 
     <Route path="/yourpage" component={YourPage} />
 
