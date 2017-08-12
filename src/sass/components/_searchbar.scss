@@ -1,5 +1,6 @@
 $search-bar-border-radius: 0 $radius-sm $radius-sm 0;
 $transparent: transparent;
+$space-1px: 1px; // shifting image to fit inside search bar's border
 .search-bar {
   width: 100%;
   height: 34px;
@@ -11,12 +12,12 @@ $transparent: transparent;
     height: 32px;
     right: 0;
     top: 0;
-    margin-top: $space-xxs;
-    margin-right: $space-xxs;
+    margin-top: $space-1px;
+    margin-right: $space-1px;
     border-radius: $search-bar-border-radius;
     overflow: hidden;
 
-    &__button {
+    .search-options-btn {
       height: inherit;
       border: none;
       background-color: $transparent;
