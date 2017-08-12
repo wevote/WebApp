@@ -12,6 +12,7 @@ class IssueStore extends FluxMapStore {
       following: [],
       ignoring: [],
       to_follow: [],
+      to_follow_for_organization: [],
       all_cached_issues: {},
     };
   }
@@ -30,6 +31,11 @@ class IssueStore extends FluxMapStore {
   toFollowList () {
     var to_follow_list = this.getIssuesFromListOfWeVoteIds(this.getState().to_follow);
     return to_follow_list;
+  }
+
+  toFollowListForOrganization () {
+    var to_follow_for_organization_list = this.getIssuesFromListOfWeVoteIds(this.getState().to_follow_for_organization);
+    return to_follow_for_organization_list;
   }
 
   getIssuesFromListOfWeVoteIds (list_of_issue_we_vote_ids) {
@@ -108,6 +114,20 @@ class IssueStore extends FluxMapStore {
             all_cached_issues: all_cached_issues,
           };
         }
+
+      case "issuesToLinkToForOrganization":
+        issues = action.res.issue_list;
+        var to_follow_for_organization = [];
+        all_cached_issues = state.all_cached_issues;
+        issues.forEach(issue => {
+          all_cached_issues[issue.issue_we_vote_id] = issue;
+          to_follow_for_organization.push(issue.issue_we_vote_id);
+        });
+        return {
+          ...state,
+          all_cached_issues: all_cached_issues,
+          to_follow_for_organization: to_follow_for_organization,
+        };
 
       default:
         return state;
