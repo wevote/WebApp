@@ -1,10 +1,11 @@
 $full-width: 100%;
-$minus-full-width: -$full-width;
 $address-margin: 26px 26px 0 0;
 $address-margin-xs: -4px 0 8px 0;
 $tab-padding: 0 0 4px 0;
 $tab-spacing: 24px;
 $transparent: transparent !important;
+$header-extension-top: 40%;
+$minus-header-extension-top: -$header-extension-top;
 $scrollbar-width: 20px;
 $tab-height: 47px;
 $tab-height-visible: $tab-height - $scrollbar-width;
@@ -36,14 +37,11 @@ $tab-height-visible: $tab-height - $scrollbar-width;
   }
 
   &__heading {
+    width: $full-width;
     background-color: $white;
     border-bottom: 1px solid #aaa;
-    padding-top: $full-width;
-    margin-top: $minus-full-width;
-    padding-left: $full-width;
-    margin-left: $minus-full-width;
-    padding-right: $full-width;
-    margin-right: $minus-full-width;
+    padding-top: $header-extension-top;
+    margin-top: $minus-header-extension-top;
     overflow: hidden;
   }
 
@@ -60,12 +58,6 @@ $tab-height-visible: $tab-height - $scrollbar-width;
   }
 
   &__tabs {
-    padding-left: $full-width;
-    margin-left: $minus-full-width;
-    padding-right: $full-width;
-    margin-right: $minus-full-width;
-    overflow: hidden;
-
     .tab-item {
       display: inline-block;
       float: none;

@@ -178,10 +178,10 @@ export default class Application extends Component {
             null }
         </div>
       </div>
-      { pathname === "/welcome" ? <div>{ this.props.children }</div> :
+      { pathname === "/welcome" || !content_full_width_mode ? <div>{ this.props.children }</div> :
         <div className="page-content-container">
           <div className="container-fluid">
-            <div className={ content_full_width_mode ? "container-main" : null }>
+            <div className="container-main">
               { this.props.children }
             </div>
           </div>

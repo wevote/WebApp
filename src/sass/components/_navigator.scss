@@ -2,7 +2,7 @@ $icon-color-base: $gray-mid;
 $icon-color-active: $link-color;
 $icon-color-hover: $gray-dark;
 $header-height: 54px;
-$header-height-getting-started: 100px;
+$header-height-getting-started: 104px;
 
 // Header Nav
 // ================================
@@ -218,6 +218,9 @@ $header-height-getting-started: 100px;
 
     &-image-wrapper {
       height: 29px;
+      @include breakpoints(small mid-small) {
+        transform: scale(.8);
+      }
     }
 
     &:active,
