@@ -4,15 +4,11 @@ $address-margin-xs: -4px 0 8px 0;
 $tab-padding: 0 0 4px 0;
 $tab-spacing: 24px;
 $transparent: transparent !important;
+$header-extension-top: 40%;
+$minus-header-extension-top: -$header-extension-top;
 $scrollbar-width: 20px;
 $tab-height: 47px;
 $tab-height-visible: $tab-height - $scrollbar-width;
-
-@mixin extension-top($length) {
-  padding-top: $length;
-  margin-top: -$length;
-  overflow: hidden;
-}
 
 .ballot {
   // ===========================================
@@ -44,7 +40,9 @@ $tab-height-visible: $tab-height - $scrollbar-width;
     width: $full-width;
     background-color: $white;
     border-bottom: 1px solid #aaa;
-    @include extension-top(40%);
+    padding-top: $header-extension-top;
+    margin-top: $minus-header-extension-top;
+    overflow: hidden;
   }
 
   &__header-title {
