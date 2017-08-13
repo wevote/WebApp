@@ -136,26 +136,28 @@ export default class Network extends Component {
       </section>
       <div className="row">
         <div className="col-sm-12 col-md-8">
-          <div className="network__tabs-background hidden-print">
-            <ul className="nav network__tabs">
-              <li>
-                <Link to="/more/network/organizations" className={this.state.edit_mode === "organizations" ? "tab tab-active" : "tab tab-default"}>
-                  <span>Organizations to Follow</span>
-                </Link>
-              </li>
+          <div className="network__network-tabs-container">
+            <div className="network__network-tabs hidden-print">
+              <ul className="nav network__tabs">
+                <li className="tab-item">
+                  <Link to="/more/network/organizations" className={this.state.edit_mode === "organizations" ? "tab tab-active" : "tab tab-default"}>
+                    <span>Organizations to Follow</span>
+                  </Link>
+                </li>
 
-              <li>
-                <Link to={{ pathname: "/more/network/friends" }} className={this.state.edit_mode === "friends" ? "tab tab-active" : "tab tab-default"}>
-                  <span>Friend Requests</span>
-                </Link>
-              </li>
+                <li className="tab-item">
+                  <Link to={{ pathname: "/more/network/friends" }} className={this.state.edit_mode === "friends" ? "tab tab-active" : "tab tab-default"}>
+                    <span>Friend Requests</span>
+                  </Link>
+                </li>
 
-              <li>
-                <Link to={{ pathname: "/more/network/issues" }} className={this.state.edit_mode === "issues" ? "tab tab-active" : "tab tab-default"}>
-                  <span>Issues to Follow</span>
-                </Link>
-              </li>
-            </ul>
+                <li className="tab-item">
+                  <Link to={{ pathname: "/more/network/issues" }} className={this.state.edit_mode === "issues" ? "tab tab-active" : "tab tab-default"}>
+                    <span>Issues to Follow</span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
           {network_component_to_display}
         </div>
