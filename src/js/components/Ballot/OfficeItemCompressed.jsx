@@ -85,33 +85,29 @@ export default class OfficeItemCompressed extends Component {
           </h2>
           <BookmarkToggle we_vote_id={we_vote_id} type="OFFICE" />
         </div>
-          <div className={this.props.link_to_ballot_item_page ?
-                "u-cursor--pointer" : null } >
-          { candidate_list_to_display.map( (one_candidate) =>
-            <div key={one_candidate.we_vote_id} className="u-stack--md">
-              <div className="u-flex u-items-center u-flex-wrap u-justify-between">
-                {/* Candidate Image */}
-                <div className="u-flex u-cursor--pointer u-min-50"
-                    onClick={ this.props.link_to_ballot_item_page ?
-                              ()=>{browserHistory.push("/candidate/" + one_candidate.we_vote_id);} :
-                              null }>
-                  <div className="u-push--sm u-stack--sm">
-                    <div className="o-media-object--center">
-                      <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
-                                    sizeClassName="icon-candidate-small u-push--sm "
-                                    imageUrl={one_candidate.candidate_photo_url_large}
-                                    alt="candidate-photo"
-                                    kind_of_ballot_item="CANDIDATE" />
-                      <div className="o-media-object__body">
-                        <h4 className="card-main__candidate-name u-f4">
-                          <a>{one_candidate.ballot_item_display_name}<span className="card-main__candidate-read-more-link hidden-xs">learn&nbsp;more</span></a>
-                        </h4>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Flex Row 2: Opinion Items */}
+        { candidate_list_to_display.map( (one_candidate) =>
+          <div key={one_candidate.we_vote_id} className="u-stack--md">
+            <div className="o-media-object--center u-flex-auto u-min-50 u-push--sm u-stack--sm">
+              {/* Candidate Image */}
+              <div onClick={ this.props.link_to_ballot_item_page ?
+                            ()=>{browserHistory.push("/candidate/" + one_candidate.we_vote_id);} :
+                            null }>
+                <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
+                              sizeClassName="icon-candidate-small u-push--sm "
+                              imageUrl={one_candidate.candidate_photo_url_large}
+                              alt="candidate-photo"
+                              kind_of_ballot_item="CANDIDATE" />
+              </div>
+              <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
+                {/* Candidate Name */}
+                <h4 className="card-main__candidate-name u-f4">
+                  {one_candidate.ballot_item_display_name}
+                  <a onClick={ this.props.link_to_ballot_item_page ?
+                                ()=>{browserHistory.push("/candidate/" + one_candidate.we_vote_id);} :
+                                null }>
+                  <span className="card-main__candidate-read-more-link hidden-xs">learn&nbsp;more</span></a>
+                </h4>
+                {/* Opinion Items */}
                 <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
                   {/* Positions in Your Network */}
                   <div className="u-cursor--pointer"
@@ -148,22 +144,22 @@ export default class OfficeItemCompressed extends Component {
                   </div>
                 </div>
               </div>
-            </div>)
-          }
-          </div>
+            </div>
+          </div>)
+        }
 
-          { !this.state.display_all_candidates_flag && remaining_candidates_to_display_count > 0 ?
-            <Link onClick={this.toggleDisplayAllCandidates}>
-              <span className="u-items-center">
-                Click&nbsp;to&nbsp;show&nbsp;{remaining_candidates_to_display_count}&nbsp;more&nbsp;candidates...</span>
-            </Link> : null
-          }
-          { this.state.display_all_candidates_flag && this.props.candidate_list.length > NUMBER_OF_CANDIDATES_TO_DISPLAY ?
-            <BallotSideBarLink url={"#" + this.props.we_vote_id}
-                               label={"Click to show fewer candidates..."}
-                               displaySubtitles={false}
-                               onClick={this.toggleDisplayAllCandidates} /> : null
-          }
+        { !this.state.display_all_candidates_flag && remaining_candidates_to_display_count > 0 ?
+          <Link onClick={this.toggleDisplayAllCandidates}>
+            <span className="u-items-center">
+              Click&nbsp;to&nbsp;show&nbsp;{remaining_candidates_to_display_count}&nbsp;more&nbsp;candidates...</span>
+          </Link> : null
+        }
+        { this.state.display_all_candidates_flag && this.props.candidate_list.length > NUMBER_OF_CANDIDATES_TO_DISPLAY ?
+          <BallotSideBarLink url={"#" + this.props.we_vote_id}
+                             label={"Click to show fewer candidates..."}
+                             displaySubtitles={false}
+                             onClick={this.toggleDisplayAllCandidates} /> : null
+        }
       </div>
     </div>;
   }
