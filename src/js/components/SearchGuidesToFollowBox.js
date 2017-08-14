@@ -40,6 +40,6 @@ export default class SearchGuidesToFollowBox extends Component {
 // Just a wrapper component now
 export default class SearchGuidesToFollowBox extends Component {
   render () {
-    return <SearchBar clear_button updateInputValue={updateResults} placeholder="Search by name or twitter handle." />;
+    return <SearchBar clear_button search_button updateInputValue={updateResults} placeholder="Search by name or twitter handle." />;
   }
 }
