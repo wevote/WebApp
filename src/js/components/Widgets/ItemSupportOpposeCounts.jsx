@@ -2,16 +2,23 @@ import React, { Component, PropTypes } from "react";
 
 export default class ItemSupportOpposeCounts extends Component {
   static propTypes = {
-    supportProps: PropTypes.object
+    supportProps: PropTypes.object,
+    guideProps: PropTypes.array,
   };
 
   constructor (props) {
     super(props);
-    this.state = { supportProps: this.props.supportProps };
+    this.state = {
+      supportProps: this.props.supportProps,
+      guideProps: this.props.guideProps,
+    };
   }
 
   componentWillReceiveProps (nextProps) {
-    this.setState({ supportProps: nextProps.supportProps });
+    this.setState({
+      supportProps: nextProps.supportProps,
+      guideProps: nextProps.guideProps,
+    });
   }
 
   percentageMajority () {
@@ -24,26 +31,24 @@ export default class ItemSupportOpposeCounts extends Component {
       return null;
     }
 
-    var { support_count, oppose_count, is_support, is_oppose } = this.state.supportProps;
+    let { support_count, oppose_count, is_support, is_oppose } = this.state.supportProps;
     if (support_count === undefined || oppose_count === undefined || is_support === undefined || is_oppose === undefined) {
       return null;
     }
 
-    var bar_style = {
+    let bar_style = {
       width: this.percentageMajority() + "%"
     };
 
-    var empty_bar_style = {
+    let empty_bar_style = {
       borderWidth: "0"
     };
 
-    var is_empty = support_count === 0 && oppose_count === 0;
+    let is_empty = support_count === 0 && oppose_count === 0;
+    let is_support_and_oppose = support_count !== 0 && oppose_count !== 0;
+    let is_majority_support = support_count >= oppose_count;
 
-    var is_support_and_oppose = support_count !== 0 && oppose_count !== 0;
-
-    var is_majority_support = support_count >= oppose_count;
-
-    var background_bar_class_name;
+    let background_bar_class_name;
     if (is_support_and_oppose && is_majority_support) {
       // If there are both support and oppose positions, change the color of the bar background to the minority position
       background_bar_class_name = "network-positions__bar-well red-bar";
@@ -54,7 +59,7 @@ export default class ItemSupportOpposeCounts extends Component {
       background_bar_class_name = "network-positions__bar-well";
     }
 
-    return <div className="network-positions">
+    return <div className={ this.state.guideProps && this.state.guideProps.length && is_empty ? "hidden-xs hidden-print network-positions" : "network-positions" }>
       {/* <div className="network-positions__bar-label">
         { !is_empty ?
           "Positions in your network" :
