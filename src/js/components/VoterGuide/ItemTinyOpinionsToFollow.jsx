@@ -13,6 +13,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
     organizationsToFollow: PropTypes.array,
     instantRefreshOn: PropTypes.bool,
     maximumOrganizationDisplay: PropTypes.number,
+    supportProps: PropTypes.object,
   };
 
   constructor (props) {
@@ -25,6 +26,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
       organizations_to_follow: this.props.organizationsToFollow,
       ballot_item_we_vote_id: "",
       maximum_organization_display: this.props.maximumOrganizationDisplay,
+      supportProps: this.props.supportProps,
     };
   }
 
@@ -33,10 +35,11 @@ export default class ItemTinyOpinionsToFollow extends Component {
       organizations_to_follow: this.props.organizationsToFollow,
       ballot_item_we_vote_id: this.props.ballotItemWeVoteId,
       maximum_organization_display: this.props.maximumOrganizationDisplay,
+      supportProps: this.props.supportProps,
     });
   }
 
-  componentWillReceiveProps (nextProps){
+  componentWillReceiveProps (nextProps) {
     // console.log("ItemTinyOpinionsToFollow, componentWillReceiveProps, nextProps.organizationsToFollow:", nextProps.organizationsToFollow);
     //if (nextProps.instantRefreshOn ) {
       // NOTE: This is off because we don't want the organization to disappear from the "More opinions" list when clicked
@@ -44,6 +47,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
         organizations_to_follow: nextProps.organizationsToFollow,
         ballot_item_we_vote_id: nextProps.ballotItemWeVoteId,
         maximum_organization_display: nextProps.maximumOrganizationDisplay,
+        supportProps: nextProps.supportProps,
       });
     //}
   }
@@ -80,6 +84,14 @@ export default class ItemTinyOpinionsToFollow extends Component {
   render () {
     if (this.state.organizations_to_follow === undefined) {
       return null;
+    }
+
+    let is_empty;
+    if (this.state.supportProps !== undefined) {
+      let { support_count, oppose_count } = this.state.supportProps;
+      if (support_count !== undefined && oppose_count !== undefined) {
+        is_empty = support_count === 0 && oppose_count === 0;
+      }
     }
 
     let local_counter = 0;
@@ -169,7 +181,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
       }
     });
 
-    return <span className="guidelist card-child__list-group">
+    return <span className={ is_empty ? "guidelist card-child__list-group" : "hidden-xs hidden-print guidelist card-child__list-group" }>
           {organizations_to_display}
       </span>;
   }
