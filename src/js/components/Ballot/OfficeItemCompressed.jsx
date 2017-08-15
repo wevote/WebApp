@@ -86,15 +86,15 @@ export default class OfficeItemCompressed extends Component {
           <BookmarkToggle we_vote_id={we_vote_id} type="OFFICE" />
         </div>
         { candidate_list_to_display.map( (one_candidate) => {
-          let candidate_id = one_candidate.we_vote_id;
-          let candidate_support_store = SupportStore.get(candidate_id);
-          let candidate_guides_list = GuideStore.getVoterGuidesToFollowForBallotItemId(candidate_id);
+          let candidateId = one_candidate.we_vote_id;
+          let candidateSupportStore = SupportStore.get(candidateId);
+          let candidateGuidesList = GuideStore.getVoterGuidesToFollowForBallotItemId(candidateId);
 
-          return <div key={candidate_id} className="u-stack--md">
+          return <div key={candidateId} className="u-stack--md">
             <div className="o-media-object--center u-flex-auto u-min-50 u-push--sm u-stack--sm">
               {/* Candidate Image */}
               <div onClick={ this.props.link_to_ballot_item_page ?
-                            ()=>{browserHistory.push("/candidate/" + candidate_id);} :
+                            ()=>{browserHistory.push("/candidate/" + candidateId);} :
                             null }>
                 <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
                               sizeClassName="icon-candidate-small u-push--sm "
@@ -107,7 +107,7 @@ export default class OfficeItemCompressed extends Component {
                 <h4 className="card-main__candidate-name u-f4">
                   {one_candidate.ballot_item_display_name}
                   <a onClick={ this.props.link_to_ballot_item_page ?
-                                ()=>{browserHistory.push("/candidate/" + candidate_id);} :
+                                ()=>{browserHistory.push("/candidate/" + candidateId);} :
                                 null }>
                   <span className="card-main__candidate-read-more-link hidden-xs">learn&nbsp;more</span></a>
                 </h4>
@@ -118,22 +118,22 @@ export default class OfficeItemCompressed extends Component {
                         onClick={ this.props.link_to_ballot_item_page ?
                         ()=>{this.props._toggleCandidateModal(one_candidate);} :
                         null } >
-                    <ItemSupportOpposeCounts we_vote_id={candidate_id}
-                                             supportProps={candidate_support_store}
+                    <ItemSupportOpposeCounts we_vote_id={candidateId}
+                                             supportProps={candidateSupportStore}
                                              type="CANDIDATE"/>
                   </div>
 
                   {/* Possible Voter Guides to Follow (Desktop) */}
-                  { candidate_guides_list && candidate_guides_list.length !== 0 ?
-                    <ItemTinyOpinionsToFollow ballotItemWeVoteId={candidate_id}
-                                              organizationsToFollow={candidate_guides_list}
+                  { candidateGuidesList && candidateGuidesList.length !== 0 ?
+                    <ItemTinyOpinionsToFollow ballotItemWeVoteId={candidateId}
+                                              organizationsToFollow={candidateGuidesList}
                                               maximumOrganizationDisplay={this.state.maximum_organization_display}
-                                              supportProps={candidate_support_store} /> : null }
+                                              supportProps={candidateSupportStore} /> : null }
 
                   {/* Support or Oppose */}
                   <div className="u-cursor--pointer">
-                    <ItemActionBar ballot_item_we_vote_id={candidate_id}
-                                   supportProps={candidate_support_store}
+                    <ItemActionBar ballot_item_we_vote_id={candidateId}
+                                   supportProps={candidateSupportStore}
                                    shareButtonHide
                                    commentButtonHide
                                    transitioniing={this.state.transitioning}
