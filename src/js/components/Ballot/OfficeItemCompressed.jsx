@@ -120,6 +120,7 @@ export default class OfficeItemCompressed extends Component {
                         null } >
                     <ItemSupportOpposeCounts we_vote_id={candidateId}
                                              supportProps={candidateSupportStore}
+                                             guideProps={candidateGuidesList}
                                              type="CANDIDATE"/>
                   </div>
 
