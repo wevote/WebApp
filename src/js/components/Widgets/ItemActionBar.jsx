@@ -25,6 +25,7 @@ export default class ItemActionBar extends Component {
     super(props);
     this.state = {
       showSupportOrOpposeHelpModal: false,
+      supportProps: this.props.supportProps,
       transitioning: false,
     };
   }
@@ -33,8 +34,11 @@ export default class ItemActionBar extends Component {
     this.toggleSupportOrOpposeHelpModal = this.toggleSupportOrOpposeHelpModal.bind(this);
   }
 
-  componentWillReceiveProps () {
-    this.setState({transitioning: false});
+  componentWillReceiveProps (nextProps) {
+    this.setState({
+      transitioning: false,
+      supportProps: nextProps.supportProps,
+    });
   }
 
   supportItem (is_support) {
