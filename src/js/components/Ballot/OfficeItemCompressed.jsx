@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
+import TextTruncate from 'react-text-truncate';
 import GuideStore from "../../stores/GuideStore";
 import ImageHandler from "../ImageHandler";
 import ItemActionBar from "../Widgets/ItemActionBar";
@@ -44,7 +45,7 @@ export default class OfficeItemCompressed extends Component {
     this.supportStoreListener.remove();
   }
 
-  _onGuideStoreChange (){
+  _onGuideStoreChange () {
     this.setState({ transitioning: false });
   }
 
@@ -93,9 +94,7 @@ export default class OfficeItemCompressed extends Component {
           return <div key={candidateId} className="u-stack--md">
             <div className="o-media-object--center u-flex-auto u-min-50 u-push--sm u-stack--sm">
               {/* Candidate Image */}
-              <div onClick={ this.props.link_to_ballot_item_page ?
-                            ()=>{browserHistory.push("/candidate/" + candidateId);} :
-                            null }>
+              <div onClick={ this.props.link_to_ballot_item_page ? () => browserHistory.push("/candidate/" + candidateId) : null }>
                 <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
                               sizeClassName="icon-candidate-small u-push--sm "
                               imageUrl={one_candidate.candidate_photo_url_large}
@@ -105,11 +104,17 @@ export default class OfficeItemCompressed extends Component {
               <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
                 {/* Candidate Name */}
                 <h4 className="card-main__candidate-name u-f4">
-                  {one_candidate.ballot_item_display_name}
-                  <a onClick={ this.props.link_to_ballot_item_page ?
-                                ()=>{browserHistory.push("/candidate/" + candidateId);} :
-                                null }>
-                  <span className="card-main__candidate-read-more-link hidden-xs">learn&nbsp;more</span></a>
+                  <a onClick={ this.props.link_to_ballot_item_page ? () => browserHistory.push("/candidate/" + candidateId) : null }>
+                    <TextTruncate
+                      line={1}
+                      truncateText="…"
+                      text={one_candidate.ballot_item_display_name}
+                      textTruncateChild={null}
+                    />
+                  </a>
+                  <a onClick={ this.props.link_to_ballot_item_page ? () => browserHistory.push("/candidate/" + candidateId) : null }>
+                    <span className="card-main__candidate-read-more-link hidden-xs">learn&nbsp;more</span>
+                  </a>
                 </h4>
                 {/* Opinion Items */}
                 <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
