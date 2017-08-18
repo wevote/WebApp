@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
-import TextTruncate from 'react-text-truncate';
+import TextTruncate from "react-text-truncate";
 import { capitalizeString } from "../../utils/textFormat";
 import BallotSideBarLink from "../Navigation/BallotSideBarLink";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
@@ -127,8 +127,10 @@ export default class OfficeItemCompressed extends Component {
                                   textTruncateChild={null} />
                   </a>
                 </h4>
-                <LearnMore text_to_display={candidate_text}
-                           on_click={ this.props.link_to_ballot_item_page ? () => browserHistory.push("/candidate/" + candidateId) : null } />
+                <div className="card-main__candidate-description">
+                  <LearnMore text_to_display={candidate_text}
+                             on_click={ this.props.link_to_ballot_item_page ? () => browserHistory.push("/candidate/" + candidateId) : null } />
+                </div>
                 {/* Opinion Items */}
                 <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
                   {/* Positions in Your Network */}

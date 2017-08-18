@@ -1,5 +1,6 @@
 // 'Card' styling for Candidates, Organizations, etc.
 
+$candidate-font-size: .875rem;
 @include media-object('.card-main__media-object', '.card-main__media-object-anchor', '.card-main__media-object-content');
 
 .card {
@@ -98,7 +99,18 @@
     }
 
     &__candidate-name {
-      font-weight: 500;
+      font-size: $candidate-font-size;
+      font-weight: 600;
+    }
+
+    &__candidate-party-description {
+      font-size: $candidate-font-size;
+      color: $gray-dark;
+    }
+
+    &__candidate-description {
+      font-size: $candidate-font-size;
+      color: $gray-mid;
     }
 
     &__display-name {
