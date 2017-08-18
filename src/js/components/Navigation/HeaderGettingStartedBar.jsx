@@ -221,26 +221,26 @@ export default class HeaderGettingStartedBar extends Component {
               source="/img/global/svg-icons/organizations-v2-31x26.svg"
               title="Organizations"
               completed={this.state.ballot_intro_organizations_completed} />
-            {/* Positions Icon & Modal */}
+            {/* Positions Icon & Modal
             <GettingStartedBarItem show={this._toggleBallotIntroPositions}
               source="/img/global/svg-icons/stance-v1-59x32.svg"
               title="Positions"
-              completed={this.state.ballot_intro_positions_completed} />
-            {/* Friends Icon & Modal */}
+              completed={this.state.ballot_intro_positions_completed} /> */}
+            {/* Friends Icon & Modal
             <GettingStartedBarItem show={this._toggleBallotIntroFriends}
               source="/img/global/svg-icons/friends-v2-59x28.svg"
               title="Friends"
-              completed={this.state.ballot_intro_friends_completed} />
-            {/* Share Icon & Modal */}
+              completed={this.state.ballot_intro_friends_completed} /> */}
+            {/* Share Icon & Modal
             <GettingStartedBarItem show={this._toggleBallotIntroShare}
               source="/img/global/svg-icons/share-v2-28x24.svg"
               title="Share"
-              completed={this.state.ballot_intro_share_completed} />
-            {/* Vote Icon & Modal */}
+              completed={this.state.ballot_intro_share_completed} /> */}
+            {/* Vote Icon & Modal
             <GettingStartedBarItem show={this._toggleBallotIntroVote}
               source="/img/global/svg-icons/vote-v6-28x28.svg"
               title="Vote"
-              completed={this.state.ballot_intro_vote_completed} />
+              completed={this.state.ballot_intro_vote_completed} /> */}
           </div>
         </header>
       }

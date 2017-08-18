@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Link } from "react-router";
+import { Link, browserHistory } from "react-router";
 import { Button } from "react-bootstrap";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import HeaderBar from "../../components/Navigation/HeaderBar";
@@ -23,6 +23,7 @@ export default class OrganizationVoterGuide extends Component {
       organization: {},
       voter: {},
     };
+    this.onEdit = this.onEdit.bind(this);
   }
 
   componentDidMount (){
@@ -50,6 +51,11 @@ export default class OrganizationVoterGuide extends Component {
   componentWillUnmount (){
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  onEdit () {
+    browserHistory.push("/voterguideedit/" + this.state.organization_we_vote_id);
+    return <div>{LoadingWheel}</div>;
   }
 
   _onVoterStoreChange () {
@@ -121,7 +127,12 @@ export default class OrganizationVoterGuide extends Component {
             <div className="col-md-12 visible-xs">
               <div className="card">
                 <div className="card-main">
-                  <FollowToggle we_vote_id={this.state.organization.organization_we_vote_id} />
+                  { is_voter_owner ?
+                    <Button bsStyle="warning" bsSize="small" className="pull-right" onClick={this.onEdit}>
+                      <span>Edit</span>
+                    </Button> :
+                    <FollowToggle we_vote_id={this.state.organization.organization_we_vote_id} />
+                  }
                   <OrganizationCard organization={this.state.organization} />
                 </div>
               </div>
