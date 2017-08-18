@@ -1,15 +1,16 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
 import TextTruncate from 'react-text-truncate';
+import { capitalizeString } from "../../utils/textFormat";
+import BallotSideBarLink from "../Navigation/BallotSideBarLink";
+import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import GuideStore from "../../stores/GuideStore";
 import ImageHandler from "../ImageHandler";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
 import ItemTinyOpinionsToFollow from "../VoterGuide/ItemTinyOpinionsToFollow";
-import BookmarkToggle from "../Bookmarks/BookmarkToggle";
-import BallotSideBarLink from "../Navigation/BallotSideBarLink";
+import LearnMore from "../Widgets/LearnMore";
 import SupportStore from "../../stores/SupportStore";
-import { capitalizeString } from "../../utils/textFormat";
 
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 3;
 
@@ -105,24 +106,19 @@ export default class OfficeItemCompressed extends Component {
                 {/* Candidate Name */}
                 <h4 className="card-main__candidate-name u-f4">
                   <a onClick={ this.props.link_to_ballot_item_page ? () => browserHistory.push("/candidate/" + candidateId) : null }>
-                    <TextTruncate
-                      line={1}
-                      truncateText="…"
-                      text={one_candidate.ballot_item_display_name}
-                      textTruncateChild={null}
-                    />
-                  </a>
-                  <a onClick={ this.props.link_to_ballot_item_page ? () => browserHistory.push("/candidate/" + candidateId) : null }>
-                    <span className="card-main__candidate-read-more-link hidden-xs">learn&nbsp;more</span>
+                    <TextTruncate line={1}
+                                  truncateText="…"
+                                  text={one_candidate.ballot_item_display_name}
+                                  textTruncateChild={null} />
                   </a>
                 </h4>
+                <LearnMore text_to_display={one_candidate.party + " candidate. " + one_candidate.twitter_description}
+                           on_click={ this.props.link_to_ballot_item_page ? () => browserHistory.push("/candidate/" + candidateId) : null } />
                 {/* Opinion Items */}
                 <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
                   {/* Positions in Your Network */}
                   <div className="u-cursor--pointer"
-                        onClick={ this.props.link_to_ballot_item_page ?
-                        ()=>{this.props._toggleCandidateModal(one_candidate);} :
-                        null } >
+                       onClick={ this.props.link_to_ballot_item_page ? () => this.props._toggleCandidateModal(one_candidate) : null }>
                     <ItemSupportOpposeCounts we_vote_id={candidateId}
                                              supportProps={candidateSupportStore}
                                              guideProps={candidateGuidesList}
