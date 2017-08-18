@@ -78,10 +78,21 @@ export default class OfficeItemCompressed extends Component {
         <div className="u-flex u-stack--sm">
           <h2 className="u-f3">
             { this.props.link_to_ballot_item_page ?
-              <Link to={officeLink}>
-                {ballot_item_display_name}
-                <span className="card-main__office-read-more-link hidden-xs">learn&nbsp;more</span>
-              </Link> :
+              <div style={{ display: "block", }}>
+                <div style={{ display: "inline-block", float: "left", }}>
+                  <Link to={officeLink}>
+                    <TextTruncate line={1}
+                                  truncateText="…"
+                                  text={ballot_item_display_name}
+                                  textTruncateChild={null} />
+                  </Link>
+                </div>
+                <div style={{ display: "inline-block", float: "left", }}>
+                  <Link to={officeLink}>
+                    <span className="card-main__office-read-more-link hidden-xs">learn&nbsp;more</span>
+                  </Link>
+                </div>
+              </div> :
               ballot_item_display_name
             }
           </h2>
