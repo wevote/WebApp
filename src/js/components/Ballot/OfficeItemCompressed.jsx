@@ -92,6 +92,10 @@ export default class OfficeItemCompressed extends Component {
           let candidateSupportStore = SupportStore.get(candidateId);
           let candidateGuidesList = GuideStore.getVoterGuidesToFollowForBallotItemId(candidateId);
 
+          let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + " candidate. " : "";
+          let candidate_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
+          let candidate_text = candidate_party_text + candidate_description_text;
+
           return <div key={candidateId} className="u-stack--md">
             <div className="o-media-object--center u-flex-auto u-min-50 u-push--sm u-stack--sm">
               {/* Candidate Image */}
@@ -112,7 +116,7 @@ export default class OfficeItemCompressed extends Component {
                                   textTruncateChild={null} />
                   </a>
                 </h4>
-                <LearnMore text_to_display={one_candidate.party + " candidate. " + one_candidate.twitter_description}
+                <LearnMore text_to_display={candidate_text}
                            on_click={ this.props.link_to_ballot_item_page ? () => browserHistory.push("/candidate/" + candidateId) : null } />
                 {/* Opinion Items */}
                 <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
