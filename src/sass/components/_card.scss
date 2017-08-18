@@ -189,12 +189,24 @@
       overflow: hidden;
     }
 
+    &__office-name-group {
+      display: block;
+    }
+
+    &__office-name-item {
+      display: inline-block;
+      float: left;
+    }
+
+    &__office-name {
+      font-weight: 600;
+    }
+
     &__office-read-more-link {
       margin-left: $space-sm;
       font-family: $body-font-stack;
       font-size: 14px;
       font-weight: 100 !important;
-      color: $link-color;
       width: 100%;
       height: 100%;
       overflow: hidden;
