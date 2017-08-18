@@ -97,8 +97,8 @@ export default class OfficeItemCompressed extends Component {
           let candidate_text = candidate_party_text + candidate_description_text;
 
           return <div key={candidateId} className="u-stack--md">
-            <div className="o-media-object--center u-flex-auto u-min-50 u-push--sm u-stack--sm">
-              {/* Candidate Image */}
+            <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+              {/* Candidate Photo */}
               <div onClick={ this.props.link_to_ballot_item_page ? () => browserHistory.push("/candidate/" + candidateId) : null }>
                 <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
                               sizeClassName="icon-candidate-small u-push--sm "
