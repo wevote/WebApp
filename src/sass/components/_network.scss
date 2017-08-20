@@ -20,7 +20,7 @@ $description-margin-top: 10px;
   justify-content: space-around;
 }
 
-@media (min-width: 768px ) {
+@media (min-width: 768px) {
   .network-btn {
     display: inline-block;
     max-width: $button-div-max-width;
@@ -32,7 +32,7 @@ $description-margin-top: 10px;
 @media (max-width: 767px) {
   .network-btn {
     display: inline-block;
-    margin-left: $button-margin-horizontal * 0.5;
+    margin-left: $button-margin-horizontal / 2;
   }
 }
 
