@@ -11,7 +11,18 @@ $scrollbar-height: 20px;
 $tab-height: 47px;
 $tab-height-visible: $tab-height - $scrollbar-height;
 
+.network-btn {
+  display: inline-block;
+  max-width: 240px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
 
+.social-btn-description {
+  margin-top: 10px;
+  word-wrap: break-word;
+  float: left;
+}
 .network {
   &__network-tabs-container {
     background-color: $white;

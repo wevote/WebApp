@@ -6,7 +6,8 @@ export default class ReadMore extends Component {
     text_to_display: PropTypes.node.isRequired,
     link_text: PropTypes.node,
     collapse_text: PropTypes.node,
-    num_of_lines: PropTypes.number
+    num_of_lines: PropTypes.number,
+    className: PropTypes.string,
   };
 
     constructor (...args) {
@@ -93,6 +94,7 @@ export default class ReadMore extends Component {
         if (this.state.readMore) {
           return <span>
             <TextTruncate
+                  containerClassName={this.props.className}
                   line={num_of_lines}
                   truncateText="..."
                   text={text_to_display}
@@ -106,7 +108,7 @@ export default class ReadMore extends Component {
               />
           </span>;
         } else {
-          return <span tabIndex="0"> {expanded_text_to_display}&nbsp;&nbsp;
+          return <span tabIndex="0" className={this.props.className}> {expanded_text_to_display}&nbsp;&nbsp;
             <a tabIndex="0"
                href="#"
                onClick={this.toggleLines}
