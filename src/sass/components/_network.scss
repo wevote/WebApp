@@ -10,18 +10,37 @@ $transparent: transparent !important;
 $scrollbar-height: 20px;
 $tab-height: 47px;
 $tab-height-visible: $tab-height - $scrollbar-height;
+$button-div-max-width: 240px;
+$button-margin-horizontal: 10px;
+$description-margin-top: 10px;
 
-.network-btn {
-  display: inline-block;
-  max-width: 240px;
-  margin-right: 10px;
-  margin-left: 10px;
+.buttons-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+@media (min-width: 768px ) {
+  .network-btn {
+    display: inline-block;
+    max-width: $button-div-max-width;
+    margin-right: $button-margin-horizontal;
+    margin-left: $button-margin-horizontal;
+  }
+}
+
+@media (max-width: 767px) {
+  .network-btn {
+    display: inline-block;
+    margin-left: $button-margin-horizontal * 0.5;
+  }
 }
 
 .social-btn-description {
-  margin-top: 10px;
+  margin-top: $description-margin-top;
   word-wrap: break-word;
   float: left;
+  text-align: left;
 }
 .network {
   &__network-tabs-container {
