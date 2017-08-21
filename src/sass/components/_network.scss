@@ -14,12 +14,12 @@ $tab-height-visible: $tab-height - $scrollbar-height;
 .network-btn {
   display: inline-block;
   max-width: 240px;
-  margin-right: 10px;
-  margin-left: 10px;
+  margin-right: $space-sm;
+  margin-left: $space-sm;
 }
 
 .social-btn-description {
-  margin-top: 10px;
+  margin-top: $space-sm;
   word-wrap: break-word;
   float: left;
 }

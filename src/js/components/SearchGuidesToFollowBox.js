@@ -11,7 +11,7 @@ const updateResults = function (event) {
   // If you blank out the query string, return normal results for this election
   let id = query === "" ? VoterStore.election_id() : 0;
   GuideActions.retrieveGuidesToFollow(id, query);
-}
+};
 
 /*
 export default class SearchGuidesToFollowBox extends Component {
@@ -26,7 +26,7 @@ export default class SearchGuidesToFollowBox extends Component {
     let id = VoterStore.election_id();
     GuideActions.retrieveGuidesToFollow(id);
   }
-  
+
   render () {
     return <input type="text"
                 className="form-control"
