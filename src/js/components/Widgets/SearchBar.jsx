@@ -5,6 +5,7 @@ export default class SearchBar extends Component {
     clear_button: PropTypes.bool,
     search_button: PropTypes.bool,
     placeholder: PropTypes.string,
+    handleKeyPress: PropTypes.func.isRequired,
     updateInputValue: PropTypes.func.isRequired,
   };
 
@@ -14,7 +15,7 @@ export default class SearchBar extends Component {
     this.state = {
       query: ""
     };
-
+    this.handleKeyPress = this.props.handleKeyPress.bind(this);
     this.updateInputValue = this.props.updateInputValue.bind(this); // some outside provider
     this.clearQuery = this.clearQuery.bind(this);
   }
@@ -32,6 +33,7 @@ export default class SearchBar extends Component {
             className="form-control"
             placeholder={this.props.placeholder}
             value={this.state.query}
+            onKeyDown={this.handleKeyPress}
             onChange={this.updateInputValue} />
         <div className="search-bar-options">
           <button className={this.props.clear_button && this.state.query.length > 0 ? "search-options-btn" : "hidden"} onClick={this.clearQuery}>
