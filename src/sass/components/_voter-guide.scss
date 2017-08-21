@@ -1,5 +1,15 @@
 // Voter Guide related styles
 
+$tabs-background-padding: 8px 16px 0 16px;
+$tab-padding: 0 0 4px 0;
+$tab-spacing-desktop: 24px;
+$tab-spacing-mobile: 16px;
+$tab-margin-mobile: 0 -15px;
+$transparent: transparent !important;
+$scrollbar-height: 20px;
+$tab-height: 47px;
+$tab-height-visible: $tab-height - $scrollbar-height;
+
 .organization-banner-image-non-twitter-users {
   height: 100px;
   background-color: $gray-mid;
@@ -13,4 +23,62 @@
 
 .organization-banner-image-img {
   width: 100%;
+}
+
+.voter-guide {
+  // From @edward-ly
+  &__voter-guide-tabs-container {
+    border-bottom: 1px solid #aaa;
+    border-radius: $radius-xs;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+    background-color: $white;
+    box-sizing: content-box;
+    padding: $tabs-background-padding;
+    overflow: hidden;
+    height: $tab-height-visible;
+    @include breakpoints (small mid-small) {
+      margin: $tab-margin-mobile;
+    }
+  }
+
+  &__voter-guide-tabs {
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    height: $tab-height;
+  }
+
+  &__tabs {
+    .tab-item {
+      display: inline-block;
+      float: none;
+    }
+
+    .tab {
+      padding: $tab-padding;
+      margin-right: $tab-spacing-desktop;
+      @include breakpoints (small mid-small) {
+        margin-right: $tab-spacing-mobile;
+      }
+    }
+
+    .tab-active {
+      border-bottom: 6px solid $black;
+      color: $black;
+    }
+
+    .tab-default {
+      color: $gray-mid;
+    }
+
+    a:focus,
+    a:hover {
+      background-color: $transparent;
+    }
+
+    a.tab-default:focus,
+    a.tab-default:hover {
+      border-bottom: 6px solid $gray-mid;
+    }
+  }
 }

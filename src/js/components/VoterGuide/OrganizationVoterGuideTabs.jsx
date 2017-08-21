@@ -6,7 +6,6 @@ import VoterGuideFollowers from "./VoterGuideFollowers";
 import VoterGuideFollowing from "./VoterGuideFollowing";
 import VoterGuidePositions from "./VoterGuidePositions";
 import VoterStore from "../../stores/VoterStore";
-import { Tabs, Tab } from "react-bootstrap";
 
 export default class OrganizationVoterGuideTabs extends Component {
   static propTypes = {
@@ -16,6 +15,7 @@ export default class OrganizationVoterGuideTabs extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      active_route: "positions",
       current_organization_we_vote_id: "",
       organization: {},
       voter: {},
@@ -107,20 +107,50 @@ export default class OrganizationVoterGuideTabs extends Component {
         "Followers" : voter_guide_followers_list.length + " Followers";
     }
 
+    let voter_guide_component_to_display = null;
+    switch (this.state.active_route) {
+      default:
+      case "positions":
+        voter_guide_component_to_display = <VoterGuidePositions organization={this.state.organization} />;
+        break;
+      case "following":
+        voter_guide_component_to_display = <VoterGuideFollowing organization={this.state.organization} />;
+        break;
+      case "followers":
+        voter_guide_component_to_display = <VoterGuideFollowers organization={this.state.organization} />;
+        break;
+    }
+
     return (
-      <Tabs defaultActiveKey={1} id="tabbed_voter_guide_details">
-        <Tab eventKey={1} title={positions_title}>
-          <VoterGuidePositions organization={this.state.organization} />
-        </Tab>
+      <div className="col-md-8 col-sm-12">
+        <div className="voter-guide__voter-guide-tabs-container">
+          <div className="voter-guide__voter-guide-tabs hidden-print">
+            <ul className="nav voter-guide__tabs">
+              <li className="tab-item">
+                <a onClick={() => this.setState({ active_route: "positions", })} className={this.state.active_route === "positions" ? "tab tab-active" : "tab tab-default"}>
+                  <span>{positions_title}</span>
+                </a>
+              </li>
 
-        <Tab eventKey={2} title={<span><span className="hidden-xs">{following_title_long}</span><span className="visible-xs">{following_title_short}</span></span>}>
-          <VoterGuideFollowing organization={this.state.organization} />
-        </Tab>
+              <li className="tab-item">
+                <a onClick={() => this.setState({ active_route: "following", })} className={this.state.active_route === "following" ? "tab tab-active" : "tab tab-default"}>
+                  <span>
+                    <span className="hidden-xs">{following_title_long}</span>
+                    <span className="visible-xs">{following_title_short}</span>
+                  </span>
+                </a>
+              </li>
 
-        <Tab eventKey={3} title={followers_title}>
-          <VoterGuideFollowers organization={this.state.organization} />
-        </Tab>
-      </Tabs>
+              <li className="tab-item">
+                <a onClick={() => this.setState({ active_route: "followers", })} className={this.state.active_route === "followers" ? "tab tab-active" : "tab tab-default"}>
+                  <span>{followers_title}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        {voter_guide_component_to_display}
+      </div>
     );
   }
 }
