@@ -19,7 +19,7 @@ const handleKeyPress = function () {
     this.timer = setTimeout(() => {
       GuideActions.retrieveGuidesToFollow(this.state.id, this.state.query);
     }, delay_before_retrieve_guides_api_call);
-}
+};
 /*
 export default class SearchGuidesToFollowBox extends Component {
 
