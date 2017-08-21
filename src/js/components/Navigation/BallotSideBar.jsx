@@ -13,8 +13,7 @@ export default class BallotSideBar extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -29,9 +28,7 @@ export default class BallotSideBar extends Component {
 
   _onBallotStoreChange () {
     let unsorted = BallotStore.ballot;
-    if ( unsorted && unsorted.length > 0) {
-      this.setState({ballot: this._sortBallots(unsorted)});
-    }
+    this.setState({ballot: this._sortBallots(unsorted)});
   }
 
   _sortBallots (unsorted) {
