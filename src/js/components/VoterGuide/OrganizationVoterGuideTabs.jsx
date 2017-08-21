@@ -8,7 +8,6 @@ import VoterGuidePositions from "./VoterGuidePositions";
 import VoterStore from "../../stores/VoterStore";
 import { Tabs, Tab } from "react-bootstrap";
 
-
 export default class OrganizationVoterGuideTabs extends Component {
   static propTypes = {
     organization: PropTypes.object.isRequired,
@@ -35,7 +34,7 @@ export default class OrganizationVoterGuideTabs extends Component {
     this.setState({
       current_organization_we_vote_id: this.props.organization.organization_we_vote_id,
       organization: this.props.organization,
-      voter: VoterStore.getVoter()
+      voter: VoterStore.getVoter(),
     });
   }
 
@@ -53,12 +52,12 @@ export default class OrganizationVoterGuideTabs extends Component {
     }
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.guideStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
-  _onGuideStoreChange (){
+  _onGuideStoreChange () {
     // console.log("OrganizationVoterGuideTabs, _onGuideStoreChange, organization: ", this.state.organization);
     this.setState({
       voter_guide_followed_list: GuideStore.getVoterGuidesFollowedByOrganization(this.state.organization.organization_we_vote_id),
@@ -68,12 +67,12 @@ export default class OrganizationVoterGuideTabs extends Component {
 
   _onVoterStoreChange () {
     this.setState({
-      voter: VoterStore.getVoter()
+      voter: VoterStore.getVoter(),
     });
    }
 
   render () {
-    if (!this.state.organization || !this.state.voter){
+    if (!this.state.organization || !this.state.voter) {
       return <div>{LoadingWheel}</div>;
     }
 
@@ -88,13 +87,9 @@ export default class OrganizationVoterGuideTabs extends Component {
     let voter_guide_followers_list = this.state.voter_guide_followers_list || [];
     if (this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id) {
       // If looking at your own voter guide, filter out your own entry as a follower
-      voter_guide_followers_list = voter_guide_followers_list.filter(one_voter_guide => {
-        if (one_voter_guide.organization_we_vote_id !== this.state.voter.linked_organization_we_vote_id) {
-          return one_voter_guide;
-        } else {
-          return null;
-        }
-      });
+      voter_guide_followers_list = voter_guide_followers_list.filter( (one_voter_guide) =>
+        one_voter_guide.organization_we_vote_id !== this.state.voter.linked_organization_we_vote_id ? one_voter_guide : null
+      );
     }
     if (looking_at_self) {
       positions_title = "Your Positions";
