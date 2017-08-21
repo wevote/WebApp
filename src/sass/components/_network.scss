@@ -1,11 +1,8 @@
-$full-width: 100%;
-$minus-full-width: -$full-width;
-$address-margin: 26px 26px 0 0;
-$address-margin-xs: -4px 0 8px 0;
-$tabs-background-padding: 16px 16px 0 16px;
+$tabs-background-padding: 8px 16px 0 16px;
 $tab-padding: 0 0 4px 0;
 $tab-spacing-desktop: 24px;
 $tab-spacing-mobile: 16px;
+$tab-margin-mobile: 0 -15px;
 $transparent: transparent !important;
 $scrollbar-height: 20px;
 $tab-height: 47px;
@@ -23,13 +20,21 @@ $tab-height-visible: $tab-height - $scrollbar-height;
   word-wrap: break-word;
   float: left;
 }
+
 .network {
+  // From @edward-ly
   &__network-tabs-container {
+    border-bottom: 1px solid #aaa;
+    border-radius: $radius-xs;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
     background-color: $white;
-    // padding: $tabs-background-padding;
-    // From @edward-le
+    box-sizing: content-box;
+    padding: $tabs-background-padding;
     overflow: hidden;
     height: $tab-height-visible;
+    @include breakpoints (small mid-small) {
+      margin: $tab-margin-mobile;
+    }
   }
 
   &__network-tabs {
@@ -65,6 +70,11 @@ $tab-height-visible: $tab-height - $scrollbar-height;
     a:focus,
     a:hover {
       background-color: $transparent;
+    }
+
+    a.tab-default:focus,
+    a.tab-default:hover {
+      border-bottom: 6px solid $gray-mid;
     }
   }
 }
