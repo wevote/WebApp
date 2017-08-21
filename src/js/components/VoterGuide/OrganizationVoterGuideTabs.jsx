@@ -123,9 +123,9 @@ export default class OrganizationVoterGuideTabs extends Component {
 
     return (
       <div className="col-md-8 col-sm-12">
-        <div className="voter-guide__voter-guide-tabs-container">
-          <div className="voter-guide__voter-guide-tabs hidden-print">
-            <ul className="nav voter-guide__tabs">
+        <div className="tabs__tabs-container-wrap">
+          <div className="tabs__tabs-container hidden-print">
+            <ul className="nav tabs__tabs">
               <li className="tab-item">
                 <a onClick={() => this.setState({ active_route: "positions", })} className={this.state.active_route === "positions" ? "tab tab-active" : "tab tab-default"}>
                   <span>{positions_title}</span>
