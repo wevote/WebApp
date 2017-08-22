@@ -78,8 +78,8 @@ export default class OfficeItemCompressed extends Component {
         <div className="u-flex u-stack--sm">
           <h2 className="u-f3">
             { this.props.link_to_ballot_item_page ?
-              <div className="card-main__office-name-group">
-                <div className="card-main__office-name-item card-main__office-name">
+              <div className="card-main__ballot-name-group">
+                <div className="card-main__ballot-name-item card-main__ballot-name">
                   <Link to={officeLink}>
                     <TextTruncate line={1}
                                   truncateText="…"
@@ -87,9 +87,9 @@ export default class OfficeItemCompressed extends Component {
                                   textTruncateChild={null} />
                   </Link>
                 </div>
-                <div className="card-main__office-name-item">
+                <div className="card-main__ballot-name-item">
                   <Link to={officeLink}>
-                    <span className="card-main__office-read-more-link hidden-xs">learn&nbsp;more</span>
+                    <span className="card-main__ballot-read-more-link hidden-xs">learn&nbsp;more</span>
                   </Link>
                 </div>
               </div> :
