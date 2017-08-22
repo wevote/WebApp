@@ -1,12 +1,44 @@
-.network-btn {
-  display: inline-block;
-  max-width: 240px;
-  margin-right: $space-sm;
-  margin-left: $space-sm;
+$full-width: 100%;
+$minus-full-width: -$full-width;
+$address-margin: 26px 26px 0 0;
+$address-margin-xs: -4px 0 8px 0;
+$tabs-background-padding: 16px 16px 0 16px;
+$tab-padding: 0 0 4px 0;
+$tab-spacing-desktop: 24px;
+$tab-spacing-mobile: 16px;
+$transparent: transparent !important;
+$scrollbar-height: 20px;
+$tab-height: 47px;
+$tab-height-visible: $tab-height - $scrollbar-height;
+$button-div-max-width: 240px;
+$button-margin-horizontal: 10px;
+$description-margin-top: 10px;
+
+.buttons-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+@media (min-width: 768px) {
+  .network-btn {
+    display: inline-block;
+    max-width: $button-div-max-width;
+    margin-right: $button-margin-horizontal;
+    margin-left: $button-margin-horizontal;
+  }
+}
+
+@media (max-width: 767px) {
+  .network-btn {
+    display: inline-block;
+    margin-left: $button-margin-horizontal / 2;
+  }
 }
 
 .social-btn-description {
-  margin-top: $space-sm;
+  margin-top: $description-margin-top;
   word-wrap: break-word;
   float: left;
+  text-align: left;
 }

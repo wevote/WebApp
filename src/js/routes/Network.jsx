@@ -99,10 +99,10 @@ export default class Network extends Component {
       <BrowserPushMessage incomingProps={this.props} />
       <section className="card">
         <div className="card-main">
-          <h3 className="h3">Build Your We Vote Network</h3>
+          <h3 className="h3 text-center">Build Your We Vote Network</h3>
 
           {/* Desktop view */}
-          <div className="hidden-xs">
+          <div className="hidden-xs buttons-container">
             { this.state.voter.signed_in_twitter ?
               null :
               <div className="network-btn">
@@ -140,19 +140,20 @@ export default class Network extends Component {
           <span className="visible-xs">
             { this.state.voter.signed_in_twitter ?
               null :
-              <span>
-                <TwitterSignIn buttonText="Find" buttonSizeClass="btn-md" />
-                &nbsp;
-              </span>
+              <div className="network-btn">
+                <TwitterSignIn className="text-center" buttonText="Find" buttonSizeClass="btn-md" />
+              </div>
             }
-            <Link to="/facebook_invitable_friends" className="btn btn-social btn-md btn-facebook">
-              <i className="fa fa-facebook" />Choose
-            </Link>
-            &nbsp;
-            <Link to="/friends/invitebyemail" className="btn btn-social btn-md btn--email">
-              <i className="fa fa-envelope" />Invite
-            </Link>
-            <div>Get advice from your social networks about your voting decisions.</div>
+            <div className="network-btn">
+              <Link to="/facebook_invitable_friends" className="btn btn-social btn-md btn-facebook">
+                <i className="fa fa-facebook" />Choose
+              </Link>
+            </div>
+            <div className="network-btn">
+              <Link to="/friends/invitebyemail" className="btn btn-social btn-md btn--email">
+                <i className="fa fa-envelope" />Invite
+              </Link>
+            </div>
           </span>
         </div>
       </section>
