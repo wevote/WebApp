@@ -134,16 +134,16 @@ export default class OfficeItemCompressed extends Component {
                 {/* Opinion Items */}
                 <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
                   {/* Positions in Your Network */}
-                  <div className="u-cursor--pointer"
+                  <div className={ this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null }
                        onClick={ this.props.link_to_ballot_item_page ? () => this.props._toggleCandidateModal(one_candidate) : null }>
                     <ItemSupportOpposeCounts we_vote_id={candidateId}
                                              supportProps={candidateSupportStore}
                                              guideProps={candidateGuidesList}
-                                             type="CANDIDATE"/>
+                                             type="CANDIDATE" />
                   </div>
 
                   {/* Possible Voter Guides to Follow (Desktop) */}
-                  { candidateGuidesList && candidateGuidesList.length !== 0 ?
+                  { candidateGuidesList && candidateGuidesList.length ?
                     <ItemTinyOpinionsToFollow ballotItemWeVoteId={candidateId}
                                               organizationsToFollow={candidateGuidesList}
                                               maximumOrganizationDisplay={this.state.maximum_organization_display}
