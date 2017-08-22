@@ -159,9 +159,9 @@ export default class Network extends Component {
       </section>
       <div className="row">
         <div className="col-sm-12 col-md-8">
-          <div className="network__network-tabs-container">
-            <div className="network__network-tabs hidden-print">
-              <ul className="nav network__tabs">
+          <div className="tabs__tabs-container-wrap">
+            <div className="tabs__tabs-container hidden-print">
+              <ul className="nav tabs__tabs">
                 <li className="tab-item">
                   <Link to="/more/network/organizations" className={this.state.edit_mode === "organizations" ? "tab tab-active" : "tab tab-default"}>
                     <span>Organizations to Follow</span>

@@ -38,7 +38,8 @@ class BallotStore extends FluxMapStore {
   }
 
   get ballotLength () {
-    return this.ballot.length || 0;
+    let ballot = this.ballot || [];
+    return ballot.length || 0;
   }
 
   get currentBallotElectionName () {
@@ -103,7 +104,8 @@ class BallotStore extends FluxMapStore {
   }
 
   get ballot_remaining_choices_length () {
-    return this.ballot_remaining_choices.length || 0;
+    let ballot_remaining_choices = this.ballot_remaining_choices || [];
+    return ballot_remaining_choices.length || 0;
   }
 
   get ballot_supported () {
