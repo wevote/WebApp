@@ -83,13 +83,19 @@ export default class MeasureItemCompressed extends Component {
       <div className="card-main__content">
         <h2 className="card-main__display-name">
           { this.props.link_to_ballot_item_page ?
-            <div>
-              <Link to={"/measure/" + we_vote_id}>
-                {ballot_item_display_name}
-                <span className="card-main__measure-read-more-link">learn&nbsp;more</span>
-              </Link>
+            <div className="card-main__ballot-name-group">
+              <div className="card-main__ballot-name-item card-main__ballot-name">
+                <Link to={"/measure/" + we_vote_id}>
+                  {ballot_item_display_name}
+                </Link>
+              </div>
+              <div className="card-main__ballot-name-item">
+                <Link to={"/measure/" + we_vote_id}>
+                  <span className="card-main__ballot-read-more-link hidden-xs">learn&nbsp;more</span>
+                </Link>
+              </div>
             </div> :
-              ballot_item_display_name
+            ballot_item_display_name
           }
         </h2>
         <BookmarkToggle we_vote_id={we_vote_id} type="MEASURE"/>
