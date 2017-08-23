@@ -50,10 +50,8 @@ export default class BallotIntoModal extends Component {
             <img src="/img/global/icons/x-close.png" alt="close" />
           </a>
         </div>
-        <h1>H1</h1>
-        <h2>h2</h2>
         <Slider dotsClass="slick-dots intro-modal__gray-dots intro-modal__bottom-sm"
-                className="calc-height intro-modal__height-full child-height-full"
+                className="calc-height intro-modal__height-full"
                 ref="slider" {...slider_settings}>
           <div className="intro-modal__height-full" key={1}><BallotIntroMission next={this._nextSliderPage}/></div>
           <div className="intro-modal__height-full" key={2}><BallotIntroFollowIssues next={this._nextSliderPage}/></div>
