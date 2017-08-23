@@ -133,6 +133,24 @@ class GuideStore extends FluxMapStore {
         GuideActions.voterGuidesFollowedRetrieve(id);
         return state;
 
+      case "voterFollowAllOrganizationsFollowedByOrganization":
+        voter_linked_organization_we_vote_id = VoterStore.getVoter().linked_organization_we_vote_id;
+        // organization_we_vote_id is the organization that was just followed
+        organization_we_vote_id = action.res.organization_we_vote_id;
+        GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter follows a new org, update list
+        // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
+        GuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
+        // Update who the organization is followed by
+        GuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
+        GuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
+        // Update the guides the voter is following
+        GuideActions.voterGuidesFollowedRetrieve();
+        // Update the followers of the organization that was just followed: organization_we_vote_id
+        GuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
+        // Following one org can change the support/oppose count for many ballot items for the voter
+        SupportActions.positionsCountForAllBallotItems();
+        return state;
+
       case "voterGuidesToFollowRetrieve":
         voter_guides = action.res.voter_guides;
         let is_empty = voter_guides.length === 0;
