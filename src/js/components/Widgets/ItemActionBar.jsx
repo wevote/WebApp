@@ -142,7 +142,7 @@ export default class ItemActionBar extends Component {
                 </span>
                 { is_support ?
                   <span
-                    className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label__position-at-state" }>Support</span> :
+                    className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label item-actionbar__position-at-state" }>Support</span> :
                   <span
                     className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label" }>Support</span>
                 }
@@ -154,7 +154,7 @@ export default class ItemActionBar extends Component {
                 </span>
                 { is_oppose ?
                   <span
-                    className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label__position-at-state" }>Oppose</span> :
+                    className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label item-actionbar__position-at-state" }>Oppose</span> :
                   <span
                     className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label" }>Oppose</span>
                 }

@@ -78,8 +78,8 @@ export default class OfficeItemCompressed extends Component {
         <div className="u-flex u-stack--sm">
           <h2 className="u-f3">
             { this.props.link_to_ballot_item_page ?
-              <div className="card-main__office-name-group">
-                <div className="card-main__office-name-item card-main__office-name">
+              <div className="card-main__ballot-name-group">
+                <div className="card-main__ballot-name-item card-main__ballot-name">
                   <Link to={officeLink}>
                     <TextTruncate line={1}
                                   truncateText="…"
@@ -87,9 +87,9 @@ export default class OfficeItemCompressed extends Component {
                                   textTruncateChild={null} />
                   </Link>
                 </div>
-                <div className="card-main__office-name-item">
+                <div className="card-main__ballot-name-item">
                   <Link to={officeLink}>
-                    <span className="card-main__office-read-more-link hidden-xs">learn&nbsp;more</span>
+                    <span className="card-main__ballot-read-more-link hidden-xs">learn&nbsp;more</span>
                   </Link>
                 </div>
               </div> :
@@ -134,16 +134,16 @@ export default class OfficeItemCompressed extends Component {
                 {/* Opinion Items */}
                 <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
                   {/* Positions in Your Network */}
-                  <div className="u-cursor--pointer"
+                  <div className={ this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null }
                        onClick={ this.props.link_to_ballot_item_page ? () => this.props._toggleCandidateModal(one_candidate) : null }>
                     <ItemSupportOpposeCounts we_vote_id={candidateId}
                                              supportProps={candidateSupportStore}
                                              guideProps={candidateGuidesList}
-                                             type="CANDIDATE"/>
+                                             type="CANDIDATE" />
                   </div>
 
                   {/* Possible Voter Guides to Follow (Desktop) */}
-                  { candidateGuidesList && candidateGuidesList.length !== 0 ?
+                  { candidateGuidesList && candidateGuidesList.length ?
                     <ItemTinyOpinionsToFollow ballotItemWeVoteId={candidateId}
                                               organizationsToFollow={candidateGuidesList}
                                               maximumOrganizationDisplay={this.state.maximum_organization_display}
