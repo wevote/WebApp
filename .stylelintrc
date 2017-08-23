@@ -14,7 +14,7 @@
     "max-empty-lines": 3,
     "number-leading-zero": "never",
     "rule-empty-line-before": null,
-    "selector-max-id": 0, 
+    "selector-no-id": true, 
     "selector-no-type": [true, {
       "ignoreTypes": ["a"]
     }],

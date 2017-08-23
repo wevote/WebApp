@@ -37,6 +37,10 @@ module.exports = {
     });
   },
 
+  voterFollowAllOrganizationsFollowedByOrganization: function (organization_we_vote_id) {
+    Dispatcher.loadEndpoint("voterFollowAllOrganizationsFollowedByOrganization", { organization_we_vote_id: organization_we_vote_id } );
+  },
+
   voterGuidesFollowedRetrieve: function () {
     Dispatcher.loadEndpoint("voterGuidesFollowedRetrieve");
   },
