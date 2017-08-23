@@ -22,7 +22,7 @@ export default class BallotIntroPositionBar extends Component {
         </div>
       </div>
       <div className="intro-modal__button-wrap">
-        <button type="button" className="btn btn-success intro-modal__button" onClick={this.props.next}>See Your Ballot &nbsp;&nbsp;&gt;</button>
+        <button type="button" className="btn btn-success intro-modal__button" onClick={this.props.next}>See Your Ballot&nbsp;&gt;</button>
       </div>
     </div>;
   }
