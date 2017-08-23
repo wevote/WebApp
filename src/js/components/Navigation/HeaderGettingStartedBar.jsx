@@ -111,7 +111,7 @@ export default class HeaderGettingStartedBar extends Component {
 
     const BallotIntroFollowIssuesModal = <Modal bsClass="background-brand-blue modal"
                                     show={this.state.showBallotIntroFollowIssues}
-                                    onHide={()=>{this._toggleBallotIntroFollowIssues(this);}}>
+                                    onHide={() => this._toggleBallotIntroFollowIssues(this)}>
         <Modal.Body>
           <div className="intro-modal__close">
             <a onClick={this._toggleBallotIntroFollowIssues} className="intro-modal__close-anchor">
@@ -121,14 +121,14 @@ export default class HeaderGettingStartedBar extends Component {
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
             <div key={1}><BallotIntroFollowIssues next={this._nextSliderPage}/></div>
             <div key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div>
-            <div key={3}><BallotIntroPositionBar next={this._nextSliderPage}/></div>
+            <div key={3}><BallotIntroPositionBar next={this._toggleBallotIntroFollowIssues}/></div>
           </Slider>
         </Modal.Body>
       </Modal>;
 
     const BallotIntroOrganizationsModal = <Modal bsClass="background-brand-blue modal"
                                     show={this.state.showBallotIntroOrganizations}
-                                    onHide={()=>{this._toggleBallotIntroOrganizations(this);}}>
+                                    onHide={() => this._toggleBallotIntroOrganizations(this)}>
         <Modal.Body>
           <div className="intro-modal__close">
             <a onClick={this._toggleBallotIntroOrganizations} className="intro-modal__close-anchor">
@@ -137,14 +137,14 @@ export default class HeaderGettingStartedBar extends Component {
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
             <div key={1}><BallotIntroOrganizations next={this._nextSliderPage}/></div>
-            <div key={2}><BallotIntroPositionBar next={this._nextSliderPage}/></div>
+            <div key={2}><BallotIntroPositionBar next={this._toggleBallotIntroOrganizations}/></div>
           </Slider>
         </Modal.Body>
       </Modal>;
 
     const BallotIntroPositionsModal = <Modal bsClass="background-brand-blue modal"
                                     show={this.state.showBallotIntroPositions}
-                                    onHide={()=>{this._toggleBallotIntroPositions(this);}}>
+                                    onHide={() => this._toggleBallotIntroPositions(this)}>
         <Modal.Body>
           <div className="intro-modal__close">
             <a onClick={this._toggleBallotIntroPositions} className="intro-modal__close-anchor">
@@ -153,14 +153,14 @@ export default class HeaderGettingStartedBar extends Component {
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
             <div key={1}><BallotIntroPositions next={this._nextSliderPage}/></div>
-            <div key={2}><BallotIntroPositionBar next={this._nextSliderPage}/></div>
+            <div key={2}><BallotIntroPositionBar next={this._toggleBallotIntroPositions}/></div>
           </Slider>
         </Modal.Body>
       </Modal>;
 
     const BallotIntroFriendsModal = <Modal bsClass="background-brand-blue modal"
                                     show={this.state.showBallotIntroFriends}
-                                    onHide={()=>{this._toggleBallotIntroFriends(this);}}>
+                                    onHide={() => this._toggleBallotIntroFriends(this)}>
         <Modal.Body>
           <div className="intro-modal__close">
             <a onClick={this._toggleBallotIntroFriends} className="intro-modal__close-anchor">
@@ -169,14 +169,14 @@ export default class HeaderGettingStartedBar extends Component {
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
             <div key={1}><BallotIntroFriends next={this._nextSliderPage}/></div>
-            <div key={2}><BallotIntroPositionBar next={this._nextSliderPage}/></div>
+            <div key={2}><BallotIntroPositionBar next={this._toggleBallotIntroFriends}/></div>
           </Slider>
         </Modal.Body>
       </Modal>;
 
     const BallotIntroShareModal = <Modal bsClass="background-brand-blue modal"
                                     show={this.state.showBallotIntroShare}
-                                    onHide={()=>{this._toggleBallotIntroShare(this);}}>
+                                    onHide={() => this._toggleBallotIntroShare(this)}>
         <Modal.Body>
           <div className="intro-modal__close">
             <a onClick={this._toggleBallotIntroShare} className="intro-modal__close-anchor">
@@ -185,14 +185,14 @@ export default class HeaderGettingStartedBar extends Component {
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
             <div key={1}><BallotIntroShare next={this._nextSliderPage}/></div>
-            <div key={2}><BallotIntroPositionBar next={this._nextSliderPage}/></div>
+            <div key={2}><BallotIntroPositionBar next={this._toggleBallotIntroShare}/></div>
           </Slider>
         </Modal.Body>
       </Modal>;
 
     const BallotIntroVoteModal = <Modal bsClass="background-brand-blue modal"
                                     show={this.state.showBallotIntroVote}
-                                    onHide={()=>{this._toggleBallotIntroVote(this);}}>
+                                    onHide={() => this._toggleBallotIntroVote(this)}>
         <Modal.Body>
           <div className="intro-modal__close">
             <a onClick={this._toggleBallotIntroVote} className="intro-modal__close-anchor">
@@ -201,7 +201,7 @@ export default class HeaderGettingStartedBar extends Component {
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
             <div key={1}><BallotIntroVote next={this._nextSliderPage}/></div>
-            <div key={2}><BallotIntroPositionBar next={this._nextSliderPage}/></div>
+            <div key={2}><BallotIntroPositionBar next={this._toggleBallotIntroVote}/></div>
           </Slider>
         </Modal.Body>
       </Modal>;
