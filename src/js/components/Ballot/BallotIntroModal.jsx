@@ -7,7 +7,7 @@ import BallotIntroFollowAdvisers from "./BallotIntroFollowAdvisers";
 import BallotIntroPositionBar from "./BallotIntroPositionBar";
 
 
-export default class BallotIntoModal extends Component {
+export default class BallotIntroModal extends Component {
   // This Modal is shown to the user, when user visits the ballot page for first time only
 
   static propTypes = {
