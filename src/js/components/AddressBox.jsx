@@ -115,6 +115,7 @@ export default class AddressBox extends Component {
             className="form-control"
             ref="autocomplete"
             placeholder="Enter address where you are registered to vote"
+            autoFocus
           />
         </form>
         <div>
