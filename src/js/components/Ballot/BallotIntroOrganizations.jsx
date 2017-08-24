@@ -22,7 +22,7 @@ export default class BallotIntroFollowAdvisers extends Component {
       description_text: "",
       followed_organizations: [],
       voter_guides_to_follow_by_issues_followed: [],
-      next_button_text: NEXT_BUTTON_TEXT
+      next_button_text: NEXT_BUTTON_TEXT,
     };
   }
 
@@ -51,7 +51,7 @@ export default class BallotIntroFollowAdvisers extends Component {
       this.setState({
         description_text: "",
         followed_organizations: new_followed_organizations,
-        next_button_text: NEXT_BUTTON_TEXT
+        next_button_text: NEXT_BUTTON_TEXT,
       });
     }
   }
@@ -88,10 +88,7 @@ export default class BallotIntroFollowAdvisers extends Component {
   }
 
   render () {
-    var voter_guides_to_follow_by_issues_followed = [];
-    if (this.state.voter_guides_to_follow_by_issues_followed) {
-      voter_guides_to_follow_by_issues_followed = this.state.voter_guides_to_follow_by_issues_followed;
-    }
+    let voter_guides_to_follow_by_issues_followed = this.state.voter_guides_to_follow_by_issues_followed || [];
 
     const voter_guides_to_follow_by_issues_followed_for_display = voter_guides_to_follow_by_issues_followed.map((voter_guide) => {
       return <OrganizationFollowToggle
@@ -107,18 +104,18 @@ export default class BallotIntroFollowAdvisers extends Component {
 
     return <div className="intro-modal">
       <div className="intro-modal__h1">Follow Organizations or People</div>
-      <div className="intro-story__h2">These are organizations or people that might share your values. Follow them to see their recommendations.</div>
+      <div className="intro-modal__h2">These are organizations or people that might share your values. Follow them to see their recommendations.</div>
       <br/>
       <div className="intro-modal-vertical-scroll-contain">
         <div className="intro-modal-vertical-scroll card">
-          { voter_guides_to_follow_by_issues_followed_for_display.length > 0 ?
+          { voter_guides_to_follow_by_issues_followed_for_display.length ?
             voter_guides_to_follow_by_issues_followed_for_display :
             <h4>No organizations to display</h4>
           }
         </div>
       </div>
-      <div className="intro-story__h2">
-        { this.state.description_text }
+      <div className="intro-modal__p">
+        {this.state.description_text}
       </div>
       <br/>
       <div className="intro-modal__button-wrap">
