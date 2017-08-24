@@ -7,7 +7,6 @@ import IssueStore from "../../stores/IssueStore";
 const NEXT_BUTTON_TEXT = "Next >";
 const SKIP_BUTTON_TEXT = "Skip >";
 const INITIAL_DESCRIPTION_TEXT = "After you follow the issues you care about, we will suggest some groups that have opinions about these issues.";
-const SELECT_ISSUES_PROMPT_TEXT = "Are you sure you don't want to choose an issue or two (above)? Choosing issues will help you find organizations that share your values.";
 const NEXT_SCREEN_PROMPT_TEXT = "On the next screen, we will help you find organizations that share your values.";
 
 export default class BallotIntroFollowIssues extends Component {
@@ -55,19 +54,17 @@ export default class BallotIntroFollowIssues extends Component {
     this.updateNextState();
   }
 
-  remainingIssues(){
+  remainingIssues () {
     var actual = this.state.min_issues - this.state.followed_issues.length;
 
     if (actual >= 0){
-      return actual
+      return actual;
     }
 
     return 0;
   }
 
-  updateNextState(){
-    const num = this.state.min_issues;
-
+  updateNextState () {
     if (this.remainingIssues() > 0) {
       this.setState({ next_button_text: "Follow " + this.remainingIssues() + " more" });
     } else {
@@ -115,11 +112,11 @@ export default class BallotIntroFollowIssues extends Component {
     var issues_followed_length = this.state.followed_issues.length;
     if (
         this.remainingIssues() < 1 &&
-        issues_followed_length > 0 || 
+        issues_followed_length > 0 ||
         this.state.next_button_text === SKIP_BUTTON_TEXT
     ) {
       this.props.next();
-    } 
+    }
 
     /*
     else if (issues_followed_length === 0) {
@@ -150,8 +147,8 @@ export default class BallotIntroFollowIssues extends Component {
     return (
     <div className="intro-modal">
       <div className="intro-modal__h1">
-        Follow&nbsp; 
-        {(this.remainingIssues() > 0) ? this.remainingIssues() + ' ': ''} 
+        Follow&nbsp;
+        { this.remainingIssues() > 0 ? this.remainingIssues() + " " : "" }
         Issues You Care About
       </div>
       <div className="intro-modal-vertical-scroll-contain">
@@ -167,8 +164,8 @@ export default class BallotIntroFollowIssues extends Component {
       </div>
       <br/>
       <div className="intro-modal__button-wrap">
-        <Button type="submit" 
-          className={(this.remainingIssues() > 0) ? "btn intro-modal__button intro-modal__button-disabled disabled btn-secondary btn-block": "btn btn-success intro-modal__button intro-modal__button-follow"}
+        <Button type="submit"
+          className={ this.remainingIssues() > 0 ? "btn intro-modal__button intro-modal__button-disabled disabled btn-secondary btn-block" : "btn btn-success intro-modal__button intro-modal__button-follow"}
           onClick={this.onNext}>
           <span>{this.state.next_button_text}</span>
         </Button>
