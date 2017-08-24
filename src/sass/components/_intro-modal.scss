@@ -107,6 +107,14 @@
     bottom: 42px;
   }
 
+  &__button-follow {
+    width: 20%;
+  }
+
+  &__button-disabled {
+    width: 20%;
+  }
+
   &__button-wrap {
     display: flex;
     justify-content: center;
@@ -327,7 +335,7 @@
 }
 
 .slick-dots {
-  bottom: 2em;
+  margin-bottom: $slick-dots-margin-bottom;
 }
 
 .facebook-intro-connect,
