@@ -14,6 +14,26 @@ var _ = require("lodash");
 import Helmet from "react-helmet";
 const web_app_config = require("../config");
 
+/*
+    NOTE August 2017:  This component uses the Facebook "games" api "invitiable_friends" call.  There is some legacy
+    code on the server side in import_export_facebook/models.py retrieve_facebook_friends_from_facebook() which is in
+    the login execution path, and uses an older "friends" api technique, that may not work anymore.
+
+    If when you press the press the "f Choose Friends" button, no friends show up...
+    1) Get the FACEBOOK_APP_ID: value for your config.js from Dale.  Also put that same value in your server side
+       "SOCIAL_AUTH_FACEBOOK_KEY" in the environment_variables.json file.  The environment_variables.json file also
+       requires a SOCIAL_AUTH_FACEBOOK_SECRET" value to be set that Dale will give you.
+    2) Go to your facebook home page, go to settings then apps.  Delete the WeVote app if it exists.
+    3) Go to the live server at https://wevote.us/welcome
+    4) Logout if you are logged in
+    5) Login with facebook (and note that within the login pop-up you are agreeing to "We Vote will receive:
+        your public profile, friend list and email address")
+    6) You now should be able navigate to "Network" in the live WeVote app, press the "f Choose Friends" button,
+       and see a list of your friends.
+    7) After these steps you should be able to login with facebook on your local server, and see the
+       invitable_friends list.
+*/
+
 export default class FacebookInvitableFriends extends Component {
   static propTypes = {
     history: PropTypes.object,
@@ -102,6 +122,7 @@ export default class FacebookInvitableFriends extends Component {
   }
 
   getFacebookInvitableFriends () {
+    // If you are not receiving a list of friends in your local environment, see the not at the top of this file.
     FacebookActions.getFacebookInvitableFriendsList(this.state.facebook_invitable_friends_image_width,
       this.state.facebook_invitable_friends_image_height);
     this.setState({saving: true});
