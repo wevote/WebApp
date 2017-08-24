@@ -1,5 +1,6 @@
 import React, {Component, PropTypes } from "react";
 import Helmet from "react-helmet";
+import { Button } from "react-bootstrap";
 import GuideStore from "../../stores/GuideStore";
 import GuideActions from "../../actions/GuideActions";
 import GuideList from "./GuideList";
@@ -83,6 +84,10 @@ export default class VoterGuideFollowing extends Component {
     }
   }
 
+  followAllOrganizations () {
+    GuideActions.voterFollowAllOrganizationsFollowedByOrganization(this.state.organization.organization_we_vote_id);
+  }
+
   toggleEditMode () {
     this.setState({editMode: !this.state.editMode});
   }
@@ -125,7 +130,9 @@ export default class VoterGuideFollowing extends Component {
                  tabIndex="0"
                  onKeyDown={this.onKeyDownEditMode.bind(this)}
                  onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit"}</a> :
-              null }
+              <Button bsStyle="info" bsSize="small" className="fa-pull-right u-push--md"
+                  onClick={this.followAllOrganizations.bind(this)}><span>Follow All</span></Button>
+              }
               { !this.state.search_filter ?
                 <span>
                   {this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id ?
