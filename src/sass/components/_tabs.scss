@@ -102,7 +102,7 @@ $tab-height-visible: $tab-height - $scrollbar-height;
 
     a:focus,
     a:hover {
-      background-color: transparent; // stylelint-disable-line sh-waqar/declaration-use-variable
+      background-color: transparent !important; // stylelint-disable-line sh-waqar/declaration-use-variable
     }
 
     a.tab-default:focus,
