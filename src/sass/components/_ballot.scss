@@ -85,6 +85,11 @@ $tab-height-visible: $tab-height - $scrollbar-height;
     a:hover {
       background-color: $transparent;
     }
+
+    a.tab-default:focus,
+    a.tab-default:hover {
+      border-bottom: 6px solid $gray-mid;
+    }
   }
 
   // ===========================================

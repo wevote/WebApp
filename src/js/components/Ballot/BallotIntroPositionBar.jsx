@@ -13,7 +13,7 @@ export default class BallotIntroPositionBar extends Component {
   render () {
     return <div className="intro-modal">
       <div className="intro-modal__h1">Congratulations!</div>
-      <div className="intro-story__h2">Now that you have a network of advisers, you will see a position bar next to ballot items with your network's positions.</div>
+      <div className="intro-modal__h2">Now that you have a network, you will see a position bar next to ballot items with your network's positions.</div>
       <div className="intro-modal__position-wrap">
         <img className="intro-modal__position-img" src="/img/global/icons/position-bar-v1-265x43.png" alt="position bar" />
         <div className="intro-modal__position-description-wrap">
@@ -22,7 +22,7 @@ export default class BallotIntroPositionBar extends Component {
         </div>
       </div>
       <div className="intro-modal__button-wrap">
-        <button type="button" className="btn btn-success intro-modal__button" onClick={this.props.next}>See Your Ballot &nbsp;&nbsp;&gt;</button>
+        <button type="button" className="btn btn-success intro-modal__button" onClick={this.props.next}>See Your Ballot&nbsp;&gt;</button>
       </div>
     </div>;
   }

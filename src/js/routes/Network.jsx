@@ -13,6 +13,13 @@ import NetworkOpinions from "../components/Network/NetworkOpinions";
 import NetworkOpinionsFollowed from "../components/Network/NetworkOpinionsFollowed";
 import TwitterSignIn from "../components/Twitter/TwitterSignIn";
 import VoterStore from "../stores/VoterStore";
+import ReadMore from "../components/Widgets/ReadMore";
+
+const twitter_info_text = "Signing into Twitter is the fastest way to find voter guides related to the issues you care about. When you sign into Twitter, We Vote will find the voter guides for everyone you are following.";
+
+const facebook_info_text = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
+
+const email_info_text = "Send email invitations to your friends. Share your vision, and get your friends help on figuring out everything on your ballot.";
 
 export default class Network extends Component {
   static propTypes = {
@@ -92,53 +99,69 @@ export default class Network extends Component {
       <BrowserPushMessage incomingProps={this.props} />
       <section className="card">
         <div className="card-main">
-          <h3 className="h3">Build Your We Vote Network</h3>
+          <h3 className="h3 text-center">Build Your We Vote Network</h3>
 
           {/* Desktop view */}
-          <span className="hidden-xs">
+          <div className="hidden-xs buttons-container">
             { this.state.voter.signed_in_twitter ?
               null :
-              <span>
-                <TwitterSignIn buttonText="Find Voter Guides" />
-                &nbsp;&nbsp;&nbsp;
-              </span>
+              <div className="network-btn">
+                <TwitterSignIn className="text-center" buttonText="Find Voter Guides" />
+                <ReadMore
+                  className="social-btn-description"
+                  text_to_display={twitter_info_text}
+                  num_of_lines={2}
+                />
+              </div>
             }
-
-            <Link to="/facebook_invitable_friends" className="btn btn-social btn-lg btn-facebook">
-              <i className="fa fa-facebook" />Choose Friends&nbsp;&nbsp;&nbsp;
+            <div className="network-btn">
+              <Link to="/facebook_invitable_friends" className="btn btn-social btn-lg btn-facebook text-center">
+                <i className="fa fa-facebook" />Choose Friends
+              </Link>
+              <ReadMore
+                className="social-btn-description"
+                text_to_display={facebook_info_text}
+                num_of_lines={2}
+              />
+              </div>
+            <div className="network-btn">
+            <Link to="/friends/invitebyemail" className="btn btn-social btn-lg btn--email text-center">
+              <i className="fa fa-envelope" />Invite Friends
             </Link>
-            &nbsp;&nbsp;&nbsp;
-
-            <Link to="/friends/invitebyemail" className="btn btn-social btn-lg btn--email">
-              <i className="fa fa-envelope" />Invite Friends&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </Link>
-          </span>
+            <ReadMore
+              className="social-btn-description"
+              text_to_display={email_info_text}
+              num_of_lines={2}
+            />
+            </div>
+          </div>
 
           {/* Mobile view */}
           <span className="visible-xs">
             { this.state.voter.signed_in_twitter ?
               null :
-              <span>
-                <TwitterSignIn buttonText="Find" buttonSizeClass="btn-md" />
-                &nbsp;
-              </span>
+              <div className="network-btn">
+                <TwitterSignIn className="text-center" buttonText="Find" buttonSizeClass="btn-md" />
+              </div>
             }
-            <Link to="/facebook_invitable_friends" className="btn btn-social btn-md btn-facebook">
-              <i className="fa fa-facebook" />Choose
-            </Link>
-            &nbsp;
-            <Link to="/friends/invitebyemail" className="btn btn-social btn-md btn--email">
-              <i className="fa fa-envelope" />Invite
-            </Link>
-            <div>Get advice from your social networks about your voting decisions.</div>
+            <div className="network-btn">
+              <Link to="/facebook_invitable_friends" className="btn btn-social btn-md btn-facebook">
+                <i className="fa fa-facebook" />Choose
+              </Link>
+            </div>
+            <div className="network-btn">
+              <Link to="/friends/invitebyemail" className="btn btn-social btn-md btn--email">
+                <i className="fa fa-envelope" />Invite
+              </Link>
+            </div>
           </span>
         </div>
       </section>
       <div className="row">
         <div className="col-sm-12 col-md-8">
-          <div className="network__network-tabs-container">
-            <div className="network__network-tabs hidden-print">
-              <ul className="nav network__tabs">
+          <div className="tabs__tabs-container-wrap">
+            <div className="tabs__tabs-container hidden-print">
+              <ul className="nav tabs__tabs">
                 <li className="tab-item">
                   <Link to="/more/network/organizations" className={this.state.edit_mode === "organizations" ? "tab tab-active" : "tab tab-default"}>
                     <span>Organizations to Follow</span>

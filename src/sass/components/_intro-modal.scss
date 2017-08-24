@@ -7,24 +7,24 @@
   &__h1 {
     font-weight: 700;
     font-size: 30px;
-    padding: $space-sm $space-none $space-md;
-    @include breakpoints (max large) {
-      font-size: 22px;
+    padding: $space-md $space-none $space-md;
+    @include breakpoints (max medium) {
+      font-size: 16px;
     }
   }
   &__h1--alt {
     font-weight: 700;
     font-size: 30px;
     padding-top: $space-lg;
-    @include breakpoints (max large) {
-      font-size: 22px;
+    @include breakpoints (max medium) {
+      font-size: 16px;
     }
   }
 
   &__h2 {
     font-size: 20px;
-    @include breakpoints (max large) {
-      font-size: 18px;
+    @include breakpoints (max medium) {
+      font-size: 16px;
     }
   }
 
@@ -43,8 +43,11 @@
     }
   }
 
-  &__height-min-100 {
+  &__responsive-height {
     min-height: 100px;
+    @include breakpoints (mid-small medium) {
+      min-height: 120px;
+    }
   }
 
   &__height-full {
@@ -60,7 +63,7 @@
     position: absolute;
     top: $space-none;
     right: $space-none;
-    width: $space-lg;
+    width: $space-md * 1.25;
     z-index: 9999;
     @include breakpoints (max mid-small) {
       width: $space-md;
@@ -73,7 +76,7 @@
   }
 
   &__p {
-    font-size: $base-font-size;
+    font-size: $base-font-size * .875;
   }
 
   &__position-wrap {
@@ -105,6 +108,9 @@
   &__button {
     position: absolute;
     bottom: 42px;
+    @include breakpoints (max mid-small) {
+      bottom: 0;
+    }
   }
 
   &__button-follow {
@@ -263,7 +269,9 @@
   }
 
   &__description-text {
-    padding-top: $space-md;
+    @extend .intro-modal__p;
+    @extend .intro-modal__responsive-height;
+    @extend .intro-modal__padding-top;
   }
 }
 
@@ -299,7 +307,7 @@
   max-height: 30vh;
   overflow-y: auto;
   @include breakpoints (max mid-small) {
-    max-height: 40vh;
+    max-height: calc(100vh - 284px);
   }
 }
 
@@ -335,7 +343,7 @@
 }
 
 .slick-dots {
-  margin-bottom: $slick-dots-margin-bottom;
+  bottom: 0 !important;
 }
 
 .facebook-intro-connect,

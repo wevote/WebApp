@@ -10,50 +10,35 @@ $transparent: transparent !important;
 $scrollbar-height: 20px;
 $tab-height: 47px;
 $tab-height-visible: $tab-height - $scrollbar-height;
+$button-div-max-width: 240px;
+$button-margin-horizontal: 10px;
+$description-margin-top: 10px;
 
+.buttons-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
 
-.network {
-  &__network-tabs-container {
-    background-color: $white;
-    // padding: $tabs-background-padding;
-    // From @edward-le
-    overflow: hidden;
-    height: $tab-height-visible;
+@media (min-width: 768px) {
+  .network-btn {
+    display: inline-block;
+    max-width: $button-div-max-width;
+    margin-right: $button-margin-horizontal;
+    margin-left: $button-margin-horizontal;
   }
+}
 
-  &__network-tabs {
-    white-space: nowrap;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    height: $tab-height;
+@media (max-width: 767px) {
+  .network-btn {
+    display: inline-block;
+    margin-left: $button-margin-horizontal / 2;
   }
+}
 
-  &__tabs {
-    .tab-item {
-      display: inline-block;
-      float: none;
-    }
-
-    .tab {
-      padding: $tab-padding;
-      margin-right: $tab-spacing-desktop;
-      @include breakpoints (small mid-small) {
-        margin-right: $tab-spacing-mobile;
-      }
-    }
-
-    .tab-active {
-      border-bottom: 6px solid $black;
-      color: $black;
-    }
-
-    .tab-default {
-      color: $gray-mid;
-    }
-
-    a:focus,
-    a:hover {
-      background-color: $transparent;
-    }
-  }
+.social-btn-description {
+  margin-top: $description-margin-top;
+  word-wrap: break-word;
+  float: left;
+  text-align: left;
 }

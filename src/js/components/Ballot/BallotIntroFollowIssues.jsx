@@ -23,7 +23,7 @@ export default class BallotIntroFollowIssues extends Component {
       followed_issues: [],
       issues: [],
       next_button_text: NEXT_BUTTON_TEXT,
-      min_issues: 5
+      min_issues: 5,
     };
   }
 
@@ -132,10 +132,7 @@ export default class BallotIntroFollowIssues extends Component {
   }
 
   render () {
-    var issue_list = [];
-    if (this.state.issues) {
-      issue_list = this.state.issues;
-    }
+    let issue_list = this.state.issues || [];
 
     let edit_mode = true;
     const issue_list_for_display = issue_list.map((issue) => {
@@ -165,8 +162,8 @@ export default class BallotIntroFollowIssues extends Component {
           }
         </div>
       </div>
-      <div className="intro-modal__p intro-modal__height-min-100 intro-modal__padding-top">
-        { this.state.description_text }
+      <div className="intro-modal__description-text">
+        {this.state.description_text}
       </div>
       <br/>
       <div className="intro-modal__button-wrap">

@@ -19,7 +19,7 @@ export default class MeasureItemCompressed extends Component {
     ballot_item_display_name: PropTypes.string.isRequired,
     link_to_ballot_item_page: PropTypes.bool,
     measure_url: PropTypes.string,
-    _toggleMeasureModal: PropTypes.func
+    _toggleMeasureModal: PropTypes.func,
   };
 
   constructor (props) {
@@ -43,7 +43,7 @@ export default class MeasureItemCompressed extends Component {
     this.supportStoreListener.remove();
   }
 
-  _onGuideStoreChange (){
+  _onGuideStoreChange () {
     // We just want to trigger a re-render
     this.setState({ transitioning: false });
     // console.log("_onGuideStoreChange");
@@ -52,36 +52,20 @@ export default class MeasureItemCompressed extends Component {
   _onSupportStoreChange () {
     this.setState({
       supportProps: SupportStore.get(this.props.we_vote_id),
-      transitioning: false
+      transitioning: false,
     });
   }
   render () {
-    //console.log("this.props", this.props);
-    const { supportProps } = this.state;
-    let support_count = 0;
-    if (supportProps && supportProps.support_count) {
-      // Only show ItemSupportOpposeCounts if your network has something to say
-      support_count = supportProps.support_count;
-    }
-    let oppose_count = 0;
-    if (supportProps && supportProps.oppose_count) {
-      // Only show ItemSupportOpposeCounts if your network has something to say
-      oppose_count = supportProps.oppose_count;
-    }
-
-    let ballot_item_display_name = this.props.ballot_item_display_name;
-    let measure_subtitle = this.props.measure_subtitle;
-    let measure_text = this.props.measure_text;  // Not currently defined
-    let we_vote_id = this.props.we_vote_id;
-    let measureLink = "/measure/" + we_vote_id;
-    let goToMeasureLink = function () { browserHistory.push(measureLink); };
+    let { ballot_item_display_name, measure_subtitle, measure_text, we_vote_id } = this.props;
 
     measure_subtitle = capitalizeString(measure_subtitle);
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
+    let measureGuidesList = GuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id);
+
     let measure_for_modal = {
       ballot_item_display_name: ballot_item_display_name,
-      voter_guides_to_follow_for_ballot_item_id: GuideStore.getVoterGuidesToFollowForBallotItemId(this.props.we_vote_id),
+      voter_guides_to_follow_for_ballot_item_id: measureGuidesList,
       kind_of_ballot_item: this.props.kind_of_ballot_item,
       link_to_ballot_item_page: this.props.link_to_ballot_item_page,
       measure_subtitle: measure_subtitle,
@@ -90,79 +74,66 @@ export default class MeasureItemCompressed extends Component {
       measure_we_vote_id: this.props.we_vote_id,
       position_list: this.props.position_list
     };
+
     // To get position_list
     // TODO DALE var measure = MeasureStore.get(this.state.measure_we_vote_id) || {};
-
 
     return <div className="card-main measure-card">
       <a name={we_vote_id} />
       <div className="card-main__content">
         <h2 className="card-main__display-name">
           { this.props.link_to_ballot_item_page ?
-            <div>
-              <Link to={measureLink}>{ballot_item_display_name}
-              <span className="card-main__measure-read-more-link">learn&nbsp;more</span></Link>
+            <div className="card-main__ballot-name-group">
+              <div className="card-main__ballot-name-item card-main__ballot-name">
+                <Link to={"/measure/" + we_vote_id}>
+                  {ballot_item_display_name}
+                </Link>
+              </div>
+              <div className="card-main__ballot-name-item">
+                <Link to={"/measure/" + we_vote_id}>
+                  <span className="card-main__ballot-read-more-link hidden-xs">learn&nbsp;more</span>
+                </Link>
+              </div>
             </div> :
-              ballot_item_display_name
+            ballot_item_display_name
           }
         </h2>
         <BookmarkToggle we_vote_id={we_vote_id} type="MEASURE"/>
         {/* Measure information */}
-        <div
-          className={ this.props.link_to_ballot_item_page ?
-          "u-cursor--pointer" : null }
-          onClick={ this.props.link_to_ballot_item_page ?
-          goToMeasureLink : null }
-        >
+        <div className={ this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null }
+             onClick={ this.props.link_to_ballot_item_page ? () => browserHistory.push("/measure/" + we_vote_id) : null }>
           {measure_subtitle}
         </div>
-        { this.props.measure_text ?
-          <div className="measure_text">{measure_text}</div> :
-          null }
+        { measure_text ? <div className="measure_text">{measure_text}</div> : null }
 
-        {/* This is the area *under* the measure title/text */}
-        <div className={"u-flex" + (this.props.link_to_ballot_item_page ?
-                " u-cursor--pointer" : "") } >
+        {/* Opinion Items */}
+        <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
+          {/* Positions in Your Network */}
+          <div className={ this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null }
+               onClick={ this.props.link_to_ballot_item_page ? () => this.props._toggleMeasureModal(measure_for_modal) : null }>
+            <ItemSupportOpposeCounts we_vote_id={we_vote_id}
+                                     supportProps={this.state.supportProps}
+                                     guideProps={measureGuidesList}
+                                     type="MEASURE" />
+          </div>
 
-          {/* Needed to force following flex area to the right */}
-          <div className="MeasureItem__summary u-flex-auto" />
+          {/* Possible Voter Guides to Follow (Desktop) */}
+          <div onClick={ this.props.link_to_ballot_item_page ? () => this.props._toggleMeasureModal(measure_for_modal) : null }>
+            { measureGuidesList && measureGuidesList.length ?
+              <ItemTinyOpinionsToFollow ballotItemWeVoteId={we_vote_id}
+                                        organizationsToFollow={measureGuidesList}
+                                        maximumOrganizationDisplay={this.state.maximum_organization_display}
+                                        supportProps={this.state.supportProps} /> : null }
+          </div>
 
-          <div className="u-flex u-items-center">
-            {/* *** "Positions in your Network" bar OR items you can follow *** */}
-            <div className="u-flex-none u-justify-end u-push--md">
-              <span className={ this.props.link_to_ballot_item_page ?
-                      "u-cursor--pointer" :
-                      null }
-              >
-              { support_count || oppose_count ?
-                <span onClick={ this.props.link_to_ballot_item_page ?
-                      ()=>{this.props._toggleMeasureModal(measure_for_modal);} :
-                      null } >
-                  <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={this.state.supportProps}
-                                           type="MEASURE" />
-                </span> :
-                <span onClick={ this.props.link_to_ballot_item_page ?
-                      ()=>{this.props._toggleMeasureModal(measure_for_modal);} :
-                      null } >
-                {/* Show possible voter guides to follow */}
-                { GuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id) && GuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id).length !== 0 ?
-                  <ItemTinyOpinionsToFollow ballotItemWeVoteId={we_vote_id}
-                                            organizationsToFollow={GuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id)}
-                                            maximumOrganizationDisplay={this.state.maximum_organization_display}/> :
-                  <span /> }
-                </span> }
-              </span>
-            </div>
-
-            {/* *** Choose Support or Oppose *** */}
-            <div className="u-flex-none u-justify-end">
-              <ItemActionBar ballot_item_we_vote_id={we_vote_id}
-                             supportProps={this.state.supportProps}
-                             shareButtonHide
-                             commentButtonHide
-                             transitioniing={this.state.transitioning}
-                             type="MEASURE" />
-            </div>
+          {/* Support or Oppose */}
+          <div className="u-cursor--pointer">
+            <ItemActionBar ballot_item_we_vote_id={we_vote_id}
+                           supportProps={this.state.supportProps}
+                           shareButtonHide
+                           commentButtonHide
+                           transitioniing={this.state.transitioning}
+                           type="MEASURE" />
           </div>
         </div>
       </div> {/* END .card-main__content */}

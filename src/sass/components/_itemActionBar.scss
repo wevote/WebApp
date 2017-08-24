@@ -13,10 +13,10 @@ $red: #ff4921;
     @include breakpoints (max mid-small) {
       display: none; // Hide Support/Oppose button labels on small screens
     }
+  }
 
-    &__position-at-state {
-      color: $gray-pale;
-    }
+  &__position-at-state {
+    color: $gray-pale;
   }
 
   .support-at-state {
