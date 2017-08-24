@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import SearchGuidesToFollowBox from "../../components/SearchGuidesToFollowBox";
+import SearchGuidesToFollowBox from "../../components/Search/SearchGuidesToFollowBox";
 import GuideStore from "../../stores/GuideStore";
 import VoterStore from "../../stores/VoterStore";
 import GuideList from "../../components/VoterGuide/GuideList";

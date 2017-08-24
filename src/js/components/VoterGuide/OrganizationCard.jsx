@@ -56,13 +56,13 @@ export default class OrganizationCard extends Component {
             <span>@{organization_twitter_handle}&nbsp;&nbsp;</span> :
             null
           }
-          {twitter_followers_count ?
+          {/* twitter_followers_count ?
             <span className="twitter-followers__badge">
               <span className="fa fa-twitter twitter-followers__icon" />
               {numberWithCommas(twitter_followers_count)}
             </span> :
             null
-          }
+          */}
           &nbsp;&nbsp;
           { organization_website ?
             <span><a href={organization_website} target="_blank">Website <i className="fa fa-external-link" /></a></span> :

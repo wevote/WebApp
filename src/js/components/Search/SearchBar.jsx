@@ -25,6 +25,7 @@ export default class SearchBar extends Component {
     this.updateInputValue({ target: { value: "" }}); // hacky, but current solution
   }
 
+  // Note that "onClick={this.updateInputValue}" isn't needed on the search_button because we only use this component for instant search
   render () {
     return (
       <div className="search-bar clearfix">
@@ -36,10 +37,11 @@ export default class SearchBar extends Component {
             onKeyDown={this.handleKeyPress}
             onChange={this.updateInputValue} />
         <div className="search-bar-options">
-          <button className={this.props.clear_button && this.state.query.length > 0 ? "search-options-btn" : "hidden"} onClick={this.clearQuery}>
+          <button className={this.props.clear_button && this.state.query && this.state.query.length > 0 ? "search-options-btn" : "hidden"}
+                  onClick={this.clearQuery}>
             <i className="glyphicon glyphicon-remove-circle u-gray-light" />
           </button>
-          <button className={this.props.search_button ? "search-options-btn" : "hidden"} onClick={this.updateInputValue}>
+          <button className={this.props.search_button ? "search-options-btn" : "hidden"}>
             <i className="glyphicon glyphicon-search" />
           </button>
         </div>
