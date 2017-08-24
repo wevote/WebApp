@@ -1,12 +1,4 @@
-$full-width: 100%;
-$address-margin: 26px 26px 0 0;
-$address-margin-xs: -4px 0 8px 0;
-$tab-padding: 0 0 4px 0;
-$tab-spacing-desktop: 24px;
-$tab-spacing-mobile: 16px;
-$transparent: transparent !important;
 $header-extension-top: 40%;
-$minus-header-extension-top: -$header-extension-top;
 $scrollbar-height: 20px;
 $tab-height: 47px;
 $tab-height-visible: $tab-height - $scrollbar-height;
@@ -38,11 +30,11 @@ $tab-height-visible: $tab-height - $scrollbar-height;
   }
 
   &__heading {
-    width: $full-width;
+    width: 100%; // stylelint-disable-line sh-waqar/declaration-use-variable
     background-color: $white;
     border-bottom: 1px solid #aaa;
     padding-top: $header-extension-top;
-    margin-top: $minus-header-extension-top;
+    margin-top: -$header-extension-top; // stylelint-disable-line sh-waqar/declaration-use-variable
     overflow: hidden;
   }
 
@@ -51,11 +43,11 @@ $tab-height-visible: $tab-height - $scrollbar-height;
   }
 
   &__header-address {
-    margin: $address-margin;
+    margin: 26px 26px 0 0; // stylelint-disable-line sh-waqar/declaration-use-variable
   }
 
   &__header-address-xs {
-    margin: $address-margin-xs;
+    margin: -4px 0 8px 0; // stylelint-disable-line sh-waqar/declaration-use-variable
   }
 
   &__tabs {
@@ -65,10 +57,10 @@ $tab-height-visible: $tab-height - $scrollbar-height;
     }
 
     .tab {
-      padding: $tab-padding;
-      margin-right: $tab-spacing-desktop;
+      padding: 0 0 4px; // stylelint-disable-line sh-waqar/declaration-use-variable
+      margin-right: 24px; // stylelint-disable-line sh-waqar/declaration-use-variable
       @include breakpoints (small mid-small) {
-        margin-right: $tab-spacing-mobile;
+        margin-right: 16px; // stylelint-disable-line sh-waqar/declaration-use-variable
       }
     }
 
@@ -83,7 +75,7 @@ $tab-height-visible: $tab-height - $scrollbar-height;
 
     a:focus,
     a:hover {
-      background-color: $transparent;
+      background-color: transparent !important; // stylelint-disable-line sh-waqar/declaration-use-variable
     }
 
     a.tab-default:focus,
