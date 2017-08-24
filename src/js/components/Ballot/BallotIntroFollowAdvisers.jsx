@@ -140,7 +140,7 @@ export default class BallotIntroFollowAdvisers extends Component {
               }
             </div>
           </div>
-          <div className="intro-modal-description-text">
+          <div className="intro-modal__description-text">
             { this.state.description_text ?
               this.state.description_text :
               <span>Great work! Based on your issues, these organizations or people
