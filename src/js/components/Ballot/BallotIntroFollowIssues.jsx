@@ -123,7 +123,7 @@ export default class BallotIntroFollowIssues extends Component {
           }
         </div>
       </div>
-      <div className="intro-modal__p intro-modal__height-min-100 intro-modal__padding-top">
+      <div className="intro-modal__description-text">
         {this.state.description_text}
       </div>
       <br/>
