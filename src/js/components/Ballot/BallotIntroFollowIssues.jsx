@@ -23,6 +23,7 @@ export default class BallotIntroFollowIssues extends Component {
       followed_issues: [],
       issues: [],
       next_button_text: NEXT_BUTTON_TEXT,
+      min_issues: 5,
     };
   }
 
@@ -50,6 +51,28 @@ export default class BallotIntroFollowIssues extends Component {
     } else {
       this.setState({ issues: IssueStore.toFollowList() });
     }
+
+    this.updateNextState();
+  }
+
+  remainingIssues(){
+    var actual = this.state.min_issues - this.state.followed_issues.length;
+
+    if (actual >= 0){
+      return actual
+    }
+
+    return 0;
+  }
+
+  updateNextState(){
+    const num = this.state.min_issues;
+
+    if (this.remainingIssues() > 0) {
+      this.setState({ next_button_text: "Follow " + this.remainingIssues() + " more" });
+    } else {
+      this.setState({ next_button_text: NEXT_BUTTON_TEXT });
+    }
   }
 
   onIssueFollow (issue_we_vote_id) {
@@ -62,6 +85,8 @@ export default class BallotIntroFollowIssues extends Component {
         followed_issues: new_followed_issues,
         next_button_text: NEXT_BUTTON_TEXT
       });
+
+      this.updateNextState();
     }
   }
 
@@ -81,19 +106,29 @@ export default class BallotIntroFollowIssues extends Component {
           followed_issues: new_followed_issues,
         });
       }
+
+      this.updateNextState();
     }
   }
 
   onNext () {
     var issues_followed_length = this.state.followed_issues.length;
-    if (issues_followed_length > 0 || this.state.next_button_text === SKIP_BUTTON_TEXT) {
+    if (
+        this.remainingIssues() < 1 &&
+        issues_followed_length > 0 || 
+        this.state.next_button_text === SKIP_BUTTON_TEXT
+    ) {
       this.props.next();
-    } else if (issues_followed_length === 0) {
+    } 
+
+    /*
+    else if (issues_followed_length === 0) {
       this.setState({
         description_text: SELECT_ISSUES_PROMPT_TEXT,
         next_button_text: SKIP_BUTTON_TEXT,
       });
     }
+    */
   }
 
   render () {
@@ -109,12 +144,16 @@ export default class BallotIntroFollowIssues extends Component {
         issue_image_url={issue.issue_photo_url_medium}
         on_issue_follow={this.onIssueFollow}
         on_issue_stop_following={this.onIssueStopFollowing}
-        edit_mode={edit_mode}
-      />;
+        edit_mode={edit_mode} />;
     });
 
-    return <div className="intro-modal">
-      <div className="intro-modal__h1">Follow Issues You Care About</div>
+    return (
+    <div className="intro-modal">
+      <div className="intro-modal__h1">
+        Follow&nbsp; 
+        {(this.remainingIssues() > 0) ? this.remainingIssues() + ' ': ''} 
+        Issues You Care About
+      </div>
       <div className="intro-modal-vertical-scroll-contain">
         <div className="intro-modal-vertical-scroll card">
           { issue_list.length > 0 ?
@@ -128,11 +167,14 @@ export default class BallotIntroFollowIssues extends Component {
       </div>
       <br/>
       <div className="intro-modal__button-wrap">
-        <Button type="submit" className="btn btn-success intro-modal__button" onClick={this.onNext}>
+        <Button type="submit" 
+          className={(this.remainingIssues() > 0) ? "btn intro-modal__button intro-modal__button-disabled disabled btn-secondary btn-block": "btn btn-success intro-modal__button intro-modal__button-follow"}
+          onClick={this.onNext}>
           <span>{this.state.next_button_text}</span>
         </Button>
       </div>
       <br/>
-    </div>;
+    </div>
+    );
   }
 }

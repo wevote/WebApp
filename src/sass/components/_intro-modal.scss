@@ -113,6 +113,14 @@
     }
   }
 
+  &__button-follow {
+    width: 20%;
+  }
+
+  &__button-disabled {
+    width: 20%;
+  }
+
   &__button-wrap {
     display: flex;
     justify-content: center;
