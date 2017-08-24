@@ -1,7 +1,7 @@
 import React, {Component } from "react";
-import GuideActions from "../actions/GuideActions";
-import VoterStore from "../stores/VoterStore";
-import SearchBar from "./Widgets/SearchBar";
+import GuideActions from "../../actions/GuideActions";
+import VoterStore from "../../stores/VoterStore";
+import SearchBar from "./SearchBar";
 
 // update provider
 const updateResults = function (event) {
@@ -20,35 +20,12 @@ const handleKeyPress = function () {
       GuideActions.retrieveGuidesToFollow(this.state.id, this.state.query);
     }, delay_before_retrieve_guides_api_call);
 };
-/*
-export default class SearchGuidesToFollowBox extends Component {
-
-  constructor (props){
-    super(props);
-    this.state = {};
-  }
-
-  componentWillUnmount (){
-    //Clear search results when navigating away
-    let id = VoterStore.election_id();
-    GuideActions.retrieveGuidesToFollow(id);
-  }
-
-  render () {
-    return <input type="text"
-                className="form-control"
-                onChange={this.updateResults.bind(this)}
-                value={this.state.query}
-                placeholder="Search by name or twitter handle." />;
-  }
-}
-*/
 
 // Just a wrapper component now
 export default class SearchGuidesToFollowBox extends Component {
   render () {
     return <SearchBar clear_button search_button updateInputValue={updateResults}
                                                  handleKeyPress={handleKeyPress}
-                                                 placeholder="Search by name or twitter handle." />;
+                                                 placeholder="Search by name or Twitter handle" />;
   }
 }

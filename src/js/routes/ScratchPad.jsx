@@ -1,5 +1,5 @@
 import React, {Component } from "react";
-import SearchBar from "../components/Widgets/SearchBar";
+import SearchBar from "../components/Search/SearchBar";
 
 let updateInputValue = function (event) {
   this.setState({ query: event.target.value });

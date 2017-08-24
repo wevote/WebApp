@@ -6,7 +6,7 @@ import IssueStore from "../../stores/IssueStore";
 
 const NEXT_BUTTON_TEXT = "Next >";
 const SKIP_BUTTON_TEXT = "Skip >";
-const INITIAL_DESCRIPTION_TEXT = "After you follow the issues you care about, we will suggest some groups that have opinions about these issues.";
+const INITIAL_DESCRIPTION_TEXT = "After you follow five issues you care about, we will suggest some groups that have opinions about these issues.";
 const NEXT_SCREEN_PROMPT_TEXT = "On the next screen, we will help you find organizations that share your values.";
 
 export default class BallotIntroFollowIssues extends Component {
@@ -22,7 +22,7 @@ export default class BallotIntroFollowIssues extends Component {
       followed_issues: [],
       issues: [],
       next_button_text: NEXT_BUTTON_TEXT,
-      min_issues: 5,
+      number_of_required_issues: 5,
     };
   }
 
@@ -55,7 +55,7 @@ export default class BallotIntroFollowIssues extends Component {
   }
 
   remainingIssues () {
-    var actual = this.state.min_issues - this.state.followed_issues.length;
+    var actual = this.state.number_of_required_issues - this.state.followed_issues.length;
 
     if (actual >= 0){
       return actual;
@@ -66,7 +66,7 @@ export default class BallotIntroFollowIssues extends Component {
 
   updateNextState () {
     if (this.remainingIssues() > 0) {
-      this.setState({ next_button_text: "Follow " + this.remainingIssues() + " more" });
+      this.setState({ next_button_text: "Please Follow " + this.remainingIssues() + " More" });
     } else {
       this.setState({ next_button_text: NEXT_BUTTON_TEXT });
     }
@@ -74,11 +74,17 @@ export default class BallotIntroFollowIssues extends Component {
 
   onIssueFollow (issue_we_vote_id) {
     let index = this.state.followed_issues.indexOf(issue_we_vote_id);
+    let description_text;
     if (index === -1) {
       var new_followed_issues = this.state.followed_issues;
       new_followed_issues.push(issue_we_vote_id);
+      if (this.state.followed_issues.length >= this.state.number_of_required_issues ) {
+        description_text = NEXT_SCREEN_PROMPT_TEXT;
+      } else {
+        description_text = INITIAL_DESCRIPTION_TEXT;
+      }
       this.setState({
-        description_text: NEXT_SCREEN_PROMPT_TEXT,
+        description_text: description_text,
         followed_issues: new_followed_issues,
         next_button_text: NEXT_BUTTON_TEXT
       });
@@ -89,12 +95,18 @@ export default class BallotIntroFollowIssues extends Component {
 
   onIssueStopFollowing (issue_we_vote_id) {
     let index = this.state.followed_issues.indexOf(issue_we_vote_id);
+    let description_text;
     if (index > -1) {
       var new_followed_issues = this.state.followed_issues;
       new_followed_issues.splice(index, 1);
+      if (this.state.followed_issues.length >= this.state.number_of_required_issues ) {
+        description_text = NEXT_SCREEN_PROMPT_TEXT;
+      } else {
+        description_text = INITIAL_DESCRIPTION_TEXT;
+      }
       if (new_followed_issues.length === 0) {
         this.setState({
-          description_text: INITIAL_DESCRIPTION_TEXT,
+          description_text: description_text,
           followed_issues: new_followed_issues,
           next_button_text: NEXT_BUTTON_TEXT,
         });
@@ -117,15 +129,6 @@ export default class BallotIntroFollowIssues extends Component {
     ) {
       this.props.next();
     }
-
-    /*
-    else if (issues_followed_length === 0) {
-      this.setState({
-        description_text: SELECT_ISSUES_PROMPT_TEXT,
-        next_button_text: SKIP_BUTTON_TEXT,
-      });
-    }
-    */
   }
 
   render () {
@@ -147,8 +150,8 @@ export default class BallotIntroFollowIssues extends Component {
     return (
     <div className="intro-modal">
       <div className="intro-modal__h1">
-        Follow&nbsp;
-        { this.remainingIssues() > 0 ? this.remainingIssues() + " " : "" }
+        Follow 5&nbsp;
+        {/* this.remainingIssues() > 0 ? this.remainingIssues() + " " : "" */}
         Issues You Care About
       </div>
       <div className="intro-modal-vertical-scroll-contain">

@@ -65,7 +65,7 @@ export default class OpinionsFollowed extends Component {
   }
 
   render () {
-    console.log("OpinionsFollowed, this.state.voter_guide_followed_list: ", this.state.voter_guide_followed_list);
+    // console.log("OpinionsFollowed, this.state.voter_guide_followed_list: ", this.state.voter_guide_followed_list);
     return <div className="opinions-followed__container">
       <Helmet title="Organizations You Follow - We Vote" />
       <section className="card">

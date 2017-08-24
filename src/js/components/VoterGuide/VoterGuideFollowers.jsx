@@ -6,8 +6,6 @@ import LoadingWheel from "../LoadingWheel";
 import VoterStore from "../../stores/VoterStore";
 var _ = require("lodash");
 
-/* VISUAL DESIGN HERE: https://invis.io/8F53FDX9G */
-
 export default class VoterGuideFollowers extends Component {
   static propTypes = {
     organization: PropTypes.object.isRequired,
@@ -30,14 +28,16 @@ export default class VoterGuideFollowers extends Component {
     // GuideActions.voterGuideFollowersRetrieve(this.props.organization.organization_we_vote_id);
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
     this.setState({
-      organization: this.props.organization
+      organization: this.props.organization,
+      voter_guide_followers_list: GuideStore.getVoterGuidesFollowingOrganization(this.props.organization.organization_we_vote_id),
     });
   }
 
   componentWillReceiveProps (nextProps) {
     // When a new organization is passed in, update this component to show the new data
     this.setState({
-      organization: nextProps.organization
+      organization: nextProps.organization,
+      voter_guide_followers_list: GuideStore.getVoterGuidesFollowingOrganization(nextProps.organization.organization_we_vote_id),
     });
   }
 
@@ -103,6 +103,7 @@ export default class VoterGuideFollowers extends Component {
     } else {
       voter_guide_followers_list = this.state.voter_guide_followers_list_filtered_by_search;
     }
+    let show_search_when_more_than_this_number = 3;
 
     return <div className="opinions-followed__container">
       {/* Since VoterGuidePositions, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
@@ -125,7 +126,7 @@ export default class VoterGuideFollowers extends Component {
                   }
                 </span>
               }
-              { voter_guide_followers_list && voter_guide_followers_list.length > 0 ?
+              { voter_guide_followers_list && voter_guide_followers_list.length > show_search_when_more_than_this_number ?
                 <input type="text"
                      className="form-control"
                      name="search_followers_voter_guides_text"

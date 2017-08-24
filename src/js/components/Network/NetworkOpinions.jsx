@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import Helmet from "react-helmet";
 import GuideStore from "../../stores/GuideStore";
-import SearchGuidesToFollowBox from "../SearchGuidesToFollowBox";
+import SearchGuidesToFollowBox from "../Search/SearchGuidesToFollowBox";
 import VoterStore from "../../stores/VoterStore";
 import GuideList from "../VoterGuide/GuideList";
 import { Link } from "react-router";

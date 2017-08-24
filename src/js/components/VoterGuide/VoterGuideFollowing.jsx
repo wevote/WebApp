@@ -33,6 +33,7 @@ export default class VoterGuideFollowing extends Component {
     this.setState({
       organization: this.props.organization,
       voter: VoterStore.getVoter(),
+      voter_guide_followed_list: GuideStore.getVoterGuidesFollowedByOrganization(this.props.organization.organization_we_vote_id),
     });
   }
 
@@ -41,7 +42,8 @@ export default class VoterGuideFollowing extends Component {
     if (this.state.organization.organization_we_vote_id !== nextProps.organization.organization_we_vote_id)
       GuideActions.voterGuidesFollowedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id);
     this.setState({
-      organization: nextProps.organization
+      organization: nextProps.organization,
+      voter_guide_followed_list: GuideStore.getVoterGuidesFollowedByOrganization(nextProps.organization.organization_we_vote_id),
     });
   }
 
@@ -117,6 +119,7 @@ export default class VoterGuideFollowing extends Component {
       voter_guide_followed_list = this.state.voter_guide_followed_list_filtered_by_search;
     }
     let hide_stop_following_button = !looking_at_self || !this.state.editMode;
+    let show_search_when_more_than_this_number = 3;
 
     return <div className="opinions-followed__container">
       {/* Since VoterGuidePositions, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
@@ -142,12 +145,12 @@ export default class VoterGuideFollowing extends Component {
                 </span> :
                 <h4 className="card__additional-heading">Search Results</h4>
               }
-              { this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length > 0 ?
+              { this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length > show_search_when_more_than_this_number ?
                 <input type="text"
-                     className="form-control"
-                     name="search_following_voter_guides_text"
-                     placeholder="Search these voter guides"
-                     onChange={this.searchFollowingVoterGuides.bind(this)} /> : null
+                       className="form-control"
+                       name="search_following_voter_guides_text"
+                       placeholder="Search these voter guides"
+                       onChange={this.searchFollowingVoterGuides.bind(this)} /> : null
               }
               { this.state.search_filter ?
                 <span>
