@@ -104,7 +104,7 @@ export default class BallotIntroFollowAdvisers extends Component {
 
     return <div className="intro-modal">
       <div className="intro-modal__h1">Follow Organizations or People</div>
-      <div className="intro-story__h2">These are organizations or people that might share your values. Follow them to see their recommendations.</div>
+      <div className="intro-modal__h2">These are organizations or people that might share your values. Follow them to see their recommendations.</div>
       <br/>
       <div className="intro-modal-vertical-scroll-contain">
         <div className="intro-modal-vertical-scroll card">
@@ -114,7 +114,7 @@ export default class BallotIntroFollowAdvisers extends Component {
           }
         </div>
       </div>
-      <div className="intro-story__h2">
+      <div className="intro-modal__p">
         {this.state.description_text}
       </div>
       <br/>
