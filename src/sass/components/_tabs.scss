@@ -1,6 +1,5 @@
 // Reusable tabs for WebApp
 // Created: 21 August 2017 by @edward-ly
-// Last Updated: 21 August 2017 by @edward-ly
 //
 // Usage:
 //
@@ -51,12 +50,8 @@
 //   </div>
 // );
 
-$tabs-background-padding: 8px 16px 0 16px;
-$tab-padding: 0 0 4px 0;
 $tab-spacing-desktop: 24px;
-$tab-spacing-mobile: 16px;
-$tab-margin-mobile: 0 -15px;
-$transparent: transparent !important;
+$tab-spacing-mobile: $space-md;
 $scrollbar-height: 20px;
 $tab-height: 47px;
 $tab-height-visible: $tab-height - $scrollbar-height;
@@ -65,14 +60,14 @@ $tab-height-visible: $tab-height - $scrollbar-height;
   &__tabs-container-wrap {
     border-bottom: 1px solid #aaa;
     border-radius: $radius-xs;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+    box-shadow: $default-box-shadow;
     background-color: $white;
     box-sizing: content-box;
-    padding: $tabs-background-padding;
+    padding: $space-sm $space-md $space-none $space-md;
     overflow: hidden;
     height: $tab-height-visible;
     @include breakpoints (small mid-small) {
-      margin: $tab-margin-mobile;
+      margin: $space-none -$space-md;
     }
   }
 
@@ -90,7 +85,7 @@ $tab-height-visible: $tab-height - $scrollbar-height;
     }
 
     .tab {
-      padding: $tab-padding;
+      padding: $space-none $space-none $space-xs;
       margin-right: $tab-spacing-desktop;
       @include breakpoints (small mid-small) {
         margin-right: $tab-spacing-mobile;
@@ -108,7 +103,7 @@ $tab-height-visible: $tab-height - $scrollbar-height;
 
     a:focus,
     a:hover {
-      background-color: $transparent;
+      background-color: transparent !important; // stylelint-disable-line sh-waqar/declaration-use-variable
     }
 
     a.tab-default:focus,

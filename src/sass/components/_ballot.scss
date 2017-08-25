@@ -1,10 +1,7 @@
-$full-width: 100%;
-$address-margin: 26px 26px 0 0;
-$address-margin-xs: -4px 0 8px 0;
-$tab-padding: 0 0 4px 0;
+$address-spacing-desktop: 26px 26px $space-none $space-none;
+$address-spacing-mobile: -$space-xs $space-none $space-sm $space-none;
 $tab-spacing-desktop: 24px;
-$tab-spacing-mobile: 16px;
-$transparent: transparent !important;
+$tab-spacing-mobile: $space-md;
 $header-extension-top: 40%;
 $minus-header-extension-top: -$header-extension-top;
 $scrollbar-height: 20px;
@@ -38,7 +35,7 @@ $tab-height-visible: $tab-height - $scrollbar-height;
   }
 
   &__heading {
-    width: $full-width;
+    width: 100%;
     background-color: $white;
     border-bottom: 1px solid #aaa;
     padding-top: $header-extension-top;
@@ -51,11 +48,11 @@ $tab-height-visible: $tab-height - $scrollbar-height;
   }
 
   &__header-address {
-    margin: $address-margin;
+    margin: $address-spacing-desktop;
   }
 
   &__header-address-xs {
-    margin: $address-margin-xs;
+    margin: $address-spacing-mobile;
   }
 
   &__tabs {
@@ -65,7 +62,7 @@ $tab-height-visible: $tab-height - $scrollbar-height;
     }
 
     .tab {
-      padding: $tab-padding;
+      padding: $space-none $space-none $space-xs;
       margin-right: $tab-spacing-desktop;
       @include breakpoints (small mid-small) {
         margin-right: $tab-spacing-mobile;
@@ -83,7 +80,7 @@ $tab-height-visible: $tab-height - $scrollbar-height;
 
     a:focus,
     a:hover {
-      background-color: $transparent;
+      background-color: transparent !important; // stylelint-disable-line sh-waqar/declaration-use-variable
     }
 
     a.tab-default:focus,
