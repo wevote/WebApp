@@ -57,7 +57,6 @@ export default class VoterGuideEditIssues extends Component {
     let issues_to_link_url = "/voterguideedit/" + this.props.organization_we_vote_id + "/issues/issues_to_link";
     let issues_linked_url = "/voterguideedit/" + this.props.organization_we_vote_id + "/issues/issues_linked";
     const is_linked_false = false;
-    const is_linked_true = true;
     switch (active_tab) {
       default:
       case "issues_to_link":

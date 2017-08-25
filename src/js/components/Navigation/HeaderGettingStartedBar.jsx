@@ -126,6 +126,7 @@ export default class HeaderGettingStartedBar extends Component {
         </Modal.Body>
       </Modal>;
 
+    // Consider using /components/Ballot/BallotIntroOrganizations instead of BallotIntroFollowAdvisers
     const BallotIntroOrganizationsModal = <Modal bsClass="background-brand-blue modal"
                                     show={this.state.showBallotIntroOrganizations}
                                     onHide={() => this._toggleBallotIntroOrganizations(this)}>
@@ -136,7 +137,7 @@ export default class HeaderGettingStartedBar extends Component {
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
-            <div key={1}><BallotIntroOrganizations next={this._nextSliderPage}/></div>
+            <div key={1}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div>
             <div key={2}><BallotIntroPositionBar next={this._toggleBallotIntroOrganizations}/></div>
           </Slider>
         </Modal.Body>

@@ -108,6 +108,7 @@
   &__button {
     position: absolute;
     bottom: 42px;
+    width: 20%;
     @include breakpoints (max mid-small) {
       bottom: 0;
     }
