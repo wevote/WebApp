@@ -30,7 +30,7 @@ export default class IssuesToFollow extends Component {
 
   _onIssueStoreChange () {
     this.setState({
-        issues_to_follow: IssueStore.toFollowList(),
+        issues_to_follow: IssueStore.getIssuesVoterCanFollow(),
     });
   }
 

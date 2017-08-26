@@ -27,7 +27,7 @@ export default class Connect extends Component {
       current_friends_list: FriendStore.currentFriends(),
       facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
       voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll(),
-      organizations_followed_on_twitter_list: GuideStore.followedOnTwitterList(),
+      organizations_followed_on_twitter_list: GuideStore.getOrganizationsFollowedByVoterOnTwitter(),
       maximum_organization_display: 25,
       maximum_friend_display: 25,
       facebook_invitable_friends_image_width: 24,
@@ -61,10 +61,10 @@ export default class Connect extends Component {
   }
 
   _onGuideStoreChange (){
-    var organizations_followed_on_twitter_list = GuideStore.followedOnTwitterList();
+    var organizations_followed_on_twitter_list = GuideStore.getOrganizationsFollowedByVoterOnTwitter();
     var voter_guides_to_follow_all = GuideStore.getVoterGuidesToFollowAll();
     if (organizations_followed_on_twitter_list !== undefined && organizations_followed_on_twitter_list.length > 0){
-      this.setState({ organizations_followed_on_twitter_list: GuideStore.followedOnTwitterList() });
+      this.setState({ organizations_followed_on_twitter_list: organizations_followed_on_twitter_list });
     }
     if (voter_guides_to_follow_all !== undefined && voter_guides_to_follow_all.length > 0){
       this.setState({ voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll() });

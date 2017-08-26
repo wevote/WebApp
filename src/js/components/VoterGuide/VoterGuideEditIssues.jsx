@@ -16,8 +16,8 @@ export default class VoterGuideEditIssues extends Component {
 
     this.state = {
       active_tab: "",
-      issue_list_to_link: [],
-      issue_list_linked: [],
+      issues_to_link_to: [],
+      issues_linked_to: [],
     };
 
     this.onDoneButton = this.onDoneButton.bind(this);
@@ -28,22 +28,21 @@ export default class VoterGuideEditIssues extends Component {
     IssueActions.retrieveIssuesToLinkForOrganization(this.props.organization_we_vote_id);
     IssueActions.retrieveIssuesLinkedForOrganization(this.props.organization_we_vote_id);
 
-    let active_tab = "issues_to_link";
-    // This check is necessary because, for the first time the active_tab is undefined
-    // and it needs to be set to a default
-    if (this.props.params.active_tab) {
-      active_tab = this.props.params.active_tab;
-    }
+    let default_active_tab = this.getDefaultActiveIssueTab();
+    let active_tab = this.props.params.active_tab || default_active_tab;
     this.setState({
       active_tab: active_tab,
     });
   }
 
   componentWillReceiveProps (nextProps) {
+    let default_active_tab = this.getDefaultActiveIssueTab();
+    let active_tab = nextProps.params.active_tab || default_active_tab;
+    console.log("VoterGuideEditIssues, nextProps.organization_we_vote_id: ", nextProps.organization_we_vote_id);
+    // console.log("VoterGuideEditIssues, active_tab: ", active_tab, "default_active_tab: ", default_active_tab);
     this.setState({
-      active_tab: nextProps.params.active_tab || "issues_to_link",
+      active_tab: active_tab,
     });
-    console.log(nextProps.params.active_tab);
   }
 
   componentWillUnmount () {
@@ -51,11 +50,27 @@ export default class VoterGuideEditIssues extends Component {
   }
 
   onIssueStoreChange () {
-    console.log("ISSUES Store changed");
+    console.log("onIssueStoreChange, this.props.organization_we_vote_id: ", this.props.organization_we_vote_id);
+    console.log("getIssuesToLinkToByOrganization: ", IssueStore.getIssuesToLinkToByOrganization(this.props.organization_we_vote_id));
+    console.log("getIssuesLinkedToByOrganization: ", IssueStore.getIssuesLinkedToByOrganization(this.props.organization_we_vote_id));
     this.setState({
-      issue_list_to_link: IssueStore.toLinkIssueListForOrganization(this.props.organization_we_vote_id),
-      issue_list_linked: IssueStore.linkedIssueListForOrganization(this.props.organization_we_vote_id),
+      issues_to_link_to: IssueStore.getIssuesToLinkToByOrganization(this.props.organization_we_vote_id),
+      issues_linked_to: IssueStore.getIssuesLinkedToByOrganization(this.props.organization_we_vote_id),
     });
+  }
+
+  getDefaultActiveIssueTab () {
+    // If the organization is linked to fewer than 3 issues, default to the "Find Issues" tab
+    // After that, default to the "Linked Issues" tab
+    let issues_linked_count = IssueStore.getIssuesLinkedToByOrganizationCount(this.props.organization_we_vote_id);
+    let show_find_issues_until_this_many_linked_to = 3;
+    let default_active_tab;
+    if (issues_linked_count < show_find_issues_until_this_many_linked_to) {
+      default_active_tab = "issues_to_link";
+    } else {
+      default_active_tab = "issues_linked";
+    }
+    return default_active_tab;
   }
 
   onDoneButton () {
@@ -66,7 +81,6 @@ export default class VoterGuideEditIssues extends Component {
     let issues_to_display = [];
 
     let active_tab = this.props.params.active_tab || this.state.active_tab;
-    console.log(active_tab);
     let issues_to_link_url = "/voterguideedit/" + this.props.organization_we_vote_id + "/issues/issues_to_link";
     let issues_linked_url = "/voterguideedit/" + this.props.organization_we_vote_id + "/issues/issues_linked";
 
@@ -74,9 +88,8 @@ export default class VoterGuideEditIssues extends Component {
     const is_linked_true = true;
 
     switch (active_tab) {
-      default:
       case "issues_to_link":
-        issues_to_display = this.state.issue_list_to_link.map((issue) => {
+        issues_to_display = this.state.issues_to_link_to.map((issue) => {
           return <IssueLinkToggle
             key={issue.issue_we_vote_id}
             issue={issue}
@@ -85,8 +98,9 @@ export default class VoterGuideEditIssues extends Component {
           />;
         });
         break;
+      default:
       case "issues_linked":
-        issues_to_display = this.state.issue_list_linked.map((issue) => {
+        issues_to_display = this.state.issues_linked_to.map((issue) => {
           return <IssueLinkToggle
             key={issue.issue_we_vote_id}
             issue={issue}
@@ -99,29 +113,33 @@ export default class VoterGuideEditIssues extends Component {
 
     return <div className="col-md-8 col-sm-12">
       <div className="card">
-      <div className="tabs__tabs-container-wrap">
-          <div className="tabs__tabs-container hidden-print">
-            <span className="pull-right">
-              <Button bsStyle="success" bsSize="xsmall" onClick={this.onDoneButton} >
-                <span>Done</span>
-              </Button>
-            </span>
-            <ul className="nav tabs__tabs">
-              <li className="tab-item">
-              <Link to={issues_to_link_url} className={active_tab === "issues_to_link" ? "tab tab-active" : "tab tab-default"}>
-                <span>Find Issues</span>
-              </Link>
-            </li>
-
-            <li className="tab-item">
-              <Link to={issues_linked_url} className={active_tab === "issues_linked" ? "tab tab-active" : "tab tab-default"}>
-                <span>Your Issues</span>
-              </Link>
-            </li>
-          </ul>
+        <div className="card-main">
+          <h1 className="h2">Issues Related to Your Voter Guide</h1>
+          <br />
+          <div className="tabs__tabs-container-wrap">
+            <div className="tabs__tabs-container hidden-print">
+              <span className="pull-right">
+                <Button bsStyle="success" bsSize="xsmall" onClick={this.onDoneButton} >
+                  <span>Done</span>
+                </Button>
+              </span>
+              <ul className="nav tabs__tabs">
+                <li className="tab-item">
+                  <Link to={issues_linked_url} className={active_tab === "issues_linked" ? "tab tab-active" : "tab tab-default"}>
+                    <span>Linked Issues</span>
+                  </Link>
+                </li>
+                <li className="tab-item">
+                  <Link to={issues_to_link_url} className={active_tab === "issues_to_link" ? "tab tab-active" : "tab tab-default"}>
+                    <span>Find Issues</span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <br />
+          {issues_to_display}
         </div>
-      </div>
-        {issues_to_display}
       </div>
     </div>;
   }

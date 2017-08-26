@@ -131,6 +131,10 @@
   width: auto; // helpful for form inputs
 }
 
+.u-no-break {
+  white-space: nowrap;
+}
+
 // Alignment
 
 .u-tr { text-align: right; }

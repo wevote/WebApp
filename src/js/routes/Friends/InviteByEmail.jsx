@@ -20,7 +20,7 @@ export default class InviteByEmail extends Component {
       current_friends_list: FriendStore.currentFriends(),
       facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
       voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll(),
-      organizations_followed_on_twitter_list: GuideStore.followedOnTwitterList(),
+      organizations_followed_on_twitter_list: GuideStore.getOrganizationsFollowedByVoterOnTwitter(),
       maximum_organization_display: 25,
       maximum_friend_display: 25,
       facebook_invitable_friends_image_width: 24,

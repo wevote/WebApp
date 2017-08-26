@@ -282,7 +282,8 @@ export default class Intro extends Component {
 
           <div className="u-f--small u-stack--lg">
             <p>
-              WeVote.US is brought to you by a partnership between two registered nonprofit organizations, one <nobr>501(c)(3)</nobr> and one <nobr>501(c)(4)</nobr>.
+              WeVote.US is brought to you by a partnership between two registered nonprofit organizations,
+               one <span className="u-no-break">501(c)(3)</span> and one <span className="u-no-break">501(c)(4)</span>.
                We do not support or oppose any political candidate or party.
             </p>
             <p>

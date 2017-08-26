@@ -32,7 +32,7 @@ export default class FollowToggle extends Component {
   }
 
   _onGuideStoreChange (){
-    this.setState({ is_following: GuideStore.isFollowing(this.props.we_vote_id)});
+    this.setState({ is_following: GuideStore.isVoterFollowingThisOrganization(this.props.we_vote_id)});
   }
 
   _onVoterStoreChange (){
