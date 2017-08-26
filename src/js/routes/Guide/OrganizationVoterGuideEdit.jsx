@@ -27,13 +27,13 @@ export default class OrganizationVoterGuideEdit extends Component {
   }
 
   componentDidMount (){
-    console.log("OrganizationVoterGuideEdit, componentDidMount, this.props.params.organization_we_vote_id: ", this.props.params.organization_we_vote_id);
-    console.log("this.props.params.edit_mode: ", this.props.params.edit_mode);
+    // console.log("OrganizationVoterGuideEdit, componentDidMount, this.props.params.organization_we_vote_id: ", this.props.params.organization_we_vote_id);
+    // console.log("this.props.params.edit_mode: ", this.props.params.edit_mode);
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
     let is_voter_owner = this.props.params.organization_we_vote_id !== undefined &&
       this.props.params.organization_we_vote_id === VoterStore.getVoter().linked_organization_we_vote_id;
-    console.log("is_voter_owner: ", is_voter_owner);
+    // console.log("is_voter_owner: ", is_voter_owner);
     if (is_voter_owner) {
       OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
       // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
@@ -49,11 +49,11 @@ export default class OrganizationVoterGuideEdit extends Component {
 
   componentWillReceiveProps (nextProps) {
     // When a new organization is passed in, update this component to show the new data
-    console.log("OrganizationVoterGuide, componentWillReceiveProps, nextProps.params: ", nextProps.params);
-    console.log("this.props.params.edit_mode: ", this.props.params.edit_mode);
+    // console.log("OrganizationVoterGuide, componentWillReceiveProps, nextProps.params: ", nextProps.params);
+    // console.log("this.props.params.edit_mode: ", this.props.params.edit_mode);
     let is_voter_owner = nextProps.params.organization_we_vote_id !== undefined &&
       nextProps.params.organization_we_vote_id === VoterStore.getVoter().linked_organization_we_vote_id;
-    console.log("is_voter_owner: ", is_voter_owner);
+    // console.log("is_voter_owner: ", is_voter_owner);
     if (is_voter_owner) {
       this.setState({organization_we_vote_id: nextProps.params.organization_we_vote_id});
 
@@ -95,21 +95,26 @@ export default class OrganizationVoterGuideEdit extends Component {
       return <div>{LoadingWheel}</div>;
     }
 
-    const edit_links_to_display = <div>
+    let current_path_name = this.props.location.pathname;
+
+    const edit_links_to_display = <div className="col-md-8 col-sm-12">
+      <div className="card">
           <h1>Edit Your Voter Guide</h1>
           <br />
-          <Link to={this.props.location.pathname + "/name"}>
+          <Link to={current_path_name + "/name"}>
             <h3 className="card-main__display-name">Edit Name and Description</h3>
           </Link>
           <br />
-          <Link to={this.props.location.pathname + "/add"}>
+          <Link to={current_path_name + "/add"}>
             <h3 className="card-main__display-name">Add Items to Voter Guide</h3>
           </Link>
           <br />
-          <Link to={this.props.location.pathname + "/issues"}>
+          <Link to={current_path_name + "/issues"}>
             <h3 className="card-main__display-name">Edit Issues</h3>
           </Link>
-        </div>;
+          <br />
+      </div>
+    </div>;
 
     let edit_component_to_display = null;
     let edit_mode = this.props.params.edit_mode;
@@ -187,12 +192,10 @@ export default class OrganizationVoterGuideEdit extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-md-8">
               { this.props.params.edit_mode ?
                 edit_component_to_display :
                 edit_links_to_display
               }
-            </div>
           </div>
         </div>
       </div>

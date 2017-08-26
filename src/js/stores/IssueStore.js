@@ -12,15 +12,16 @@ class IssueStore extends FluxMapStore {
       following: [],
       ignoring: [],
       to_follow: [],
-      to_follow_for_organization: [],
+      to_link_issue_list_for_organizations: {},
+      linked_issue_list_for_organizations: {},
       all_cached_issues: {},
     };
   }
 
   getAllIssues () {
     let all_issue_we_vote_id_list = Object.keys(this.getState().all_cached_issues);
-    var issues_to_follow = this.getIssuesFromListOfWeVoteIds(all_issue_we_vote_id_list);
-    return issues_to_follow;
+    var all_issues = this.getIssuesFromListOfWeVoteIds(all_issue_we_vote_id_list);
+    return all_issues;
   }
 
   followingList () {
@@ -33,9 +34,23 @@ class IssueStore extends FluxMapStore {
     return to_follow_list;
   }
 
-  toFollowListForOrganization () {
-    var to_follow_for_organization_list = this.getIssuesFromListOfWeVoteIds(this.getState().to_follow_for_organization);
-    return to_follow_for_organization_list;
+  toLinkIssueListForOrganization (organization_we_vote_id) {
+
+    let issue_we_vote_id_list_to_link_for_organization = this.getState().to_link_issue_list_for_organizations[organization_we_vote_id];
+    if (issue_we_vote_id_list_to_link_for_organization === undefined) {
+      return [];
+    }
+    var to_link_issue_list_for_organization = this.getIssuesFromListOfWeVoteIds(issue_we_vote_id_list_to_link_for_organization);
+    return to_link_issue_list_for_organization;
+  }
+
+  linkedIssueListForOrganization (organization_we_vote_id) {
+    let issue_we_vote_id_list_linked_for_organization = this.getState().linked_issue_list_for_organizations[organization_we_vote_id];
+    if (issue_we_vote_id_list_linked_for_organization === undefined) {
+      return [];
+    }
+    var linked_issue_list_for_organization = this.getIssuesFromListOfWeVoteIds(issue_we_vote_id_list_linked_for_organization);
+    return linked_issue_list_for_organization;
   }
 
   getIssuesFromListOfWeVoteIds (list_of_issue_we_vote_ids) {
@@ -115,18 +130,48 @@ class IssueStore extends FluxMapStore {
           };
         }
 
+      case "organizationLinkToIssue":
+        // When an orgnization is linked/unlinked to an issue, we need to refresh the linked and to_link issue lists
+        IssueActions.retrieveIssuesToLinkForOrganization();
+        IssueActions.retrieveIssuesLinkedForOrganization();
+        return state;
+
       case "issuesToLinkToForOrganization":
+        console.log("IssueStore issuesToLinkToForOrganization");
+        let organization_we_vote_id = action.res.organization_we_vote_id;
         issues = action.res.issue_list;
-        var to_follow_for_organization = [];
+        var to_link_issue_list_for_organizations = state.to_link_issue_list_for_organizations;
+        var to_link_issue_list_for_one_organization = [];
         all_cached_issues = state.all_cached_issues;
         issues.forEach(issue => {
           all_cached_issues[issue.issue_we_vote_id] = issue;
-          to_follow_for_organization.push(issue.issue_we_vote_id);
+          to_link_issue_list_for_one_organization.push(issue.issue_we_vote_id);
         });
+        to_link_issue_list_for_organizations[organization_we_vote_id] = to_link_issue_list_for_one_organization;
+
         return {
           ...state,
           all_cached_issues: all_cached_issues,
-          to_follow_for_organization: to_follow_for_organization,
+          to_link_issue_list_for_organizations: to_link_issue_list_for_organizations,
+        };
+
+      case "issuesLinkedToOrganization":
+        console.log("IssueStore issuesLinkedToOrganization");
+        organization_we_vote_id = action.res.organization_we_vote_id;
+        issues = action.res.issue_list;
+        var linked_issue_list_for_organizations = state.linked_issue_list_for_organizations;
+        var linked_issue_list_for_one_organization = [];
+        all_cached_issues = state.all_cached_issues;
+        issues.forEach(issue => {
+          all_cached_issues[issue.issue_we_vote_id] = issue;
+          linked_issue_list_for_one_organization.push(issue.issue_we_vote_id);
+        });
+        linked_issue_list_for_organizations[organization_we_vote_id] = linked_issue_list_for_one_organization;
+
+        return {
+          ...state,
+          all_cached_issues: all_cached_issues,
+          linked_issue_list_for_organizations: linked_issue_list_for_organizations,
         };
 
       default:

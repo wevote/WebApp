@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import {Button} from "react-bootstrap";
 import ImageHandler from "../ImageHandler";
+import IssueActions from "../../actions/IssueActions";
 
 export default class IssueLinkToggle extends Component {
   static propTypes = {
@@ -15,7 +16,7 @@ export default class IssueLinkToggle extends Component {
     this.state = {
       is_linked: false,
     };
-    console.log(this.props.issue);
+
     this.onIssueLink = this.onIssueLink.bind(this);
     this.onIssueUnlink = this.onIssueUnlink.bind(this);
   }
@@ -35,11 +36,11 @@ export default class IssueLinkToggle extends Component {
   }
 
   onIssueLink () {
-    console.log("You clicked to Link issue");
+    IssueActions.issueLinkForOrganization(this.props.organization_we_vote_id, this.props.issue.issue_we_vote_id);
   }
 
   onIssueUnlink () {
-    console.log("You clicked to UnLink issue");
+    IssueActions.issueUnLinkForOrganization(this.props.organization_we_vote_id, this.props.issue.issue_we_vote_id);
   }
 
   render () {
@@ -52,29 +53,29 @@ export default class IssueLinkToggle extends Component {
                         kind_of_image="ISSUE"
           />
         </div>
-        <span className="intro-modal__span intro-modal__margin-right">
+        <span className="intro-modal__span intro-modal__margin-right" onClick={this.onIssueUnlink}>
           <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue.issue_name}</h4>
           <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.issue.issue_description}</p>
         </span>
         <Button bsStyle="warning" bsSize="small" onClick={this.onIssueUnlink}>
-          <span>Un-Link</span>
+          <span>Unlink</span>
         </Button>
       </div> :
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
-        <div className="intro-modal__hide-sm intro-modal__margin-right">
-          <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
-                        sizeClassName="icon-candidate-small u-push--sm "
-                        alt="issue-photo"
-                        kind_of_image="ISSUE"
-          />
-        </div>
-        <span className="intro-modal__span intro-modal__margin-right" onClick={this.onIssueLink}>
+          <div className="intro-modal__hide-sm intro-modal__margin-right">
+            <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
+                          sizeClassName="icon-candidate-small u-push--sm "
+                          alt="issue-photo"
+                          kind_of_image="ISSUE"
+            />
+          </div>
+          <span className="intro-modal__span intro-modal__margin-right" onClick={this.onIssueLink}>
             <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue.issue_name}</h4>
             <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.issue.issue_description}</p>
         </span>
-        <Button bsStyle="info" bsSize="small" onClick={this.onIssueLink}>
-          <span>Link</span>
-        </Button>
-      </div>;
+          <Button bsStyle="info" bsSize="small" onClick={this.onIssueLink}>
+            <span>Link</span>
+          </Button>
+        </div>;
   }
 }

@@ -18,7 +18,29 @@ module.exports = {
     Dispatcher.loadEndpoint("issueFollow", {issue_we_vote_id: issue_we_vote_id, follow: false, ignore: false} );
   },
 
-  retrieveIssuesForOrganization: function (organization_we_vote_id) {
+  issueLinkForOrganization: function (organization_we_vote_id, issue_we_vote_id) {
+    Dispatcher.loadEndpoint("organizationLinkToIssue",
+      {
+        organization_we_vote_id: organization_we_vote_id,
+        issue_we_vote_id: issue_we_vote_id,
+        organization_linked_to_issue: true,
+      });
+  },
+
+  issueUnLinkForOrganization: function (organization_we_vote_id, issue_we_vote_id) {
+    Dispatcher.loadEndpoint("organizationLinkToIssue",
+      {
+        organization_we_vote_id: organization_we_vote_id,
+        issue_we_vote_id: issue_we_vote_id,
+        organization_linked_to_issue: false,
+      });
+  },
+
+  retrieveIssuesToLinkForOrganization: function (organization_we_vote_id) {
     Dispatcher.loadEndpoint("issuesToLinkToForOrganization", {organization_we_vote_id: organization_we_vote_id});
+  },
+
+  retrieveIssuesLinkedForOrganization: function (organization_we_vote_id) {
+    Dispatcher.loadEndpoint("issuesLinkedToOrganization", {organization_we_vote_id: organization_we_vote_id});
   },
 };
