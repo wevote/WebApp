@@ -69,7 +69,7 @@ export default class NetworkOpinions extends Component {
             </span>
             <p>Enter your address so we can find voter guides to follow.</p>
           </div>
-          <Link className="pull-right" to="/opinions_ignored">Organizations you are ignoring</Link><br />
+          <Link className="pull-right" to="/opinions_ignored u-no-break">Organizations you are ignoring</Link><br />
         </section>
       </div>;
     } else {
@@ -77,13 +77,13 @@ export default class NetworkOpinions extends Component {
       <Helmet title="Organizations to Follow - We Vote" />
         <section className="card">
           <div className="card-main">
-            <span style={floatRight} className="hidden-print">
-              <Link to="/opinions_followed" className="u-margin-left--md">See organizations you are following</Link>
-            </span>
             <p className="hidden-print">
               Find opinions about your ballot (ordered by Twitter followers).
               Follow those you trust. Unfollow at any time.
               Following won't add you to mailing lists.
+              <span style={floatRight} className="hidden-print">
+                <Link to="/opinions_followed" className="u-margin-left--md u-no-break">See organizations you follow</Link>
+              </span>
             </p>
             <div className="hidden-print">
               <SearchGuidesToFollowBox />
@@ -95,8 +95,8 @@ export default class NetworkOpinions extends Component {
             <div className="card">
               <GuideList organizationsToFollow={voter_guides_to_follow_all} instantRefreshOn />
             </div>
+            <Link className="pull-right hidden-print" to="/opinions_ignored">Organizations you are ignoring</Link><br />
           </div>
-          <Link className="pull-right hidden-print" to="/opinions_ignored">Organizations you are ignoring</Link><br />
         </section>
       </div>;
     }

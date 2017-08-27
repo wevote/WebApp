@@ -1,7 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
 import { Button } from "react-bootstrap";
+import VoterGuideEditActivityReports from "../../components/VoterGuide/VoterGuideEditActivityReports";
+import VoterGuideEditAddPositions from "../../components/VoterGuide/VoterGuideEditAddPositions";
+import VoterGuideEditIndex from "../../components/VoterGuide/VoterGuideEditIndex";
 import VoterGuideEditIssues from "../../components/VoterGuide/VoterGuideEditIssues";
+import VoterGuideEditName from "../../components/VoterGuide/VoterGuideEditName";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import HeaderBar from "../../components/Navigation/HeaderBar";
 import LoadingWheel from "../../components/LoadingWheel";
@@ -71,6 +75,10 @@ export default class OrganizationVoterGuideEdit extends Component {
     this.voterStoreListener.remove();
   }
 
+  onDoneButton () {
+    browserHistory.push("/voterguideedit/" + this.props.organization_we_vote_id);
+  }
+
   _onVoterStoreChange () {
     this.setState({
       voter: VoterStore.getVoter()
@@ -95,46 +103,6 @@ export default class OrganizationVoterGuideEdit extends Component {
       return <div>{LoadingWheel}</div>;
     }
 
-    let current_path_name = this.props.location.pathname;
-
-    const edit_links_to_display = <div className="col-md-8 col-sm-12">
-      <div className="card">
-          <h1>Edit Your Voter Guide</h1>
-          <br />
-          <Link to={current_path_name + "/name"}>
-            <h3 className="card-main__display-name">Edit Name and Description</h3>
-          </Link>
-          <br />
-          <Link to={current_path_name + "/add"}>
-            <h3 className="card-main__display-name">Add Items to Voter Guide</h3>
-          </Link>
-          <br />
-          <Link to={current_path_name + "/issues"}>
-            <h3 className="card-main__display-name">Edit Issues</h3>
-          </Link>
-          <br />
-      </div>
-    </div>;
-
-    let edit_component_to_display = null;
-    let edit_mode = this.props.params.edit_mode;
-    switch (edit_mode) {
-      case "name":
-        edit_component_to_display = <h1 className="card-main__display-name">Edit Names</h1>;
-        break;
-      case "add":
-        edit_component_to_display = <h1 className="card-main__display-name">Add Items to voter guide</h1>;
-        break;
-      case "issues":
-        edit_component_to_display = <VoterGuideEditIssues
-            params={this.props.params}
-            organization_we_vote_id={this.state.organization_we_vote_id} />;
-        break;
-      default :
-        edit_component_to_display = null;
-        break;
-    }
-
     if (!this.state.organization) {
       var floatRight = {
         float: "right"
@@ -151,6 +119,34 @@ export default class OrganizationVoterGuideEdit extends Component {
               These voter guides have been created by nonprofits, public figures, your friends, and more. (OrganizationVoterGuide)</p>
           </div>
         </div>;
+    }
+
+    let edit_component_to_display = null;
+    let edit_mode = this.props.params.edit_mode;
+    switch (edit_mode) {
+      case "activity":
+        edit_component_to_display = <VoterGuideEditActivityReports
+            params={this.props.params}
+            organization_we_vote_id={this.state.organization_we_vote_id} />;
+        break;
+      case "add":
+        edit_component_to_display = <VoterGuideEditAddPositions
+            params={this.props.params}
+            organization_we_vote_id={this.state.organization_we_vote_id} />;
+        break;
+      case "issues":
+        edit_component_to_display = <VoterGuideEditIssues
+            params={this.props.params}
+            organization_we_vote_id={this.state.organization_we_vote_id} />;
+        break;
+      case "name":
+        edit_component_to_display = <VoterGuideEditName
+            params={this.props.params}
+            organization_we_vote_id={this.state.organization_we_vote_id} />;
+        break;
+      default :
+        edit_component_to_display = null;
+        break;
     }
 
     return <div>
@@ -194,7 +190,10 @@ export default class OrganizationVoterGuideEdit extends Component {
             </div>
               { this.props.params.edit_mode ?
                 edit_component_to_display :
-                edit_links_to_display
+                <VoterGuideEditIndex
+                  params={this.props.params}
+                  location={this.props.location}
+                  organization_we_vote_id={this.state.organization_we_vote_id} />
               }
           </div>
         </div>

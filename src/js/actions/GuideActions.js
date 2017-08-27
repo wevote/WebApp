@@ -42,7 +42,9 @@ module.exports = {
   },
 
   voterGuidesFollowedRetrieve: function () {
-    Dispatcher.loadEndpoint("voterGuidesFollowedRetrieve");
+    Dispatcher.loadEndpoint("voterGuidesFollowedRetrieve", {
+      maximum_number_to_retrieve: 0
+    } );
   },
 
   voterGuidesFollowedByOrganizationRetrieve: function (organization_we_vote_id) {
@@ -57,7 +59,10 @@ module.exports = {
   },
 
   voterGuideFollowersRetrieve: function (organization_we_vote_id) {
-    Dispatcher.loadEndpoint("voterGuideFollowersRetrieve", { organization_we_vote_id: organization_we_vote_id} );
+    Dispatcher.loadEndpoint("voterGuideFollowersRetrieve", {
+      organization_we_vote_id: organization_we_vote_id,
+      maximum_number_to_retrieve: 200
+    } );
   },
 
   voterGuidesIgnoredRetrieve: function () {

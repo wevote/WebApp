@@ -5,52 +5,59 @@ import IssueActions from "../actions/IssueActions";
 
 class IssueStore extends FluxMapStore {
 
-  // The store keeps nested attributes of issues in all_cached_voter_guides, whereas the followed,
-  // ignoring, to_follow are just lists of issue_we_vote_id.
   getInitialState () {
     return {
-      following: [],
-      ignoring: [],
-      to_follow: [],
-      to_link_issue_list_for_organizations: {},
-      linked_issue_list_for_organizations: {},
-      all_cached_issues: {},
+      issue_we_vote_ids_voter_is_following: [], // These are issues a particular voter is following
+      issue_we_vote_ids_voter_can_follow: [], // These are issues a particular voter can follow
+      issue_we_vote_ids_to_link_to_by_organization_dict: {}, // Dictionary with key: organization_we_vote_id, list: issue_we_vote_id that the organization can link to
+      issue_we_vote_ids_linked_to_by_organization_dict: {}, // Dictionary with key: organization_we_vote_id, list: issue_we_vote_id that the organization is linked to
+      all_cached_issues: {}, // Dictionary with key: issue_we_vote_id, and value: complete issue object
     };
   }
 
   getAllIssues () {
-    let all_issue_we_vote_id_list = Object.keys(this.getState().all_cached_issues);
-    var all_issues = this.getIssuesFromListOfWeVoteIds(all_issue_we_vote_id_list);
-    return all_issues;
+    // List of all issue objects
+    return this.getState().all_cached_issues;
   }
 
-  followingList () {
-    var following_issue_list = this.getIssuesFromListOfWeVoteIds(this.getState().following);
-    return following_issue_list;
+  getIssuesVoterIsFollowing () {
+    // List of issue objects the voter is already following
+    return this.getIssuesFromListOfWeVoteIds(this.getState().issue_we_vote_ids_voter_is_following);
   }
 
-  toFollowList () {
-    var to_follow_list = this.getIssuesFromListOfWeVoteIds(this.getState().to_follow);
-    return to_follow_list;
+  getIssuesVoterCanFollow () {
+    // List of issue objects the voter can follow
+    return this.getIssuesFromListOfWeVoteIds(this.getState().issue_we_vote_ids_voter_can_follow);
   }
 
-  toLinkIssueListForOrganization (organization_we_vote_id) {
-
-    let issue_we_vote_id_list_to_link_for_organization = this.getState().to_link_issue_list_for_organizations[organization_we_vote_id];
+  getIssuesToLinkToByOrganization (organization_we_vote_id) {
+    // These are issues that an organization can link itself to, to help Voters find the organization
+    let issue_we_vote_id_list_to_link_for_organization = this.getState().issue_we_vote_ids_to_link_to_by_organization_dict[organization_we_vote_id];
     if (issue_we_vote_id_list_to_link_for_organization === undefined) {
       return [];
     }
-    var to_link_issue_list_for_organization = this.getIssuesFromListOfWeVoteIds(issue_we_vote_id_list_to_link_for_organization);
-    return to_link_issue_list_for_organization;
+    // List of issue objects that an organization can link to
+    return this.getIssuesFromListOfWeVoteIds(issue_we_vote_id_list_to_link_for_organization);
   }
 
-  linkedIssueListForOrganization (organization_we_vote_id) {
-    let issue_we_vote_id_list_linked_for_organization = this.getState().linked_issue_list_for_organizations[organization_we_vote_id];
-    if (issue_we_vote_id_list_linked_for_organization === undefined) {
+  getIssuesLinkedToByOrganization (organization_we_vote_id) {
+    // These are issues that an organization has linked itself to, to help Voters find the organization
+    let issue_we_vote_ids_linked_to_organization = this.getState().issue_we_vote_ids_linked_to_by_organization_dict[organization_we_vote_id];
+    if (issue_we_vote_ids_linked_to_organization === undefined) {
       return [];
     }
-    var linked_issue_list_for_organization = this.getIssuesFromListOfWeVoteIds(issue_we_vote_id_list_linked_for_organization);
-    return linked_issue_list_for_organization;
+    // List of issue objects that an organization is linked to
+    return this.getIssuesFromListOfWeVoteIds(issue_we_vote_ids_linked_to_organization);
+  }
+
+  getIssuesLinkedToByOrganizationCount (organization_we_vote_id) {
+    // These are issues that an organization has linked itself to, to help Voters find the organization
+    let issue_we_vote_ids_linked_to_organization = this.getState().issue_we_vote_ids_linked_to_by_organization_dict[organization_we_vote_id];
+    if (issue_we_vote_ids_linked_to_organization === undefined) {
+      return 0;
+    } else {
+      return issue_we_vote_ids_linked_to_organization.length;
+    }
   }
 
   getIssuesFromListOfWeVoteIds (list_of_issue_we_vote_ids) {
@@ -69,13 +76,14 @@ class IssueStore extends FluxMapStore {
   }
 
   reduce (state, action) {
+    let issue_list;
+    let organization_we_vote_id;
 
-  // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
+    // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success)
       return state;
 
     switch (action.type) {
-
       case "issueFollow":
         // When a voter follows or unfollows an issue on the ballot intro modal screen, update the voter guide list
         GuideActions.retrieveGuidesToFollowByIssuesFollowed();
@@ -83,45 +91,37 @@ class IssueStore extends FluxMapStore {
         return state;
 
       case "retrieveIssuesToFollow":
-        let issues = action.res.issue_list;
+        issue_list = action.res.issue_list;
         var all_cached_issues = state.all_cached_issues;
-        var to_follow = [];
-        issues.forEach( issue => {
+        var issue_we_vote_ids_voter_can_follow = [];
+        issue_list.forEach( issue => {
           all_cached_issues[issue.issue_we_vote_id] = issue;
-          to_follow.push(issue.issue_we_vote_id);
+          issue_we_vote_ids_voter_can_follow.push(issue.issue_we_vote_id);
         });
-
-        // if a issue_we_vote_id in following list is also in ignoring list, then remove the id from ignoring list
-        var ignoring = state.ignoring;
-        ignoring = ignoring.filter(issue_we_vote_id => !to_follow.includes(issue_we_vote_id));
 
         return {
           ...state,
           all_cached_issues: all_cached_issues,
-          to_follow: to_follow,
-          ignoring: ignoring,
+          issue_we_vote_ids_voter_can_follow: issue_we_vote_ids_voter_can_follow,
         };
 
       case "issuesRetrieve":
-        issues = action.res.issue_list;
-        var following = [];
+        issue_list = action.res.issue_list;
+        var issue_we_vote_ids_voter_is_following = [];
         all_cached_issues = state.all_cached_issues;
-        // Update following if voter_issues_only flag is set, else update the all_cached_issues
+        // Update issue_we_vote_ids_voter_is_following if voter_issues_only flag is set, else update the all_cached_issues
         if (action.res.voter_issues_only) {
-          issues.forEach(issue => {
+          issue_list.forEach(issue => {
             all_cached_issues[issue.issue_we_vote_id] = issue;
-            following.push(issue.issue_we_vote_id);
+            issue_we_vote_ids_voter_is_following.push(issue.issue_we_vote_id);
           });
-          ignoring = state.ignoring;
-          ignoring = ignoring.filter(issue_we_vote_id => !following.includes(issue_we_vote_id));
           return {
             ...state,
             all_cached_issues: all_cached_issues,
-            following: following,
-            ignoring: ignoring,
+            issue_we_vote_ids_voter_is_following: issue_we_vote_ids_voter_is_following,
           };
         } else {
-          issues.forEach(issue => {
+          issue_list.forEach(issue => {
             all_cached_issues[issue.issue_we_vote_id] = issue;
           });
           return {
@@ -131,54 +131,59 @@ class IssueStore extends FluxMapStore {
         }
 
       case "organizationLinkToIssue":
-        // When an orgnization is linked/unlinked to an issue, we need to refresh the linked and to_link issue lists
-        IssueActions.retrieveIssuesToLinkForOrganization();
-        IssueActions.retrieveIssuesLinkedForOrganization();
+        // When an organization is linked/unlinked to an issue, we need to refresh the linked and to_link issue lists
+        organization_we_vote_id = action.res.organization_we_vote_id;
+        IssueActions.retrieveIssuesToLinkForOrganization(organization_we_vote_id);
+        IssueActions.retrieveIssuesLinkedForOrganization(organization_we_vote_id);
         return state;
 
       case "issuesToLinkToForOrganization":
         console.log("IssueStore issuesToLinkToForOrganization");
-        let organization_we_vote_id = action.res.organization_we_vote_id;
-        issues = action.res.issue_list;
-        var to_link_issue_list_for_organizations = state.to_link_issue_list_for_organizations;
-        var to_link_issue_list_for_one_organization = [];
+        organization_we_vote_id = action.res.organization_we_vote_id;
+        issue_list = action.res.issue_list;
+        var issue_we_vote_ids_to_link_to_by_organization_dict = state.issue_we_vote_ids_to_link_to_by_organization_dict;
+        var to_link_to_issue_list_for_one_organization = [];
+        // We accumulate all issue objects in the all_cached_issues variable
         all_cached_issues = state.all_cached_issues;
-        issues.forEach(issue => {
+        issue_list.forEach(issue => {
           all_cached_issues[issue.issue_we_vote_id] = issue;
-          to_link_issue_list_for_one_organization.push(issue.issue_we_vote_id);
+          to_link_to_issue_list_for_one_organization.push(issue.issue_we_vote_id);
         });
-        to_link_issue_list_for_organizations[organization_we_vote_id] = to_link_issue_list_for_one_organization;
+        // Add the "issues to link to" to the master dict, with the organization_we_vote_id as the key
+        issue_we_vote_ids_to_link_to_by_organization_dict[organization_we_vote_id] = to_link_to_issue_list_for_one_organization;
 
         return {
           ...state,
           all_cached_issues: all_cached_issues,
-          to_link_issue_list_for_organizations: to_link_issue_list_for_organizations,
+          issue_we_vote_ids_to_link_to_by_organization_dict: issue_we_vote_ids_to_link_to_by_organization_dict,
         };
 
       case "issuesLinkedToOrganization":
-        console.log("IssueStore issuesLinkedToOrganization");
+        //console.log("IssueStore issuesLinkedToOrganization");
         organization_we_vote_id = action.res.organization_we_vote_id;
-        issues = action.res.issue_list;
-        var linked_issue_list_for_organizations = state.linked_issue_list_for_organizations;
+        issue_list = action.res.issue_list;
+        console.log("IssueStore, issuesLinkedToOrganization: ", issue_list);
+        var issue_we_vote_ids_linked_to_by_organization_dict = state.issue_we_vote_ids_linked_to_by_organization_dict;
         var linked_issue_list_for_one_organization = [];
+        // We accumulate all issue objects in the all_cached_issues variable
         all_cached_issues = state.all_cached_issues;
-        issues.forEach(issue => {
+        issue_list.forEach(issue => {
           all_cached_issues[issue.issue_we_vote_id] = issue;
           linked_issue_list_for_one_organization.push(issue.issue_we_vote_id);
         });
-        linked_issue_list_for_organizations[organization_we_vote_id] = linked_issue_list_for_one_organization;
+        // Add the "issues linked to orgs" to the master dict, with the organization_we_vote_id as the key
+        issue_we_vote_ids_linked_to_by_organization_dict[organization_we_vote_id] = linked_issue_list_for_one_organization;
 
         return {
           ...state,
           all_cached_issues: all_cached_issues,
-          linked_issue_list_for_organizations: linked_issue_list_for_organizations,
+          issue_we_vote_ids_linked_to_by_organization_dict: issue_we_vote_ids_linked_to_by_organization_dict,
         };
 
       default:
         return state;
     }
   }
-
 }
 
 module.exports = new IssueStore(Dispatcher);

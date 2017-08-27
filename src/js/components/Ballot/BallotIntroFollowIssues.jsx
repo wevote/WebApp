@@ -44,11 +44,11 @@ export default class BallotIntroFollowIssues extends Component {
     // update followed_issues only for first time, subsequent updates will be made locally
     if (this.state.followed_issues.length === 0) {
       this.setState({
-        issues: IssueStore.toFollowList(),
-        followed_issues: IssueStore.followingList(),
+        issues: IssueStore.getIssuesVoterCanFollow(),
+        followed_issues: IssueStore.getIssuesVoterIsFollowing(),
       });
     } else {
-      this.setState({ issues: IssueStore.toFollowList() });
+      this.setState({ issues: IssueStore.getIssuesVoterCanFollow() });
     }
 
     this.updateNextState();

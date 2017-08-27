@@ -32,6 +32,10 @@ export function arrayUnique (array) {
   return a;
 }
 
+export function arrayContains(needle, array_haystack) {
+    return (array_haystack.indexOf(needle) > -1);
+}
+
 export function capitalizeString (raw_string) {
   if (raw_string === undefined) {
     return "";

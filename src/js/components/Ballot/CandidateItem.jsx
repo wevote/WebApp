@@ -11,8 +11,7 @@ import OfficeNameText from "../Widgets/OfficeNameText";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
 import SupportStore from "../../stores/SupportStore";
-import {abbreviateNumber} from "../../utils/textFormat";
-import {numberWithCommas} from "../../utils/textFormat";
+import { abbreviateNumber, numberWithCommas } from "../../utils/textFormat";
 
 export default class CandidateItem extends Component {
   static propTypes = {

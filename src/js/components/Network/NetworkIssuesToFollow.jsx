@@ -30,7 +30,7 @@ export default class NetworkIssuesToFollow extends Component {
 
   _onIssueStoreChange () {
     this.setState({
-        issues_to_follow: IssueStore.toFollowList(),
+        issues_to_follow: IssueStore.getIssuesVoterCanFollow(),
     });
   }
 
@@ -60,12 +60,12 @@ export default class NetworkIssuesToFollow extends Component {
       <Helmet title="Issues to Follow - We Vote" />
       <section className="card">
         <div className="card-main">
-          <span style={floatRight}>
-            <Link to="/issues_followed" className="u-margin-left--md">See issues you are following</Link>
-          </span>
           <p>
             Follow the issues you care about. By choosing the issues that matter most to
             you, we are able to highlight the organizations that care about the same issues you do.
+            <span style={floatRight}>
+              <Link to="/issues_followed" className="u-margin-left--md u-no-break">See issues you follow</Link>
+            </span>
           </p>
           <div className="voter-guide-list card">
             <div className="card-child__list-group">

@@ -13,11 +13,14 @@ export default class OpinionsIgnored extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {voter_guide_ignored_list: GuideStore.ignoredList(),
-                  editMode: false};
+    this.state = {
+      voter_guide_ignored_list: [],
+      editMode: false
+    };
   }
 
   componentDidMount () {
+    this.setState({ voter_guide_ignored_list: GuideStore.getVoterGuidesVoterIsIgnoring() });
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
     GuideActions.voterGuidesIgnoredRetrieve();
   }
@@ -27,10 +30,10 @@ export default class OpinionsIgnored extends Component {
   }
 
   _onGuideStoreChange (){
-    var list = GuideStore.ignoredList();
+    var list = GuideStore.getVoterGuidesVoterIsIgnoring();
 
     if (list !== undefined && list.length > 0){
-      this.setState({ voter_guide_ignored_list: GuideStore.ignoredList() });
+      this.setState({ voter_guide_ignored_list: GuideStore.getVoterGuidesVoterIsIgnoring() });
       // console.log(this.state.voter_guide_ignored_list);
     }
   }
