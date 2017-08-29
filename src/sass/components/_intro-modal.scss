@@ -108,18 +108,15 @@
   &__button {
     position: absolute;
     bottom: 42px;
-    width: 20%;
+    width: 180px;
     @include breakpoints (max mid-small) {
       bottom: 0;
     }
   }
 
-  &__button-follow {
-    width: 20%;
-  }
-
+  &__button-follow,
   &__button-disabled {
-    width: 20%;
+    width: 180px;
   }
 
   &__button-wrap {
@@ -264,10 +261,6 @@
     opacity: 1;
   }
   /* stylelint-enable */
-
-  &__bottom-sm {
-    bottom: 1em !important;
-  }
 
   &__description-text {
     @extend .intro-modal__p;
