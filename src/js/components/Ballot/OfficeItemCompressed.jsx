@@ -167,10 +167,10 @@ export default class OfficeItemCompressed extends Component {
           </div>;
         })}
 
-        { !this.state.display_all_candidates_flag && remaining_candidates_to_display_count > 0 ?
+        { !this.state.display_all_candidates_flag && remaining_candidates_to_display_count ?
           <Link onClick={this.toggleDisplayAllCandidates}>
             <span className="u-items-center">
-              Click&nbsp;to&nbsp;show&nbsp;{remaining_candidates_to_display_count}&nbsp;more&nbsp;candidates...</span>
+              Click&nbsp;to&nbsp;show&nbsp;{remaining_candidates_to_display_count}&nbsp;more&nbsp;candidate{ remaining_candidates_to_display_count !== 1 ? "s" : null }...</span>
           </Link> : null
         }
         { this.state.display_all_candidates_flag && this.props.candidate_list.length > NUMBER_OF_CANDIDATES_TO_DISPLAY ?
