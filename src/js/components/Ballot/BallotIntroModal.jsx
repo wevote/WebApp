@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import { Modal } from "react-bootstrap";
 import Slider from "react-slick";
-import BallotIntroMission from "./BallotIntroMission";
+// import BallotIntroMission from "./BallotIntroMission";
 import BallotIntroFollowIssues from "./BallotIntroFollowIssues";
 import BallotIntroFollowAdvisers from "./BallotIntroFollowAdvisers";
 import BallotIntroPositionBar from "./BallotIntroPositionBar";
+import VoterActions from "../../actions/VoterActions";
 
 
 export default class BallotIntroModal extends Component {
@@ -25,6 +26,7 @@ export default class BallotIntroModal extends Component {
   }
 
   _nextSliderPage () {
+    VoterActions.voterUpdateRefresh();
     this.refs.slider.slickNext();
   }
 
@@ -53,7 +55,7 @@ export default class BallotIntroModal extends Component {
         <Slider dotsClass="slick-dots intro-modal__gray-dots"
                 className="calc-height intro-modal__height-full"
                 ref="slider" {...slider_settings}>
-          <div className="intro-modal__height-full" key={1}><BallotIntroMission next={this._nextSliderPage}/></div>
+          {/* <div className="intro-modal__height-full" key={1}><BallotIntroMission next={this._nextSliderPage}/></div>*/}
           <div className="intro-modal__height-full" key={2}><BallotIntroFollowIssues next={this._nextSliderPage}/></div>
           <div className="intro-modal__height-full" key={3}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div>
           <div className="intro-modal__height-full" key={4}><BallotIntroPositionBar next={this.props.toggleFunction}/></div>

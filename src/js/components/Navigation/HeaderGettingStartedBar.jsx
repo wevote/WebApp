@@ -3,13 +3,14 @@ import { Modal } from "react-bootstrap";
 import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
 import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
 import BallotIntroFriends from "../../components/Ballot/BallotIntroFriends";
-import BallotIntroOrganizations from "../../components/Ballot/BallotIntroOrganizations";
+// import BallotIntroOrganizations from "../../components/Ballot/BallotIntroOrganizations";
 import BallotIntroPositions from "../../components/Ballot/BallotIntroPositions";
 import BallotIntroPositionBar from "../../components/Ballot/BallotIntroPositionBar";
 import BallotIntroShare from "../../components/Ballot/BallotIntroShare";
 import BallotIntroVote from "../../components/Ballot/BallotIntroVote";
 import GettingStartedBarItem from "./GettingStartedBarItem";
 import Slider from "react-slick";
+import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
 
@@ -66,30 +67,37 @@ export default class HeaderGettingStartedBar extends Component {
   }
 
   _toggleBallotIntroFollowIssues () {
+    VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
     this.setState({ showBallotIntroFollowIssues: !this.state.showBallotIntroFollowIssues });
   }
 
   _toggleBallotIntroOrganizations () {
+    VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
     this.setState({ showBallotIntroOrganizations: !this.state.showBallotIntroOrganizations });
   }
 
   _toggleBallotIntroPositions () {
+    VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
     this.setState({ showBallotIntroPositions: !this.state.showBallotIntroPositions });
   }
 
   _toggleBallotIntroFriends () {
+    VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
     this.setState({ showBallotIntroFriends: !this.state.showBallotIntroFriends });
   }
 
   _toggleBallotIntroShare () {
+    VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
     this.setState({ showBallotIntroShare: !this.state.showBallotIntroShare });
   }
 
   _toggleBallotIntroVote () {
+    VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
     this.setState({ showBallotIntroVote: !this.state.showBallotIntroVote });
   }
 
   _nextSliderPage () {
+    VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
     this.refs.slider.slickNext();
   }
 

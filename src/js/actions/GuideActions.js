@@ -2,8 +2,10 @@ import Dispatcher from "../dispatcher/Dispatcher";
 
 module.exports = {
   organizationFollow: function (organization_we_vote_id, organization_follow_based_on_issue = false) {
-    Dispatcher.loadEndpoint("organizationFollow", { organization_we_vote_id: organization_we_vote_id,
-      organization_follow_based_on_issue: organization_follow_based_on_issue} );
+    Dispatcher.loadEndpoint("organizationFollow", {
+      organization_we_vote_id: organization_we_vote_id,
+      organization_follow_based_on_issue: organization_follow_based_on_issue
+    });
   },
 
   organizationsFollowedRetrieve: function () {
@@ -12,22 +14,26 @@ module.exports = {
   },
 
   organizationFollowIgnore: function (organization_we_vote_id) {
-    Dispatcher.loadEndpoint("organizationFollowIgnore", { organization_we_vote_id: organization_we_vote_id} );
+    Dispatcher.loadEndpoint("organizationFollowIgnore", { organization_we_vote_id: organization_we_vote_id});
   },
 
   organizationStopFollowing: function (organization_we_vote_id) {
-    Dispatcher.loadEndpoint("organizationStopFollowing", { organization_we_vote_id: organization_we_vote_id} );
+    Dispatcher.loadEndpoint("organizationStopFollowing", { organization_we_vote_id: organization_we_vote_id});
   },
 
   retrieveGuidesToFollow: function (election_id, search_string) {
     const MAXIMUM_NUMBER_OF_GUIDES_TO_RETRIEVE = 50;
-    Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", { google_civic_election_id: election_id,
-      maximum_number_to_retrieve: MAXIMUM_NUMBER_OF_GUIDES_TO_RETRIEVE, search_string: search_string || "" });
+    Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", {
+      google_civic_election_id: election_id,
+      maximum_number_to_retrieve: MAXIMUM_NUMBER_OF_GUIDES_TO_RETRIEVE,
+      search_string: search_string || ""
+    });
   },
 
   retrieveGuidesToFollowByBallotItem: function (ballot_item_we_vote_id, kind_of_ballot_item) {
     Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", {
-      ballot_item_we_vote_id: ballot_item_we_vote_id, kind_of_ballot_item: kind_of_ballot_item
+      ballot_item_we_vote_id: ballot_item_we_vote_id,
+      kind_of_ballot_item: kind_of_ballot_item
     });
   },
 
@@ -38,7 +44,9 @@ module.exports = {
   },
 
   voterFollowAllOrganizationsFollowedByOrganization: function (organization_we_vote_id) {
-    Dispatcher.loadEndpoint("voterFollowAllOrganizationsFollowedByOrganization", { organization_we_vote_id: organization_we_vote_id } );
+    Dispatcher.loadEndpoint("voterFollowAllOrganizationsFollowedByOrganization", {
+      organization_we_vote_id: organization_we_vote_id
+    });
   },
 
   voterGuidesFollowedRetrieve: function () {
@@ -48,7 +56,9 @@ module.exports = {
   },
 
   voterGuidesFollowedByOrganizationRetrieve: function (organization_we_vote_id) {
-    Dispatcher.loadEndpoint("voterGuidesFollowedByOrganizationRetrieve", { organization_we_vote_id: organization_we_vote_id} );
+    Dispatcher.loadEndpoint("voterGuidesFollowedByOrganizationRetrieve", {
+      organization_we_vote_id: organization_we_vote_id
+    });
   },
 
   voterGuidesRecommendedByOrganizationRetrieve: function (organization_we_vote_id, google_civic_election_id) {
