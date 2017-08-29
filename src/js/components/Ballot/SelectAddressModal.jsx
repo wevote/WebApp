@@ -16,7 +16,7 @@ export default class SelectAddressModal extends Component {
   }
 
   render () {
-    return <Modal show onHide={this.props.toggleFunction} className="ballot-election-list ballot-election-list__modal" >
+    return <Modal show onHide={this.props.toggleFunction} className="ballot-election-list ballot-election-list__modal ballot-election-list__modal-mobile" >
       <Modal.Header closeButton onHide={this.props.toggleFunction}>
         <Modal.Title className="ballot-election-list__h1">Enter address where you are registered to vote</Modal.Title>
       </Modal.Header>
