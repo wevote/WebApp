@@ -5,6 +5,10 @@
   width: 100%;
   color: $white;
   text-align: center;
+  @include breakpoints (mid-small) {
+    min-height: 508px;
+  }
+
   &__h1 {
     font-weight: 700;
     font-size: 30px;
