@@ -76,10 +76,10 @@ export default class OfficeItemCompressed extends Component {
       <a name={we_vote_id} />
       <div className="card-main__content">
         <div className="u-flex u-stack--sm">
-          <h2 className="u-f3">
+          <h2 className="u-f3 card-main__ballot-name">
             { this.props.link_to_ballot_item_page ?
               <div className="card-main__ballot-name-group">
-                <div className="card-main__ballot-name-item card-main__ballot-name">
+                <div className="card-main__ballot-name-item">
                   <Link to={officeLink}>
                     <TextTruncate line={1}
                                   truncateText="…"
@@ -93,7 +93,10 @@ export default class OfficeItemCompressed extends Component {
                   </Link>
                 </div>
               </div> :
-              ballot_item_display_name
+              <TextTruncate line={1}
+                            truncateText="…"
+                            text={ballot_item_display_name}
+                            textTruncateChild={null} />
             }
           </h2>
           <BookmarkToggle we_vote_id={we_vote_id} type="OFFICE" />
@@ -164,10 +167,10 @@ export default class OfficeItemCompressed extends Component {
           </div>;
         })}
 
-        { !this.state.display_all_candidates_flag && remaining_candidates_to_display_count > 0 ?
+        { !this.state.display_all_candidates_flag && remaining_candidates_to_display_count ?
           <Link onClick={this.toggleDisplayAllCandidates}>
             <span className="u-items-center">
-              Click&nbsp;to&nbsp;show&nbsp;{remaining_candidates_to_display_count}&nbsp;more&nbsp;candidates...</span>
+              Click&nbsp;to&nbsp;show&nbsp;{remaining_candidates_to_display_count}&nbsp;more&nbsp;candidate{ remaining_candidates_to_display_count !== 1 ? "s" : null }...</span>
           </Link> : null
         }
         { this.state.display_all_candidates_flag && this.props.candidate_list.length > NUMBER_OF_CANDIDATES_TO_DISPLAY ?

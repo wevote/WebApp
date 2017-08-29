@@ -151,8 +151,8 @@ export default class BallotIntroFollowIssues extends Component {
     return (
     <div className="intro-modal">
       <div className="intro-modal__h1">
-        Follow { remaining_issues ? remaining_issues : "" }
-        &nbsp;Issues You Care About
+        Follow{ remaining_issues ? " " + remaining_issues : null }
+        &nbsp;Issue{ remaining_issues !== 1 ? "s" : null } You Care About
       </div>
       <div className="intro-modal-vertical-scroll-contain">
         <div className="intro-modal-vertical-scroll card">
