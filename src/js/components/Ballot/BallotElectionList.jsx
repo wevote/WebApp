@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from "react";
-import TextTruncate from "react-text-truncate";
 import VoterActions from "../../actions/VoterActions";
 import { cleanArray } from "../../utils/textFormat";
 import moment from "moment";
+
+const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 36;
 
 export default class BallotElectionList extends Component {
 
@@ -32,10 +33,10 @@ export default class BallotElectionList extends Component {
         <dl className="list-unstyled text-center">
           <button type="button" className="btn btn-success ballot-election-list__button"
                   onClick={this.updateBallot.bind(this, item.originalTextForMapSearch, simpleSave, item.googleCivicElectionId)}>
-            <TextTruncate line={1}
-                          truncateText="…"
-                          text={item.election_description_text}
-                          textTruncateChild={null} />
+            { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ?
+              <span>{item.election_description_text}&nbsp;<img src={"/img/global/icons/Circle-Arrow.png"}/></span> :
+              <span>{item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}...&nbsp;<img src={"/img/global/icons/Circle-Arrow.png"}/></span>
+            }
             <div className="ballot-election-list__h2">{moment(item.election_date).format("MMMM Do, YYYY")}</div>
           </button>
         </dl>
@@ -51,10 +52,10 @@ export default class BallotElectionList extends Component {
         <dl className="list-unstyled text-center">
           <button type="button" className="btn btn-success ballot-election-list__button"
                   onClick={this.updateBallot.bind(this, item.originalTextForMapSearch, simpleSave, item.googleCivicElectionId)}>
-            <TextTruncate line={1}
-                          truncateText="…"
-                          text={item.election_description_text}
-                          textTruncateChild={null} />
+            { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ?
+              <span>{item.election_description_text}&nbsp;<img src={"/img/global/icons/Circle-Arrow.png"}/></span> :
+              <span>{item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}...&nbsp;<img src={"/img/global/icons/Circle-Arrow.png"}/></span>
+            }
             <div className="ballot-election-list__h2">{moment(item.election_date).format("MMMM Do, YYYY")}</div>
           </button>
         </dl>
