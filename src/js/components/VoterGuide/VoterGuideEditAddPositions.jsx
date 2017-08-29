@@ -1,9 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import { Link, browserHistory } from "react-router";
-import IssueActions from "../../actions/IssueActions";
-import IssueLinkToggle from "../Issues/IssueLinkToggle";
-import IssueStore from "../../stores/IssueStore";
+import { browserHistory } from "react-router";
 
 export default class VoterGuideEditAddPositions extends Component {
   static propTypes = {

@@ -133,6 +133,7 @@ export default class BallotIntroFollowIssues extends Component {
 
   render () {
     let issue_list = this.state.issues || [];
+    let remaining_issues = this.remainingIssues();
 
     let edit_mode = true;
     const issue_list_for_display = issue_list.map((issue) => {
@@ -150,9 +151,8 @@ export default class BallotIntroFollowIssues extends Component {
     return (
     <div className="intro-modal">
       <div className="intro-modal__h1">
-        Follow 5&nbsp;
-        {/* this.remainingIssues() > 0 ? this.remainingIssues() + " " : "" */}
-        Issues You Care About
+        Follow { remaining_issues ? remaining_issues : "" }
+        &nbsp;Issues You Care About
       </div>
       <div className="intro-modal-vertical-scroll-contain">
         <div className="intro-modal-vertical-scroll card">

@@ -47,10 +47,11 @@ export default class OrganizationFollowToggle extends Component {
     return this.state.is_following ?
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
         <div className="intro-modal__hide-sm intro-modal__margin-right">
-          <ImageHandler className="intro-modal__hide-sm hidden-sm card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
+          <ImageHandler className="intro-modal__hide-sm hidden-xs card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
                         sizeClassName="icon-org-small u-push--sm "
                         alt="organization-photo"
                         kind_of_image="ORGANIZATION"
+                        imageUrl={this.props.organization_image_url}
           />
         </div>
         <span className="intro-modal__span intro-modal__margin-right">
@@ -63,10 +64,11 @@ export default class OrganizationFollowToggle extends Component {
       </div> :
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
         <div className="intro-modal__hide-sm intro-modal__margin-right">
-          <ImageHandler className="intro-modal__hide-sm hidden-sm card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
+          <ImageHandler className="intro-modal__hide-sm hidden-xs card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
                         sizeClassName="icon-org-small u-push--sm "
                         alt="organization-photo"
                         kind_of_image="ORGANIZATION"
+                        imageUrl={this.props.organization_image_url}
           />
         </div>
         <span className="intro-modal__span intro-modal__margin-right" onClick={this.onOrganizationFollow.bind(this)}>

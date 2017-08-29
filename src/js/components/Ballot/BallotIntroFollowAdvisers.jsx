@@ -105,7 +105,7 @@ export default class BallotIntroFollowAdvisers extends Component {
         organization_we_vote_id={voter_guide.organization_we_vote_id}
         organization_name={voter_guide.voter_guide_display_name}
         organization_description={voter_guide.twitter_description}
-        organization_image_url={voter_guide.voter_guide_image_url_medium}
+        organization_image_url={voter_guide.voter_guide_image_url_tiny}
         on_organization_follow={this.onOrganizationFollow}
         on_organization_stop_following={this.onOrganizationStopFollowing}
         />;
@@ -122,7 +122,7 @@ export default class BallotIntroFollowAdvisers extends Component {
         organization_we_vote_id={voter_guide.organization_we_vote_id}
         organization_name={voter_guide.voter_guide_display_name}
         organization_description={voter_guide.twitter_description}
-        organization_image_url={voter_guide.voter_guide_image_url_medium}
+        organization_image_url={voter_guide.voter_guide_image_url_tiny}
         on_organization_follow={this.onOrganizationFollow}
         on_organization_stop_following={this.onOrganizationStopFollowing}
         />;
