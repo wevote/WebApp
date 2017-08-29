@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from "react";
+import TextTruncate from "react-text-truncate";
 import VoterActions from "../../actions/VoterActions";
 import { cleanArray } from "../../utils/textFormat";
-let moment = require("moment");
+import moment from "moment";
 
 export default class BallotElectionList extends Component {
 
@@ -10,7 +11,7 @@ export default class BallotElectionList extends Component {
     toggleFunction: PropTypes.func.isRequired,
   };
 
-  constructor (props){
+  constructor (props) {
     super(props);
     this.state = {};
   }
@@ -29,10 +30,13 @@ export default class BallotElectionList extends Component {
       item.election_date > currentDate ?
       <div key={index}>
         <dl className="list-unstyled text-center">
-          <button type="button" className="btn btn-success"
-            onClick={this.updateBallot.bind(this, item.originalTextForMapSearch, simpleSave, item.googleCivicElectionId)}>
-            See {item.election_description_text} <span><img src={"/img/global/icons/Circle-Arrow.png"}/></span><br />
-            <span className="ballot-election-list__h2 pull-left"> {moment(item.election_date).format("MMMM Do, YYYY")}</span>
+          <button type="button" className="btn btn-success ballot-election-list__button"
+                  onClick={this.updateBallot.bind(this, item.originalTextForMapSearch, simpleSave, item.googleCivicElectionId)}>
+            <TextTruncate line={1}
+                          truncateText="…"
+                          text={item.election_description_text}
+                          textTruncateChild={null} />
+            <div className="ballot-election-list__h2">{moment(item.election_date).format("MMMM Do, YYYY")}</div>
           </button>
         </dl>
       </div> :
@@ -45,10 +49,13 @@ export default class BallotElectionList extends Component {
       null :
       <div key={index}>
         <dl className="list-unstyled text-center">
-          <button type="button" className="btn btn-success"
-            onClick={this.updateBallot.bind(this, item.originalTextForMapSearch, simpleSave, item.googleCivicElectionId)}>
-            See {item.election_description_text} <span><img src={"/img/global/icons/Circle-Arrow.png"}/></span><br />
-            <span className="ballot-election-list__h2 pull-left"> {moment(item.election_date).format("MMMM Do, YYYY")}</span>
+          <button type="button" className="btn btn-success ballot-election-list__button"
+                  onClick={this.updateBallot.bind(this, item.originalTextForMapSearch, simpleSave, item.googleCivicElectionId)}>
+            <TextTruncate line={1}
+                          truncateText="…"
+                          text={item.election_description_text}
+                          textTruncateChild={null} />
+            <div className="ballot-election-list__h2">{moment(item.election_date).format("MMMM Do, YYYY")}</div>
           </button>
         </dl>
       </div>
@@ -56,12 +63,12 @@ export default class BallotElectionList extends Component {
     priorElectionList = cleanArray(priorElectionList);
 
     return <div>
-      { upcomingElectionList && upcomingElectionList.length > 0 ?
+      { upcomingElectionList && upcomingElectionList.length ?
         <h4 className="h4">Upcoming Election(s)</h4> :
         null }
       {upcomingElectionList}
 
-      { priorElectionList && priorElectionList.length > 0 ?
+      { priorElectionList && priorElectionList.length ?
         <h4 className="h4">Prior Election(s)</h4> :
         null }
       {priorElectionList}
