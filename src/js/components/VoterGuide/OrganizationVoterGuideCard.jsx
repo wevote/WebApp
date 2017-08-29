@@ -4,9 +4,7 @@ import { Link, browserHistory } from "react-router";
 import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
 import LoadingWheel from "../../components/LoadingWheel";
 import FollowToggle from "../../components/Widgets/FollowToggle";
-import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
-
-/* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/94226088 */
+import { removeTwitterNameFromDescription } from "../../utils/textFormat"; // numberWithCommas,
 
 // This Component is used to display the Organization by TwitterHandle
 // Please see VoterGuide/Organization for the Component used by GuideList for Candidate and Opinions (you can follow)
@@ -33,9 +31,9 @@ export default class OrganizationVoterGuideCard extends Component {
       return <div>{LoadingWheel}</div>;
     }
 
-    const {organization_twitter_handle, twitter_description, twitter_followers_count,
+    const {organization_twitter_handle, twitter_description,
       organization_photo_url_large, organization_website,
-      organization_name, organization_we_vote_id} = this.props.organization;
+      organization_name, organization_we_vote_id} = this.props.organization; // , twitter_followers_count
 
     // If the displayName is in the twitterDescription, remove it from twitterDescription
     let displayName = organization_name ? organization_name : "";

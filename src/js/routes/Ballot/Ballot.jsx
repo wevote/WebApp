@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { browserHistory, Link } from "react-router";
 import CandidateModal from "../../components/Ballot/CandidateModal";
+import cookies from "../../utils/cookies";
 import BallotActions from "../../actions/BallotActions";
 import BallotFilter from "../../components/Navigation/BallotFilter";
 import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
@@ -44,7 +45,7 @@ export default class Ballot extends Component {
         voter_guides_to_follow_for_latest_ballot_item: [],
         position_list: []
       },
-      showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
+      showBallotIntroModal: false,
       showCandidateModal: false,
       showMeasureModal: false,
       showSelectBallotModal: false,
@@ -62,8 +63,14 @@ export default class Ballot extends Component {
     this._toggleBallotSummaryModal = this._toggleBallotSummaryModal.bind(this);
   }
 
+  componentWillMount () {
+  }
+
   componentDidMount () {
-    this.setState({mounted: true});
+    this.setState({
+      mounted: true,
+      showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
+    });
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
       browserHistory.push("settings/location");
     } else {
@@ -83,6 +90,8 @@ export default class Ballot extends Component {
       this.supportStoreListener = SupportStore.addListener(this._onBallotStoreChange.bind(this));
       this._onVoterStoreChange(); // We call this to properly set showBallotIntroModal
       this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+      // Once a voter hits the ballot, they have gone through orientation
+      cookies.setItem("voter_orientation_complete", "1", Infinity, "/");
     }
   }
 

@@ -179,6 +179,13 @@ module.exports = {
       });
   },
 
+  voterUpdateRefresh: function () {
+    // Just make sure we have the latest voter data
+    Dispatcher.loadEndpoint("voterUpdate",
+      {
+      });
+  },
+
   voterRefreshDonations: function () {
     Dispatcher.loadEndpoint("voterUpdate",
       {

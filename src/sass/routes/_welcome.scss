@@ -25,7 +25,7 @@
   .features-section {
     background-color: $brand-blue;
     color: $white;
-    padding-top: $space-xl;
+    padding-top: $space-lg;
     padding-bottom: $space-xl;
   }
   .features__block {
@@ -44,6 +44,11 @@
   .features__text {
     font-size: 16px;
     line-height: 1.25;
+  }
+  .features-your-mission__block {
+    align-items: center;
+    text-align: center;
+    padding-bottom: $space-md;
   }
 
   .network-section {

@@ -41,7 +41,7 @@ export default class Intro extends Component {
   }
 
   goToGetStarted () {
-    var getStartedNow = "/intro/sample_ballot";
+    var getStartedNow = "/ballot";
     browserHistory.push(getStartedNow);
   }
 
@@ -174,6 +174,10 @@ export default class Intro extends Component {
 
       <section className="features-section">
         <div className="container">
+          <div className="features-your-mission__block">
+            <div className="h1">Your Mission:</div>
+            <div className="h2">Make the world a better place.</div>
+          </div>
           <Row className="u-stack--lg">
             <div className="col-6 col-md-4 u-flex u-justify-center">
               <div className="features__block">

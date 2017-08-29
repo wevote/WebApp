@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import ImageHandler from "../../components/ImageHandler";
-import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
+import { removeTwitterNameFromDescription } from "../../utils/textFormat"; // numberWithCommas,
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
 import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
 import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
@@ -41,10 +41,9 @@ export default class OrganizationDisplayForList extends Component {
     var position = this.props;
 
     const {
-      twitter_followers_count,
       organization_we_vote_id,
       voter_guide_image_url_large,
-    } = this.props;
+    } = this.props; // twitter_followers_count,
     let num_of_lines = 2;
     let voter_guide_display_name = this.props.voter_guide_display_name ? this.props.voter_guide_display_name : "";
     let twitterDescription = this.props.twitter_description ? this.props.twitter_description : "";

@@ -59,11 +59,11 @@ export default class OrganizationVoterGuideEdit extends Component {
       nextProps.params.organization_we_vote_id === VoterStore.getVoter().linked_organization_we_vote_id;
     // console.log("is_voter_owner: ", is_voter_owner);
     if (is_voter_owner) {
-      this.setState({organization_we_vote_id: nextProps.params.organization_we_vote_id});
-
       // We refresh the data for all three tabs here on the top level
       OrganizationActions.organizationRetrieve(nextProps.params.organization_we_vote_id);
       // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
+
+      this.setState({organization_we_vote_id: nextProps.params.organization_we_vote_id});
     } else {
       const voter_guide_redirect_link = "/voterguide/" + nextProps.params.organization_we_vote_id;
       browserHistory.push(voter_guide_redirect_link);
@@ -76,7 +76,7 @@ export default class OrganizationVoterGuideEdit extends Component {
   }
 
   onDoneButton () {
-    browserHistory.push("/voterguideedit/" + this.props.organization_we_vote_id);
+    browserHistory.push("/voterguideedit/" + this.state.organization_we_vote_id);
   }
 
   _onVoterStoreChange () {

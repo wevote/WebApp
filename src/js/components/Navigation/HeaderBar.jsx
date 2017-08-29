@@ -293,7 +293,7 @@ export default class HeaderBar extends Component {
   }
 
   goToGetStarted () {
-    var getStartedNow = "/intro/sample_ballot";
+    var getStartedNow = "/ballot";
     browserHistory.push(getStartedNow);
   }
 
