@@ -352,7 +352,7 @@ export default class About extends Component {
                               alt="Bharath Reddy"/>
                 <div className="media-body">
                   <h4 className="team-member__name"><strong>Bharath Reddy</strong></h4>
-                  <p className="team-member__title">Engineering Intern</p>
+                  <p className="team-member__title">Software Engineer</p>
                 </div>
               </div>
             </div>
