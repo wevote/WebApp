@@ -42,13 +42,13 @@ export default class BallotIntroFollowIssues extends Component {
 
   _onIssueStoreChange () {
     // update followed_issues only for first time, subsequent updates will be made locally
-    if (this.state.followed_issues.length === 0) {
+    if (this.state.followed_issues.length) {
+      this.setState({ issues: IssueStore.getIssuesVoterCanFollow() });
+    } else {
       this.setState({
         issues: IssueStore.getIssuesVoterCanFollow(),
         followed_issues: IssueStore.getIssuesVoterIsFollowing(),
       });
-    } else {
-      this.setState({ issues: IssueStore.getIssuesVoterCanFollow() });
     }
 
     this.updateNextState();
@@ -57,15 +57,11 @@ export default class BallotIntroFollowIssues extends Component {
   remainingIssues () {
     var actual = this.state.number_of_required_issues - this.state.followed_issues.length;
 
-    if (actual >= 0){
-      return actual;
-    }
-
-    return 0;
+    return actual >= 0 ? actual : 0;
   }
 
   updateNextState () {
-    if (this.remainingIssues() > 0) {
+    if (this.remainingIssues()) {
       this.setState({ next_button_text: "Please Follow " + this.remainingIssues() + " More" });
     } else {
       this.setState({ next_button_text: NEXT_BUTTON_TEXT });
@@ -78,7 +74,7 @@ export default class BallotIntroFollowIssues extends Component {
     if (index === -1) {
       var new_followed_issues = this.state.followed_issues;
       new_followed_issues.push(issue_we_vote_id);
-      if (this.state.followed_issues.length >= this.state.number_of_required_issues ) {
+      if (this.state.followed_issues.length >= this.state.number_of_required_issues) {
         description_text = NEXT_SCREEN_PROMPT_TEXT;
       } else {
         description_text = INITIAL_DESCRIPTION_TEXT;
@@ -99,20 +95,20 @@ export default class BallotIntroFollowIssues extends Component {
     if (index > -1) {
       var new_followed_issues = this.state.followed_issues;
       new_followed_issues.splice(index, 1);
-      if (this.state.followed_issues.length >= this.state.number_of_required_issues ) {
+      if (this.state.followed_issues.length >= this.state.number_of_required_issues) {
         description_text = NEXT_SCREEN_PROMPT_TEXT;
       } else {
         description_text = INITIAL_DESCRIPTION_TEXT;
       }
-      if (new_followed_issues.length === 0) {
+      if (new_followed_issues.length) {
+        this.setState({
+          followed_issues: new_followed_issues,
+        });
+      } else {
         this.setState({
           description_text: description_text,
           followed_issues: new_followed_issues,
           next_button_text: NEXT_BUTTON_TEXT,
-        });
-      } else {
-        this.setState({
-          followed_issues: new_followed_issues,
         });
       }
 
@@ -156,10 +152,7 @@ export default class BallotIntroFollowIssues extends Component {
       </div>
       <div className="intro-modal-vertical-scroll-contain">
         <div className="intro-modal-vertical-scroll card">
-          { issue_list.length > 0 ?
-            issue_list_for_display :
-            <h4>No issues to display</h4>
-          }
+          { issue_list.length ? issue_list_for_display : <h4>No issues to display</h4> }
         </div>
       </div>
       <div className="intro-modal__description-text">
@@ -168,7 +161,7 @@ export default class BallotIntroFollowIssues extends Component {
       <br/>
       <div className="intro-modal__button-wrap">
         <Button type="submit"
-          className={ this.remainingIssues() > 0 ? "btn intro-modal__button intro-modal__button-disabled disabled btn-secondary btn-block" : "btn btn-success intro-modal__button intro-modal__button-follow"}
+          className={ this.remainingIssues() ? "btn intro-modal__button intro-modal__button-disabled disabled btn-secondary btn-block" : "btn btn-success intro-modal__button intro-modal__button-follow"}
           onClick={this.onNext}>
           <span>{this.state.next_button_text}</span>
         </Button>
