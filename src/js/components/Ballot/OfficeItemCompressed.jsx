@@ -75,32 +75,21 @@ export default class OfficeItemCompressed extends Component {
     return <div className="card-main office-item">
       <a name={we_vote_id} />
       <div className="card-main__content">
-        <div className="u-flex u-stack--sm">
-          <h2 className="u-f3 card-main__ballot-name">
-            { this.props.link_to_ballot_item_page ?
-              <div className="card-main__ballot-name-group">
-                <div className="card-main__ballot-name-item">
-                  <Link to={officeLink}>
-                    <TextTruncate line={1}
-                                  truncateText="…"
-                                  text={ballot_item_display_name}
-                                  textTruncateChild={null} />
-                  </Link>
-                </div>
-                <div className="card-main__ballot-name-item">
-                  <Link to={officeLink}>
-                    <span className="card-main__ballot-read-more-link hidden-xs">learn&nbsp;more</span>
-                  </Link>
-                </div>
-              </div> :
+        <BookmarkToggle we_vote_id={we_vote_id} type="OFFICE" />
+        <h2 className="u-f3 card-main__ballot-name u-stack--sm">
+          { this.props.link_to_ballot_item_page ?
+            <Link to={officeLink}>
               <TextTruncate line={1}
                             truncateText="…"
                             text={ballot_item_display_name}
                             textTruncateChild={null} />
-            }
-          </h2>
-          <BookmarkToggle we_vote_id={we_vote_id} type="OFFICE" />
-        </div>
+            </Link> :
+            <TextTruncate line={1}
+                          truncateText="…"
+                          text={ballot_item_display_name}
+                          textTruncateChild={null} />
+          }
+        </h2>
         { candidate_list_to_display.map( (one_candidate) => {
           let candidateId = one_candidate.we_vote_id;
           let candidateSupportStore = SupportStore.get(candidateId);
