@@ -272,6 +272,42 @@
     @extend .intro-modal__responsive-height;
     @extend .intro-modal__padding-top;
   }
+
+  &__issue-grid {
+    padding: $space-none $space-md;
+  }
+
+  &__issue-square {
+    position: relative;
+    text-align: left;
+    padding: $space-xs;
+
+    &-image {
+      height: 100%;
+      width: 100%;
+      border: 1px solid $gray-border;
+      border-radius: $space-sm;
+    }
+
+    &-following {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: scale(.6);
+    }
+
+    &-name {
+      position: absolute;
+      right: $space-sm;
+      bottom: $space-sm;
+      left: $space-sm;
+      font-size: .875rem;
+      mix-blend-mode: difference;
+      @include breakpoints (max mid-small) {
+        font-size: .7rem;
+      }
+    }
+  }
 }
 
 .intro-modal-vertical-scroll {
