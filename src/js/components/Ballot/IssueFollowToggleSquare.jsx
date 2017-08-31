@@ -15,7 +15,7 @@ export default class IssueFollowToggleSquare extends IssueFollowToggle {
                       alt={this.props.issue_name}
                       kind_of_image="ISSUE-PHOTO" />
         { this.state.is_following ?
-          <ImageHandler className="intro-modal__issue-square-following"
+          <ImageHandler className="intro-modal__issue-square-following u-cursor--pointer"
                         imageUrl="/img/global/svg-icons/check-mark-v2-40x43.svg"
                         alt="Following" /> :
           null
