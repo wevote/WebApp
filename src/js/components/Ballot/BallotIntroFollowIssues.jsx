@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 import IssueActions from "../../actions/IssueActions";
-import IssueFollowToggle from "./IssueFollowToggle";
+import IssueFollowToggleSquare from "./IssueFollowToggleSquare";
 import IssueStore from "../../stores/IssueStore";
 
 const NEXT_BUTTON_TEXT = "Next >";
@@ -133,7 +133,7 @@ export default class BallotIntroFollowIssues extends Component {
 
     let edit_mode = true;
     const issue_list_for_display = issue_list.map((issue) => {
-      return <IssueFollowToggle
+      return <IssueFollowToggleSquare
         key={issue.issue_we_vote_id}
         issue_we_vote_id={issue.issue_we_vote_id}
         issue_name={issue.issue_name}
@@ -152,7 +152,9 @@ export default class BallotIntroFollowIssues extends Component {
       </div>
       <div className="intro-modal-vertical-scroll-contain">
         <div className="intro-modal-vertical-scroll card">
-          { issue_list.length ? issue_list_for_display : <h4>No issues to display</h4> }
+          <div className="row intro-modal__issue-grid">
+            { issue_list.length ? issue_list_for_display : <h4>No issues to display</h4> }
+          </div>
         </div>
       </div>
       <div className="intro-modal__description-text">
