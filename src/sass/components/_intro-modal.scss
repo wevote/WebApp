@@ -287,13 +287,18 @@
       width: 100%;
       border: 1px solid $gray-border;
       border-radius: $space-sm;
+      filter: brightness(80%) contrast(80%);
     }
 
     &-following {
+      filter: brightness(40%);
+    }
+
+    &-check-mark {
       position: absolute;
       top: 0;
       left: 0;
-      transform: scale(.6);
+      transform: scale(.5);
     }
 
     &-name {
@@ -302,9 +307,8 @@
       bottom: $space-sm;
       left: $space-sm;
       font-size: .875rem;
-      mix-blend-mode: difference;
       @include breakpoints (max mid-small) {
-        font-size: .7rem;
+        font-size: .675rem;
       }
     }
   }
