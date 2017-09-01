@@ -147,6 +147,7 @@ const routes = () =>
 
     {/* Voter Guide Pages */}
     <Route path="/voterguide/:organization_we_vote_id" component={OrganizationVoterGuide} />
+    <Route path="/voterguide/:organization_we_vote_id/af" component={OrganizationVoterGuide} />
     <Route path="/voterguideedit/:organization_we_vote_id" component={OrganizationVoterGuideEdit} />
     <Route path="/voterguideedit/:organization_we_vote_id/:edit_mode" component={OrganizationVoterGuideEdit} />
     <Route path="/voterguideedit/:organization_we_vote_id/:edit_mode/:active_tab" component={OrganizationVoterGuideEdit} />
@@ -170,6 +171,7 @@ const routes = () =>
 
     {/* Any route that is not found -> @return NotFound component */}
     <Route path=":twitter_handle" component={NotFound} />
+    <Route path=":twitter_handle/:action_variable" component={NotFound} />
     <Route path=":twitter_handle/following" component={VoterGuideFollowing} />
 
   </Route>;

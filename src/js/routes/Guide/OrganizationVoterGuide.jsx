@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
 import { Button } from "react-bootstrap";
 import FollowToggle from "../../components/Widgets/FollowToggle";
+import GuideActions from "../../actions/GuideActions";
 import HeaderBar from "../../components/Navigation/HeaderBar";
 import LoadingWheel from "../../components/LoadingWheel";
 import OrganizationActions from "../../actions/OrganizationActions";
@@ -10,6 +11,7 @@ import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationVoterGuideCard from "../../components/VoterGuide/OrganizationVoterGuideCard";
 import OrganizationVoterGuideTabs from "../../components/VoterGuide/OrganizationVoterGuideTabs";
 import VoterStore from "../../stores/VoterStore";
+const AUTO_FOLLOW = "af";
 
 export default class OrganizationVoterGuide extends Component {
   static propTypes = {
@@ -32,6 +34,11 @@ export default class OrganizationVoterGuide extends Component {
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
     OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
     // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
+
+    if (this.props.params.action_variable === AUTO_FOLLOW && this.props.params.organization_we_vote_id) {
+      console.log("Auto following");
+      GuideActions.organizationFollow(this.state.organization_we_vote_id);
+    }
     this.setState({
       organization_we_vote_id: this.props.params.organization_we_vote_id,
       voter: VoterStore.getVoter(),
