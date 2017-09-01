@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { browserHistory, Link } from "react-router";
 import Helmet from "react-helmet";
-import { Button, FormGroup, Row} from "react-bootstrap";
+import { Button, FormGroup, Row } from "react-bootstrap";
 import VoterActions from "../actions/VoterActions";
 import VoterConstants from "../constants/VoterConstants";
 import VoterStore from "../stores/VoterStore";
@@ -117,11 +117,22 @@ export default class Intro extends Component {
         <div className="container">
           <Row>
             <div className="col-md-11 push-md-1">
-              <h1 className="u-f1 u-bold u-stack--lg">
-                View your ballot.<br />
-                Learn from friends.<br />
-                Share your vision.
-              </h1>
+              <Row className="visible-xs visible-sm">
+                <h1 className="col-sm-12 u-f1 u-bold u-stack--lg">
+                  View your ballot.<br />
+                  Learn from friends.<br />
+                  Share your vision.
+                </h1>
+              </Row>
+              <Row className="hidden-xs hidden-sm">
+                <h1 className="col-md-6 u-f1 u-bold u-stack--lg">
+                  View your ballot.<br />
+                  Learn from friends.
+                </h1>
+                <h1 className="col-md-6 u-f1 u-bold u-stack--lg">
+                  Share your vision.
+                </h1>
+              </Row>
 
               <h2 className="u-f3 u-stack--md">Launching Fall 2017!</h2>
               { voter_signed_in ?
@@ -135,7 +146,7 @@ export default class Intro extends Component {
                   { this.state.newsletter_opt_in_true ?
                     <h1 className="u-f1 u-bold u-stack--lg">Please check your email for a verification link.</h1> :
                     <div>
-                      <p>Sign up for updates and be the first to use We Vote</p>
+                      <p>Sign up for updates and be the first to use We Vote.</p>
 
                       <form className="form-inline" onSubmit={this.voterEmailAddressSignUpSave.bind(this)}>
                         <FormGroup className="u-push--sm">
@@ -182,37 +193,43 @@ export default class Intro extends Component {
             <div className="col-6 col-md-4 u-flex u-justify-center">
               <div className="features__block">
                 <img className="features__image" src="/img/welcome/benefits/view-your-ballot.png" width="50%" height="50%" />
-                <h3 className="features__text">View Your Ballot</h3>
+                <h3 className="features__h3">View Your Ballot</h3>
+                <p className="features__p">You will see your actual ballot, including candidates and measures.</p>
               </div>
             </div>
             <div className="col-6 col-md-4 u-flex u-justify-center">
               <div className="features__block">
                 <img className="features__image" src="/img/welcome/benefits/learn-from-orgs.png" width="50%" height="50%" />
-                <h3 className="features__text">Learn From Organizations</h3>
+                <h3 className="features__h3">Learn From Organizations</h3>
+                <p className="features__p">Follow the voter guides of groups you trust. See what they support or oppose.</p>
               </div>
             </div>
             <div className="col-6 col-md-4 u-flex u-justify-center">
               <div className="features__block">
                 <img className="features__image" src="/img/welcome/benefits/see-position.png" width="50%" height="50%" />
-                <h3 className="features__text">See Your Network's Positions</h3>
+                <h3 className="features__h3">See Your Network's Positions</h3>
+                <p className="features__p">See how many (in your network) support or oppose each candidate or measure.</p>
               </div>
             </div>
             <div className="col-6 col-md-4 u-flex u-justify-center">
               <div className="features__block">
                 <img className="features__image" src="/img/welcome/benefits/choose-friends.png" width="50%" height="50%" />
-                <h3 className="features__text">Invite Friends to Your We&nbsp;Vote Network</h3>
+                <h3 className="features__h3">Invite Friends to Your We Vote Network</h3>
+                <p className="features__p">Talk politics with friends who share your values. Avoid flame wars!</p>
               </div>
             </div>
             <div className="col-sm-6 col-md-4 u-flex u-justify-center">
               <div className="features__block">
                 <img className="features__image" src="/img/welcome/benefits/share-vision.png" width="50%" height="50%" />
-                <h3 className="features__text">Share Your Vision</h3>
+                <h3 className="features__h3">Share Your Vision</h3>
+                <p className="features__p">Empower other voters with information and help your friends.</p>
               </div>
             </div>
             <div className="col-sm-6 col-md-4 u-flex u-justify-center">
               <div className="features__block">
                 <img className="features__image" src="/img/welcome/benefits/decide.png" width="50%" height="50%" />
-                <h3 className="features__text">Decide & Vote</h3>
+                <h3 className="features__h3">Decide & Vote</h3>
+                <p className="features__p">Bring We Vote on your phone or a print-out to cast your vote with confidence.</p>
               </div>
             </div>
           </Row>
