@@ -46,4 +46,8 @@ module.exports = {
         kind_of_opinion_maker: "ORGANIZATION"
       });
   },
+
+  organizationsFollowedRetrieve: function () {
+    Dispatcher.loadEndpoint("organizationsFollowedRetrieve");
+  },
 };

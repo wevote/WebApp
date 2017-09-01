@@ -1,10 +1,12 @@
 var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
+import { arrayContains } from "../utils/textFormat";
 
 class OrganizationStore extends FluxMapStore {
   getInitialState () {
     return {
       all_cached_organizations_dict: {}, // This is a dictionary with organization_we_vote_id as key and list of organizations
+      organization_we_vote_ids_voter_is_following: [],
     };
   }
 
@@ -12,6 +14,15 @@ class OrganizationStore extends FluxMapStore {
     let all_cached_organizations_dict = this.getState().all_cached_organizations_dict;
     // console.log("getOrganizationByWeVoteId, one organization: ", all_cached_organizations_dict[organization_we_vote_id]);
     return all_cached_organizations_dict[organization_we_vote_id] || {};
+  }
+
+  isVoterFollowingThisOrganization (organization_we_vote_id){
+    let organization_we_vote_ids_voter_is_following = this.getState().organization_we_vote_ids_voter_is_following;
+    if (organization_we_vote_ids_voter_is_following) {
+      return arrayContains(organization_we_vote_id, organization_we_vote_ids_voter_is_following);
+    } else {
+      return false;
+    }
   }
 
   reduce (state, action) {
@@ -42,6 +53,23 @@ class OrganizationStore extends FluxMapStore {
           return {
             ...state,
             all_cached_organizations_dict: all_cached_organizations_dict
+          };
+        }
+        return state;
+
+      case "organizationsFollowedRetrieve":
+        if (action.res.success) {
+          var organization_list = action.res.organization_list;
+          var organization_we_vote_ids_voter_is_following = [];
+          all_cached_organizations_dict = state.all_cached_organizations_dict;
+          organization_list.forEach( one_organization => {
+            all_cached_organizations_dict[one_organization.organization_we_vote_id] = one_organization;
+            organization_we_vote_ids_voter_is_following.push(one_organization.organization_we_vote_id);
+          });
+          return {
+            ...state,
+            organization_we_vote_ids_voter_is_following: organization_we_vote_ids_voter_is_following,
+            all_cached_organizations_dict: all_cached_organizations_dict,
           };
         }
         return state;

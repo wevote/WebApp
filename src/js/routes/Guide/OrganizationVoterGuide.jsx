@@ -34,10 +34,10 @@ export default class OrganizationVoterGuide extends Component {
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
     OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
     // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
-
+    // console.log("action_variable: " + this.props.params.action_variable);
     if (this.props.params.action_variable === AUTO_FOLLOW && this.props.params.organization_we_vote_id) {
-      console.log("Auto following");
-      GuideActions.organizationFollow(this.state.organization_we_vote_id);
+      // console.log("Auto following");
+      GuideActions.organizationFollow(this.props.params.organization_we_vote_id);
     }
     this.setState({
       organization_we_vote_id: this.props.params.organization_we_vote_id,
