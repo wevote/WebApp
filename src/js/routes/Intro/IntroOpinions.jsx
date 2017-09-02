@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import SearchGuidesToFollowBox from "../../components/Search/SearchGuidesToFollowBox";
-import GuideStore from "../../stores/GuideStore";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 import GuideList from "../../components/VoterGuide/GuideList";
 import { Link } from "react-router";
@@ -22,19 +22,19 @@ export default class IntroOpinionsPage extends Component {
 
   componentDidMount () {
     this._onChange();
-    this.guideStoreListener = GuideStore.addListener(this._onChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onChange.bind(this));
   }
 
   _onChange () {
     this.setState({
-      voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll(),
-      ballot_has_guides: GuideStore.ballotHasGuides(),
+      voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
+      ballot_has_guides: VoterGuideStore.ballotHasGuides(),
       text_for_map_search: VoterStore.getTextForMapSearch()
     });
   }
 
   componentWillUnmount (){
-    this.guideStoreListener.remove();
+    this.voterGuideStoreListener.remove();
   }
 
   render () {

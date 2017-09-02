@@ -3,7 +3,7 @@ import { Link, browserHistory } from "react-router";
 import { Button } from "react-bootstrap";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import FollowToggle from "../../components/Widgets/FollowToggle";
-import GuideStore from "../../stores/GuideStore";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 import HeaderBar from "../../components/Navigation/HeaderBar";
 import LoadingWheel from "../../components/LoadingWheel";
 import OrganizationActions from "../../actions/OrganizationActions";
@@ -33,7 +33,7 @@ export default class OrganizationVoterGuide extends Component {
 
   componentDidMount (){
     // console.log("OrganizationVoterGuide, componentDidMount, this.props.params.organization_we_vote_id: ", this.props.params.organization_we_vote_id);
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
@@ -81,7 +81,7 @@ export default class OrganizationVoterGuide extends Component {
   }
 
   componentWillUnmount (){
-    this.guideStoreListener.remove();
+    this.voterGuideStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
   }
@@ -91,7 +91,7 @@ export default class OrganizationVoterGuide extends Component {
     return <div>{LoadingWheel}</div>;
   }
 
-  _onGuideStoreChange (){
+  _onVoterGuideStoreChange (){
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization_we_vote_id)
     });

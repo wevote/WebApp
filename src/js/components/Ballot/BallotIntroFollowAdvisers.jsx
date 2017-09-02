@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import GuideActions from "../../actions/GuideActions";
+import VoterGuideActions from "../../actions/VoterGuideActions";
 import OrganizationFollowToggle from "./OrganizationFollowToggle";
-import GuideStore from "../../stores/GuideStore";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 
 const NEXT_BUTTON_TEXT = "Next >";
@@ -21,8 +21,8 @@ export default class BallotIntroFollowAdvisers extends Component {
     this.state = {
       description_text: "",
       followed_organizations: [],
-      voter_guides_to_follow_by_issues_followed: GuideStore.getVoterGuidesToFollowByIssuesFollowed(),
-      voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll(),
+      voter_guides_to_follow_by_issues_followed: VoterGuideStore.getVoterGuidesToFollowByIssuesFollowed(),
+      voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
       next_button_text: NEXT_BUTTON_TEXT,
     };
 
@@ -32,20 +32,20 @@ export default class BallotIntroFollowAdvisers extends Component {
   }
 
   componentDidMount () {
-    GuideActions.retrieveGuidesToFollowByIssuesFollowed();
-    GuideActions.retrieveGuidesToFollow(VoterStore.election_id());
-    this._onGuideStoreChange();
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+    VoterGuideActions.retrieveGuidesToFollowByIssuesFollowed();
+    VoterGuideActions.retrieveGuidesToFollow(VoterStore.election_id());
+    this._onVoterGuideStoreChange();
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
   }
 
   componentWillUnmount () {
-    this.guideStoreListener.remove();
+    this.voterGuideStoreListener.remove();
   }
 
-  _onGuideStoreChange () {
+  _onVoterGuideStoreChange () {
     this.setState({
-      voter_guides_to_follow_by_issues_followed: GuideStore.getVoterGuidesToFollowByIssuesFollowed(),
-      voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll(),
+      voter_guides_to_follow_by_issues_followed: VoterGuideStore.getVoterGuidesToFollowByIssuesFollowed(),
+      voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
     });
   }
 

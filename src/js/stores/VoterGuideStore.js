@@ -1,11 +1,11 @@
 var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
-import GuideActions from "../actions/GuideActions";
+import VoterGuideActions from "../actions/VoterGuideActions";
 import OrganizationStore from "../stores/OrganizationStore";
 import SupportActions from "../actions/SupportActions";
 import VoterStore from "../stores/VoterStore";
 
-class GuideStore extends FluxMapStore {
+class VoterGuideStore extends FluxMapStore {
 
   getInitialState () {
     return {
@@ -89,31 +89,31 @@ class GuideStore extends FluxMapStore {
           return state;
         } else {
           id = action.res.google_civic_election_id;
-          GuideActions.retrieveGuidesToFollow(id);
-          GuideActions.voterGuidesFollowedRetrieve(id);
+          VoterGuideActions.retrieveGuidesToFollow(id);
+          VoterGuideActions.voterGuidesFollowedRetrieve(id);
           return state;
         }
 
       case "voterAddressRetrieve": // refresh guides when you change address
         id = action.res.google_civic_election_id;
-        GuideActions.retrieveGuidesToFollow(id);
-        GuideActions.voterGuidesFollowedRetrieve(id);
+        VoterGuideActions.retrieveGuidesToFollow(id);
+        VoterGuideActions.voterGuidesFollowedRetrieve(id);
         return state;
 
       case "voterFollowAllOrganizationsFollowedByOrganization":
         voter_linked_organization_we_vote_id = VoterStore.getVoter().linked_organization_we_vote_id;
         // organization_we_vote_id is the organization that was just followed
         organization_we_vote_id = action.res.organization_we_vote_id;
-        GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter follows a new org, update list
+        VoterGuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter follows a new org, update list
         // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
-        GuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
+        VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
         // Update who the organization is followed by
-        GuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
-        GuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
+        VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
+        VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
         // Update the guides the voter is following
-        GuideActions.voterGuidesFollowedRetrieve();
+        VoterGuideActions.voterGuidesFollowedRetrieve();
         // Update the followers of the organization that was just followed: organization_we_vote_id
-        GuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
+        VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
         // Following one org can change the support/oppose count for many ballot items for the voter
         SupportActions.positionsCountForAllBallotItems();
         return state;
@@ -128,7 +128,7 @@ class GuideStore extends FluxMapStore {
 
         // If no voter guides found , and it's not a search query, retrieve results for all elections
         if (is_empty && election_id_exists && !search_term_exists ) {
-          GuideActions.retrieveGuidesToFollow(0);
+          VoterGuideActions.retrieveGuidesToFollow(0);
           return state;
         }
 
@@ -339,4 +339,4 @@ class GuideStore extends FluxMapStore {
   }
 }
 
-module.exports = new GuideStore(Dispatcher);
+module.exports = new VoterGuideStore(Dispatcher);

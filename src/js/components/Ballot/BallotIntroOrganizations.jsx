@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import GuideActions from "../../actions/GuideActions";
+import VoterGuideActions from "../../actions/VoterGuideActions";
 import OrganizationFollowToggle from "./OrganizationFollowToggle";
-import GuideStore from "../../stores/GuideStore";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 
 const NEXT_BUTTON_TEXT = "Next >";
 const SKIP_BUTTON_TEXT = "Skip >";
@@ -27,20 +27,20 @@ export default class BallotIntroFollowAdvisers extends Component {
   }
 
   componentDidMount () {
-    GuideActions.retrieveGuidesToFollowByIssuesFollowed();
-    this._onGuideStoreChange();
+    VoterGuideActions.retrieveGuidesToFollowByIssuesFollowed();
+    this._onVoterGuideStoreChange();
     this.onOrganizationFollow = this.onOrganizationFollow.bind(this);
     this.onOrganizationStopFollowing = this.onOrganizationStopFollowing.bind(this);
     this.onNext = this.onNext.bind(this);
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
   }
 
   componentWillUnmount () {
-    this.guideStoreListener.remove();
+    this.voterGuideStoreListener.remove();
   }
 
-  _onGuideStoreChange () {
-    this.setState({ voter_guides_to_follow_by_issues_followed: GuideStore.getVoterGuidesToFollowByIssuesFollowed() });
+  _onVoterGuideStoreChange () {
+    this.setState({ voter_guides_to_follow_by_issues_followed: VoterGuideStore.getVoterGuidesToFollowByIssuesFollowed() });
   }
 
   onOrganizationFollow (organization_we_vote_id) {

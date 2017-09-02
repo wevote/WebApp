@@ -1,6 +1,6 @@
 var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
-import GuideActions from "../actions/GuideActions";
+import VoterGuideActions from "../actions/VoterGuideActions";
 import OrganizationActions from "../actions/OrganizationActions";
 import SupportActions from "../actions/SupportActions";
 import VoterStore from "../stores/VoterStore";
@@ -83,25 +83,25 @@ class OrganizationStore extends FluxMapStore {
     switch (action.type) {
 
       case "organizationFollow":
-        // We also listen to "organizationFollow" in GuideStore so we can alter organization_we_vote_ids_to_follow_all and organization_we_vote_ids_to_follow_for_latest_ballot_item
+        // We also listen to "organizationFollow" in VoterGuideStore so we can alter organization_we_vote_ids_to_follow_all and organization_we_vote_ids_to_follow_for_latest_ballot_item
         // voter_linked_organization_we_vote_id is the voter who clicked the Follow button
         voter_linked_organization_we_vote_id = action.res.voter_linked_organization_we_vote_id;
         // organization_we_vote_id is the organization that was just followed
         organization_we_vote_id = action.res.organization_we_vote_id;
         if (action.res.organization_follow_based_on_issue) {
-          GuideActions.retrieveGuidesToFollowByIssuesFollowed();  // Whenever a voter follows a new org, update list
+          VoterGuideActions.retrieveGuidesToFollowByIssuesFollowed();  // Whenever a voter follows a new org, update list
         } else {
-          GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter follows a new org, update list
+          VoterGuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter follows a new org, update list
         }
         // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
-        GuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
+        VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
         // Update who the organization is followed by
-        GuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
-        GuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
+        VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
+        VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
         // Update the guides the voter is following
-        GuideActions.voterGuidesFollowedRetrieve();
+        VoterGuideActions.voterGuidesFollowedRetrieve();
         // Update the followers of the organization that was just followed: organization_we_vote_id
-        GuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
+        VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
         // Following one org can change the support/oppose count for many ballot items for the voter
         SupportActions.positionsCountForAllBallotItems();
         // Retrieve the organizations followed by voter
@@ -113,22 +113,22 @@ class OrganizationStore extends FluxMapStore {
         };
 
       case "organizationStopFollowing":
-        // We also listen to "organizationStopFollowing" in GuideStore so we can alter organization_we_vote_ids_to_follow_all
+        // We also listen to "organizationStopFollowing" in VoterGuideStore so we can alter organization_we_vote_ids_to_follow_all
 
         // voter_linked_organization_we_vote_id is the voter who clicked the Follow button
         voter_linked_organization_we_vote_id = action.res.voter_linked_organization_we_vote_id;
         // organization_we_vote_id is the organization that was just followed
         organization_we_vote_id = action.res.organization_we_vote_id;
-        GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter stops following an org, update list
+        VoterGuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter stops following an org, update list
         // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
-        GuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
+        VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
         // Update who the organization is followed by
-        GuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
-        GuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
+        VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
+        VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
         // Update the guides the voter is following
-        GuideActions.voterGuidesFollowedRetrieve();
+        VoterGuideActions.voterGuidesFollowedRetrieve();
         // Update the followers of the organization that was just un-followed: organization_we_vote_id
-        GuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
+        VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
         // Un-Following one org can change the support/oppose count for many ballot items for the voter
         SupportActions.positionsCountForAllBallotItems();
         return {
@@ -137,22 +137,22 @@ class OrganizationStore extends FluxMapStore {
         };
 
       case "organizationFollowIgnore":
-        // We also listen to "organizationFollowIgnore" in GuideStore so we can alter organization_we_vote_ids_to_follow_all and organization_we_vote_ids_to_follow_for_latest_ballot_item
+        // We also listen to "organizationFollowIgnore" in VoterGuideStore so we can alter organization_we_vote_ids_to_follow_all and organization_we_vote_ids_to_follow_for_latest_ballot_item
 
         // voter_linked_organization_we_vote_id is the voter who clicked the Follow button
         voter_linked_organization_we_vote_id = action.res.voter_linked_organization_we_vote_id;
         // organization_we_vote_id is the organization that was just followed
         organization_we_vote_id = action.res.organization_we_vote_id;
-        GuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter ignores an org, update list
+        VoterGuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter ignores an org, update list
         // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
-        GuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
+        VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
         // Update who the organization is followed by
-        GuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
-        GuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
+        VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
+        VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
         // Update the guides the voter is following
-        GuideActions.voterGuidesFollowedRetrieve();
+        VoterGuideActions.voterGuidesFollowedRetrieve();
         // Update the followers of the organization that was just ignored: organization_we_vote_id
-        GuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
+        VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
         // Ignoring one org can change the support/oppose count for many ballot items for the voter
         SupportActions.positionsCountForAllBallotItems();
         return {
@@ -344,7 +344,7 @@ class OrganizationStore extends FluxMapStore {
         }
 
       case "voterGuidesFollowedByOrganizationRetrieve":
-        // In GuideStore we listen for "voterGuidesFollowedByOrganizationRetrieve" so we can update
+        // In VoterGuideStore we listen for "voterGuidesFollowedByOrganizationRetrieve" so we can update
         //  all_cached_voter_guides and organization_we_vote_ids_to_follow_organization_recommendation_dict
         voter_guides = action.res.voter_guides;
         let organization_we_vote_id_for_voter_guide_owner = action.res.organization_we_vote_id;
@@ -368,7 +368,7 @@ class OrganizationStore extends FluxMapStore {
         }
 
       case "voterGuideFollowersRetrieve":
-        // In GuideStore, we also listen for a response to "voterGuideFollowersRetrieve" and update all_cached_voter_guides
+        // In VoterGuideStore, we also listen for a response to "voterGuideFollowersRetrieve" and update all_cached_voter_guides
         voter_guides = action.res.voter_guides;
         let organization_we_vote_ids_following_by_organization_dict = state.organization_we_vote_ids_following_by_organization_dict;
         // Reset the followers for this organization
@@ -382,7 +382,7 @@ class OrganizationStore extends FluxMapStore {
         };
 
       // case "voterGuidesFollowedRetrieve":
-      //   // In GuideStore, we listen for a response to "voterGuidesFollowedRetrieve" and update all_cached_voter_guides
+      //   // In VoterGuideStore, we listen for a response to "voterGuidesFollowedRetrieve" and update all_cached_voter_guides
       //   // In OrganizationStore, we listen for a response to "organizationsFollowedRetrieve" instead of "voterGuidesFollowedRetrieve"
 
       case "voterGuidesIgnoredRetrieve":
