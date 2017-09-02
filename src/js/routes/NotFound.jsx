@@ -4,17 +4,18 @@ import { Link } from "react-router";
 import Candidate from "./Ballot/Candidate";
 import Helmet from "react-helmet";
 import LoadingWheel from "../components/LoadingWheel";
-import OrganizationVoterGuide from "./Guide/OrganizationVoterGuide";
+import OrganizationVoterGuide from "./VoterGuide/OrganizationVoterGuide";
 import OrganizationActions from "../actions/OrganizationActions";
-import PositionListForFriends from "./Guide/PositionListForFriends";
+import PositionListForFriends from "./VoterGuide/PositionListForFriends";
 import TwitterActions from "../actions/TwitterActions";
 import TwitterStore from "../stores/TwitterStore";
-import UnknownTwitterAccount from "./Guide/UnknownTwitterAccount";
+import UnknownTwitterAccount from "./VoterGuide/UnknownTwitterAccount";
 import VoterStore from "../stores/VoterStore";
 
 export default class NotFound extends Component {
   static propTypes = {
-    params: PropTypes.object
+    params: PropTypes.object,
+    location: PropTypes.object.isRequired,
   };
 
   constructor (props) {
@@ -108,7 +109,8 @@ export default class NotFound extends Component {
       if (looking_at_positions_for_friends_only) {
         return <PositionListForFriends we_vote_id {...this.props} />;
       } else {
-          return <OrganizationVoterGuide we_vote_id {...this.props} />;
+          return <OrganizationVoterGuide we_vote_id {...this.props}
+                                         location={this.props.location} />;
       }
     } else if (this.state.kind_of_owner === "TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE"){
       return <UnknownTwitterAccount {...this.state} />;

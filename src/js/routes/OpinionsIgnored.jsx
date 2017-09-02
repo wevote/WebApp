@@ -3,8 +3,9 @@ import { Link } from "react-router";
 import Helmet from "react-helmet";
 import GuideStore from "../stores/GuideStore";
 import GuideActions from "../actions/GuideActions";
-import OpinionsIgnoredList from "../components/VoterGuide/OpinionsIgnoredList";
+import OpinionsIgnoredList from "../components/Organization/OpinionsIgnoredList";
 
+// NOTE FROM DALE: This should be refactored to pull in Organizations instead of Voter Guides
 export default class OpinionsIgnored extends Component {
   static propTypes = {
     children: PropTypes.object,
@@ -74,7 +75,8 @@ export default class OpinionsIgnored extends Component {
               }
             </div>
           </div>
-          <Link className="pull-right" to="/opinions_followed">Go back</Link>
+          <Link className="pull-right" to="/opinions_followed">See organizations you follow</Link>
+          <br />
         </div>
       </section>
     </div>;

@@ -1,6 +1,27 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
 module.exports = {
+
+  organizationFollow: function (organization_we_vote_id, organization_follow_based_on_issue = false) {
+    Dispatcher.loadEndpoint("organizationFollow", {
+      organization_we_vote_id: organization_we_vote_id,
+      organization_follow_based_on_issue: organization_follow_based_on_issue
+    });
+  },
+
+  organizationFollowIgnore: function (organization_we_vote_id) {
+    Dispatcher.loadEndpoint("organizationFollowIgnore", { organization_we_vote_id: organization_we_vote_id});
+  },
+
+  organizationStopFollowing: function (organization_we_vote_id) {
+    Dispatcher.loadEndpoint("organizationStopFollowing", { organization_we_vote_id: organization_we_vote_id});
+  },
+
+  organizationsFollowedRetrieve: function (auto_followed_from_twitter_suggestion) {
+    Dispatcher.loadEndpoint("organizationsFollowedRetrieve", {
+      auto_followed_from_twitter_suggestion: auto_followed_from_twitter_suggestion} );
+  },
+
   saveFromFacebook: function (facebook_id, facebook_email, facebook_profile_image_url_https, organization_name) {
     Dispatcher.loadEndpoint("organizationSave",
       {
@@ -45,9 +66,5 @@ module.exports = {
         friends_vs_public: "FRIENDS_ONLY",
         kind_of_opinion_maker: "ORGANIZATION"
       });
-  },
-
-  organizationsFollowedRetrieve: function () {
-    Dispatcher.loadEndpoint("organizationsFollowedRetrieve");
   },
 };

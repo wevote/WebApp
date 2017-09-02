@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import {Button} from "react-bootstrap";
-import GuideActions from "../../actions/GuideActions";
+import OrganizationActions from "../../actions/OrganizationActions";
 import ImageHandler from "../ImageHandler";
 
 export default class OrganizationFollowToggle extends Component {
@@ -30,14 +30,14 @@ export default class OrganizationFollowToggle extends Component {
     if (!this.state.is_following) {
       this.setState({is_following: true});
       let organization_follow_based_on_issue = true;
-      GuideActions.organizationFollow(this.props.organization_we_vote_id, organization_follow_based_on_issue);
+      OrganizationActions.organizationFollow(this.props.organization_we_vote_id, organization_follow_based_on_issue);
       this.props.on_organization_follow(this.props.organization_we_vote_id);
     }
   }
 
   onOrganizationStopFollowing () {
     this.setState({is_following: false});
-    GuideActions.organizationStopFollowing(this.props.organization_we_vote_id);
+    OrganizationActions.organizationStopFollowing(this.props.organization_we_vote_id);
     this.props.on_organization_stop_following(this.props.organization_we_vote_id);
   }
 

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { browserHistory } from "react-router";
-import GuidePositionListForVoter from "./Guide/GuidePositionListForVoter";
+import GuidePositionListForVoter from "./VoterGuide/GuidePositionListForVoter";
 import LoadingWheel from "../components/LoadingWheel";
 import OrganizationActions from "../actions/OrganizationActions";
 import TwitterHandleBox from "../components/Twitter/TwitterHandleBox";

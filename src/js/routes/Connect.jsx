@@ -2,18 +2,16 @@ import React, { Component } from "react";
 import { Link } from "react-router";
 import AddFriendsByEmail from "../components/Friends/AddFriendsByEmail";
 import CurrentFriends from "../components/Connect/CurrentFriends";
-import GuideActions from "../actions/GuideActions";
 import GuideStore from "../stores/GuideStore";
 import FriendActions from "../actions/FriendActions";
 import FriendStore from "../stores/FriendStore";
 import FacebookActions from "../actions/FacebookActions";
 import FacebookStore from "../stores/FacebookStore";
 import Helmet from "react-helmet";
+import OrganizationActions from "../actions/OrganizationActions";
 import OrganizationsFollowedOnTwitter from "../components/Connect/OrganizationsFollowedOnTwitter";
 import AddFacebookFriends from "../components/Connect/AddFacebookFriends";
 import ItemTinyOpinionsToFollow from "../components/VoterGuide/ItemTinyOpinionsToFollow";
-
-/* VISUAL DESIGN HERE: https://invis.io/E45246B2C */
 
 export default class Connect extends Component {
 	static propTypes = {
@@ -37,7 +35,7 @@ export default class Connect extends Component {
 
   componentDidMount () {
     if (this.state.organizations_followed_on_twitter_list) {
-      GuideActions.organizationsFollowedRetrieve();
+      OrganizationActions.organizationsFollowedRetrieve();
     }
     this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
 
