@@ -114,8 +114,9 @@ export default class VoterGuideEditIssues extends Component {
     return <div className="col-md-8 col-sm-12">
       <div className="card">
         <div className="card-main">
-          <h1 className="h2">Issues Related to Your Voter Guide</h1>
-          <br />
+          <h1 className="h2 hidden-xs">Issues Related to Your Voter Guide</h1>
+          <h1 className="h4 hidden-sm hidden-md hidden-lg">Issues Related to Your Voter Guide</h1>
+          <p>Help voters find your voter guide. Specify the issues on which you take positions.</p>
           <div className="tabs__tabs-container-wrap">
             <div className="tabs__tabs-container hidden-print">
               <span className="pull-right">

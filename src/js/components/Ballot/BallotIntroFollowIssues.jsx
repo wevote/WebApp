@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 import IssueActions from "../../actions/IssueActions";
-import IssueFollowToggleSquare from "./IssueFollowToggleSquare";
+import IssueFollowToggleSquare from "../Issues/IssueFollowToggleSquare";
 import IssueStore from "../../stores/IssueStore";
 
 const NEXT_BUTTON_TEXT = "Next >";
@@ -138,7 +138,7 @@ export default class BallotIntroFollowIssues extends Component {
         issue_we_vote_id={issue.issue_we_vote_id}
         issue_name={issue.issue_name}
         issue_description={issue.issue_description}
-        issue_image_url={issue.issue_photo_url_medium}
+        issue_image_url={issue.issue_image_url}
         on_issue_follow={this.onIssueFollow}
         on_issue_stop_following={this.onIssueStopFollowing}
         edit_mode={edit_mode} />;

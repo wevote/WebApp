@@ -65,9 +65,9 @@
 
 // For display of tiny thumbnail images for organizational voter guides
 .organization-image-tiny {
-  margin-left: $space-xs;
-  width: 30px;
-  border-radius: $radius-sm;
+  margin-left: $space-xxs;
+  width: 24px; // 24px is set in WeVoteServer environment_variables
+  border-radius: $radius-xs;
   @include breakpoints(small) {
     // TODO DALE this seems to always get set
     // max-width: 20px;

@@ -58,9 +58,10 @@ export default class IssueFollowToggle extends Component {
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
         <div className="intro-modal__hide-sm intro-modal__margin-right">
           <ImageHandler className="intro-modal__hide-sm hidden-sm card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
-            sizeClassName="icon-candidate-small u-push--sm "
-            alt="issue-photo"
-            kind_of_image="ISSUE"
+                        sizeClassName="icon-candidate-small u-push--sm "
+                        alt="issue-photo"
+                        kind_of_image="ISSUE"
+                        imageUrl={this.props.issue_image_url}
           />
         </div>
         <span className="intro-modal__span intro-modal__margin-right">
@@ -79,6 +80,7 @@ export default class IssueFollowToggle extends Component {
                         sizeClassName="icon-candidate-small u-push--sm "
                         alt="issue-photo"
                         kind_of_image="ISSUE"
+                        imageUrl={this.props.issue_image_url}
           />
         </div>
 

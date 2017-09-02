@@ -27,7 +27,7 @@ export default class FollowToggle extends Component {
   }
 
   componentWillUnmount (){
-    this.guideStoreListener.remove();
+    this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
   }
 

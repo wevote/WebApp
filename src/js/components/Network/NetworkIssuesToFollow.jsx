@@ -2,7 +2,7 @@ import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
 import IssueActions from "../../actions/IssueActions";
-import IssueFollowToggle from "../Ballot/IssueFollowToggle";
+import IssueFollowToggle from "../Issues/IssueFollowToggle";
 import IssueStore from "../../stores/IssueStore";
 
 
