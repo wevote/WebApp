@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import FollowToggle from "../Widgets/FollowToggle";
-import GuideActions from "../../actions/GuideActions";
-import OrganizationDisplayForList from "./OrganizationDisplayForList";
+import OrganizationActions from "../../actions/OrganizationActions";
+import VoterGuideDisplayForList from "./VoterGuideDisplayForList";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 
 export default class GuideList extends Component {
@@ -42,7 +42,7 @@ export default class GuideList extends Component {
   }
 
   handleIgnore (id) {
-    GuideActions.organizationFollowIgnore(id);
+    OrganizationActions.organizationFollowIgnore(id);
     this.setState({ organizations_to_follow: this.state.organizations_to_follow.filter( (org) => { return org.organization_we_vote_id !== id;})});
   }
 
@@ -57,7 +57,7 @@ export default class GuideList extends Component {
         // console.log("GuideList org === undefined");
         return null;
       } else {
-        return <OrganizationDisplayForList key={org.organization_we_vote_id} {...org}>
+        return <VoterGuideDisplayForList key={org.organization_we_vote_id} {...org}>
           <FollowToggle we_vote_id={org.organization_we_vote_id}
                         hide_stop_following_button={this.props.hide_stop_following_button}/>
           { this.props.hide_ignore_button ?
@@ -66,7 +66,7 @@ export default class GuideList extends Component {
                     onClick={this.handleIgnore.bind(this, org.organization_we_vote_id)}>
               Ignore
             </button> }
-        </OrganizationDisplayForList>;
+        </VoterGuideDisplayForList>;
       }
     });
     // console.log("GuideList orgs: ", orgs);

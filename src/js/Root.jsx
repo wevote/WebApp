@@ -24,8 +24,8 @@ import FAQ from "./routes/More/FAQ";
 import FacebookInvitableFriends from "./routes/FacebookInvitableFriends";
 import Friends from "./routes/Friends";
 import GetStarted from "./routes/Intro/GetStarted";
-import OrganizationVoterGuide from "./routes/Guide/OrganizationVoterGuide";
-import OrganizationVoterGuideEdit from "./routes/Guide/OrganizationVoterGuideEdit";
+import OrganizationVoterGuide from "./routes/VoterGuide/OrganizationVoterGuide";
+import OrganizationVoterGuideEdit from "./routes/VoterGuide/OrganizationVoterGuideEdit";
 import HowToUse from "./routes/More/HowToUse";
 import Intro from "./routes/Intro/Intro";
 import IntroContests from "./routes/Intro/IntroContests";
@@ -64,7 +64,7 @@ import TwitterSignInProcessOld from "./routes/Process/TwitterSignInProcessOld";
 import VerifyEmailProcess from "./routes/Process/VerifyEmailProcess";
 import FriendInvitationByEmailVerifyProcess from "./routes/Process/FriendInvitationByEmailVerifyProcess";
 import VoterGuideFollowing from "./components/VoterGuide/VoterGuideFollowing";
-import VerifyThisIsMe from "./routes/Guide/VerifyThisIsMe";
+import VerifyThisIsMe from "./routes/VoterGuide/VerifyThisIsMe";
 import Vision from "./routes/More/Vision";
 import Welcome from "./routes/Welcome";
 import YourPage from "./routes/YourPage";
@@ -147,7 +147,7 @@ const routes = () =>
 
     {/* Voter Guide Pages */}
     <Route path="/voterguide/:organization_we_vote_id" component={OrganizationVoterGuide} />
-    <Route path="/voterguide/:organization_we_vote_id/af" component={OrganizationVoterGuide} />
+    <Route path="/voterguide/:organization_we_vote_id/:action_variable" component={OrganizationVoterGuide} />
     <Route path="/voterguideedit/:organization_we_vote_id" component={OrganizationVoterGuideEdit} />
     <Route path="/voterguideedit/:organization_we_vote_id/:edit_mode" component={OrganizationVoterGuideEdit} />
     <Route path="/voterguideedit/:organization_we_vote_id/:edit_mode/:active_tab" component={OrganizationVoterGuideEdit} />

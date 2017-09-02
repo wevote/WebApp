@@ -1,9 +1,9 @@
 import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
-import GuideStore from "../stores/GuideStore";
-import GuideActions from "../actions/GuideActions";
-import OpinionsFollowedList from "../components/VoterGuide/OpinionsFollowedList";
+import OrganizationActions from "../actions/OrganizationActions";
+import OrganizationStore from "../stores/OrganizationStore";
+import OpinionsFollowedList from "../components/Organization/OpinionsFollowedList";
 
 export default class OpinionsFollowed extends Component {
   static propTypes = {
@@ -14,26 +14,26 @@ export default class OpinionsFollowed extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      voter_guide_followed_list: [],
+      organizations_followed_list: [],
       editMode: false
     };
   }
 
   componentDidMount () {
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
-    GuideActions.voterGuidesFollowedRetrieve();
+    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
+    OrganizationActions.organizationsFollowedRetrieve();
     this.setState({
-      voter_guide_followed_list: GuideStore.getVoterGuidesVoterIsFollowing()
+      organizations_followed_list: OrganizationStore.getOrganizationsVoterIsFollowing()
     });
   }
 
   componentWillUnmount (){
-    this.guideStoreListener.remove();
+    this.organizationStoreListener.remove();
   }
 
-  _onGuideStoreChange (){
+  _onOrganizationStoreChange (){
     this.setState({
-      voter_guide_followed_list: GuideStore.getVoterGuidesVoterIsFollowing()
+      organizations_followed_list: OrganizationStore.getOrganizationsVoterIsFollowing()
     });
   }
 
@@ -65,7 +65,7 @@ export default class OpinionsFollowed extends Component {
   }
 
   render () {
-    // console.log("OpinionsFollowed, this.state.voter_guide_followed_list: ", this.state.voter_guide_followed_list);
+    // console.log("OpinionsFollowed, this.state.organizations_followed_list: ", this.state.organizations_followed_list);
     return <div className="opinions-followed__container">
       <Helmet title="Organizations You Follow - We Vote" />
       <section className="card">
@@ -81,8 +81,8 @@ export default class OpinionsFollowed extends Component {
           <div className="voter-guide-list card">
             <div className="card-child__list-group">
               {
-                this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length ?
-                <OpinionsFollowedList organizationsFollowed={this.state.voter_guide_followed_list}
+                this.state.organizations_followed_list && this.state.organizations_followed_list.length ?
+                <OpinionsFollowedList organizationsFollowed={this.state.organizations_followed_list}
                                       editMode={this.state.editMode}
                                       instantRefreshOn /> :
                   null

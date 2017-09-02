@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from "react";
 import FollowToggle from "../Widgets/FollowToggle";
-import GuideActions from "../../actions/GuideActions";
-import OrganizationDisplayForListCompressed from "./OrganizationDisplayForListCompressed";
+import OrganizationActions from "../../actions/OrganizationActions";
+import OrganizationDisplayForList from "./OrganizationDisplayForList";
+import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 
-export default class OpinionsFollowedListCompressed extends Component {
+export default class OpinionsFollowedList extends Component {
 
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
@@ -38,7 +39,7 @@ export default class OpinionsFollowedListCompressed extends Component {
   }
 
   handleIgnore (id) {
-    GuideActions.organizationFollowIgnore(id);
+    OrganizationActions.organizationFollowIgnore(id);
     this.setState({
       organizations_followed: this.state.organizations_followed.filter( (org) => {
         return org.organization_we_vote_id !== id;
@@ -55,17 +56,19 @@ export default class OpinionsFollowedListCompressed extends Component {
     // there is probably a more elegant way to do this, but left it this way for now as it works.
     const orgs = this.state.organizations_followed.map( (org) => {
       if (this.props.editMode) {
-        return <OrganizationDisplayForListCompressed key={org.organization_we_vote_id} {...org}>
+        return <OrganizationDisplayForList key={org.organization_we_vote_id} {...org}>
               <FollowToggle we_vote_id={org.organization_we_vote_id} /><span />
-            </OrganizationDisplayForListCompressed>;
+            </OrganizationDisplayForList>;
       } else {
-        return <OrganizationDisplayForListCompressed key={org.organization_we_vote_id} {...org}>
-              <span /><span /></OrganizationDisplayForListCompressed>;
+        return <OrganizationDisplayForList key={org.organization_we_vote_id} {...org}>
+              <span /><span /></OrganizationDisplayForList>;
       }
     });
 
     return <div className="guidelist card-child__list-group">
+        <ReactCSSTransitionGroup transitionName="org-ignore" transitionEnterTimeout={4000} transitionLeaveTimeout={2000}>
           {orgs}
+        </ReactCSSTransitionGroup>
       </div>;
   }
 

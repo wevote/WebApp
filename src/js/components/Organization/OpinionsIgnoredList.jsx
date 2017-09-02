@@ -1,14 +1,14 @@
 import React, { Component, PropTypes } from "react";
 import FollowToggle from "../Widgets/FollowToggle";
-import GuideActions from "../../actions/GuideActions";
-import OrganizationDisplayForList from "./OrganizationDisplayForList";
+import VoterGuideDisplayForList from "../VoterGuide/VoterGuideDisplayForList";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 
-export default class OpinionsFollowedList extends Component {
+// NOTE FROM DALE: When OpinionsIgnoredList is refactored, this should be refactored to display Organizations instead of Voter Guides
+export default class OpinionsIgnoredList extends Component {
 
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
-    organizationsFollowed: PropTypes.array,
+    organizationsIgnored: PropTypes.array,
     instantRefreshOn: PropTypes.bool,
     editMode: PropTypes.bool
   };
@@ -16,14 +16,14 @@ export default class OpinionsFollowedList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      organizations_followed: [],
+      organizations_ignored: this.props.organizationsIgnored,
       ballot_item_we_vote_id: ""
     };
   }
 
   componentDidMount () {
     this.setState({
-      organizations_followed: this.props.organizationsFollowed,
+      organizations_ignored: this.props.organizationsIgnored,
       ballot_item_we_vote_id: this.props.ballotItemWeVoteId
     });
   }
@@ -32,36 +32,27 @@ export default class OpinionsFollowedList extends Component {
     //if (nextProps.instantRefreshOn ) {
       // NOTE: This is off because we don't want the organization to disappear from the "More opinions" list when clicked
       this.setState({
-        organizations_followed: nextProps.organizationsFollowed,
+        organizations_ignored: nextProps.organizationsIgnored,
         ballot_item_we_vote_id: nextProps.ballotItemWeVoteId
       });
     //}
   }
 
-  handleIgnore (id) {
-    GuideActions.organizationFollowIgnore(id);
-    this.setState({
-      organizations_followed: this.state.organizations_followed.filter( (org) => {
-        return org.organization_we_vote_id !== id;
-      })
-    });
-  }
-
   render () {
-    if (this.state.organizations_followed === undefined) {
+    if (this.state.organizations_ignored === undefined) {
       return null;
     }
     // zachmonteith: extra span tags inside of OrganizationDisplayForList are to ensure that {org} gets passed in
     // as an array rather than an object, so that our propTypes validations in OrganizationDisplayForList work.
     // there is probably a more elegant way to do this, but left it this way for now as it works.
-    const orgs = this.state.organizations_followed.map( (org) => {
+    const orgs = this.state.organizations_ignored.map( (org) => {
       if (this.props.editMode) {
-        return <OrganizationDisplayForList key={org.organization_we_vote_id} {...org}>
+        return <VoterGuideDisplayForList key={org.organization_we_vote_id} {...org}>
               <FollowToggle we_vote_id={org.organization_we_vote_id} /><span />
-            </OrganizationDisplayForList>;
+            </VoterGuideDisplayForList>;
       } else {
-        return <OrganizationDisplayForList key={org.organization_we_vote_id} {...org}>
-              <span /><span /></OrganizationDisplayForList>;
+        return <VoterGuideDisplayForList key={org.organization_we_vote_id} {...org}>
+              <span /><span /></VoterGuideDisplayForList>;
       }
     });
 

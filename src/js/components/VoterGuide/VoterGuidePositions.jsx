@@ -62,9 +62,11 @@ export default class VoterGuidePositions extends Component {
         current_organization_we_vote_id: nextProps.organization.organization_we_vote_id,
         organization: nextProps.organization
       });
-    } else {
-      // console.log("VoterGuidePositions, componentWillReceiveProps, not different");
-      // this.setState({organization: nextProps.organization}); // This causes problems with resetting attached lists
+    // } else {
+    //   console.log("VoterGuidePositions, componentWillReceiveProps, not different");
+      // We do not refresh the organization since we don't want to cause the positions to have to re-render and
+      //  "flash" on the screen
+      // this.setState({organization: nextProps.organization});
     }
   }
 
