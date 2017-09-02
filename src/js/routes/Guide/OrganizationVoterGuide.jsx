@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
 import { Button } from "react-bootstrap";
+import AnalyticsActions from "../../actions/AnalyticsActions";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import GuideActions from "../../actions/GuideActions";
 import HeaderBar from "../../components/Navigation/HeaderBar";
@@ -33,6 +34,7 @@ export default class OrganizationVoterGuide extends Component {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
     OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
+    AnalyticsActions.saveActionVoterGuideVisit(this.props.params.organization_we_vote_id);
     // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
     // console.log("action_variable: " + this.props.params.action_variable);
     if (this.props.params.action_variable === AUTO_FOLLOW && this.props.params.organization_we_vote_id) {
@@ -52,6 +54,7 @@ export default class OrganizationVoterGuide extends Component {
 
     // We refresh the data for all three tabs here on the top level
     OrganizationActions.organizationRetrieve(nextProps.params.organization_we_vote_id);
+    AnalyticsActions.saveActionVoterGuideVisit(nextProps.params.organization_we_vote_id);
     // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
   }
 

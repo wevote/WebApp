@@ -174,7 +174,7 @@ export default class VoterGuidePositions extends Component {
                 <div>You have not taken any positions yet for this election.
                   Click 'Ballot' in the top navigation bar to see items you can support or oppose.<br />
                   <br />
-                  <span>Until you take positions for this voter guide, we will recommend visitors look at any other voter guides you are following. </span>
+                  <span>Until you take positions, we recommend visitors look at other voter guides you follow. </span>
                   <VoterGuideRecommendationsFromOneOrganization organization_we_vote_id={this.state.organization.organization_we_vote_id} />
                 </div> :
                 <div>
