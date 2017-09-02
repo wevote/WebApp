@@ -186,6 +186,11 @@ export default class Intro extends Component {
         </div>
       </section>
 
+      <section className="quick-links-section u-flex">
+        <a className="quick-links__button quick-links__button-left" onClick={() => browserHistory.push("/ballot")}>Get Started</a>
+        <a className="quick-links__button quick-links__button-right" onClick={() => browserHistory.push("/more/sign_in")}>Create Voter Guide</a>
+      </section>
+
       <section className="features-section">
         <div className="container">
           <div className="features-your-mission__block">

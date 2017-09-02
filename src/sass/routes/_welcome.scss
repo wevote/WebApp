@@ -1,6 +1,8 @@
+$cta-color: #fb2f2f;
+
 .welcome-page {
   .cta-button {
-    background-color: #fb2f2f; // stylelint-disable-line sh-waqar/declaration-use-variable
+    background-color: $cta-color;
   }
 
   .hero-section {
@@ -30,6 +32,34 @@
 
   .form-control {
     width: 100%;
+  }
+
+  .quick-links {
+    &__button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: $white;
+      font-size: 1.6em;
+      width: 100%;
+      text-align: center;
+      padding: 1em; // stylelint-disable-line sh-waqar/declaration-use-variable
+      line-height: 1em;
+      transition: background .3s;
+
+      &-left {
+        background: $cta-color;
+      }
+
+      &-right {
+        background: #476480;
+      }
+
+      &:hover {
+        background: $brand-blue;
+        text-decoration: none;
+      }
+    }
   }
 
   .features {
