@@ -44,6 +44,14 @@
       align-items: center;
       text-align: center;
       padding-bottom: $space-md;
+
+      .h1 {
+        line-height: 1.2;
+      }
+
+      .h2 {
+        font-weight: normal;
+      }
     }
 
     &__block {
