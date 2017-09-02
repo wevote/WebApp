@@ -116,15 +116,15 @@ export default class Intro extends Component {
       <section className="hero-section">
         <div className="container">
           <Row>
-            <div className="col-md-11 push-md-1">
-              <Row className="visible-xs visible-sm">
+            <div className="col-md-12">
+              <Row className="visible-xs">
                 <h1 className="col-sm-12 u-f1 u-bold u-stack--lg">
                   View your ballot.<br />
                   Learn from friends.<br />
                   Share your vision.
                 </h1>
               </Row>
-              <Row className="hidden-xs hidden-sm">
+              <Row className="hidden-xs">
                 <h1 className="col-md-6 u-f1 u-bold u-stack--lg">
                   View your ballot.<br />
                   Learn from friends.
@@ -148,8 +148,8 @@ export default class Intro extends Component {
                     <div>
                       <p>Sign up for updates and be the first to use We Vote.</p>
 
-                      <form className="form-inline" onSubmit={this.voterEmailAddressSignUpSave.bind(this)}>
-                        <FormGroup className="u-push--sm">
+                      <form className="row form-inline" onSubmit={this.voterEmailAddressSignUpSave.bind(this)}>
+                        <FormGroup className="col-md-4">
                           <label className="sr-only" htmlFor="name">Name</label>
                           <input className="form-control"
                                  type="text"
@@ -159,7 +159,7 @@ export default class Intro extends Component {
                                  onChange={this.updateVoterFullName.bind(this)}
                                  placeholder="Name"/>
                         </FormGroup>
-                        <FormGroup className="u-push--sm">
+                        <FormGroup className="col-md-4">
                           <label className="sr-only" htmlFor="exampleEmail">Email</label>
                           <input className="form-control"
                                  type="email"
@@ -169,10 +169,13 @@ export default class Intro extends Component {
                                  onChange={this.updateVoterEmailAddress.bind(this)}
                                  placeholder="Email Address"/>
                         </FormGroup>
-                        <Button bsStyle="danger"
-                                type="submit"
-                                onClick={this.voterEmailAddressSignUpSave.bind(this)}
-                                >Sign Up</Button>
+                        <FormGroup className="col-md-4">
+                          <Button className="form-control"
+                                  bsStyle="danger"
+                                  type="submit"
+                                  onClick={this.voterEmailAddressSignUpSave.bind(this)}
+                                  >Sign Up</Button>
+                        </FormGroup>
                       </form>
                     </div>
                   }
@@ -192,7 +195,7 @@ export default class Intro extends Component {
           <Row className="u-stack--lg">
             <div className="col-6 col-md-4 u-flex u-justify-center">
               <div className="features__block">
-                <img className="features__image" src="/img/welcome/benefits/view-your-ballot.png" width="50%" height="50%" />
+                <img className="features__image" src="/img/welcome/benefits/view-your-ballot.png" width="25%" height="25%" />
                 <h3 className="features__h3">View Your Ballot</h3>
                 <p className="features__p">You will see your actual ballot, including candidates and measures.</p>
               </div>
@@ -206,7 +209,7 @@ export default class Intro extends Component {
             </div>
             <div className="col-6 col-md-4 u-flex u-justify-center">
               <div className="features__block">
-                <img className="features__image" src="/img/welcome/benefits/see-position.png" width="50%" height="50%" />
+                <img className="features__image" src="/img/welcome/benefits/see-position.png" />
                 <h3 className="features__h3">See Your Network's Positions</h3>
                 <p className="features__p">See how many (in your network) support or oppose each candidate or measure.</p>
               </div>
