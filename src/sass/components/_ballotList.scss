@@ -1,6 +1,3 @@
-$full-width: 100%;
-$minus-space-md: -$space-md;
-
 .BallotList {
   @include print {
     column-count: 2;
@@ -17,7 +14,7 @@ $minus-space-md: -$space-md;
     color: $gray-dark;
     @include breakpoints(max mid-small) {
       font-size: 18px;
-      max-width: $full-width;
+      max-width: 100%;
       // padding-right: 30px; // TODO: adjust for bookmark icon
       white-space: nowrap;
       overflow: hidden;
@@ -85,7 +82,7 @@ $minus-space-md: -$space-md;
 
 .BallotItemsSummary {
   padding-top: $space-md;
-  margin-bottom: $minus-space-md;
+  margin-bottom: -$space-md; // stylelint-disable-line sh-waqar/declaration-use-variable
   // Has the result of float center
   // float: right;
   // position: relative;

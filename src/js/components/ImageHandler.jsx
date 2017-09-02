@@ -43,6 +43,9 @@ export default class ImageHandler extends Component {
         replacementClass = "icon-main image-person-placeholder";
         place_holder_image_url = "/img/global/svg-icons/issue-generic.svg";
         break;
+      case "ISSUE-PHOTO":
+        place_holder_image_url = "/img/global/svg-icons/issue-photo-generic.svg";
+        break;
       default:
         replacementClass = "icon-main image-organization-placeholder";
         place_holder_image_url = "/img/global/svg-icons/organization-icon.svg";

@@ -272,6 +272,50 @@
     @extend .intro-modal__responsive-height;
     @extend .intro-modal__padding-top;
   }
+
+  &__issue-grid {
+    padding: $space-none $space-md;
+  }
+
+  &__issue-square {
+    position: relative;
+    text-align: left;
+    padding: $space-xs;
+
+    &-image {
+      height: 100%;
+      width: 100%;
+      border: 1px solid $gray-border;
+      border-radius: $space-sm;
+      filter: brightness(80%) contrast(80%);
+    }
+
+    &-following {
+      filter: brightness(40%);
+    }
+
+    &-check-mark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: scale(.5);
+    }
+
+    &-name {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      left: 12px;
+      font-size: .875rem;
+      text-shadow: 1px 1px 2px rgba($black, .6);
+      @include breakpoints (max mid-small) {
+        right: 10px;
+        bottom: 10px;
+        left: 10px;
+        font-size: .675rem;
+      }
+    }
+  }
 }
 
 .intro-modal-vertical-scroll {
