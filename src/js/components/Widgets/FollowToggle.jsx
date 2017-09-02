@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import GuideStore from "../../stores/GuideStore";
+import OrganizationStore from "../../stores/OrganizationStore";
 import GuideActions from "../../actions/GuideActions";
 import VoterStore from "../../stores/VoterStore";
 
@@ -20,8 +20,8 @@ export default class FollowToggle extends Component {
   }
 
   componentDidMount (){
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
-    this._onGuideStoreChange();
+    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
+    this._onOrganizationStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     this._onVoterStoreChange();
   }
@@ -31,8 +31,8 @@ export default class FollowToggle extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onGuideStoreChange (){
-    this.setState({ is_following: GuideStore.isVoterFollowingThisOrganization(this.props.we_vote_id)});
+  _onOrganizationStoreChange (){
+    this.setState({ is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.we_vote_id)});
   }
 
   _onVoterStoreChange (){

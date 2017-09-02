@@ -1,6 +1,7 @@
 var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
 import GuideActions from "../actions/GuideActions";
+import OrganizationActions from "../actions/OrganizationActions";
 import SupportActions from "../actions/SupportActions";
 import VoterStore from "../stores/VoterStore";
 import { arrayContains } from "../utils/textFormat";
@@ -56,7 +57,6 @@ class GuideStore extends FluxMapStore {
     }
     return filtered_organizations_followed;
   }
-
 
   ballotHasGuides () {
     return this.getState().ballot_has_guides;
@@ -380,6 +380,8 @@ class GuideStore extends FluxMapStore {
         GuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
         // Following one org can change the support/oppose count for many ballot items for the voter
         SupportActions.positionsCountForAllBallotItems();
+        // Retrieve the organizations followed by voter
+        OrganizationActions.organizationsFollowedRetrieve();
         return {
           ...state,
           organization_we_vote_ids_voter_is_following: state.organization_we_vote_ids_voter_is_following.concat(organization_we_vote_id),
