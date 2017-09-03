@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
-import GuideStore from "../../stores/GuideStore";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
 import ItemTinyOpinionsToFollow from "../VoterGuide/ItemTinyOpinionsToFollow";
@@ -32,21 +32,21 @@ export default class MeasureItemCompressed extends Component {
   }
 
   componentDidMount () {
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
-    this._onGuideStoreChange();
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
+    this._onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
   }
 
   componentWillUnmount () {
-    this.guideStoreListener.remove();
+    this.voterGuideStoreListener.remove();
     this.supportStoreListener.remove();
   }
 
-  _onGuideStoreChange () {
+  _onVoterGuideStoreChange () {
     // We just want to trigger a re-render
     this.setState({ transitioning: false });
-    // console.log("_onGuideStoreChange");
+    // console.log("_onVoterGuideStoreChange");
   }
 
   _onSupportStoreChange () {
@@ -61,7 +61,7 @@ export default class MeasureItemCompressed extends Component {
     measure_subtitle = capitalizeString(measure_subtitle);
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
-    let measureGuidesList = GuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id);
+    let measureGuidesList = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id);
 
     let measure_for_modal = {
       ballot_item_display_name: ballot_item_display_name,

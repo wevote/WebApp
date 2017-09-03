@@ -1,5 +1,5 @@
 import React, {Component } from "react";
-import GuideActions from "../../actions/GuideActions";
+import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterStore from "../../stores/VoterStore";
 import SearchBar from "./SearchBar";
 
@@ -17,7 +17,7 @@ const delay_before_retrieve_guides_api_call = 500;
 const handleKeyPress = function () {
     clearTimeout(this.timer);
     this.timer = setTimeout(() => {
-      GuideActions.retrieveGuidesToFollow(this.state.id, this.state.query);
+      VoterGuideActions.retrieveGuidesToFollow(this.state.id, this.state.query);
     }, delay_before_retrieve_guides_api_call);
 };
 

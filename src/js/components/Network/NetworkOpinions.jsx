@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import Helmet from "react-helmet";
-import GuideStore from "../../stores/GuideStore";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 import SearchGuidesToFollowBox from "../Search/SearchGuidesToFollowBox";
 import VoterStore from "../../stores/VoterStore";
 import GuideList from "../VoterGuide/GuideList";
@@ -17,26 +17,26 @@ export default class NetworkOpinions extends Component {
   constructor (props){
     super(props);
     this.state = {
-      ballot_has_guides: GuideStore.ballotHasGuides(),
+      ballot_has_guides: VoterGuideStore.ballotHasGuides(),
       text_for_map_search: VoterStore.getTextForMapSearch(),
-      voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll(),
+      voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
     };
   }
 
   componentDidMount () {
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
   }
 
-  _onGuideStoreChange () {
+  _onVoterGuideStoreChange () {
     this.setState({
-      ballot_has_guides: GuideStore.ballotHasGuides(),
+      ballot_has_guides: VoterGuideStore.ballotHasGuides(),
       text_for_map_search: VoterStore.getTextForMapSearch(),
-      voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll(),
+      voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
     });
   }
 
   componentWillUnmount (){
-    this.guideStoreListener.remove();
+    this.voterGuideStoreListener.remove();
   }
 
   getCurrentRoute (){

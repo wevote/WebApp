@@ -4,7 +4,7 @@ import BallotStore from "../../stores/BallotStore";
 import BookmarkStore from "../../stores/BookmarkStore";
 import cookies from "../../utils/cookies";
 import FriendStore from "../../stores/FriendStore";
-import GuideActions from "../../actions/GuideActions";
+import VoterGuideActions from "../../actions/VoterGuideActions";
 import OrganizationActions from "../../actions/OrganizationActions";
 import SearchAllBox from "../SearchAllBox";
 import VoterSessionActions from "../../actions/VoterSessionActions";
@@ -277,8 +277,8 @@ export default class HeaderBar extends Component {
     OrganizationActions.retrievePositions(this.props.voter.linked_organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
     OrganizationActions.retrievePositions(this.props.voter.linked_organization_we_vote_id, false, true);
-    GuideActions.voterGuideFollowersRetrieve(this.props.voter.linked_organization_we_vote_id);
-    GuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.voter.linked_organization_we_vote_id);
+    VoterGuideActions.voterGuideFollowersRetrieve(this.props.voter.linked_organization_we_vote_id);
+    VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.voter.linked_organization_we_vote_id);
     this.setState({accountMenuOpen: false});
   }
 

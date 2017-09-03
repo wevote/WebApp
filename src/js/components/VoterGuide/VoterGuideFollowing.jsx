@@ -1,8 +1,8 @@
 import React, {Component, PropTypes } from "react";
 import Helmet from "react-helmet";
 import { Button } from "react-bootstrap";
-import GuideStore from "../../stores/GuideStore";
-import GuideActions from "../../actions/GuideActions";
+import VoterGuideStore from "../../stores/VoterGuideStore";
+import VoterGuideActions from "../../actions/VoterGuideActions";
 import GuideList from "./GuideList";
 import LoadingWheel from "../LoadingWheel";
 import VoterStore from "../../stores/VoterStore";
@@ -28,27 +28,27 @@ export default class VoterGuideFollowing extends Component {
 
   componentDidMount () {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    GuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.organization.organization_we_vote_id);
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+    VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.organization.organization_we_vote_id);
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
     this.setState({
       organization: this.props.organization,
       voter: VoterStore.getVoter(),
-      voter_guide_followed_list: GuideStore.getVoterGuidesFollowedByOrganization(this.props.organization.organization_we_vote_id),
+      voter_guide_followed_list: VoterGuideStore.getVoterGuidesFollowedByOrganization(this.props.organization.organization_we_vote_id),
     });
   }
 
   componentWillReceiveProps (nextProps) {
     // When a new organization is passed in, update this component to show the new data
     if (this.state.organization.organization_we_vote_id !== nextProps.organization.organization_we_vote_id)
-      GuideActions.voterGuidesFollowedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id);
+      VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id);
     this.setState({
       organization: nextProps.organization,
-      voter_guide_followed_list: GuideStore.getVoterGuidesFollowedByOrganization(nextProps.organization.organization_we_vote_id),
+      voter_guide_followed_list: VoterGuideStore.getVoterGuidesFollowedByOrganization(nextProps.organization.organization_we_vote_id),
     });
   }
 
   componentWillUnmount (){
-    this.guideStoreListener.remove();
+    this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
@@ -57,9 +57,9 @@ export default class VoterGuideFollowing extends Component {
       voter: VoterStore.getVoter()});
    }
 
-  _onGuideStoreChange (){
+  _onVoterGuideStoreChange (){
     this.setState({
-      voter_guide_followed_list: GuideStore.getVoterGuidesFollowedByOrganization(this.state.organization.organization_we_vote_id)
+      voter_guide_followed_list: VoterGuideStore.getVoterGuidesFollowedByOrganization(this.state.organization.organization_we_vote_id)
     });
   }
 
@@ -87,7 +87,7 @@ export default class VoterGuideFollowing extends Component {
   }
 
   followAllOrganizations () {
-    GuideActions.voterFollowAllOrganizationsFollowedByOrganization(this.state.organization.organization_we_vote_id);
+    VoterGuideActions.voterFollowAllOrganizationsFollowedByOrganization(this.state.organization.organization_we_vote_id);
   }
 
   toggleEditMode () {

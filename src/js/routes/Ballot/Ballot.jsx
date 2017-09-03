@@ -13,8 +13,8 @@ import BallotStore from "../../stores/BallotStore";
 import BallotSummaryModal from "../../components/Ballot/BallotSummaryModal";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import EditAddress from "../../components/Widgets/EditAddress";
-import GuideActions from "../../actions/GuideActions";
-import GuideStore from "../../stores/GuideStore";
+import VoterGuideActions from "../../actions/VoterGuideActions";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 import Helmet from "react-helmet";
 import LoadingWheel from "../../components/LoadingWheel";
 import MeasureModal from "../../components/Ballot/MeasureModal";
@@ -86,7 +86,7 @@ export default class Ballot extends Component {
       SupportActions.voterAllPositionsRetrieve();
       SupportActions.positionsCountForAllBallotItems();
       BallotActions.voterBallotListRetrieve();
-      this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+      this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
       this.supportStoreListener = SupportStore.addListener(this._onBallotStoreChange.bind(this));
       this._onVoterStoreChange(); // We call this to properly set showBallotIntroModal
       this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
@@ -101,7 +101,7 @@ export default class Ballot extends Component {
       // No ballot found
     } else {
       this.ballotStoreListener.remove();
-      this.guideStoreListener.remove();
+      this.voterGuideStoreListener.remove();
       this.supportStoreListener.remove();
       this.voterStoreListener.remove();
     }
@@ -114,8 +114,8 @@ export default class Ballot extends Component {
 
   _toggleCandidateModal (candidate_for_modal) {
     if (candidate_for_modal) {
-      GuideActions.retrieveGuidesToFollowByBallotItem(candidate_for_modal.we_vote_id, "CANDIDATE");
-      candidate_for_modal.voter_guides_to_follow_for_latest_ballot_item = GuideStore.getVoterGuidesToFollowForBallotItemId(candidate_for_modal.we_vote_id);
+      VoterGuideActions.retrieveGuidesToFollowByBallotItem(candidate_for_modal.we_vote_id, "CANDIDATE");
+      candidate_for_modal.voter_guides_to_follow_for_latest_ballot_item = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(candidate_for_modal.we_vote_id);
     }
 
     this.setState({
@@ -137,7 +137,7 @@ export default class Ballot extends Component {
 
   _toggleMeasureModal (measureForModal) {
     if (measureForModal) {
-      GuideActions.retrieveGuidesToFollowByBallotItem(measureForModal.measure_we_vote_id, "MEASURE");
+      VoterGuideActions.retrieveGuidesToFollowByBallotItem(measureForModal.measure_we_vote_id, "MEASURE");
     }
     this.setState({
       measure_for_modal: measureForModal,
@@ -190,20 +190,20 @@ export default class Ballot extends Component {
     }
   }
 
-  _onGuideStoreChange (){
+  _onVoterGuideStoreChange (){
     // Update the data for the modal to include the position of the organization related to this ballot item
     if (this.state.candidate_for_modal) {
       this.setState({
         candidate_for_modal: {
           ...this.state.candidate_for_modal,
-          voter_guides_to_follow_for_latest_ballot_item: GuideStore.getVoterGuidesToFollowForLatestBallotItem()
+          voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem()
         }
       });
     } else if (this.state.measure_for_modal) {
       this.setState({
         measure_for_modal: {
           ...this.state.measure_for_modal,
-          voter_guides_to_follow_for_latest_ballot_item: GuideStore.getVoterGuidesToFollowForLatestBallotItem()
+          voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem()
         }
       });
     }

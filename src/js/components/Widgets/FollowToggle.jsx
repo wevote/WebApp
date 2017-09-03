@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import GuideStore from "../../stores/GuideStore";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationActions from "../../actions/OrganizationActions";
 import VoterStore from "../../stores/VoterStore";
@@ -21,8 +21,8 @@ export default class FollowToggle extends Component {
   }
 
   componentDidMount (){
-    // We need the guideStoreListener until we take the follow functions out of OrganizationActions and GuideStore
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+    // We need the voterGuideStoreListener until we take the follow functions out of OrganizationActions and VoterGuideStore
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
     this._onOrganizationStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
@@ -30,13 +30,13 @@ export default class FollowToggle extends Component {
   }
 
   componentWillUnmount (){
-    this.guideStoreListener.remove();
+    this.voterGuideStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
-  _onGuideStoreChange (){
-    // console.log("FollowToggle, _onGuideStoreChange, organization_we_vote_id: ", this.props.we_vote_id);
+  _onVoterGuideStoreChange (){
+    // console.log("FollowToggle, _onVoterGuideStoreChange, organization_we_vote_id: ", this.props.we_vote_id);
     this.setState({ is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.we_vote_id)});
   }
 

@@ -3,7 +3,7 @@ import React, {Component, PropTypes } from "react";
 import { capitalizeString } from "../../utils/textFormat";
 import Helmet from "react-helmet";
 import BallotStore from "../../stores/BallotStore";
-import GuideActions from "../../actions/GuideActions";
+import VoterGuideActions from "../../actions/VoterGuideActions";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationPositionItem from "./OrganizationPositionItem";
@@ -32,7 +32,7 @@ export default class VoterGuidePositions extends Component {
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     // console.log("VoterGuidePositions, componentDidMount, this.props.organization: ", this.props.organization);
-    GuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
+    VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
     // Positions for this organization, for this voter / election
     OrganizationActions.retrievePositions(this.props.organization.organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
@@ -52,7 +52,7 @@ export default class VoterGuidePositions extends Component {
     // console.log("VoterGuidePositions componentWillReceiveProps-different_election: ", different_election, " different_organization: ", different_organization);
     if (different_election || different_organization) {
       // console.log("VoterGuidePositions, componentWillReceiveProps, nextProps.organization: ", nextProps.organization);
-      GuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id, VoterStore.election_id());
+      VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id, VoterStore.election_id());
       // Positions for this organization, for this voter / election
       OrganizationActions.retrievePositions(nextProps.organization.organization_we_vote_id, true);
       // Positions for this organization, NOT including for this voter / election

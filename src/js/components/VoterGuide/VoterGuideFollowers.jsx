@@ -1,6 +1,6 @@
 import React, {Component, PropTypes } from "react";
 import Helmet from "react-helmet";
-import GuideStore from "../../stores/GuideStore";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 import GuideList from "./GuideList";
 import LoadingWheel from "../LoadingWheel";
 import VoterStore from "../../stores/VoterStore";
@@ -25,11 +25,11 @@ export default class VoterGuideFollowers extends Component {
   componentDidMount () {
     this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    // GuideActions.voterGuideFollowersRetrieve(this.props.organization.organization_we_vote_id);
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+    // VoterGuideActions.voterGuideFollowersRetrieve(this.props.organization.organization_we_vote_id);
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
     this.setState({
       organization: this.props.organization,
-      voter_guide_followers_list: GuideStore.getVoterGuidesFollowingOrganization(this.props.organization.organization_we_vote_id),
+      voter_guide_followers_list: VoterGuideStore.getVoterGuidesFollowingOrganization(this.props.organization.organization_we_vote_id),
     });
   }
 
@@ -37,12 +37,12 @@ export default class VoterGuideFollowers extends Component {
     // When a new organization is passed in, update this component to show the new data
     this.setState({
       organization: nextProps.organization,
-      voter_guide_followers_list: GuideStore.getVoterGuidesFollowingOrganization(nextProps.organization.organization_we_vote_id),
+      voter_guide_followers_list: VoterGuideStore.getVoterGuidesFollowingOrganization(nextProps.organization.organization_we_vote_id),
     });
   }
 
   componentWillUnmount (){
-    this.guideStoreListener.remove();
+    this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
@@ -51,9 +51,9 @@ export default class VoterGuideFollowers extends Component {
       voter: VoterStore.getVoter()});
    }
 
-  _onGuideStoreChange (){
+  _onVoterGuideStoreChange (){
     this.setState({
-      voter_guide_followers_list: GuideStore.getVoterGuidesFollowingOrganization(this.state.organization.organization_we_vote_id)
+      voter_guide_followers_list: VoterGuideStore.getVoterGuidesFollowingOrganization(this.state.organization.organization_we_vote_id)
     });
   }
 

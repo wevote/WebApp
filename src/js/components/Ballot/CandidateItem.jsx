@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
-import GuideStore from "../../stores/GuideStore";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 import ImageHandler from "../ImageHandler";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
@@ -43,8 +43,8 @@ export default class CandidateItem extends Component {
   }
 
   componentDidMount () {
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
-    this._onGuideStoreChange();
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
+    this._onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
     var supportProps = SupportStore.get(this.props.we_vote_id);
     if (supportProps !== undefined) {
@@ -53,11 +53,11 @@ export default class CandidateItem extends Component {
   }
 
   componentWillUnmount () {
-    this.guideStoreListener.remove();
+    this.voterGuideStoreListener.remove();
     this.supportStoreListener.remove();
   }
 
-  _onGuideStoreChange (){
+  _onVoterGuideStoreChange (){
     // We just want to trigger a re-render
     this.setState({ transitioning: false });
   }
@@ -208,13 +208,13 @@ export default class CandidateItem extends Component {
               null }
             {/* Show possible voter guides to follow */}
             { !this.props.hideOpinionsToFollow &&
-              GuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id) && GuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id).length !== 0 ?
+              VoterGuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id) && VoterGuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id).length !== 0 ?
               <span>
                 { positions_in_your_network ?
                   "More Opinions to Follow." :
                   "Opinions to Follow." }
                 <ItemTinyOpinionsToFollow ballotItemWeVoteId={we_vote_id}
-                                          organizationsToFollow={GuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id)}
+                                          organizationsToFollow={VoterGuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id)}
                                           maximumOrganizationDisplay={this.state.maximum_organization_display} />
               </span> :
               <span /> }
