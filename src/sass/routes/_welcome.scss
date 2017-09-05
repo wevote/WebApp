@@ -1,8 +1,10 @@
+$cta-color: #fb2f2f;
+
 .welcome-page {
-  $cta-color: #fb2f2f;
   .cta-button {
     background-color: $cta-color;
   }
+
   .hero-section {
     position: relative;
     background-image: url('/img/welcome/header-image-desktop.png');
@@ -10,6 +12,8 @@
     color: $white;
     padding-top: $space-lg;
     padding-bottom: $space-xl;
+    text-align: center;
+
     &::before {
       content: '';
       display: block;
@@ -22,33 +26,138 @@
     }
   }
 
-  .features-section {
-    background-color: $brand-blue;
-    color: $white;
-    padding-top: $space-lg;
-    padding-bottom: $space-xl;
+  .form-group {
+    padding: $space-none $space-sm;
   }
-  .features__block {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    text-align: center;
-    margin-bottom: $space-xl;
-    min-height: 120px;
+
+  .form-control {
+    width: 100%;
   }
-  .features__image {
-    margin-bottom: $space-md;
-    height: auto;
+
+  .quick-links {
+    &__button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: $white;
+      font-size: 1.6em;
+      width: 100%;
+      text-align: center;
+      padding: 1em; // stylelint-disable-line sh-waqar/declaration-use-variable
+      line-height: 1em;
+      transition: background .3s;
+
+      &-left {
+        background: $cta-color;
+      }
+
+      &-right {
+        background: #476480;
+      }
+
+      &:hover {
+        background: $brand-blue;
+        text-decoration: none;
+      }
+    }
   }
-  .features__text {
-    font-size: 16px;
-    line-height: 1.25;
-  }
-  .features-your-mission__block {
-    align-items: center;
-    text-align: center;
-    padding-bottom: $space-md;
+
+  .features {
+    &-section {
+      background-color: $brand-blue;
+      color: $white;
+      padding-top: $space-lg;
+      padding-bottom: $space-xl;
+    }
+
+    &-your-mission__block {
+      align-items: center;
+      text-align: center;
+      padding-bottom: $space-md;
+
+      .h1 {
+        font-size: 26px;
+        line-height: 1.2;
+      }
+
+      .h2 {
+        font-size: 24px;
+        font-weight: normal;
+      }
+    }
+
+    &__block-container {
+      &:nth-child(1),
+      &:nth-child(2) {
+        .features__block {
+          @include breakpoints (max medium) {
+            height: 184px;
+          }
+        }
+      }
+
+      &:nth-child(3),
+      &:nth-child(4) {
+        .features__block {
+          @include breakpoints (max medium) {
+            height: 176px;
+          }
+        }
+      }
+
+      &:nth-child(5),
+      &:nth-child(6) {
+        .features__block {
+          @include breakpoints (max medium) {
+            height: 144px;
+          }
+        }
+      }
+    }
+
+    &__block {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      text-align: center;
+      margin-bottom: $space-xl;
+      min-height: 120px;
+    }
+
+    &__image {
+      margin-bottom: $space-md;
+      height: auto;
+    }
+
+    &__h3 {
+      margin-bottom: 10px; // stylelint-disable-line sh-waqar/declaration-use-variable
+      font-size: 24px;
+      line-height: 1.25;
+      font-weight: 600;
+
+      @include breakpoints (max iphone5) {
+        font-size: 20px;
+      }
+    }
+
+    &__p {
+      font-size: 16px;
+      padding: $space-none $space-lg;
+      height: 66px;
+
+      @include breakpoints (medium 992px) {
+        height: 110px;
+      }
+
+      @include breakpoints (max medium) {
+        padding: $space-none;
+      }
+
+      &.hidden-xs {
+        font-size: 14px;
+      }
+    }
   }
 
   .network-section {
@@ -70,9 +179,11 @@
     padding-bottom: $space-xl;
     text-align: center;
     color: $white;
+
     a {
       color: $white;
       text-decoration: underline;
+
       &:hover {
         color: $white;
       }

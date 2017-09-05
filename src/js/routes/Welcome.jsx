@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { browserHistory, Link } from "react-router";
 import Helmet from "react-helmet";
-import { Button, FormGroup, Row} from "react-bootstrap";
+import { Button, FormGroup, Row } from "react-bootstrap";
 import VoterActions from "../actions/VoterActions";
 import VoterConstants from "../constants/VoterConstants";
 import VoterStore from "../stores/VoterStore";
@@ -16,8 +16,21 @@ export default class Intro extends Component {
     super(props);
     this.state = {
       newsletter_opt_in_true: false,
-      voter: {}
+      voter: {},
+      show_features_ballot: false,
+      show_features_organizations: false,
+      show_features_positions: false,
+      show_features_network: false,
+      show_features_vision: false,
+      show_features_vote: false,
     };
+
+    this._toggleBallotFeature = this._toggleBallotFeature.bind(this);
+    this._toggleOrganizationsFeature = this._toggleOrganizationsFeature.bind(this);
+    this._togglePositionsFeature = this._togglePositionsFeature.bind(this);
+    this._toggleNetworkFeature = this._toggleNetworkFeature.bind(this);
+    this._toggleVisionFeature = this._toggleVisionFeature.bind(this);
+    this._toggleVoteFeature = this._toggleVoteFeature.bind(this);
   }
 
   static getProps () {
@@ -31,6 +44,30 @@ export default class Intro extends Component {
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
+  }
+
+  _toggleBallotFeature () {
+    this.setState({ show_features_ballot: !this.state.show_features_ballot });
+  }
+
+  _toggleOrganizationsFeature () {
+    this.setState({ show_features_organizations: !this.state.show_features_organizations });
+  }
+
+  _togglePositionsFeature () {
+    this.setState({ show_features_positions: !this.state.show_features_positions });
+  }
+
+  _toggleNetworkFeature () {
+    this.setState({ show_features_network: !this.state.show_features_network });
+  }
+
+  _toggleVisionFeature () {
+    this.setState({ show_features_vision: !this.state.show_features_vision });
+  }
+
+  _toggleVoteFeature () {
+    this.setState({ show_features_vote: !this.state.show_features_vote });
   }
 
   _onVoterStoreChange () {
@@ -116,12 +153,23 @@ export default class Intro extends Component {
       <section className="hero-section">
         <div className="container">
           <Row>
-            <div className="col-md-11 push-md-1">
-              <h1 className="u-f1 u-bold u-stack--lg">
-                View your ballot.<br />
-                Learn from friends.<br />
-                Share your vision.
-              </h1>
+            <div className="col-md-12">
+              <Row className="visible-xs">
+                <h1 className="col-sm-12 u-f1 u-bold u-stack--lg">
+                  View your ballot.<br />
+                  Learn from friends.<br />
+                  Share your vision.
+                </h1>
+              </Row>
+              <Row className="hidden-xs">
+                <h1 className="col-md-6 u-f1 u-bold u-stack--lg">
+                  View your ballot.<br />
+                  Learn from friends.
+                </h1>
+                <h1 className="col-md-6 u-f1 u-bold u-stack--lg">
+                  Share your vision.
+                </h1>
+              </Row>
 
               <h2 className="u-f3 u-stack--md">Launching Fall 2017!</h2>
               { voter_signed_in ?
@@ -135,10 +183,10 @@ export default class Intro extends Component {
                   { this.state.newsletter_opt_in_true ?
                     <h1 className="u-f1 u-bold u-stack--lg">Please check your email for a verification link.</h1> :
                     <div>
-                      <p>Sign up for updates and be the first to use We Vote</p>
+                      <p>Sign up for updates and be the first to use We Vote.</p>
 
-                      <form className="form-inline" onSubmit={this.voterEmailAddressSignUpSave.bind(this)}>
-                        <FormGroup className="u-push--sm">
+                      <form className="row form-inline" onSubmit={this.voterEmailAddressSignUpSave.bind(this)}>
+                        <FormGroup className="col-md-4">
                           <label className="sr-only" htmlFor="name">Name</label>
                           <input className="form-control"
                                  type="text"
@@ -148,7 +196,7 @@ export default class Intro extends Component {
                                  onChange={this.updateVoterFullName.bind(this)}
                                  placeholder="Name"/>
                         </FormGroup>
-                        <FormGroup className="u-push--sm">
+                        <FormGroup className="col-md-4">
                           <label className="sr-only" htmlFor="exampleEmail">Email</label>
                           <input className="form-control"
                                  type="email"
@@ -158,10 +206,13 @@ export default class Intro extends Component {
                                  onChange={this.updateVoterEmailAddress.bind(this)}
                                  placeholder="Email Address"/>
                         </FormGroup>
-                        <Button bsStyle="danger"
-                                type="submit"
-                                onClick={this.voterEmailAddressSignUpSave.bind(this)}
-                                >Sign Up</Button>
+                        <FormGroup className="col-md-4">
+                          <Button className="form-control"
+                                  bsStyle="danger"
+                                  type="submit"
+                                  onClick={this.voterEmailAddressSignUpSave.bind(this)}
+                                  >Sign Up</Button>
+                        </FormGroup>
                       </form>
                     </div>
                   }
@@ -172,47 +223,57 @@ export default class Intro extends Component {
         </div>
       </section>
 
+      <section className="quick-links-section u-flex">
+        <a className="quick-links__button quick-links__button-left" onClick={() => browserHistory.push("/ballot")}>Get Started</a>
+        <a className="quick-links__button quick-links__button-right" onClick={() => browserHistory.push("/more/sign_in")}>Create Voter Guide</a>
+      </section>
+
       <section className="features-section">
         <div className="container">
           <div className="features-your-mission__block">
-            <div className="h1">Your Mission:</div>
-            <div className="h2">Make the world a better place.</div>
+            <div className="h1 u-bold">Your Mission:<br /><span className="h2">Make the world a better place.</span></div>
           </div>
           <Row className="u-stack--lg">
-            <div className="col-6 col-md-4 u-flex u-justify-center">
-              <div className="features__block">
-                <img className="features__image" src="/img/welcome/benefits/view-your-ballot.png" width="50%" height="50%" />
-                <h3 className="features__text">View Your Ballot</h3>
+            <div className="col-6 col-md-4 u-flex u-justify-center features__block-container">
+              <div className="features__block" onClick={this._toggleBallotFeature}>
+                <img className={ this.state.show_features_ballot ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/view-your-ballot.png" width="25%" />
+                <h3 className="features__h3">View Your Ballot</h3>
+                <p className={ this.state.show_features_ballot ? "features__p" : "features__p hidden-xs" }>You will see your actual ballot, including candidates and measures.</p>
               </div>
             </div>
-            <div className="col-6 col-md-4 u-flex u-justify-center">
-              <div className="features__block">
-                <img className="features__image" src="/img/welcome/benefits/learn-from-orgs.png" width="50%" height="50%" />
-                <h3 className="features__text">Learn From Organizations</h3>
+            <div className="col-6 col-md-4 u-flex u-justify-center features__block-container">
+              <div className="features__block" onClick={this._toggleOrganizationsFeature}>
+                <img className={ this.state.show_features_organizations ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/learn-from-orgs.png" width="50%" />
+                <h3 className="features__h3">Learn From Organizations</h3>
+                <p className={ this.state.show_features_organizations ? "features__p" : "features__p hidden-xs" }>Follow the voter guides of groups you trust. See what they support or oppose.</p>
               </div>
             </div>
-            <div className="col-6 col-md-4 u-flex u-justify-center">
-              <div className="features__block">
-                <img className="features__image" src="/img/welcome/benefits/see-position.png" width="50%" height="50%" />
-                <h3 className="features__text">See Your Network's Positions</h3>
+            <div className="col-6 col-md-4 u-flex u-justify-center features__block-container">
+              <div className="features__block" onClick={this._togglePositionsFeature}>
+                <img className={ this.state.show_features_positions ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/see-position.png" />
+                <h3 className="features__h3">See Your Network's Positions</h3>
+                <p className={ this.state.show_features_positions ? "features__p" : "features__p hidden-xs" }>See how many (in your network) support or oppose each candidate or measure.</p>
               </div>
             </div>
-            <div className="col-6 col-md-4 u-flex u-justify-center">
-              <div className="features__block">
-                <img className="features__image" src="/img/welcome/benefits/choose-friends.png" width="50%" height="50%" />
-                <h3 className="features__text">Invite Friends to Your We&nbsp;Vote Network</h3>
+            <div className="col-6 col-md-4 u-flex u-justify-center features__block-container">
+              <div className="features__block" onClick={this._toggleNetworkFeature}>
+                <img className={ this.state.show_features_network ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/choose-friends.png" width="50%" />
+                <h3 className="features__h3">Invite Friends to Your We Vote Network</h3>
+                <p className={ this.state.show_features_network ? "features__p" : "features__p hidden-xs" }>Talk politics with friends who share your values. Avoid flame wars!</p>
               </div>
             </div>
-            <div className="col-sm-6 col-md-4 u-flex u-justify-center">
-              <div className="features__block">
-                <img className="features__image" src="/img/welcome/benefits/share-vision.png" width="50%" height="50%" />
-                <h3 className="features__text">Share Your Vision</h3>
+            <div className="col-sm-6 col-md-4 u-flex u-justify-center features__block-container">
+              <div className="features__block" onClick={this._toggleVisionFeature}>
+                <img className={ this.state.show_features_vision ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/share-vision.png" width="50%" />
+                <h3 className="features__h3">Share Your Vision</h3>
+                <p className={ this.state.show_features_vision ? "features__p" : "features__p hidden-xs" }>Empower other voters with information and help your friends.</p>
               </div>
             </div>
-            <div className="col-sm-6 col-md-4 u-flex u-justify-center">
-              <div className="features__block">
-                <img className="features__image" src="/img/welcome/benefits/decide.png" width="50%" height="50%" />
-                <h3 className="features__text">Decide & Vote</h3>
+            <div className="col-sm-6 col-md-4 u-flex u-justify-center features__block-container">
+              <div className="features__block" onClick={this._toggleVoteFeature}>
+                <img className={ this.state.show_features_vote ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/decide.png" width="50%" />
+                <h3 className="features__h3">Decide & Vote</h3>
+                <p className={ this.state.show_features_vote ? "features__p" : "features__p hidden-xs" }>Bring We Vote on your phone or a print-out to cast your vote with confidence.</p>
               </div>
             </div>
           </Row>
