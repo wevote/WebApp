@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router";
 import AddFriendsByEmail from "../../components/Friends/AddFriendsByEmail";
 import CurrentFriends from "../../components/Connect/CurrentFriends";
-import GuideStore from "../../stores/GuideStore";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
 import FacebookStore from "../../stores/FacebookStore";
@@ -19,8 +19,8 @@ export default class InviteByEmail extends Component {
       add_friends_type: "ADD_FRIENDS_BY_EMAIL",
       current_friends_list: FriendStore.currentFriends(),
       facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
-      voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll(),
-      organizations_followed_on_twitter_list: GuideStore.getOrganizationsFollowedByVoterOnTwitter(),
+      voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
+      organizations_followed_on_twitter_list: VoterGuideStore.getOrganizationsFollowedByVoterOnTwitter(),
       maximum_organization_display: 25,
       maximum_friend_display: 25,
       facebook_invitable_friends_image_width: 24,

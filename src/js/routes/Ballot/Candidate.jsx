@@ -3,9 +3,9 @@ import CandidateActions from "../../actions/CandidateActions";
 import CandidateItem from "../../components/Ballot/CandidateItem";
 import CandidateStore from "../../stores/CandidateStore";
 import { capitalizeString } from "../../utils/textFormat";
-import GuideActions from "../../actions/GuideActions";
+import VoterGuideActions from "../../actions/VoterGuideActions";
 import GuideList from "../../components/VoterGuide/GuideList";
-import GuideStore from "../../stores/GuideStore";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 import Helmet from "react-helmet";
 import LoadingWheel from "../../components/LoadingWheel";
 import PositionList from "../../components/Ballot/PositionList";
@@ -27,8 +27,8 @@ export default class Candidate extends Component {
       candidate_we_vote_id: this.props.params.candidate_we_vote_id,
       // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidate_we_vote_id, but we can't now
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-      // guidesToFollowList: GuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.candidate_we_vote_id)
-      voter_guides_to_follow_for_latest_ballot_item: GuideStore.getVoterGuidesToFollowForLatestBallotItem()
+      // guidesToFollowList: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.candidate_we_vote_id)
+      voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem()
     };
   }
 
@@ -38,8 +38,8 @@ export default class Candidate extends Component {
     CandidateActions.retrieve(candidate_we_vote_id);
 
     // Get the latest guides to follow for this candidate
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
-    GuideActions.retrieveGuidesToFollowByBallotItem(candidate_we_vote_id, "CANDIDATE");
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
+    VoterGuideActions.retrieveGuidesToFollowByBallotItem(candidate_we_vote_id, "CANDIDATE");
 
     // Make sure supportProps exist for this Candidate when browser comes straight to candidate page
     SupportActions.retrievePositionsCountsForOneBallotItem(candidate_we_vote_id);
@@ -55,7 +55,7 @@ export default class Candidate extends Component {
 
     CandidateActions.retrieve(nextProps.params.candidate_we_vote_id);
 
-    GuideActions.retrieveGuidesToFollowByBallotItem(nextProps.params.candidate_we_vote_id, "CANDIDATE");
+    VoterGuideActions.retrieveGuidesToFollowByBallotItem(nextProps.params.candidate_we_vote_id, "CANDIDATE");
 
     // Display the candidate's name in the search box
     // var { candidate } = this.state;
@@ -65,7 +65,7 @@ export default class Candidate extends Component {
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
-    this.guideStoreListener.remove();
+    this.voterGuideStoreListener.remove();
   }
 
   _onCandidateStoreChange (){
@@ -74,12 +74,12 @@ export default class Candidate extends Component {
     this.setState({ candidate: candidate });
   }
 
-  _onGuideStoreChange (){
+  _onVoterGuideStoreChange (){
     let { candidate_we_vote_id } = this.state;
     // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidate_we_vote_id, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-    // this.setState({ voter_guides_to_follow_for_latest_ballot_item: GuideStore.getVoterGuidesToFollowForBallotItemId(this.state.candidate_we_vote_id) });
-    this.setState({ voter_guides_to_follow_for_latest_ballot_item: GuideStore.getVoterGuidesToFollowForLatestBallotItem() });
+    // this.setState({ voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.state.candidate_we_vote_id) });
+    this.setState({ voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem() });
     // When the voter_guides_to_follow_for_latest_ballot_item changes, trigger an update of the candidate so we can get an updated position_list
     CandidateActions.retrieve(this.state.candidate_we_vote_id);
     // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems

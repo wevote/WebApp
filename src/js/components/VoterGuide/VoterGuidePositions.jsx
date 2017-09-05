@@ -3,7 +3,7 @@ import React, {Component, PropTypes } from "react";
 import { capitalizeString } from "../../utils/textFormat";
 import Helmet from "react-helmet";
 import BallotStore from "../../stores/BallotStore";
-import GuideActions from "../../actions/GuideActions";
+import VoterGuideActions from "../../actions/VoterGuideActions";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationPositionItem from "./OrganizationPositionItem";
@@ -32,7 +32,7 @@ export default class VoterGuidePositions extends Component {
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     // console.log("VoterGuidePositions, componentDidMount, this.props.organization: ", this.props.organization);
-    GuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
+    VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
     // Positions for this organization, for this voter / election
     OrganizationActions.retrievePositions(this.props.organization.organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
@@ -52,7 +52,7 @@ export default class VoterGuidePositions extends Component {
     // console.log("VoterGuidePositions componentWillReceiveProps-different_election: ", different_election, " different_organization: ", different_organization);
     if (different_election || different_organization) {
       // console.log("VoterGuidePositions, componentWillReceiveProps, nextProps.organization: ", nextProps.organization);
-      GuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id, VoterStore.election_id());
+      VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id, VoterStore.election_id());
       // Positions for this organization, for this voter / election
       OrganizationActions.retrievePositions(nextProps.organization.organization_we_vote_id, true);
       // Positions for this organization, NOT including for this voter / election
@@ -62,9 +62,11 @@ export default class VoterGuidePositions extends Component {
         current_organization_we_vote_id: nextProps.organization.organization_we_vote_id,
         organization: nextProps.organization
       });
-    } else {
-      // console.log("VoterGuidePositions, componentWillReceiveProps, not different");
-      // this.setState({organization: nextProps.organization}); // This causes problems with resetting attached lists
+    // } else {
+    //   console.log("VoterGuidePositions, componentWillReceiveProps, not different");
+      // We do not refresh the organization since we don't want to cause the positions to have to re-render and
+      //  "flash" on the screen
+      // this.setState({organization: nextProps.organization});
     }
   }
 
@@ -174,7 +176,7 @@ export default class VoterGuidePositions extends Component {
                 <div>You have not taken any positions yet for this election.
                   Click 'Ballot' in the top navigation bar to see items you can support or oppose.<br />
                   <br />
-                  <span>Until you take positions for this voter guide, we will recommend visitors look at any other voter guides you are following. </span>
+                  <span>Until you take positions, we recommend visitors look at other voter guides you follow. </span>
                   <VoterGuideRecommendationsFromOneOrganization organization_we_vote_id={this.state.organization.organization_we_vote_id} />
                 </div> :
                 <div>

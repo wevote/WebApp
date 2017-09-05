@@ -1,25 +1,6 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
 module.exports = {
-  organizationFollow: function (organization_we_vote_id, organization_follow_based_on_issue = false) {
-    Dispatcher.loadEndpoint("organizationFollow", {
-      organization_we_vote_id: organization_we_vote_id,
-      organization_follow_based_on_issue: organization_follow_based_on_issue
-    });
-  },
-
-  organizationsFollowedRetrieve: function () {
-    Dispatcher.loadEndpoint("organizationsFollowedRetrieve", {
-      auto_followed_from_twitter_suggestion: true} );
-  },
-
-  organizationFollowIgnore: function (organization_we_vote_id) {
-    Dispatcher.loadEndpoint("organizationFollowIgnore", { organization_we_vote_id: organization_we_vote_id});
-  },
-
-  organizationStopFollowing: function (organization_we_vote_id) {
-    Dispatcher.loadEndpoint("organizationStopFollowing", { organization_we_vote_id: organization_we_vote_id});
-  },
 
   retrieveGuidesToFollow: function (election_id, search_string) {
     const MAXIMUM_NUMBER_OF_GUIDES_TO_RETRIEVE = 50;

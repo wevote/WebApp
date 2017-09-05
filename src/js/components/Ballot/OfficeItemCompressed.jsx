@@ -4,7 +4,7 @@ import TextTruncate from "react-text-truncate";
 import { capitalizeString } from "../../utils/textFormat";
 import BallotSideBarLink from "../Navigation/BallotSideBarLink";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
-import GuideStore from "../../stores/GuideStore";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 import ImageHandler from "../ImageHandler";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
@@ -36,17 +36,17 @@ export default class OfficeItemCompressed extends Component {
   }
 
   componentDidMount () {
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
-    this._onGuideStoreChange();
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
+    this._onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
   }
 
   componentWillUnmount () {
-    this.guideStoreListener.remove();
+    this.voterGuideStoreListener.remove();
     this.supportStoreListener.remove();
   }
 
-  _onGuideStoreChange () {
+  _onVoterGuideStoreChange () {
     this.setState({ transitioning: false });
   }
 
@@ -93,7 +93,7 @@ export default class OfficeItemCompressed extends Component {
         { candidate_list_to_display.map( (one_candidate) => {
           let candidateId = one_candidate.we_vote_id;
           let candidateSupportStore = SupportStore.get(candidateId);
-          let candidateGuidesList = GuideStore.getVoterGuidesToFollowForBallotItemId(candidateId);
+          let candidateGuidesList = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(candidateId);
 
           let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + " candidate. " : "";
           let candidate_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";

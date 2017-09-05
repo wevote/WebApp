@@ -287,11 +287,11 @@
       width: 100%;
       border: 1px solid $gray-border;
       border-radius: $space-sm;
-      filter: brightness(80%) contrast(80%);
+      filter: brightness(90%) contrast(90%);
     }
 
     &-following {
-      filter: brightness(40%);
+      filter: brightness(60%);
     }
 
     &-check-mark {

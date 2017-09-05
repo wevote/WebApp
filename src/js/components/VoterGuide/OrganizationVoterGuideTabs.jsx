@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
-import GuideActions from "../../actions/GuideActions";
-import GuideStore from "../../stores/GuideStore";
+import VoterGuideActions from "../../actions/VoterGuideActions";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 import LoadingWheel from "../LoadingWheel";
 import VoterGuideFollowers from "./VoterGuideFollowers";
 import VoterGuideFollowing from "./VoterGuideFollowing";
@@ -26,11 +26,11 @@ export default class OrganizationVoterGuideTabs extends Component {
 
   componentDidMount () {
     // console.log("OrganizationVoterGuideTabs, componentDidMount, organization: ", this.props.organization);
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    GuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.organization.organization_we_vote_id);
-    GuideActions.voterGuideFollowersRetrieve(this.props.organization.organization_we_vote_id);
-    GuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
+    VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.organization.organization_we_vote_id);
+    VoterGuideActions.voterGuideFollowersRetrieve(this.props.organization.organization_we_vote_id);
+    VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
     this.setState({
       current_organization_we_vote_id: this.props.organization.organization_we_vote_id,
       organization: this.props.organization,
@@ -42,9 +42,9 @@ export default class OrganizationVoterGuideTabs extends Component {
     // console.log("OrganizationVoterGuideTabs, componentWillReceiveProps, nextProps: ", nextProps);
     // When a new organization is passed in, update this component to show the new data
     if (nextProps.organization.organization_we_vote_id !== this.state.current_organization_we_vote_id) {
-      GuideActions.voterGuidesFollowedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id);
-      GuideActions.voterGuideFollowersRetrieve(nextProps.organization.organization_we_vote_id);
-      GuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id, VoterStore.election_id());
+      VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id);
+      VoterGuideActions.voterGuideFollowersRetrieve(nextProps.organization.organization_we_vote_id);
+      VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id, VoterStore.election_id());
       this.setState({
         current_organization_we_vote_id: nextProps.organization.organization_we_vote_id,
         organization: nextProps.organization,
@@ -53,15 +53,15 @@ export default class OrganizationVoterGuideTabs extends Component {
   }
 
   componentWillUnmount () {
-    this.guideStoreListener.remove();
+    this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
-  _onGuideStoreChange () {
-    // console.log("OrganizationVoterGuideTabs, _onGuideStoreChange, organization: ", this.state.organization);
+  _onVoterGuideStoreChange () {
+    // console.log("OrganizationVoterGuideTabs, _onVoterGuideStoreChange, organization: ", this.state.organization);
     this.setState({
-      voter_guide_followed_list: GuideStore.getVoterGuidesFollowedByOrganization(this.state.organization.organization_we_vote_id),
-      voter_guide_followers_list: GuideStore.getVoterGuidesFollowingOrganization(this.state.organization.organization_we_vote_id),
+      voter_guide_followed_list: VoterGuideStore.getVoterGuidesFollowedByOrganization(this.state.organization.organization_we_vote_id),
+      voter_guide_followers_list: VoterGuideStore.getVoterGuidesFollowingOrganization(this.state.organization.organization_we_vote_id),
     });
   }
 

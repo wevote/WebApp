@@ -1,8 +1,8 @@
 import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
-import GuideStore from "../../stores/GuideStore";
-import GuideActions from "../../actions/GuideActions";
-import OpinionsFollowedListCompressed from "../VoterGuide/OpinionsFollowedListCompressed";
+import OrganizationStore from "../../stores/OrganizationStore";
+import OrganizationActions from "../../actions/OrganizationActions";
+import OpinionsFollowedListCompressed from "../Organization/OpinionsFollowedListCompressed";
 
 export default class NetworkOpinionsFollowed extends Component {
   static propTypes = {
@@ -13,33 +13,30 @@ export default class NetworkOpinionsFollowed extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      voter_guide_followed_list: [],
+      organizations_followed_list: [],
       editMode: false
     };
   }
 
   componentDidMount () {
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
-    GuideActions.voterGuidesFollowedRetrieve();
-    let voter_guide_followed_list = GuideStore.getVoterGuidesVoterIsFollowing();
-    const OPINIONS_TO_SHOW = 3;
-    let voter_guide_followed_list_limited = voter_guide_followed_list.slice(0, OPINIONS_TO_SHOW);
-    this.setState({
-      voter_guide_followed_list: voter_guide_followed_list_limited
-    });
+    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
+    this._onOrganizationStoreChange();
+    OrganizationActions.organizationsFollowedRetrieve();
   }
 
   componentWillUnmount (){
-    this.guideStoreListener.remove();
+    this.organizationStoreListener.remove();
   }
 
-  _onGuideStoreChange (){
-    let voter_guide_followed_list = GuideStore.getVoterGuidesVoterIsFollowing();
-    const OPINIONS_TO_SHOW = 3;
-    let voter_guide_followed_list_limited = voter_guide_followed_list.slice(0, OPINIONS_TO_SHOW);
-    this.setState({
-      voter_guide_followed_list: voter_guide_followed_list_limited
-    });
+  _onOrganizationStoreChange (){
+    let organizations_followed_list = OrganizationStore.getOrganizationsVoterIsFollowing();
+    if (organizations_followed_list && organizations_followed_list.length) {
+      const OPINIONS_TO_SHOW = 3;
+      let organizations_followed_list_limited = organizations_followed_list.slice(0, OPINIONS_TO_SHOW);
+      this.setState({
+        organizations_followed_list: organizations_followed_list_limited
+      });
+    }
   }
 
   getCurrentRoute (){
@@ -70,7 +67,7 @@ export default class NetworkOpinionsFollowed extends Component {
   }
 
   render () {
-    // console.log("NetworkOpinionsFollowed, this.state.voter_guide_followed_list: ", this.state.voter_guide_followed_list);
+    // console.log("NetworkOpinionsFollowed, this.state.organizations_followed_list: ", this.state.organizations_followed_list);
     return <div className="opinions-followed__container">
       <section className="card">
         <div className="card-main">
@@ -78,9 +75,9 @@ export default class NetworkOpinionsFollowed extends Component {
           <div className="voter-guide-list card">
             <div className="card-child__list-group">
               {
-                this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length ?
+                this.state.organizations_followed_list && this.state.organizations_followed_list.length ?
                   <span>
-                    <OpinionsFollowedListCompressed organizationsFollowed={this.state.voter_guide_followed_list}
+                    <OpinionsFollowedListCompressed organizationsFollowed={this.state.organizations_followed_list}
                                                     editMode={this.state.editMode}
                                                     instantRefreshOn />
                     <Link to="/opinions_followed">See All</Link>

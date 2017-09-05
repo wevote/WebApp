@@ -51,6 +51,7 @@ export default class IssueLinkToggle extends Component {
                         sizeClassName="icon-candidate-small u-push--sm "
                         alt="issue-photo"
                         kind_of_image="ISSUE"
+                        imageUrl={this.props.issue.issue_image_url}
           />
         </div>
         <span className="intro-modal__span intro-modal__margin-right" onClick={this.onIssueUnlink}>
@@ -67,6 +68,7 @@ export default class IssueLinkToggle extends Component {
                           sizeClassName="icon-candidate-small u-push--sm "
                           alt="issue-photo"
                           kind_of_image="ISSUE"
+                          imageUrl={this.props.issue.issue_image_url}
             />
           </div>
           <span className="intro-modal__span intro-modal__margin-right" onClick={this.onIssueLink}>

@@ -1,10 +1,11 @@
 import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
-import GuideStore from "../stores/GuideStore";
-import GuideActions from "../actions/GuideActions";
-import OpinionsIgnoredList from "../components/VoterGuide/OpinionsIgnoredList";
+import VoterGuideStore from "../stores/VoterGuideStore";
+import VoterGuideActions from "../actions/VoterGuideActions";
+import OpinionsIgnoredList from "../components/Organization/OpinionsIgnoredList";
 
+// NOTE FROM DALE: This should be refactored to pull in Organizations instead of Voter Guides
 export default class OpinionsIgnored extends Component {
   static propTypes = {
     children: PropTypes.object,
@@ -20,20 +21,20 @@ export default class OpinionsIgnored extends Component {
   }
 
   componentDidMount () {
-    this.setState({ voter_guide_ignored_list: GuideStore.getVoterGuidesVoterIsIgnoring() });
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
-    GuideActions.voterGuidesIgnoredRetrieve();
+    this.setState({ voter_guide_ignored_list: VoterGuideStore.getVoterGuidesVoterIsIgnoring() });
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
+    VoterGuideActions.voterGuidesIgnoredRetrieve();
   }
 
   componentWillUnmount (){
-    this.guideStoreListener.remove();
+    this.voterGuideStoreListener.remove();
   }
 
-  _onGuideStoreChange (){
-    var list = GuideStore.getVoterGuidesVoterIsIgnoring();
+  _onVoterGuideStoreChange (){
+    var list = VoterGuideStore.getVoterGuidesVoterIsIgnoring();
 
     if (list !== undefined && list.length > 0){
-      this.setState({ voter_guide_ignored_list: GuideStore.getVoterGuidesVoterIsIgnoring() });
+      this.setState({ voter_guide_ignored_list: VoterGuideStore.getVoterGuidesVoterIsIgnoring() });
       // console.log(this.state.voter_guide_ignored_list);
     }
   }
@@ -74,7 +75,8 @@ export default class OpinionsIgnored extends Component {
               }
             </div>
           </div>
-          <Link className="pull-right" to="/opinions_followed">Go back</Link>
+          <Link className="pull-right" to="/opinions_followed">See organizations you follow</Link>
+          <br />
         </div>
       </section>
     </div>;

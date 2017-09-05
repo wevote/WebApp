@@ -2,18 +2,16 @@ import React, { Component } from "react";
 import { Link } from "react-router";
 import AddFriendsByEmail from "../components/Friends/AddFriendsByEmail";
 import CurrentFriends from "../components/Connect/CurrentFriends";
-import GuideActions from "../actions/GuideActions";
-import GuideStore from "../stores/GuideStore";
+import VoterGuideStore from "../stores/VoterGuideStore";
 import FriendActions from "../actions/FriendActions";
 import FriendStore from "../stores/FriendStore";
 import FacebookActions from "../actions/FacebookActions";
 import FacebookStore from "../stores/FacebookStore";
 import Helmet from "react-helmet";
+import OrganizationActions from "../actions/OrganizationActions";
 import OrganizationsFollowedOnTwitter from "../components/Connect/OrganizationsFollowedOnTwitter";
 import AddFacebookFriends from "../components/Connect/AddFacebookFriends";
 import ItemTinyOpinionsToFollow from "../components/VoterGuide/ItemTinyOpinionsToFollow";
-
-/* VISUAL DESIGN HERE: https://invis.io/E45246B2C */
 
 export default class Connect extends Component {
 	static propTypes = {
@@ -26,8 +24,8 @@ export default class Connect extends Component {
       add_friends_type: "ADD_FRIENDS_BY_EMAIL",
       current_friends_list: FriendStore.currentFriends(),
       facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
-      voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll(),
-      organizations_followed_on_twitter_list: GuideStore.getOrganizationsFollowedByVoterOnTwitter(),
+      voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
+      organizations_followed_on_twitter_list: VoterGuideStore.getOrganizationsFollowedByVoterOnTwitter(),
       maximum_organization_display: 25,
       maximum_friend_display: 25,
       facebook_invitable_friends_image_width: 24,
@@ -37,9 +35,9 @@ export default class Connect extends Component {
 
   componentDidMount () {
     if (this.state.organizations_followed_on_twitter_list) {
-      GuideActions.organizationsFollowedRetrieve();
+      OrganizationActions.organizationsFollowedRetrieve();
     }
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
 
     if (this.state.current_friends_list) {
       FriendActions.currentFriends();
@@ -60,14 +58,14 @@ export default class Connect extends Component {
     });
   }
 
-  _onGuideStoreChange (){
-    var organizations_followed_on_twitter_list = GuideStore.getOrganizationsFollowedByVoterOnTwitter();
-    var voter_guides_to_follow_all = GuideStore.getVoterGuidesToFollowAll();
+  _onVoterGuideStoreChange (){
+    var organizations_followed_on_twitter_list = VoterGuideStore.getOrganizationsFollowedByVoterOnTwitter();
+    var voter_guides_to_follow_all = VoterGuideStore.getVoterGuidesToFollowAll();
     if (organizations_followed_on_twitter_list !== undefined && organizations_followed_on_twitter_list.length > 0){
       this.setState({ organizations_followed_on_twitter_list: organizations_followed_on_twitter_list });
     }
     if (voter_guides_to_follow_all !== undefined && voter_guides_to_follow_all.length > 0){
-      this.setState({ voter_guides_to_follow_all: GuideStore.getVoterGuidesToFollowAll() });
+      this.setState({ voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll() });
     }
   }
 
@@ -79,7 +77,7 @@ export default class Connect extends Component {
 
   componentWillUnmount (){
     this.friendStoreListener.remove();
-    this.guideStoreListener.remove();
+    this.voterGuideStoreListener.remove();
     this.facebookStoreListener.remove();
   }
 
