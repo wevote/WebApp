@@ -76,11 +76,42 @@ $cta-color: #fb2f2f;
       padding-bottom: $space-md;
 
       .h1 {
+        font-size: 26px;
         line-height: 1.2;
       }
 
       .h2 {
+        font-size: 24px;
         font-weight: normal;
+      }
+    }
+
+    &__block-wrap {
+      div:nth-child(1),
+      div:nth-child(2) {
+        .features__block {
+          @include breakpoints (max medium) {
+            height: 184px;
+          }
+        }
+      }
+
+      div:nth-child(3),
+      div:nth-child(4) {
+        .features__block {
+          @include breakpoints (max medium) {
+            height: 176px;
+          }
+        }
+      }
+
+      div:nth-child(5),
+      div:nth-child(6) {
+        .features__block {
+          @include breakpoints (max medium) {
+            height: 144px;
+          }
+        }
       }
     }
 
@@ -104,10 +135,28 @@ $cta-color: #fb2f2f;
       font-size: 24px;
       line-height: 1.25;
       font-weight: 600;
+
+      @include breakpoints (max iphone5) {
+        font-size: 20px;
+      }
     }
 
     &__p {
+      font-size: 16px;
       padding: $space-none $space-lg;
+      height: 66px;
+
+      @include breakpoints (medium 992px) {
+        height: 110px;
+      }
+
+      @include breakpoints (max medium) {
+        padding: $space-none;
+      }
+
+      &.hidden-xs {
+        font-size: 14px;
+      }
     }
   }
 
