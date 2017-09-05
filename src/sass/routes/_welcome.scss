@@ -86,9 +86,9 @@ $cta-color: #fb2f2f;
       }
     }
 
-    &__block-wrap {
-      div:nth-child(1),
-      div:nth-child(2) {
+    &__block-container {
+      &:nth-child(1),
+      &:nth-child(2) {
         .features__block {
           @include breakpoints (max medium) {
             height: 184px;
@@ -96,8 +96,8 @@ $cta-color: #fb2f2f;
         }
       }
 
-      div:nth-child(3),
-      div:nth-child(4) {
+      &:nth-child(3),
+      &:nth-child(4) {
         .features__block {
           @include breakpoints (max medium) {
             height: 176px;
@@ -105,8 +105,8 @@ $cta-color: #fb2f2f;
         }
       }
 
-      div:nth-child(5),
-      div:nth-child(6) {
+      &:nth-child(5),
+      &:nth-child(6) {
         .features__block {
           @include breakpoints (max medium) {
             height: 144px;

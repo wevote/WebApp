@@ -233,43 +233,43 @@ export default class Intro extends Component {
           <div className="features-your-mission__block">
             <div className="h1 u-bold">Your Mission:<br /><span className="h2">Make the world a better place.</span></div>
           </div>
-          <Row className="u-stack--lg features__block-wrap">
-            <div className="col-6 col-md-4 u-flex u-justify-center">
+          <Row className="u-stack--lg">
+            <div className="col-6 col-md-4 u-flex u-justify-center features__block-container">
               <div className="features__block" onClick={this._toggleBallotFeature}>
                 <img className={ this.state.show_features_ballot ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/view-your-ballot.png" width="25%" />
                 <h3 className="features__h3">View Your Ballot</h3>
                 <p className={ this.state.show_features_ballot ? "features__p" : "features__p hidden-xs" }>You will see your actual ballot, including candidates and measures.</p>
               </div>
             </div>
-            <div className="col-6 col-md-4 u-flex u-justify-center">
+            <div className="col-6 col-md-4 u-flex u-justify-center features__block-container">
               <div className="features__block" onClick={this._toggleOrganizationsFeature}>
                 <img className={ this.state.show_features_organizations ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/learn-from-orgs.png" width="50%" />
                 <h3 className="features__h3">Learn From Organizations</h3>
                 <p className={ this.state.show_features_organizations ? "features__p" : "features__p hidden-xs" }>Follow the voter guides of groups you trust. See what they support or oppose.</p>
               </div>
             </div>
-            <div className="col-6 col-md-4 u-flex u-justify-center">
+            <div className="col-6 col-md-4 u-flex u-justify-center features__block-container">
               <div className="features__block" onClick={this._togglePositionsFeature}>
                 <img className={ this.state.show_features_positions ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/see-position.png" />
                 <h3 className="features__h3">See Your Network's Positions</h3>
                 <p className={ this.state.show_features_positions ? "features__p" : "features__p hidden-xs" }>See how many (in your network) support or oppose each candidate or measure.</p>
               </div>
             </div>
-            <div className="col-6 col-md-4 u-flex u-justify-center">
+            <div className="col-6 col-md-4 u-flex u-justify-center features__block-container">
               <div className="features__block" onClick={this._toggleNetworkFeature}>
                 <img className={ this.state.show_features_network ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/choose-friends.png" width="50%" />
                 <h3 className="features__h3">Invite Friends to Your We Vote Network</h3>
                 <p className={ this.state.show_features_network ? "features__p" : "features__p hidden-xs" }>Talk politics with friends who share your values. Avoid flame wars!</p>
               </div>
             </div>
-            <div className="col-sm-6 col-md-4 u-flex u-justify-center">
+            <div className="col-sm-6 col-md-4 u-flex u-justify-center features__block-container">
               <div className="features__block" onClick={this._toggleVisionFeature}>
                 <img className={ this.state.show_features_vision ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/share-vision.png" width="50%" />
                 <h3 className="features__h3">Share Your Vision</h3>
                 <p className={ this.state.show_features_vision ? "features__p" : "features__p hidden-xs" }>Empower other voters with information and help your friends.</p>
               </div>
             </div>
-            <div className="col-sm-6 col-md-4 u-flex u-justify-center">
+            <div className="col-sm-6 col-md-4 u-flex u-justify-center features__block-container">
               <div className="features__block" onClick={this._toggleVoteFeature}>
                 <img className={ this.state.show_features_vote ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/decide.png" width="50%" />
                 <h3 className="features__h3">Decide & Vote</h3>
