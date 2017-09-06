@@ -122,7 +122,8 @@ export default class Application extends Component {
     var in_theater_mode = false;
     var content_full_width_mode = false;
     var voter_guide_mode = false;
-    if (pathname === "/intro/story" || pathname === "/intro/sample_ballot" || pathname === "/intro/get_started") {
+    if (pathname === "/intro/story" || pathname === "/intro/sample_ballot" || pathname === "/intro/get_started" ||
+      pathname === "/voterguidegetstarted") {
       in_theater_mode = true;
     } else if (pathname === "/bookmarks" || pathname.startsWith("/candidate/") ||
       pathname === "/facebook_invitable_friends" || pathname === "/friends" || pathname === "/friends/invitebyemail" ||

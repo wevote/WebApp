@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from "react";
+import LoadingWheel from "../LoadingWheel";
+import OrganizationActions from "../../actions/OrganizationActions";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
-import LoadingWheel from "../LoadingWheel";
 import VoterGuideFollowers from "./VoterGuideFollowers";
 import VoterGuideFollowing from "./VoterGuideFollowing";
 import VoterGuidePositions from "./VoterGuidePositions";
@@ -28,6 +29,7 @@ export default class OrganizationVoterGuideTabs extends Component {
     // console.log("OrganizationVoterGuideTabs, componentDidMount, organization: ", this.props.organization);
     this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    OrganizationActions.organizationsFollowedRetrieve();
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.organization.organization_we_vote_id);
     VoterGuideActions.voterGuideFollowersRetrieve(this.props.organization.organization_we_vote_id);
     VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
@@ -42,6 +44,7 @@ export default class OrganizationVoterGuideTabs extends Component {
     // console.log("OrganizationVoterGuideTabs, componentWillReceiveProps, nextProps: ", nextProps);
     // When a new organization is passed in, update this component to show the new data
     if (nextProps.organization.organization_we_vote_id !== this.state.current_organization_we_vote_id) {
+      OrganizationActions.organizationsFollowedRetrieve();
       VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id);
       VoterGuideActions.voterGuideFollowersRetrieve(nextProps.organization.organization_we_vote_id);
       VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id, VoterStore.election_id());

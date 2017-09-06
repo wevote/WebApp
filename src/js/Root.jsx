@@ -45,11 +45,8 @@ import OpinionsIgnored from "./routes/OpinionsIgnored";
 import Organization from "./routes/More/Organization";
 import Privacy from "./routes/More/Privacy";
 import ProcessingDonation from "./routes/More/ProcessingDonation";
-
-// Added by me
-import ScratchPad from "./routes/ScratchPad";
-
 import SampleBallot from "./routes/Intro/SampleBallot";
+import ScratchPad from "./routes/ScratchPad";
 import Settings from "./routes/Settings/Settings";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
 import SignIn from "./routes/More/SignIn";
@@ -64,6 +61,7 @@ import TwitterSignInProcessOld from "./routes/Process/TwitterSignInProcessOld";
 import VerifyEmailProcess from "./routes/Process/VerifyEmailProcess";
 import FriendInvitationByEmailVerifyProcess from "./routes/Process/FriendInvitationByEmailVerifyProcess";
 import VoterGuideFollowing from "./components/VoterGuide/VoterGuideFollowing";
+import VoterGuideGetStarted from "./routes/VoterGuide/VoterGuideGetStarted";
 import VerifyThisIsMe from "./routes/VoterGuide/VerifyThisIsMe";
 import Vision from "./routes/More/Vision";
 import Welcome from "./routes/Welcome";
@@ -152,6 +150,7 @@ const routes = () =>
     <Route path="/voterguideedit/:organization_we_vote_id/:edit_mode" component={OrganizationVoterGuideEdit} />
     <Route path="/voterguideedit/:organization_we_vote_id/:edit_mode/:active_tab" component={OrganizationVoterGuideEdit} />
 
+    <Route path="/voterguidegetstarted" component={VoterGuideGetStarted} />
     <Route path="/yourpage" component={YourPage} />
 
     <Route path="/facebook_sign_in" component={FacebookSignInProcess} />

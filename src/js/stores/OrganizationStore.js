@@ -1,8 +1,8 @@
 var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
-import VoterGuideActions from "../actions/VoterGuideActions";
 import OrganizationActions from "../actions/OrganizationActions";
 import SupportActions from "../actions/SupportActions";
+import VoterGuideActions from "../actions/VoterGuideActions";
 import VoterStore from "../stores/VoterStore";
 import { arrayContains } from "../utils/textFormat";
 
@@ -44,9 +44,13 @@ class OrganizationStore extends FluxMapStore {
 
   isVoterFollowingThisOrganization (organization_we_vote_id){
     let organization_we_vote_ids_voter_is_following = this.getState().organization_we_vote_ids_voter_is_following;
+    // console.log("OrganizationStore, isVoterFollowingThisOrganization, organization_we_vote_ids_voter_is_following: ", organization_we_vote_ids_voter_is_following);
     if (organization_we_vote_ids_voter_is_following) {
-      return arrayContains(organization_we_vote_id, organization_we_vote_ids_voter_is_following);
+      let is_following = arrayContains(organization_we_vote_id, organization_we_vote_ids_voter_is_following);
+      // console.log("OrganizationStore, isVoterFollowingThisOrganization:", is_following, ", organization_we_vote_id:", organization_we_vote_id);
+      return is_following;
     } else {
+      // console.log("OrganizationStore, isVoterFollowingThisOrganization: NO organization_we_vote_ids_voter_is_following, org_we_vote_id: ", organization_we_vote_id);
       return false;
     }
   }
@@ -131,6 +135,8 @@ class OrganizationStore extends FluxMapStore {
         VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
         // Un-Following one org can change the support/oppose count for many ballot items for the voter
         SupportActions.positionsCountForAllBallotItems();
+        // Retrieve the organizations followed by voter
+        OrganizationActions.organizationsFollowedRetrieve();
         return {
           ...state,
           organization_we_vote_ids_voter_is_following: state.organization_we_vote_ids_voter_is_following.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; }),
@@ -155,6 +161,8 @@ class OrganizationStore extends FluxMapStore {
         VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
         // Ignoring one org can change the support/oppose count for many ballot items for the voter
         SupportActions.positionsCountForAllBallotItems();
+        // Retrieve the organizations followed by voter
+        OrganizationActions.organizationsFollowedRetrieve();
         return {
           ...state,
           organization_we_vote_ids_voter_is_ignoring: state.organization_we_vote_ids_voter_is_ignoring.concat(organization_we_vote_id),

@@ -4,9 +4,9 @@ import BallotStore from "../../stores/BallotStore";
 import BookmarkStore from "../../stores/BookmarkStore";
 import cookies from "../../utils/cookies";
 import FriendStore from "../../stores/FriendStore";
-import VoterGuideActions from "../../actions/VoterGuideActions";
 import OrganizationActions from "../../actions/OrganizationActions";
 import SearchAllBox from "../SearchAllBox";
+import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 var Icon = require("react-svg-icons");
 
@@ -277,6 +277,7 @@ export default class HeaderBar extends Component {
     OrganizationActions.retrievePositions(this.props.voter.linked_organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
     OrganizationActions.retrievePositions(this.props.voter.linked_organization_we_vote_id, false, true);
+    OrganizationActions.organizationsFollowedRetrieve();
     VoterGuideActions.voterGuideFollowersRetrieve(this.props.voter.linked_organization_we_vote_id);
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.voter.linked_organization_we_vote_id);
     this.setState({accountMenuOpen: false});
