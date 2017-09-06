@@ -225,7 +225,7 @@ export default class Intro extends Component {
 
       <section className="quick-links-section u-flex">
         <a className="quick-links__button quick-links__button-left" onClick={() => browserHistory.push("/ballot")}>Get Started</a>
-        <a className="quick-links__button quick-links__button-right" onClick={() => browserHistory.push("/more/sign_in")}>Create Voter Guide</a>
+        <a className="quick-links__button quick-links__button-right" onClick={() => browserHistory.push("/voterguidegetstarted")}>Create Voter Guide</a>
       </section>
 
       <section className="features-section">
@@ -238,7 +238,7 @@ export default class Intro extends Component {
               <div className="features__block" onClick={this._toggleBallotFeature}>
                 <img className={ this.state.show_features_ballot ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/view-your-ballot.png" width="25%" />
                 <h3 className="features__h3">View Your Ballot</h3>
-                <p className={ this.state.show_features_ballot ? "features__p" : "features__p hidden-xs" }>You will see your actual ballot, including candidates and measures.</p>
+                <p className={ this.state.show_features_ballot ? "features__p" : "features__p hidden-xs" }>See your actual ballot, including candidates and measures.</p>
               </div>
             </div>
             <div className="col-6 col-md-4 u-flex u-justify-center features__block-container">
@@ -252,7 +252,7 @@ export default class Intro extends Component {
               <div className="features__block" onClick={this._togglePositionsFeature}>
                 <img className={ this.state.show_features_positions ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/see-position.png" />
                 <h3 className="features__h3">See Your Network's Positions</h3>
-                <p className={ this.state.show_features_positions ? "features__p" : "features__p hidden-xs" }>See how many (in your network) support or oppose each candidate or measure.</p>
+                <p className={ this.state.show_features_positions ? "features__p" : "features__p hidden-xs" }>See how many in your network support or oppose each candidate or measure.</p>
               </div>
             </div>
             <div className="col-6 col-md-4 u-flex u-justify-center features__block-container">
@@ -266,14 +266,14 @@ export default class Intro extends Component {
               <div className="features__block" onClick={this._toggleVisionFeature}>
                 <img className={ this.state.show_features_vision ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/share-vision.png" width="50%" />
                 <h3 className="features__h3">Share Your Vision</h3>
-                <p className={ this.state.show_features_vision ? "features__p" : "features__p hidden-xs" }>Empower other voters with information and help your friends.</p>
+                <p className={ this.state.show_features_vision ? "features__p" : "features__p hidden-xs" }>Empower other voters with what you've learned. Help your friends.</p>
               </div>
             </div>
             <div className="col-sm-6 col-md-4 u-flex u-justify-center features__block-container">
               <div className="features__block" onClick={this._toggleVoteFeature}>
                 <img className={ this.state.show_features_vote ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/decide.png" width="50%" />
                 <h3 className="features__h3">Decide & Vote</h3>
-                <p className={ this.state.show_features_vote ? "features__p" : "features__p hidden-xs" }>Bring We Vote on your phone or a print-out to cast your vote with confidence.</p>
+                <p className={ this.state.show_features_vote ? "features__p" : "features__p hidden-xs" }>Cast your vote with confidence after using We Vote.</p>
               </div>
             </div>
           </Row>

@@ -1,8 +1,9 @@
 var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
-import VoterGuideActions from "../actions/VoterGuideActions";
+import OrganizationActions from "../actions/OrganizationActions";
 import OrganizationStore from "../stores/OrganizationStore";
 import SupportActions from "../actions/SupportActions";
+import VoterGuideActions from "../actions/VoterGuideActions";
 import VoterStore from "../stores/VoterStore";
 
 class VoterGuideStore extends FluxMapStore {
@@ -116,6 +117,8 @@ class VoterGuideStore extends FluxMapStore {
         VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
         // Following one org can change the support/oppose count for many ballot items for the voter
         SupportActions.positionsCountForAllBallotItems();
+        // Retrieve the organizations followed by voter
+        OrganizationActions.organizationsFollowedRetrieve();
         return state;
 
       case "voterGuidesToFollowRetrieve":

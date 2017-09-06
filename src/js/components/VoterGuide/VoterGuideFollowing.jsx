@@ -1,10 +1,11 @@
 import React, {Component, PropTypes } from "react";
 import Helmet from "react-helmet";
 import { Button } from "react-bootstrap";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import VoterGuideActions from "../../actions/VoterGuideActions";
 import GuideList from "./GuideList";
 import LoadingWheel from "../LoadingWheel";
+import OrganizationActions from "../../actions/OrganizationActions";
+import VoterGuideActions from "../../actions/VoterGuideActions";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 var _ = require("lodash");
 
@@ -27,6 +28,7 @@ export default class VoterGuideFollowing extends Component {
   }
 
   componentDidMount () {
+    OrganizationActions.organizationsFollowedRetrieve();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.organization.organization_we_vote_id);
     this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
@@ -39,8 +41,10 @@ export default class VoterGuideFollowing extends Component {
 
   componentWillReceiveProps (nextProps) {
     // When a new organization is passed in, update this component to show the new data
-    if (this.state.organization.organization_we_vote_id !== nextProps.organization.organization_we_vote_id)
+    if (this.state.organization.organization_we_vote_id !== nextProps.organization.organization_we_vote_id) {
+      OrganizationActions.organizationsFollowedRetrieve();
       VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id);
+    }
     this.setState({
       organization: nextProps.organization,
       voter_guide_followed_list: VoterGuideStore.getVoterGuidesFollowedByOrganization(nextProps.organization.organization_we_vote_id),

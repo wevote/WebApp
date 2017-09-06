@@ -6,8 +6,8 @@ import IssueStore from "../../stores/IssueStore";
 
 const NEXT_BUTTON_TEXT = "Next >";
 const SKIP_BUTTON_TEXT = "Skip >";
-const INITIAL_DESCRIPTION_TEXT = "After you follow five issues you care about, we will suggest some groups that have opinions about these issues.";
-const NEXT_SCREEN_PROMPT_TEXT = "On the next screen, we will help you find organizations that share your values.";
+const INITIAL_DESCRIPTION_TEXT = "After you follow five issues you care about, we'll suggest some groups that have opinions about these issues.";
+const NEXT_SCREEN_PROMPT_TEXT = "On the next screen, we'll help you find organizations that share your values.";
 
 export default class BallotIntroFollowIssues extends Component {
   static propTypes = {
@@ -18,7 +18,7 @@ export default class BallotIntroFollowIssues extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      description_text: INITIAL_DESCRIPTION_TEXT,
+      description_text: null,
       followed_issues: [],
       issues: [],
       next_button_text: NEXT_BUTTON_TEXT,
@@ -62,7 +62,7 @@ export default class BallotIntroFollowIssues extends Component {
 
   updateNextState () {
     if (this.remainingIssues()) {
-      this.setState({ next_button_text: "Please Follow " + this.remainingIssues() + " More" });
+      this.setState({ next_button_text: "Pick " + this.remainingIssues() + " more!" });
     } else {
       this.setState({ next_button_text: NEXT_BUTTON_TEXT });
     }
@@ -77,7 +77,7 @@ export default class BallotIntroFollowIssues extends Component {
       if (this.state.followed_issues.length >= this.state.number_of_required_issues) {
         description_text = NEXT_SCREEN_PROMPT_TEXT;
       } else {
-        description_text = INITIAL_DESCRIPTION_TEXT;
+        description_text = null;
       }
       this.setState({
         description_text: description_text,
@@ -98,7 +98,7 @@ export default class BallotIntroFollowIssues extends Component {
       if (this.state.followed_issues.length >= this.state.number_of_required_issues) {
         description_text = NEXT_SCREEN_PROMPT_TEXT;
       } else {
-        description_text = INITIAL_DESCRIPTION_TEXT;
+        description_text = null;
       }
       if (new_followed_issues.length) {
         this.setState({
@@ -147,8 +147,12 @@ export default class BallotIntroFollowIssues extends Component {
     return (
     <div className="intro-modal">
       <div className="intro-modal__h1">
-        Follow{ remaining_issues ? " " + remaining_issues : null }
-        &nbsp;Issue{ remaining_issues !== 1 ? "s" : null } You Care About
+        What do you care about?
+      </div>
+      <div>
+        Pick{ remaining_issues ? " " + remaining_issues : null }
+        &nbsp;issue{ remaining_issues !== 1 ? "s" : null } (or { remaining_issues !== 1 ? "categories) " : "category) " }
+        and we will suggest organizations working on those issues.
       </div>
       <div className="intro-modal-vertical-scroll-contain">
         <div className="intro-modal-vertical-scroll card">
@@ -157,9 +161,11 @@ export default class BallotIntroFollowIssues extends Component {
           </div>
         </div>
       </div>
-      <div className="intro-modal__description-text">
-        {this.state.description_text}
-      </div>
+      {this.state.description_text ?
+        <div className="intro-modal__description-text">
+          {this.state.description_text}
+        </div> :
+        null }
       <br/>
       <div className="intro-modal__button-wrap">
         <Button type="submit"
