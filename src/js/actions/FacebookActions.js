@@ -26,10 +26,13 @@ module.exports = {
     Dispatcher.loadEndpoint("facebookDisconnect");
   },
 
+  /* Sept 6, 2017, We now use the Facebook "games" api "invitable_friends" data on the fly from the webapp, and no
+  longer attempt to use the more limited "friends" api call from the server
   facebookFriendsAction: function () {
-    Dispatcher.loadEndpoint("facebookFriendsAction", {});
+     Dispatcher.loadEndpoint("facebookFriendsAction", {});
     FriendActions.suggestedFriendList();
   },
+  */
 
   getFacebookProfilePicture: function (userId) {
       if (window.FB) {
@@ -137,18 +140,17 @@ module.exports = {
   },
 
   // Save incoming data from Facebook
+  // For offsets, see https://developers.facebook.com/docs/graph-api/reference/cover-photo/
   voterFacebookSignInData: function (data) {
     console.log("FacebookActions voterFacebookSignInData, data:", data);
     let background = false;
-    if (data.cover && data.cover.source)
-      background = data.cover.source;
-    // For offsets, see https://developers.facebook.com/docs/graph-api/reference/cover-photo/
     let offset_x = false;
-    if (data.cover && data.cover.offset_x)
-      offset_x = data.cover.offset_x;
     let offset_y = false;
-    if (data.cover && data.cover.offset_y)
-      offset_y = data.cover.offset_y;
+    if (data.cover && data.cover.source) {
+      background = data.cover.source;
+      offset_x = data.cover.offset_x;  // zero is a valid value so can't use the short-circuit operation " || false"
+      offset_y = data.cover.offset_y;  // zero is a valid value so can't use the short-circuit operation " || false"
+    }
     Dispatcher.loadEndpoint("voterFacebookSignInSave", {
       facebook_user_id: data.id || false,
       facebook_email: data.email || false,
@@ -157,8 +159,8 @@ module.exports = {
       facebook_last_name: data.last_name || false,
       facebook_profile_image_url_https: data.url || false,
       facebook_background_image_url_https: background,
-      facebook_background_image_offset_x: offset_x, // Not supported on API server yet
-      facebook_background_image_offset_y: offset_y, // Not supported on API server yet
+      facebook_background_image_offset_x: offset_x,
+      facebook_background_image_offset_y: offset_y,
       save_auth_data: false,
       save_profile_data: true
     });

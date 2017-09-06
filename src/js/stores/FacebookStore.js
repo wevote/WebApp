@@ -168,7 +168,9 @@ class FacebookStore extends FluxMapStore {
         // console.log("FacebookStore voterFacebookSignInRetrieve, facebook_sign_in_verified: ", action.res.facebook_sign_in_verified);
         if (action.res.facebook_sign_in_verified) {
           VoterActions.voterRetrieve();
+          /* Sept 6, 2017, has been replaced by facebook Game API friends list
           FacebookActions.facebookFriendsAction();
+          */
         }
         return {
           ...state,
@@ -208,11 +210,13 @@ class FacebookStore extends FluxMapStore {
           emailData: {}
         };
 
+      /* Sept 6, 2017, has been replaced by facebook Game API friends list
       case "facebookFriendsAction":
         return {
           ...state,
           facebook_friends_list: action.res.facebook_friends_list,
          };
+      */
 
       case FacebookConstants.FACEBOOK_SIGN_IN_DISCONNECT:
         this.disconnectFromFacebook();
