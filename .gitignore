@@ -167,6 +167,8 @@ sftp-config.json
 /**/migrations/*.py
 !/**/migrations/__init__.py
 src/js/config.js
+src/javascript/google-tag-manager.js
+src/javascript/google-analytics.js
 web_app/build/*
 package-lock.json
 
@@ -174,3 +176,4 @@ package-lock.json
 ##################
 *.pyc
 staticfiles
+

@@ -146,8 +146,15 @@ gulp.task("copy-img", function () {
     .pipe(browserSync.stream());
 });
 
+// Copy javascript files to Build directory
+gulp.task("copy-javascript", function () {
+  return gulp.src("./src/javascript/*")
+    .pipe(gulp.dest("./build/javascript"))
+    .pipe(browserSync.stream());
+});
+
 // Build tasks
-gulp.task("build", ["copy-fonts", "copy-index", "compile-bootstrap", "copy-css", "copy-img", "browserify", "sass"]);
+gulp.task("build", ["copy-fonts", "copy-index", "compile-bootstrap", "copy-css", "copy-img", "copy-javascript", "browserify", "sass"]);
 
 // Watch tasks
 gulp.task("watch", ["build"], PRODUCTION ? ()=>{} : function () {
@@ -158,6 +165,7 @@ gulp.task("watch", ["build"], PRODUCTION ? ()=>{} : function () {
   gulp.watch(["./src/css/**/*.scss"], ["lint-css"]);
   gulp.watch(["./src/img/**/*"], ["copy-img"]);
   gulp.watch(["./src/sass/**/*.scss"], ["sass"]);
+  gulp.watch(["./src/javascript/*.js"], ["copy-javascript"]);
   gulp.watch(["./src/js/**/*.js?(x)"], ["browserify"]);
 });
 
