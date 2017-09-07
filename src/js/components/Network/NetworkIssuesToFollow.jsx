@@ -2,7 +2,8 @@ import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
 import IssueActions from "../../actions/IssueActions";
-import IssueFollowToggle from "../Issues/IssueFollowToggle";
+// import IssueFollowToggle from "../Issues/IssueFollowToggle";
+import IssueFollowToggleSquare from "../Issues/IssueFollowToggleSquare";
 import IssueStore from "../../stores/IssueStore";
 
 
@@ -42,12 +43,12 @@ export default class NetworkIssuesToFollow extends Component {
     let edit_mode = true;
     let is_following = false;
     const issue_list_for_display = issue_list.map((issue) => {
-      return <IssueFollowToggle
+      return <IssueFollowToggleSquare
         key={issue.issue_we_vote_id}
         issue_we_vote_id={issue.issue_we_vote_id}
         issue_name={issue.issue_name}
         issue_description={issue.issue_description}
-        issue_image_url={issue.issue_photo_url_medium}
+        issue_image_url={issue.issue_image_url} //{issue.issue_photo_url_medium}
         edit_mode={edit_mode}
         is_following={is_following}
       />;
@@ -67,7 +68,7 @@ export default class NetworkIssuesToFollow extends Component {
               <Link to="/issues_followed" className="u-margin-left--md u-no-break">See issues you follow</Link>
             </span>
           </p>
-          <div className="voter-guide-list card">
+          <div className="network-issues-list voter-guide-list card">
             <div className="card-child__list-group">
               {
                 this.state.issues_to_follow && this.state.issues_to_follow.length ?

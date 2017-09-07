@@ -30,3 +30,12 @@ $description-margin-top: 10px;
   float: left;
   text-align: left;
 }
+
+.network-issues-list {
+  padding: 1em;
+
+  .intro-modal__issue-square {
+    float: left;
+    color: white;
+  }
+}
