@@ -38,7 +38,7 @@ export default class Measure extends Component {
     MeasureActions.retrieve(measure_we_vote_id);
 
     this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
-    VoterGuideActions.retrieveGuidesToFollowByBallotItem(measure_we_vote_id, "MEASURE");
+    VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(measure_we_vote_id, "MEASURE");
 
     // Make sure supportProps exist for this Measure when browser comes straight to measure page
     SupportActions.retrievePositionsCountsForOneBallotItem(measure_we_vote_id);
@@ -52,7 +52,7 @@ export default class Measure extends Component {
 
     MeasureActions.retrieve(nextProps.params.measure_we_vote_id);
 
-    VoterGuideActions.retrieveGuidesToFollowByBallotItem(nextProps.params.measure_we_vote_id, "MEASURE");
+    VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.measure_we_vote_id, "MEASURE");
 
     // Display the measure's name in the search box
     // var { measure } = this.state;

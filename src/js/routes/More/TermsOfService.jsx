@@ -80,7 +80,7 @@ export default class TermsOfService extends React.Component {
 
 
         <h2><b>How to contact us</b></h2>
-        <p><span>If you have any questions about the Terms of Service, you may contact us by sending an e-mail to info@WeVote.US </span><br />
+        <p><span>If you have any questions about the Terms of Service, you may contact us by sending an e-mail to <a href="mailto:info@WeVote.US" target="_blank">info@WeVote.US</a> </span><br />
           <span>You can also write to us at the following address:</span>
         </p>
         <p>We Vote USA
