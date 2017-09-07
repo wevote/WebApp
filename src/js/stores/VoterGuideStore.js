@@ -90,14 +90,14 @@ class VoterGuideStore extends FluxMapStore {
           return state;
         } else {
           id = action.res.google_civic_election_id;
-          VoterGuideActions.retrieveGuidesToFollow(id);
+          VoterGuideActions.voterGuidesToFollowRetrieve(id);
           VoterGuideActions.voterGuidesFollowedRetrieve(id);
           return state;
         }
 
       case "voterAddressRetrieve": // refresh guides when you change address
         id = action.res.google_civic_election_id;
-        VoterGuideActions.retrieveGuidesToFollow(id);
+        VoterGuideActions.voterGuidesToFollowRetrieve(id);
         VoterGuideActions.voterGuidesFollowedRetrieve(id);
         return state;
 
@@ -105,7 +105,7 @@ class VoterGuideStore extends FluxMapStore {
         voter_linked_organization_we_vote_id = VoterStore.getVoter().linked_organization_we_vote_id;
         // organization_we_vote_id is the organization that was just followed
         organization_we_vote_id = action.res.organization_we_vote_id;
-        VoterGuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter follows a new org, update list
+        VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id());  // Whenever a voter follows a new org, update list
         // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
         VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
         // Update who the organization is followed by
@@ -131,7 +131,7 @@ class VoterGuideStore extends FluxMapStore {
 
         // If no voter guides found , and it's not a search query, retrieve results for all elections
         if (is_empty && election_id_exists && !search_term_exists ) {
-          VoterGuideActions.retrieveGuidesToFollow(0);
+          VoterGuideActions.voterGuidesToFollowRetrieve(0);
           return state;
         }
 

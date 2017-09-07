@@ -27,7 +27,7 @@ export default class BallotIntroFollowAdvisers extends Component {
   }
 
   componentDidMount () {
-    VoterGuideActions.retrieveGuidesToFollowByIssuesFollowed();
+    VoterGuideActions.voterGuidesToFollowRetrieveByIssuesFollowed();
     this._onVoterGuideStoreChange();
     this.onOrganizationFollow = this.onOrganizationFollow.bind(this);
     this.onOrganizationStopFollowing = this.onOrganizationStopFollowing.bind(this);

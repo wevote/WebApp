@@ -17,7 +17,7 @@ const delay_before_retrieve_guides_api_call = 500;
 const handleKeyPress = function () {
     clearTimeout(this.timer);
     this.timer = setTimeout(() => {
-      VoterGuideActions.retrieveGuidesToFollow(this.state.id, this.state.query);
+      VoterGuideActions.voterGuidesToFollowRetrieve(this.state.id, this.state.query);
     }, delay_before_retrieve_guides_api_call);
 };
 

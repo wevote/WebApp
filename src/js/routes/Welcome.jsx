@@ -208,7 +208,7 @@ export default class Intro extends Component {
                         </FormGroup>
                         <FormGroup className="col-md-4">
                           <Button className="form-control"
-                                  bsStyle="danger"
+                                  bsStyle="success"
                                   type="submit"
                                   onClick={this.voterEmailAddressSignUpSave.bind(this)}
                                   >Sign Up</Button>

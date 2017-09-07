@@ -12,8 +12,9 @@ export default class BallotIntroPositionBar extends Component {
 
   render () {
     return <div className="intro-modal">
-      <div className="intro-modal__h1">Congratulations!</div>
-      <div className="intro-modal__h2">Now that you have a network, you will see a position bar next to ballot items with your network's positions.</div>
+      <div className="intro-modal__h1">Nice job!</div>
+      <div className="intro-modal__h2">Each position bar shows where your network stands on a
+        candidate, measure or referendum.</div>
       <div className="intro-modal__position-wrap">
         <img className="intro-modal__position-img" src="/img/global/icons/position-bar-v1-265x43.png" alt="position bar" />
         <div className="intro-modal__position-description-wrap">

@@ -83,6 +83,8 @@ class OrganizationStore extends FluxMapStore {
     let organizations_followed_on_twitter_list;
     let voter_linked_organization_we_vote_id;
     let voter_guides;
+    let search_string;
+    let add_voter_guides_not_from_election;
 
     switch (action.type) {
 
@@ -93,9 +95,12 @@ class OrganizationStore extends FluxMapStore {
         // organization_we_vote_id is the organization that was just followed
         organization_we_vote_id = action.res.organization_we_vote_id;
         if (action.res.organization_follow_based_on_issue) {
-          VoterGuideActions.retrieveGuidesToFollowByIssuesFollowed();  // Whenever a voter follows a new org, update list
+          VoterGuideActions.voterGuidesToFollowRetrieveByIssuesFollowed();  // Whenever a voter follows a new org, update list
         } else {
-          VoterGuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter follows a new org, update list
+          search_string = "";
+          add_voter_guides_not_from_election = true;
+          // Whenever a voter follows a new org, update list
+          VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voter_guides_not_from_election);
         }
         // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
         VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
@@ -123,7 +128,10 @@ class OrganizationStore extends FluxMapStore {
         voter_linked_organization_we_vote_id = action.res.voter_linked_organization_we_vote_id;
         // organization_we_vote_id is the organization that was just followed
         organization_we_vote_id = action.res.organization_we_vote_id;
-        VoterGuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter stops following an org, update list
+        search_string = "";
+        add_voter_guides_not_from_election = true;
+        // Whenever a voter follows a new org, update list
+        VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voter_guides_not_from_election);
         // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
         VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
         // Update who the organization is followed by
@@ -149,7 +157,10 @@ class OrganizationStore extends FluxMapStore {
         voter_linked_organization_we_vote_id = action.res.voter_linked_organization_we_vote_id;
         // organization_we_vote_id is the organization that was just followed
         organization_we_vote_id = action.res.organization_we_vote_id;
-        VoterGuideActions.retrieveGuidesToFollow(VoterStore.election_id());  // Whenever a voter ignores an org, update list
+        search_string = "";
+        add_voter_guides_not_from_election = true;
+        // Whenever a voter follows a new org, update list
+        VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voter_guides_not_from_election);
         // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
         VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
         // Update who the organization is followed by

@@ -114,7 +114,7 @@ export default class Ballot extends Component {
 
   _toggleCandidateModal (candidate_for_modal) {
     if (candidate_for_modal) {
-      VoterGuideActions.retrieveGuidesToFollowByBallotItem(candidate_for_modal.we_vote_id, "CANDIDATE");
+      VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidate_for_modal.we_vote_id, "CANDIDATE");
       candidate_for_modal.voter_guides_to_follow_for_latest_ballot_item = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(candidate_for_modal.we_vote_id);
     }
 
@@ -137,7 +137,7 @@ export default class Ballot extends Component {
 
   _toggleMeasureModal (measureForModal) {
     if (measureForModal) {
-      VoterGuideActions.retrieveGuidesToFollowByBallotItem(measureForModal.measure_we_vote_id, "MEASURE");
+      VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(measureForModal.measure_we_vote_id, "MEASURE");
     }
     this.setState({
       measure_for_modal: measureForModal,

@@ -12,7 +12,7 @@
   &__h1 {
     font-weight: 700;
     font-size: 30px;
-    padding: $space-md $space-none $space-md;
+    padding: $space-md $space-none $space-sm;
     @include breakpoints (max medium) {
       font-size: 16px;
     }
@@ -134,6 +134,15 @@
     overflow: hidden;
     @include breakpoints (max mid-small) {
       text-align: start;
+    }
+  }
+
+  &__top-description {
+    font-size: 20px;
+    padding-bottom: $space-md;
+    @include breakpoints (max medium) {
+      font-size: 16px;
+      padding-bottom: $space-sm;
     }
   }
 

@@ -168,12 +168,12 @@ class VoterStore extends FluxMapStore {
         if (action.res.success) {
           if (action.res.kind_of_follow_task === "FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW") {
             // console.log("organizationSuggestionTasks FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
-            VoterGuideActions.retrieveGuidesToFollow(this.election_id());
+            VoterGuideActions.voterGuidesToFollowRetrieve(this.election_id());
             VoterGuideActions.voterGuidesFollowedRetrieve(this.election_id());
             SupportActions.positionsCountForAllBallotItems(this.election_id());
           } else if (action.res.kind_of_suggestion_task === "UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW") {
             // console.log("organizationSuggestionTasks UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
-            VoterGuideActions.retrieveGuidesToFollow(this.election_id());
+            VoterGuideActions.voterGuidesToFollowRetrieve(this.election_id());
           }
         }
         return state;
@@ -217,12 +217,14 @@ class VoterStore extends FluxMapStore {
         return state;
 
       case "voterAddressRetrieve":
+        console.log("VoterStore, voterAddressRetrieve, address:", action.res);
         return {
           ...state,
           address: action.res
         };
 
       case "voterAddressSave":
+        console.log("VoterStore, voterAddressSave, action.res.google_civic_election_id:", action.res.google_civic_election_id);
         if (action.res.status === "SIMPLE_ADDRESS_SAVE") {
           return {
             ...state,

@@ -21,8 +21,8 @@ export default class BallotIntroFollowAdvisers extends Component {
     this.state = {
       description_text: "",
       followed_organizations: [],
-      voter_guides_to_follow_by_issues_followed: VoterGuideStore.getVoterGuidesToFollowByIssuesFollowed(),
-      voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
+      voter_guides_to_follow_by_issues_followed: [],
+      voter_guides_to_follow_all: [],
       next_button_text: NEXT_BUTTON_TEXT,
     };
 
@@ -32,8 +32,10 @@ export default class BallotIntroFollowAdvisers extends Component {
   }
 
   componentDidMount () {
-    VoterGuideActions.retrieveGuidesToFollowByIssuesFollowed();
-    VoterGuideActions.retrieveGuidesToFollow(VoterStore.election_id());
+    VoterGuideActions.voterGuidesToFollowRetrieveByIssuesFollowed();
+    let search_string = "";
+    let add_voter_guides_not_from_election = true;
+    VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voter_guides_not_from_election);
     this._onVoterGuideStoreChange();
     this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
   }
@@ -43,6 +45,8 @@ export default class BallotIntroFollowAdvisers extends Component {
   }
 
   _onVoterGuideStoreChange () {
+    // console.log("BallotIntroFollowAdvisers, voter_guides_to_follow_by_issues_followed: ", VoterGuideStore.getVoterGuidesToFollowByIssuesFollowed());
+    // console.log("voter_guides_to_follow_all: ", VoterGuideStore.getVoterGuidesToFollowAll());
     this.setState({
       voter_guides_to_follow_by_issues_followed: VoterGuideStore.getVoterGuidesToFollowByIssuesFollowed(),
       voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
@@ -129,42 +133,31 @@ export default class BallotIntroFollowAdvisers extends Component {
     });
 
     return <div className="intro-modal">
-      <div className="intro-modal__h1">Follow Organizations</div>
-      { voter_guides_to_follow_by_issues_for_display.length ?
+      <div className="intro-modal__h1">Follow organizations</div>
         <div>
+          <div className="intro-modal__top-description">
+            { this.state.description_text ?
+              this.state.description_text :
+              <span>Great work! Next, follow any of these organizations to see their opinions on your ballot.</span>
+            }
+          </div>
           <div className="intro-modal-vertical-scroll-contain">
             <div className="intro-modal-vertical-scroll card">
               { voter_guides_to_follow_by_issues_for_display.length ?
                 voter_guides_to_follow_by_issues_for_display :
-                <h4>No organizations to display</h4>
+                <span>NOT voter_guides_to_follow_by_issues_for_display</span>
               }
-            </div>
-          </div>
-          <div className="intro-modal__description-text">
-            { this.state.description_text ?
-              this.state.description_text :
-              <span>Great work! Based on your issues, these organizations or people
-                might share your values. Follow them for recommendations.</span>
-            }
-          </div>
-        </div> :
-        <div>
-          <div className="intro-modal-vertical-scroll-contain">
-            <div className="intro-modal-vertical-scroll card">
               { voter_guides_to_follow_all_for_display.length ?
                 voter_guides_to_follow_all_for_display :
-                <h4>No organizations to display</h4>
+                <span>NOT voter_guides_to_follow_all_for_display</span>
+              }
+              { voter_guides_to_follow_by_issues_for_display.length || voter_guides_to_follow_all_for_display.length ?
+                null :
+                <h4>There are no more organizations to follow!</h4>
               }
             </div>
           </div>
-          <div className="intro-modal__description-text">
-            { this.state.description_text ?
-              this.state.description_text :
-              <span>These organizations or people provide voter guides. Follow them for recommendations.</span>
-            }
-          </div>
         </div>
-      }
       <br/>
       <div className="intro-modal__button-wrap">
         <Button type="submit" className="btn btn-success intro-modal__button" onClick={this.onNext}>

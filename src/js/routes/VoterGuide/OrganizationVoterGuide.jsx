@@ -32,12 +32,14 @@ export default class OrganizationVoterGuide extends Component {
   }
 
   componentDidMount (){
-    // console.log("OrganizationVoterGuide, componentDidMount, this.props.params.organization_we_vote_id: ", this.props.params.organization_we_vote_id);
+    console.log("OrganizationVoterGuide, componentDidMount, this.props.params.organization_we_vote_id: ", this.props.params.organization_we_vote_id);
     this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
-    AnalyticsActions.saveActionVoterGuideVisit(this.props.params.organization_we_vote_id);
+    if (VoterStore.election_id()) {
+      AnalyticsActions.saveActionVoterGuideVisit(this.props.params.organization_we_vote_id, VoterStore.election_id());
+    }
     // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
     // console.log("action_variable: " + this.props.params.action_variable);
     if (this.props.params.action_variable === AUTO_FOLLOW && this.props.params.organization_we_vote_id) {
