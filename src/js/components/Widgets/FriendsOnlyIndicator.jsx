@@ -20,10 +20,10 @@ export default class FriendsOnlyIndicator extends Component {
     let labelText = "";
     let visibilityIcon = "";
     if (is_friends_only) {
-      labelText = "Friends";
+      labelText = "This position is visible to friends only.";
       visibilityIcon = <Icon name="group-icon" color="#999" width={18} height={18} />;
     } else {
-      labelText = "Public";
+      labelText = "This position is visible to the public.";
       visibilityIcon = <Icon name="public-icon" color="#ccc" width={18} height={18} />;
     }
 
