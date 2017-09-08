@@ -15,10 +15,10 @@ import VoterStore from "../stores/VoterStore";
 
 module.exports = {
 
-  saveActionVoterGuideVisit: function (organization_we_vote_id) {
+  saveActionVoterGuideVisit: function (organization_we_vote_id, google_civic_election_id) {
     const ACTION_VOTER_GUIDE_VISIT = 1;
     // Look up google_civic_election_id
-    let google_civic_election_id = VoterStore.election_id();
+    console.log("AnalyticsActions, saveActionVoterGuideVisit, google_civic_election_id: ", google_civic_election_id);
 
     Dispatcher.loadEndpoint("saveAnalyticsAction",
       {
