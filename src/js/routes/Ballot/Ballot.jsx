@@ -312,7 +312,7 @@ export default class Ballot extends Component {
     }
 
     const missing_address = this.props.location === null;
-    // const ballot_caveat = BallotStore.ballot_properties.ballot_caveat;
+    const ballot_caveat = BallotStore.ballot_properties.ballot_caveat;
     const election_name = BallotStore.currentBallotElectionName;
     const election_date = BallotStore.currentBallotElectionDate;
     const polling_location_we_vote_id_source = BallotStore.currentBallotPollingLocationSource;
@@ -401,6 +401,14 @@ export default class Ballot extends Component {
           {emptyBallot}
           <div className="row ballot__body">
             <div className="col-xs-12 col-md-8">
+              {/* ballot_caveat ?
+                <div>{ballot_caveat}</div> :
+                null */}
+              <div className="alert alert-warning">
+                <a href="#" className="close" data-dismiss="alert">&times;</a>
+                For the New York September 12th election, we have put all of the ballot items on one ballot for New York.
+                Some of these offices will not be on your personal ballot.
+              </div>
               <div className="BallotList">
               { in_ready_to_vote_mode ?
                 ballot.map( (item) => <BallotItemReadyToVote key={item.we_vote_id} {...item} />) :

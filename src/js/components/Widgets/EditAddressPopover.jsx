@@ -22,8 +22,10 @@ export default class EditAddressPopover extends Component {
       onClick={this.closePopover}>
       <div style={{textAlign: "center"}}>
         <p><span style={{color: "#ef1e26"}}>This is our best guess</span> <i className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></p>
-        <p>Want to make sure these are your ballot items? Enter the full address where you are registered to vote.</p>
-        <button className="btn btn-success" onClick={this.props.onClick}>Enter Address &gt;&gt;</button>
+        {/*<p>Want to make sure these are your ballot items? Enter the full address where you are registered to vote.</p>*/}
+        <p>For the New York September 12th election, we have put all of the ballot items on one ballot for New York.
+          Some of these offices will not be on your personal ballot.</p>
+        {/*<button className="btn btn-success" onClick={this.props.onClick}>Enter Address &gt;&gt;</button>*/}
       </div>
     </Popover>;
 
