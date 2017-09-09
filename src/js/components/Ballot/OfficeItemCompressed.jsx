@@ -95,7 +95,7 @@ export default class OfficeItemCompressed extends Component {
           let candidateSupportStore = SupportStore.get(candidateId);
           let candidateGuidesList = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(candidateId);
 
-          let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + " candidate. " : "";
+          let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + ". " : "";
           let candidate_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
           let candidate_text = candidate_party_text + candidate_description_text;
 
