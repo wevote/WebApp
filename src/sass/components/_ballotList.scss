@@ -78,6 +78,10 @@
   position: relative;
   // top: 20%;
   transform: translateY(-50%);
+
+  @include breakpoints(992px) {
+    width: 768px;
+  }
 }
 
 .BallotItemsSummary {
