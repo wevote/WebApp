@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { browserHistory, Link } from "react-router";
 import Helmet from "react-helmet";
 import { Button, FormGroup, Row } from "react-bootstrap";
+import AnalyticsActions from "../actions/AnalyticsActions";
 import VoterActions from "../actions/VoterActions";
 import VoterConstants from "../constants/VoterConstants";
 import VoterStore from "../stores/VoterStore";
@@ -40,6 +41,7 @@ export default class Intro extends Component {
   componentDidMount () {
     this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    AnalyticsActions.saveActionWelcomeVisit(VoterStore.election_id());
   }
 
   componentWillUnmount () {
