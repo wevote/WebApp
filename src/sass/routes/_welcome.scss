@@ -146,11 +146,11 @@ $cta-color: #fb2f2f;
       padding: $space-none $space-lg;
       height: 66px;
 
-      @include breakpoints (medium 992px) {
+      @include breakpoints (small-bootstrap medium-bootstrap) {
         height: 110px;
       }
 
-      @include breakpoints (max medium) {
+      @include breakpoints (max small-bootstrap) {
         padding: $space-none;
       }
 
