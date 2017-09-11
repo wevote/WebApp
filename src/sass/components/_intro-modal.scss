@@ -5,16 +5,18 @@
   width: 100%;
   color: $white;
   text-align: center;
-  @include breakpoints (mid-small) {
-    min-height: 508px;
-  }
 
   &__h1 {
     font-weight: 700;
     font-size: 30px;
     padding: $space-md $space-none $space-sm;
-    @include breakpoints (max medium) {
-      font-size: 16px;
+
+    @include breakpoints (mid-small medium) {
+      font-size: 24px;
+    }
+
+    @include breakpoints (max mid-small) {
+      font-size: 18px;
     }
   }
   &__h1--alt {
@@ -112,21 +114,18 @@
 
   &__button {
     position: absolute;
-    bottom: 42px;
-    width: 180px;
-    @include breakpoints (max mid-small) {
-      bottom: 0;
-    }
+    bottom: 36px;
+    width: 19%;
   }
 
   &__button-follow,
   &__button-disabled {
-    width: 180px;
+    width: 19%;
   }
 
   &__button-wrap {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
   }
 
   &__span {
@@ -140,8 +139,14 @@
   &__top-description {
     font-size: 20px;
     padding-bottom: $space-md;
-    @include breakpoints (max medium) {
-      font-size: 16px;
+
+    @include breakpoints (mid-small medium) {
+      font-size: 18px;
+      padding-bottom: $space-sm;
+    }
+
+    @include breakpoints (max mid-small) {
+      font-size: 14px;
       padding-bottom: $space-sm;
     }
   }
@@ -317,11 +322,26 @@
       left: 12px;
       font-size: .875rem;
       text-shadow: 1px 1px 2px rgba($black, .6);
-      @include breakpoints (max mid-small) {
+
+      @include breakpoints (xsmall-bootstrap small-bootstrap) {
         right: 10px;
         bottom: 10px;
         left: 10px;
-        font-size: .675rem;
+        font-size: .65rem;
+      }
+
+      @include breakpoints (iphone5 mid-small) {
+        right: 10px;
+        bottom: 10px;
+        left: 10px;
+        font-size: .65rem;
+      }
+
+      @include breakpoints (max iphone5) {
+        right: 8px;
+        bottom: 8px;
+        left: 8px;
+        font-size: .6rem;
       }
     }
   }
@@ -356,10 +376,15 @@
 }
 
 .intro-modal-vertical-scroll-contain {
-  max-height: 30vh;
+  height: 40vh;
   overflow-y: auto;
+
+  @include breakpoints (mid-small medium) {
+    height: 42vh;
+  }
+
   @include breakpoints (max mid-small) {
-    max-height: calc(100vh - 284px);
+    height: calc(100vh - 256px);
   }
 }
 
@@ -394,6 +419,11 @@
   }
 }
 
+.slick-list,
+.slick-track {
+  height: 100%;
+}
+
 .slick-dots {
   bottom: 0;
 }
@@ -407,5 +437,9 @@
 .calc-height {
   @include breakpoints (max mid-small) {
     height: calc(100vh - 52px);
+  }
+
+  @include breakpoints (mid-small) {
+    height: 64vh;
   }
 }
