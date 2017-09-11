@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { browserHistory, Link } from "react-router";
+import AnalyticsActions from "../../actions/AnalyticsActions";
 import CandidateModal from "../../components/Ballot/CandidateModal";
 import cookies from "../../utils/cookies";
 import BallotActions from "../../actions/BallotActions";
@@ -93,6 +94,7 @@ export default class Ballot extends Component {
       // Once a voter hits the ballot, they have gone through orientation
       cookies.setItem("voter_orientation_complete", "1", Infinity, "/");
     }
+    AnalyticsActions.saveActionBallotVisit(VoterStore.election_id());
   }
 
   componentWillUnmount (){
@@ -312,7 +314,7 @@ export default class Ballot extends Component {
     }
 
     const missing_address = this.props.location === null;
-    const ballot_caveat = BallotStore.ballot_properties.ballot_caveat;
+    // const ballot_caveat = BallotStore.ballot_properties.ballot_caveat; // ballot_properties might be undefined
     const election_name = BallotStore.currentBallotElectionName;
     const election_date = BallotStore.currentBallotElectionDate;
     const polling_location_we_vote_id_source = BallotStore.currentBallotPollingLocationSource;
