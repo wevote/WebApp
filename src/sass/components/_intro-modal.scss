@@ -115,17 +115,17 @@
   &__button {
     position: absolute;
     bottom: 36px;
-    width: 180px;
+    width: 19%;
   }
 
   &__button-follow,
   &__button-disabled {
-    width: 180px;
+    width: 19%;
   }
 
   &__button-wrap {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
   }
 
   &__span {
@@ -322,6 +322,27 @@
       left: 12px;
       font-size: .875rem;
       text-shadow: 1px 1px 2px rgba($black, .6);
+
+      @include breakpoints (xsmall-bootstrap small-bootstrap) {
+        right: 10px;
+        bottom: 10px;
+        left: 10px;
+        font-size: .65rem;
+      }
+
+      @include breakpoints (iphone5 mid-small) {
+        right: 10px;
+        bottom: 10px;
+        left: 10px;
+        font-size: .65rem;
+      }
+
+      @include breakpoints (max iphone5) {
+        right: 8px;
+        bottom: 8px;
+        left: 8px;
+        font-size: .6rem;
+      }
     }
   }
 }
