@@ -5,16 +5,18 @@
   width: 100%;
   color: $white;
   text-align: center;
-  @include breakpoints (mid-small) {
-    min-height: 508px;
-  }
 
   &__h1 {
     font-weight: 700;
     font-size: 30px;
     padding: $space-md $space-none $space-sm;
-    @include breakpoints (max medium) {
-      font-size: 16px;
+
+    @include breakpoints (mid-small medium) {
+      font-size: 24px;
+    }
+
+    @include breakpoints (max mid-small) {
+      font-size: 18px;
     }
   }
   &__h1--alt {
@@ -112,11 +114,8 @@
 
   &__button {
     position: absolute;
-    bottom: 42px;
+    bottom: 36px;
     width: 180px;
-    @include breakpoints (max mid-small) {
-      bottom: 0;
-    }
   }
 
   &__button-follow,
@@ -140,8 +139,14 @@
   &__top-description {
     font-size: 20px;
     padding-bottom: $space-md;
-    @include breakpoints (max medium) {
-      font-size: 16px;
+
+    @include breakpoints (mid-small medium) {
+      font-size: 18px;
+      padding-bottom: $space-sm;
+    }
+
+    @include breakpoints (max mid-small) {
+      font-size: 14px;
       padding-bottom: $space-sm;
     }
   }
@@ -317,12 +322,6 @@
       left: 12px;
       font-size: .875rem;
       text-shadow: 1px 1px 2px rgba($black, .6);
-      @include breakpoints (max mid-small) {
-        right: 10px;
-        bottom: 10px;
-        left: 10px;
-        font-size: .675rem;
-      }
     }
   }
 }
@@ -356,10 +355,15 @@
 }
 
 .intro-modal-vertical-scroll-contain {
-  max-height: 30vh;
+  max-height: 40vh;
   overflow-y: auto;
+
+  @include breakpoints (mid-small medium) {
+    max-height: 42vh;
+  }
+
   @include breakpoints (max mid-small) {
-    max-height: calc(100vh - 284px);
+    max-height: calc(100vh - 256px);
   }
 }
 
@@ -394,6 +398,11 @@
   }
 }
 
+.slick-list,
+.slick-track {
+  height: 100%;
+}
+
 .slick-dots {
   bottom: 0;
 }
@@ -407,5 +416,9 @@
 .calc-height {
   @include breakpoints (max mid-small) {
     height: calc(100vh - 52px);
+  }
+
+  @include breakpoints (mid-small) {
+    height: 64vh;
   }
 }
