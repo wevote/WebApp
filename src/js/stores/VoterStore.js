@@ -144,6 +144,10 @@ class VoterStore extends FluxMapStore {
     return this.getState().voter_found;
   }
 
+  // isVerificationEmailSent () {
+  //   return this.getState().email_address_status.verification_email_sent;
+  // }
+
   reduce (state, action) {
 
     let voter_device_id;

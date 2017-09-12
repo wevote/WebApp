@@ -3,6 +3,7 @@ import { browserHistory, Link } from "react-router";
 import Helmet from "react-helmet";
 import { Button, FormGroup, Row } from "react-bootstrap";
 import AnalyticsActions from "../actions/AnalyticsActions";
+import { validateEmail } from "../utils/email-functions";
 import VoterActions from "../actions/VoterActions";
 import VoterConstants from "../constants/VoterConstants";
 import VoterStore from "../stores/VoterStore";
@@ -18,12 +19,16 @@ export default class Intro extends Component {
     this.state = {
       newsletter_opt_in_true: false,
       voter: {},
+      is_verification_email_sent: false,
       show_features_ballot: false,
       show_features_organizations: false,
       show_features_positions: false,
       show_features_network: false,
       show_features_vision: false,
       show_features_vote: false,
+      submit_disabled: true,
+      voter_email_address: "",
+      voter_full_name: "",
     };
 
     this._toggleBallotFeature = this._toggleBallotFeature.bind(this);
@@ -73,8 +78,10 @@ export default class Intro extends Component {
   }
 
   _onVoterStoreChange () {
+    // console.log("is_verification_email_sent:  " + VoterStore.isVerificationEmailSent());
     this.setState({
       newsletter_opt_in_true: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
+      // is_verification_email_sent: VoterStore.isVerificationEmailSent(),
       voter: VoterStore.getVoter(),
     });
   }
@@ -91,8 +98,14 @@ export default class Intro extends Component {
   }
 
   updateVoterEmailAddress (event) {
+    let is_email_valid = validateEmail(event.target.value);
+    let submit_disabled = true;
+    if (is_email_valid) {
+      submit_disabled = false;
+    }
     this.setState({
-      voter_email_address: event.target.value
+      voter_email_address: event.target.value,
+      submit_disabled: submit_disabled,
     });
   }
 
@@ -150,6 +163,7 @@ export default class Intro extends Component {
       }
     }
 
+    // && this.state.is_verification_email_sent ?
     return <div className="welcome-page">
       <Helmet title="Welcome to We Vote" />
       <section className="hero-section">
@@ -212,6 +226,7 @@ export default class Intro extends Component {
                           <Button className="form-control"
                                   bsStyle="success"
                                   type="submit"
+                                  disabled={this.state.submit_disabled}
                                   onClick={this.voterEmailAddressSignUpSave.bind(this)}
                                   >Sign Up</Button>
                         </FormGroup>
