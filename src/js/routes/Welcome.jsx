@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { browserHistory, Link } from "react-router";
 import Helmet from "react-helmet";
 import { Button, FormGroup, Row } from "react-bootstrap";
@@ -26,7 +26,7 @@ export default class Intro extends Component {
       show_features_network: false,
       show_features_vision: false,
       show_features_vote: false,
-      submit_disabled: true,
+      submit_enabled: false,
       voter_email_address: "",
       voter_full_name: "",
     };
@@ -99,23 +99,26 @@ export default class Intro extends Component {
 
   updateVoterEmailAddress (event) {
     let is_email_valid = validateEmail(event.target.value);
-    let submit_disabled = true;
+    let submit_enabled = false;
     if (is_email_valid) {
-      submit_disabled = false;
+      submit_enabled = true;
     }
     this.setState({
       voter_email_address: event.target.value,
-      submit_disabled: submit_disabled,
+      submit_enabled: submit_enabled,
     });
   }
 
   voterEmailAddressSignUpSave (event) {
-    event.preventDefault();
-    let send_link_to_sign_in = true;
-    VoterActions.voterEmailAddressSave(this.state.voter_email_address, send_link_to_sign_in);
-    VoterActions.voterFullNameSoftSave("", "", this.state.voter_full_name);
-    VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
-    this.setState({loading: true});
+    // Only proceed after we have a valid email address, which will enable the submit
+    if (this.state.submit_enabled) {
+      event.preventDefault();
+      let send_link_to_sign_in = true;
+      VoterActions.voterEmailAddressSave(this.state.voter_email_address, send_link_to_sign_in);
+      VoterActions.voterFullNameSoftSave("", "", this.state.voter_full_name);
+      VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
+      this.setState({loading: true});
+    }
   }
 
   shareToFacebookButton () {
@@ -223,12 +226,18 @@ export default class Intro extends Component {
                                  placeholder="Email Address"/>
                         </FormGroup>
                         <FormGroup className="col-md-4">
-                          <Button className="form-control"
-                                  bsStyle="success"
-                                  type="submit"
-                                  disabled={this.state.submit_disabled}
-                                  onClick={this.voterEmailAddressSignUpSave.bind(this)}
-                                  >Sign Up</Button>
+                          {this.state.submit_enabled ?
+                            <Button className="form-control"
+                                    bsStyle="success"
+                                    type="submit"
+                                    onClick={this.voterEmailAddressSignUpSave.bind(this)}
+                            >Sign Up</Button> :
+                            <Button className="btn btn-success"
+                                    type="submit"
+                                    disabled
+                                    onClick={this.voterEmailAddressSignUpSave.bind(this)}
+                            >Enter Your Email to Sign Up</Button>
+                          }
                         </FormGroup>
                       </form>
                     </div>

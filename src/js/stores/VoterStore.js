@@ -221,14 +221,14 @@ class VoterStore extends FluxMapStore {
         return state;
 
       case "voterAddressRetrieve":
-        console.log("VoterStore, voterAddressRetrieve, address:", action.res);
+        // console.log("VoterStore, voterAddressRetrieve, address:", action.res);
         return {
           ...state,
           address: action.res
         };
 
       case "voterAddressSave":
-        console.log("VoterStore, voterAddressSave, action.res.google_civic_election_id:", action.res.google_civic_election_id);
+        // console.log("VoterStore, voterAddressSave, action.res.google_civic_election_id:", action.res.google_civic_election_id);
         if (action.res.status === "SIMPLE_ADDRESS_SAVE") {
           return {
             ...state,
