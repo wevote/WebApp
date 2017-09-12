@@ -376,11 +376,11 @@
 }
 
 .intro-modal-vertical-scroll-contain {
-  height: 40vh;
+  height: calc(64vh - 232px);
   overflow-y: auto;
 
   @include breakpoints (mid-small medium) {
-    height: 42vh;
+    height: calc(64vh - 208px);
   }
 
   @include breakpoints (max mid-small) {
