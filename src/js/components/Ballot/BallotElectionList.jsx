@@ -17,22 +17,23 @@ export default class BallotElectionList extends Component {
     this.state = {};
   }
 
-  updateBallot (originalTextForMapSearch, simpleSave, googleCivicElectionId) {
-    console.log("BallotElectionList.jsx updateBallot, googleCivicElectionId: ", googleCivicElectionId);
-    VoterActions.voterAddressSave(originalTextForMapSearch, simpleSave, googleCivicElectionId);
+  updateBallot (originalTextForMapSearch, simple_save, googleCivicElectionId) {
+    // console.log("BallotElectionList.jsx updateBallot, googleCivicElectionId: ", googleCivicElectionId);
+    VoterActions.voterAddressSave(originalTextForMapSearch, simple_save, googleCivicElectionId);
     // Not necessary here: BallotActions.voterBallotItemsRetrieve(googleCivicElectionId);
     this.props.toggleFunction();
   }
 
   render () {
+    console.log("BallotElectionList, this.props.ballotElectionList", this.props.ballotElectionList);
     let currentDate = moment().format("YYYY-MM-DD");
-    let simpleSave = true;
+    let simple_save = false;
     let upcomingElectionList = this.props.ballotElectionList.map((item, index) =>
       item.election_date > currentDate ?
       <div key={index}>
         <dl className="list-unstyled text-center">
           <button type="button" className="btn btn-success ballot-election-list__button"
-                  onClick={this.updateBallot.bind(this, item.originalTextForMapSearch, simpleSave, item.googleCivicElectionId)}>
+                  onClick={this.updateBallot.bind(this, item.original_text_for_map_search, simple_save, item.google_civic_election_id)}>
             { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ?
               <span>{item.election_description_text}&nbsp;<img src={"/img/global/icons/Circle-Arrow.png"}/></span> :
               <span>{item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}...&nbsp;<img src={"/img/global/icons/Circle-Arrow.png"}/></span>
@@ -51,7 +52,7 @@ export default class BallotElectionList extends Component {
       <div key={index}>
         <dl className="list-unstyled text-center">
           <button type="button" className="btn btn-success ballot-election-list__button"
-                  onClick={this.updateBallot.bind(this, item.originalTextForMapSearch, simpleSave, item.googleCivicElectionId)}>
+                  onClick={this.updateBallot.bind(this, item.original_text_for_map_search, simple_save, item.google_civic_election_id)}>
             { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ?
               <span>{item.election_description_text}&nbsp;<img src={"/img/global/icons/Circle-Arrow.png"}/></span> :
               <span>{item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}...&nbsp;<img src={"/img/global/icons/Circle-Arrow.png"}/></span>
