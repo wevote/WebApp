@@ -1,6 +1,7 @@
 import React, {Component, PropTypes } from "react";
 import { browserHistory } from "react-router";
 import { Button } from "react-bootstrap";
+import AnalyticsActions from "../actions/AnalyticsActions";
 import CheckBox from "../components/Connect/CheckBox";
 import LoadingWheel from "../components/LoadingWheel";
 import FacebookActions from "../actions/FacebookActions";
@@ -64,6 +65,7 @@ export default class FacebookInvitableFriends extends Component {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     this._onFacebookStoreChange();
     this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
+    AnalyticsActions.saveActionFacebookInvitableFriends(VoterStore.election_id());
   }
 
   componentWillMount () {

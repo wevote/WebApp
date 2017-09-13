@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
 import { browserHistory } from "react-router";
+import AnalyticsActions from "../../actions/AnalyticsActions";
 import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 import FacebookStore from "../../stores/FacebookStore";
 import LoadingWheel from "../../components/LoadingWheel";
@@ -30,6 +31,7 @@ export default class VoterGuideGetStarted extends Component {
     this._onVoterStoreChange();
     this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    AnalyticsActions.saveActionVoterGuideGetStarted(VoterStore.election_id());
   }
 
   componentWillUnmount () {

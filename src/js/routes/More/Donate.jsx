@@ -1,10 +1,12 @@
 import React, {Component} from "react";
 import { Button, FormGroup, Radio, InputGroup, FormControl } from "react-bootstrap";
 import Helmet from "react-helmet";
+import AnalyticsActions from "../../actions/AnalyticsActions";
 import DonationForm from "../../components/Donation/DonationForm";
 import DonationError from "../../components/Donation/DonationError";
 import DonateStore from "../../stores/DonateStore";
 import DonationListForm from "../../components/Donation/DonationListForm";
+import VoterStore from "../../stores/VoterStore";
 
 export default class Donate extends Component {
   constructor (props) {
@@ -30,6 +32,7 @@ export default class Donate extends Component {
   componentDidMount () {
     this._donateStoreChange();
     this.donateStoreListener = DonateStore.addListener(this._donateStoreChange);
+    AnalyticsActions.saveActionDonateVisit(VoterStore.election_id());
   }
 
   componentWillUnmount () {

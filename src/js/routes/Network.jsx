@@ -1,5 +1,6 @@
 import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
+import AnalyticsActions from "../actions/AnalyticsActions";
 import BrowserPushMessage from "../components/Widgets/BrowserPushMessage";
 import FriendActions from "../actions/FriendActions";
 import FriendStore from "../stores/FriendStore";
@@ -49,6 +50,7 @@ export default class Network extends Component {
     this.setState({
       edit_mode: this.props.params.edit_mode || "organizations",
     });
+    AnalyticsActions.saveActionNetwork(VoterStore.election_id());
   }
 
   componentWillReceiveProps (nextProps) {

@@ -32,28 +32,29 @@ export default class OrganizationVoterGuide extends Component {
   }
 
   componentDidMount (){
-    console.log("OrganizationVoterGuide, componentDidMount, this.props.params.organization_we_vote_id: ", this.props.params.organization_we_vote_id);
+    // console.log("OrganizationVoterGuide, componentDidMount, this.props.params.organization_we_vote_id: ", this.props.params.organization_we_vote_id);
     this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
-    AnalyticsActions.saveActionVoterGuideVisit(this.props.params.organization_we_vote_id, VoterStore.election_id());
     // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
     // console.log("action_variable: " + this.props.params.action_variable);
     if (this.props.params.action_variable === AUTO_FOLLOW && this.props.params.organization_we_vote_id) {
       // If we are here,
       // console.log("Auto following");
+      AnalyticsActions.saveActionVoterGuideAutoFollow(this.props.params.organization_we_vote_id, VoterStore.election_id());
       OrganizationActions.organizationFollow(this.props.params.organization_we_vote_id);
       // Now redirect to the same page without the "/af" in the route
       let current_path_name = this.props.location.pathname;
       // AUTO_FOLLOW is "af"
       let current_path_name_without_auto_follow = current_path_name.replace("/" + AUTO_FOLLOW, "");
-      console.log("OrganizationVoterGuide, current_path_name_without_auto_follow: ", current_path_name_without_auto_follow);
+      // console.log("OrganizationVoterGuide, current_path_name_without_auto_follow: ", current_path_name_without_auto_follow);
       browserHistory.push(current_path_name_without_auto_follow);
       this.setState({
         auto_follow_redirect_happening: true,
       });
     } else {
+      AnalyticsActions.saveActionVoterGuideVisit(this.props.params.organization_we_vote_id, VoterStore.election_id());
       this.setState({
         organization_we_vote_id: this.props.params.organization_we_vote_id,
         voter: VoterStore.getVoter(),

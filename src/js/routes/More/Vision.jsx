@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import Helmet from "react-helmet";
 import ReactPlayer from "react-player";
+import AnalyticsActions from "../../actions/AnalyticsActions";
+import VoterStore from "../../stores/VoterStore";
 
 export default class Vision extends Component {
   constructor (props) {
@@ -9,6 +11,10 @@ export default class Vision extends Component {
 
   static getProps () {
     return {};
+  }
+
+  componentDidMount (){
+    AnalyticsActions.saveActionAboutVision(VoterStore.election_id());
   }
 
   render () {

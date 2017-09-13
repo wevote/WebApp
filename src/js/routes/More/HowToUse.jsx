@@ -1,7 +1,9 @@
 import React, {Component} from "react";
 import Helmet from "react-helmet";
 import {Link} from "react-router";
+import AnalyticsActions from "../../actions/AnalyticsActions";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
+import VoterStore from "../../stores/VoterStore";
 
 export default class HowToUse extends Component {
   constructor (props) {
@@ -10,6 +12,10 @@ export default class HowToUse extends Component {
 
   static getProps () {
     return {};
+  }
+
+  componentDidMount (){
+    AnalyticsActions.saveActionAboutGettingStarted(VoterStore.election_id());
   }
 
   render () {

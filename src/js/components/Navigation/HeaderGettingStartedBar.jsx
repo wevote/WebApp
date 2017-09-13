@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Modal } from "react-bootstrap";
+import AnalyticsActions from "../../actions/AnalyticsActions";
 import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
 import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
 import BallotIntroFriends from "../../components/Ballot/BallotIntroFriends";
@@ -68,31 +69,55 @@ export default class HeaderGettingStartedBar extends Component {
 
   _toggleBallotIntroFollowIssues () {
     VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
+    if (!this.state.showBallotIntroFollowIssues) {
+      // Save action when going from off to on
+      AnalyticsActions.saveActionModalIssues(VoterStore.election_id());
+    }
     this.setState({ showBallotIntroFollowIssues: !this.state.showBallotIntroFollowIssues });
   }
 
   _toggleBallotIntroOrganizations () {
     VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
+    if (!this.state.showBallotIntroOrganizations) {
+      // Save action when going from off to on
+      AnalyticsActions.saveActionModalOrganizations(VoterStore.election_id());
+    }
     this.setState({ showBallotIntroOrganizations: !this.state.showBallotIntroOrganizations });
   }
 
   _toggleBallotIntroPositions () {
     VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
+    if (!this.state.showBallotIntroPositions) {
+      // Save action when going from off to on
+      AnalyticsActions.saveActionModalPositions(VoterStore.election_id());
+    }
     this.setState({ showBallotIntroPositions: !this.state.showBallotIntroPositions });
   }
 
   _toggleBallotIntroFriends () {
     VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
+    if (!this.state.showBallotIntroFriends) {
+      // Save action when going from off to on
+      AnalyticsActions.saveActionModalFriends(VoterStore.election_id());
+    }
     this.setState({ showBallotIntroFriends: !this.state.showBallotIntroFriends });
   }
 
   _toggleBallotIntroShare () {
     VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
+    if (!this.state.showBallotIntroShare) {
+      // Save action when going from off to on
+      AnalyticsActions.saveActionModalShare(VoterStore.election_id());
+    }
     this.setState({ showBallotIntroShare: !this.state.showBallotIntroShare });
   }
 
   _toggleBallotIntroVote () {
     VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
+    if (!this.state.showBallotIntroVote) {
+      // Save action when going from off to on
+      AnalyticsActions.saveActionModalVote(VoterStore.election_id());
+    }
     this.setState({ showBallotIntroVote: !this.state.showBallotIntroVote });
   }
 

@@ -181,8 +181,7 @@ export default class Ballot extends Component {
   _onBallotStoreChange (){
     if (this.state.mounted) {
       if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) {
-        // Ballot is found but ballot is empty
-        browserHistory.push("/ballot/empty");
+        // Ballot is found but ballot is empty. We want to stay put.
         console.log("_onBallotStoreChange: ballot is empty");
       } else {
         let ballot_type = this.props.location.query ? this.props.location.query.type : "all";

@@ -2,7 +2,9 @@ import React, {Component} from "react";
 import Helmet from "react-helmet";
 import {Link} from "react-router";
 import ReactPlayer from "react-player";
+import AnalyticsActions from "../../actions/AnalyticsActions";
 import ImageHandler from "../../components/ImageHandler";
+import VoterStore from "../../stores/VoterStore";
 
 export default class About extends Component {
   constructor (props) {
@@ -11,6 +13,10 @@ export default class About extends Component {
 
   static getProps () {
     return {};
+  }
+
+  componentDidMount (){
+    AnalyticsActions.saveActionAboutMobile(VoterStore.election_id());
   }
 
   render () {
