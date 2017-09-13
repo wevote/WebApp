@@ -104,7 +104,7 @@ class FacebookStore extends FluxMapStore {
     switch (action.type) {
 
       case FacebookConstants.FACEBOOK_LOGGED_IN:
-        console.log("FACEBOOK_LOGGED_IN action.data:", action.data);
+        // console.log("FACEBOOK_LOGGED_IN action.data:", action.data);
         FacebookActions.voterFacebookSignInAuth(action.data.authResponse);
         FacebookActions.getFacebookData();
         return {
@@ -133,7 +133,7 @@ class FacebookStore extends FluxMapStore {
         } else {
           facebook_friends_not_exist = true;
         }
-        console.log("FACEBOOK_RECEIVED_INVITABLE_FRIENDS: ", facebook_invitable_friends_list);
+        // console.log("FACEBOOK_RECEIVED_INVITABLE_FRIENDS: ", facebook_invitable_friends_list);
         return {
           ...state,
           facebookInvitableFriendsList: facebook_invitable_friends_list,
@@ -142,7 +142,7 @@ class FacebookStore extends FluxMapStore {
         };
 
       case FacebookConstants.FACEBOOK_READ_APP_REQUESTS:
-        console.log("FacebookStore appreqests:", action.data.apprequests);
+        // console.log("FacebookStore appreqests:", action.data.apprequests);
         let app_request_already_processed = false;
         if (action.data.apprequests) {
           let apprequests_data = action.data.apprequests.data[0];
@@ -153,7 +153,7 @@ class FacebookStore extends FluxMapStore {
         } else {
           app_request_already_processed = true;
         }
-        console.log("app_request_already_processed", app_request_already_processed);
+        // console.log("app_request_already_processed", app_request_already_processed);
         return {
           ...state,
           appRequestAlreadyProcessed: app_request_already_processed

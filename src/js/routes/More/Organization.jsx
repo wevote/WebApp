@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import Helmet from "react-helmet";
+import AnalyticsActions from "../../actions/AnalyticsActions";
+import VoterStore from "../../stores/VoterStore";
 
 export default class Organization extends Component {
   constructor (props) {
@@ -8,6 +10,10 @@ export default class Organization extends Component {
 
   static getProps () {
     return {};
+  }
+
+  componentDidMount (){
+    AnalyticsActions.saveActionAboutOrganization(VoterStore.election_id());
   }
 
   render () {

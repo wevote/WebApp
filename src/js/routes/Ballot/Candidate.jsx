@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import AnalyticsActions from "../../actions/AnalyticsActions";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateItem from "../../components/Ballot/CandidateItem";
 import CandidateStore from "../../stores/CandidateStore";
@@ -47,6 +48,7 @@ export default class Candidate extends Component {
     // Display the candidate's name in the search box
     var searchBoxText = this.state.candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
     SearchAllActions.exitSearch(searchBoxText); // TODO: still not used :)
+    AnalyticsActions.saveActionCandidate(VoterStore.election_id(), candidate_we_vote_id);
   }
 
   componentWillReceiveProps (nextProps) {

@@ -1,12 +1,15 @@
 import React, { Component } from "react";
+import Helmet from "react-helmet";
 import { Link } from "react-router";
 import AddFriendsByEmail from "../../components/Friends/AddFriendsByEmail";
+import AnalyticsActions from "../../actions/AnalyticsActions";
 import CurrentFriends from "../../components/Connect/CurrentFriends";
-import VoterGuideStore from "../../stores/VoterGuideStore";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
 import FacebookStore from "../../stores/FacebookStore";
-import Helmet from "react-helmet";
+import OrganizationStore from "../../stores/OrganizationStore";
+import VoterGuideStore from "../../stores/VoterGuideStore";
+import VoterStore from "../../stores/VoterStore";
 
 export default class InviteByEmail extends Component {
 	static propTypes = {
@@ -20,7 +23,7 @@ export default class InviteByEmail extends Component {
       current_friends_list: FriendStore.currentFriends(),
       facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
       voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
-      organizations_followed_on_twitter_list: VoterGuideStore.getOrganizationsFollowedByVoterOnTwitter(),
+      organizations_followed_on_twitter_list: OrganizationStore.getOrganizationsFollowedByVoterOnTwitter(),
       maximum_organization_display: 25,
       maximum_friend_display: 25,
       facebook_invitable_friends_image_width: 24,
@@ -33,6 +36,7 @@ export default class InviteByEmail extends Component {
       FriendActions.currentFriends();
     }
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
+    AnalyticsActions.saveActionInviteByEmail(VoterStore.election_id());
   }
 
   _onFriendStoreChange () {

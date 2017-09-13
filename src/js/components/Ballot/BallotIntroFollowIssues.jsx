@@ -6,7 +6,6 @@ import IssueStore from "../../stores/IssueStore";
 
 const NEXT_BUTTON_TEXT = "Next >";
 const SKIP_BUTTON_TEXT = "Skip >";
-const INITIAL_DESCRIPTION_TEXT = "After you follow five issues you care about, we'll suggest some groups that have opinions about these issues.";
 const NEXT_SCREEN_PROMPT_TEXT = "On the next screen, we'll help you find organizations that share your values.";
 
 export default class BallotIntroFollowIssues extends Component {
@@ -152,7 +151,7 @@ export default class BallotIntroFollowIssues extends Component {
       <div className="intro-modal__top-description">
         Pick{ remaining_issues ? " " + remaining_issues : null }
         &nbsp;issue{ remaining_issues !== 1 ? "s" : null } or { remaining_issues !== 1 ? "categories" : "category" }
-        { remaining_issues ? " (or more!)" : null }, and we will suggest organizations working on those issues.
+        { remaining_issues ? " (or more!)" : null }, and we'll suggest organizations working on those issues.
       </div>
       <div className="intro-modal-vertical-scroll-contain">
         <div className="intro-modal-vertical-scroll card">

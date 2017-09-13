@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import {Button} from "react-bootstrap";
 import Helmet from "react-helmet";
 import { browserHistory } from "react-router";
+import AnalyticsActions from "../../actions/AnalyticsActions";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
@@ -42,6 +43,7 @@ export default class SignIn extends Component {
     this._onVoterStoreChange();
     this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    AnalyticsActions.saveActionAccountPage(VoterStore.election_id());
   }
 
   componentWillUnmount () {

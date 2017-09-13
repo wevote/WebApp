@@ -10,6 +10,7 @@ import FacebookStore from "../stores/FacebookStore";
 import Helmet from "react-helmet";
 import OrganizationActions from "../actions/OrganizationActions";
 import OrganizationsFollowedOnTwitter from "../components/Connect/OrganizationsFollowedOnTwitter";
+import OrganizationStore from "../stores/OrganizationStore";
 import AddFacebookFriends from "../components/Connect/AddFacebookFriends";
 import ItemTinyOpinionsToFollow from "../components/VoterGuide/ItemTinyOpinionsToFollow";
 
@@ -25,7 +26,7 @@ export default class Connect extends Component {
       current_friends_list: FriendStore.currentFriends(),
       facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
       voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
-      organizations_followed_on_twitter_list: VoterGuideStore.getOrganizationsFollowedByVoterOnTwitter(),
+      organizations_followed_on_twitter_list: OrganizationStore.getOrganizationsFollowedByVoterOnTwitter(),
       maximum_organization_display: 25,
       maximum_friend_display: 25,
       facebook_invitable_friends_image_width: 24,
@@ -59,7 +60,7 @@ export default class Connect extends Component {
   }
 
   _onVoterGuideStoreChange (){
-    var organizations_followed_on_twitter_list = VoterGuideStore.getOrganizationsFollowedByVoterOnTwitter();
+    var organizations_followed_on_twitter_list = OrganizationStore.getOrganizationsFollowedByVoterOnTwitter();
     var voter_guides_to_follow_all = VoterGuideStore.getVoterGuidesToFollowAll();
     if (organizations_followed_on_twitter_list !== undefined && organizations_followed_on_twitter_list.length > 0){
       this.setState({ organizations_followed_on_twitter_list: organizations_followed_on_twitter_list });

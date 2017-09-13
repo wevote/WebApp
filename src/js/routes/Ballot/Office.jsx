@@ -2,11 +2,13 @@ import React, { Component, PropTypes } from "react";
 import CandidateList from "../../components/Ballot/CandidateList";
 import { capitalizeString } from "../../utils/textFormat";
 import Helmet from "react-helmet";
+import AnalyticsActions from "../../actions/AnalyticsActions";
 import LoadingWheel from "../../components/LoadingWheel";
 import OfficeActions from "../../actions/OfficeActions";
 import OfficeItem from "../../components/Ballot/OfficeItem";
 import OfficeStore from "../../stores/OfficeStore";
 import SearchAllActions from "../../actions/SearchAllActions";
+import VoterStore from "../../stores/VoterStore";
 
 export default class Office extends Component {
   static propTypes = {
@@ -27,6 +29,7 @@ export default class Office extends Component {
       this.setState({office: office});
     }
 
+    AnalyticsActions.saveActionOffice(VoterStore.election_id(), this.state.office_we_vote_id);
     SearchAllActions.exitSearch();
   }
 

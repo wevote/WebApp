@@ -1,7 +1,9 @@
 import React, {Component} from "react";
 import Helmet from "react-helmet";
 import {Link} from "react-router";
+import AnalyticsActions from "../../actions/AnalyticsActions";
 import ImageHandler from "../../components/ImageHandler";
+import VoterStore from "../../stores/VoterStore";
 
 export default class Team extends Component {
   constructor (props) {
@@ -10,6 +12,10 @@ export default class Team extends Component {
 
   static getProps () {
     return {};
+  }
+
+  componentDidMount (){
+    AnalyticsActions.saveActionAboutTeam(VoterStore.election_id());
   }
 
   render () {
