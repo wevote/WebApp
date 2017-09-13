@@ -106,7 +106,7 @@ export default class Application extends Component {
 
   render () {
     var { location: { pathname }} = this.props;
-    const headRoomSize = pathname === "/ballot" ?
+    const headRoomSize = pathname === "/ballot" || pathname === "/bookmarks" ?
       "headroom-getting-started__margin" :
       "headroom-wrapper";
 
@@ -140,7 +140,7 @@ export default class Application extends Component {
       pathname === "/opinions" || pathname === "/opinions_followed" || pathname === "/opinions_ignored" ||
       pathname === "/settings/location" || pathname.startsWith("/verifythisisme/") || pathname === "/welcome") {
       content_full_width_mode = true;
-    } else if (pathname === "/ballot") {
+    } else if (pathname === "/ballot" || pathname === "/bookmarks") {
       content_full_width_mode = false;
     } else {
       voter_guide_mode = true;
@@ -174,7 +174,7 @@ export default class Application extends Component {
       <div className={headRoomSize}>
         <div ref="pageHeader" className="page-header__container headroom">
           <HeaderBar pathname={pathname} voter={this.state.voter} />
-          { pathname === "/ballot" ?
+          { pathname === "/ballot" || pathname === "/bookmarks" ?
             <HeaderGettingStartedBar pathname={pathname} voter={this.state.voter}/> :
             null }
         </div>
