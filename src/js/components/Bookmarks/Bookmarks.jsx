@@ -14,7 +14,7 @@ export default class Bookmarks extends Component {
   static propTypes = {
   };
 
-  constructor (props){
+  constructor (props) {
     super(props);
     this.state = {
       bookmarks: [],
@@ -34,7 +34,7 @@ export default class Bookmarks extends Component {
   }
 
   _onBallotStoreChange () {
-    this.setState({bookmarks: BallotStore.bookmarks });
+    this.setState({ bookmarks: BallotStore.bookmarks });
   }
 
   _toggleSelectAddressModal () {
@@ -42,9 +42,7 @@ export default class Bookmarks extends Component {
     if (!this.state.showSelectAddressModal)
       browserHistory.push("/bookmarks");
 
-    this.setState({
-      showSelectAddressModal: !this.state.showSelectAddressModal
-    });
+    this.setState({ showSelectAddressModal: !this.state.showSelectAddressModal });
   }
 
   render () {
@@ -94,15 +92,9 @@ export default class Bookmarks extends Component {
       <div className="page-content-container">
         <div className="container-fluid">
           <div className="container-main">
-            {
-              this.state.bookmarks.length === 0 && <p>No bookmarks yet</p>
-            }
+            { !this.state.bookmarks.length && <p>No bookmarks yet</p> }
             <div className="bookmarks-list">
-              {
-                this.state.bookmarks.map(bookmark => {
-                  return <BookmarkItem key={bookmark.ballot_item_display_name} bookmark={bookmark}/>;
-                })
-              }
+              { this.state.bookmarks.map((bookmark) => <BookmarkItem key={bookmark.ballot_item_display_name} bookmark={bookmark}/>) }
             </div>
           </div>
         </div>
