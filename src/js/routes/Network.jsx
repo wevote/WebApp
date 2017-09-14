@@ -21,6 +21,8 @@ const facebook_info_text = "By signing into Facebook here, you can choose which 
 
 const email_info_text = "Send email invitations to your friends. Share your vision, and get your friends help on figuring out everything on your ballot.";
 
+let desktop_view_display = null;
+
 export default class Network extends Component {
   static propTypes = {
     params: PropTypes.object,
@@ -79,7 +81,6 @@ export default class Network extends Component {
     if (!this.state.voter){
       return LoadingWheel;
     }
-
     let network_component_to_display = null;
     switch (this.state.edit_mode) {
       default:
@@ -102,7 +103,7 @@ export default class Network extends Component {
           <h3 className="h3 text-center">Build Your We Vote Network</h3>
 
           {/* Desktop view */}
-          <div className="hidden-xs buttons-container">
+          <div className="hidden-xs buttons-container" ref="desktopView">
             { this.state.voter.signed_in_twitter ?
               null :
               <div className="network-btn">
@@ -137,7 +138,7 @@ export default class Network extends Component {
           </div>
 
           {/* Mobile view */}
-          <span className="visible-xs">
+          <div className="mobile-container">
             { this.state.voter.signed_in_twitter ?
               null :
               <div className="network-btn">
@@ -154,7 +155,7 @@ export default class Network extends Component {
                 <i className="fa fa-envelope" />Invite
               </Link>
             </div>
-          </span>
+          </div>
         </div>
       </section>
       <div className="row">

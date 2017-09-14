@@ -13,10 +13,12 @@ $tab-height-visible: $tab-height - $scrollbar-height;
 $button-div-max-width: 240px;
 $button-margin-horizontal: 10px;
 $description-margin-top: 10px;
+$social-left-padding-mobile: 40px;
+$social-right-padding-mobile: 9px;
 
 .buttons-container {
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   justify-content: space-around;
 }
 
@@ -27,12 +29,24 @@ $description-margin-top: 10px;
     margin-right: $button-margin-horizontal;
     margin-left: $button-margin-horizontal;
   }
+  .mobile-container {
+    display: none;
+  }
 }
 
 @media (max-width: 767px) {
   .network-btn {
     display: inline-block;
     margin-left: $button-margin-horizontal / 2;
+  }
+  .mobile-container {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+  }
+  .btn-social {
+    padding-left: $social-left-padding-mobile;
+    padding-right: $social-right-padding-mobile;
   }
 }
 
