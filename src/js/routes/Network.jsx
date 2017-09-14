@@ -21,8 +21,6 @@ const facebook_info_text = "By signing into Facebook here, you can choose which 
 
 const email_info_text = "Send email invitations to your friends. Share your vision, and get your friends help on figuring out everything on your ballot.";
 
-let desktop_view_display = null;
-
 export default class Network extends Component {
   static propTypes = {
     params: PropTypes.object,
@@ -103,7 +101,7 @@ export default class Network extends Component {
           <h3 className="h3 text-center">Build Your We Vote Network</h3>
 
           {/* Desktop view */}
-          <div className="hidden-xs buttons-container" ref="desktopView">
+          <div className="hidden-xs buttons-container">
             { this.state.voter.signed_in_twitter ?
               null :
               <div className="network-btn">
