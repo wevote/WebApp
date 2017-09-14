@@ -15,24 +15,37 @@ export default class IssueFollowToggleSquare extends IssueFollowToggle {
       // issue_image_url = "/img/global/issues/" + issue_name_base + "-110x110.jpg";
     }
 
-    return this.state.is_following ?
-      <div className="col-4 col-sm-2 intro-modal__issue-square" onClick={this.onIssueStopFollowing}>
-        <ImageHandler sizeClassName="intro-modal__issue-square-image u-cursor--pointer intro-modal__issue-square-following"
+    if (this.props.read_only === true && !this.props.edit_mode){
+      return <div className={this.props.grid + " intro-modal__issue-square"}>
+        <ImageHandler sizeClassName="intro-modal__issue-square-image intro-modal__issue-square-following"
                       imageUrl={ issue_image_url }
                       alt={this.props.issue_name}
                       kind_of_image="ISSUE-PHOTO" />
-        <ImageHandler className="intro-modal__issue-square-check-mark u-cursor--pointer"
+        <ImageHandler className="intro-modal__issue-square-check-mark"
                       imageUrl="/img/global/svg-icons/check-mark-v2-40x43.svg"
                       alt="Following" />
         <h4 className="intro-modal__white-space intro-modal__issue-square-name">{this.props.issue_name}</h4>
-      </div> :
-      <div className="col-4 col-sm-2 intro-modal__issue-square" onClick={this.onIssueFollow}>
-        <ImageHandler sizeClassName="intro-modal__issue-square-image u-cursor--pointer"
-                      imageUrl={ issue_image_url }
-                      alt={this.props.issue_name}
-                      kind_of_image="ISSUE-PHOTO" />
-        <h4 className="intro-modal__white-space intro-modal__issue-square-name">{this.props.issue_name}</h4>
-      </div>
-    ;
+      </div>;
+    } else {
+      return this.state.is_following ?
+        <div className={this.props.grid + " intro-modal__issue-square"} onClick={this.onIssueStopFollowing}>
+          <ImageHandler sizeClassName="intro-modal__issue-square-image u-cursor--pointer intro-modal__issue-square-following"
+                        imageUrl={ issue_image_url }
+                        alt={this.props.issue_name}
+                        kind_of_image="ISSUE-PHOTO" />
+          <ImageHandler className="intro-modal__issue-square-check-mark u-cursor--pointer"
+                        imageUrl="/img/global/svg-icons/check-mark-v2-40x43.svg"
+                        alt="Following" />
+          <h4 className="intro-modal__white-space intro-modal__issue-square-name">{this.props.issue_name}</h4>
+        </div> :
+        <div className={this.props.grid + " intro-modal__issue-square"} onClick={this.onIssueFollow}>
+          <ImageHandler sizeClassName="intro-modal__issue-square-image u-cursor--pointer"
+                        imageUrl={ issue_image_url }
+                        alt={this.props.issue_name}
+                        kind_of_image="ISSUE-PHOTO" />
+          <h4 className="intro-modal__white-space intro-modal__issue-square-name">{this.props.issue_name}</h4>
+        </div>
+      ;
+    }
   }
 }

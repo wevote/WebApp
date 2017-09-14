@@ -2,7 +2,7 @@ import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
 import IssueActions from "../actions/IssueActions";
-import IssueFollowToggle from "../components/Issues/IssueFollowToggle";
+import IssueFollowToggleSquare from "../components/Issues/IssueFollowToggleSquare";
 import IssueStore from "../stores/IssueStore";
 
 
@@ -60,14 +60,16 @@ export default class IssuesFollowed extends Component {
 
     let is_following = true;
     const issue_list_for_display = issue_list.map((issue) => {
-      return <IssueFollowToggle
+      return <IssueFollowToggleSquare
         key={issue.issue_we_vote_id}
         issue_we_vote_id={issue.issue_we_vote_id}
         issue_name={issue.issue_name}
         issue_description={issue.issue_description}
-        issue_image_url={issue.issue_photo_url_medium}
+        issue_image_url={issue.issue_image_url}
         edit_mode={this.state.edit_mode}
         is_following={is_following}
+        grid="col-4 col-sm-2"
+        read_only
       />;
     });
 
@@ -84,7 +86,7 @@ export default class IssuesFollowed extends Component {
               These are the issues you currently follow. We recommend organizations that you might want to learn from
               based on these issues.
             </p>
-          <div className="voter-guide-list card">
+          <div className="network-issues-list voter-guide-list card">
             <div className="card-child__list-group">
               {
                 this.state.issues_followed.length > 0 ?

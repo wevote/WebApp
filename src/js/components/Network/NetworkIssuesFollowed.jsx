@@ -1,7 +1,8 @@
 import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
 import IssueActions from "../../actions/IssueActions";
-import IssueFollowToggle from "../Issues/IssueFollowToggle";
+// import IssueFollowToggle from "../Issues/IssueFollowToggle";
+import IssueFollowToggleSquare from "../Issues/IssueFollowToggleSquare";
 import IssueStore from "../../stores/IssueStore";
 
 
@@ -56,7 +57,7 @@ export default class NetworkIssuesFollowed extends Component {
     if (this.state.issues_followed) {
       issue_list = this.state.issues_followed;
     }
-    const ISSUES_TO_SHOW = 3;
+    const ISSUES_TO_SHOW = 6;
 
     let is_following = true;
     let issue_count = 0;
@@ -65,15 +66,16 @@ export default class NetworkIssuesFollowed extends Component {
       if (issue_count > ISSUES_TO_SHOW) {
         return null;
       } else {
-        return <IssueFollowToggle
+        return <IssueFollowToggleSquare
           key={issue.issue_we_vote_id}
           issue_we_vote_id={issue.issue_we_vote_id}
           issue_name={issue.issue_name}
           issue_description={issue.issue_description}
-          issue_image_url={issue.issue_photo_url_medium}
+          issue_image_url={issue.issue_image_url}
           edit_mode={this.state.edit_mode}
           is_following={is_following}
-        />;
+          grid="col-sm-6"
+          read_only />;
       }
     });
 
@@ -81,16 +83,16 @@ export default class NetworkIssuesFollowed extends Component {
       <section className="card">
         <div className="card-main">
           <h1 className="h4">Issues You Are Following</h1>
-          <div className="voter-guide-list card">
-            <div className="card-child__list-group">
-              {
-                this.state.issues_followed.length > 0 ?
-                  <span>
-                    <span>{issue_list_for_display}</span>
-                    <Link to="/issues_followed">See All</Link>
-                  </span> :
-                  <span>You are not following any issues yet.</span>
-              }
+          <div className="network-issues-list voter-guide-list card">
+            <div className="card-child__list-group clearfix">
+              { issue_list_for_display }
+            </div>
+            <div>
+            {
+              this.state.issues_followed.length > 0 ?
+              <span><Link to="/issues_followed">See All</Link></span> :
+              <span>You are not following any issues yet.</span>
+            }
             </div>
           </div>
           <br />
