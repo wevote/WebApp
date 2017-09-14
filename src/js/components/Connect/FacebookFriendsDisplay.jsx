@@ -12,6 +12,7 @@ export default class FacebookFriendsDisplay extends Component {
     maximumFriendDisplay: PropTypes.number,
     facebookInvitableFriendsImageWidth: PropTypes.number,
     facebookInvitableFriendsImageHeight: PropTypes.number,
+    facebookInvitableFriendsList: PropTypes.object,
   };
 
   constructor (props) {
