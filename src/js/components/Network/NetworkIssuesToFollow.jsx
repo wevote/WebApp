@@ -48,7 +48,7 @@ export default class NetworkIssuesToFollow extends Component {
         issue_we_vote_id={issue.issue_we_vote_id}
         issue_name={issue.issue_name}
         issue_description={issue.issue_description}
-        issue_image_url={issue.issue_image_url} //{issue.issue_photo_url_medium}
+        issue_image_url={issue.issue_image_url}
         edit_mode={edit_mode}
         is_following={is_following}
         grid="col-4 col-sm-2"
