@@ -70,6 +70,7 @@ export default class IssuesFollowed extends Component {
         edit_mode={this.state.edit_mode}
         is_following={is_following}
         grid="col-4 col-sm-2"
+        read_only={true}
       />;
     });
 
