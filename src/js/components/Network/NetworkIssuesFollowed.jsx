@@ -73,9 +73,9 @@ export default class NetworkIssuesFollowed extends Component {
           issue_description={issue.issue_description}
           issue_image_url={issue.issue_image_url}
           edit_mode={this.state.edit_mode}
-          is_following={is_following} 
-          grid="col-sm-6" 
-          read_only={true} />;
+          is_following={is_following}
+          grid="col-sm-6"
+          read_only />;
       }
     });
 
@@ -86,14 +86,6 @@ export default class NetworkIssuesFollowed extends Component {
           <div className="network-issues-list voter-guide-list card">
             <div className="card-child__list-group clearfix">
               { issue_list_for_display }
-              {/*
-                this.state.issues_followed.length > 0 ?
-                  <span>
-                    <span>{issue_list_for_display}</span>
-                    <Link to="/issues_followed">See All</Link>
-                  </span> :
-                  <span>You are not following any issues yet.</span>
-              */}
             </div>
             <div>
             {
