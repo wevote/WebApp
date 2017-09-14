@@ -51,6 +51,7 @@ export default class NetworkIssuesToFollow extends Component {
         issue_image_url={issue.issue_image_url} //{issue.issue_photo_url_medium}
         edit_mode={edit_mode}
         is_following={is_following}
+        grid="col-4 col-sm-2"
       />;
     });
     var floatRight = {

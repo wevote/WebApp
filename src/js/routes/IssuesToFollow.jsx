@@ -51,6 +51,7 @@ export default class IssuesToFollow extends Component {
         issue_image_url={issue.issue_image_url}
         edit_mode={edit_mode}
         is_following={is_following}
+        grid="col-4 col-sm-2"
       />;
     });
 
