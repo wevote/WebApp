@@ -2,7 +2,6 @@ import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
 import IssueActions from "../actions/IssueActions";
-// import IssueFollowToggle from "../components/Issues/IssueFollowToggle";
 import IssueFollowToggleSquare from "../components/Issues/IssueFollowToggleSquare";
 import IssueStore from "../stores/IssueStore";
 
@@ -70,7 +69,7 @@ export default class IssuesFollowed extends Component {
         edit_mode={this.state.edit_mode}
         is_following={is_following}
         grid="col-4 col-sm-2"
-        read_only={true}
+        read_only
       />;
     });
 
