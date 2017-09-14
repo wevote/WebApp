@@ -81,7 +81,6 @@ export default class Network extends Component {
     if (!this.state.voter){
       return LoadingWheel;
     }
-
     let network_component_to_display = null;
     switch (this.state.edit_mode) {
       default:
@@ -139,7 +138,7 @@ export default class Network extends Component {
           </div>
 
           {/* Mobile view */}
-          <span className="visible-xs">
+          <div className="mobile-container">
             { this.state.voter.signed_in_twitter ?
               null :
               <div className="network-btn">
@@ -156,7 +155,7 @@ export default class Network extends Component {
                 <i className="fa fa-envelope" />Invite
               </Link>
             </div>
-          </span>
+          </div>
         </div>
       </section>
       <div className="row">
