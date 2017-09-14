@@ -90,15 +90,22 @@ export default class Bookmarks extends Component {
           </div>
         </div>
       </div>
-      {
-        this.state.bookmarks.length === 0 && <p>No bookmarks yet</p>
-      }
-      <div className="bookmarks-list">
-        {
-          this.state.bookmarks.map(bookmark => {
-            return <BookmarkItem key={bookmark.ballot_item_display_name} bookmark={bookmark}/>;
-          })
-        }
+
+      <div className="page-content-container">
+        <div className="container-fluid">
+          <div className="container-main">
+            {
+              this.state.bookmarks.length === 0 && <p>No bookmarks yet</p>
+            }
+            <div className="bookmarks-list">
+              {
+                this.state.bookmarks.map(bookmark => {
+                  return <BookmarkItem key={bookmark.ballot_item_display_name} bookmark={bookmark}/>;
+                })
+              }
+            </div>
+          </div>
+        </div>
       </div>
     </div>;
   }
