@@ -31,11 +31,15 @@ $description-margin-top: 10px;
   text-align: left;
 }
 
+// temporary until moved until a more general style
+$network-issue-list-padding: 1em;
+$follow-card-title-color: #fff;
+
 .network-issues-list {
-  padding: 1em;
+  padding: $network-issue-list-padding;
 
   .intro-modal__issue-square {
     float: left;
-    color: white;
+    color: $follow-card-title-color;
   }
 }
