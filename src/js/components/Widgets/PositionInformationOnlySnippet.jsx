@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import ReactPlayer from "react-player";
 import ReadMore from "../../components/Widgets/ReadMore";
+import { Tooltip, OverlayTrigger } from "react-bootstrap";
 import {vimeo_reg, youtube_reg} from "../../utils/textFormat";
 var Icon = require("react-svg-icons");
 // import ViewSourceModal from "../../components/Widgets/ViewSourceModal";
@@ -93,8 +94,14 @@ export default class PositionInformationOnlySnippet extends Component {
       }
     }
 
+    let noPositionIcon = <Icon name="no-position-icon" width={24} height={24} className={className} alt={alt} />;
+    let labelText = "This position is information-only, as opposed to “support” or “oppose”";
+    const tooltip = <Tooltip id="tooltip">{labelText}</Tooltip>;
+    const noPositionIndicator = <OverlayTrigger placement="top" overlay={tooltip}>
+      <div className="public-friends-indicator">{noPositionIcon}</div>
+    </OverlayTrigger>;
     return <div className="explicit-position">
-      {stance_display_off ? null : <Icon name="no-position-icon" width={24} height={24} className={className} alt={alt} />}
+      {stance_display_off ? null : noPositionIndicator}
       <div className="explicit-position__text">
         { stance_display_off ?
           null :
