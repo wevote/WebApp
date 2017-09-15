@@ -287,6 +287,13 @@
     @extend .intro-modal__padding-top;
   }
 
+  &__default-text {
+    width: 100%;
+    color: $black;
+    padding: $space-md;
+    text-align: center;
+  }
+
   &__issue-grid {
     padding: $space-none $space-md;
   }
