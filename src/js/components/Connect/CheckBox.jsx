@@ -9,17 +9,18 @@ export default class CheckBox extends Component {
     handleCheckboxChange: PropTypes.func.isRequired,
   };
 
-  state = {
-      isChecked: false,
+  constructor (props) {
+    super(props);
+    this.state = {
+        isChecked: false,
+    };
   }
 
-  toggleCheckboxChange = () => {
+  toggleCheckboxChange () {
     const { friendId, friendName } = this.props;
-    this.setState(({ isChecked }) => (
-      {
-        isChecked: !isChecked,
-      }
-    ));
+    this.setState({
+      isChecked: !this.state.isChecked,
+    });
     this.props.handleCheckboxChange(friendId, friendName);
   }
 
