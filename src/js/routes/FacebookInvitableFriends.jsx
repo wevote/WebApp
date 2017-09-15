@@ -48,8 +48,8 @@ export default class FacebookInvitableFriends extends Component {
       facebook_logged_in: false,
       facebook_auth_response: {},
       facebook_invitable_friends: FacebookStore.facebookInvitableFriends(),
-      facebook_invitable_friends_image_width: 48,
-      facebook_invitable_friends_image_height: 48,
+      facebook_invitable_friends_image_width: 148,
+      facebook_invitable_friends_image_height: 148,
       add_friends_message: "Please join me in preparing for the upcoming election.",
       saving: false,
       search_filter: false,
@@ -310,16 +310,14 @@ export default class FacebookInvitableFriends extends Component {
       facebook_invitable_friends_list = this.state.facebook_invitable_friends_filtered_by_search;
     }
 
-    const facebook_friend_list_for_display = facebook_invitable_friends_list.map( (friend) => {
-        return <div key={friend.id} className="card-child">
-          <CheckBox
-            friendId={friend.id}
-            friendName={friend.name}
-            friendImage={friend.picture.data.url}
-            handleCheckboxChange={this.toggleCheckBox.bind(this)}
-          />
-        </div>;
-      });
+    const facebook_friend_list_for_display = facebook_invitable_friends_list.map( (friend) =>
+      <CheckBox key={friend.id}
+                friendId={friend.id}
+                friendName={friend.name}
+                friendImage={friend.picture.data.url}
+                grid="col-4 col-sm-2"
+                handleCheckboxChange={this.toggleCheckBox.bind(this)} />
+    );
 
     return <div className="opinion-view">
       <Helmet title="Your Facebook Friends - We Vote" />
@@ -338,11 +336,13 @@ export default class FacebookInvitableFriends extends Component {
                    onChange={this.searchFacebookFriends.bind(this)} />
             <form onSubmit={this.sendInviteRequestToFacebookFriends.bind(this)}>
               <div className="display-in-column-with-vertical-scroll-contain">
-                <div className="display-in-column-with-vertical-scroll">
-                  { facebook_invitable_friends_list.length > 0 ?
-                    facebook_friend_list_for_display :
-                    <h4>No friends found with the search string '{this.state.search_term}'.</h4>
-                  }
+                <div className="display-in-column-with-vertical-scroll card">
+                  <div className="row friends-list__grid">
+                    { facebook_invitable_friends_list.length ?
+                      facebook_friend_list_for_display :
+                      <h4 className="friends-list__default-text">No friends found with the search string '{this.state.search_term}'.</h4>
+                    }
+                  </div>
                 </div>
               </div>
               <br />
