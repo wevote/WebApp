@@ -22,7 +22,6 @@ export default class Team extends Component {
     return <div>
       <Helmet title="Team - We Vote"/>
       <div className="container-fluid card u-inset__v--md">
-
         <section>
           <h1 className="h1">Our Team</h1>
           <h3 className="h3">We Vote Board Members &amp; Advisers</h3>
@@ -43,20 +42,6 @@ export default class Team extends Component {
             </div>
             <div className="col-4 col-sm-3">
               <div className="team-member">
-                <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/Tiana_Epps_Johnson-200x200.jpg"
-                              alt="Tiana Epps-Johnson"/>
-                <div className="media-body">
-                  <h4 className="team-member__name"><strong>Tiana Epps-Johnson</strong></h4>
-                  <p className="team-member__title">Senior Adviser</p>
-                <p className="xx-small hidden-xs">
-                  Exec. Dir. of CTCL, software for election administrators. Former Voting Info Project &amp;
-                  Harvard Ash Center for Democratic Governance and Innovation.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="col-4 col-sm-3">
-              <div className="team-member">
                 <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/Debra_Cleaver-200x200.jpg"
                               alt="Debra Cleaver"/>
                 <div className="media-body">
@@ -69,7 +54,20 @@ export default class Team extends Component {
                 </div>
               </div>
             </div>
-
+            <div className="col-4 col-sm-3">
+              <div className="team-member">
+                <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/Tiana_Epps_Johnson-200x200.jpg"
+                              alt="Tiana Epps-Johnson"/>
+                <div className="media-body">
+                  <h4 className="team-member__name"><strong>Tiana Epps-Johnson</strong></h4>
+                  <p className="team-member__title">Senior Adviser</p>
+                <p className="xx-small hidden-xs">
+                  Exec. Dir. of CTCL, software for election administrators. Former Voting Info Project &amp;
+                  Harvard Ash Center for Democratic Governance and Innovation.
+                  </p>
+                </div>
+              </div>
+            </div>
             <div className="col-4 col-sm-3">
               <div className="team-member">
                 <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/Tory_Gavito-200x200.jpg"
@@ -110,7 +108,6 @@ export default class Team extends Component {
                 </div>
               </div>
             </div>
-
             <div className="col-4 col-sm-3">
               <div className="team-member">
                 <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/Barbara_Shannon-200x200.jpg"
@@ -148,7 +145,19 @@ export default class Team extends Component {
                 </div>
               </div>
             </div>
-
+            <div className="col-4 col-sm-3">
+              <div className="team-member">
+                <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/Billy_Wimsatt-200x200.jpg"
+                              alt="Billy Wimsatt"/>
+                <div className="media-body">
+                  <h4 className="team-member__name"><strong>Billy Wimsatt</strong></h4>
+                  <p className="team-member__title">Senior Adviser</p>
+                  <p className="xx-small hidden-xs">
+                    Author and political activist. Founder of Gamechanger Labs, the League of Young Voters &amp; TheBallot.org.
+                  </p>
+                </div>
+              </div>
+            </div>
             <div className="col-4 col-sm-3">
               <div className="team-member">
                 <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/William_Winters-200x200.jpg"
@@ -157,13 +166,12 @@ export default class Team extends Component {
                   <h4 className="team-member__name"><strong>William Winters</strong></h4>
                   <p className="team-member__title">c4 Board Member</p>
                   <p className="xx-small hidden-xs">
-                    Campaign Manager at Color Of Change, CEL &amp; Change.org.
+                    Campaign Manager. Courage Campaign, Color Of Change, CEL &amp; Change.org.
                   </p>
                 </div>
               </div>
             </div>
           </div>
-
           <h3 className="h3">We Vote Staff</h3>
           <div className="row">
             <div className="col-4 col-sm-3">
@@ -196,7 +204,6 @@ export default class Team extends Component {
                 </div>
               </div>
             </div>
-
             <div className="col-4 col-sm-3">
               <div className="team-member">
                 <ImageHandler className="img-responsive team-member__photo" imageUrl="/img/global/photos/Yuanhsin_Chang-200x200.jpg"
@@ -331,7 +338,6 @@ export default class Team extends Component {
               </div>
             </div>
           </div>
-
         </section>
 
         <section>
