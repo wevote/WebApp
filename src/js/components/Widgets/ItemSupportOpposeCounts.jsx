@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { Tooltip, OverlayTrigger } from "react-bootstrap";
 
 export default class ItemSupportOpposeCounts extends Component {
   static propTypes = {
@@ -41,7 +42,8 @@ export default class ItemSupportOpposeCounts extends Component {
     };
 
     let empty_bar_style = {
-      borderWidth: "0"
+      borderWidth: "0",
+      width: "100%",
     };
 
     let is_empty = support_count === 0 && oppose_count === 0;
@@ -59,13 +61,19 @@ export default class ItemSupportOpposeCounts extends Component {
       background_bar_class_name = "network-positions__bar-well";
     }
 
+    let supportOpposePopoverText = "This is a summary of the “support” and “oppose” positions from your network. Click to see who supports and who opposes this ballot item, and any other organizations you can follow";
+    const supportOpposePopoverTooltip = <Tooltip id="supportOpposeTooltip">{supportOpposePopoverText}</Tooltip>;
+
+    let nonSupportOpposePopoverText = "This will show a summary of the “support” and “oppose” positions from your network once you have followed any voter guides that have positions on this ballot item. Click to see organizations you can follow that have positions on this ballot item";
+    const nonSupportOpposePopoverTooltip = <Tooltip id="nonSupportOpposeTooltip">{nonSupportOpposePopoverText}</Tooltip>;
+
     return <div className={ this.state.guideProps && this.state.guideProps.length && is_empty ? "hidden-xs hidden-print network-positions" : "network-positions" }>
       {/* <div className="network-positions__bar-label">
-        { !is_empty ?
-          "Positions in your network" :
-          "No positions in your network"
-        }
-      </div> */}
+       { !is_empty ?
+       "Positions in your network" :
+       "No positions in your network"
+       }
+       </div> */}
       <div className="network-positions__support">
         <img src={ !is_empty && is_majority_support ? "/img/global/icons/up-arrow-color-icon.svg" : "/img/global/icons/up-arrow-gray-icon.svg" } className="network-positions__support-icon u-push--xs" width="20" height="20" />
         <div className="network-positions__count">
@@ -73,16 +81,25 @@ export default class ItemSupportOpposeCounts extends Component {
           <span className="sr-only"> Support</span>
         </div>
       </div>
-      <div className={background_bar_class_name}>
-        { is_majority_support ?
-          <div className="network-positions__bar network-positions__bar--majority network-positions__bar--support" style={ !is_empty ? bar_style : empty_bar_style }>
-            <span className="sr-only">{this.percentageMajority()}% Supports</span>
-          </div> :
-          <div className="network-positions__bar network-positions__bar--majority network-positions__bar--oppose" style={ !is_empty ? bar_style : empty_bar_style }>
-            <span className="sr-only">{this.percentageMajority()}% Supports</span>
-          </div>
-        }
-      </div>
+      {is_empty ?
+        <div className={background_bar_class_name}>
+          <OverlayTrigger placement="top" overlay={nonSupportOpposePopoverTooltip}>
+            <div className="network-positions__bar" style={ !is_empty ? bar_style : empty_bar_style } >
+              <span className="sr-only">Empty position bar</span>
+            </div>
+          </OverlayTrigger>
+        </div> :
+        <div className={background_bar_class_name}>
+          <OverlayTrigger placement="top" overlay={supportOpposePopoverTooltip}>
+            <div className={ is_majority_support ?
+              "network-positions__bar network-positions__bar--majority network-positions__bar--support" :
+              "network-positions__bar network-positions__bar--majority network-positions__bar--oppose" }
+                 style={ !is_empty ? bar_style : empty_bar_style }>
+              <span className="sr-only">{this.percentageMajority()}% Supports</span>
+            </div>
+          </OverlayTrigger>
+        </div>
+      }
 
       <div className="network-positions__oppose">
         <div className="network-positions__count u-push--xs">
