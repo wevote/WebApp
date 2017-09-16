@@ -50,18 +50,20 @@ export default class Credits extends Component {
             <li>Jeff French - Oakland, CA</li>
             <li>Neelam Joshi - Columbus, OH</li>
             <li>Alicia Kolar Prevost - Washington, DC</li>
+            <li>Bharath D N Reddy - Mountain View, CA</li>
             <li>Sarah Clements - San Francisco, CA</li>
             <li>Zach Monteith - San Francisco, CA</li>
             <li>Lisa Cho - San Francisco, CA</li>
             <li>Nicolas Fiorini - Arlington, VA</li>
-            <li>Bharath D N Reddy - Mountain View, CA</li>
             <li>Colette Phair - Oakland, CA</li>
             <li>Jennifer Holmes - Pacifica, CA</li>
             <li>Joe Evans - Santa Cruz, CA</li>
             <li>Andrea Moed - San Francisco, CA</li>
             <li>Steve Podell - Oakland, CA</li>
-            <li>Ciero Kilpatrick - Washington, DC</li>
+            <li>Matt Holford - New York, NY</li>
+            <li>Edward Ly - Gresham, OR</li>
             <li>YuanHsin Chang - San Francisco, CA</li>
+            <li>Ciero Kilpatrick - Washington, DC</li>
             <li>Eric Ogawa - San Francisco, CA</li>
             <li>Mary O'Connor - Sebastopol, CA</li>
             <li>Harsha Dronamraju - San Francisco, CA</li>
@@ -75,6 +77,7 @@ export default class Credits extends Component {
             <li>Irene Florez - San Francisco, CA</li>
             <li>Udi Davidovich - Walnut Creek, CA</li>
             <li>Chris Arya - San Francisco, CA</li>
+            <li>Josh Southern - San Francisco, CA</li>
             <li>Tom Furlong - Menlo Park, CA</li>
             <li>Paul A. "Dash" McLean - E. Palo Alto, CA</li>
             <li>Eric Olivera - San Francisco, CA</li>
@@ -104,7 +107,6 @@ export default class Credits extends Component {
             <li>Miguel Elasmar - Sarasota, FL</li>
             <li>Cindy Cruz - Daly City, CA</li>
             <li>Nicole Shanahan - Palo Alto, CA</li>
-            <li>Edward Ly - Gresham, OR</li>
             <li>Steve Whetstone - San Francisco, CA</li>
             <li>Brian Bordley - Berkeley, CA</li>
             <li>Marcus Busby - San Francisco, CA</li>
