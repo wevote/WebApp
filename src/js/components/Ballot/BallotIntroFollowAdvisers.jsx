@@ -153,7 +153,7 @@ export default class BallotIntroFollowAdvisers extends Component {
               }
               { voter_guides_to_follow_by_issues_for_display.length || voter_guides_to_follow_all_for_display.length ?
                 null :
-                <h4>There are no more organizations to follow!</h4>
+                <h4 className="intro-modal__default-text">There are no more organizations to follow!</h4>
               }
             </div>
           </div>

@@ -89,9 +89,9 @@ export default class IssuesFollowed extends Component {
           <div className="network-issues-list voter-guide-list card">
             <div className="card-child__list-group">
               {
-                this.state.issues_followed.length > 0 ?
+                issue_list.length ?
                   issue_list_for_display :
-                  null
+                  <h4 className="intro-modal__default-text">You are not following any issues yet.</h4>
               }
             </div>
           </div>

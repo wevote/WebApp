@@ -74,7 +74,7 @@ export default class NetworkIssuesToFollow extends Component {
               {
                 this.state.issues_to_follow && this.state.issues_to_follow.length ?
                   issue_list_for_display :
-                  null
+                  <h4 className="intro-modal__default-text">There are no more issues to follow!</h4>
               }
             </div>
           </div>
