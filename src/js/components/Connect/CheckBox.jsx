@@ -15,9 +15,6 @@ export default class CheckBox extends Component {
     this.state = {
         isChecked: false,
     };
-  }
-
-  componentDidMount () {
     this.toggleCheckboxChange = this.toggleCheckboxChange.bind(this);
   }
 
