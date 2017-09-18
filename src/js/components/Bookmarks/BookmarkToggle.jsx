@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Modal } from "react-bootstrap";
+import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
 import BookmarkStore from "../../stores/BookmarkStore";
 import BookmarkActions from "../../actions/BookmarkActions";
 import VoterActions from "../../actions/VoterActions";
@@ -69,7 +69,7 @@ export default class BookmarkToggle extends Component {
     });
   }
 
-	render () {
+  render () {
     if (this.state.is_bookmarked === undefined){
       return <span className="bookmark-action" />;
     }
@@ -92,19 +92,22 @@ export default class BookmarkToggle extends Component {
         </section>
       </Modal.Body>
     </Modal>;
-
+    const bookmarkPopoverText = "Bookmark for later";
+    const bookmarkToolTip = <Tooltip id="bookmarkTooltip">{ bookmarkPopoverText }</Tooltip>;
     return <div>
-            <span tabIndex="0"
-                 className="bookmark-action"
-                 onClick={this.BookmarkClick.bind(this)}
-                 onKeyDown={this.BookmarkKeyDown.bind(this)}
-                 title="Bookmark for later">
+        <span tabIndex="0"
+              className="bookmark-action"
+              onClick={this.BookmarkClick.bind(this)}
+              onKeyDown={this.BookmarkKeyDown.bind(this)}
+              title="Bookmark for later">
               {this.state.is_bookmarked ?
                 <Icon alt="Is Bookmarked" name="bookmark-icon" width={24} height={24} fill="#999" stroke="none" /> :
-                <Icon alt="Bookmark for later" name="bookmark-icon" width={24} height={24} fill="none" stroke="#ccc" strokeWidth={2} />
+                <OverlayTrigger placement="top" overlay={bookmarkToolTip}>
+                  <Icon alt="Bookmark for later" name="bookmark-icon" width={24} height={24} fill="none" stroke="#ccc" strokeWidth={2} />
+                </OverlayTrigger>
               }
             </span>
-            { this.state.showBookmarkToggleHelpModal ? BookmarkToggleHelpModal : null }
-          </div>;
-	}
+      { this.state.showBookmarkToggleHelpModal ? BookmarkToggleHelpModal : null }
+    </div>;
+  }
 }

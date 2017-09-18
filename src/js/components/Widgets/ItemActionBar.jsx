@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Modal } from "react-bootstrap";
+import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
 import SupportActions from "../../actions/SupportActions";
 import ShareButtonDropdown from "./ShareButtonDropdown";
 import VoterActions from "../../actions/VoterActions";
@@ -19,6 +19,7 @@ export default class ItemActionBar extends Component {
     supportProps: PropTypes.object,
     toggleFunction: PropTypes.func,
     type: PropTypes.string.isRequired,
+    displayName: PropTypes.string,
   };
 
   constructor (props) {
@@ -133,41 +134,61 @@ export default class ItemActionBar extends Component {
       </Modal.Body>
     </Modal>;
 
+    const popoverDisplayName = this.props.displayName || "";
+    const supportButtonSelectedPopOverText = "Click to support " + popoverDisplayName + ". Only your We Vote friends will see your support.";
+    let supportButtonUnselectedPopOverText = "Click to remove your support ";
+    if (popoverDisplayName.length > 0) {
+      supportButtonUnselectedPopOverText += "for " + popoverDisplayName + ".";
+    }
+
+    const opposeButtonSelectedPopOverText = "Click to oppose " + popoverDisplayName + ". Only your We Vote friends will see your opposition.";
+    let opposeButtonUnselectedPopOverText = "Click to remove your opposition ";
+    if (popoverDisplayName.length > 0) {
+      opposeButtonUnselectedPopOverText += "for " + popoverDisplayName + ".";
+    }
+
+    const supportButtonPopoverTooltip = <Tooltip id="supportButtonTooltip">{is_support ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }</Tooltip>;
+    const opposeButtonPopoverTooltip = <Tooltip id="opposeButtonTooltip">{is_oppose ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}</Tooltip>;
+
     return <div className={ this.props.shareButtonHide ? "item-actionbar--inline" : "item-actionbar" }>
-            <div className={"btn-group" + (!this.props.shareButtonHide ? " u-push--sm" : "")}>
-              {/* Start of Support Button */}
-              <button className={"item-actionbar__btn item-actionbar__btn--support btn btn-default" + (is_support ? " support-at-state" : "")} onClick={this.supportItem.bind(this, is_support)}>
+      <div className={"btn-group" + (!this.props.shareButtonHide ? " u-push--sm" : "")}>
+        {/* Start of Support Button */}
+        <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
+          <button className={"item-actionbar__btn item-actionbar__btn--support btn btn-default" + (is_support ? " support-at-state" : "")} onClick={this.supportItem.bind(this, is_support)}>
                 <span className="btn__icon">
                   <Icon name="thumbs-up-icon" width={icon_size} height={icon_size} color={support_icon_color} />
                 </span>
-                { is_support ?
-                  <span
-                    className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label item-actionbar__position-at-state" }>Support</span> :
-                  <span
-                    className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label" }>Support</span>
-                }
-              </button>
-              {/* Start of Oppose Button */}
-              <button className={"item-actionbar__btn item-actionbar__btn--oppose btn btn-default" + (is_oppose ? " oppose-at-state" : "")} onClick={this.opposeItem.bind(this, is_oppose)}>
+            { is_support ?
+              <span
+                className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label item-actionbar__position-at-state" }>Support</span> :
+              <span
+                className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label" }>Support</span>
+            }
+          </button>
+        </OverlayTrigger>
+        {/* Start of Oppose Button */}
+        <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
+          <button className={"item-actionbar__btn item-actionbar__btn--oppose btn btn-default" + (is_oppose ? " oppose-at-state" : "")} onClick={this.opposeItem.bind(this, is_oppose)}>
                 <span className="btn__icon">
                   <Icon name="thumbs-down-icon" width={icon_size} height={icon_size} color={oppose_icon_color} />
                 </span>
-                { is_oppose ?
-                  <span
-                    className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label item-actionbar__position-at-state" }>Oppose</span> :
-                  <span
-                    className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label" }>Oppose</span>
-                }
-              </button>
-            </div>
+            { is_oppose ?
+              <span
+                className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label item-actionbar__position-at-state" }>Oppose</span> :
+              <span
+                className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label" }>Oppose</span>
+            }
+          </button>
+        </OverlayTrigger>
+      </div>
       { this.props.commentButtonHide ?
         null :
-         <button className="item-actionbar__btn item-actionbar__btn--comment btn btn-default u-push--sm" onClick={this.props.toggleFunction}>
+        <button className="item-actionbar__btn item-actionbar__btn--comment btn btn-default u-push--sm" onClick={this.props.toggleFunction}>
             <span className="btn__icon">
               <Icon name="comment-icon" width={icon_size} height={icon_size} color={icon_color} />
             </span>
-            <span className="item-actionbar__position-btn-label">Comment</span>
-          </button> }
+          <span className="item-actionbar__position-btn-label">Comment</span>
+        </button> }
 
       { this.props.shareButtonHide ?
         null :
