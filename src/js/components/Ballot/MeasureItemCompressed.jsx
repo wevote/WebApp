@@ -133,6 +133,7 @@ export default class MeasureItemCompressed extends Component {
                            shareButtonHide
                            commentButtonHide
                            transitioniing={this.state.transitioning}
+                           displayName={ballot_item_display_name}
                            type="MEASURE" />
           </div>
         </div>

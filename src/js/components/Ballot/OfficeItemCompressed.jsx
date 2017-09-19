@@ -148,6 +148,7 @@ export default class OfficeItemCompressed extends Component {
                                    shareButtonHide
                                    commentButtonHide
                                    transitioniing={this.state.transitioning}
+                                   displayName={one_candidate.ballot_item_display_name}
                                    type="CANDIDATE" />
                   </div>
                 </div>
