@@ -46,7 +46,8 @@ export default class CandidateModal extends Component {
             </p>
             <ItemSupportOpposeCounts we_vote_id={this.props.candidate.we_vote_id}
                                      supportProps={SupportStore.get(this.props.candidate.we_vote_id)}
-                                     type="CANDIDATE" />
+                                     type="CANDIDATE"
+                                     isModal/>
             { this.props.candidate.position_list ?
               <span>
                         {/* Show a break-down of the positions in your network */}

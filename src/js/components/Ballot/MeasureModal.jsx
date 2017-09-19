@@ -37,7 +37,8 @@ export default class MeasureModal extends Component {
             </p>
             <ItemSupportOpposeCounts we_vote_id={this.props.measure.measure_we_vote_id}
                                      supportProps={SupportStore.get(this.props.measure.measure_we_vote_id)}
-                                     type="MEASURE" />
+                                     type="MEASURE"
+                                     isModal/>
             { this.props.measure.position_list ?
               <span>
                   {/* Show a break-down of the positions in your network */}

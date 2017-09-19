@@ -5,6 +5,7 @@ export default class ItemSupportOpposeCounts extends Component {
   static propTypes = {
     supportProps: PropTypes.object,
     guideProps: PropTypes.array,
+    isModal: PropTypes.bool,
   };
 
   constructor (props) {
@@ -61,10 +62,16 @@ export default class ItemSupportOpposeCounts extends Component {
       background_bar_class_name = "network-positions__bar-well";
     }
 
-    let supportOpposePopoverText = "This is a summary of the “support” and “oppose” positions from your network. Click to see who supports and who opposes this ballot item, and any other organizations you can follow";
+    let supportOpposePopoverText = "This is a summary of the “support” and “oppose” positions from your network.";
+    if (!this.props.isModal) {
+      supportOpposePopoverText += "Click to see who supports and who opposes this ballot item, and any other organizations you can follow";
+    }
     const supportOpposePopoverTooltip = <Tooltip id="supportOpposeTooltip">{supportOpposePopoverText}</Tooltip>;
 
-    let nonSupportOpposePopoverText = "This will show a summary of the “support” and “oppose” positions from your network once you have followed any voter guides that have positions on this ballot item. Click to see organizations you can follow that have positions on this ballot item";
+    let nonSupportOpposePopoverText = "This will show a summary of the “support” and “oppose” positions from your network once you have followed any voter guides that have positions on this ballot item.";
+    if (!this.props.isModal) {
+      nonSupportOpposePopoverText += "Click to see organizations you can follow that have positions on this ballot item";
+    }
     const nonSupportOpposePopoverTooltip = <Tooltip id="nonSupportOpposeTooltip">{nonSupportOpposePopoverText}</Tooltip>;
 
     return <div className={ this.state.guideProps && this.state.guideProps.length && is_empty ? "hidden-xs hidden-print network-positions" : "network-positions" }>
