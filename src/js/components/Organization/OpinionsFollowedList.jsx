@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from "react";
 import FollowToggle from "../Widgets/FollowToggle";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationDisplayForList from "./OrganizationDisplayForList";
-import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 
 export default class OpinionsFollowedList extends Component {
 
@@ -66,9 +65,7 @@ export default class OpinionsFollowedList extends Component {
     });
 
     return <div className="guidelist card-child__list-group">
-        <ReactCSSTransitionGroup transitionName="org-ignore" transitionEnterTimeout={4000} transitionLeaveTimeout={2000}>
-          {orgs}
-        </ReactCSSTransitionGroup>
+        {orgs}
       </div>;
   }
 

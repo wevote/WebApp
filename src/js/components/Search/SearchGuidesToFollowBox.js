@@ -3,29 +3,30 @@ import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterStore from "../../stores/VoterStore";
 import SearchBar from "./SearchBar";
 
-// update provider
-const updateResults = function (event) {
-  let query = event.target.value;
-  this.setState({ query: query,
-    id: query === "" ? VoterStore.election_id() : 0
-  });
-  // Search for orgs based on query regardless of whether they have opinions on your ballot (election_id is 0)
-  // If you blank out the query string, return normal results for this election
-};
-
-const delay_before_retrieve_guides_api_call = 500;
-const handleKeyPress = function () {
-    clearTimeout(this.timer);
-    this.timer = setTimeout(() => {
-      VoterGuideActions.voterGuidesToFollowRetrieve(this.state.id, this.state.query);
-    }, delay_before_retrieve_guides_api_call);
-};
-
-// Just a wrapper component now
 export default class SearchGuidesToFollowBox extends Component {
+
+  constructor (props) {
+    super(props);
+
+    this.searchFunction = this.searchFunction.bind(this);
+    this.clearFunction = this.clearFunction.bind(this);
+  }
+
+  searchFunction (search_query) {
+    let election_id = search_query === "" ? VoterStore.election_id() : 0;
+    VoterGuideActions.voterGuidesToFollowRetrieve(election_id, search_query);
+  }
+
+  clearFunction () {
+    this.searchFunction("");
+  }
+
   render () {
-    return <SearchBar clear_button search_button updateInputValue={updateResults}
-                                                 handleKeyPress={handleKeyPress}
-                                                 placeholder="Search by name or Twitter handle" />;
+    return <SearchBar clearButton
+                       searchButton
+                       placeholder="Search by name or Twitter handle"
+                       searchFunction={this.searchFunction}
+                       clearFunction={this.clearFunction}
+                       searchUpdateDelayTime={500} />;
   }
 }
