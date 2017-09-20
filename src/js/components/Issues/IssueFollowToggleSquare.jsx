@@ -28,18 +28,18 @@ export default class IssueFollowToggleSquare extends IssueFollowToggle {
       </div>;
     } else {
       return this.state.is_following ?
-        <div className={this.props.grid + " intro-modal__square"} onClick={this.onIssueStopFollowing}>
-          <ImageHandler sizeClassName="intro-modal__square-image u-cursor--pointer intro-modal__square-following"
+        <div className={this.props.grid + " intro-modal__square u-cursor--pointer"} onClick={this.onIssueStopFollowing}>
+          <ImageHandler sizeClassName="intro-modal__square-image intro-modal__square-following"
                         imageUrl={ issue_image_url }
                         alt={this.props.issue_name}
                         kind_of_image="ISSUE-PHOTO" />
-          <ImageHandler className="intro-modal__square-check-mark u-cursor--pointer"
+          <ImageHandler className="intro-modal__square-check-mark"
                         imageUrl="/img/global/svg-icons/check-mark-v2-40x43.svg"
                         alt="Following" />
           <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.issue_name}</h4>
         </div> :
-        <div className={this.props.grid + " intro-modal__square"} onClick={this.onIssueFollow}>
-          <ImageHandler sizeClassName="intro-modal__square-image u-cursor--pointer"
+        <div className={this.props.grid + " intro-modal__square u-cursor--pointer"} onClick={this.onIssueFollow}>
+          <ImageHandler sizeClassName="intro-modal__square-image"
                         imageUrl={ issue_image_url }
                         alt={this.props.issue_name}
                         kind_of_image="ISSUE-PHOTO" />
