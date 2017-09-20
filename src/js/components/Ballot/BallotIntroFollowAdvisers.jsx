@@ -103,34 +103,34 @@ export default class BallotIntroFollowAdvisers extends Component {
     // These are the organizations that a voter might want to follow based on the issues the voter is following.
     let voter_guides_to_follow_by_issues_followed = this.state.voter_guides_to_follow_by_issues_followed || [];
 
-    const voter_guides_to_follow_by_issues_for_display = voter_guides_to_follow_by_issues_followed.map((voter_guide) => {
-      return <OrganizationFollowToggle
+    const voter_guides_to_follow_by_issues_for_display = voter_guides_to_follow_by_issues_followed.map((voter_guide) =>
+      <OrganizationFollowToggle
         key={voter_guide.organization_we_vote_id}
         organization_we_vote_id={voter_guide.organization_we_vote_id}
         organization_name={voter_guide.voter_guide_display_name}
         organization_description={voter_guide.twitter_description}
-        organization_image_url={voter_guide.voter_guide_image_url_tiny}
+        organization_image_url={voter_guide.voter_guide_image_url_large}
         on_organization_follow={this.onOrganizationFollow}
         on_organization_stop_following={this.onOrganizationStopFollowing}
-        />;
-    });
+        grid="col-4 col-sm-2" />
+    );
 
     // These are organizations based on the upcoming election
     let voter_guides_to_follow_all = [];
     if (this.state.voter_guides_to_follow_all) {
       voter_guides_to_follow_all = this.state.voter_guides_to_follow_all;
     }
-    const voter_guides_to_follow_all_for_display = voter_guides_to_follow_all.map((voter_guide) => {
-      return <OrganizationFollowToggle
+    const voter_guides_to_follow_all_for_display = voter_guides_to_follow_all.map((voter_guide) =>
+      <OrganizationFollowToggle
         key={voter_guide.organization_we_vote_id}
         organization_we_vote_id={voter_guide.organization_we_vote_id}
         organization_name={voter_guide.voter_guide_display_name}
         organization_description={voter_guide.twitter_description}
-        organization_image_url={voter_guide.voter_guide_image_url_tiny}
+        organization_image_url={voter_guide.voter_guide_image_url_large}
         on_organization_follow={this.onOrganizationFollow}
         on_organization_stop_following={this.onOrganizationStopFollowing}
-        />;
-    });
+        grid="col-4 col-sm-2" />
+    );
 
     return <div className="intro-modal">
       <div className="intro-modal__h1">Follow organizations</div>
@@ -143,18 +143,14 @@ export default class BallotIntroFollowAdvisers extends Component {
           </div>
           <div className="intro-modal-vertical-scroll-contain">
             <div className="intro-modal-vertical-scroll card">
-              { voter_guides_to_follow_by_issues_for_display.length ?
-                voter_guides_to_follow_by_issues_for_display :
-                <span>NOT voter_guides_to_follow_by_issues_for_display</span>
-              }
-              { voter_guides_to_follow_all_for_display.length ?
-                voter_guides_to_follow_all_for_display :
-                <span>NOT voter_guides_to_follow_all_for_display</span>
-              }
-              { voter_guides_to_follow_by_issues_for_display.length || voter_guides_to_follow_all_for_display.length ?
-                null :
-                <h4 className="intro-modal__default-text">There are no more organizations to follow!</h4>
-              }
+              <div className="row intro-modal__grid">
+                { voter_guides_to_follow_by_issues_for_display.length ? voter_guides_to_follow_by_issues_for_display : null }
+                { voter_guides_to_follow_all_for_display.length ? voter_guides_to_follow_all_for_display : null }
+                { voter_guides_to_follow_by_issues_for_display.length || voter_guides_to_follow_all_for_display.length ?
+                  null :
+                  <h4 className="intro-modal__default-text">There are no more organizations to follow!</h4>
+                }
+              </div>
             </div>
           </div>
         </div>
