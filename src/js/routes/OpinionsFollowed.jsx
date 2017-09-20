@@ -4,6 +4,8 @@ import Helmet from "react-helmet";
 import OrganizationActions from "../actions/OrganizationActions";
 import OrganizationStore from "../stores/OrganizationStore";
 import OpinionsFollowedList from "../components/Organization/OpinionsFollowedList";
+import SearchBar from "../components/Search/SearchBar";
+var _ = require("lodash");
 
 export default class OpinionsFollowed extends Component {
   static propTypes = {
@@ -15,8 +17,12 @@ export default class OpinionsFollowed extends Component {
     super(props);
     this.state = {
       organizations_followed_list: [],
-      editMode: false
+      editMode: false,
+      search_query: "",
     };
+
+    this.searchFunction = this.searchFunction.bind(this);
+    this.clearFunction = this.clearFunction.bind(this);
   }
 
   componentDidMount () {
@@ -64,7 +70,27 @@ export default class OpinionsFollowed extends Component {
     }
   }
 
+  searchFunction (search_query) {
+    this.setState({ search_query: search_query });
+  }
+
+  clearFunction () {
+    this.searchFunction("");
+  }
+
   render () {
+    let organizations_followed_list_for_display = [];
+    if (this.state.search_query.length > 0) {
+      const search_query_lowercase = this.state.search_query.toLowerCase();
+      organizations_followed_list_for_display = _.filter(this.state.organizations_followed_list,
+        function (one_organization) {
+          return one_organization.organization_name.toLowerCase().includes(search_query_lowercase) ||
+            one_organization.organization_twitter_handle.toLowerCase().includes(search_query_lowercase);
+        });
+    } else {
+      organizations_followed_list_for_display = this.state.organizations_followed_list;
+    }
+
     // console.log("OpinionsFollowed, this.state.organizations_followed_list: ", this.state.organizations_followed_list);
     return <div className="opinions-followed__container">
       <Helmet title="Organizations You Follow - We Vote" />
@@ -78,11 +104,18 @@ export default class OpinionsFollowed extends Component {
             <p>
               Organizations, public figures and other voters you currently follow. <em>We will never sell your email</em>.
             </p>
+          <SearchBar clearButton
+                      searchButton
+                      placeholder="Search by name or Twitter handle"
+                      searchFunction={this.searchFunction}
+                      clearFunction={this.clearFunction}
+                      searchUpdateDelayTime={0} />
+          <br />
           <div className="voter-guide-list card">
             <div className="card-child__list-group">
               {
                 this.state.organizations_followed_list && this.state.organizations_followed_list.length ?
-                <OpinionsFollowedList organizationsFollowed={this.state.organizations_followed_list}
+                <OpinionsFollowedList organizationsFollowed={organizations_followed_list_for_display}
                                       editMode={this.state.editMode}
                                       instantRefreshOn /> :
                   null
