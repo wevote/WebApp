@@ -2,11 +2,12 @@ import React, {Component, PropTypes } from "react";
 
 export default class SearchBar extends Component {
   static propTypes = {
-    clear_button: PropTypes.bool,
-    search_button: PropTypes.bool,
+    clearButton: PropTypes.bool,
+    searchButton: PropTypes.bool,
     placeholder: PropTypes.string,
-    handleKeyPress: PropTypes.func.isRequired,
-    updateInputValue: PropTypes.func.isRequired,
+    searchFunction: PropTypes.func.isRequired,
+    clearFunction: PropTypes.func.isRequired,
+    searchUpdateDelayTime: PropTypes.number.isRequired,
   };
 
   constructor (props) {
@@ -15,33 +16,52 @@ export default class SearchBar extends Component {
     this.state = {
       query: ""
     };
-    this.handleKeyPress = this.props.handleKeyPress.bind(this);
-    this.updateInputValue = this.props.updateInputValue.bind(this); // some outside provider
+
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.updateResults = this.updateResults.bind(this);
     this.clearQuery = this.clearQuery.bind(this);
   }
 
-  clearQuery () {
-    this.setState({ query: "" });
-    this.updateInputValue({ target: { value: "" }}); // hacky, but current solution
+  componentDidMount () {
   }
 
-  // Note that "onClick={this.updateInputValue}" isn't needed on the search_button because we only use this component for instant search
+  componentWillUnmount (){
+  }
+
+  clearQuery () {
+    this.props.clearFunction();
+    this.setState({ query: "" });
+  }
+
+  handleKeyPress () {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      this.props.searchFunction(this.state.query);
+    }, this.props.searchUpdateDelayTime);
+  }
+
+  updateResults (event) {
+    let query = event.target.value;
+    this.props.searchFunction(query);
+    this.setState({ query: query });
+  }
+
   render () {
     return (
       <div className="search-bar clearfix">
-          <input ref="search_input"
-            type="text"
-            className="form-control"
-            placeholder={this.props.placeholder}
-            value={this.state.query}
-            onKeyDown={this.handleKeyPress}
-            onChange={this.updateInputValue} />
+        <input ref="search_input"
+               type="text"
+               className="form-control"
+               placeholder={this.props.placeholder}
+               value={this.state.query}
+               onKeyDown={this.handleKeyPress}
+               onChange={this.updateResults} />
         <div className="search-bar-options">
-          <button className={this.props.clear_button && this.state.query && this.state.query.length > 0 ? "search-options-btn" : "hidden"}
+          <button className={this.props.clearButton && this.state.query && this.state.query.length > 0 ? "search-options-btn" : "hidden"}
                   onClick={this.clearQuery}>
             <i className="glyphicon glyphicon-remove-circle u-gray-light" />
           </button>
-          <button className={this.props.search_button ? "search-options-btn" : "hidden"}>
+          <button className={this.props.searchButton ? "search-options-btn" : "hidden"}>
             <i className="glyphicon glyphicon-search" />
           </button>
         </div>
