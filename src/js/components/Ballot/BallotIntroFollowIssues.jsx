@@ -156,7 +156,7 @@ export default class BallotIntroFollowIssues extends Component {
       </div>
       <div className="intro-modal-vertical-scroll-contain">
         <div className="intro-modal-vertical-scroll card">
-          <div className="row intro-modal__issue-grid">
+          <div className="row intro-modal__grid">
             { issue_list.length ? issue_list_for_display : <h4 className="intro-modal__default-text">No issues to display.</h4> }
           </div>
         </div>

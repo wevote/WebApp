@@ -52,12 +52,12 @@ $follow-card-title-color: #fff;
 .network-issues-list {
   padding: $network-issue-list-padding;
 
-  .intro-modal__issue-square {
+  .intro-modal__square {
     float: left;
     color: $follow-card-title-color;
   }
 
-  .intro-modal__issue-square-name {
+  .intro-modal__square-name {
     position: absolute;
     right: 10px;
     bottom: 10px;
