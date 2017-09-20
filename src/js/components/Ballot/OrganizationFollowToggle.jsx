@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from "react";
+import React, { Component, PropTypes } from "react";
+import { Tooltip, OverlayTrigger } from "react-bootstrap";
 import OrganizationActions from "../../actions/OrganizationActions";
 import ImageHandler from "../ImageHandler";
 
@@ -55,6 +56,12 @@ export default class OrganizationFollowToggle extends Component {
                       imageUrl="/img/global/svg-icons/check-mark-v2-40x43.svg"
                       alt="Following" /> }
         <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.organization_name}</h4>
+        { this.props.organization_description && this.props.organization_description.length ?
+          <OverlayTrigger placement="top" overlay={<Tooltip id="organizationDescriptionTooltip">{this.props.organization_description}</Tooltip>}>
+            <i className="fa fa-info-circle fa-lg intro-modal__square-details" aria-hidden="true" />
+          </OverlayTrigger> :
+          null
+        }
       </div>
     );
   }
