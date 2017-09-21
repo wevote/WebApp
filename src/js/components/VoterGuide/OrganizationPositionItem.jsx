@@ -82,7 +82,7 @@ export default class OrganizationPositionItem extends Component {
     // console.log("signed_in_with_this_organization: ", signed_in_with_this_organization);
     var signed_in_twitter = this.state.voter === undefined ? false : this.state.voter.signed_in_twitter;
     var signed_in_with_this_twitter_account = false;
-    if (signed_in_twitter) {
+    if (signed_in_twitter && this.state.voter.twitter_screen_name != null) {
       signed_in_with_this_twitter_account = this.state.voter.twitter_screen_name.toLowerCase() === organization_twitter_handle_being_viewed.toLowerCase();
     }
     var signed_in_facebook = this.state.voter === undefined ? false : this.state.voter.signed_in_facebook;
@@ -101,8 +101,8 @@ export default class OrganizationPositionItem extends Component {
       // When component first loads, use the value in the incoming position. If there are any supportProps updates, use those.
       statement_text = supportProps && supportProps.voter_statement_text ? supportProps.voter_statement_text : position.statement_text;
       is_public_position = supportProps && supportProps.is_public_position ? supportProps.is_public_position : position.is_public_position;
-      is_support = supportProps && supportProps.is_support ? supportProps.is_support : position.is_support;
-      is_oppose = supportProps && supportProps.is_oppose ? supportProps.is_oppose : position.is_oppose;
+      is_support = supportProps && supportProps.is_support !== undefined ? supportProps.is_support : position.is_support;
+      is_oppose = supportProps && supportProps.is_oppose !== undefined ? supportProps.is_oppose : position.is_oppose;
     } else {
       // console.log("OrganizationPositionItem NOT signed_in_with_this_twitter_account");
       statement_text = position.statement_text;
