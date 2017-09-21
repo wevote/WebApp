@@ -5,7 +5,7 @@ export default class ItemSupportOpposeCounts extends Component {
   static propTypes = {
     supportProps: PropTypes.object,
     guideProps: PropTypes.array,
-    isModal: PropTypes.bool,
+    positionBarIsClickable: PropTypes.bool,
   };
 
   constructor (props) {
@@ -63,14 +63,14 @@ export default class ItemSupportOpposeCounts extends Component {
     }
 
     let supportOpposePopoverText = "This is a summary of the “support” and “oppose” positions from your network.";
-    if (!this.props.isModal) {
-      supportOpposePopoverText += "Click to see who supports and who opposes this ballot item, and any other organizations you can follow";
+    if (!this.props.positionBarIsClickable) {
+      supportOpposePopoverText += " Click to see more detail.";
     }
     const supportOpposePopoverTooltip = <Tooltip id="supportOpposeTooltip">{supportOpposePopoverText}</Tooltip>;
 
-    let nonSupportOpposePopoverText = "This will show a summary of the “support” and “oppose” positions from your network once you have followed any voter guides that have positions on this ballot item.";
-    if (!this.props.isModal) {
-      nonSupportOpposePopoverText += "Click to see organizations you can follow that have positions on this ballot item";
+    let nonSupportOpposePopoverText = "This will show a summary of the “support” and “oppose” positions from your network.";
+    if (!this.props.positionBarIsClickable) {
+      nonSupportOpposePopoverText += " Click to see voter guides you can follow.";
     }
     const nonSupportOpposePopoverTooltip = <Tooltip id="nonSupportOpposeTooltip">{nonSupportOpposePopoverText}</Tooltip>;
 

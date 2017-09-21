@@ -199,6 +199,7 @@ export default class OrganizationPositionItem extends Component {
           { this.props.editMode ?
             <div>
               <ItemActionBar ballot_item_we_vote_id={position.ballot_item_we_vote_id}
+                             ballot_item_display_name={ballot_item_display_name}
                              commentButtonHide
                              supportProps={supportProps}
                              transitioning={this.state.transitioning}

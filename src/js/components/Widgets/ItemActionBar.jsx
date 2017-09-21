@@ -19,7 +19,7 @@ export default class ItemActionBar extends Component {
     supportProps: PropTypes.object,
     toggleFunction: PropTypes.func,
     type: PropTypes.string.isRequired,
-    displayName: PropTypes.string,
+    ballot_item_display_name: PropTypes.string,
   };
 
   constructor (props) {
@@ -95,6 +95,10 @@ export default class ItemActionBar extends Component {
       // console.log("ItemActionBar, support_count: ", support_count, ", oppose_count: ", oppose_count, ", is_support: ", is_support, ", or is_oppose: ", is_oppose, "");
       return null;
     }
+    let is_public_position = false;
+    if (this.props.supportProps !== undefined && this.props.supportProps.is_public_position !== undefined) {
+      is_public_position = this.props.supportProps.is_public_position;
+    }
     const icon_size = 18;
     var icon_color = "#999";
     // TODO Refactor the way we color the icons
@@ -134,17 +138,43 @@ export default class ItemActionBar extends Component {
       </Modal.Body>
     </Modal>;
 
-    const popoverDisplayName = this.props.displayName || "";
-    const supportButtonSelectedPopOverText = "Click to support " + popoverDisplayName + ". Only your We Vote friends will see your support.";
-    let supportButtonUnselectedPopOverText = "Click to remove your support ";
-    if (popoverDisplayName.length > 0) {
-      supportButtonUnselectedPopOverText += "for " + popoverDisplayName + ".";
+    const ballot_item_display_name = this.props.ballot_item_display_name || "";
+    let supportButtonSelectedPopOverText = "Click to support";
+    if (ballot_item_display_name.length > 0) {
+      supportButtonSelectedPopOverText += " " + ballot_item_display_name + ".";
+    } else {
+      supportButtonSelectedPopOverText += ".";
+    }
+    
+    if (is_public_position) {
+      supportButtonSelectedPopOverText += " Your support will be visible to the public.";
+    } else {
+      supportButtonSelectedPopOverText += " Only your We Vote friends will see your support.";
+    }
+    let supportButtonUnselectedPopOverText = "Click to remove your support";
+    if (ballot_item_display_name.length > 0) {
+      supportButtonUnselectedPopOverText += " for " + ballot_item_display_name + ".";
+    } else {
+      supportButtonUnselectedPopOverText += ".";
     }
 
-    const opposeButtonSelectedPopOverText = "Click to oppose " + popoverDisplayName + ". Only your We Vote friends will see your opposition.";
-    let opposeButtonUnselectedPopOverText = "Click to remove your opposition ";
-    if (popoverDisplayName.length > 0) {
-      opposeButtonUnselectedPopOverText += "for " + popoverDisplayName + ".";
+    let opposeButtonSelectedPopOverText = "Click to oppose";
+    if (ballot_item_display_name.length > 0) {
+      opposeButtonSelectedPopOverText += " " + ballot_item_display_name + ".";
+    } else {
+      opposeButtonSelectedPopOverText += ".";
+    }
+
+    if (is_public_position) {
+      opposeButtonSelectedPopOverText += " Your opposition will be visible to the public.";
+    } else {
+      opposeButtonSelectedPopOverText += " Only your We Vote friends will see your opposition.";
+    }
+    let opposeButtonUnselectedPopOverText = "Click to remove your opposition";
+    if (ballot_item_display_name.length > 0) {
+      opposeButtonUnselectedPopOverText += " for " + ballot_item_display_name + ".";
+    } else {
+      opposeButtonUnselectedPopOverText += ".";
     }
 
     const supportButtonPopoverTooltip = <Tooltip id="supportButtonTooltip">{is_support ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }</Tooltip>;
