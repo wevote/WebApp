@@ -32,6 +32,15 @@
   &__grid {
     padding: $space-none $space-md;
   }
+  &__welcome {
+    padding: $space-none $space-md;
+    align-items: center;
+
+    &-image {
+      position: relative;
+      padding: $space-xs;
+    }
+  }
 
   &__square {
     position: relative;

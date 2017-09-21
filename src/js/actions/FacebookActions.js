@@ -25,12 +25,11 @@ module.exports = {
   },
 
   /* Sept 6, 2017, We now use the Facebook "games" api "invitable_friends" data on the fly from the webapp, and no
-  longer attempt to use the more limited "friends" api call from the server
+  longer attempt to use the more limited "friends" api call from the server */
   facebookFriendsAction: function () {
-     Dispatcher.loadEndpoint("facebookFriendsAction", {});
-    FriendActions.suggestedFriendList();
+    Dispatcher.loadEndpoint("facebookFriendsAction", {});
+    //FriendActions.suggestedFriendList();
   },
-  */
 
   getFacebookProfilePicture: function (userId) {
       if (window.FB) {

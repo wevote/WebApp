@@ -73,8 +73,8 @@ class FacebookStore extends FluxMapStore {
     return this.facebookAuthData.authResponse.accessToken;
   }
 
-  facebookFriendsList (){
-      return this.getDataFromArr(this.getState().facebook_friends_list) || {};
+  facebookFriendsUsingWeVoteList (){
+      return this.getDataFromArr(this.getState().facebook_friends_using_we_vote_list) || {};
   }
 
   facebookInvitableFriends () {
@@ -210,13 +210,12 @@ class FacebookStore extends FluxMapStore {
           emailData: {}
         };
 
-      /* Sept 6, 2017, has been replaced by facebook Game API friends list
+      /* Sept 6, 2017, has been replaced by facebook Game API friends list */
       case "facebookFriendsAction":
         return {
           ...state,
-          facebook_friends_list: action.res.facebook_friends_list,
+          facebook_friends_using_we_vote_list: action.res.facebook_friends_using_we_vote_list,
          };
-      */
 
       case FacebookConstants.FACEBOOK_SIGN_IN_DISCONNECT:
         this.disconnectFromFacebook();
