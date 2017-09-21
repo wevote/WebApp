@@ -53,8 +53,11 @@ export default class Bookmarks extends Component {
       if (support_count || oppose_count) {
         what_your_network_thinks = <span className={"u-cursor--pointer"}
                                          onClick={goToLink} >
-              <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={supportProps} transitioning={transitioning}
-                                       type={kind_of_ballot_item}/>
+              <ItemSupportOpposeCounts we_vote_id={we_vote_id}
+                                       supportProps={supportProps}
+                                       transitioning={transitioning}
+                                       type={kind_of_ballot_item}
+                                       positionBarIsClickable/>
             </span>;
       }
     }

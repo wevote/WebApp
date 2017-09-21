@@ -185,7 +185,8 @@ export default class CandidateItem extends Component {
               <ItemSupportOpposeCounts we_vote_id={we_vote_id}
                                        supportProps={supportProps}
                                        transitioning={transitioning}
-                                       type="CANDIDATE" /> :
+                                       type="CANDIDATE"
+                                       positionBarIsClickable /> :
               <span /> }
             {/* Show a break-down of the positions in your network */}
             { positions_in_your_network && this.props.showPositionsInYourNetworkBreakdown ?
@@ -224,6 +225,7 @@ export default class CandidateItem extends Component {
       </div> {/* END .card-main__media-object */}
       <div className="card-main__actions">
         <ItemActionBar ballot_item_we_vote_id={we_vote_id}
+                       ballot_item_display_name={ballot_item_display_name}
                        commentButtonHide={this.props.commentButtonHide}
                        supportProps={supportProps}
                        transitioning={transitioning}

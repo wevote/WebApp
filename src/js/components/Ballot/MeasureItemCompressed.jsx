@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { Link, browserHistory } from "react-router";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import ItemActionBar from "../Widgets/ItemActionBar";
+import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
 import ItemTinyOpinionsToFollow from "../VoterGuide/ItemTinyOpinionsToFollow";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
@@ -75,8 +76,14 @@ export default class MeasureItemCompressed extends Component {
       position_list: this.props.position_list
     };
 
-    // To get position_list
-    // TODO DALE var measure = MeasureStore.get(this.state.measure_we_vote_id) || {};
+    let is_support = false;
+    let is_oppose = false;
+    let voter_statement_text = false;
+    if (this.state.supportProps !== undefined) {
+      is_support = this.state.supportProps.is_support;
+      is_oppose = this.state.supportProps.is_oppose;
+      voter_statement_text = this.state.supportProps.voter_statement_text;
+    }
 
     return <div className="card-main measure-card">
       <a name={we_vote_id} />
@@ -133,10 +140,21 @@ export default class MeasureItemCompressed extends Component {
                            shareButtonHide
                            commentButtonHide
                            transitioniing={this.state.transitioning}
-                           displayName={ballot_item_display_name}
+                           ballot_item_display_name={ballot_item_display_name}
                            type="MEASURE" />
           </div>
         </div>
+        {/* If voter has taken position, offer the comment bar */}
+        { is_support || is_oppose || voter_statement_text ?
+          <div>
+            <ItemPositionStatementActionBar ballot_item_we_vote_id={this.props.we_vote_id}
+                                            ballot_item_display_name={this.props.ballot_item_display_name}
+                                            supportProps={this.state.supportProps}
+                                            transitioning={this.state.transitioning}
+                                            type="MEASURE" />
+          </div> :
+          null
+        }
       </div> {/* END .card-main__content */}
     </div>;
   }
