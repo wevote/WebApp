@@ -2,9 +2,11 @@ import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
 import IssueActions from "../actions/IssueActions";
-// import IssueFollowToggle from "../components/Issues/IssueFollowToggle";
 import IssueFollowToggleSquare from "../components/Issues/IssueFollowToggleSquare";
 import IssueStore from "../stores/IssueStore";
+import SearchBar from "../components/Search/SearchBar";
+
+var _ = require("lodash");
 
 
 export default class IssuesToFollow extends Component {
@@ -16,8 +18,12 @@ export default class IssuesToFollow extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      issues_to_follow: []
+      issues_to_follow: [],
+      search_query: "",
     };
+
+    this.searchFunction = this.searchFunction.bind(this);
+    this.clearFunction = this.clearFunction.bind(this);
   }
 
   componentDidMount () {
@@ -35,11 +41,29 @@ export default class IssuesToFollow extends Component {
     });
   }
 
+  searchFunction (search_query) {
+    this.setState({ search_query: search_query });
+  }
+
+  clearFunction () {
+    this.searchFunction("");
+  }
+
   render () {
     var issue_list = [];
     if (this.state.issues_to_follow) {
       issue_list = this.state.issues_to_follow;
     }
+
+    if (this.state.search_query.length > 0) {
+      const search_query_lowercase = this.state.search_query.toLowerCase();
+      issue_list = _.filter(issue_list,
+        function (one_issue) {
+          return one_issue.issue_name.toLowerCase().includes(search_query_lowercase) ||
+            one_issue.issue_description.toLowerCase().includes(search_query_lowercase);
+        });
+    }
+
     let edit_mode = true;
     let is_following = false;
     const issue_list_for_display = issue_list.map((issue) => {
@@ -64,6 +88,13 @@ export default class IssuesToFollow extends Component {
             Follow the issues you care about. By choosing the issues that matter most to
             you, we are able to highlight the organizations that care about the same issues you do.
           </p>
+          <SearchBar clearButton
+                     searchButton
+                     placeholder="Search by name or Description"
+                     searchFunction={this.searchFunction}
+                     clearFunction={this.clearFunction}
+                     searchUpdateDelayTime={0} />
+          <br />
           <div className="network-issues-list voter-guide-list card">
             <div className="card-child__list-group">
               {
