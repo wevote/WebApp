@@ -30,6 +30,10 @@ class IssueStore extends FluxMapStore {
     return this.getIssuesFromListOfWeVoteIds(this.getState().issue_we_vote_ids_voter_can_follow);
   }
 
+  getIssueWeVoteIdsVoterIsFollowing () {
+    return this.getState().issue_we_vote_ids_voter_is_following;
+  }
+
   getIssuesToLinkToByOrganization (organization_we_vote_id) {
     // These are issues that an organization can link itself to, to help Voters find the organization
     let issue_we_vote_id_list_to_link_for_organization = this.getState().issue_we_vote_ids_to_link_to_by_organization_dict[organization_we_vote_id];

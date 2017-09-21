@@ -4,6 +4,9 @@ import Helmet from "react-helmet";
 import IssueActions from "../actions/IssueActions";
 import IssueFollowToggleSquare from "../components/Issues/IssueFollowToggleSquare";
 import IssueStore from "../stores/IssueStore";
+import SearchBar from "../components/Search/SearchBar";
+
+var _ = require("lodash");
 
 
 export default class IssuesFollowed extends Component {
@@ -16,8 +19,12 @@ export default class IssuesFollowed extends Component {
     super(props);
     this.state = {
       edit_mode: false,
-      issues_followed: []
+      issues_followed: [],
+      search_query: "",
     };
+
+    this.searchFunction = this.searchFunction.bind(this);
+    this.clearFunction = this.clearFunction.bind(this);
   }
 
   componentDidMount () {
@@ -52,10 +59,27 @@ export default class IssuesFollowed extends Component {
     }
   }
 
+  searchFunction (search_query) {
+    this.setState({ search_query: search_query });
+  }
+
+  clearFunction () {
+    this.searchFunction("");
+  }
+
   render () {
     var issue_list = [];
     if (this.state.issues_followed) {
       issue_list = this.state.issues_followed;
+    }
+
+    if (this.state.search_query.length > 0) {
+      const search_query_lowercase = this.state.search_query.toLowerCase();
+      issue_list = _.filter(issue_list,
+        function (one_issue) {
+          return one_issue.issue_name.toLowerCase().includes(search_query_lowercase) ||
+            one_issue.issue_description.toLowerCase().includes(search_query_lowercase);
+        });
     }
 
     let is_following = true;
@@ -86,6 +110,13 @@ export default class IssuesFollowed extends Component {
               These are the issues you currently follow. We recommend organizations that you might want to learn from
               based on these issues.
             </p>
+          <SearchBar clearButton
+                     searchButton
+                     placeholder="Search by name or Description"
+                     searchFunction={this.searchFunction}
+                     clearFunction={this.clearFunction}
+                     searchUpdateDelayTime={0} />
+          <br />
           <div className="network-issues-list voter-guide-list card">
             <div className="card-child__list-group">
               {
