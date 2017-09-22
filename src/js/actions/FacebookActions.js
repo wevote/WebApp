@@ -24,8 +24,8 @@ module.exports = {
     Dispatcher.loadEndpoint("facebookDisconnect");
   },
 
-  /* Sept 6, 2017, We now use the Facebook "games" api "invitable_friends" data on the fly from the webapp, and no
-  longer attempt to use the more limited "friends" api call from the server */
+  // Sept 2017, We now use the Facebook "games" api "invitable_friends" data on the fly from the webapp for the "Choose Friends" feature. 
+  // We use the more limited "friends" api call from the server to find Facebook profiles of friends already using We Vote.
   facebookFriendsAction: function () {
     Dispatcher.loadEndpoint("facebookFriendsAction", {});
     //FriendActions.suggestedFriendList();
