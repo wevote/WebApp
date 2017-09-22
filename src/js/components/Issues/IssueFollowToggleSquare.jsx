@@ -1,4 +1,5 @@
 import React from "react";
+import { Tooltip, OverlayTrigger } from "react-bootstrap";
 import ImageHandler from "../ImageHandler";
 import IssueFollowToggle from "./IssueFollowToggle";
 
@@ -15,7 +16,7 @@ export default class IssueFollowToggleSquare extends IssueFollowToggle {
       // issue_image_url = "/img/global/issues/" + issue_name_base + "-110x110.jpg";
     }
 
-    if (this.props.read_only === true && !this.props.edit_mode){
+    if (this.props.read_only === true && !this.props.edit_mode) {
       return <div className={this.props.grid + " intro-modal__square"}>
         <ImageHandler sizeClassName="intro-modal__square-image intro-modal__square-following"
                       imageUrl={ issue_image_url }
@@ -25,6 +26,12 @@ export default class IssueFollowToggleSquare extends IssueFollowToggle {
                       imageUrl="/img/global/svg-icons/check-mark-v2-40x43.svg"
                       alt="Following" />
         <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.issue_name}</h4>
+        { this.props.issue_description && this.props.issue_description.length ?
+          <OverlayTrigger placement="top" overlay={<Tooltip id="organizationDescriptionTooltip">{this.props.issue_description}</Tooltip>}>
+            <i className="fa fa-info-circle fa-lg hidden-xs hidden-sm intro-modal__square-details" aria-hidden="true" />
+          </OverlayTrigger> :
+          null
+        }
       </div>;
     } else {
       return this.state.is_following ?
@@ -37,6 +44,12 @@ export default class IssueFollowToggleSquare extends IssueFollowToggle {
                         imageUrl="/img/global/svg-icons/check-mark-v2-40x43.svg"
                         alt="Following" />
           <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.issue_name}</h4>
+          { this.props.issue_description && this.props.issue_description.length ?
+            <OverlayTrigger placement="top" overlay={<Tooltip id="organizationDescriptionTooltip">{this.props.issue_description}</Tooltip>}>
+              <i className="fa fa-info-circle fa-lg hidden-xs hidden-sm intro-modal__square-details" aria-hidden="true" />
+            </OverlayTrigger> :
+            null
+          }
         </div> :
         <div className={this.props.grid + " intro-modal__square u-cursor--pointer"} onClick={this.onIssueFollow}>
           <ImageHandler sizeClassName="intro-modal__square-image"
@@ -44,6 +57,12 @@ export default class IssueFollowToggleSquare extends IssueFollowToggle {
                         alt={this.props.issue_name}
                         kind_of_image="ISSUE-PHOTO" />
           <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.issue_name}</h4>
+          { this.props.issue_description && this.props.issue_description.length ?
+            <OverlayTrigger placement="top" overlay={<Tooltip id="organizationDescriptionTooltip">{this.props.issue_description}</Tooltip>}>
+              <i className="fa fa-info-circle fa-lg hidden-xs hidden-sm intro-modal__square-details" aria-hidden="true" />
+            </OverlayTrigger> :
+            null
+          }
         </div>
       ;
     }
