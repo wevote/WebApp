@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { browserHistory, Link } from "react-router";
 import Helmet from "react-helmet";
-import { Button, FormGroup, Row } from "react-bootstrap";
+import { Button, FormGroup, Row, OverlayTrigger, Tooltip } from "react-bootstrap";
 import AnalyticsActions from "../actions/AnalyticsActions";
 import { validateEmail } from "../utils/email-functions";
+import FacebookStore from "../stores/FacebookStore";
+import FacebookActions from "../actions/FacebookActions";
 import VoterActions from "../actions/VoterActions";
 import VoterConstants from "../constants/VoterConstants";
 import VoterStore from "../stores/VoterStore";
@@ -26,6 +28,10 @@ export default class Intro extends Component {
       show_features_network: false,
       show_features_vision: false,
       show_features_vote: false,
+      facebook_friends_image_width: 60,
+      facebook_friends_image_height: 60,
+      maximum_friends_display: 5,
+      facebook_friends_using_we_vote_list: FacebookStore.facebookFriendsUsingWeVoteList(),
       submit_enabled: false,
       voter_email_address: "",
       voter_full_name: "",
@@ -47,10 +53,14 @@ export default class Intro extends Component {
     this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionWelcomeVisit(VoterStore.election_id());
+    FacebookActions.facebookFriendsAction();
+    this._onFacebookStoreChange();
+    this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
+    this.facebookStoreListener.remove();
   }
 
   _toggleBallotFeature () {
@@ -83,6 +93,12 @@ export default class Intro extends Component {
       newsletter_opt_in_true: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
       // is_verification_email_sent: VoterStore.isVerificationEmailSent(),
       voter: VoterStore.getVoter(),
+    });
+  }
+
+  _onFacebookStoreChange () {
+    this.setState({
+      facebook_friends_using_we_vote_list: FacebookStore.facebookFriendsUsingWeVoteList(),
     });
   }
 
@@ -166,6 +182,22 @@ export default class Intro extends Component {
       }
     }
 
+    let local_counter = 0;
+    const facebook_friends_using_we_vote_list_for_display = this.state.facebook_friends_using_we_vote_list.map( (friend) => {
+      local_counter++;
+      if (friend.facebook_profile_image_url_https && local_counter <= this.state.maximum_friends_display) {
+        const friendName = friend.facebook_user_name ? <Tooltip id="tooltip">{friend.facebook_user_name}</Tooltip> : <span />;
+        return <OverlayTrigger key={friend.facebook_user_id} placement="bottom" overlay={friendName} >
+            <img className="friends-list__welcome-image"
+              src={friend.facebook_profile_image_url_https}
+              height={this.state.facebook_friends_image_height}
+              width={this.state.facebook_friends_image_width} />
+          </OverlayTrigger>;
+      } else {
+        return null;
+      }
+      });
+
     // && this.state.is_verification_email_sent ?
     return <div className="welcome-page">
       <Helmet title="Welcome to We Vote" />
@@ -177,6 +209,12 @@ export default class Intro extends Component {
                 <h1 className="col-sm-12 u-f1 u-bold u-stack--lg">
                   View your ballot.<br />
                   Learn from friends.<br />
+                  { this.state.facebook_friends_using_we_vote_list.length > 0 ?
+                    <div className="u-flex-row friends-list__welcome">
+                      { facebook_friends_using_we_vote_list_for_display }
+                    </div> :
+                    null
+                  }
                   Share your vision.
                 </h1>
               </Row>
@@ -184,6 +222,12 @@ export default class Intro extends Component {
                 <h1 className="col-md-6 u-f1 u-bold u-stack--lg">
                   View your ballot.<br />
                   Learn from friends.
+                  { this.state.facebook_friends_using_we_vote_list.length > 0 ?
+                    <div className="u-flex-row friends-list__welcome">
+                      { facebook_friends_using_we_vote_list_for_display }
+                    </div> :
+                    null
+                  }
                 </h1>
                 <h1 className="col-md-6 u-f1 u-bold u-stack--lg">
                   Share your vision.
