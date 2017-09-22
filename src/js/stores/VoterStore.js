@@ -16,6 +16,7 @@ class VoterStore extends FluxMapStore {
     return {
       voter: {
         interface_status_flags: 0,
+        state_code_from_ip_address: '',
       },
       address: {},
       email_address_status: {},
@@ -72,6 +73,10 @@ class VoterStore extends FluxMapStore {
 
   getFullName (){
     return this.getState().voter.full_name || "";
+  }
+
+  getStateCodeFromIPAddress (){
+    return this.getState().voter.state_code_from_ip_address || "";
   }
 
   getTwitterHandle (){

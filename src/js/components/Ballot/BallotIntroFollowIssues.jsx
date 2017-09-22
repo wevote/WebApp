@@ -131,17 +131,22 @@ export default class BallotIntroFollowIssues extends Component {
     let remaining_issues = this.remainingIssues();
 
     let edit_mode = true;
+    let issues_shown_count = 0;
+    let maximum_number_of_issues_to_show = 24; // Only show the first 6 * 4 = 24 issues so as to not overwhelm voter
     const issue_list_for_display = issue_list.map((issue) => {
-      return <IssueFollowToggleSquare
-        key={issue.issue_we_vote_id}
-        issue_we_vote_id={issue.issue_we_vote_id}
-        issue_name={issue.issue_name}
-        issue_description={issue.issue_description}
-        issue_image_url={issue.issue_image_url}
-        on_issue_follow={this.onIssueFollow}
-        on_issue_stop_following={this.onIssueStopFollowing}
-        edit_mode={edit_mode}
-        grid="col-4 col-sm-2" />;
+      if (issues_shown_count < maximum_number_of_issues_to_show) {
+        issues_shown_count++;
+        return <IssueFollowToggleSquare
+          key={issue.issue_we_vote_id}
+          issue_we_vote_id={issue.issue_we_vote_id}
+          issue_name={issue.issue_name}
+          issue_description={issue.issue_description}
+          issue_image_url={issue.issue_image_url}
+          on_issue_follow={this.onIssueFollow}
+          on_issue_stop_following={this.onIssueStopFollowing}
+          edit_mode={edit_mode}
+          grid="col-4 col-sm-2" />;
+      }
     });
 
     return (

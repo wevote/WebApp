@@ -109,7 +109,8 @@ export default class MeasureItem extends Component {
                 <ItemSupportOpposeCounts we_vote_id={we_vote_id}
                                          supportProps={supportProps}
                                          transitioning={transitioning}
-                                         type="MEASURE" />
+                                         type="MEASURE"
+                                         positionBarIsClickable />
              </div>
                  {/* Show a break-down of the positions in your network */}
               { positions_in_your_network && this.props.showPositionsInYourNetworkBreakdown ?
@@ -135,6 +136,7 @@ export default class MeasureItem extends Component {
           </div> {/* END .card-main__content */}
           <div className="card-main__actions">
             <ItemActionBar ballot_item_we_vote_id={we_vote_id}
+                           ballot_item_display_name={ballot_item_display_name}
                            commentButtonHide={this.props.commentButtonHide}
                            supportProps={supportProps}
                            transitioniing={transitioning}
