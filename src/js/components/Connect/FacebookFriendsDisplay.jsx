@@ -10,6 +10,7 @@ export default class FacebookFriendsDisplay extends Component {
 
   static propTypes = {
     maximumFriendDisplay: PropTypes.number,
+    facebookInvitableFriendsList: PropTypes.array,
     facebookInvitableFriendsImageWidth: PropTypes.number,
     facebookInvitableFriendsImageHeight: PropTypes.number,
   };

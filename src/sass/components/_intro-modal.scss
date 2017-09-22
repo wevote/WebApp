@@ -294,11 +294,11 @@
     text-align: center;
   }
 
-  &__issue-grid {
+  &__grid {
     padding: $space-none $space-md;
   }
 
-  &__issue-square {
+  &__square {
     position: relative;
     text-align: left;
     padding: $space-xs;
@@ -349,6 +349,27 @@
         bottom: 8px;
         left: 8px;
         font-size: .6rem;
+      }
+    }
+
+    &-details {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+
+      @include breakpoints (xsmall-bootstrap small-bootstrap) {
+        top: 10px;
+        right: 10px;
+      }
+
+      @include breakpoints (iphone5 mid-small) {
+        top: 10px;
+        right: 10px;
+      }
+
+      @include breakpoints (max iphone5) {
+        top: 8px;
+        right: 8px;
       }
     }
   }

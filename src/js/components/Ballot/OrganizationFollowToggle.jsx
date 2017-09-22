@@ -1,5 +1,5 @@
-import React, {Component, PropTypes} from "react";
-import {Button} from "react-bootstrap";
+import React, { Component, PropTypes } from "react";
+import { Tooltip, OverlayTrigger } from "react-bootstrap";
 import OrganizationActions from "../../actions/OrganizationActions";
 import ImageHandler from "../ImageHandler";
 
@@ -11,6 +11,7 @@ export default class OrganizationFollowToggle extends Component {
     organization_image_url: PropTypes.string,
     on_organization_follow: PropTypes.func.isRequired,
     on_organization_stop_following: PropTypes.func.isRequired,
+    grid: PropTypes.string.isRequired,
   };
 
   constructor (props) {
@@ -43,41 +44,25 @@ export default class OrganizationFollowToggle extends Component {
 
   render () {
     if (!this.state) { return <div />; }
+    let { is_following } = this.state;
 
-    return this.state.is_following ?
-      <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
-        <div className="intro-modal__hide-sm intro-modal__margin-right">
-          <ImageHandler className="intro-modal__hide-sm hidden-xs card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
-                        sizeClassName="icon-org-small u-push--sm "
-                        alt="organization-photo"
-                        kind_of_image="ORGANIZATION"
-                        imageUrl={this.props.organization_image_url}
-          />
-        </div>
-        <span className="intro-modal__span intro-modal__margin-right">
-          <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.organization_name}</h4>
-          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.organization_description}</p>
-        </span>
-        <Button bsStyle="warning" bsSize="small" onClick={this.onOrganizationStopFollowing.bind(this)}>
-          <span>Following</span>
-        </Button>
-      </div> :
-      <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
-        <div className="intro-modal__hide-sm intro-modal__margin-right">
-          <ImageHandler className="intro-modal__hide-sm hidden-xs card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
-                        sizeClassName="icon-org-small u-push--sm "
-                        alt="organization-photo"
-                        kind_of_image="ORGANIZATION"
-                        imageUrl={this.props.organization_image_url}
-          />
-        </div>
-        <span className="intro-modal__span intro-modal__margin-right" onClick={this.onOrganizationFollow.bind(this)}>
-          <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.organization_name}</h4>
-          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.organization_description}</p>
-        </span>
-        <Button bsStyle="info" bsSize="small" onClick={this.onOrganizationFollow.bind(this)}>
-          <span>Follow</span>
-        </Button>
-      </div>;
+    return (
+      <div className={this.props.grid + " intro-modal__square u-cursor--pointer"} onClick={ is_following ? this.onOrganizationStopFollowing : this.onOrganizationFollow }>
+        <ImageHandler sizeClassName={ is_following ? "intro-modal__square-image intro-modal__square-following" : "intro-modal__square-image" }
+                      imageUrl={this.props.organization_image_url}
+                      kind_of_image="ORGANIZATION"
+                      alt="organization-photo" />
+        { is_following && <ImageHandler className="intro-modal__square-check-mark"
+                      imageUrl="/img/global/svg-icons/check-mark-v2-40x43.svg"
+                      alt="Following" /> }
+        <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.organization_name}</h4>
+        { this.props.organization_description && this.props.organization_description.length ?
+          <OverlayTrigger placement="top" overlay={<Tooltip id="organizationDescriptionTooltip">{this.props.organization_description}</Tooltip>}>
+            <i className="fa fa-info-circle fa-lg hidden-xs hidden-sm intro-modal__square-details" aria-hidden="true" />
+          </OverlayTrigger> :
+          null
+        }
+      </div>
+    );
   }
 }

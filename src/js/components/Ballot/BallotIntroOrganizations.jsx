@@ -90,17 +90,17 @@ export default class BallotIntroFollowAdvisers extends Component {
   render () {
     let voter_guides_to_follow_by_issues_followed = this.state.voter_guides_to_follow_by_issues_followed || [];
 
-    const voter_guides_to_follow_by_issues_followed_for_display = voter_guides_to_follow_by_issues_followed.map((voter_guide) => {
-      return <OrganizationFollowToggle
+    const voter_guides_to_follow_by_issues_followed_for_display = voter_guides_to_follow_by_issues_followed.map((voter_guide) =>
+      <OrganizationFollowToggle
         key={voter_guide.organization_we_vote_id}
         organization_we_vote_id={voter_guide.organization_we_vote_id}
         organization_name={voter_guide.voter_guide_display_name}
         organization_description={voter_guide.twitter_description}
-        organization_image_url={voter_guide.voter_guide_image_url_medium}
+        organization_image_url={voter_guide.voter_guide_image_url_large}
         on_organization_follow={this.onOrganizationFollow}
         on_organization_stop_following={this.onOrganizationStopFollowing}
-        />;
-    });
+        grid="col-4 col-sm-2" />
+    );
 
     return <div className="intro-modal">
       <div className="intro-modal__h1">Follow Organizations or People</div>
@@ -108,10 +108,12 @@ export default class BallotIntroFollowAdvisers extends Component {
       <br/>
       <div className="intro-modal-vertical-scroll-contain">
         <div className="intro-modal-vertical-scroll card">
-          { voter_guides_to_follow_by_issues_followed_for_display.length ?
-            voter_guides_to_follow_by_issues_followed_for_display :
-            <h4>No organizations to display</h4>
-          }
+          <div className="row intro-modal__grid">
+            { voter_guides_to_follow_by_issues_followed_for_display.length ?
+              voter_guides_to_follow_by_issues_followed_for_display :
+              <h4>No organizations to display</h4>
+            }
+          </div>
         </div>
       </div>
       <div className="intro-modal__p">

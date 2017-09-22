@@ -145,7 +145,7 @@ export default class ItemActionBar extends Component {
     } else {
       supportButtonSelectedPopOverText += ".";
     }
-    
+
     if (is_public_position) {
       supportButtonSelectedPopOverText += " Your support will be visible to the public.";
     } else {

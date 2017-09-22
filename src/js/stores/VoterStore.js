@@ -16,7 +16,7 @@ class VoterStore extends FluxMapStore {
     return {
       voter: {
         interface_status_flags: 0,
-        state_code_from_ip_address: '',
+        state_code_from_ip_address: "",
       },
       address: {},
       email_address_status: {},

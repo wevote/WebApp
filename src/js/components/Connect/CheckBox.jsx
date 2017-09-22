@@ -29,11 +29,11 @@ export default class CheckBox extends Component {
   render () {
     const { isChecked } = this.state;
     return (
-      <div className={this.props.grid + " friends-list__square"} onClick={this.toggleCheckboxChange}>
-        <ImageHandler sizeClassName={"friends-list__square-image u-cursor--pointer" + (isChecked && " friends-list__square-following")}
+      <div className={this.props.grid + " friends-list__square u-cursor--pointer"} onClick={this.toggleCheckboxChange}>
+        <ImageHandler sizeClassName={ isChecked ? "friends-list__square-image friends-list__square-following" : "friends-list__square-image" }
                       imageUrl={this.props.friendImage}
                       alt={this.props.friendName} />
-        { isChecked && <ImageHandler className="friends-list__square-check-mark u-cursor--pointer"
+        { isChecked && <ImageHandler className="friends-list__square-check-mark"
                       imageUrl="/img/global/svg-icons/check-mark-v2-40x43.svg"
                       alt="Inviting" /> }
         <h4 className="intro-modal__white-space friends-list__square-name">{this.props.friendName}</h4>
