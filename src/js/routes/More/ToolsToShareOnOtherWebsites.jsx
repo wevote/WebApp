@@ -33,6 +33,8 @@ export default class ToolsToShareOnOtherWebsites extends React.Component {
           <li>We recommend putting each tool on its own page so you don’t overwhelm your visitors</li>
         </ul>
 
+        {/* eslint quotes: [1, "double", { "allowTemplateLiterals": true }] */}
+
         <h4 className="h2">Free voter registration tool from Vote.org</h4>
         {/* enclose html within {` and `} to make them literal string in JSX */}
         <CodeCopier>

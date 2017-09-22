@@ -82,7 +82,7 @@ export default class OrganizationPositionItem extends Component {
     // console.log("signed_in_with_this_organization: ", signed_in_with_this_organization);
     var signed_in_twitter = this.state.voter === undefined ? false : this.state.voter.signed_in_twitter;
     var signed_in_with_this_twitter_account = false;
-    if (signed_in_twitter && this.state.voter.twitter_screen_name != null) {
+    if (signed_in_twitter && this.state.voter.twitter_screen_name !== null) {
       signed_in_with_this_twitter_account = this.state.voter.twitter_screen_name.toLowerCase() === organization_twitter_handle_being_viewed.toLowerCase();
     }
     var signed_in_facebook = this.state.voter === undefined ? false : this.state.voter.signed_in_facebook;
