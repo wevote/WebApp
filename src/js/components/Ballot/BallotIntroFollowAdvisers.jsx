@@ -45,12 +45,14 @@ export default class BallotIntroFollowAdvisers extends Component {
   }
 
   _onVoterGuideStoreChange () {
-    // console.log("BallotIntroFollowAdvisers, voter_guides_to_follow_by_issues_followed: ", VoterGuideStore.getVoterGuidesToFollowByIssuesFollowed());
-    // console.log("voter_guides_to_follow_all: ", VoterGuideStore.getVoterGuidesToFollowAll());
-    this.setState({
-      voter_guides_to_follow_by_issues_followed: VoterGuideStore.getVoterGuidesToFollowByIssuesFollowed(),
-      voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
-    });
+    // update followed_organizations only for first time, subsequent updates will be made locally
+    if (!this.state.followed_organizations.length) {
+      this.setState({
+        voter_guides_to_follow_by_issues_followed: VoterGuideStore.getVoterGuidesToFollowByIssuesFollowed(),
+        voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
+        followed_organizations: VoterGuideStore.getVoterGuidesVoterIsFollowing(),
+      });
+    }
   }
 
   onOrganizationFollow (organization_we_vote_id) {
