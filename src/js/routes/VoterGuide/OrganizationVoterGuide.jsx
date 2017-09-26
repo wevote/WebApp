@@ -54,7 +54,7 @@ export default class OrganizationVoterGuide extends Component {
         auto_follow_redirect_happening: true,
       });
     } else {
-      console.log("VoterStore.getAddressObject(): ", VoterStore.getAddressObject());
+      // console.log("VoterStore.getAddressObject(): ", VoterStore.getAddressObject());
       AnalyticsActions.saveActionVoterGuideVisit(this.props.params.organization_we_vote_id, VoterStore.election_id());
       this.setState({
         organization_we_vote_id: this.props.params.organization_we_vote_id,
@@ -77,7 +77,7 @@ export default class OrganizationVoterGuide extends Component {
 
       // We refresh the data for all three tabs here on the top level
       OrganizationActions.organizationRetrieve(nextProps.params.organization_we_vote_id);
-      console.log("VoterStore.getAddressObject(): ", VoterStore.getAddressObject());
+      // console.log("VoterStore.getAddressObject(): ", VoterStore.getAddressObject());
       AnalyticsActions.saveActionVoterGuideVisit(nextProps.params.organization_we_vote_id, VoterStore.election_id());
       // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
     }

@@ -234,14 +234,22 @@ export default class Intro extends Component {
                 </h1>
               </Row>
 
-              <h2 className="u-f3 u-stack--md">Launching Fall 2017!</h2>
-              { voter_signed_in ?
-                <h1 className="u-f1 u-bold u-stack--lg">{ actual_full_name ?
-                  "Welcome Back, " + actual_full_name + "." :
-                  <Button bsStyle="danger" bsSize="large" className="u-stack--md center-block" onClick={this.goToGetStarted}>
-                    Get Started
-                  </Button>
-                }</h1> :
+            </div>
+          </Row>
+        </div>
+      </section>
+
+      <section className="quick-links-section u-flex">
+        <a className="quick-links__button quick-links__button-left" onClick={() => browserHistory.push("/ballot")}>Get Started</a>
+        <a className="quick-links__button quick-links__button-right" onClick={() => browserHistory.push("/voterguidegetstarted")}>Create Voter Guide</a>
+      </section>
+
+      { voter_signed_in ?
+        null :
+        <section>
+          <div className="container">
+            <Row>
+              <div className="col-md-12">
                 <span>
                   { this.state.newsletter_opt_in_true ?
                     <h1 className="u-f1 u-bold u-stack--lg">Please check your email for a verification link.</h1> :
@@ -287,16 +295,11 @@ export default class Intro extends Component {
                     </div>
                   }
                 </span>
-              }
-            </div>
-          </Row>
-        </div>
-      </section>
-
-      <section className="quick-links-section u-flex">
-        <a className="quick-links__button quick-links__button-left" onClick={() => browserHistory.push("/ballot")}>Get Started</a>
-        <a className="quick-links__button quick-links__button-right" onClick={() => browserHistory.push("/voterguidegetstarted")}>Create Voter Guide</a>
-      </section>
+              </div>
+            </Row>
+          </div>
+        </section>
+      }
 
       <section className="features-section">
         <div className="container">
