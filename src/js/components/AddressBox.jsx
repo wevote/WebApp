@@ -102,7 +102,10 @@ export default class AddressBox extends Component {
 
   render () {
     if (this.state.loading){
-      return LoadingWheel;
+      return <div>
+            <h2>Please wait a moment while we adjust your ballot options to the new location...</h2>,
+            {LoadingWheel}
+          </div>;
     }
     return <div>
         <form onSubmit={this.voterAddressSave}>
@@ -119,6 +122,7 @@ export default class AddressBox extends Component {
           />
         </form>
         <div>
+        <br/>
           <Button
             className="pull-right"
             onClick={this.voterAddressSave}
