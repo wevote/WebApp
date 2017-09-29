@@ -201,41 +201,42 @@ export default class Intro extends Component {
     // && this.state.is_verification_email_sent ?
     return <div className="welcome-page">
       <Helmet title="Welcome to We Vote" />
-      <section className="hero-section">
-        <div className="container">
-          <Row>
-            <div className="col-md-12">
-              <Row className="visible-xs">
-                <h1 className="col-sm-12 u-f1 u-bold u-stack--lg">
-                  View your ballot.<br />
-                  Learn from friends.<br />
-                  { this.state.facebook_friends_using_we_vote_list.length > 0 ?
-                    <div className="u-flex-row friends-list__welcome">
-                      { facebook_friends_using_we_vote_list_for_display }
-                    </div> :
-                    null
-                  }
-                  Share your vision.
-                </h1>
-              </Row>
-              <Row className="hidden-xs">
-                <h1 className="col-md-6 u-f1 u-bold u-stack--lg">
-                  View your ballot.<br />
-                  Learn from friends.
-                  { this.state.facebook_friends_using_we_vote_list.length > 0 ?
-                    <div className="u-flex-row friends-list__welcome">
-                      { facebook_friends_using_we_vote_list_for_display }
-                    </div> :
-                    null
-                  }
-                </h1>
-                <h1 className="col-md-6 u-f1 u-bold u-stack--lg">
-                  Share your vision.
-                </h1>
-              </Row>
-
-            </div>
-          </Row>
+      <section className="hero-section-container">
+        <div className="hero-section">
+          <div className="container">
+            <Row>
+              <div className="col-md-12">
+                <Row className="visible-xs">
+                  <h1 className="col-sm-12 u-f1 u-bold u-stack--lg">
+                    View your ballot.<br />
+                    Learn from friends.<br />
+                    { this.state.facebook_friends_using_we_vote_list.length ?
+                      <div className="u-flex-row friends-list__welcome">
+                        { facebook_friends_using_we_vote_list_for_display }
+                      </div> :
+                      null
+                    }
+                    Share your vision.
+                  </h1>
+                </Row>
+                <Row className="hidden-xs">
+                  <h1 className="col-md-6 u-f1 u-bold u-stack--lg">
+                    View your ballot.<br />
+                    Learn from friends.
+                    { this.state.facebook_friends_using_we_vote_list.length ?
+                      <div className="u-flex-row friends-list__welcome">
+                        { facebook_friends_using_we_vote_list_for_display }
+                      </div> :
+                      null
+                    }
+                  </h1>
+                  <h1 className="col-md-6 u-f1 u-bold u-stack--lg">
+                    Share your vision.
+                  </h1>
+                </Row>
+              </div>
+            </Row>
+          </div>
         </div>
       </section>
 
@@ -246,15 +247,15 @@ export default class Intro extends Component {
 
       { voter_signed_in ?
         null :
-        <section>
+        <section className="form-section">
           <div className="container">
             <Row>
               <div className="col-md-12">
                 <span>
                   { this.state.newsletter_opt_in_true ?
                     <h1 className="u-f1 u-bold u-stack--lg">Please check your email for a verification link.</h1> :
-                    <div>
-                      <p>Sign up for updates and be the first to use We Vote.</p>
+                    <div className="form-container">
+                      <h2 className="form-header">Sign up for updates and be the first to use We Vote.</h2>
 
                       <form className="row form-inline" onSubmit={this.voterEmailAddressSignUpSave.bind(this)}>
                         <FormGroup className="col-md-4">
@@ -284,7 +285,8 @@ export default class Intro extends Component {
                                     type="submit"
                                     onClick={this.voterEmailAddressSignUpSave.bind(this)}
                             >Sign Up</Button> :
-                            <Button className="btn btn-success"
+                            <Button className="form-control form-button-disabled"
+                                    bsStyle="success"
                                     type="submit"
                                     disabled
                                     onClick={this.voterEmailAddressSignUpSave.bind(this)}
