@@ -191,13 +191,17 @@ export default class Ballot extends Component {
   _onVoterStoreChange () {
     if (this.state.mounted) {
       let consider_opening_ballot_intro_modal = true;
-      if ( this.state.hide_intro_modal_from_cookie || this.state.hide_intro_modal_from_url ) {
-        consider_opening_ballot_intro_modal = false;
-      } else if ( this.state.wait_until_voter_sign_in_completes ) {
+      if ( this.state.wait_until_voter_sign_in_completes ) {
         consider_opening_ballot_intro_modal = false;
         if ( this.state.voter && this.state.voter.is_signed_in ) {
           consider_opening_ballot_intro_modal = true;
+          this.setState({ wait_until_voter_sign_in_completes: undefined });
+          browserHistory.push("/ballot");
         }
+      }
+
+      if ( this.state.hide_intro_modal_from_cookie || this.state.hide_intro_modal_from_url ) {
+        consider_opening_ballot_intro_modal = false;
       }
 
       if ( consider_opening_ballot_intro_modal ) {

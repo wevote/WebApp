@@ -1,5 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { browserHistory, Link } from "react-router";
+import cookies from "../utils/cookies";
 import Helmet from "react-helmet";
 import { Button, FormGroup, Row, OverlayTrigger, Tooltip } from "react-bootstrap";
 import AnalyticsActions from "../actions/AnalyticsActions";
@@ -14,6 +15,7 @@ const web_app_config = require("../config");
 
 export default class Intro extends Component {
   static propTypes = {
+    location: PropTypes.object,
   };
 
   constructor (props) {
@@ -56,6 +58,12 @@ export default class Intro extends Component {
     FacebookActions.facebookFriendsAction();
     this._onFacebookStoreChange();
     this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
+    let we_vote_branding_off_from_url = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
+    let we_vote_branding_off_from_cookie = cookies.getItem("we_vote_branding_off");
+    this.setState({
+      we_vote_branding_off: we_vote_branding_off_from_url || we_vote_branding_off_from_cookie,
+    });
+
   }
 
   componentWillUnmount () {
@@ -251,52 +259,54 @@ export default class Intro extends Component {
           <div className="container">
             <Row>
               <div className="col-md-12">
-                <span>
-                  { this.state.newsletter_opt_in_true ?
-                    <h1 className="u-f1 u-bold u-stack--lg">Please check your email for a verification link.</h1> :
-                    <div className="form-container">
-                      <h2 className="form-header">Sign up for updates and be the first to use We Vote.</h2>
+                { this.state.we_vote_branding_off ? null :
+                  <span>
+                    { this.state.newsletter_opt_in_true ?
+                      <h1 className="u-f1 u-bold u-stack--lg">Please check your email for a verification link.</h1> :
+                      <div className="form-container">
+                        <h2 className="form-header">Sign up for updates and be the first to use We Vote.</h2>
 
-                      <form className="row form-inline" onSubmit={this.voterEmailAddressSignUpSave.bind(this)}>
-                        <FormGroup className="col-md-4">
-                          <label className="sr-only" htmlFor="name">Name</label>
-                          <input className="form-control"
-                                 type="text"
-                                 name="voter_full_name"
-                                 id=""
-                                 value={this.state.voter_full_name}
-                                 onChange={this.updateVoterFullName.bind(this)}
-                                 placeholder="Name"/>
-                        </FormGroup>
-                        <FormGroup className="col-md-4">
-                          <label className="sr-only" htmlFor="exampleEmail">Email</label>
-                          <input className="form-control"
-                                 type="email"
-                                 name="voter_email_address"
-                                 id=""
-                                 value={this.state.voter_email_address}
-                                 onChange={this.updateVoterEmailAddress.bind(this)}
-                                 placeholder="Email Address"/>
-                        </FormGroup>
-                        <FormGroup className="col-md-4">
-                          {this.state.submit_enabled ?
-                            <Button className="form-control"
-                                    bsStyle="success"
-                                    type="submit"
-                                    onClick={this.voterEmailAddressSignUpSave.bind(this)}
-                            >Sign Up</Button> :
-                            <Button className="form-control form-button-disabled"
-                                    bsStyle="success"
-                                    type="submit"
-                                    disabled
-                                    onClick={this.voterEmailAddressSignUpSave.bind(this)}
-                            >Enter Your Email to Sign Up</Button>
-                          }
-                        </FormGroup>
-                      </form>
-                    </div>
-                  }
-                </span>
+                        <form className="row form-inline" onSubmit={this.voterEmailAddressSignUpSave.bind(this)}>
+                          <FormGroup className="col-md-4">
+                            <label className="sr-only" htmlFor="name">Name</label>
+                            <input className="form-control"
+                                   type="text"
+                                   name="voter_full_name"
+                                   id=""
+                                   value={this.state.voter_full_name}
+                                   onChange={this.updateVoterFullName.bind(this)}
+                                   placeholder="Name"/>
+                          </FormGroup>
+                          <FormGroup className="col-md-4">
+                            <label className="sr-only" htmlFor="exampleEmail">Email</label>
+                            <input className="form-control"
+                                   type="email"
+                                   name="voter_email_address"
+                                   id=""
+                                   value={this.state.voter_email_address}
+                                   onChange={this.updateVoterEmailAddress.bind(this)}
+                                   placeholder="Email Address"/>
+                          </FormGroup>
+                          <FormGroup className="col-md-4">
+                            {this.state.submit_enabled ?
+                              <Button className="form-control"
+                                      bsStyle="success"
+                                      type="submit"
+                                      onClick={this.voterEmailAddressSignUpSave.bind(this)}
+                              >Sign Up</Button> :
+                              <Button className="form-control form-button-disabled"
+                                      bsStyle="success"
+                                      type="submit"
+                                      disabled
+                                      onClick={this.voterEmailAddressSignUpSave.bind(this)}
+                              >Enter Your Email to Sign Up</Button>
+                            }
+                          </FormGroup>
+                        </form>
+                      </div>
+                    }
+                  </span>
+                }
               </div>
             </Row>
           </div>
@@ -357,68 +367,72 @@ export default class Intro extends Component {
         </div>
 
       </section>
-
-      <section className="network-section">
-        <div className="container">
-          <h2 className="u-f2 u-stack--lg">Our Network</h2>
-          <div className="partner-logos">
-              <img className="partner-logo u-push--lg u-stack--lg" src="/img/welcome/partners/google-logo.svg" alt="Google" width="150" />
-              <img className="partner-logo u-push--lg u-stack--lg" src="/img/welcome/partners/center-for-technology.png" alt="Center for Technology and Civic Life" width="200" />
-              <img className="partner-logo u-push--lg u-stack--lg" src="/img/welcome/partners/vote-org.png" alt="Vote.org" width="169" />
-              <img className="partner-logo u-push--lg u-stack--lg" src="/img/welcome/partners/voting-information-project.png" alt="Voting Information Project" width="193" />
+      { this.state.we_vote_branding_off ? null :
+        <section className="network-section">
+          <div className="container">
+            <h2 className="u-f2 u-stack--lg">Our Network</h2>
+            <div className="partner-logos">
+                <img className="partner-logo u-push--lg u-stack--lg" src="/img/welcome/partners/google-logo.svg" alt="Google" width="150" />
+                <img className="partner-logo u-push--lg u-stack--lg" src="/img/welcome/partners/center-for-technology.png" alt="Center for Technology and Civic Life" width="200" />
+                <img className="partner-logo u-push--lg u-stack--lg" src="/img/welcome/partners/vote-org.png" alt="Vote.org" width="169" />
+                <img className="partner-logo u-push--lg u-stack--lg" src="/img/welcome/partners/voting-information-project.png" alt="Voting Information Project" width="193" />
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      }
 
       <section className="footer-section">
         <div className="container">
-          <h3 className="u-f3 u-stack--lg">Please share or donate to help us reach more voters.</h3>
-          <div className="u-stack--xl">
-            <Button className="btn btn-social btn-facebook u-push--sm"
-                bsStyle="danger"
-                type="submit"
-                onClick={this.shareToFacebookButton}>
-              <span className="fa fa-facebook" /> Facebook
-            </Button>
-            <Button className="btn btn-social btn-twitter u-push--sm"
-                bsStyle="danger"
-                onClick={this.shareToTwitterButton}>
-              <span className="fa fa-twitter" /> Twitter
-            </Button>
-            <a href={mailto_url} title="Submit this to Email">
-              <button className="btn btn-social btn--email u-push--sm">
-                <span className="fa fa-envelope" />Email
-              </button>
-            </a>
-            <Link to="/more/donate">
-              <button className="btn btn-social btn-danger u-push--sm">
-                <span className="fa fa-heart" /> Donate
-              </button>
-            </Link>
-          </div>
+          { this.state.we_vote_branding_off ? null :
+            <span>
+              <h3 className="u-f3 u-stack--lg">Please share or donate to help us reach more voters.</h3>
+              <div className="u-stack--xl">
+                <Button className="btn btn-social btn-facebook u-push--sm"
+                    bsStyle="danger"
+                    type="submit"
+                    onClick={this.shareToFacebookButton}>
+                  <span className="fa fa-facebook" /> Facebook
+                </Button>
+                <Button className="btn btn-social btn-twitter u-push--sm"
+                    bsStyle="danger"
+                    onClick={this.shareToTwitterButton}>
+                  <span className="fa fa-twitter" /> Twitter
+                </Button>
+                <a href={mailto_url} title="Submit this to Email">
+                  <button className="btn btn-social btn--email u-push--sm">
+                    <span className="fa fa-envelope" />Email
+                  </button>
+                </a>
+                <Link to="/more/donate">
+                  <button className="btn btn-social btn-danger u-push--sm">
+                    <span className="fa fa-heart" /> Donate
+                  </button>
+                </Link>
+              </div>
 
 
-          <ul className="footer-nav u-f4 list-unstyled list-inline u-stack--xl">
-            <li className="u-push--md u-stack--lg">
-              <Link to={"/more/about"}>About</Link>
-            </li>
-              <li className="u-push--md u-stack--lg">
-                <Link to={"/more/vision"}>Our Vision</Link>
-              </li>
-            <li className="u-push--md u-stack--lg">
-              <Link to={"/more/team"}>Our Team</Link>
-            </li>
-            <li className="u-push--md u-stack--lg">
-              <Link to={"/intro/sample_ballot"}>Get Started</Link>
-            </li>
-            <li className="u-push--md u-stack--lg">
-              <Link to={"/more/sign_in"}>Sign In</Link>
-            </li>
-            <li className="u-push--md u-stack--lg">
-              <Link to={"/more/tools"}>Tools For Your Website</Link>
-            </li>
-          </ul>
-
+              <ul className="footer-nav u-f4 list-unstyled list-inline u-stack--xl">
+                <li className="u-push--md u-stack--lg">
+                  <Link to={"/more/about"}>About</Link>
+                </li>
+                  <li className="u-push--md u-stack--lg">
+                    <Link to={"/more/vision"}>Our Vision</Link>
+                  </li>
+                <li className="u-push--md u-stack--lg">
+                  <Link to={"/more/team"}>Our Team</Link>
+                </li>
+                <li className="u-push--md u-stack--lg">
+                  <Link to={"/intro/sample_ballot"}>Get Started</Link>
+                </li>
+                <li className="u-push--md u-stack--lg">
+                  <Link to={"/more/sign_in"}>Sign In</Link>
+                </li>
+                <li className="u-push--md u-stack--lg">
+                  <Link to={"/more/tools"}>Tools For Your Website</Link>
+                </li>
+              </ul>
+            </span>
+          }
 
           <div className="u-f--small u-stack--lg">
             <p>
