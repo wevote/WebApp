@@ -6,8 +6,8 @@ module.exports = {
     Dispatcher.loadEndpoint("voterSignOut", { sign_out_all_devices: false });
     cookies.removeItem("voter_device_id");
     cookies.removeItem("voter_device_id", "/");
-    cookies.removeItem("voter_orientation_complete");
-    cookies.removeItem("voter_orientation_complete", "/");
+    cookies.removeItem("show_full_navigation");
+    cookies.removeItem("show_full_navigation", "/");
   },
 
   setVoterDeviceIdCookie: function (id) {

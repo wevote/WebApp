@@ -61,6 +61,7 @@ export default class TwitterSignInProcess extends Component {
     } else {
       browserHistory.push({
         pathname: "/ballot",
+        query: { wait_until_voter_sign_in_completes: 1 },
         state: {
           message: "You have successfully signed in with Twitter.",
           message_type: "success"

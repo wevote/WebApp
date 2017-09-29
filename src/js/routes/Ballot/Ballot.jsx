@@ -54,6 +54,8 @@ export default class Ballot extends Component {
       showBallotSummaryModal: false,
       ballotElectionList: [],
       mounted: false,
+      hide_intro_modal_from_url: 0,
+      hide_intro_modal_from_cookie: 0,
     };
 
     this._toggleBallotIntroModal = this._toggleBallotIntroModal.bind(this);
@@ -68,10 +70,27 @@ export default class Ballot extends Component {
   }
 
   componentDidMount () {
+    let hide_intro_modal_from_url = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
+    let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal") || 0;
+    let wait_until_voter_sign_in_completes = this.props.location.query ? this.props.location.query.wait_until_voter_sign_in_completes : 0;
+    if ( wait_until_voter_sign_in_completes !== undefined || hide_intro_modal_from_cookie || hide_intro_modal_from_url ) {
+      this.setState({
+        mounted: true,
+        showBallotIntroModal: false
+      });
+    } else {
+      this.setState({
+        mounted: true,
+        showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN)
+      });
+    }
+
     this.setState({
-      mounted: true,
-      showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
+      hide_intro_modal_from_url: hide_intro_modal_from_url,
+      hide_intro_modal_from_cookie: hide_intro_modal_from_cookie,
+      wait_until_voter_sign_in_completes: wait_until_voter_sign_in_completes
     });
+
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
       browserHistory.push("settings/location");
     } else {
@@ -92,7 +111,7 @@ export default class Ballot extends Component {
       this._onVoterStoreChange(); // We call this to properly set showBallotIntroModal
       this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
       // Once a voter hits the ballot, they have gone through orientation
-      cookies.setItem("voter_orientation_complete", "1", Infinity, "/");
+      cookies.setItem("show_full_navigation", "1", Infinity, "/");
     }
     AnalyticsActions.saveActionBallotVisit(VoterStore.election_id());
   }
@@ -171,10 +190,24 @@ export default class Ballot extends Component {
 
   _onVoterStoreChange () {
     if (this.state.mounted) {
-      this.setState({
-        voter: VoterStore.getVoter(),
-        showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
-      });
+      let consider_opening_ballot_intro_modal = true;
+      if ( this.state.hide_intro_modal_from_cookie || this.state.hide_intro_modal_from_url ) {
+        consider_opening_ballot_intro_modal = false;
+      } else if ( this.state.wait_until_voter_sign_in_completes ) {
+        consider_opening_ballot_intro_modal = false;
+        if ( this.state.voter && this.state.voter.is_signed_in ) {
+          consider_opening_ballot_intro_modal = true;
+        }
+      }
+
+      if ( consider_opening_ballot_intro_modal ) {
+        this.setState({
+          voter: VoterStore.getVoter(),
+          showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN)
+        });
+      } else {
+        this.setState({ voter: VoterStore.getVoter() });
+      }
     }
   }
 

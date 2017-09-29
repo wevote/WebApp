@@ -58,6 +58,7 @@ const links = {
 
 export default class HeaderBar extends Component {
   static propTypes = {
+    location: PropTypes.object,
     voter: PropTypes.object,
     pathname: PropTypes.string
   };
@@ -81,6 +82,12 @@ export default class HeaderBar extends Component {
     this.bookmarkStoreListener = BookmarkStore.addListener(this._onBallotStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
     this._onBallotStoreChange();
+
+    let we_vote_branding_off_from_url = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
+    let we_vote_branding_off_from_cookie = cookies.getItem("we_vote_branding_off");
+    this.setState({
+      we_vote_branding_off: we_vote_branding_off_from_url || we_vote_branding_off_from_cookie,
+    });
   }
 
   componentWillUnmount (){
@@ -224,27 +231,33 @@ export default class HeaderBar extends Component {
                 </Link>
               </li> :
               null }
-            <li className="visible-xs-block">
-              <Link onClick={this.hideAccountMenu.bind(this)} to="/more/howtouse">
-                <div>
-                  <span className="header-slide-out-menu-text-left">Getting Started</span>
-                </div>
-              </Link>
-            </li>
-            <li className="visible-xs-block">
-              <Link onClick={this.hideAccountMenu.bind(this)} to="/more/about">
-                <div>
-                  <span className="header-slide-out-menu-text-left">About We Vote</span>
-                </div>
-              </Link>
-            </li>
-            <li className="visible-xs-block">
-              <Link onClick={this.hideAccountMenu.bind(this)} to="/more/donate">
-                <div>
-                  <span className="header-slide-out-menu-text-left">Donate</span>
-                </div>
-              </Link>
-            </li>
+            { this.state.we_vote_branding_off ? null :
+              <li className="visible-xs-block">
+                <Link onClick={this.hideAccountMenu.bind(this)} to="/more/howtouse">
+                  <div>
+                    <span className="header-slide-out-menu-text-left">Getting Started</span>
+                  </div>
+                </Link>
+              </li>
+            }
+            { this.state.we_vote_branding_off ? null :
+              <li className="visible-xs-block">
+                <Link onClick={this.hideAccountMenu.bind(this)} to="/more/about">
+                  <div>
+                    <span className="header-slide-out-menu-text-left">About We Vote</span>
+                  </div>
+                </Link>
+              </li>
+            }
+            { this.state.we_vote_branding_off ? null :
+              <li className="visible-xs-block">
+                <Link onClick={this.hideAccountMenu.bind(this)} to="/more/donate">
+                  <div>
+                    <span className="header-slide-out-menu-text-left">Donate</span>
+                  </div>
+                </Link>
+              </li>
+            }
           </ul>
           <span className="terms-and-privacy">
             <br />
@@ -305,50 +318,61 @@ export default class HeaderBar extends Component {
     let { ballot, network, donate } = links;
     let number_of_incoming_friend_requests = this.state.friend_invitations_sent_to_me.length;
     let voter_is_signed_in = this.props.voter && this.props.voter.is_signed_in;
-    let voter_orientation_complete = cookies.getItem("voter_orientation_complete") || voter_is_signed_in;
+    let show_full_navigation = cookies.getItem("show_full_navigation") || voter_is_signed_in;
+    let we_vote_branding_off = this.state.we_vote_branding_off;
     let in_network_section = pathname === "/more/network" || pathname === "/more/network/organizations" || pathname === "/more/network/issues" || pathname === "/more/network/friends";
 
     return (
       <header className="page-header">
-        <Link to="/welcome" className="page-logo page-logo-full-size h4 hidden-xs">
-          We Vote
-          <span className="page-logo__version"> alpha</span>
-        </Link>
-
-        { voter_orientation_complete ? <Link to="/welcome" className="page-logo page-logo-short h4 visible-xs">
-            WV
-          </Link> :
-          <Link to="/welcome" className="page-logo page-logo-short h4 visible-xs">
+        { we_vote_branding_off ? null :
+          <Link to="/welcome" className="page-logo page-logo-full-size h4 hidden-xs">
             We Vote
             <span className="page-logo__version"> alpha</span>
-          </Link> }
-
-        <div className="header-nav">
-          { voter_orientation_complete ? ballot(pathname === "/ballot") : null }
-
-          { voter_orientation_complete ? network(in_network_section, number_of_incoming_friend_requests) : null }
-
-          { voter_orientation_complete ?
-            <span onClick={this.toggleAboutMenu} className={ "header-nav__item header-nav__item--about header-nav__item--has-icon hidden-xs" + (pathname === "/more/about" ? " active-icon" : "")}>
-              <span className="header-nav__icon--about">About</span>
-              <span className="header-nav__label">We Vote</span>
-              <div>{this.aboutMenu()}</div>
-            </span> :
-            <div>
-              <Link to="/more/about" className={ "header-nav__item header-nav__item--about" + (pathname === "/more/about" ? " active-icon" : "")}>
-                <span className="header-nav__icon--about">About</span>
-                <span className="header-nav__label">We Vote</span>
+          </Link>
+        }
+        { we_vote_branding_off ?
+          null :
+          <span>
+            { show_full_navigation ?
+              <Link to="/welcome" className="page-logo page-logo-short h4 visible-xs">
+                WV
+              </Link> :
+              <Link to="/welcome" className="page-logo page-logo-short h4 visible-xs">
+                We Vote
+                <span className="page-logo__version"> alpha</span>
               </Link>
-            </div> }
+            }
+          </span>
+        }
+        <div className="header-nav">
+          { show_full_navigation ? ballot(pathname === "/ballot") : null }
 
-          { voter_orientation_complete ? donate(pathname === "/more/donate") : null }
+          { show_full_navigation ? network(in_network_section, number_of_incoming_friend_requests) : null }
+          { we_vote_branding_off ? null :
+            <span>
+              { show_full_navigation ?
+                <span onClick={this.toggleAboutMenu} className={ "header-nav__item header-nav__item--about header-nav__item--has-icon hidden-xs" + (pathname === "/more/about" ? " active-icon" : "")}>
+                  <span className="header-nav__icon--about">About</span>
+                  <span className="header-nav__label">We Vote</span>
+                  <div>{this.aboutMenu()}</div>
+                </span> :
+                <div>
+                  <Link to="/more/about" className={ "header-nav__item header-nav__item--about" + (pathname === "/more/about" ? " active-icon" : "")}>
+                    <span className="header-nav__icon--about">About</span>
+                    <span className="header-nav__label">We Vote</span>
+                  </Link>
+                 </div>
+              }
+            </span>
+          }
+          { show_full_navigation && !we_vote_branding_off ? donate(pathname === "/more/donate") : null }
 
-          { voter_orientation_complete ?
+          { show_full_navigation ?
             null :
             <button type="button" className="btn btn-sm btn-success"
                 onClick={this.goToGetStarted}>Sample Ballot</button> }
 
-          { voter_orientation_complete ?
+          { show_full_navigation ?
             null :
             <Link to="/more/sign_in" className="sign_in header-nav__item">
               Sign In
@@ -356,9 +380,9 @@ export default class HeaderBar extends Component {
           }
         </div>
 
-        { voter_orientation_complete ? <SearchAllBox /> : null }
+        { show_full_navigation ? <SearchAllBox /> : null }
 
-        { voter_orientation_complete ? <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
+        { show_full_navigation ? <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
           {voter_photo_url_medium ?
             <div id="js-header-avatar" className="header-nav__avatar-container">
                 <img className="header-nav__avatar"

@@ -70,6 +70,7 @@ export default class FacebookSignInProcess extends Component {
     } else {
       browserHistory.push({
         pathname: "/ballot",
+        query: { wait_until_voter_sign_in_completes: 1 },
         state: {
           message: "You have successfully signed in with Facebook.",
           message_type: "success"
