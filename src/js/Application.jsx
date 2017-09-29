@@ -77,7 +77,10 @@ export default class Application extends Component {
     if (we_vote_branding_off_from_url && !we_vote_branding_off_from_cookie ) {
         cookies.setItem("we_vote_branding_off", we_vote_branding_off_from_url, one_day_expires, "/");
     }
-
+    if (we_vote_branding_off_from_url || we_vote_branding_off_from_cookie ) {
+      cookies.setItem("show_full_navigation", "1", Infinity, "/");
+    }
+    this.setState({we_vote_branding_off: we_vote_branding_off_from_url || we_vote_branding_off_from_cookie});
     let hide_intro_modal_from_url = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
     let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal") || 0;
     if (hide_intro_modal_from_url && !hide_intro_modal_from_cookie ) {
@@ -177,7 +180,7 @@ export default class Application extends Component {
       // console.log("voter_guide_mode", voter_guide_mode);
       return <div className="app-base" id="app-base-id">
         <div className="headroom-wrapper">
-          <div ref="pageHeader" className="page-header__container headroom">
+          <div ref="pageHeader" className={ this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom" }>
             <HeaderBar pathname={pathname} voter={this.state.voter} location={this.props.location}/>
           </div>
         </div>
@@ -187,7 +190,7 @@ export default class Application extends Component {
 
     return <div className="app-base" id="app-base-id">
       <div className={headRoomSize}>
-        <div ref="pageHeader" className="page-header__container headroom">
+        <div ref="pageHeader" className={ this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom" }>
           <HeaderBar pathname={pathname} voter={this.state.voter} location={this.props.location}/>
           { pathname === "/ballot" || pathname === "/bookmarks" ?
             <HeaderGettingStartedBar pathname={pathname} voter={this.state.voter}/> :

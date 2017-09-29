@@ -19,6 +19,11 @@
     padding: $space-sm $space-none;
   }
 
+  &__container_branding_off {
+    background-color: $gray-darker;
+    padding: $space-sm $space-none;
+  }
+
   &__search {
     margin: $space-none;
     position: relative;
