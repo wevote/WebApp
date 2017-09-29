@@ -1,4 +1,5 @@
 $cta-color: #fb2f2f;
+$header-image-width: 931px;
 
 .welcome-page {
   .cta-button {
@@ -10,9 +11,18 @@ $cta-color: #fb2f2f;
     background-image: url('/img/welcome/header-image-desktop.png');
     background-size: cover;
     color: $white;
-    padding-top: $space-lg;
+    max-width: $header-image-width;
+    padding-top: $space-xl;
     padding-bottom: $space-xl;
     text-align: center;
+
+    @include breakpoints($header-image-width) {
+      margin: $space-none calc(50% - #{$header-image-width} / 2);
+    }
+
+    &-container {
+      background-color: #314965; // stylelint-disable-line sh-waqar/declaration-use-variable
+    }
 
     &::before {
       content: '';
@@ -26,12 +36,40 @@ $cta-color: #fb2f2f;
     }
   }
 
-  .form-group {
-    padding: $space-none $space-sm;
-  }
+  .form {
+    &-section {
+      width: 100%;
+      padding-top: $space-lg;
+      background-color: $brand-blue;
+    }
 
-  .form-control {
-    width: 100%;
+    &-container {
+      padding: $space-lg $space-none;
+    }
+
+    &-header {
+      margin-bottom: $space-md;
+      color: $white;
+      font-size: 20px;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    &-group {
+      padding: $space-none $space-sm;
+    }
+
+    &-control {
+      width: 100%;
+    }
+
+    &-button-disabled {
+      color: $gray-darker;
+    }
+
+    &-button-disabled:hover {
+      color: $white;
+    }
   }
 
   .quick-links {
