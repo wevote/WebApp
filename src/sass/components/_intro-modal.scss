@@ -115,12 +115,12 @@
   &__button {
     position: absolute;
     bottom: 36px;
-    width: 19%;
+    width: 10%;
   }
 
   &__button-follow,
   &__button-disabled {
-    width: 19%;
+    width: 10%;
   }
 
   &__button-wrap {
@@ -469,5 +469,43 @@
 
   @include breakpoints (mid-small) {
     height: calc(100vh - 104px);
+  }
+}
+
+.modal-dialog {
+  @include breakpoints (small) {
+    height: 100vh;
+
+    .modal-content {
+      height: calc(100vh - 90px);
+    }
+  }
+}
+
+.modal-body {
+  @include breakpoints (small) {
+    height: inherit;
+
+    .intro-modal__button-disabled,
+    .intro-modal__button {
+      width: 20%;
+      bottom: 75px;
+    }
+
+    .intro-modal__button-wrap {
+      justify-content: auto;
+    }
+
+    .intro-modal__gray-dots {
+      bottom: 25px;
+    }
+
+    .intro-modal-vertical-scroll-contain {
+      height: calc(100vh - 350px);
+    }
+
+    .calc-height {
+      height: calc(100vh - 100px);
+    }
   }
 }
