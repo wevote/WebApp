@@ -18,7 +18,7 @@ export default class SampleBallot extends Component {
   componentWillMount () {
     document.body.style.backgroundColor = "#A3A3A3";
     document.body.className = "story-view";
-    cookies.setItem("voter_orientation_complete", "1", Infinity, "/");
+    cookies.setItem("show_full_navigation", "1", Infinity, "/");
   }
 
   componentWillUnmount () {

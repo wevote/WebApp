@@ -68,7 +68,7 @@ import Welcome from "./routes/Welcome";
 import YourPage from "./routes/YourPage";
 
 
-// See /js/components/Navigation/HeaderBar.jsx for voter_orientation_complete cookie
+// See /js/components/Navigation/HeaderBar.jsx for show_full_navigation cookie
 const firstVisit = !cookies.getItem("voter_device_id");
 
 const routes = () =>
@@ -81,6 +81,7 @@ const routes = () =>
     <Route path="/activity" component={Activity} />
     <Route path="/ballot" component={BallotIndex}>
       <IndexRoute component={Ballot}/>
+      <Route path="/ballot?wait_until_voter_sign_in_completes=:wait_until_voter_sign_in_completes" component={Ballot} />
       <Route path="/office/:office_we_vote_id" component={Office} />
       <Route path="/candidate/:candidate_we_vote_id" component={Candidate} />
       <Route path="/measure/:measure_we_vote_id" component={Measure} />
