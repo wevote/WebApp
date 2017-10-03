@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { $ajax } from "../../utils/service";
+import cookies from "../../utils/cookies";
 // import TwitterActions from "../../actions/TwitterActions";
 const web_app_config = require("../../config");
 
@@ -31,6 +32,7 @@ export default class TwitterSignIn extends Component {
   }
 
   twitterSignInStart () {
+    let we_vote_branding_off_from_cookie = cookies.getItem("we_vote_branding_off") || 0;
     let return_url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/twitter_sign_in";
     $ajax({
       endpoint: "twitterSignInStart",
@@ -38,7 +40,11 @@ export default class TwitterSignIn extends Component {
       success: res => {
         console.log("twitterSignInStart success, res:", res);
         if (res.twitter_redirect_url) {
-          window.location.assign(res.twitter_redirect_url);
+          if (we_vote_branding_off_from_cookie) {
+            window.open(res.twitter_redirect_url);
+          } else {
+            window.location.assign(res.twitter_redirect_url);
+          }
         } else {
           // There is a problem signing in
           console.log("twitterSignInStart ERROR res: ", res);

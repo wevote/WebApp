@@ -2,9 +2,10 @@ import Dispatcher from "../dispatcher/Dispatcher";
 
 module.exports = {
 
-  organizationFollow: function (organization_we_vote_id, organization_follow_based_on_issue = false) {
+  organizationFollow: function (organization_we_vote_id, organization_twitter_handle = "", organization_follow_based_on_issue = false) {
     Dispatcher.loadEndpoint("organizationFollow", {
       organization_we_vote_id: organization_we_vote_id,
+      organization_twitter_handle: organization_twitter_handle,
       organization_follow_based_on_issue: organization_follow_based_on_issue
     });
   },
