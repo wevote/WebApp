@@ -1,5 +1,6 @@
 $cta-color: #fb2f2f;
 $header-image-width: 931px;
+$hero-section-background-color: rgba(250, 250, 250, .8);
 
 .welcome-page {
   .cta-button {
@@ -226,5 +227,160 @@ $header-image-width: 931px;
         color: $white;
       }
     }
+  }
+}
+
+
+.welcome-page .hero-section::before {
+  background-color: $hero-section-background-color;
+}
+
+.row {
+  .h1 {
+    font-weight: inherit;
+    letter-spacing: 1px;
+
+    &:nth-child(1) {
+      color: $cta-color;
+    }
+
+    &:nth-child(2) {
+      color: #476480; // stylelint-disable-line sh-waqar/declaration-use-variable
+    }
+  }
+}
+
+.syv-h1 {
+  color: #476480; // stylelint-disable-line sh-waqar/declaration-use-variable
+}
+
+.welcome-page {
+  .section:nth-child(2) {
+    padding: 15px $space-none 15px $space-none; // stylelint-disable-line sh-waqar/declaration-use-variable
+  }
+}
+
+.welcome-page .features-your-mission__block .h1 {
+  margin-bottom: 35px; // stylelint-disable-line sh-waqar/declaration-use-variable
+}
+
+.features__block {
+  a {
+    color: $white;
+    text-decoration: none;
+
+    .h3:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.welcome-page .features__block-container:nth-child(6) {
+  margin-bottom: $space-none; // stylelint-disable-line sh-waqar/declaration-use-variable
+}
+
+.quick-links-section a {
+  font-size: 18px;
+  margin: auto; // stylelint-disable-line sh-waqar/declaration-use-variable
+  margin-top: 30px; // stylelint-disable-line sh-waqar/declaration-use-variable
+}
+
+.welcome-page .quick-links__button {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: $white;
+  width: 40%;
+  text-align: center;
+  padding: 1em; // stylelint-disable-line sh-waqar/declaration-use-variable
+  line-height: 1em;
+  transition: background .3s;
+  border-radius: 15px; // stylelint-disable-line sh-waqar/declaration-use-variable
+  font-size: 18px;
+}
+
+.welcome-page {
+  .network-section {
+    padding-top: 40px; // stylelint-disable-line sh-waqar/declaration-use-variable
+    padding-bottom: 40px; // stylelint-disable-line sh-waqar/declaration-use-variable
+  }
+}
+
+.container {
+  .h2 {
+    margin-bottom: 15px; // stylelint-disable-line sh-waqar/declaration-use-variable
+  }
+}
+
+.partner-logos {
+  .img {
+    padding-bottom: $space-none; // stylelint-disable-line sh-waqar/declaration-use-variable
+    margin-bottom: $space-none; // stylelint-disable-line sh-waqar/declaration-use-variable
+  }
+}
+
+.welcome-page .footer-section a {
+  text-decoration: none;
+}
+
+.welcome-page .footer-section a:hover {
+  text-decoration: underline;
+}
+
+.u-stack--xl {
+  margin-bottom: 32px; // stylelint-disable-line sh-waqar/declaration-use-variable
+}
+
+
+@media all and (max-width: 767px) {
+  .syv-h1 {
+    margin-top: 50px; // stylelint-disable-line sh-waqar/declaration-use-variable
+  }
+  .welcome-page .quick-links__button {
+    width: 80%;
+    margin-bottom: 25px; // stylelint-disable-line sh-waqar/declaration-use-variable
+  }
+  .u-f--small {
+    .p:nth-child(1) {
+      width: 80%;
+      margin: auto; // stylelint-disable-line sh-waqar/declaration-use-variable
+    }
+  }
+  .features-block,
+  .features__block-container {
+    height: 275px;
+  }
+  .partner-logos {
+    .img {
+      width: 60%;
+      margin-bottom: $space-none; // stylelint-disable-line sh-waqar/declaration-use-variable
+      padding-bottom: 20px; // stylelint-disable-line sh-waqar/declaration-use-variable
+    }
+  }
+  .list-inline {
+    .li {
+      margin-bottom: 10px // stylelint-disable-line sh-waqar/declaration-use-variable
+    }
+  }
+  .btn-social {
+    width: 50%;
+    text-align: center;
+    margin-bottom: 10px; // stylelint-disable-line sh-waqar/declaration-use-variable
+  }
+  .features__block {
+    width: 100%;
+    height: inherit;
+  }
+  .features__block a {
+    width: 80%;
+  }
+  .features-your-mission__block {
+    margin-bottom: 35px; // stylelint-disable-line sh-waqar/declaration-use-variable
+  }
+  .welcome-page .features__p {
+    padding: $space-none; // stylelint-disable-line sh-waqar/declaration-use-variable
   }
 }
