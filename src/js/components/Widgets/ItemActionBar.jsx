@@ -133,6 +133,8 @@ export default class ItemActionBar extends Component {
                                   inTestMode
             />
             <br />
+            We Vote helps you get ready to vote, <strong>but you cannot use We Vote to actually cast your vote</strong>. Make sure to return your official ballot to your polling place!<br />
+            <br />
           </div>
         </section>
       </Modal.Body>
