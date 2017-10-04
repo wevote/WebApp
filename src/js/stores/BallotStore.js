@@ -136,6 +136,22 @@ class BallotStore extends FluxMapStore {
     return assign({}, ballot_item, {candidate_list: filtered_list });
   }
 
+  // getBallotLocationForVoter () {
+  //   // console.log("getBallotLocationForVoter this.ballot_properties:", this.ballot_properties);
+  //   if (this.ballot_properties) {
+  //     return {
+  //       text_for_map_search: this.ballot_properties.text_for_map_search,
+  //       ballot_returned_we_vote_id: this.ballot_properties.ballot_returned_we_vote_id,
+  //       polling_location_we_vote_id: this.ballot_properties.polling_location_we_vote_id_source,
+  //       ballot_location_order: 0,
+  //       ballot_location_display_name: "", // this.ballot_properties.ballot_location_display_name,
+  //       ballot_location_shortcut: this.ballot_properties.ballot_location_shortcut,
+  //       google_civic_election_id: this.ballot_properties.google_civic_election_id,
+  //     };
+  //   }
+  //   return null;
+  // }
+
   reduce (state, action) {
 
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
@@ -149,10 +165,12 @@ class BallotStore extends FluxMapStore {
     switch (action.type) {
 
       case "voterAddressRetrieve":
+        // console.log("BallotStore, voterAddressRetrieve response received, calling voterBallotItemsRetrieve now.");
         BallotActions.voterBallotItemsRetrieve();
         return state;
 
       case "voterBallotItemsRetrieve":
+        // console.log("BallotStore, voterBallotItemsRetrieve response received.");
         key = action.res.google_civic_election_id;
         newBallot[key] = action.res;
 

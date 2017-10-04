@@ -43,6 +43,22 @@ class VoterStore extends FluxMapStore {
     return this.getState().address || {};
   }
 
+  getBallotLocationForVoter () {
+    // console.log("getBallotLocationForVoter this.getState().address:", this.getState().address);
+    if (this.getState().address) {
+      return {
+        text_for_map_search: this.getState().address.text_for_map_search,
+        ballot_returned_we_vote_id: this.getState().address.ballot_returned_we_vote_id,
+        polling_location_we_vote_id: "",
+        ballot_location_order: 0,
+        ballot_location_display_name: "", // this.ballot_properties.ballot_location_display_name,
+        ballot_location_shortcut: "",
+        google_civic_election_id: this.getState().address.google_civic_election_id,
+      };
+    }
+    return null;
+  }
+
   getEmailAddressList (){
     return this.getDataFromArr(this.getState().email_address_list) || {};
   }
@@ -239,7 +255,8 @@ class VoterStore extends FluxMapStore {
             ...state,
             address: {
               text_for_map_search: action.res.text_for_map_search,
-              google_civic_election_id: action.res.google_civic_election_id
+              google_civic_election_id: action.res.google_civic_election_id,
+              ballot_returned_we_vote_id: action.res.ballot_returned_we_vote_id
             }
           };
         } else {
@@ -249,7 +266,8 @@ class VoterStore extends FluxMapStore {
             ...state,
             address: {
               text_for_map_search: action.res.text_for_map_search,
-              google_civic_election_id: action.res.google_civic_election_id
+              google_civic_election_id: action.res.google_civic_election_id,
+              ballot_returned_we_vote_id: action.res.ballot_returned_we_vote_id
             }
           };
         }

@@ -79,7 +79,7 @@ class VoterGuideStore extends FluxMapStore {
   reduce (state, action) {
     let voter_guides;
     let all_cached_voter_guides;
-    let id;
+    let google_civic_election_id;
     let organization_we_vote_id;
     let voter_linked_organization_we_vote_id;
 
@@ -89,16 +89,16 @@ class VoterGuideStore extends FluxMapStore {
         if (action.res.status === "SIMPLE_ADDRESS_SAVE") {
           return state;
         } else {
-          id = action.res.google_civic_election_id;
-          VoterGuideActions.voterGuidesToFollowRetrieve(id);
-          VoterGuideActions.voterGuidesFollowedRetrieve(id);
+          google_civic_election_id = action.res.google_civic_election_id;
+          VoterGuideActions.voterGuidesToFollowRetrieve(google_civic_election_id);
+          VoterGuideActions.voterGuidesFollowedRetrieve(google_civic_election_id);
           return state;
         }
 
       case "voterAddressRetrieve": // refresh guides when you change address
-        id = action.res.google_civic_election_id;
-        VoterGuideActions.voterGuidesToFollowRetrieve(id);
-        VoterGuideActions.voterGuidesFollowedRetrieve(id);
+        google_civic_election_id = action.res.google_civic_election_id;
+        VoterGuideActions.voterGuidesToFollowRetrieve(google_civic_election_id);
+        VoterGuideActions.voterGuidesFollowedRetrieve(google_civic_election_id);
         return state;
 
       case "voterFollowAllOrganizationsFollowedByOrganization":
