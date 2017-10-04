@@ -218,40 +218,54 @@ export default class Intro extends Component {
                   <h1 className="col-sm-12 u-f1 u-bold u-stack--lg">
                     View your ballot.<br />
                     Learn from friends.<br />
-                    { this.state.facebook_friends_using_we_vote_list.length ?
+
+                    { this.state.facebook_friends_using_we_vote_list.length > 0 ?
                       <div className="u-flex-row friends-list__welcome">
                         { facebook_friends_using_we_vote_list_for_display }
                       </div> :
                       null
                     }
-                    Share your vision.
+                    <section className="quick-links-section u-flex">
+                      <a className="quick-links__button quick-links__button-left" onClick={() => browserHistory.push("/ballot")}>Get Started</a>
+                    </section>
+
+                    <div className="syv-h1">
+                      Share your vision.
+
+                      <section className="quick-links-section u-flex">
+                        <a className="quick-links__button quick-links__button-right" onClick={() => browserHistory.push("/voterguidegetstarted")}>Create Voter Guide</a>
+                      </section>
+                    </div>
                   </h1>
                 </Row>
                 <Row className="hidden-xs">
                   <h1 className="col-md-6 u-f1 u-bold u-stack--lg">
                     View your ballot.<br />
                     Learn from friends.
-                    { this.state.facebook_friends_using_we_vote_list.length ?
+                    { this.state.facebook_friends_using_we_vote_list.length > 0 ?
                       <div className="u-flex-row friends-list__welcome">
                         { facebook_friends_using_we_vote_list_for_display }
                       </div> :
                       null
                     }
+                    <section className="quick-links-section u-flex">
+                      <a className="quick-links__button quick-links__button-left" onClick={() => browserHistory.push("/ballot")}>Get Started</a>
+                    </section>
                   </h1>
                   <h1 className="col-md-6 u-f1 u-bold u-stack--lg">
                     Share your vision.
+                    <section className="quick-links-section u-flex">
+                      <a className="quick-links__button quick-links__button-right" onClick={() => browserHistory.push("/voterguidegetstarted")}>Create Voter Guide</a>
+                    </section>
                   </h1>
                 </Row>
+
               </div>
             </Row>
           </div>
-        </div>
+         </div>
       </section>
 
-      <section className="quick-links-section u-flex">
-        <a className="quick-links__button quick-links__button-left" onClick={() => browserHistory.push("/ballot")}>Get Started</a>
-        <a className="quick-links__button quick-links__button-right" onClick={() => browserHistory.push("/voterguidegetstarted")}>Create Voter Guide</a>
-      </section>
 
       { voter_signed_in ?
         null :
@@ -319,46 +333,62 @@ export default class Intro extends Component {
             <div className="h1 u-bold">Your Mission:<br /><span className="h2">Make the world a better place.</span></div>
           </div>
           <Row className="u-stack--lg">
-            <div className="col-6 col-md-4 u-flex u-justify-center features__block-container">
+            <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block-container">
               <div className="features__block" onClick={this._toggleBallotFeature}>
-                <img className={ this.state.show_features_ballot ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/view-your-ballot.png" width="25%" />
-                <h3 className="features__h3">View Your Ballot</h3>
-                <p className={ this.state.show_features_ballot ? "features__p" : "features__p hidden-xs" }>See your actual ballot, including candidates and measures.</p>
+                <Link to={"/ballot"}>
+
+                  <img className={ this.state.show_features_ballot ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/view-your-ballot.svg" width="55%" />
+                  <h3 className="features__h3">View Your Ballot</h3>
+                  <p className={ this.state.show_features_ballot ? "features__p" : "features__p hidden-xs" }>See your actual ballot, including candidates and measures.</p>
+
+                </Link>
               </div>
             </div>
-            <div className="col-6 col-md-4 u-flex u-justify-center features__block-container">
+            <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block-container">
               <div className="features__block" onClick={this._toggleOrganizationsFeature}>
-                <img className={ this.state.show_features_organizations ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/learn-from-orgs.png" width="50%" />
-                <h3 className="features__h3">Learn From Organizations</h3>
-                <p className={ this.state.show_features_organizations ? "features__p" : "features__p hidden-xs" }>Follow the voter guides of groups you trust. See what they support or oppose.</p>
+                <Link to={"/more/network"}>
+
+                    <img className={ this.state.show_features_organizations ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/learn-from-orgs.svg" width="60%" />
+                    <h3 className="features__h3">Learn From Organizations</h3>
+                    <p className={ this.state.show_features_organizations ? "features__p" : "features__p hidden-xs" }>Follow the voter guides of groups you trust. See what they support or oppose.</p>
+
+                </Link>
               </div>
             </div>
-            <div className="col-6 col-md-4 u-flex u-justify-center features__block-container">
+            <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block-container">
               <div className="features__block" onClick={this._togglePositionsFeature}>
-                <img className={ this.state.show_features_positions ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/see-position.png" />
-                <h3 className="features__h3">See Your Network's Positions</h3>
-                <p className={ this.state.show_features_positions ? "features__p" : "features__p hidden-xs" }>See how many in your network support or oppose each candidate or measure.</p>
+                <Link to={"/ballot"}>
+                  <img className={ this.state.show_features_positions ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/see-position.svg" />
+                  <h3 className="features__h3">See Your Network's Positions</h3>
+                  <p className={ this.state.show_features_positions ? "features__p" : "features__p hidden-xs" }>See how many in your network support or oppose each candidate or measure.</p>
+                </Link>
               </div>
             </div>
-            <div className="col-6 col-md-4 u-flex u-justify-center features__block-container">
+            <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block-container">
               <div className="features__block" onClick={this._toggleNetworkFeature}>
-                <img className={ this.state.show_features_network ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/choose-friends.png" width="50%" />
-                <h3 className="features__h3">Invite Friends to Your We Vote Network</h3>
-                <p className={ this.state.show_features_network ? "features__p" : "features__p hidden-xs" }>Talk politics with friends who share your values. Avoid flame wars!</p>
+                <Link to={"/more/network"}>
+                  <img className={ this.state.show_features_network ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/choose-friends.svg" width="60%" />
+                  <h3 className="features__h3">Invite Friends to Your We Vote Network</h3>
+                  <p className={ this.state.show_features_network ? "features__p" : "features__p hidden-xs" }>Talk politics with friends who share your values. Avoid flame wars!</p>
+                </Link>
               </div>
             </div>
-            <div className="col-sm-6 col-md-4 u-flex u-justify-center features__block-container">
+            <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block-container">
               <div className="features__block" onClick={this._toggleVisionFeature}>
-                <img className={ this.state.show_features_vision ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/share-vision.png" width="50%" />
-                <h3 className="features__h3">Share Your Vision</h3>
-                <p className={ this.state.show_features_vision ? "features__p" : "features__p hidden-xs" }>Empower other voters with what you've learned. Help your friends.</p>
+                <Link to={"/voterguidegetstarted"}>
+                  <img className={ this.state.show_features_vision ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/share-vision.svg" width="55%" />
+                  <h3 className="features__h3">Share Your Vision</h3>
+                  <p className={ this.state.show_features_vision ? "features__p" : "features__p hidden-xs" }>Empower other voters with what you've learned. Help your friends.</p>
+                </Link>
               </div>
             </div>
-            <div className="col-sm-6 col-md-4 u-flex u-justify-center features__block-container">
+            <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block-container">
               <div className="features__block" onClick={this._toggleVoteFeature}>
-                <img className={ this.state.show_features_vote ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/decide.png" width="50%" />
-                <h3 className="features__h3">Decide & Vote</h3>
-                <p className={ this.state.show_features_vote ? "features__p" : "features__p hidden-xs" }>Cast your vote with confidence after using We Vote.</p>
+                <Link to={"/ballot?type=filterReadyToVote"}>
+                  <img className={ this.state.show_features_vote ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/decide.svg" width="60%" />
+                  <h3 className="features__h3">Decide & Vote</h3>
+                  <p className={ this.state.show_features_vote ? "features__p" : "features__p hidden-xs" }>Cast your vote with confidence after using We Vote.</p>
+                </Link>
               </div>
             </div>
           </Row>
@@ -438,6 +468,7 @@ export default class Intro extends Component {
             <p>
               WeVote.US is brought to you by a partnership between two registered nonprofit organizations,
                one <span className="u-no-break">501(c)(3)</span> and one <span className="u-no-break">501(c)(4)</span>.
+               <br />
                We do not support or oppose any political candidate or party.
             </p>
             <p>
