@@ -212,10 +212,10 @@ export default class Intro extends Component {
       <section className="hero-section-container">
         <div className="hero-section">
           <div className="container">
-            <Row>
+            <Row className="hero-section-row">
               <div className="col-md-12">
                 <Row className="visible-xs">
-                  <h1 className="col-sm-12 u-f1 u-bold u-stack--lg">
+                  <h1 className="col-sm-12 u-f1 u-stack--lg">
                     View your ballot.<br />
                     Learn from friends.<br />
 
@@ -239,7 +239,7 @@ export default class Intro extends Component {
                   </h1>
                 </Row>
                 <Row className="hidden-xs">
-                  <h1 className="col-md-6 u-f1 u-bold u-stack--lg">
+                  <h1 className="col-md-6 u-f1 u-stack--lg">
                     View your ballot.<br />
                     Learn from friends.
                     { this.state.facebook_friends_using_we_vote_list.length > 0 ?
@@ -252,8 +252,10 @@ export default class Intro extends Component {
                       <a className="quick-links__button quick-links__button-left" onClick={() => browserHistory.push("/ballot")}>Get Started</a>
                     </section>
                   </h1>
-                  <h1 className="col-md-6 u-f1 u-bold u-stack--lg">
+
+                  <h1 className="col-md-6 u-f1 u-stack--lg">
                     Share your vision.
+                     <br /> <br />
                     <section className="quick-links-section u-flex">
                       <a className="quick-links__button quick-links__button-right" onClick={() => browserHistory.push("/voterguidegetstarted")}>Create Voter Guide</a>
                     </section>
@@ -330,7 +332,9 @@ export default class Intro extends Component {
       <section className="features-section">
         <div className="container">
           <div className="features-your-mission__block">
-            <div className="h1 u-bold">Your Mission:<br /><span className="h2">Make the world a better place.</span></div>
+            <div className="features-title">Your Mission:<br />
+              <span className="h2">Make the world a better place.</span>
+            </div>
           </div>
           <Row className="u-stack--lg">
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block-container">
