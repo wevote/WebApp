@@ -141,7 +141,7 @@ export default class OrganizationVoterGuide extends Component {
     return <div>
       <div className="headroom-wrapper">
         <div ref="pageHeader" className="page-header__container headroom">
-          <HeaderBar voter={this.state.voter} />
+          <HeaderBar location={this.props.location} pathname={this.props.location.pathname} voter={this.state.voter} />
         </div>
       </div>
       <div className="page-content-container">

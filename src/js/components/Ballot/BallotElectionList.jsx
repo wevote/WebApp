@@ -25,7 +25,7 @@ export default class BallotElectionList extends Component {
   }
 
   render () {
-    console.log("BallotElectionList, this.props.ballotElectionList", this.props.ballotElectionList);
+    // console.log("BallotElectionList, this.props.ballotElectionList", this.props.ballotElectionList);
     let currentDate = moment().format("YYYY-MM-DD");
     let simple_save = false;
     let upcomingElectionList = this.props.ballotElectionList.map((item, index) =>

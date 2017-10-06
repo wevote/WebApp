@@ -280,7 +280,7 @@ export default class Intro extends Component {
                     { this.state.newsletter_opt_in_true ?
                       <h1 className="u-f1 u-bold u-stack--lg">Please check your email for a verification link.</h1> :
                       <div className="form-container">
-                        <h2 className="form-header">Sign up for updates and be the first to use We Vote.</h2>
+                        <h2 className="form-header">Sign up to get updates about We Vote.</h2>
 
                         <form className="row form-inline" onSubmit={this.voterEmailAddressSignUpSave.bind(this)}>
                           <FormGroup className="col-md-4">

@@ -200,7 +200,7 @@ export default class Application extends Component {
       return <div className="app-base" id="app-base-id">
         <div className="headroom-wrapper">
           <div ref="pageHeader" className={ this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom" }>
-            <HeaderBar pathname={pathname} voter={this.state.voter} location={this.props.location}/>
+            <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
           </div>
         </div>
         { this.props.children }
@@ -210,7 +210,7 @@ export default class Application extends Component {
     return <div className="app-base" id="app-base-id">
       <div className={headRoomSize}>
         <div ref="pageHeader" className={ this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom" }>
-          <HeaderBar pathname={pathname} voter={this.state.voter} location={this.props.location}/>
+          <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
           { pathname.startsWith("/ballot") || pathname === "/bookmarks" ?
             <HeaderGettingStartedBar pathname={pathname} voter={this.state.voter}/> :
             null }

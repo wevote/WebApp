@@ -51,9 +51,11 @@ class VoterStore extends FluxMapStore {
         ballot_returned_we_vote_id: this.getState().address.ballot_returned_we_vote_id,
         polling_location_we_vote_id: "",
         ballot_location_order: 0,
-        ballot_location_display_name: "", // this.ballot_properties.ballot_location_display_name,
+        ballot_location_display_name: this.getState().address.ballot_location_display_name,
         ballot_location_shortcut: "",
         google_civic_election_id: this.getState().address.google_civic_election_id,
+        voter_entered_address: false, // Did the voter save an address?
+        voter_specific_ballot_from_google_civic: false, // Did this ballot come back for this specific address?
       };
     }
     return null;
