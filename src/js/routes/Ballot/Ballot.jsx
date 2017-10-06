@@ -11,12 +11,12 @@ import BallotItemReadyToVote from "../../components/Ballot/BallotItemReadyToVote
 import BallotIntroModal from "../../components/Ballot/BallotIntroModal";
 import BallotLocationChoices from "../../components/Navigation/BallotLocationChoices";
 import BallotSideBar from "../../components/Navigation/BallotSideBar";
+import BallotStatusMessage from "../../components/Ballot/BallotStatusMessage";
 import BallotStore from "../../stores/BallotStore";
 import BallotSummaryModal from "../../components/Ballot/BallotSummaryModal";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import EditAddress from "../../components/Widgets/EditAddress";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterGuideStore from "../../stores/VoterGuideStore";
+import ElectionStore from "../../stores/ElectionStore";
 import Helmet from "react-helmet";
 import LoadingWheel from "../../components/LoadingWheel";
 import MeasureModal from "../../components/Ballot/MeasureModal";
@@ -26,6 +26,8 @@ import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
+import VoterGuideActions from "../../actions/VoterGuideActions";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 
 
@@ -445,6 +447,22 @@ export default class Ballot extends Component {
 
     let in_ready_to_vote_mode = this.getFilterType() === "filterReadyToVote";
 
+    let voter_ballot_location = VoterStore.getBallotLocationForVoter();
+    let voter_entered_address = false;
+    let voter_specific_ballot_from_google_civic = false;
+    let ballot_location_display_name = "";
+    if (voter_ballot_location && voter_ballot_location.voter_entered_address) {
+      voter_entered_address = true;
+    }
+    if (voter_ballot_location && voter_ballot_location.voter_specific_ballot_from_google_civic) {
+      voter_specific_ballot_from_google_civic = true;
+    }
+    if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_location_display_name) {
+      ballot_location_display_name = BallotStore.ballot_properties.ballot_location_display_name;
+    } else if (voter_ballot_location && voter_ballot_location.ballot_location_display_name) {
+      ballot_location_display_name = voter_ballot_location.ballot_location_display_name;
+    }
+
     return <div className="ballot">
       { this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this._toggleBallotIntroModal} /> : null }
       { this.state.showMeasureModal ? <MeasureModal show={this.state.showMeasureModal} toggleFunction={this._toggleMeasureModal} measure={this.state.measure_for_modal}/> : null }
@@ -472,15 +490,43 @@ export default class Ballot extends Component {
                                                                             alt={"view your ballots"}/> : null}
                       </h1>
                       <span className="hidden-xs hidden-print pull-right ballot__header-address">
-                        <EditAddress address={voter_address_object} _toggleSelectAddressModal={this._toggleSelectAddressModal} />
+                        <EditAddress address={voter_address_object}
+                                     _toggleSelectAddressModal={this._toggleSelectAddressModal}
+                                     ballot_location_chosen
+                                     ballot_location_display_name={ballot_location_display_name}
+                                     election_day_text={ElectionStore.getElectionDayText(this.state.google_civic_election_id)}
+                                     election_is_upcoming={ElectionStore.isElectionIsUpcoming(this.state.google_civic_election_id)}
+                                     voter_entered_address={voter_entered_address}
+                                     google_civic_data_exists={ElectionStore.googleCivicDataExists(this.state.google_civic_election_id)}
+                                     voter_specific_ballot_from_google_civic={voter_specific_ballot_from_google_civic}
+                        />
                       </span>
                     </header> :
                   null }
                 <div className="visible-xs-block hidden-print ballot__header-address-xs">
-                  <EditAddress address={voter_address_object} _toggleSelectAddressModal={this._toggleSelectAddressModal} />
+                  <EditAddress address={voter_address_object}
+                               _toggleSelectAddressModal={this._toggleSelectAddressModal}
+                               ballot_location_chosen
+                               ballot_location_display_name={ballot_location_display_name}
+                               election_day_text={ElectionStore.getElectionDayText(this.state.google_civic_election_id)}
+                               election_is_upcoming={ElectionStore.isElectionIsUpcoming(this.state.google_civic_election_id)}
+                               voter_entered_address={voter_entered_address}
+                               google_civic_data_exists={ElectionStore.googleCivicDataExists(this.state.google_civic_election_id)}
+                               voter_specific_ballot_from_google_civic={voter_specific_ballot_from_google_civic} />
                 </div>
 
-                <BallotLocationChoices google_civic_election_id={this.state.google_civic_election_id} />
+                {this.state.ballot.length > 0 ?
+                  <div>
+                    <BallotLocationChoices google_civic_election_id={this.state.google_civic_election_id} />
+                    <BallotStatusMessage ballot_location_chosen
+                                         ballot_location_display_name={ballot_location_display_name}
+                                         election_day_text={ElectionStore.getElectionDayText(this.state.google_civic_election_id)}
+                                         election_is_upcoming={ElectionStore.isElectionIsUpcoming(this.state.google_civic_election_id)}
+                                         voter_entered_address={voter_entered_address}
+                                         google_civic_data_exists={ElectionStore.googleCivicDataExists(this.state.google_civic_election_id)}
+                                         voter_specific_ballot_from_google_civic={voter_specific_ballot_from_google_civic} />
+                  </div> :
+                  null }
 
                 { text_for_map_search ?
                   <div className="ballot__filter-container">

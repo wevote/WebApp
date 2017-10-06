@@ -83,6 +83,7 @@ export default class HeaderBar extends Component {
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
     this._onBallotStoreChange();
 
+    // this.props.location &&
     let we_vote_branding_off_from_url = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
     let we_vote_branding_off_from_cookie = cookies.getItem("we_vote_branding_off");
     this.setState({
