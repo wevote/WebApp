@@ -34,6 +34,11 @@ import Dispatcher from "../dispatcher/Dispatcher";
 // ACTION_ABOUT_MOBILE = 32
 // ACTION_OFFICE = 33
 // ACTION_CANDIDATE = 34
+// ACTION_FACEBOOK_AUTHENTICATION_EXISTS = 36
+// ACTION_GOOGLE_AUTHENTICATION_EXISTS = 37
+// ACTION_TWITTER_AUTHENTICATION_EXISTS = 38
+// ACTION_EMAIL_AUTHENTICATION_EXISTS = 39
+// ACTION_ELECTIONS = 40
 
 
 module.exports = {
@@ -106,6 +111,11 @@ module.exports = {
 
   saveActionDonateVisit: function (google_civic_election_id) {
     const action_constant = 25; // ACTION_DONATE_VISIT
+    this.saveActionWrapper(action_constant, google_civic_election_id);
+  },
+
+  saveActionElections: function (google_civic_election_id) {
+    const action_constant = 40; // ACTION_ELECTIONS
     this.saveActionWrapper(action_constant, google_civic_election_id);
   },
 

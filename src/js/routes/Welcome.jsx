@@ -446,23 +446,26 @@ export default class Intro extends Component {
 
 
               <ul className="footer-nav u-f4 list-unstyled list-inline u-stack--xl">
-                <li className="u-push--md u-stack--lg">
+                <li className="u-push--md u-stack--sm">
                   <Link to={"/more/about"}>About</Link>
                 </li>
-                  <li className="u-push--md u-stack--lg">
+                  <li className="u-push--md u-stack--sm">
                     <Link to={"/more/vision"}>Our Vision</Link>
                   </li>
-                <li className="u-push--md u-stack--lg">
+                <li className="u-push--md u-stack--sm">
                   <Link to={"/more/team"}>Our Team</Link>
                 </li>
-                <li className="u-push--md u-stack--lg">
+                <li className="u-push--md u-stack--sm">
                   <Link to={"/intro/sample_ballot"}>Get Started</Link>
                 </li>
-                <li className="u-push--md u-stack--lg">
+                <li className="u-push--md u-stack--sm">
                   <Link to={"/more/sign_in"}>Sign In</Link>
                 </li>
-                <li className="u-push--md u-stack--lg">
+                <li className="u-push--md u-stack--sm">
                   <Link to={"/more/tools"}>Tools For Your Website</Link>
+                </li>
+                <li className="u-push--md u-stack--sm">
+                  <Link to={"/more/elections"}>Supported Elections</Link>
                 </li>
               </ul>
             </span>

@@ -17,6 +17,7 @@ import Connect from "./routes/Connect";
 import Credits from "./routes/More/Credits";
 import Donate from "./routes/More/Donate";
 import DonateThankYou from "./routes/More/DonateThankYou";
+import Elections from "./routes/More/Elections";
 import EmailBallot from "./routes/More/EmailBallot";
 import EmptyBallot from "./routes/Ballot/EmptyBallot";
 import FacebookSignInProcess from "./routes/Process/FacebookSignInProcess";
@@ -56,7 +57,6 @@ import SignInEmailProcess from "./routes/Process/SignInEmailProcess";
 import Team from "./routes/More/Team";
 import TermsOfService from "./routes/More/TermsOfService";
 import ToolsToShareOnOtherWebsites from "./routes/More/ToolsToShareOnOtherWebsites";
-import MoreElections from "./routes/More/MoreElections";
 import TwitterSignInProcess from "./routes/Process/TwitterSignInProcess";
 import TwitterSignInProcessOld from "./routes/Process/TwitterSignInProcessOld";
 import VerifyEmailProcess from "./routes/Process/VerifyEmailProcess";
@@ -129,7 +129,7 @@ const routes = () =>
     <Route path="/more/credits" component={Credits} />
     <Route path="/more/donate" component={Donate} />
     <Route path="/more/donate_thank_you" component={DonateThankYou} />
-    <Route path="/more/elections" component={MoreElections} /> {/* More elections page */}
+    <Route path="/more/elections" component={Elections} />
     <Route path="/more/email_ballot" component={EmailBallot} />
     <Route path="/more/facebooklandingprocess" component={FacebookLandingProcess} />
     <Route path="/more/facebookredirecttowevote" component={FacebookRedirectToWeVote} />
