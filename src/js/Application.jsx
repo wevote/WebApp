@@ -167,8 +167,8 @@ export default class Application extends Component {
       pathname === "/intro" || pathname === "/issues_followed" || pathname === "/issues_to_follow" ||
       pathname.startsWith("/measure/") ||
       pathname === "/more/about" || pathname === "/more/connect" || pathname === "/more/credits" ||
-      pathname === "/more/donate" || pathname === "/more/donate_thank_you" || pathname === "/more/howtouse" ||
-      pathname.startsWith("/office/") ||
+      pathname === "/more/donate" || pathname === "/more/donate_thank_you" || pathname === "/more/elections" ||
+      pathname === "/more/howtouse" || pathname.startsWith("/office/") ||
       pathname === "/more/network" ||
       pathname === "/more/network/friends" || pathname === "/more/network/issues" || pathname === "/more/network/organizations" ||
       pathname === "/more/organization" ||
