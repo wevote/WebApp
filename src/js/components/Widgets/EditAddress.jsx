@@ -4,7 +4,7 @@ import EditAddressPopover from "./EditAddressPopover";
 export default class EditAddress extends Component {
   static propTypes = {
     address: PropTypes.object.isRequired,
-    _toggleSelectAddressModal: PropTypes.func.isRequired,
+    toggleSelectAddressModal: PropTypes.func.isRequired,
     ballot_location_chosen: PropTypes.bool.isRequired,
     ballot_location_display_name: PropTypes.string,
     election_day_text: PropTypes.string,
@@ -65,24 +65,24 @@ export default class EditAddress extends Component {
           { edit_address_popover_on ?
             <EditAddressPopover address={address}
                                 placement={"bottom"}
-                                onEnterAddressClick={this.props._toggleSelectAddressModal}
+                                onEnterAddressClick={this.props.toggleSelectAddressModal}
                                 ballot_location_chosen={this.state.ballot_location_chosen}
-                                 ballot_location_display_name={this.state.ballot_location_display_name}
-                                 election_day_text={this.state.election_day_text}
-                                 election_is_upcoming={this.state.election_is_upcoming}
-                                 voter_entered_address={this.state.voter_entered_address}
-                                 google_civic_data_exists={this.state.google_civic_data_exists}
-                                 voter_specific_ballot_from_google_civic={this.state.voter_specific_ballot_from_google_civic} /> :
+                                ballot_location_display_name={this.state.ballot_location_display_name}
+                                election_day_text={this.state.election_day_text}
+                                election_is_upcoming={this.state.election_is_upcoming}
+                                voter_entered_address={this.state.voter_entered_address}
+                                google_civic_data_exists={this.state.google_civic_data_exists}
+                                voter_specific_ballot_from_google_civic={this.state.voter_specific_ballot_from_google_civic} /> :
             <span>{ address }</span>
           }
-          <span className="hidden-print">(<a onClick={this.props._toggleSelectAddressModal}>Edit</a>)</span>
+          <span className="hidden-print">(<a onClick={this.props.toggleSelectAddressModal}>Edit</a>)</span>
         </span>
       );
     } else {
       return (
         <span className="ballot__date_location">
           In order to see your ballot, please enter your address.
-          <span className="hidden-print">&nbsp;(<a onClick={this.props._toggleSelectAddressModal}>Add Your Address</a>)</span>
+          <span className="hidden-print">&nbsp;(<a onClick={this.props.toggleSelectAddressModal}>Add Your Address</a>)</span>
         </span>
       );
     }

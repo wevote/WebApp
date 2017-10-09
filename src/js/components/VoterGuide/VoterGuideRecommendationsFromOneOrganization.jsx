@@ -18,7 +18,7 @@ export default class VoterGuideRecommendationsFromOneOrganization extends Compon
   }
 
   componentDidMount () {
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.setState({
       organization_we_vote_id: this.props.organization_we_vote_id,
       voter_guides_to_follow_organization_recommendation_all_elections: VoterGuideStore.getVoterGuidesFollowedByOrganization(this.props.organization_we_vote_id),
@@ -35,7 +35,7 @@ export default class VoterGuideRecommendationsFromOneOrganization extends Compon
     });
   }
 
-  _onVoterGuideStoreChange () {
+  onVoterGuideStoreChange () {
     this.setState({
       voter_guides_to_follow_organization_recommendation_all_elections: VoterGuideStore.getVoterGuidesFollowedByOrganization(this.state.organization_we_vote_id),
       voter_guides_to_follow_organization_recommendation_this_election: VoterGuideStore.getVoterGuidesToFollowByOrganizationRecommendation(this.state.organization_we_vote_id),

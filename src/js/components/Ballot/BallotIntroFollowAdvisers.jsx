@@ -36,15 +36,15 @@ export default class BallotIntroFollowAdvisers extends Component {
     let search_string = "";
     let add_voter_guides_not_from_election = true;
     VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voter_guides_not_from_election);
-    this._onVoterGuideStoreChange();
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
+    this.onVoterGuideStoreChange();
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     this.voterGuideStoreListener.remove();
   }
 
-  _onVoterGuideStoreChange () {
+  onVoterGuideStoreChange () {
     // update followed_organizations only for first time, subsequent updates will be made locally
     if (!this.state.followed_organizations.length) {
       this.setState({

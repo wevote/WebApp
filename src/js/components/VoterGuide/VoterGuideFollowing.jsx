@@ -31,7 +31,7 @@ export default class VoterGuideFollowing extends Component {
     OrganizationActions.organizationsFollowedRetrieve();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.organization.organization_we_vote_id);
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.setState({
       organization: this.props.organization,
       voter: VoterStore.getVoter(),
@@ -61,7 +61,7 @@ export default class VoterGuideFollowing extends Component {
       voter: VoterStore.getVoter()});
    }
 
-  _onVoterGuideStoreChange (){
+  onVoterGuideStoreChange (){
     this.setState({
       voter_guide_followed_list: VoterGuideStore.getVoterGuidesFollowedByOrganization(this.state.organization.organization_we_vote_id)
     });

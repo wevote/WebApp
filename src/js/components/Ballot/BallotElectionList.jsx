@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from "react";
+import { browserHistory } from "react-router";
+import BallotActions from "../../actions/BallotActions";
 import VoterActions from "../../actions/VoterActions";
 import { cleanArray } from "../../utils/textFormat";
 import moment from "moment";
@@ -9,7 +11,7 @@ export default class BallotElectionList extends Component {
 
   static propTypes = {
     ballotElectionList: PropTypes.array.isRequired,
-    toggleFunction: PropTypes.func.isRequired,
+    toggleFunction: PropTypes.func,
   };
 
   constructor (props) {
@@ -17,28 +19,40 @@ export default class BallotElectionList extends Component {
     this.state = {};
   }
 
-  updateBallot (originalTextForMapSearch, simple_save, googleCivicElectionId) {
-    // console.log("BallotElectionList.jsx updateBallot, googleCivicElectionId: ", googleCivicElectionId);
-    VoterActions.voterAddressSave(originalTextForMapSearch, simple_save, googleCivicElectionId);
-    // Not necessary here: BallotActions.voterBallotItemsRetrieve(googleCivicElectionId);
-    this.props.toggleFunction();
+  goToDifferentElection (ballot_location_shortcut, ballot_returned_we_vote_id, googleCivicElectionId, originalTextForMapSearch = "") {
+    console.log("BallotElectionList.jsx goToDifferentElection, googleCivicElectionId: ", googleCivicElectionId, ", originalTextForMapSearch: ", originalTextForMapSearch);
+    if (ballot_location_shortcut && ballot_location_shortcut !== "") {
+      browserHistory.push("/ballot/" + ballot_location_shortcut);
+    } else if (ballot_returned_we_vote_id && ballot_returned_we_vote_id !== "") {
+      browserHistory.push("/ballot/id/" + ballot_returned_we_vote_id);
+    } else if (originalTextForMapSearch && originalTextForMapSearch !== "") {
+      // Do we still want to be updating addresses? Maybe instead just update google_civic_election_id?
+      let simple_save = false;
+      VoterActions.voterAddressSave(originalTextForMapSearch, simple_save, googleCivicElectionId);
+      browserHistory.push("/ballot");
+    } else if (googleCivicElectionId && googleCivicElectionId !== 0) {
+      BallotActions.voterBallotItemsRetrieve(googleCivicElectionId);
+      browserHistory.push("/ballot");
+    }
+    if (this.props.toggleFunction) {
+      this.props.toggleFunction();
+    }
   }
 
   render () {
     // console.log("BallotElectionList, this.props.ballotElectionList", this.props.ballotElectionList);
     let currentDate = moment().format("YYYY-MM-DD");
-    let simple_save = false;
     let upcomingElectionList = this.props.ballotElectionList.map((item, index) =>
-      item.election_date > currentDate ?
+      item.election_day_text > currentDate ?
       <div key={index}>
         <dl className="list-unstyled text-center">
           <button type="button" className="btn btn-success ballot-election-list__button"
-                  onClick={this.updateBallot.bind(this, item.original_text_for_map_search, simple_save, item.google_civic_election_id)}>
+                  onClick={this.goToDifferentElection.bind(this, item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search)}>
             { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ?
               <span>{item.election_description_text}&nbsp;<img src={"/img/global/icons/Circle-Arrow.png"}/></span> :
               <span>{item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}...&nbsp;<img src={"/img/global/icons/Circle-Arrow.png"}/></span>
             }
-            <div className="ballot-election-list__h2">{moment(item.election_date).format("MMMM Do, YYYY")}</div>
+            <div className="ballot-election-list__h2">{moment(item.election_day_text).format("MMMM Do, YYYY")}</div>
           </button>
         </dl>
       </div> :
@@ -47,17 +61,17 @@ export default class BallotElectionList extends Component {
     upcomingElectionList = cleanArray(upcomingElectionList);
 
     let priorElectionList = this.props.ballotElectionList.map((item, index) =>
-      item.election_date > currentDate ?
+      item.election_day_text > currentDate ?
       null :
       <div key={index}>
         <dl className="list-unstyled text-center">
           <button type="button" className="btn btn-success ballot-election-list__button"
-                  onClick={this.updateBallot.bind(this, item.original_text_for_map_search, simple_save, item.google_civic_election_id)}>
+                  onClick={this.goToDifferentElection.bind(this, item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search)}>
             { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ?
               <span>{item.election_description_text}&nbsp;<img src={"/img/global/icons/Circle-Arrow.png"}/></span> :
               <span>{item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}...&nbsp;<img src={"/img/global/icons/Circle-Arrow.png"}/></span>
             }
-            <div className="ballot-election-list__h2">{moment(item.election_date).format("MMMM Do, YYYY")}</div>
+            <div className="ballot-election-list__h2">{moment(item.election_day_text).format("MMMM Do, YYYY")}</div>
           </button>
         </dl>
       </div>

@@ -22,7 +22,7 @@ export default class FollowToggle extends Component {
 
   componentDidMount (){
     // We need the voterGuideStoreListener until we take the follow functions out of OrganizationActions and VoterGuideStore
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
     this._onOrganizationStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
@@ -35,8 +35,8 @@ export default class FollowToggle extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onVoterGuideStoreChange (){
-    // console.log("FollowToggle, _onVoterGuideStoreChange, organization_we_vote_id: ", this.props.we_vote_id);
+  onVoterGuideStoreChange (){
+    // console.log("FollowToggle, onVoterGuideStoreChange, organization_we_vote_id: ", this.props.we_vote_id);
     this.setState({ is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.we_vote_id)});
   }
 

@@ -22,7 +22,7 @@ export default class OpinionsIgnored extends Component {
 
   componentDidMount () {
     this.setState({ voter_guide_ignored_list: VoterGuideStore.getVoterGuidesVoterIsIgnoring() });
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     VoterGuideActions.voterGuidesIgnoredRetrieve();
   }
 
@@ -30,7 +30,7 @@ export default class OpinionsIgnored extends Component {
     this.voterGuideStoreListener.remove();
   }
 
-  _onVoterGuideStoreChange (){
+  onVoterGuideStoreChange (){
     var list = VoterGuideStore.getVoterGuidesVoterIsIgnoring();
 
     if (list !== undefined && list.length > 0){

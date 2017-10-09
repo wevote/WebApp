@@ -27,7 +27,7 @@ export default class OrganizationVoterGuideTabs extends Component {
 
   componentDidMount () {
     // console.log("OrganizationVoterGuideTabs, componentDidMount, organization: ", this.props.organization);
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     OrganizationActions.organizationsFollowedRetrieve();
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.organization.organization_we_vote_id);
@@ -60,8 +60,8 @@ export default class OrganizationVoterGuideTabs extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onVoterGuideStoreChange () {
-    // console.log("OrganizationVoterGuideTabs, _onVoterGuideStoreChange, organization: ", this.state.organization);
+  onVoterGuideStoreChange () {
+    // console.log("OrganizationVoterGuideTabs, onVoterGuideStoreChange, organization: ", this.state.organization);
     this.setState({
       voter_guide_followed_list: VoterGuideStore.getVoterGuidesFollowedByOrganization(this.state.organization.organization_we_vote_id),
       voter_guide_followers_list: VoterGuideStore.getVoterGuidesFollowingOrganization(this.state.organization.organization_we_vote_id),

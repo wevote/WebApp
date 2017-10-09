@@ -25,10 +25,10 @@ export default class Opinions extends Component {
   }
 
   componentDidMount () {
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
   }
 
-  _onVoterGuideStoreChange () {
+  onVoterGuideStoreChange () {
     this.setState({
       ballot_has_guides: VoterGuideStore.ballotHasGuides(),
       text_for_map_search: VoterStore.getTextForMapSearch(),

@@ -18,15 +18,15 @@ export default class BallotSideBar extends Component {
   }
 
   componentDidMount () {
-    this._onBallotStoreChange();
-    this.ballotStoreListener = BallotStore.addListener(this._onBallotStoreChange.bind(this));
+    this.onBallotStoreChange();
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     this.ballotStoreListener.remove();
   }
 
-  _onBallotStoreChange () {
+  onBallotStoreChange () {
     let unsorted = BallotStore.ballot;
     this.setState({ballot: this._sortBallots(unsorted)});
   }

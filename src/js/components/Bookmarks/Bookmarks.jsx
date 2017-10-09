@@ -21,23 +21,23 @@ export default class Bookmarks extends Component {
       showSelectAddressModal: false,
     };
 
-    this._toggleSelectAddressModal = this._toggleSelectAddressModal.bind(this);
+    this.toggleSelectAddressModal = this.toggleSelectAddressModal.bind(this);
   }
 
   componentDidMount () {
-    this.ballotStoreListener = BallotStore.addListener(this._onBallotStoreChange.bind(this));
-    this._onBallotStoreChange();
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    this.onBallotStoreChange();
   }
 
   componentWillUnmount () {
     this.ballotStoreListener.remove();
   }
 
-  _onBallotStoreChange () {
+  onBallotStoreChange () {
     this.setState({ bookmarks: BallotStore.bookmarks });
   }
 
-  _toggleSelectAddressModal () {
+  toggleSelectAddressModal () {
     // Clear out any # from anchors in the URL
     if (!this.state.showSelectAddressModal)
       browserHistory.push("/bookmarks");
@@ -50,13 +50,13 @@ export default class Bookmarks extends Component {
       return LoadingWheel;
     }
     const election_name = BallotStore.currentBallotElectionName;
-    const election_date = BallotStore.currentBallotElectionDate;
-    const electionTooltip = election_date ? <Tooltip id="tooltip">Ballot for {election_date}</Tooltip> : <span />;
+    const election_day_text = BallotStore.currentBallotElectionDate;
+    const electionTooltip = election_day_text ? <Tooltip id="tooltip">Ballot for {election_day_text}</Tooltip> : <span />;
     let voter_address_object = VoterStore.getAddressObject();
 
     return <div className="ballot">
       { this.state.showSelectAddressModal ? <SelectAddressModal show={this.state.showSelectAddressModal}
-                                                                toggleFunction={this._toggleSelectAddressModal} /> : null }
+                                                                toggleFunction={this.toggleSelectAddressModal} /> : null }
       <div className="ballot__heading">
         <div className="page-content-container">
           <div className="container-fluid">
@@ -69,12 +69,12 @@ export default class Bookmarks extends Component {
                       <span className="u-push--sm">{election_name}</span>
                     </h1>
                     <span className="hidden-xs hidden-print pull-right ballot__header-address">
-                      <EditAddress address={voter_address_object} _toggleSelectAddressModal={this._toggleSelectAddressModal} />
+                      <EditAddress address={voter_address_object} toggleSelectAddressModal={this.toggleSelectAddressModal} />
                     </span>
                   </header>
                 </OverlayTrigger>
                 <div className="visible-xs-block hidden-print ballot__header-address-xs">
-                  <EditAddress address={voter_address_object} _toggleSelectAddressModal={this._toggleSelectAddressModal} />
+                  <EditAddress address={voter_address_object} toggleSelectAddressModal={this.toggleSelectAddressModal} />
                 </div>
                 <div className="ballot__filter-container">
                   <div className="ballot__filter hidden-print">
