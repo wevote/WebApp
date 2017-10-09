@@ -9,7 +9,7 @@ import BallotStore from "../stores/BallotStore";
 
 export default class AddressBox extends Component {
   static propTypes = {
-    _toggleSelectAddressModal: PropTypes.func,
+    toggleSelectAddressModal: PropTypes.func,
     saveUrl: PropTypes.string.isRequired
   };
 
@@ -32,7 +32,7 @@ export default class AddressBox extends Component {
       ballotCaveat: BallotStore.getBallotCaveat()
     });
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    this.ballotStoreListener = BallotStore.addListener(this._onBallotStoreChange.bind(this));
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     let addressAutocomplete = new google.maps.places.Autocomplete(this.refs.autocomplete);
     addressAutocomplete.setComponentRestrictions({country: "us"});
     this.googleAutocompleteListener = addressAutocomplete.addListener("place_changed", this._placeChanged.bind(this, addressAutocomplete));
@@ -45,8 +45,8 @@ export default class AddressBox extends Component {
   }
 
   _onVoterStoreChange () {
-    if (this.props._toggleSelectAddressModal){
-       this.props._toggleSelectAddressModal();
+    if (this.props.toggleSelectAddressModal){
+       this.props.toggleSelectAddressModal();
      }
     if (this.state.text_for_map_search){
       browserHistory.push(this.props.saveUrl);
@@ -58,7 +58,7 @@ export default class AddressBox extends Component {
     }
   }
 
-  _onBallotStoreChange () {
+  onBallotStoreChange () {
       this.setState({ ballotCaveat: BallotStore.getBallotCaveat() });
   }
 

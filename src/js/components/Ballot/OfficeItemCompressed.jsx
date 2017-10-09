@@ -22,7 +22,7 @@ export default class OfficeItemCompressed extends Component {
     ballot_item_display_name: PropTypes.string.isRequired,
     link_to_ballot_item_page: PropTypes.bool,
     candidate_list: PropTypes.array,
-    _toggleCandidateModal: PropTypes.func,
+    toggleCandidateModal: PropTypes.func,
   };
 
   constructor (props) {
@@ -38,8 +38,8 @@ export default class OfficeItemCompressed extends Component {
   }
 
   componentDidMount () {
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
-    this._onVoterGuideStoreChange();
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+    this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
   }
 
@@ -48,7 +48,7 @@ export default class OfficeItemCompressed extends Component {
     this.supportStoreListener.remove();
   }
 
-  _onVoterGuideStoreChange () {
+  onVoterGuideStoreChange () {
     this.setState({ transitioning: false });
   }
 
@@ -137,7 +137,7 @@ export default class OfficeItemCompressed extends Component {
                 <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
                   {/* Positions in Your Network */}
                   <div className={ this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null }
-                       onClick={ this.props.link_to_ballot_item_page ? () => this.props._toggleCandidateModal(one_candidate) : null }>
+                       onClick={ this.props.link_to_ballot_item_page ? () => this.props.toggleCandidateModal(one_candidate) : null }>
                     <ItemSupportOpposeCounts we_vote_id={candidate_we_vote_id}
                                              supportProps={candidateSupportStore}
                                              guideProps={candidateGuidesList}

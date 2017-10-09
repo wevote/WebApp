@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import Helmet from "react-helmet";
+import { Link } from "react-router";
 import moment from "moment";
 import AnalyticsActions from "../../actions/AnalyticsActions";
+import BallotElectionList from "../../components/Ballot/BallotElectionList";
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
 import VoterStore from "../../stores/VoterStore";
@@ -10,7 +12,8 @@ export default class Elections extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      elections_locations_list: []
+      elections_locations_list: [],
+      voter_ballot_list: []
     };
   }
 
@@ -19,25 +22,50 @@ export default class Elections extends Component {
   }
 
   componentDidMount(){
-    this.electionListListener = ElectionStore.addListener(this._onElectionStoreChange.bind(this));
+    this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
     ElectionActions.electionsRetrieve();
     AnalyticsActions.saveActionElections(VoterStore.election_id());
   }
 
-  _onElectionStoreChange(){
-    // quick and messy version of this will look for better way if one exists already
-    var elections_list = ElectionStore.getElectionList();
-    var elections_locations_list = [];
-    var ballot_locations = [];
+  onElectionStoreChange(){
+    let ballot_locations = [];
+    let elections_list = ElectionStore.getElectionList();
+    let elections_locations_list = [];
+    let voter_ballot; // A different format for much of the same data
+    let voter_ballot_list = [];
+    let one_ballot_location;
+    let ballot_location_shortcut;
+    let ballot_returned_we_vote_id;
 
     for (var i = 0; i < elections_list.length; i++){
       var election = elections_list[i];
       ballot_locations = ElectionStore.getBallotLocationsForElection(election.google_civic_election_id);
       election.ballot_locations = ballot_locations;
       elections_locations_list.push(election);
+      ballot_returned_we_vote_id = "";
+      ballot_location_shortcut = "";
+      console.log("Elections, onElectionStoreChange, ballot_locations: ", ballot_locations);
+      if (ballot_locations && ballot_locations.length) {
+        one_ballot_location = ballot_locations.pop();
+        ballot_location_shortcut = one_ballot_location.ballot_location_shortcut;
+        ballot_returned_we_vote_id = one_ballot_location.ballot_returned_we_vote_id;
+      }
+      voter_ballot = {
+        google_civic_election_id: election.google_civic_election_id,
+        election_description_text: election.election_name,
+        election_day_text: election.election_day_text,
+        original_text_for_map_search: "",
+        ballot_location_shortcut: ballot_location_shortcut,
+        ballot_returned_we_vote_id: ballot_returned_we_vote_id,
+      };
+      voter_ballot_list.push(voter_ballot);
     }
+    console.log("Elections, onElectionStoreChange, voter_ballot_list: ", voter_ballot_list);
 
-    this.setState({ elections_locations_list: elections_locations_list });
+    this.setState({
+      elections_locations_list: elections_locations_list,
+      voter_ballot_list: voter_ballot_list,
+    });
   }
 
   componentWillUnmount(){
@@ -49,20 +77,7 @@ export default class Elections extends Component {
         <Helmet title="Elections - We Vote" />
       <h1 className="h1">Supported Elections</h1>
         <div className="elections-list-container">
-          <ul>
-          {this.state.elections_locations_list.map((election) => {
-            return <li key={election.google_civic_election_id}>
-              {election.election_name}, {moment(election.election_day_text).format("MMMM Do, YYYY")}
-              <ul>
-              {election.ballot_locations.map((location) => {
-                return <li key={location.ballot_returned_we_vote_id}>
-                  <a href={"/ballot/" + location.ballot_location_shortcut}>{location.ballot_location_display_name}, {location.text_for_map_search}</a>
-                </li>;
-              })}
-              </ul>
-            </li>;
-          })}
-          </ul>
+          <BallotElectionList ballotElectionList={this.state.voter_ballot_list} />
         </div>
       </div>;
   }

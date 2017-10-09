@@ -60,16 +60,21 @@ export default class BallotLocationChoices extends Component {
     let voter_ballot_location = VoterStore.getBallotLocationForVoter();
     if (voter_ballot_location && voter_ballot_location.ballot_returned_we_vote_id) {
       let voter_ballot_location_in_list = false;
-      ballot_location_list_sorted.map( (ballot_location) => {
-        if (ballot_location.ballot_returned_we_vote_id === voter_ballot_location.ballot_returned_we_vote_id) {
-          voter_ballot_location_in_list = true;
-        }
-      });
+      // If the election in the voter_ballot_location matches the election we are looking at,
+      // include the voter's displayed address
+      // console.log("retrieveBallotLocationList, google_civic_election_id: ", google_civic_election_id, ", voter_ballot_location: ", voter_ballot_location);
+      if (voter_ballot_location.google_civic_election_id === google_civic_election_id) {
+        ballot_location_list_sorted.map((ballot_location) => {
+          if (ballot_location.ballot_returned_we_vote_id === voter_ballot_location.ballot_returned_we_vote_id) {
+            voter_ballot_location_in_list = true;
+          }
+        });
 
-      if (!voter_ballot_location_in_list) {
-        // The this ballot isn't already in the list, add it to the start
-        ballot_location_list_sorted.unshift(voter_ballot_location); // Add to the start of the array
-        // console.log("Added to start of ballot_location_list_sorted: ", voter_ballot_location);
+        if (!voter_ballot_location_in_list) {
+          // The this ballot isn't already in the list, add it to the start
+          ballot_location_list_sorted.unshift(voter_ballot_location); // Add to the start of the array
+          // console.log("Added to start of ballot_location_list_sorted: ", voter_ballot_location);
+        }
       }
     }
     return ballot_location_list_sorted;
@@ -131,10 +136,13 @@ export default class BallotLocationChoices extends Component {
                 }
               }
             }
-            if (ballot_location.ballot_location_display_name !== "") {
+            console.log("ballot_location");
+            if (ballot_location.ballot_location_display_name && ballot_location.ballot_location_display_name !== "") {
               ballot_location_display_name = ballot_location.ballot_location_display_name;
             } else if (ballot_location.text_for_map_search !== "") {
               ballot_location_display_name = ballot_location.text_for_map_search;
+            } else {
+              ballot_location_display_name = "My Address";
             }
             return <span key={key} className="u-push--md">
               <Button bsStyle={ballot_location_shortcut_matches || ballot_returned_we_vote_id_matches ? "info" : "default"}

@@ -43,8 +43,8 @@ export default class CandidateItem extends Component {
   }
 
   componentDidMount () {
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
-    this._onVoterGuideStoreChange();
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+    this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
     var supportProps = SupportStore.get(this.props.we_vote_id);
     if (supportProps !== undefined) {
@@ -57,7 +57,7 @@ export default class CandidateItem extends Component {
     this.supportStoreListener.remove();
   }
 
-  _onVoterGuideStoreChange (){
+  onVoterGuideStoreChange (){
     // We just want to trigger a re-render
     this.setState({ transitioning: false });
   }

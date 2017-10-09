@@ -20,7 +20,7 @@ export default class MeasureItemCompressed extends Component {
     ballot_item_display_name: PropTypes.string.isRequired,
     link_to_ballot_item_page: PropTypes.bool,
     measure_url: PropTypes.string,
-    _toggleMeasureModal: PropTypes.func,
+    toggleMeasureModal: PropTypes.func,
   };
 
   constructor (props) {
@@ -33,8 +33,8 @@ export default class MeasureItemCompressed extends Component {
   }
 
   componentDidMount () {
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
-    this._onVoterGuideStoreChange();
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+    this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
   }
@@ -44,10 +44,10 @@ export default class MeasureItemCompressed extends Component {
     this.supportStoreListener.remove();
   }
 
-  _onVoterGuideStoreChange () {
+  onVoterGuideStoreChange () {
     // We just want to trigger a re-render
     this.setState({ transitioning: false });
-    // console.log("_onVoterGuideStoreChange");
+    // console.log("onVoterGuideStoreChange");
   }
 
   _onSupportStoreChange () {
@@ -117,7 +117,7 @@ export default class MeasureItemCompressed extends Component {
         <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
           {/* Positions in Your Network */}
           <div className={ this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null }
-               onClick={ this.props.link_to_ballot_item_page ? () => this.props._toggleMeasureModal(measure_for_modal) : null }>
+               onClick={ this.props.link_to_ballot_item_page ? () => this.props.toggleMeasureModal(measure_for_modal) : null }>
             <ItemSupportOpposeCounts we_vote_id={we_vote_id}
                                      supportProps={this.state.supportProps}
                                      guideProps={measureGuidesList}
@@ -125,7 +125,7 @@ export default class MeasureItemCompressed extends Component {
           </div>
 
           {/* Possible Voter Guides to Follow (Desktop) */}
-          <div onClick={ this.props.link_to_ballot_item_page ? () => this.props._toggleMeasureModal(measure_for_modal) : null }>
+          <div onClick={ this.props.link_to_ballot_item_page ? () => this.props.toggleMeasureModal(measure_for_modal) : null }>
             { measureGuidesList && measureGuidesList.length ?
               <ItemTinyOpinionsToFollow ballotItemWeVoteId={we_vote_id}
                                         organizationsToFollow={measureGuidesList}

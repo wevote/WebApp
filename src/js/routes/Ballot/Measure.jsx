@@ -37,7 +37,7 @@ export default class Measure extends Component {
 
     MeasureActions.retrieve(measure_we_vote_id);
 
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(measure_we_vote_id, "MEASURE");
 
     // Make sure supportProps exist for this Measure when browser comes straight to measure page
@@ -65,7 +65,7 @@ export default class Measure extends Component {
     this.voterGuideStoreListener.remove();
   }
 
-  _onVoterGuideStoreChange (){
+  onVoterGuideStoreChange (){
     // Eventually we could use this getVoterGuidesToFollowForBallotItemId with measure_we_vote_id, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
     this.setState({ voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem() });

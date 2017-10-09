@@ -38,7 +38,7 @@ export default class Connect extends Component {
     if (this.state.organizations_followed_on_twitter_list) {
       OrganizationActions.organizationsFollowedRetrieve();
     }
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
 
     if (this.state.current_friends_list) {
       FriendActions.currentFriends();
@@ -59,7 +59,7 @@ export default class Connect extends Component {
     });
   }
 
-  _onVoterGuideStoreChange (){
+  onVoterGuideStoreChange (){
     var organizations_followed_on_twitter_list = OrganizationStore.getOrganizationsFollowedByVoterOnTwitter();
     var voter_guides_to_follow_all = VoterGuideStore.getVoterGuidesToFollowAll();
     if (organizations_followed_on_twitter_list !== undefined && organizations_followed_on_twitter_list.length > 0){

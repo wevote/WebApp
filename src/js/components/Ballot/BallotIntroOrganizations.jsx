@@ -28,18 +28,18 @@ export default class BallotIntroFollowAdvisers extends Component {
 
   componentDidMount () {
     VoterGuideActions.voterGuidesToFollowRetrieveByIssuesFollowed();
-    this._onVoterGuideStoreChange();
+    this.onVoterGuideStoreChange();
     this.onOrganizationFollow = this.onOrganizationFollow.bind(this);
     this.onOrganizationStopFollowing = this.onOrganizationStopFollowing.bind(this);
     this.onNext = this.onNext.bind(this);
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     this.voterGuideStoreListener.remove();
   }
 
-  _onVoterGuideStoreChange () {
+  onVoterGuideStoreChange () {
     this.setState({ voter_guides_to_follow_by_issues_followed: VoterGuideStore.getVoterGuidesToFollowByIssuesFollowed() });
   }
 

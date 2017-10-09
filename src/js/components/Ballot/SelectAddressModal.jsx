@@ -21,7 +21,7 @@ export default class SelectAddressModal extends Component {
         <Modal.Title className="ballot-election-list__h1">Enter address where you are registered to vote</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <AddressBox saveUrl={"/ballot"} _toggleSelectAddressModal={this.props.toggleFunction} />
+        <AddressBox saveUrl={"/ballot"} toggleSelectAddressModal={this.props.toggleFunction} />
         <br/>
         <br/>
       </Modal.Body>

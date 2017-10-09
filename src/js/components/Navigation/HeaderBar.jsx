@@ -78,10 +78,10 @@ export default class HeaderBar extends Component {
   }
 
   componentDidMount () {
-    this.ballotStoreListener = BallotStore.addListener(this._onBallotStoreChange.bind(this));
-    this.bookmarkStoreListener = BookmarkStore.addListener(this._onBallotStoreChange.bind(this));
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    this.bookmarkStoreListener = BookmarkStore.addListener(this.onBallotStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
-    this._onBallotStoreChange();
+    this.onBallotStoreChange();
 
     // this.props.location &&
     let we_vote_branding_off_from_url = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
@@ -97,7 +97,7 @@ export default class HeaderBar extends Component {
     this.friendStoreListener.remove();
   }
 
-  _onBallotStoreChange (){
+  onBallotStoreChange (){
     this.setState({bookmarks: BallotStore.bookmarks });
   }
 

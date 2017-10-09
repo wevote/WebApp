@@ -51,7 +51,7 @@ class BallotStore extends FluxMapStore {
   get currentBallotElectionDate () {
     if (!this.isLoaded()){ return undefined; }
     let civicId = VoterStore.election_id();
-    return this.getState().ballots[civicId].election_date;
+    return this.getState().ballots[civicId].election_day_text;
   }
 
   get currentBallotPollingLocationSource () {
@@ -154,7 +154,7 @@ class BallotStore extends FluxMapStore {
         return state;
 
       case "voterBallotItemsRetrieve":
-        // console.log("BallotStore, voterBallotItemsRetrieve response received.");
+        console.log("BallotStore, voterBallotItemsRetrieve response received.");
         key = action.res.google_civic_election_id;
         newBallot[key] = action.res;
 

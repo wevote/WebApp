@@ -39,7 +39,7 @@ export default class Candidate extends Component {
     CandidateActions.retrieve(candidate_we_vote_id);
 
     // Get the latest guides to follow for this candidate
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidate_we_vote_id, "CANDIDATE");
 
     // Make sure supportProps exist for this Candidate when browser comes straight to candidate page
@@ -76,7 +76,7 @@ export default class Candidate extends Component {
     this.setState({ candidate: candidate });
   }
 
-  _onVoterGuideStoreChange (){
+  onVoterGuideStoreChange (){
     let { candidate_we_vote_id } = this.state;
     // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidate_we_vote_id, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow

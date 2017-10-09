@@ -24,6 +24,7 @@ class VoterStore extends FluxMapStore {
       facebook_sign_in_status: {},
       voter_found: false,
       voter_donation_history_list: {},
+      latest_google_civic_election_id: 0,
     };
   }
 
@@ -32,7 +33,7 @@ class VoterStore extends FluxMapStore {
   }
 
   election_id (){
-    return this.getState().address.google_civic_election_id;
+    return this.getState().latest_google_civic_election_id;
   }
 
   getTextForMapSearch (){
@@ -273,6 +274,13 @@ class VoterStore extends FluxMapStore {
             }
           };
         }
+
+      case "voterBallotItemsRetrieve":
+        console.log("VoterStore latest_google_civic_election_id: ", action.res.google_civic_election_id);
+        return {
+          ...state,
+          latest_google_civic_election_id: action.res.google_civic_election_id,
+        };
 
       case "voterEmailAddressRetrieve":
         return {

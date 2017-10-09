@@ -23,8 +23,8 @@ export default class MeasureItemReadyToVote extends Component {
   }
 
   componentDidMount () {
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
-    this._onVoterGuideStoreChange();
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+    this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
   }
@@ -34,10 +34,10 @@ export default class MeasureItemReadyToVote extends Component {
     this.supportStoreListener.remove();
   }
 
-  _onVoterGuideStoreChange (){
+  onVoterGuideStoreChange (){
     // We just want to trigger a re-render
     this.setState({ transitioning: false });
-    // console.log("_onVoterGuideStoreChange");
+    // console.log("onVoterGuideStoreChange");
   }
 
   _onSupportStoreChange () {
