@@ -109,7 +109,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
 
       if (local_counter > this.state.maximum_organization_display) {
         if (local_counter === this.state.maximum_organization_display + 1) {
-          // If here we want to show how many organizations there are to follow
+          // If here, we want to show how many organizations there are to follow
           this.popover_state[orgs_not_shown_count] = {show: false, timer: null};
           let organizationPopover = <Popover
               id={`organization-popover-${orgs_not_shown_count}`}
@@ -138,6 +138,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
         }
       } else {
         one_organization_for_organization_card = {
+            organization_we_vote_id: one_organization.organization_we_vote_id,
             organization_name: one_organization.voter_guide_display_name,
             organization_photo_url_large: one_organization.voter_guide_image_url_large,
             organization_photo_url_tiny: one_organization.voter_guide_image_url_tiny,
@@ -159,7 +160,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
             onMouseOut={() => this.onTriggerLeave(org_id)}
             className="card-popover">
             <FollowToggle we_vote_id={one_organization.organization_we_vote_id} />
-            <OrganizationCard organization={one_organization_for_organization_card} />
+            <OrganizationCard organization={one_organization_for_organization_card} ballotItemWeVoteId={this.state.ballot_item_we_vote_id} />
           </Popover>;
 
         return <OverlayTrigger

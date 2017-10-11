@@ -88,7 +88,10 @@ export default class CandidateItem extends Component {
     const { supportProps, transitioning } = this.state;
 
     // TwitterHandle-based link
-    let candidateLink = twitter_handle ? "/" + twitter_handle : "/candidate/" + we_vote_id;
+    // TODO switch back to Twitter-based url once we fix the bug where we aren't routed to the
+    // candidate page for this election
+    // let candidateLink = twitter_handle ? "/" + twitter_handle : "/candidate/" + we_vote_id;
+    let candidateLink = "/candidate/" + we_vote_id;
     let goToCandidateLink = function () { browserHistory.push(candidateLink); };
     let candidate_photo_url;
     if (this.props.showLargeImage) {

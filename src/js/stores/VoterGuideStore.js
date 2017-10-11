@@ -48,6 +48,10 @@ class VoterGuideStore extends FluxMapStore {
     return this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_to_follow_for_latest_ballot_item) || [];
   }
 
+  getVoterGuideForOrganizationId (organization_we_vote_id) {
+    return this.getState().all_cached_voter_guides[organization_we_vote_id] || [];
+  }
+
   getVoterGuidesToFollowForBallotItemId (ballot_item_we_vote_id) {
     return this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_to_follow_ballot_items_dict[ballot_item_we_vote_id]) || [];
   }

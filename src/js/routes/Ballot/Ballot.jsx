@@ -73,7 +73,7 @@ export default class Ballot extends Component {
   }
 
   componentDidMount () {
-    console.log("Ballot componentDidMount");
+    // console.log("Ballot componentDidMount");
     let hide_intro_modal_from_url = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
     let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal") || 0;
     let wait_until_voter_sign_in_completes = this.props.location.query ? this.props.location.query.wait_until_voter_sign_in_completes : 0;
@@ -138,7 +138,7 @@ export default class Ballot extends Component {
   }
 
   componentWillUnmount (){
-    console.log("Ballot componentWillUnmount");
+    // console.log("Ballot componentWillUnmount");
     this.setState({mounted: false});
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){
       // No ballot found
@@ -151,7 +151,7 @@ export default class Ballot extends Component {
   }
 
   componentWillReceiveProps (nextProps){
-    console.log("Ballot componentWillReceiveProps");
+    // console.log("Ballot componentWillReceiveProps");
     let ballot_type = nextProps.location.query ? nextProps.location.query.type : "all";
 
     let ballot_returned_we_vote_id = nextProps.params.ballot_returned_we_vote_id || "";
@@ -236,7 +236,7 @@ export default class Ballot extends Component {
   }
 
   _onVoterStoreChange () {
-    console.log("Ballot.jsx _onVoterStoreChange");
+    // console.log("Ballot.jsx _onVoterStoreChange");
     if (this.state.mounted) {
       let consider_opening_ballot_intro_modal = true;
       if ( this.state.wait_until_voter_sign_in_completes ) {

@@ -38,8 +38,23 @@ class OrganizationStore extends FluxMapStore {
 
   getOrganizationByWeVoteId (organization_we_vote_id){
     let all_cached_organizations_dict = this.getState().all_cached_organizations_dict;
-    // console.log("getOrganizationByWeVoteId, one organization: ", all_cached_organizations_dict[organization_we_vote_id]);
     return all_cached_organizations_dict[organization_we_vote_id] || {};
+  }
+
+  getOrganizationPositionByWeVoteId (organization_we_vote_id, ballot_item_we_vote_id){
+    let requested_position = {};
+    let all_cached_organizations_dict = this.getState().all_cached_organizations_dict;
+    // console.log("getOrganizationPositionByWeVoteId, organization_we_vote_id: ", organization_we_vote_id, ", ballot_item_we_vote_id: ", ballot_item_we_vote_id);
+    let organization = all_cached_organizations_dict[organization_we_vote_id] || {};
+    if (organization.position_list_for_one_election) {
+      organization.position_list_for_one_election.forEach( one_position => {
+        if (one_position.ballot_item_we_vote_id && one_position.ballot_item_we_vote_id === ballot_item_we_vote_id) {
+          requested_position = one_position;
+          // There isn't an easy javascript way to break out
+        }
+      });
+    }
+    return requested_position;
   }
 
   isVoterFollowingThisOrganization (organization_we_vote_id){
@@ -65,6 +80,8 @@ class OrganizationStore extends FluxMapStore {
   }
 
   _copyListsToNewOrganization (new_organization, prior_copy_of_organization){
+    // console.log("new_organization (_copyListsToNewOrganization): ", new_organization);
+    // console.log("prior_copy_of_organization (_copyListsToNewOrganization): ", prior_copy_of_organization);
     new_organization.friends_position_list_for_one_election = prior_copy_of_organization.friends_position_list_for_one_election;
     new_organization.friends_position_list_for_all_except_one_election = prior_copy_of_organization.friends_position_list_for_all_except_one_election;
     new_organization.friends_position_list = prior_copy_of_organization.friends_position_list;

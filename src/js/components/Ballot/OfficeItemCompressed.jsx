@@ -151,7 +151,7 @@ export default class OfficeItemCompressed extends Component {
                                               maximumOrganizationDisplay={this.state.maximum_organization_display}
                                               supportProps={candidateSupportStore} /> : null }
 
-                  {/* Support or Oppose */}
+                  {/* Support or Oppose actions for voter */}
                   <div className="u-cursor--pointer">
                     <ItemActionBar ballot_item_we_vote_id={candidate_we_vote_id}
                                    supportProps={candidateSupportStore}
