@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import ImageHandler from "../../components/ImageHandler";
-import { removeTwitterNameFromDescription } from "../../utils/textFormat"; // numberWithCommas,
+import { removeTwitterNameFromDescription } from "../../utils/textFormat";
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
 import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
 import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
@@ -54,7 +54,7 @@ export default class VoterGuideDisplayForList extends Component {
     var voterGuideLink = this.props.twitter_handle ? "/" + this.props.twitter_handle : "/voterguide/" + organization_we_vote_id;
 
     let position_description = "";
-    const is_on_ballot_item_page = true;
+    const is_on_ballot_item_page = true; // From "actor's" perspective: actorSupportsBallotItemLabel
     if (position.vote_smart_rating) {
         position_description =
           <PositionRatingSnippet {...position} />;

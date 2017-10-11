@@ -1,7 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import Helmet from "react-helmet";
-import { Link } from "react-router";
-import moment from "moment";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import BallotElectionList from "../../components/Ballot/BallotElectionList";
 import ElectionActions from "../../actions/ElectionActions";
@@ -21,13 +19,13 @@ export default class Elections extends Component {
     return {};
   }
 
-  componentDidMount(){
+  componentDidMount (){
     this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
     ElectionActions.electionsRetrieve();
     AnalyticsActions.saveActionElections(VoterStore.election_id());
   }
 
-  onElectionStoreChange(){
+  onElectionStoreChange (){
     let ballot_locations = [];
     let elections_list = ElectionStore.getElectionList();
     let elections_locations_list = [];
@@ -44,7 +42,7 @@ export default class Elections extends Component {
       elections_locations_list.push(election);
       ballot_returned_we_vote_id = "";
       ballot_location_shortcut = "";
-      console.log("Elections, onElectionStoreChange, ballot_locations: ", ballot_locations);
+      // console.log("Elections, onElectionStoreChange, ballot_locations: ", ballot_locations);
       if (ballot_locations && ballot_locations.length) {
         one_ballot_location = ballot_locations.pop();
         ballot_location_shortcut = one_ballot_location.ballot_location_shortcut;
@@ -60,7 +58,7 @@ export default class Elections extends Component {
       };
       voter_ballot_list.push(voter_ballot);
     }
-    console.log("Elections, onElectionStoreChange, voter_ballot_list: ", voter_ballot_list);
+    // console.log("Elections, onElectionStoreChange, voter_ballot_list: ", voter_ballot_list);
 
     this.setState({
       elections_locations_list: elections_locations_list,
@@ -68,7 +66,7 @@ export default class Elections extends Component {
     });
   }
 
-  componentWillUnmount(){
+  componentWillUnmount (){
     this.electionListListener.remove();
   }
 

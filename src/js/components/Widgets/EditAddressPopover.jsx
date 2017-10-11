@@ -85,22 +85,21 @@ export default class EditAddressPopover extends Component {
       } else {
         message_string += "We are showing you the closest match to your official ballot.";
       }
+    } else if (this.state.voter_specific_ballot_from_google_civic) {
+      // message_string += "";
+      // address_popover_enter_address_on = false;
+      return null;
+    } else if (this.state.voter_entered_address) {
+      message_string += "We are showing you the closest match to your official ballot.";
+      address_popover_enter_address_on = false;
+    } else if (this.state.google_civic_data_exists) {
+      message_string += "This election is in the past. We are showing you the closest match to your official ballot.";
+      address_popover_enter_address_on = false;
     } else {
-      if (this.state.voter_specific_ballot_from_google_civic) {
-        // message_string += "";
-        // address_popover_enter_address_on = false;
-        return null;
-      } else if (this.state.voter_entered_address) {
-        message_string += "We are showing you the closest match to your official ballot.";
-        address_popover_enter_address_on = false;
-     } else if (this.state.google_civic_data_exists) {
-        message_string += "This election is in the past. We are showing you the closest match to your official ballot.";
-        address_popover_enter_address_on = false;
-      } else {
-        message_string += "This election is in the past. We are showing you the closest match to your official ballot.";
-        address_popover_enter_address_on = false;
-      }
+      message_string += "This election is in the past. We are showing you the closest match to your official ballot.";
+      address_popover_enter_address_on = false;
     }
+
 
     const AddressPopover = <Popover id="popover-trigger-click-root-close" onClick={this.closePopover}>
       <div style={{textAlign: "center"}}>

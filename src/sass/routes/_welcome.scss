@@ -15,13 +15,16 @@ $opaque-grey: rgba($gray-dark, .5);
     background-image: url('/img/welcome/header-image-desktop.png');
     background-size: cover;
     color: $white;
-    max-width: $header-image-width;
+    margin: $space-none auto;
+    //max-width: $header-image-width;
+    max-width: 100%;
     padding-top: $space-xl;
     padding-bottom: $space-xl;
     text-align: center;
 
-    @include breakpoints($header-image-width) {
-      margin: $space-none calc(50% - #{$header-image-width} / 2);
+    @include breakpoints (iphone5 large) {
+      padding-top: $space-md;
+      padding-bottom: $space-md;
     }
 
     &-container {
@@ -37,6 +40,7 @@ $opaque-grey: rgba($gray-dark, .5);
       bottom: 0;
       left: 0;
       background-color: $opaque-grey;
+      // background-color: $hero-section-background-color; // Very white
     }
   }
 
@@ -100,6 +104,20 @@ $opaque-grey: rgba($gray-dark, .5);
       &:hover {
         background: $brand-blue;
         text-decoration: none;
+      }
+    }
+  }
+
+  .features-your-mission__block {
+    padding-bottom: $space-none;
+
+    .features-title {
+      margin-bottom: $space-none;
+      font-weight: bold;
+      font-size: 2rem;
+
+      @include breakpoints (iphone5 large) {
+        font-size: 1.5rem;
       }
     }
   }
@@ -234,16 +252,6 @@ $opaque-grey: rgba($gray-dark, .5);
 }
 
 .welcome-page {
-  .hero-section {
-    max-width: 100%;
-    margin: $space-none auto;
-    padding-top: $space-xl;
-    padding-bottom: $space-xl;
-
-    ::before {
-      background-color: $hero-section-background-color;
-    }
-  }
 
   .form-section {
     padding-top: $space-none;
@@ -251,16 +259,6 @@ $opaque-grey: rgba($gray-dark, .5);
 
   .features-section {
     padding-top: $scrollbar-height;
-  }
-
-  .features-your-mission__block {
-    padding-bottom: $space-none;
-
-    .features-title {
-      margin-bottom: $space-none;
-      font-weight: bold;
-      font-size: 2rem;
-    }
   }
 }
 
@@ -277,8 +275,8 @@ $opaque-grey: rgba($gray-dark, .5);
   }
 }
 
-.syv-h1 {
-  color: $call-to-action-blue;
+.share-your-vision-h1 {
+  //color: $call-to-action-blue;
 }
 
 .welcome-page {
@@ -361,11 +359,13 @@ $opaque-grey: rgba($gray-dark, .5);
   margin-bottom: $space-lg;
 }
 
-
 @media all and (max-width: 767px) {
-  .syv-h1 {
-    color: $call-to-action-blue;
+  .share-your-vision-h1 {
+    // color: $call-to-action-blue;
     margin-top: $space-xl;
+    @include breakpoints (small mid-small) {
+      margin-top: $space-sm;
+    }
   }
   .welcome-page .quick-links__button {
     width: 80%;

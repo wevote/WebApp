@@ -39,8 +39,8 @@ export default class PositionSupportOpposeSnippet extends Component {
     var stance_icon_src;
     var className;
     var alt;
-    var positionLabel;
-    var isSupportedBy;
+    var actorSupportsBallotItemLabel;
+    var ballotItemIsSupportedByActorLabel;
     var { is_looking_at_self, more_info_url } = this.props;
     var statement_text = this.props.statement_text || "";
     var statement_text_html = <ReadMore text_to_display={statement_text} />;
@@ -73,14 +73,14 @@ export default class PositionSupportOpposeSnippet extends Component {
       stance_icon_src = "/img/global/svg-icons/thumbs-up-color-icon.svg";
       className = "explicit-position__icon";
       alt = "Supports";
-      positionLabel = is_looking_at_self ? "You Support" : "Supports";
-      isSupportedBy = is_looking_at_self ? "is Supported by You" : "is Supported by";
+      actorSupportsBallotItemLabel = is_looking_at_self ? "You Support" : "Supports"; // Actor supports Ballot item (Active voice)
+      ballotItemIsSupportedByActorLabel = is_looking_at_self ? "is Supported by You" : "is Supported by"; // Ballot item is supported by Actor (Passive voice)
     } else if (this.props.is_oppose) {
       stance_icon_src = "/img/global/svg-icons/thumbs-down-color-icon.svg";
       className = "explicit-position__icon";
       alt = "Opposes";
-      positionLabel = is_looking_at_self ? "You Oppose" : "Opposes";
-      isSupportedBy = is_looking_at_self ? "is Opposed by You" : "is Opposed by";
+      actorSupportsBallotItemLabel = is_looking_at_self ? "You Oppose" : "Opposes";
+      ballotItemIsSupportedByActorLabel = is_looking_at_self ? "is Opposed by You" : "is Opposed by";
     } else {
       // We shouldn't be here. Do not display position information. See instead PositionInformationOnlySnippet.jsx
       return <span />;
@@ -109,11 +109,11 @@ export default class PositionSupportOpposeSnippet extends Component {
           <span>
             {this.props.is_on_ballot_item_page ?
               <span>
-                <span className="explicit-position__position-label">{positionLabel}</span>
+                <span className="explicit-position__position-label">{actorSupportsBallotItemLabel}</span>
                 <span> {this.props.ballot_item_display_name} </span>
               </span> :
               <span>
-                <span className="explicit-position__position-label">{isSupportedBy}</span>
+                <span className="explicit-position__position-label">{ballotItemIsSupportedByActorLabel}</span>
                 <span> {this.props.speaker_display_name} </span>
               </span> }
             <br />

@@ -214,8 +214,9 @@ export default class Intro extends Component {
           <div className="container">
             <Row className="hero-section-row">
               <div className="col-md-12">
+                {/* Mobile View */}
                 <Row className="visible-xs">
-                  <h1 className="col-sm-12 u-f1 u-stack--lg">
+                  <h1 className="col-sm-12 u-f1 u-stack--md">
                     View your ballot.<br />
                     Learn from friends.<br />
 
@@ -229,7 +230,7 @@ export default class Intro extends Component {
                       <a className="quick-links__button quick-links__button-left" onClick={() => browserHistory.push("/ballot")}>Get Started</a>
                     </section>
 
-                    <div className="syv-h1">
+                    <div className="share-your-vision-h1">
                       Share your vision.
 
                       <section className="quick-links-section u-flex">
@@ -238,6 +239,7 @@ export default class Intro extends Component {
                     </div>
                   </h1>
                 </Row>
+                {/* Desktop View */}
                 <Row className="hidden-xs">
                   <h1 className="col-md-6 u-f1 u-stack--lg">
                     View your ballot.<br />
@@ -333,7 +335,8 @@ export default class Intro extends Component {
         <div className="container">
           <div className="features-your-mission__block">
             <div className="features-title">Your Mission:<br />
-              <span className="h2">Make the world a better place.</span>
+              <span className="hidden-xs h2">Make the world a better place.</span>
+              <span className="visible-xs h4">Make the world a better place.</span>
             </div>
           </div>
           <Row className="u-stack--lg">

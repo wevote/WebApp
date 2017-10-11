@@ -63,8 +63,7 @@ export default class GuidePositionList extends Component {
   }
 
   _onOrganizationStoreChange (){
-    var { organization_we_vote_id } = this.state;
-    this.setState({ organization: OrganizationStore.getOrganizationByWeVoteId(organization_we_vote_id)});
+    this.setState({ organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization_we_vote_id)});
   }
 
   render () {

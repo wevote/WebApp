@@ -1,21 +1,94 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
-import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
 import ImageHandler from "../../components/ImageHandler";
 import LoadingWheel from "../../components/LoadingWheel";
-import { removeTwitterNameFromDescription } from "../../utils/textFormat"; // numberWithCommas,
+import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
+import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
+import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
+import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
+import OrganizationActions from "../../actions/OrganizationActions";
+import OrganizationStore from "../../stores/OrganizationStore";
+import { removeTwitterNameFromDescription } from "../../utils/textFormat";
 
 // This Component is used to display the Organization by TwitterHandle
 // Please see VoterGuide/Organization for the Component used by GuideList for Candidate and Opinions (you can follow)
 export default class OrganizationCard extends Component {
   static propTypes = {
+    ballotItemWeVoteId: PropTypes.string,
     organization: PropTypes.object.isRequired,
     turn_off_description: PropTypes.bool
   };
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      ballot_item_we_vote_id: "",
+      organization_position: {},
+      organization_positions_requested: false,
+      organization_we_vote_id: "",
+    };
+  }
+
+  componentDidMount () {
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    if (this.props.organization && this.props.organization.organization_we_vote_id) {
+      this.setState({
+        organization_we_vote_id: this.props.organization.organization_we_vote_id,
+      });
+    }
+    this.setState({
+      ballot_item_we_vote_id: this.props.ballotItemWeVoteId,
+    });
+    // console.log("this.props.organization (componentDidMount): ", this.props.organization);
+    if (this.props.organization && this.props.organization.organization_we_vote_id && this.props.ballotItemWeVoteId) {
+      let organization_position = OrganizationStore.getOrganizationPositionByWeVoteId(this.props.organization.organization_we_vote_id, this.props.ballotItemWeVoteId);
+      // console.log("organization_position (componentDidMount): ", organization_position);
+      if (organization_position && organization_position.ballot_item_we_vote_id) {
+        this.setState({
+          organization_position: organization_position,
+        });
+      } else {
+        OrganizationActions.retrievePositions(this.props.organization.organization_we_vote_id, true);
+        this.setState({
+          organization_positions_requested: true,
+        });
+      }
+    }
+    // If no position, we need to call positionListForOpinionMaker here
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
+      this.setState({
+        organization_we_vote_id: nextProps.organization.organization_we_vote_id,
+      });
+    }
+    this.setState({
+      ballot_item_we_vote_id: nextProps.ballotItemWeVoteId,
+    });
+    // console.log("nextProps.organization (componentWillReceiveProps): ", this.props.organization);
+    if (nextProps.organization && nextProps.organization.organization_we_vote_id && nextProps.ballotItemWeVoteId) {
+      let organization_position = OrganizationStore.getOrganizationPositionByWeVoteId(nextProps.organization.organization_we_vote_id, nextProps.ballotItemWeVoteId);
+      // console.log("organization_position (componentWillReceiveProps): ", organization_position);
+      if (organization_position && organization_position.ballot_item_we_vote_id) {
+        this.setState({
+          organization_position: organization_position,
+        });
+      } else if (!this.state.organization_positions_requested) {
+        OrganizationActions.retrievePositions(nextProps.organization.organization_we_vote_id, true);
+        this.setState({
+          organization_positions_requested: true,
+        });
+      }
+    }
+  }
+
+  onOrganizationStoreChange (){
+    this.setState({ organization_position: OrganizationStore.getOrganizationPositionByWeVoteId(this.state.organization_we_vote_id, this.state.ballot_item_we_vote_id)});
+  }
+
+  componentWillUnmount (){
+    this.organizationStoreListener.remove();
   }
 
   render () {
@@ -33,6 +106,22 @@ export default class OrganizationCard extends Component {
     let twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
     var voterGuideLink = organization_twitter_handle ? "/" + organization_twitter_handle : "/voterguide/" + organization_we_vote_id;
 
+    let position_description = "";
+    if (this.state.organization_position) {
+      const is_on_ballot_item_page = true; // From "actor's" perspective: actorSupportsBallotItemLabel
+      // console.log("this.state.organization_position: ", this.state.organization_position);
+      if (this.state.organization_position.vote_smart_rating) {
+        position_description =
+          <PositionRatingSnippet {...this.state.organization_position} />;
+      } else if (this.state.organization_position.is_support || this.state.organization_position.is_oppose) {
+        position_description =
+          <PositionSupportOpposeSnippet {...this.state.organization_position} is_on_ballot_item_page={is_on_ballot_item_page}/>;
+      } else if (this.state.organization_position.is_information_only) {
+        position_description =
+          <PositionInformationOnlySnippet {...this.state.organization_position} is_on_ballot_item_page={is_on_ballot_item_page}/>;
+      }
+    }
+
     return <div className="card-main__media-object">
       <div className="card-main__media-object-anchor">
         <Link to={voterGuideLink} className="u-no-underline">
@@ -43,6 +132,9 @@ export default class OrganizationCard extends Component {
         <Link to={voterGuideLink}>
           <h3 className="card-main__display-name">{displayName}</h3>
         </Link>
+        {/* Organization supports ballot item */}
+        {position_description}
+
         { twitterDescriptionMinusName && !this.props.turn_off_description ?
           <ParsedTwitterDescription
             twitter_description={twitterDescriptionMinusName}

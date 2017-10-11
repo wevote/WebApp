@@ -136,7 +136,7 @@ export default class BallotLocationChoices extends Component {
                 }
               }
             }
-            console.log("ballot_location");
+            // console.log("ballot_location");
             if (ballot_location.ballot_location_display_name && ballot_location.ballot_location_display_name !== "") {
               ballot_location_display_name = ballot_location.ballot_location_display_name;
             } else if (ballot_location.text_for_map_search !== "") {
