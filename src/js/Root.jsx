@@ -90,6 +90,7 @@ const routes = () =>
     <Route path="/ballot/empty" component={EmptyBallot} />
     <Route path="/ballot/:ballot_location_shortcut" component={Ballot} />
     <Route path="/ballot/id/:ballot_returned_we_vote_id" component={Ballot} />
+    <Route path="/ballot/election/:google_civic_election_id" component={Ballot} />
 
     <Route path="bookmarks" component={Bookmarks} />
 

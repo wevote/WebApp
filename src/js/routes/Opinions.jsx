@@ -62,15 +62,15 @@ export default class Opinions extends Component {
         float: "right"
     };
 
-    if ( text_for_map_search === "" ){
-      guides = <div>
-          <span style={floatRight}>
-              <Link to="/settings/location"><Button bsStyle="primary">Enter your address &#x21AC;</Button></Link>
-          </span>
-          <p>Enter your address so we can find voter guides to follow.</p>
-        </div>;
-
-    } else {
+    // if ( text_for_map_search === "" ){
+    //   guides = <div>
+    //       <span style={floatRight}>
+    //           <Link to="/settings/location"><Button bsStyle="primary">Enter your address &#x21AC;</Button></Link>
+    //       </span>
+    //       <p>Enter your address so we can find voter guides to follow.</p>
+    //     </div>;
+    //
+    // } else {
         guides = <div>
           <p>
             Find opinions about your ballot (ordered by Twitter followers).
@@ -89,7 +89,7 @@ export default class Opinions extends Component {
           <GuideList organizationsToFollow={voter_guides_to_follow_all} instantRefreshOn />
         </div>
         </div>;
-      }
+      // }
 
     return <div className="opinion-view">
       <Helmet title="Build Your Network - We Vote" />
