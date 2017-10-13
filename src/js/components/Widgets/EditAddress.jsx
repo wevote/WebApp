@@ -56,35 +56,27 @@ export default class EditAddress extends Component {
   }
 
   render () {
-    let address = this.props.address.text_for_map_search || "";
+    let text_for_map_search = this.props.address.text_for_map_search || "";
+    let no_address_message = "- no address entered -";
     let edit_address_popover_on = true;
 
-    if (address.length) {
-      return (
-        <span className="ballot__date_location">
-          { edit_address_popover_on ?
-            <EditAddressPopover address={address}
-                                placement={"bottom"}
-                                onEnterAddressClick={this.props.toggleSelectAddressModal}
-                                ballot_location_chosen={this.state.ballot_location_chosen}
-                                ballot_location_display_name={this.state.ballot_location_display_name}
-                                election_day_text={this.state.election_day_text}
-                                election_is_upcoming={this.state.election_is_upcoming}
-                                voter_entered_address={this.state.voter_entered_address}
-                                google_civic_data_exists={this.state.google_civic_data_exists}
-                                voter_specific_ballot_from_google_civic={this.state.voter_specific_ballot_from_google_civic} /> :
-            <span>{ address }</span>
-          }
-          <span className="hidden-print">(<a onClick={this.props.toggleSelectAddressModal}>Edit</a>)</span>
-        </span>
-      );
-    } else {
-      return (
-        <span className="ballot__date_location">
-          In order to see your ballot, please enter your address.
-          <span className="hidden-print">&nbsp;(<a onClick={this.props.toggleSelectAddressModal}>Add Your Address</a>)</span>
-        </span>
-      );
-    }
+    return (
+      <span className="ballot__date_location">
+        { edit_address_popover_on ?
+          <EditAddressPopover text_for_map_search={text_for_map_search}
+                              placement={"bottom"}
+                              onEnterAddressClick={this.props.toggleSelectAddressModal}
+                              ballot_location_chosen={this.state.ballot_location_chosen}
+                              ballot_location_display_name={this.state.ballot_location_display_name}
+                              election_day_text={this.state.election_day_text}
+                              election_is_upcoming={this.state.election_is_upcoming}
+                              voter_entered_address={this.state.voter_entered_address}
+                              google_civic_data_exists={this.state.google_civic_data_exists}
+                              voter_specific_ballot_from_google_civic={this.state.voter_specific_ballot_from_google_civic} /> :
+          <span>{ text_for_map_search.length ? text_for_map_search : no_address_message }</span>
+        }
+        <span className="hidden-print">(<a onClick={this.props.toggleSelectAddressModal}>Edit</a>)</span>
+      </span>
+    );
   }
 }

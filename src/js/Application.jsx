@@ -37,7 +37,10 @@ export default class Application extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      // Do not define voter here. We rely on it being undefined
+      voter_initial_retrieve_needed: true,
+    };
     this.loadedHeader = false;
     this.initFacebook();
   }
@@ -65,46 +68,14 @@ export default class Application extends Component {
   componentDidMount () {
     let voter_device_id = VoterStore.voterDeviceId();
     VoterActions.voterRetrieve();
-    // console.log("Application, componentDidMount, voter_device_id:", voter_device_id);
-    if (voter_device_id && voter_device_id !== "") {
-      VoterActions.voterEmailAddressRetrieve();
-      BookmarkActions.voterAllBookmarksStatusRetrieve();
-      FriendActions.friendInvitationsSentToMe();
+    console.log("Application, componentDidMount, voter_device_id:", voter_device_id);
+    if (voter_device_id) {
+      this._onVoterStoreChange();
     }
+
     ElectionActions.electionsRetrieve();
 
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    // Cookie needs to expire in One day i.e. 24*60*60 = 86400
-    let one_day_expires = 86400;
-    let we_vote_branding_off_from_url = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-    let we_vote_branding_off_from_cookie = cookies.getItem("we_vote_branding_off") || 0;
-    if (we_vote_branding_off_from_url && !we_vote_branding_off_from_cookie ) {
-        cookies.setItem("we_vote_branding_off", we_vote_branding_off_from_url, one_day_expires, "/");
-    }
-    if (we_vote_branding_off_from_url || we_vote_branding_off_from_cookie ) {
-      cookies.setItem("show_full_navigation", "1", Infinity, "/");
-    }
-    this.setState({we_vote_branding_off: we_vote_branding_off_from_url || we_vote_branding_off_from_cookie});
-
-    let hide_intro_modal_from_url = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
-    let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal") || 0;
-    if (hide_intro_modal_from_url && !hide_intro_modal_from_cookie ) {
-        cookies.setItem("hide_intro_modal", hide_intro_modal_from_url, one_day_expires, "/");
-    }
-
-    var auto_follow_list_from_url = "";
-    if (this.props.location.query) {
-      if (this.props.location.query.af) {
-        auto_follow_list_from_url = this.props.location.query.af;
-      } else if (this.props.location.query.auto_follow_list) {
-        auto_follow_list_from_url = this.props.location.query.auto_follow_list;
-      }
-    }
-    let auto_follow_list = auto_follow_list_from_url ? auto_follow_list_from_url.split(",") : [];
-    auto_follow_list.forEach((organization_twitter_handle) => {
-      OrganizationActions.organizationFollow("", organization_twitter_handle);
-    });
-    browserHistory.push(this.props.location.pathname);
   }
 
   componentWillUnmount () {
@@ -113,6 +84,8 @@ export default class Application extends Component {
   }
 
   componentDidUpdate () {
+    let voter_device_id = VoterStore.voterDeviceId();
+    console.log("Application, componentDidUpdate, voter_device_id:", voter_device_id);
     if (this.loadedHeader) return;
     if (!this.refs.pageHeader) return;
 
@@ -131,10 +104,68 @@ export default class Application extends Component {
   }
 
   _onVoterStoreChange () {
-    this.setState({
-      voter: VoterStore.getVoter(),
-      // text_for_map_search: VoterStore.getTextForMapSearch()
-    });
+    console.log("Application, _onVoterStoreChange");
+    let voter_device_id = VoterStore.voterDeviceId();
+    if (voter_device_id && voter_device_id !== "" && this.state.voter_initial_retrieve_needed) {
+      VoterActions.voterEmailAddressRetrieve();
+      BookmarkActions.voterAllBookmarksStatusRetrieve();
+      FriendActions.friendInvitationsSentToMe();
+      this.incomingVariableManagement();
+      this.setState({
+        voter: VoterStore.getVoter(),
+        voter_initial_retrieve_needed: false,
+      });
+    }
+  }
+
+  incomingVariableManagement () {
+    // console.log("Application, incomingVariableManagement, this.props.location.query: ", this.props.location.query);
+    if (this.props.location.query) {
+      // Cookie needs to expire in One day i.e. 24*60*60 = 86400
+      let one_day_expires = 86400;
+      let we_vote_branding_off_from_url = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
+      let we_vote_branding_off_from_cookie = cookies.getItem("we_vote_branding_off") || 0;
+      if (we_vote_branding_off_from_url && !we_vote_branding_off_from_cookie) {
+        cookies.setItem("we_vote_branding_off", we_vote_branding_off_from_url, one_day_expires, "/");
+      }
+      if (we_vote_branding_off_from_url || we_vote_branding_off_from_cookie) {
+        cookies.setItem("show_full_navigation", "1", Infinity, "/");
+      }
+      this.setState({we_vote_branding_off: we_vote_branding_off_from_url || we_vote_branding_off_from_cookie});
+
+      let hide_intro_modal_from_url = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
+      let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal") || 0;
+      if (hide_intro_modal_from_url && !hide_intro_modal_from_cookie) {
+        cookies.setItem("hide_intro_modal", hide_intro_modal_from_url, one_day_expires, "/");
+      }
+
+      let auto_follow_list_from_url = "";
+      let at_least_one_query_variable_found = false;
+      if (this.props.location.query) {
+        // console.log("this.props.location.query: ", this.props.location.query);
+        if (this.props.location.query.af) {
+          auto_follow_list_from_url = this.props.location.query.af;
+          at_least_one_query_variable_found = true;
+        } else if (this.props.location.query.auto_follow) {
+          at_least_one_query_variable_found = true;
+          auto_follow_list_from_url = this.props.location.query.auto_follow;
+        }
+        let auto_follow_list = auto_follow_list_from_url ? auto_follow_list_from_url.split(",") : [];
+        auto_follow_list.forEach((organization_twitter_handle) => {
+          OrganizationActions.organizationFollow("", organization_twitter_handle);
+        });
+
+        if (this.props.location.query.voter_address) {
+          at_least_one_query_variable_found = true;
+          let voter_address = this.props.location.query.voter_address;
+          VoterActions.voterAddressSave(voter_address);
+        }
+        if (at_least_one_query_variable_found) {
+          // console.log("at_least_one_query_variable_found push: ", at_least_one_query_variable_found);
+          browserHistory.push(this.props.location.pathname);
+        }
+      }
+    }
   }
 
   hideSearchContainer () {

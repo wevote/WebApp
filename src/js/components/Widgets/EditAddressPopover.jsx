@@ -3,7 +3,7 @@ import { OverlayTrigger, Popover } from "react-bootstrap";
 
 export default class EditAddressPopover extends Component {
   static propTypes = {
-    address: PropTypes.string.isRequired,
+    text_for_map_search: PropTypes.string.isRequired,
     placement: PropTypes.string.isRequired,
     onEnterAddressClick: PropTypes.func.isRequired,
     ballot_location_chosen: PropTypes.bool.isRequired,
@@ -116,6 +116,8 @@ export default class EditAddressPopover extends Component {
       </div>
     </Popover>;
 
+    let no_address_message = "- no address entered -";
+
     return (
         <OverlayTrigger
           trigger="click"
@@ -125,7 +127,7 @@ export default class EditAddressPopover extends Component {
           placement={this.props.placement}
           overlay={AddressPopover}>
             <span>
-              { this.props.address }
+              { this.props.text_for_map_search.length ? this.props.text_for_map_search : no_address_message }
               <span className="position-rating__source with-popover">&nbsp;&nbsp;
               <i className="fa fa-exclamation-circle" aria-hidden="true" style={{color: "#fc0d1b"}} />&nbsp;&nbsp;</span>
             </span>
