@@ -405,11 +405,22 @@ class VoterStore extends FluxMapStore {
               this.setVoterDeviceIdCookie(voter_device_id);
             }
             VoterActions.voterAddressRetrieve(voter_device_id);
+
+            // FriendsInvitationList.jsx is choking on this because calling this
+            // results in an infinite loop cycling between voterRetrieve and getFaceProfilePicture which
+            // resolves to FACEBOOK_RECIEVED_PICTURE which then attempts to save using voterFacebookSignInPhoto
+            // which in turn resolves to voterFacebookSignInSave which finally attempts to call
+            // voterRetrieve again
+
+            // url never seems to be satisfied in this case
+
+            /*
             const url = action.res.facebook_profile_image_url_https;
             if (action.res.signed_in_facebook && (url === null || url === "")) {
               const userId = FacebookStore.userId;
               FacebookActions.getFacebookProfilePicture(userId);
             }
+            */
           } else {
               // console.log("voter_device_id not returned by voterRetrieve");
           }
