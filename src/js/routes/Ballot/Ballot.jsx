@@ -73,7 +73,7 @@ export default class Ballot extends Component {
   }
 
   componentDidMount () {
-    console.log("Ballot componentDidMount");
+    // console.log("Ballot componentDidMount");
     let hide_intro_modal_from_url = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
     let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal") || 0;
     let wait_until_voter_sign_in_completes = this.props.location.query ? this.props.location.query.wait_until_voter_sign_in_completes : 0;
@@ -90,7 +90,7 @@ export default class Ballot extends Component {
     }
 
     let google_civic_election_id_from_url = this.props.params.google_civic_election_id || 0;
-    console.log("google_civic_election_id_from_url: ", google_civic_election_id_from_url);
+    // console.log("google_civic_election_id_from_url: ", google_civic_election_id_from_url);
     let ballot_returned_we_vote_id = this.props.params.ballot_returned_we_vote_id || "";
     ballot_returned_we_vote_id = ballot_returned_we_vote_id === "none" ? "" : ballot_returned_we_vote_id;
     let ballot_location_shortcut = this.props.params.ballot_location_shortcut || "";
@@ -145,7 +145,7 @@ export default class Ballot extends Component {
   }
 
   componentWillUnmount (){
-    console.log("Ballot componentWillUnmount");
+    // console.log("Ballot componentWillUnmount");
     this.setState({mounted: false});
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){
       // No ballot found
@@ -158,7 +158,7 @@ export default class Ballot extends Component {
   }
 
   componentWillReceiveProps (nextProps){
-    console.log("Ballot componentWillReceiveProps, nextProps: ", nextProps);
+    // console.log("Ballot componentWillReceiveProps, nextProps: ", nextProps);
     let ballot_type = nextProps.location.query ? nextProps.location.query.type : "all";
 
     let google_civic_election_id_from_params = nextProps.params.google_civic_election_id || 0;
@@ -282,7 +282,7 @@ export default class Ballot extends Component {
 
   onBallotStoreChange (){
     // console.log("Ballot.jsx onBallotStoreChange");
-    console.log("Ballot.jsx onBallotStoreChange, BallotStore.ballot_properties: ", BallotStore.ballot_properties);
+    // console.log("Ballot.jsx onBallotStoreChange, BallotStore.ballot_properties: ", BallotStore.ballot_properties);
     if (this.state.mounted) {
       if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) {
         // Ballot is found but ballot is empty. We want to stay put.
@@ -294,15 +294,15 @@ export default class Ballot extends Component {
       this.setState({ballotElectionList: BallotStore.ballotElectionList()});
     }
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.google_civic_election_id) {
-      console.log("onBallotStoreChange, google_civic_election_id: ", BallotStore.ballot_properties.google_civic_election_id);
+      // console.log("onBallotStoreChange, google_civic_election_id: ", BallotStore.ballot_properties.google_civic_election_id);
       this.setState({google_civic_election_id: BallotStore.ballot_properties.google_civic_election_id});
     }
 
     let ballot_location_shortcut_of_retrieved_ballot = "";
     if (BallotStore.ballot_properties) {
       ballot_location_shortcut_of_retrieved_ballot = BallotStore.ballot_properties.ballot_location_shortcut;
-      ballot_location_shortcut_of_retrieved_ballot = "none" ? "" : ballot_location_shortcut_of_retrieved_ballot;
-      console.log("ballot_location_shortcut_of_retrieved_ballot: ", ballot_location_shortcut_of_retrieved_ballot);
+      ballot_location_shortcut_of_retrieved_ballot = ballot_location_shortcut_of_retrieved_ballot === "none" ? "" : ballot_location_shortcut_of_retrieved_ballot;
+      // console.log("ballot_location_shortcut_of_retrieved_ballot: ", ballot_location_shortcut_of_retrieved_ballot);
     }
     if (ballot_location_shortcut_of_retrieved_ballot !== "" || this.state.ballot_location_shortcut !== "") {
       if (this.state.ballot_location_shortcut !== ballot_location_shortcut_of_retrieved_ballot) {

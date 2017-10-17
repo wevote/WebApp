@@ -1,8 +1,6 @@
-import { Button } from "react-bootstrap";
 import Helmet from "react-helmet";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import SearchGuidesToFollowBox from "../Search/SearchGuidesToFollowBox";
-import VoterStore from "../../stores/VoterStore";
 import GuideList from "../VoterGuide/GuideList";
 import { Link } from "react-router";
 import React, {Component, PropTypes } from "react";
@@ -18,7 +16,6 @@ export default class NetworkOpinions extends Component {
     super(props);
     this.state = {
       ballot_has_guides: VoterGuideStore.ballotHasGuides(),
-      text_for_map_search: VoterStore.getTextForMapSearch(),
       voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
     };
   }
@@ -30,7 +27,6 @@ export default class NetworkOpinions extends Component {
   onVoterGuideStoreChange () {
     this.setState({
       ballot_has_guides: VoterGuideStore.ballotHasGuides(),
-      text_for_map_search: VoterStore.getTextForMapSearch(),
       voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
     });
   }
@@ -55,7 +51,7 @@ export default class NetworkOpinions extends Component {
   }
 
   render () {
-    const { ballot_has_guides, voter_guides_to_follow_all, text_for_map_search } = this.state;
+    const { ballot_has_guides, voter_guides_to_follow_all } = this.state;
     var floatRight = {
         float: "right"
     };

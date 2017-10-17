@@ -1,8 +1,6 @@
-import { Button } from "react-bootstrap";
 import VoterGuideStore from "../stores/VoterGuideStore";
 import Helmet from "react-helmet";
 import SearchGuidesToFollowBox from "../components/Search/SearchGuidesToFollowBox";
-import VoterStore from "../stores/VoterStore";
 import GuideList from "../components/VoterGuide/GuideList";
 import { Link } from "react-router";
 import React, {Component, PropTypes } from "react";
@@ -19,7 +17,6 @@ export default class Opinions extends Component {
     super(props);
     this.state = {
       ballot_has_guides: VoterGuideStore.ballotHasGuides(),
-      text_for_map_search: VoterStore.getTextForMapSearch(),
       voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
     };
   }
@@ -31,7 +28,6 @@ export default class Opinions extends Component {
   onVoterGuideStoreChange () {
     this.setState({
       ballot_has_guides: VoterGuideStore.ballotHasGuides(),
-      text_for_map_search: VoterStore.getTextForMapSearch(),
       voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
     });
   }
@@ -56,40 +52,30 @@ export default class Opinions extends Component {
   }
 
   render () {
-    const { ballot_has_guides, voter_guides_to_follow_all, text_for_map_search } = this.state;
+    const { ballot_has_guides, voter_guides_to_follow_all } = this.state;
     let guides;
     var floatRight = {
         float: "right"
     };
 
-    // if ( text_for_map_search === "" ){
-    //   guides = <div>
-    //       <span style={floatRight}>
-    //           <Link to="/settings/location"><Button bsStyle="primary">Enter your address &#x21AC;</Button></Link>
-    //       </span>
-    //       <p>Enter your address so we can find voter guides to follow.</p>
-    //     </div>;
-    //
-    // } else {
-        guides = <div>
-          <p>
-            Find opinions about your ballot (ordered by Twitter followers).
-            Follow those you trust. Unfollow at any time.
-            Following won't add you to mailing lists.
-            <span style={floatRight} className="hidden-print">
-              <Link to="/opinions_followed" className="u-margin-left--md u-no-break">See organizations you follow</Link>
-            </span>
-          </p>
-          <SearchGuidesToFollowBox />
-          { ballot_has_guides ?
-            <p /> :
-            <p>There are no organizations with opinions on your ballot. Here are some popular organizations</p>
-          }
-        <div className="card">
-          <GuideList organizationsToFollow={voter_guides_to_follow_all} instantRefreshOn />
-        </div>
-        </div>;
-      // }
+    guides = <div>
+      <p>
+        Find opinions about your ballot (ordered by Twitter followers).
+        Follow those you trust. Unfollow at any time.
+        Following won't add you to mailing lists.
+        <span style={floatRight} className="hidden-print">
+          <Link to="/opinions_followed" className="u-margin-left--md u-no-break">See organizations you follow</Link>
+        </span>
+      </p>
+      <SearchGuidesToFollowBox />
+      { ballot_has_guides ?
+        <p /> :
+        <p>There are no organizations with opinions on your ballot. Here are some popular organizations</p>
+      }
+    <div className="card">
+      <GuideList organizationsToFollow={voter_guides_to_follow_all} instantRefreshOn />
+    </div>
+    </div>;
 
     return <div className="opinion-view">
       <Helmet title="Build Your Network - We Vote" />

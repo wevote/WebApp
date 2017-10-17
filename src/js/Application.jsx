@@ -68,7 +68,7 @@ export default class Application extends Component {
   componentDidMount () {
     let voter_device_id = VoterStore.voterDeviceId();
     VoterActions.voterRetrieve();
-    console.log("Application, componentDidMount, voter_device_id:", voter_device_id);
+    // console.log("Application, componentDidMount, voter_device_id:", voter_device_id);
     if (voter_device_id) {
       this._onVoterStoreChange();
     }
@@ -84,8 +84,8 @@ export default class Application extends Component {
   }
 
   componentDidUpdate () {
-    let voter_device_id = VoterStore.voterDeviceId();
-    console.log("Application, componentDidUpdate, voter_device_id:", voter_device_id);
+    // let voter_device_id = VoterStore.voterDeviceId();
+    // console.log("Application, componentDidUpdate, voter_device_id:", voter_device_id);
     if (this.loadedHeader) return;
     if (!this.refs.pageHeader) return;
 
@@ -104,7 +104,7 @@ export default class Application extends Component {
   }
 
   _onVoterStoreChange () {
-    console.log("Application, _onVoterStoreChange");
+    // console.log("Application, _onVoterStoreChange");
     let voter_device_id = VoterStore.voterDeviceId();
     if (voter_device_id && voter_device_id !== "" && this.state.voter_initial_retrieve_needed) {
       VoterActions.voterEmailAddressRetrieve();
@@ -122,6 +122,7 @@ export default class Application extends Component {
     // console.log("Application, incomingVariableManagement, this.props.location.query: ", this.props.location.query);
     if (this.props.location.query) {
       // Cookie needs to expire in One day i.e. 24*60*60 = 86400
+      let at_least_one_query_variable_found = false;
       let one_day_expires = 86400;
       let we_vote_branding_off_from_url = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
       let we_vote_branding_off_from_cookie = cookies.getItem("we_vote_branding_off") || 0;
@@ -134,13 +135,17 @@ export default class Application extends Component {
       this.setState({we_vote_branding_off: we_vote_branding_off_from_url || we_vote_branding_off_from_cookie});
 
       let hide_intro_modal_from_url = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
-      let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal") || 0;
-      if (hide_intro_modal_from_url && !hide_intro_modal_from_cookie) {
+      let hide_intro_modal_from_url_true = hide_intro_modal_from_url === 1 || hide_intro_modal_from_url === "1" || hide_intro_modal_from_url === "true";
+      if (hide_intro_modal_from_url) {
+        at_least_one_query_variable_found = true;
+      }
+      let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal");
+      let hide_intro_modal_from_cookie_true = hide_intro_modal_from_cookie === 1 || hide_intro_modal_from_cookie === "1" || hide_intro_modal_from_cookie === "true";
+      if (hide_intro_modal_from_url_true && !hide_intro_modal_from_cookie_true) {
         cookies.setItem("hide_intro_modal", hide_intro_modal_from_url, one_day_expires, "/");
       }
 
       let auto_follow_list_from_url = "";
-      let at_least_one_query_variable_found = false;
       if (this.props.location.query) {
         // console.log("this.props.location.query: ", this.props.location.query);
         if (this.props.location.query.af) {

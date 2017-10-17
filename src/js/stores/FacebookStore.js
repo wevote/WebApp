@@ -123,6 +123,7 @@ class FacebookStore extends FluxMapStore {
         };
 
       case FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS:
+        // console.log("FacebookStore, FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS");
         // Cache the data in the API server
         // FacebookActions.getFacebookInvitableFriendsList(action.data.id);
         let facebook_friends_not_exist = false;
@@ -130,6 +131,10 @@ class FacebookStore extends FluxMapStore {
         let facebook_invitable_friends_list = [];
         if (action.data.invitable_friends) {
           facebook_invitable_friends_list = action.data.invitable_friends.data;
+          // Does not seem to work
+          // if (action.data.id) {
+          //   FacebookActions.getFacebookProfilePicture(action.data.id);
+          // }
         } else {
           facebook_friends_not_exist = true;
         }

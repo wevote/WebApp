@@ -52,6 +52,7 @@ module.exports = {
   },
 
   voterAddressRetrieve: function (id){
+    // console.log("VoterActions, voterAddressRetrieve");
     Dispatcher.loadEndpoint("voterAddressRetrieve", { voter_device_id: id});
   },
 

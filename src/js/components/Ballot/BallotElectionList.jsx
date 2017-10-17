@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import { browserHistory } from "react-router";
-import BallotActions from "../../actions/BallotActions";
 import VoterActions from "../../actions/VoterActions";
 import { cleanArray } from "../../utils/textFormat";
 import moment from "moment";
@@ -35,7 +34,6 @@ export default class BallotElectionList extends Component {
       browserHistory.push("/ballot");
     } else if (googleCivicElectionId && googleCivicElectionId !== 0) {
       console.log("goToDifferentElection, googleCivicElectionId: ", googleCivicElectionId);
-      // BallotActions.voterBallotItemsRetrieve(googleCivicElectionId);
       browserHistory.push("/ballot/election/" + googleCivicElectionId);
     }
     if (this.props.toggleFunction) {
