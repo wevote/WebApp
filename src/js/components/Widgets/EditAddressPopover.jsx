@@ -62,7 +62,7 @@ export default class EditAddressPopover extends Component {
   }
 
   render () {
-    let exclamation_circle_red = "#fc0d1b"; // I tried to replace literal string below with this variable. Didn't work.
+    // let exclamation_circle_red = "#fc0d1b"; // I tried to replace literal string below with this variable. Didn't work.
     let message_title = "This is our best guess";
     let message_string = "";
     let address_popover_enter_address_on = true;

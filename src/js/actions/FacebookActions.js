@@ -1,5 +1,4 @@
 import Dispatcher from "../dispatcher/Dispatcher";
-// Including FacebookStore causes problems
 import FacebookConstants from "../constants/FacebookConstants";
 import VoterActions from "../actions/VoterActions";
 import VoterSessionActions from "../actions/VoterSessionActions";
@@ -13,11 +12,11 @@ module.exports = {
   },
 
   disconnectFromFacebook: function () {
-      // Removing connection between We Vote and Facebook
-      Dispatcher.dispatch({
-          type: FacebookConstants.FACEBOOK_SIGN_IN_DISCONNECT,
-          data: true
-      });
+    // Removing connection between We Vote and Facebook
+    Dispatcher.dispatch({
+      type: FacebookConstants.FACEBOOK_SIGN_IN_DISCONNECT,
+      data: true
+    });
   },
 
   facebookDisconnect: function (){
@@ -32,23 +31,23 @@ module.exports = {
   },
 
   getFacebookProfilePicture: function (userId) {
-      if (window.FB) {
-          window.FB.api(`/${userId}/picture?type=large`, (response) => {
-              Dispatcher.dispatch({
-                  type: FacebookConstants.FACEBOOK_RECEIVED_PICTURE,
-                  data: response
-              });
-          });
-      }
+    if (window.FB) {
+      window.FB.api(`/${userId}/picture?type=large`, (response) => {
+        Dispatcher.dispatch({
+          type: FacebookConstants.FACEBOOK_RECEIVED_PICTURE,
+          data: response
+        });
+      });
+    }
   },
 
   // https://developers.facebook.com/docs/graph-api/reference/v2.6/user
   getFacebookData: function (){
     window.FB.api("/me?fields=id,email,first_name,middle_name,last_name,cover", (response) => {
-        Dispatcher.dispatch({
-            type: FacebookConstants.FACEBOOK_RECEIVED_DATA,
-            data: response
-        });
+      Dispatcher.dispatch({
+        type: FacebookConstants.FACEBOOK_RECEIVED_DATA,
+        data: response
+      });
     });
   },
 
@@ -57,8 +56,8 @@ module.exports = {
     window.FB.api(fb_api_for_invitable_friends, (response) => {
       // console.log("getFacebookInvitableFriendsList", response);
       Dispatcher.dispatch({
-          type: FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS,
-          data: response
+        type: FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS,
+        data: response
       });
     });
   },
@@ -68,8 +67,8 @@ module.exports = {
     window.FB.api(fb_api_for_reading_app_requests, (response) => {
       console.log("readFacebookAppRequests", response);
       Dispatcher.dispatch({
-          type: FacebookConstants.FACEBOOK_READ_APP_REQUESTS,
-          data: response
+        type: FacebookConstants.FACEBOOK_READ_APP_REQUESTS,
+        data: response
       });
     });
   },
@@ -78,10 +77,10 @@ module.exports = {
     console.log("deleteFacebookAppRequest requestId: ", requestId);
     window.FB.api(requestId, "delete", (response) => {
       console.log("deleteFacebookAppRequest response", response);
-       Dispatcher.dispatch({
-          type: FacebookConstants.FACEBOOK_DELETE_APP_REQUEST,
-          data: response
-       });
+      Dispatcher.dispatch({
+        type: FacebookConstants.FACEBOOK_DELETE_APP_REQUEST,
+        data: response
+      });
     });
   },
 
@@ -92,21 +91,23 @@ module.exports = {
     // FB.getLoginStatus does an ajax call and when you call FB.login on it's response, the popup that would open
     // as a result of this call is blocked. A solution to this problem would be to to specify status: true in the
     // options object of FB.init and you need to be confident that login status has already loaded.
-    window.FB.getLoginStatus(function (response) {
-      if (response.status === "connected") {
-        Dispatcher.dispatch({
+    if (window.FB) {
+      window.FB.getLoginStatus(function (response) {
+        if (response.status === "connected") {
+          Dispatcher.dispatch({
             type: FacebookConstants.FACEBOOK_LOGGED_IN,
             data: response
-        });
-      } else {
-        window.FB.login( (res) =>{
-          Dispatcher.dispatch({
+          });
+        } else {
+          window.FB.login((res) => {
+            Dispatcher.dispatch({
               type: FacebookConstants.FACEBOOK_LOGGED_IN,
               data: res
-          });
-        }, {scope: "public_profile,email,user_friends"});
-      }
-    });
+            });
+          }, {scope: "public_profile,email,user_friends"});
+        }
+      });
+    }
   },
 
   logout: function () {

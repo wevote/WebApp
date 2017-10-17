@@ -154,7 +154,7 @@ class BallotStore extends FluxMapStore {
         return state;
 
       case "voterBallotItemsRetrieve":
-        console.log("BallotStore, voterBallotItemsRetrieve response received.");
+        // console.log("BallotStore, voterBallotItemsRetrieve response received.");
         key = action.res.google_civic_election_id;
         newBallot[key] = action.res;
 

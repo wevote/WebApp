@@ -82,7 +82,7 @@ export default class CandidateItem extends Component {
       twitter_description,
       twitter_followers_count,
       contest_office_name,
-      twitter_handle,
+      // twitter_handle,
     } = this.props;
 
     const { supportProps, transitioning } = this.state;

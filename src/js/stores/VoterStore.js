@@ -22,6 +22,7 @@ class VoterStore extends FluxMapStore {
       email_address_status: {},
       email_sign_in_status: {},
       facebook_sign_in_status: {},
+      facebook_photo_retrieve_loop_count: 0,
       voter_found: false,
       voter_donation_history_list: {},
       latest_google_civic_election_id: 0,
@@ -382,6 +383,8 @@ class VoterStore extends FluxMapStore {
         };
 
       case "voterRetrieve":
+        // console.log("VoterStore, voterRetrieve");
+        let facebook_photo_retrieve_loop_count = state.facebook_photo_retrieve_loop_count;
         let current_voter_device_id = cookies.getItem("voter_device_id");
         if (!action.res.voter_found) {
           // console.log("This voter_device_id is not in the db and is invalid, so delete it: " +
@@ -405,9 +408,17 @@ class VoterStore extends FluxMapStore {
               this.setVoterDeviceIdCookie(voter_device_id);
             }
             VoterActions.voterAddressRetrieve(voter_device_id);
-            const url = action.res.facebook_profile_image_url_https;
-            if (action.res.signed_in_facebook && (url === null || url === "")) {
-              const userId = FacebookStore.userId;
+
+            // FriendsInvitationList.jsx is choking on this because calling this
+            // results in an infinite loop cycling between voterRetrieve and getFaceProfilePicture which
+            // resolves to FACEBOOK_RECEIVED_PICTURE which then attempts to save using voterFacebookSignInPhoto
+            // which in turn resolves to voterFacebookSignInSave which finally attempts to call
+            // voterRetrieve again
+            let url = action.res.facebook_profile_image_url_https;
+            // console.log("VoterStore, voterRetrieve, action.res: ", action.res);
+
+            if (action.res.signed_in_facebook && (url === null || url === "") && facebook_photo_retrieve_loop_count < 10) {
+              let userId = FacebookStore.userId;
               FacebookActions.getFacebookProfilePicture(userId);
             }
           } else {
@@ -417,6 +428,7 @@ class VoterStore extends FluxMapStore {
 
         return {
           ...state,
+          facebook_photo_retrieve_loop_count: facebook_photo_retrieve_loop_count + 1,
           voter: action.res,
           voter_found: action.res.voter_found,
         };
