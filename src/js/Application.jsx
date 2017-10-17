@@ -106,15 +106,21 @@ export default class Application extends Component {
   _onVoterStoreChange () {
     // console.log("Application, _onVoterStoreChange");
     let voter_device_id = VoterStore.voterDeviceId();
-    if (voter_device_id && voter_device_id !== "" && this.state.voter_initial_retrieve_needed) {
-      VoterActions.voterEmailAddressRetrieve();
-      BookmarkActions.voterAllBookmarksStatusRetrieve();
-      FriendActions.friendInvitationsSentToMe();
-      this.incomingVariableManagement();
-      this.setState({
-        voter: VoterStore.getVoter(),
-        voter_initial_retrieve_needed: false,
-      });
+    if (voter_device_id && voter_device_id !== "") {
+      if (this.state.voter_initial_retrieve_needed) {
+        VoterActions.voterEmailAddressRetrieve();
+        BookmarkActions.voterAllBookmarksStatusRetrieve();
+        FriendActions.friendInvitationsSentToMe();
+        this.incomingVariableManagement();
+        this.setState({
+          voter: VoterStore.getVoter(),
+          voter_initial_retrieve_needed: false,
+        });
+      } else {
+        this.setState({
+          voter: VoterStore.getVoter(),
+        });
+      }
     }
   }
 

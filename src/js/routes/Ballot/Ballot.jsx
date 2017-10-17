@@ -116,7 +116,7 @@ export default class Ballot extends Component {
     if (ballot_returned_we_vote_id || ballot_location_shortcut || google_civic_election_id_from_url) {
       BallotActions.voterBallotItemsRetrieve(google_civic_election_id_from_url, ballot_returned_we_vote_id, ballot_location_shortcut);
     } else if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
-      browserHistory.push("settings/location");
+      browserHistory.push("/settings/location");
     }
 
     let ballot = this.getBallot(this.props);
