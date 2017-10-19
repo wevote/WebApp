@@ -16,6 +16,7 @@ export default class ItemPositionStatementActionBar extends Component {
     type: PropTypes.string.isRequired,
     comment_edit_mode_on: PropTypes.bool,
     supportProps: PropTypes.object,
+    shown_in_list: PropTypes.bool,
     stance_display_off: PropTypes.bool,
     //saveUrl: PropTypes.string.isRequired
   };
@@ -214,7 +215,7 @@ export default class ItemPositionStatementActionBar extends Component {
       statement_text_no_url = statement_text_to_be_saved.replace(video_url, "");
     }
 
-    return <div className="position-statement__container">
+    return <div className={ this.props.shown_in_list ? "position-statement__container__in-list" : "position-statement__container"}>
       { this.props.stance_display_off ?
         null :
         <div className="position-statement__overview u-flex items-center u-stack--sm">

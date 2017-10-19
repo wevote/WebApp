@@ -174,7 +174,8 @@ export default class OfficeItemCompressed extends Component {
                                                     ballot_item_display_name={one_candidate.ballot_item_display_name}
                                                     supportProps={candidateSupportStore}
                                                     transitioning={this.state.transitioning}
-                                                    type="CANDIDATE" />
+                                                    type="CANDIDATE"
+                                                    shown_in_list />
                 </div>
               </div> :
               null
