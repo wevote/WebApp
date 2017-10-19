@@ -23,8 +23,9 @@
 
   &__container {
     background-color: $gray-pale;
-    padding: $space-sm $space-sm;
+    padding: $space-sm $space-md;
     margin: $space-none (-$space-md) (-$space-sm);
+    margin-left: 37px;
   }
 
   &--truncated {
