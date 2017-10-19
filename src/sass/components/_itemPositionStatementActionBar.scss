@@ -25,7 +25,9 @@
     background-color: $gray-pale;
     padding: $space-sm $space-md;
     margin: $space-none (-$space-md) (-$space-sm);
-    margin-left: $space-position-comment;
+    &__in-list {
+      margin-left: $space-position-comment;
+    }
   }
 
   &--truncated {
