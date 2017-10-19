@@ -406,6 +406,8 @@
 .intro-modal-vertical-scroll-contain {
   height: calc(100vh - 336px);
   overflow-y: auto;
+  -webkit-overflow-scrolling: auto;
+  overflow-x: hidden;
 
   @include breakpoints (mid-small medium) {
     height: calc(100vh - 312px);
