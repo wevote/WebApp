@@ -23,7 +23,7 @@
 
   &__container {
     background-color: $gray-pale;
-    padding: $space-sm ($space-md - 4px);
+    padding: $space-sm $space-sm;
     margin: $space-none (-$space-md) (-$space-sm);
   }
 
