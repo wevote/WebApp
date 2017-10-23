@@ -31,11 +31,13 @@ $social-right-padding-mobile: 9px;
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-around;
+    .btn-social {
+      width: 100%;
+      padding-left: $social-left-padding-mobile;
+      padding-right: $social-right-padding-mobile;
+    }
   }
-  .btn-social {
-    padding-left: $social-left-padding-mobile;
-    padding-right: $social-right-padding-mobile;
-  }
+
 }
 
 .social-btn-description {
