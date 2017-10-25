@@ -1,9 +1,10 @@
 let Dispatcher = require("../dispatcher/Dispatcher");
 let FluxMapStore = require("flux/lib/FluxMapStore");
 import BallotActions from "../actions/BallotActions";
-import VoterStore from "../stores/VoterStore";
 import BookmarkStore from "../stores/BookmarkStore";
 import SupportStore from "../stores/SupportStore";
+import VoterGuideActions from "../actions/VoterGuideActions";
+import VoterStore from "../stores/VoterStore";
 const assign = require("object-assign");
 
 class BallotStore extends FluxMapStore {
@@ -142,7 +143,7 @@ class BallotStore extends FluxMapStore {
     if (!action.res || !action.res.success)
       return state;
 
-    let key;
+    let google_civic_election_id;
     let newBallot = {};
     let ballotCaveat = "";
 
@@ -155,16 +156,19 @@ class BallotStore extends FluxMapStore {
 
       case "voterBallotItemsRetrieve":
         // console.log("BallotStore, voterBallotItemsRetrieve response received.");
-        key = action.res.google_civic_election_id;
-        newBallot[key] = action.res;
+        google_civic_election_id = action.res.google_civic_election_id || 0;
+        if (google_civic_election_id !== 0) {
+          newBallot[google_civic_election_id] = action.res;
 
-        // console.log("BallotStore, voterBallotItemsRetrieve, state.ballots " + state.ballots);
-        // console.log("BallotStore, voterBallotItemsRetrieve, newBallot " + newBallot);
+          VoterGuideActions.voterGuidesToFollowRetrieve(google_civic_election_id);
+          VoterGuideActions.voterGuidesFollowedRetrieve(google_civic_election_id);
 
-        return {
-          ...state,
-          ballots: assign({}, state.ballots, newBallot ),
-        };
+          return {
+            ...state,
+            ballots: assign({}, state.ballots, newBallot),
+          };
+        }
+        return state;
 
       case "voterBallotListRetrieve":
         let ballot_election_list = action.res.voter_ballot_list;
@@ -177,18 +181,21 @@ class BallotStore extends FluxMapStore {
         if (action.res.status === "SIMPLE_ADDRESS_SAVE") {
           return state;
         } else {
-          key = action.res.google_civic_election_id;
-          newBallot[key] = action.res;
-          if (newBallot[key].ballot_found === false ) {
-            ballotCaveat = newBallot[key].ballot_caveat;
-          }
+          google_civic_election_id = action.res.google_civic_election_id || 0;
+          if (google_civic_election_id !== 0) {
+            newBallot[google_civic_election_id] = action.res;
+            if (newBallot[google_civic_election_id].ballot_found === false) {
+              ballotCaveat = newBallot[google_civic_election_id].ballot_caveat;
+            }
 
-          return {
-            ...state,
-            ballots: assign({}, state.ballots, newBallot ),
-            ballotCaveat: ballotCaveat
-          };
+            return {
+              ...state,
+              ballots: assign({}, state.ballots, newBallot),
+              ballotCaveat: ballotCaveat
+            };
+          }
         }
+        return state;
 
       case "error-voterBallotItemsRetrieve":
       default:

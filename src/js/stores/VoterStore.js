@@ -176,6 +176,8 @@ class VoterStore extends FluxMapStore {
   reduce (state, action) {
 
     let voter_device_id;
+    let google_civic_election_id;
+
     switch (action.type) {
       case "organizationSave":
         // If an organization saves, we want to check to see if it is tied to this voter. If so,
@@ -260,7 +262,8 @@ class VoterStore extends FluxMapStore {
             address: {
               text_for_map_search: action.res.text_for_map_search,
               google_civic_election_id: action.res.google_civic_election_id,
-              ballot_returned_we_vote_id: action.res.ballot_returned_we_vote_id
+              ballot_returned_we_vote_id: action.res.ballot_returned_we_vote_id,
+              ballot_location_display_name: action.res.ballot_location_display_name
             }
           };
         } else {
@@ -271,17 +274,22 @@ class VoterStore extends FluxMapStore {
             address: {
               text_for_map_search: action.res.text_for_map_search,
               google_civic_election_id: action.res.google_civic_election_id,
-              ballot_returned_we_vote_id: action.res.ballot_returned_we_vote_id
+              ballot_returned_we_vote_id: action.res.ballot_returned_we_vote_id,
+              ballot_location_display_name: action.res.ballot_location_display_name
             }
           };
         }
 
       case "voterBallotItemsRetrieve":
         // console.log("VoterStore latest_google_civic_election_id: ", action.res.google_civic_election_id);
-        return {
-          ...state,
-          latest_google_civic_election_id: action.res.google_civic_election_id,
-        };
+        google_civic_election_id = action.res.google_civic_election_id || 0;
+        if (google_civic_election_id !== 0) {
+          return {
+            ...state,
+            latest_google_civic_election_id: google_civic_election_id,
+          };
+        }
+        return state;
 
       case "voterEmailAddressRetrieve":
         return {

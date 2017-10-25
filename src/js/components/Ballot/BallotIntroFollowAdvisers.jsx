@@ -102,8 +102,17 @@ export default class BallotIntroFollowAdvisers extends Component {
   }
 
   render () {
+    // BallotIntroOrganizations is very similar. Check to see if we want to keep that file and this one in sync.
+
     // These are the organizations that a voter might want to follow based on the issues the voter is following.
     let voter_guides_to_follow_by_issues_followed = this.state.voter_guides_to_follow_by_issues_followed || [];
+
+    // We want to keep track of organizations we have already offered to the voter, so we don't show one twice
+    let index;
+    let organization_we_vote_ids_displayed = [];
+    for (index = 0; index < voter_guides_to_follow_by_issues_followed.length; ++index) {
+      organization_we_vote_ids_displayed.push(voter_guides_to_follow_by_issues_followed[index].organization_we_vote_id);
+    }
 
     const voter_guides_to_follow_by_issues_for_display = voter_guides_to_follow_by_issues_followed.map((voter_guide) =>
       <OrganizationFollowToggle
@@ -122,7 +131,17 @@ export default class BallotIntroFollowAdvisers extends Component {
     if (this.state.voter_guides_to_follow_all) {
       voter_guides_to_follow_all = this.state.voter_guides_to_follow_all;
     }
-    const voter_guides_to_follow_all_for_display = voter_guides_to_follow_all.map((voter_guide) =>
+
+    // We want to remove the organizations we've already displayed
+    let voter_guides_to_follow_all_filtered = [];
+    for (index = 0; index < voter_guides_to_follow_all.length; ++index) {
+      if (!organization_we_vote_ids_displayed.includes(voter_guides_to_follow_all[index].organization_we_vote_id)) {
+        voter_guides_to_follow_all_filtered.push(voter_guides_to_follow_all[index]);
+        organization_we_vote_ids_displayed.push(voter_guides_to_follow_all[index].organization_we_vote_id);
+      }
+    }
+
+    const voter_guides_to_follow_all_for_display = voter_guides_to_follow_all_filtered.map((voter_guide) =>
       <OrganizationFollowToggle
         key={voter_guide.organization_we_vote_id}
         organization_we_vote_id={voter_guide.organization_we_vote_id}

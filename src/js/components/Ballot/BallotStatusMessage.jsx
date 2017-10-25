@@ -69,7 +69,10 @@ export default class BallotStatusMessage extends Component {
       } else if (this.state.ballot_location_chosen && this.state.ballot_location_display_name) {
         message_string += "You are looking at the ballot for " + this.state.ballot_location_display_name + ". Some items below may not be on your official ballot.";
       } else {
-        message_string += "This is a ballot near you. Some items below may not be on your official ballot.";
+        if (this.state.voter_entered_address) {
+          message_string += "This is a ballot near you. ";
+        }
+        message_string += "Some items below may not be on your official ballot.";
       }
     } else {
       ballot_status_style = ""; // "alert-danger";
@@ -93,7 +96,10 @@ export default class BallotStatusMessage extends Component {
       } else if (this.state.ballot_location_chosen && this.state.ballot_location_display_name) {
         message_string += message_in_past_string + " You are looking at the ballot for " + this.state.ballot_location_display_name + ". Some items shown below may not have been on your official ballot.";
       } else {
-        message_string += message_in_past_string + " This was a ballot near you. Some items below may not have been on your official ballot.";
+        if (this.state.voter_entered_address) {
+          message_string += " This was a ballot near you. ";
+        }
+        message_string += message_in_past_string + " Some items below may not have been on your official ballot.";
       }
     }
 
