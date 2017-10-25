@@ -203,8 +203,12 @@ class VoterGuideStore extends FluxMapStore {
             if (filter_voter_guides_by_issue) {
               organization_we_vote_id = one_voter_guide.organization_we_vote_id;
               if (guide_we_vote_ids_processed.indexOf(organization_we_vote_id) === -1) {
-                organization_we_vote_ids_to_follow_by_issues_followed.push(one_voter_guide.organization_we_vote_id);
-                guide_we_vote_ids_processed.push(organization_we_vote_id);
+                if (!organization_we_vote_ids_to_follow_by_issues_followed.includes(one_voter_guide.organization_we_vote_id)) {
+                  organization_we_vote_ids_to_follow_by_issues_followed.push(one_voter_guide.organization_we_vote_id);
+                }
+                if (!guide_we_vote_ids_processed.includes(organization_we_vote_id)) {
+                  guide_we_vote_ids_processed.push(organization_we_vote_id);
+                }
               }
             }
           });

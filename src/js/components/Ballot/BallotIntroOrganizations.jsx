@@ -88,6 +88,7 @@ export default class BallotIntroFollowAdvisers extends Component {
   }
 
   render () {
+    // BallotIntroFollowAdvisers is very similar. Check to see if we want to keep that file and this one in sync.
     let voter_guides_to_follow_by_issues_followed = this.state.voter_guides_to_follow_by_issues_followed || [];
 
     const voter_guides_to_follow_by_issues_followed_for_display = voter_guides_to_follow_by_issues_followed.map((voter_guide) =>

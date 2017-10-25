@@ -143,6 +143,7 @@ export default class Application extends Component {
       let hide_intro_modal_from_url = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
       let hide_intro_modal_from_url_true = hide_intro_modal_from_url === 1 || hide_intro_modal_from_url === "1" || hide_intro_modal_from_url === "true";
       if (hide_intro_modal_from_url) {
+        // console.log("hide_intro_modal_from_url: ", hide_intro_modal_from_url);
         at_least_one_query_variable_found = true;
       }
       let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal");
@@ -167,12 +168,17 @@ export default class Application extends Component {
         });
 
         if (this.props.location.query.voter_address) {
+          // console.log("this.props.location.query.voter_address: ", this.props.location.query.voter_address);
           at_least_one_query_variable_found = true;
           let voter_address = this.props.location.query.voter_address;
-          VoterActions.voterAddressSave(voter_address);
+          if (voter_address && voter_address !== "") {
+            // Do not save a blank voter_address -- we don't want to over-ride an existing address with a blank
+            VoterActions.voterAddressSave(voter_address);
+          }
         }
-        if (at_least_one_query_variable_found) {
+        if (at_least_one_query_variable_found && this.props.location.pathname) {
           // console.log("at_least_one_query_variable_found push: ", at_least_one_query_variable_found);
+          // console.log("this.props.location.pathname: ", this.props.location.pathname);
           browserHistory.push(this.props.location.pathname);
         }
       }
