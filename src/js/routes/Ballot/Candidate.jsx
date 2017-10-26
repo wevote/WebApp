@@ -36,7 +36,8 @@ export default class Candidate extends Component {
   componentDidMount (){
     this.candidateStoreListener = CandidateStore.addListener(this._onCandidateStoreChange.bind(this));
     var { candidate_we_vote_id } = this.state;
-    CandidateActions.retrieve(candidate_we_vote_id);
+    CandidateActions.candidateRetrieve(candidate_we_vote_id);
+    CandidateActions.positionListForBallotItem(candidate_we_vote_id);
 
     // Get the latest guides to follow for this candidate
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
@@ -55,7 +56,8 @@ export default class Candidate extends Component {
     // When a new candidate is passed in, update this component to show the new data
     this.setState({candidate_we_vote_id: nextProps.params.candidate_we_vote_id});
 
-    CandidateActions.retrieve(nextProps.params.candidate_we_vote_id);
+    CandidateActions.candidateRetrieve(nextProps.params.candidate_we_vote_id);
+    CandidateActions.positionListForBallotItem(nextProps.params.candidate_we_vote_id);
 
     VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.candidate_we_vote_id, "CANDIDATE");
 
@@ -83,7 +85,8 @@ export default class Candidate extends Component {
     // this.setState({ voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.state.candidate_we_vote_id) });
     this.setState({ voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem() });
     // When the voter_guides_to_follow_for_latest_ballot_item changes, trigger an update of the candidate so we can get an updated position_list
-    CandidateActions.retrieve(this.state.candidate_we_vote_id);
+    CandidateActions.candidateRetrieve(this.state.candidate_we_vote_id);
+    CandidateActions.positionListForBallotItem(this.state.candidate_we_vote_id);
     // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
     SupportActions.retrievePositionsCountsForOneBallotItem(candidate_we_vote_id);
   }

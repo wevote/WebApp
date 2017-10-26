@@ -4,6 +4,7 @@ import GuideList from "../../components/VoterGuide/GuideList";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
 import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPositionBreakdownList";
 import SupportStore from "../../stores/SupportStore";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 
 
 export default class CandidateModal extends Component {
@@ -24,11 +25,28 @@ export default class CandidateModal extends Component {
   }
 
   componentDidMount () {
+    let position_list = this.props.candidate.position_list || [];
+    if (position_list.length === 0) {
+      // position_list = VoterGuideStore.get
+    }
+    this.setState({
+      position_list: position_list,
+    });
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+  }
+
+  componentWillUnmount () {
+    this.voterGuideStoreListener.remove();
+  }
+
+  onVoterGuideStoreChange () {
+    // this.setState({ transitioning: false });
   }
 
   render () {
     let voter_guides_to_follow_for_ballot_item_id = this.props.candidate.voter_guides_to_follow_for_ballot_item_id || [];
-    return <Modal show >
+    return <Modal show={this.props.show}
+                  onHide={this.props.toggleFunction} >
       <Modal.Header closeButton onHide={this.props.toggleFunction}>
         <Modal.Title>
           { this.props.candidate ?

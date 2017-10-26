@@ -7,6 +7,7 @@
   text-align: center;
   @include breakpoints (max large) {
     height: 100vh;
+    max-height: 990px; // We set this so that when We Vote is in a frame, the modal isn't too long.
   }
   &__h1 {
     font-weight: 700;

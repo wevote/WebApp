@@ -405,16 +405,19 @@
 
 .intro-modal-vertical-scroll-contain {
   height: calc(100vh - 336px);
+  max-height: 654px; // Scroll area in modal: 990 - 336 = 654px We set this so that when We Vote is in a frame, the modal isn't too long.
   overflow-y: auto;
   -webkit-overflow-scrolling: auto;
   overflow-x: hidden;
 
-  @include breakpoints (mid-small medium) {
-    height: calc(100vh - 312px);
-  }
-
   @include breakpoints (max mid-small) {
     height: calc(100vh - 256px);
+    max-height: 344px; // Scroll area in modal: 600 - 256 = 344px We set this so that when We Vote is in a frame, the modal isn't too long.
+  }
+
+  @include breakpoints (mid-small medium) {
+    height: calc(100vh - 312px);
+    max-height: 288px; // Scroll area in modal: 600 - 312 = 654px We set this so that when We Vote is in a frame, the modal isn't too long.
   }
 }
 
@@ -467,10 +470,12 @@
 .calc-height {
   @include breakpoints (max mid-small) {
     height: calc(100vh - 52px);
+    max-height: 548px; // Scroll area in modal: 600 - 52 = 548px We set this so that when We Vote is in a frame, the modal isn't too long.
   }
 
   @include breakpoints (mid-small) {
     height: calc(100vh - 104px);
+    max-height: 496px; // Scroll area in modal: 600 - 104 = 496px We set this so that when We Vote is in a frame, the modal isn't too long.
   }
 }
 
@@ -480,6 +485,7 @@
 
     .modal-content {
       height: calc(100vh - 90px);
+      max-height: 900px; // Modal background box: 990 - 90 = 900px We set this so that when We Vote is in a frame, the modal isn't too long.
     }
   }
 }
@@ -504,10 +510,12 @@
 
     .intro-modal-vertical-scroll-contain {
       height: calc(100vh - 350px);
+      max-height: 640px; // Scroll area in modal: 990 - 350 = 640px We set this so that when We Vote is in a frame, the modal isn't too long.
     }
 
     .calc-height {
       height: calc(100vh - 100px);
+      max-height: 890px; // Modal buttons positioning: 990 - 100 = 640px We set this so that when We Vote is in a frame, the modal isn't too long.
     }
   }
 }

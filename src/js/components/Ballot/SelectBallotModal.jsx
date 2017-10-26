@@ -19,7 +19,9 @@ export default class SelectBallotModal extends Component {
 
 
   render () {
-    return <Modal show onHide={this.props.toggleFunction} className="ballot-election-list ballot-election-list__modal">
+    return <Modal className="ballot-election-list ballot-election-list__modal"
+                  show={this.props.show}
+                  onHide={this.props.toggleFunction} >
       <Modal.Header closeButton onHide={this.props.toggleFunction}>
         <Modal.Title className="ballot-election-list__h1">See Ballot from Another Election</Modal.Title>
       </Modal.Header>

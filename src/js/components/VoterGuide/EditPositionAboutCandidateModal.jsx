@@ -37,7 +37,8 @@ export default class EditPositionAboutCandidateModal extends Component {
     // var candidate = CandidateStore.get(ballot_item_we_vote_id) || null;
     // console.log("EditPositionAboutCandidateModal: componentDidMount, ballot_item_we_vote_id: ", ballot_item_we_vote_id, ", candidate: ", candidate);
     // if (candidate === null) {
-    //   CandidateActions.retrieve(ballot_item_we_vote_id);
+    //   CandidateActions.candidateRetrieve(ballot_item_we_vote_id);
+    //   CandidateActions.positionListForBallotItem(ballot_item_we_vote_id);
     // } else {
     //   this._onCandidateStoreChange()
     // }
