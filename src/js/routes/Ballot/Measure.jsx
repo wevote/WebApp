@@ -35,7 +35,8 @@ export default class Measure extends Component {
     this.measureStoreListener = MeasureStore.addListener(this._onMeasureStoreChange.bind(this));
     var { measure_we_vote_id } = this.props.params;
 
-    MeasureActions.retrieve(measure_we_vote_id);
+    MeasureActions.measureRetrieve(measure_we_vote_id);
+    MeasureActions.positionListForBallotItem(measure_we_vote_id);
 
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(measure_we_vote_id, "MEASURE");
@@ -50,7 +51,8 @@ export default class Measure extends Component {
     // When a new candidate is passed in, update this component to show the new data
     this.setState({measure_we_vote_id: nextProps.params.measure_we_vote_id});
 
-    MeasureActions.retrieve(nextProps.params.measure_we_vote_id);
+    MeasureActions.measureRetrieve(nextProps.params.measure_we_vote_id);
+    MeasureActions.positionListForBallotItem(nextProps.params.measure_we_vote_id);
 
     VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.measure_we_vote_id, "MEASURE");
 
@@ -69,7 +71,8 @@ export default class Measure extends Component {
     // Eventually we could use this getVoterGuidesToFollowForBallotItemId with measure_we_vote_id, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
     this.setState({ voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem() });
-    MeasureActions.retrieve(this.state.measure_we_vote_id);
+    MeasureActions.measureRetrieve(this.state.measure_we_vote_id);
+    MeasureActions.positionListForBallotItem(this.state.measure_we_vote_id);
   }
 
   _onMeasureStoreChange (){

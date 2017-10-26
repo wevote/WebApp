@@ -20,7 +20,8 @@ export default class MeasureModal extends Component {
   }
 
   render () {
-    return <Modal show onHide={this.props.toggleFunction}>
+    return <Modal show={this.props.show}
+                  onHide={this.props.toggleFunction} >
       <Modal.Header closeButton onHide={this.props.toggleFunction}>
         <Modal.Title>
           { this.props.measure ?
