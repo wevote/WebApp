@@ -21,7 +21,21 @@ export default class VerifyThisIsMe extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {candidate: {} };
+    this.state = {
+      candidate: {},
+      organization: {},
+      position_list_from_advisers_followed_by_voter: [],
+      voter: {},
+      kind_of_owner: "",
+      owner_we_vote_id: "",
+      twitter_handle: "",
+      twitter_description: "",
+      twitter_followers_count: 0,
+      twitter_name: "",
+      twitter_photo_url: "",
+      twitter_user_website: "",
+      status: ""
+    };
   }
 
   componentDidMount () {
@@ -61,9 +75,9 @@ export default class VerifyThisIsMe extends Component {
 
   _onCandidateStoreChange (){
     let { owner_we_vote_id } = TwitterStore.get();
-    var candidate = CandidateStore.get(owner_we_vote_id) || {};
     this.setState({
-      candidate: candidate,
+      candidate: CandidateStore.getCandidate(owner_we_vote_id),
+      position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(owner_we_vote_id),
     });
   }
 
@@ -114,6 +128,7 @@ export default class VerifyThisIsMe extends Component {
         <Helmet title="Claim This Page - We Vote" />
         <section className="card">
           <CandidateItem {...candidate}
+                         position_list={this.state.position_list_from_advisers_followed_by_voter}
                          showLargeImage />
         </section>
         <div>

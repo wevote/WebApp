@@ -25,6 +25,7 @@
 
 .display-in-column-with-vertical-scroll-contain {
   height: calc(100vh - 384px);
+  max-height: 990px; // Doesn't seem to be working as expected
   overflow-y: auto;
 }
 

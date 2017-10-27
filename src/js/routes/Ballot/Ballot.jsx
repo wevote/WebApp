@@ -15,6 +15,7 @@ import BallotStatusMessage from "../../components/Ballot/BallotStatusMessage";
 import BallotStore from "../../stores/BallotStore";
 import BallotSummaryModal from "../../components/Ballot/BallotSummaryModal";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
+import CandidateActions from "../../actions/CandidateActions";
 import CandidateModal from "../../components/Ballot/CandidateModal";
 import cookies from "../../utils/cookies";
 import EditAddress from "../../components/Widgets/EditAddress";
@@ -218,6 +219,7 @@ export default class Ballot extends Component {
     if (candidate_for_modal) {
       VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidate_for_modal.we_vote_id, "CANDIDATE");
       candidate_for_modal.voter_guides_to_follow_for_latest_ballot_item = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(candidate_for_modal.we_vote_id);
+      CandidateActions.positionListForBallotItem(candidate_for_modal.we_vote_id);
     }
 
     this.setState({
