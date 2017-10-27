@@ -34,7 +34,7 @@ export default class EditPositionAboutCandidateModal extends Component {
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
 
     // let { ballot_item_we_vote_id } = this.props.position;
-    // var candidate = CandidateStore.get(ballot_item_we_vote_id) || null;
+    // var candidate = CandidateStore.getCandidate(ballot_item_we_vote_id) || null;
     // console.log("EditPositionAboutCandidateModal: componentDidMount, ballot_item_we_vote_id: ", ballot_item_we_vote_id, ", candidate: ", candidate);
     // if (candidate === null) {
     //   CandidateActions.candidateRetrieve(ballot_item_we_vote_id);
@@ -78,7 +78,7 @@ export default class EditPositionAboutCandidateModal extends Component {
 
   _onCandidateStoreChange () {
     // let { ballot_item_we_vote_id } = this.props.position;
-    // var candidate = CandidateStore.get(ballot_item_we_vote_id) || {};
+    // var candidate = CandidateStore.getCandidate(ballot_item_we_vote_id) || {};
     // console.log("_onCandidateStoreChange, ballot_item_we_vote_id: ", ballot_item_we_vote_id, ", candidate: ", candidate);
     // this.setState({
     //   candidate: candidate,
