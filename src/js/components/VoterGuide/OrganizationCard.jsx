@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
+import FollowToggle from "../../components/Widgets/FollowToggle";
 import ImageHandler from "../../components/ImageHandler";
 import LoadingWheel from "../../components/LoadingWheel";
 import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
@@ -15,6 +16,7 @@ import { removeTwitterNameFromDescription } from "../../utils/textFormat";
 export default class OrganizationCard extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
+    followToggleOn: PropTypes.bool,
     organization: PropTypes.object.isRequired,
     turn_off_description: PropTypes.bool
   };
@@ -127,6 +129,12 @@ export default class OrganizationCard extends Component {
         <Link to={voterGuideLink} className="u-no-underline">
           <ImageHandler imageUrl={organization_photo_url_large} className="card-main__org-avatar" sizeClassName="icon-lg "/>
         </Link>
+        {this.props.followToggleOn ?
+          <div className="u-margin-top--md">
+            <FollowToggle we_vote_id={this.state.organization_we_vote_id}
+                          classNameOverride="pull-left" />
+          </div> :
+          null }
       </div>
       <div className="card-main__media-object-content">
         <Link to={voterGuideLink}>

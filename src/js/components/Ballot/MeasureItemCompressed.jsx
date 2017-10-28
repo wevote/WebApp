@@ -35,7 +35,7 @@ export default class MeasureItemCompressed extends Component {
   componentDidMount () {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
-    this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
   }
 
@@ -50,7 +50,7 @@ export default class MeasureItemCompressed extends Component {
     // console.log("onVoterGuideStoreChange");
   }
 
-  _onSupportStoreChange () {
+  onSupportStoreChange () {
     this.setState({
       supportProps: SupportStore.get(this.props.we_vote_id),
       transitioning: false,
@@ -58,11 +58,11 @@ export default class MeasureItemCompressed extends Component {
   }
   render () {
     let { ballot_item_display_name, measure_subtitle, measure_text, we_vote_id } = this.props;
-
+    let measure_we_vote_id = we_vote_id;
     measure_subtitle = capitalizeString(measure_subtitle);
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
-    let measureGuidesList = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id);
+    let measureGuidesList = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(measure_we_vote_id);
 
     let measure_for_modal = {
       ballot_item_display_name: ballot_item_display_name,
@@ -72,7 +72,7 @@ export default class MeasureItemCompressed extends Component {
       measure_subtitle: measure_subtitle,
       measure_text: this.props.measure_text,
       measure_url: this.props.measure_url,
-      measure_we_vote_id: this.props.we_vote_id,
+      we_vote_id: measure_we_vote_id,
       position_list: this.props.position_list
     };
 
@@ -86,18 +86,18 @@ export default class MeasureItemCompressed extends Component {
     }
 
     return <div className="card-main measure-card">
-      <a name={we_vote_id} />
+      <a name={measure_we_vote_id} />
       <div className="card-main__content">
         <h2 className="card-main__display-name">
           { this.props.link_to_ballot_item_page ?
             <div className="card-main__ballot-name-group">
               <div className="card-main__ballot-name-item card-main__ballot-name">
-                <Link to={"/measure/" + we_vote_id}>
+                <Link to={"/measure/" + measure_we_vote_id}>
                   {ballot_item_display_name}
                 </Link>
               </div>
               <div className="card-main__ballot-name-item">
-                <Link to={"/measure/" + we_vote_id}>
+                <Link to={"/measure/" + measure_we_vote_id}>
                   <span className="card-main__ballot-read-more-link hidden-xs">learn&nbsp;more</span>
                 </Link>
               </div>
@@ -105,10 +105,10 @@ export default class MeasureItemCompressed extends Component {
             ballot_item_display_name
           }
         </h2>
-        <BookmarkToggle we_vote_id={we_vote_id} type="MEASURE"/>
+        <BookmarkToggle we_vote_id={measure_we_vote_id} type="MEASURE"/>
         {/* Measure information */}
         <div className={ this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null }
-             onClick={ this.props.link_to_ballot_item_page ? () => browserHistory.push("/measure/" + we_vote_id) : null }>
+             onClick={ this.props.link_to_ballot_item_page ? () => browserHistory.push("/measure/" + measure_we_vote_id) : null }>
           {measure_subtitle}
         </div>
         { measure_text ? <div className="measure_text">{measure_text}</div> : null }
@@ -118,7 +118,7 @@ export default class MeasureItemCompressed extends Component {
           {/* Positions in Your Network */}
           <div className={ this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null }
                onClick={ this.props.link_to_ballot_item_page ? () => this.props.toggleMeasureModal(measure_for_modal) : null }>
-            <ItemSupportOpposeCounts we_vote_id={we_vote_id}
+            <ItemSupportOpposeCounts we_vote_id={measure_we_vote_id}
                                      supportProps={this.state.supportProps}
                                      guideProps={measureGuidesList}
                                      type="MEASURE" />
@@ -127,7 +127,7 @@ export default class MeasureItemCompressed extends Component {
           {/* Possible Voter Guides to Follow (Desktop) */}
           <div onClick={ this.props.link_to_ballot_item_page ? () => this.props.toggleMeasureModal(measure_for_modal) : null }>
             { measureGuidesList && measureGuidesList.length ?
-              <ItemTinyOpinionsToFollow ballotItemWeVoteId={we_vote_id}
+              <ItemTinyOpinionsToFollow ballotItemWeVoteId={measure_we_vote_id}
                                         organizationsToFollow={measureGuidesList}
                                         maximumOrganizationDisplay={this.state.maximum_organization_display}
                                         supportProps={this.state.supportProps} /> : null }
@@ -135,7 +135,7 @@ export default class MeasureItemCompressed extends Component {
 
           {/* Support or Oppose */}
           <div className="u-cursor--pointer">
-            <ItemActionBar ballot_item_we_vote_id={we_vote_id}
+            <ItemActionBar ballot_item_we_vote_id={measure_we_vote_id}
                            supportProps={this.state.supportProps}
                            shareButtonHide
                            commentButtonHide
@@ -147,7 +147,7 @@ export default class MeasureItemCompressed extends Component {
         {/* If voter has taken position, offer the comment bar */}
         { is_support || is_oppose || voter_statement_text ?
           <div>
-            <ItemPositionStatementActionBar ballot_item_we_vote_id={this.props.we_vote_id}
+            <ItemPositionStatementActionBar ballot_item_we_vote_id={measure_we_vote_id}
                                             ballot_item_display_name={this.props.ballot_item_display_name}
                                             supportProps={this.state.supportProps}
                                             transitioning={this.state.transitioning}

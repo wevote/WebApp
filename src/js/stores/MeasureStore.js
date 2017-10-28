@@ -1,9 +1,22 @@
 var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
-const assign = require("object-assign");
-
 
 class MeasureStore extends FluxMapStore {
+
+  getInitialState () {
+    return {
+      all_cached_measures: {}, // Dictionary with measure_we_vote_id as key and the measure as value
+      position_list_from_advisers_followed_by_voter: {}, // Dictionary with measure_we_vote_id as key and list of positions as value
+    };
+  }
+
+  getMeasure (measure_we_vote_id) {
+    return this.getState().all_cached_measures[measure_we_vote_id] || [];
+  }
+
+  getPositionList (measure_we_vote_id) {
+    return this.getState().position_list_from_advisers_followed_by_voter[measure_we_vote_id] || [];
+  }
 
   reduce (state, action) {
 
@@ -11,22 +24,38 @@ class MeasureStore extends FluxMapStore {
     if (!action.res || !action.res.success)
       return state;
 
-    var key;
-    var merged_properties;
+    let all_cached_measures;
+    let ballot_item_we_vote_id;
+    let measure;
+    let new_position_list;
+    let position_list_for_measure;
+    let position_list_from_advisers_followed_by_voter;
 
     switch (action.type) {
 
       case "measureRetrieve":
-        key = action.res.we_vote_id;
-        merged_properties = assign({}, state.get(key), action.res );
-        return state.set(key, merged_properties );
+        measure = action.res;
+        all_cached_measures = state.all_cached_measures;
+        all_cached_measures[measure.we_vote_id] = measure;
+        return {
+          ...state,
+          all_cached_measures: all_cached_measures
+        };
 
       case "positionListForBallotItem":
-        // TODO DALE We need to filter this to only store if the ballot item is a measure
-        key = action.res.ballot_item_we_vote_id;
-        var position_list = action.res.position_list;
-        merged_properties = assign({}, state.get(key), {position_list: position_list} );
-        return state.set(key, merged_properties );
+        position_list_for_measure = action.res.kind_of_ballot_item === "MEASURE";
+        if (position_list_for_measure) {
+          ballot_item_we_vote_id = action.res.ballot_item_we_vote_id;
+          new_position_list = action.res.position_list;
+          position_list_from_advisers_followed_by_voter = state.position_list_from_advisers_followed_by_voter;
+          position_list_from_advisers_followed_by_voter[ballot_item_we_vote_id] = new_position_list;
+          return {
+            ...state,
+            position_list_from_advisers_followed_by_voter: position_list_from_advisers_followed_by_voter,
+          };
+        } else {
+          return state;
+        }
 
       case "error-measureRetrieve" || "error-positionListForBallotItem":
         console.log(action);

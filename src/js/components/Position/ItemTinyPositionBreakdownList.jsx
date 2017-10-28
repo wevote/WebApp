@@ -4,6 +4,7 @@ import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
 import PositionItem from "../Ballot/PositionItem";
 import PositionsNotShownList from "../Ballot/PositionsNotShownList";
 import VoterStore from "../../stores/VoterStore";
+var Icon = require("react-svg-icons");
 
 // This component can be used to show either supporters, opposers, or groups with info only
 export default class ItemTinyPositionBreakdownList extends Component {
@@ -73,6 +74,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
     let one_organization;
     let organizations_to_display = [];
     let temp_organizations_to_display = [];
+    let voter_image_url_tiny = "";
     // Put the voter's icon first
     if (this.props.supportProps && this.state.voter) {
       let show_voter_position = false;
@@ -81,15 +83,22 @@ export default class ItemTinyPositionBreakdownList extends Component {
       } else if (this.props.supportProps.is_oppose && this.props.showOppose) {
         show_voter_position = true;
       }
+      // console.log("ItemTinyPositionBreakdownList show_voter_position: ", show_voter_position);
       if (show_voter_position) {
         one_organization = {
           organization_we_vote_id: this.state.voter.we_vote_id,
-          voter_guide_image_url_tiny: this.state.voter.voter_photo_url_tiny,
           voter_guide_display_name: this.state.voter.full_name
         };
-        let voter_organization_tiny_display = <OrganizationTinyDisplay key={one_organization.organization_we_vote_id}
-                                                                       showPlaceholderImage
-                                                                       {...one_organization} />;
+        let voter_organization_tiny_display;
+        voter_image_url_tiny = this.state.voter.voter_photo_url_tiny ? this.state.voter.voter_photo_url_tiny : "";
+        if (voter_image_url_tiny && voter_image_url_tiny.length) {
+          voter_organization_tiny_display = <OrganizationTinyDisplay key={one_organization.organization_we_vote_id}
+                                                                     showPlaceholderImage
+                                                                     voter_image_url_tiny={voter_image_url_tiny}
+                                                                     {...one_organization} />;
+        } else {
+          voter_organization_tiny_display = <span key="anonIconKey" className="position-rating__source with-popover"><Icon name="avatar-generic" width={24} height={24} />You</span>;
+        }
         organizations_to_display.push(voter_organization_tiny_display);
       }
     }

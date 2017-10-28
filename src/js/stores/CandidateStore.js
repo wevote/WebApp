@@ -1,6 +1,5 @@
 var Dispatcher = require("../dispatcher/Dispatcher");
 var FluxMapStore = require("flux/lib/FluxMapStore");
-const assign = require("object-assign");
 import OfficeActions from "../actions/OfficeActions";
 import OfficeStore from "../stores/OfficeStore";
 
@@ -30,7 +29,6 @@ class CandidateStore extends FluxMapStore {
     let all_cached_candidates;
     let ballot_item_we_vote_id;
     let candidate;
-    var key;
     let new_position_list;
     let position_list_for_candidate;
     let position_list_from_advisers_followed_by_voter;
@@ -38,16 +36,13 @@ class CandidateStore extends FluxMapStore {
     switch (action.type) {
 
       case "candidateRetrieve":
-        key = action.res.we_vote_id;
-        // Make sure we have information for the office the candidate is running for
+         // Make sure we have information for the office the candidate is running for
         if (action.res.contest_office_we_vote_id) {
           let office = OfficeStore.getOffice(action.res.contest_office_we_vote_id);
           if (!office || !office.ballot_item_display_name) {
             OfficeActions.officeRetrieve(action.res.contest_office_we_vote_id);
           }
         }
-        // merged_properties = assign({}, state.get(key), action.res );
-        // return state.set(key, merged_properties );
         candidate = action.res;
         all_cached_candidates = state.all_cached_candidates;
         all_cached_candidates[candidate.we_vote_id] = candidate;

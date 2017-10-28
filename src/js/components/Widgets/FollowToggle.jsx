@@ -8,7 +8,8 @@ import VoterStore from "../../stores/VoterStore";
 export default class FollowToggle extends Component {
   static propTypes = {
     we_vote_id: PropTypes.string.isRequired,
-    hide_stop_following_button: PropTypes.bool
+    hide_stop_following_button: PropTypes.bool,
+    classNameOverride: PropTypes.string,
   };
 
   constructor (props) {
@@ -60,7 +61,7 @@ export default class FollowToggle extends Component {
     let is_looking_at_self = this.state.voter.linked_organization_we_vote_id === we_vote_id;
     // You should not be able to follow yourself
     if (is_looking_at_self) { return <div />; }
-
+    let classNameOverride = this.props.classNameOverride || "";
 
     const followFunc = OrganizationActions.organizationFollow.bind(this, we_vote_id);
     const stopFollowingFunc = OrganizationActions.organizationStopFollowing.bind(this, we_vote_id);
@@ -81,11 +82,14 @@ export default class FollowToggle extends Component {
         null :
         <Button bsStyle="warning"
                 bsSize="small"
-                className="pull-right"
+                className={classNameOverride.length ? classNameOverride : "pull-right"}
                 onClick={stopFollowingInstantly}>
                 <span>Unfollow</span>
         </Button> }
         </span> :
-        <Button bsStyle="info" bsSize="small" className="pull-right" onClick={followInstantly}><span>Follow</span></Button>;
+        <Button bsStyle="info"
+                bsSize="small"
+                className={classNameOverride.length ? classNameOverride : "pull-right"}
+                onClick={followInstantly}><span>Follow</span></Button>;
   }
 }

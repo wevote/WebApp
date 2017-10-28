@@ -36,7 +36,7 @@ export default class OrganizationPositionItem extends Component {
   }
 
   componentDidMount () {
-    this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
@@ -46,7 +46,7 @@ export default class OrganizationPositionItem extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onSupportStoreChange () {
+  onSupportStoreChange () {
     this.setState({
       supportProps: SupportStore.get(this.props.position.ballot_item_we_vote_id),
       transitioning: false

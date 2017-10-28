@@ -45,7 +45,7 @@ export default class CandidateItem extends Component {
   componentDidMount () {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
-    this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     var supportProps = SupportStore.get(this.props.we_vote_id);
     if (supportProps !== undefined) {
       this.setState({ supportProps: supportProps, transitioning: false });
@@ -62,7 +62,7 @@ export default class CandidateItem extends Component {
     this.setState({ transitioning: false });
   }
 
-  _onSupportStoreChange () {
+  onSupportStoreChange () {
     var supportProps = SupportStore.get(this.props.we_vote_id);
     if (supportProps !== undefined) {
       this.setState({ supportProps: supportProps, transitioning: false });

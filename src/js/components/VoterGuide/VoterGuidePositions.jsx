@@ -29,7 +29,7 @@ export default class VoterGuidePositions extends Component {
 
   componentDidMount (){
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
-    this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     // console.log("VoterGuidePositions, componentDidMount, this.props.organization: ", this.props.organization);
     VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
@@ -83,7 +83,7 @@ export default class VoterGuidePositions extends Component {
     });
   }
 
-  _onSupportStoreChange () {
+  onSupportStoreChange () {
     // Whenever positions change, we want to make sure to get the latest organization, because it has
     //  position_list_for_one_election and position_list_for_all_except_one_election attached to it
     this.setState({

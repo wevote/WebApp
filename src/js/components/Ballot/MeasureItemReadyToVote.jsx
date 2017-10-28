@@ -25,7 +25,7 @@ export default class MeasureItemReadyToVote extends Component {
   componentDidMount () {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
-    this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
   }
 
@@ -40,7 +40,7 @@ export default class MeasureItemReadyToVote extends Component {
     // console.log("onVoterGuideStoreChange");
   }
 
-  _onSupportStoreChange () {
+  onSupportStoreChange () {
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id), transitioning: false });
   }
   render () {
