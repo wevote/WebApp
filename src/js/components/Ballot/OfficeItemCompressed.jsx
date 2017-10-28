@@ -40,7 +40,7 @@ export default class OfficeItemCompressed extends Component {
   componentDidMount () {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
-    this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
   }
 
   componentWillUnmount () {
@@ -52,7 +52,7 @@ export default class OfficeItemCompressed extends Component {
     this.setState({ transitioning: false });
   }
 
-  _onSupportStoreChange () {
+  onSupportStoreChange () {
     this.setState({ transitioning: false });
   }
 
@@ -94,12 +94,12 @@ export default class OfficeItemCompressed extends Component {
         </h2>
         { candidate_list_to_display.map( (one_candidate) => {
           let candidate_we_vote_id = one_candidate.we_vote_id;
-          let candidateSupportStore = SupportStore.get(candidate_we_vote_id);
           let candidateGuidesList = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(candidate_we_vote_id);
 
           let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + ". " : "";
           let candidate_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
           let candidate_text = candidate_party_text + candidate_description_text;
+          let candidateSupportStore = SupportStore.get(candidate_we_vote_id);
           let is_support = false;
           let is_oppose = false;
           let voter_statement_text = false;
@@ -144,7 +144,7 @@ export default class OfficeItemCompressed extends Component {
                                              type="CANDIDATE" />
                   </div>
 
-                  {/* Possible Voter Guides to Follow (Desktop) */}
+          {/* Possible Voter Guides to Follow (Desktop) */}
                   { candidateGuidesList && candidateGuidesList.length ?
                     <ItemTinyOpinionsToFollow ballotItemWeVoteId={candidate_we_vote_id}
                                               organizationsToFollow={candidateGuidesList}

@@ -22,6 +22,8 @@ import EditAddress from "../../components/Widgets/EditAddress";
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
 import Helmet from "react-helmet";
+import IssueStore from "../../stores/IssueStore";
+import MeasureActions from "../../actions/MeasureActions";
 import MeasureModal from "../../components/Ballot/MeasureModal";
 import SelectAddressModal from "../../components/Ballot/SelectAddressModal";
 import SelectBallotModal from "../../components/Ballot/SelectBallotModal";
@@ -81,7 +83,9 @@ export default class Ballot extends Component {
     let hide_intro_modal_from_url = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
     let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal") || 0;
     let wait_until_voter_sign_in_completes = this.props.location.query ? this.props.location.query.wait_until_voter_sign_in_completes : 0;
-    if ( wait_until_voter_sign_in_completes !== undefined || hide_intro_modal_from_cookie || hide_intro_modal_from_url ) {
+    let issues_voter_can_follow = IssueStore.getIssuesVoterCanFollow(); // Check to see if the issues have been retrieved yet
+
+    if ( wait_until_voter_sign_in_completes !== undefined || hide_intro_modal_from_cookie || hide_intro_modal_from_url || !issues_voter_can_follow ) {
       this.setState({
         mounted: true,
         showBallotIntroModal: false
@@ -239,12 +243,15 @@ export default class Ballot extends Component {
     this.setState({ showBallotIntroModal: !this.state.showBallotIntroModal });
   }
 
-  toggleMeasureModal (measureForModal) {
-    if (measureForModal) {
-      VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(measureForModal.measure_we_vote_id, "MEASURE");
+  toggleMeasureModal (measure_for_modal) {
+    // console.log("toggleMeasureModal, measure_for_modal: ", measure_for_modal);
+    if (measure_for_modal) {
+      VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(measure_for_modal.we_vote_id, "MEASURE");
+      measure_for_modal.voter_guides_to_follow_for_latest_ballot_item = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(measure_for_modal.we_vote_id);
+      MeasureActions.positionListForBallotItem(measure_for_modal.we_vote_id);
     }
     this.setState({
-      measure_for_modal: measureForModal,
+      measure_for_modal: measure_for_modal,
       showMeasureModal: !this.state.showMeasureModal
     });
   }
@@ -483,10 +490,11 @@ export default class Ballot extends Component {
     let ballot = this.state.ballot;
     let text_for_map_search = VoterStore.getTextForMapSearch();
     let voter_address_object = VoterStore.getAddressObject();
+    let issues_voter_can_follow = IssueStore.getIssuesVoterCanFollow(); // Don't auto-open intro until Issues are loaded
 
     if (!ballot) {
       return <div className="ballot container-fluid well u-stack--md u-inset--md">
-        { this.state.showBallotIntroModal ?
+        { this.state.showBallotIntroModal && issues_voter_can_follow.length !== 0 ?
           <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
         <div className="ballot__header">
           <BrowserPushMessage incomingProps={this.props} />

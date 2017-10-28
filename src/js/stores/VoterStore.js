@@ -281,7 +281,7 @@ class VoterStore extends FluxMapStore {
         }
 
       case "voterBallotItemsRetrieve":
-        // console.log("VoterStore latest_google_civic_election_id: ", action.res.google_civic_election_id);
+        // console.log("VoterStore voterBallotItemsRetrieve latest_google_civic_election_id: ", action.res.google_civic_election_id);
         google_civic_election_id = action.res.google_civic_election_id || 0;
         if (google_civic_election_id !== 0) {
           return {

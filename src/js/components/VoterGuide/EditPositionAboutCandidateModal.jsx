@@ -31,7 +31,7 @@ export default class EditPositionAboutCandidateModal extends Component {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
 
     this.candidateStoreListener = CandidateStore.addListener(this._onCandidateStoreChange.bind(this));
-    this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
 
     // let { ballot_item_we_vote_id } = this.props.position;
     // var candidate = CandidateStore.getCandidate(ballot_item_we_vote_id) || null;
@@ -86,7 +86,7 @@ export default class EditPositionAboutCandidateModal extends Component {
     //
   }
 
-  _onSupportStoreChange () {
+  onSupportStoreChange () {
     var ballot_item_we_vote_id = this.props.position.ballot_item_we_vote_id;
     this.setState({ supportProps: SupportStore.get(ballot_item_we_vote_id) });
   }

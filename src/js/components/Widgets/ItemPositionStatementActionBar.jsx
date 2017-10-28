@@ -50,7 +50,7 @@ export default class ItemPositionStatementActionBar extends Component {
       voter_full_name: VoterStore.getFullName(),
       voter_photo_url_medium: VoterStore.getVoterPhotoUrlMedium()
     });
-    this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
@@ -69,7 +69,7 @@ export default class ItemPositionStatementActionBar extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onSupportStoreChange () {
+  onSupportStoreChange () {
     let supportProps = SupportStore.get(this.props.ballot_item_we_vote_id);
     let statement_text_to_be_saved = "";
     let is_public_position = "";
