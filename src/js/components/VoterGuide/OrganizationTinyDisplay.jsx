@@ -7,6 +7,7 @@ export default class OrganizationTinyDisplay extends Component {
   static propTypes = {
     showPlaceholderImage: PropTypes.bool,
     voter_guide_image_url_tiny: PropTypes.string,
+    voter_image_url_tiny: PropTypes.string,
     organization_photo_url_tiny: PropTypes.string,
     voter_guide_display_name: PropTypes.string,
     organization_name: PropTypes.string,
@@ -28,6 +29,8 @@ export default class OrganizationTinyDisplay extends Component {
       image_url_tiny = this.props.voter_guide_image_url_tiny;
     } else if (this.props.organization_photo_url_tiny) {
       image_url_tiny = this.props.organization_photo_url_tiny;
+    } else if (this.props.voter_image_url_tiny) {
+      image_url_tiny = this.props.voter_image_url_tiny;
     } else {
       image_url_tiny = "";
     }

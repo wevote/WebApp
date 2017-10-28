@@ -23,7 +23,7 @@ export default class OfficeItemReadyToVote extends Component {
   componentDidMount () {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
-    this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     // console.log("OfficeItemCompressed, this.props.we_vote_id: ", this.props.we_vote_id);
   }
 
@@ -38,10 +38,10 @@ export default class OfficeItemReadyToVote extends Component {
     // console.log("onVoterGuideStoreChange");
   }
 
-  _onSupportStoreChange () {
+  onSupportStoreChange () {
     // We just want to trigger a re-render
     this.setState({ transitioning: false });
-    // console.log("_onSupportStoreChange");
+    // console.log("onSupportStoreChange");
   }
 
   render () {
