@@ -24,6 +24,7 @@ export default class OrganizationsFollowedOnTwitter extends Component {
   }
 
   componentDidMount () {
+    console.log("OrganizationsFollowedOnTwitter componentDidMount");
     this.setState({
       organizations_followed_on_twitter: this.props.organizationsFollowedOnTwitter,
       maximum_organization_display: this.props.maximumOrganizationDisplay,

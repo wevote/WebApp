@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import CandidateStore from "../../stores/CandidateStore";
 import FollowToggle from "../Widgets/FollowToggle";
 import OrganizationActions from "../../actions/OrganizationActions";
 import VoterGuideDisplayForList from "./VoterGuideDisplayForList";
@@ -24,6 +25,8 @@ export default class GuideList extends Component {
 
   componentDidMount () {
     // console.log("GuideList componentDidMount");
+    // this.setState({
+    //   position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(this.props.candidate.we_vote_id),
     this.setState({
       organizations_to_follow: this.props.organizationsToFollow,
       ballot_item_we_vote_id: this.props.ballotItemWeVoteId
@@ -52,28 +55,38 @@ export default class GuideList extends Component {
       return null;
     }
 
-    const orgs = this.state.organizations_to_follow.map( (org) => {
-      if (org === undefined) {
+    let organization_position_for_this_ballot_item;
+
+    const organization_list = this.state.organizations_to_follow.map( (organization) => {
+      if (organization === undefined) {
         // console.log("GuideList org === undefined");
         return null;
       } else {
-        return <VoterGuideDisplayForList key={org.organization_we_vote_id} {...org}>
-          <FollowToggle we_vote_id={org.organization_we_vote_id}
+        // console.log("GuideList organization: ", organization);
+        organization_position_for_this_ballot_item = {};
+        if (!organization.is_support_or_positive_rating && !organization.is_oppose_or_negative_rating && !organization.is_information_only && this.state.ballot_item_we_vote_id && organization.organization_we_vote_id) {
+          organization_position_for_this_ballot_item = CandidateStore.getPositionAboutCandidateFromOrganization(this.state.ballot_item_we_vote_id, organization.organization_we_vote_id);
+          // console.log("GuideList organization_position_for_this_ballot_item: ", organization_position_for_this_ballot_item);
+        }
+        return <VoterGuideDisplayForList key={organization.organization_we_vote_id}
+                                         {...organization}
+                                         {...organization_position_for_this_ballot_item}>
+          <FollowToggle we_vote_id={organization.organization_we_vote_id}
                         hide_stop_following_button={this.props.hide_stop_following_button}/>
           { this.props.hide_ignore_button ?
             null :
             <button className="btn btn-default btn-sm"
-                    onClick={this.handleIgnore.bind(this, org.organization_we_vote_id)}>
+                    onClick={this.handleIgnore.bind(this, organization.organization_we_vote_id)}>
               Ignore
             </button> }
         </VoterGuideDisplayForList>;
       }
     });
-    // console.log("GuideList orgs: ", orgs);
+    // console.log("GuideList organization_list: ", organization_list);
 
     return <div className="guidelist card-child__list-group">
         <ReactCSSTransitionGroup transitionName="org-ignore" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-          {orgs}
+          {organization_list}
         </ReactCSSTransitionGroup>
       </div>;
   }

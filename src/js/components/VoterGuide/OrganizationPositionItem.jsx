@@ -113,7 +113,9 @@ export default class OrganizationPositionItem extends Component {
 
     // TwitterHandle-based link
     let ballot_item_url = position.kind_of_ballot_item === "MEASURE" ? "/measure/" : "/candidate/";
-    let ballotItemLink = position.ballot_item_twitter_handle ? "/" + position.ballot_item_twitter_handle : ballot_item_url + position.ballot_item_we_vote_id;
+    // We are turning off links to twitter pages until we get politician pages working
+    //let ballotItemLink = position.ballot_item_twitter_handle ? "/" + position.ballot_item_twitter_handle : ballot_item_url + position.ballot_item_we_vote_id;
+    let ballotItemLink = ballot_item_url + position.ballot_item_we_vote_id;
     let position_description = "";
     let is_candidate = position.kind_of_ballot_item === "CANDIDATE";
     let ballot_item_display_name = "";

@@ -3,10 +3,9 @@ import Dispatcher from "../dispatcher/Dispatcher";
 module.exports = {
 
   voterGuidesToFollowRetrieve: function (election_id, search_string, add_voter_guides_not_from_election) {
-    const MAXIMUM_NUMBER_OF_GUIDES_TO_RETRIEVE = 300;
     Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", {
       google_civic_election_id: election_id,
-      maximum_number_to_retrieve: MAXIMUM_NUMBER_OF_GUIDES_TO_RETRIEVE,
+      maximum_number_to_retrieve: 300,
       search_string: search_string || "",
       add_voter_guides_not_from_election: add_voter_guides_not_from_election || false,
     });
@@ -58,6 +57,7 @@ module.exports = {
   },
 
   voterGuidesIgnoredRetrieve: function () {
+    // We do not currently limit the maximum_number_to_retrieve
     Dispatcher.loadEndpoint("voterGuidesIgnoredRetrieve");
   }
 

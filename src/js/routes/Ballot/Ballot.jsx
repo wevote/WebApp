@@ -25,6 +25,7 @@ import Helmet from "react-helmet";
 import IssueStore from "../../stores/IssueStore";
 import MeasureActions from "../../actions/MeasureActions";
 import MeasureModal from "../../components/Ballot/MeasureModal";
+import OrganizationActions from "../../actions/OrganizationActions";
 import SelectAddressModal from "../../components/Ballot/SelectAddressModal";
 import SelectBallotModal from "../../components/Ballot/SelectBallotModal";
 import SupportActions from "../../actions/SupportActions";
@@ -114,15 +115,6 @@ export default class Ballot extends Component {
       google_civic_election_id = BallotStore.ballot_properties.google_civic_election_id;
     }
 
-    this.setState({
-      google_civic_election_id: google_civic_election_id,
-      ballot_returned_we_vote_id: ballot_returned_we_vote_id,
-      ballot_location_shortcut: ballot_location_shortcut,
-      hide_intro_modal_from_url: hide_intro_modal_from_url,
-      hide_intro_modal_from_cookie: hide_intro_modal_from_cookie,
-      wait_until_voter_sign_in_completes: wait_until_voter_sign_in_completes
-    });
-
     // console.log("ballot_returned_we_vote_id: ", ballot_returned_we_vote_id, ", ballot_location_shortcut:", ballot_location_shortcut, ", google_civic_election_id_from_url: ", google_civic_election_id_from_url);
     if (ballot_returned_we_vote_id || ballot_location_shortcut || google_civic_election_id_from_url) {
       BallotActions.voterBallotItemsRetrieve(google_civic_election_id_from_url, ballot_returned_we_vote_id, ballot_location_shortcut);
@@ -135,7 +127,10 @@ export default class Ballot extends Component {
     if (ballot !== undefined) {
       // console.log("ballot !== undefined");
       let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
-      this.setState({ballot: ballot, ballot_type: ballot_type});
+      this.setState({
+        ballot: ballot,
+        ballot_type: ballot_type
+      });
     }
     // We need a ballotStoreListener here because we want the ballot to display before positions are received
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
@@ -153,6 +148,7 @@ export default class Ballot extends Component {
 
     this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
     ElectionActions.electionsRetrieve();
+    OrganizationActions.organizationsFollowedRetrieve();
 
     if (google_civic_election_id && google_civic_election_id !== 0) {
       AnalyticsActions.saveActionBallotVisit(google_civic_election_id);
@@ -160,19 +156,15 @@ export default class Ballot extends Component {
       AnalyticsActions.saveActionBallotVisit(VoterStore.election_id());
     }
     // console.log("End of componentDidMount");
-  }
 
-  componentWillUnmount (){
-    // console.log("Ballot componentWillUnmount");
-    this.setState({mounted: false});
-    if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){
-      // No ballot found
-    }
-    this.ballotStoreListener.remove();
-    this.electionListListener.remove();
-    this.supportStoreListener.remove();
-    this.voterGuideStoreListener.remove();
-    this.voterStoreListener.remove();
+    this.setState({
+      google_civic_election_id: google_civic_election_id,
+      ballot_returned_we_vote_id: ballot_returned_we_vote_id,
+      ballot_location_shortcut: ballot_location_shortcut,
+      hide_intro_modal_from_url: hide_intro_modal_from_url,
+      hide_intro_modal_from_cookie: hide_intro_modal_from_cookie,
+      wait_until_voter_sign_in_completes: wait_until_voter_sign_in_completes
+    });
   }
 
   componentWillReceiveProps (nextProps){
@@ -196,6 +188,8 @@ export default class Ballot extends Component {
       BallotActions.voterBallotItemsRetrieve(google_civic_election_id_zero, ballot_returned_we_vote_id);
     } else if (ballot_location_shortcut.length && ballot_location_shortcut !== this.state.ballot_location_shortcut) {
       // console.log("ballot_location_shortcut !== this.state.ballot_location_shortcut");
+      // console.log("ballot_location_shortcut:", ballot_location_shortcut);
+      // console.log("this.state.ballot_location_shortcut:", this.state.ballot_location_shortcut);
       let google_civic_election_id_zero = 0;
       let ballot_returned_we_vote_id_empty = "";
       BallotActions.voterBallotItemsRetrieve(google_civic_election_id_zero, ballot_returned_we_vote_id_empty, ballot_location_shortcut);
@@ -217,6 +211,19 @@ export default class Ballot extends Component {
     } else {
       AnalyticsActions.saveActionBallotVisit(VoterStore.election_id());
     }
+  }
+
+  componentWillUnmount (){
+    // console.log("Ballot componentWillUnmount");
+    this.setState({mounted: false});
+    if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){
+      // No ballot found
+    }
+    this.ballotStoreListener.remove();
+    this.electionListListener.remove();
+    this.supportStoreListener.remove();
+    this.voterGuideStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   toggleCandidateModal (candidate_for_modal) {
@@ -336,7 +343,7 @@ export default class Ballot extends Component {
 
     let ballot_location_shortcut_of_retrieved_ballot = "";
     if (BallotStore.ballot_properties) {
-      ballot_location_shortcut_of_retrieved_ballot = BallotStore.ballot_properties.ballot_location_shortcut;
+      ballot_location_shortcut_of_retrieved_ballot = BallotStore.ballot_properties.ballot_location_shortcut || "";
       ballot_location_shortcut_of_retrieved_ballot = ballot_location_shortcut_of_retrieved_ballot.trim();
       ballot_location_shortcut_of_retrieved_ballot = ballot_location_shortcut_of_retrieved_ballot === "none" ? "" : ballot_location_shortcut_of_retrieved_ballot;
     }
@@ -348,8 +355,17 @@ export default class Ballot extends Component {
       if (ballot_location_shortcut_of_retrieved_ballot_length && state_ballot_location_shortcut_length) {
         if (this.state.ballot_location_shortcut !== ballot_location_shortcut_of_retrieved_ballot) {
           // console.log("onBallotStoreChange, ballot_location_shortcut_of_retrieved_ballot is different");
+          let google_civic_election_id_zero = 0;
+          let ballot_returned_we_vote_id_empty = "";
+          // Retrieve the new ballot
+          BallotActions.voterBallotItemsRetrieve(google_civic_election_id_zero, ballot_returned_we_vote_id_empty, ballot_location_shortcut_of_retrieved_ballot);
+          // Change the URL to match
           browserHistory.push("/ballot/" + ballot_location_shortcut_of_retrieved_ballot);
-        }
+          // Update the Ballot state so we know the current ballot_location_shortcut we are looking at
+          this.setState({
+            ballot_location_shortcut: ballot_location_shortcut_of_retrieved_ballot
+          });
+       }
       }
     }
   }
