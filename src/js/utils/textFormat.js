@@ -33,7 +33,13 @@ export function arrayUnique (array) {
 }
 
 export function arrayContains (needle, array_haystack) {
-    return array_haystack.indexOf(needle) > -1;
+  // console.log("arrayContains, needle:", needle, ", haystack: ", array_haystack);
+  return array_haystack.indexOf(needle) > -1;
+}
+
+export function stringContains (needle, string_haystack) {
+  // console.log("stringContains, needle:", needle, ", haystack: ", string_haystack);
+  return string_haystack.indexOf(needle) !== -1;
 }
 
 export function capitalizeString (raw_string) {

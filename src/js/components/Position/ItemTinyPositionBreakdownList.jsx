@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { OverlayTrigger, Popover } from "react-bootstrap";
+import OrganizationCard from "../VoterGuide/OrganizationCard";
 import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
-import PositionItem from "../Ballot/PositionItem";
 import PositionsNotShownList from "../Ballot/PositionsNotShownList";
 import VoterStore from "../../stores/VoterStore";
 var Icon = require("react-svg-icons");
@@ -43,18 +43,18 @@ export default class ItemTinyPositionBreakdownList extends Component {
     });
   }
 
-  onTriggerEnter (org_id) {
-    this.refs[`overlay-${org_id}`].show();
+  onTriggerEnter (organization_we_vote_id) {
+    this.refs[`overlay-${organization_we_vote_id}`].show();
     this.show_popover = true;
     clearTimeout(this.hide_popover_timer);
   }
 
-  onTriggerLeave (org_id) {
+  onTriggerLeave (organization_we_vote_id) {
     this.show_popover = false;
     clearTimeout(this.hide_popover_timer);
     this.hide_popover_timer = setTimeout(() => {
-      if (!this.show_popover) {
-        this.refs[`overlay-${org_id}`].hide();
+      if (!this.show_popover && this.refs[`overlay-${organization_we_vote_id}`]) {
+        this.refs[`overlay-${organization_we_vote_id}`].hide();
       }
     }, 100);
   }
@@ -140,6 +140,8 @@ export default class ItemTinyPositionBreakdownList extends Component {
 
         local_counter++;
         if (local_counter > MAXIMUM_ORGANIZATION_DISPLAY) {
+          // We are in a loop here, and when we arrive at the first organization after our display limit,
+          //  we want to show a "drop down" with the remaining organizations.
           if (local_counter === MAXIMUM_ORGANIZATION_DISPLAY + 1) {
             // If here we want to show how many organizations there are to follow
             let organizationPopover = <Popover
@@ -166,24 +168,29 @@ export default class ItemTinyPositionBreakdownList extends Component {
           }
         } else {
           // If we made it to here, then we want to display the organization in a popover
+          // console.log("ItemTinyPositionBreakdownList, one_position:", one_position);
           one_organization = {
             organization_we_vote_id: one_position.speaker_we_vote_id,
-            voter_guide_image_url_tiny: one_position.speaker_image_url_https_tiny,
-            voter_guide_display_name: one_position.speaker_display_name
-          };
-          let org_id = one_organization.organization_we_vote_id;
+            organization_name: one_position.speaker_display_name,
+            organization_photo_url_large: one_position.speaker_image_url_https_large,
+            organization_photo_url_tiny: one_position.speaker_image_url_https_tiny,
+            organization_twitter_handle: one_position.speaker_twitter_handle,
+            // organization_website: one_position.more_info_url,
+            twitter_description: "",
+            twitter_followers_count: 0,
+         };
+          let organization_we_vote_id = one_organization.organization_we_vote_id;
           let organizationPopover = <Popover
-              id={`organization-popover-${org_id}`}
-              onMouseOver={() => this.onTriggerEnter(org_id)}
-              onMouseOut={() => this.onTriggerLeave(org_id)}>
+              id={`organization-popover-${organization_we_vote_id}`}
+              onMouseOver={() => this.onTriggerEnter(organization_we_vote_id)}
+              onMouseOut={() => this.onTriggerLeave(organization_we_vote_id)}>
               <section className="card">
                 <div className="card__additional">
                   <div>
                     <ul className="card-child__list-group">
-                      <PositionItem key={one_position.speaker_we_vote_id}
-                                    ballot_item_display_name={one_position.speaker_display_name}
-                                    position={one_position}
-                      />
+                      <OrganizationCard organization={one_organization}
+                                        ballotItemWeVoteId={this.props.ballotItemWeVoteId}
+                                        followToggleOn />
                     </ul>
                   </div>
               </div>
@@ -191,16 +198,16 @@ export default class ItemTinyPositionBreakdownList extends Component {
             </Popover>;
 
           return <OverlayTrigger
-              key={`trigger-${org_id}`}
-              ref={`overlay-${org_id}`}
-              onMouseOver={() => this.onTriggerEnter(org_id)}
-              onMouseOut={() => this.onTriggerLeave(org_id)}
+              key={`trigger-${organization_we_vote_id}`}
+              ref={`overlay-${organization_we_vote_id}`}
+              onMouseOver={() => this.onTriggerEnter(organization_we_vote_id)}
+              onMouseOut={() => this.onTriggerLeave(organization_we_vote_id)}
               rootClose
               placement="bottom"
               overlay={organizationPopover}>
             <span className="position-rating__source with-popover">
               <OrganizationTinyDisplay {...one_organization}
-                                     showPlaceholderImage />
+                                       showPlaceholderImage />
             </span>
           </OverlayTrigger>;
         }

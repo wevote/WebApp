@@ -25,6 +25,7 @@ export default class EditPositionAboutCandidateModal extends Component {
   }
 
   componentDidMount () {
+    console.log("OrganizationsFollowedOnTwitter componentDidMount");
     this._onVoterStoreChange();
 
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
@@ -117,7 +118,9 @@ export default class EditPositionAboutCandidateModal extends Component {
       modal_contents = <div className="card">
               <div className="card-main candidate-card">
                 <FollowToggle we_vote_id={organization.organization_we_vote_id}/>
-                <OrganizationCard organization={organization} turn_off_description/>
+                <OrganizationCard organization={organization}
+                                  turn_off_description
+                                  followToggleOn/>
               </div>
             <ul className="list-group">
               <OrganizationPositionItem position={position}

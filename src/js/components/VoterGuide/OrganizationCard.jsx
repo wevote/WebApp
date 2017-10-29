@@ -32,6 +32,7 @@ export default class OrganizationCard extends Component {
   }
 
   componentDidMount () {
+    // console.log("OrganizationCard, componentDidMount, this.props:", this.props);
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     if (this.props.organization && this.props.organization.organization_we_vote_id) {
       this.setState({
@@ -60,6 +61,7 @@ export default class OrganizationCard extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    // console.log("OrganizationCard, componentWillReceiveProps, nextProps:", nextProps);
     if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
       this.setState({
         organization_we_vote_id: nextProps.organization.organization_we_vote_id,
@@ -68,7 +70,6 @@ export default class OrganizationCard extends Component {
     this.setState({
       ballot_item_we_vote_id: nextProps.ballotItemWeVoteId,
     });
-    // console.log("nextProps.organization (componentWillReceiveProps): ", this.props.organization);
     if (nextProps.organization && nextProps.organization.organization_we_vote_id && nextProps.ballotItemWeVoteId) {
       let organization_position = OrganizationStore.getOrganizationPositionByWeVoteId(nextProps.organization.organization_we_vote_id, nextProps.ballotItemWeVoteId);
       // console.log("organization_position (componentWillReceiveProps): ", organization_position);
@@ -94,19 +95,19 @@ export default class OrganizationCard extends Component {
   }
 
   render () {
-    if (!this.props.organization){
+    if (!this.state.organization_we_vote_id.length){
       return <div>{LoadingWheel}</div>;
     }
 
     const {organization_twitter_handle, twitter_description,
       organization_photo_url_large, organization_website,
-      organization_name, organization_we_vote_id} = this.props.organization; // twitter_followers_count,
+      organization_name} = this.props.organization; // twitter_followers_count,
 
     // If the displayName is in the twitterDescription, remove it from twitterDescription
     let displayName = organization_name ? organization_name : "";
     let twitterDescription = twitter_description ? twitter_description : "";
     let twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
-    var voterGuideLink = organization_twitter_handle ? "/" + organization_twitter_handle : "/voterguide/" + organization_we_vote_id;
+    var voterGuideLink = organization_twitter_handle ? "/" + organization_twitter_handle : "/voterguide/" + this.state.organization_we_vote_id;
 
     let position_description = "";
     if (this.state.organization_position) {
