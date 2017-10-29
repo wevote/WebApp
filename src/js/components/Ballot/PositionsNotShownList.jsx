@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from "react";
+import { OverlayTrigger, Popover } from "react-bootstrap";
 import { Link } from "react-router";
 import ImageHandler from "../../components/ImageHandler";
 import LoadingWheel from "../../components/LoadingWheel";
+import OrganizationCard from "../VoterGuide/OrganizationCard";
 
+// This component is used to display the "+X" list in the ItemTinyPositionBreakdownList
 export default class PositionsNotShownList extends Component {
   static propTypes = {
     positions_not_shown_list: PropTypes.array.isRequired
@@ -21,6 +24,7 @@ export default class PositionsNotShownList extends Component {
     var nothing_to_display = null;
 
     const positions_not_shown_display = this.props.positions_not_shown_list.map( (one_position) => {
+      // console.log("PositionsNotShownList, one_position: ", one_position);
       let speaker_we_vote_id = one_position.speaker_we_vote_id;
       let speaker_display_name = one_position.speaker_display_name;
       let speaker_image_url_https_tiny = one_position.speaker_image_url_https_tiny;
@@ -28,7 +32,22 @@ export default class PositionsNotShownList extends Component {
 
       // TwitterHandle-based link
       var speakerLink = speaker_twitter_handle ? "/" + speaker_twitter_handle : "/voterguide/" + speaker_we_vote_id;
+      let one_organization_for_organization_card = {
+            organization_we_vote_id: one_position.speaker_we_vote_id,
+            organization_name: one_position.speaker_display_name,
+            organization_photo_url_large: one_position.speaker_image_url_https_large,
+            organization_photo_url_tiny: one_position.speaker_image_url_https_tiny,
+            organization_twitter_handle: one_position.speaker_twitter_handle,
+            // organization_website: one_position.more_info_url,
+            twitter_description: "",
+            twitter_followers_count: 0,
+          };
 
+      // return <OrganizationCard organization={one_organization_for_organization_card}
+      //                          ballotItemWeVoteId={this.props.ballot_item_we_vote_id}
+      //                          followToggleOn />;
+
+      // Display the organization in a brief list
       return <div key={speaker_we_vote_id} className="card-main__media-object">
         {/* One Position on this Candidate */}
           <div className="card-child__media-object-anchor">

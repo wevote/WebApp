@@ -43,14 +43,16 @@ class OrganizationStore extends FluxMapStore {
 
   getOrganizationPositionByWeVoteId (organization_we_vote_id, ballot_item_we_vote_id){
     let requested_position = {};
+    let result_found = false;
     let all_cached_organizations_dict = this.getState().all_cached_organizations_dict;
     // console.log("getOrganizationPositionByWeVoteId, organization_we_vote_id: ", organization_we_vote_id, ", ballot_item_we_vote_id: ", ballot_item_we_vote_id);
     let organization = all_cached_organizations_dict[organization_we_vote_id] || {};
     if (organization.position_list_for_one_election) {
       organization.position_list_for_one_election.forEach( one_position => {
-        if (one_position.ballot_item_we_vote_id && one_position.ballot_item_we_vote_id === ballot_item_we_vote_id) {
+        if (one_position.ballot_item_we_vote_id && one_position.ballot_item_we_vote_id === ballot_item_we_vote_id && !result_found) {
+          // console.log("OrganizationStore, getOrganizationPositionByWeVoteId, one_position: ", one_position);
           requested_position = one_position;
-          // There isn't an easy javascript way to break out
+          result_found = true; // Once a result is found, ignore all other positions
         }
       });
     }
@@ -58,9 +60,9 @@ class OrganizationStore extends FluxMapStore {
   }
 
   isVoterFollowingThisOrganization (organization_we_vote_id){
-    let organization_we_vote_ids_voter_is_following = this.getState().organization_we_vote_ids_voter_is_following;
+    let organization_we_vote_ids_voter_is_following = this.getState().organization_we_vote_ids_voter_is_following || [];
     // console.log("OrganizationStore, isVoterFollowingThisOrganization, organization_we_vote_ids_voter_is_following: ", organization_we_vote_ids_voter_is_following);
-    if (organization_we_vote_ids_voter_is_following) {
+    if (organization_we_vote_ids_voter_is_following.length) {
       let is_following = arrayContains(organization_we_vote_id, organization_we_vote_ids_voter_is_following);
       // console.log("OrganizationStore, isVoterFollowingThisOrganization:", is_following, ", organization_we_vote_id:", organization_we_vote_id);
       return is_following;
@@ -93,15 +95,17 @@ class OrganizationStore extends FluxMapStore {
   }
 
   reduce (state, action) {
+    let add_voter_guides_not_from_election;
     let all_cached_organizations_dict;
     let organization_we_vote_id;
     let organization;
     let prior_copy_of_organization;
     let organizations_followed_on_twitter_list;
+    let organization_we_vote_ids_voter_is_following;
+    let organization_we_vote_ids_voter_is_ignoring;
+    let search_string;
     let voter_linked_organization_we_vote_id;
     let voter_guides;
-    let search_string;
-    let add_voter_guides_not_from_election;
 
     switch (action.type) {
 
@@ -132,9 +136,13 @@ class OrganizationStore extends FluxMapStore {
         SupportActions.positionsCountForAllBallotItems();
         // Retrieve the organizations followed by voter
         OrganizationActions.organizationsFollowedRetrieve();
+        organization_we_vote_ids_voter_is_following = state.organization_we_vote_ids_voter_is_following;
+        if (!arrayContains(organization_we_vote_id, organization_we_vote_ids_voter_is_following)) {
+          organization_we_vote_ids_voter_is_following = state.organization_we_vote_ids_voter_is_following.concat(organization_we_vote_id);
+        }
         return {
           ...state,
-          organization_we_vote_ids_voter_is_following: state.organization_we_vote_ids_voter_is_following.concat(organization_we_vote_id),
+          organization_we_vote_ids_voter_is_following: organization_we_vote_ids_voter_is_following,
           organization_we_vote_ids_voter_is_ignoring: state.organization_we_vote_ids_voter_is_ignoring.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== voter_linked_organization_we_vote_id; })
         };
 
@@ -191,9 +199,13 @@ class OrganizationStore extends FluxMapStore {
         SupportActions.positionsCountForAllBallotItems();
         // Retrieve the organizations followed by voter
         OrganizationActions.organizationsFollowedRetrieve();
+        organization_we_vote_ids_voter_is_ignoring = state.organization_we_vote_ids_voter_is_ignoring;
+        if (!arrayContains(organization_we_vote_id, organization_we_vote_ids_voter_is_ignoring)) {
+          organization_we_vote_ids_voter_is_ignoring = state.organization_we_vote_ids_voter_is_ignoring.concat(organization_we_vote_id);
+        }
         return {
           ...state,
-          organization_we_vote_ids_voter_is_ignoring: state.organization_we_vote_ids_voter_is_ignoring.concat(organization_we_vote_id),
+          organization_we_vote_ids_voter_is_ignoring: organization_we_vote_ids_voter_is_ignoring,
           organization_we_vote_ids_voter_is_following: state.organization_we_vote_ids_voter_is_following.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; })
         };
 
@@ -237,7 +249,7 @@ class OrganizationStore extends FluxMapStore {
             };
           } else {
             var organization_list = action.res.organization_list;
-            var organization_we_vote_ids_voter_is_following = [];
+            organization_we_vote_ids_voter_is_following = [];
             let revised_organization;
             all_cached_organizations_dict = state.all_cached_organizations_dict;
             organization_list.forEach( one_organization => {
@@ -250,8 +262,9 @@ class OrganizationStore extends FluxMapStore {
               } else {
                 all_cached_organizations_dict[organization_we_vote_id] = one_organization;
               }
-
-              organization_we_vote_ids_voter_is_following.push(one_organization.organization_we_vote_id);
+              if (!arrayContains(one_organization.organization_we_vote_id, organization_we_vote_ids_voter_is_following)) {
+                organization_we_vote_ids_voter_is_following.push(one_organization.organization_we_vote_id);
+              }
             });
             return {
               ...state,
@@ -424,16 +437,15 @@ class OrganizationStore extends FluxMapStore {
       case "voterGuidesIgnoredRetrieve":
         // In OrganizationStore, we also listen for a response to "voterGuidesIgnoredRetrieve" and update organization_we_vote_ids_voter_is_ignoring
         voter_guides = action.res.voter_guides;
-        // all_cached_voter_guides = state.all_cached_voter_guides;
-        var organization_we_vote_ids_voter_is_ignoring = [];
+        organization_we_vote_ids_voter_is_ignoring = [];
         voter_guides.forEach( one_voter_guide => {
-          // all_cached_voter_guides[one_voter_guide.organization_we_vote_id] = one_voter_guide;
-          organization_we_vote_ids_voter_is_ignoring.push(one_voter_guide.organization_we_vote_id);
+          if (!arrayContains(one_voter_guide.organization_we_vote_id, organization_we_vote_ids_voter_is_ignoring)) {
+            organization_we_vote_ids_voter_is_ignoring.push(one_voter_guide.organization_we_vote_id);
+          }
         });
         return {
           ...state,
           organization_we_vote_ids_voter_is_ignoring: organization_we_vote_ids_voter_is_ignoring,
-          // all_cached_voter_guides: all_cached_voter_guides
         };
 
       default:

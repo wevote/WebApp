@@ -167,7 +167,7 @@ export default class CandidateModal extends Component {
                 </div> :
                 null
               }
-            {/* Show voter guides to follow that relate to this measure */}
+            {/* Show voter guides to follow that relate to this candidate */}
               {this.state.voter_guides_to_follow_for_latest_ballot_item.length === 0 ?
                 <p className="card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
                 <div>
