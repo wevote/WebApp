@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import CandidateStore from "../../stores/CandidateStore";
 import FollowToggle from "../Widgets/FollowToggle";
+import MeasureStore from "../../stores/MeasureStore";
 import OrganizationActions from "../../actions/OrganizationActions";
 import VoterGuideDisplayForList from "./VoterGuideDisplayForList";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import { stringContains } from "../../utils/textFormat";
 
 export default class GuideList extends Component {
 
@@ -63,9 +65,14 @@ export default class GuideList extends Component {
         return null;
       } else {
         // console.log("GuideList organization: ", organization);
+        // console.log("GuideList this.state:", this.state);
         organization_position_for_this_ballot_item = {};
         if (!organization.is_support_or_positive_rating && !organization.is_oppose_or_negative_rating && !organization.is_information_only && this.state.ballot_item_we_vote_id && organization.organization_we_vote_id) {
-          organization_position_for_this_ballot_item = CandidateStore.getPositionAboutCandidateFromOrganization(this.state.ballot_item_we_vote_id, organization.organization_we_vote_id);
+          if (stringContains("cand", this.state.ballot_item_we_vote_id)) {
+            organization_position_for_this_ballot_item = CandidateStore.getPositionAboutCandidateFromOrganization(this.state.ballot_item_we_vote_id, organization.organization_we_vote_id);
+          } else if (stringContains("meas", this.state.ballot_item_we_vote_id)) {
+            organization_position_for_this_ballot_item = MeasureStore.getPositionAboutMeasureFromOrganization(this.state.ballot_item_we_vote_id, organization.organization_we_vote_id);
+          }
           // console.log("GuideList organization_position_for_this_ballot_item: ", organization_position_for_this_ballot_item);
         }
         return <VoterGuideDisplayForList key={organization.organization_we_vote_id}
