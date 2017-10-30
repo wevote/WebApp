@@ -4,14 +4,15 @@ import CandidateActions from "../../actions/CandidateActions";
 import CandidateItem from "../../components/Ballot/CandidateItem";
 import CandidateStore from "../../stores/CandidateStore";
 import { capitalizeString } from "../../utils/textFormat";
-import VoterGuideActions from "../../actions/VoterGuideActions";
 import GuideList from "../../components/VoterGuide/GuideList";
-import VoterGuideStore from "../../stores/VoterGuideStore";
 import Helmet from "react-helmet";
 import LoadingWheel from "../../components/LoadingWheel";
+import OrganizationActions from "../../actions/OrganizationActions";
 import PositionList from "../../components/Ballot/PositionList";
 import SupportActions from "../../actions/SupportActions";
 import ThisIsMeAction from "../../components/Widgets/ThisIsMeAction";
+import VoterGuideActions from "../../actions/VoterGuideActions";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 import SearchAllActions from "../../actions/SearchAllActions";
 const web_app_config = require("../../config");
@@ -46,6 +47,7 @@ export default class Candidate extends Component {
 
     // Make sure supportProps exist for this Candidate when browser comes straight to candidate page
     SupportActions.retrievePositionsCountsForOneBallotItem(this.props.params.candidate_we_vote_id);
+    OrganizationActions.organizationsFollowedRetrieve();
 
     // Display the candidate's name in the search box
     var searchBoxText = this.state.candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
@@ -109,7 +111,7 @@ export default class Candidate extends Component {
 
   render () {
     const electionId = VoterStore.election_id();
-    const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to follow about this candidate or measure.";
+    const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to follow about this candidate.";
 
     if (!this.state.candidate || !this.state.candidate.ballot_item_display_name){
       // TODO DALE If the candidate we_vote_id is not valid, we need to update this with a notice
@@ -148,7 +150,9 @@ export default class Candidate extends Component {
           {this.state.voter_guides_to_follow_for_latest_ballot_item.length === 0 ?
             <p className="card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
             <div><h3 className="card__additional-heading">{"More opinions about " + this.state.candidate.ballot_item_display_name}</h3>
-            <GuideList id={electionId} ballotItemWeVoteId={this.state.candidate_we_vote_id} organizationsToFollow={this.state.voter_guides_to_follow_for_latest_ballot_item}/></div>
+            <GuideList id={electionId}
+                       ballotItemWeVoteId={this.state.candidate_we_vote_id}
+                       organizationsToFollow={this.state.voter_guides_to_follow_for_latest_ballot_item}/></div>
           }
         </div>
       </section>

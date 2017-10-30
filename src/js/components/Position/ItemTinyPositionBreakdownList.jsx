@@ -149,7 +149,8 @@ export default class ItemTinyPositionBreakdownList extends Component {
                 onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
                 onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
                 className="card-popover">
-                <PositionsNotShownList positions_not_shown_list={positions_not_shown_list} />
+                <PositionsNotShownList ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
+                                       positions_not_shown_list={positions_not_shown_list} />
               </Popover>;
 
             return <OverlayTrigger
@@ -178,7 +179,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
             // organization_website: one_position.more_info_url,
             twitter_description: "",
             twitter_followers_count: 0,
-         };
+          };
           let organization_we_vote_id = one_organization.organization_we_vote_id;
           let organizationPopover = <Popover
               id={`organization-popover-${organization_we_vote_id}`}

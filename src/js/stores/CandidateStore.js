@@ -94,7 +94,6 @@ class CandidateStore extends FluxMapStore {
           return state;
         }
         all_cached_positions_about_candidates = state.all_cached_positions_about_candidates;
-        // positions_about_one_candidate = {}; // Dictionary with organization_we_vote_id as the key, and the position as value
         voter_guides.forEach( one_voter_guide => {
           // Make sure we have a position in the voter guide
           if (one_voter_guide.is_support_or_positive_rating || one_voter_guide.is_oppose_or_negative_rating || one_voter_guide.is_information_only) {
@@ -105,7 +104,6 @@ class CandidateStore extends FluxMapStore {
               all_cached_positions_about_candidates[ballot_item_we_vote_id][one_voter_guide.organization_we_vote_id] = {};
             }
 
-            // positions_about_one_candidate = all_cached_positions_about_candidates[ballot_item_we_vote_id][one_voter_guide.organization_we_vote_id];
             one_position = {
               position_we_vote_id: one_voter_guide.position_we_vote_id, // Currently empty
               ballot_item_display_name: one_voter_guide.ballot_item_display_name,
@@ -155,9 +153,7 @@ class CandidateStore extends FluxMapStore {
       default:
         return state;
     }
-
   }
-
 }
 
 module.exports = new CandidateStore(Dispatcher);
