@@ -112,6 +112,7 @@ export default class Candidate extends Component {
   render () {
     const electionId = VoterStore.election_id();
     const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to follow about this candidate.";
+    // console.log("Candidate render, this.state.position_list_from_advisers_followed_by_voter: ", this.state.position_list_from_advisers_followed_by_voter);
 
     if (!this.state.candidate || !this.state.candidate.ballot_item_display_name){
       // TODO DALE If the candidate we_vote_id is not valid, we need to update this with a notice
@@ -163,7 +164,7 @@ export default class Candidate extends Component {
       <br />
     {/* Show links to this candidate in the admin tools */}
     { voter.is_admin || voter.is_verified_volunteer ?
-      <span>Admin: <a href={candidate_admin_edit_url} target="_blank">edit {candidate_name}</a></span> :
+      <span className="u-wrap-links">Admin: <a href={candidate_admin_edit_url} target="_blank">edit {candidate_name}</a></span> :
       null
     }
     </span>;

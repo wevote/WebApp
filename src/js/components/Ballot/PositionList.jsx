@@ -31,7 +31,7 @@ export default class PositionList extends Component {
         <ul className="card-child__list-group">
           { this.state.position_list.map(one_position =>
             <span key={one_position.position_we_vote_id} >
-            { one_position.statement_text ?
+            { one_position.statement_text || one_position.has_video ?
               <PositionItem ballot_item_display_name={this.props.ballot_item_display_name}
                             position={one_position} /> :
               null }

@@ -65,10 +65,10 @@ export default class ThisIsMeAction extends Component {
     return <span>
         {signed_in_with_this_twitter_account ?
           <span /> :
-          <Link to={`/verifythisisme/${twitter_handle_being_viewed}`}>
-            <Button bsStyle="link">
+          <Link to={"/verifythisisme/" + twitter_handle_being_viewed}>
+            <span className="u-wrap-links">
               {this_is_me_action_text}
-            </Button>
+            </span>
           </Link>
           }
       </span>;
