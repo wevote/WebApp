@@ -103,7 +103,7 @@ export default class AddressBox extends Component {
   render () {
     if (this.state.loading){
       return <div>
-            <h2>Please wait a moment while we adjust your ballot options to the new location...</h2>,
+            <h2>Please wait a moment while we adjust your ballot options to the new location...</h2>
             {LoadingWheel}
           </div>;
     }

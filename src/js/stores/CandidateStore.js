@@ -63,11 +63,13 @@ class CandidateStore extends FluxMapStore {
 
       case "positionListForBallotItem":
         position_list_for_candidate = action.res.kind_of_ballot_item === "CANDIDATE";
+        // console.log("positionListForBallotItem action.res:", action.res);
         if (position_list_for_candidate) {
           ballot_item_we_vote_id = action.res.ballot_item_we_vote_id;
           new_position_list = action.res.position_list;
           position_list_from_advisers_followed_by_voter = state.position_list_from_advisers_followed_by_voter;
           position_list_from_advisers_followed_by_voter[ballot_item_we_vote_id] = new_position_list;
+          // console.log("positionListForBallotItem position_list_from_advisers_followed_by_voter[ballot_item_we_vote_id]:", position_list_from_advisers_followed_by_voter[ballot_item_we_vote_id]);
           return {
             ...state,
             position_list_from_advisers_followed_by_voter: position_list_from_advisers_followed_by_voter,
