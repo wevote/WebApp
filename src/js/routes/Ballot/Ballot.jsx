@@ -80,7 +80,7 @@ export default class Ballot extends Component {
   }
 
   componentDidMount () {
-    // console.log("Ballot componentDidMount");
+    console.log("Ballot componentDidMount");
     let hide_intro_modal_from_url = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
     let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal") || 0;
     let wait_until_voter_sign_in_completes = this.props.location.query ? this.props.location.query.wait_until_voter_sign_in_completes : 0;
@@ -168,7 +168,7 @@ export default class Ballot extends Component {
   }
 
   componentWillReceiveProps (nextProps){
-    // console.log("Ballot componentWillReceiveProps, nextProps: ", nextProps);
+    console.log("Ballot componentWillReceiveProps, nextProps: ", nextProps);
     let ballot_type = nextProps.location.query ? nextProps.location.query.type : "all";
 
     let google_civic_election_id_from_params = nextProps.params.google_civic_election_id || 0;
@@ -187,9 +187,9 @@ export default class Ballot extends Component {
       let google_civic_election_id_zero = 0;
       BallotActions.voterBallotItemsRetrieve(google_civic_election_id_zero, ballot_returned_we_vote_id);
     } else if (ballot_location_shortcut.length && ballot_location_shortcut !== this.state.ballot_location_shortcut) {
-      // console.log("ballot_location_shortcut !== this.state.ballot_location_shortcut");
-      // console.log("ballot_location_shortcut:", ballot_location_shortcut);
-      // console.log("this.state.ballot_location_shortcut:", this.state.ballot_location_shortcut);
+      console.log("ballot_location_shortcut !== this.state.ballot_location_shortcut");
+      console.log("ballot_location_shortcut:", ballot_location_shortcut);
+      console.log("this.state.ballot_location_shortcut:", this.state.ballot_location_shortcut);
       let google_civic_election_id_zero = 0;
       let ballot_returned_we_vote_id_empty = "";
       BallotActions.voterBallotItemsRetrieve(google_civic_election_id_zero, ballot_returned_we_vote_id_empty, ballot_location_shortcut);
@@ -214,7 +214,7 @@ export default class Ballot extends Component {
   }
 
   componentWillUnmount (){
-    // console.log("Ballot componentWillUnmount");
+    console.log("Ballot componentWillUnmount");
     this.setState({mounted: false});
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){
       // No ballot found
@@ -287,7 +287,7 @@ export default class Ballot extends Component {
   }
 
   _onVoterStoreChange () {
-    // console.log("Ballot.jsx _onVoterStoreChange");
+    console.log("Ballot.jsx _onVoterStoreChange");
     if (this.state.mounted) {
       let consider_opening_ballot_intro_modal = true;
       if ( this.state.wait_until_voter_sign_in_completes ) {
@@ -295,7 +295,7 @@ export default class Ballot extends Component {
         if ( this.state.voter && this.state.voter.is_signed_in ) {
           consider_opening_ballot_intro_modal = true;
           this.setState({ wait_until_voter_sign_in_completes: undefined });
-          // console.log("_onVoterStoreChange, about to browserHistory.push(this.props.location.pathname):", this.props.location.pathname)
+          console.log("_onVoterStoreChange, about to browserHistory.push(this.props.location.pathname):", this.props.location.pathname)
           browserHistory.push(this.props.location.pathname);
         }
       }
@@ -350,11 +350,11 @@ export default class Ballot extends Component {
     if (ballot_location_shortcut_of_retrieved_ballot && this.state.ballot_location_shortcut) {
       let ballot_location_shortcut_of_retrieved_ballot_length = ballot_location_shortcut_of_retrieved_ballot.trim().length;
       let state_ballot_location_shortcut_length = this.state.ballot_location_shortcut.trim().length;
-      // console.log("ballot_location_shortcut_of_retrieved_ballot: '", ballot_location_shortcut_of_retrieved_ballot, "', length: ", ballot_location_shortcut_of_retrieved_ballot_length);
-      // console.log("this.state.ballot_location_shortcut: '", this.state.ballot_location_shortcut, "', length: ", state_ballot_location_shortcut_length);
+      console.log("ballot_location_shortcut_of_retrieved_ballot: '", ballot_location_shortcut_of_retrieved_ballot, "', length: ", ballot_location_shortcut_of_retrieved_ballot_length);
+      console.log("this.state.ballot_location_shortcut: '", this.state.ballot_location_shortcut, "', length: ", state_ballot_location_shortcut_length);
       if (ballot_location_shortcut_of_retrieved_ballot_length && state_ballot_location_shortcut_length) {
         if (this.state.ballot_location_shortcut !== ballot_location_shortcut_of_retrieved_ballot) {
-          // console.log("onBallotStoreChange, ballot_location_shortcut_of_retrieved_ballot is different");
+          console.log("onBallotStoreChange, ballot_location_shortcut_of_retrieved_ballot is different");
           let google_civic_election_id_zero = 0;
           let ballot_returned_we_vote_id_empty = "";
           // Retrieve the new ballot
@@ -599,10 +599,12 @@ export default class Ballot extends Component {
                          <OverlayTrigger placement="top" overlay={electionTooltip} >
                            <span className="u-push--sm">{election_name}</span>
                          </OverlayTrigger>
-                         {this.state.ballotElectionList.length > 1 ? <img src={"/img/global/icons/gear-icon.png"}
-                                                                            className="hidden-print" role="button"
-                                                                            onClick={this.toggleSelectBallotModal}
-                                                                            alt={"view your ballots"}/> : null}
+                         {this.state.ballotElectionList.length > 1 ?
+                           <span className="u-no-break hidden-print u-f8 u-cursor--pointer"
+                                 onClick={this.toggleSelectBallotModal} ><img src={"/img/global/icons/gear-icon.png"}
+                                 role="button"
+                                 alt={"change election"}/> change election</span> :
+                           null}
                       </h1>
                       <span className="hidden-xs hidden-print pull-right ballot__header-address">
                         <EditAddress address={voter_address_object}

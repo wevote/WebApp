@@ -1,11 +1,7 @@
 import React from "react";
 import { Route, IndexRoute, IndexRedirect } from "react-router";
 import cookies from "./utils/cookies";
-
-// main Application
 import Application from "./Application";
-
-/****************************** ROUTE-COMPONENTS ******************************/
 import About from "./routes/More/About";
 import Activity from "./routes/Activity";
 import Ballot from "./routes/Ballot/Ballot";

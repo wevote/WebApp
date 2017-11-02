@@ -180,13 +180,39 @@ class VoterGuideStore extends FluxMapStore {
           let ballot_items_we_are_tracking = Object.keys(organization_we_vote_ids_to_follow_ballot_items_dict);
           let current_list = [];
           let new_list = [];
-          let ballot_item_we_vote_ids_this_org_supports;
           let guide_we_vote_ids_processed = [];
 
           voter_guides.forEach( one_voter_guide => {
-            ballot_item_we_vote_ids_this_org_supports = one_voter_guide.ballot_item_we_vote_ids_this_org_supports;
-            if (ballot_item_we_vote_ids_this_org_supports) {
-              ballot_item_we_vote_ids_this_org_supports.forEach(one_ballot_item_we_vote_id => {
+            if (one_voter_guide.ballot_item_we_vote_ids_this_org_supports) {
+              one_voter_guide.ballot_item_we_vote_ids_this_org_supports.forEach(one_ballot_item_we_vote_id => {
+                if (ballot_items_we_are_tracking.includes(one_ballot_item_we_vote_id)) {
+                  current_list = organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id];
+                  current_list.push(one_voter_guide.organization_we_vote_id);
+                  organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id] = current_list;
+                } else {
+                  new_list = [];
+                  new_list.push(one_voter_guide.organization_we_vote_id);
+                  organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id] = new_list;
+                }
+                ballot_items_we_are_tracking = Object.keys(organization_we_vote_ids_to_follow_ballot_items_dict);
+              });
+            }
+            if (one_voter_guide.ballot_item_we_vote_ids_this_org_info_only) {
+              one_voter_guide.ballot_item_we_vote_ids_this_org_info_only.forEach(one_ballot_item_we_vote_id => {
+                if (ballot_items_we_are_tracking.includes(one_ballot_item_we_vote_id)) {
+                  current_list = organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id];
+                  current_list.push(one_voter_guide.organization_we_vote_id);
+                  organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id] = current_list;
+                } else {
+                  new_list = [];
+                  new_list.push(one_voter_guide.organization_we_vote_id);
+                  organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id] = new_list;
+                }
+                ballot_items_we_are_tracking = Object.keys(organization_we_vote_ids_to_follow_ballot_items_dict);
+              });
+            }
+            if (one_voter_guide.ballot_item_we_vote_ids_this_org_opposes) {
+              one_voter_guide.ballot_item_we_vote_ids_this_org_opposes.forEach(one_ballot_item_we_vote_id => {
                 if (ballot_items_we_are_tracking.includes(one_ballot_item_we_vote_id)) {
                   current_list = organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id];
                   current_list.push(one_voter_guide.organization_we_vote_id);
