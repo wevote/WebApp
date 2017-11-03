@@ -150,6 +150,15 @@ export function removeTwitterNameFromDescription (displayName, twitterDescriptio
     return twitterDescriptionMinusName;
 }
 
+export function shortenText (incoming_string, maximum_length){
+  let maximum_length_int = parseInt(maximum_length, 10);
+  let crop_length_to_make_room_for_ellipses = maximum_length_int - 2;
+  // Don't allow the string to use less than 3 characters
+  let minimum_characters_to_display = 3;
+  crop_length_to_make_room_for_ellipses = crop_length_to_make_room_for_ellipses > 2 ? crop_length_to_make_room_for_ellipses : minimum_characters_to_display;
+  return incoming_string.length < maximum_length_int ? incoming_string : `${incoming_string.slice(0, crop_length_to_make_room_for_ellipses)}...`;
+}
+
 export function elipses (name, mobile){
   function cut (position){
     return name.length < position ? name : `${name.slice(0, position)}...`;
