@@ -9,7 +9,8 @@ class ElectionStore extends FluxMapStore {
 
   getBallotLocationsForElection (google_civic_election_id) {
     if (this.getState().election_list_by_google_civic_election_id) {
-      let one_election = this.getState().election_list_by_google_civic_election_id[google_civic_election_id];
+      let google_civic_election_id_int = parseInt(google_civic_election_id, 10);
+      let one_election = this.getState().election_list_by_google_civic_election_id[google_civic_election_id_int];
       if (one_election) {
         return one_election.ballot_location_list;
       }
@@ -19,7 +20,8 @@ class ElectionStore extends FluxMapStore {
 
   getElectionDayText (google_civic_election_id) {
     if (this.getState().election_list_by_google_civic_election_id) {
-      let one_election = this.getState().election_list_by_google_civic_election_id[google_civic_election_id];
+      let google_civic_election_id_int = parseInt(google_civic_election_id, 10);
+      let one_election = this.getState().election_list_by_google_civic_election_id[google_civic_election_id_int];
       if (one_election) {
         return one_election.election_day_text || "";
       }
@@ -29,7 +31,8 @@ class ElectionStore extends FluxMapStore {
 
   googleCivicDataExists (google_civic_election_id) {
     if (this.getState().election_list_by_google_civic_election_id) {
-      let one_election = this.getState().election_list_by_google_civic_election_id[google_civic_election_id];
+      let google_civic_election_id_int = parseInt(google_civic_election_id, 10);
+      let one_election = this.getState().election_list_by_google_civic_election_id[google_civic_election_id_int];
       // console.log("googleCivicDataExists, one_election:", one_election);
       if (one_election) {
         // If more than 20 ballot_returned entries exist, we assume the data came from google civic
@@ -39,9 +42,12 @@ class ElectionStore extends FluxMapStore {
     return false;
   }
 
-  isElectionIsUpcoming (google_civic_election_id) {
+  isElectionUpcoming (google_civic_election_id) {
+    // console.log("ElectionStore, isElectionUpcoming, this.getState().election_list_by_google_civic_election_id:", this.getState().election_list_by_google_civic_election_id);
     if (this.getState().election_list_by_google_civic_election_id) {
-      let one_election = this.getState().election_list_by_google_civic_election_id[google_civic_election_id];
+      let google_civic_election_id_int = parseInt(google_civic_election_id, 10);
+      // console.log("ElectionStore, isElectionUpcoming, google_civic_election_id:", google_civic_election_id);
+      let one_election = this.getState().election_list_by_google_civic_election_id[google_civic_election_id_int];
       if (one_election) {
         return one_election.election_is_upcoming;
       }
@@ -60,8 +66,10 @@ class ElectionStore extends FluxMapStore {
       case "electionsRetrieve":
         let election_list = action.res.election_list;
         let election_list_by_google_civic_election_id = {};
+        let google_civic_election_id;
         election_list.forEach(election => {
-          election_list_by_google_civic_election_id[election.google_civic_election_id] = election;
+          google_civic_election_id = parseInt(election.google_civic_election_id);
+          election_list_by_google_civic_election_id[google_civic_election_id] = election;
         });
         // console.log("In ElectionStore, electionsRetrieve, election_list: ", election_list);
         // console.log("In ElectionStore, electionsRetrieve, election_list_by_google_civic_election_id: ", election_list_by_google_civic_election_id);

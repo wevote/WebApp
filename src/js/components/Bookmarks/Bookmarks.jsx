@@ -7,6 +7,7 @@ import BookmarkItem from "./BookmarkItem";
 import EditAddress from "../../components/Widgets/EditAddress";
 import Helmet from "react-helmet";
 import LoadingWheel from "../LoadingWheel";
+import moment from "moment";
 import SelectAddressModal from "../../components/Ballot/SelectAddressModal";
 import VoterStore from "../../stores/VoterStore";
 
@@ -51,7 +52,7 @@ export default class Bookmarks extends Component {
     }
     const election_name = BallotStore.currentBallotElectionName;
     const election_day_text = BallotStore.currentBallotElectionDate;
-    const electionTooltip = election_day_text ? <Tooltip id="tooltip">Ballot for {election_day_text}</Tooltip> : <span />;
+    const electionTooltip = election_day_text ? <Tooltip id="tooltip">Election day {moment(election_day_text).format("MMM Do, YYYY")}</Tooltip> : <span />;
     let voter_address_object = VoterStore.getAddressObject();
 
     return <div className="ballot">

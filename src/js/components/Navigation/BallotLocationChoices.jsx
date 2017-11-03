@@ -88,8 +88,8 @@ export default class BallotLocationChoices extends Component {
 
     // sorting the mapped array based on ballot_location_order which came from the server
     mapped.sort( (a, b) => {
-      return +(parseInt(a.value.ballot_location_order) > parseInt(b.value.ballot_location_order)) ||
-        +(parseInt(a.value.ballot_location_order) === parseInt(b.value.ballot_location_order)) - 1;
+      return +(parseInt(a.value.ballot_location_order, 10) > parseInt(b.value.ballot_location_order, 10)) ||
+        +(parseInt(a.value.ballot_location_order, 10) === parseInt(b.value.ballot_location_order, 10)) - 1;
     });
 
     let orderedArray = [];

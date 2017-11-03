@@ -23,6 +23,7 @@ export default class EditAddress extends Component {
       election_is_upcoming: false,
       google_civic_data_exists: false,
       show_ballot_status: true,
+      text_for_map_search: "",
       voter_entered_address: false,
       voter_specific_ballot_from_google_civic: false,
     };
@@ -37,6 +38,7 @@ export default class EditAddress extends Component {
       election_is_upcoming: this.props.election_is_upcoming,
       google_civic_data_exists: this.props.google_civic_data_exists,
       show_ballot_status: true,
+      text_for_map_search: this.props.address.text_for_map_search || "",
       voter_entered_address: this.props.voter_entered_address,
       voter_specific_ballot_from_google_civic: this.props.voter_specific_ballot_from_google_civic,
     });
@@ -50,20 +52,19 @@ export default class EditAddress extends Component {
       election_is_upcoming: nextProps.election_is_upcoming,
       google_civic_data_exists: nextProps.google_civic_data_exists,
       show_ballot_status: true,
+      text_for_map_search: nextProps.address.text_for_map_search || "",
       voter_entered_address: nextProps.voter_entered_address,
       voter_specific_ballot_from_google_civic: nextProps.voter_specific_ballot_from_google_civic,
     });
   }
 
   render () {
-    let text_for_map_search = this.props.address.text_for_map_search || "";
     let no_address_message = "- no address entered -";
     let edit_address_popover_on = true;
-
     return (
       <span className="ballot__date_location">
         { edit_address_popover_on ?
-          <EditAddressPopover text_for_map_search={text_for_map_search}
+          <EditAddressPopover text_for_map_search={this.state.text_for_map_search}
                               placement={"bottom"}
                               onEnterAddressClick={this.props.toggleSelectAddressModal}
                               ballot_location_chosen={this.state.ballot_location_chosen}
@@ -73,7 +74,7 @@ export default class EditAddress extends Component {
                               voter_entered_address={this.state.voter_entered_address}
                               google_civic_data_exists={this.state.google_civic_data_exists}
                               voter_specific_ballot_from_google_civic={this.state.voter_specific_ballot_from_google_civic} /> :
-          <span>{ text_for_map_search.length ? text_for_map_search : no_address_message }</span>
+          <span>{ this.state.text_for_map_search.length ? this.state.text_for_map_search : no_address_message }</span>
         }
         <span className="hidden-print">(<a onClick={this.props.toggleSelectAddressModal}>Edit</a>)</span>
       </span>
