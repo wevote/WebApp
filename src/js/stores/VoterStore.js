@@ -56,8 +56,8 @@ class VoterStore extends FluxMapStore {
         ballot_location_display_name: this.getState().address.ballot_location_display_name,
         ballot_location_shortcut: "",
         google_civic_election_id: this.getState().address.google_civic_election_id,
-        voter_entered_address: false, // Did the voter save an address?
-        voter_specific_ballot_from_google_civic: false, // Did this ballot come back for this specific address?
+        voter_entered_address: this.getState().address.voter_entered_address || false, // Did the voter save an address?
+        voter_specific_ballot_from_google_civic: this.getState().address.voter_specific_ballot_from_google_civic || false, // Did this ballot come back for this specific address?
       };
     }
     return null;
@@ -255,30 +255,24 @@ class VoterStore extends FluxMapStore {
         };
 
       case "voterAddressSave":
-        // console.log("VoterStore, voterAddressSave, action.res.google_civic_election_id:", action.res.google_civic_election_id);
+        // console.log("VoterStore, voterAddressSave, action.res:", action.res);
         if (action.res.status === "SIMPLE_ADDRESS_SAVE") {
-          return {
-            ...state,
-            address: {
-              text_for_map_search: action.res.text_for_map_search,
-              google_civic_election_id: action.res.google_civic_election_id,
-              ballot_returned_we_vote_id: action.res.ballot_returned_we_vote_id,
-              ballot_location_display_name: action.res.ballot_location_display_name
-            }
-          };
+          // Don't do any other refreshing
         } else {
           BallotActions.voterBallotItemsRetrieve();
           SupportActions.positionsCountForAllBallotItems(action.res.google_civic_election_id);
-          return {
-            ...state,
-            address: {
-              text_for_map_search: action.res.text_for_map_search,
-              google_civic_election_id: action.res.google_civic_election_id,
-              ballot_returned_we_vote_id: action.res.ballot_returned_we_vote_id,
-              ballot_location_display_name: action.res.ballot_location_display_name
-            }
-          };
         }
+        return {
+          ...state,
+          address: {
+            text_for_map_search: action.res.address.text_for_map_search,
+            google_civic_election_id: action.res.address.google_civic_election_id,
+            ballot_returned_we_vote_id: action.res.address.ballot_returned_we_vote_id,
+            ballot_location_display_name: action.res.address.ballot_location_display_name,
+            voter_entered_address: action.res.address.voter_entered_address,
+            voter_specific_ballot_from_google_civic: action.res.address.voter_specific_ballot_from_google_civic
+          }
+        };
 
       case "voterBallotItemsRetrieve":
         // console.log("VoterStore voterBallotItemsRetrieve latest_google_civic_election_id: ", action.res.google_civic_election_id);
@@ -393,6 +387,10 @@ class VoterStore extends FluxMapStore {
       case "voterRetrieve":
         // console.log("VoterStore, voterRetrieve");
         let facebook_photo_retrieve_loop_count = state.facebook_photo_retrieve_loop_count;
+
+        // Preserve address within voter
+        let incoming_voter = action.res;
+
         let current_voter_device_id = cookies.getItem("voter_device_id");
         if (!action.res.voter_found) {
           // console.log("This voter_device_id is not in the db and is invalid, so delete it: " +
@@ -437,7 +435,7 @@ class VoterStore extends FluxMapStore {
         return {
           ...state,
           facebook_photo_retrieve_loop_count: facebook_photo_retrieve_loop_count + 1,
-          voter: action.res,
+          voter: incoming_voter,
           voter_found: action.res.voter_found,
         };
 

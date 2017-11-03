@@ -1,11 +1,13 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
+import moment from "moment";
 
 export default class BallotFilter extends Component {
   static propTypes = {
     params: PropTypes.object,
     pathname: PropTypes.string,
     ballot_type: PropTypes.string,
+    election_day_text: PropTypes.string,
     length: PropTypes.number,
     length_remaining: PropTypes.number,
   };
@@ -36,7 +38,7 @@ export default class BallotFilter extends Component {
       <li className="tab-item">
         <Link to={{ pathname: pathname, query: { type: "filterReadyToVote" } }}
               className={ this.props.ballot_type === "READY_TO_VOTE" ? "tab tab-active" : "tab tab-default"}>
-          <span>Vote!</span>
+          <span>Vote{this.props.election_day_text ? " by " + moment(this.props.election_day_text).format("MMM Do, YYYY") : ""}!</span>
         </Link>
       </li>
     </ul>;
