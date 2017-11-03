@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from "react";
+import moment from "moment";
 
 
 export default class BallotStatusMessage extends Component {
@@ -78,7 +79,7 @@ export default class BallotStatusMessage extends Component {
       ballot_status_style = ""; // "alert-danger";
       let message_in_past_string;
       if (this.state.election_day_text) {
-        message_in_past_string = "This election was held on " + this.state.election_day_text + ".";
+        message_in_past_string = "This election was held on " + moment(this.state.election_day_text).format("MMM Do, YYYY") + ".";
       } else {
         message_in_past_string = "This election has passed.";
       }

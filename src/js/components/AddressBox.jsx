@@ -45,6 +45,7 @@ export default class AddressBox extends Component {
   }
 
   _onVoterStoreChange () {
+    // console.log("AddressBox, _onVoterStoreChange, this.state:", this.state);
     if (this.props.toggleSelectAddressModal){
        this.props.toggleSelectAddressModal();
      }

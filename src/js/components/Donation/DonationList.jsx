@@ -75,7 +75,7 @@ export default class DonationList extends Component {
             </thead>
             <tbody>{this.state.journal.map(function (item, key) {
               if (item.record_enum === "PAYMENT_FROM_UI" || item.record_enum === "PAYMENT_AUTO_SUBSCRIPTION") {
-                let refundDays = parseInt(item.refund_days_limit);
+                let refundDays = parseInt(item.refund_days_limit, 10);
                 let active =
                   moment.utc(item.created).local().isAfter(moment(new Date()).subtract(refundDays, "days")) &&
                   ! item.stripe_status.includes("refund");
