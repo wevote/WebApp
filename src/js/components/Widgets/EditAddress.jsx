@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import EditAddressPopover from "./EditAddressPopover";
+import { shortenText } from "../../utils/textFormat";
 
 export default class EditAddress extends Component {
   static propTypes = {
@@ -61,6 +62,8 @@ export default class EditAddress extends Component {
   render () {
     let no_address_message = "- no address entered -";
     let edit_address_popover_on = true;
+    let maximum_address_display_length = 35;
+    
     return (
       <span className="ballot__date_location">
         { edit_address_popover_on ?
@@ -71,10 +74,11 @@ export default class EditAddress extends Component {
                               ballot_location_display_name={this.state.ballot_location_display_name}
                               election_day_text={this.state.election_day_text}
                               election_is_upcoming={this.state.election_is_upcoming}
+                              maxAddressDisplayLength={maximum_address_display_length}
                               voter_entered_address={this.state.voter_entered_address}
                               google_civic_data_exists={this.state.google_civic_data_exists}
                               voter_specific_ballot_from_google_civic={this.state.voter_specific_ballot_from_google_civic} /> :
-          <span>{ this.state.text_for_map_search.length ? this.state.text_for_map_search : no_address_message }</span>
+          <span>{ this.state.text_for_map_search.length ? shortenText(this.state.text_for_map_search, maximum_address_display_length) : no_address_message }</span>
         }
         <span className="hidden-print">(<a onClick={this.props.toggleSelectAddressModal}>Edit</a>)</span>
       </span>

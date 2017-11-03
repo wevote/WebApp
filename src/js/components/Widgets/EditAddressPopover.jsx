@@ -1,16 +1,18 @@
 import React, { Component, PropTypes } from "react";
 import { OverlayTrigger, Popover } from "react-bootstrap";
+import { shortenText } from "../../utils/textFormat";
 
 export default class EditAddressPopover extends Component {
   static propTypes = {
-    text_for_map_search: PropTypes.string.isRequired,
-    placement: PropTypes.string.isRequired,
-    onEnterAddressClick: PropTypes.func.isRequired,
     ballot_location_chosen: PropTypes.bool.isRequired,
     ballot_location_display_name: PropTypes.string,
     election_day_text: PropTypes.string,
     election_is_upcoming: PropTypes.bool.isRequired,
     google_civic_data_exists: PropTypes.bool.isRequired,
+    maxAddressDisplayLength: PropTypes.number,
+    onEnterAddressClick: PropTypes.func.isRequired,
+    placement: PropTypes.string.isRequired,
+    text_for_map_search: PropTypes.string.isRequired,
     voter_entered_address: PropTypes.bool.isRequired,
     voter_specific_ballot_from_google_civic: PropTypes.bool.isRequired,
   };
@@ -23,6 +25,7 @@ export default class EditAddressPopover extends Component {
       election_day_text: "",
       election_is_upcoming: false,
       google_civic_data_exists: false,
+      max_address_display_length: 0,
       show_ballot_status: true,
       text_for_map_search: "",
       voter_entered_address: false,
@@ -39,6 +42,7 @@ export default class EditAddressPopover extends Component {
       election_day_text: this.props.election_day_text,
       election_is_upcoming: this.props.election_is_upcoming,
       google_civic_data_exists: this.props.google_civic_data_exists,
+      max_address_display_length: this.props.maxAddressDisplayLength,
       show_ballot_status: true,
       text_for_map_search: this.props.text_for_map_search,
       voter_entered_address: this.props.voter_entered_address,
@@ -53,6 +57,7 @@ export default class EditAddressPopover extends Component {
       election_day_text: nextProps.election_day_text,
       election_is_upcoming: nextProps.election_is_upcoming,
       google_civic_data_exists: nextProps.google_civic_data_exists,
+      max_address_display_length: nextProps.maxAddressDisplayLength,
       show_ballot_status: true,
       text_for_map_search: nextProps.text_for_map_search,
       voter_entered_address: nextProps.voter_entered_address,
@@ -118,6 +123,7 @@ export default class EditAddressPopover extends Component {
     </Popover>;
 
     let no_address_message = "- no address entered -";
+    let maximum_address_display_length = this.state.max_address_display_length !== 0 ? this.state.max_address_display_length : 35;
 
     return <span>{ address_popover_on ?
         <OverlayTrigger
@@ -128,13 +134,13 @@ export default class EditAddressPopover extends Component {
           placement={this.props.placement}
           overlay={AddressPopover}>
             <span className="u-cursor--pointer">
-              { this.state.text_for_map_search.length ? this.state.text_for_map_search : no_address_message }
+              { this.state.text_for_map_search.length ? shortenText(this.state.text_for_map_search, maximum_address_display_length) : no_address_message }
               <span className="position-rating__source with-popover">&nbsp;&nbsp;
               <i className="fa fa-exclamation-circle" aria-hidden="true" style={{color: "#fc0d1b"}} />&nbsp;&nbsp;</span>
             </span>
         </OverlayTrigger> :
         <span onClick={this.props.onEnterAddressClick} className="u-cursor--pointer">
-          { this.state.text_for_map_search.length ? this.state.text_for_map_search : no_address_message }
+          { this.state.text_for_map_search.length ? shortenText(this.state.text_for_map_search, maximum_address_display_length) : no_address_message }
           <span className="position-rating__source with-popover">&nbsp;&nbsp;</span>
         </span> }
     </span>;
