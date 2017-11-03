@@ -4,6 +4,7 @@ import BallotActions from "../../actions/BallotActions";
 import BallotStore from "../../stores/BallotStore";
 import ElectionStore from "../../stores/ElectionStore";
 import VoterStore from "../../stores/VoterStore";
+import { shortenText } from "../../utils/textFormat";
 
 
 export default class BallotLocationChoices extends Component {
@@ -30,7 +31,7 @@ export default class BallotLocationChoices extends Component {
     // console.log("In BallotLocationChoices componentDidMount, ballot_location_list_sorted: ", ballot_location_list_sorted);
   }
   componentWillReceiveProps (nextProps) {
-    // console.log("BallotLocationChoices componentWillReceiveProps");
+    // console.log("BallotLocationChoices componentWillReceiveProps, nextProps.google_civic_election_id: ", nextProps.google_civic_election_id);
     this.setState({
       google_civic_election_id: nextProps.google_civic_election_id,
       ballot_location_list: this.retrieveBallotLocationList(nextProps.google_civic_election_id),
@@ -140,7 +141,8 @@ export default class BallotLocationChoices extends Component {
             if (ballot_location.ballot_location_display_name && ballot_location.ballot_location_display_name !== "") {
               ballot_location_display_name = ballot_location.ballot_location_display_name;
             } else if (ballot_location.text_for_map_search !== "") {
-              ballot_location_display_name = ballot_location.text_for_map_search;
+              let maximum_display_length = 35;
+              ballot_location_display_name = shortenText(ballot_location.text_for_map_search, maximum_display_length);
             } else {
               ballot_location_display_name = "My Address";
             }
