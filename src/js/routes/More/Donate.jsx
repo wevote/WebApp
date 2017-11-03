@@ -139,7 +139,7 @@ export default class Donate extends Component {
                                  placeholder="250.00" />
                     <InputGroup.Button>
                       <DonationForm donationAmount={parseInt(parseFloat(
-                          this.state.custom_amount.replace(/[^0-9.]+/g, "")) * 100)}
+                          this.state.custom_amount.replace(/[^0-9.]+/g, "")) * 100, 10)}
                                     donateMonthly={this.state.donateMonthly}
                                     donateButtonText="Go" donateOther />
                     </InputGroup.Button>

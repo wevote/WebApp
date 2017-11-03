@@ -24,6 +24,7 @@ export default class EditAddressPopover extends Component {
       election_is_upcoming: false,
       google_civic_data_exists: false,
       show_ballot_status: true,
+      text_for_map_search: "",
       voter_entered_address: false,
       voter_specific_ballot_from_google_civic: false,
     };
@@ -39,6 +40,7 @@ export default class EditAddressPopover extends Component {
       election_is_upcoming: this.props.election_is_upcoming,
       google_civic_data_exists: this.props.google_civic_data_exists,
       show_ballot_status: true,
+      text_for_map_search: this.props.text_for_map_search,
       voter_entered_address: this.props.voter_entered_address,
       voter_specific_ballot_from_google_civic: this.props.voter_specific_ballot_from_google_civic,
     });
@@ -52,6 +54,7 @@ export default class EditAddressPopover extends Component {
       election_is_upcoming: nextProps.election_is_upcoming,
       google_civic_data_exists: nextProps.google_civic_data_exists,
       show_ballot_status: true,
+      text_for_map_search: nextProps.text_for_map_search,
       voter_entered_address: nextProps.voter_entered_address,
       voter_specific_ballot_from_google_civic: nextProps.voter_specific_ballot_from_google_civic,
     });
@@ -65,6 +68,7 @@ export default class EditAddressPopover extends Component {
     // let exclamation_circle_red = "#fc0d1b"; // I tried to replace literal string below with this variable. Didn't work.
     let message_title = "This is our best guess";
     let message_string = "";
+    let address_popover_on = true;
     let address_popover_enter_address_on = true;
 
     // TODO DALE: Deal with the situation where you are in one state (ex "NC") and you link to a NY ballot
@@ -72,23 +76,20 @@ export default class EditAddressPopover extends Component {
     if (this.state.election_is_upcoming) {
       if (this.state.voter_specific_ballot_from_google_civic) {
         // message_string += ""; // No additional text
-        // address_popover_enter_address_on = false;
-        return null;
+        address_popover_on = false;
+        address_popover_enter_address_on = false;
+        // return null;
       } else if (this.state.voter_entered_address) {
         // message_title = "";
         // message_string += "We are showing you the closest match to your official ballot.";
         //address_popover_enter_address_on = false;
-        return null;
-     } else if (this.state.google_civic_data_exists) {
+        // return null;
+      } else if (this.state.google_civic_data_exists) {
         message_string += "Want to make sure these are your ballot items? Enter the full address where you are registered to vote.";
         address_popover_enter_address_on = true;
       } else {
         message_string += "We are showing you the closest match to your official ballot.";
       }
-    } else if (this.state.voter_specific_ballot_from_google_civic) {
-      // message_string += "";
-      // address_popover_enter_address_on = false;
-      return null;
     } else if (this.state.voter_entered_address) {
       message_string += "We are showing you the closest match to your official ballot.";
       address_popover_enter_address_on = false;
@@ -118,7 +119,7 @@ export default class EditAddressPopover extends Component {
 
     let no_address_message = "- no address entered -";
 
-    return (
+    return <span>{ address_popover_on ?
         <OverlayTrigger
           trigger="click"
           ref="overlay"
@@ -126,12 +127,16 @@ export default class EditAddressPopover extends Component {
           rootClose
           placement={this.props.placement}
           overlay={AddressPopover}>
-            <span>
-              { this.props.text_for_map_search.length ? this.props.text_for_map_search : no_address_message }
+            <span className="u-cursor--pointer">
+              { this.state.text_for_map_search.length ? this.state.text_for_map_search : no_address_message }
               <span className="position-rating__source with-popover">&nbsp;&nbsp;
               <i className="fa fa-exclamation-circle" aria-hidden="true" style={{color: "#fc0d1b"}} />&nbsp;&nbsp;</span>
             </span>
-        </OverlayTrigger>
-    );
+        </OverlayTrigger> :
+        <span onClick={this.props.onEnterAddressClick} className="u-cursor--pointer">
+          { this.state.text_for_map_search.length ? this.state.text_for_map_search : no_address_message }
+          <span className="position-rating__source with-popover">&nbsp;&nbsp;</span>
+        </span> }
+    </span>;
   }
 }

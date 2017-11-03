@@ -157,6 +157,7 @@ class BallotStore extends FluxMapStore {
       case "voterBallotItemsRetrieve":
         // console.log("BallotStore, voterBallotItemsRetrieve response received.");
         google_civic_election_id = action.res.google_civic_election_id || 0;
+        google_civic_election_id = parseInt(google_civic_election_id, 10);
         if (google_civic_election_id !== 0) {
           newBallot[google_civic_election_id] = action.res;
 
@@ -182,6 +183,7 @@ class BallotStore extends FluxMapStore {
           return state;
         } else {
           google_civic_election_id = action.res.google_civic_election_id || 0;
+          google_civic_election_id = parseInt(google_civic_election_id, 10);
           if (google_civic_election_id !== 0) {
             newBallot[google_civic_election_id] = action.res;
             if (newBallot[google_civic_election_id].ballot_found === false) {

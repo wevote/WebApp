@@ -25,6 +25,7 @@ import Helmet from "react-helmet";
 import IssueStore from "../../stores/IssueStore";
 import MeasureActions from "../../actions/MeasureActions";
 import MeasureModal from "../../components/Ballot/MeasureModal";
+import moment from "moment";
 import OrganizationActions from "../../actions/OrganizationActions";
 import SelectAddressModal from "../../components/Ballot/SelectAddressModal";
 import SelectBallotModal from "../../components/Ballot/SelectBallotModal";
@@ -80,7 +81,7 @@ export default class Ballot extends Component {
   }
 
   componentDidMount () {
-    console.log("Ballot componentDidMount");
+    // console.log("Ballot componentDidMount");
     let hide_intro_modal_from_url = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
     let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal") || 0;
     let wait_until_voter_sign_in_completes = this.props.location.query ? this.props.location.query.wait_until_voter_sign_in_completes : 0;
@@ -141,8 +142,8 @@ export default class Ballot extends Component {
     BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onBallotStoreChange.bind(this));
-    this._onVoterStoreChange(); // We call this to properly set showBallotIntroModal
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.onVoterStoreChange(); // We call this to properly set showBallotIntroModal
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // Once a voter hits the ballot, they have gone through orientation
     cookies.setItem("show_full_navigation", "1", Infinity, "/");
 
@@ -158,7 +159,7 @@ export default class Ballot extends Component {
     // console.log("End of componentDidMount");
 
     this.setState({
-      google_civic_election_id: google_civic_election_id,
+      google_civic_election_id: parseInt(google_civic_election_id, 10),
       ballot_returned_we_vote_id: ballot_returned_we_vote_id,
       ballot_location_shortcut: ballot_location_shortcut,
       hide_intro_modal_from_url: hide_intro_modal_from_url,
@@ -168,7 +169,7 @@ export default class Ballot extends Component {
   }
 
   componentWillReceiveProps (nextProps){
-    console.log("Ballot componentWillReceiveProps, nextProps: ", nextProps);
+    // console.log("Ballot componentWillReceiveProps, nextProps: ", nextProps);
     let ballot_type = nextProps.location.query ? nextProps.location.query.type : "all";
 
     let google_civic_election_id_from_params = nextProps.params.google_civic_election_id || 0;
@@ -176,7 +177,8 @@ export default class Ballot extends Component {
     ballot_returned_we_vote_id = ballot_returned_we_vote_id.trim();
     let ballot_location_shortcut = nextProps.params.ballot_location_shortcut || "";
     ballot_location_shortcut = ballot_location_shortcut.trim();
-    let google_civic_election_id = 0;
+    let google_civic_election_id = this.state.google_civic_election_id;
+    // console.log("google_civic_election_id_from_params: ", google_civic_election_id_from_params);
     if (google_civic_election_id_from_params !== 0) {
       // console.log("google_civic_election_id_from_params !== 0");
       google_civic_election_id_from_params = parseInt(google_civic_election_id_from_params, 10);
@@ -198,14 +200,11 @@ export default class Ballot extends Component {
     this.setState({
       ballot: this.getBallot(nextProps),
       ballot_type: ballot_type,
-      google_civic_election_id: google_civic_election_id,
+      google_civic_election_id: parseInt(google_civic_election_id, 10),
       ballot_returned_we_vote_id: ballot_returned_we_vote_id,
       ballot_location_shortcut: ballot_location_shortcut
     });
 
-    // if (nextProps.location.pathname !== "/ballot" && ballot_location_shortcut === "") {
-    //   browserHistory.push("/ballot");
-    // }
     if (google_civic_election_id && google_civic_election_id !== 0) {
       AnalyticsActions.saveActionBallotVisit(google_civic_election_id);
     } else {
@@ -214,7 +213,7 @@ export default class Ballot extends Component {
   }
 
   componentWillUnmount (){
-    console.log("Ballot componentWillUnmount");
+    // console.log("Ballot componentWillUnmount");
     this.setState({mounted: false});
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){
       // No ballot found
@@ -286,8 +285,8 @@ export default class Ballot extends Component {
     });
   }
 
-  _onVoterStoreChange () {
-    console.log("Ballot.jsx _onVoterStoreChange");
+  onVoterStoreChange () {
+    //console.log("Ballot.jsx onVoterStoreChange");
     if (this.state.mounted) {
       let consider_opening_ballot_intro_modal = true;
       if ( this.state.wait_until_voter_sign_in_completes ) {
@@ -295,7 +294,7 @@ export default class Ballot extends Component {
         if ( this.state.voter && this.state.voter.is_signed_in ) {
           consider_opening_ballot_intro_modal = true;
           this.setState({ wait_until_voter_sign_in_completes: undefined });
-          console.log("_onVoterStoreChange, about to browserHistory.push(this.props.location.pathname):", this.props.location.pathname)
+          // console.log("onVoterStoreChange, about to browserHistory.push(this.props.location.pathname):", this.props.location.pathname)
           browserHistory.push(this.props.location.pathname);
         }
       }
@@ -303,17 +302,17 @@ export default class Ballot extends Component {
       if ( this.state.hide_intro_modal_from_cookie || this.state.hide_intro_modal_from_url ) {
         consider_opening_ballot_intro_modal = false;
       }
-
+      // console.log("Ballot.jsx onVoterStoreChange VoterStore.getVoter: ", VoterStore.getVoter());
       if ( consider_opening_ballot_intro_modal ) {
         this.setState({
           voter: VoterStore.getVoter(),
           showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
-          google_civic_election_id: VoterStore.election_id(),
+          google_civic_election_id: parseInt(VoterStore.election_id(), 10),
         });
       } else {
         this.setState({
           voter: VoterStore.getVoter(),
-          google_civic_election_id: VoterStore.election_id(),
+          google_civic_election_id: parseInt(VoterStore.election_id(), 10),
         });
       }
     }
@@ -338,7 +337,9 @@ export default class Ballot extends Component {
     }
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.google_civic_election_id) {
       // console.log("onBallotStoreChange, google_civic_election_id: ", BallotStore.ballot_properties.google_civic_election_id);
-      this.setState({google_civic_election_id: BallotStore.ballot_properties.google_civic_election_id});
+      this.setState({
+        google_civic_election_id: parseInt(BallotStore.ballot_properties.google_civic_election_id, 10)
+      });
     }
 
     let ballot_location_shortcut_of_retrieved_ballot = "";
@@ -371,6 +372,7 @@ export default class Ballot extends Component {
   }
 
   onElectionStoreChange (){
+    // console.log("Elections, onElectionStoreChange");
     let ballot_locations = [];
     let elections_list = ElectionStore.getElectionList();
     let elections_locations_list = [];
@@ -414,6 +416,7 @@ export default class Ballot extends Component {
   }
 
   onVoterGuideStoreChange (){
+    // console.log("Ballot onVoterGuideStoreChange");
     // Update the data for the modal to include the position of the organization related to this ballot item
     if (this.state.candidate_for_modal) {
       this.setState({
@@ -503,9 +506,11 @@ export default class Ballot extends Component {
   }
 
   render () {
+    // console.log("Ballot render");
     let ballot = this.state.ballot;
     let text_for_map_search = VoterStore.getTextForMapSearch();
     let voter_address_object = VoterStore.getAddressObject();
+    // console.log("Ballot render, voter_address_object: ", voter_address_object);
     let issues_voter_can_follow = IssueStore.getIssuesVoterCanFollow(); // Don't auto-open intro until Issues are loaded
 
     if (!ballot) {
@@ -556,7 +561,7 @@ export default class Ballot extends Component {
      </div> :
       null;
 
-    const electionTooltip = election_day_text ? <Tooltip id="tooltip">Ballot for {election_day_text}</Tooltip> : <span />;
+    const electionTooltip = election_day_text ? <Tooltip id="tooltip">Election day {moment(election_day_text).format("MMM Do, YYYY")}</Tooltip> : <span />;
 
     let in_ready_to_vote_mode = this.getFilterType() === "filterReadyToVote";
 
@@ -576,7 +581,7 @@ export default class Ballot extends Component {
       ballot_location_display_name = voter_ballot_location.ballot_location_display_name;
     }
 
-    //  console.log("Ballot.jsx, this.state.google_civic_election_id: ", this.state.google_civic_election_id);
+    // console.log("Ballot.jsx, this.state.google_civic_election_id: ", this.state.google_civic_election_id);
 
     return <div className="ballot">
       { this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
@@ -606,13 +611,14 @@ export default class Ballot extends Component {
                                  alt={"change election"}/> change election</span> :
                            null}
                       </h1>
+                      {/* This Edit address shown in Desktop mode */}
                       <span className="hidden-xs hidden-print pull-right ballot__header-address">
                         <EditAddress address={voter_address_object}
                                      toggleSelectAddressModal={this.toggleSelectAddressModal}
                                      ballot_location_chosen
                                      ballot_location_display_name={ballot_location_display_name}
                                      election_day_text={ElectionStore.getElectionDayText(this.state.google_civic_election_id)}
-                                     election_is_upcoming={ElectionStore.isElectionIsUpcoming(this.state.google_civic_election_id)}
+                                     election_is_upcoming={ElectionStore.isElectionUpcoming(this.state.google_civic_election_id)}
                                      voter_entered_address={voter_entered_address}
                                      google_civic_data_exists={ElectionStore.googleCivicDataExists(this.state.google_civic_election_id)}
                                      voter_specific_ballot_from_google_civic={voter_specific_ballot_from_google_civic}
@@ -620,13 +626,14 @@ export default class Ballot extends Component {
                       </span>
                     </header> :
                   null }
+                {/* This Edit address shown in Mobile mode */}
                 <div className="visible-xs-block hidden-print ballot__header-address-xs">
                   <EditAddress address={voter_address_object}
                                toggleSelectAddressModal={this.toggleSelectAddressModal}
                                ballot_location_chosen
                                ballot_location_display_name={ballot_location_display_name}
                                election_day_text={ElectionStore.getElectionDayText(this.state.google_civic_election_id)}
-                               election_is_upcoming={ElectionStore.isElectionIsUpcoming(this.state.google_civic_election_id)}
+                               election_is_upcoming={ElectionStore.isElectionUpcoming(this.state.google_civic_election_id)}
                                voter_entered_address={voter_entered_address}
                                google_civic_data_exists={ElectionStore.googleCivicDataExists(this.state.google_civic_election_id)}
                                voter_specific_ballot_from_google_civic={voter_specific_ballot_from_google_civic} />
@@ -638,7 +645,7 @@ export default class Ballot extends Component {
                     <BallotStatusMessage ballot_location_chosen
                                          ballot_location_display_name={ballot_location_display_name}
                                          election_day_text={ElectionStore.getElectionDayText(this.state.google_civic_election_id)}
-                                         election_is_upcoming={ElectionStore.isElectionIsUpcoming(this.state.google_civic_election_id)}
+                                         election_is_upcoming={ElectionStore.isElectionUpcoming(this.state.google_civic_election_id)}
                                          voter_entered_address={voter_entered_address}
                                          google_civic_data_exists={ElectionStore.googleCivicDataExists(this.state.google_civic_election_id)}
                                          voter_specific_ballot_from_google_civic={voter_specific_ballot_from_google_civic}
@@ -652,6 +659,7 @@ export default class Ballot extends Component {
                     <div className="ballot__filter hidden-print">
                       <BallotFilter pathname={this.props.location.pathname}
                                     ballot_type={this.getBallotType()}
+                                    election_day_text={ElectionStore.getElectionDayText(this.state.google_civic_election_id)}
                                     length={BallotStore.ballotLength}
                                     length_remaining={BallotStore.ballot_remaining_choices_length} />
                     </div>

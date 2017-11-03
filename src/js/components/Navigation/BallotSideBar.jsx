@@ -39,8 +39,8 @@ export default class BallotSideBar extends Component {
 
     // sorting the mapped array based on local_ballot_order which came from the server
     mapped.sort( (a, b) => {
-      return +(parseInt(a.value.local_ballot_order) > parseInt(b.value.local_ballot_order)) ||
-        +(parseInt(a.value.local_ballot_order) === parseInt(b.value.local_ballot_order)) - 1;
+      return +(parseInt(a.value.local_ballot_order, 10) > parseInt(b.value.local_ballot_order, 10)) ||
+        +(parseInt(a.value.local_ballot_order, 10) === parseInt(b.value.local_ballot_order, 10)) - 1;
     });
 
     let orderedArray = [];
