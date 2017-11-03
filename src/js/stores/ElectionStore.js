@@ -68,7 +68,7 @@ class ElectionStore extends FluxMapStore {
         let election_list_by_google_civic_election_id = {};
         let google_civic_election_id;
         election_list.forEach(election => {
-          google_civic_election_id = parseInt(election.google_civic_election_id);
+          google_civic_election_id = parseInt(election.google_civic_election_id, 10);
           election_list_by_google_civic_election_id[google_civic_election_id] = election;
         });
         // console.log("In ElectionStore, electionsRetrieve, election_list: ", election_list);
