@@ -31,8 +31,11 @@ export default class Location extends Component {
     AnalyticsActions.saveActionElections(VoterStore.election_id());
   }
 
+  componentWillUnmount (){
+    this.electionListListener.remove();
+  }
+
   onElectionStoreChange (){
-    let ballot_locations = [];
     let elections_list = ElectionStore.getElectionList();
     let elections_locations_list = [];
     let voter_ballot; // A different format for much of the same data
@@ -43,16 +46,16 @@ export default class Location extends Component {
 
     for (var i = 0; i < elections_list.length; i++){
       var election = elections_list[i];
-      ballot_locations = ElectionStore.getBallotLocationsForElection(election.google_civic_election_id);
-      election.ballot_locations = ballot_locations;
       elections_locations_list.push(election);
       ballot_returned_we_vote_id = "";
       ballot_location_shortcut = "";
-      // console.log("Elections, onElectionStoreChange, ballot_locations: ", ballot_locations);
-      if (ballot_locations && ballot_locations.length) {
-        one_ballot_location = ballot_locations.pop();
-        ballot_location_shortcut = one_ballot_location.ballot_location_shortcut;
-        ballot_returned_we_vote_id = one_ballot_location.ballot_returned_we_vote_id;
+      if (election.ballot_location_list && election.ballot_location_list.length) {
+        // We want to add the shortcut and we_vote_id for the first ballot location option
+        one_ballot_location = election.ballot_location_list[0];
+        ballot_location_shortcut = one_ballot_location.ballot_location_shortcut || "";
+        ballot_location_shortcut = ballot_location_shortcut.trim();
+        ballot_returned_we_vote_id = one_ballot_location.ballot_returned_we_vote_id || "";
+        ballot_returned_we_vote_id = ballot_returned_we_vote_id.trim();
       }
       voter_ballot = {
         google_civic_election_id: election.google_civic_election_id,
@@ -64,16 +67,11 @@ export default class Location extends Component {
       };
       voter_ballot_list.push(voter_ballot);
     }
-    // console.log("Elections, onElectionStoreChange, voter_ballot_list: ", voter_ballot_list);
 
     this.setState({
       elections_locations_list: elections_locations_list,
       voter_ballot_list: voter_ballot_list,
     });
-  }
-
-  componentWillUnmount (){
-    this.electionListListener.remove();
   }
 
   render () {
