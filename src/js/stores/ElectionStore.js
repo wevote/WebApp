@@ -11,6 +11,7 @@ class ElectionStore extends FluxMapStore {
     if (this.getState().election_list_by_google_civic_election_id) {
       let google_civic_election_id_int = parseInt(google_civic_election_id, 10);
       let one_election = this.getState().election_list_by_google_civic_election_id[google_civic_election_id_int];
+      // console.log("getBallotLocationsForElection, one_election.ballot_location_list:", one_election.ballot_location_list)
       if (one_election) {
         return one_election.ballot_location_list;
       }
@@ -64,14 +65,15 @@ class ElectionStore extends FluxMapStore {
     switch (action.type) {
 
       case "electionsRetrieve":
+        // console.log("In ElectionStore, electionsRetrieve, action.res: ", action.res);
         let election_list = action.res.election_list;
+        // console.log("In ElectionStore, electionsRetrieve, election_list: ", election_list);
         let election_list_by_google_civic_election_id = {};
         let google_civic_election_id;
         election_list.forEach(election => {
-          google_civic_election_id = parseInt(election.google_civic_election_id);
+          google_civic_election_id = parseInt(election.google_civic_election_id, 10);
           election_list_by_google_civic_election_id[google_civic_election_id] = election;
         });
-        // console.log("In ElectionStore, electionsRetrieve, election_list: ", election_list);
         // console.log("In ElectionStore, electionsRetrieve, election_list_by_google_civic_election_id: ", election_list_by_google_civic_election_id);
 
         return {

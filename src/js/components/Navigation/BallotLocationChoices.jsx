@@ -115,6 +115,7 @@ export default class BallotLocationChoices extends Component {
       return <div className="u-stack--sm">
         <div className="btn-group">
         {this.state.ballot_location_list.map( (ballot_location, key) => {
+          // console.log("ballot_location: ", ballot_location, ", key: ", key);
           if (ballot_location.ballot_item_display_name !== "" || ballot_location.text_for_map_search !== "") {
             let ballot_location_shortcut_of_retrieved_ballot = "";
             let ballot_location_shortcut_matches = false;
