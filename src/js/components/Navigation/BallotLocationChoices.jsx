@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { Button } from "react-bootstrap";
+import { browserHistory } from "react-router";
 import BallotActions from "../../actions/BallotActions";
 import BallotStore from "../../stores/BallotStore";
 import ElectionStore from "../../stores/ElectionStore";
@@ -104,8 +105,15 @@ export default class BallotLocationChoices extends Component {
   handleClick (ballot_returned_we_vote_id = "", ballot_location_shortcut = "") {
     // console.log("BallotLocationChoices, handleClick, ballot_returned_we_vote_id: ", ballot_returned_we_vote_id);
     // console.log("BallotLocationChoices, handleClick, ballot_location_shortcut: ", ballot_location_shortcut);
-    let google_civic_election_id = 0;
-    BallotActions.voterBallotItemsRetrieve(google_civic_election_id, ballot_returned_we_vote_id, ballot_location_shortcut);
+    if (ballot_location_shortcut !== "" && ballot_location_shortcut !== undefined) {
+      BallotActions.voterBallotItemsRetrieve(0, "", ballot_location_shortcut);
+      // Change the URL to match
+      browserHistory.push("/ballot/" + ballot_location_shortcut);
+    } else if (ballot_returned_we_vote_id !== "" && ballot_returned_we_vote_id !== undefined) {
+      BallotActions.voterBallotItemsRetrieve(0, ballot_returned_we_vote_id, "");
+      // Change the URL to match
+      browserHistory.push("/ballot/id/" + ballot_returned_we_vote_id);
+    }
   }
 
   render () {
