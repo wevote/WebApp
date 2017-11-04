@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { browserHistory } from "react-router";
+import BallotActions from "../../actions/BallotActions";
 import VoterActions from "../../actions/VoterActions";
 import { cleanArray } from "../../utils/textFormat";
 import moment from "moment";
@@ -22,9 +23,11 @@ export default class BallotElectionList extends Component {
     // console.log("BallotElectionList.jsx goToDifferentElection, googleCivicElectionId: ", googleCivicElectionId, ", originalTextForMapSearch: ", originalTextForMapSearch);
     if (ballot_location_shortcut && ballot_location_shortcut !== "" && ballot_location_shortcut !== "none") {
       // console.log("goToDifferentElection, ballot_location_shortcut: ", ballot_location_shortcut);
+      BallotActions.voterBallotItemsRetrieve(0, "", ballot_location_shortcut);
       browserHistory.push("/ballot/" + ballot_location_shortcut);
     } else if (ballot_returned_we_vote_id && ballot_returned_we_vote_id !== "" && ballot_returned_we_vote_id !== "none") {
       // console.log("goToDifferentElection, ballot_returned_we_vote_id: ", ballot_returned_we_vote_id);
+      BallotActions.voterBallotItemsRetrieve(0, ballot_returned_we_vote_id, "");
       browserHistory.push("/ballot/id/" + ballot_returned_we_vote_id);
     } else if (originalTextForMapSearch && originalTextForMapSearch !== "") {
       // Do we still want to be updating addresses? Maybe instead just update google_civic_election_id?
@@ -33,6 +36,7 @@ export default class BallotElectionList extends Component {
       VoterActions.voterAddressSave(originalTextForMapSearch, simple_save, googleCivicElectionId);
       browserHistory.push("/ballot");
     } else if (googleCivicElectionId && googleCivicElectionId !== 0) {
+      BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, "", "");
       // console.log("goToDifferentElection, googleCivicElectionId: ", googleCivicElectionId);
       browserHistory.push("/ballot/election/" + googleCivicElectionId);
     }

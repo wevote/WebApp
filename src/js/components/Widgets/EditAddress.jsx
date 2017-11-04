@@ -63,7 +63,7 @@ export default class EditAddress extends Component {
     let no_address_message = "- no address entered -";
     let edit_address_popover_on = true;
     let maximum_address_display_length = 35;
-    
+
     return (
       <span className="ballot__date_location">
         { edit_address_popover_on ?
