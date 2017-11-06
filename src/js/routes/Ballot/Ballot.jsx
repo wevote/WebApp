@@ -82,7 +82,7 @@ export default class Ballot extends Component {
   }
 
   componentDidMount () {
-    console.log("Ballot componentDidMount");
+    // console.log("Ballot componentDidMount");
     let hide_intro_modal_from_url = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
     let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal") || 0;
     let wait_until_voter_sign_in_completes = this.props.location.query ? this.props.location.query.wait_until_voter_sign_in_completes : 0;
@@ -149,10 +149,10 @@ export default class Ballot extends Component {
       browserHistory.push("/settings/location");
     }
 
-    let ballot = this.getBallot(this.props);
+    let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
+    let ballot = this.getBallotByBallotType(ballot_type);
     if (ballot !== undefined) {
       // console.log("ballot !== undefined");
-      let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
       this.setState({
         ballot: ballot,
         ballot_type: ballot_type
@@ -189,54 +189,32 @@ export default class Ballot extends Component {
       ballot_location_shortcut: ballot_location_shortcut,
       hide_intro_modal_from_url: hide_intro_modal_from_url,
       hide_intro_modal_from_cookie: hide_intro_modal_from_cookie,
+      location: this.props.location,
+      pathname: this.props.location.pathname,
       wait_until_voter_sign_in_completes: wait_until_voter_sign_in_completes
     });
   }
 
   componentWillReceiveProps (nextProps){
     // console.log("Ballot componentWillReceiveProps, nextProps: ", nextProps);
+    // console.log("Ballot this.state: ", this.state);
     let ballot_type = nextProps.location.query ? nextProps.location.query.type : "all";
 
-    let google_civic_election_id = nextProps.params.google_civic_election_id || 0;
+    // We don't want to let the google_civic_election_id disappear
+    let google_civic_election_id = nextProps.params.google_civic_election_id || this.state.google_civic_election_id;
     let ballot_returned_we_vote_id = nextProps.params.ballot_returned_we_vote_id || "";
     ballot_returned_we_vote_id = ballot_returned_we_vote_id.trim();
     let ballot_location_shortcut = nextProps.params.ballot_location_shortcut || "";
     ballot_location_shortcut = ballot_location_shortcut.trim();
-    // let google_civic_election_id = this.state.google_civic_election_id;
-
-    // Here we want to react to any changes with the url, and make sure we have the latest data,
-    //  but only if we aren't already waiting for the new ballot items
-    // 2017-11-04 We do not react to incoming url changes -- we always trigger the URL change along with the
-    //  request for the new data
-    // if (!this.state.waiting_for_new_ballot_items) {
-    //   // console.log("google_civic_election_id_from_params: ", google_civic_election_id_from_params);
-    //   if (google_civic_election_id_from_params !== 0) {
-    //     console.log("google_civic_election_id_from_params !== 0");
-    //     google_civic_election_id_from_params = parseInt(google_civic_election_id_from_params, 10);
-    //     google_civic_election_id = google_civic_election_id_from_params;
-    //     BallotActions.voterBallotItemsRetrieve(google_civic_election_id);
-    //   } else if (ballot_returned_we_vote_id.length && ballot_returned_we_vote_id !== this.state.ballot_returned_we_vote_id) {
-    //     console.log("ballot_returned_we_vote_id !== this.state.ballot_returned_we_vote_id");
-    //     let google_civic_election_id_zero = 0;
-    //     BallotActions.voterBallotItemsRetrieve(google_civic_election_id_zero, ballot_returned_we_vote_id);
-    //   } else if (ballot_location_shortcut.length && ballot_location_shortcut !== this.state.ballot_location_shortcut) {
-    //     console.log("ballot_location_shortcut !== this.state.ballot_location_shortcut");
-    //     console.log("ballot_location_shortcut:", ballot_location_shortcut);
-    //     console.log("this.state.ballot_location_shortcut:", this.state.ballot_location_shortcut);
-    //     let google_civic_election_id_zero = 0;
-    //     let ballot_returned_we_vote_id_empty = "";
-    //     BallotActions.voterBallotItemsRetrieve(google_civic_election_id_zero, ballot_returned_we_vote_id_empty, ballot_location_shortcut);
-    //   }
-    // } else {
-    //   console.log("Ballot componentWillReceiveProps, waiting_for_new_ballot_items is True");
-    // }
 
     this.setState({
-      ballot: this.getBallot(nextProps),
+      ballot: this.getBallotByBallotType(ballot_type),
+      ballot_returned_we_vote_id: ballot_returned_we_vote_id,
+      ballot_location_shortcut: ballot_location_shortcut,
       ballot_type: ballot_type,
       google_civic_election_id: parseInt(google_civic_election_id, 10),
-      ballot_returned_we_vote_id: ballot_returned_we_vote_id,
-      ballot_location_shortcut: ballot_location_shortcut
+      location: nextProps.location,
+      pathname: nextProps.location.pathname,
     });
 
     if (google_civic_election_id && google_civic_election_id !== 0) {
@@ -276,9 +254,9 @@ export default class Ballot extends Component {
     if (this.state.showBallotIntroModal) {
       // Saved to the voter record that the ballot introduction has been seen
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.BALLOT_INTRO_MODAL_SHOWN);
-    } else if (this.props.location.hash.includes("#")) {
+    } else if (this.state.location.hash.includes("#")) {
       // Clear out any # from anchors in the URL
-      browserHistory.push(this.props.location.pathname);
+      browserHistory.push(this.state.pathname);
     }
     this.setState({ showBallotIntroModal: !this.state.showBallotIntroModal });
   }
@@ -304,8 +282,8 @@ export default class Ballot extends Component {
 
   toggleSelectAddressModal () {
     // Clear out any # from anchors in the URL
-    if (!this.state.showSelectAddressModal && this.props.location.hash.includes("#")) {
-      browserHistory.push(this.props.location.pathname);
+    if (!this.state.showSelectAddressModal && this.state.location.hash.includes("#")) {
+      browserHistory.push(this.state.pathname);
     }
 
     this.setState({
@@ -320,7 +298,7 @@ export default class Ballot extends Component {
   }
 
   onVoterStoreChange () {
-    //console.log("Ballot.jsx onVoterStoreChange");
+    // console.log("Ballot.jsx onVoterStoreChange");
     if (this.state.mounted) {
       let consider_opening_ballot_intro_modal = true;
       if ( this.state.wait_until_voter_sign_in_completes ) {
@@ -328,8 +306,8 @@ export default class Ballot extends Component {
         if ( this.state.voter && this.state.voter.is_signed_in ) {
           consider_opening_ballot_intro_modal = true;
           this.setState({ wait_until_voter_sign_in_completes: undefined });
-          console.log("onVoterStoreChange, about to browserHistory.push(this.props.location.pathname):", this.props.location.pathname);
-          browserHistory.push(this.props.location.pathname);
+          console.log("onVoterStoreChange, about to browserHistory.push(this.state.pathname):", this.state.pathname);
+          browserHistory.push(this.state.pathname);
         }
       }
 
@@ -353,68 +331,28 @@ export default class Ballot extends Component {
   }
 
   onBallotStoreChange (){
-    // console.log("Ballot.jsx onBallotStoreChange");
-    console.log("Ballot.jsx onBallotStoreChange, BallotStore.ballot_properties: ", BallotStore.ballot_properties);
+    // console.log("Ballot.jsx onBallotStoreChange, BallotStore.ballot_properties: ", BallotStore.ballot_properties);
     if (this.state.mounted) {
       if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) {
         // Ballot is found but ballot is empty. We want to stay put.
         // console.log("onBallotStoreChange: ballot is empty");
       } else {
-        let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
-        // console.log("onBallotStoreChange, setState:ballot this.props:", this.props);
+        let ballot_type = this.state.location.query ? this.state.location.query.type : "all";
+        // console.log("onBallotStoreChange, ballot_type:", ballot_type);
         this.setState({
-          ballot: this.getBallot(this.props),
+          ballot: this.getBallotByBallotType(ballot_type),
           ballot_type: ballot_type
         });
       }
       this.setState({ballotElectionList: BallotStore.ballotElectionList()});
     }
-    if (BallotStore.ballot_properties && BallotStore.ballot_properties.google_civic_election_id) {
-      // console.log("onBallotStoreChange, google_civic_election_id: ", BallotStore.ballot_properties.google_civic_election_id);
+    if (BallotStore.ballot_properties) {
       this.setState({
+        ballot_returned_we_vote_id: BallotStore.ballot_properties.ballot_returned_we_vote_id || "",
+        ballot_location_shortcut: BallotStore.ballot_properties.ballot_location_shortcut || "",
         google_civic_election_id: parseInt(BallotStore.ballot_properties.google_civic_election_id, 10)
       });
     }
-
-    // DALE 2017-11-04 We don't want to change the data in response to the url (except in component did mount)
-    //  Instead we want to always change the url when we are requesting new ballot data
-
-    // let ballot_location_shortcut_of_retrieved_ballot = "";
-    // if (BallotStore.ballot_properties) {
-    //   ballot_location_shortcut_of_retrieved_ballot = BallotStore.ballot_properties.ballot_location_shortcut || "";
-    //   ballot_location_shortcut_of_retrieved_ballot = ballot_location_shortcut_of_retrieved_ballot.trim();
-    //   ballot_location_shortcut_of_retrieved_ballot = ballot_location_shortcut_of_retrieved_ballot === "none" ? "" : ballot_location_shortcut_of_retrieved_ballot;
-    // }
-    // if (this.state.waiting_for_ballot_items_from === ballot_location_shortcut_of_retrieved_ballot) {
-    //   console.log("Ballot setting waiting_for_new_ballot_items to False");
-    //   // This variable is used to prevent an infinite loop between onBallotStoreChange and componentWillReceiveProps
-    //   this.setState({
-    //     waiting_for_new_ballot_items: false,
-    //   });
-    // }
-    // if (ballot_location_shortcut_of_retrieved_ballot && this.state.ballot_location_shortcut) {
-    //   let ballot_location_shortcut_of_retrieved_ballot_length = ballot_location_shortcut_of_retrieved_ballot.trim().length;
-    //   let state_ballot_location_shortcut_length = this.state.ballot_location_shortcut.trim().length;
-    //   console.log("ballot_location_shortcut_of_retrieved_ballot: '", ballot_location_shortcut_of_retrieved_ballot, "', length: ", ballot_location_shortcut_of_retrieved_ballot_length);
-    //   console.log("this.state.ballot_location_shortcut: '", this.state.ballot_location_shortcut, "', length: ", state_ballot_location_shortcut_length);
-    //   if (ballot_location_shortcut_of_retrieved_ballot_length && state_ballot_location_shortcut_length) {
-    //     if (this.state.ballot_location_shortcut !== ballot_location_shortcut_of_retrieved_ballot) {
-    //       console.log("onBallotStoreChange, ballot_location_shortcut_of_retrieved_ballot is different, triggering voterBallotItemsRetrieve and push");
-    //       let google_civic_election_id_zero = 0;
-    //       let ballot_returned_we_vote_id_empty = "";
-    //       // Retrieve the new ballot
-    //       BallotActions.voterBallotItemsRetrieve(google_civic_election_id_zero, ballot_returned_we_vote_id_empty, ballot_location_shortcut_of_retrieved_ballot);
-    //       // Change the URL to match
-    //       browserHistory.push("/ballot/" + ballot_location_shortcut_of_retrieved_ballot);
-    //       // Update the Ballot state so we know the current ballot_location_shortcut we are looking at
-    //       this.setState({
-    //         ballot_location_shortcut: ballot_location_shortcut_of_retrieved_ballot,
-    //         waiting_for_new_ballot_items: true,
-    //         waiting_for_ballot_items_from: ballot_location_shortcut_of_retrieved_ballot,
-    //       });
-    //    }
-    //   }
-    // }
   }
 
   onElectionStoreChange (){
@@ -496,8 +434,8 @@ export default class Ballot extends Component {
     }
   }
 
-  getBallot (props){
-    let ballot_type = props.location.query ? props.location.query.type : "all";
+  getBallotByBallotType (ballot_type){
+    // console.log("getBallotByBallotType, ballot_type: ", ballot_type);
     switch (ballot_type) {
       case "filterRemaining":
         return BallotStore.ballot_remaining_choices;
@@ -548,7 +486,7 @@ export default class Ballot extends Component {
   }
 
   render () {
-    // console.log("Ballot render");
+    // console.log("Ballot render, this.state: ", this.state);
     let ballot = this.state.ballot;
     let text_for_map_search = VoterStore.getTextForMapSearch();
     let voter_address_object = VoterStore.getAddressObject();
@@ -569,7 +507,7 @@ export default class Ballot extends Component {
       </div>;
     }
 
-    const missing_address = this.props.location === null;
+    const missing_address = this.state.location === null;
     // const ballot_caveat = BallotStore.ballot_properties.ballot_caveat; // ballot_properties might be undefined
     const election_name = BallotStore.currentBallotElectionName;
     const election_day_text = BallotStore.currentBallotElectionDate;
@@ -605,6 +543,7 @@ export default class Ballot extends Component {
 
     const electionTooltip = election_day_text ? <Tooltip id="tooltip">Election day {moment(election_day_text).format("MMM Do, YYYY")}</Tooltip> : <span />;
 
+    let in_remaining_decisions_mode = this.getFilterType() === "filterRemaining";
     let in_ready_to_vote_mode = this.getFilterType() === "filterReadyToVote";
 
     let voter_ballot_location = VoterStore.getBallotLocationForVoter();
@@ -620,9 +559,13 @@ export default class Ballot extends Component {
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_location_display_name) {
       ballot_location_display_name = BallotStore.ballot_properties.ballot_location_display_name;
     } else if (voter_ballot_location && voter_ballot_location.ballot_location_display_name) {
+      // Get the location name from the VoterStore address object
       ballot_location_display_name = voter_ballot_location.ballot_location_display_name;
     }
 
+    if (ballot.length === 0 && in_remaining_decisions_mode) {
+      browserHistory.push(this.state.pathname);
+    }
     // console.log("Ballot.jsx, this.state.google_civic_election_id: ", this.state.google_civic_election_id);
 
     return <div className="ballot">
@@ -699,7 +642,7 @@ export default class Ballot extends Component {
                 { text_for_map_search ?
                   <div className="ballot__filter-container">
                     <div className="ballot__filter hidden-print">
-                      <BallotFilter pathname={this.props.location.pathname}
+                      <BallotFilter pathname={this.state.pathname}
                                     ballot_type={this.getBallotType()}
                                     election_day_text={ElectionStore.getElectionDayText(this.state.google_civic_election_id)}
                                     length={BallotStore.ballotLength}
@@ -712,12 +655,13 @@ export default class Ballot extends Component {
           </div>
         </div>
       </div>
-
-      <div className="visible-xs-block hidden-print">
-        <div className="BallotItemsSummary">
-          <a onClick={this.toggleBallotSummaryModal}>Summary of Ballot Items</a>
-        </div>
-      </div>
+      { ballot.length === 0 ?
+        null :
+        <div className="visible-xs-block hidden-print">
+          <div className="BallotItemsSummary">
+            <a onClick={this.toggleBallotSummaryModal}>Summary of Ballot Items</a>
+          </div>
+        </div> }
 
       <div className="page-content-container">
         <div className="container-fluid">
@@ -755,9 +699,12 @@ export default class Ballot extends Component {
                 null
               }
             </div>
-            <div className="col-md-4 hidden-xs sidebar-menu">
-              <BallotSideBar displayTitle displaySubtitles />
-            </div>
+
+            { ballot.length === 0 ?
+              null :
+              <div className="col-md-4 hidden-xs sidebar-menu">
+                <BallotSideBar displayTitle displaySubtitles />
+              </div> }
           </div>
         </div>
       </div>
