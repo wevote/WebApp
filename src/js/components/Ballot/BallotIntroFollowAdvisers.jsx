@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import OrganizationFollowToggle from "./OrganizationFollowToggle";
+import { isSpeakerTypeIndividual } from "../../utils/organization-functions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 
@@ -132,12 +133,23 @@ export default class BallotIntroFollowAdvisers extends Component {
       voter_guides_to_follow_all = this.state.voter_guides_to_follow_all;
     }
 
-    // We want to remove the organizations we've already displayed
+    // We want to remove the organizations we've already displayed and limit the total displayed
     let voter_guides_to_follow_all_filtered = [];
+    let number_added_to_all_filtered_list = 0;
+    let total_number_of_voter_guides_to_show = 36;
+    let already_seen;
+    let exceeded_voter_guides_to_show;
+    let is_individual;
     for (index = 0; index < voter_guides_to_follow_all.length; ++index) {
-      if (!organization_we_vote_ids_displayed.includes(voter_guides_to_follow_all[index].organization_we_vote_id)) {
+      // console.log("voter guide to follow, owner type:", voter_guides_to_follow_all[index].voter_guide_owner_type);
+      // Filter out some voter guides
+      already_seen = organization_we_vote_ids_displayed.includes(voter_guides_to_follow_all[index].organization_we_vote_id);
+      exceeded_voter_guides_to_show = number_added_to_all_filtered_list >= total_number_of_voter_guides_to_show;
+      is_individual = isSpeakerTypeIndividual(voter_guides_to_follow_all[index].voter_guide_owner_type);
+      if (!already_seen && !exceeded_voter_guides_to_show && !is_individual) {
         voter_guides_to_follow_all_filtered.push(voter_guides_to_follow_all[index]);
         organization_we_vote_ids_displayed.push(voter_guides_to_follow_all[index].organization_we_vote_id);
+        number_added_to_all_filtered_list++;
       }
     }
 
