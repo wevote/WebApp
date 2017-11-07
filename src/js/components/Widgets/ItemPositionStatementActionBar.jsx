@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from "react";
+import ReactPlayer from "react-player";
 import ReadMore from "../../components/Widgets/ReadMore";
 import Textarea from "react-textarea-autosize";
+import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
+import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
 import SupportActions from "../../actions/SupportActions";
-import ReactPlayer from "react-player";
 import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
-import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
 import {vimeo_reg, youtube_reg} from "../../utils/textFormat";
 var Icon = require("react-svg-icons");
 
@@ -175,7 +176,7 @@ export default class ItemPositionStatementActionBar extends Component {
 
     let image_placeholder = "";
     let speaker_type = "V";  // TODO DALE make this dynamic
-    if (speaker_type === "O") {
+    if (isSpeakerTypeOrganization(speaker_type)) {
         image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
     } else {
         image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
