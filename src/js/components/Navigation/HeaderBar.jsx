@@ -5,6 +5,7 @@ import BookmarkStore from "../../stores/BookmarkStore";
 import cookies from "../../utils/cookies";
 import FriendStore from "../../stores/FriendStore";
 import OrganizationActions from "../../actions/OrganizationActions";
+import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
 import SearchAllBox from "../SearchAllBox";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
@@ -299,7 +300,7 @@ export default class HeaderBar extends Component {
 
   imagePlaceholder (speaker_type) {
     let image_placeholder = "";
-    if (speaker_type === "O") {
+    if (isSpeakerTypeOrganization(speaker_type)) {
         image_placeholder = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} /></div>;
     } else {
         image_placeholder = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} /></div>;
