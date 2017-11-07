@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import ImageHandler from "../../components/ImageHandler";
 // import EditPositionAboutCandidateModal from "../../components/VoterGuide/EditPositionAboutCandidateModal";
 import FriendsOnlyIndicator from "../../components/Widgets/FriendsOnlyIndicator";
+import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from "../../utils/organization-functions";
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
 import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
 import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
@@ -36,9 +37,9 @@ export default class PositionItem extends Component {
     var speakerLink = position.speaker_twitter_handle ? "/" + position.speaker_twitter_handle : "/voterguide/" + position.speaker_we_vote_id;
 
     let image_placeholder = "";
-    if (position.speaker_type === "O") {
+    if (isSpeakerTypeOrganization(position.speaker_type)) {
         image_placeholder = <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color" />;
-    } else if (position.speaker_type === "V") {
+    } else if (isSpeakerTypeIndividual(position.speaker_type)) {
         image_placeholder = <i className="icon-org-lg icon-icon-person-placeholder-6-1 icon-org-resting-color" />;
     }
 
@@ -51,7 +52,7 @@ export default class PositionItem extends Component {
       position_description = <PositionSupportOpposeSnippet {...position} is_on_ballot_item_page={is_on_ballot_item_page} />;
     } else if (position.is_information_only) {
       position_description = <PositionInformationOnlySnippet {...position} is_on_ballot_item_page={is_on_ballot_item_page} />;
-    } else if (position.speaker_type === "V") {
+    } else if (isSpeakerTypeIndividual(position.speaker_type)) {
         position_description = <p className="">
           <span>{this.props.ballot_item_display_name}</span>
           <span className="small"> { dateText }</span>
