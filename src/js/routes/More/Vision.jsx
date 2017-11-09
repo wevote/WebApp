@@ -53,7 +53,7 @@ export default class Vision extends Component {
         informed by issues you care about and people you trust. Through our nonpartisan, open source platform,
         we'll help you become a better voter, up and down the ballot.<br />
         <br />
-        You have alot of decisions to make when you vote, and political campaigns don't always tell the
+        You have a lot of decisions to make when you vote, and political campaigns don't always tell the
         whole truth. With fake news and misinformation, it's hard to tell which candidate or ballot initiative
         is on your side. Does that candidate for state legislature care about the same issues that you do?
         Does the awkwardly-worded ballot initiative support what you believe or is it the exact opposite
