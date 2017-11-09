@@ -6,6 +6,7 @@ import BallotStore from "../../stores/BallotStore";
 import ElectionStore from "../../stores/ElectionStore";
 import VoterStore from "../../stores/VoterStore";
 import { shortenText } from "../../utils/textFormat";
+import BallotLocationButton from "./BallotLocationButton";
 
 
 export default class BallotLocationChoices extends Component {
@@ -19,7 +20,9 @@ export default class BallotLocationChoices extends Component {
     this.state = {
       google_civic_election_id: 0
     };
+
     this.handleClick = this.handleClick.bind(this);
+    this.hideToggle = this.hideToggle.bind(this);
   }
 
   componentDidMount () {
@@ -116,55 +119,37 @@ export default class BallotLocationChoices extends Component {
     }
   }
 
+  hideToggle(){
+    this.setState({ hide: !this.state.hide });
+  }
+
   render () {
     // console.log("In BallotLocationChoices render, ballot_location_list: ", this.state.ballot_location_list);
     if (this.state.ballot_location_list && this.state.ballot_location_list.length) {
       //  className="container-fluid card"
-      return <div className="u-stack--sm">
+      return <div className="u-stack--sm ballot-locations">
         <div className="btn-group">
-        {this.state.ballot_location_list.map( (ballot_location, key) => {
-          // console.log("ballot_location: ", ballot_location, ", key: ", key);
-          if (ballot_location.ballot_item_display_name !== "" || ballot_location.text_for_map_search !== "") {
-            let ballot_location_shortcut_of_retrieved_ballot = "";
-            let ballot_location_shortcut_matches = false;
-            let ballot_returned_we_vote_id_of_retrieved_ballot = "";
-            let ballot_returned_we_vote_id_matches = false;
-            let ballot_location_display_name = "";
-            if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_location_shortcut) {
-              ballot_location_shortcut_of_retrieved_ballot = BallotStore.ballot_properties.ballot_location_shortcut;
-              if (ballot_location.ballot_location_shortcut && ballot_location_shortcut_of_retrieved_ballot) {
-                if (ballot_location.ballot_location_shortcut === ballot_location_shortcut_of_retrieved_ballot) {
-                  ballot_location_shortcut_matches = true;
-                }
-              }
-            }
-            if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_returned_we_vote_id) {
-              ballot_returned_we_vote_id_of_retrieved_ballot = BallotStore.ballot_properties.ballot_returned_we_vote_id;
-              if (ballot_location.ballot_returned_we_vote_id && ballot_returned_we_vote_id_of_retrieved_ballot) {
-                if (ballot_location.ballot_returned_we_vote_id === ballot_returned_we_vote_id_of_retrieved_ballot) {
-                  ballot_returned_we_vote_id_matches = true;
-                }
-              }
-            }
-            // console.log("ballot_location");
-            if (ballot_location.ballot_location_display_name && ballot_location.ballot_location_display_name !== "") {
-              ballot_location_display_name = ballot_location.ballot_location_display_name;
-            } else if (ballot_location.text_for_map_search !== "") {
-              let maximum_display_length = 35;
-              ballot_location_display_name = shortenText(ballot_location.text_for_map_search, maximum_display_length);
-            } else {
-              ballot_location_display_name = "My Address";
-            }
-            return <span key={key} className="u-push--md">
-              <Button bsStyle={ballot_location_shortcut_matches || ballot_returned_we_vote_id_matches ? "info" : "default"}
-                      onClick={() => { this.handleClick(ballot_location.ballot_returned_we_vote_id, ballot_location.ballot_location_shortcut); }} >
-                <span>{ballot_location_display_name}</span>
-              </Button>
-            </span>;
-          } else {
-            return <span key={key} />;
-          }
-        })}
+            <div className="ballot-locations-mobile">
+              {this.state.ballot_location_list.slice(0, 3).map((ballot_location, key) => {
+                return <BallotLocationButton key={key} ballot_location={ballot_location} />;
+              })}
+
+              <div className={(this.state.hide) ? "hide": "show"}>
+                {this.state.ballot_location_list.slice(3).map((ballot_location, key) => {
+                  return <BallotLocationButton key={key} ballot_location={ballot_location} />; 
+                })}
+              </div>
+              <div>
+                <a onClick={this.hideToggle}>
+                  {(this.state.hide) ? "Show " + Math.max(0, this.state.ballot_location_list.length - 3) + " more": "Hide"}
+                </a>
+              </div>
+            </div>
+            <div className="ballot-locations-desktop">
+              {this.state.ballot_location_list.map( (ballot_location, key) => {
+                return <BallotLocationButton key={key} ballot_location={ballot_location} />;
+              })} 
+            </div>
         </div>
       </div>;
     } else {
