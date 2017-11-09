@@ -18,14 +18,8 @@ export default class BallotLocationChoices extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      google_civic_election_id: 0,
-      on_mobile: onMobile(document)
+      google_civic_election_id: 0
     };
-
-    // Can I do this?
-    if (onMobile(document)){
-      this.state.hide = true;
-    }
 
     this.handleClick = this.handleClick.bind(this);
     this.hideToggle = this.hideToggle.bind(this);
@@ -130,14 +124,12 @@ export default class BallotLocationChoices extends Component {
   }
 
   render () {
-    let diff = Math.max(0, this.state.ballot_location_list.length - 3);
-
     // console.log("In BallotLocationChoices render, ballot_location_list: ", this.state.ballot_location_list);
     if (this.state.ballot_location_list && this.state.ballot_location_list.length) {
       //  className="container-fluid card"
-      return <div className="u-stack--sm">
+      return <div className="u-stack--sm ballot-locations">
         <div className="btn-group">
-            <div classname="ballot-locations-mobile">
+            <div className="ballot-locations-mobile">
               {this.state.ballot_location_list.slice(0, 3).map((ballot_location, key) => {
                 return <BallotLocationButton key={key} ballot_location={ballot_location} />;
               })}
@@ -149,7 +141,7 @@ export default class BallotLocationChoices extends Component {
               </div>
               <div>
                 <a onClick={this.hideToggle}>
-                  {(this.state.hide) ? "Show " + diff + " more": "Hide"}
+                  {(this.state.hide) ? "Show " + Math.max(0, this.state.ballot_location_list.length - 3) + " more": "Hide"}
                 </a>
               </div>
             </div>
