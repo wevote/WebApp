@@ -6,33 +6,6 @@ import ElectionStore from "../../stores/ElectionStore";
 import VoterStore from "../../stores/VoterStore";
 import BallotLocationButton from "./BallotLocationButton";
 
-// Probably unnecessary, but used as a simple solution for.
-var onMobile = function (document){
-  var width = Math.max(
-    document.documentElement.clientWidth,
-    document.body.scrollWidth,
-    document.documentElement.scrollWidth,
-    document.body.offsetWidth,
-    document.documentElement.offsetWidth
-  );
-
-  var height = Math.max(
-    document.documentElement.clientHeight,
-    document.body.scrollHeight,
-    document.documentElement.scrollHeight,
-    document.body.offsetHeight,
-    document.documentElement.offsetHeight
-  );
-
-  var ratio = height / width;
-
-  if (ratio >= 1.5){
-    return true;
-  } else {
-    return false;
-  }
-};
-
 export default class BallotLocationChoices extends Component {
   static propTypes = {
     current_voter_address: PropTypes.string,
@@ -147,16 +120,14 @@ export default class BallotLocationChoices extends Component {
   }
 
   render () {
+    let diff = Math.max(0, this.state.ballot_location_list.length - 3);
+
     // console.log("In BallotLocationChoices render, ballot_location_list: ", this.state.ballot_location_list);
     if (this.state.ballot_location_list && this.state.ballot_location_list.length) {
       //  className="container-fluid card"
       return <div className="u-stack--sm">
         <div className="btn-group">
-        {(() => {
-          let diff = Math.max(0, this.state.ballot_location_list.length - 3);
-
-          if (this.state.on_mobile){
-            return <div>
+            <div classname="ballot-locations-mobile">
               {this.state.ballot_location_list.slice(0, 3).map((ballot_location, key) => {
                 return <BallotLocationButton key={key} ballot_location={ballot_location} />;
               })}
@@ -171,15 +142,12 @@ export default class BallotLocationChoices extends Component {
                   {(this.state.hide) ? "Show " + diff + " more": "Hide"}
                 </a>
               </div>
-            </div>;
-          } else {
-            return <div>
-            {this.state.ballot_location_list.map( (ballot_location, key) => {
-              return <BallotLocationButton key={key} ballot_location={ballot_location} />;
-            })} 
-            </div>;           
-          }
-        })()}
+            </div>
+            <div className="ballot-locations-desktop">
+              {this.state.ballot_location_list.map( (ballot_location, key) => {
+                return <BallotLocationButton key={key} ballot_location={ballot_location} />;
+              })} 
+            </div>          
         </div>
       </div>;
     } else {
