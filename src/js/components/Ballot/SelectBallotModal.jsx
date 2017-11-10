@@ -9,7 +9,7 @@ export default class SelectBallotModal extends Component {
   static propTypes = {
     show: PropTypes.bool,
     toggleFunction: PropTypes.func.isRequired,
-    ballotElectionList: PropTypes.array.isRequired,
+    ballotElectionList: PropTypes.array,
   };
 
   constructor (props) {
@@ -19,6 +19,7 @@ export default class SelectBallotModal extends Component {
 
 
   render () {
+    let ballotElectionList = this.props.ballotElectionList || [];
     return <Modal className="ballot-election-list ballot-election-list__modal"
                   show={this.props.show}
                   onHide={this.props.toggleFunction} >
@@ -26,7 +27,7 @@ export default class SelectBallotModal extends Component {
         <Modal.Title className="ballot-election-list__h1">See Ballot from Another Election</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <BallotElectionList ballotElectionList={this.props.ballotElectionList}
+        <BallotElectionList ballotElectionList={ballotElectionList}
                             toggleFunction={this.props.toggleFunction}/>
       </Modal.Body>
     </Modal>;
