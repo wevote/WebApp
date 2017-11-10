@@ -184,9 +184,10 @@ export default class Ballot extends Component {
     // console.log("End of componentDidMount");
 
     this.setState({
-      google_civic_election_id: parseInt(google_civic_election_id, 10),
+      ballotElectionList: BallotStore.ballotElectionList(),
       ballot_returned_we_vote_id: ballot_returned_we_vote_id,
       ballot_location_shortcut: ballot_location_shortcut,
+      google_civic_election_id: parseInt(google_civic_election_id, 10),
       hide_intro_modal_from_url: hide_intro_modal_from_url,
       hide_intro_modal_from_cookie: hide_intro_modal_from_cookie,
       location: this.props.location,
@@ -275,6 +276,9 @@ export default class Ballot extends Component {
   }
 
   toggleSelectBallotModal () {
+    if (!this.state.showSelectBallotModal) {
+      BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
+    }
     this.setState({
       showSelectBallotModal: !this.state.showSelectBallotModal
     });
@@ -344,7 +348,6 @@ export default class Ballot extends Component {
           ballot_type: ballot_type
         });
       }
-      this.setState({ballotElectionList: BallotStore.ballotElectionList()});
     }
     if (BallotStore.ballot_properties) {
       this.setState({
@@ -353,6 +356,7 @@ export default class Ballot extends Component {
         google_civic_election_id: parseInt(BallotStore.ballot_properties.google_civic_election_id, 10)
       });
     }
+    this.setState({ballotElectionList: BallotStore.ballotElectionList()});
   }
 
   onElectionStoreChange (){
@@ -583,34 +587,33 @@ export default class Ballot extends Component {
               <div className="col-md-12">
                 <Helmet title="Ballot - We Vote" />
                 <BrowserPushMessage incomingProps={this.props} />
-                { election_name ?
-                    <header className="ballot__header-group">
-                      <h1 className="h1 ballot__election-name ballot__header-title">
-                         <OverlayTrigger placement="top" overlay={electionTooltip} >
-                           <span className="u-push--sm">{election_name}</span>
-                         </OverlayTrigger>
-                         {this.state.ballotElectionList.length > 1 ?
-                           <span className="u-no-break hidden-print u-f8 u-cursor--pointer"
-                                 onClick={this.toggleSelectBallotModal} ><img src={"/img/global/icons/gear-icon.png"}
-                                 role="button"
-                                 alt={"change election"}/> change election</span> :
-                           null}
-                      </h1>
-                      {/* This Edit address shown in Desktop mode */}
-                      <span className="hidden-xs hidden-print pull-right ballot__header-address">
-                        <EditAddress address={voter_address_object}
-                                     toggleSelectAddressModal={this.toggleSelectAddressModal}
-                                     ballot_location_chosen
-                                     ballot_location_display_name={ballot_location_display_name}
-                                     election_day_text={ElectionStore.getElectionDayText(this.state.google_civic_election_id)}
-                                     election_is_upcoming={ElectionStore.isElectionUpcoming(this.state.google_civic_election_id)}
-                                     voter_entered_address={voter_entered_address}
-                                     google_civic_data_exists={ElectionStore.googleCivicDataExists(this.state.google_civic_election_id)}
-                                     voter_specific_ballot_from_google_civic={voter_specific_ballot_from_google_civic}
-                        />
-                      </span>
-                    </header> :
-                  null }
+                <header className="ballot__header-group">
+                  <h1 className="h1 ballot__election-name ballot__header-title">
+                    { election_name ?
+                      <OverlayTrigger placement="top" overlay={electionTooltip} >
+                       <span className="u-push--sm">{election_name}</span>
+                      </OverlayTrigger> :
+                      null }
+                    {/* We always show the change election option */}
+                    <span className="u-no-break hidden-print u-f8 u-cursor--pointer"
+                          onClick={this.toggleSelectBallotModal} ><img src={"/img/global/icons/gear-icon.png"}
+                          role="button"
+                          alt={"change election"}/> change election</span>
+                  </h1>
+                  {/* This Edit address shown in Desktop mode */}
+                  <span className="hidden-xs hidden-print pull-right ballot__header-address">
+                    <EditAddress address={voter_address_object}
+                                 toggleSelectAddressModal={this.toggleSelectAddressModal}
+                                 ballot_location_chosen
+                                 ballot_location_display_name={ballot_location_display_name}
+                                 election_day_text={ElectionStore.getElectionDayText(this.state.google_civic_election_id)}
+                                 election_is_upcoming={ElectionStore.isElectionUpcoming(this.state.google_civic_election_id)}
+                                 voter_entered_address={voter_entered_address}
+                                 google_civic_data_exists={ElectionStore.googleCivicDataExists(this.state.google_civic_election_id)}
+                                 voter_specific_ballot_from_google_civic={voter_specific_ballot_from_google_civic}
+                    />
+                  </span>
+                </header>
                 {/* This Edit address shown in Mobile mode */}
                 <div className="visible-xs-block hidden-print ballot__header-address-xs">
                   <EditAddress address={voter_address_object}
