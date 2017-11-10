@@ -97,23 +97,3 @@ $tab-height-visible: $tab-height - $scrollbar-height;
     margin-top: $space-lg;
   }
 }
-
-// Ballot Locations List Buttons
-
-.ballot-locations-desktop {
-  display: none;
-}
-
-.ballot-locations-mobile {
-  display: block;
-}
-
-@include breakpoints (large) {
-  .ballot-locations-desktop {
-    display: block;
-  }
-
-  .ballot-locations-mobile {
-    display: none;
-  }
-}

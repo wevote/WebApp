@@ -123,7 +123,7 @@ export default class EditAddressPopover extends Component {
     </Popover>;
 
     let no_address_message = "- no address entered -";
-    let maximum_address_display_length = this.state.max_address_display_length !== 0 ? this.state.max_address_display_length : 35;
+    let maximum_address_display_length = this.state.max_address_display_length !== 0 ? this.state.max_address_display_length : 30;
 
     return <span>{ address_popover_on ?
         <OverlayTrigger
