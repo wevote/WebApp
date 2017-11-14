@@ -4,7 +4,7 @@
 // Explicit Positions
 
 @include media-object('.explicit-position', '.explicit-position__icon', '.explicit-position__text', $margin: 5px);
-
+s
 .explicit-position__icon {
   margin-top: $space-xxs;
 }
@@ -20,6 +20,11 @@
 
 .explicit-position__source {
   color: $gray-mid;
+}
+
+.explicit-position__media-player {
+  max-width: 300px;
+  max-height: 231px;
 }
 
 // Position Ratings
