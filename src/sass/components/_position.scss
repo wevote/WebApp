@@ -22,6 +22,11 @@
   color: $gray-mid;
 }
 
+.explicit-position__media-player {
+  max-width: 300px;
+  max-height: 231px;
+}
+
 // Position Ratings
 
 @include media-object('.position-rating', '.position-rating__icon', '.position-rating__text', $margin: 5px);
