@@ -32,7 +32,11 @@ You should be able to visit WebApp here:
 
 # How to Update to Latest Changes from “develop” Branch
 
-Lets assume you are working on a branch called "dale_work_feb28". Ctrl-C to stop npm from running. Then:
+The process of stashing code and unstashing code (including dealing with merge conflicts) is much easier if you use an IDE (Integrated Development Environment) like <a href="https://www.jetbrains.com/pycharm/download/">PyCharm Community Edition</a>. This is how you can do it from the command line.
+
+Ctrl-C to stop npm from running. Then:
+
+`(WebAppEnv) $ git stash save "my_branch_20170101"`  # Set aside your current work locally
 
 `(WebAppEnv) $ git branch -a`  # See what branch you are currently set to (look for "*" on left of listing)
 
@@ -42,10 +46,11 @@ Lets assume you are working on a branch called "dale_work_feb28". Ctrl-C to stop
 
 `(WebAppEnv) $ git push origin develop`  # Push this latest version of develop up to your Personal Fork on the github servers
 
-`(WebAppEnv) $ git checkout -b <your-feature-branch>`
+`(WebAppEnv) $ git checkout -b <your-feature-branch>`  # Create a new branch with the name you want to use for your pull request
 
-Now you need to merge locally the latest code from "develop" with your branch name. Dale does this merging with 
-the PyCharm IDE. How you do this depends on the development environment you use. 
+`(WebAppEnv) $ git stash list`  # Remind yourself the stash name you used
+
+`(WebAppEnv) $ git stash apply stash^{/my_branch_20170101}`  # Apply your stashed code on top of the latest develop branch
 
 Restart web application
 
