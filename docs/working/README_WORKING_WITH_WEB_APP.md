@@ -52,7 +52,7 @@ Restart web application
     (WebAppEnv) $ npm install
     (WebAppEnv) $ npm start
 
-We have created <a href="https://docs.google.com/drawings/d/1ED4X3Gpy_UruGDSiO8FjjxQeGOmQqIApguodHDo6-ok/edit" target="_blank">this diagram</a> (opens in a new window) to show the typical flow when preparing a pull request.
+We have created <a href="https://docs.google.com/drawings/d/1ED4X3Gpy_UruGDSiO8FjjxQeGOmQqIApguodHDo6-ok/edit">this diagram</a> to show the typical flow when preparing a pull request.
 
 ---
 
