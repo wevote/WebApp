@@ -225,13 +225,13 @@ export default class ItemPositionStatementActionBar extends Component {
           <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
                                 type={this.props.type}
                                 supportProps={this.props.supportProps}
-                                className="u-flex-auto u-tr" />
+                                className="u-flex-auto u-tr hidden-print" />
         </div> }
 
       { // Show the edit box (Viewing self)
         edit_mode ?
           <form onSubmit={this.savePositionStatement.bind(this)}>
-            <div className="position-statement">
+            <div className="position-statement hidden-print">
               { speaker_image_url_https ?
                 <img className="position-statement__avatar"
                       src={speaker_image_url_https}

@@ -76,6 +76,9 @@ $candidate-font-size: .875rem;
         }
         border-radius: $radius-rounded;
       }
+      @include print {
+        width: 40px;
+      }
     }
 
     &__org-avatar {
@@ -99,7 +102,6 @@ $candidate-font-size: .875rem;
     }
 
     &__candidate-name {
-      font-size: $candidate-font-size;
       font-weight: 600;
     }
 

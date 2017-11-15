@@ -3,9 +3,9 @@ import { Tooltip, OverlayTrigger } from "react-bootstrap";
 
 export default class ItemSupportOpposeCounts extends Component {
   static propTypes = {
-    supportProps: PropTypes.object,
     guideProps: PropTypes.array,
     positionBarIsClickable: PropTypes.bool,
+    supportProps: PropTypes.object,
   };
 
   constructor (props) {

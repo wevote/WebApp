@@ -5,9 +5,11 @@ import OrganizationStore from "../stores/OrganizationStore";
 import SupportActions from "../actions/SupportActions";
 import VoterGuideActions from "../actions/VoterGuideActions";
 import VoterStore from "../stores/VoterStore";
+import { arrayContains } from "../utils/textFormat";
 
 class VoterGuideStore extends FluxMapStore {
 
+  // The store keeps nested attributes of voter guides in all_cached_voter_guides, whereas the followed, ignoring, to_follow are just lists of ids.
   getInitialState () {
     return {
       all_cached_voter_guides: {}, // Dictionary with organization_we_vote_id as key and the voter_guide as value
@@ -54,6 +56,30 @@ class VoterGuideStore extends FluxMapStore {
 
   getVoterGuidesToFollowForBallotItemId (ballot_item_we_vote_id) {
     return this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_to_follow_ballot_items_dict[ballot_item_we_vote_id]) || [];
+  }
+
+  getVoterGuidesToFollowForBallotItemIdSupports (ballot_item_we_vote_id) {
+    let voter_guides_to_follow = this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_to_follow_ballot_items_dict[ballot_item_we_vote_id]) || [];
+    let voter_guides_to_follow_support = [];
+    voter_guides_to_follow.forEach(voter_guide => {
+      // console.log("voter_guide:", voter_guide);
+      if (arrayContains(ballot_item_we_vote_id, voter_guide.ballot_item_we_vote_ids_this_org_supports)) {
+        voter_guides_to_follow_support.push(voter_guide);
+      }
+    });
+    return voter_guides_to_follow_support;
+  }
+
+  getVoterGuidesToFollowForBallotItemIdOpposes (ballot_item_we_vote_id) {
+    let voter_guides_to_follow = this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_to_follow_ballot_items_dict[ballot_item_we_vote_id]) || [];
+    let voter_guides_to_follow_oppose = [];
+    voter_guides_to_follow.forEach(voter_guide => {
+      // console.log("voter_guide:", voter_guide);
+      if (arrayContains(ballot_item_we_vote_id, voter_guide.ballot_item_we_vote_ids_this_org_opposes)) {
+        voter_guides_to_follow_oppose.push(voter_guide);
+      }
+    });
+    return voter_guides_to_follow_oppose;
   }
 
   getVoterGuidesToFollowByIssuesFollowed () {

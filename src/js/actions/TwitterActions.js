@@ -16,10 +16,19 @@ module.exports = {
       });
   },
 
+  twitterNativeSignInSave: function (twitter_access_token, twitter_access_token_secret) {
+    Dispatcher.loadEndpoint("twitterNativeSignInSave",
+      {
+        twitter_access_token: twitter_access_token,
+        twitter_access_token_secret: twitter_access_token_secret
+      });
+  },
+
   twitterSignInRetrieve: function () {
     Dispatcher.loadEndpoint("twitterSignInRetrieve", {
     });
   },
+
   //
   // twitterSignInStart: function (return_url) {
   //   Dispatcher.loadEndpoint("twitterSignInStart",
