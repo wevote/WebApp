@@ -105,7 +105,7 @@ export default class BallotStatusMessage extends Component {
     }
 
     if (this.state.show_ballot_status && message_string.length > 0) {
-      return <div className="u-stack--sm">
+      return <div className="u-stack--sm hidden-print">
         <div className={"alert " + ballot_status_style}>
           <a href="#" className="close" data-dismiss="alert">&times;</a>
           {message_string}

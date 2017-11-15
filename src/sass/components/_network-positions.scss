@@ -71,5 +71,39 @@ $red: #ff4921;
   }
 }
 
+.network-positions-stacked {
+  $bar-height: 10px;
+  $icon-size: 20px;
+  position: relative;
+  align-items: center;
+  // flex: 5 0 130px;
+  // min-width: 130px; // flex-basis not being respected (Chrome)
+
+  &__bar {
+    position: absolute;
+    display: block;
+    height: $bar-height;
+    width: 0;
+    transition: width .2s ease-out;
+    box-sizing: content-box;
+  }
+
+  &__support,
+  &__oppose {
+    display: flex;
+    align-items: center;
+    flex: none;
+  }
+
+  &__more-opinions {
+    color: $gray-mid;
+  }
+
+  &__count {
+    text-align: center;
+    color: $gray-dark;
+  }
+}
+
 .red-bar { background-color: $red; }
 .green-bar { background-color: $green; }
