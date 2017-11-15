@@ -46,7 +46,7 @@ import SampleBallot from "./routes/Intro/SampleBallot";
 import ScratchPad from "./routes/ScratchPad";
 import Settings from "./routes/Settings/Settings";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
-import SignIn from "./routes/More/SignIn";
+import SignIn from "./routes/SignIn/SignIn";
 import FacebookLandingProcess from "./routes/Process/FacebookLandingProcess";
 import FacebookRedirectToWeVote from "./routes/More/FacebookRedirectToWeVote";
 import SignInEmailProcess from "./routes/Process/SignInEmailProcess";

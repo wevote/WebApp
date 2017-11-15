@@ -60,12 +60,14 @@ export default class ItemTinyPositionBreakdownList extends Component {
   }
 
   render () {
+    // console.log("ItemTinyPositionBreakdownList render");
     if (!this.state.position_list && !this.props.supportProps) {
       // If neither position_list nor supportProps exist, then return null
       return null;
     }
+    // console.log("ItemTinyPositionBreakdownList got past return null");
 
-    const MAXIMUM_ORGANIZATION_DISPLAY = 4;
+    const MAXIMUM_ORGANIZATION_DISPLAY = 5;
     let local_counter = 0;
     let orgs_not_shown_count = 0;
     let positions_not_shown_list = [];
@@ -104,7 +106,9 @@ export default class ItemTinyPositionBreakdownList extends Component {
     }
     // Add the icons of other organizations now
     if (this.state.position_list) {
+      // console.log("ItemTinyPositionBreakdownList position_list found");
       this.state.position_list.map((one_position) => {
+        // console.log("one_position: ", one_position);
         // Filter out the positions that we don't want to display
         if (this.props.showSupport && one_position.is_support_or_positive_rating) {
           support_positions_list.push(one_position);

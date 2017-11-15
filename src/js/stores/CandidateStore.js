@@ -15,7 +15,7 @@ class CandidateStore extends FluxMapStore {
   }
 
   getCandidate (candidate_we_vote_id) {
-    return this.getState().all_cached_candidates[candidate_we_vote_id] || [];
+    return this.getState().all_cached_candidates[candidate_we_vote_id] || {};
   }
 
   getPositionList (candidate_we_vote_id) {
@@ -25,6 +25,15 @@ class CandidateStore extends FluxMapStore {
   getPositionAboutCandidateFromOrganization (candidate_we_vote_id, organization_we_vote_id) {
     let positions_about_candidate = this.getState().all_cached_positions_about_candidates[candidate_we_vote_id] || [];
     return positions_about_candidate[organization_we_vote_id] || [];
+  }
+
+  isCandidateInStore (candidate_we_vote_id) {
+    let candidate = this.getState().all_cached_candidates[candidate_we_vote_id] || {};
+    if (candidate.we_vote_id) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   reduce (state, action) {

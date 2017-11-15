@@ -127,7 +127,7 @@ export default class BallotLocationChoices extends Component {
     // console.log("In BallotLocationChoices render, ballot_location_list: ", this.state.ballot_location_list);
     if (this.state.ballot_location_list && this.state.ballot_location_list.length) {
       //  className="container-fluid card"
-      return <div className="u-stack--sm ballot-locations">
+      return <div className="u-stack--sm ballot-locations hidden-print">
         <div className="btn-group">
           {/* Mobile display of buttons */}
           <div className="visible-xs">
@@ -147,7 +147,7 @@ export default class BallotLocationChoices extends Component {
               </span> :
               null }
           </div>
-          
+
           {/* Desktop display of buttons */}
           <div className="hidden-xs">
             {this.state.ballot_location_list.slice(0, default_number_of_ballot_locations_desktop).map((ballot_location, key) => {

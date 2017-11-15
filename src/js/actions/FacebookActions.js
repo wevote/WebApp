@@ -1,12 +1,15 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 import FacebookConstants from "../constants/FacebookConstants";
+import FriendActions from "../actions/FriendActions";
 import VoterActions from "../actions/VoterActions";
 import VoterSessionActions from "../actions/VoterSessionActions";
 const web_app_config = require("../config");
+// Including FacebookStore causes problems in the WebApp, and again in the Native App
+
 
 module.exports = {
   appLogout: function (){
-    VoterSessionActions.voterSignOut();
+    VoterSessionActions.voterSignOut();  // This deletes the device_id cookie
     VoterActions.voterRetrieve();
     VoterActions.voterEmailAddressRetrieve();
   },
@@ -27,7 +30,44 @@ module.exports = {
   // We use the more limited "friends" api call from the server to find Facebook profiles of friends already using We Vote.
   facebookFriendsAction: function () {
     Dispatcher.loadEndpoint("facebookFriendsAction", {});
-    //FriendActions.suggestedFriendList();
+    FriendActions.suggestedFriendList();
+  },
+
+  // https://developers.facebook.com/docs/graph-api/reference/v2.6/user
+  getFacebookData: function (){
+    window.FB.api("/me?fields=id,email,first_name,middle_name,last_name,cover", (response) => {
+      Dispatcher.dispatch({
+        type: FacebookConstants.FACEBOOK_RECEIVED_DATA,
+        data: response
+      });
+    });
+  },
+
+  // Save incoming data from Facebook
+  // For offsets, see https://developers.facebook.com/docs/graph-api/reference/cover-photo/
+  voterFacebookSignInData: function (data) {
+    // console.log("FacebookActions voterFacebookSignInData, data:", data);
+    let background = false;
+    let offset_x = false;
+    let offset_y = false;
+    if (data.cover && data.cover.source) {
+      background = data.cover.source;
+      offset_x = data.cover.offset_x;  // zero is a valid value so can't use the short-circuit operation " || false"
+      offset_y = data.cover.offset_y;  // zero is a valid value so can't use the short-circuit operation " || false"
+    }
+    Dispatcher.loadEndpoint("voterFacebookSignInSave", {
+      facebook_user_id: data.id || false,
+      facebook_email: data.email || false,
+      facebook_first_name: data.first_name || false,
+      facebook_middle_name: data.middle_name || false,
+      facebook_last_name: data.last_name || false,
+      facebook_profile_image_url_https: data.url || false,
+      facebook_background_image_url_https: background,
+      facebook_background_image_offset_x: offset_x,
+      facebook_background_image_offset_y: offset_y,
+      save_auth_data: false,
+      save_profile_data: true,
+    });
   },
 
   getFacebookProfilePicture: function (userId) {
@@ -39,16 +79,6 @@ module.exports = {
         });
       });
     }
-  },
-
-  // https://developers.facebook.com/docs/graph-api/reference/v2.6/user
-  getFacebookData: function (){
-    window.FB.api("/me?fields=id,email,first_name,middle_name,last_name,cover", (response) => {
-      Dispatcher.dispatch({
-        type: FacebookConstants.FACEBOOK_RECEIVED_DATA,
-        data: response
-      });
-    });
   },
 
   getFacebookInvitableFriendsList: function (picture_width, picture_height) {
@@ -134,33 +164,6 @@ module.exports = {
       facebook_signed_request: data.signedRequest || false,
       save_auth_data: true,
       save_profile_data: false
-    });
-  },
-
-  // Save incoming data from Facebook
-  // For offsets, see https://developers.facebook.com/docs/graph-api/reference/cover-photo/
-  voterFacebookSignInData: function (data) {
-    // console.log("FacebookActions voterFacebookSignInData, data:", data);
-    let background = false;
-    let offset_x = false;
-    let offset_y = false;
-    if (data.cover && data.cover.source) {
-      background = data.cover.source;
-      offset_x = data.cover.offset_x;  // zero is a valid value so can't use the short-circuit operation " || false"
-      offset_y = data.cover.offset_y;  // zero is a valid value so can't use the short-circuit operation " || false"
-    }
-    Dispatcher.loadEndpoint("voterFacebookSignInSave", {
-      facebook_user_id: data.id || false,
-      facebook_email: data.email || false,
-      facebook_first_name: data.first_name || false,
-      facebook_middle_name: data.middle_name || false,
-      facebook_last_name: data.last_name || false,
-      facebook_profile_image_url_https: data.url || false,
-      facebook_background_image_url_https: background,
-      facebook_background_image_offset_x: offset_x,
-      facebook_background_image_offset_y: offset_y,
-      save_auth_data: false,
-      save_profile_data: true
     });
   },
 
