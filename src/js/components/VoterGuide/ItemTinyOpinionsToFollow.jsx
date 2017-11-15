@@ -106,6 +106,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
       local_counter++;
       let org_id = one_organization.organization_we_vote_id;
 
+      // Once we have more organizations than we want to show, put them into a drop-down
       if (local_counter > this.state.maximum_organization_display) {
         if (local_counter === this.state.maximum_organization_display + 1) {
           // If here, we want to show how many organizations there are to follow

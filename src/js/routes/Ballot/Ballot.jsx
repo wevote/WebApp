@@ -675,7 +675,7 @@ export default class Ballot extends Component {
                 <div>
                   <div className="alert alert-success">
                     <a href="#" className="close" data-dismiss="alert">&times;</a>
-                    We Vote helps you get ready to vote, <strong>but you cannot use We Vote to actually cast your vote</strong>.
+                    We Vote helps you get ready to vote, <strong>but you cannot use We Vote to cast your vote</strong>.
                     Make sure to return your official ballot to your polling
                     place!<br />
                     <a href="https://help.wevote.us/hc/en-us/articles/115002401353-Can-I-cast-my-vote-with-We-Vote-"

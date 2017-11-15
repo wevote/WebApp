@@ -94,7 +94,7 @@ export default class BookmarkToggle extends Component {
     </Modal>;
     const bookmarkPopoverText = "Bookmark for later";
     const bookmarkToolTip = <Tooltip id="bookmarkTooltip">{ bookmarkPopoverText }</Tooltip>;
-    return <div>
+    return <div className="hidden-print">
         <span tabIndex="0"
               className="bookmark-action"
               onClick={this.BookmarkClick.bind(this)}

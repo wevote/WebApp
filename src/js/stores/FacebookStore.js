@@ -1,4 +1,4 @@
-var FluxMapStore = require("flux/lib/FluxMapStore");
+let FluxMapStore = require("flux/lib/FluxMapStore");
 import FacebookConstants from "../constants/FacebookConstants";
 import FacebookActions from "../actions/FacebookActions";
 import Dispatcher from "../dispatcher/Dispatcher";
@@ -94,7 +94,7 @@ class FacebookStore extends FluxMapStore {
       return [];
     }
     let data_list = [];
-    for (var i = 0, len = arr.length; i < len; i++) {
+    for (let i = 0, len = arr.length; i < len; i++) {
       data_list.push( arr[i] );
     }
     return data_list;
@@ -131,10 +131,6 @@ class FacebookStore extends FluxMapStore {
         let facebook_invitable_friends_list = [];
         if (action.data.invitable_friends) {
           facebook_invitable_friends_list = action.data.invitable_friends.data;
-          // Does not seem to work
-          // if (action.data.id) {
-          //   FacebookActions.getFacebookProfilePicture(action.data.id);
-          // }
         } else {
           facebook_friends_not_exist = true;
         }

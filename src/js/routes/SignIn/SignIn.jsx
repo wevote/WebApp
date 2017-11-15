@@ -11,13 +11,15 @@ import LoadingWheel from "../../components/LoadingWheel";
 import TwitterActions from "../../actions/TwitterActions";
 import TwitterSignIn from "../../components/Twitter/TwitterSignIn";
 import VoterActions from "../../actions/VoterActions";
+import VoterConstants from "../../constants/VoterConstants";
 import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import VoterStore from "../../stores/VoterStore";
-import VoterConstants from "../../constants/VoterConstants";
 
 const debug_mode = false;
 const delay_before_user_name_update_api_call = 1200;
+
+
 export default class SignIn extends Component {
 
   constructor (props) {
@@ -34,10 +36,12 @@ export default class SignIn extends Component {
     };
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.updateVoterName = this.updateVoterName.bind(this);
     this.updateNewsletterOptIn = this.updateNewsletterOptIn.bind(this);
+    this.updateVoterName = this.updateVoterName.bind(this);
   }
 
+  // Set up this component upon first entry
+  // componentWillMount is used in WebApp
   componentDidMount () {
     // console.log("SignIn componentDidMount");
     this._onVoterStoreChange();
@@ -47,6 +51,7 @@ export default class SignIn extends Component {
   }
 
   componentWillUnmount () {
+    console.log("SignIn ---- UN mount");
     this.facebookListener.remove();
     this.voterStoreListener.remove();
     this.timer = null;
@@ -135,14 +140,14 @@ export default class SignIn extends Component {
     }
   }
 
+
   render () {
-    var {voter} = this.state;
-    if (!voter){
+    if (!this.state.voter){
       return LoadingWheel;
     }
 
     // console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
-    if (!voter.signed_in_facebook && this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
+    if (!this.state.voter.signed_in_facebook && this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
       console.log("SignIn.jsx facebook_retrieve_attempted");
       browserHistory.push("/facebook_sign_in");
       // return <span>SignIn.jsx facebook_retrieve_attempted</span>;
@@ -152,12 +157,12 @@ export default class SignIn extends Component {
     let page_title = "Sign In - We Vote";
     let your_account_title = "Your Account";
     let your_account_explanation = "";
-    if (voter.is_signed_in) {
+    if (this.state.voter.is_signed_in) {
       page_title = "Your Account - We Vote";
-      if (voter.signed_in_facebook && !voter.signed_in_twitter) {
+      if (this.state.voter.signed_in_facebook && !this.state.voter.signed_in_twitter) {
         your_account_title = "Have Twitter Too?";
         your_account_explanation = "By adding your Twitter account to your We Vote profile, you get access to the voter guides of everyone you follow.";
-      } else if (voter.signed_in_twitter && !voter.signed_in_facebook) {
+      } else if (this.state.voter.signed_in_twitter && !this.state.voter.signed_in_facebook) {
         your_account_title = "Have Facebook Too?";
         your_account_explanation = "By adding Facebook to your We Vote profile, it is easier to invite friends.";
       }
@@ -168,24 +173,24 @@ export default class SignIn extends Component {
       <BrowserPushMessage incomingProps={this.props} />
       <div className="card">
         <div className="card-main">
-          {voter.signed_in_twitter && voter.signed_in_facebook ?
+          {this.state.voter.signed_in_twitter && this.state.voter.signed_in_facebook ?
             null :
-            <h1 className="h3">{voter.is_signed_in ? <span>{your_account_title}</span> : null}</h1>
+            <h1 className="h3">{this.state.voter.is_signed_in ? <span>{your_account_title}</span> : null}</h1>
           }
-          {voter.is_signed_in ?
+          {this.state.voter.is_signed_in ?
             <span>{your_account_explanation}</span> :
             <div>Before you can share, either publicly or with friends, please sign in. Don't worry, we won't post anything automatically.<br />
             <br />
             </div>
           }
-          {!voter.signed_in_twitter || !voter.signed_in_facebook ?
+          {!this.state.voter.signed_in_twitter || !this.state.voter.signed_in_facebook ?
             <div>
-              {voter.signed_in_twitter ?
+              {this.state.voter.signed_in_twitter ?
                 null :
                 <TwitterSignIn />
               }
               <span>&nbsp;</span>
-              {voter.signed_in_facebook ?
+              {this.state.voter.signed_in_facebook ?
                 null :
                 <FacebookSignIn />
               }
@@ -194,7 +199,7 @@ export default class SignIn extends Component {
             </div> :
             null
           }
-          {voter.is_signed_in ?
+          {this.state.voter.is_signed_in ?
             <div>
               <div className="card">
                 <span className="h3">Your Account</span>
@@ -238,18 +243,18 @@ export default class SignIn extends Component {
             </div> :
             null
           }
-          {/*voter.signed_in_twitter && voter.signed_in_facebook ?
+          {/*this.state.voter.signed_in_twitter && this.state.voter.signed_in_facebook ?
             null :
-            <h1 className="h3">{voter.is_signed_in ? <span>{your_account_title}</span> : <span>Your Account</span>}</h1>
+            <h1 className="h3">{this.state.voter.is_signed_in ? <span>{your_account_title}</span> : <span>Your Account</span>}</h1>
           */}
-          {/*voter.is_signed_in ?
+          {/*this.state.voter.is_signed_in ?
             <span>{your_account_explanation}</span> :
             <div>Before you can share, either publicly or with friends, please sign in. Don't worry, we won't post anything automatically.<br />
             <br />
             </div>
           */}
           <div>
-            {voter.is_signed_in ?
+            {this.state.voter.is_signed_in ?
               <div>
                 <span className="h3">Currently Signed In</span>
                 <span>&nbsp;&nbsp;&nbsp;</span>
@@ -259,14 +264,14 @@ export default class SignIn extends Component {
 
                 <br />
                 <div>
-                  {voter.signed_in_twitter ?
+                  {this.state.voter.signed_in_twitter ?
                     <span>
                       <span className="btn btn-social btn-lg btn-twitter" href="#">
-                        <i className="fa fa-twitter"/>@{voter.twitter_screen_name}</span><span>&nbsp;</span>
+                        <i className="fa fa-twitter"/>@{this.state.voter.twitter_screen_name}</span><span>&nbsp;</span>
                     </span> :
                     null
                   }
-                  {voter.signed_in_facebook ?
+                  {this.state.voter.signed_in_facebook ?
                     <span>
                       <span className="btn btn-social-icon btn-lg btn-facebook">
                         <span className="fa fa-facebook" />
@@ -275,7 +280,7 @@ export default class SignIn extends Component {
                     </span> :
                     null
                   }
-                  {voter.signed_in_with_email ?
+                  {this.state.voter.signed_in_with_email ?
                     <span>
                       <span className="btn btn-warning btn-lg">
                       <span className="glyphicon glyphicon-envelope" /></span>
@@ -283,13 +288,13 @@ export default class SignIn extends Component {
                     null
                   }
                 </div>
-                {voter.signed_in_twitter && (voter.signed_in_facebook || voter.signed_in_with_email) ?
+                {this.state.voter.signed_in_twitter && (this.state.voter.signed_in_facebook || this.state.voter.signed_in_with_email) ?
                   <span>{this.state.show_twitter_disconnect ?
                     <div>
                       <Button bsStyle="danger"
                           type="submit"
                           onClick={this.voterSplitIntoTwoAccounts.bind(this)}
-                          >Disconnect @{voter.twitter_screen_name} from this account</Button>
+                          >Disconnect @{this.state.voter.twitter_screen_name} from this account</Button>
                     </div> :
                     <div>
                       <span onClick={this.toggleTwitterDisconnectOpen.bind(this)}>un-link twitter</span>
@@ -306,15 +311,15 @@ export default class SignIn extends Component {
 
           {debug_mode &&
           <div className="text-center">
-            is_signed_in: {voter.is_signed_in ? <span>True</span> : null}<br />
-            signed_in_facebook: {voter.signed_in_facebook ? <span>True</span> : null}<br />
-            signed_in_twitter: {voter.signed_in_twitter ? <span>True</span> : null}<br />
-            we_vote_id: {voter.we_vote_id ? <span>{voter.we_vote_id}</span> : null}<br />
-            email: {voter.email ? <span>{voter.email}</span> : null}<br />
-            facebook_email: {voter.facebook_email ? <span>{voter.facebook_email}</span> : null}<br />
-            facebook_profile_image_url_https: {voter.facebook_profile_image_url_https ? <span>{voter.facebook_profile_image_url_https}</span> : null}<br />
-            first_name: {voter.first_name ? <span>{voter.first_name}</span> : null}<br />
-            facebook_id: {voter.facebook_id ? <span>{voter.facebook_id}</span> : null}<br />
+            is_signed_in: {this.state.voter.is_signed_in ? <span>True</span> : null}<br />
+            signed_in_facebook: {this.state.voter.signed_in_facebook ? <span>True</span> : null}<br />
+            signed_in_twitter: {this.state.voter.signed_in_twitter ? <span>True</span> : null}<br />
+            we_vote_id: {this.state.voter.we_vote_id ? <span>{this.state.voter.we_vote_id}</span> : null}<br />
+            email: {this.state.voter.email ? <span>{this.state.voter.email}</span> : null}<br />
+            facebook_email: {this.state.voter.facebook_email ? <span>{this.state.voter.facebook_email}</span> : null}<br />
+            facebook_profile_image_url_https: {this.state.voter.facebook_profile_image_url_https ? <span>{this.state.voter.facebook_profile_image_url_https}</span> : null}<br />
+            first_name: {this.state.voter.first_name ? <span>{this.state.voter.first_name}</span> : null}<br />
+            facebook_id: {this.state.voter.facebook_id ? <span>{this.state.voter.facebook_id}</span> : null}<br />
           </div>
         }
         </div>
