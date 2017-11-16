@@ -20,7 +20,7 @@ export default class SelectBallotModal extends Component {
 
   render () {
     let ballotElectionList = this.props.ballotElectionList || [];
-    return <Modal className="ballot-election-list ballot-election-list__modal"
+    return <Modal className="ballot-election-list ballot-election-list__modal ballot-election-list__modal-mobile"
                   show={this.props.show}
                   onHide={this.props.toggleFunction} >
       <Modal.Header closeButton onHide={this.props.toggleFunction}>
