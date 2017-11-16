@@ -17,10 +17,11 @@ export default class BallotSummaryModal extends Component {
   }
 
   render () {
-    return <Modal show={this.props.show}
+    return <Modal className="ballot-summary ballot-summary__modal ballot-summary__modal-mobile"
+                  show={this.props.show}
                   onHide={this.props.toggleFunction} >
         <Modal.Header closeButton>
-          <Modal.Title>Summary of Ballot Items</Modal.Title>
+          <Modal.Title className="ballot-summary__h1">Summary of Ballot Items</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <BallotSideBar displayTitle={false} displaySubtitles={false} onClick={this.props.toggleFunction} />
