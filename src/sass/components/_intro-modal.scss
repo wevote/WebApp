@@ -511,6 +511,30 @@
     .intro-modal-vertical-scroll-contain {
       height: calc(100vh - 350px);
       max-height: 640px; // Scroll area in modal: 990 - 350 = 640px We set this so that when We Vote is in a frame, the modal isn't too long.
+
+      &::-webkit-scrollbar {
+        width: 9px;
+      }
+
+      &::-webkit-scrollbar-track {
+        -webkit-border-radius:5px;
+        border-radius:5px;
+        background:rgba(255, 255, 255, 0.1);
+      }
+
+      &::-webkit-scrollbar-thumb {
+        -webkit-border-radius:5px;
+        border-radius:5px;
+        background:rgba(255, 255, 255, 0.2);
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background:rgba(255, 255, 255, 0.4);
+      }
+
+      &::-webkit-scrollbar-thumb:window-inactive {
+        background:rgba(255, 255, 255, 0.05);
+      } 
     }
 
     .calc-height {
