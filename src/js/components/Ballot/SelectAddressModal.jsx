@@ -16,11 +16,11 @@ export default class SelectAddressModal extends Component {
   }
 
   render () {
-    return <Modal className="ballot-election-list ballot-election-list__modal ballot-election-list__modal-mobile"
+    return <Modal className="select-address select-address__modal select-address__modal-mobile"
                   show={this.props.show}
                   onHide={this.props.toggleFunction} >
       <Modal.Header closeButton onHide={this.props.toggleFunction}>
-        <Modal.Title className="ballot-election-list__h1">Enter address where you are registered to vote</Modal.Title>
+        <Modal.Title className="select-address__h1">Enter address where you are registered to vote</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <AddressBox saveUrl={"/ballot"} toggleSelectAddressModal={this.props.toggleFunction} />
