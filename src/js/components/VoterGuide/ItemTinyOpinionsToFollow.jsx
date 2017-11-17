@@ -52,7 +52,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
   }
 
   onTriggerEnter (org_id) {
-    this.refs[`overlay-${org_id}`].show();
+    this.refs[`to-follow-overlay-${org_id}`].show();
     clearTimeout(this.popover_state[org_id].timer);
     this.popover_state[org_id].show = true;
   }
@@ -62,7 +62,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
     clearTimeout(this.popover_state[org_id].timer);
     this.popover_state[org_id].timer = setTimeout(() => {
       if (!this.popover_state[org_id].show) {
-        this.refs[`overlay-${org_id}`].hide();
+        this.refs[`to-follow-overlay-${org_id}`].hide();
       }
     }, 100);
   }
@@ -121,7 +121,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
 
           return <OverlayTrigger
               key={`trigger-${orgs_not_shown_count}`}
-              ref={`overlay-${orgs_not_shown_count}`}
+              ref={`to-follow-overlay-${orgs_not_shown_count}`}
               onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
               onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
               onExiting={() => this.onTriggerLeave(orgs_not_shown_count)}
@@ -166,7 +166,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
 
         return <OverlayTrigger
             key={`trigger-${org_id}`}
-            ref={`overlay-${org_id}`}
+            ref={`to-follow-overlay-${org_id}`}
             onMouseOver={() => this.onTriggerEnter(org_id)}
             onMouseOut={() => this.onTriggerLeave(org_id)}
             onExiting={() => this.onTriggerLeave(org_id)}
