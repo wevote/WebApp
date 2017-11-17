@@ -484,15 +484,6 @@
   // top: 20%;
   transform: translateY(-50%);
 
-  @include breakpoints (small) {
-    height: 100vh;
-
-    .modal-content {
-      height: calc(100vh - 90px);
-      max-height: 900px; // Modal background box: 990 - 90 = 900px We set this so that when We Vote is in a frame, the modal isn't too long.
-    }
-  }
-
   @include breakpoints(medium large) {
     width: 750px;
   }
