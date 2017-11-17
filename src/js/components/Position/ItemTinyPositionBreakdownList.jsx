@@ -44,7 +44,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
   }
 
   onTriggerEnter (organization_we_vote_id) {
-    this.refs[`overlay-${organization_we_vote_id}`].show();
+    this.refs[`position-overlay-${organization_we_vote_id}`].show();
     this.show_popover = true;
     clearTimeout(this.hide_popover_timer);
   }
@@ -53,8 +53,8 @@ export default class ItemTinyPositionBreakdownList extends Component {
     this.show_popover = false;
     clearTimeout(this.hide_popover_timer);
     this.hide_popover_timer = setTimeout(() => {
-      if (!this.show_popover && this.refs[`overlay-${organization_we_vote_id}`]) {
-        this.refs[`overlay-${organization_we_vote_id}`].hide();
+      if (!this.show_popover && this.refs[`position-overlay-${organization_we_vote_id}`]) {
+        this.refs[`position-overlay-${organization_we_vote_id}`].hide();
       }
     }, 100);
   }
@@ -87,6 +87,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
       }
       // console.log("ItemTinyPositionBreakdownList show_voter_position: ", show_voter_position);
       if (show_voter_position) {
+        // If here, we are showing an icon for the voter
         one_organization = {
           organization_we_vote_id: this.state.voter.we_vote_id,
           voter_guide_display_name: this.state.voter.full_name
@@ -105,6 +106,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
       }
     }
     // Add the icons of other organizations now
+    // console.log("this.state.position_list: ", this.state.position_list); // Switching elections bug -- first candidate missing?
     if (this.state.position_list) {
       // console.log("ItemTinyPositionBreakdownList position_list found");
       this.state.position_list.map((one_position) => {
@@ -159,7 +161,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
 
             return <OverlayTrigger
                 key={`trigger-${orgs_not_shown_count}`}
-                ref={`overlay-${orgs_not_shown_count}`}
+                ref={`position-overlay-${orgs_not_shown_count}`}
                 onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
                 onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
                 trigger={["focus", "hover"]}
@@ -204,7 +206,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
 
           return <OverlayTrigger
               key={`trigger-${organization_we_vote_id}`}
-              ref={`overlay-${organization_we_vote_id}`}
+              ref={`position-overlay-${organization_we_vote_id}`}
               onMouseOver={() => this.onTriggerEnter(organization_we_vote_id)}
               onMouseOut={() => this.onTriggerLeave(organization_we_vote_id)}
               rootClose

@@ -17,7 +17,7 @@ export default class PositionsNotShownList extends Component {
   }
 
   onTriggerEnter (organization_we_vote_id) {
-    this.refs[`overlay-${organization_we_vote_id}`].show();
+    this.refs[`not-shown-overlay-${organization_we_vote_id}`].show();
     this.show_popover = true;
     clearTimeout(this.hide_popover_timer);
   }
@@ -26,8 +26,8 @@ export default class PositionsNotShownList extends Component {
     this.show_popover = false;
     clearTimeout(this.hide_popover_timer);
     this.hide_popover_timer = setTimeout(() => {
-      if (!this.show_popover && this.refs[`overlay-${organization_we_vote_id}`]) {
-        this.refs[`overlay-${organization_we_vote_id}`].hide();
+      if (!this.show_popover && this.refs[`not-shown-overlay-${organization_we_vote_id}`]) {
+        this.refs[`not-shown-overlay-${organization_we_vote_id}`].hide();
       }
     }, 100);
   }
@@ -80,7 +80,7 @@ export default class PositionsNotShownList extends Component {
       // Display the organization in a brief list
       return <OverlayTrigger
               key={`trigger-${organization_we_vote_id}`}
-              ref={`overlay-${organization_we_vote_id}`}
+              ref={`not-shown-overlay-${organization_we_vote_id}`}
               onMouseOver={() => this.onTriggerEnter(organization_we_vote_id)}
               onMouseOut={() => this.onTriggerLeave(organization_we_vote_id)}
               rootClose
