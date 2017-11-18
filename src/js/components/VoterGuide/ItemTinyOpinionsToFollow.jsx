@@ -52,17 +52,34 @@ export default class ItemTinyOpinionsToFollow extends Component {
   }
 
   onTriggerEnter (org_id) {
-    this.refs[`to-follow-overlay-${org_id}`].show();
+    if (this.refs[`to-follow-overlay-${org_id}`]) {
+      this.refs[`to-follow-overlay-${org_id}`].show();
+    }
+    if (!this.popover_state[org_id]) {
+      // If it wasn't created, create it now
+      this.popover_state[org_id] = {show: false, timer: null};
+    }
+
     clearTimeout(this.popover_state[org_id].timer);
+    if (!this.popover_state[org_id]) {
+      // If it wasn't created, create it now
+      this.popover_state[org_id] = {show: false, timer: null};
+    }
     this.popover_state[org_id].show = true;
   }
 
   onTriggerLeave (org_id) {
+    if (!this.popover_state[org_id]) {
+      // If it wasn't created, create it now
+      this.popover_state[org_id] = {show: false, timer: null};
+    }
     this.popover_state[org_id].show = false;
     clearTimeout(this.popover_state[org_id].timer);
     this.popover_state[org_id].timer = setTimeout(() => {
       if (!this.popover_state[org_id].show) {
-        this.refs[`to-follow-overlay-${org_id}`].hide();
+        if (this.refs[`to-follow-overlay-${org_id}`]) {
+          this.refs[`to-follow-overlay-${org_id}`].hide();
+        }
       }
     }, 100);
   }
@@ -71,6 +88,11 @@ export default class ItemTinyOpinionsToFollow extends Component {
     if (this.mobile) {
       e.preventDefault();
       e.stopPropagation();
+      
+      if (!this.popover_state[org_id]) {
+        // If it wasn't created, create it now
+        this.popover_state[org_id] = {show: false, timer: null};
+      }
 
       if (this.popover_state[org_id].show) {
         this.onTriggerLeave(org_id);
