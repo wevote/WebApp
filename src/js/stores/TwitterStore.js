@@ -7,11 +7,17 @@ import VoterActions from "../actions/VoterActions";
 
 class TwitterStore extends FluxMapStore {
 
+  getInitialState () {
+    return {
+      success: true,
+    };
+  }
+
   get () {
     return {
-      kind_of_owner: this.getState().kindOfOwner || "",
-      owner_we_vote_id: this.getState().ownerWeVoteId || "",
-      twitter_handle: this.getState().twitterHandle || "",
+      kind_of_owner: this.getState().kind_of_owner || "",
+      owner_we_vote_id: this.getState().owner_we_vote_id || "",
+      twitter_handle: this.getState().twitter_handle || "",
       twitter_description: this.getState().twitter_description || "",
       twitter_followers_count: this.getState().twitter_followers_count || "",
       twitter_name: this.getState().twitter_name || "",
@@ -75,7 +81,6 @@ class TwitterStore extends FluxMapStore {
     //   return state;
     // }
 
-
     switch (action.type) {
 
       case "twitterIdentityRetrieve":
@@ -137,7 +142,9 @@ class TwitterStore extends FluxMapStore {
         };
 
       default:
-        return state;
+        return {
+          ...state
+        };
     }
   }
 }
