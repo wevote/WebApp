@@ -171,13 +171,13 @@ export default class OfficeItemCompressed extends Component {
               </div>;
 
           let candidate_name_cheetah = <h4 className="card-main__candidate-name u-f5">
-                  <a onClick={this.props.link_to_ballot_item_page ? this.toggleExpandCheetahDetails : null}>
-                    <TextTruncate line={1}
-                                  truncateText="…"
-                                  text={one_candidate.ballot_item_display_name}
-                                  textTruncateChild={null} />
-                  </a>
-                </h4>;
+                <a onClick={this.props.link_to_ballot_item_page ? this.toggleExpandCheetahDetails : null}>
+                  <TextTruncate line={1}
+                                truncateText="…"
+                                text={one_candidate.ballot_item_display_name}
+                                textTruncateChild={null} />
+                </a>
+              </h4>;
 
           let candidate_name_walrus = <h4 className="card-main__candidate-name u-f4">
                   <a onClick={this.props.link_to_ballot_item_page ? () => browserHistory.push("/candidate/" + candidate_we_vote_id) : null}>
@@ -189,10 +189,23 @@ export default class OfficeItemCompressed extends Component {
                 </h4>;
 
           let candidate_description_cheetah = this.state.display_cheetah_details_flag ?
-            <div className="card-main__candidate-description">
-                  <LearnMore text_to_display={candidate_text}
+              <div className="card-main__candidate-description">
+                {/* Support or Oppose actions for voter */}
+                {this.state.display_cheetah_details_flag ?
+                  <span className="u-cursor--pointer">
+                    <ItemActionBar ballot_item_display_name={one_candidate.ballot_item_display_name}
+                                   ballot_item_we_vote_id={candidate_we_vote_id}
+                                   commentButtonHide
+                                   shareButtonHide
+                                   supportProps={candidateSupportStore}
+                                   transitioniing={this.state.transitioning}
+                                   type="CANDIDATE"/>
+                  </span> :
+                  null
+                }
+                <LearnMore text_to_display={candidate_text}
                              on_click={() => this.openCandidateModal(one_candidate)} />
-                </div> :
+              </div> :
             null;
 
           let candidate_description_walrus = <div className="card-main__candidate-description">
@@ -214,17 +227,6 @@ export default class OfficeItemCompressed extends Component {
                                         toggleCandidateModal={this.props.toggleCandidateModal}
                                         type="CANDIDATE" />
             </div>
-            {/* Support or Oppose actions for voter */}
-            {this.state.display_cheetah_details_flag ?
-              <div className="u-cursor--pointer">
-                <ItemActionBar ballot_item_we_vote_id={candidate_we_vote_id}
-                               supportProps={candidateSupportStore}
-                               transitioniing={this.state.transitioning}
-                               ballot_item_display_name={one_candidate.ballot_item_display_name}
-                               type="CANDIDATE"/>
-              </div> :
-              null
-            }
           </div>;
 
           let positions_display_walrus = <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
