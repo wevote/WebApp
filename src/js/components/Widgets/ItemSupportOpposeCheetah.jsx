@@ -72,17 +72,29 @@ export default class ItemSupportOpposeCheetah extends Component {
   }
 
   onTriggerEnter (org_id) {
-    this.refs[`overlay-${org_id}`].show();
+    if (this.refs[`cheetah-overlay-${org_id}`]) {
+      this.refs[`cheetah-overlay-${org_id}`].show();
+    }
+    if (!this.popover_state[org_id]) {
+      // If it wasn't created, create it now
+      this.popover_state[org_id] = {show: false, timer: null};
+    }
     clearTimeout(this.popover_state[org_id].timer);
     this.popover_state[org_id].show = true;
   }
 
   onTriggerLeave (org_id) {
+    if (!this.popover_state[org_id]) {
+      // If it wasn't created, create it now
+      this.popover_state[org_id] = {show: false, timer: null};
+    }
     this.popover_state[org_id].show = false;
     clearTimeout(this.popover_state[org_id].timer);
     this.popover_state[org_id].timer = setTimeout(() => {
       if (!this.popover_state[org_id].show) {
-        this.refs[`overlay-${org_id}`].hide();
+        if (this.refs[`cheetah-overlay-${org_id}`]) {
+          this.refs[`cheetah-overlay-${org_id}`].hide();
+        }
       }
     }, 100);
   }
@@ -91,6 +103,10 @@ export default class ItemSupportOpposeCheetah extends Component {
     if (this.mobile) {
       e.preventDefault();
       e.stopPropagation();
+      if (!this.popover_state[org_id]) {
+        // If it wasn't created, create it now
+        this.popover_state[org_id] = {show: false, timer: null};
+      }
 
       if (this.popover_state[org_id].show) {
         this.onTriggerLeave(org_id);
@@ -127,6 +143,7 @@ export default class ItemSupportOpposeCheetah extends Component {
       if (local_counter > maximum_organization_display) {
         if (local_counter === maximum_organization_display + 1) {
           // If here, we want to show how many organizations there are to follow
+          // Using orgs_not_shown_count as the key seems arbitrary and could cause a collision
           this.popover_state[orgs_not_shown_count] = {show: false, timer: null};
           let organizationPopover = <Popover
               id={`organization-popover-${orgs_not_shown_count}`}
@@ -138,7 +155,7 @@ export default class ItemSupportOpposeCheetah extends Component {
 
           return <OverlayTrigger
               key={`trigger-${orgs_not_shown_count}`}
-              ref={`overlay-${orgs_not_shown_count}`}
+              ref={`cheetah-overlay-${orgs_not_shown_count}`}
               onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
               onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
               onExiting={() => this.onTriggerLeave(orgs_not_shown_count)}
@@ -183,7 +200,7 @@ export default class ItemSupportOpposeCheetah extends Component {
 
         return <OverlayTrigger
             key={`trigger-${org_id}`}
-            ref={`overlay-${org_id}`}
+            ref={`cheetah-overlay-${org_id}`}
             onMouseOver={() => this.onTriggerEnter(org_id)}
             onMouseOut={() => this.onTriggerLeave(org_id)}
             onExiting={() => this.onTriggerLeave(org_id)}

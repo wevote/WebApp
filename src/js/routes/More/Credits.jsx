@@ -18,6 +18,7 @@ export default class Credits extends Component {
 
           <h3 className="h4">We are grateful for these organizations that are critical to our work.</h3>
           <ul>
+              <li><strong>Amazon Web Services</strong> - Servers</li>
               <li><strong>Ballotpedia</strong> - Data</li>
               <li><strong>Center for Technology and Civic Life</strong> - Data</li>
               <li><strong>Change.org</strong> - Data</li>
@@ -26,6 +27,7 @@ export default class Credits extends Component {
               <li><strong>DLA Piper</strong> - Legal</li>
               <li><strong>Facebook</strong> - Authentication &amp; Data</li>
               <li><strong>Google Civic</strong> - Data</li>
+              <li><strong>Greenberg Traurig, LLP</strong> - Legal</li>
               <li><strong>League of Women Voters</strong> - Data</li>
               <li><strong>MapLight</strong> - Data</li>
               <li><strong>Microsoft</strong> - For supporting Code for San Francisco</li>
@@ -50,6 +52,7 @@ export default class Credits extends Component {
             <li>Jeff French - Oakland, CA</li>
             <li>Neelam Joshi - Columbus, OH</li>
             <li>Alicia Kolar Prevost - Washington, DC</li>
+            <li>Steve Podell - Oakland, CA</li>
             <li>Bharath D N Reddy - Mountain View, CA</li>
             <li>Sarah Clements - San Francisco, CA</li>
             <li>Zach Monteith - San Francisco, CA</li>
@@ -59,7 +62,6 @@ export default class Credits extends Component {
             <li>Jennifer Holmes - Pacifica, CA</li>
             <li>Joe Evans - Santa Cruz, CA</li>
             <li>Andrea Moed - San Francisco, CA</li>
-            <li>Steve Podell - Oakland, CA</li>
             <li>Matt Holford - New York, NY</li>
             <li>Edward Ly - Gresham, OR</li>
             <li>YuanHsin Chang - San Francisco, CA</li>
@@ -68,6 +70,7 @@ export default class Credits extends Component {
             <li>Mary O'Connor - Sebastopol, CA</li>
             <li>Harsha Dronamraju - San Francisco, CA</li>
             <li>Rohan Bhambhoria - Mississauga, Ontario, Canada</li>
+            <li>Josh Southern - San Francisco, CA</li>
             <li>Nitin Garg - San Francisco, CA</li>
             <li>Niko Barry - Berkeley, CA</li>
             <li>Adam Barry - San Francisco, CA</li>
@@ -77,9 +80,10 @@ export default class Credits extends Component {
             <li>Irene Florez - San Francisco, CA</li>
             <li>Udi Davidovich - Walnut Creek, CA</li>
             <li>Chris Arya - San Francisco, CA</li>
-            <li>Josh Southern - San Francisco, CA</li>
             <li>Tom Furlong - Menlo Park, CA</li>
             <li>Paul A. "Dash" McLean - E. Palo Alto, CA</li>
+            <li>Mansi Desai - San Francisco, CA</li>
+            <li>Neil Dullaghan - Florence, Italy</li>
             <li>Eric Olivera - San Francisco, CA</li>
             <li>Emily Hittle - San Francisco, CA</li>
             <li>Mikel Duffy - San Francisco, CA</li>
@@ -94,13 +98,13 @@ export default class Credits extends Component {
             <li>Kad Smith - Berkeley, CA</li>
             <li>Courtney Gonzales - Benicia, CA</li>
             <li>Jenna Haywood - Berkeley, CA</li>
-            <li>Mansi Desai - San Francisco, CA</li>
             <li>Jayadev Akkiraju - Santa Clara, CA</li>
             <li>Raphael Merx - San Francisco, CA</li>
             <li>Susan Clark - Oakland, CA</li>
             <li>Kim Anderson - San Francisco, CA</li>
             <li>Betsy Neely Sikma - Taylors, SC</li>
             <li>Keith Underwood - Alameda, CA</li>
+            <li>Marlene Flores - San Francisco, CA</li>
             <li>Jesse Aldridge - San Francisco, CA</li>
             <li>Josh Levinger - Oakland, CA</li>
             <li>Leslie Castellanos - San Francisco, CA</li>
