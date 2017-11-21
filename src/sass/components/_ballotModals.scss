@@ -1,4 +1,5 @@
-.ballot-election-list {
+.ballot-election-list,
+.select-address {
   font-size: 12px;
   text-align: center;
   @include breakpoints (max large) {
@@ -41,5 +42,13 @@
 
   &__button {
     width: 100%;
+  }
+}
+
+// Overrides
+
+.ballot-election-list {
+  &__modal {
+    top: 0;
   }
 }
