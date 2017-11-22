@@ -10,6 +10,8 @@ import BallotIntroPositionBar from "../../components/Ballot/BallotIntroPositionB
 import BallotIntroShare from "../../components/Ballot/BallotIntroShare";
 import BallotIntroVote from "../../components/Ballot/BallotIntroVote";
 import GettingStartedBarItem from "./GettingStartedBarItem";
+import InviteByEmail from "../../routes/friends/InviteByEmail";
+//import EmailModal from "../../components/Ballot/EmailModal";
 import Slider from "react-slick";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
@@ -29,6 +31,7 @@ export default class HeaderGettingStartedBar extends Component {
     this._toggleBallotIntroFriends = this._toggleBallotIntroFriends.bind(this);
     this._toggleBallotIntroShare = this._toggleBallotIntroShare.bind(this);
     this._toggleBallotIntroVote = this._toggleBallotIntroVote.bind(this);
+    this._openEmailModal = this._openEmailModal.bind(this);
     this._nextSliderPage = this._nextSliderPage.bind(this);
     this.state = {
       ballot_intro_issues_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ISSUES_COMPLETED),
@@ -43,6 +46,7 @@ export default class HeaderGettingStartedBar extends Component {
       showBallotIntroFriends: false,
       showBallotIntroShare: false,
       showBallotIntroVote: false,
+      showEmailModal: false,
     };
   }
 
@@ -65,6 +69,14 @@ export default class HeaderGettingStartedBar extends Component {
       ballot_intro_share_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_SHARE_COMPLETED),
       ballot_intro_vote_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_VOTE_COMPLETED),
     });
+  }
+
+  _openPrintModal () {
+    window.print();
+  }
+
+  _openEmailModal () {
+    this.setState({ showEmailModal: !this.state.showEmailModal });
   }
 
   _toggleBallotIntroFollowIssues () {
@@ -141,6 +153,20 @@ export default class HeaderGettingStartedBar extends Component {
 
     // Have all of the 6 major steps been taken?
     let voter_thorough_orientation_complete = false;
+    const SendEmailModal = <Modal bsClass="background-brand-blue modal"
+                      show={this.state.showEmailModal}
+                      onHide={() => this._openEmailModal(this)}>
+      <Modal.Body>
+        <div className="intro-modal__close">
+          <a onClick={this._openEmailModal} className="intro-modal__close-anchor">
+            <img src="/img/global/icons/x-close.png" alt="close" />
+          </a>
+        </div>
+        <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
+          <div key={1}><InviteByEmail next={this._nextSliderPage}/></div>
+        </Slider>
+      </Modal.Body>
+    </Modal>;
 
     const BallotIntroFollowIssuesModal = <Modal bsClass="background-brand-blue modal"
                                     show={this.state.showBallotIntroFollowIssues}
@@ -255,6 +281,12 @@ export default class HeaderGettingStartedBar extends Component {
               source="/img/global/svg-icons/organizations-v2-31x26.svg"
               title="Organizations"
               completed={this.state.ballot_intro_organizations_completed} />
+            <GettingStartedBarItem show={this._openPrintModal}
+                                   title="Print"
+                                   printIcon/>
+            <GettingStartedBarItem show={this._openEmailModal}
+                                   title="Email"
+                                   emailIcon/>
             {/* Positions Icon & Modal */}
             {/* <GettingStartedBarItem show={this._toggleBallotIntroPositions}
               source="/img/global/svg-icons/stance-v1-59x32.svg"
@@ -284,6 +316,7 @@ export default class HeaderGettingStartedBar extends Component {
       { this.state.showBallotIntroFriends ? BallotIntroFriendsModal : null }
       { this.state.showBallotIntroShare ? BallotIntroShareModal : null }
       { this.state.showBallotIntroVote ? BallotIntroVoteModal : null }
+      { this.state.showEmailModal ? SendEmailModal : null }
     </div>;
   }
 }
