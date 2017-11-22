@@ -90,14 +90,14 @@ export default class ItemSupportOpposeCounts extends Component {
       </div>
       {is_empty ?
         <div className={background_bar_class_name}>
-          <OverlayTrigger placement="top" overlay={nonSupportOpposePopoverTooltip}>
+          <OverlayTrigger container={this} placement="top" overlay={nonSupportOpposePopoverTooltip}>
             <div className="network-positions__bar" style={ !is_empty ? bar_style : empty_bar_style } >
               <span className="sr-only">Empty position bar</span>
             </div>
           </OverlayTrigger>
         </div> :
         <div className={background_bar_class_name}>
-          <OverlayTrigger placement="top" overlay={supportOpposePopoverTooltip}>
+          <OverlayTrigger container={this} placement="top" overlay={supportOpposePopoverTooltip}>
             <div className={ is_majority_support ?
               "network-positions__bar network-positions__bar--majority network-positions__bar--support" :
               "network-positions__bar network-positions__bar--majority network-positions__bar--oppose" }
