@@ -20,10 +20,13 @@ export default class NotFound extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      twitter_handle: "",
+    };
   }
 
   componentDidMount () {
+    // console.log("NotFound componentDidMount");
     TwitterActions.twitterIdentityRetrieve(this.props.params.twitter_handle);
     this.twitterStoreListener = TwitterStore.addListener(this._onTwitterStoreChange.bind(this));
 
@@ -32,7 +35,12 @@ export default class NotFound extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    TwitterActions.twitterIdentityRetrieve(nextProps.params.twitter_handle);
+    // console.log("NotFound componentWillReceiveProps");
+    if (nextProps.params.twitter_handle && this.state.twitter_handle.toLowerCase() !== nextProps.params.twitter_handle.toLowerCase()) {
+      // We need this test to prevent an infinite loop
+      // console.log("NotFound componentWillReceiveProps, different twitter_handle: ", nextProps.params.twitter_handle);
+      TwitterActions.twitterIdentityRetrieve(nextProps.params.twitter_handle);
+    }
   }
 
   componentWillUnmount (){
@@ -41,6 +49,7 @@ export default class NotFound extends Component {
   }
 
   _onTwitterStoreChange (){
+    // console.log("NotFound _onTwitterStoreChange");
     let { kind_of_owner, owner_we_vote_id, twitter_handle, twitter_description, twitter_followers_count, twitter_name,
       twitter_photo_url, twitter_user_website,
       status } = TwitterStore.get();
@@ -59,10 +68,12 @@ export default class NotFound extends Component {
   }
 
   _onVoterStoreChange () {
+    // console.log("NotFound _onTwitterStoreChange");
     this.setState({ voter: VoterStore.getVoter() });
   }
 
   organizationCreateFromTwitter (new_twitter_handle) {
+    // console.log("NotFound organizationCreateFromTwitter");
     OrganizationActions.saveFromTwitter(new_twitter_handle);
   }
 
@@ -92,7 +103,7 @@ export default class NotFound extends Component {
     if (signed_in_with_this_twitter_account && is_neither_organization_nor_politician) {
       // We make the API call to create a new organization for this Twitter handle. This will create a cascade so that
       // js/routes/NotFound will switch the view to an Organization card / PositionList
-      console.log("NotFound, calling organizationCreateFromTwitter because is_neither_organization_nor_politician");
+      // console.log("NotFound, calling organizationCreateFromTwitter because is_neither_organization_nor_politician");
       this.organizationCreateFromTwitter(voter.twitter_screen_name);
     } else if (signed_in_with_this_twitter_account && voter_not_linked_to_organization) {
       // We (TODO DALE *should*) link the voter record to the organization with Twitter sign in -- this is for safety
