@@ -307,7 +307,7 @@ export default class OfficeItemCompressed extends Component {
 
         { !this.state.display_all_candidates_flag && remaining_candidates_to_display_count ?
           <Link onClick={this.toggleDisplayAllCandidates}>
-            <span className="u-items-center u-no-break">
+            <span className="u-items-center u-no-break hidden-print">
               Click to show {remaining_candidates_to_display_count} more candidate{ remaining_candidates_to_display_count !== 1 ? "s" : null }...</span>
           </Link> : null
         }
@@ -319,11 +319,11 @@ export default class OfficeItemCompressed extends Component {
         }
         { this.state.display_cheetah_details_flag ?
           <Link onClick={this.toggleExpandCheetahDetails}>
-            <div className="u-items-center u-no-break">
+            <div className="u-items-center u-no-break hidden-print">
               Click to show fewer details...</div>
           </Link> :
           <Link onClick={this.toggleExpandCheetahDetails}>
-            <div className="u-items-center u-no-break">
+            <div className="u-items-center u-no-break hidden-print">
               Click to show more details...</div>
           </Link>
         }

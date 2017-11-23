@@ -673,7 +673,7 @@ export default class Ballot extends Component {
             <div className="col-xs-12 col-md-8">
               { in_ready_to_vote_mode ?
                 <div>
-                  <div className="alert alert-success">
+                  <div className="alert alert-success hidden-print">
                     <a href="#" className="close" data-dismiss="alert">&times;</a>
                     We Vote helps you get ready to vote, <strong>but you cannot use We Vote to cast your vote</strong>.
                     Make sure to return your official ballot to your polling
@@ -696,7 +696,7 @@ export default class Ballot extends Component {
               }
               {/* Show links to this candidate in the admin tools */}
               { this.state.voter && polling_location_we_vote_id_source && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ?
-                <span>Admin: <a href={ballot_returned_admin_edit_url} target="_blank">
+                <span className="u-wrap-links hidden-print">Admin: <a href={ballot_returned_admin_edit_url} target="_blank">
                     Ballot copied from polling location "{polling_location_we_vote_id_source}"
                   </a></span> :
                 null

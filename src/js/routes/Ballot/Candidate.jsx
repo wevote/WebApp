@@ -164,7 +164,7 @@ export default class Candidate extends Component {
       <br />
     {/* Show links to this candidate in the admin tools */}
     { voter.is_admin || voter.is_verified_volunteer ?
-      <span className="u-wrap-links">Admin: <a href={candidate_admin_edit_url} target="_blank">edit {candidate_name}</a></span> :
+      <span className="u-wrap-links hidden-print">Admin: <a href={candidate_admin_edit_url} target="_blank">edit {candidate_name}</a></span> :
       null
     }
     </span>;
