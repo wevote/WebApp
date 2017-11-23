@@ -68,7 +68,8 @@ export default class OrganizationVoterGuide extends Component {
     if (nextProps.params.action_variable === AUTO_FOLLOW) {
       // Wait until we get the path without the "/af" action variable
       // console.log("OrganizationVoterGuide, componentWillReceiveProps - waiting");
-    } else {
+    } else if (nextProps.params.organization_we_vote_id && this.state.organization_we_vote_id !== nextProps.params.organization_we_vote_id) {
+      // Only refresh data if we are working with a new organization
       // console.log("OrganizationVoterGuide, componentWillReceiveProps, nextProps.params: ", nextProps.params);
       this.setState({
         organization_we_vote_id: nextProps.params.organization_we_vote_id,

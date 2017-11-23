@@ -1,4 +1,7 @@
 @media print {
+  @page {
+    size: portrait
+  }
   body {
     background-color: $white !important;
     color: $black;
