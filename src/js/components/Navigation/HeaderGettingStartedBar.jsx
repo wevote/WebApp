@@ -10,7 +10,7 @@ import BallotIntroPositionBar from "../../components/Ballot/BallotIntroPositionB
 import BallotIntroShare from "../../components/Ballot/BallotIntroShare";
 import BallotIntroVote from "../../components/Ballot/BallotIntroVote";
 import GettingStartedBarItem from "./GettingStartedBarItem";
-import InviteByEmail from "../../routes/friends/InviteByEmail";
+import InviteByEmail from "../../routes/Friends/InviteByEmail";
 //import EmailModal from "../../components/Ballot/EmailModal";
 import Slider from "react-slick";
 import VoterActions from "../../actions/VoterActions";
