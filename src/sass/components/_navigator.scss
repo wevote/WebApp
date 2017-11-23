@@ -1,6 +1,7 @@
 $icon-color-base: $gray-mid;
 $icon-color-active: $link-color;
 $icon-color-hover: $gray-dark;
+$glyph-icon-color: #51708e;
 $header-height: 54px;
 $header-height-getting-started: 104px;
 
@@ -210,7 +211,7 @@ $header-height-getting-started: 104px;
     width: 80px;
     height: 48px;
     padding: $space-none;
-    color: $gray-dark;
+    color: $glyph-icon-color;
     opacity: .8;
     text-align: center;
     // temporary offsets for .page-header__container padding
