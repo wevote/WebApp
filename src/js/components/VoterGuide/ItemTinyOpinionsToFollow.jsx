@@ -88,7 +88,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
     if (this.mobile) {
       e.preventDefault();
       e.stopPropagation();
-      
+
       if (!this.popover_state[org_id]) {
         // If it wasn't created, create it now
         this.popover_state[org_id] = {show: false, timer: null};
