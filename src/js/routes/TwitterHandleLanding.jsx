@@ -12,8 +12,9 @@ import TwitterStore from "../stores/TwitterStore";
 import UnknownTwitterAccount from "./VoterGuide/UnknownTwitterAccount";
 import VoterStore from "../stores/VoterStore";
 
-export default class NotFound extends Component {
+export default class TwitterHandleLanding extends Component {
   static propTypes = {
+    active_route: PropTypes.string,
     params: PropTypes.object,
     location: PropTypes.object.isRequired,
   };
@@ -23,10 +24,11 @@ export default class NotFound extends Component {
     this.state = {
       twitter_handle: "",
     };
+    this.getIncomingActiveRoute = this.getIncomingActiveRoute.bind(this);
   }
 
   componentDidMount () {
-    // console.log("NotFound componentDidMount");
+    // console.log("TwitterHandleLanding componentDidMount");
     TwitterActions.twitterIdentityRetrieve(this.props.params.twitter_handle);
     this.twitterStoreListener = TwitterStore.addListener(this._onTwitterStoreChange.bind(this));
 
@@ -35,10 +37,10 @@ export default class NotFound extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log("NotFound componentWillReceiveProps");
+    // console.log("TwitterHandleLanding componentWillReceiveProps");
     if (nextProps.params.twitter_handle && this.state.twitter_handle.toLowerCase() !== nextProps.params.twitter_handle.toLowerCase()) {
       // We need this test to prevent an infinite loop
-      // console.log("NotFound componentWillReceiveProps, different twitter_handle: ", nextProps.params.twitter_handle);
+      // console.log("TwitterHandleLanding componentWillReceiveProps, different twitter_handle: ", nextProps.params.twitter_handle);
       TwitterActions.twitterIdentityRetrieve(nextProps.params.twitter_handle);
     }
   }
@@ -49,7 +51,7 @@ export default class NotFound extends Component {
   }
 
   _onTwitterStoreChange (){
-    // console.log("NotFound _onTwitterStoreChange");
+    // console.log("TwitterHandleLanding _onTwitterStoreChange");
     let { kind_of_owner, owner_we_vote_id, twitter_handle, twitter_description, twitter_followers_count, twitter_name,
       twitter_photo_url, twitter_user_website,
       status } = TwitterStore.get();
@@ -68,13 +70,18 @@ export default class NotFound extends Component {
   }
 
   _onVoterStoreChange () {
-    // console.log("NotFound _onTwitterStoreChange");
+    // console.log("TwitterHandleLanding _onTwitterStoreChange");
     this.setState({ voter: VoterStore.getVoter() });
   }
 
   organizationCreateFromTwitter (new_twitter_handle) {
-    // console.log("NotFound organizationCreateFromTwitter");
+    // console.log("TwitterHandleLanding organizationCreateFromTwitter");
     OrganizationActions.saveFromTwitter(new_twitter_handle);
+  }
+
+  getIncomingActiveRoute () {
+    let incoming_active_route = this.props.active_route || "";
+    return incoming_active_route;
   }
 
   render () {
@@ -102,13 +109,13 @@ export default class NotFound extends Component {
     var voter_not_linked_to_organization = kind_of_owner === "ORGANIZATION" && voter.linked_organization_we_vote_id !== owner_we_vote_id;
     if (signed_in_with_this_twitter_account && is_neither_organization_nor_politician) {
       // We make the API call to create a new organization for this Twitter handle. This will create a cascade so that
-      // js/routes/NotFound will switch the view to an Organization card / PositionList
-      // console.log("NotFound, calling organizationCreateFromTwitter because is_neither_organization_nor_politician");
+      // js/routes/TwitterHandleLanding will switch the view to an Organization card / PositionList
+      // console.log("TwitterHandleLanding, calling organizationCreateFromTwitter because is_neither_organization_nor_politician");
       this.organizationCreateFromTwitter(voter.twitter_screen_name);
     } else if (signed_in_with_this_twitter_account && voter_not_linked_to_organization) {
       // We (TODO DALE *should*) link the voter record to the organization with Twitter sign in -- this is for safety
       // TODO DALE 2016-10-30 Moving this to Twitter sign in
-      // console.log("NotFound, calling organizationCreateFromTwitter because voter_not_linked_to_organization");
+      // console.log("TwitterHandleLanding, calling organizationCreateFromTwitter because voter_not_linked_to_organization");
       // this.organizationCreateFromTwitter(voter.twitter_screen_name);
     }
 
@@ -121,7 +128,8 @@ export default class NotFound extends Component {
         return <PositionListForFriends we_vote_id {...this.props} />;
       } else {
           return <OrganizationVoterGuide we_vote_id {...this.props}
-                                         location={this.props.location} />;
+                                         location={this.props.location}
+                                         active_route={this.getIncomingActiveRoute()} />;
       }
     } else if (this.state.kind_of_owner === "TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE"){
       return <UnknownTwitterAccount {...this.state} />;

@@ -7,16 +7,18 @@ import VoterGuideFollowers from "./VoterGuideFollowers";
 import VoterGuideFollowing from "./VoterGuideFollowing";
 import VoterGuidePositions from "./VoterGuidePositions";
 import VoterStore from "../../stores/VoterStore";
+import { arrayContains } from "../../utils/textFormat";
 
 export default class OrganizationVoterGuideTabs extends Component {
   static propTypes = {
+    active_route: PropTypes.string,
     organization: PropTypes.object.isRequired,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      active_route: "positions",
+      active_route: "",
       current_organization_we_vote_id: "",
       organization: {},
       voter: {},
@@ -34,6 +36,7 @@ export default class OrganizationVoterGuideTabs extends Component {
     VoterGuideActions.voterGuideFollowersRetrieve(this.props.organization.organization_we_vote_id);
     VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
     this.setState({
+      active_route: this.props.active_route || "positions",
       current_organization_we_vote_id: this.props.organization.organization_we_vote_id,
       organization: this.props.organization,
       voter: VoterStore.getVoter(),
@@ -72,6 +75,18 @@ export default class OrganizationVoterGuideTabs extends Component {
     this.setState({
       voter: VoterStore.getVoter(),
     });
+   }
+
+  switchTab (destination_tab) {
+    let available_tabs_array = ["following", "followers", "positions"];
+    if (arrayContains(destination_tab, available_tabs_array) ) {
+      this.setState({
+        active_route: destination_tab,
+      });
+      // DALE 2017-11-24 This is a partially implemented redirect, to make sure the URL matches the tab.
+      // But this is an expensive action as it reloads quite a bit of data from the API server, so we leave this off for now.
+      // browserHistory.push("/resistancevoter/" + destination_tab);
+    }
    }
 
   render () {
@@ -130,13 +145,13 @@ export default class OrganizationVoterGuideTabs extends Component {
           <div className="tabs__tabs-container hidden-print">
             <ul className="nav tabs__tabs">
               <li className="tab-item">
-                <a onClick={() => this.setState({ active_route: "positions", })} className={this.state.active_route === "positions" ? "tab tab-active" : "tab tab-default"}>
+                <a onClick={() => this.switchTab("positions")} className={this.state.active_route === "positions" ? "tab tab-active" : "tab tab-default"}>
                   <span>{positions_title}</span>
                 </a>
               </li>
 
               <li className="tab-item">
-                <a onClick={() => this.setState({ active_route: "following", })} className={this.state.active_route === "following" ? "tab tab-active" : "tab tab-default"}>
+                <a onClick={() => this.switchTab("following")} className={this.state.active_route === "following" ? "tab tab-active" : "tab tab-default"}>
                   <span>
                     <span className="hidden-xs">{following_title_long}</span>
                     <span className="visible-xs">{following_title_short}</span>
@@ -145,7 +160,7 @@ export default class OrganizationVoterGuideTabs extends Component {
               </li>
 
               <li className="tab-item">
-                <a onClick={() => this.setState({ active_route: "followers", })} className={this.state.active_route === "followers" ? "tab tab-active" : "tab tab-default"}>
+                <a onClick={() => this.switchTab("followers")} className={this.state.active_route === "followers" ? "tab tab-active" : "tab tab-default"}>
                   <span>{followers_title}</span>
                 </a>
               </li>
