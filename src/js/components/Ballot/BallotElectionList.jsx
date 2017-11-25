@@ -11,6 +11,7 @@ export default class BallotElectionList extends Component {
 
   static propTypes = {
     ballotElectionList: PropTypes.array.isRequired,
+    ballotBaseUrl: PropTypes.string,
     toggleFunction: PropTypes.func,
   };
 
@@ -21,24 +22,25 @@ export default class BallotElectionList extends Component {
 
   goToDifferentElection (ballot_location_shortcut, ballot_returned_we_vote_id, googleCivicElectionId, originalTextForMapSearch = "") {
     // console.log("BallotElectionList.jsx goToDifferentElection, googleCivicElectionId: ", googleCivicElectionId, ", originalTextForMapSearch: ", originalTextForMapSearch);
+    let ballot_base_url = this.props.ballotBaseUrl || "/ballot";
     if (ballot_location_shortcut && ballot_location_shortcut !== "" && ballot_location_shortcut !== "none") {
       // console.log("goToDifferentElection, ballot_location_shortcut: ", ballot_location_shortcut);
       BallotActions.voterBallotItemsRetrieve(0, "", ballot_location_shortcut);
-      browserHistory.push("/ballot/" + ballot_location_shortcut);
+      browserHistory.push(ballot_base_url + "/" + ballot_location_shortcut);
     } else if (ballot_returned_we_vote_id && ballot_returned_we_vote_id !== "" && ballot_returned_we_vote_id !== "none") {
       // console.log("goToDifferentElection, ballot_returned_we_vote_id: ", ballot_returned_we_vote_id);
       BallotActions.voterBallotItemsRetrieve(0, ballot_returned_we_vote_id, "");
-      browserHistory.push("/ballot/id/" + ballot_returned_we_vote_id);
+      browserHistory.push(ballot_base_url + "/id/" + ballot_returned_we_vote_id);
     } else if (originalTextForMapSearch && originalTextForMapSearch !== "") {
       // Do we still want to be updating addresses? Maybe instead just update google_civic_election_id?
       // console.log("goToDifferentElection, originalTextForMapSearch: ", originalTextForMapSearch);
       let simple_save = false;
       VoterActions.voterAddressSave(originalTextForMapSearch, simple_save, googleCivicElectionId);
-      browserHistory.push("/ballot");
+      browserHistory.push(ballot_base_url);
     } else if (googleCivicElectionId && googleCivicElectionId !== 0) {
       BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, "", "");
       // console.log("goToDifferentElection, googleCivicElectionId: ", googleCivicElectionId);
-      browserHistory.push("/ballot/election/" + googleCivicElectionId);
+      browserHistory.push(ballot_base_url + "/election/" + googleCivicElectionId);
     }
     if (this.props.toggleFunction) {
       this.props.toggleFunction();

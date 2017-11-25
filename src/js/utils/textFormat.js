@@ -50,6 +50,25 @@ export function stringContains (needle, string_haystack) {
   }
 }
 
+export function calculateBallotBaseUrl (incoming_ballot_base_url, incoming_pathname) {
+  let incoming_pathname_exists = incoming_pathname && incoming_pathname !== "";
+  let ballot_base_url_empty = !incoming_ballot_base_url || incoming_ballot_base_url === "";
+  let ballotBaseUrl = "";
+  if (incoming_pathname_exists && ballot_base_url_empty) {
+    // console.log("incoming_pathname:", incoming_pathname);
+    // Strip off everything after these path strings "/ballot" "/positions" "/followers" "/followed"
+    let temp1 = incoming_pathname.split("/ballot")[0];
+    let temp2 = temp1.split("/positions")[0];
+    let temp3 = temp2.split("/followers")[0];
+    let temp4 = temp3.split("/followed")[0];
+    ballotBaseUrl = temp4 + "/ballot";
+    // console.log("ballotBaseUrl:", ballotBaseUrl);
+  } else {
+    ballotBaseUrl = incoming_ballot_base_url || "/ballot";
+  }
+  return ballotBaseUrl;
+}
+
 export function capitalizeString (raw_string) {
   if (raw_string === undefined) {
     return "";
