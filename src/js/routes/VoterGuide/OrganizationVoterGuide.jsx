@@ -17,8 +17,8 @@ const AUTO_FOLLOW = "af";
 export default class OrganizationVoterGuide extends Component {
   static propTypes = {
     active_route: PropTypes.string,
-    params: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
+    params: PropTypes.object.isRequired,
   };
 
   constructor (props) {
@@ -182,6 +182,8 @@ export default class OrganizationVoterGuide extends Component {
               </div>
             </div>
             <OrganizationVoterGuideTabs organization={this.state.organization}
+                                        location={this.props.location}
+                                        params={this.props.params}
                                         active_route={this.props.active_route} />
           </div>
         </div>

@@ -2,10 +2,11 @@ import React, { Component, PropTypes } from "react";
 import LoadingWheel from "../LoadingWheel";
 import OrganizationActions from "../../actions/OrganizationActions";
 import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterGuideStore from "../../stores/VoterGuideStore";
+import VoterGuideBallot from "./VoterGuideBallot";
 import VoterGuideFollowers from "./VoterGuideFollowers";
 import VoterGuideFollowing from "./VoterGuideFollowing";
 import VoterGuidePositions from "./VoterGuidePositions";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 import { arrayContains } from "../../utils/textFormat";
 
@@ -13,6 +14,8 @@ export default class OrganizationVoterGuideTabs extends Component {
   static propTypes = {
     active_route: PropTypes.string,
     organization: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    params: PropTypes.object.isRequired,
   };
 
   constructor (props) {
@@ -36,7 +39,7 @@ export default class OrganizationVoterGuideTabs extends Component {
     VoterGuideActions.voterGuideFollowersRetrieve(this.props.organization.organization_we_vote_id);
     VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
     this.setState({
-      active_route: this.props.active_route || "positions",
+      active_route: this.props.active_route || "ballot",
       current_organization_we_vote_id: this.props.organization.organization_we_vote_id,
       organization: this.props.organization,
       voter: VoterStore.getVoter(),
@@ -78,7 +81,7 @@ export default class OrganizationVoterGuideTabs extends Component {
    }
 
   switchTab (destination_tab) {
-    let available_tabs_array = ["following", "followers", "positions"];
+    let available_tabs_array = ["ballot", "following", "followers", "positions"];
     if (arrayContains(destination_tab, available_tabs_array) ) {
       this.setState({
         active_route: destination_tab,
@@ -128,6 +131,11 @@ export default class OrganizationVoterGuideTabs extends Component {
     let voter_guide_component_to_display = null;
     switch (this.state.active_route) {
       default:
+      case "ballot":
+        voter_guide_component_to_display = <VoterGuideBallot organization={this.state.organization}
+                                                             location={this.props.location}
+                                                             params={this.props.params} />;
+        break;
       case "positions":
         voter_guide_component_to_display = <VoterGuidePositions organization={this.state.organization} />;
         break;
@@ -144,6 +152,12 @@ export default class OrganizationVoterGuideTabs extends Component {
         <div className="tabs__tabs-container-wrap">
           <div className="tabs__tabs-container hidden-print">
             <ul className="nav tabs__tabs">
+              <li className="tab-item">
+                <a onClick={() => this.switchTab("ballot")} className={this.state.active_route === "ballot" ? "tab tab-active" : "tab tab-default"}>
+                  <span>Ballot</span>
+                </a>
+              </li>
+
               <li className="tab-item">
                 <a onClick={() => this.switchTab("positions")} className={this.state.active_route === "positions" ? "tab tab-active" : "tab tab-default"}>
                   <span>{positions_title}</span>
