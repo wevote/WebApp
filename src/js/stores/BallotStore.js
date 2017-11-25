@@ -137,6 +137,33 @@ class BallotStore extends FluxMapStore {
     return assign({}, ballot_item, {candidate_list: filtered_list });
   }
 
+  getBallotByFilterType (filter_type){
+    // console.log("getBallotByFilterType, filter_type: ", filter_type);
+    switch (filter_type) {
+      case "filterRemaining":
+        return this.ballot_remaining_choices;
+      case "filterSupport":
+        return this.ballot_supported;
+      case "filterReadyToVote":
+        return this.ballot;
+      default :
+        return this.ballot;
+    }
+  }
+
+  getBallotTypeByFilterType (filter_type){
+    switch (filter_type) {
+      case "filterRemaining":
+        return "CHOICES_REMAINING";
+      case "filterSupport":
+        return "WHAT_I_SUPPORT";
+      case "filterReadyToVote":
+        return "READY_TO_VOTE";
+      default :
+        return "ALL_BALLOT_ITEMS";
+    }
+  }
+
   reduce (state, action) {
 
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)

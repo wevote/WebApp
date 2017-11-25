@@ -129,6 +129,7 @@ export default class TwitterHandleLanding extends Component {
       } else {
           return <OrganizationVoterGuide we_vote_id {...this.props}
                                          location={this.props.location}
+                                         params={this.props.params}
                                          active_route={this.getIncomingActiveRoute()} />;
       }
     } else if (this.state.kind_of_owner === "TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE"){

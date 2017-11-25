@@ -73,7 +73,7 @@ export default class Elections extends Component {
         <Helmet title="Elections - We Vote" />
       <h1 className="h1">Supported Elections</h1>
         <div className="elections-list-container">
-          <BallotElectionList ballotElectionList={this.state.voter_ballot_list} />
+          <BallotElectionList ballotElectionList={this.state.voter_ballot_list} ballotBaseUrl="/ballot" />
         </div>
       </div>;
   }

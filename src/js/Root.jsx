@@ -146,6 +146,11 @@ const routes = () =>
 
     {/* Voter Guide Pages */}
     <Route path="/voterguide/:organization_we_vote_id" component={OrganizationVoterGuide} />
+    <Route path="/voterguide/:organization_we_vote_id/ballot" component={OrganizationVoterGuide} />
+    <Route path="/voterguide/:organization_we_vote_id/ballot/empty" component={OrganizationVoterGuide} />
+    <Route path="/voterguide/:organization_we_vote_id/ballot/:ballot_location_shortcut" component={OrganizationVoterGuide} />
+    <Route path="/voterguide/:organization_we_vote_id/ballot/id/:ballot_returned_we_vote_id" component={OrganizationVoterGuide} />
+    <Route path="/voterguide/:organization_we_vote_id/ballot/election/:google_civic_election_id" component={OrganizationVoterGuide} />
     <Route path="/voterguide/:organization_we_vote_id/followers" component={props => <OrganizationVoterGuide {...props} active_route="followers" />} />
     <Route path="/voterguide/:organization_we_vote_id/following" component={props => <OrganizationVoterGuide {...props} active_route="following" />} />
     <Route path="/voterguide/:organization_we_vote_id/positions" component={props => <OrganizationVoterGuide {...props} active_route="positions" />} />
@@ -172,12 +177,10 @@ const routes = () =>
     {/* Temporary scratchpad for component testing */}
     <Route path="/testing/scratchpad" component={ScratchPad} />
 
-    {/*
-    <Route path=":twitter_handle/ballot/empty" component={EmptyBallot} />
-    <Route path=":twitter_handle/ballot/:ballot_location_shortcut" component={Ballot} />
-    <Route path=":twitter_handle/ballot/id/:ballot_returned_we_vote_id" component={Ballot} />
-    <Route path=":twitter_handle/ballot/election/:google_civic_election_id" component={Ballot} />
-    */}
+    <Route path=":twitter_handle/ballot/empty" component={TwitterHandleLanding} />
+    <Route path=":twitter_handle/ballot/:ballot_location_shortcut" component={TwitterHandleLanding} />
+    <Route path=":twitter_handle/ballot/id/:ballot_returned_we_vote_id" component={TwitterHandleLanding} />
+    <Route path=":twitter_handle/ballot/election/:google_civic_election_id" component={TwitterHandleLanding} />
 
     {/* Any route that is not found -> @return TwitterHandleLanding component */}
     <Route path=":twitter_handle" component={TwitterHandleLanding} />
