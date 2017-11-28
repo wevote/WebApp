@@ -145,7 +145,7 @@ export default class Measure extends Component {
           </div>
     {/* Show links to this candidate in the admin tools */}
     { voter.is_admin || voter.is_verified_volunteer ?
-      <span>Admin: <a href={measure_admin_edit_url} target="_blank">edit {measure_name}</a></span> :
+      <span className="u-wrap-links hidden-print">Admin: <a href={measure_admin_edit_url} target="_blank">edit {measure_name}</a></span> :
       null
     }
         </section>;

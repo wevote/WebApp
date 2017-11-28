@@ -4,12 +4,15 @@ import BallotActions from "../../actions/BallotActions";
 import ElectionStore from "../../stores/ElectionStore";
 import VoterStore from "../../stores/VoterStore";
 import BallotLocationButton from "./BallotLocationButton";
+import { calculateBallotBaseUrl } from "../../utils/textFormat";
 
 
 export default class BallotLocationChoices extends Component {
   static propTypes = {
+    ballotBaseUrl: PropTypes.string,
     current_voter_address: PropTypes.string,
     google_civic_election_id: PropTypes.number.isRequired,
+    pathname: PropTypes.string,
   };
 
   constructor (props) {
@@ -104,16 +107,18 @@ export default class BallotLocationChoices extends Component {
   }
 
   goToDifferentBallot (ballot_returned_we_vote_id = "", ballot_location_shortcut = "") {
+    let ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
+
     // console.log("BallotLocationChoices, goToDifferentBallot, ballot_returned_we_vote_id: ", ballot_returned_we_vote_id);
     // console.log("BallotLocationChoices, goToDifferentBallot, ballot_location_shortcut: ", ballot_location_shortcut);
     if (ballot_location_shortcut !== "" && ballot_location_shortcut !== undefined) {
       BallotActions.voterBallotItemsRetrieve(0, "", ballot_location_shortcut);
       // Change the URL to match
-      browserHistory.push("/ballot/" + ballot_location_shortcut);
+      browserHistory.push(ballotBaseUrl + "/" + ballot_location_shortcut);
     } else if (ballot_returned_we_vote_id !== "" && ballot_returned_we_vote_id !== undefined) {
       BallotActions.voterBallotItemsRetrieve(0, ballot_returned_we_vote_id, "");
       // Change the URL to match
-      browserHistory.push("/ballot/id/" + ballot_returned_we_vote_id);
+      browserHistory.push(ballotBaseUrl + "/id/" + ballot_returned_we_vote_id);
     }
   }
 

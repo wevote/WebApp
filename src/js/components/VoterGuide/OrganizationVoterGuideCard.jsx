@@ -73,7 +73,7 @@ export default class OrganizationVoterGuideCard extends Component {
       }
 
       { organization_website ?
-        <span><a href={organization_website} target="_blank"> {organization_website} <i className="fa fa-external-link" /></a></span> :
+        <span className="u-wrap-links"><a href={organization_website} target="_blank"> {organization_website} <i className="fa fa-external-link" /></a></span> :
         null }
       {/* 5 of your friends follow Organization Name<br />*/}
 

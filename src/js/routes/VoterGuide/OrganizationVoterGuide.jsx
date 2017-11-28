@@ -16,8 +16,9 @@ const AUTO_FOLLOW = "af";
 
 export default class OrganizationVoterGuide extends Component {
   static propTypes = {
-    params: PropTypes.object.isRequired,
+    active_route: PropTypes.string,
     location: PropTypes.object.isRequired,
+    params: PropTypes.object.isRequired,
   };
 
   constructor (props) {
@@ -68,7 +69,8 @@ export default class OrganizationVoterGuide extends Component {
     if (nextProps.params.action_variable === AUTO_FOLLOW) {
       // Wait until we get the path without the "/af" action variable
       // console.log("OrganizationVoterGuide, componentWillReceiveProps - waiting");
-    } else {
+    } else if (nextProps.params.organization_we_vote_id && this.state.organization_we_vote_id !== nextProps.params.organization_we_vote_id) {
+      // Only refresh data if we are working with a new organization
       // console.log("OrganizationVoterGuide, componentWillReceiveProps, nextProps.params: ", nextProps.params);
       this.setState({
         organization_we_vote_id: nextProps.params.organization_we_vote_id,
@@ -179,7 +181,10 @@ export default class OrganizationVoterGuide extends Component {
                 </div>
               </div>
             </div>
-            <OrganizationVoterGuideTabs organization={this.state.organization} />
+            <OrganizationVoterGuideTabs organization={this.state.organization}
+                                        location={this.props.location}
+                                        params={this.props.params}
+                                        active_route={this.props.active_route} />
           </div>
         </div>
       </div>
