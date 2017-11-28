@@ -12,6 +12,7 @@ import VoterActions from "./actions/VoterActions";
 import SearchAllActions from "./actions/SearchAllActions";
 import VoterStore from "./stores/VoterStore";
 const web_app_config = require("./config");
+import { stringContains } from "./utils/textFormat";
 
 var loadingScreenStyles = {
   position: "fixed",
@@ -191,9 +192,6 @@ export default class Application extends Component {
 
   render () {
     var { location: { pathname }} = this.props;
-    const headRoomSize = pathname.startsWith("/ballot") || pathname === "/bookmarks" ?
-      "headroom-getting-started__margin" :
-      "headroom-wrapper";
 
     if (this.state.voter === undefined || location === undefined ) {
       return <div style={loadingScreenStyles}>
@@ -207,6 +205,7 @@ export default class Application extends Component {
     var in_theater_mode = false;
     var content_full_width_mode = false;
     var voter_guide_mode = false;
+    let voter_guide_show_getting_started_navigation = false;
     if (pathname === "/intro/story" || pathname === "/intro/sample_ballot" || pathname === "/intro/get_started" ||
       pathname === "/voterguidegetstarted") {
       in_theater_mode = true;
@@ -229,7 +228,13 @@ export default class Application extends Component {
       content_full_width_mode = false;
     } else {
       voter_guide_mode = true;
+      // Consider limiting "HeaderGettingStartedBar" to ballot tab only
+      voter_guide_show_getting_started_navigation = true;
     }
+
+    const headRoomSize = voter_guide_show_getting_started_navigation || stringContains("/ballot", pathname) || pathname === "/bookmarks" ?
+      "headroom-getting-started__margin" :
+      "headroom-wrapper";
 
     if (in_theater_mode) {
       return <div className="app-base" id="app-base-id">
@@ -246,9 +251,12 @@ export default class Application extends Component {
     } else if (voter_guide_mode) {
       // console.log("voter_guide_mode", voter_guide_mode);
       return <div className="app-base" id="app-base-id">
-        <div className="headroom-wrapper">
+        <div className={headRoomSize}>
           <div ref="pageHeader" className={ this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom" }>
             <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
+            { voter_guide_show_getting_started_navigation || stringContains("/ballot", pathname) ?
+              <HeaderGettingStartedBar pathname={pathname} voter={this.state.voter}/> :
+              null }
           </div>
         </div>
         { this.props.children }
@@ -259,7 +267,7 @@ export default class Application extends Component {
       <div className={headRoomSize}>
         <div ref="pageHeader" className={ this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom" }>
           <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
-          { pathname.startsWith("/ballot") || pathname === "/bookmarks" ?
+          { stringContains("/ballot", pathname) || pathname === "/bookmarks" ?
             <HeaderGettingStartedBar pathname={pathname} voter={this.state.voter}/> :
             null }
         </div>

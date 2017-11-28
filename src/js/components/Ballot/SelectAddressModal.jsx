@@ -1,11 +1,14 @@
 import React, { Component, PropTypes } from "react";
 import { Modal } from "react-bootstrap";
 import AddressBox from "../../components/AddressBox";
+import { calculateBallotBaseUrl } from "../../utils/textFormat";
 
 export default class SelectAddressModal extends Component {
   // This modal will allow users to change their addresses
 
   static propTypes = {
+    ballotBaseUrl: PropTypes.string,
+    pathname: PropTypes.string,
     show: PropTypes.bool,
     toggleFunction: PropTypes.func.isRequired
   };
@@ -16,6 +19,8 @@ export default class SelectAddressModal extends Component {
   }
 
   render () {
+    let ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
+
     return <Modal className="select-address select-address__modal select-address__modal-mobile"
                   show={this.props.show}
                   onHide={this.props.toggleFunction} >
@@ -23,7 +28,7 @@ export default class SelectAddressModal extends Component {
         <Modal.Title className="select-address__h1">Enter address where you are registered to vote</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <AddressBox saveUrl={"/ballot"} toggleSelectAddressModal={this.props.toggleFunction} />
+        <AddressBox saveUrl={ballotBaseUrl} toggleSelectAddressModal={this.props.toggleFunction} />
         <br/>
         <br/>
       </Modal.Body>
