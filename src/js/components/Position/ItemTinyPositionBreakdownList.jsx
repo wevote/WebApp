@@ -154,6 +154,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
                 id={`organization-popover-${orgs_not_shown_count}`}
                 onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
                 onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
+                placement="bottom"
                 className="card-popover">
                 <PositionsNotShownList ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
                                        positions_not_shown_list={positions_not_shown_list} />
@@ -164,6 +165,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
                 ref={`position-overlay-${orgs_not_shown_count}`}
                 onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
                 onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
+                onExiting={() => this.onTriggerLeave(orgs_not_shown_count)}
                 trigger={["focus", "hover"]}
                 rootClose
                 placement="bottom"
@@ -190,18 +192,12 @@ export default class ItemTinyPositionBreakdownList extends Component {
           let organizationPopover = <Popover
               id={`organization-popover-${organization_we_vote_id}`}
               onMouseOver={() => this.onTriggerEnter(organization_we_vote_id)}
-              onMouseOut={() => this.onTriggerLeave(organization_we_vote_id)}>
-              <section className="card">
-                <div className="card__additional">
-                  <div>
-                    <ul className="card-child__list-group">
-                      <OrganizationCard organization={one_organization}
-                                        ballotItemWeVoteId={this.props.ballotItemWeVoteId}
-                                        followToggleOn />
-                    </ul>
-                  </div>
-              </div>
-              </section>
+              onMouseOut={() => this.onTriggerLeave(organization_we_vote_id)}
+              placement="bottom"
+              className="card-popover">
+              <OrganizationCard organization={one_organization}
+                                ballotItemWeVoteId={this.props.ballotItemWeVoteId}
+                                followToggleOn />
             </Popover>;
 
           return <OverlayTrigger
@@ -209,6 +205,8 @@ export default class ItemTinyPositionBreakdownList extends Component {
               ref={`position-overlay-${organization_we_vote_id}`}
               onMouseOver={() => this.onTriggerEnter(organization_we_vote_id)}
               onMouseOut={() => this.onTriggerLeave(organization_we_vote_id)}
+              onExiting={() => this.onTriggerLeave(organization_we_vote_id)}
+              trigger={["focus", "hover"]}
               rootClose
               placement="bottom"
               overlay={organizationPopover}>
