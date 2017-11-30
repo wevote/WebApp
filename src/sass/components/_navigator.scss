@@ -68,7 +68,7 @@ $header-height-getting-started: 104px;
 
 .headroom-getting-started__margin {
   @include print {
-    margin-top: 0;
+    margin-top: $space-none;
   }
   margin-top: $header-height-getting-started;
 }
