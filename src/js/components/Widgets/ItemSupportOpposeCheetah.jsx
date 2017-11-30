@@ -246,7 +246,7 @@ export default class ItemSupportOpposeCheetah extends Component {
       // console.log("ItemSupportOpposeCheetah, this.state.ballot_item_we_vote_id: ", this.state.ballot_item_we_vote_id);
       let support_positions_list_count = 0;
       let oppose_positions_list_count = 0;
-      let info_only_positions_list_count = 0;
+      // let info_only_positions_list_count = 0;
       this.state.position_list_from_advisers_followed_by_voter.map((one_position) => {
         // console.log("one_position: ", one_position);
         // Filter out the positions that we don't want to display
@@ -254,9 +254,9 @@ export default class ItemSupportOpposeCheetah extends Component {
           support_positions_list_count++;
         } else if (one_position.is_oppose_or_negative_rating) {
           oppose_positions_list_count++;
-        } else if (!one_position.is_support_or_positive_rating && !one_position.is_oppose_or_negative_rating) {
-          info_only_positions_list_count++;
-        }
+        } // else if (!one_position.is_support_or_positive_rating && !one_position.is_oppose_or_negative_rating) {
+        //   info_only_positions_list_count++;
+        // }
       });
       // console.log("support_positions_list_count:", support_positions_list_count);
 
