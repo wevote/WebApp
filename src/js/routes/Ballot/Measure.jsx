@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import AnalyticsActions from "../../actions/AnalyticsActions";
+// import AnalyticsActions from "../../actions/AnalyticsActions";
 import { capitalizeString } from "../../utils/textFormat";
 import GuideList from "../../components/VoterGuide/GuideList";
 import Helmet from "react-helmet";
