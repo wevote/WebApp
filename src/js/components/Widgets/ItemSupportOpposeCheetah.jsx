@@ -71,9 +71,9 @@ export default class ItemSupportOpposeCheetah extends Component {
     });
   }
 
-  onTriggerEnter (org_id) {
-    if (this.refs[`cheetah-overlay-${org_id}`]) {
-      this.refs[`cheetah-overlay-${org_id}`].show();
+  onTriggerEnter (org_id, visible_tag) {
+    if (this.refs[`cheetah-overlay-${org_id}-${visible_tag}`]) {
+      this.refs[`cheetah-overlay-${org_id}-${visible_tag}`].show();
     }
     if (!this.popover_state[org_id]) {
       // If it wasn't created, create it now
@@ -83,7 +83,7 @@ export default class ItemSupportOpposeCheetah extends Component {
     this.popover_state[org_id].show = true;
   }
 
-  onTriggerLeave (org_id) {
+  onTriggerLeave (org_id, visible_tag) {
     if (!this.popover_state[org_id]) {
       // If it wasn't created, create it now
       this.popover_state[org_id] = {show: false, timer: null};
@@ -92,14 +92,14 @@ export default class ItemSupportOpposeCheetah extends Component {
     clearTimeout(this.popover_state[org_id].timer);
     this.popover_state[org_id].timer = setTimeout(() => {
       if (!this.popover_state[org_id].show) {
-        if (this.refs[`cheetah-overlay-${org_id}`]) {
-          this.refs[`cheetah-overlay-${org_id}`].hide();
+        if (this.refs[`cheetah-overlay-${org_id}-${visible_tag}`]) {
+          this.refs[`cheetah-overlay-${org_id}-${visible_tag}`].hide();
         }
       }
     }, 100);
   }
 
-  onTriggerToggle (e, org_id) {
+  onTriggerToggle (e, org_id, visible_tag) {
     if (this.mobile) {
       e.preventDefault();
       e.stopPropagation();
@@ -109,9 +109,9 @@ export default class ItemSupportOpposeCheetah extends Component {
       }
 
       if (this.popover_state[org_id].show) {
-        this.onTriggerLeave(org_id);
+        this.onTriggerLeave(org_id, visible_tag);
       } else {
-        this.onTriggerEnter(org_id);
+        this.onTriggerEnter(org_id, visible_tag);
       }
     }
   }
@@ -121,7 +121,7 @@ export default class ItemSupportOpposeCheetah extends Component {
     return Math.round(100 * Math.max(support_count, oppose_count) / (support_count + oppose_count));
   }
 
-  organizationsToDisplay (organizations_to_follow, maximum_organization_display, ballot_item_we_vote_id) {
+  organizationsToDisplay (organizations_to_follow, maximum_organization_display, ballot_item_we_vote_id, visible_tag) {
     if (!maximum_organization_display || maximum_organization_display === 0) {
       return [];
     }
@@ -146,19 +146,19 @@ export default class ItemSupportOpposeCheetah extends Component {
           // Using orgs_not_shown_count as the key seems arbitrary and could cause a collision
           this.popover_state[orgs_not_shown_count] = {show: false, timer: null};
           let organizationPopover = <Popover
-              id={`organization-popover-${orgs_not_shown_count}`}
-              onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
-              onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
+              id={`organization-popover-${orgs_not_shown_count}-${visible_tag}`}
+              onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count, visible_tag)}
+              onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count, visible_tag)}
               className="card-popover">
               <OrganizationsNotShownList orgs_not_shown_list={orgs_not_shown_list} />
             </Popover>;
 
           return <OverlayTrigger
-              key={`trigger-${orgs_not_shown_count}`}
-              ref={`cheetah-overlay-${orgs_not_shown_count}`}
-              onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
-              onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
-              onExiting={() => this.onTriggerLeave(orgs_not_shown_count)}
+              key={`trigger-${orgs_not_shown_count}-${visible_tag}`}
+              ref={`cheetah-overlay-${orgs_not_shown_count}-${visible_tag}`}
+              onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count, visible_tag)}
+              onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count, visible_tag)}
+              onExiting={() => this.onTriggerLeave(orgs_not_shown_count, visible_tag)}
               trigger={["focus", "hover"]}
               rootClose
               placement="bottom"
@@ -189,9 +189,9 @@ export default class ItemSupportOpposeCheetah extends Component {
                                   "/voterguide/" + one_organization.organization_we_vote_id;
 
         let organizationPopover = <Popover
-            id={`organization-popover-${org_id}`}
-            onMouseOver={() => this.onTriggerEnter(org_id)}
-            onMouseOut={() => this.onTriggerLeave(org_id)}
+            id={`organization-popover-${org_id}-${visible_tag}`}
+            onMouseOver={() => this.onTriggerEnter(org_id, visible_tag)}
+            onMouseOut={() => this.onTriggerLeave(org_id, visible_tag)}
             className="card-popover">
             <OrganizationCard organization={one_organization_for_organization_card}
                               ballotItemWeVoteId={ballot_item_we_vote_id}
@@ -199,17 +199,17 @@ export default class ItemSupportOpposeCheetah extends Component {
           </Popover>;
 
         return <OverlayTrigger
-            key={`trigger-${org_id}`}
-            ref={`cheetah-overlay-${org_id}`}
-            onMouseOver={() => this.onTriggerEnter(org_id)}
-            onMouseOut={() => this.onTriggerLeave(org_id)}
-            onExiting={() => this.onTriggerLeave(org_id)}
+            key={`trigger-${org_id}-${visible_tag}`}
+            ref={`cheetah-overlay-${org_id}-${visible_tag}`}
+            onMouseOver={() => this.onTriggerEnter(org_id, visible_tag)}
+            onMouseOut={() => this.onTriggerLeave(org_id, visible_tag)}
+            onExiting={() => this.onTriggerLeave(org_id, visible_tag)}
             trigger={["focus", "hover"]}
             rootClose
             placement="bottom"
             overlay={organizationPopover}>
           <span className="position-rating__source with-popover">
-            <Link key={`tiny-link-${org_id}`} to={voterGuideLink} onClick={(e) => this.onTriggerToggle(e, org_id)} className="u-no-underline">
+            <Link key={`tiny-link-${org_id}-${visible_tag}`} to={voterGuideLink} onClick={(e) => this.onTriggerToggle(e, org_id, visible_tag)} className="u-no-underline">
               <OrganizationTinyDisplay {...one_organization} showPlaceholderImage />
             </Link>
           </span>
@@ -273,10 +273,10 @@ export default class ItemSupportOpposeCheetah extends Component {
 
       //console.log("organizations_to_follow_support_mobile_to_show:", organizations_to_follow_support_mobile_to_show);
 
-      let organizations_to_follow_support_desktop = this.organizationsToDisplay(this.state.organizations_to_follow_support, organizations_to_follow_support_desktop_to_show, this.state.ballot_item_we_vote_id);
-      let organizations_to_follow_support_mobile = this.organizationsToDisplay(this.state.organizations_to_follow_support, organizations_to_follow_support_mobile_to_show, this.state.ballot_item_we_vote_id);
-      let organizations_to_follow_oppose_desktop = this.organizationsToDisplay(this.state.organizations_to_follow_oppose, organizations_to_follow_oppose_desktop_to_show, this.state.ballot_item_we_vote_id);
-      let organizations_to_follow_oppose_mobile = this.organizationsToDisplay(this.state.organizations_to_follow_oppose, organizations_to_follow_oppose_mobile_to_show, this.state.ballot_item_we_vote_id);
+      let organizations_to_follow_support_desktop = this.organizationsToDisplay(this.state.organizations_to_follow_support, organizations_to_follow_support_desktop_to_show, this.state.ballot_item_we_vote_id, "desktop");
+      let organizations_to_follow_support_mobile = this.organizationsToDisplay(this.state.organizations_to_follow_support, organizations_to_follow_support_mobile_to_show, this.state.ballot_item_we_vote_id, "mobile");
+      let organizations_to_follow_oppose_desktop = this.organizationsToDisplay(this.state.organizations_to_follow_oppose, organizations_to_follow_oppose_desktop_to_show, this.state.ballot_item_we_vote_id, "desktop");
+      let organizations_to_follow_oppose_mobile = this.organizationsToDisplay(this.state.organizations_to_follow_oppose, organizations_to_follow_oppose_mobile_to_show, this.state.ballot_item_we_vote_id, "mobile");
 
       let show_support_row = this.state.display_cheetah_details_flag ? support_count || organizations_to_follow_support_desktop.length : support_count;
       let show_oppose_row = this.state.display_cheetah_details_flag ? oppose_count || organizations_to_follow_oppose_desktop.length : oppose_count;
