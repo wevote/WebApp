@@ -377,9 +377,11 @@
 
 // Intro Modal shadow
 .intro-modal-shadow {
-  height: 8px;
+  position: relative;
+  top: -25px;
+  height: 25px;
   width: 100%;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 40%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(to bottom, transparent 1%, #fff 100%);
 }
 
 .intro-modal-vertical-scroll {
