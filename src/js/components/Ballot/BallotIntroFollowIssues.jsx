@@ -168,6 +168,7 @@ export default class BallotIntroFollowIssues extends Component {
           </div>
         </div>
       </div>
+      <div className="intro-modal-shadow" />
       {this.state.description_text ?
         <div className="intro-modal__description-text">
           {this.state.description_text}

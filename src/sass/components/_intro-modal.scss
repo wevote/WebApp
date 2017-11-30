@@ -375,9 +375,18 @@
   }
 }
 
+// Intro Modal shadow
+.intro-modal-shadow {
+  position: relative;
+  top: -25px;
+  height: 25px;
+  width: 100%;
+  background: linear-gradient(to bottom, transparent 1%, #fff 100%);
+}
+
 .intro-modal-vertical-scroll {
   // padding: $space-md;
-  border-radius: $radius-sm;
+  border-radius: $radius-sm $radius-sm 0 0;
   -webkit-column-count: 1;
   -moz-column-count: 1;
   column-count: 1;
@@ -394,6 +403,11 @@
       }
     }
   }
+}
+
+
+.intro-modal-vertical-scroll.card {
+  margin-bottom: $space-none;
 }
 
 .child-height-full > :first-child {
@@ -500,7 +514,7 @@
     .intro-modal__button-disabled,
     .intro-modal__button {
       width: 20%;
-      bottom: 75px;
+      bottom: 65px;
     }
 
     .intro-modal__button-wrap {
@@ -512,7 +526,7 @@
     }
 
     .intro-modal-vertical-scroll-contain {
-      height: calc(100vh - 350px);
+      height: calc(100vh - 375px);
       max-height: 640px; // Scroll area in modal: 990 - 350 = 640px We set this so that when We Vote is in a frame, the modal isn't too long.
     }
 
