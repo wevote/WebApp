@@ -10,8 +10,7 @@ import BallotIntroPositionBar from "../../components/Ballot/BallotIntroPositionB
 import BallotIntroShare from "../../components/Ballot/BallotIntroShare";
 import BallotIntroVote from "../../components/Ballot/BallotIntroVote";
 import GettingStartedBarItem from "./GettingStartedBarItem";
-import InviteByEmail from "../../routes/Friends/InviteByEmail";
-//import EmailModal from "../../components/Ballot/EmailModal";
+import EmailBallotModal from "../Ballot/EmailBallotModal";
 import Slider from "react-slick";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
@@ -163,7 +162,7 @@ export default class HeaderGettingStartedBar extends Component {
           </a>
         </div>
         <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
-          <div key={1}><InviteByEmail next={this._nextSliderPage}/></div>
+          <div key={1}><EmailBallotModal ballot_link={this.props.pathname} next={this._nextSliderPage}/></div>
         </Slider>
       </Modal.Body>
     </Modal>;
