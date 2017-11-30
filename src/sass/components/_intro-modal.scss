@@ -375,9 +375,16 @@
   }
 }
 
+// Intro Modal shadow
+.intro-modal-shadow {
+  height: 8px;
+  width: 100%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 40%, rgba(255, 255, 255, 0) 100%);
+}
+
 .intro-modal-vertical-scroll {
   // padding: $space-md;
-  border-radius: $radius-sm;
+  border-radius: $radius-sm $radius-sm 0 0;
   -webkit-column-count: 1;
   -moz-column-count: 1;
   column-count: 1;
@@ -394,6 +401,11 @@
       }
     }
   }
+}
+
+
+.intro-modal-vertical-scroll.card {
+  margin-bottom: $space-none;
 }
 
 .child-height-full > :first-child {
@@ -500,7 +512,7 @@
     .intro-modal__button-disabled,
     .intro-modal__button {
       width: 20%;
-      bottom: 75px;
+      bottom: 65px;
     }
 
     .intro-modal__button-wrap {
