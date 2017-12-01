@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 import { browserHistory } from "react-router";
 import LoadingWheel from "../LoadingWheel";
@@ -9,6 +9,7 @@ import { validateEmail } from "../../utils/email-functions";
 
 export default class AddFriendsByEmail extends Component {
   static propTypes = {
+    success_message: PropTypes.object,
   };
 
   constructor (props) {
