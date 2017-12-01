@@ -53,6 +53,10 @@ class FriendStore extends FluxMapStore {
     return this.getState().add_friends_by_email_step;
   }
 
+  switchToEmailBallotDataStep () {
+    return this.getState().email_ballot_data_step;
+  }
+
   getDataFromArr (arr) {
     if (arr === undefined) {
       return [];
@@ -139,6 +143,21 @@ class FriendStore extends FluxMapStore {
           // Reset the invitation form
         }
         FriendActions.friendInvitationsSentByMe();
+        return {
+          ...state
+        };
+
+      case "emailBallotData":
+        if (action.res.sender_voter_email_address_missing) {
+          // Return the person to the form where they can fill in their email address
+          return {
+            ...state,
+            email_ballot_data_step: "on_collect_email_step",
+            error_message_to_show_voter: action.res.error_message_to_show_voter
+          };
+        } else {
+          // Reset the invitation form
+        }
         return {
           ...state
         };
