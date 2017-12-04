@@ -18,12 +18,12 @@ export default class FollowToggle extends Component {
     super(props);
     this.state = {
       voter: {
-        we_vote_id: ""
+        we_vote_id: "",
       }
     };
   }
 
-  componentDidMount (){
+  componentDidMount () {
     // console.log("componentDidMount, this.props: ", this.props);
     this._onOrganizationStoreChange();
     this._onVoterStoreChange();
@@ -34,25 +34,25 @@ export default class FollowToggle extends Component {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     // console.log("componentWillUnmount, this.props.we_vote_id: ", this.props.we_vote_id);
     this.voterGuideStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
-  onVoterGuideStoreChange (){
+  onVoterGuideStoreChange () {
     // console.log("FollowToggle, onVoterGuideStoreChange, organization_we_vote_id: ", this.props.we_vote_id);
-    this.setState({ is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.we_vote_id)});
+    this.setState({ is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.we_vote_id) });
   }
 
-  _onOrganizationStoreChange (){
+  _onOrganizationStoreChange () {
     // console.log("FollowToggle, _onOrganizationStoreChange, organization_we_vote_id: ", this.props.we_vote_id);
-    this.setState({ is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.we_vote_id)});
+    this.setState({ is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.we_vote_id) });
   }
 
-  _onVoterStoreChange (){
-    this.setState({ voter: VoterStore.getVoter()});
+  _onVoterStoreChange () {
+    this.setState({ voter: VoterStore.getVoter() });
   }
 
   toggleFollow () {
@@ -61,25 +61,20 @@ export default class FollowToggle extends Component {
 
   render () {
     if (!this.state) { return <div />; }
+
     let { we_vote_id, organization_for_display } = this.props;
+    let classNameOverride = this.props.classNameOverride || "";
     let { is_following } = this.state;
+
     let is_looking_at_self = this.state.voter.linked_organization_we_vote_id === we_vote_id;
     // You should not be able to follow yourself
     if (is_looking_at_self) { return <div />; }
-    let classNameOverride = this.props.classNameOverride || "";
 
     const followFunc = OrganizationActions.organizationFollow.bind(this, we_vote_id);
     const stopFollowingFunc = OrganizationActions.organizationStopFollowing.bind(this, we_vote_id);
 
-    var stopFollowingInstantly = function () {
-      is_following = false;
-      stopFollowingFunc();
-    };
-
-    var followInstantly = function () {
-      is_following = true;
-      followFunc();
-    };
+    var stopFollowingInstantly = () => { is_following = false; stopFollowingFunc(); };
+    var followInstantly = () => { is_following = true; followFunc(); };
 
     if (organization_for_display) {
       return <span onClick={followInstantly}>
@@ -88,19 +83,22 @@ export default class FollowToggle extends Component {
     }
 
     return is_following ?
-        <span>
-      { this.props.hide_stop_following_button ?
-        null :
-        <Button bsStyle="warning"
-                bsSize="small"
-                className={classNameOverride.length ? classNameOverride : "pull-right"}
-                onClick={stopFollowingInstantly}>
-                <span>Unfollow</span>
-        </Button> }
-        </span> :
-        <Button bsStyle="info"
-                bsSize="small"
-                className={classNameOverride.length ? classNameOverride : "pull-right"}
-                onClick={followInstantly}><span>Follow</span></Button>;
+      <span>
+        { this.props.hide_stop_following_button ?
+          null :
+          <Button bsStyle="warning"
+                  bsSize="small"
+                  className={classNameOverride.length ? classNameOverride : "pull-right"}
+                  onClick={stopFollowingInstantly}>
+            <span>Unfollow</span>
+          </Button>
+        }
+      </span> :
+      <Button bsStyle="info"
+              bsSize="small"
+              className={classNameOverride.length ? classNameOverride : "pull-right"}
+              onClick={followInstantly}>
+        <span>Follow</span>
+      </Button>;
   }
 }
