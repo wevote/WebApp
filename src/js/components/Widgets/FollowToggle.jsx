@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
+import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
 import VoterStore from "../../stores/VoterStore";
 
 export default class FollowToggle extends Component {
@@ -10,6 +11,7 @@ export default class FollowToggle extends Component {
     we_vote_id: PropTypes.string.isRequired,
     hide_stop_following_button: PropTypes.bool,
     classNameOverride: PropTypes.string,
+    organization_for_display: PropTypes.object,
   };
 
   constructor (props) {
@@ -59,8 +61,8 @@ export default class FollowToggle extends Component {
 
   render () {
     if (!this.state) { return <div />; }
-    let we_vote_id = this.props.we_vote_id;
-    let is_following = this.state.is_following;
+    let { we_vote_id, organization_for_display } = this.props;
+    let { is_following } = this.state;
     let is_looking_at_self = this.state.voter.linked_organization_we_vote_id === we_vote_id;
     // You should not be able to follow yourself
     if (is_looking_at_self) { return <div />; }
@@ -78,6 +80,12 @@ export default class FollowToggle extends Component {
       is_following = true;
       followFunc();
     };
+
+    if (organization_for_display) {
+      return <span onClick={followInstantly}>
+        <OrganizationTinyDisplay {...organization_for_display} showPlaceholderImage />
+      </span>;
+    }
 
     return is_following ?
         <span>

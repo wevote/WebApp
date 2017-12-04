@@ -3,10 +3,10 @@ import { OverlayTrigger, Popover } from "react-bootstrap";
 import { Link } from "react-router";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
+import FollowToggle from "./FollowToggle";
 import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdownList";
 import OrganizationCard from "../VoterGuide/OrganizationCard";
 import OrganizationsNotShownList from "../VoterGuide/OrganizationsNotShownList";
-import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
 
 export default class ItemSupportOpposeCheetah extends Component {
   static propTypes = {
@@ -184,10 +184,6 @@ export default class ItemSupportOpposeCheetah extends Component {
 
         this.popover_state[org_id] = {show: false, timer: null};
 
-        let voterGuideLink = one_organization.organization_twitter_handle ?
-                                  "/" + one_organization.organization_twitter_handle :
-                                  "/voterguide/" + one_organization.organization_we_vote_id;
-
         let organizationPopover = <Popover
             id={`organization-popover-${org_id}-${visible_tag}`}
             onMouseOver={() => this.onTriggerEnter(org_id, visible_tag)}
@@ -209,9 +205,9 @@ export default class ItemSupportOpposeCheetah extends Component {
             placement="bottom"
             overlay={organizationPopover}>
           <span className="position-rating__source with-popover">
-            <Link key={`tiny-link-${org_id}-${visible_tag}`} to={voterGuideLink} onClick={(e) => this.onTriggerToggle(e, org_id, visible_tag)} className="u-no-underline">
-              <OrganizationTinyDisplay {...one_organization} showPlaceholderImage />
-            </Link>
+            <FollowToggle we_vote_id={one_organization.organization_we_vote_id}
+                          organization_for_display={one_organization}
+                          classNameOverride="pull-left" />
           </span>
         </OverlayTrigger>;
       }
