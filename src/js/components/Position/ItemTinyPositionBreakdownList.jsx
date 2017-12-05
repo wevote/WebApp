@@ -206,7 +206,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
               onMouseOver={() => this.onTriggerEnter(organization_we_vote_id)}
               onMouseOut={() => this.onTriggerLeave(organization_we_vote_id)}
               onExiting={() => this.onTriggerLeave(organization_we_vote_id)}
-              trigger={["focus", "hover"]}
+              trigger={["focus", "hover", "click"]}
               rootClose
               placement="bottom"
               overlay={organizationPopover}>
