@@ -16,14 +16,14 @@ export default class ItemTinyPositionBreakdownList extends Component {
     showInfoOnly: PropTypes.bool,
     showOppose: PropTypes.bool,
     showSupport: PropTypes.bool,
-    supportProps: PropTypes.object
+    supportProps: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
       position_list: this.props.position_list,
-      ballot_item_we_vote_id: ""
+      ballot_item_we_vote_id: "",
     };
     this.show_popover = false;
   }
@@ -32,14 +32,14 @@ export default class ItemTinyPositionBreakdownList extends Component {
     this.setState({
       ballot_item_we_vote_id: this.props.ballotItemWeVoteId,
       position_list: this.props.position_list,
-      voter: VoterStore.getVoter() // We only set this once since the info we need isn't dynamic
+      voter: VoterStore.getVoter(), // We only set this once since the info we need isn't dynamic
     });
   }
 
-  componentWillReceiveProps (nextProps){
+  componentWillReceiveProps (nextProps) {
     this.setState({
       position_list: nextProps.position_list,
-      ballot_item_we_vote_id: nextProps.ballotItemWeVoteId
+      ballot_item_we_vote_id: nextProps.ballotItemWeVoteId,
     });
   }
 
@@ -90,7 +90,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
         // If here, we are showing an icon for the voter
         one_organization = {
           organization_we_vote_id: this.state.voter.we_vote_id,
-          voter_guide_display_name: this.state.voter.full_name
+          voter_guide_display_name: this.state.voter.full_name,
         };
         let voter_organization_tiny_display;
         voter_image_url_tiny = this.state.voter.voter_photo_url_tiny ? this.state.voter.voter_photo_url_tiny : "";
@@ -206,7 +206,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
               onMouseOver={() => this.onTriggerEnter(organization_we_vote_id)}
               onMouseOut={() => this.onTriggerLeave(organization_we_vote_id)}
               onExiting={() => this.onTriggerLeave(organization_we_vote_id)}
-              trigger={["focus", "hover"]}
+              trigger={["focus", "hover", "click"]}
               rootClose
               placement="bottom"
               overlay={organizationPopover}>
