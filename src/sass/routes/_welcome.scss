@@ -31,6 +31,21 @@ $opaque-grey: rgba($gray-dark, .5);
       background-color: $background-pale-blue;
     }
 
+    &-row {
+      font-weight: normal;
+      letter-spacing: 1px;
+
+      .h1{
+        &:nth-child(1) {
+          color: $call-to-action-red;
+        }
+
+        &:nth-child(2) {
+          color: $call-to-action-blue;
+        }
+      }
+    }
+
     &::before {
       content: '';
       display: block;
@@ -47,7 +62,7 @@ $opaque-grey: rgba($gray-dark, .5);
   .form {
     &-section {
       width: 100%;
-      padding-top: $space-lg;
+      padding-top: $space-none;
       background-color: $brand-blue;
     }
 
@@ -80,18 +95,24 @@ $opaque-grey: rgba($gray-dark, .5);
     }
   }
 
+
   .quick-links {
     &__button {
+      display: -ms-flexbox;
       display: flex;
+      -ms-flex-pack: center;
       justify-content: center;
       align-items: center;
+      -ms-flex-align: center;
       color: $white;
-      font-size: 1.6em;
+      font-size: 18px;
       width: 100%;
       text-align: center;
       padding: $network-issue-list-padding;
       line-height: 1em;
       transition: background .3s;
+      width: 60%;
+      border-radius: $space-md;
 
       &-left {
         background: $call-to-action-red;
@@ -106,10 +127,21 @@ $opaque-grey: rgba($gray-dark, .5);
         text-decoration: none;
       }
     }
+
+    &-section{
+      a{
+        margin: $space-auto;
+        margin-top: $space-lg;
+      }
+    }
   }
 
   .features-your-mission__block {
     padding-bottom: $space-none;
+
+    // .h1 {
+    //   margin-bottom: $space-lg;
+    // }
 
     .features-title {
       margin-bottom: $space-none;
@@ -126,7 +158,7 @@ $opaque-grey: rgba($gray-dark, .5);
     &-section {
       background-color: $brand-blue;
       color: $white;
-      padding-top: $space-lg;
+      padding-top: $scrollbar-height;
       padding-bottom: $space-xl;
     }
 
@@ -173,6 +205,10 @@ $opaque-grey: rgba($gray-dark, .5);
           }
         }
       }
+
+      &:nth-child(6) {
+        margin-bottom: $space-none;
+      }
     }
 
     &__block {
@@ -183,6 +219,21 @@ $opaque-grey: rgba($gray-dark, .5);
       text-align: center;
       margin-bottom: $space-xl;
       min-height: 120px;
+
+      a {
+        color: $white;
+        text-decoration: none;
+
+//TODO: REMOVE
+//Currently it is not doing anything because it is looking for an
+//element with class h3. I think it was suppose to look for an element with
+//tag h3. If one changes it to h3 one will see that now it will be underlined.
+        // .h3 {
+          // &:hover {
+          //   text-decoration: underline;
+          // }
+        // }
+      }
     }
 
     &__image {
@@ -195,6 +246,10 @@ $opaque-grey: rgba($gray-dark, .5);
       font-size: 24px;
       line-height: 1.25;
       font-weight: 600;
+
+      &:hover {
+        text-decoration: underline;
+      }
 
       @include breakpoints (max iphone5) {
         font-size: 20px;
@@ -222,7 +277,7 @@ $opaque-grey: rgba($gray-dark, .5);
 
   .network-section {
     padding-top: $space-lg;
-    padding-bottom: $space-xl;
+    padding-bottom: $space-lg;
     text-align: center;
     background-color: $white;
   }
@@ -231,6 +286,8 @@ $opaque-grey: rgba($gray-dark, .5);
     margin: $space-none;
     text-align: center;
     list-style: none;
+    padding-bottom: $space-none;
+    margin-bottom: $space-none;
   }
 
   .footer-section {
@@ -242,122 +299,147 @@ $opaque-grey: rgba($gray-dark, .5);
 
     a {
       color: $white;
-      text-decoration: underline;
+      text-decoration: none;
 
       &:hover {
         color: $white;
+        text-decoration: underline;
       }
     }
+
+    .u-stack--xl {
+      margin-bottom: $space-lg;
+    }
   }
 }
+//////////////////////////////////////////////////////
 
+
+//TODO: Find in project if hero-section is being used in the project.
+//  It seems like .h1:nth-child(1) and .h1:nth-child(2) do nothing.
+//  ".h1:nth-child(1)" gets compilled to ".hero-section-row .h1:nth-child(1)"
+//  It is looking for the first child in an element with class h1 and not tag h1.
+//  However there are no elements with class h1 inside .hero-section-row
+//
+// .hero-section-row {
+//   font-weight: normal;
+//   letter-spacing: 1px;
+//
+//   .h1:nth-child(1) {
+//     color: $call-to-action-red;
+//   }
+//
+//   .h1:nth-child(2) {
+//     color: $call-to-action-blue;
+//   }
+// }
+
+//TODO: REFACTOR: to be more explicit
+//The code is nesting .welcome-page with .section:nth-child(2) however the
+//welcome page never uses a section class. Instead it has multiple section tags
+//but not section classes.
 .welcome-page {
-
-  .form-section {
-    padding-top: $space-none;
-  }
-
-  .features-section {
-    padding-top: $scrollbar-height;
-  }
-}
-
-.hero-section-row {
-  font-weight: normal;
-  letter-spacing: 1px;
-
-  .h1:nth-child(1) {
-    color: $call-to-action-red;
-  }
-
-  .h1:nth-child(2) {
-    color: $call-to-action-blue;
-  }
-}
-
-.share-your-vision-h1 {
-  //color: $call-to-action-blue;
-}
-
-.welcome-page {
-  .section:nth-child(2) {
+  .hero-section {
+    .section:nth-child(2) {
     padding: $space-md $space-none $space-md $space-none;
-  }
-}
-
-.welcome-page .features-your-mission__block .h1 {
-  margin-bottom: $space-lg;
-}
-
-.features__block {
-  a {
-    color: $white;
-    text-decoration: none;
-
-    .h3:hover {
-      text-decoration: underline;
     }
   }
 }
 
-.welcome-page .features__block-container:nth-child(6) {
-  margin-bottom: $space-none;
-}
+//TODO: DELETE
+//There is only one div that uses the class features-your-mission__block
+//That div(class: features-your-mission__block) does not contain an h1
+//only a div, a br and two spans.
+//This class should be deleted
+// .welcome-page .features-your-mission__block .h1{
+//   margin-bottom: $space-lg;
+// }
 
-.quick-links-section a {
-  font-size: $space-md;
-  margin: $space-auto;
-  margin-top: $space-lg;
-}
+//TODO: DELETE
+//There is commentaries in the code above. Line 228
+// .features__block {
+//   a {
+//     color: $white;
+//     text-decoration: none;
+//
+//     .h3:hover {
+//       text-decoration: underline;
+//     }
+//   }
+// }
 
-.welcome-page .quick-links__button {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: $white;
-  width: 60%;
-  text-align: center;
-  padding: $network-issue-list-padding;
-  line-height: 1em;
-  transition: background .3s;
-  border-radius: $space-md;
-  font-size: 18px;
-}
+/**************** OK ****************/
+// .welcome-page .features__block-container:nth-child(6) {
+//   margin-bottom: $space-none;
+// }
 
-.welcome-page {
-  .network-section {
-    padding-top: $space-lg;
-    padding-bottom: $space-lg;
-  }
-}
 
+//TODO DELETE font-size
+//The font-size property is struck-through in chrome developer tools, and
+//it means that it is being overridden by a more specific selector.
+//https://stackoverflow.com/questions/3047056/what-do-the-crossed-style-properties-in-google-chrome-devtools-mean
+// .quick-links-section a {
+//   font-size: $space-md;
+//   margin: $space-auto;
+//   margin-top: $space-lg;
+// }
+
+
+/**************** OK ****************/
+//   display: -ms-flexbox;
+//   display: flex;
+//   -ms-flex-pack: center;
+//   justify-content: center;
+//   -ms-flex-align: center;
+//   align-items: center;
+//   color: $white;
+//   width: 60%;
+//   text-align: center;
+//   padding: $network-issue-list-padding;
+//   line-height: 1em;
+//   transition: background .3s;
+//   border-radius: $space-md;
+//   font-size: 18px;
+// }
+
+/**************** OK ****************/
+// .welcome-page {
+//   .network-section {
+//     padding-top: $space-lg;
+//     padding-bottom: $space-lg;
+//   }
+// }
+
+//TODO: Still need to figure out where this is being used.
 .container {
   .h2 {
     margin-bottom: $space-md;
   }
 }
 
-.partner-logos {
-  .img {
-    padding-bottom: $space-none;
-    margin-bottom: $space-none;
-  }
-}
+/**************** OK ****************/
+// .partner-logos {
+//   .img {
+//     padding-bottom: $space-none;
+//     margin-bottom: $space-none;
+//   }
+// }
 
-.welcome-page .footer-section a {
-  text-decoration: none;
-}
+/**************** OK ****************/
+// .welcome-page .footer-section a {
+//   text-decoration: none;
+// }
+//
 
-.welcome-page .footer-section a:hover {
-  text-decoration: underline;
-}
+/**************** OK ****************/
+// .welcome-page .footer-section a:hover {
+//   text-decoration: underline;
+// }
 
-.u-stack--xl {
-  margin-bottom: $space-lg;
-}
+/**************** OK ****************/
+// .u-stack--xl {
+//   margin-bottom: $space-lg;
+// }
 
 @media all and (max-width: 767px) {
   .share-your-vision-h1 {
