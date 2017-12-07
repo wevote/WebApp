@@ -49,6 +49,13 @@ class FacebookStore extends FluxMapStore {
     };
   }
 
+  getFacebookData () {
+    return {
+      userId: this.facebookEmailData.id,
+      email: this.facebookEmailData.email,
+    };
+  }
+
   get loggedIn () {
     if (!this.facebookAuthData) {
         return undefined;

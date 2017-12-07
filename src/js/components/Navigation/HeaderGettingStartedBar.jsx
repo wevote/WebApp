@@ -162,7 +162,7 @@ export default class HeaderGettingStartedBar extends Component {
           </a>
         </div>
         <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
-          <div key={1}><EmailBallotModal ballot_link={this.props.pathname} next={this._nextSliderPage}/></div>
+          <div key={1}><EmailBallotModal ballot_link={this.props.pathname}/></div>
         </Slider>
       </Modal.Body>
     </Modal>;
