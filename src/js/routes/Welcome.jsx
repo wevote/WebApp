@@ -226,14 +226,14 @@ export default class Intro extends Component {
                       </div> :
                       null
                     }
-                    <section className="quick-links-section u-flex">
+                    <section className="quick-links-section-mobile u-flex">
                       <a className="quick-links__button quick-links__button-left" onClick={() => browserHistory.push("/ballot")}>Get Started</a>
                     </section>
 
                     <div className="share-your-vision-h1">
                       Share your vision.
 
-                      <section className="quick-links-section u-flex">
+                      <section className="quick-links-section-mobile u-flex">
                         <a className="quick-links__button quick-links__button-right" onClick={() => browserHistory.push("/voterguidegetstarted")}>Create Voter Guide</a>
                       </section>
                     </div>
@@ -250,7 +250,7 @@ export default class Intro extends Component {
                       </div> :
                       null
                     }
-                    <section className="quick-links-section u-flex">
+                    <section className="quick-links-section-desktop u-flex">
                       <a className="quick-links__button quick-links__button-left" onClick={() => browserHistory.push("/ballot")}>Get Started</a>
                     </section>
                   </h1>
@@ -258,7 +258,7 @@ export default class Intro extends Component {
                   <h1 className="col-md-6 u-f1 u-stack--lg">
                     Share your vision.
                      <br /> <br />
-                    <section className="quick-links-section u-flex">
+                    <section className="quick-links-section-desktop u-flex">
                       <a className="quick-links__button quick-links__button-right" onClick={() => browserHistory.push("/voterguidegetstarted")}>Create Voter Guide</a>
                     </section>
                   </h1>
