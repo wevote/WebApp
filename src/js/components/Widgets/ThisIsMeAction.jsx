@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import { Button } from "react-bootstrap";
 import { Link } from "react-router";
 import VoterStore from "../../stores/VoterStore";
 
@@ -22,7 +21,7 @@ export default class ThisIsMeAction extends Component {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.voterStoreListener.remove();
   }
 
