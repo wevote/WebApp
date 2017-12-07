@@ -41,16 +41,6 @@ $opaque-grey: rgba($gray-dark, .5);
     &-row {
       font-weight: normal;
       letter-spacing: 1px;
-
-      .h1{
-        &:nth-child(1) {
-          color: $call-to-action-red;
-        }
-
-        &:nth-child(2) {
-          color: $call-to-action-blue;
-        }
-      }
     }
 
     &::before {
@@ -163,10 +153,6 @@ $opaque-grey: rgba($gray-dark, .5);
 
   .features-your-mission__block {
     padding-bottom: $space-none;
-
-    // .h1 {
-    //   margin-bottom: $space-lg;
-    // }
 
     .features-title {
       margin-bottom: $space-none;
@@ -354,7 +340,6 @@ $opaque-grey: rgba($gray-dark, .5);
 //////////////////////////////////////////////////////
 //TODO: Find in project if hero-section is being used in the project.
 //  It seems like .h1:nth-child(1) and .h1:nth-child(2) do nothing.
-//  ".h1:nth-child(1)" gets compilled to ".hero-section-row .h1:nth-child(1)"
 //  It is looking for the first child in an element with class h1 and not tag h1.
 //  However there are no elements with class h1 inside .hero-section-row
 //
@@ -370,67 +355,3 @@ $opaque-grey: rgba($gray-dark, .5);
 //     color: $call-to-action-blue;
 //   }
 // }
-
-//Move up
-@media all and (max-width: 767px) {
-
-  //TODO: DELETE
-  .share-your-vision-h1 {
-    // color: $call-to-action-blue;
-
-    // The margin-top appears as overwritten when using chrome dev tools.
-    margin-top: $space-xl;
-    //TODO ASK:
-    @include breakpoints (small mid-small) {
-      margin-top: $space-sm;
-    }
-  }
-  ////// ---- CLEANED UP ---- //////
-  // .welcome-page .quick-links__button {
-  //   width: 80%;
-  //   margin-bottom: $space-lg;
-  // }
-
-
-
-  //TODO: DELETE
-  //There is no class with the name features-block in welcome.jsx nor the entire project.
-  .features-block,
-  .features__block-container {
-    // height: 275px;
-  }
-
-
-
-  ////// ---- CLEANED UP ---- //////
-  // .btn-social {
-  //   width: 50%;
-  //   text-align: center;
-  //   margin-bottom: $space-sm;
-  // }
-  ////// ---- CLEANED UP ---- //////
-  // .features__block {
-  //   width: 100%;
-  //   height: inherit;
-  // }
-  ////// ---- CLEANED UP ---- //////
-  // .features__block a {
-  //   width: 80%;
-  // }
-  // .features-your-mission__block {
-  //   margin-bottom: $space-lg;
-  // }
-
-  //TODO:
-  //There is a features__p set to padding $space-non but it is for max small-bootstrap
-  .welcome-page {
-    .features__p {
-      padding: $space-none;
-    }
-
-    ////// ---- DONE ---- //////
-    // .features-your-mission__block {
-    //   margin-bottom: $space-xl;
-    // }
-  }
-}
