@@ -281,7 +281,7 @@ export default class Intro extends Component {
           </div>
           <Row className="u-stack--lg">
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block-container">
-              <div className="features__block" onClick={this._toggleBallotFeature}>
+              <div className="features__block features__block__row1" onClick={this._toggleBallotFeature}>
                 <Link to={"/ballot"}>
 
                   <img className={ this.state.show_features_ballot ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/view-your-ballot.svg" width="55%" />
@@ -292,7 +292,7 @@ export default class Intro extends Component {
               </div>
             </div>
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block-container">
-              <div className="features__block" onClick={this._toggleOrganizationsFeature}>
+              <div className="features__block features__block__row1" onClick={this._toggleOrganizationsFeature}>
                 <Link to={"/more/network"}>
 
                     <img className={ this.state.show_features_organizations ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/learn-from-orgs.svg" width="60%" />
@@ -303,7 +303,7 @@ export default class Intro extends Component {
               </div>
             </div>
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block-container">
-              <div className="features__block" onClick={this._togglePositionsFeature}>
+              <div className="features__block features__block__row2" onClick={this._togglePositionsFeature}>
                 <Link to={"/ballot"}>
                   <img className={ this.state.show_features_positions ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/see-position.svg" />
                   <h3 className="features__h3">See Your Network's Positions</h3>
@@ -312,7 +312,7 @@ export default class Intro extends Component {
               </div>
             </div>
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block-container">
-              <div className="features__block" onClick={this._toggleNetworkFeature}>
+              <div className="features__block features__block__row2" onClick={this._toggleNetworkFeature}>
                 <Link to={"/more/network"}>
                   <img className={ this.state.show_features_network ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/choose-friends.svg" width="60%" />
                   <h3 className="features__h3">Invite Friends to Your We Vote Network</h3>
@@ -321,7 +321,7 @@ export default class Intro extends Component {
               </div>
             </div>
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block-container">
-              <div className="features__block" onClick={this._toggleVisionFeature}>
+              <div className="features__block features__block__row3" onClick={this._toggleVisionFeature}>
                 <Link to={"/voterguidegetstarted"}>
                   <img className={ this.state.show_features_vision ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/share-vision.svg" width="55%" />
                   <h3 className="features__h3">Share Your Vision</h3>
@@ -330,7 +330,7 @@ export default class Intro extends Component {
               </div>
             </div>
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block-container">
-              <div className="features__block" onClick={this._toggleVoteFeature}>
+              <div className="features__block features__block__row3" onClick={this._toggleVoteFeature}>
                 <Link to={"/ballot?type=filterReadyToVote"}>
                   <img className={ this.state.show_features_vote ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/decide.svg" width="60%" />
                   <h3 className="features__h3">Decide & Vote</h3>
@@ -426,7 +426,7 @@ export default class Intro extends Component {
           { this.state.we_vote_branding_off ? null :
             <span>
               <h3 className="u-f3 u-stack--lg">Please share or donate to help us reach more voters.</h3>
-              <div className="u-stack--xl">
+              <div className="u-stack--lg">
                 <Button className="btn btn-social btn-facebook u-push--sm"
                     bsStyle="danger"
                     type="submit"
@@ -451,7 +451,7 @@ export default class Intro extends Component {
               </div>
 
 
-              <ul className="footer-nav u-f4 list-unstyled list-inline u-stack--xl">
+              <ul className="footer-nav u-f4 list-unstyled list-inline u-stack--lg">
                 <li className="u-push--md u-stack--sm">
                   <Link to={"/more/about"}>About</Link>
                 </li>
