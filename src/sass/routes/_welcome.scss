@@ -7,17 +7,12 @@ $hero-section-background-color: rgba(255, 255, 255, .75);
 $opaque-grey: rgba($gray-dark, .5);
 
 .welcome-page {
-  .cta-button {
-    background-color: $call-to-action-red;
-  }
-
   .hero-section {
     position: relative;
     background-image: url('/img/welcome/header-image-desktop.png');
     background-size: cover;
     color: $white;
     margin: $space-none auto;
-    //max-width: $header-image-width;
     max-width: 100%;
     padding-top: $space-xl;
     padding-bottom: $space-xl;
@@ -26,12 +21,6 @@ $opaque-grey: rgba($gray-dark, .5);
     @include breakpoints (iphone5 large) {
       padding-top: $space-md;
       padding-bottom: $space-md;
-    }
-
-    .share-your-vision-h1{
-      @include breakpoints (small mid-small) {
-        margin-top: $space-sm;
-      }
     }
 
     &-container {
@@ -52,11 +41,14 @@ $opaque-grey: rgba($gray-dark, .5);
       bottom: 0;
       left: 0;
       background-color: $opaque-grey;
-      // background-color: $hero-section-background-color; // Very white
     }
   }
 
-
+  .share-your-vision-h1{
+    @include breakpoints (small mid-small) {
+      margin-top: $space-sm;
+    }
+  }
 
   .form {
     &-section {
@@ -93,7 +85,6 @@ $opaque-grey: rgba($gray-dark, .5);
       color: $white;
     }
   }
-
 
   .quick-links {
     &__button {
@@ -151,24 +142,6 @@ $opaque-grey: rgba($gray-dark, .5);
     }
   }
 
-  .features-your-mission__block {
-    padding-bottom: $space-none;
-
-    .features-title {
-      margin-bottom: $space-none;
-      font-weight: bold;
-      font-size: 2rem;
-
-      @include breakpoints (iphone5 large) {
-        font-size: 1.5rem;
-      }
-    }
-
-    @include breakpoints (max medium) {
-      margin-bottom: $space-lg;
-    }
-  }
-
   .features {
     &-section {
       background-color: $brand-blue;
@@ -182,54 +155,13 @@ $opaque-grey: rgba($gray-dark, .5);
       text-align: center;
       padding-bottom: $space-md;
 
-      .h1 {
-        font-size: 26px;
-        line-height: 1.2;
+      @include breakpoints (max medium) {
+        margin-bottom: $space-xl;
       }
 
       .h2 {
         font-size: 24px;
         font-weight: normal;
-      }
-      @include breakpoints (max medium) {
-        margin-bottom: $space-xl;
-      }
-    }
-
-    &__block-container {
-      @include breakpoints (max medium) {
-        height: $features-block-container-height;
-      }
-
-      &:nth-child(1),
-      &:nth-child(2) {
-        .features__block {
-          @include breakpoints (max medium) {
-            height: 184px;
-          }
-        }
-      }
-
-      &:nth-child(3),
-      &:nth-child(4) {
-        .features__block {
-          @include breakpoints (max medium) {
-            height: 176px;
-          }
-        }
-      }
-
-      &:nth-child(5),
-      &:nth-child(6) {
-        .features__block {
-          @include breakpoints (max medium) {
-            height: 144px;
-          }
-        }
-      }
-
-      &:nth-child(6) {
-        margin-bottom: $space-none;
       }
     }
 
@@ -241,17 +173,43 @@ $opaque-grey: rgba($gray-dark, .5);
       text-align: center;
       margin-bottom: $space-xl;
       min-height: 120px;
+
+      @include breakpoints (max medium) {
+        width: 100%;
+        height: inherit;
+      }
+
       a {
         color: $white;
         text-decoration: none;
+
         @include breakpoints (max medium) {
           width: 80%;
         }
       }
 
-      @include breakpoints (max medium) {
-        width: 100%;
-        height: inherit;
+      &-container{
+        @include breakpoints (max medium) {
+          height: $features-block-container-height;
+        }
+      }
+
+      &__row1 {
+        @include breakpoints (max medium) {
+          height: 184px;
+        }
+      }
+
+      &__row2{
+        @include breakpoints (max medium) {
+          height: 176px;
+        }
+      }
+
+      &__row3{
+        @include breakpoints (max medium) {
+          height: 144px;
+        }
       }
     }
 
@@ -292,6 +250,16 @@ $opaque-grey: rgba($gray-dark, .5);
         font-size: 14px;
       }
     }
+
+    &-title{
+      margin-bottom: $space-none;
+      font-weight: bold;
+      font-size: 2rem;
+
+      @include breakpoints (iphone5 large) {
+        font-size: 1.5rem;
+      }
+    }
   }
 
   .network-section {
@@ -299,14 +267,14 @@ $opaque-grey: rgba($gray-dark, .5);
     padding-bottom: $space-lg;
     text-align: center;
     background-color: $white;
-  }
 
-  .partner-logos {
-    margin: $space-none;
-    text-align: center;
-    list-style: none;
-    padding-bottom: $space-none;
-    margin-bottom: $space-none;
+    .partner-logos {
+      margin: $space-none;
+      text-align: center;
+      list-style: none;
+      padding-bottom: $space-none;
+      margin-bottom: $space-none;
+    }
   }
 
   .footer-section {
@@ -325,11 +293,9 @@ $opaque-grey: rgba($gray-dark, .5);
         text-decoration: underline;
       }
     }
-    .u-stack--xl {
-      margin-bottom: $space-lg;
-    }
-    @include breakpoints (max medium) {
-      .btn-social {
+
+    .btn-social {
+      @include breakpoints (max medium) {
         width: 50%;
         text-align: center;
         margin-bottom: $space-sm;
@@ -337,21 +303,3 @@ $opaque-grey: rgba($gray-dark, .5);
     }
   }
 }
-//////////////////////////////////////////////////////
-//TODO: Find in project if hero-section is being used in the project.
-//  It seems like .h1:nth-child(1) and .h1:nth-child(2) do nothing.
-//  It is looking for the first child in an element with class h1 and not tag h1.
-//  However there are no elements with class h1 inside .hero-section-row
-//
-// .hero-section-row {
-//   font-weight: normal;
-//   letter-spacing: 1px;
-//
-//   .h1:nth-child(1) {
-//     color: $call-to-action-red;
-//   }
-//
-//   .h1:nth-child(2) {
-//     color: $call-to-action-blue;
-//   }
-// }
