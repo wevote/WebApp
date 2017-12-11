@@ -1,12 +1,12 @@
-var Dispatcher = require("../dispatcher/Dispatcher");
-var FluxMapStore = require("flux/lib/FluxMapStore");
+import { ReduceStore } from "flux/utils";
+import Dispatcher from "../dispatcher/Dispatcher";
 import OrganizationActions from "../actions/OrganizationActions";
 import SupportActions from "../actions/SupportActions";
 import VoterGuideActions from "../actions/VoterGuideActions";
 import VoterStore from "../stores/VoterStore";
 import { arrayContains } from "../utils/textFormat";
 
-class OrganizationStore extends FluxMapStore {
+class OrganizationStore extends ReduceStore {
   getInitialState () {
     return {
       all_cached_organizations_dict: {}, // This is a dictionary with organization_we_vote_id as key and list of organizations
