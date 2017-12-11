@@ -1,9 +1,9 @@
-var Promise = require("es6-promise").Promise;
-var assign = require("object-assign");
+import Promise  from "es6-promise";
+import assign from "object-assign";
 
-var _callbacks = [];
+let _callbacks = [];
 
-var Dispatcher = function () {};
+let Dispatcher = function () {};
 Dispatcher.prototype = assign({}, Dispatcher.prototype, {
 
   /**
@@ -22,8 +22,8 @@ Dispatcher.prototype = assign({}, Dispatcher.prototype, {
    */
   dispatch: function (payload) {
     // First create array of promises for callbacks to reference.
-    var resolves = [];
-    var rejects = [];
+    let resolves = [];
+    let rejects = [];
     // Dispatch to callbacks and resolve/reject promises.
     _callbacks.forEach(function (callback, i) {
       // Callback can return an obj, to resolve, or a promise, to chain.

@@ -1,16 +1,16 @@
-import Dispatcher from "../dispatcher/Dispatcher";
+import { ReduceStore } from "flux/utils";
 import BallotActions from "../actions/BallotActions";
+import BookmarkActions from "../actions/BookmarkActions";
+import Dispatcher from "../dispatcher/Dispatcher";
 import FacebookActions from "../actions/FacebookActions";
 import FacebookStore from "../stores/FacebookStore";
-import FluxMapStore from "flux/lib/FluxMapStore";
 import FriendActions from "../actions/FriendActions";
-import VoterGuideActions from "../actions/VoterGuideActions";
-import BookmarkActions from "../actions/BookmarkActions";
 import SupportActions from "../actions/SupportActions";
 import VoterActions from "../actions/VoterActions";
+import VoterGuideActions from "../actions/VoterGuideActions";
 const cookies = require("../utils/cookies");
 
-class VoterStore extends FluxMapStore {
+class VoterStore extends ReduceStore {
 
   getInitialState () {
     return {

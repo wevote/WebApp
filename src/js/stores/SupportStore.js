@@ -1,10 +1,15 @@
-var Dispatcher = require("../dispatcher/Dispatcher");
-var FluxMapStore = require("flux/lib/FluxMapStore");
-const assign = require("object-assign");
+import { ReduceStore } from "flux/utils";
+import assign from "object-assign";
+import Dispatcher from "../dispatcher/Dispatcher";
 import { mergeTwoObjectLists } from "../utils/textFormat";
 import SupportActions from "../actions/SupportActions";
 
-class SupportStore extends FluxMapStore {
+class SupportStore extends ReduceStore {
+
+  getInitialState () {
+    return {
+    };
+  }
 
   get (ballot_item_we_vote_id) {
     if (!(this.supportList && this.opposeList && this.supportCounts && this.opposeCounts )){

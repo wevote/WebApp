@@ -1,5 +1,5 @@
-var Dispatcher = require("../dispatcher/Dispatcher");
-var FluxMapStore = require("flux/lib/FluxMapStore");
+import { ReduceStore } from "flux/utils";
+import Dispatcher from "../dispatcher/Dispatcher";
 import OrganizationActions from "../actions/OrganizationActions";
 import OrganizationStore from "../stores/OrganizationStore";
 import SupportActions from "../actions/SupportActions";

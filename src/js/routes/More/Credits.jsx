@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
+import { organizationalDonors, teamOfVolunteers } from "./people";
 
 export default class Credits extends Component {
   constructor (props) {
@@ -18,109 +19,14 @@ export default class Credits extends Component {
 
           <h3 className="h4">We are grateful for these organizations that are critical to our work.</h3>
           <ul>
-              <li><strong>Amazon Web Services</strong> - Servers</li>
-              <li><strong>Ballotpedia</strong> - Data</li>
-              <li><strong>Center for Technology and Civic Life</strong> - Data</li>
-              <li><strong>Change.org</strong> - Data</li>
-              <li><strong>CivicMakers</strong> - Event Collaborations</li>
-              <li><strong>Code for San Francisco &amp; Code for America</strong> - Our Home for Volunteer Work</li>
-              <li><strong>DLA Piper</strong> - Legal</li>
-              <li><strong>Facebook</strong> - Authentication &amp; Data</li>
-              <li><strong>Google Civic</strong> - Data</li>
-              <li><strong>Greenberg Traurig, LLP</strong> - Legal</li>
-              <li><strong>League of Women Voters</strong> - Data</li>
-              <li><strong>MapLight</strong> - Data</li>
-              <li><strong>Microsoft</strong> - For supporting Code for San Francisco</li>
-              <li><strong>Sunlight Foundation</strong> - Data</li>
-              <li><strong>TurboVote, Democracy Works</strong> - Data</li>
-              <li><strong>Twitter</strong> - Authentication &amp; Data</li>
-              <li><strong>Vote Smart</strong> - Data</li>
-              <li><strong>Voting Information Project, Pew Charitable Trusts</strong> - Data</li>
-              <li><strong>We Vote Education</strong> - Data</li>
-              <li><strong>Wikipedia</strong> - Data</li>
+            { organizationalDonors.map((item) => <div key={item.name}><li><strong>{item.name}</strong> - {item.title}</li></div>) }
           </ul>
-
           <h3 className="h4">Special thanks to our team of volunteers.</h3>
           <p>You are the best! <br />
             (This is a list of volunteers who have contributed 10 or more hours, in rough order of hours contributed.)<br />
           </p>
           <ul>
-            <li>Dale McGrew - Oakland, CA</li>
-            <li>Jenifer Fernandez Ancona - Oakland, CA</li>
-            <li>Anisha Jain - San Jose, CA</li>
-            <li>Rob Simpson - Warrenton, VA</li>
-            <li>Jeff French - Oakland, CA</li>
-            <li>Neelam Joshi - Columbus, OH</li>
-            <li>Alicia Kolar Prevost - Washington, DC</li>
-            <li>Steve Podell - Oakland, CA</li>
-            <li>Bharath D N Reddy - Mountain View, CA</li>
-            <li>Sarah Clements - San Francisco, CA</li>
-            <li>Zach Monteith - San Francisco, CA</li>
-            <li>Lisa Cho - San Francisco, CA</li>
-            <li>Nicolas Fiorini - Arlington, VA</li>
-            <li>Colette Phair - Oakland, CA</li>
-            <li>Jennifer Holmes - Pacifica, CA</li>
-            <li>Joe Evans - Santa Cruz, CA</li>
-            <li>Andrea Moed - San Francisco, CA</li>
-            <li>Matt Holford - New York, NY</li>
-            <li>Edward Ly - Gresham, OR</li>
-            <li>YuanHsin Chang - San Francisco, CA</li>
-            <li>Ciero Kilpatrick - Washington, DC</li>
-            <li>Eric Ogawa - San Francisco, CA</li>
-            <li>Mary O'Connor - Sebastopol, CA</li>
-            <li>Harsha Dronamraju - San Francisco, CA</li>
-            <li>Rohan Bhambhoria - Mississauga, Ontario, Canada</li>
-            <li>Josh Southern - San Francisco, CA</li>
-            <li>Nitin Garg - San Francisco, CA</li>
-            <li>Niko Barry - Berkeley, CA</li>
-            <li>Adam Barry - San Francisco, CA</li>
-            <li>Marissa Luna - Lansing, MI</li>
-            <li>Aaron Borden - San Francisco, CA</li>
-            <li>Judy Johnson - Oakland, CA</li>
-            <li>Irene Florez - San Francisco, CA</li>
-            <li>Udi Davidovich - Walnut Creek, CA</li>
-            <li>Chris Arya - San Francisco, CA</li>
-            <li>Tom Furlong - Menlo Park, CA</li>
-            <li>Paul A. "Dash" McLean - E. Palo Alto, CA</li>
-            <li>Mansi Desai - San Francisco, CA</li>
-            <li>Neil Dullaghan - Florence, Italy</li>
-            <li>Eric Olivera - San Francisco, CA</li>
-            <li>Emily Hittle - San Francisco, CA</li>
-            <li>Mikel Duffy - San Francisco, CA</li>
-            <li>Robin Braverman - Walnut Creek, CA</li>
-            <li>Mike McConnell - San Francisco, CA</li>
-            <li>Niyati Kothari - Alpharetta, GA</li>
-            <li>Dan Ancona - Oakland, CA</li>
-            <li>Zak Zaidman - Ojai, CA</li>
-            <li>Debra Cleaver - San Francisco, CA</li>
-            <li>William Winters - Oakland, CA</li>
-            <li>Anat Shenker-Osorio - Oakland, CA</li>
-            <li>Kad Smith - Berkeley, CA</li>
-            <li>Courtney Gonzales - Benicia, CA</li>
-            <li>Jenna Haywood - Berkeley, CA</li>
-            <li>Jayadev Akkiraju - Santa Clara, CA</li>
-            <li>Raphael Merx - San Francisco, CA</li>
-            <li>Susan Clark - Oakland, CA</li>
-            <li>Kim Anderson - San Francisco, CA</li>
-            <li>Betsy Neely Sikma - Taylors, SC</li>
-            <li>Keith Underwood - Alameda, CA</li>
-            <li>Marlene Flores - San Francisco, CA</li>
-            <li>Jesse Aldridge - San Francisco, CA</li>
-            <li>Josh Levinger - Oakland, CA</li>
-            <li>Leslie Castellanos - San Francisco, CA</li>
-            <li>Miguel Elasmar - Sarasota, FL</li>
-            <li>Cindy Cruz - Daly City, CA</li>
-            <li>Nicole Shanahan - Palo Alto, CA</li>
-            <li>Steve Whetstone - San Francisco, CA</li>
-            <li>Brian Bordley - Berkeley, CA</li>
-            <li>Marcus Busby - San Francisco, CA</li>
-            <li>lulu - New York, NY</li>
-            <li>Chris Griffith - Santa Cruz, CA</li>
-            <li>Nathan Stankowski - San Rafael, CA</li>
-            <li>Sean McMahon - Redwood City, CA</li>
-            <li>Scott Wasserman - Philadelphia, PA</li>
-            <li>Adrienne Yang - Oakland, CA</li>
-            <li>Mark Rosenthal - Oakland, CA</li>
+            { teamOfVolunteers.map((item) => <div key={item.name}><li><strong>{item.name}</strong> - {item.title}</li></div>) }
           </ul>
           <br />
 
