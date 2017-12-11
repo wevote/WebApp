@@ -7,7 +7,7 @@ import VoterGuideActions from "../actions/VoterGuideActions";
 import VoterStore from "../stores/VoterStore";
 import { arrayContains } from "../utils/textFormat";
 
-class VoterGuideStore extends FluxMapStore {
+class VoterGuideStore extends ReduceStore {
 
   // The store keeps nested attributes of voter guides in all_cached_voter_guides, whereas the followed, ignoring, to_follow are just lists of ids.
   getInitialState () {
