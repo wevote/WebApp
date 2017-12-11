@@ -1,10 +1,15 @@
+import { ReduceStore } from "flux/utils";
+import assign from "object-assign";
 import Dispatcher from "../dispatcher/Dispatcher";
-import FluxMapStore from "flux/lib/FluxMapStore";
 import FriendActions from "../actions/FriendActions";
 import VoterActions from "../actions/VoterActions";
-const assign = require("object-assign");
 
-class FriendStore extends FluxMapStore {
+class FriendStore extends ReduceStore {
+
+  getInitialState () {
+    return {
+    };
+  }
 
   currentFriends (){
     return this.getDataFromArr(this.getState().current_friends) || {};
