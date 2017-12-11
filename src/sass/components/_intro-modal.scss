@@ -417,6 +417,14 @@
   }
 }
 
+.intro-modal-vertical-scroll-contain_without_slider {
+  height: calc(100vh - 100px);
+  max-height: 540px; // Scroll area in modal: 990 - 350 = 640px We set this so that when We Vote is in a frame, the modal isn't too long.
+  overflow-y: auto;
+  -webkit-overflow-scrolling: auto;
+  overflow-x: hidden;
+}
+
 .intro-modal-vertical-scroll-contain {
   height: calc(100vh - 336px);
   max-height: 654px; // Scroll area in modal: 990 - 336 = 654px We set this so that when We Vote is in a frame, the modal isn't too long.
@@ -533,6 +541,11 @@
     .calc-height {
       height: calc(100vh - 100px);
       max-height: 890px; // Modal buttons positioning: 990 - 100 = 640px We set this so that when We Vote is in a frame, the modal isn't too long.
+    }
+
+    .intro-modal-vertical-scroll-contain_without_slider {
+      height: calc(100vh - 100px);
+      max-height: 540px; // Scroll area in modal: 990 - 350 = 640px We set this so that when We Vote is in a frame, the modal isn't too long.
     }
   }
 }

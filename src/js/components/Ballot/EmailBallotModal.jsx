@@ -8,13 +8,11 @@ import FriendStore from "../../stores/FriendStore";
 import LoadingWheel from "../LoadingWheel";
 import VoterStore from "../../stores/VoterStore";
 
-const NEXT_BUTTON_TEXT = "Next >";
 const web_app_config = require("../../config");
 
 export default class EmailBallotModal extends Component {
   static propTypes = {
     history: PropTypes.object,
-    next: PropTypes.func,
     ballot_link: PropTypes.string,
   };
 
@@ -33,7 +31,6 @@ export default class EmailBallotModal extends Component {
       loading: false,
       sender_email_address: VoterStore.getVoter().email,
       sender_email_address_error: false,
-      next_button_text: NEXT_BUTTON_TEXT,
       on_enter_email_addresses_step: true,
       on_collect_email_step: false,
       on_ballot_email_sent_step: false,
@@ -48,7 +45,6 @@ export default class EmailBallotModal extends Component {
     this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    this.onNext = this.onNext.bind(this);
   }
 
   componentWillUnmount () {
@@ -285,10 +281,6 @@ export default class EmailBallotModal extends Component {
     }
   }
 
-  onNext () {
-    this.props.next();
-  }
-
   render () {
     let { loading } = this.state;
     if (loading) {
@@ -319,7 +311,7 @@ export default class EmailBallotModal extends Component {
       </div>
 
       <div>
-        <div className="intro-modal-vertical-scroll-contain">
+        <div className="intro-modal-vertical-scroll-contain_without_slider">
           <div className="intro-modal-vertical-scroll card">
             <div className="row intro-modal__grid intro-modal__default-text">
               <div className="container-fluid u-inset--md">
@@ -402,15 +394,6 @@ export default class EmailBallotModal extends Component {
           </div>
         </div>
       </div>
-      <br/>
-      {/*<div className="intro-modal__button-wrap">*/}
-        {/*<Button type="submit"*/}
-                {/*className="btn btn-success intro-modal__button"*/}
-                {/*onClick={this.onNext}>*/}
-          {/*<span>{this.state.next_button_text}</span>*/}
-        {/*</Button>*/}
-      {/*</div>*/}
-      <br/>
     </div>
     );
   }
