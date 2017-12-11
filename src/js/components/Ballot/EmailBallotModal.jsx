@@ -377,7 +377,7 @@ export default class EmailBallotModal extends Component {
                                 bsStyle="danger"
                                 type="submit"
                                 onClick={this.sendDirectMessageToSelfFacebook.bind(this)}>
-                          <span className="fa fa-facebook" />Send Through Facebook
+                          <span className="fa fa-facebook" />Send Ballot Through Facebook
                         </Button>
                       </div>
                       <div className="mobile-container">
@@ -388,7 +388,7 @@ export default class EmailBallotModal extends Component {
                                   bsStyle="danger"
                                   type="submit"
                                   onClick={this.shareOnFacebook.bind(this)}>
-                            <span className="fa fa-facebook" />Share on Facebook
+                            <span className="fa fa-facebook" />Share Ballot on Facebook
                           </Button>
                         </div>
                       </div>

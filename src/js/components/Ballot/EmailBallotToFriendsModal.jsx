@@ -536,7 +536,7 @@ export default class EmailBallotToFriendsModal extends Component {
                   null }
                 {this.state.on_enter_email_addresses_step ? <div>
                     <form onSubmit={this.prepareApiArraysFromForm.bind(this)}>
-                      <span>Email this ballot to your friends so they can get prepared to vote.<br />&nbsp;<br /></span>
+                      <span>Email this ballot to your friends so they can get prepared to vote. These friends will see what you support or oppose.<br />&nbsp;<br /></span>
                       <div className="row invite-inputs">
                         <div className="form-group col-12 col-sm-12 col-md-6">
                           <label>Email Address</label>
@@ -736,13 +736,13 @@ export default class EmailBallotToFriendsModal extends Component {
                     </form>
                     <div className="text-center col-12">
                       <div className="hidden-xs">
-                        <span>Send this ballot to specific friends through Facebook.</span>
+                        <span>Send this ballot to specific friends through Facebook. The friends you choose will see what you support or oppose.</span>
                         <div className="u-inset--xs"/>
                         <Button className="btn btn-social btn-facebook u-push--sm"
                                 bsStyle="danger"
                                 type="submit"
                                 onClick={this.sendDirectMessageToFacebookFriends.bind(this)}>
-                          <span className="fa fa-facebook" />Send Through Facebook
+                          <span className="fa fa-facebook" />Send Ballot Through Facebook
                         </Button>
                       </div>
                       <div className="mobile-container">
@@ -753,7 +753,7 @@ export default class EmailBallotToFriendsModal extends Component {
                                 bsStyle="danger"
                                 type="submit"
                                 onClick={this.shareOnFacebook.bind(this)}>
-                            <span className="fa fa-facebook" />Share on Facebook
+                            <span className="fa fa-facebook" />Share Ballot on Facebook
                           </Button>
                         </div>
                       </div>

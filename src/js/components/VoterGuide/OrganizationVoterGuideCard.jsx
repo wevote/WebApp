@@ -66,7 +66,7 @@ export default class OrganizationVoterGuideCard extends Component {
       { twitterDescriptionMinusName && !this.props.turn_off_description ?
           <ParsedTwitterDescription
             twitter_description={twitterDescriptionMinusName}
-          />:
+          /> :
         <p className="card-main__description" />
       }
 
