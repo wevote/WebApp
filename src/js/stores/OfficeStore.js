@@ -1,8 +1,14 @@
-var Dispatcher = require("../dispatcher/Dispatcher");
-var FluxMapStore = require("flux/lib/FluxMapStore");
-const assign = require("object-assign");
+import { ReduceStore } from "flux/utils";
+import assign from "object-assign";
+import Dispatcher from "../dispatcher/Dispatcher";
 
-class OfficeStore extends FluxMapStore {
+class OfficeStore extends ReduceStore {
+  getInitialState () {
+    return {
+      success: true,
+    };
+  }
+
   getOffice (office_we_vote_id) {
     // if (!this.isLoaded()){ return undefined; }
     let office_list = this.getState().offices;
