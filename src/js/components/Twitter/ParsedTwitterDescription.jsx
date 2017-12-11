@@ -46,7 +46,7 @@ const ParsedTwitterDescription = (props) => {
   let parsedTwitterDescription = parseTextForTwitterLinks(props.twitter_description);
 
   return (
-    <p className="card-main__description">
+    <span className="card-main__description">
       {
         //eslint-disable-next-line no-extra-parens
         parsedTwitterDescription.map((snippet, i) => (
@@ -68,7 +68,7 @@ const ParsedTwitterDescription = (props) => {
             </span>
         ))
       }
-    </p>
+    </span>
   );
 };
 
