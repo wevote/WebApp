@@ -1,9 +1,9 @@
+import { ReduceStore } from "flux/utils";
 import Dispatcher from "../dispatcher/Dispatcher";
-var FluxMapStore = require("flux/lib/FluxMapStore");
 import VoterActions from "../actions/VoterActions";
 
-class VoterSessionStore extends FluxMapStore {
-  getInitialState (){
+class VoterSessionStore extends ReduceStore {
+  getInitialState () {
     return {
     };
   }
@@ -16,13 +16,13 @@ class VoterSessionStore extends FluxMapStore {
         return {
           authData: {},
           pictureData: {},
-          emailData: {}
+          emailData: {},
         };
 
       default:
         return state;
-      }
     }
   }
+}
 
 module.exports = new VoterSessionStore(Dispatcher);

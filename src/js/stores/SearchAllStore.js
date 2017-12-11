@@ -1,30 +1,34 @@
-const assign = require("object-assign");
+import { ReduceStore } from "flux/utils";
+import assign from "object-assign";
+import Dispatcher from "../dispatcher/Dispatcher";
 
-var Dispatcher = require("../dispatcher/Dispatcher");
-var FluxMapStore = require("flux/lib/FluxMapStore");
+class SearchAllStore extends ReduceStore {
+  getInitialState () {
+    return {
+    };
+  }
 
-class SearchAllStore extends FluxMapStore {
-  getSearchResults (){
+  getSearchResults () {
     return this.getState().search_results_new || [];
   }
 
-  getTextFromSearchField (){
+  getTextFromSearchField () {
     return this.getState().text_from_search_field || "";
   }
 
-  getForceClosed (){
+  getForceClosed () {
     return this.getState().force_closed;
   }
 
-  isRecentSearch (){
+  isRecentSearch () {
     return this.getState().search_type === "RECENT_SEARCH";
   }
 
-  isRelatedSearch (){
+  isRelatedSearch () {
     return this.getState().search_type === "RELATED_SEARCH";
   }
 
-  isSearchInProgress (){
+  isSearchInProgress () {
     return true;
     // return this.getState().search_type === "SEARCH_IN_PROGRESS";
   }

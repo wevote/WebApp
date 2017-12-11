@@ -1,18 +1,10 @@
-/**
- * The idea of this APIS.js file is to abstract away the details
- * of many repetitive service calls that we will be using.
- * @author Nick Fiorini <nf071590@gmail.com>
- */
-"use strict";
+import assign from "object-assign";
+import cookies from "./cookies";
+import * as request from "superagent";
+import url from "url";
+import webAppConfig from "../config";
 
 const DEBUG = false;
-const url = require("url");
-
-const assign = require("object-assign");
-const webAppConfig = require("../config");
-const cookies = require("./cookies");
-
-import * as request from "superagent";
 
 const defaults = {
   dataType: "json",
@@ -28,6 +20,12 @@ const defaults = {
   success: (res) => console.warn("Success function not defined:", res),
   error: (err) => console.error(err.message)
 };
+
+/**
+ * The idea of this APIS.js file is to abstract away the details
+ * of many repetitive service calls that we will be using.
+ * @author Nick Fiorini <nf071590@gmail.com>
+ */
 
 export function $ajax (options) {
   if (!options.endpoint) throw new Error("$ajax missing endpoint option");

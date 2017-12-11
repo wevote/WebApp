@@ -1,10 +1,10 @@
-var Dispatcher = require("../dispatcher/Dispatcher");
-var FluxMapStore = require("flux/lib/FluxMapStore");
+import { ReduceStore } from "flux/utils";
+import Dispatcher from "../dispatcher/Dispatcher";
 import OfficeActions from "../actions/OfficeActions";
 import OfficeStore from "../stores/OfficeStore";
 import { stringContains } from "../utils/textFormat";
 
-class CandidateStore extends FluxMapStore {
+class CandidateStore extends ReduceStore {
 
   getInitialState () {
     return {

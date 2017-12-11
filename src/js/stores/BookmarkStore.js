@@ -1,7 +1,21 @@
-var Dispatcher = require("../dispatcher/Dispatcher");
-var FluxMapStore = require("flux/lib/FluxMapStore");
+import { ReduceStore } from "flux/utils";
+import Dispatcher from "../dispatcher/Dispatcher";
+import Immutable, { Map } from "immutable";
 
-class BookmarkStore extends FluxMapStore {
+class BookmarkStore extends ReduceStore {
+
+  getInitialState () {
+    return Immutable.Map();
+  }
+
+
+  get (ballot_item_we_vote_id) {
+    if (!(this.supportList && this.opposeList && this.supportCounts && this.opposeCounts)) {
+      return undefined;
+    }
+
+    return { ...state };
+  }
 
   reduce (state, action) {
 
@@ -18,7 +32,7 @@ class BookmarkStore extends FluxMapStore {
         action.res.bookmark_list.forEach(el =>{
           newState[el.ballot_item_we_vote_id] = el.bookmark_on;
         });
-        return state.merge(newState);
+        return state.merge(Immutable.Map(newState));
 
       case "voterBookmarkOnSave":
         return state.set(key, true);
