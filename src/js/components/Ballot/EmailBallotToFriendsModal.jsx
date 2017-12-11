@@ -9,12 +9,9 @@ import VoterStore from "../../stores/VoterStore";
 import { validateEmail } from "../../utils/email-functions";
 const web_app_config = require("../../config");
 
-const NEXT_BUTTON_TEXT = "Next >";
-
 export default class EmailBallotToFriendsModal extends Component {
   static propTypes = {
     history: PropTypes.object,
-    next: PropTypes.func,
     ballot_link: PropTypes.string,
     success_message: PropTypes.object,
   };
@@ -50,7 +47,6 @@ export default class EmailBallotToFriendsModal extends Component {
       email_addresses_error: false,
       sender_email_address: VoterStore.getVoter().email,
       sender_email_address_error: false,
-      next_button_text: NEXT_BUTTON_TEXT,
       on_enter_email_addresses_step: true,
       on_collect_email_step: false,
       on_ballot_email_sent_step: false,
@@ -67,7 +63,6 @@ export default class EmailBallotToFriendsModal extends Component {
     this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    // this.onNext = this.onNext.bind(this);
   }
 
   componentWillUnmount () {
@@ -404,10 +399,6 @@ export default class EmailBallotToFriendsModal extends Component {
     return this.state.row2_open && this.state.row3_open && this.state.row4_open && this.state.row5_open;
   }
 
-  onNext () {
-    this.props.next();
-  }
-
   sendDirectMessageToFacebookFriends () {
     let emailData = FacebookStore.getFacebookData();
     let facebookAuthResponse = FacebookStore.getFacebookAuthResponse();
@@ -516,7 +507,7 @@ export default class EmailBallotToFriendsModal extends Component {
       </div>
 
       <div>
-        <div className="intro-modal-vertical-scroll-contain">
+        <div className="intro-modal-vertical-scroll-contain_without_slider">
           <div className="intro-modal-vertical-scroll card">
             <div className="row intro-modal__grid intro-modal__default-text">
               <div className="container-fluid u-inset--md text-left">
@@ -793,15 +784,6 @@ export default class EmailBallotToFriendsModal extends Component {
             </div>
           </div>
         </div>
-        <br/>
-        {/*<div className="intro-modal__button-wrap">*/}
-          {/*<Button type="submit"*/}
-                  {/*className="btn btn-success intro-modal__button"*/}
-                  {/*onClick={this.onNext}>*/}
-            {/*<span>{this.state.next_button_text}</span>*/}
-          {/*</Button>*/}
-        {/*</div>*/}
-        <br/>
       </div>
     </div>);
   }
