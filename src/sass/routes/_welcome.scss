@@ -7,7 +7,7 @@ $hero-section-background-color: rgba(255, 255, 255, .75);
 $opaque-grey: rgba($gray-dark, .5);
 
 .welcome-page {
-  .hero-section {
+  .hero__section {
     position: relative;
     background-image: url('/img/welcome/header-image-desktop.png');
     background-size: cover;
@@ -23,11 +23,11 @@ $opaque-grey: rgba($gray-dark, .5);
       padding-bottom: $space-md;
     }
 
-    &-container {
+    &__container {
       background-color: $background-pale-blue;
     }
 
-    &-row {
+    &__row {
       font-weight: normal;
       letter-spacing: 1px;
     }
@@ -44,24 +44,34 @@ $opaque-grey: rgba($gray-dark, .5);
     }
   }
 
-  .share-your-vision-h1{
+  .share-your-vision__h1{
     @include breakpoints (small mid-small) {
       margin-top: $space-sm;
     }
   }
 
+  // Do not remove or change name. It is being used by bootstrap.
+  .form-group {
+    padding: $space-none $space-sm;
+  }
+
+  // Do not remove or change name. It is being used by bootstrap.
+  .form-control {
+    width: 100%;
+  }
+
   .form {
-    &-section {
+    &__section {
       width: 100%;
       padding-top: $space-none;
       background-color: $brand-blue;
     }
 
-    &-container {
+    &__container {
       padding: $space-lg $space-none;
     }
 
-    &-header {
+    &__header {
       margin-bottom: $space-md;
       color: $white;
       font-size: 20px;
@@ -69,19 +79,11 @@ $opaque-grey: rgba($gray-dark, .5);
       text-align: center;
     }
 
-    &-group {
-      padding: $space-none $space-sm;
-    }
-
-    &-control {
-      width: 100%;
-    }
-
-    &-button-disabled {
+    &__button--disabled {
       color: $gray-darker;
     }
 
-    &-button-disabled:hover {
+    &__button--disabled:hover {
       color: $white;
     }
   }
@@ -109,11 +111,11 @@ $opaque-grey: rgba($gray-dark, .5);
         margin-bottom: $space-lg;
       }
 
-      &-left {
+      &--left {
         background: $call-to-action-red;
       }
 
-      &-right {
+      &--right {
         background: $call-to-action-blue;
       }
 
@@ -123,7 +125,7 @@ $opaque-grey: rgba($gray-dark, .5);
       }
     }
 
-    &-section-desktop{
+    &__section--desktop{
       padding: $space-md $space-none $space-md $space-none;
 
       a{
@@ -132,7 +134,7 @@ $opaque-grey: rgba($gray-dark, .5);
       }
     }
 
-    &-section-mobile{
+    &__section--mobile{
       padding: $space-none $space-none $space-md $space-none;
       margin-top: $space-sm;
 
@@ -143,26 +145,11 @@ $opaque-grey: rgba($gray-dark, .5);
   }
 
   .features {
-    &-section {
+    &__section {
       background-color: $brand-blue;
       color: $white;
       padding-top: $scrollbar-height;
       padding-bottom: $space-xl;
-    }
-
-    &-your-mission__block {
-      align-items: center;
-      text-align: center;
-      padding-bottom: $space-md;
-
-      @include breakpoints (max medium) {
-        margin-bottom: $space-xl;
-      }
-
-      .h2 {
-        font-size: 24px;
-        font-weight: normal;
-      }
     }
 
     &__block {
@@ -188,7 +175,7 @@ $opaque-grey: rgba($gray-dark, .5);
         }
       }
 
-      &-container{
+      &__container{
         @include breakpoints (max medium) {
           height: $features-block-container-height;
         }
@@ -234,7 +221,7 @@ $opaque-grey: rgba($gray-dark, .5);
     }
 
     &__p {
-      font-size: 16px;
+      font-size: 14px;
       padding: $space-none $space-lg;
       height: 66px;
 
@@ -245,13 +232,9 @@ $opaque-grey: rgba($gray-dark, .5);
       @include breakpoints (max small-bootstrap) {
         padding: $space-none;
       }
-
-      &.hidden-xs {
-        font-size: 14px;
-      }
     }
 
-    &-title{
+    &__title {
       margin-bottom: $space-none;
       font-weight: bold;
       font-size: 2rem;
@@ -262,22 +245,39 @@ $opaque-grey: rgba($gray-dark, .5);
     }
   }
 
-  .network-section {
+  .features-your-mission {
+    &__block {
+      align-items: center;
+      text-align: center;
+      padding-bottom: $space-md;
+
+      @include breakpoints (max medium) {
+        margin-bottom: $space-xl;
+      }
+
+      .h2 {
+        font-size: 24px;
+        font-weight: normal;
+      }
+    }
+  }
+
+  .network__section {
     padding-top: $space-lg;
     padding-bottom: $space-lg;
     text-align: center;
     background-color: $white;
-
-    .partner-logos {
-      margin: $space-none;
-      text-align: center;
-      list-style: none;
-      padding-bottom: $space-none;
-      margin-bottom: $space-none;
-    }
   }
 
-  .footer-section {
+  .partner__logos {
+    margin: $space-none;
+    text-align: center;
+    list-style: none;
+    padding-bottom: $space-none;
+    margin-bottom: $space-none;
+  }
+
+  .footer__section {
     background-color: $call-to-action-blue;
     padding-top: $space-xl;
     padding-bottom: $space-xl;
@@ -294,6 +294,7 @@ $opaque-grey: rgba($gray-dark, .5);
       }
     }
 
+    //Do not change name. It is used by bootstrap.
     .btn-social {
       @include breakpoints (max medium) {
         width: 50%;

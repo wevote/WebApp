@@ -209,10 +209,10 @@ export default class Intro extends Component {
     // && this.state.is_verification_email_sent ?
     return <div className="welcome-page">
       <Helmet title="Welcome to We Vote" />
-      <section className="hero-section-container">
-        <div className="hero-section">
+      <section className="hero__section__container">
+        <div className="hero__section">
           <div className="container">
-            <Row className="hero-section-row">
+            <Row className="hero__section__row">
               <div className="col-md-12">
                 {/* Mobile View */}
                 <Row className="visible-xs">
@@ -226,15 +226,15 @@ export default class Intro extends Component {
                       </div> :
                       null
                     }
-                    <section className="quick-links-section-mobile u-flex">
-                      <a className="quick-links__button quick-links__button-left" onClick={() => browserHistory.push("/ballot")}>Get Started</a>
+                    <section className="quick-links__section--mobile u-flex">
+                      <a className="quick-links__button quick-links__button--left" onClick={() => browserHistory.push("/ballot")}>Get Started</a>
                     </section>
 
-                    <div className="share-your-vision-h1">
+                    <div className="share-your-vision__h1">
                       Share your vision.
 
-                      <section className="quick-links-section-mobile u-flex">
-                        <a className="quick-links__button quick-links__button-right" onClick={() => browserHistory.push("/voterguidegetstarted")}>Create Voter Guide</a>
+                      <section className="quick-links__section--mobile u-flex">
+                        <a className="quick-links__button quick-links__button--right" onClick={() => browserHistory.push("/voterguidegetstarted")}>Create Voter Guide</a>
                       </section>
                     </div>
                   </h1>
@@ -250,16 +250,16 @@ export default class Intro extends Component {
                       </div> :
                       null
                     }
-                    <section className="quick-links-section-desktop u-flex">
-                      <a className="quick-links__button quick-links__button-left" onClick={() => browserHistory.push("/ballot")}>Get Started</a>
+                    <section className="quick-links__section--desktop u-flex">
+                      <a className="quick-links__button quick-links__button--left" onClick={() => browserHistory.push("/ballot")}>Get Started</a>
                     </section>
                   </h1>
 
                   <h1 className="col-md-6 u-f1 u-stack--lg">
                     Share your vision.
                      <br /> <br />
-                    <section className="quick-links-section-desktop u-flex">
-                      <a className="quick-links__button quick-links__button-right" onClick={() => browserHistory.push("/voterguidegetstarted")}>Create Voter Guide</a>
+                    <section className="quick-links__section--desktop u-flex">
+                      <a className="quick-links__button quick-links__button--right" onClick={() => browserHistory.push("/voterguidegetstarted")}>Create Voter Guide</a>
                     </section>
                   </h1>
                 </Row>
@@ -271,16 +271,16 @@ export default class Intro extends Component {
       </section>
 
       {/* Description of benefits of We Vote */}
-      <section className="features-section">
+      <section className="features__section">
         <div className="container">
           <div className="features-your-mission__block">
-            <div className="features-title">Your Mission:<br />
+            <div className="features__title">Your Mission:<br />
               <span className="hidden-xs h2">Make the world a better place.</span>
               <span className="visible-xs h4">Make the world a better place.</span>
             </div>
           </div>
           <Row className="u-stack--lg">
-            <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block-container">
+            <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
               <div className="features__block features__block__row1" onClick={this._toggleBallotFeature}>
                 <Link to={"/ballot"}>
 
@@ -291,7 +291,7 @@ export default class Intro extends Component {
                 </Link>
               </div>
             </div>
-            <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block-container">
+            <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
               <div className="features__block features__block__row1" onClick={this._toggleOrganizationsFeature}>
                 <Link to={"/more/network"}>
 
@@ -302,7 +302,7 @@ export default class Intro extends Component {
                 </Link>
               </div>
             </div>
-            <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block-container">
+            <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
               <div className="features__block features__block__row2" onClick={this._togglePositionsFeature}>
                 <Link to={"/ballot"}>
                   <img className={ this.state.show_features_positions ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/see-position.svg" />
@@ -311,7 +311,7 @@ export default class Intro extends Component {
                 </Link>
               </div>
             </div>
-            <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block-container">
+            <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
               <div className="features__block features__block__row2" onClick={this._toggleNetworkFeature}>
                 <Link to={"/more/network"}>
                   <img className={ this.state.show_features_network ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/choose-friends.svg" width="60%" />
@@ -320,7 +320,7 @@ export default class Intro extends Component {
                 </Link>
               </div>
             </div>
-            <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block-container">
+            <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
               <div className="features__block features__block__row3" onClick={this._toggleVisionFeature}>
                 <Link to={"/voterguidegetstarted"}>
                   <img className={ this.state.show_features_vision ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/share-vision.svg" width="55%" />
@@ -329,7 +329,7 @@ export default class Intro extends Component {
                 </Link>
               </div>
             </div>
-            <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block-container">
+            <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
               <div className="features__block features__block__row3" onClick={this._toggleVoteFeature}>
                 <Link to={"/ballot?type=filterReadyToVote"}>
                   <img className={ this.state.show_features_vote ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/decide.svg" width="60%" />
@@ -347,7 +347,7 @@ export default class Intro extends Component {
       {/* Sign up for email list */}
       { voter_signed_in ?
         null :
-        <section className="form-section">
+        <section className="form__section">
           <div className="container">
             <Row>
               <div className="col-md-12">
@@ -355,8 +355,8 @@ export default class Intro extends Component {
                   <span>
                     { this.state.newsletter_opt_in_true ?
                       <h1 className="u-f1 u-bold u-stack--lg">Please check your email for a verification link.</h1> :
-                      <div className="form-container">
-                        <h2 className="form-header">Sign up to get updates about We Vote.</h2>
+                      <div className="form__container">
+                        <h2 className="form__header">Sign up to get updates about We Vote.</h2>
 
                         <form className="row form-inline" onSubmit={this.voterEmailAddressSignUpSave.bind(this)}>
                           <FormGroup className="col-md-4">
@@ -386,7 +386,7 @@ export default class Intro extends Component {
                                       type="submit"
                                       onClick={this.voterEmailAddressSignUpSave.bind(this)}
                               >Sign Up</Button> :
-                              <Button className="form-control form-button-disabled"
+                              <Button className="form-control form__button--disabled"
                                       bsStyle="success"
                                       type="submit"
                                       disabled
@@ -407,10 +407,10 @@ export default class Intro extends Component {
 
       {/* We Vote Partners */}
       { this.state.we_vote_branding_off ? null :
-        <section className="network-section">
+        <section className="network__section">
           <div className="container">
             <h2 className="u-f2 u-stack--lg">Our Network</h2>
-            <div className="partner-logos">
+            <div className="partner__logos">
                 <img className="partner-logo u-push--lg u-stack--lg" src="/img/welcome/partners/google-logo.svg" alt="Google" width="150" />
                 <img className="partner-logo u-push--lg u-stack--lg" src="/img/welcome/partners/center-for-technology.png" alt="Center for Technology and Civic Life" width="200" />
                 <img className="partner-logo u-push--lg u-stack--lg" src="/img/welcome/partners/vote-org.png" alt="Vote.org" width="169" />
@@ -421,7 +421,7 @@ export default class Intro extends Component {
       }
 
       {/* Dark blue section with share buttons and footer links */}
-      <section className="footer-section">
+      <section className="footer__section">
         <div className="container">
           { this.state.we_vote_branding_off ? null :
             <span>
