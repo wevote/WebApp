@@ -2,21 +2,17 @@ $call-to-action-red: #fb2f2f;
 $call-to-action-blue: #476480;
 $background-pale-blue: #314965;
 $header-image-width: 931px;
+$features-block-container-height: 275px;
 $hero-section-background-color: rgba(255, 255, 255, .75);
 $opaque-grey: rgba($gray-dark, .5);
 
 .welcome-page {
-  .cta-button {
-    background-color: $call-to-action-red;
-  }
-
-  .hero-section {
+  .hero__section {
     position: relative;
     background-image: url('/img/welcome/header-image-desktop.png');
     background-size: cover;
     color: $white;
     margin: $space-none auto;
-    //max-width: $header-image-width;
     max-width: 100%;
     padding-top: $space-xl;
     padding-bottom: $space-xl;
@@ -27,8 +23,13 @@ $opaque-grey: rgba($gray-dark, .5);
       padding-bottom: $space-md;
     }
 
-    &-container {
+    &__container {
       background-color: $background-pale-blue;
+    }
+
+    &__row {
+      font-weight: normal;
+      letter-spacing: 1px;
     }
 
     &::before {
@@ -40,22 +41,37 @@ $opaque-grey: rgba($gray-dark, .5);
       bottom: 0;
       left: 0;
       background-color: $opaque-grey;
-      // background-color: $hero-section-background-color; // Very white
     }
   }
 
+  .share-your-vision__h1{
+    @include breakpoints (small mid-small) {
+      margin-top: $space-sm;
+    }
+  }
+
+  // Do not remove or change name. It is being used by bootstrap.
+  .form-group {
+    padding: $space-none $space-sm;
+  }
+
+  // Do not remove or change name. It is being used by bootstrap.
+  .form-control {
+    width: 100%;
+  }
+
   .form {
-    &-section {
+    &__section {
       width: 100%;
-      padding-top: $space-lg;
+      padding-top: $space-none;
       background-color: $brand-blue;
     }
 
-    &-container {
+    &__container {
       padding: $space-lg $space-none;
     }
 
-    &-header {
+    &__header {
       margin-bottom: $space-md;
       color: $white;
       font-size: 20px;
@@ -63,41 +79,43 @@ $opaque-grey: rgba($gray-dark, .5);
       text-align: center;
     }
 
-    &-group {
-      padding: $space-none $space-sm;
-    }
-
-    &-control {
-      width: 100%;
-    }
-
-    &-button-disabled {
+    &__button--disabled {
       color: $gray-darker;
     }
 
-    &-button-disabled:hover {
+    &__button--disabled:hover {
       color: $white;
     }
   }
 
   .quick-links {
     &__button {
+      display: -ms-flexbox;
       display: flex;
+      -ms-flex-pack: center;
       justify-content: center;
       align-items: center;
+      -ms-flex-align: center;
       color: $white;
-      font-size: 1.6em;
+      font-size: 18px;
       width: 100%;
       text-align: center;
       padding: $network-issue-list-padding;
       line-height: 1em;
       transition: background .3s;
+      width: 60%;
+      border-radius: $space-md;
 
-      &-left {
+      @include breakpoints (max medium) {
+        width: 80%;
+        margin-bottom: $space-lg;
+      }
+
+      &--left {
         background: $call-to-action-red;
       }
 
-      &-right {
+      &--right {
         background: $call-to-action-blue;
       }
 
@@ -106,73 +124,32 @@ $opaque-grey: rgba($gray-dark, .5);
         text-decoration: none;
       }
     }
-  }
 
-  .features-your-mission__block {
-    padding-bottom: $space-none;
+    &__section--desktop{
+      padding: $space-md $space-none $space-md $space-none;
 
-    .features-title {
-      margin-bottom: $space-none;
-      font-weight: bold;
-      font-size: 2rem;
+      a{
+        margin: $space-auto;
+        margin-top: $space-lg;
+      }
+    }
 
-      @include breakpoints (iphone5 large) {
-        font-size: 1.5rem;
+    &__section--mobile{
+      padding: $space-none $space-none $space-md $space-none;
+      margin-top: $space-sm;
+
+      a{
+        margin: $space-auto;
       }
     }
   }
 
   .features {
-    &-section {
+    &__section {
       background-color: $brand-blue;
       color: $white;
-      padding-top: $space-lg;
+      padding-top: $scrollbar-height;
       padding-bottom: $space-xl;
-    }
-
-    &-your-mission__block {
-      align-items: center;
-      text-align: center;
-      padding-bottom: $space-md;
-
-      .h1 {
-        font-size: 26px;
-        line-height: 1.2;
-      }
-
-      .h2 {
-        font-size: 24px;
-        font-weight: normal;
-      }
-    }
-
-    &__block-container {
-      &:nth-child(1),
-      &:nth-child(2) {
-        .features__block {
-          @include breakpoints (max medium) {
-            height: 184px;
-          }
-        }
-      }
-
-      &:nth-child(3),
-      &:nth-child(4) {
-        .features__block {
-          @include breakpoints (max medium) {
-            height: 176px;
-          }
-        }
-      }
-
-      &:nth-child(5),
-      &:nth-child(6) {
-        .features__block {
-          @include breakpoints (max medium) {
-            height: 144px;
-          }
-        }
-      }
     }
 
     &__block {
@@ -183,6 +160,44 @@ $opaque-grey: rgba($gray-dark, .5);
       text-align: center;
       margin-bottom: $space-xl;
       min-height: 120px;
+
+      @include breakpoints (max medium) {
+        width: 100%;
+        height: inherit;
+      }
+
+      a {
+        color: $white;
+        text-decoration: none;
+
+        @include breakpoints (max medium) {
+          width: 80%;
+        }
+      }
+
+      &__container{
+        @include breakpoints (max medium) {
+          height: $features-block-container-height;
+        }
+      }
+
+      &__row1 {
+        @include breakpoints (max medium) {
+          height: 184px;
+        }
+      }
+
+      &__row2{
+        @include breakpoints (max medium) {
+          height: 176px;
+        }
+      }
+
+      &__row3{
+        @include breakpoints (max medium) {
+          height: 144px;
+        }
+      }
     }
 
     &__image {
@@ -196,13 +211,17 @@ $opaque-grey: rgba($gray-dark, .5);
       line-height: 1.25;
       font-weight: 600;
 
+      &:hover {
+        text-decoration: underline;
+      }
+
       @include breakpoints (max iphone5) {
         font-size: 20px;
       }
     }
 
     &__p {
-      font-size: 16px;
+      font-size: 14px;
       padding: $space-none $space-lg;
       height: 66px;
 
@@ -213,27 +232,52 @@ $opaque-grey: rgba($gray-dark, .5);
       @include breakpoints (max small-bootstrap) {
         padding: $space-none;
       }
+    }
 
-      &.hidden-xs {
-        font-size: 14px;
+    &__title {
+      margin-bottom: $space-none;
+      font-weight: bold;
+      font-size: 2rem;
+
+      @include breakpoints (iphone5 large) {
+        font-size: 1.5rem;
       }
     }
   }
 
-  .network-section {
+  .features-your-mission {
+    &__block {
+      align-items: center;
+      text-align: center;
+      padding-bottom: $space-md;
+
+      @include breakpoints (max medium) {
+        margin-bottom: $space-xl;
+      }
+
+      .h2 {
+        font-size: 24px;
+        font-weight: normal;
+      }
+    }
+  }
+
+  .network__section {
     padding-top: $space-lg;
-    padding-bottom: $space-xl;
+    padding-bottom: $space-lg;
     text-align: center;
     background-color: $white;
   }
 
-  .partner-logos {
+  .partner__logos {
     margin: $space-none;
     text-align: center;
     list-style: none;
+    padding-bottom: $space-none;
+    margin-bottom: $space-none;
   }
 
-  .footer-section {
+  .footer__section {
     background-color: $call-to-action-blue;
     padding-top: $space-xl;
     padding-bottom: $space-xl;
@@ -242,179 +286,21 @@ $opaque-grey: rgba($gray-dark, .5);
 
     a {
       color: $white;
-      text-decoration: underline;
+      text-decoration: none;
 
       &:hover {
         color: $white;
+        text-decoration: underline;
       }
     }
-  }
-}
 
-.welcome-page {
-
-  .form-section {
-    padding-top: $space-none;
-  }
-
-  .features-section {
-    padding-top: $scrollbar-height;
-  }
-}
-
-.hero-section-row {
-  font-weight: normal;
-  letter-spacing: 1px;
-
-  .h1:nth-child(1) {
-    color: $call-to-action-red;
-  }
-
-  .h1:nth-child(2) {
-    color: $call-to-action-blue;
-  }
-}
-
-.share-your-vision-h1 {
-  //color: $call-to-action-blue;
-}
-
-.welcome-page {
-  .section:nth-child(2) {
-    padding: $space-md $space-none $space-md $space-none;
-  }
-}
-
-.welcome-page .features-your-mission__block .h1 {
-  margin-bottom: $space-lg;
-}
-
-.features__block {
-  a {
-    color: $white;
-    text-decoration: none;
-
-    .h3:hover {
-      text-decoration: underline;
-    }
-  }
-}
-
-.welcome-page .features__block-container:nth-child(6) {
-  margin-bottom: $space-none;
-}
-
-.quick-links-section a {
-  font-size: $space-md;
-  margin: $space-auto;
-  margin-top: $space-lg;
-}
-
-.welcome-page .quick-links__button {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: $white;
-  width: 60%;
-  text-align: center;
-  padding: $network-issue-list-padding;
-  line-height: 1em;
-  transition: background .3s;
-  border-radius: $space-md;
-  font-size: 18px;
-}
-
-.welcome-page {
-  .network-section {
-    padding-top: $space-lg;
-    padding-bottom: $space-lg;
-  }
-}
-
-.container {
-  .h2 {
-    margin-bottom: $space-md;
-  }
-}
-
-.partner-logos {
-  .img {
-    padding-bottom: $space-none;
-    margin-bottom: $space-none;
-  }
-}
-
-.welcome-page .footer-section a {
-  text-decoration: none;
-}
-
-.welcome-page .footer-section a:hover {
-  text-decoration: underline;
-}
-
-.u-stack--xl {
-  margin-bottom: $space-lg;
-}
-
-@media all and (max-width: 767px) {
-  .share-your-vision-h1 {
-    // color: $call-to-action-blue;
-    margin-top: $space-xl;
-    @include breakpoints (small mid-small) {
-      margin-top: $space-sm;
-    }
-  }
-  .welcome-page .quick-links__button {
-    width: 80%;
-    margin-bottom: $space-lg;
-  }
-  .u-f--small {
-    .p:nth-child(1) {
-      width: 80%;
-      margin: $space-auto;
-    }
-  }
-  .features-block,
-  .features__block-container {
-    height: 275px;
-  }
-  .partner-logos {
-    .img {
-      width: 60%;
-      margin-bottom: $space-none;
-      padding-bottom: $space-md;
-    }
-  }
-  .list-inline {
-    .li {
-      margin-bottom: $space-sm;
-    }
-  }
-  .btn-social {
-    width: 50%;
-    text-align: center;
-    margin-bottom: $space-sm;
-  }
-  .features__block {
-    width: 100%;
-    height: inherit;
-  }
-  .features__block a {
-    width: 80%;
-  }
-  .features-your-mission__block {
-    margin-bottom: $space-lg;
-  }
-  .welcome-page {
-    .features__p {
-      padding: $space-none;
-    }
-
-    .features-your-mission__block {
-      margin-bottom: $space-xl;
+    //Do not change name. It is used by bootstrap.
+    .btn-social {
+      @include breakpoints (max medium) {
+        width: 50%;
+        text-align: center;
+        margin-bottom: $space-sm;
+      }
     }
   }
 }
