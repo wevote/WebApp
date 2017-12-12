@@ -53,9 +53,10 @@ export default class EmailBallotToFriendsModal extends Component {
       success_message: this.props.success_message,
       on_mobile: false,
     };
-    this.email_address_array = "";
-    this.first_name_array = "";
-    this.last_name_array = "";
+    this.email_address_array = [];
+    this.sent_email_address_array = [];
+    this.first_name_array = [];
+    this.last_name_array = [];
     this.allRowsOpen.bind(this);
   }
 
@@ -173,9 +174,9 @@ export default class EmailBallotToFriendsModal extends Component {
       on_ballot_email_sent_step: true,
       success_message: "",
     });
-    this.setEmailAddressArray("");
-    this.setFirstNameArray("");
-    this.setLastNameArray("");
+    this.setEmailAddressArray([]);
+    this.setFirstNameArray([]);
+    this.setLastNameArray([]);
   }
 
   hasValidEmail () {
@@ -266,6 +267,7 @@ export default class EmailBallotToFriendsModal extends Component {
   }
 
   setEmailAddressArray (value) {
+    this.sent_email_address_array = value.length !== 0 ? value : this.email_address_array;
     this.email_address_array = value;
   }
 
@@ -344,10 +346,15 @@ export default class EmailBallotToFriendsModal extends Component {
         return false;
       }
     }
+    this.setEmailAddressArray(tmpEmailArray);
+    this.setFirstNameArray(tmpFirstNameArray);
+    this.setLastNameArray(tmpLastNameArray);
 
-    this.setEmailAddressArray(_state.email_address_array.concat(tmpEmailArray));
-    this.setFirstNameArray(_state.first_name_array.concat(tmpFirstNameArray));
-    this.setLastNameArray(_state.last_name_array.concat(tmpLastNameArray));
+    this.setState({
+      email_address_array: tmpEmailArray,
+      first_name_array: tmpFirstNameArray,
+      last_name_array: tmpLastNameArray,
+    });
 
     // console.log("prepareApiArraysFromForm: this.email_address_array: ", this.email_address_array);
     // console.log("prepareApiArraysFromForm: this.first_name_array: ", this.first_name_array);
@@ -515,18 +522,23 @@ export default class EmailBallotToFriendsModal extends Component {
                   {this.state.success_message}
                 </div> : null
                 }
-                {this.state.on_ballot_email_sent_step ?
-                  <div className="alert alert-success">
-                    Success! This ballot was sent. Would you like to send this ballot to anyone else?
-                  </div> :
-                  null }
-                {this.state.email_addresses_error || this.state.sender_email_address_error ?
-                  <div className="alert alert-danger">
-                    {this.state.error_message}
-                  </div> :
-                  null }
                 {this.state.on_enter_email_addresses_step ? <div>
-                    <form onSubmit={this.prepareApiArraysFromForm.bind(this)}>
+                  {this.state.email_addresses_error || this.state.sender_email_address_error ?
+                    <div className="alert alert-danger">
+                      {this.state.error_message}
+                    </div> :
+                    <div>
+                      {this.state.on_ballot_email_sent_step ?
+                        <div className="alert alert-success">
+                          Success! This ballot has been sent to the email address(es) {this.sent_email_address_array.join(", ")}.
+                          Would you like to send this ballot to anyone else?
+                        </div> :
+                        null
+                      }
+                    </div>
+                  }
+
+                  <form onSubmit={this.prepareApiArraysFromForm.bind(this)}>
                       <span>Email this ballot to your friends so they can get prepared to vote. These friends will see what you support or oppose.<br />&nbsp;<br /></span>
                       <div className="row invite-inputs">
                         <div className="form-group col-12 col-sm-12 col-md-6">
@@ -758,9 +770,18 @@ export default class EmailBallotToFriendsModal extends Component {
                 }
                 {this.state.on_collect_email_step ?
                   <div>
+                    <div className="alert alert-success">
+                      Success! This ballot has been sent to the email address(es) {this.sent_email_address_array.join(", ")}.
+                    </div>
+                    <div className="alert alert-warning">
+                      Please make sure to check your email and verify your email address {this.state.sender_email_address}.
+                      This ballot will be sent to your friends as soon as you verify your email address.
+                    </div>
+
                     <form onSubmit={this.ballotEmailSendStepsManager.bind(this)} className="u-stack--md">
                       <input type="text" name="sender_email_address"
                              className="form-control"
+                             value={this.state.sender_email_address || ""}
                              onChange={this.cacheSenderEmailAddress.bind(this)}
                              placeholder="Enter your email address" />
                     </form>
@@ -776,7 +797,6 @@ export default class EmailBallotToFriendsModal extends Component {
                           <span>Send</span>
                         </Button>
                       </span>
-                      <p>In order to send your message, you will need to verify your email address. We will never sell your email.</p>
                     </div>
                   </div> : null
                 }
