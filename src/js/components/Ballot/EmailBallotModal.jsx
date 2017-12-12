@@ -8,13 +8,11 @@ import FriendStore from "../../stores/FriendStore";
 import LoadingWheel from "../LoadingWheel";
 import VoterStore from "../../stores/VoterStore";
 
-const NEXT_BUTTON_TEXT = "Next >";
 const web_app_config = require("../../config");
 
 export default class EmailBallotModal extends Component {
   static propTypes = {
     history: PropTypes.object,
-    next: PropTypes.func,
     ballot_link: PropTypes.string,
   };
 
@@ -33,7 +31,6 @@ export default class EmailBallotModal extends Component {
       loading: false,
       sender_email_address: VoterStore.getVoter().email,
       sender_email_address_error: false,
-      next_button_text: NEXT_BUTTON_TEXT,
       on_enter_email_addresses_step: true,
       on_collect_email_step: false,
       on_ballot_email_sent_step: false,
@@ -48,7 +45,6 @@ export default class EmailBallotModal extends Component {
     this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    this.onNext = this.onNext.bind(this);
   }
 
   componentWillUnmount () {
@@ -129,9 +125,9 @@ export default class EmailBallotModal extends Component {
   ballotEmailSend () {
     let success_message = "";
     if ( this.state.on_facebook_login_step ) {
-      success_message = <span>Success! Your ballot has been sent to the facebook and email address{this.state.sender_email_address} </span>;
+      success_message = <span>Success! This ballot has been sent to Facebook and the email address {this.state.sender_email_address} </span>;
     } else {
-      success_message = <span>Success! Your ballot has been sent to the email address {this.state.sender_email_address} </span>;
+      success_message = <span>Success! This ballot has been sent to the email address {this.state.sender_email_address} </span>;
     }
 
     FriendActions.emailBallotData("", "", "", this.state.sender_email_address, this.state.email_ballot_message,
@@ -285,10 +281,6 @@ export default class EmailBallotModal extends Component {
     }
   }
 
-  onNext () {
-    this.props.next();
-  }
-
   render () {
     let { loading } = this.state;
     if (loading) {
@@ -315,11 +307,11 @@ export default class EmailBallotModal extends Component {
     return (
     <div className="intro-modal">
       <div className="intro-modal__h1">
-        Send your Ballot to yourself via Email?
+        Send This Ballot to Yourself Through Email or Facebook
       </div>
 
       <div>
-        <div className="intro-modal-vertical-scroll-contain">
+        <div className="intro-modal-vertical-scroll-contain_without_slider">
           <div className="intro-modal-vertical-scroll card">
             <div className="row intro-modal__grid intro-modal__default-text">
               <div className="container-fluid u-inset--md">
@@ -329,15 +321,15 @@ export default class EmailBallotModal extends Component {
                   </div> :
                   null }
                 {this.state.on_enter_email_addresses_step ? <div className="row invite-inputs">
-                    <span className="col-12 text-left">Email ballot to yourself so you can print, or come back to it later.&nbsp;</span>
+                    <span className="col-12 text-left">Email this ballot to yourself so you can print it, or come back to it later.&nbsp;<br />&nbsp;<br /></span>
                     <div className="form-group col-12 col-sm-12 col-md-12 text-left">
-                      { this.hasValidEmail() ? <label>Your Email Address</label> : <label>What is your Email Address?</label> }
+                      { this.hasValidEmail() ? <label>Your Email Address</label> : <label>What is your email address?</label> }
                       <div className="input-group">
                         <input type="text" name="self_email_address"
                                className="form-control"
                                value={this.state.sender_email_address || ""}
                                onChange={this.cacheSenderEmailAddress.bind(this)}
-                               placeholder="name@domain.com"/>
+                               placeholder="For example: name@domain.com"/>
                       </div>
 
                       {/*<form onSubmit={this.ballotEmailSendStepsManager.bind(this)} className="u-stack--md">*/}
@@ -358,7 +350,7 @@ export default class EmailBallotModal extends Component {
                           onClick={this.ballotEmailSendStepsManager.bind(this)}
                           bsStyle="primary"
                         >
-                          <span>Send &gt;</span>
+                          <span>Send This Ballot &gt;</span>
                         </Button>
                       </span>
                     </div>
@@ -371,24 +363,24 @@ export default class EmailBallotModal extends Component {
                     <div className="col-12 u-inset--md" />
                     <div className="text-center col-12">
                       <div className="hidden-xs">
-                        <span >Send your Ballot to your Facebook account and Facebook Email.</span>
+                        <span >Send this ballot to yourself through Facebook and your Facebook Email.</span>
                         <div className="u-inset--xs"/>
                         <Button className="btn btn-social btn-facebook u-push--sm"
                                 bsStyle="danger"
                                 type="submit"
                                 onClick={this.sendDirectMessageToSelfFacebook.bind(this)}>
-                          <span className="fa fa-facebook" />Send Through Facebook
+                          <span className="fa fa-facebook" />Send Ballot Through Facebook
                         </Button>
                       </div>
                       <div className="mobile-container">
                         <div>
-                          <span >Share your Ballot to your Facebook Timeline and Facebook Email.</span>
+                          <span >Share this ballot to your Facebook Timeline and Facebook Email.</span>
                           <div className="u-inset--xs"/>
                           <Button className="btn btn-social btn-facebook u-push--sm"
                                   bsStyle="danger"
                                   type="submit"
                                   onClick={this.shareOnFacebook.bind(this)}>
-                            <span className="fa fa-facebook" />Share on Facebook
+                            <span className="fa fa-facebook" />Share Ballot on Facebook
                           </Button>
                         </div>
                       </div>
@@ -402,15 +394,6 @@ export default class EmailBallotModal extends Component {
           </div>
         </div>
       </div>
-      <br/>
-      {/*<div className="intro-modal__button-wrap">*/}
-        {/*<Button type="submit"*/}
-                {/*className="btn btn-success intro-modal__button"*/}
-                {/*onClick={this.onNext}>*/}
-          {/*<span>{this.state.next_button_text}</span>*/}
-        {/*</Button>*/}
-      {/*</div>*/}
-      <br/>
     </div>
     );
   }

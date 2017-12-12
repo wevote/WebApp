@@ -9,12 +9,9 @@ import VoterStore from "../../stores/VoterStore";
 import { validateEmail } from "../../utils/email-functions";
 const web_app_config = require("../../config");
 
-const NEXT_BUTTON_TEXT = "Next >";
-
 export default class EmailBallotToFriendsModal extends Component {
   static propTypes = {
     history: PropTypes.object,
-    next: PropTypes.func,
     ballot_link: PropTypes.string,
     success_message: PropTypes.object,
   };
@@ -22,7 +19,7 @@ export default class EmailBallotToFriendsModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      email_ballot_message: "This is WeVote Ballot data for the upcoming election.",
+      email_ballot_message: "This is a ballot on We Vote for the upcoming election.",
       voter: VoterStore.getVoter(),
       loading: false,
       row2_open: false,
@@ -50,7 +47,6 @@ export default class EmailBallotToFriendsModal extends Component {
       email_addresses_error: false,
       sender_email_address: VoterStore.getVoter().email,
       sender_email_address_error: false,
-      next_button_text: NEXT_BUTTON_TEXT,
       on_enter_email_addresses_step: true,
       on_collect_email_step: false,
       on_ballot_email_sent_step: false,
@@ -67,7 +63,6 @@ export default class EmailBallotToFriendsModal extends Component {
     this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    // this.onNext = this.onNext.bind(this);
   }
 
   componentWillUnmount () {
@@ -404,10 +399,6 @@ export default class EmailBallotToFriendsModal extends Component {
     return this.state.row2_open && this.state.row3_open && this.state.row4_open && this.state.row5_open;
   }
 
-  onNext () {
-    this.props.next();
-  }
-
   sendDirectMessageToFacebookFriends () {
     let emailData = FacebookStore.getFacebookData();
     let facebookAuthResponse = FacebookStore.getFacebookAuthResponse();
@@ -425,8 +416,8 @@ export default class EmailBallotToFriendsModal extends Component {
             if (response.success) {
               // console.log("Successfully send", response);
               this.setState({
-                success_message: "Success! Your Ballot has been sent to your Facebook friends. Is there anyone else " +
-                "you'd like to send your Ballot?",
+                success_message: "Success! This ballot has been sent to your Facebook friends. Would you like to " +
+                "send this ballot to anyone else?",
                 on_ballot_email_sent_step: false,
               });
             }
@@ -481,8 +472,8 @@ export default class EmailBallotToFriendsModal extends Component {
           if (response) {
             // console.log("Successfully send", response);
             this.setState({
-              success_message: "Success! Your Ballot has been shared. Is there anyone else " +
-              "you'd like to share your Ballot?",
+              success_message: "Success! This ballot has been shared. Would you like to send this " +
+              "ballot to anyone else?",
               on_ballot_email_sent_step: false,
             });
           } else {
@@ -512,11 +503,11 @@ export default class EmailBallotToFriendsModal extends Component {
     return (
     <div className="intro-modal">
       <div className="intro-modal__h1">
-        Send your Ballot to Friends through Email or Facebook?
+        Send This Ballot to Friends Through Email or Facebook
       </div>
 
       <div>
-        <div className="intro-modal-vertical-scroll-contain">
+        <div className="intro-modal-vertical-scroll-contain_without_slider">
           <div className="intro-modal-vertical-scroll card">
             <div className="row intro-modal__grid intro-modal__default-text">
               <div className="container-fluid u-inset--md text-left">
@@ -526,7 +517,7 @@ export default class EmailBallotToFriendsModal extends Component {
                 }
                 {this.state.on_ballot_email_sent_step ?
                   <div className="alert alert-success">
-                    Success! Your Ballot sent. Is there anyone else you'd like to send your Ballot?
+                    Success! This ballot was sent. Would you like to send this ballot to anyone else?
                   </div> :
                   null }
                 {this.state.email_addresses_error || this.state.sender_email_address_error ?
@@ -536,7 +527,7 @@ export default class EmailBallotToFriendsModal extends Component {
                   null }
                 {this.state.on_enter_email_addresses_step ? <div>
                     <form onSubmit={this.prepareApiArraysFromForm.bind(this)}>
-                      <span>Email your Ballot to Friends</span>
+                      <span>Email this ballot to your friends so they can get prepared to vote. These friends will see what you support or oppose.<br />&nbsp;<br /></span>
                       <div className="row invite-inputs">
                         <div className="form-group col-12 col-sm-12 col-md-6">
                           <label>Email Address</label>
@@ -545,7 +536,7 @@ export default class EmailBallotToFriendsModal extends Component {
                                    className="form-control"
                                    value={this.state.friend1_email_address}
                                    onChange={this.cacheFriendData.bind(this)}
-                                   placeholder="name@domain.com"/>
+                                   placeholder="For example: name@domain.com"/>
                           </div>
                         </div>
                         <div className="form-group col-6 col-sm-6 col-md-3">
@@ -578,7 +569,7 @@ export default class EmailBallotToFriendsModal extends Component {
                                      className="form-control"
                                      value={this.state.friend2_email_address}
                                      onChange={this.cacheFriendData.bind(this)}
-                                     placeholder="name@domain.com"/>
+                                     placeholder="For example: name@domain.com"/>
                             </div>
                           </div>
                           <div className="form-group col-6 col-sm-6 col-md-3">
@@ -613,7 +604,7 @@ export default class EmailBallotToFriendsModal extends Component {
                                      className="form-control"
                                      value={this.state.friend3_email_address}
                                      onChange={this.cacheFriendData.bind(this)}
-                                     placeholder="name@domain.com"/>
+                                     placeholder="For example: name@domain.com"/>
                             </div>
                           </div>
                           <div className="form-group col-6 col-sm-6 col-md-3">
@@ -648,7 +639,7 @@ export default class EmailBallotToFriendsModal extends Component {
                                      className="form-control"
                                      value={this.state.friend4_email_address}
                                      onChange={this.cacheFriendData.bind(this)}
-                                     placeholder="name@domain.com"/>
+                                     placeholder="For example: name@domain.com"/>
                             </div>
                           </div>
                           <div className="form-group col-6 col-sm-6 col-md-3">
@@ -683,7 +674,7 @@ export default class EmailBallotToFriendsModal extends Component {
                                      className="form-control"
                                      value={this.state.friend5_email_address}
                                      onChange={this.cacheFriendData.bind(this)}
-                                     placeholder="name@domain.com"/>
+                                     placeholder="For example: name@domain.com"/>
                             </div>
                           </div>
                           <div className="form-group col-6 col-sm-6 col-md-3">
@@ -736,24 +727,24 @@ export default class EmailBallotToFriendsModal extends Component {
                     </form>
                     <div className="text-center col-12">
                       <div className="hidden-xs">
-                        <span >Choose friends to send your Ballot through Facebook.</span>
+                        <span>Send this ballot to specific friends through Facebook. The friends you choose will see what you support or oppose.</span>
                         <div className="u-inset--xs"/>
                         <Button className="btn btn-social btn-facebook u-push--sm"
                                 bsStyle="danger"
                                 type="submit"
                                 onClick={this.sendDirectMessageToFacebookFriends.bind(this)}>
-                          <span className="fa fa-facebook" />Send Through Facebook
+                          <span className="fa fa-facebook" />Send Ballot Through Facebook
                         </Button>
                       </div>
                       <div className="mobile-container">
                         <div>
-                          <span >Share your Ballot on your Facebook timeline or friend's Facebook timeline, or as a private message on Facebook.</span>
+                          <span>Share this ballot to your (or a friend's) Facebook Timeline, or as a private message through Facebook.</span>
                           <div className="u-inset--xs"/>
                           <Button className="btn btn-social btn-facebook u-push--sm"
                                 bsStyle="danger"
                                 type="submit"
                                 onClick={this.shareOnFacebook.bind(this)}>
-                            <span className="fa fa-facebook" />Share on Facebook
+                            <span className="fa fa-facebook" />Share Ballot on Facebook
                           </Button>
                         </div>
                       </div>
@@ -793,15 +784,6 @@ export default class EmailBallotToFriendsModal extends Component {
             </div>
           </div>
         </div>
-        <br/>
-        {/*<div className="intro-modal__button-wrap">*/}
-          {/*<Button type="submit"*/}
-                  {/*className="btn btn-success intro-modal__button"*/}
-                  {/*onClick={this.onNext}>*/}
-            {/*<span>{this.state.next_button_text}</span>*/}
-          {/*</Button>*/}
-        {/*</div>*/}
-        <br/>
       </div>
     </div>);
   }

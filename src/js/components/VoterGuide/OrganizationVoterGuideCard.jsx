@@ -64,11 +64,9 @@ export default class OrganizationVoterGuideCard extends Component {
         <FollowToggle we_vote_id={organization_we_vote_id} />
       }
       { twitterDescriptionMinusName && !this.props.turn_off_description ?
-        <p className="card-main__description">
           <ParsedTwitterDescription
             twitter_description={twitterDescriptionMinusName}
-          />
-        </p> :
+          /> :
         <p className="card-main__description" />
       }
 

@@ -39,6 +39,7 @@ import Opinions from "./routes/Opinions";
 import OpinionsFollowed from "./routes/OpinionsFollowed";
 import OpinionsIgnored from "./routes/OpinionsIgnored";
 import Organization from "./routes/More/Organization";
+import PollingPlaceLocatorModal from "./routes/Ballot/PollingPlaceLocatorModal";
 import Privacy from "./routes/More/Privacy";
 import ProcessingDonation from "./routes/More/ProcessingDonation";
 import SampleBallot from "./routes/Intro/SampleBallot";
@@ -87,6 +88,7 @@ const routes = () =>
     <Route path="/ballot/id/:ballot_returned_we_vote_id" component={Ballot} />
     <Route path="/ballot/election/:google_civic_election_id" component={Ballot} />
 
+    <Route path="/polling-place-locator" component={PollingPlaceLocatorModal} />
     <Route path="bookmarks" component={Bookmarks} />
 
     <Route path="/intro" component={Intro} />
