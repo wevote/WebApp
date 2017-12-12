@@ -10,7 +10,8 @@ const GettingStartedBarItem = props => <Link onClick={props.show} className={ (p
         }
         { props.printIcon ? <span className="glyphicon glyphicon-print fa-2x"/> : null }
         { props.emailIcon ? <span className="glyphicon glyphicon-envelope fa-2x"/> : null }
-        { !props.printIcon && !props.emailIcon ? <img className={`glyphicon nav-getting-started__image${props.completed ? "-fade" : ""}`} src={props.source} /> : null }
+        { props.mapMarkerIcon ? <span className="glyphicon glyphicon-map-marker fa-2x"/> : null }
+        { !props.printIcon && !props.emailIcon && !props.mapMarkerIcon ? <img className={`glyphicon nav-getting-started__image${props.completed ? "-fade" : ""}`} src={props.source} /> : null }
       </span>
       <span className={`header-getting-started-nav__label${props.completed ? "-fade" : ""}`}>
         {props.title}
@@ -24,6 +25,7 @@ GettingStartedBarItem.propTypes = {
   title: PropTypes.string.isRequired,
   printIcon: PropTypes.bool,
   emailIcon: PropTypes.bool,
+  mapMarkerIcon: PropTypes.bool,
 };
 
 export default GettingStartedBarItem;

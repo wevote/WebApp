@@ -1,11 +1,11 @@
-let FluxMapStore = require("flux/lib/FluxMapStore");
-import FacebookConstants from "../constants/FacebookConstants";
-import FacebookActions from "../actions/FacebookActions";
+import { ReduceStore } from "flux/utils";
 import Dispatcher from "../dispatcher/Dispatcher";
-import VoterActions from "../actions/VoterActions";
+import FacebookActions from "../actions/FacebookActions";
+import FacebookConstants from "../constants/FacebookConstants";
 import FriendActions from "../actions/FriendActions";
+import VoterActions from "../actions/VoterActions";
 
-class FacebookStore extends FluxMapStore {
+class FacebookStore extends ReduceStore {
   getInitialState (){
     return {
       authData: {},

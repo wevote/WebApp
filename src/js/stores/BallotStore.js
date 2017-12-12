@@ -1,13 +1,18 @@
-let Dispatcher = require("../dispatcher/Dispatcher");
-let FluxMapStore = require("flux/lib/FluxMapStore");
+import { ReduceStore } from "flux/utils";
+import Dispatcher from "../dispatcher/Dispatcher";
+import assign from "object-assign";
 import BallotActions from "../actions/BallotActions";
 import BookmarkStore from "../stores/BookmarkStore";
 import SupportStore from "../stores/SupportStore";
 import VoterGuideActions from "../actions/VoterGuideActions";
 import VoterStore from "../stores/VoterStore";
-const assign = require("object-assign");
 
-class BallotStore extends FluxMapStore {
+class BallotStore extends ReduceStore {
+
+  getInitialState () {
+    return {
+    };
+  }
 
   isLoaded () {
     let civicId = VoterStore.election_id();

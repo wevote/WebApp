@@ -1,9 +1,14 @@
-var Dispatcher = require("../dispatcher/Dispatcher");
-var FluxMapStore = require("flux/lib/FluxMapStore");
-import VoterGuideActions from "../actions/VoterGuideActions";
+import { ReduceStore } from "flux/utils";
+import Dispatcher from "../dispatcher/Dispatcher";
 import IssueActions from "../actions/IssueActions";
+import VoterGuideActions from "../actions/VoterGuideActions";
 
-class IssueStore extends FluxMapStore {
+class IssueStore extends ReduceStore {
+
+  getInitialState () {
+    return {
+    };
+  }
 
   getInitialState () {
     return {

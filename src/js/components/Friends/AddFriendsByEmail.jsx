@@ -444,7 +444,7 @@ export default class AddFriendsByEmail extends Component {
                       className="form-control"
                       value={this.state.friend1_email_address}
                       onChange={this.cacheFriendData.bind(this)}
-                      placeholder="name@domain.com"/>
+                      placeholder="For example: name@domain.com"/>
                 </div>
               </div>
               <div className="form-group col-6 col-sm-6 col-md-3">
@@ -477,7 +477,7 @@ export default class AddFriendsByEmail extends Component {
                        className="form-control"
                        value={this.state.friend2_email_address}
                        onChange={this.cacheFriendData.bind(this)}
-                       placeholder="name@domain.com"/>
+                       placeholder="For example: name@domain.com"/>
                   </div>
                 </div>
                 <div className="form-group col-6 col-sm-6 col-md-3">
@@ -512,7 +512,7 @@ export default class AddFriendsByEmail extends Component {
                        className="form-control"
                        value={this.state.friend3_email_address}
                        onChange={this.cacheFriendData.bind(this)}
-                       placeholder="name@domain.com"/>
+                       placeholder="For example: name@domain.com"/>
                   </div>
                 </div>
                 <div className="form-group col-6 col-sm-6 col-md-3">
@@ -547,7 +547,7 @@ export default class AddFriendsByEmail extends Component {
                        className="form-control"
                        value={this.state.friend4_email_address}
                        onChange={this.cacheFriendData.bind(this)}
-                       placeholder="name@domain.com"/>
+                       placeholder="For example: name@domain.com"/>
                   </div>
                 </div>
                 <div className="form-group col-6 col-sm-6 col-md-3">
@@ -582,7 +582,7 @@ export default class AddFriendsByEmail extends Component {
                        className="form-control"
                        value={this.state.friend5_email_address}
                        onChange={this.cacheFriendData.bind(this)}
-                       placeholder="name@domain.com"/>
+                       placeholder="For example: name@domain.com"/>
                   </div>
                 </div>
                 <div className="form-group col-6 col-sm-6 col-md-3">

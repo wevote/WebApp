@@ -11,6 +11,7 @@ import BallotIntroShare from "../../components/Ballot/BallotIntroShare";
 import BallotIntroVote from "../../components/Ballot/BallotIntroVote";
 import GettingStartedBarItem from "./GettingStartedBarItem";
 import EmailBallotModal from "../Ballot/EmailBallotModal";
+import PollingPlaceLocator from "../Ballot/PollingPlaceLocator";
 import Slider from "react-slick";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
@@ -31,6 +32,7 @@ export default class HeaderGettingStartedBar extends Component {
     this._toggleBallotIntroShare = this._toggleBallotIntroShare.bind(this);
     this._toggleBallotIntroVote = this._toggleBallotIntroVote.bind(this);
     this._openEmailModal = this._openEmailModal.bind(this);
+    this._openPollingLocatorModal = this._openPollingLocatorModal.bind(this);
     this._nextSliderPage = this._nextSliderPage.bind(this);
     this.state = {
       ballot_intro_issues_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ISSUES_COMPLETED),
@@ -76,6 +78,10 @@ export default class HeaderGettingStartedBar extends Component {
 
   _openEmailModal () {
     this.setState({ showEmailModal: !this.state.showEmailModal });
+  }
+
+  _openPollingLocatorModal () {
+    this.setState({ showPollingLocatorModal: !this.state.showPollingLocatorModal });
   }
 
   _toggleBallotIntroFollowIssues () {
@@ -152,21 +158,6 @@ export default class HeaderGettingStartedBar extends Component {
 
     // Have all of the 6 major steps been taken?
     let voter_thorough_orientation_complete = false;
-    const SendEmailModal = <Modal bsClass="background-brand-blue modal"
-                      show={this.state.showEmailModal}
-                      onHide={() => this._openEmailModal(this)}>
-      <Modal.Body>
-        <div className="intro-modal__close">
-          <a onClick={this._openEmailModal} className="intro-modal__close-anchor">
-            <img src="/img/global/icons/x-close.png" alt="close" />
-          </a>
-        </div>
-        <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
-          <div key={1}><EmailBallotModal ballot_link={this.props.pathname}/></div>
-        </Slider>
-      </Modal.Body>
-    </Modal>;
-
     const BallotIntroFollowIssuesModal = <Modal bsClass="background-brand-blue modal"
                                     show={this.state.showBallotIntroFollowIssues}
                                     onHide={() => this._toggleBallotIntroFollowIssues(this)}>
@@ -265,6 +256,32 @@ export default class HeaderGettingStartedBar extends Component {
         </Modal.Body>
       </Modal>;
 
+    const SendEmailModal = <Modal bsClass="background-brand-blue modal"
+                                  show={this.state.showEmailModal}
+                                  onHide={() => this._openEmailModal(this)}>
+      <Modal.Body>
+        <div className="intro-modal__close">
+          <a onClick={this._openEmailModal} className="intro-modal__close-anchor">
+            <img src="/img/global/icons/x-close.png" alt="close" />
+          </a>
+        </div>
+        <div key={1}><EmailBallotModal ballot_link={this.props.pathname}/></div>
+      </Modal.Body>
+    </Modal>;
+
+    const ShowPollingLocatorModal = <Modal bsClass="background-brand-blue modal"
+                                  show={this.state.showPollingLocatorModal}
+                                  onHide={() => this._openPollingLocatorModal(this)}>
+      <Modal.Body>
+        <div className="intro-modal__close">
+          <a onClick={this._openPollingLocatorModal} className="intro-modal__close-anchor">
+            <img src="/img/global/icons/x-close.png" alt="close" />
+          </a>
+        </div>
+        <div key={1}><PollingPlaceLocator /></div>
+      </Modal.Body>
+    </Modal>;
+
     return <div className="page-getting-started-header-background">
       { voter_thorough_orientation_complete ?
         null :
@@ -286,6 +303,9 @@ export default class HeaderGettingStartedBar extends Component {
             <GettingStartedBarItem show={this._openEmailModal}
                                    title="Email"
                                    emailIcon/>
+            <GettingStartedBarItem show={this._openPollingLocatorModal}
+                                   title="Polling Location"
+                                   mapMarkerIcon/>
             {/* Positions Icon & Modal */}
             {/* <GettingStartedBarItem show={this._toggleBallotIntroPositions}
               source="/img/global/svg-icons/stance-v1-59x32.svg"
@@ -316,6 +336,7 @@ export default class HeaderGettingStartedBar extends Component {
       { this.state.showBallotIntroShare ? BallotIntroShareModal : null }
       { this.state.showBallotIntroVote ? BallotIntroVoteModal : null }
       { this.state.showEmailModal ? SendEmailModal : null }
+      { this.state.showPollingLocatorModal ? ShowPollingLocatorModal : null }
     </div>;
   }
 }

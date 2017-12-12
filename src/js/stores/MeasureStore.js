@@ -1,8 +1,8 @@
-var Dispatcher = require("../dispatcher/Dispatcher");
-var FluxMapStore = require("flux/lib/FluxMapStore");
+import { ReduceStore } from "flux/utils";
+import Dispatcher from "../dispatcher/Dispatcher";
 import { stringContains } from "../utils/textFormat";
 
-class MeasureStore extends FluxMapStore {
+class MeasureStore extends ReduceStore {
 
   getInitialState () {
     return {
