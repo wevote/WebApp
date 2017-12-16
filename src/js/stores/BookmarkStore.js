@@ -1,13 +1,12 @@
 import { ReduceStore } from "flux/utils";
 import Dispatcher from "../dispatcher/Dispatcher";
-import Immutable, { Map } from "immutable";
+import Immutable from "immutable";
 
 class BookmarkStore extends ReduceStore {
 
   getInitialState () {
     return Immutable.Map();
   }
-
 
   get (ballot_item_we_vote_id) {
     if (!(this.supportList && this.opposeList && this.supportCounts && this.opposeCounts)) {
