@@ -319,7 +319,7 @@ const teamOfVolunteers = [ {
     name: "Eric Ogawa",
     title: "San Francisco, CA",
   }, {
-    name: "Mary O\"Connor",
+    name: "Mary O\'Connor",
     title: "Sebastopol, CA",
   }, {
     name: "Harsha Dronamraju",

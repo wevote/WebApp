@@ -28,7 +28,7 @@ export default class IssueFollowToggleSquare extends IssueFollowToggle {
         <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.issue_name}</h4>
         { this.props.issue_description && this.props.issue_description.length ?
           <OverlayTrigger placement="top" overlay={<Tooltip id="organizationDescriptionTooltip">{this.props.issue_description}</Tooltip>}>
-            <i className="fa fa-info-circle fa-lg hidden-xs hidden-sm intro-modal__square-details" aria-hidden="true" />
+            <i className="fa fa-info-circle fa-lg hidden-xs intro-modal__square-details" aria-hidden="true" />
           </OverlayTrigger> :
           null
         }
@@ -46,7 +46,7 @@ export default class IssueFollowToggleSquare extends IssueFollowToggle {
           <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.issue_name}</h4>
           { this.props.issue_description && this.props.issue_description.length ?
             <OverlayTrigger placement="top" overlay={<Tooltip id="organizationDescriptionTooltip">{this.props.issue_description}</Tooltip>}>
-              <i className="fa fa-info-circle fa-lg hidden-xs hidden-sm intro-modal__square-details" aria-hidden="true" />
+              <i className="fa fa-info-circle fa-lg hidden-xs intro-modal__square-details" aria-hidden="true" />
             </OverlayTrigger> :
             null
           }
@@ -59,7 +59,7 @@ export default class IssueFollowToggleSquare extends IssueFollowToggle {
           <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.issue_name}</h4>
           { this.props.issue_description && this.props.issue_description.length ?
             <OverlayTrigger placement="top" overlay={<Tooltip id="organizationDescriptionTooltip">{this.props.issue_description}</Tooltip>}>
-              <i className="fa fa-info-circle fa-lg hidden-xs hidden-sm intro-modal__square-details" aria-hidden="true" />
+              <i className="fa fa-info-circle fa-lg hidden-xs intro-modal__square-details" aria-hidden="true" />
             </OverlayTrigger> :
             null
           }
