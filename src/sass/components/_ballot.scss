@@ -19,21 +19,16 @@ $tab-height-visible: $tab-height - $scrollbar-height;
     // TODO either add some properties to this class or delete it
   }
 
-  &__filter-container {
-    overflow: hidden;
-    height: $tab-height-visible;
-  }
-
   &__filter {
     white-space: nowrap;
     overflow-x: scroll;
     overflow-y: hidden;
     height: $tab-height;
-  }
 
-  &__header-group {
-    display: block;
-    border-bottom: 0 solid $black;
+    &__container {
+      overflow: hidden;
+      height: $tab-height-visible;
+    }
   }
 
   &__heading {
@@ -43,27 +38,34 @@ $tab-height-visible: $tab-height - $scrollbar-height;
     padding-top: $header-extension-top;
     margin-top: $minus-header-extension-top;
     overflow: hidden;
+
+    &__voter-guide {
+      width: 100%;
+      background-color: $white;
+      border-bottom: 1px solid #aaa;
+      padding-top: $header-extension-top-voter-guide;
+      margin-top: $minus-header-extension-top-voter-guide;
+      overflow: hidden;
+    }
   }
 
-  &__heading-voter-guide {
-    width: 100%;
-    background-color: $white;
-    border-bottom: 1px solid #aaa;
-    padding-top: $header-extension-top-voter-guide;
-    margin-top: $minus-header-extension-top-voter-guide;
-    overflow: hidden;
-  }
+  &__header {
+    &__title {
+      display: inline-block;
+    }
 
-  &__header-title {
-    display: inline-block;
-  }
+    &__address {
+      margin: $address-spacing-desktop;
+    }
 
-  &__header-address {
-    margin: $address-spacing-desktop;
-  }
+    &__address--xs {
+      margin: $address-spacing-mobile;
+    }
 
-  &__header-address-xs {
-    margin: $address-spacing-mobile;
+    &__group {
+      display: block;
+      border-bottom: 0 solid $black;
+    }
   }
 
   &__tabs {
@@ -78,15 +80,15 @@ $tab-height-visible: $tab-height - $scrollbar-height;
       @include breakpoints (small mid-small) {
         margin-right: $tab-spacing-mobile;
       }
-    }
 
-    .tab-active {
-      border-bottom: 6px solid $black;
-      color: $black;
-    }
+      &--active {
+        border-bottom: 6px solid $black;
+        color: $black;
+      }
 
-    .tab-default {
-      color: $gray-mid;
+      &--default {
+        color: $gray-mid;
+      }
     }
 
     a:focus,
@@ -94,8 +96,8 @@ $tab-height-visible: $tab-height - $scrollbar-height;
       background-color: transparent !important; // stylelint-disable-line sh-waqar/declaration-use-variable
     }
 
-    a.tab-default:focus,
-    a.tab-default:hover {
+    a.tab--default:focus,
+    a.tab--default:hover {
       border-bottom: 6px solid $gray-mid;
     }
   }

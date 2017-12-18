@@ -544,15 +544,15 @@ export default class VoterGuideBallot extends Component {
       { this.state.showSelectAddressModal ? <SelectAddressModal show={this.state.showSelectAddressModal} toggleFunction={this.toggleSelectAddressModal} /> : null }
       { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this.toggleBallotSummaryModal} /> : null }
 
-      <div className="ballot__heading-voter-guide">
+      <div className="ballot__heading__voter-guide">
         <div className="page-content-container">
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-12">
                 <Helmet title="Ballot - We Vote" />
                 <BrowserPushMessage incomingProps={this.props} />
-                <header className="ballot__header-group">
-                  <h1 className="h1 ballot__election-name ballot__header-title">
+                <header className="ballot__header__group">
+                  <h1 className="h1 ballot__election-name ballot__header__title">
                     { election_name ?
                       <OverlayTrigger placement="top" overlay={electionTooltip} >
                        <span className="u-push--sm">{election_name}</span>
@@ -565,7 +565,7 @@ export default class VoterGuideBallot extends Component {
                           alt={"change election"}/> change election</span>
                   </h1>
                   {/* This Edit address shown in Desktop mode */}
-                  <span className="hidden-xs hidden-print pull-right ballot__header-address">
+                  <span className="hidden-xs hidden-print pull-right ballot__header__address">
                     <EditAddress address={voter_address_object}
                                  toggleSelectAddressModal={this.toggleSelectAddressModal}
                                  ballot_location_chosen
@@ -579,7 +579,7 @@ export default class VoterGuideBallot extends Component {
                   </span>
                 </header>
                 {/* This Edit address shown in Mobile mode */}
-                <div className="visible-xs-block hidden-print ballot__header-address-xs">
+                <div className="visible-xs-block hidden-print ballot__header__address--xs">
                   <EditAddress address={voter_address_object}
                                toggleSelectAddressModal={this.toggleSelectAddressModal}
                                ballot_location_chosen
@@ -608,7 +608,7 @@ export default class VoterGuideBallot extends Component {
                   null }
 
                 { text_for_map_search ?
-                  <div className="ballot__filter-container">
+                  <div className="ballot__filter__container">
                     <div className="ballot__filter hidden-print">
                       <BallotFilter pathname={this.state.pathname}
                                     ballot_type={BallotStore.getBallotTypeByFilterType(this.state.filter_type)}
