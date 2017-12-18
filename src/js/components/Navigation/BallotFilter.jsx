@@ -20,16 +20,15 @@ export default class BallotFilter extends Component {
 
     let show_remaining_decisions = this.props.length_remaining || false;
 
-    return
-    <ul className="nav ballot__tabs">
-      <li className="tab-item">
+    return <ul className="nav ballot__tabs">
+      <li className="tab__item">
         <Link to={pathname} className={this.props.ballot_type === "ALL_BALLOT_ITEMS" ? "tab tab--active" : "tab tab--default"}>
           <span>All Items ({this.props.length})</span>
         </Link>
       </li>
 
       { show_remaining_decisions ?
-        <li className="tab-item">
+        <li className="tab__item">
           <Link to={{ pathname: pathname, query: { type: "filterRemaining" } }}
                 className={this.props.ballot_type === "CHOICES_REMAINING" ? "tab tab--active" : "tab tab--default"}>
             {/* Desktop */}
@@ -41,7 +40,7 @@ export default class BallotFilter extends Component {
         null
       }
 
-      <li className="tab-item">
+      <li className="tab__item">
         <Link to={{ pathname: pathname, query: { type: "filterReadyToVote" } }}
               className={ this.props.ballot_type === "READY_TO_VOTE" ? "tab tab--active" : "tab tab--default"}>
           <span>Vote{this.props.election_day_text ? " by " + moment(this.props.election_day_text).format("MMM Do, YYYY") : ""}!</span>
