@@ -69,16 +69,13 @@ $tab-height-visible: $tab-height - $scrollbar-height;
   }
 
   &__tabs {
-    .tab-item {
-      display: inline-block;
-      float: none;
-    }
-
     .tab {
       padding: $space-none $space-none $space-xs;
       margin-right: $tab-spacing-desktop;
-      @include breakpoints (small mid-small) {
-        margin-right: $tab-spacing-mobile;
+
+      &__item {
+        display: inline-block;
+        float: none;
       }
 
       &--active {
@@ -88,6 +85,10 @@ $tab-height-visible: $tab-height - $scrollbar-height;
 
       &--default {
         color: $gray-mid;
+      }
+
+      @include breakpoints (small mid-small) {
+        margin-right: $tab-spacing-mobile;
       }
     }
 
