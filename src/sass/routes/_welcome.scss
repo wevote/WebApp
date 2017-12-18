@@ -44,7 +44,7 @@ $opaque-grey: rgba($gray-dark, .5);
     }
   }
 
-  .share-your-vision__h1{
+  .share-your-vision__h1 {
     @include breakpoints (small mid-small) {
       margin-top: $space-sm;
     }
@@ -98,7 +98,6 @@ $opaque-grey: rgba($gray-dark, .5);
       -ms-flex-align: center;
       color: $white;
       font-size: 18px;
-      width: 100%;
       text-align: center;
       padding: $network-issue-list-padding;
       line-height: 1em;
@@ -125,20 +124,20 @@ $opaque-grey: rgba($gray-dark, .5);
       }
     }
 
-    &__section--desktop{
+    &__section--desktop {
       padding: $space-md $space-none $space-md $space-none;
 
-      a{
+      a {
         margin: $space-auto;
         margin-top: $space-lg;
       }
     }
 
-    &__section--mobile{
+    &__section--mobile {
       padding: $space-none $space-none $space-md $space-none;
       margin-top: $space-sm;
 
-      a{
+      a {
         margin: $space-auto;
       }
     }
@@ -175,7 +174,7 @@ $opaque-grey: rgba($gray-dark, .5);
         }
       }
 
-      &__container{
+      &__container {
         @include breakpoints (max medium) {
           height: $features-block-container-height;
         }
@@ -187,13 +186,13 @@ $opaque-grey: rgba($gray-dark, .5);
         }
       }
 
-      &__row2{
+      &__row2 {
         @include breakpoints (max medium) {
           height: 176px;
         }
       }
 
-      &__row3{
+      &__row3 {
         @include breakpoints (max medium) {
           height: 144px;
         }
@@ -274,7 +273,6 @@ $opaque-grey: rgba($gray-dark, .5);
     text-align: center;
     list-style: none;
     padding-bottom: $space-none;
-    margin-bottom: $space-none;
   }
 
   .footer__section {
