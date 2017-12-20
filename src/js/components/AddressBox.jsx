@@ -9,17 +9,18 @@ import BallotStore from "../stores/BallotStore";
 
 export default class AddressBox extends Component {
   static propTypes = {
+    cancelEditAddress: PropTypes.func,
     toggleSelectAddressModal: PropTypes.func,
     saveUrl: PropTypes.string.isRequired
   };
 
   constructor (props) {
-      super(props);
-      this.state = {
-        loading: false,
-        text_for_map_search: "",
-        ballotCaveat: "",
-      };
+    super(props);
+    this.state = {
+      loading: false,
+      text_for_map_search: "",
+      ballotCaveat: "",
+    };
 
     this.updateVoterAddress = this.updateVoterAddress.bind(this);
     this.voterAddressSave = this.voterAddressSave.bind(this);
@@ -129,6 +130,9 @@ export default class AddressBox extends Component {
             onClick={this.voterAddressSave}
             bsStyle="primary">
             Save</Button>
+          { this.props.cancelEditAddress ?
+            <span className="pull-right u-f5 u-push--md"><a href="#" onClick={this.props.cancelEditAddress}>cancel</a> </span> :
+            null }
         </div>
       <p/><h4>{this.state.ballotCaveat}</h4>
       </div>;
