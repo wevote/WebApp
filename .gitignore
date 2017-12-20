@@ -176,3 +176,4 @@ web_app/build/*
 *.pyc
 staticfiles
 
+yarn.lock
