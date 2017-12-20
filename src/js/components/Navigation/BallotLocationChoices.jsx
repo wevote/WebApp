@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { browserHistory } from "react-router";
 import BallotActions from "../../actions/BallotActions";
+import BallotStore from "../../stores/BallotStore";
 import ElectionStore from "../../stores/ElectionStore";
 import VoterStore from "../../stores/VoterStore";
 import BallotLocationButton from "./BallotLocationButton";
@@ -13,6 +14,8 @@ export default class BallotLocationChoices extends Component {
     current_voter_address: PropTypes.string,
     google_civic_election_id: PropTypes.number.isRequired,
     pathname: PropTypes.string,
+    showElectionName: PropTypes.bool,
+    toggleFunction: PropTypes.func,
   };
 
   constructor (props) {
@@ -120,6 +123,9 @@ export default class BallotLocationChoices extends Component {
       // Change the URL to match
       browserHistory.push(ballotBaseUrl + "/id/" + ballot_returned_we_vote_id);
     }
+    if (this.props.toggleFunction) {
+      this.props.toggleFunction();
+    }
   }
 
   showAllBallotLocationsToggle () {
@@ -127,12 +133,14 @@ export default class BallotLocationChoices extends Component {
   }
 
   render () {
-    const default_number_of_ballot_locations_mobile = 2;
+    const default_number_of_ballot_locations_mobile = 5;
     const default_number_of_ballot_locations_desktop = 5;
+    const election_name = BallotStore.currentBallotElectionName;
     // console.log("In BallotLocationChoices render, ballot_location_list: ", this.state.ballot_location_list);
     if (this.state.ballot_location_list && this.state.ballot_location_list.length) {
       //  className="container-fluid card"
       return <div className="u-stack--sm ballot-locations hidden-print">
+        { this.props.showElectionName ? <h4 className="h4">{election_name}</h4> : null }
         <div className="btn-group">
           {/* Mobile display of buttons */}
           <div className="visible-xs">
