@@ -13,7 +13,7 @@ const buffer = require("vinyl-buffer");
 const del = require("del");
 const server = require("./server");
 const assign = require("lodash.assign");
-const cssmin = require('gulp-cssmin');
+const cssmin = require("gulp-cssnano");
 
 const config = {
     bootstrapDir: './node_modules/bootstrap-sass',
@@ -95,9 +95,9 @@ gulp.task("sass", function () {
   .pipe(sourcemaps.init())
   .on("error", function (err) { console.error(err); })
   .pipe(sass({ style: 'expanded' }))
-  .pipe(autoprefixer('last 2 version'))
-  .pipe(sourcemaps.write())
+  //.pipe(autoprefixer('last 2 version'))
   .pipe(cssmin())
+  .pipe(sourcemaps.write(".")) // --> working directory is /build/css
   .pipe(gulp.dest("./build/css"))
   .pipe(browserSync.stream());
 });
