@@ -26,45 +26,44 @@
   // These are for the BallotSideBar summary pane
   // //////////////////////////////////////////////
 
-  &__summary-title {
+  &__summary {
+    &__title {
     font-family: $heading-font-stack;
     font-size: 18px;
     color: $gray-dark;
     padding-bottom: $space-md;
     padding-top: $space-sm;
-  }
+    }
 
-  &__summary-item-container {
-    overflow: hidden;
-    align-items: center;
-    position: relative;
-    margin-top: $space-none;
-    margin-bottom: $space-md;
-  }
+    &__item {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; // Not working currently
+      color: $gray-mid;
+      line-height: 19.6px;
+      position: relative;
+      font-size: 14px;
+    }
 
-  &__summary-item {
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; // Not working currently
-  }
+    &__item-container {
+      overflow: hidden;
+      align-items: center;
+      position: relative;
+      margin-top: $space-none;
+      margin-bottom: $space-md;
+    }
 
-  &__summary-display-name {
-    font-family: $heading-font-stack;
-    font-size: 15px;
-    color: $link-color;
-  }
-
-  &__summary-item {
-    color: $gray-mid;
-    line-height: 19.6px;
-    position: relative;
-    font-size: 14px;
+    &__display-name {
+      font-family: $heading-font-stack;
+      font-size: 15px;
+      color: $link-color;
+    }
   }
 }
 
 // For display of tiny thumbnail images for organizational voter guides
-.organization-image-tiny {
+.organization__image--tiny {
   margin-left: $space-xxs;
   width: 32px; // 32px is set in WeVoteServer environment_variables as PROFILE_IMAGE_TINY_WIDTH (formerly 24px)
   border-radius: $radius-xs;

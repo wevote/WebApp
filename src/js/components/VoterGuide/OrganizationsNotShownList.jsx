@@ -32,7 +32,7 @@ export default class OrganizationsNotShownList extends Component {
           <Link to={voterGuideLink} className="u-no-underline">
             <ImageHandler imageUrl={organization_photo_url_tiny}
               className=""
-              sizeClassName="organization-image-tiny"/>
+              sizeClassName="organization__image--tiny"/>
           </Link>
           <br/>
         </div>

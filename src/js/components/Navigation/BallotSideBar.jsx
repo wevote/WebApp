@@ -65,7 +65,7 @@ export default class BallotSideBar extends Component {
     if (ballot && ballot.length) {
       return <div className="container-fluid card">
         {this.props.displayTitle ?
-          <div className="BallotItem__summary-title" >Summary of Ballot Items</div> : null }
+          <div className="BallotItem__summary__title" >Summary of Ballot Items</div> : null }
         {ballot.map( (item, key) => {
           if (item.kind_of_ballot_item === "OFFICE" || item.kind_of_ballot_item === "MEASURE") {
             return <div key={key}>

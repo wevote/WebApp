@@ -36,7 +36,7 @@ export default class OrganizationTinyDisplay extends Component {
     }
     let hide_placeholder = !this.props.showPlaceholderImage;
     return <ImageHandler className=""
-                         sizeClassName="organization-image-tiny"
+                         sizeClassName="organization__image--tiny"
                          hidePlaceholder={hide_placeholder}
                          imageUrl={image_url_tiny}
                          alt={display_name} />;
