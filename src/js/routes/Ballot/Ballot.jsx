@@ -573,13 +573,14 @@ export default class Ballot extends Component {
           </div>
         </div>
       </div>
-      { ballot.length === 0 ?
+      
+      {/* ballot.length === 0 ?
         null :
         <div className="visible-xs-block hidden-print">
           <div className="BallotItemsSummary">
             <a onClick={this.toggleBallotSummaryModal}>Summary of Ballot Items</a>
           </div>
-        </div> }
+        </div> */}
 
       <div className="page-content-container">
         <div className="container-fluid">
