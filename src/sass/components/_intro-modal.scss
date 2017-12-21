@@ -386,7 +386,7 @@
 
 .intro-modal-vertical-scroll {
   // padding: $space-md;
-  border-radius: $radius-sm $radius-sm 0 0;
+  border-radius: $radius-sm $radius-sm $radius-sm $radius-sm;
   -webkit-column-count: 1;
   -moz-column-count: 1;
   column-count: 1;
