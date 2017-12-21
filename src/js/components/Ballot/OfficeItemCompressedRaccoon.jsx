@@ -95,11 +95,11 @@ export default class OfficeItemCompressed extends Component {
 
   render () {
     let { ballot_item_display_name, we_vote_id } = this.props;
-    let officeLink = "/office/" + we_vote_id;
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
     var candidate_list_to_display = this.props.candidate_list;
+    let total_number_of_candidates_to_display = this.props.candidate_list.length;
     var remaining_candidates_to_display_count = 0;
 
     if (!this.state.display_all_candidates_flag && this.props.candidate_list.length > NUMBER_OF_CANDIDATES_TO_DISPLAY) {
@@ -170,10 +170,10 @@ export default class OfficeItemCompressed extends Component {
 
     return <div className="card-main office-item">
       <a name={we_vote_id} />
-      <span className="card-main__content">
+      <div className="card-main__content">
         {/* Desktop */}
         <span className="hidden-xs">
-          {/*<BookmarkToggle we_vote_id={we_vote_id} type="OFFICE" />*/}
+          <BookmarkToggle we_vote_id={we_vote_id} type="OFFICE" />
           <span className="hidden-print pull-right u-push--lg">
               <Link className="BallotItem__learn-more" onClick={this.goToOfficeLink}>Learn More</Link>
           </span>
@@ -187,7 +187,7 @@ export default class OfficeItemCompressed extends Component {
             null
           }
         </span>
-        <span className="h2 u-f3 card-main__ballot-name u-stack--sm">{ballot_item_display_name_raccoon}</span>
+        <h2 className="u-f3 card-main__ballot-name u-stack--sm">{ballot_item_display_name_raccoon}</h2>
 
         {/* Only show the candidates if the Office is "unfurled" */}
         { this.state.display_raccoon_details_flag ?
@@ -331,7 +331,7 @@ export default class OfficeItemCompressed extends Component {
           null
         }
 
-        { !this.state.display_all_candidates_flag && remaining_candidates_to_display_count ?
+        { !this.state.display_all_candidates_flag && this.state.display_raccoon_details_flag && remaining_candidates_to_display_count ?
           <Link onClick={this.toggleDisplayAllCandidates}>
             <span className="u-items-center u-no-break hidden-print">
               Click to show {remaining_candidates_to_display_count} more candidate{ remaining_candidates_to_display_count !== 1 ? "s" : null }...</span>
@@ -350,10 +350,13 @@ export default class OfficeItemCompressed extends Component {
           </Link> :
           <Link onClick={this.toggleExpandCheetahDetails}>
             <div className="BallotItem__view-more u-items-center u-no-break hidden-print">
-              View all candidates...</div>
+              { total_number_of_candidates_to_display > 1 ?
+                <span>View all {total_number_of_candidates_to_display} candidates...</span> :
+                <span>View candidate...</span> }
+            </div>
           </Link>
         }
-        </span>
+        </div>
       </div>;
   }
 }
