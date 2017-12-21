@@ -455,14 +455,8 @@ export default class Intro extends Component {
                 <li className="u-push--md u-stack--sm">
                   <Link to={"/more/about"}>About</Link>
                 </li>
-                  <li className="u-push--md u-stack--sm">
-                    <Link to={"/more/vision"}>Our Vision</Link>
-                  </li>
                 <li className="u-push--md u-stack--sm">
-                  <Link to={"/more/team"}>Our Team</Link>
-                </li>
-                <li className="u-push--md u-stack--sm">
-                  <Link to={"/intro/sample_ballot"}>Get Started</Link>
+                  <Link to={"/ballot"}>Get Started</Link>
                 </li>
                 <li className="u-push--md u-stack--sm">
                   <Link to={"/more/sign_in"}>Sign In</Link>
