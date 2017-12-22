@@ -1,8 +1,5 @@
 // Network Positions bar (ItemSupportOpposeCounts)
 
-$green: #76d00b;
-$red: #ff4921;
-
 .network-positions {
   $bar-height: 10px;
   $icon-size: 20px;
@@ -68,6 +65,34 @@ $red: #ff4921;
     background-color: $red;
     background: linear-gradient(to bottom, $red, darken($red, 5%)); // stylelint-disable-line declaration-block-no-shorthand-property-overrides
     border-left: 2px solid #fff;
+  }
+
+  &__support-score {
+    font-size: 2rem;
+    font-weight: 500;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__show-support-underline {
+    border-bottom: solid;
+    border-bottom-color: $support-green;
+  }
+
+  &__show-oppose-underline {
+    border-bottom: solid;
+    border-bottom-color: $oppose-red;
+  }
+
+  &__to-follow-fade {
+    opacity: .4;
+    filter: alpha(opacity=40); /* For IE8 and earlier */
+  }
+
+  &__to-follow-fade:hover {
+    opacity: .6;
+    // filter: alpha(opacity=100); /* For IE8 and earlier */
+    filter: alpha(opacity=60); /* For IE8 and earlier */
   }
 }
 

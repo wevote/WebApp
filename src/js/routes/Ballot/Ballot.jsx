@@ -5,7 +5,7 @@ import AddressBox from "../../components/AddressBox";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import BallotActions from "../../actions/BallotActions";
 import BallotElectionList from "../../components/Ballot/BallotElectionList";
-import BallotFilter from "../../components/Navigation/BallotFilter";
+import BallotTabsRaccoon from "../../components/Navigation/BallotTabsRaccoon";
 import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 import BallotItemReadyToVote from "../../components/Ballot/BallotItemReadyToVote";
 import BallotIntroModal from "../../components/Ballot/BallotIntroModal";
@@ -560,11 +560,11 @@ export default class Ballot extends Component {
                 { text_for_map_search ?
                   <div className="ballot__filter__container">
                     <div className="ballot__filter hidden-print">
-                      <BallotFilter pathname={this.state.pathname}
-                                    ballot_type={BallotStore.getBallotTypeByFilterType(this.state.filter_type)}
-                                    election_day_text={ElectionStore.getElectionDayText(this.state.google_civic_election_id)}
-                                    length={BallotStore.ballotLength}
-                                    length_remaining={BallotStore.ballot_remaining_choices_length} />
+                      <BallotTabsRaccoon pathname={this.state.pathname}
+                                         ballot_type={BallotStore.getBallotTypeByFilterType(this.state.filter_type)}
+                                         election_day_text={ElectionStore.getElectionDayText(this.state.google_civic_election_id)}
+                                         length={BallotStore.ballotLength}
+                                         length_remaining={BallotStore.ballot_remaining_choices_length} />
                     </div>
                   </div> :
                   null }
@@ -573,7 +573,7 @@ export default class Ballot extends Component {
           </div>
         </div>
       </div>
-      
+
       {/* ballot.length === 0 ?
         null :
         <div className="visible-xs-block hidden-print">

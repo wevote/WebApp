@@ -55,7 +55,7 @@ export default class ImageHandler extends Component {
     if (show_placeholder_if_image_missing) {
       // This branch is for situations where we want to show a placeholder image in case the image is broken or missing
       const image_or_placeholder = this.state.error || !this.props.imageUrl || this.props.imageUrl === "" ?
-        <img className={`${sizeClassName} ${replacementClass}`} src={place_holder_image_url}/> :
+        <img className={`${sizeClassName} ${this_class} ${replacementClass}`} src={place_holder_image_url}/> :
         <img className={`${sizeClassName} ${this_class}`} src={this.props.imageUrl} alt={alt}
              onError={this.brokenLink.bind(this)}/>;
       return image_or_placeholder;

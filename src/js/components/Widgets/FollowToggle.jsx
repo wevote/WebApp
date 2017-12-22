@@ -12,6 +12,8 @@ export default class FollowToggle extends Component {
     hide_stop_following_button: PropTypes.bool,
     classNameOverride: PropTypes.string,
     organization_for_display: PropTypes.object,
+    opposesThisBallotItem: PropTypes.bool,
+    supportsThisBallotItem: PropTypes.bool,
   };
 
   constructor (props) {
@@ -78,7 +80,11 @@ export default class FollowToggle extends Component {
 
     if (organization_for_display) {
       return <span onClick={followInstantly}>
-        <OrganizationTinyDisplay {...organization_for_display} showPlaceholderImage />
+        <OrganizationTinyDisplay {...organization_for_display}
+                                 showPlaceholderImage
+                                 toFollow
+                                 showSupport={this.props.supportsThisBallotItem}
+                                 showOppose={this.props.opposesThisBallotItem} />
       </span>;
     }
 

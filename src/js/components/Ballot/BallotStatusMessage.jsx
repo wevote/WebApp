@@ -75,7 +75,7 @@ export default class BallotStatusMessage extends Component {
         message_string += "Some items below may not be on your official ballot.";
       }
     } else {
-      ballot_status_style = "alert-danger";
+      ballot_status_style = "alert-info";
       let message_in_past_string;
       if (this.state.election_day_text) {
         message_in_past_string = "This election was held on " + moment(this.state.election_day_text).format("MMM Do, YYYY") + ".";

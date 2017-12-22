@@ -8,12 +8,8 @@ import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import ImageHandler from "../ImageHandler";
-import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
-import ItemSupportOpposeCheetah from "../Widgets/ItemSupportOpposeCheetah";
-import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
-import ItemTinyOpinionsToFollow from "../VoterGuide/ItemTinyOpinionsToFollow";
-import LearnMore from "../Widgets/LearnMore";
+import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
 import SupportStore from "../../stores/SupportStore";
 
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 5; // Set to 5 in raccoon, and 3 in walrus
@@ -38,6 +34,7 @@ export default class OfficeItemCompressed extends Component {
       show_position_statement: true,
     };
 
+    this.goToCandidateLink = this.goToCandidateLink.bind(this);
     this.goToOfficeLink = this.goToOfficeLink.bind(this);
     this.openCandidateModal = this.openCandidateModal.bind(this);
     this.toggleDisplayAllCandidates = this.toggleDisplayAllCandidates.bind(this);
@@ -89,6 +86,10 @@ export default class OfficeItemCompressed extends Component {
     }
   }
 
+  goToCandidateLink (candidate_we_vote_id) {
+    browserHistory.push("/candidate/" + candidate_we_vote_id);
+  }
+
   goToOfficeLink () {
     browserHistory.push("/office/" + this.props.we_vote_id);
   }
@@ -127,31 +128,32 @@ export default class OfficeItemCompressed extends Component {
     let candidate_with_most_support = null;
     let voter_supports_at_least_one_candidate = false;
     let supportProps;
-    let is_support;
+    let candidate_has_voter_support;
 
+    // Prepare an array of candidate names that are supported by voter
     this.props.candidate_list.forEach((candidate) => {
       supportProps = SupportStore.get(candidate.we_vote_id);
       if (supportProps) {
-        is_support = supportProps.is_support;
+        candidate_has_voter_support = supportProps.is_support;
 
-        if (is_support) {
+        if (candidate_has_voter_support) {
           is_support_array.push(candidate.ballot_item_display_name);
           voter_supports_at_least_one_candidate = true;
         }
       }
     });
 
-    /* This function finds the highest support count for each office but does not handle ties. If two candidates have the
-    same network support count, only the first candidate will be displayed. */
-    let largest_support_count;
+    // This function finds the highest support count for each office but does not handle ties. If two candidates have
+    // the same network support count, only the first candidate will be displayed.
+    let largest_support_count = 0;
     let at_least_one_candidate_chosen = false;
 
+    // If the voter isn't supporting any candidates, then figure out which candidate the voter's network likes the best
     if (is_support_array.length === 0){
       let network_support_count;
       let network_oppose_count;
 
       this.props.candidate_list.forEach((candidate) => {
-        largest_support_count = 0;
         supportProps = SupportStore.get(candidate.we_vote_id);
         if (supportProps) {
           network_support_count = supportProps.support_count;
@@ -196,9 +198,9 @@ export default class OfficeItemCompressed extends Component {
             let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidate_we_vote_id);
             let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidate_we_vote_id);
 
-            let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + ". " : "";
-            let candidate_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
-            let candidate_text = candidate_party_text + candidate_description_text;
+            // let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + ". " : "";
+            // let candidate_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
+            // let candidate_text = candidate_party_text + candidate_description_text;
             let candidateSupportStore = SupportStore.get(candidate_we_vote_id);
             let is_support = false;
             let is_oppose = false;
@@ -220,7 +222,7 @@ export default class OfficeItemCompressed extends Component {
               null;
 
             let candidate_name_raccoon = <h4 className="card-main__candidate-name u-f5">
-              <a onClick={this.props.link_to_ballot_item_page ? () => this.openCandidateModal(one_candidate) : null}>
+              <a onClick={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(one_candidate.we_vote_id) : null}>
                 <TextTruncate line={1}
                               truncateText="…"
                               text={one_candidate.ballot_item_display_name}
@@ -232,7 +234,7 @@ export default class OfficeItemCompressed extends Component {
             let positions_display_raccoon = <div>
               <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
                 {/* Positions in Your Network and Possible Voter Guides to Follow (Desktop) */}
-                <ItemSupportOpposeCheetah ballotItemWeVoteId={candidate_we_vote_id}
+                <ItemSupportOpposeRaccoon ballotItemWeVoteId={candidate_we_vote_id}
                                           ballot_item_display_name={one_candidate.ballot_item_display_name}
                                           display_raccoon_details_flag={this.state.display_raccoon_details_flag}
                                           supportProps={candidateSupportStore}
@@ -244,8 +246,26 @@ export default class OfficeItemCompressed extends Component {
               </div>
             </div>;
 
-            let comment_display_raccoon = this.state.display_raccoon_details_flag && (is_support || is_oppose || voter_statement_text) ?
-              <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+            // TODO: NOT WORKING
+            let comment_display_raccoon_desktop = this.state.display_raccoon_details_flag && (is_support || is_oppose || voter_statement_text) ?
+              <div className="hidden-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+                <div
+                  className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
+                </div>
+                <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
+                  <ItemPositionStatementActionBar ballot_item_we_vote_id={candidate_we_vote_id}
+                                                  ballot_item_display_name={one_candidate.ballot_item_display_name}
+                                                  supportProps={candidateSupportStore}
+                                                  transitioning={this.state.transitioning}
+                                                  type="CANDIDATE"
+                                                  shown_in_list/>
+                </div>
+              </div> :
+              null;
+
+            // TODO: NOT WORKING
+            let comment_display_raccoon_mobile = this.state.display_raccoon_details_flag && (is_support || is_oppose || voter_statement_text) ?
+              <div className="visible-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
                 <div
                   className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
                 </div>
@@ -267,12 +287,14 @@ export default class OfficeItemCompressed extends Component {
                 <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
                   {/* Candidate Name */}
                   {candidate_name_raccoon}
-                  {/* Opinion Items */}
+                  {/* Organization's Followed AND to Follow Items */}
                   {positions_display_raccoon}
+                  {/* DESKTOP: If voter has taken position, offer the comment bar */}
+                  {/* comment_display_raccoon_desktop */}
                 </div>
+                {/* MOBILE: If voter has taken position, offer the comment bar */}
+                {/* comment_display_raccoon_mobile */}
               </div>
-              {/* If voter has taken position, offer the comment bar */}
-              {comment_display_raccoon}
             </div>;
           })}</span> :
           null
@@ -287,7 +309,7 @@ export default class OfficeItemCompressed extends Component {
                 { SupportStore.get(one_candidate.we_vote_id) && SupportStore.get(one_candidate.we_vote_id).is_support ?
                   <div className="u-flex u-items-center">
                     <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
-                    this.goToOfficeLink : null }>
+                    () => this.goToCandidateLink(one_candidate.we_vote_id) : null }>
                       <h2 className="h5">
                       {one_candidate.ballot_item_display_name}
                       </h2>
@@ -299,11 +321,10 @@ export default class OfficeItemCompressed extends Component {
                     </div>
                   </div> :
 
-                    candidate_with_most_support === one_candidate.ballot_item_display_name ?
-
+                  candidate_with_most_support === one_candidate.ballot_item_display_name ?
                   <div className="u-flex u-items-center">
                     <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
-                      this.goToOfficeLink : null }>
+                      () => this.goToCandidateLink(one_candidate.we_vote_id) : null }>
                       <h2 className="h5">
                         {one_candidate.ballot_item_display_name}
                       </h2>
