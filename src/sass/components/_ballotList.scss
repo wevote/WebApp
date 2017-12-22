@@ -22,6 +22,18 @@
     }
   }
 
+  &__learn-more {
+    font-size: .8rem;
+    font-weight: 200;
+    position: relative;
+    z-index: 99999;
+  }
+
+  &__view-more {
+    font-size: .8rem;
+    font-weight: 200;
+  }
+
   // //////////////////////////////////////////////
   // These are for the BallotSideBar summary pane
   // //////////////////////////////////////////////

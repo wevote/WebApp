@@ -386,7 +386,9 @@
 
 .intro-modal-vertical-scroll {
   // padding: $space-md;
-  border-radius: $radius-sm $radius-sm 0 0;
+
+  border-radius: $radius-sm $radius-sm $radius-sm $radius-sm;
+
   -webkit-column-count: 1;
   -moz-column-count: 1;
   column-count: 1;
@@ -546,6 +548,12 @@
     .intro-modal-vertical-scroll-contain_without_slider {
       height: calc(100vh - 100px);
       max-height: 540px; // Scroll area in modal: 990 - 350 = 640px We set this so that when We Vote is in a frame, the modal isn't too long.
+    }
+  }
+
+  @include breakpoints (mid-small medium) {
+    .intro-modal-vertical-scroll-contain {
+      height: calc(100vh - 400px); // slight bug with new shadow that needs this
     }
   }
 }

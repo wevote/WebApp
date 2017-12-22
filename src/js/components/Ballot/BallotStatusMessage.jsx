@@ -59,7 +59,6 @@ export default class BallotStatusMessage extends Component {
     // console.log("In BallotStatusMessage render");
     let message_string = "";
     let ballot_status_style;
-    let see_other_elections = <span />;
     // this.state.google_civic_data_exists
     if (this.state.election_is_upcoming) {
       ballot_status_style = "alert-info";
@@ -76,30 +75,25 @@ export default class BallotStatusMessage extends Component {
         message_string += "Some items below may not be on your official ballot.";
       }
     } else {
-      ballot_status_style = ""; // "alert-danger";
+      ballot_status_style = "alert-info";
       let message_in_past_string;
       if (this.state.election_day_text) {
         message_in_past_string = "This election was held on " + moment(this.state.election_day_text).format("MMM Do, YYYY") + ".";
       } else {
         message_in_past_string = "This election has passed.";
       }
-      if (this.props.toggleSelectBallotModal) {
-        see_other_elections = <span onClick={this.props.toggleSelectBallotModal} > Click <img
-          src={"/img/global/icons/gear-icon.png"}
-          className="hidden-print" role="button"
-          alt={"see other elections"}/> to see other elections.</span>;
-      }
       if (this.state.voter_specific_ballot_from_google_civic) {
         message_string += message_in_past_string; // No additional text
       // } else if (this.state.voter_entered_address) {
       //   message_string += message_in_past_string; // No additional text
-      //   message_string += see_other_elections;
       } else if (this.state.ballot_location_chosen && this.state.ballot_location_display_name) {
-        message_string += message_in_past_string + " You are looking at the ballot for " + this.state.ballot_location_display_name + ". Some items shown below may not have been on your official ballot.";
+        message_string += message_in_past_string;
+        // message_string += " You are looking at the ballot for " + this.state.ballot_location_display_name + ".";
+        message_string += " Some items shown below may not have been on your official ballot.";
       } else {
-        if (this.state.voter_entered_address) {
-          message_string += " This was a ballot near you. ";
-        }
+        // if (this.state.voter_entered_address) {
+        //   message_string += " This was a ballot near you. ";
+        // }
         message_string += message_in_past_string + " Some items below may not have been on your official ballot.";
       }
     }
@@ -109,7 +103,6 @@ export default class BallotStatusMessage extends Component {
         <div className={"alert " + ballot_status_style}>
           <a href="#" className="close" data-dismiss="alert">&times;</a>
           {message_string}
-          {see_other_elections}
         </div>
       </div>;
     } else {

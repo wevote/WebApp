@@ -48,9 +48,9 @@ export default class AddFriendsByEmail extends Component {
         on_friend_invitations_sent_step: false,
         voter: {},
       };
-      this.email_address_array = "";
-      this.first_name_array = "";
-      this.last_name_array = "";
+      this.email_address_array = [];
+      this.first_name_array = [];
+      this.last_name_array = [];
       this.allRowsOpen.bind(this);
   }
 
@@ -146,9 +146,9 @@ export default class AddFriendsByEmail extends Component {
       on_collect_email_step: false,
       on_friend_invitations_sent_step: true,
     });
-    this.setEmailAddressArray("");
-    this.setFirstNameArray("");
-    this.setLastNameArray("");
+    this.setEmailAddressArray([]);
+    this.setFirstNameArray([]);
+    this.setLastNameArray([]);
 
   }
 
@@ -187,7 +187,7 @@ export default class AddFriendsByEmail extends Component {
           email_addresses_error: true,
         });
       }
-      if (!this.state.email_address_array) {
+      if (this.state.email_address_array.length === 0 ) {
         // console.log("AddFriendsByEmailStepsManager: this.state.email_add is ", this.state.email_address_array);
         email_addresses_error = true;
         error_message += "Please enter at least one email address.";
@@ -214,7 +214,7 @@ export default class AddFriendsByEmail extends Component {
     } else if (this.state.on_collect_email_step) {
       // Validate sender's email addresses
       let sender_email_address_error = false;
-      if (!this.state.email_address_array) {
+      if (this.state.email_address_array.length === 0 ) {
         sender_email_address_error = true;
         error_message += "Please enter a valid email address for yourself. ";
       } else if (!this.senderEmailAddressVerified()) {
@@ -238,6 +238,7 @@ export default class AddFriendsByEmail extends Component {
 
   cacheFriendData (event) {
     this.setState({[event.target.name]: event.target.value});
+    // console.log(`New State => ${event.target.name}: ${event.target.value}`);
   }
 
   validateEmailAddresses () {
@@ -644,7 +645,7 @@ export default class AddFriendsByEmail extends Component {
                     onKeyDown={this.onKeyDown.bind(this)}
                     onClick={this.AddFriendsByEmailStepsManager.bind(this)}
                     bsStyle="primary"
-                    disabled={!this.state.email_address_array}
+                    disabled={!atLeastOneValidated}
                   >
                     { this.hasValidEmail() ?
                       <span>Send &gt;</span> :
