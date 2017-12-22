@@ -6,6 +6,10 @@ import ImageHandler from "../../components/ImageHandler";
 export default class OrganizationTinyDisplay extends Component {
   static propTypes = {
     showPlaceholderImage: PropTypes.bool,
+    showInfoOnly: PropTypes.bool,
+    showOppose: PropTypes.bool,
+    showSupport: PropTypes.bool,
+    toFollow: PropTypes.bool,
     voter_guide_image_url_tiny: PropTypes.string,
     voter_image_url_tiny: PropTypes.string,
     organization_photo_url_tiny: PropTypes.string,
@@ -14,7 +18,6 @@ export default class OrganizationTinyDisplay extends Component {
   };
 
   render () {
-    // TODO DALE NOTE: We need to generate a popover here
     let display_name;
     if (this.props.voter_guide_display_name) {
       display_name = this.props.voter_guide_display_name;
@@ -34,8 +37,21 @@ export default class OrganizationTinyDisplay extends Component {
     } else {
       image_url_tiny = "";
     }
+
+    let support_oppose_class = "";
+    if (this.props.showSupport) {
+      support_oppose_class = "network-positions__show-support-underline ";
+    } else if (this.props.showOppose) {
+      support_oppose_class = "network-positions__show-oppose-underline ";
+    }
+
+    let to_follow_class = "";
+    if (this.props.toFollow) {
+      to_follow_class = "network-positions__to-follow-fade ";
+    }
+
     let hide_placeholder = !this.props.showPlaceholderImage;
-    return <ImageHandler className=""
+    return <ImageHandler className={support_oppose_class + to_follow_class}
                          sizeClassName="organization-image-tiny"
                          hidePlaceholder={hide_placeholder}
                          imageUrl={image_url_tiny}

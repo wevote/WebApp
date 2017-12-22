@@ -70,7 +70,7 @@ export default class OfficeItemReadyToVote extends Component {
 
     /* This function finds the highest support count for each office but does not handle ties. If two candidates have the
     same network support count, only the first candidate will be displayed. */
-    let largest_support_count;
+    let largest_support_count = 0;
     let at_least_one_candidate_chosen = false;
 
     if (is_support_array.length === 0){
@@ -78,7 +78,6 @@ export default class OfficeItemReadyToVote extends Component {
       let network_oppose_count;
 
       this.props.candidate_list.forEach((candidate) => {
-        largest_support_count = 0;
         supportProps = SupportStore.get(candidate.we_vote_id);
         if (supportProps) {
           network_support_count = supportProps.support_count;

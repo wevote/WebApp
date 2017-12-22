@@ -94,13 +94,27 @@ export default class ItemTinyPositionBreakdownList extends Component {
         };
         let voter_organization_tiny_display;
         voter_image_url_tiny = this.state.voter.voter_photo_url_tiny ? this.state.voter.voter_photo_url_tiny : "";
+
+        let showSupport = false;
+        let showOppose = false;
+        let support_oppose_class = "";
+        if (this.props.supportProps.is_support) {
+          showSupport = true;
+          support_oppose_class = "network-positions__show-support-underline ";
+        } else if (this.props.supportProps.is_oppose) {
+          showOppose = true;
+          support_oppose_class = "network-positions__show-oppose-underline ";
+        }
+
         if (voter_image_url_tiny && voter_image_url_tiny.length) {
           voter_organization_tiny_display = <OrganizationTinyDisplay key={one_organization.organization_we_vote_id}
                                                                      showPlaceholderImage
                                                                      voter_image_url_tiny={voter_image_url_tiny}
+                                                                     showSupport={showSupport}
+                                                                     showOppose={showOppose}
                                                                      {...one_organization} />;
         } else {
-          voter_organization_tiny_display = <span key="anonIconKey" className="position-rating__source with-popover"><Icon name="avatar-generic" width={24} height={24} />You</span>;
+          voter_organization_tiny_display = <span key="anonIconKey" className={support_oppose_class + "position-rating__source with-popover"}><Icon name="avatar-generic" width={24} height={24} />You</span>;
         }
         organizations_to_display.push(voter_organization_tiny_display);
       }
@@ -212,7 +226,9 @@ export default class ItemTinyPositionBreakdownList extends Component {
               overlay={organizationPopover}>
             <span className="position-rating__source with-popover">
               <OrganizationTinyDisplay {...one_organization}
-                                       showPlaceholderImage />
+                                       showPlaceholderImage
+                                       showSupport={this.props.showSupport}
+                                       showOppose={this.props.showOppose}/>
             </span>
           </OverlayTrigger>;
         }

@@ -15,6 +15,7 @@ export default class ItemActionBar extends Component {
   static propTypes = {
     ballot_item_we_vote_id: PropTypes.string.isRequired,
     commentButtonHide: PropTypes.bool,
+    opposeHideInMobile: PropTypes.bool,
     shareButtonHide: PropTypes.bool,
     supportProps: PropTypes.object,
     toggleFunction: PropTypes.func,
@@ -200,7 +201,7 @@ export default class ItemActionBar extends Component {
         </OverlayTrigger>
         {/* Start of Oppose Button */}
         <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
-          <button className={"item-actionbar__btn item-actionbar__btn--oppose btn btn-default" + (is_oppose ? " oppose-at-state" : "")} onClick={this.opposeItem.bind(this, is_oppose)}>
+          <button className={(this.props.opposeHideInMobile ? "hidden-xs " : "") + "item-actionbar__btn item-actionbar__btn--oppose btn btn-default" + (is_oppose ? " oppose-at-state" : "")} onClick={this.opposeItem.bind(this, is_oppose)}>
                 <span className="btn__icon">
                   <Icon name="thumbs-down-icon" width={icon_size} height={icon_size} color={oppose_icon_color} />
                 </span>
