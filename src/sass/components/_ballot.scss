@@ -15,10 +15,6 @@ $tab-height-visible: $tab-height - $scrollbar-height;
   // Ballot Header
   // ===========================================
 
-  &__election-name {
-    // TODO either add some properties to this class or delete it
-  }
-
   &__filter {
     white-space: nowrap;
     overflow-x: scroll;

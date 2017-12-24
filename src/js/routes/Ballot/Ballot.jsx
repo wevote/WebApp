@@ -145,11 +145,11 @@ export default class Ballot extends Component {
     }
 
     let filter_type = this.props.location.query ? this.props.location.query.type : "all";
-    let ballot = BallotStore.getBallotByFilterType(filter_type);
-    if (ballot !== undefined) {
-      // console.log("ballot !== undefined");
+    let ballot_with_all_items = BallotStore.getBallotByFilterType(filter_type);
+    if (ballot_with_all_items !== undefined) {
+      // console.log("ballot_with_all_items !== undefined");
       this.setState({
-        ballot: ballot,
+        ballot_with_all_items: ballot_with_all_items,
         filter_type: filter_type
       });
     }
@@ -194,7 +194,7 @@ export default class Ballot extends Component {
   componentWillReceiveProps (nextProps){
     // console.log("Ballot componentWillReceiveProps, nextProps: ", nextProps);
     // console.log("Ballot this.state: ", this.state);
-    let filter_type = nextProps.location.query ? nextProps.location.query.type : "all";
+    let filter_type = nextProps.location && nextProps.location.query ? nextProps.location.query.type : "all";
 
     // We don't want to let the google_civic_election_id disappear
     let google_civic_election_id = nextProps.params.google_civic_election_id || this.state.google_civic_election_id;
@@ -203,20 +203,23 @@ export default class Ballot extends Component {
     let ballot_location_shortcut = nextProps.params.ballot_location_shortcut || "";
     ballot_location_shortcut = ballot_location_shortcut.trim();
 
-    this.setState({
-      ballot: BallotStore.getBallotByFilterType(filter_type),
-      ballot_returned_we_vote_id: ballot_returned_we_vote_id,
-      ballot_location_shortcut: ballot_location_shortcut,
-      filter_type: filter_type,
-      google_civic_election_id: parseInt(google_civic_election_id, 10),
-      location: nextProps.location,
-      pathname: nextProps.location.pathname,
-    });
+    // Were there any actual changes?
+    if (ballot_returned_we_vote_id !== this.state.ballot_returned_we_vote_id || ballot_location_shortcut !== this.state.ballot_location_shortcut || google_civic_election_id !== this.state.google_civic_election_id || filter_type !== this.state.filter_type) {
+      this.setState({
+        ballot: BallotStore.getBallotByFilterType(filter_type),
+        ballot_returned_we_vote_id: ballot_returned_we_vote_id,
+        ballot_location_shortcut: ballot_location_shortcut,
+        filter_type: filter_type,
+        google_civic_election_id: parseInt(google_civic_election_id, 10),
+        location: nextProps.location,
+        pathname: nextProps.location.pathname,
+      });
 
-    if (google_civic_election_id && google_civic_election_id !== 0) {
-      AnalyticsActions.saveActionBallotVisit(google_civic_election_id);
-    } else {
-      AnalyticsActions.saveActionBallotVisit(VoterStore.election_id());
+      if (google_civic_election_id && google_civic_election_id !== 0) {
+        AnalyticsActions.saveActionBallotVisit(google_civic_election_id);
+      } else {
+        AnalyticsActions.saveActionBallotVisit(VoterStore.election_id());
+      }
     }
   }
 
@@ -323,12 +326,12 @@ export default class Ballot extends Component {
     if (this.state.mounted) {
       if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) {
         // Ballot is found but ballot is empty. We want to stay put.
-        // console.log("onBallotStoreChange: ballot is empty");
+        // console.log("onBallotStoreChange: ballot_with_all_items is empty");
       } else {
         let filter_type = this.state.location.query ? this.state.location.query.type : "all";
         // console.log("onBallotStoreChange, filter_type:", filter_type);
         this.setState({
-          ballot: BallotStore.getBallotByFilterType(filter_type),
+          ballot_with_all_items: BallotStore.getBallotByFilterType(filter_type),
           filter_type: filter_type
         });
       }
@@ -435,11 +438,11 @@ export default class Ballot extends Component {
 
   render () {
     // console.log("Ballot render, this.state: ", this.state);
-    let ballot = this.state.ballot;
+    let ballot_with_all_items = this.state.ballot_with_all_items;
     let text_for_map_search = VoterStore.getTextForMapSearch();
     let issues_voter_can_follow = IssueStore.getIssuesVoterCanFollow(); // Don't auto-open intro until Issues are loaded
 
-    if (!ballot) {
+    if (!ballot_with_all_items) {
       return <div className="ballot container-fluid well u-stack--md u-inset--md">
         { this.state.showBallotIntroModal && issues_voter_can_follow.length !== 0 ?
           <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
@@ -476,8 +479,8 @@ export default class Ballot extends Component {
           </div>
         </div>;
 
-    // console.log("ballot: ", ballot);
-    const emptyBallot = ballot.length === 0 ?
+    // console.log("ballot_with_all_items: ", ballot_with_all_items);
+    const emptyBallot = ballot_with_all_items.length === 0 ?
       <div>
         <h3 className="text-center">{this.getEmptyMessageByFilterType(this.state.filter_type)}</h3>
         {emptyBallotButton}
@@ -509,7 +512,7 @@ export default class Ballot extends Component {
       ballot_location_display_name = voter_ballot_location.ballot_location_display_name;
     }
 
-    if (ballot.length === 0 && in_remaining_decisions_mode) {
+    if (ballot_with_all_items.length === 0 && in_remaining_decisions_mode) {
       browserHistory.push(this.state.pathname);
     }
     // console.log("Ballot.jsx, this.state.google_civic_election_id: ", this.state.google_civic_election_id);
@@ -529,7 +532,7 @@ export default class Ballot extends Component {
                 <Helmet title="Ballot - We Vote" />
                 <BrowserPushMessage incomingProps={this.props} />
                 <header className="ballot__header__group">
-                  <h1 className="h1 ballot__election-name ballot__header__title">
+                  <h1 className="h1 ballot__header__title">
                     { election_name ?
                       <OverlayTrigger placement="top" overlay={electionTooltip} >
                        <span className="u-push--sm">{election_name}</span>
@@ -543,7 +546,7 @@ export default class Ballot extends Component {
                   </h1>
                 </header>
 
-                {this.state.ballot.length > 0 ?
+                {this.state.ballot_with_all_items.length > 0 ?
                   <div>
                     <BallotStatusMessage ballot_location_chosen
                                          ballot_location_display_name={ballot_location_display_name}
@@ -574,14 +577,6 @@ export default class Ballot extends Component {
         </div>
       </div>
 
-      {/* ballot.length === 0 ?
-        null :
-        <div className="visible-xs-block hidden-print">
-          <div className="BallotItemsSummary">
-            <a onClick={this.toggleBallotSummaryModal}>Summary of Ballot Items</a>
-          </div>
-        </div> */}
-
       <div className="page-content-container">
         <div className="container-fluid">
           {emptyBallot}
@@ -598,12 +593,12 @@ export default class Ballot extends Component {
                        target="_blank">See more information about casting your official vote.</a>
                   </div>
                   <div className="BallotList">
-                    {ballot.map( (item) => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
+                    {ballot_with_all_items.map( (item) => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
                   </div>
                 </div> :
                 <div>
                   <div className="BallotList">
-                    {ballot.map( (item) => <BallotItemCompressed toggleCandidateModal={this.toggleCandidateModal}
+                    {ballot_with_all_items.map( (item) => <BallotItemCompressed toggleCandidateModal={this.toggleCandidateModal}
                                                                  toggleMeasureModal={this.toggleMeasureModal}
                                                                  key={item.we_vote_id}
                                                                  {...item} />)}
@@ -619,7 +614,7 @@ export default class Ballot extends Component {
               }
             </div>
 
-            { ballot.length === 0 ?
+            { ballot_with_all_items.length === 0 ?
               null :
               <div className="col-md-4 hidden-xs sidebar-menu">
                 <BallotSideBar displayTitle displaySubtitles />

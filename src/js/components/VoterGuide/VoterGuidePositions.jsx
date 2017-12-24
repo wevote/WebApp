@@ -1,5 +1,4 @@
 import React, {Component, PropTypes } from "react";
-// import { OverlayTrigger } from "react-bootstrap";
 import { capitalizeString } from "../../utils/textFormat";
 import Helmet from "react-helmet";
 import BallotStore from "../../stores/BallotStore";
@@ -28,11 +27,12 @@ export default class VoterGuidePositions extends Component {
   }
 
   componentDidMount (){
+    // console.log("VoterGuidePositions, componentDidMount, this.props.organization: ", this.props.organization);
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    // console.log("VoterGuidePositions, componentDidMount, this.props.organization: ", this.props.organization);
     VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
+    // TODO: COMMENT OUT because they were added to OrganizationVoterGuideTabs?
     // Positions for this organization, for this voter / election
     OrganizationActions.retrievePositions(this.props.organization.organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
@@ -46,6 +46,7 @@ export default class VoterGuidePositions extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    // console.log("VoterGuidePositions componentWillReceiveProps");
     // When a new organization is passed in, update this component to show the new data
     let different_election = this.state.current_google_civic_election_id !== VoterStore.election_id();
     let different_organization = this.state.current_organization_we_vote_id !== nextProps.organization.organization_we_vote_id;
@@ -53,10 +54,10 @@ export default class VoterGuidePositions extends Component {
     if (different_election || different_organization) {
       // console.log("VoterGuidePositions, componentWillReceiveProps, nextProps.organization: ", nextProps.organization);
       VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id, VoterStore.election_id());
-      // Positions for this organization, for this voter / election
-      OrganizationActions.retrievePositions(nextProps.organization.organization_we_vote_id, true);
-      // Positions for this organization, NOT including for this voter / election
-      OrganizationActions.retrievePositions(nextProps.organization.organization_we_vote_id, false, true);
+      // // Positions for this organization, for this voter / election
+      // OrganizationActions.retrievePositions(nextProps.organization.organization_we_vote_id, true);
+      // // Positions for this organization, NOT including for this voter / election
+      // OrganizationActions.retrievePositions(nextProps.organization.organization_we_vote_id, false, true);
       this.setState({
         current_google_civic_election_id: VoterStore.election_id(),
         current_organization_we_vote_id: nextProps.organization.organization_we_vote_id,

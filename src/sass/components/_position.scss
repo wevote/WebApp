@@ -5,26 +5,32 @@
 
 @include media-object('.explicit-position', '.explicit-position__icon', '.explicit-position__text', $margin: 5px);
 
-.explicit-position__icon {
-  margin-top: $space-xxs;
-}
+.explicit-position {
+  &__icon {
+    margin-top: $space-xxs;
+  }
 
-.explicit-position__text {
-  padding-top: $space-xs;
-  color: $gray-dark;
-}
+  &__text {
+    padding-top: $space-xs;
+    color: $gray-dark;
+  }
 
-.explicit-position__position-label {
-  font-weight: bold;
-}
+  &__position-label {
+    font-weight: bold;
+  }
 
-.explicit-position__source {
-  color: $gray-mid;
-}
+  &__source {
+    color: $gray-mid;
+  }
 
-.explicit-position__media-player {
-  max-width: 300px;
-  max-height: 231px;
+  &__media-player {
+    max-width: 300px;
+    max-height: 231px;
+  }
+
+  &__voter-guide-increase {
+    font-size: 1.15rem;
+  }
 }
 
 // Position Ratings

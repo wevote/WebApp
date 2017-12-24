@@ -119,7 +119,7 @@ export default class EditPositionAboutCandidateModal extends Component {
               <div className="card-main candidate-card">
                 <FollowToggle we_vote_id={organization.organization_we_vote_id}/>
                 <OrganizationCard organization={organization}
-                                  turn_off_description
+                                  turnOffDescription
                                   followToggleOn/>
               </div>
             <ul className="list-group">

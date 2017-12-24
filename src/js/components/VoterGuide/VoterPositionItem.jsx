@@ -130,7 +130,7 @@ export default class VoterPositionItem extends Component {
           {/*<i className="icon-icon-add-friends-2-1 icon-light icon-medium" />*/}
           { is_candidate ?
             <ImageHandler
-              className="card-child__avatar-round"
+              className="card-child__avatar--round"
               sizeClassName="icon-lg "
               imageUrl={position.ballot_item_image_url_https_large}
               alt="candidate-photo"

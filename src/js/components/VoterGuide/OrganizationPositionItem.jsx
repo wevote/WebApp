@@ -6,6 +6,7 @@ import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActi
 import FriendsOnlyIndicator from "../Widgets/FriendsOnlyIndicator";
 import VoterStore from "../../stores/VoterStore";
 import OfficeNameText from "../Widgets/OfficeNameText";
+import OrganizationStore from "../../stores/OrganizationStore";
 import PositionInformationOnlySnippet from "../Widgets/PositionInformationOnlySnippet";
 import PositionRatingSnippet from "../Widgets/PositionRatingSnippet";
 import PositionPublicToggle from "../Widgets/PositionPublicToggle";
@@ -24,6 +25,8 @@ export default class OrganizationPositionItem extends Component {
     position: PropTypes.object.isRequired,
     popover_off: PropTypes.bool,
     stance_display_off: PropTypes.bool,
+    turnOffLogo: PropTypes.bool,
+    turnOffName: PropTypes.bool,
   };
 
   constructor (props) {
@@ -36,18 +39,37 @@ export default class OrganizationPositionItem extends Component {
   }
 
   componentDidMount () {
+    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.setState({
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.props.organization.organization_we_vote_id),
+    });
+  }
+  componentWillReceiveProps (nextProps) {
+    // console.log("OrganizationPositionItem componentWillReceiveProps");
+    this.setState({
+      organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
+    });
   }
 
   componentWillUnmount () {
+    this.organizationStoreListener.remove();
     this.supportStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
+  _onOrganizationStoreChange (){
+    // console.log("OrganizationPositionItem _onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
+    this.setState({
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
+    });
+  }
+
   onSupportStoreChange () {
     this.setState({
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
       supportProps: SupportStore.get(this.props.position.ballot_item_we_vote_id),
       transitioning: false
     });
@@ -63,7 +85,12 @@ export default class OrganizationPositionItem extends Component {
 
   render (){
     var position = this.props.position;
-    let organization = this.props.organization;
+    let organization = this.state.organization;
+
+    if (!position.ballot_item_we_vote_id) {
+      // console.log("OrganizationPositionItem cannot render yet -- missing position and organization");
+      return null;
+    }
 
     let { stance_display_off, comment_text_off, popover_off, placement } = this.props;
     const { supportProps } = this.state;
@@ -156,13 +183,13 @@ export default class OrganizationPositionItem extends Component {
     }
     return <li className="position-item card-child">
 
-      { is_candidate ?
+      { is_candidate && !this.props.turnOffLogo ?
         <div className="card-child__media-object-anchor">
           <Link to={ ballotItemLink }
                 className="u-no-underline"
                 onlyActiveOnIndex={false}>
             <ImageHandler
-              className="card-child__avatar-round"
+              className="card-child__avatar--round"
               sizeClassName="icon-lg "
               imageUrl={position.ballot_item_image_url_https_large}
               alt="candidate-photo"
@@ -173,25 +200,27 @@ export default class OrganizationPositionItem extends Component {
       }
       <div className="card-child__media-object-content">
         <div className="card-child__content">
-          <div className="u-flex items-center">
-            <Link to={ ballotItemLink }
-                  onlyActiveOnIndex={false}
-                  className="position-rating__candidate-name u-flex-auto">
-                  {ballot_item_display_name}
-            </Link>
+          {!this.props.turnOffName ?
+            <div className="u-flex items-center">
+              <Link to={ ballotItemLink }
+                    onlyActiveOnIndex={false}
+                    className="position-rating__candidate-name u-flex-auto">
+                    {ballot_item_display_name}
+              </Link>
 
-            { (signed_in_with_this_twitter_account ||
-              signed_in_with_this_organization ||
-              signed_in_with_this_facebook_account) &&
-              this.props.editMode ?
-              <PositionPublicToggle ballot_item_we_vote_id={position.ballot_item_we_vote_id}
-                type={position.kind_of_ballot_item}
-                supportProps={supportProps}
-                className="organization-position-item-toggle"/> :
-                <FriendsOnlyIndicator isFriendsOnly={!is_public_position}/>
-            }
-            <BookmarkToggle we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
-          </div>
+              { (signed_in_with_this_twitter_account ||
+                signed_in_with_this_organization ||
+                signed_in_with_this_facebook_account) &&
+                this.props.editMode ?
+                <PositionPublicToggle ballot_item_we_vote_id={position.ballot_item_we_vote_id}
+                  type={position.kind_of_ballot_item}
+                  supportProps={supportProps}
+                  className="organization-position-item-toggle"/> :
+                  <FriendsOnlyIndicator isFriendsOnly={!is_public_position}/>
+              }
+              <BookmarkToggle we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
+            </div> :
+            null }
           { position.kind_of_ballot_item === "CANDIDATE" && contest_office_name !== undefined ?
             <OfficeNameText political_party={political_party} contest_office_name={contest_office_name} /> :
             null

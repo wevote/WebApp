@@ -46,7 +46,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   componentDidMount () {
-    console.log("ItemSupportOpposeRaccoon, componentWillReceiveProps");
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     CandidateActions.positionListForBallotItem(this.props.ballotItemWeVoteId);
     this.setState({
@@ -63,7 +62,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log("ItemSupportOpposeRaccoon, componentWillReceiveProps");
     this.setState({
       ballot_item_display_name: nextProps.ballot_item_display_name,
       ballot_item_we_vote_id: nextProps.ballotItemWeVoteId,
@@ -329,7 +327,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         {/* Support Score here */}
         <div className="network-positions-stacked__count">
           <span className="network-positions__support-score u-cursor--pointer u-no-break" onClick={() => this.goToCandidateLink(this.state.ballot_item_we_vote_id)}>
-            { total_score === 0 ? <span>&nbsp;&nbsp;{ total_score_with_sign }&nbsp;&nbsp;</span> : <span>&nbsp;{ total_score_with_sign }&nbsp;</span>}
+            { total_score === 0 ? <span>&nbsp;&nbsp;&nbsp;{ total_score_with_sign }&nbsp;</span> : <span>&nbsp;{ total_score_with_sign }&nbsp;</span>}
           </span>
           <span className="sr-only">{total_score > 0 ? total_score + " Support" : null }{total_score < 0 ? total_score + " Oppose" : null }</span>
         </div>
