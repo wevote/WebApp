@@ -360,9 +360,8 @@ class OrganizationStore extends ReduceStore {
             prior_copy_of_organization = all_cached_organizations_dict[organization_we_vote_id];
             organization = this._copyListsToNewOrganization(organization, prior_copy_of_organization);
           }
-          // And now update the position_list_for_one_election
           organization.position_list_for_one_election = position_list_for_one_election;
-          // console.log("organization-not FRIENDS_ONLY-filter_for_voter: ", organization);
+          // console.log("organization-NOT FRIENDS_ONLY-filter_for_voter: ", organization);
           all_cached_organizations_dict[organization_we_vote_id] = organization;
           return {
             ...state,
@@ -372,8 +371,14 @@ class OrganizationStore extends ReduceStore {
           var position_list_for_all_except_one_election = action.res.position_list;
           all_cached_organizations_dict = state.all_cached_organizations_dict;
           organization = all_cached_organizations_dict[organization_we_vote_id] || {};
+
+          // Make sure to maintain the lists we attach to the organization from other API calls
+          if (all_cached_organizations_dict[organization_we_vote_id]) {
+            prior_copy_of_organization = all_cached_organizations_dict[organization_we_vote_id];
+            organization = this._copyListsToNewOrganization(organization, prior_copy_of_organization);
+          }
           organization.position_list_for_all_except_one_election = position_list_for_all_except_one_election;
-          // console.log("organization-not FRIENDS_ONLY-filter_out_voter: ", organization);
+          // console.log("organization-NOT FRIENDS_ONLY-filter_out_voter: ", organization);
           all_cached_organizations_dict[organization_we_vote_id] = organization;
           return {
             ...state,
@@ -383,8 +388,14 @@ class OrganizationStore extends ReduceStore {
           var position_list = action.res.position_list;
           all_cached_organizations_dict = state.all_cached_organizations_dict;
           organization = all_cached_organizations_dict[organization_we_vote_id] || {};
+
+          // Make sure to maintain the lists we attach to the organization from other API calls
+          if (all_cached_organizations_dict[organization_we_vote_id]) {
+            prior_copy_of_organization = all_cached_organizations_dict[organization_we_vote_id];
+            organization = this._copyListsToNewOrganization(organization, prior_copy_of_organization);
+          }
           organization.position_list = position_list;
-          // console.log("organization-not FRIENDS_ONLY-filter_for_voter: ", organization);
+          // console.log("organization-NOT FRIENDS_ONLY-no filter: ", organization);
           all_cached_organizations_dict[organization_we_vote_id] = organization;
           return {
             ...state,

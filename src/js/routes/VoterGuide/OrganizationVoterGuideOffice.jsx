@@ -10,7 +10,8 @@ import OfficeStore from "../../stores/OfficeStore";
 import SearchAllActions from "../../actions/SearchAllActions";
 import VoterStore from "../../stores/VoterStore";
 
-export default class Office extends Component {
+// This is based on routes/Ballot/Office
+export default class OrganizationVoterGuideOffice extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired
   };
@@ -20,6 +21,7 @@ export default class Office extends Component {
     this.state = {
       office: {},
       office_we_vote_id: "",
+      organization_we_vote_id: "",
     };
   }
 
@@ -33,10 +35,12 @@ export default class Office extends Component {
     }
     this.setState({
       office_we_vote_id: this.props.params.office_we_vote_id,
+      organization_we_vote_id: this.props.params.organization_we_vote_id,
     });
 
     AnalyticsActions.saveActionOffice(VoterStore.election_id(), this.props.params.office_we_vote_id);
     SearchAllActions.exitSearch();
+    console.log("OrganizationVoterGuideOffice, organization_we_vote_id: ", this.props.params.organization_we_vote_id);
   }
 
   componentWillReceiveProps (nextProps) {

@@ -18,7 +18,8 @@ export default class OrganizationCard extends Component {
     ballotItemWeVoteId: PropTypes.string,
     followToggleOn: PropTypes.bool,
     organization: PropTypes.object.isRequired,
-    turn_off_description: PropTypes.bool
+    turnOffDescription: PropTypes.bool,
+    turnOffLogo: PropTypes.bool,
   };
 
   constructor (props) {
@@ -127,9 +128,11 @@ export default class OrganizationCard extends Component {
 
     return <div className="card-main__media-object">
       <div className="card-main__media-object-anchor">
-        <Link to={voterGuideLink} className="u-no-underline">
-          <ImageHandler imageUrl={organization_photo_url_large} className="card-main__org-avatar" sizeClassName="icon-lg "/>
-        </Link>
+        {this.props.turnOffLogo ?
+          null :
+          <Link to={voterGuideLink} className="u-no-underline">
+            <ImageHandler imageUrl={organization_photo_url_large} className="card-main__org-avatar" sizeClassName="icon-lg "/>
+          </Link> }
         {this.props.followToggleOn ?
           <div className="u-margin-top--md">
             <FollowToggle we_vote_id={this.state.organization_we_vote_id}
@@ -144,30 +147,32 @@ export default class OrganizationCard extends Component {
         {/* Organization supports ballot item */}
         {position_description}
 
-        { twitterDescriptionMinusName && !this.props.turn_off_description ?
+        { twitterDescriptionMinusName && !this.props.turnOffDescription ?
           <ParsedTwitterDescription
             twitter_description={twitterDescriptionMinusName}
           /> :
           <p className="card-main__description" />
         }
-        <div>
-          { organization_twitter_handle ?
-            <span>@{organization_twitter_handle}&nbsp;&nbsp;</span> :
-            null
-          }
-          {/* twitter_followers_count ?
-            <span className="twitter-followers__badge">
-              <span className="fa fa-twitter twitter-followers__icon" />
-              {numberWithCommas(twitter_followers_count)}
-            </span> :
-            null
-          */}
-          &nbsp;&nbsp;
-          { organization_website ?
-            <span><a href={organization_website} target="_blank">Website <i className="fa fa-external-link" /></a></span> :
-            null }
-          {/*5 of your friends follow Organization Name<br />*/}
-        </div>
+        { !this.props.turnOffDescription ?
+          <div>
+            { organization_twitter_handle ?
+              <span>@{organization_twitter_handle}&nbsp;&nbsp;</span> :
+              null
+            }
+            {/* twitter_followers_count ?
+              <span className="twitter-followers__badge">
+                <span className="fa fa-twitter twitter-followers__icon" />
+                {numberWithCommas(twitter_followers_count)}
+              </span> :
+              null
+            */}
+            &nbsp;&nbsp;
+            { organization_website ?
+              <span><a href={organization_website} target="_blank">Website <i className="fa fa-external-link" /></a></span> :
+              null }
+            {/*5 of your friends follow Organization Name<br />*/}
+          </div> :
+          null }
       </div>
     </div>;
   }

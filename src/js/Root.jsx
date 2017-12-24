@@ -21,8 +21,6 @@ import FAQ from "./routes/More/FAQ";
 import FacebookInvitableFriends from "./routes/FacebookInvitableFriends";
 import Friends from "./routes/Friends";
 import GetStarted from "./routes/Intro/GetStarted";
-import OrganizationVoterGuide from "./routes/VoterGuide/OrganizationVoterGuide";
-import OrganizationVoterGuideEdit from "./routes/VoterGuide/OrganizationVoterGuideEdit";
 import HowToUse from "./routes/More/HowToUse";
 import Intro from "./routes/Intro/Intro";
 import IntroContests from "./routes/Intro/IntroContests";
@@ -39,6 +37,10 @@ import Opinions from "./routes/Opinions";
 import OpinionsFollowed from "./routes/OpinionsFollowed";
 import OpinionsIgnored from "./routes/OpinionsIgnored";
 import Organization from "./routes/More/Organization";
+import OrganizationVoterGuide from "./routes/VoterGuide/OrganizationVoterGuide";
+import OrganizationVoterGuideCandidate from "./routes/VoterGuide/OrganizationVoterGuideCandidate";
+import OrganizationVoterGuideEdit from "./routes/VoterGuide/OrganizationVoterGuideEdit";
+import OrganizationVoterGuideOffice from "./routes/VoterGuide/OrganizationVoterGuideOffice";
 import PollingPlaceLocatorModal from "./routes/Ballot/PollingPlaceLocatorModal";
 import Privacy from "./routes/More/Privacy";
 import ProcessingDonation from "./routes/More/ProcessingDonation";
@@ -79,7 +81,9 @@ const routes = () =>
     <Route path="/ballot" component={BallotIndex}>
       <IndexRoute component={Ballot}/>
       <Route path="/ballot?wait_until_voter_sign_in_completes=:wait_until_voter_sign_in_completes" component={Ballot} />
+      <Route path="/office/:office_we_vote_id/:organization_we_vote_id" component={OrganizationVoterGuideOffice} />
       <Route path="/office/:office_we_vote_id" component={Office} />
+      <Route path="/candidate/:candidate_we_vote_id/:organization_we_vote_id" component={OrganizationVoterGuideCandidate} />
       <Route path="/candidate/:candidate_we_vote_id" component={Candidate} />
       <Route path="/measure/:measure_we_vote_id" component={Measure} />
     </Route>
