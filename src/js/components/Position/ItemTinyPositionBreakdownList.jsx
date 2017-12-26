@@ -10,7 +10,7 @@ var Icon = require("react-svg-icons");
 export default class ItemTinyPositionBreakdownList extends Component {
 
   static propTypes = {
-    ballot_item_display_name: PropTypes.string.isRequired,
+    // ballot_item_display_name: PropTypes.string.isRequired,  // We have removed this, so we can remove it from all places that call this component
     ballotItemWeVoteId: PropTypes.string.isRequired,
     position_list: PropTypes.array,
     showInfoOnly: PropTypes.bool,

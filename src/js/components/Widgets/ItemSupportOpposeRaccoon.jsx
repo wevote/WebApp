@@ -14,7 +14,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string,
     ballotItemWeVoteId: PropTypes.string,
-    display_cheetah_details_flag: PropTypes.bool,
     maximumOrganizationDisplay: PropTypes.number,
     organizationsToFollowSupport: PropTypes.array,
     organizationsToFollowOppose: PropTypes.array,
@@ -33,7 +32,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
       ballot_item_display_name: "",
       ballot_item_we_vote_id: "",
       candidate: {},
-      display_cheetah_details_flag: false,
       maximum_organization_display: 0,
       organizations_to_follow_support: [],
       organizations_to_follow_oppose: [],
@@ -42,7 +40,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
     };
 
     this.goToCandidateLink = this.goToCandidateLink.bind(this);
-    this.openCandidateModal = this.openCandidateModal.bind(this);
   }
 
   componentDidMount () {
@@ -52,7 +49,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
       ballot_item_display_name: this.props.ballot_item_display_name,
       ballot_item_we_vote_id: this.props.ballotItemWeVoteId,
       candidate: CandidateStore.getCandidate(this.props.ballotItemWeVoteId),
-      display_cheetah_details_flag: this.props.display_cheetah_details_flag,
       maximum_organization_display: this.props.maximumOrganizationDisplay,
       organizations_to_follow_support: this.props.organizationsToFollowSupport,
       organizations_to_follow_oppose: this.props.organizationsToFollowOppose,
@@ -66,7 +62,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
       ballot_item_display_name: nextProps.ballot_item_display_name,
       ballot_item_we_vote_id: nextProps.ballotItemWeVoteId,
       candidate: CandidateStore.getCandidate(nextProps.ballotItemWeVoteId),
-      display_cheetah_details_flag: nextProps.display_cheetah_details_flag,
       maximum_organization_display: nextProps.maximumOrganizationDisplay,
       organizations_to_follow_support: nextProps.organizationsToFollowSupport,
       organizations_to_follow_oppose: nextProps.organizationsToFollowOppose,
@@ -233,13 +228,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
   goToCandidateLink (candidate_we_vote_id) {
     browserHistory.push("/candidate/" + candidate_we_vote_id);
-  }
-
-  openCandidateModal () {
-    // console.log("this.state.candidate: ", this.state.candidate);
-    if (this.state.candidate.we_vote_id) {
-      this.props.toggleCandidateModal(this.state.candidate);
-    }
   }
 
   render () {
