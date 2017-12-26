@@ -235,10 +235,12 @@ export default class Application extends Component {
     }
 
     let show_back_to_header = false;
-    if (stringContains("/bto/", pathname) || stringContains("/btvg/", pathname)) {
+    if (stringContains("/btdb/", pathname) || stringContains("/btdo/", pathname) || stringContains("/bto/", pathname) || stringContains("/btvg/", pathname)) {
       // If here, we want the top header to be "Back To..."
+      // "/btdb/" stands for "Back To Default Ballot Page"
+      // "/btdo/" stands for "Back To Default Office Page"
       // "/btvg/" stands for "Back To Voter Guide Page"
-      // "/bto/" stands for "Back To Office Page"
+      // "/bto/" stands for "Back To Voter Guide Office Page"
       show_back_to_header = true;
     }
 

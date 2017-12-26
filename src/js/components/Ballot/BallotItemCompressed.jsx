@@ -12,9 +12,11 @@ export default class BallotItemCompressed extends Component {
     ballot_item_display_name: PropTypes.string.isRequired,
     candidate_list: PropTypes.array,
     kind_of_ballot_item: PropTypes.string.isRequired,
-    we_vote_id: PropTypes.string.isRequired,
+    organization: PropTypes.object,
+    organization_we_vote_id: PropTypes.string,
     toggleCandidateModal: PropTypes.func,
     toggleMeasureModal: PropTypes.func,
+    we_vote_id: PropTypes.string.isRequired,
   };
 
   isMeasure () {

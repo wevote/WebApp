@@ -6,6 +6,7 @@ import BallotSideBarLink from "../Navigation/BallotSideBarLink";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
+import OrganizationStore from "../../stores/OrganizationStore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import ImageHandler from "../ImageHandler";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
@@ -14,26 +15,33 @@ import SupportStore from "../../stores/SupportStore";
 
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 5; // Set to 5 in raccoon, and 3 in walrus
 
+// This is related to components/VoterGuide/VoterGuideOfficeItemCompressed
 export default class OfficeItemCompressed extends Component {
   static propTypes = {
     we_vote_id: PropTypes.string.isRequired,
-    kind_of_ballot_item: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string.isRequired,
-    link_to_ballot_item_page: PropTypes.bool,
     candidate_list: PropTypes.array,
+    kind_of_ballot_item: PropTypes.string.isRequired,
+    link_to_ballot_item_page: PropTypes.bool,
+    organization: PropTypes.object,
+    organization_we_vote_id: PropTypes.string,
     toggleCandidateModal: PropTypes.func,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      transitioning: false,
-      maximum_organization_display: 4,
       display_all_candidates_flag: false,
       display_raccoon_details_flag: false,
+      editMode: false,
+      maximum_organization_display: 4,
+      organization: {},
       show_position_statement: true,
+      transitioning: false,
     };
 
+    this.getCandidateLink = this.getCandidateLink.bind(this);
+    this.getOfficeLink = this.getOfficeLink.bind(this);
     this.goToCandidateLink = this.goToCandidateLink.bind(this);
     this.goToOfficeLink = this.goToOfficeLink.bind(this);
     this.openCandidateModal = this.openCandidateModal.bind(this);
@@ -42,9 +50,10 @@ export default class OfficeItemCompressed extends Component {
   }
 
   componentDidMount () {
+    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
-    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
 
     // console.log("this.props.candidate_list: ", this.props.candidate_list);
     if (this.props.candidate_list && this.props.candidate_list.length) {
@@ -56,19 +65,46 @@ export default class OfficeItemCompressed extends Component {
         }
       });
     }
+    if (this.props.organization && this.props.organization.organization_we_vote_id) {
+      this.setState({
+        organization: this.props.organization,
+      });
+    }
+  }
+
+  componentWillReceiveProps (nextProps){
+    // console.log("VoterGuideOfficeItemCompressed componentWillReceiveProps, nextProps: ", nextProps);
+    if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
+      this.setState({
+         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
+       });
+    }
   }
 
   componentWillUnmount () {
-    this.voterGuideStoreListener.remove();
+    this.organizationStoreListener.remove();
     this.supportStoreListener.remove();
+    this.voterGuideStoreListener.remove();
   }
 
   onVoterGuideStoreChange () {
     this.setState({ transitioning: false });
   }
 
+  _onOrganizationStoreChange (){
+    // console.log("VoterGuideOfficeItemCompressed _onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
+    this.setState({
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
+    });
+  }
+
   onSupportStoreChange () {
-    this.setState({ transitioning: false });
+    // Whenever positions change, we want to make sure to get the latest organization, because it has
+    //  position_list_for_one_election and position_list_for_all_except_one_election attached to it
+    this.setState({
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
+      transitioning: false,
+    });
   }
 
   toggleDisplayAllCandidates () {
@@ -86,12 +122,34 @@ export default class OfficeItemCompressed extends Component {
     }
   }
 
+  getCandidateLink (candidate_we_vote_id) {
+    if (this.state.organization && this.state.organization.organization_we_vote_id) {
+      // If there is an organization_we_vote_id, signal that we want to link back to voter_guide for that organization
+      return "/candidate/" + candidate_we_vote_id + "/btvg/" + this.state.organization.organization_we_vote_id;
+    } else {
+      // If no organization_we_vote_id, signal that we want to link back to default ballot
+      return "/candidate/" + candidate_we_vote_id + "/b/btdb/";
+    }
+  }
+
+  getOfficeLink () {
+    if (this.state.organization && this.state.organization.organization_we_vote_id) {
+      // If there is an organization_we_vote_id, signal that we want to link back to voter_guide for that organization
+      return "/office/" + this.props.we_vote_id + "/btvg/" + this.state.organization.organization_we_vote_id;
+    } else {
+      // If no organization_we_vote_id, signal that we want to link back to default ballot
+      return "/office/" + this.props.we_vote_id + "/b/btdb/";
+    }
+  }
+
   goToCandidateLink (candidate_we_vote_id) {
-    browserHistory.push("/candidate/" + candidate_we_vote_id);
+    let candidate_link = this.getCandidateLink(candidate_we_vote_id);
+    browserHistory.push(candidate_link);
   }
 
   goToOfficeLink () {
-    browserHistory.push("/office/" + this.props.we_vote_id);
+    let office_link = this.getOfficeLink();
+    browserHistory.push(office_link);
   }
 
   render () {
@@ -121,7 +179,6 @@ export default class OfficeItemCompressed extends Component {
                             text={ballot_item_display_name}
                             textTruncateChild={null} />
             </Link>;
-
 
     // Ready to Vote code
     let is_support_array = [];
@@ -189,19 +246,20 @@ export default class OfficeItemCompressed extends Component {
             null
           }
         </span>
+
         <h2 className="u-f3 card-main__ballot-name u-stack--sm">{ballot_item_display_name_raccoon}</h2>
 
         {/* Only show the candidates if the Office is "unfurled" */}
         { this.state.display_raccoon_details_flag ?
           <span>{candidate_list_to_display.map((one_candidate) => {
             let candidate_we_vote_id = one_candidate.we_vote_id;
+            let candidateSupportStore = SupportStore.get(candidate_we_vote_id);
             let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidate_we_vote_id);
             let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidate_we_vote_id);
 
             // let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + ". " : "";
             // let candidate_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
             // let candidate_text = candidate_party_text + candidate_description_text;
-            let candidateSupportStore = SupportStore.get(candidate_we_vote_id);
             let is_support = false;
             let is_oppose = false;
             let voter_statement_text = false;
@@ -230,10 +288,9 @@ export default class OfficeItemCompressed extends Component {
               </a>
             </h4>;
 
-            // We are experimenting with different display options
             let positions_display_raccoon = <div>
               <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
-                {/* Positions in Your Network and Possible Voter Guides to Follow (Desktop) */}
+                {/* Positions in Your Network and Possible Voter Guides to Follow */}
                 <ItemSupportOpposeRaccoon ballotItemWeVoteId={candidate_we_vote_id}
                                           ballot_item_display_name={one_candidate.ballot_item_display_name}
                                           display_raccoon_details_flag={this.state.display_raccoon_details_flag}
@@ -303,8 +360,8 @@ export default class OfficeItemCompressed extends Component {
         {/* If the office is "rolled up", show some details */}
         { !this.state.display_raccoon_details_flag ?
           <div>
-            { candidate_list_to_display.map( (one_candidate) =>
-              <div key={one_candidate.we_vote_id}>
+            { candidate_list_to_display.map( (one_candidate) => {
+              return <div key={one_candidate.we_vote_id}>
                 {/* *** Candidate name *** */}
                 { SupportStore.get(one_candidate.we_vote_id) && SupportStore.get(one_candidate.we_vote_id).is_support ?
                   <div className="u-flex u-items-center">
@@ -338,7 +395,8 @@ export default class OfficeItemCompressed extends Component {
                     <div className="u-flex-none u-justify-end">Your network is undecided</div> :
                       null}
                 {/* *** "Positions in your Network" bar OR items you can follow *** */}
-              </div>)
+              </div>;
+              })
             }
             { voter_supports_at_least_one_candidate ?
               null :
