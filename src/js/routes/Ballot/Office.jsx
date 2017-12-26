@@ -10,6 +10,7 @@ import OfficeStore from "../../stores/OfficeStore";
 import SearchAllActions from "../../actions/SearchAllActions";
 import VoterStore from "../../stores/VoterStore";
 
+// This is related to routes/VoterGuide/OrganizationVoterGuideOffice
 export default class Office extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired

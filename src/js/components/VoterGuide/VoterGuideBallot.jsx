@@ -641,6 +641,7 @@ export default class VoterGuideBallot extends Component {
                                                                toggleMeasureModal={this.toggleMeasureModal}
                                                                key={item.we_vote_id}
                                                                organization={this.props.organization}
+                                                               organization_we_vote_id={this.props.organization.organization_we_vote_id}
                                                                {...item} />)}
                 </div>
               </div>

@@ -17,28 +17,34 @@ export default class CandidateItem extends Component {
     ballot_item_display_name: PropTypes.string.isRequired,
     candidate_photo_url_large: PropTypes.string.isRequired,
     candidate_photo_url_medium: PropTypes.string,
+    contest_office_name: PropTypes.string,
     showLargeImage: PropTypes.bool,
     commentButtonHide: PropTypes.bool,
     hideOpinionsToFollow: PropTypes.bool,
     hidePositionStatement: PropTypes.bool,
-    showPositionsInYourNetworkBreakdown: PropTypes.bool,
     party: PropTypes.string,
     position_list: PropTypes.array,
-    we_vote_id: PropTypes.string.isRequired,
+    showPositionsInYourNetworkBreakdown: PropTypes.bool,
     twitter_description: PropTypes.string,
     twitter_followers_count: PropTypes.number,
     twitter_handle: PropTypes.string,
-    contest_office_name: PropTypes.string,
+    we_vote_id: PropTypes.string.isRequired, // This is the candidate_we_vote_id
     link_to_ballot_item_page: PropTypes.bool
   };
 
   constructor (props) {
     super(props);
     this.state = {
-     hide_position_statement: this.props.hidePositionStatement,
-     transitioning: false,
-     maximum_organization_display: 5
+      candidate_we_vote_id: "",
+      hide_position_statement: this.props.hidePositionStatement,
+      maximum_organization_display: 5,
+      office_we_vote_id: "",
+      transitioning: false,
     };
+    this.getCandidateLink = this.getCandidateLink.bind(this);
+    this.getOfficeLink = this.getOfficeLink.bind(this);
+    this.goToCandidateLink = this.goToCandidateLink.bind(this);
+    this.goToOfficeLink = this.goToOfficeLink.bind(this);
   }
 
   componentDidMount () {
@@ -47,7 +53,19 @@ export default class CandidateItem extends Component {
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     var supportProps = SupportStore.get(this.props.we_vote_id);
     if (supportProps !== undefined) {
-      this.setState({ supportProps: supportProps, transitioning: false });
+      this.setState({
+        supportProps: supportProps,
+        transitioning: false
+      });
+    }
+    console.log("CandidateItem, this.props:", this.props);
+    if (this.props.we_vote_id) {
+      // If here we want to get the candidate so we can get the office_we_vote_id
+      let candidate = CandidateStore.getCandidate(this.props.we_vote_id);
+      this.setState({
+        candidate_we_vote_id: this.props.we_vote_id,
+        office_we_vote_id: candidate.office_we_vote_id,
+      });
     }
   }
 
@@ -62,7 +80,7 @@ export default class CandidateItem extends Component {
   }
 
   onSupportStoreChange () {
-    var supportProps = SupportStore.get(this.props.we_vote_id);
+    var supportProps = SupportStore.get(this.state.candidate_we_vote_id);
     if (supportProps !== undefined) {
       this.setState({ supportProps: supportProps, transitioning: false });
     }
@@ -72,6 +90,23 @@ export default class CandidateItem extends Component {
     this.setState({hide_position_statement: !this.state.hide_position_statement});
   }
 
+  getCandidateLink () {
+    // If here, we assume the voter is on the Office page
+    return "/candidate/" + this.state.candidate_we_vote_id + "/b/bto/";
+  }
+
+  getOfficeLink () {
+    return "/office/" + this.state.office_we_vote_id + "/b/btvg/";
+  }
+
+  goToCandidateLink () {
+    // If here, we assume the voter is on the Office page
+    browserHistory.push("/candidate/" + this.state.candidate_we_vote_id + "/b/bto/");
+  }
+
+  goToOfficeLink () {
+    browserHistory.push("/office/" + this.state.office_we_vote_id + "/b/btvg/");
+  }
 
   render () {
     let {
@@ -87,12 +122,6 @@ export default class CandidateItem extends Component {
     const { supportProps, transitioning } = this.state;
     let candidate_we_vote_id = this.props.we_vote_id;
 
-    // TwitterHandle-based link
-    // TODO switch back to Twitter-based url once we fix the bug where we aren't routed to the
-    // candidate page for this election
-    // let candidateLink = twitter_handle ? "/" + twitter_handle : "/candidate/" + we_vote_id;
-    let candidateLink = "/candidate/" + we_vote_id;
-    let goToCandidateLink = function () { browserHistory.push(candidateLink); };
     let candidate_photo_url;
     if (this.props.showLargeImage) {
       if (this.props.candidate_photo_url_large) {
@@ -135,7 +164,7 @@ export default class CandidateItem extends Component {
       <div className="card-main__media-object">
         <div className="card-main__media-object-anchor">
           {this.props.link_to_ballot_item_page ?
-            <Link to={candidateLink} className="u-no-underline">{candidate_photo_url_html}</Link> :
+            <Link to={this.getCandidateLink} className="u-no-underline">{candidate_photo_url_html}</Link> :
             candidate_photo_url_html
           }
 
@@ -143,8 +172,7 @@ export default class CandidateItem extends Component {
             <span className={this.props.link_to_ballot_item_page ?
                     "twitter-followers__badge u-cursor--pointer" :
                     "twitter-followers__badge" }
-                  onClick={ this.props.link_to_ballot_item_page ?
-                    goToCandidateLink : null }
+                  onClick={ this.props.link_to_ballot_item_page ? this.goToCandidateLink : null }
             >
               <span className="fa fa-twitter twitter-followers__icon" />
               <span title={numberWithCommas(twitter_followers_count)}>{abbreviateNumber(twitter_followers_count)}</span>
@@ -156,7 +184,7 @@ export default class CandidateItem extends Component {
         <div className="card-main__media-object-content">
           <h2 className="card-main__display-name">
             { this.props.link_to_ballot_item_page ?
-              <Link to={candidateLink}>{ballot_item_display_name}</Link> :
+              <Link to={this.getCandidateLink}>{ballot_item_display_name}</Link> :
               ballot_item_display_name
             }
           </h2>
@@ -165,7 +193,7 @@ export default class CandidateItem extends Component {
               "u-gray-darker u-cursor--pointer" :
               "u-gray-darker"
             } onClick={this.props.link_to_ballot_item_page ?
-              goToCandidateLink : null }
+              this.goToCandidateLink : null }
           >
           { contest_office_name ?
           <OfficeNameText political_party={party} contest_office_name={contest_office_name} /> :
@@ -179,11 +207,11 @@ export default class CandidateItem extends Component {
                   twitter_description={twitter_description}
                 />
               </div>
-              <Link to={candidateLink}>
+              <Link to={this.getCandidateLink}>
                 { this.props.link_to_ballot_item_page ? <span className="card-main__read-more-pseudo" /> : null }
               </Link>
               { this.props.link_to_ballot_item_page ?
-                <Link to={candidateLink} className="card-main__read-more-link">&nbsp;Read more</Link> :
+                <Link to={this.getCandidateLink} className="card-main__read-more-link">&nbsp;Read more</Link> :
                 null
               }
             </div> :
