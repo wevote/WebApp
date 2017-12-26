@@ -30,7 +30,7 @@ module.exports = {
   },
 
   emailBallotData: function ( email_address_array, first_name_array, last_name_array, email_addresses,
-                              invitation_message, ballot_link, sender_email_address) {
+                              invitation_message, ballot_link, sender_email_address, verification_email_sent) {
     Dispatcher.loadEndpoint("emailBallotData",
       {
         email_address_array: email_address_array,
@@ -39,7 +39,8 @@ module.exports = {
         email_addresses_raw: email_addresses,
         invitation_message: invitation_message,
         ballot_link: ballot_link,
-        sender_email_address: sender_email_address
+        sender_email_address: sender_email_address,
+        verification_email_sent: verification_email_sent
       });
   },
 
