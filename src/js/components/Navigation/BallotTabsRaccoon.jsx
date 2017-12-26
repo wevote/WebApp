@@ -3,7 +3,6 @@ import { Link } from "react-router";
 
 export default class BallotTabsRaccoon extends Component {
   static propTypes = {
-    params: PropTypes.object,
     pathname: PropTypes.string,
     ballot_type: PropTypes.string,
     election_day_text: PropTypes.string,

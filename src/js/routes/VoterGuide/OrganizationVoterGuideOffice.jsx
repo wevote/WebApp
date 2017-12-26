@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import CandidateList from "../../components/Ballot/CandidateList";
+import OrganizationVoterGuideCandidateList from "../../components/VoterGuide/OrganizationVoterGuideCandidateList";
 import { capitalizeString } from "../../utils/textFormat";
 import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
@@ -91,8 +91,9 @@ export default class OrganizationVoterGuideOffice extends Component {
                   ballot_item_display_name={office.ballot_item_display_name} />
       { office.candidate_list ?
         <div>
-          <CandidateList children={office.candidate_list}
-                         contest_office_name={office.ballot_item_display_name} />
+          <OrganizationVoterGuideCandidateList children={office.candidate_list}
+                                               contest_office_name={office.ballot_item_display_name}
+                                               organization_we_vote_id={this.state.organization_we_vote_id} />
         </div> :
         <span>No candidates found.</span>
       }

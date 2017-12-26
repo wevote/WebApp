@@ -17,6 +17,7 @@ import { capitalizeString } from "../../utils/textFormat";
 
 export default class OrganizationPositionItem extends Component {
   static propTypes = {
+    ballotItemLink: PropTypes.string,
     comment_text_off: PropTypes.bool,
     editMode: PropTypes.bool,
     link_to_edit_modal_off: PropTypes.bool,
@@ -138,11 +139,16 @@ export default class OrganizationPositionItem extends Component {
       is_oppose = position.is_oppose;
     }
 
-    // TwitterHandle-based link
-    let ballot_item_url = position.kind_of_ballot_item === "MEASURE" ? "/measure/" : "/candidate/";
-    // We are turning off links to twitter pages until we get politician pages working
-    //let ballotItemLink = position.ballot_item_twitter_handle ? "/" + position.ballot_item_twitter_handle : ballot_item_url + position.ballot_item_we_vote_id;
-    let ballotItemLink = ballot_item_url + position.ballot_item_we_vote_id;
+    let ballotItemLink;
+    if (this.props.ballotItemLink) {
+      ballotItemLink = this.props.ballotItemLink;
+    } else {
+      // TwitterHandle-based link
+      let ballot_item_url = position.kind_of_ballot_item === "MEASURE" ? "/measure/" : "/candidate/";
+      // We are turning off links to twitter pages until we get politician pages working
+      //let ballotItemLink = position.ballot_item_twitter_handle ? "/" + position.ballot_item_twitter_handle : ballot_item_url + position.ballot_item_we_vote_id;
+      ballotItemLink = ballot_item_url + position.ballot_item_we_vote_id;
+    }
     let position_description = "";
     let is_candidate = position.kind_of_ballot_item === "CANDIDATE";
     let ballot_item_display_name = "";

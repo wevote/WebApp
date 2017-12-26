@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import CandidateItem from "../../components/Ballot/CandidateItem";
 
+// This is related to components/VoterGuide/OrganizationVoterGuideCandidateList.jsx
 export default class CandidateList extends Component {
   static propTypes = {
     children: PropTypes.array.isRequired,
@@ -15,7 +16,8 @@ export default class CandidateList extends Component {
                            hidePositionStatement
                            {...child}
                            position_list={child.position_list}
-                           link_to_ballot_item_page contest_office_name={this.props.contest_office_name} />
+                           link_to_ballot_item_page
+                           contest_office_name={this.props.contest_office_name} />
           </div>)
         }
       </article>;

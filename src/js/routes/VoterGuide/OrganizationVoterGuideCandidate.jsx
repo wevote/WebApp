@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import CandidateActions from "../../actions/CandidateActions";
-import CandidateItem from "../../components/Ballot/CandidateItem";
+import OrganizationVoterGuideCandidateItem from "../../components/VoterGuide/OrganizationVoterGuideCandidateItem";
 import CandidateStore from "../../stores/CandidateStore";
 import { capitalizeString } from "../../utils/textFormat";
 import GuideList from "../../components/VoterGuide/GuideList";
@@ -136,11 +136,12 @@ export default class OrganizationVoterGuideCandidate extends Component {
               meta={[{"name": "description", "content": description_text}]}
               />
       <section className="card">
-        <CandidateItem {...this.state.candidate}
-                       position_list={this.state.position_list_from_advisers_followed_by_voter}
+        <OrganizationVoterGuideCandidateItem {...this.state.candidate}
                        commentButtonHide
                        contest_office_name={this.state.candidate.contest_office_name}
                        hideOpinionsToFollow
+                       organization_we_vote_id={this.state.organization_we_vote_id}
+                       position_list={this.state.position_list_from_advisers_followed_by_voter}
                        showLargeImage
                        showPositionsInYourNetworkBreakdown />
         <div className="card__additional">

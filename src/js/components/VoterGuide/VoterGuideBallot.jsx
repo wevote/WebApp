@@ -23,6 +23,8 @@ import MeasureModal from "../../components/Ballot/MeasureModal";
 import moment from "moment";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
+import PledgeToSupportOrganizationButton from "../../components/VoterGuide/PledgeToSupportOrganizationButton";
+import PledgeToSupportOrganizationStatusBar from "../../components/VoterGuide/PledgeToSupportOrganizationStatusBar";
 import SelectBallotModal from "../../components/Ballot/SelectBallotModal";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
@@ -32,7 +34,6 @@ import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideBallotItemCompressed from "../../components/VoterGuide/VoterGuideBallotItemCompressed";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
-import { arrayContains } from "../../utils/textFormat";
 
 
 const web_app_config = require("../../config");
@@ -461,9 +462,8 @@ export default class VoterGuideBallot extends Component {
     }
   }
 
-  isContestOnOrganizationVoterGuide (contest_we_vote_id) {
-    let contests_to_show_on_organization_ballot = ["wv02off11651", "wv02off11652"]; // Weave this data into one of our stores
-    return arrayContains(contest_we_vote_id, contests_to_show_on_organization_ballot);
+  doesOrganizationHavePositionOnOffice (contest_office_we_vote_id) {
+    return OrganizationStore.doesOrganizationHavePositionOnOffice(this.state.organization.organization_we_vote_id, contest_office_we_vote_id);
   }
 
   render () {
@@ -551,7 +551,7 @@ export default class VoterGuideBallot extends Component {
 
     for (var i = 0; i < ballot_with_all_items.length; i++) {
       var one_contest = ballot_with_all_items[i];
-      if (one_contest && this.isContestOnOrganizationVoterGuide(one_contest.we_vote_id)) {
+      if (one_contest && this.doesOrganizationHavePositionOnOffice(one_contest.we_vote_id)) {
         ballot_with_organization_items.push(one_contest);
       } else {
         ballot_with_remaining_items.push(one_contest);
@@ -573,7 +573,7 @@ export default class VoterGuideBallot extends Component {
                 <Helmet title="Ballot - We Vote" />
                 <BrowserPushMessage incomingProps={this.props} />
                 <header className="ballot__header__group">
-                  <h1 className="h2 ballot__header__title">
+                  <h1 className="h3 ballot__header__title-voter-guide">
                     { election_name ?
                       <OverlayTrigger placement="top" overlay={electionTooltip} >
                        <span className="u-push--sm">{election_name}</span>
@@ -586,6 +586,14 @@ export default class VoterGuideBallot extends Component {
                           alt={"change address or election"}/> change address or election</span>
                   </h1>
                 </header>
+
+                <div>
+                  <PledgeToSupportOrganizationStatusBar organization={this.state.organization} />
+                </div>
+
+                <div>
+                  <PledgeToSupportOrganizationButton organization={this.state.organization} />
+                </div>
 
                 {this.state.ballot_with_all_items.length > 0 ?
                   <div>
