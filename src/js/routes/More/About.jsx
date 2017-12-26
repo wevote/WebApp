@@ -61,7 +61,7 @@ export default class About extends Component {
           <h3 className="h3">We Vote Board Members &amp; Advisers</h3>
           <div className="row">
             {
-              weVoteBoard.map((item) => <div className="col-4 col-sm-3">
+              weVoteBoard.map((item) => <div className="col-4 col-sm-3" key={item.name}>
                 <div className="team-member">
                   <ImageHandler className="img-responsive team-member__photo"
                                 imageUrl={item.image}
@@ -78,7 +78,7 @@ export default class About extends Component {
           <h3 className="h3">We Vote Staff</h3>
           <div className="row">
             {
-              weVoteStaff.map((item) => <div className="col-4 col-sm-3">
+              weVoteStaff.map((item) => <div className="col-4 col-sm-3" key={item.name}>
                 <div className="team-member">
                   <ImageHandler className="img-responsive team-member__photo"
                                 imageUrl={item.image}
