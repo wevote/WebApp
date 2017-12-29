@@ -2,6 +2,13 @@ import Dispatcher from "../dispatcher/Dispatcher";
 
 module.exports = {
 
+  pledgeToVoteWithVoterGuide: function (voter_guide_we_vote_id, delete_pledge = false) {
+    Dispatcher.loadEndpoint("pledgeToVoteWithVoterGuide", {
+      voter_guide_we_vote_id: voter_guide_we_vote_id,
+      delete_pledge: delete_pledge,
+    });
+  },
+
   voterGuidesToFollowRetrieve: function (election_id, search_string, add_voter_guides_not_from_election) {
     Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", {
       google_civic_election_id: election_id,

@@ -1,19 +1,58 @@
 import React, { PropTypes, Component } from "react";
 import { Button } from "react-bootstrap";
 import { shortenText } from "../../utils/textFormat";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 
 export default class PledgeToSupportOrganizationButton extends Component {
   static propTypes = {
     organization: PropTypes.object.isRequired,
-    //pledgeToVoteAction: PropTypes.func.isRequired
-    pledgeToVoteAction: PropTypes.func
+    pledgeToVoteAction: PropTypes.func.isRequired,
   };
 
   constructor (props) {
     super(props);
+    this.state = {
+      organization: {},
+      voter_guide: {},
+    };
+  }
+
+  componentDidMount () {
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+    this.setState({
+      organization: this.props.organization,
+      voter_guide: VoterGuideStore.getVoterGuideForOrganizationId(this.props.organization.organization_we_vote_id),
+    });
+  }
+
+  componentWillReceiveProps (nextProps) {
+    // When a new organization is passed in, update this component to show the new data
+    this.setState({
+      organization: nextProps.organization,
+      voter_guide: VoterGuideStore.getVoterGuideForOrganizationId(nextProps.organization.organization_we_vote_id),
+    });
+  }
+
+  componentWillUnmount (){
+    this.voterGuideStoreListener.remove();
+  }
+
+  onVoterGuideStoreChange (){
+    this.setState({
+      voter_guide: VoterGuideStore.getVoterGuideForOrganizationId(this.state.organization.organization_we_vote_id)
+    });
   }
 
   render () {
+    if (!this.state.voter_guide) {
+      return null;
+    }
+
+    // Turn off the button if voter has already pledged
+    if (this.state.voter_guide.voter_has_pledged) {
+      return null;
+    }
+
     let i_stand_with_text = "I Stand With " + this.props.organization.organization_name;
     let i_stand_with_text_mobile = shortenText(i_stand_with_text, 32);
 
