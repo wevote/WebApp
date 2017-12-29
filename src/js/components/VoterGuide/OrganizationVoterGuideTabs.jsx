@@ -141,7 +141,7 @@ export default class OrganizationVoterGuideTabs extends Component {
       followers_title = voter_guide_followers_list.length === 0 ?
         "Followers" : voter_guide_followers_list.length + " Followers";
     } else {
-      positions_title = "Positions";
+      positions_title = "All Positions";
       following_title_long = this.state.voter_guide_followed_list.length === 0 ?
         "Following" : "Following " + this.state.voter_guide_followed_list.length;
       following_title_short = "Following";
@@ -175,7 +175,7 @@ export default class OrganizationVoterGuideTabs extends Component {
             <ul className="nav tabs__tabs">
               <li className="tab-item">
                 <a onClick={() => this.switchTab("ballot")} className={this.state.active_route === "ballot" ? "tab tab-active" : "tab tab-default"}>
-                  <span>Ballot</span>
+                  <span>Your Ballot</span>
                 </a>
               </li>
 

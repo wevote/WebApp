@@ -72,6 +72,7 @@ export default class VoterGuideBallot extends Component {
       waiting_for_new_ballot_items: false,
     };
 
+    this.pledgeToVoteWithVoterGuide = this.pledgeToVoteWithVoterGuide.bind(this);
     this.toggleBallotIntroModal = this.toggleBallotIntroModal.bind(this);
     this.toggleCandidateModal = this.toggleCandidateModal.bind(this);
     this.toggleMeasureModal = this.toggleMeasureModal.bind(this);
@@ -192,6 +193,7 @@ export default class VoterGuideBallot extends Component {
       location: this.props.location,
       organization: this.props.organization,
       pathname: this.props.location.pathname,
+      voter_guide: VoterGuideStore.getVoterGuideForOrganizationId(this.props.organization.organization_we_vote_id),
       wait_until_voter_sign_in_completes: wait_until_voter_sign_in_completes
     });
   }
@@ -219,6 +221,7 @@ export default class VoterGuideBallot extends Component {
         location: nextProps.location,
         organization: nextProps.organization,
         pathname: nextProps.location.pathname,
+        voter_guide: VoterGuideStore.getVoterGuideForOrganizationId(nextProps.organization.organization_we_vote_id),
       });
 
       // if (google_civic_election_id && google_civic_election_id !== 0) {
@@ -229,6 +232,7 @@ export default class VoterGuideBallot extends Component {
     } else {
       this.setState({
         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
+        voter_guide: VoterGuideStore.getVoterGuideForOrganizationId(nextProps.organization.organization_we_vote_id),
       });
     }
   }
@@ -420,14 +424,16 @@ export default class VoterGuideBallot extends Component {
         candidate_for_modal: {
           ...this.state.candidate_for_modal,
           voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem()
-        }
+        },
+        voter_guide: VoterGuideStore.getVoterGuideForOrganizationId(this.state.organization.organization_we_vote_id)
       });
     } else if (this.state.measure_for_modal) {
       this.setState({
         measure_for_modal: {
           ...this.state.measure_for_modal,
           voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem()
-        }
+        },
+        voter_guide: VoterGuideStore.getVoterGuideForOrganizationId(this.state.organization.organization_we_vote_id)
       });
     }
   }
@@ -464,6 +470,11 @@ export default class VoterGuideBallot extends Component {
 
   doesOrganizationHavePositionOnOffice (contest_office_we_vote_id) {
     return OrganizationStore.doesOrganizationHavePositionOnOffice(this.state.organization.organization_we_vote_id, contest_office_we_vote_id);
+  }
+
+  pledgeToVoteWithVoterGuide () {
+    // console.log("VoterGuideBallot pledgeToVoteWithVoterGuide, this.state.voter_guide:", this.state.voter_guide);
+    VoterGuideActions.pledgeToVoteWithVoterGuide(this.state.voter_guide.we_vote_id);
   }
 
   render () {
@@ -592,7 +603,8 @@ export default class VoterGuideBallot extends Component {
                 </div>
 
                 <div>
-                  <PledgeToSupportOrganizationButton organization={this.state.organization} />
+                  <PledgeToSupportOrganizationButton organization={this.state.organization}
+                                                     pledgeToVoteAction={this.pledgeToVoteWithVoterGuide} />
                 </div>
 
                 {this.state.ballot_with_all_items.length > 0 ?
