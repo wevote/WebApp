@@ -11,8 +11,8 @@ import SupportStore from "../../stores/SupportStore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import { abbreviateNumber, numberWithCommas } from "../../utils/textFormat";
 
-// This is related to /js/components/VoterGuide/OrganizationVoterGuideCandidateItem.jsx
-export default class CandidateItem extends Component {
+// This is related to /js/components/Ballot/CandidateItem.jsx
+export default class OrganizationVoterGuideCandidateItem extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string.isRequired,
     candidate_photo_url_large: PropTypes.string.isRequired,
@@ -22,6 +22,7 @@ export default class CandidateItem extends Component {
     commentButtonHide: PropTypes.bool,
     hideOpinionsToFollow: PropTypes.bool,
     hidePositionStatement: PropTypes.bool,
+    organization_we_vote_id: PropTypes.string.isRequired,
     party: PropTypes.string,
     position_list: PropTypes.array,
     showPositionsInYourNetworkBreakdown: PropTypes.bool,
@@ -39,6 +40,7 @@ export default class CandidateItem extends Component {
       hide_position_statement: this.props.hidePositionStatement,
       maximum_organization_display: 5,
       office_we_vote_id: "",
+      organization_we_vote_id: "",
       transitioning: false,
     };
     this.getCandidateLink = this.getCandidateLink.bind(this);
@@ -58,13 +60,18 @@ export default class CandidateItem extends Component {
         transitioning: false
       });
     }
-    console.log("CandidateItem, this.props:", this.props);
+    console.log("OrganizationVoterGuideCandidateItem, this.props:", this.props);
     if (this.props.we_vote_id) {
       // If here we want to get the candidate so we can get the office_we_vote_id
       let candidate = CandidateStore.getCandidate(this.props.we_vote_id);
       this.setState({
         candidate_we_vote_id: this.props.we_vote_id,
         office_we_vote_id: candidate.office_we_vote_id,
+      });
+    }
+    if (this.props.organization_we_vote_id) {
+      this.setState({
+        organization_we_vote_id: this.props.organization_we_vote_id
       });
     }
   }
@@ -92,20 +99,20 @@ export default class CandidateItem extends Component {
 
   getCandidateLink () {
     // If here, we assume the voter is on the Office page
-    return "/candidate/" + this.state.candidate_we_vote_id + "/b/bto/";
+    return "/candidate/" + this.state.candidate_we_vote_id + "/bto/" + this.state.organization_we_vote_id;
   }
 
   getOfficeLink () {
-    return "/office/" + this.state.office_we_vote_id + "/b/btvg/";
+    return "/office/" + this.state.office_we_vote_id + "/btvg/" + this.state.organization_we_vote_id;
   }
 
   goToCandidateLink () {
     // If here, we assume the voter is on the Office page
-    browserHistory.push("/candidate/" + this.state.candidate_we_vote_id + "/b/bto/");
+    browserHistory.push("/candidate/" + this.state.candidate_we_vote_id + "/bto/" + this.state.organization_we_vote_id);
   }
 
   goToOfficeLink () {
-    browserHistory.push("/office/" + this.state.office_we_vote_id + "/b/btvg/");
+    browserHistory.push("/office/" + this.state.office_we_vote_id + "/btvg/" + this.state.organization_we_vote_id);
   }
 
   render () {

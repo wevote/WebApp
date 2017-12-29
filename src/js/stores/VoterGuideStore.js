@@ -110,10 +110,29 @@ class VoterGuideStore extends ReduceStore {
     let voter_guides;
     let all_cached_voter_guides;
     let google_civic_election_id;
+    let voter_guide_with_pledge_info;
     let organization_we_vote_id;
     let voter_linked_organization_we_vote_id;
 
     switch (action.type) {
+
+      case "pledgeToVoteWithVoterGuide":
+        if (action.res.pledge_statistics_found) {
+          // console.log("VoterGuideStore pledgeToVoteWithVoterGuide, action.res: ", action.res);
+          all_cached_voter_guides = state.all_cached_voter_guides;
+          voter_guide_with_pledge_info = all_cached_voter_guides[action.res.organization_we_vote_id] || {};
+          voter_guide_with_pledge_info.pledge_goal = action.res.pledge_goal;
+          voter_guide_with_pledge_info.pledge_count = action.res.pledge_count;
+          voter_guide_with_pledge_info.voter_has_pledged = action.res.voter_has_pledged;
+          all_cached_voter_guides[action.res.organization_we_vote_id] = voter_guide_with_pledge_info;
+
+          return {
+            ...state,
+            all_cached_voter_guides: all_cached_voter_guides
+          };
+        } else {
+          return state;
+        }
 
       case "voterAddressSave":
         if (action.res.status === "SIMPLE_ADDRESS_SAVE") {
@@ -168,6 +187,7 @@ class VoterGuideStore extends ReduceStore {
         all_cached_voter_guides = state.all_cached_voter_guides;
         var organization_we_vote_id_list_from_voter_guides_returned = [];
         voter_guides.forEach( one_voter_guide => {
+          // console.log("VoterGuideStore voterGuidesToFollowRetrieve one_voter_guide: ", one_voter_guide);
           all_cached_voter_guides[one_voter_guide.organization_we_vote_id] = one_voter_guide;
           organization_we_vote_id_list_from_voter_guides_returned.push(one_voter_guide.organization_we_vote_id);
         });
@@ -283,7 +303,6 @@ class VoterGuideStore extends ReduceStore {
               all_cached_voter_guides: all_cached_voter_guides
             };
           }
-
         }
 
       case "voterGuidesFollowedRetrieve":

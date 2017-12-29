@@ -14,7 +14,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string,
     ballotItemWeVoteId: PropTypes.string,
-    display_cheetah_details_flag: PropTypes.bool,
     maximumOrganizationDisplay: PropTypes.number,
     organizationsToFollowSupport: PropTypes.array,
     organizationsToFollowOppose: PropTypes.array,
@@ -33,7 +32,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
       ballot_item_display_name: "",
       ballot_item_we_vote_id: "",
       candidate: {},
-      display_cheetah_details_flag: false,
       maximum_organization_display: 0,
       organizations_to_follow_support: [],
       organizations_to_follow_oppose: [],
@@ -42,18 +40,15 @@ export default class ItemSupportOpposeRaccoon extends Component {
     };
 
     this.goToCandidateLink = this.goToCandidateLink.bind(this);
-    this.openCandidateModal = this.openCandidateModal.bind(this);
   }
 
   componentDidMount () {
-    console.log("ItemSupportOpposeRaccoon, componentWillReceiveProps");
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     CandidateActions.positionListForBallotItem(this.props.ballotItemWeVoteId);
     this.setState({
       ballot_item_display_name: this.props.ballot_item_display_name,
       ballot_item_we_vote_id: this.props.ballotItemWeVoteId,
       candidate: CandidateStore.getCandidate(this.props.ballotItemWeVoteId),
-      display_cheetah_details_flag: this.props.display_cheetah_details_flag,
       maximum_organization_display: this.props.maximumOrganizationDisplay,
       organizations_to_follow_support: this.props.organizationsToFollowSupport,
       organizations_to_follow_oppose: this.props.organizationsToFollowOppose,
@@ -63,12 +58,10 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log("ItemSupportOpposeRaccoon, componentWillReceiveProps");
     this.setState({
       ballot_item_display_name: nextProps.ballot_item_display_name,
       ballot_item_we_vote_id: nextProps.ballotItemWeVoteId,
       candidate: CandidateStore.getCandidate(nextProps.ballotItemWeVoteId),
-      display_cheetah_details_flag: nextProps.display_cheetah_details_flag,
       maximum_organization_display: nextProps.maximumOrganizationDisplay,
       organizations_to_follow_support: nextProps.organizationsToFollowSupport,
       organizations_to_follow_oppose: nextProps.organizationsToFollowOppose,
@@ -237,13 +230,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
     browserHistory.push("/candidate/" + candidate_we_vote_id);
   }
 
-  openCandidateModal () {
-    // console.log("this.state.candidate: ", this.state.candidate);
-    if (this.state.candidate.we_vote_id) {
-      this.props.toggleCandidateModal(this.state.candidate);
-    }
-  }
-
   render () {
     let candidateSupportStore = SupportStore.get(this.state.ballot_item_we_vote_id);
     let candidate_support_action_raccoon = <span>
@@ -329,7 +315,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         {/* Support Score here */}
         <div className="network-positions-stacked__count">
           <span className="network-positions__support-score u-cursor--pointer u-no-break" onClick={() => this.goToCandidateLink(this.state.ballot_item_we_vote_id)}>
-            { total_score === 0 ? <span>&nbsp;&nbsp;{ total_score_with_sign }&nbsp;&nbsp;</span> : <span>&nbsp;{ total_score_with_sign }&nbsp;</span>}
+            { total_score === 0 ? <span>&nbsp;&nbsp;&nbsp;{ total_score_with_sign }&nbsp;</span> : <span>&nbsp;{ total_score_with_sign }&nbsp;</span>}
           </span>
           <span className="sr-only">{total_score > 0 ? total_score + " Support" : null }{total_score < 0 ? total_score + " Oppose" : null }</span>
         </div>

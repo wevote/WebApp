@@ -6,6 +6,7 @@ import FacebookStore from "../../stores/FacebookStore";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
 import LoadingWheel from "../LoadingWheel";
+import { validateEmail } from "../../utils/email-functions";
 import VoterStore from "../../stores/VoterStore";
 
 const web_app_config = require("../../config");
@@ -32,10 +33,10 @@ export default class EmailBallotModal extends Component {
       sender_email_address: VoterStore.getVoter().email,
       sender_email_address_error: false,
       on_enter_email_addresses_step: true,
-      on_collect_email_step: false,
       on_ballot_email_sent_step: false,
       on_facebook_login_step: false,
       facebook_login_started: false,
+      verification_email_sent: false,
       on_mobile: false,
       ballot_link: ballotLink,
     };
@@ -81,13 +82,12 @@ export default class EmailBallotModal extends Component {
   _onFriendStoreChange () {
     let email_ballot_data_step = FriendStore.switchToEmailBallotDataStep();
     let error_message_to_show_voter = FriendStore.getErrorMessageToShowVoter();
-    // console.log("AddFriendsByEmail, _onFriendStoreChange, email_ballot_data_step:", email_ballot_data_step);
+    // console.log("EmailBallotModal, _onFriendStoreChange, email_ballot_data_step:", email_ballot_data_step);
     if (email_ballot_data_step === "on_collect_email_step") {
       // Switch to "on_collect_email_step"
       this.setState({
         loading: false,
         on_enter_email_addresses_step: false,
-        on_collect_email_step: true,
         on_ballot_email_sent_step: false,
         error_message_to_show_voter: error_message_to_show_voter
       });
@@ -124,6 +124,7 @@ export default class EmailBallotModal extends Component {
 
   ballotEmailSend () {
     let success_message = "";
+    let verification_email_sent = false;
     if ( this.state.on_facebook_login_step ) {
       success_message = <span>Success! This ballot has been sent to Facebook and the email address {this.state.sender_email_address} </span>;
     } else {
@@ -131,16 +132,20 @@ export default class EmailBallotModal extends Component {
     }
 
     FriendActions.emailBallotData("", "", "", this.state.sender_email_address, this.state.email_ballot_message,
-      this.state.ballot_link, this.state.sender_email_address);
-    console.log("ballotEmailSend: email_address: ", this.state.sender_email_address);
+      this.state.ballot_link, this.state.sender_email_address, this.state.verification_email_sent);
+
+    if (!this.hasValidEmail()) {
+      verification_email_sent = true;
+      success_message = <span>Success! This ballot has been sent to the email address {this.state.sender_email_address}. Please check your email and verify your email address to send Ballot to your friends. </span>;
+    }
     // After calling the API, reset the form
     this.setState({
       loading: true,
       sender_email_address_error: false,
       on_enter_email_addresses_step: true,
-      on_collect_email_step: false,
       on_ballot_email_sent_step: true,
       showEmailToFriendsModal: false,
+      verification_email_sent: verification_email_sent,
       success_message: success_message,
     });
   }
@@ -158,49 +163,27 @@ export default class EmailBallotModal extends Component {
     if (this.state.on_enter_email_addresses_step) {
       // Validate friends' email addresses
       let sender_email_address_error = false;
-      if (!this.state.sender_email_address) {
+      if (!this.state.sender_email_address || !validateEmail(this.state.sender_email_address)) {
         sender_email_address_error = true;
         error_message += "Please enter a valid email address for yourself.";
       }
 
       if (sender_email_address_error) {
-        console.log("ballotEmailSendStepsManager, sender_email_address_error");
+        // console.log("ballotEmailSendStepsManager, sender_email_address_error");
         this.setState({
           loading: false,
           sender_email_address_error: true,
           error_message: error_message
         });
       } else if (!this.hasValidEmail()) {
-        console.log("ballotEmailSendStepsManager, NOT hasValidEmail");
+        // console.log("ballotEmailSendStepsManager, NOT hasValidEmail");
         this.setState({
           loading: false,
           on_enter_email_addresses_step: false,
-          on_collect_email_step: false,
         });
         this.ballotEmailSend();
       } else {
-        console.log("ballotEmailSendStepsManager, calling emailBallotData");
-        this.ballotEmailSend();
-      }
-    } else if (this.state.on_collect_email_step) {
-      // Validate sender's email addresses
-      let sender_email_address_error = false;
-      if (!this.state.sender_email_address) {
-        sender_email_address_error = true;
-        error_message += "Please enter a valid email address for yourself. ";
-      } else if (!this.senderEmailAddressVerified()) {
-        sender_email_address_error = true;
-        error_message += "This is not a valid email address. ";
-      }
-
-      if (sender_email_address_error) {
-        this.setState({
-          loading: false,
-          sender_email_address_error: true,
-          error_message: error_message
-        });
-      } else {
-        console.log("ballotEmailSendStepsManager, calling emailBallotData");
+        // console.log("ballotEmailSendStepsManager, calling emailBallotData");
         this.ballotEmailSend();
       }
     }
@@ -296,12 +279,17 @@ export default class EmailBallotModal extends Component {
 
     if (this.state.showEmailToFriendsModal) {
       this.componentWillUnmount();
-      return <EmailBallotToFriendsModal ballot_link={this.state.ballot_link}/>;
+      return <EmailBallotToFriendsModal ballot_link={this.state.ballot_link}
+                                        sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
+                                        verification_email_sent={this.state.verification_email_sent} />;
     }
 
     if (this.state.on_ballot_email_sent_step) {
       this.componentWillUnmount();
-      return <EmailBallotToFriendsModal ballot_link={this.state.ballot_link} success_message={this.state.success_message}/>;
+      return <EmailBallotToFriendsModal ballot_link={this.state.ballot_link}
+                                        success_message={this.state.success_message}
+                                        sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
+                                        verification_email_sent={this.state.verification_email_sent} />;
     }
 
     return (
@@ -314,7 +302,7 @@ export default class EmailBallotModal extends Component {
         <div className="intro-modal-vertical-scroll-contain_without_slider">
           <div className="intro-modal-vertical-scroll card">
             <div className="row intro-modal__grid intro-modal__default-text">
-              <div className="container-fluid u-inset--md">
+              <div className="container-fluid u-inset--md text-left">
                 {this.state.sender_email_address_error ?
                   <div className="alert alert-danger">
                     {this.state.error_message}

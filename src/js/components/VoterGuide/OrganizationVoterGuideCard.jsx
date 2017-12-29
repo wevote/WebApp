@@ -12,7 +12,7 @@ export default class OrganizationVoterGuideCard extends Component {
   static propTypes = {
     organization: PropTypes.object.isRequired,
     is_voter_owner: PropTypes.bool,
-    turn_off_description: PropTypes.bool
+    turnOffDescription: PropTypes.bool
   };
 
   constructor (props) {
@@ -63,7 +63,7 @@ export default class OrganizationVoterGuideCard extends Component {
         </Button> :
         <FollowToggle we_vote_id={organization_we_vote_id} />
       }
-      { twitterDescriptionMinusName && !this.props.turn_off_description ?
+      { twitterDescriptionMinusName && !this.props.turnOffDescription ?
           <ParsedTwitterDescription
             twitter_description={twitterDescriptionMinusName}
           /> :

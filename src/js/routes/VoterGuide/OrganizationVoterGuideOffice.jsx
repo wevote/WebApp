@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import CandidateList from "../../components/Ballot/CandidateList";
+import OrganizationVoterGuideCandidateList from "../../components/VoterGuide/OrganizationVoterGuideCandidateList";
 import { capitalizeString } from "../../utils/textFormat";
 import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
@@ -10,8 +10,8 @@ import OfficeStore from "../../stores/OfficeStore";
 import SearchAllActions from "../../actions/SearchAllActions";
 import VoterStore from "../../stores/VoterStore";
 
-// This is related to routes/VoterGuide/OrganizationVoterGuideOffice
-export default class Office extends Component {
+// This is based on routes/Ballot/Office
+export default class OrganizationVoterGuideOffice extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired
   };
@@ -21,6 +21,7 @@ export default class Office extends Component {
     this.state = {
       office: {},
       office_we_vote_id: "",
+      organization_we_vote_id: "",
     };
   }
 
@@ -34,10 +35,12 @@ export default class Office extends Component {
     }
     this.setState({
       office_we_vote_id: this.props.params.office_we_vote_id,
+      organization_we_vote_id: this.props.params.organization_we_vote_id,
     });
 
     AnalyticsActions.saveActionOffice(VoterStore.election_id(), this.props.params.office_we_vote_id);
     SearchAllActions.exitSearch();
+    console.log("OrganizationVoterGuideOffice, organization_we_vote_id: ", this.props.params.organization_we_vote_id);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -88,8 +91,9 @@ export default class Office extends Component {
                   ballot_item_display_name={office.ballot_item_display_name} />
       { office.candidate_list ?
         <div>
-          <CandidateList children={office.candidate_list}
-                         contest_office_name={office.ballot_item_display_name} />
+          <OrganizationVoterGuideCandidateList children={office.candidate_list}
+                                               contest_office_name={office.ballot_item_display_name}
+                                               organization_we_vote_id={this.state.organization_we_vote_id} />
         </div> :
         <span>No candidates found.</span>
       }

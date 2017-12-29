@@ -14,3 +14,21 @@
 .organization-banner-image-img {
   width: 100%;
 }
+
+.voter-guide {
+  &__pledge-to-support {
+    &__current-supporters {
+      font-size: .8rem;
+    }
+
+    &__i-stand-with-button {
+      @include breakpoints (small mid-small) {
+        font-size: .9rem;
+      }
+    }
+
+    &__thank-you-for-supporting {
+      font-size: 1.2rem;
+    }
+  }
+}

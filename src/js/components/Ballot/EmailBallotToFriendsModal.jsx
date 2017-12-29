@@ -14,6 +14,8 @@ export default class EmailBallotToFriendsModal extends Component {
     history: PropTypes.object,
     ballot_link: PropTypes.string,
     success_message: PropTypes.object,
+    sender_email_address_from_email_ballot_modal: PropTypes.string,
+    verification_email_sent: PropTypes.bool,
   };
 
   constructor (props) {
@@ -51,6 +53,7 @@ export default class EmailBallotToFriendsModal extends Component {
       on_collect_email_step: false,
       on_ballot_email_sent_step: false,
       success_message: this.props.success_message,
+      verification_pending: false,
       on_mobile: false,
     };
     this.email_address_array = [];
@@ -137,9 +140,27 @@ export default class EmailBallotToFriendsModal extends Component {
 
   ballotEmailSend (e) {
     e.preventDefault();
+    let sender_email_address = "";
+    let success_message = "";
+    if (this.props.sender_email_address_from_email_ballot_modal &&
+        this.props.sender_email_address_from_email_ballot_modal !== this.state.sender_email_address) {
+      sender_email_address = this.props.sender_email_address_from_email_ballot_modal;
+    } else {
+      sender_email_address = this.state.sender_email_address;
+    }
+
+    if (!this.hasValidEmail() || this.props.verification_email_sent) {
+      success_message = "Success! Verification email has been sent to " + sender_email_address +
+        ". Once you verify your email, this ballot will be automatically sent to your friend's email address(es) " +
+        this.sent_email_address_array.join(", ") + ".";
+    } else {
+      success_message = "Success! This ballot has been sent to the email address(es) " + this.sent_email_address_array.join(", ") +
+        ". Would you like to send this ballot to anyone else?";
+    }
+
     FriendActions.emailBallotData(this.email_address_array, this.first_name_array,
       this.last_name_array, "", this.state.email_ballot_message, this.props.ballot_link,
-      this.state.sender_email_address);
+      sender_email_address, this.props.verification_email_sent);
 
     // After calling the API, reset the form
     this.setState({
@@ -172,7 +193,7 @@ export default class EmailBallotToFriendsModal extends Component {
       on_enter_email_addresses_step: true,
       on_collect_email_step: false,
       on_ballot_email_sent_step: true,
-      success_message: "",
+      success_message: success_message,
     });
     this.setEmailAddressArray([]);
     this.setFirstNameArray([]);
@@ -217,7 +238,14 @@ export default class EmailBallotToFriendsModal extends Component {
       if (this.email_address_array.length === 0 ) {
         // console.log("ballotEmailSendStepsManager: this.state.email_add is ", this.state.email_address_array);
         email_addresses_error = true;
-        error_message += "Please enter at least one email address.";
+        error_message += "Please enter at least one valid email address.";
+      } else {
+        this.email_address_array.map((email_address) => {
+          if (!validateEmail(email_address)) {
+            email_addresses_error = true;
+            error_message += "Please enter a valid email address for " + email_address;
+          }
+        });
       }
 
       if (email_addresses_error) {
@@ -228,12 +256,18 @@ export default class EmailBallotToFriendsModal extends Component {
           error_message: error_message
         });
       } else if (!this.hasValidEmail()) {
-        console.log("ballotEmailSendStepsManager, NOT hasValidEmail");
-        this.setState({
-          loading: false,
-          on_enter_email_addresses_step: false,
-          on_collect_email_step: true,
-        });
+        // console.log("ballotEmailSendStepsManager, NOT hasValidEmail");
+        if (this.props.sender_email_address_from_email_ballot_modal) {
+          // console.log("ballotEmailSendStepsManager, NOT hasValidEmail but voter has sent a verification email already");
+          this.ballotEmailSend(event);
+        } else {
+          // console.log("ballotEmailSendStepsManager, NOT hasValidEmail so redirect to verification ");
+          this.setState({
+            loading: false,
+            on_enter_email_addresses_step: false,
+            on_collect_email_step: true,
+          });
+        }
       } else {
         // console.log("ballotEmailSendStepsManager, calling emailBallotData");
         this.ballotEmailSend(event);
@@ -241,7 +275,7 @@ export default class EmailBallotToFriendsModal extends Component {
     } else if (this.state.on_collect_email_step) {
       // Validate sender's email addresses
       let sender_email_address_error = false;
-      if ( this.email_address_array.length === 0 ) {
+      if ( !this.state.sender_email_address ) {
         sender_email_address_error = true;
         error_message += "Please enter a valid email address for yourself. ";
       } else if (!this.senderEmailAddressVerified()) {
@@ -518,24 +552,17 @@ export default class EmailBallotToFriendsModal extends Component {
           <div className="intro-modal-vertical-scroll card">
             <div className="row intro-modal__grid intro-modal__default-text">
               <div className="container-fluid u-inset--md text-left">
-                { this.state.success_message ? <div className="alert alert-success">
-                  {this.state.success_message}
-                </div> : null
-                }
                 {this.state.on_enter_email_addresses_step ? <div>
-                  {this.state.email_addresses_error || this.state.sender_email_address_error ?
+                  { this.state.success_message ?
+                    <div className="alert alert-success">
+                      {this.state.success_message}
+                    </div> : null
+                  }
+
+                  {this.state.email_addresses_error ?
                     <div className="alert alert-danger">
                       {this.state.error_message}
-                    </div> :
-                    <div>
-                      {this.state.on_ballot_email_sent_step ?
-                        <div className="alert alert-success">
-                          Success! This ballot has been sent to the email address(es) {this.sent_email_address_array.join(", ")}.
-                          Would you like to send this ballot to anyone else?
-                        </div> :
-                        null
-                      }
-                    </div>
+                    </div> : null
                   }
 
                   <form onSubmit={this.prepareApiArraysFromForm.bind(this)}>
@@ -770,18 +797,20 @@ export default class EmailBallotToFriendsModal extends Component {
                 }
                 {this.state.on_collect_email_step ?
                   <div>
-                    <div className="alert alert-success">
-                      Success! This ballot has been sent to the email address(es) {this.sent_email_address_array.join(", ")}.
-                    </div>
-                    <div className="alert alert-warning">
-                      Please make sure to check your email and verify your email address {this.state.sender_email_address}.
-                      This ballot will be sent to your friends as soon as you verify your email address.
-                    </div>
-
+                    {this.state.sender_email_address_error ?
+                      <div className="alert alert-danger">
+                        {this.state.sender_email_address_error}
+                      </div> :
+                      <div>
+                        <div className="alert alert-warning">
+                          Please make sure to check your email and verify your email
+                          address. This ballot will be sent to your friends as soon as you verify your email address.
+                        </div>
+                      </div>
+                    }
                     <form onSubmit={this.ballotEmailSendStepsManager.bind(this)} className="u-stack--md">
                       <input type="text" name="sender_email_address"
                              className="form-control"
-                             value={this.state.sender_email_address || ""}
                              onChange={this.cacheSenderEmailAddress.bind(this)}
                              placeholder="Enter your email address" />
                     </form>

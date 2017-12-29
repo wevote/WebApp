@@ -272,13 +272,19 @@ $candidate-font-size: .875rem;
 
     &__avatar { // placed on the actual image
       max-width: 50px;
-      &-round {
+      &--round {
         border-radius: $radius-rounded;
         max-width: 50px;
+        @include print {
+          // font-size: 5px; // TODO TESTING
+        }
       }
     }
     .icon-lg { // temp - for placeholder icons
       font-size: 50px;
+      @include print {
+        // font-size: 5px; // TODO TESTING
+      }
     }
 
     &__media-object-content { // positioning for media-object pattern

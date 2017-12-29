@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import LoadingWheel from "../LoadingWheel";
 import OrganizationActions from "../../actions/OrganizationActions";
+import OrganizationStore from "../../stores/OrganizationStore";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideBallot from "./VoterGuideBallot";
 import VoterGuideFollowers from "./VoterGuideFollowers";
@@ -32,12 +33,17 @@ export default class OrganizationVoterGuideTabs extends Component {
 
   componentDidMount () {
     // console.log("OrganizationVoterGuideTabs, componentDidMount, organization: ", this.props.organization);
+    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     OrganizationActions.organizationsFollowedRetrieve();
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.organization.organization_we_vote_id);
     VoterGuideActions.voterGuideFollowersRetrieve(this.props.organization.organization_we_vote_id);
     VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
+    // Positions for this organization, for this voter / election
+    OrganizationActions.retrievePositions(this.props.organization.organization_we_vote_id, true);
+    // Positions for this organization, NOT including for this voter / election
+    OrganizationActions.retrievePositions(this.props.organization.organization_we_vote_id, false, true);
     this.setState({
       active_route: this.props.active_route || "ballot",
       current_organization_we_vote_id: this.props.organization.organization_we_vote_id,
@@ -49,11 +55,18 @@ export default class OrganizationVoterGuideTabs extends Component {
   componentWillReceiveProps (nextProps) {
     // console.log("OrganizationVoterGuideTabs, componentWillReceiveProps, nextProps: ", nextProps);
     // When a new organization is passed in, update this component to show the new data
-    if (nextProps.organization.organization_we_vote_id !== this.state.current_organization_we_vote_id) {
+    // let different_election = this.state.current_google_civic_election_id !== VoterStore.election_id();
+    let different_organization = this.state.current_organization_we_vote_id !== nextProps.organization.organization_we_vote_id;
+    if (different_organization) {
       OrganizationActions.organizationsFollowedRetrieve();
       VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id);
       VoterGuideActions.voterGuideFollowersRetrieve(nextProps.organization.organization_we_vote_id);
       VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id, VoterStore.election_id());
+      // DALE 2017-12-24 Causes too much churn when here
+      // Positions for this organization, for this voter / election
+      OrganizationActions.retrievePositions(nextProps.organization.organization_we_vote_id, true);
+      // Positions for this organization, NOT including for this voter / election
+      OrganizationActions.retrievePositions(nextProps.organization.organization_we_vote_id, false, true);
       this.setState({
         current_organization_we_vote_id: nextProps.organization.organization_we_vote_id,
         organization: nextProps.organization,
@@ -62,8 +75,16 @@ export default class OrganizationVoterGuideTabs extends Component {
   }
 
   componentWillUnmount () {
+    this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  _onOrganizationStoreChange (){
+    // console.log("VoterGuidePositions _onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
+    this.setState({
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
+    });
   }
 
   onVoterGuideStoreChange () {
@@ -120,7 +141,7 @@ export default class OrganizationVoterGuideTabs extends Component {
       followers_title = voter_guide_followers_list.length === 0 ?
         "Followers" : voter_guide_followers_list.length + " Followers";
     } else {
-      positions_title = "Positions";
+      positions_title = "All Positions";
       following_title_long = this.state.voter_guide_followed_list.length === 0 ?
         "Following" : "Following " + this.state.voter_guide_followed_list.length;
       following_title_short = "Following";
@@ -154,7 +175,7 @@ export default class OrganizationVoterGuideTabs extends Component {
             <ul className="nav tabs__tabs">
               <li className="tab-item">
                 <a onClick={() => this.switchTab("ballot")} className={this.state.active_route === "ballot" ? "tab tab-active" : "tab tab-default"}>
-                  <span>Ballot</span>
+                  <span>Your Ballot</span>
                 </a>
               </li>
 

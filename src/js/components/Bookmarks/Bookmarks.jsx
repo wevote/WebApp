@@ -66,7 +66,7 @@ export default class Bookmarks extends Component {
                 <Helmet title="Bookmarks- We Vote" />
                 <OverlayTrigger placement="top" overlay={electionTooltip} >
                   <header className="ballot__header__group">
-                    <h1 className="h1 ballot__election-name ballot__header__title">
+                    <h1 className="h1 ballot__header__title">
                       <span className="u-push--sm">{election_name}</span>
                     </h1>
                     <span className="hidden-xs hidden-print pull-right ballot__header__address">

@@ -6,6 +6,7 @@ import BallotSideBarLink from "../Navigation/BallotSideBarLink";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
+import OrganizationPositionItem from "./OrganizationPositionItem";
 import OrganizationStore from "../../stores/OrganizationStore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import ImageHandler from "../ImageHandler";
@@ -15,16 +16,16 @@ import SupportStore from "../../stores/SupportStore";
 
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 5; // Set to 5 in raccoon, and 3 in walrus
 
-// This is related to components/VoterGuide/VoterGuideOfficeItemCompressed
-export default class OfficeItemCompressed extends Component {
+// This is based on components/Ballot/OfficeItemCompressed
+export default class VoterGuideOfficeItemCompressed extends Component {
   static propTypes = {
     we_vote_id: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string.isRequired,
     candidate_list: PropTypes.array,
     kind_of_ballot_item: PropTypes.string.isRequired,
     link_to_ballot_item_page: PropTypes.bool,
-    organization: PropTypes.object,
-    organization_we_vote_id: PropTypes.string,
+    organization: PropTypes.object.isRequired,
+    organization_we_vote_id: PropTypes.string.isRequired,
     toggleCandidateModal: PropTypes.func,
   };
 
@@ -65,20 +66,16 @@ export default class OfficeItemCompressed extends Component {
         }
       });
     }
-    if (this.props.organization && this.props.organization.organization_we_vote_id) {
-      this.setState({
-        organization: this.props.organization,
-      });
-    }
+    this.setState({
+      organization: this.props.organization,
+    });
   }
 
   componentWillReceiveProps (nextProps){
     // console.log("VoterGuideOfficeItemCompressed componentWillReceiveProps, nextProps: ", nextProps);
-    if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
-      this.setState({
-         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
-       });
-    }
+    this.setState({
+      organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
+    });
   }
 
   componentWillUnmount () {
@@ -123,33 +120,39 @@ export default class OfficeItemCompressed extends Component {
   }
 
   getCandidateLink (candidate_we_vote_id) {
-    if (this.state.organization && this.state.organization.organization_we_vote_id) {
-      // If there is an organization_we_vote_id, signal that we want to link back to voter_guide for that organization
-      return "/candidate/" + candidate_we_vote_id + "/btvg/" + this.state.organization.organization_we_vote_id;
-    } else {
-      // If no organization_we_vote_id, signal that we want to link back to default ballot
-      return "/candidate/" + candidate_we_vote_id + "/b/btdb/";
-    }
+    return "/candidate/" + candidate_we_vote_id + "/btvg/" + this.state.organization.organization_we_vote_id;
   }
 
   getOfficeLink () {
-    if (this.state.organization && this.state.organization.organization_we_vote_id) {
-      // If there is an organization_we_vote_id, signal that we want to link back to voter_guide for that organization
-      return "/office/" + this.props.we_vote_id + "/btvg/" + this.state.organization.organization_we_vote_id;
-    } else {
-      // If no organization_we_vote_id, signal that we want to link back to default ballot
-      return "/office/" + this.props.we_vote_id + "/b/btdb/";
-    }
+    return "/office/" + this.props.we_vote_id + "/btvg/" + this.state.organization.organization_we_vote_id;
   }
 
   goToCandidateLink (candidate_we_vote_id) {
-    let candidate_link = this.getCandidateLink(candidate_we_vote_id);
-    browserHistory.push(candidate_link);
+    browserHistory.push("/candidate/" + candidate_we_vote_id + "/btvg/" + this.state.organization.organization_we_vote_id);
   }
 
   goToOfficeLink () {
-    let office_link = this.getOfficeLink();
-    browserHistory.push(office_link);
+    browserHistory.push("/office/" + this.props.we_vote_id + "/btvg/" + this.state.organization.organization_we_vote_id);
+  }
+
+  doesOrganizationHavePositionOnCandidate (candidate_we_vote_id) {
+    return OrganizationStore.doesOrganizationHavePositionOnCandidate(this.state.organization.organization_we_vote_id, candidate_we_vote_id);
+  }
+
+  getOrganizationPositionForThisCandidate (candidate_we_vote_id, position_list_for_one_election) {
+    // console.log("getOrganizationPositionForThisCandidate position_list_for_one_election: ", position_list_for_one_election);
+    let one_position_to_return = {};
+    if (position_list_for_one_election) {
+      position_list_for_one_election.forEach((one_position) => {
+        // console.log("getOrganizationPositionForThisCandidate candidate_we_vote_id: ", candidate_we_vote_id, ", one_position: ", one_position);
+        if (one_position.ballot_item_we_vote_id === candidate_we_vote_id) {
+          // console.log("getOrganizationPositionForThisCandidate one_position found to return");
+          // Because this is a forEach, we aren't able to break out of the loop
+          one_position_to_return = one_position;
+        }
+      });
+    }
+    return one_position_to_return;
   }
 
   render () {
@@ -227,6 +230,8 @@ export default class OfficeItemCompressed extends Component {
       });
     }
 
+    let organization_position_for_this_candidate;
+
     return <div className="card-main office-item">
       <a name={we_vote_id} />
       <div className="card-main__content">
@@ -247,7 +252,8 @@ export default class OfficeItemCompressed extends Component {
           }
         </span>
 
-        <h2 className="u-f3 card-main__ballot-name u-stack--sm">{ballot_item_display_name_raccoon}</h2>
+        {/* On the voter guide, we bring the size of the office name down so we can emphasize the candidate being supported */}
+        <h2 className="h4 u-f5 card-main__ballot-name u-stack--sm">{ballot_item_display_name_raccoon}</h2>
 
         {/* Only show the candidates if the Office is "unfurled" */}
         { this.state.display_raccoon_details_flag ?
@@ -279,7 +285,7 @@ export default class OfficeItemCompressed extends Component {
               </div> :
               null;
 
-            let candidate_name_raccoon = <h4 className="card-main__candidate-name u-f5">
+            let candidate_name_raccoon = <h4 className={"card-main__candidate-name" + (this.doesOrganizationHavePositionOnCandidate(candidate_we_vote_id) ? " u-f2" : " u-f6")}>
               <a onClick={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(one_candidate.we_vote_id) : null}>
                 <TextTruncate line={1}
                               truncateText="…"
@@ -337,6 +343,8 @@ export default class OfficeItemCompressed extends Component {
               </div> :
               null;
 
+            organization_position_for_this_candidate = this.getOrganizationPositionForThisCandidate(candidate_we_vote_id, this.state.organization.position_list_for_one_election);
+
             return <div key={candidate_we_vote_id} className="u-stack--md">
               <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
                 {/* Candidate Photo, only shown in Desktop */}
@@ -344,8 +352,21 @@ export default class OfficeItemCompressed extends Component {
                 <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
                   {/* Candidate Name */}
                   {candidate_name_raccoon}
-                  {/* Organization's Followed AND to Follow Items */}
-                  {positions_display_raccoon}
+
+                  {/* Organization Endorsement */}
+                  { this.doesOrganizationHavePositionOnCandidate(candidate_we_vote_id) && organization_position_for_this_candidate ?
+                    <OrganizationPositionItem key={organization_position_for_this_candidate.position_we_vote_id}
+                                              position={organization_position_for_this_candidate}
+                                              organization={this.state.organization}
+                                              editMode={this.state.editMode}
+                                              turnOffLogo
+                                              turnOffName
+                             /> :
+                    null }
+
+                  {/* Organization's Followed AND to Follow Items -- only show for promoted candidate */}
+                  { this.doesOrganizationHavePositionOnCandidate(candidate_we_vote_id) ? positions_display_raccoon : null}
+
                   {/* DESKTOP: If voter has taken position, offer the comment bar */}
                   {/* comment_display_raccoon_desktop */}
                 </div>
@@ -357,45 +378,30 @@ export default class OfficeItemCompressed extends Component {
           null
         }
 
-        {/* If the office is "rolled up", show some details */}
+        {/* If the office is "rolled up", show some details for the organization's endorsement */}
         { !this.state.display_raccoon_details_flag ?
           <div>
             { candidate_list_to_display.map( (one_candidate) => {
-              return <div key={one_candidate.we_vote_id}>
-                {/* *** Candidate name *** */}
-                { SupportStore.get(one_candidate.we_vote_id) && SupportStore.get(one_candidate.we_vote_id).is_support ?
-                  <div className="u-flex u-items-center">
-                    <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
-                    () => this.goToCandidateLink(one_candidate.we_vote_id) : null }>
-                      <h2 className="h5">
-                      {one_candidate.ballot_item_display_name}
-                      </h2>
-                    </div>
+                if (this.doesOrganizationHavePositionOnCandidate(one_candidate.we_vote_id) ) {
+                  organization_position_for_this_candidate = this.getOrganizationPositionForThisCandidate(one_candidate.we_vote_id, this.state.organization.position_list_for_one_election);
+                  // console.log("Rolled up, one_candidate: ", one_candidate);
+                  // console.log("Rolled up, this.state.organization.position_list_for_one_election: ", this.state.organization.position_list_for_one_election);
+                  // console.log("Rolled up, just tested doesOrganizationHavePositionOnCandidate, getOrganizationPositionForThisCandidate: ", organization_position_for_this_candidate);
 
-                    <div className="u-flex-none u-justify-end">
-                      <span className="u-push--xs">Supported by you</span>
-                      <img src="/img/global/svg-icons/thumbs-up-color-icon.svg" width="24" height="24" />
-                    </div>
-                  </div> :
-
-                  candidate_with_most_support === one_candidate.ballot_item_display_name ?
-                  <div className="u-flex u-items-center">
-                    <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
-                      () => this.goToCandidateLink(one_candidate.we_vote_id) : null }>
-                      <h2 className="h5">
-                        {one_candidate.ballot_item_display_name}
-                      </h2>
-                    </div>
-                    <div className="u-flex-none u-justify-end">
-                      <span className="u-push--xs">Your network supports</span>
-                      <img src="/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" />
-                    </div>
-                  </div> :
-                    is_support_array === 0 && candidate_with_most_support !== one_candidate.ballot_item_display_name && !voter_supports_at_least_one_candidate ?
-                    <div className="u-flex-none u-justify-end">Your network is undecided</div> :
-                      null}
-                {/* *** "Positions in your Network" bar OR items you can follow *** */}
-              </div>;
+                  if (organization_position_for_this_candidate) {
+                    //console.log("Rolled up, about to return OrganizationPositionItem");
+                    return <div key={one_candidate.we_vote_id}>
+                      {/* Organization Endorsement */}
+                      <OrganizationPositionItem ballotItemLink={this.getCandidateLink(one_candidate.we_vote_id)}
+                                                key={organization_position_for_this_candidate.position_we_vote_id}
+                                                position={organization_position_for_this_candidate}
+                                                organization={this.state.organization}
+                                                editMode={this.state.editMode}
+                      />
+                    </div>;
+                  }
+                }
+                return null;
               })
             }
             { voter_supports_at_least_one_candidate ?

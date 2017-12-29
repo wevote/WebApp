@@ -89,7 +89,7 @@ export default class FollowToggle extends Component {
     }
 
     return is_following ?
-      <span>
+      <span className="hidden-print">
         { this.props.hide_stop_following_button ?
           null :
           <Button bsStyle="warning"
@@ -100,11 +100,13 @@ export default class FollowToggle extends Component {
           </Button>
         }
       </span> :
-      <Button bsStyle="info"
-              bsSize="small"
-              className={classNameOverride.length ? classNameOverride : "pull-right"}
-              onClick={followInstantly}>
-        <span>Follow</span>
-      </Button>;
+      <span className="hidden-print">
+        <Button bsStyle="info"
+                bsSize="small"
+                className={classNameOverride.length ? classNameOverride : "pull-right"}
+                onClick={followInstantly}>
+          <span>Follow</span>
+        </Button>
+      </span>;
   }
 }

@@ -106,7 +106,7 @@ export default class PositionSupportOpposeSnippet extends Component {
       { stance_display_off ?
         null :
         <div className="explicit-position__text">
-          <span>
+          <span className="explicit-position__voter-guide-increase">
             {this.props.is_on_ballot_item_page ?
               <span>
                 <span className="explicit-position__position-label">{actorSupportsBallotItemLabel}</span>

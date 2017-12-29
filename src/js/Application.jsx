@@ -3,6 +3,7 @@ import { browserHistory } from "react-router";
 import cookies from "./utils/cookies";
 import ElectionActions from "./actions/ElectionActions";
 import FriendActions from "./actions/FriendActions";
+import HeaderBackToBar from "./components/Navigation/HeaderBackToBar";
 import HeaderBar from "./components/Navigation/HeaderBar";
 import HeaderGettingStartedBar from "./components/Navigation/HeaderGettingStartedBar";
 import Headroom from "headroom.js";
@@ -32,8 +33,9 @@ var loadingScreenStyles = {
 export default class Application extends Component {
   static propTypes = {
     children: PropTypes.element,
+    location: PropTypes.object,
+    params: PropTypes.object,
     route: PropTypes.object,
-    location: PropTypes.object
   };
 
   constructor (props) {
@@ -232,6 +234,16 @@ export default class Application extends Component {
       voter_guide_show_getting_started_navigation = true;
     }
 
+    let show_back_to_header = false;
+    if (stringContains("/btdb/", pathname) || stringContains("/btdo/", pathname) || stringContains("/bto/", pathname) || stringContains("/btvg/", pathname)) {
+      // If here, we want the top header to be "Back To..."
+      // "/btdb/" stands for "Back To Default Ballot Page"
+      // "/btdo/" stands for "Back To Default Office Page"
+      // "/btvg/" stands for "Back To Voter Guide Page"
+      // "/bto/" stands for "Back To Voter Guide Office Page"
+      show_back_to_header = true;
+    }
+
     const headRoomSize = voter_guide_show_getting_started_navigation || stringContains("/ballot", pathname) || pathname === "/bookmarks" ?
       "headroom-getting-started__margin" :
       "headroom-wrapper";
@@ -250,12 +262,20 @@ export default class Application extends Component {
       </div>;
     } else if (voter_guide_mode) {
       // console.log("voter_guide_mode", voter_guide_mode);
+      let hideGettingStartedIssuesButton = voter_guide_show_getting_started_navigation;
+      let hideGettingStartedOrganizationsButton = voter_guide_show_getting_started_navigation;
+
       return <div className="app-base" id="app-base-id">
         <div className={headRoomSize}>
           <div ref="pageHeader" className={ this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom" }>
-            <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
+            { show_back_to_header ?
+              <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
+              <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/> }
             { voter_guide_show_getting_started_navigation || stringContains("/ballot", pathname) ?
-              <HeaderGettingStartedBar pathname={pathname} voter={this.state.voter}/> :
+              <HeaderGettingStartedBar hideGettingStartedOrganizationsButton={hideGettingStartedOrganizationsButton}
+                                       hideGettingStartedIssuesButton={hideGettingStartedIssuesButton}
+                                       pathname={pathname}
+                                       voter={this.state.voter}/> :
               null }
           </div>
         </div>
@@ -266,7 +286,9 @@ export default class Application extends Component {
     return <div className="app-base" id="app-base-id">
       <div className={headRoomSize}>
         <div ref="pageHeader" className={ this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom" }>
-          <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
+          { show_back_to_header ?
+            <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
+            <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/> }
           { stringContains("/ballot", pathname) || pathname === "/bookmarks" ?
             <HeaderGettingStartedBar pathname={pathname} voter={this.state.voter}/> :
             null }

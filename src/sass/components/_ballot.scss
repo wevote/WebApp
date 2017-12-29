@@ -15,10 +15,6 @@ $tab-height-visible: $tab-height - $scrollbar-height;
   // Ballot Header
   // ===========================================
 
-  &__election-name {
-    // TODO either add some properties to this class or delete it
-  }
-
   &__filter {
     white-space: nowrap;
     overflow-x: scroll;
@@ -54,12 +50,17 @@ $tab-height-visible: $tab-height - $scrollbar-height;
       display: inline-block;
     }
 
-    &__address {
-      margin: $address-spacing-desktop;
+    &__title-voter-guide {
+      display: inline-block;
+      font-size: 1.1rem;
     }
 
-    &__address--xs {
-      margin: $address-spacing-mobile;
+    &__address {
+      margin: $address-spacing-desktop;
+
+      &--xs {
+        margin: $address-spacing-mobile;
+      }
     }
 
     &__group {

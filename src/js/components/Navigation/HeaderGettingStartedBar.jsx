@@ -19,6 +19,8 @@ import VoterStore from "../../stores/VoterStore";
 
 export default class HeaderGettingStartedBar extends Component {
   static propTypes = {
+    hideGettingStartedIssuesButton: PropTypes.bool,
+    hideGettingStartedOrganizationsButton: PropTypes.bool,
     voter: PropTypes.object,
     pathname: PropTypes.string
   };
@@ -288,15 +290,19 @@ export default class HeaderGettingStartedBar extends Component {
         <header className="page-getting-started-header">
           <div className="header-getting-started-nav">
             {/* Issues Icon & Modal */}
-            <GettingStartedBarItem show={this._toggleBallotIntroFollowIssues}
-              source="/img/global/svg-icons/issues-v1-64x42.svg"
-              title="Issues"
-              completed={this.state.ballot_intro_issues_completed} />
+            {!this.props.hideGettingStartedIssuesButton ?
+              <GettingStartedBarItem show={this._toggleBallotIntroFollowIssues}
+                                     source="/img/global/svg-icons/issues-v1-64x42.svg"
+                                     title="Issues"
+                                     completed={this.state.ballot_intro_issues_completed} /> :
+              null }
             {/* Organizations Icon & Modal */}
-            <GettingStartedBarItem show={this._toggleBallotIntroOrganizations}
-              source="/img/global/svg-icons/organizations-v2-31x26.svg"
-              title="Organizations"
-              completed={this.state.ballot_intro_organizations_completed} />
+            {!this.props.hideGettingStartedOrganizationsButton ?
+              <GettingStartedBarItem show={this._toggleBallotIntroOrganizations}
+                                     source="/img/global/svg-icons/organizations-v2-31x26.svg"
+                                     title="Organizations"
+                                     completed={this.state.ballot_intro_organizations_completed} /> :
+              null }
             <GettingStartedBarItem show={this._openPrintModal}
                                    title="Print"
                                    printIcon/>

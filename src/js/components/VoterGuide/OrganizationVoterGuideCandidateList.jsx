@@ -1,21 +1,23 @@
 import React, { Component, PropTypes } from "react";
-import CandidateItem from "../../components/Ballot/CandidateItem";
+import OrganizationVoterGuideCandidateItem from "../../components/VoterGuide/OrganizationVoterGuideCandidateItem";
 
-// This is related to components/VoterGuide/OrganizationVoterGuideCandidateList.jsx
-export default class CandidateList extends Component {
+// This is related to components/Ballot/CandidateList.jsx
+export default class OrganizationVoterGuideCandidateList extends Component {
   static propTypes = {
     children: PropTypes.array.isRequired,
-    contest_office_name: PropTypes.string
+    contest_office_name: PropTypes.string,
+    organization_we_vote_id: PropTypes.string.isRequired,
   };
 
   render () {
     return <article className="card-main__list-group">
         { this.props.children.map( (child) =>
           <div key={child.we_vote_id} className="card">
-            <CandidateItem key={child.we_vote_id}
+            <OrganizationVoterGuideCandidateItem key={child.we_vote_id}
                            contest_office_name={this.props.contest_office_name}
                            hidePositionStatement
                            link_to_ballot_item_page
+                           organization_we_vote_id={this.props.organization_we_vote_id}
                            position_list={child.position_list}
                            {...child}
             />

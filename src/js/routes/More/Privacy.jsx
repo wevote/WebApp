@@ -21,8 +21,7 @@ export default class Privacy extends React.Component {
         </p>
         <h2><b>How we use your information</b></h2>
         <p><span>When you request your ballot, send messages to friends, donate, join our newsletter, or take any other action on this Site, we may ask you to give us contact information, including your name, address, email address and telephone number. We may also obtain information about you from outside sources and combine it with the information we collect through this Site. We use this information to operate this Site, to sends you news and information about We Vote, to measure the effectiveness of our programs, and to send you timely election reminders.
-          You may opt-out of receiving messages from We Vote by sending any email to <a href="mailto:info@WeVote.US" target="_blank">info@WeVote.US</a>
-          and asking that you not receive future email messages.  You may also opt-out by following the unsubscribe link at the bottom of each email.</span>
+          You may opt-out of receiving messages from We Vote by sending any email to <a href="mailto:info@WeVote.US" target="_blank">info@WeVote.US</a> and asking that you not receive future email messages.  You may also opt-out by following the unsubscribe link at the bottom of each email.</span>
         </p>
         <p><span>Some information on our mailing lists, such as names, email addresses, and addresses, may be exchanged with named partners and other organizations with principles and/or missions that overlap with those of We Vote. Subscribers may opt out of such mailing list exchanges at any time. Our purpose is to protect your information while making sure you have what you need to make an informed decision on Election Day.</span>
         </p>

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import CandidateActions from "../../actions/CandidateActions";
-import CandidateItem from "../../components/Ballot/CandidateItem";
+import OrganizationVoterGuideCandidateItem from "../../components/VoterGuide/OrganizationVoterGuideCandidateItem";
 import CandidateStore from "../../stores/CandidateStore";
 import { capitalizeString } from "../../utils/textFormat";
 import GuideList from "../../components/VoterGuide/GuideList";
@@ -17,7 +17,8 @@ import VoterStore from "../../stores/VoterStore";
 import SearchAllActions from "../../actions/SearchAllActions";
 const web_app_config = require("../../config");
 
-export default class Candidate extends Component {
+// This is based on routes/Ballot/Candidate
+export default class OrganizationVoterGuideCandidate extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired
   };
@@ -32,6 +33,7 @@ export default class Candidate extends Component {
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
       // guidesToFollowList: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.candidate_we_vote_id)
       voter_guides_to_follow_for_latest_ballot_item: [],
+      organization_we_vote_id: "",
     };
   }
 
@@ -55,9 +57,11 @@ export default class Candidate extends Component {
     AnalyticsActions.saveActionCandidate(VoterStore.election_id(), this.props.params.candidate_we_vote_id);
     this.setState({
       candidate_we_vote_id: this.props.params.candidate_we_vote_id,
+      organization_we_vote_id: this.props.params.organization_we_vote_id,
       position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(this.props.params.candidate_we_vote_id),
       voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
     });
+    console.log("OrganizationVoterGuideCandidate, organization_we_vote_id: ", this.props.params.organization_we_vote_id);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -132,10 +136,11 @@ export default class Candidate extends Component {
               meta={[{"name": "description", "content": description_text}]}
               />
       <section className="card">
-        <CandidateItem {...this.state.candidate}
+        <OrganizationVoterGuideCandidateItem {...this.state.candidate}
                        commentButtonHide
                        contest_office_name={this.state.candidate.contest_office_name}
                        hideOpinionsToFollow
+                       organization_we_vote_id={this.state.organization_we_vote_id}
                        position_list={this.state.position_list_from_advisers_followed_by_voter}
                        showLargeImage
                        showPositionsInYourNetworkBreakdown />
