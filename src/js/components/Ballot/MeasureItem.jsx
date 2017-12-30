@@ -139,12 +139,12 @@ export default class MeasureItem extends Component {
                            ballot_item_display_name={ballot_item_display_name}
                            commentButtonHide={this.props.commentButtonHide}
                            supportProps={supportProps}
-                           transitioniing={transitioning}
+                           transitioning={transitioning}
                            type="MEASURE" />
             <ItemPositionStatementActionBar ballot_item_we_vote_id={we_vote_id}
                                             ballot_item_display_name={ballot_item_display_name}
                                             supportProps={supportProps}
-                                            transitioniing={transitioning}
+                                            transitioning={transitioning}
                                             type="MEASURE" />
           </div>
         </div>;

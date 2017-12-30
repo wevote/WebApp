@@ -61,7 +61,7 @@ export default class OrganizationVoterGuideCandidate extends Component {
       position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(this.props.params.candidate_we_vote_id),
       voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
     });
-    console.log("OrganizationVoterGuideCandidate, organization_we_vote_id: ", this.props.params.organization_we_vote_id);
+    // console.log("OrganizationVoterGuideCandidate, organization_we_vote_id: ", this.props.params.organization_we_vote_id);
   }
 
   componentWillReceiveProps (nextProps) {
