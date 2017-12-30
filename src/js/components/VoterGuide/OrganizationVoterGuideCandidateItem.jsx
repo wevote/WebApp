@@ -60,7 +60,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
         transitioning: false
       });
     }
-    console.log("OrganizationVoterGuideCandidateItem, this.props:", this.props);
+    // console.log("OrganizationVoterGuideCandidateItem, this.props:", this.props);
     if (this.props.we_vote_id) {
       // If here we want to get the candidate so we can get the office_we_vote_id
       let candidate = CandidateStore.getCandidate(this.props.we_vote_id);

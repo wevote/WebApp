@@ -25,6 +25,8 @@ import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import PledgeToSupportOrganizationButton from "../../components/VoterGuide/PledgeToSupportOrganizationButton";
 import PledgeToSupportOrganizationStatusBar from "../../components/VoterGuide/PledgeToSupportOrganizationStatusBar";
+import PledgeToVoteButton from "../../components/VoterGuide/PledgeToVoteButton";
+import PledgeToVoteStatusBar from "../../components/VoterGuide/PledgeToVoteStatusBar";
 import SelectBallotModal from "../../components/Ballot/SelectBallotModal";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
@@ -193,7 +195,7 @@ export default class VoterGuideBallot extends Component {
       location: this.props.location,
       organization: this.props.organization,
       pathname: this.props.location.pathname,
-      voter_guide: VoterGuideStore.getVoterGuideForOrganizationId(this.props.organization.organization_we_vote_id),
+      voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.props.organization.organization_we_vote_id, VoterStore.election_id()),
       wait_until_voter_sign_in_completes: wait_until_voter_sign_in_completes
     });
   }
@@ -221,7 +223,7 @@ export default class VoterGuideBallot extends Component {
         location: nextProps.location,
         organization: nextProps.organization,
         pathname: nextProps.location.pathname,
-        voter_guide: VoterGuideStore.getVoterGuideForOrganizationId(nextProps.organization.organization_we_vote_id),
+        voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(nextProps.organization.organization_we_vote_id, VoterStore.election_id()),
       });
 
       // if (google_civic_election_id && google_civic_election_id !== 0) {
@@ -232,7 +234,7 @@ export default class VoterGuideBallot extends Component {
     } else {
       this.setState({
         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
-        voter_guide: VoterGuideStore.getVoterGuideForOrganizationId(nextProps.organization.organization_we_vote_id),
+        voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(nextProps.organization.organization_we_vote_id, VoterStore.election_id()),
       });
     }
   }
@@ -425,7 +427,7 @@ export default class VoterGuideBallot extends Component {
           ...this.state.candidate_for_modal,
           voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem()
         },
-        voter_guide: VoterGuideStore.getVoterGuideForOrganizationId(this.state.organization.organization_we_vote_id)
+        voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id())
       });
     } else if (this.state.measure_for_modal) {
       this.setState({
@@ -433,7 +435,7 @@ export default class VoterGuideBallot extends Component {
           ...this.state.measure_for_modal,
           voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem()
         },
-        voter_guide: VoterGuideStore.getVoterGuideForOrganizationId(this.state.organization.organization_we_vote_id)
+        voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id())
       });
     }
   }
@@ -599,12 +601,17 @@ export default class VoterGuideBallot extends Component {
                 </header>
 
                 <div>
-                  <PledgeToSupportOrganizationStatusBar organization={this.state.organization} />
+                  {ballot_with_organization_items.length > 0 ?
+                    <PledgeToSupportOrganizationStatusBar organization={this.state.organization} /> :
+                    <PledgeToVoteStatusBar organization={this.state.organization} /> }
                 </div>
 
                 <div>
-                  <PledgeToSupportOrganizationButton organization={this.state.organization}
-                                                     pledgeToVoteAction={this.pledgeToVoteWithVoterGuide} />
+                  {ballot_with_organization_items.length > 0 ?
+                    <PledgeToSupportOrganizationButton organization={this.state.organization}
+                                                     pledgeToVoteAction={this.pledgeToVoteWithVoterGuide} /> :
+                    <PledgeToVoteButton organization={this.state.organization}
+                                        pledgeToVoteAction={this.pledgeToVoteWithVoterGuide} /> }
                 </div>
 
                 {this.state.ballot_with_all_items.length > 0 ?

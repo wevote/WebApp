@@ -10,6 +10,7 @@ import OrganizationPositionItem from "./OrganizationPositionItem";
 import OrganizationStore from "../../stores/OrganizationStore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import ImageHandler from "../ImageHandler";
+import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
 import SupportStore from "../../stores/SupportStore";
@@ -389,7 +390,8 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                   // console.log("Rolled up, just tested doesOrganizationHavePositionOnCandidate, getOrganizationPositionForThisCandidate: ", organization_position_for_this_candidate);
 
                   if (organization_position_for_this_candidate) {
-                    //console.log("Rolled up, about to return OrganizationPositionItem");
+                    let candidateSupportStore = SupportStore.get(one_candidate.we_vote_id);
+                    // console.log("Rolled up, one_candidate:", one_candidate);
                     return <div key={one_candidate.we_vote_id}>
                       {/* Organization Endorsement */}
                       <OrganizationPositionItem ballotItemLink={this.getCandidateLink(one_candidate.we_vote_id)}
@@ -398,6 +400,16 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                                                 organization={this.state.organization}
                                                 editMode={this.state.editMode}
                       />
+                      <div className="flex">
+                          <ItemActionBar ballot_item_display_name={one_candidate.ballot_item_display_name}
+                                         ballot_item_we_vote_id={one_candidate.we_vote_id}
+                                         commentButtonHide
+                                         opposeHideInMobile
+                                         shareButtonHide
+                                         supportProps={candidateSupportStore}
+                                         transitioning={this.state.transitioning}
+                                         type="CANDIDATE"/>
+                      </div>
                     </div>;
                   }
                 }

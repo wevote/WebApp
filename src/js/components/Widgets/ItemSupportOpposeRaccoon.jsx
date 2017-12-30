@@ -239,7 +239,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                      opposeHideInMobile
                      shareButtonHide
                      supportProps={candidateSupportStore}
-                     transitioniing={this.state.transitioning}
+                     transitioning={this.state.transitioning}
                      type="CANDIDATE"/>
       </span>;
 

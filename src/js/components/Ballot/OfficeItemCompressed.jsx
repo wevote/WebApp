@@ -198,7 +198,7 @@ export default class OfficeItemCompressed extends Component {
                                    commentButtonHide
                                    shareButtonHide
                                    supportProps={candidateSupportStore}
-                                   transitioniing={this.state.transitioning}
+                                   transitioning={this.state.transitioning}
                                    type="CANDIDATE"/>
                   </span> :
                   null
@@ -252,7 +252,7 @@ export default class OfficeItemCompressed extends Component {
                                    supportProps={candidateSupportStore}
                                    shareButtonHide
                                    commentButtonHide
-                                   transitioniing={this.state.transitioning}
+                                   transitioning={this.state.transitioning}
                                    ballot_item_display_name={one_candidate.ballot_item_display_name}
                                    type="CANDIDATE" />
                   </div>
