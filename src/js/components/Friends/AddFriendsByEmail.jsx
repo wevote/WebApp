@@ -278,15 +278,19 @@ export default class AddFriendsByEmail extends Component {
   }
 
   setEmailAddressArray (value) {
+    // do we need both this.email... and this.state.email...?
     this.email_address_array = value;
+    this.state.email_address_array = value;
   }
 
   setFirstNameArray (value) {
     this.first_name_array = value;
+    this.state.first_name_array = value;
   }
 
   setLastNameArray (value) {
     this.last_name_array = value;
+    this.state.last_name_array = value;
   }
 
   prepareApiArraysFromForm () {
