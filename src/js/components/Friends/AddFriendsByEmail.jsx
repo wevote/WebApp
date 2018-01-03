@@ -187,7 +187,7 @@ export default class AddFriendsByEmail extends Component {
           email_addresses_error: true,
         });
       }
-      if (this.state.email_address_array.length === 0 ) {
+      if (this.email_address_array.length === 0 ) {
         // console.log("AddFriendsByEmailStepsManager: this.state.email_add is ", this.state.email_address_array);
         email_addresses_error = true;
         error_message += "Please enter at least one email address.";
