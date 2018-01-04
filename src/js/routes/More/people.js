@@ -130,7 +130,7 @@ const weVoteStaff = [ {
     name: "Irene Florez",
     image: wrapper("../../../img/global/photos/Irene_Florez-200x200.jpg"),
     title: [
-      "Engineering Intern"
+      "Marketing Manager"
     ]
   }, {
     name: "Jeff French",
