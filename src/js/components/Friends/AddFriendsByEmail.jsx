@@ -149,7 +149,6 @@ export default class AddFriendsByEmail extends Component {
     this.setEmailAddressArray([]);
     this.setFirstNameArray([]);
     this.setLastNameArray([]);
-
   }
 
   hasValidEmail () {
@@ -187,10 +186,17 @@ export default class AddFriendsByEmail extends Component {
           email_addresses_error: true,
         });
       }
-      if (this.state.email_address_array.length === 0 ) {
+      if (this.email_address_array.length === 0 ) {
         // console.log("AddFriendsByEmailStepsManager: this.state.email_add is ", this.state.email_address_array);
         email_addresses_error = true;
-        error_message += "Please enter at least one email address.";
+        error_message += "Please enter at least one valid email address.";
+      } else {
+        this.email_address_array.map((email_address) => {
+          if (!validateEmail(email_address)) {
+            email_addresses_error = true;
+            error_message += "Please enter a valid email address for " + email_address;
+          }
+        });
       }
 
       if (email_addresses_error) {
@@ -241,43 +247,12 @@ export default class AddFriendsByEmail extends Component {
     // console.log(`New State => ${event.target.name}: ${event.target.value}`);
   }
 
-  validateEmailAddresses () {
-    var _state = this.state;
-
-    //console.log("validateEmailAddresses:");
-    if (! validateEmail(_state.friend1_email_address)) {
-      //console.log("validateEmailAddresses: Invalid email", _state.friend1_email_address);
-      return false;
-    }
-
-    if (! validateEmail(_state.friend2_email_address)) {
-      //console.log("validateEmailAddresses: Invalid email", _state.friend2_email_address);
-      return false;
-    }
-
-    if (! validateEmail(_state.friend3_email_address)) {
-      //console.log("validateEmailAddresses: Invalid email", _state.friend3_email_address);
-      return false;
-    }
-
-    if (! validateEmail(_state.friend4_email_address)) {
-      //console.log("validateEmailAddresses: Invalid email", _state.friend4_email_address);
-      return false;
-    }
-
-    if (! validateEmail(_state.friend5_email_address)) {
-      //console.log("validateEmailAddresses: Invalid email", _state.friend5_email_address);
-      return false;
-    }
-
-    return true;
-  }
-
   addElementToArray (array, value) {
     array.push(value);
   }
 
   setEmailAddressArray (value) {
+    this.sent_email_address_array = value.length !== 0 ? value : this.email_address_array;
     this.email_address_array = value;
   }
 
@@ -298,6 +273,7 @@ export default class AddFriendsByEmail extends Component {
 
     if (_state.friend1_email_address) {
       result = validateEmail(_state.friend1_email_address);
+      // console.log("prepareApiArraysFromForm", result);
       if (result) {
         //console.log("prepareApiArraysFromForm: validated email", _state.friend1_email_address);
         this.addElementToArray(tmpEmailArray, _state.friend1_email_address);
@@ -355,10 +331,15 @@ export default class AddFriendsByEmail extends Component {
         return false;
       }
     }
+    this.setEmailAddressArray(tmpEmailArray);
+    this.setFirstNameArray(tmpFirstNameArray);
+    this.setLastNameArray(tmpLastNameArray);
 
-    this.setEmailAddressArray(_state.email_address_array.concat(tmpEmailArray));
-    this.setFirstNameArray(_state.first_name_array.concat(tmpFirstNameArray));
-    this.setLastNameArray(_state.last_name_array.concat(tmpLastNameArray));
+    this.setState({
+      email_address_array: tmpEmailArray,
+      first_name_array: tmpFirstNameArray,
+      last_name_array: tmpLastNameArray,
+    });
 
     // console.log("prepareApiArraysFromForm: this.email_address_array: ", this.email_address_array);
     // console.log("prepareApiArraysFromForm: this.first_name_array: ", this.first_name_array);
@@ -388,7 +369,7 @@ export default class AddFriendsByEmail extends Component {
   }
 
   closeRow5 () {
-   this.setState({ friend5_email_address: ""});
+    this.setState({ friend5_email_address: ""});
     this.setState({ friend5_first_name: ""});
     this.setState({ friend5_last_name: ""});
     this.setState({ row5_open: false});
@@ -399,7 +380,7 @@ export default class AddFriendsByEmail extends Component {
     if (!_state.row2_open)
       this.setState({ row2_open: true});
     else if (!_state.row3_open)
-       this.setState({ row3_open: true});
+      this.setState({ row3_open: true});
     else if (!_state.row4_open)
       this.setState({ row4_open: true});
     else if (!_state.row5_open)
