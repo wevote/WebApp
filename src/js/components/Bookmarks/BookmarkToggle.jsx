@@ -35,6 +35,7 @@ export default class BookmarkToggle extends Component {
 
   _onChange () {
     this.setState({ is_bookmarked: BookmarkStore.get(this.props.we_vote_id) || false});
+    // console.log(this.state);
   }
 
   _onVoterStoreChange () {

@@ -9,11 +9,7 @@ class BookmarkStore extends ReduceStore {
   }
 
   get (ballot_item_we_vote_id) {
-    if (!(this.supportList && this.opposeList && this.supportCounts && this.opposeCounts)) {
-      return undefined;
-    }
-
-    return { ...state };
+    return this._state.get(ballot_item_we_vote_id);
   }
 
   reduce (state, action) {
