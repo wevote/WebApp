@@ -1,4 +1,4 @@
-export function makeSearchLink (twitter_handle, we_vote_id, kind_of_owner) {
+export function makeSearchLink (twitter_handle, we_vote_id, kind_of_owner, link_internal, google_civic_election_id) {
   var search_link = "";
   switch (kind_of_owner) {
     case "CANDIDATE":
@@ -15,6 +15,9 @@ export function makeSearchLink (twitter_handle, we_vote_id, kind_of_owner) {
       break;
     case "POLITICIAN":
       search_link = twitter_handle ? "/" + twitter_handle : "/voterguide/" + we_vote_id;
+      break;
+    case "ELECTION":
+      search_link = link_internal ? link_internal : "/ballot/election/" + google_civic_election_id;
       break;
     default:
       break;

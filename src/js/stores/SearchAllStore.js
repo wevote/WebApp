@@ -44,17 +44,30 @@ class SearchAllStore extends ReduceStore {
 
         let searchResults = [];
         let alreadyFoundTwitterHandles = [];
+        let alreadyFoundElectionId = [];
         let twitter_handle;
         let alreadyContains;
+        let google_civic_election_id;
         action.res.search_results.forEach(one_search_result =>{
           alreadyContains = false;
-          twitter_handle = one_search_result.twitter_handle || "";
-          if (twitter_handle && twitter_handle !== "") {
-            alreadyContains = alreadyFoundTwitterHandles.indexOf(twitter_handle.toLowerCase()) > -1;
-          }
-          if (!alreadyContains) {
-            searchResults.push(one_search_result);
-            alreadyFoundTwitterHandles.push(twitter_handle.toLowerCase());
+          if (one_search_result.kind_of_owner === "ELECTION"){
+            google_civic_election_id = one_search_result.google_civic_election_id || "";
+            if (google_civic_election_id && google_civic_election_id !== "") {
+              alreadyContains = alreadyFoundElectionId.indexOf(google_civic_election_id) > -1;
+            }
+            if (!alreadyContains) {
+              searchResults.push(one_search_result);
+              alreadyFoundElectionId.push(google_civic_election_id);
+            }
+          } else {
+            twitter_handle = one_search_result.twitter_handle || "";
+            if (twitter_handle && twitter_handle !== "") {
+              alreadyContains = alreadyFoundTwitterHandles.indexOf(twitter_handle.toLowerCase()) > -1;
+            }
+            if (!alreadyContains) {
+              searchResults.push(one_search_result);
+              alreadyFoundTwitterHandles.push(twitter_handle.toLowerCase());
+            }
           }
         });
         return {
