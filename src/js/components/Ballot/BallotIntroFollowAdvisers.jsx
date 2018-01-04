@@ -174,7 +174,7 @@ export default class BallotIntroFollowAdvisers extends Component {
               <span>Great work! Next, follow any of these organizations to see their opinions on your ballot.</span>
             }
           </div>
-          <div className="intro-modal-vertical-scroll-contain">
+          <div className="intro-modal-vertical-scroll-contain advisers">
             <div className="intro-modal-vertical-scroll card">
               <div className="row intro-modal__grid">
                 { voter_guides_to_follow_by_issues_for_display.length ? voter_guides_to_follow_by_issues_for_display : null }
@@ -186,6 +186,7 @@ export default class BallotIntroFollowAdvisers extends Component {
               </div>
             </div>
           </div>
+          <div className="intro-modal-shadow" />
         </div>
       <br/>
       <div className="intro-modal__button-wrap">
