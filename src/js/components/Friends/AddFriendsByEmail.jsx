@@ -20,6 +20,7 @@ export default class AddFriendsByEmail extends Component {
         row3_open: false,
         row4_open: false,
         row5_open: false,
+        friend_total: 5,
         friend1_first_name: "",
         friend1_last_name: "",
         friend1_email_address: "",
@@ -35,9 +36,6 @@ export default class AddFriendsByEmail extends Component {
         friend5_first_name: "",
         friend5_last_name: "",
         friend5_email_address: "",
-        email_address_array: [],
-        first_name_array: [],
-        last_name_array: [],
         email_addresses_error: false,
         sender_email_address: "",
         sender_email_address_error: false,
@@ -48,21 +46,18 @@ export default class AddFriendsByEmail extends Component {
         on_friend_invitations_sent_step: false,
         voter: {},
       };
-      this.email_address_array = [];
-      this.first_name_array = [];
-      this.last_name_array = [];
       this.allRowsOpen.bind(this);
   }
+
+  // componentDidUpdate () {
+  //
+  // }
 
   componentDidMount () {
     this.setState({ voter: VoterStore.getVoter() });
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
-
-  // componentDidUpdate () {
-  //   console.log(this.state.email_address_array);
-  // }
 
   componentWillUnmount () {
     this.friendStoreListener.remove();
@@ -115,9 +110,24 @@ export default class AddFriendsByEmail extends Component {
 
   friendInvitationByEmailSend (e) {
     e.preventDefault();
-    //console.log("friendInvitationByEmailSend: email_address_array: ", this.email_address_array);
-    FriendActions.friendInvitationByEmailSend(this.email_address_array, this.first_name_array,
-                                              this.last_name_array, "", this.state.add_friends_message,
+    //console.log("friendInvitationByEmailSend);
+    let _state = this.state; 
+    let email_address_array = [];
+    let first_name_array = [];
+    let last_name_array = [];
+    //create temporary arrays so friendInvitationByEmailSend can work
+    for (let friend_index = 1; friend_index <= this.state.friend_total; friend_index++) {
+      if (validateEmail(_state[`friend${friend_index}_email_address`])){
+        email_address_array.push(_state[`friend${friend_index}_email_address`])
+        first_name_array.push(_state[`friend${friend_index}_first_name`]) 
+        last_name_array.push(_state[`friend${friend_index}_last_name`]) 
+      }
+    }
+    // console.log("email_address_array: ", email_address_array);
+    // console.log("first_name_array: ", first_name_array);
+    // console.log("last_name_array: ", last_name_array);
+    FriendActions.friendInvitationByEmailSend(email_address_array, first_name_array,
+                                              last_name_array, "", this.state.add_friends_message,
                                               this.state.sender_email_address);
     // After calling the API, reset the form
     this.setState({
@@ -141,18 +151,12 @@ export default class AddFriendsByEmail extends Component {
       friend5_first_name: "",
       friend5_last_name: "",
       friend5_email_address: "",
-      email_address_array: [],
-      first_name_array: [],
-      last_name_array: [],
       email_addresses_error: false,
       sender_email_address: "",
       on_enter_email_addresses_step: true,
       on_collect_email_step: false,
       on_friend_invitations_sent_step: true,
     });
-    this.setEmailAddressArray([]);
-    this.setFirstNameArray([]);
-    this.setLastNameArray([]);
   }
 
   hasValidEmail () {
@@ -161,7 +165,7 @@ export default class AddFriendsByEmail extends Component {
   }
 
   senderEmailAddressVerified () {
-    return true;
+    return validateEmail(this.state.sender_email_address);
   }
 
   onKeyDown (event) {
@@ -173,7 +177,8 @@ export default class AddFriendsByEmail extends Component {
   }
 
   AddFriendsByEmailStepsManager (event) {
-    // This function is called when the form is submitted
+    // This function is called when the next button is  submitted;
+    // this funtion is called twice per cycle
     // console.log("Entering function AddFriendsByEmailStepsManager");
     let error_message = "";
 
@@ -181,27 +186,21 @@ export default class AddFriendsByEmail extends Component {
       // Validate friends' email addresses
       let email_addresses_error = false;
 
-      if (!this.prepareApiArraysFromForm()) {
-        //TBD error handling
-        // console.log("AddFriendsByEmailStepsManager, EmailAddresses error");
-        this.setState({
-          //TBD email_addresses_error set to true
-          loading: false,
-          email_addresses_error: true,
-        });
-      }
-      if (this.email_address_array.length === 0 ) {
-        // console.log("AddFriendsByEmailStepsManager: this.state.email_add is ", this.state.email_address_array);
-        email_addresses_error = true;
-        error_message += "Please enter at least one valid email address.";
-      } else {
-        this.email_address_array.map((email_address) => {
-          if (!validateEmail(email_address)) {
-            email_addresses_error = true;
-            error_message += "Please enter a valid email address for " + email_address;
-          }
-        });
-      }
+      //Error message logic on submit disabled in favor of disabling buttons
+
+      // if (!this.state.friend1_email_address ) {
+      //   // console.log("AddFriendsByEmailStepsManager: this.state.email_add is ");
+      //   email_addresses_error = true;
+      //   error_message += "Please enter at least one valid email address.";
+      // } else {
+      //   //custom error message for each invalid email
+      //   for (let friend_index = 1; friend_index <= this.state.friend_total; friend_index++){
+      //     if (this.state[`friend${friend_index}_email_address`] && !validateEmail(this.state[`friend${friend_index}_email_address`])) {
+      //       email_addresses_error = true;
+      //       error_message += `Please enter a valid email address for ${this.state[`friend${friend_index}_email_address`]}`;
+      //     }
+      //   }
+      // }
 
       if (email_addresses_error) {
         // console.log("AddFriendsByEmailStepsManager, email_addresses_error");
@@ -224,13 +223,16 @@ export default class AddFriendsByEmail extends Component {
     } else if (this.state.on_collect_email_step) {
       // Validate sender's email addresses
       let sender_email_address_error = false;
-      if (this.state.email_address_array.length === 0 ) {
-        sender_email_address_error = true;
-        error_message += "Please enter a valid email address for yourself. ";
-      } else if (!this.senderEmailAddressVerified()) {
-        sender_email_address_error = true;
-        error_message += "This is not a valid email address. ";
-      }
+
+      //Error message logic on submit disabled in favor of disabling buttons
+
+      // if (!this.state.sender_email_address ) {
+      //   sender_email_address_error = true;
+      //   error_message += "Please enter an email address for yourself. ";
+      // } else if (!this.senderEmailAddressVerified()) {
+      //   sender_email_address_error = true;
+      //   error_message += "Your email address is not a valid. ";
+      // }
 
       if (sender_email_address_error) {
         this.setState({
@@ -245,93 +247,36 @@ export default class AddFriendsByEmail extends Component {
     }
   }
 
-
   cacheFriendData (event) {
     this.setState({[event.target.name]: event.target.value});
     // console.log(`New State => ${event.target.name}: ${event.target.value}`);
   }
 
-  addElementToArray (array, value) {
-    array.push(value);
-  }
+  AllEnteredEmailsVerified () {
+    let _state = this.state;
+    let result;
 
-  setEmailAddressArray (value) {
-    this.sent_email_address_array = value.length !== 0 ? value : this.email_address_array;
-    this.email_address_array = value;
-  }
-
-  setFirstNameArray (value) {
-    this.first_name_array = value;
-  }
-
-  setLastNameArray (value) {
-    this.last_name_array = value;
-  }
-
-  prepareApiArraysFromForm () {
-    var _state = this.state;
-    var result;
-    var tmpEmailArray = _state.email_address_array.slice();
-    var tmpFirstNameArray = _state.first_name_array.slice();
-    var tmpLastNameArray = _state.last_name_array.slice();
-
-    for (let friend_index = 0; friend_index < 5; friend_index++) {
+    for (let friend_index = 1; friend_index <= this.state.friend_total; friend_index++) {
       if (_state[`friend${friend_index}_email_address`]){
         result = validateEmail(_state[`friend${friend_index}_email_address`]);
         if (result) {
-          // console.log(`prepareApiArraysFromForm: validated email for friend${friend_index}`, _state[`friend${friend_index}_email_address`]);
-          this.addElementToArray(tmpEmailArray, _state[`friend${friend_index}_email_address`]);
-          this.addElementToArray(tmpFirstNameArray, _state[`friend${friend_index}_first_name`]);
-          this.addElementToArray(tmpLastNameArray, _state[`friend${friend_index}_last_name`]);
+          // console.log(`AllEnteredEmailsVerified: validated email for friend${friend_index}`, _state[`friend${friend_index}_email_address`]);
         } else {
-          // console.log(`prepareApiArraysFromForm: invalid email address for friend${friend_index}`, _state[`friend${friend_index}_email_address`]);
+          // console.log(`AllEnteredEmailsVerified: invalid email address for friend${friend_index}`, _state[`friend${friend_index}_email_address`]);
           return false;
         }
       }
     }
-
-    this.setEmailAddressArray(tmpEmailArray);
-    this.setFirstNameArray(tmpFirstNameArray);
-    this.setLastNameArray(tmpLastNameArray);
-
-    this.setState({
-      email_address_array: tmpEmailArray,
-      first_name_array: tmpFirstNameArray,
-      last_name_array: tmpLastNameArray,
-    });
-
-    // console.log("prepareApiArraysFromForm: this.email_address_array: ", this.email_address_array);
-    // console.log("prepareApiArraysFromForm: this.first_name_array: ", this.first_name_array);
-    // console.log("prepareApiArraysFromForm: this.last_name_array: ", this.last_name_array);
     return true;
   }
 
-  closeRow2 () {
-    this.setState({ friend2_email_address: ""});
-    this.setState({ friend2_first_name: ""});
-    this.setState({ friend2_last_name: ""});
-    this.setState({ row2_open: false});
-  }
-
-  closeRow3 () {
-    this.setState({ friend3_email_address: ""});
-    this.setState({ friend3_first_name: ""});
-    this.setState({ friend3_last_name: ""});
-    this.setState({ row3_open: false});
-  }
-
-  closeRow4 () {
-    this.setState({ friend4_email_address: ""});
-    this.setState({ friend4_first_name: ""});
-    this.setState({ friend4_last_name: ""});
-    this.setState({ row4_open: false});
-  }
-
-  closeRow5 () {
-    this.setState({ friend5_email_address: ""});
-    this.setState({ friend5_first_name: ""});
-    this.setState({ friend5_last_name: ""});
-    this.setState({ row5_open: false});
+  closeRow (row_number) {
+    this.setState({
+      [`friend${row_number}_email_address`]: "",
+      [`friend${row_number}_first_name`]: "",
+      [`friend${row_number}_last_name`]: "",
+      [`row${row_number}_open`]: false
+    });
   }
 
   addAnotherInvitation () {
@@ -441,7 +386,7 @@ export default class AddFriendsByEmail extends Component {
                       placeholder="Optional"/>
                   </div>
                 </div>
-                <span className="close close-on-right" name="row2_open" aria-label="Close" onClick={this.closeRow2.bind(this)}><span aria-hidden="true">&times;</span></span>
+                <span className="close close-on-right" name="row2_open" aria-label="Close" onClick={this.closeRow.bind(this, 2)}><span aria-hidden="true">&times;</span></span>
               </div> :
             null}
             {this.state.row3_open ?
@@ -476,7 +421,7 @@ export default class AddFriendsByEmail extends Component {
                       placeholder="Optional"/>
                   </div>
                 </div>
-                <span className="close close-on-right" aria-label="Close" onClick={this.closeRow3.bind(this)}><span aria-hidden="true">&times;</span></span>
+                <span className="close close-on-right" aria-label="Close" onClick={this.closeRow.bind(this, 3)}><span aria-hidden="true">&times;</span></span>
               </div> :
             null}
             {this.state.row4_open ?
@@ -511,7 +456,7 @@ export default class AddFriendsByEmail extends Component {
                       placeholder="Optional"/>
                   </div>
                 </div>
-                <span className="close close-on-right" aria-label="Close" onClick={this.closeRow4.bind(this)}><span aria-hidden="true">&times;</span></span>
+                <span className="close close-on-right" aria-label="Close" onClick={this.closeRow.bind(this, 4)}><span aria-hidden="true">&times;</span></span>
               </div> :
             null}
             {this.state.row5_open ?
@@ -546,7 +491,7 @@ export default class AddFriendsByEmail extends Component {
                       placeholder="Optional"/>
                   </div>
                 </div>
-                <span className="close close-on-right" aria-label="Close" onClick={this.closeRow5.bind(this)}><span aria-hidden="true">&times;</span></span>
+                <span className="close close-on-right" aria-label="Close" onClick={this.closeRow.bind(this, 5)}><span aria-hidden="true">&times;</span></span>
               </div> :
             null}
             <div className="row invite-inputs">
@@ -561,13 +506,10 @@ export default class AddFriendsByEmail extends Component {
           </div>
 
           </form>
-          {/*<div>
-            {friendArray}
-          </div>*/}
         </div>
 
           <form className="u-stack--md">
-          {this.state.email_address_array && atLeastOneValidated ?
+          {atLeastOneValidated ?
             <span>
               <label htmlFor="last-name">Include a Message <span className="small">(Optional)</span></label><br />
               <input type="text" name="add_friends_message"
@@ -585,7 +527,7 @@ export default class AddFriendsByEmail extends Component {
                     onKeyDown={this.onKeyDown.bind(this)}
                     onClick={this.AddFriendsByEmailStepsManager.bind(this)}
                     bsStyle="primary"
-                    disabled={!atLeastOneValidated}
+                    disabled={!this.state.friend1_email_address || !this.AllEnteredEmailsVerified() }
                   >
                     { this.hasValidEmail() ?
                       <span>Send &gt;</span> :
@@ -615,7 +557,7 @@ export default class AddFriendsByEmail extends Component {
                   onKeyDown={this.onKeyDown.bind(this)}
                   onClick={this.AddFriendsByEmailStepsManager.bind(this)}
                   bsStyle="primary"
-                  disabled={!this.state.sender_email_address} >
+                  disabled={!this.state.sender_email_address || !this.senderEmailAddressVerified() } >
                   <span>Send</span>
                 </Button>
               </span>
