@@ -375,7 +375,7 @@ export default class AddFriendsByEmail extends Component {
       {this.state.on_enter_email_addresses_step ?
         <div>
         <div>
-          <form onSubmit={this.prepareApiArraysFromForm.bind(this)}>
+          <form>
             <div className="container-fluid">
               <div className="row invite-inputs">
                 <div className="form-group col-12 col-sm-12 col-md-6">
@@ -566,7 +566,7 @@ export default class AddFriendsByEmail extends Component {
           </div>*/}
         </div>
 
-          <form onSubmit={this.AddFriendsByEmailStepsManager.bind(this)} className="u-stack--md">
+          <form className="u-stack--md">
           {this.state.email_address_array && atLeastOneValidated ?
             <span>
               <label htmlFor="last-name">Include a Message <span className="small">(Optional)</span></label><br />
@@ -601,7 +601,7 @@ export default class AddFriendsByEmail extends Component {
 
       {this.state.on_collect_email_step ?
         <div>
-          <form onSubmit={this.AddFriendsByEmailStepsManager.bind(this)} className="u-stack--md">
+          <form className="u-stack--md">
             <input type="text" name="sender_email_address"
                    className="form-control"
                    onChange={this.cacheSenderEmailAddress.bind(this)}
