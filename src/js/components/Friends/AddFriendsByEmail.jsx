@@ -60,7 +60,11 @@ export default class AddFriendsByEmail extends Component {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
-  componentWillUnmount (){
+  // componentDidUpdate () {
+  //   console.log(this.state.email_address_array);
+  // }
+
+  componentWillUnmount () {
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
   }
@@ -271,66 +275,21 @@ export default class AddFriendsByEmail extends Component {
     var tmpFirstNameArray = _state.first_name_array.slice();
     var tmpLastNameArray = _state.last_name_array.slice();
 
-    if (_state.friend1_email_address) {
-      result = validateEmail(_state.friend1_email_address);
-      // console.log("prepareApiArraysFromForm", result);
-      if (result) {
-        //console.log("prepareApiArraysFromForm: validated email", _state.friend1_email_address);
-        this.addElementToArray(tmpEmailArray, _state.friend1_email_address);
-        this.addElementToArray(tmpFirstNameArray, _state.friend1_first_name);
-        this.addElementToArray(tmpLastNameArray, _state.friend1_last_name);
-      } else {
-        //console.log("prepareApiArraysFromForm: invalid email address", _state.friend1_email_address);
-        return false;
+    for (let friend_index = 0; friend_index < 5; friend_index++) {
+      if (_state[`friend${friend_index}_email_address`]){
+        result = validateEmail(_state[`friend${friend_index}_email_address`]);
+        if (result) {
+          // console.log(`prepareApiArraysFromForm: validated email for friend${friend_index}`, _state[`friend${friend_index}_email_address`]);
+          this.addElementToArray(tmpEmailArray, _state[`friend${friend_index}_email_address`]);
+          this.addElementToArray(tmpFirstNameArray, _state[`friend${friend_index}_first_name`]);
+          this.addElementToArray(tmpLastNameArray, _state[`friend${friend_index}_last_name`]);
+        } else {
+          // console.log(`prepareApiArraysFromForm: invalid email address for friend${friend_index}`, _state[`friend${friend_index}_email_address`]);
+          return false;
+        }
       }
     }
-    if (_state.friend2_email_address) {
-      result = validateEmail(_state.friend2_email_address);
-      if (result) {
-        // console.log("prepareApiArraysFromForm: validated email for friend2", _state.friend2_email_address);
-        this.addElementToArray(tmpEmailArray, _state.friend2_email_address);
-        this.addElementToArray(tmpFirstNameArray, _state.friend2_first_name);
-        this.addElementToArray(tmpLastNameArray, _state.friend2_last_name);
-      } else {
-        // console.log("prepareApiArraysFromForm: invalid email address for friend2", _state.friend2_email_address);
-        return false;
-      }
-    }
-    if (_state.friend3_email_address) {
-      result = validateEmail(_state.friend3_email_address);
-      if (result) {
-        // console.log("prepareApiArraysFromForm: validated email for friend3", _state.friend3_email_address);
-        this.addElementToArray(tmpEmailArray, _state.friend3_email_address);
-        this.addElementToArray(tmpFirstNameArray, _state.friend3_first_name);
-        this.addElementToArray(tmpLastNameArray, _state.friend3_last_name);
-      } else {
-        // console.log("prepareApiArraysFromForm: invalid email address for friend3", _state.friend3_email_address);
-        return false;
-      }
-    }
-    if (_state.friend4_email_address) {
-      result = validateEmail(_state.friend4_email_address);
-      if (result) {
-        this.addElementToArray(tmpEmailArray, _state.friend4_email_address);
-        this.addElementToArray(tmpFirstNameArray, _state.friend4_first_name);
-        this.addElementToArray(tmpLastNameArray, _state.friend4_last_name);
-      } else {
-        // console.log("prepareApiArraysFromForm: invalid email address for friend4", _state.friend4_email_address);
-        return false;
-      }
-    }
-    if (_state.friend5_email_address) {
-      result = validateEmail(_state.friend5_email_address);
-      if (result) {
-        // console.log("prepareApiArraysFromForm: validated email for friend5", _state.friend5_email_address);
-        this.addElementToArray(tmpEmailArray, _state.friend5_email_address);
-        this.addElementToArray(tmpFirstNameArray, _state.friend5_first_name);
-        this.addElementToArray(tmpLastNameArray, _state.friend5_last_name);
-      } else {
-        // console.log("prepareApiArraysFromForm: invalid email address for friend5", _state.friend5_email_address);
-        return false;
-      }
-    }
+
     this.setEmailAddressArray(tmpEmailArray);
     this.setFirstNameArray(tmpFirstNameArray);
     this.setLastNameArray(tmpLastNameArray);
