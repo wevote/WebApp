@@ -67,6 +67,9 @@ export default class PledgeToSupportOrganizationButton extends Component {
         <span className="voter-guide__pledge-to-support__i-stand-with-button hidden-xs">{i_stand_with_text}</span>
         <span className="voter-guide__pledge-to-support__i-stand-with-button visible-xs">{i_stand_with_text_mobile}</span>
       </Button>
+      <div className="voter-guide__pledge-to-support__i-stand-with-button-description u-stack--md">
+        {"Click this button to match what " + this.props.organization.organization_name + " supports or opposes."}
+        </div>
     </span>;
   }
 }

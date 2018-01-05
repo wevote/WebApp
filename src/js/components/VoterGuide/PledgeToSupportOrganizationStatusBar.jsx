@@ -53,7 +53,7 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
       number_of_supporters_goal = this.state.voter_guide.pledge_goal || 0;
 
       // So we can demo
-      number_of_supporters += 10;
+      number_of_supporters += 50;
       number_of_supporters_goal = 100;
 
       if (number_of_supporters_goal !== 0) {
