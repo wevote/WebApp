@@ -58,7 +58,7 @@ export default class CandidateItem extends Component {
         transitioning: false
       });
     }
-    console.log("CandidateItem, this.props:", this.props);
+    // console.log("CandidateItem, this.props:", this.props);
     if (this.props.we_vote_id) {
       // If here we want to get the candidate so we can get the office_we_vote_id
       let candidate = CandidateStore.getCandidate(this.props.we_vote_id);

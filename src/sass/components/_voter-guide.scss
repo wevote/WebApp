@@ -18,10 +18,19 @@
 .voter-guide {
   &__pledge-to-support {
     &__current-supporters {
+      text-align: center;
       font-size: .8rem;
     }
 
     &__i-stand-with-button {
+      @include breakpoints (small mid-small) {
+        font-size: .9rem;
+      }
+    }
+
+    &__i-stand-with-button-description {
+      text-align: center;
+      font-size: .8rem;
       @include breakpoints (small mid-small) {
         font-size: .9rem;
       }

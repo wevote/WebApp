@@ -227,16 +227,16 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   goToCandidateLink (candidate_we_vote_id) {
-    browserHistory.push("/candidate/" + candidate_we_vote_id);
+    browserHistory.push("/candidate/" + candidate_we_vote_id + "/b/bto/");
   }
 
   render () {
     let candidateSupportStore = SupportStore.get(this.state.ballot_item_we_vote_id);
+    // Removed from ItemActionBar opposeHideInMobile
     let candidate_support_action_raccoon = <span>
       <ItemActionBar ballot_item_display_name={this.state.ballot_item_display_name}
                      ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
                      commentButtonHide
-                     opposeHideInMobile
                      shareButtonHide
                      supportProps={candidateSupportStore}
                      transitioning={this.state.transitioning}
@@ -261,8 +261,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
     }
 
     let positions_exist = support_count || oppose_count || this.state.organizations_to_follow_support || this.state.organizations_to_follow_oppose;
-    let maximum_organizations_to_show_desktop = 8;
-    let maximum_organizations_to_show_mobile = 5;
+    let maximum_organizations_to_show_desktop = 12;
+    let maximum_organizations_to_show_mobile = 7;
 
     let organizations_to_follow_support_desktop = [];
     let organizations_to_follow_support_mobile = [];
@@ -313,13 +313,21 @@ export default class ItemSupportOpposeRaccoon extends Component {
         {candidate_support_action_raccoon}
 
         {/* Support Score here */}
-        <div className="network-positions-stacked__count">
-          <span className="network-positions__support-score u-cursor--pointer u-no-break" onClick={() => this.goToCandidateLink(this.state.ballot_item_we_vote_id)}>
-            { total_score === 0 ? <span>&nbsp;&nbsp;&nbsp;{ total_score_with_sign }&nbsp;</span> : <span>&nbsp;{ total_score_with_sign }&nbsp;</span>}
+        <div>
+          <span className="network-positions-stacked__support-score u-cursor--pointer u-no-break" onClick={() => this.goToCandidateLink(this.state.ballot_item_we_vote_id)}>
+            { total_score === 0 ?
+              <span className="u-margin-left--md">{ total_score_with_sign }&nbsp;</span> :
+              <span className="u-margin-left--xs">{ total_score_with_sign }&nbsp;</span>
+            }
+            <span className="network-positions-stacked__support-score-label">
+              <span className="visible-xs">Network Score</span>
+              <span className="hidden-xs">Your Network's Score</span>
+            </span>
           </span>
           <span className="sr-only">{total_score > 0 ? total_score + " Support" : null }{total_score < 0 ? total_score + " Oppose" : null }</span>
         </div>
-
+      </div>
+      <div className="network-positions-stacked__support">
         {/* Show a break-down of the positions in your network */}
         <span className="u-flex u-justify-between u-inset__v--xs">
           <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
