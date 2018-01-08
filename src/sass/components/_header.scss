@@ -158,6 +158,21 @@
       text-decoration: none;
     }
   }
+
+  &__election_results {
+    background-color: $white;
+    padding: $space-md;
+    font-size: 1rem;
+    align-items: center;
+
+    &--highlighted {
+      background-color: $search-result-highlight-color;
+    }
+  }
+
+  &__election_summary {
+    margin-right: $space-md;
+  }
 }
 
 .search-image {

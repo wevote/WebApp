@@ -6,13 +6,15 @@ import BallotSideBarLink from "../Navigation/BallotSideBarLink";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
-import OrganizationPositionItem from "./OrganizationPositionItem";
-import OrganizationStore from "../../stores/OrganizationStore";
-import VoterGuideStore from "../../stores/VoterGuideStore";
 import ImageHandler from "../ImageHandler";
+import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
+import LearnMore from "../Widgets/LearnMore";
+import OrganizationPositionItem from "./OrganizationPositionItem";
+import OrganizationStore from "../../stores/OrganizationStore";
 import SupportStore from "../../stores/SupportStore";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 5; // Set to 5 in raccoon, and 3 in walrus
 
@@ -239,14 +241,14 @@ export default class VoterGuideOfficeItemCompressed extends Component {
         <span className="hidden-xs">
           <BookmarkToggle we_vote_id={we_vote_id} type="OFFICE" />
           <span className="hidden-print pull-right u-push--lg">
-              <Link className="BallotItem__learn-more" onClick={this.goToOfficeLink}>Learn More</Link>
+              <Link className="BallotItem__learn-more" onClick={this.goToOfficeLink}>learn more</Link>
           </span>
         </span>
         {/* Mobile */}
         <span className="visible-xs">
           { this.state.display_raccoon_details_flag ?
             <span className="BallotItem__learn-more hidden-print pull-right">
-              <Link className="BallotItem__learn-more" onClick={this.goToOfficeLink}>Learn More</Link>
+              <Link className="BallotItem__learn-more" onClick={this.goToOfficeLink}>learn more</Link>
             </span> :
             null
           }
@@ -263,9 +265,9 @@ export default class VoterGuideOfficeItemCompressed extends Component {
             let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidate_we_vote_id);
             let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidate_we_vote_id);
 
-            // let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + ". " : "";
-            // let candidate_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
-            // let candidate_text = candidate_party_text + candidate_description_text;
+            let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + ". " : "";
+            let candidate_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
+            let candidate_text = candidate_party_text + candidate_description_text;
             let is_support = false;
             let is_oppose = false;
             let voter_statement_text = false;
@@ -352,6 +354,10 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                 <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
                   {/* Candidate Name */}
                   {candidate_name_raccoon}
+                  
+                  {/* Description under candidate name */}
+                  <LearnMore text_to_display={candidate_text}
+                             on_click={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(one_candidate.we_vote_id) : null} />
 
                   {/* Organization Endorsement */}
                   { this.doesOrganizationHavePositionOnCandidate(candidate_we_vote_id) && organization_position_for_this_candidate ?
@@ -389,7 +395,9 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                   // console.log("Rolled up, just tested doesOrganizationHavePositionOnCandidate, getOrganizationPositionForThisCandidate: ", organization_position_for_this_candidate);
 
                   if (organization_position_for_this_candidate) {
-                    //console.log("Rolled up, about to return OrganizationPositionItem");
+                    let candidateSupportStore = SupportStore.get(one_candidate.we_vote_id);
+                    // console.log("Rolled up, one_candidate:", one_candidate);
+                    // Removed from ItemActionBar  opposeHideInMobile
                     return <div key={one_candidate.we_vote_id}>
                       {/* Organization Endorsement */}
                       <OrganizationPositionItem ballotItemLink={this.getCandidateLink(one_candidate.we_vote_id)}
@@ -398,6 +406,15 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                                                 organization={this.state.organization}
                                                 editMode={this.state.editMode}
                       />
+                      <div className="flex">
+                          <ItemActionBar ballot_item_display_name={one_candidate.ballot_item_display_name}
+                                         ballot_item_we_vote_id={one_candidate.we_vote_id}
+                                         commentButtonHide
+                                         shareButtonHide
+                                         supportProps={candidateSupportStore}
+                                         transitioning={this.state.transitioning}
+                                         type="CANDIDATE"/>
+                      </div>
                     </div>;
                   }
                 }

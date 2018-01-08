@@ -4,7 +4,7 @@ import { shortenText } from "../../utils/textFormat";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 
-export default class PledgeToSupportOrganizationButton extends Component {
+export default class PledgeToVoteButton extends Component {
   static propTypes = {
     organization: PropTypes.object.isRequired,
     pledgeToVoteAction: PropTypes.func.isRequired,
@@ -54,9 +54,7 @@ export default class PledgeToSupportOrganizationButton extends Component {
       return null;
     }
 
-    // console.log("PledgeToSupportOrganizationButton, this.state.voter_guide: ", this.state.voter_guide);
-
-    let i_stand_with_text = "I Stand With " + this.props.organization.organization_name;
+    let i_stand_with_text = "I Will Vote";
     let i_stand_with_text_mobile = shortenText(i_stand_with_text, 32);
 
     return <span>
@@ -67,9 +65,6 @@ export default class PledgeToSupportOrganizationButton extends Component {
         <span className="voter-guide__pledge-to-support__i-stand-with-button hidden-xs">{i_stand_with_text}</span>
         <span className="voter-guide__pledge-to-support__i-stand-with-button visible-xs">{i_stand_with_text_mobile}</span>
       </Button>
-      <div className="voter-guide__pledge-to-support__i-stand-with-button-description u-stack--md">
-        {"Click this button to match what " + this.props.organization.organization_name + " supports or opposes."}
-        </div>
     </span>;
   }
 }

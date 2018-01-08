@@ -3,7 +3,7 @@ import { ProgressBar } from "react-bootstrap";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 
-export default class PledgeToSupportOrganizationStatusBar extends Component {
+export default class PledgeToVoteStatusBar extends Component {
   static propTypes = {
     organization: PropTypes.object.isRequired,
   };
@@ -53,7 +53,7 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
       number_of_supporters_goal = this.state.voter_guide.pledge_goal || 0;
 
       // So we can demo
-      number_of_supporters += 50;
+      number_of_supporters += 10;
       number_of_supporters_goal = 100;
 
       if (number_of_supporters_goal !== 0) {
@@ -75,12 +75,12 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
                                       className="u-stack--xs"
                                       striped
                                       now={percent_complete}
-                                      label={`${number_of_supporters} supporters`} />;
+                                      label={`${number_of_supporters} will vote`} />;
 
     return <span>
       {show_progress_bar ? progress_bar : null}
       {number_of_supporters > 1 ? <div className="voter-guide__pledge-to-support__current-supporters u-stack--md">
-          {number_of_supporters > 1 ? <span>{number_of_supporters} have pledged to stand with {this.props.organization.organization_name}. </span> : null }
+          {number_of_supporters > 1 ? <span>{number_of_supporters} have pledged to vote. </span> : null }
           { percent_complete < 100 ?
             <span>{number_of_supporters > 1 && number_of_supporters_goal && !voter_has_pledged ? <span>Let's get to {number_of_supporters_goal}!</span> : null }
             {number_of_supporters > 1 && number_of_supporters_goal && voter_has_pledged ? <span>Share with friends so we can get to {number_of_supporters_goal}!</span> : null }</span> :
@@ -89,7 +89,7 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
         null }
       {voter_has_pledged ?
         <div className="voter-guide__pledge-to-support__thank-you-for-supporting u-stack--md">
-          Thank you for standing with {this.props.organization.organization_name}!
+          Thank you for pledging to vote!
           {number_of_supporters === 1 && number_of_supporters_goal && voter_has_pledged && percent_complete < 100 ?
             <span> Share with friends so we can get to {number_of_supporters_goal}.</span> :
             null }

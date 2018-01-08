@@ -295,9 +295,9 @@ export default class Intro extends Component {
               <div className="features__block features__block__row1" onClick={this._toggleOrganizationsFeature}>
                 <Link to={"/more/network"}>
 
-                    <img className={ this.state.show_features_organizations ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/learn-from-orgs.svg" width="60%" />
-                    <h3 className="features__h3">Learn From Organizations</h3>
-                    <p className={ this.state.show_features_organizations ? "features__p" : "features__p hidden-xs" }>Follow the voter guides of groups you trust. See what they support or oppose.</p>
+                    <img className={ this.state.show_features_organizations ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/learn-issues-orgs.svg" width="60%" />
+                    <h3 className="features__h3">Learn From Issues and Organizations</h3>
+                    <p className={ this.state.show_features_organizations ? "features__p" : "features__p hidden-xs" }>Follow the issues and voter guides of groups you trust. See what they support or oppose.</p>
 
                 </Link>
               </div>
@@ -305,7 +305,7 @@ export default class Intro extends Component {
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
               <div className="features__block features__block__row2" onClick={this._togglePositionsFeature}>
                 <Link to={"/ballot"}>
-                  <img className={ this.state.show_features_positions ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/see-position.svg" />
+                  <img className={ this.state.show_features_positions ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/network-position.svg" />
                   <h3 className="features__h3">See Your Network's Positions</h3>
                   <p className={ this.state.show_features_positions ? "features__p" : "features__p hidden-xs" }>See how many in your network support or oppose each candidate or measure.</p>
                 </Link>

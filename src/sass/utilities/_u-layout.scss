@@ -6,6 +6,7 @@
 // Spacing
 // -------------------------------------------
 
+// $space-auto: auto;
 // $space-none:   0;
 // $space-xxs:  2px;
 // $space-xs:   4px;
@@ -28,6 +29,8 @@
 .u-margin-left--sm { margin-left: $space-sm; }
 .u-margin-left--md { margin-left: $space-md; }
 .u-margin-left--lg { margin-left: $space-lg; }
+
+.u_margin-center { margin: $space-none $space-auto; }
 
 // Stack classes
 // -------------------------------

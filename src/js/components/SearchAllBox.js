@@ -76,7 +76,8 @@ export default class SearchAllBox extends Component {
 
     if (SearchAllStore.getSearchResults()) {
       new_state.search_results = SearchAllStore.getSearchResults();
-      this.links = new_state.search_results.map((r) => makeSearchLink(r.twitter_handle, r.we_vote_id, r.kind_of_owner));
+      this.links = new_state.search_results.map((r) => makeSearchLink(r.twitter_handle, r.we_vote_id, r.kind_of_owner,
+        r.link_internal, r.google_civic_election_id));
     }
 
     if (SearchAllStore.getForceClosed()) {
@@ -273,27 +274,51 @@ export default class SearchAllBox extends Component {
              ref="searchContainer">
            { search_results.map((one_result, idx) => {
               let capitalized_title = capitalizeString(one_result.result_title);
-              let search_result_classes = classNames({
-                "search-container__results": true,
-                "search-container__results--highlighted": idx === this.state.selected_index
-              });
+              if (one_result.kind_of_owner === "ELECTION") {
+                let search_result_classes = classNames({
+                  "search-container__election_results": true,
+                  "search-container__election_results--highlighted": idx === this.state.selected_index
+                });
+                let election_day = one_result.result_summary.split(" ").splice(-1);
+                let today = new Date();
+                let election_date = new Date(election_day + " 0:00:00");
+                let past_election = today > election_date ? " IN PAST" : "UPCOMING ELECTION";
+                console.log("Election election_date ", election_date);
+                return <Link key={one_result.local_id}
+                             data-idx={idx}
+                             to={this.links[idx]}
+                             onMouseOver={this.onSearchResultMouseOver}
+                             className="search-container__links"
+                             onClick={this.onSearchResultClick}>
+                  <div className={search_result_classes}>
+                      <span className="search-container__election_summary">{capitalized_title}</span>
+                      <span className="search-container__election_summary">{election_day}</span>
+                      <span style={{float: "right"}}>{past_election}</span>
+                    </div>
+                </Link>;
+              } else {
+                let search_result_classes = classNames({
+                  "search-container__results": true,
+                  "search-container__results--highlighted": idx === this.state.selected_index
+                });
 
-              return <Link key={one_result.we_vote_id}
-                           data-idx={idx}
-                           to={this.links[idx]}
-                           onMouseOver={this.onSearchResultMouseOver}
-                           className="search-container__links"
-                           onClick={this.onSearchResultClick}>
-                <div className={search_result_classes}>
+                return <Link key={one_result.we_vote_id}
+                             data-idx={idx}
+                             to={this.links[idx]}
+                             onMouseOver={this.onSearchResultMouseOver}
+                             className="search-container__links"
+                             onClick={this.onSearchResultClick}>
+                  <div className={search_result_classes}>
                   <span>
                     <ImageHandler imageUrl={one_result.result_image}
                                   kind_of_ballot_item={one_result.kind_of_owner}
                                   sizeClassName="search-image "
                                   className={one_result.kind_of_owner} />
                   </span>
-                  {capitalized_title}
-                </div>
-              </Link>;
+                    {capitalized_title}
+                  </div>
+                </Link>;
+              }
           }) }
         </div>
       </div>;
