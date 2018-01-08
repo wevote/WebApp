@@ -16,7 +16,7 @@ const weVoteBoard = [ {
     image: wrapper("../../../img/global/photos/Debra_Cleaver-200x200.jpg"),
     title: [
       "c3 Board Member",
-      "Founder & CEO of VOTE.org, the web\"s most heavily trafficked site for accurate voting information."
+      "Founder & CEO of VOTE.org, the web's most heavily trafficked site for accurate voting information."
     ]
   }, {
     name: "Tiana Epps-Johnson",

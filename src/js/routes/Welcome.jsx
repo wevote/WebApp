@@ -275,7 +275,7 @@ export default class Intro extends Component {
         <div className="container">
           <div className="features-your-mission__block">
             <div className="features__title">Your Mission:<br />
-              <span className="hidden-xs h2">Make the world a better place.</span>
+              <span className="hidden-xs h2">Vote your values to make the world a better place.</span>
               <span className="visible-xs h4">Make the world a better place.</span>
             </div>
           </div>
@@ -331,7 +331,7 @@ export default class Intro extends Component {
             </div>
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
               <div className="features__block features__block__row3" onClick={this._toggleVoteFeature}>
-                <Link to={"/ballot?type=filterReadyToVote"}>
+                <Link to={"/ballot"}>
                   <img className={ this.state.show_features_vote ? "hidden-xs features__image" : "features__image" } src="/img/welcome/benefits/decide.svg" width="60%" />
                   <h3 className="features__h3">Decide & Vote</h3>
                   <p className={ this.state.show_features_vote ? "features__p" : "features__p hidden-xs" }>Cast your vote with confidence after using We Vote.</p>

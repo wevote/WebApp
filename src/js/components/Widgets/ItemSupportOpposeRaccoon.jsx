@@ -231,6 +231,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   render () {
+    console.log("ItemSupportOpposeRaccoon render");
     let candidateSupportStore = SupportStore.get(this.state.ballot_item_we_vote_id);
     // Removed from ItemActionBar opposeHideInMobile
     let candidate_support_action_raccoon = <span>
@@ -328,7 +329,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         </div>
       </div>
       <div className="network-positions-stacked__support">
-        {/* Show a break-down of the positions in your network */}
+        {/* Show a break-down of the current positions in your network */}
         <span className="u-flex u-justify-between u-inset__v--xs">
           <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
                                          ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
