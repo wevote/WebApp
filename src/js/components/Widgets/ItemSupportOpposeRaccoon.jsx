@@ -3,11 +3,11 @@ import { OverlayTrigger, Popover } from "react-bootstrap";
 import { Link, browserHistory } from "react-router";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
-import FollowToggle from "./FollowToggle";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdownList";
 import OrganizationCard from "../VoterGuide/OrganizationCard";
 import OrganizationsNotShownList from "../VoterGuide/OrganizationsNotShownList";
+import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
 import SupportStore from "../../stores/SupportStore";
 
 export default class ItemSupportOpposeRaccoon extends Component {
@@ -169,7 +169,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
               onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count, visible_tag)}
               onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count, visible_tag)}
               onExiting={() => this.onTriggerLeave(orgs_not_shown_count, visible_tag)}
-              trigger={["focus", "hover"]}
+              trigger={["focus", "hover", "click"]}
               rootClose
               placement="bottom"
               overlay={organizationPopover}>
@@ -210,16 +210,16 @@ export default class ItemSupportOpposeRaccoon extends Component {
             onMouseOver={() => this.onTriggerEnter(org_id, visible_tag)}
             onMouseOut={() => this.onTriggerLeave(org_id, visible_tag)}
             onExiting={() => this.onTriggerLeave(org_id, visible_tag)}
-            trigger={["focus", "hover"]}
+            trigger={["focus", "hover", "click"]}
             rootClose
             placement="bottom"
             overlay={organizationPopover}>
           <span className="position-rating__source with-popover">
-            <FollowToggle we_vote_id={one_organization.organization_we_vote_id}
-                          organization_for_display={one_organization}
-                          classNameOverride="pull-left"
-                          supportsThisBallotItem={supports_this_ballot_item}
-                          opposesThisBallotItem={opposes_this_ballot_item} />
+            <OrganizationTinyDisplay {...one_organization}
+                                     showPlaceholderImage
+                                     toFollow
+                                     showSupport={supports_this_ballot_item}
+                                     showOppose={opposes_this_ballot_item} />
           </span>
         </OverlayTrigger>;
       }
