@@ -328,7 +328,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         </div>
       </div>
       <div className="network-positions-stacked__support">
-        {/* Show a break-down of the positions in your network */}
+        {/* Show a break-down of the current positions in your network */}
         <span className="u-flex u-justify-between u-inset__v--xs hidden-xs">
           <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
                                          ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
