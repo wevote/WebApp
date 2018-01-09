@@ -210,7 +210,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
             onMouseOver={() => this.onTriggerEnter(org_id, visible_tag)}
             onMouseOut={() => this.onTriggerLeave(org_id, visible_tag)}
             onExiting={() => this.onTriggerLeave(org_id, visible_tag)}
-            trigger={["focus", "hover", "click"]}
+            trigger={ visible_tag === "mobile" ? "click" : ["focus", "hover", "click"] }
             rootClose
             placement="bottom"
             overlay={organizationPopover}>
@@ -329,19 +329,37 @@ export default class ItemSupportOpposeRaccoon extends Component {
       </div>
       <div className="network-positions-stacked__support">
         {/* Show a break-down of the positions in your network */}
-        <span className="u-flex u-justify-between u-inset__v--xs">
+        <span className="u-flex u-justify-between u-inset__v--xs hidden-xs">
           <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
                                          ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
                                          position_list={this.state.position_list_from_advisers_followed_by_voter}
                                          showSupport
-                                         supportProps={this.state.supportProps} />
+                                         supportProps={this.state.supportProps}
+                                         visibility="desktop" />
         </span>
-        <span className="u-flex u-justify-between u-inset__v--xs">
+        <span className="u-flex u-justify-between u-inset__v--xs hidden-xs">
           <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
                                          ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
                                          position_list={this.state.position_list_from_advisers_followed_by_voter}
                                          showOppose
-                                         supportProps={this.state.supportProps}/>
+                                         supportProps={this.state.supportProps}
+                                         visibility="desktop" />
+        </span>
+        <span className="u-flex u-justify-between u-inset__v--xs visible-xs">
+          <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
+                                         ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
+                                         position_list={this.state.position_list_from_advisers_followed_by_voter}
+                                         showSupport
+                                         supportProps={this.state.supportProps}
+                                         visibility="mobile" />
+        </span>
+        <span className="u-flex u-justify-between u-inset__v--xs visible-xs">
+          <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
+                                         ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
+                                         position_list={this.state.position_list_from_advisers_followed_by_voter}
+                                         showOppose
+                                         supportProps={this.state.supportProps}
+                                         visibility="mobile" />
         </span>
 
         {/* Show support positions the voter can follow Desktop */}
