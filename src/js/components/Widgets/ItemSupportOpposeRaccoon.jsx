@@ -231,6 +231,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   render () {
+    console.log("ItemSupportOpposeRaccoon render");
     let candidateSupportStore = SupportStore.get(this.state.ballot_item_we_vote_id);
     // Removed from ItemActionBar opposeHideInMobile
     let candidate_support_action_raccoon = <span>
