@@ -247,6 +247,24 @@ class VoterStore extends ReduceStore {
         }
         return state;
 
+      case "voterAnalysisForJumpProcess":
+        VoterActions.voterRetrieve();
+        return {
+          ...state,
+          email_address_status: {
+            email_ownership_is_verified: action.res.email_ownership_is_verified,
+            email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
+            email_verify_attempted: action.res.email_verify_attempted,
+            email_address_found: action.res.email_address_found,
+          },
+          email_sign_in_status: {
+            email_ownership_is_verified: action.res.email_ownership_is_verified,
+            email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
+            email_sign_in_attempted: action.res.email_verify_attempted,
+            email_address_found: action.res.email_address_found,
+          }
+        };
+
       case "voterAddressRetrieve":
         // console.log("VoterStore, voterAddressRetrieve, address:", action.res);
         return {
