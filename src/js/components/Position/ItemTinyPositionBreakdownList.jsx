@@ -63,7 +63,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
   }
 
   render () {
-    console.log("ItemTinyPositionBreakdownList render");
+    // console.log("ItemTinyPositionBreakdownList render");
     if (!this.state.position_list && !this.state.voter_support_oppose_properties) {
       // If neither position_list nor supportProps exist, then return null
       return null;

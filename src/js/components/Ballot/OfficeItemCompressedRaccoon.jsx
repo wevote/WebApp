@@ -74,7 +74,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
   }
 
   componentWillReceiveProps (nextProps){
-    console.log("VoterGuideOfficeItemCompressed componentWillReceiveProps");
+    // console.log("VoterGuideOfficeItemCompressed componentWillReceiveProps");
     // console.log("nextProps.candidate_list: ", nextProps.candidate_list);
     // Doesn't seem necessary
     // if (nextProps.candidate_list && nextProps.candidate_list.length) {
@@ -271,7 +271,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
             let candidateSupportStore = SupportStore.get(candidate_we_vote_id);
             let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidate_we_vote_id);
             let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidate_we_vote_id);
-            console.log("OfficeItemCompressedRaccoon, just retrieved getVoterGuidesToFollowForBallotItemIdSupports");
+            // console.log("OfficeItemCompressedRaccoon, just retrieved getVoterGuidesToFollowForBallotItemIdSupports");
             let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + ". " : "";
             let candidate_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
             let candidate_text = candidate_party_text + candidate_description_text;
@@ -310,11 +310,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
                 <ItemSupportOpposeRaccoon ballotItemWeVoteId={candidate_we_vote_id}
                                           ballot_item_display_name={one_candidate.ballot_item_display_name}
                                           display_raccoon_details_flag={this.state.display_raccoon_details_flag}
-                                          supportProps={candidateSupportStore}
+                                          goToCandidate={() => this.goToCandidateLink(one_candidate.we_vote_id)}
+                                          maximumOrganizationDisplay={this.state.maximum_organization_display}
                                           organizationsToFollowSupport={organizationsToFollowSupport}
                                           organizationsToFollowOppose={organizationsToFollowOppose}
-                                          maximumOrganizationDisplay={this.state.maximum_organization_display}
-                                          toggleCandidateModal={this.props.toggleCandidateModal}
+                                          supportProps={candidateSupportStore}
                                           type="CANDIDATE"/>
               </div>
             </div>;

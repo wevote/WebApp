@@ -1,4 +1,5 @@
 import { ReduceStore } from "flux/utils";
+import CandidateActions from "../actions/CandidateActions";
 import Dispatcher from "../dispatcher/Dispatcher";
 import OfficeActions from "../actions/OfficeActions";
 import OfficeStore from "../stores/OfficeStore";
@@ -55,7 +56,7 @@ class CandidateStore extends ReduceStore {
     switch (action.type) {
 
       case "candidateRetrieve":
-         // Make sure we have information for the office the candidate is running for
+        // Make sure we have information for the office the candidate is running for
         if (action.res.contest_office_we_vote_id) {
           let office = OfficeStore.getOffice(action.res.contest_office_we_vote_id);
           if (!office || !office.ballot_item_display_name) {
@@ -69,6 +70,33 @@ class CandidateStore extends ReduceStore {
           ...state,
           all_cached_candidates: all_cached_candidates
         };
+
+      case "organizationFollow":
+        // Go through all of the candidates currently on the ballot and update their positions
+        if (state.all_cached_candidates) {
+          for (var candidate_we_vote_id in state.all_cached_candidates) {
+            CandidateActions.positionListForBallotItem(candidate_we_vote_id);
+          }
+        }
+        return state;
+
+      case "organizationStopFollowing":
+        // Go through all of the candidates currently on the ballot and update their positions
+        if (state.all_cached_candidates) {
+          for (var candidate_we_vote_id in state.all_cached_candidates) {
+            CandidateActions.positionListForBallotItem(candidate_we_vote_id);
+          }
+        }
+        return state;
+
+      case "organizationFollowIgnore":
+        // Go through all of the candidates currently on the ballot and update their positions
+        if (state.all_cached_candidates) {
+          for (var candidate_we_vote_id in state.all_cached_candidates) {
+            CandidateActions.positionListForBallotItem(candidate_we_vote_id);
+          }
+        }
+        return state;
 
       case "positionListForBallotItem":
         position_list_for_candidate = action.res.kind_of_ballot_item === "CANDIDATE";

@@ -14,12 +14,12 @@ export default class ItemSupportOpposeRaccoon extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string,
     ballotItemWeVoteId: PropTypes.string,
+    goToCandidate: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
     maximumOrganizationDisplay: PropTypes.number,
     organizationsToFollowSupport: PropTypes.array,
     organizationsToFollowOppose: PropTypes.array,
     positionBarIsClickable: PropTypes.bool,
     supportProps: PropTypes.object,
-    toggleCandidateModal: PropTypes.func,
   };
 
   constructor (props) {
@@ -38,8 +38,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       position_list_from_advisers_followed_by_voter: [],
       supportProps: this.props.supportProps,
     };
-
-    this.goToCandidateLink = this.goToCandidateLink.bind(this);
+    this.goToCandidateLinkLocal = this.goToCandidateLinkLocal.bind(this);
   }
 
   componentDidMount () {
@@ -72,6 +71,13 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
+  }
+
+  goToCandidateLinkLocal() {
+    // console.log("ItemSupportOpposeRaccoon goToCandidateLinkLocal");
+    if (this.props.goToCandidate) {
+      this.props.goToCandidate();
+    }
   }
 
   onCandidateStoreChange () {
@@ -137,49 +143,50 @@ export default class ItemSupportOpposeRaccoon extends Component {
     }
 
     let local_counter = 0;
-    let orgs_not_shown_count = 0;
-    let orgs_not_shown_list = [];
+    // let orgs_not_shown_count = 0;
+    // let orgs_not_shown_list = [];
     let one_organization_for_organization_card;
-    if (organizations_to_follow &&
-      organizations_to_follow.length > maximum_organization_display) {
-      orgs_not_shown_count = organizations_to_follow.length - maximum_organization_display;
-      orgs_not_shown_list = organizations_to_follow.slice(maximum_organization_display);
-    }
+    // if (organizations_to_follow &&
+    //   organizations_to_follow.length > maximum_organization_display) {
+    //   orgs_not_shown_count = organizations_to_follow.length - maximum_organization_display;
+    //   orgs_not_shown_list = organizations_to_follow.slice(maximum_organization_display);
+    // }
     return organizations_to_follow.map( (one_organization) => {
       local_counter++;
       let org_id = one_organization.organization_we_vote_id;
 
       // Once we have more organizations than we want to show, put them into a drop-down
       if (local_counter > maximum_organization_display) {
-        if (local_counter === maximum_organization_display + 1) {
-          // If here, we want to show how many organizations there are to follow
-          // Using orgs_not_shown_count as the key seems arbitrary and could cause a collision
-          this.popover_state[orgs_not_shown_count] = {show: false, timer: null};
-          let organizationPopover = <Popover
-              id={`organization-popover-${orgs_not_shown_count}-${visible_tag}`}
-              onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count, visible_tag)}
-              onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count, visible_tag)}
-              className="card-popover">
-              <OrganizationsNotShownList orgs_not_shown_list={orgs_not_shown_list} />
-            </Popover>;
-
-          return <OverlayTrigger
-              key={`trigger-${orgs_not_shown_count}-${visible_tag}`}
-              ref={`cheetah-overlay-${orgs_not_shown_count}-${visible_tag}`}
-              onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count, visible_tag)}
-              onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count, visible_tag)}
-              onExiting={() => this.onTriggerLeave(orgs_not_shown_count, visible_tag)}
-              trigger={["focus", "hover", "click"]}
-              rootClose
-              placement="bottom"
-              overlay={organizationPopover}>
-            <span className="position-rating__source with-popover">
-              <Link to="/opinions"> +{orgs_not_shown_count}</Link>
-            </span>
-          </OverlayTrigger>;
-        } else {
-          return "";
-        }
+        // For now we don't want the dropdown
+        // if (local_counter === maximum_organization_display + 1) {
+        //   // If here, we want to show how many organizations there are to follow
+        //   // Using orgs_not_shown_count as the key seems arbitrary and could cause a collision
+        //   this.popover_state[orgs_not_shown_count] = {show: false, timer: null};
+        //   let organizationPopover = <Popover
+        //       id={`organization-popover-${orgs_not_shown_count}-${visible_tag}`}
+        //       onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count, visible_tag)}
+        //       onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count, visible_tag)}
+        //       className="card-popover">
+        //       <OrganizationsNotShownList orgs_not_shown_list={orgs_not_shown_list} />
+        //     </Popover>;
+        //
+        //   return <OverlayTrigger
+        //       key={`trigger-${orgs_not_shown_count}-${visible_tag}`}
+        //       ref={`cheetah-overlay-${orgs_not_shown_count}-${visible_tag}`}
+        //       onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count, visible_tag)}
+        //       onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count, visible_tag)}
+        //       onExiting={() => this.onTriggerLeave(orgs_not_shown_count, visible_tag)}
+        //       trigger={["focus", "hover", "click"]}
+        //       rootClose
+        //       placement="bottom"
+        //       overlay={organizationPopover}>
+        //     <span className="position-rating__source with-popover">
+        //       <Link to="/opinions"> +{orgs_not_shown_count}</Link>
+        //     </span>
+        //   </OverlayTrigger>;
+        // } else {
+        //   return "";
+        // }
       } else {
         one_organization_for_organization_card = {
             organization_we_vote_id: one_organization.organization_we_vote_id,
@@ -224,10 +231,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
         </OverlayTrigger>;
       }
     });
-  }
-
-  goToCandidateLink (candidate_we_vote_id) {
-    browserHistory.push("/candidate/" + candidate_we_vote_id + "/b/bto/");
   }
 
   render () {
@@ -315,14 +318,14 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
         {/* Support Score here */}
         <div>
-          <span className="network-positions-stacked__support-score u-cursor--pointer u-no-break" onClick={() => this.goToCandidateLink(this.state.ballot_item_we_vote_id)}>
+          <span className="network-positions-stacked__support-score u-cursor--pointer u-no-break" onClick={this.goToCandidateLinkLocal}>
             { total_score === 0 ?
               <span className="u-margin-left--md">{ total_score_with_sign }&nbsp;</span> :
               <span className="u-margin-left--xs">{ total_score_with_sign }&nbsp;</span>
             }
             <span className="network-positions-stacked__support-score-label">
-              <span className="visible-xs">Network Score</span>
-              <span className="hidden-xs">Your Network's Score</span>
+              <span className="visible-xs">Score in Your Network</span>
+              <span className="hidden-xs">Score in Your Network</span>
             </span>
           </span>
           <span className="sr-only">{total_score > 0 ? total_score + " Support" : null }{total_score < 0 ? total_score + " Oppose" : null }</span>

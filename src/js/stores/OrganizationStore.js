@@ -184,9 +184,6 @@ class OrganizationStore extends ReduceStore {
         VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
         // Following one org can change the support/oppose count for many ballot items for the voter
         SupportActions.positionsCountForAllBallotItems();
-        // Go through all of the candidates currently on the ballot and update their positions
-        candidate_we_vote_id = "wv01cand5887"; // TODO TEMP
-        CandidateActions.positionListForBallotItem(candidate_we_vote_id);
         // Retrieve the organizations followed by voter
         OrganizationActions.organizationsFollowedRetrieve();
         organization_we_vote_ids_voter_is_following = state.organization_we_vote_ids_voter_is_following;
@@ -221,9 +218,6 @@ class OrganizationStore extends ReduceStore {
         VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
         // Un-Following one org can change the support/oppose count for many ballot items for the voter
         SupportActions.positionsCountForAllBallotItems();
-        // Go through all of the candidates currently on the ballot and update their positions
-        candidate_we_vote_id = "wv01cand5887"; // TODO TEMP
-        CandidateActions.positionListForBallotItem(candidate_we_vote_id);
         // Retrieve the organizations followed by voter
         OrganizationActions.organizationsFollowedRetrieve();
         return {

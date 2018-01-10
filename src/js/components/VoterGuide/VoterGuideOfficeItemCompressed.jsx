@@ -302,11 +302,11 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                 <ItemSupportOpposeRaccoon ballotItemWeVoteId={candidate_we_vote_id}
                                           ballot_item_display_name={one_candidate.ballot_item_display_name}
                                           display_raccoon_details_flag={this.state.display_raccoon_details_flag}
-                                          supportProps={candidateSupportStore}
+                                          goToCandidate={() => this.goToCandidateLink(one_candidate.we_vote_id)}
+                                          maximumOrganizationDisplay={this.state.maximum_organization_display}
                                           organizationsToFollowSupport={organizationsToFollowSupport}
                                           organizationsToFollowOppose={organizationsToFollowOppose}
-                                          maximumOrganizationDisplay={this.state.maximum_organization_display}
-                                          toggleCandidateModal={this.props.toggleCandidateModal}
+                                          supportProps={candidateSupportStore}
                                           type="CANDIDATE"/>
               </div>
             </div>;
