@@ -17,6 +17,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
     showOppose: PropTypes.bool,
     showSupport: PropTypes.bool,
     supportProps: PropTypes.object,
+    visibility: PropTypes.string,
   };
 
   constructor (props) {
@@ -33,6 +34,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
       ballot_item_we_vote_id: this.props.ballotItemWeVoteId,
       position_list: this.props.position_list,
       voter: VoterStore.getVoter(), // We only set this once since the info we need isn't dynamic
+      voter_support_oppose_properties: this.props.supportProps,
     });
   }
 
@@ -40,6 +42,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
     this.setState({
       position_list: nextProps.position_list,
       ballot_item_we_vote_id: nextProps.ballotItemWeVoteId,
+      voter_support_oppose_properties: nextProps.supportProps,
     });
   }
 
@@ -61,7 +64,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
 
   render () {
     // console.log("ItemTinyPositionBreakdownList render");
-    if (!this.state.position_list && !this.props.supportProps) {
+    if (!this.state.position_list && !this.state.voter_support_oppose_properties) {
       // If neither position_list nor supportProps exist, then return null
       return null;
     }
@@ -78,11 +81,11 @@ export default class ItemTinyPositionBreakdownList extends Component {
     let temp_organizations_to_display = [];
     let voter_image_url_tiny = "";
     // Put the voter's icon first
-    if (this.props.supportProps && this.state.voter) {
+    if (this.state.voter_support_oppose_properties && this.state.voter) {
       let show_voter_position = false;
-      if (this.props.supportProps.is_support && this.props.showSupport) {
+      if (this.state.voter_support_oppose_properties.is_support && this.props.showSupport) {
         show_voter_position = true;
-      } else if (this.props.supportProps.is_oppose && this.props.showOppose) {
+      } else if (this.state.voter_support_oppose_properties.is_oppose && this.props.showOppose) {
         show_voter_position = true;
       }
       // console.log("ItemTinyPositionBreakdownList show_voter_position: ", show_voter_position);
@@ -98,10 +101,10 @@ export default class ItemTinyPositionBreakdownList extends Component {
         let showSupport = false;
         let showOppose = false;
         let support_oppose_class = "";
-        if (this.props.supportProps.is_support) {
+        if (this.state.voter_support_oppose_properties.is_support) {
           showSupport = true;
           support_oppose_class = "network-positions__show-support-underline ";
-        } else if (this.props.supportProps.is_oppose) {
+        } else if (this.state.voter_support_oppose_properties.is_oppose) {
           showOppose = true;
           support_oppose_class = "network-positions__show-oppose-underline ";
         }
@@ -180,7 +183,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
                 onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
                 onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
                 onExiting={() => this.onTriggerLeave(orgs_not_shown_count)}
-                trigger={["focus", "hover"]}
+                trigger={this.props.visibility === "mobile" ? "click" : ["focus", "hover", "click"]}
                 rootClose
                 placement="bottom"
                 overlay={organizationPopover}>
@@ -220,7 +223,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
               onMouseOver={() => this.onTriggerEnter(organization_we_vote_id)}
               onMouseOut={() => this.onTriggerLeave(organization_we_vote_id)}
               onExiting={() => this.onTriggerLeave(organization_we_vote_id)}
-              trigger={["focus", "hover", "click"]}
+              trigger={this.props.visibility === "mobile" ? "click" : ["focus", "hover", "click"]}
               rootClose
               placement="bottom"
               overlay={organizationPopover}>

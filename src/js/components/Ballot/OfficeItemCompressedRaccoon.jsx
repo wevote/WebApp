@@ -17,7 +17,7 @@ import VoterGuideStore from "../../stores/VoterGuideStore";
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 5; // Set to 5 in raccoon, and 3 in walrus
 
 // This is related to components/VoterGuide/VoterGuideOfficeItemCompressed
-export default class OfficeItemCompressed extends Component {
+export default class OfficeItemCompressedRaccoon extends Component {
   static propTypes = {
     we_vote_id: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string.isRequired,
@@ -74,7 +74,18 @@ export default class OfficeItemCompressed extends Component {
   }
 
   componentWillReceiveProps (nextProps){
-    // console.log("VoterGuideOfficeItemCompressed componentWillReceiveProps, nextProps: ", nextProps);
+    // console.log("VoterGuideOfficeItemCompressed componentWillReceiveProps");
+    // console.log("nextProps.candidate_list: ", nextProps.candidate_list);
+    // Doesn't seem necessary
+    // if (nextProps.candidate_list && nextProps.candidate_list.length) {
+    //   nextProps.candidate_list.forEach( function (candidate) {
+    //     // console.log("OfficeItemCompressed, candidate: ", candidate);
+    //     if (candidate && candidate.hasOwnProperty("we_vote_id") && !CandidateStore.isCandidateInStore(candidate.we_vote_id)) {
+    //       // console.log("OfficeItemCompressed, retrieving");
+    //       CandidateActions.candidateRetrieve(candidate.we_vote_id);
+    //     }
+    //   });
+    // }
     if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
       this.setState({
          organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
@@ -89,7 +100,9 @@ export default class OfficeItemCompressed extends Component {
   }
 
   onVoterGuideStoreChange () {
-    this.setState({ transitioning: false });
+    this.setState({
+      transitioning: false
+    });
   }
 
   _onOrganizationStoreChange (){
@@ -154,6 +167,7 @@ export default class OfficeItemCompressed extends Component {
   }
 
   render () {
+    // console.log("OfficeItemCompressedRaccoon render");
     let { ballot_item_display_name, we_vote_id } = this.props;
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
@@ -257,7 +271,7 @@ export default class OfficeItemCompressed extends Component {
             let candidateSupportStore = SupportStore.get(candidate_we_vote_id);
             let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidate_we_vote_id);
             let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidate_we_vote_id);
-
+            // console.log("OfficeItemCompressedRaccoon, just retrieved getVoterGuidesToFollowForBallotItemIdSupports");
             let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + ". " : "";
             let candidate_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
             let candidate_text = candidate_party_text + candidate_description_text;
@@ -296,11 +310,11 @@ export default class OfficeItemCompressed extends Component {
                 <ItemSupportOpposeRaccoon ballotItemWeVoteId={candidate_we_vote_id}
                                           ballot_item_display_name={one_candidate.ballot_item_display_name}
                                           display_raccoon_details_flag={this.state.display_raccoon_details_flag}
-                                          supportProps={candidateSupportStore}
+                                          goToCandidate={() => this.goToCandidateLink(one_candidate.we_vote_id)}
+                                          maximumOrganizationDisplay={this.state.maximum_organization_display}
                                           organizationsToFollowSupport={organizationsToFollowSupport}
                                           organizationsToFollowOppose={organizationsToFollowOppose}
-                                          maximumOrganizationDisplay={this.state.maximum_organization_display}
-                                          toggleCandidateModal={this.props.toggleCandidateModal}
+                                          supportProps={candidateSupportStore}
                                           type="CANDIDATE"/>
               </div>
             </div>;

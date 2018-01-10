@@ -1,5 +1,6 @@
 import { ReduceStore } from "flux/utils";
 import Dispatcher from "../dispatcher/Dispatcher";
+import CandidateActions from "../actions/CandidateActions";
 import OrganizationActions from "../actions/OrganizationActions";
 import SupportActions from "../actions/SupportActions";
 import VoterGuideActions from "../actions/VoterGuideActions";
@@ -145,6 +146,7 @@ class OrganizationStore extends ReduceStore {
   reduce (state, action) {
     let add_voter_guides_not_from_election;
     let all_cached_organizations_dict;
+    let candidate_we_vote_id;
     let organization_we_vote_id;
     let organization;
     let prior_copy_of_organization;
@@ -245,6 +247,9 @@ class OrganizationStore extends ReduceStore {
         VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
         // Ignoring one org can change the support/oppose count for many ballot items for the voter
         SupportActions.positionsCountForAllBallotItems();
+        // Go through all of the candidates currently on the ballot and update their positions
+        candidate_we_vote_id = "wv01cand5887"; // TODO TEMP
+        CandidateActions.positionListForBallotItem(candidate_we_vote_id);
         // Retrieve the organizations followed by voter
         OrganizationActions.organizationsFollowedRetrieve();
         organization_we_vote_ids_voter_is_ignoring = state.organization_we_vote_ids_voter_is_ignoring;
