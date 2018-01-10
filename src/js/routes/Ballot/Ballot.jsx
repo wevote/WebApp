@@ -37,6 +37,7 @@ import VoterStore from "../../stores/VoterStore";
 
 const web_app_config = require("../../config");
 
+// Related to WebApp/src/js/components/VoterGuide/VoterGuideBallot.jsx
 export default class Ballot extends Component {
   static propTypes = {
     location: PropTypes.object,
@@ -206,7 +207,7 @@ export default class Ballot extends Component {
     // Were there any actual changes?
     if (ballot_returned_we_vote_id !== this.state.ballot_returned_we_vote_id || ballot_location_shortcut !== this.state.ballot_location_shortcut || google_civic_election_id !== this.state.google_civic_election_id || filter_type !== this.state.filter_type) {
       this.setState({
-        ballot: BallotStore.getBallotByFilterType(filter_type),
+        ballot_with_all_items: BallotStore.getBallotByFilterType(filter_type),
         ballot_returned_we_vote_id: ballot_returned_we_vote_id,
         ballot_location_shortcut: ballot_location_shortcut,
         filter_type: filter_type,
@@ -297,7 +298,7 @@ export default class Ballot extends Component {
         if ( this.state.voter && this.state.voter.is_signed_in ) {
           consider_opening_ballot_intro_modal = true;
           this.setState({ wait_until_voter_sign_in_completes: undefined });
-          console.log("onVoterStoreChange, about to browserHistory.push(this.state.pathname):", this.state.pathname);
+          // console.log("onVoterStoreChange, about to browserHistory.push(this.state.pathname):", this.state.pathname);
           browserHistory.push(this.state.pathname);
         }
       }
@@ -328,11 +329,11 @@ export default class Ballot extends Component {
         // Ballot is found but ballot is empty. We want to stay put.
         // console.log("onBallotStoreChange: ballot_with_all_items is empty");
       } else {
-        let filter_type = this.state.location.query ? this.state.location.query.type : "all";
-        // console.log("onBallotStoreChange, filter_type:", filter_type);
+        let prior_filter_type = this.state.filter_type || "all";
+        let new_filter_type = this.state.location.query && this.state.location.query.type !== "" ? this.state.location.query.type : prior_filter_type;
         this.setState({
-          ballot_with_all_items: BallotStore.getBallotByFilterType(filter_type),
-          filter_type: filter_type
+          ballot_with_all_items: BallotStore.getBallotByFilterType(new_filter_type),
+          filter_type: new_filter_type
         });
       }
     }
@@ -521,7 +522,7 @@ export default class Ballot extends Component {
       { this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
       { this.state.showMeasureModal ? <MeasureModal show={this.state.showMeasureModal} toggleFunction={this.toggleMeasureModal} measure={this.state.measure_for_modal}/> : null }
       { this.state.showCandidateModal ? <CandidateModal show={this.state.showCandidateModal} toggleFunction={this.toggleCandidateModal} candidate={this.state.candidate_for_modal}/> : null }
-      { this.state.showSelectBallotModal ? <SelectBallotModal show={this.state.showSelectBallotModal} toggleFunction={this.toggleSelectBallotModal} ballotElectionList={this.state.ballotElectionList} ballotBaseUrl="/ballot" google_civic_election_id={this.state.google_civic_election_id} location={this.state.location} /> : null }
+      { this.state.showSelectBallotModal ? <SelectBallotModal show={this.state.showSelectBallotModal} toggleFunction={this.toggleSelectBallotModal} ballotElectionList={this.state.ballotElectionList} pathname={this.state.pathname} ballotBaseUrl="/ballot" google_civic_election_id={this.state.google_civic_election_id} location={this.state.location} /> : null }
       { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this.toggleBallotSummaryModal} /> : null }
 
       <div className="ballot__heading">
