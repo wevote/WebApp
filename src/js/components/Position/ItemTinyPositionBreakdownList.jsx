@@ -17,6 +17,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
     showOppose: PropTypes.bool,
     showSupport: PropTypes.bool,
     supportProps: PropTypes.object,
+    visibility: PropTypes.string,
   };
 
   constructor (props) {
@@ -182,7 +183,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
                 onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
                 onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
                 onExiting={() => this.onTriggerLeave(orgs_not_shown_count)}
-                trigger={["focus", "hover"]}
+                trigger={this.props.visibility === "mobile" ? "click" : ["focus", "hover", "click"]}
                 rootClose
                 placement="bottom"
                 overlay={organizationPopover}>
@@ -222,7 +223,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
               onMouseOver={() => this.onTriggerEnter(organization_we_vote_id)}
               onMouseOut={() => this.onTriggerLeave(organization_we_vote_id)}
               onExiting={() => this.onTriggerLeave(organization_we_vote_id)}
-              trigger={["focus", "hover", "click"]}
+              trigger={this.props.visibility === "mobile" ? "click" : ["focus", "hover", "click"]}
               rootClose
               placement="bottom"
               overlay={organizationPopover}>

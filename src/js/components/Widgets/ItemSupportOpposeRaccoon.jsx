@@ -3,11 +3,11 @@ import { OverlayTrigger, Popover } from "react-bootstrap";
 import { Link, browserHistory } from "react-router";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
-import FollowToggle from "./FollowToggle";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdownList";
 import OrganizationCard from "../VoterGuide/OrganizationCard";
 import OrganizationsNotShownList from "../VoterGuide/OrganizationsNotShownList";
+import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
 import SupportStore from "../../stores/SupportStore";
 
 export default class ItemSupportOpposeRaccoon extends Component {
@@ -169,7 +169,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
               onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count, visible_tag)}
               onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count, visible_tag)}
               onExiting={() => this.onTriggerLeave(orgs_not_shown_count, visible_tag)}
-              trigger={["focus", "hover"]}
+              trigger={["focus", "hover", "click"]}
               rootClose
               placement="bottom"
               overlay={organizationPopover}>
@@ -210,16 +210,16 @@ export default class ItemSupportOpposeRaccoon extends Component {
             onMouseOver={() => this.onTriggerEnter(org_id, visible_tag)}
             onMouseOut={() => this.onTriggerLeave(org_id, visible_tag)}
             onExiting={() => this.onTriggerLeave(org_id, visible_tag)}
-            trigger={["focus", "hover"]}
+            trigger={ visible_tag === "mobile" ? "click" : ["focus", "hover", "click"] }
             rootClose
             placement="bottom"
             overlay={organizationPopover}>
           <span className="position-rating__source with-popover">
-            <FollowToggle we_vote_id={one_organization.organization_we_vote_id}
-                          organization_for_display={one_organization}
-                          classNameOverride="pull-left"
-                          supportsThisBallotItem={supports_this_ballot_item}
-                          opposesThisBallotItem={opposes_this_ballot_item} />
+            <OrganizationTinyDisplay {...one_organization}
+                                     showPlaceholderImage
+                                     toFollow
+                                     showSupport={supports_this_ballot_item}
+                                     showOppose={opposes_this_ballot_item} />
           </span>
         </OverlayTrigger>;
       }
@@ -231,7 +231,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   render () {
-    console.log("ItemSupportOpposeRaccoon render");
+    // console.log("ItemSupportOpposeRaccoon render");
     let candidateSupportStore = SupportStore.get(this.state.ballot_item_we_vote_id);
     // Removed from ItemActionBar opposeHideInMobile
     let candidate_support_action_raccoon = <span>
@@ -330,19 +330,37 @@ export default class ItemSupportOpposeRaccoon extends Component {
       </div>
       <div className="network-positions-stacked__support">
         {/* Show a break-down of the current positions in your network */}
-        <span className="u-flex u-justify-between u-inset__v--xs">
+        <span className="u-flex u-justify-between u-inset__v--xs hidden-xs">
           <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
                                          ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
                                          position_list={this.state.position_list_from_advisers_followed_by_voter}
                                          showSupport
-                                         supportProps={this.state.supportProps} />
+                                         supportProps={this.state.supportProps}
+                                         visibility="desktop" />
         </span>
-        <span className="u-flex u-justify-between u-inset__v--xs">
+        <span className="u-flex u-justify-between u-inset__v--xs hidden-xs">
           <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
                                          ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
                                          position_list={this.state.position_list_from_advisers_followed_by_voter}
                                          showOppose
-                                         supportProps={this.state.supportProps}/>
+                                         supportProps={this.state.supportProps}
+                                         visibility="desktop" />
+        </span>
+        <span className="u-flex u-justify-between u-inset__v--xs visible-xs">
+          <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
+                                         ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
+                                         position_list={this.state.position_list_from_advisers_followed_by_voter}
+                                         showSupport
+                                         supportProps={this.state.supportProps}
+                                         visibility="mobile" />
+        </span>
+        <span className="u-flex u-justify-between u-inset__v--xs visible-xs">
+          <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
+                                         ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
+                                         position_list={this.state.position_list_from_advisers_followed_by_voter}
+                                         showOppose
+                                         supportProps={this.state.supportProps}
+                                         visibility="mobile" />
         </span>
 
         {/* Show support positions the voter can follow Desktop */}
