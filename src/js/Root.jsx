@@ -49,6 +49,7 @@ import ScratchPad from "./routes/ScratchPad";
 import Settings from "./routes/Settings/Settings";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
 import SignIn from "./routes/SignIn/SignIn";
+import SignInJumpProcess from "./routes/Process/SignInJumpProcess";
 import FacebookLandingProcess from "./routes/Process/FacebookLandingProcess";
 import FacebookRedirectToWeVote from "./routes/More/FacebookRedirectToWeVote";
 import SignInEmailProcess from "./routes/Process/SignInEmailProcess";
@@ -141,6 +142,7 @@ const routes = () =>
     <Route path="/more/facebookredirecttowevote" component={FacebookRedirectToWeVote} />
     <Route path="/more/faq" component={FAQ} />
     <Route path="/more/howtouse" component={HowToUse} />
+    <Route path="/more/jump" component={SignInJumpProcess} />
     <Route path="/more/network" component={Network} />
     <Route path="/more/network/key/:invitation_secret_key" component={FriendInvitationByEmailVerifyProcess} />
     <Route path="/more/network/key/:invitation_secret_key/ignore" component={FriendInvitationByEmailVerifyProcess} />

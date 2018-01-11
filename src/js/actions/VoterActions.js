@@ -64,6 +64,12 @@ module.exports = {
     Dispatcher.loadEndpoint("voterAddressSave", { text_for_map_search: text, simple_save: simple_save, google_civic_election_id: google_civic_election_id});
   },
 
+  voterAnalysisForJumpProcess: function (incoming_voter_device_id){
+    Dispatcher.loadEndpoint("voterAnalysisForJumpProcess", {
+      incoming_voter_device_id: incoming_voter_device_id
+    });
+  },
+
   voterEmailAddressSave: function (voter_email_address, send_link_to_sign_in = false){
     Dispatcher.loadEndpoint("voterEmailAddressSave", {
       text_for_email_address: voter_email_address,
@@ -106,6 +112,7 @@ module.exports = {
       {
         email_secret_key: email_secret_key,
         facebook_secret_key: "",
+        incoming_voter_device_id: "",
         invitation_secret_key: "",
         twitter_secret_key: "",
       });
@@ -117,6 +124,7 @@ module.exports = {
       {
         email_secret_key: "",
         facebook_secret_key: facebook_secret_key,
+        incoming_voter_device_id: "",
         invitation_secret_key: "",
         twitter_secret_key: "",
       });
@@ -127,7 +135,20 @@ module.exports = {
       {
         email_secret_key: "",
         facebook_secret_key: "",
+        incoming_voter_device_id: "",
         invitation_secret_key: invitation_secret_key,
+        twitter_secret_key: "",
+      });
+  },
+
+  voterMergeTwoAccountsByJumpProcess: function (incoming_voter_device_id) {
+    // TODO DALE 2018-01-10 voterMergeTwoAccounts doesn't support incoming_voter_device_id yet
+    Dispatcher.loadEndpoint("voterMergeTwoAccounts",
+      {
+        email_secret_key: "",
+        facebook_secret_key: "",
+        incoming_voter_device_id: incoming_voter_device_id,
+        invitation_secret_key: "",
         twitter_secret_key: "",
       });
   },
@@ -137,6 +158,7 @@ module.exports = {
       {
         email_secret_key: "",
         facebook_secret_key: "",
+        incoming_voter_device_id: "",
         invitation_secret_key: "",
         twitter_secret_key: twitter_secret_key,
       });

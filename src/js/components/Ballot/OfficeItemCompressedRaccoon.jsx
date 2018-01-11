@@ -6,17 +6,18 @@ import BallotSideBarLink from "../Navigation/BallotSideBarLink";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
-import OrganizationStore from "../../stores/OrganizationStore";
-import VoterGuideStore from "../../stores/VoterGuideStore";
 import ImageHandler from "../ImageHandler";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
+import LearnMore from "../Widgets/LearnMore";
+import OrganizationStore from "../../stores/OrganizationStore";
 import SupportStore from "../../stores/SupportStore";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 5; // Set to 5 in raccoon, and 3 in walrus
 
 // This is related to components/VoterGuide/VoterGuideOfficeItemCompressed
-export default class OfficeItemCompressed extends Component {
+export default class OfficeItemCompressedRaccoon extends Component {
   static propTypes = {
     we_vote_id: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string.isRequired,
@@ -73,7 +74,18 @@ export default class OfficeItemCompressed extends Component {
   }
 
   componentWillReceiveProps (nextProps){
-    // console.log("VoterGuideOfficeItemCompressed componentWillReceiveProps, nextProps: ", nextProps);
+    // console.log("VoterGuideOfficeItemCompressed componentWillReceiveProps");
+    // console.log("nextProps.candidate_list: ", nextProps.candidate_list);
+    // Doesn't seem necessary
+    // if (nextProps.candidate_list && nextProps.candidate_list.length) {
+    //   nextProps.candidate_list.forEach( function (candidate) {
+    //     // console.log("OfficeItemCompressed, candidate: ", candidate);
+    //     if (candidate && candidate.hasOwnProperty("we_vote_id") && !CandidateStore.isCandidateInStore(candidate.we_vote_id)) {
+    //       // console.log("OfficeItemCompressed, retrieving");
+    //       CandidateActions.candidateRetrieve(candidate.we_vote_id);
+    //     }
+    //   });
+    // }
     if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
       this.setState({
          organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
@@ -88,7 +100,9 @@ export default class OfficeItemCompressed extends Component {
   }
 
   onVoterGuideStoreChange () {
-    this.setState({ transitioning: false });
+    this.setState({
+      transitioning: false
+    });
   }
 
   _onOrganizationStoreChange (){
@@ -153,6 +167,7 @@ export default class OfficeItemCompressed extends Component {
   }
 
   render () {
+    // console.log("OfficeItemCompressedRaccoon render");
     let { ballot_item_display_name, we_vote_id } = this.props;
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
@@ -234,14 +249,14 @@ export default class OfficeItemCompressed extends Component {
         <span className="hidden-xs">
           <BookmarkToggle we_vote_id={we_vote_id} type="OFFICE" />
           <span className="hidden-print pull-right u-push--lg">
-              <Link className="BallotItem__learn-more" onClick={this.goToOfficeLink}>Learn More</Link>
+              <Link className="BallotItem__learn-more" onClick={this.goToOfficeLink}>learn more</Link>
           </span>
         </span>
         {/* Mobile */}
         <span className="visible-xs">
           { this.state.display_raccoon_details_flag ?
             <span className="BallotItem__learn-more hidden-print pull-right">
-              <Link className="BallotItem__learn-more" onClick={this.goToOfficeLink}>Learn More</Link>
+              <Link className="BallotItem__learn-more" onClick={this.goToOfficeLink}>learn more</Link>
             </span> :
             null
           }
@@ -256,10 +271,10 @@ export default class OfficeItemCompressed extends Component {
             let candidateSupportStore = SupportStore.get(candidate_we_vote_id);
             let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidate_we_vote_id);
             let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidate_we_vote_id);
-
-            // let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + ". " : "";
-            // let candidate_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
-            // let candidate_text = candidate_party_text + candidate_description_text;
+            // console.log("OfficeItemCompressedRaccoon, just retrieved getVoterGuidesToFollowForBallotItemIdSupports");
+            let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + ". " : "";
+            let candidate_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
+            let candidate_text = candidate_party_text + candidate_description_text;
             let is_support = false;
             let is_oppose = false;
             let voter_statement_text = false;
@@ -269,8 +284,9 @@ export default class OfficeItemCompressed extends Component {
               voter_statement_text = candidateSupportStore.voter_statement_text;
             }
 
+            // Was:  className="hidden-xs"
             let candidate_photo_raccoon = this.state.display_raccoon_details_flag ?
-              <div className="hidden-xs" onClick={this.props.link_to_ballot_item_page ? this.toggleExpandCheetahDetails : null}>
+              <div onClick={this.props.link_to_ballot_item_page ? this.toggleExpandCheetahDetails : null}>
                 <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
                               sizeClassName="icon-candidate-small u-push--sm "
                               imageUrl={one_candidate.candidate_photo_url_large}
@@ -294,11 +310,11 @@ export default class OfficeItemCompressed extends Component {
                 <ItemSupportOpposeRaccoon ballotItemWeVoteId={candidate_we_vote_id}
                                           ballot_item_display_name={one_candidate.ballot_item_display_name}
                                           display_raccoon_details_flag={this.state.display_raccoon_details_flag}
-                                          supportProps={candidateSupportStore}
+                                          goToCandidate={() => this.goToCandidateLink(one_candidate.we_vote_id)}
+                                          maximumOrganizationDisplay={this.state.maximum_organization_display}
                                           organizationsToFollowSupport={organizationsToFollowSupport}
                                           organizationsToFollowOppose={organizationsToFollowOppose}
-                                          maximumOrganizationDisplay={this.state.maximum_organization_display}
-                                          toggleCandidateModal={this.props.toggleCandidateModal}
+                                          supportProps={candidateSupportStore}
                                           type="CANDIDATE"/>
               </div>
             </div>;
@@ -344,6 +360,9 @@ export default class OfficeItemCompressed extends Component {
                 <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
                   {/* Candidate Name */}
                   {candidate_name_raccoon}
+                  {/* Description under candidate name */}
+                  <LearnMore text_to_display={candidate_text}
+                             on_click={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(one_candidate.we_vote_id) : null} />
                   {/* Organization's Followed AND to Follow Items */}
                   {positions_display_raccoon}
                   {/* DESKTOP: If voter has taken position, offer the comment bar */}

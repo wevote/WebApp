@@ -58,7 +58,7 @@ export default class CandidateItem extends Component {
         transitioning: false
       });
     }
-    console.log("CandidateItem, this.props:", this.props);
+    // console.log("CandidateItem, this.props:", this.props);
     if (this.props.we_vote_id) {
       // If here we want to get the candidate so we can get the office_we_vote_id
       let candidate = CandidateStore.getCandidate(this.props.we_vote_id);
@@ -152,10 +152,11 @@ export default class CandidateItem extends Component {
         {/* Positions in Your Network and Possible Voter Guides to Follow */}
         <ItemSupportOpposeRaccoon ballotItemWeVoteId={candidate_we_vote_id}
                                   ballot_item_display_name={one_candidate.ballot_item_display_name}
-                                  supportProps={candidateSupportStore}
+                                  goToCandidate={this.goToCandidateLink}
+                                  maximumOrganizationDisplay={8}
                                   organizationsToFollowSupport={organizationsToFollowSupport}
                                   organizationsToFollowOppose={organizationsToFollowOppose}
-                                  maximumOrganizationDisplay={8}
+                                  supportProps={candidateSupportStore}
                                   type="CANDIDATE"/>
       </div>
     </div>;

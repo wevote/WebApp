@@ -40,6 +40,7 @@ import VoterStore from "../../stores/VoterStore";
 
 const web_app_config = require("../../config");
 
+// Related to WebApp/src/js/routes/Ballot/Ballot.jsx
 export default class VoterGuideBallot extends Component {
   static propTypes = {
     location: PropTypes.object,
@@ -215,7 +216,7 @@ export default class VoterGuideBallot extends Component {
     // Were there any actual changes?
     if (ballot_returned_we_vote_id !== this.state.ballot_returned_we_vote_id || ballot_location_shortcut !== this.state.ballot_location_shortcut || google_civic_election_id !== this.state.google_civic_election_id || filter_type !== this.state.filter_type) {
       this.setState({
-        ballot: BallotStore.getBallotByFilterType(filter_type),
+        ballot_with_all_items: BallotStore.getBallotByFilterType(filter_type),
         ballot_returned_we_vote_id: ballot_returned_we_vote_id,
         ballot_location_shortcut: ballot_location_shortcut,
         filter_type: filter_type,
@@ -345,11 +346,11 @@ export default class VoterGuideBallot extends Component {
         // Ballot is found but ballot is empty. We want to stay put.
         // console.log("onBallotStoreChange: ballot_with_all_items is empty");
       } else {
-        let filter_type = this.state.location.query ? this.state.location.query.type : "all";
-        // console.log("onBallotStoreChange, filter_type:", filter_type);
+        let prior_filter_type = this.state.filter_type || "all";
+        let new_filter_type = this.state.location.query && this.state.location.query.type !== "" ? this.state.location.query.type : prior_filter_type;
         this.setState({
-          ballot_with_all_items: BallotStore.getBallotByFilterType(filter_type),
-          filter_type: filter_type
+          ballot_with_all_items: BallotStore.getBallotByFilterType(new_filter_type),
+          filter_type: new_filter_type
         });
       }
     }
@@ -482,6 +483,7 @@ export default class VoterGuideBallot extends Component {
   render () {
     // console.log("VoterGuideBallot render, this.state: ", this.state);
     let ballot_with_all_items = this.state.ballot_with_all_items;
+    let text_for_map_search = VoterStore.getTextForMapSearch();
     let issues_voter_can_follow = IssueStore.getIssuesVoterCanFollow(); // Don't auto-open intro until Issues are loaded
 
     if (!ballot_with_all_items) {
@@ -535,6 +537,7 @@ export default class VoterGuideBallot extends Component {
     const electionTooltip = election_day_text ? <Tooltip id="tooltip">Election day {moment(election_day_text).format("MMM Do, YYYY")}</Tooltip> : <span />;
 
     let in_remaining_decisions_mode = this.state.filter_type === "filterRemaining";
+    let in_ready_to_vote_mode = this.state.filter_type === "filterReadyToVote";
 
     let voter_ballot_location = VoterStore.getBallotLocationForVoter();
     let voter_entered_address = false;

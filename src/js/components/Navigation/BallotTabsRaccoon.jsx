@@ -16,7 +16,8 @@ export default class BallotTabsRaccoon extends Component {
       pathname = this.props.pathname;
     }
 
-    let show_remaining_decisions = this.props.length_remaining || false;
+    let remaining_decisions_count_different_than_all_items = this.props.length !== this.props.length_remaining;
+    let show_remaining_decisions = remaining_decisions_count_different_than_all_items && this.props.length_remaining || false;
 
     return <ul className="nav ballot__tabs">
       { show_remaining_decisions ?

@@ -124,9 +124,22 @@
     color: $gray-mid;
   }
 
-  &__count {
-    text-align: center;
+  &__support-score {
     color: $gray-dark;
+    font-size: 2rem;
+    font-weight: 500;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__support-score-label {
+    color: $gray-dark;
+    font-size: .875rem;
+    font-weight: 200;
+    vertical-align: middle;
+    @include breakpoints (small mid-small) {
+      font-size: .675rem;
+    }
   }
 }
 

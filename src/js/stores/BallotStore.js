@@ -99,6 +99,7 @@ class BallotStore extends ReduceStore {
 
     return this.ballot.filter( ballot_item => {
       let {kind_of_ballot_item, we_vote_id, candidate_list } = ballot_item;
+      // console.log("BallotStore ballot_remaining_choices, kind_of_ballot_item: ", kind_of_ballot_item);
       if (kind_of_ballot_item === "OFFICE"){ // OFFICE - you are undecided if you haven't supported anyone
         return candidate_list.filter(candidate =>{
           return SupportStore.supportList[candidate.we_vote_id];
@@ -143,7 +144,6 @@ class BallotStore extends ReduceStore {
   }
 
   getBallotByFilterType (filter_type){
-    // console.log("getBallotByFilterType, filter_type: ", filter_type);
     switch (filter_type) {
       case "filterRemaining":
         return this.ballot_remaining_choices;

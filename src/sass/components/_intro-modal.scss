@@ -434,6 +434,10 @@
   -webkit-overflow-scrolling: auto;
   overflow-x: hidden;
 
+  &__advisers {
+    height: calc(100vh - 345px);
+  }
+
   @include breakpoints (max mid-small) {
     height: calc(100vh - 256px);
     max-height: 344px; // Scroll area in modal: 600 - 256 = 344px We set this so that when We Vote is in a frame, the modal isn't too long.
@@ -538,6 +542,9 @@
     .intro-modal-vertical-scroll-contain {
       height: calc(100vh - 375px);
       max-height: 640px; // Scroll area in modal: 990 - 350 = 640px We set this so that when We Vote is in a frame, the modal isn't too long.
+      &__advisers {
+        height: calc(100vh - 345px);
+      }
     }
 
     .calc-height {
