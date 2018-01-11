@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import moment from "moment";
+import cookies from "../../utils/cookies"; 
 
 
 export default class BallotStatusMessage extends Component {
@@ -55,6 +56,12 @@ export default class BallotStatusMessage extends Component {
     });
   }
 
+  handleMessageClose () {
+    console.log("closing message");
+    console.log(this.state.ballot_location_display_name)
+    console.log(this.state.election_day_text);
+  }
+
   render () {
     // console.log("In BallotStatusMessage render");
     let message_string = "";
@@ -101,7 +108,11 @@ export default class BallotStatusMessage extends Component {
     if (this.state.show_ballot_status && message_string.length > 0) {
       return <div className="u-stack--sm hidden-print">
         <div className={"alert " + ballot_status_style}>
-          <a href="#" className="close" data-dismiss="alert">&times;</a>
+          <a href="#" className="close" data-dismiss="alert">
+            <div id="ballot-status-message-close-container" onClick={this.handleMessageClose.bind(this)}> 
+              &times;
+            </div>
+          </a>
           {message_string}
         </div>
       </div>;
