@@ -264,7 +264,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       }
     }
 
-    let positions_exist = support_count || oppose_count || this.state.organizations_to_follow_support || this.state.organizations_to_follow_oppose;
+    let positions_exist = support_count || oppose_count || this.state.organizations_to_follow_support.length || this.state.organizations_to_follow_oppose.length;
     let maximum_organizations_to_show_desktop = 12;
     let maximum_organizations_to_show_mobile = 7;
 
@@ -332,6 +332,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         </div>
       </div>
       <div className="network-positions-stacked__support">
+        { positions_exist ? <span className="network-positions-stacked__support-label">Positions&nbsp;</span> : null }
         {/* Show a break-down of the current positions in your network */}
         <span className="u-flex u-justify-between u-inset__v--xs hidden-xs">
           <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
