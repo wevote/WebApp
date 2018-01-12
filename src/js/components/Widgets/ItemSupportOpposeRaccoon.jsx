@@ -1,12 +1,10 @@
 import React, { Component, PropTypes } from "react";
 import { OverlayTrigger, Popover } from "react-bootstrap";
-import { Link, browserHistory } from "react-router";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdownList";
 import OrganizationCard from "../VoterGuide/OrganizationCard";
-import OrganizationsNotShownList from "../VoterGuide/OrganizationsNotShownList";
 import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
 import SupportStore from "../../stores/SupportStore";
 
@@ -73,7 +71,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     this.candidateStoreListener.remove();
   }
 
-  goToCandidateLinkLocal() {
+  goToCandidateLinkLocal () {
     // console.log("ItemSupportOpposeRaccoon goToCandidateLinkLocal");
     if (this.props.goToCandidate) {
       this.props.goToCandidate();
@@ -187,6 +185,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         // } else {
         //   return "";
         // }
+        return null;
       } else {
         one_organization_for_organization_card = {
             organization_we_vote_id: one_organization.organization_we_vote_id,
