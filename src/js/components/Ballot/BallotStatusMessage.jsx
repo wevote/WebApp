@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import moment from "moment";
-import cookies from "../../utils/cookies"; 
-
+import cookies from "../../utils/cookies";
 
 export default class BallotStatusMessage extends Component {
   static propTypes = {
@@ -34,7 +33,7 @@ export default class BallotStatusMessage extends Component {
   componentDidMount () {
     // console.log("In BallotStatusMessage componentDidMount");
     let viewed_warning_messages_of_elections_array = JSON.parse(cookies.getItem("viewed_warning_messages_of_elections_array")) || [];
-
+    // console.log("initial WM arrays", viewed_warning_messages_of_elections_array);
     this.setState({
       ballot_location_chosen: this.props.ballot_location_chosen,
       ballot_location_display_name: this.props.ballot_location_display_name,
@@ -62,8 +61,9 @@ export default class BallotStatusMessage extends Component {
   }
 
   handleMessageClose () {
-    console.log("closing message");
-    cookies.setItem("viewed_warning_messages_of_elections_array", JSON.stringify([...this.state.viewed_warning_messages_of_elections_array, this.state.google_civic_election_id]), Infinity, "/");
+    //setting cookie to track the elections where user has closed the warning messages for them
+    cookies.setItem("viewed_warning_messages_of_elections_array", JSON.stringify([...this.state.viewed_warning_messages_of_elections_array, this.props.google_civic_election_id]), Infinity, "/");
+    // console.log([...this.state.viewed_warning_messages_of_elections_array, this.props.google_civic_election_id]);
   }
 
   render () {
