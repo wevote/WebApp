@@ -358,6 +358,9 @@ export const teamOfVolunteers = [ {
     name: "Paul A. \"Dash\" McLean",
     title: "E. Palo Alto, CA",
   }, {
+    name: "Mansi Desai",
+    title: "San Francisco, CA",
+  }, {
     name: "Neil Dullaghan",
     title: "San Francisco, CA",
   }, {
@@ -402,9 +405,6 @@ export const teamOfVolunteers = [ {
   }, {
     name: "Jenna Haywood",
     title: "Berkeley, CA",
-  }, {
-    name: "Mansi Desai",
-    title: "San Francisco, CA",
   }, {
     name: "Jayadev Akkiraju",
     title: "Santa Clara, CA",
