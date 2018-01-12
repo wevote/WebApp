@@ -506,6 +506,7 @@ export default class Ballot extends Component {
     if (voter_ballot_location && voter_ballot_location.voter_specific_ballot_from_google_civic) {
       voter_specific_ballot_from_google_civic = true;
     }
+
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_location_display_name) {
       ballot_location_display_name = BallotStore.ballot_properties.ballot_location_display_name;
     } else if (voter_ballot_location && voter_ballot_location.ballot_location_display_name) {
@@ -557,6 +558,7 @@ export default class Ballot extends Component {
                                          google_civic_data_exists={ElectionStore.googleCivicDataExists(this.state.google_civic_election_id)}
                                          voter_specific_ballot_from_google_civic={voter_specific_ballot_from_google_civic}
                                          toggleSelectBallotModal={this.toggleSelectBallotModal}
+                                         google_civic_election_id={this.state.google_civic_election_id}
                     />
                   </div> :
                   null }

@@ -13,6 +13,7 @@ export default class BallotStatusMessage extends Component {
     voter_entered_address: PropTypes.bool.isRequired,
     voter_specific_ballot_from_google_civic: PropTypes.bool.isRequired,
     toggleSelectBallotModal: PropTypes.func,
+    google_civic_election_id: PropTypes.number
   };
 
   constructor (props) {
@@ -26,11 +27,14 @@ export default class BallotStatusMessage extends Component {
       show_ballot_status: true,
       voter_entered_address: false,
       voter_specific_ballot_from_google_civic: false,
+      viewed_warning_messages_of_elections_array: []
     };
   }
 
   componentDidMount () {
     // console.log("In BallotStatusMessage componentDidMount");
+    let viewed_warning_messages_of_elections_array = JSON.parse(cookies.getItem("viewed_warning_messages_of_elections_array")) || [];
+
     this.setState({
       ballot_location_chosen: this.props.ballot_location_chosen,
       ballot_location_display_name: this.props.ballot_location_display_name,
@@ -40,6 +44,7 @@ export default class BallotStatusMessage extends Component {
       show_ballot_status: true,
       voter_entered_address: this.props.voter_entered_address,
       voter_specific_ballot_from_google_civic: this.props.voter_specific_ballot_from_google_civic,
+      viewed_warning_messages_of_elections_array
     });
   }
   componentWillReceiveProps (nextProps) {
@@ -58,8 +63,7 @@ export default class BallotStatusMessage extends Component {
 
   handleMessageClose () {
     console.log("closing message");
-    console.log(this.state.ballot_location_display_name)
-    console.log(this.state.election_day_text);
+    cookies.setItem("viewed_warning_messages_of_elections_array", JSON.stringify([...this.state.viewed_warning_messages_of_elections_array, this.state.google_civic_election_id]), Infinity, "/");
   }
 
   render () {
@@ -105,11 +109,11 @@ export default class BallotStatusMessage extends Component {
       }
     }
 
-    if (this.state.show_ballot_status && message_string.length > 0) {
+    if (this.state.show_ballot_status && message_string.length > 0 && !this.state.viewed_warning_messages_of_elections_array.includes(this.props.google_civic_election_id)) {
       return <div className="u-stack--sm hidden-print">
         <div className={"alert " + ballot_status_style}>
           <a href="#" className="close" data-dismiss="alert">
-            <div id="ballot-status-message-close-container" onClick={this.handleMessageClose.bind(this)}> 
+            <div id="ballot-status-message-close-container" onClick={this.handleMessageClose.bind(this)}>
               &times;
             </div>
           </a>
