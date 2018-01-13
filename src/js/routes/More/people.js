@@ -1,82 +1,76 @@
-const isNative = false;  // True for Native, false for Webapp, everything below this line is identical for both.
-
-const wrapper = (path) => {
-  return isNative ? require(path) : path;
-};
-
-const weVoteBoard = [ {
+export const weVoteBoard = [ {
     name: "Jenifer Fernandez Ancona",
-    image: wrapper("../../../img/global/photos/Jenifer_Fernandez_Ancona-200x200.jpg"),
+    image: "../../../img/global/photos/Jenifer_Fernandez_Ancona-200x200.jpg",
     title: [
       "Co-Founder & c4 Board Chair",
       "VP, Strategy & Member Engagement at the Women Donors Network."
     ]
   }, {
     name: "Debra Cleaver",
-    image: wrapper("../../../img/global/photos/Debra_Cleaver-200x200.jpg"),
+    image: "../../../img/global/photos/Debra_Cleaver-200x200.jpg",
     title: [
       "c3 Board Member",
       "Founder & CEO of VOTE.org, the web's most heavily trafficked site for accurate voting information."
     ]
   }, {
     name: "Tiana Epps-Johnson",
-    image: wrapper("../../../img/global/photos/Tiana_Epps_Johnson-200x200.jpg"),
+    image: "../../../img/global/photos/Tiana_Epps_Johnson-200x200.jpg",
     title: [
       "Senior Adviser",
       "Exec. Dir. of CTCL, software for election administrators. Former Voting Info Project Harvard Ash Center for Democratic Governance and Innovation."
     ]
   }, {
     name: "Tory Gavito",
-    image: wrapper("../../../img/global/photos/Tory_Gavito-200x200.jpg"),
+    image: "../../../img/global/photos/Tory_Gavito-200x200.jpg",
     title: [
       "c4 Board Member",
       "Exec. Dir. at Texas Future Project."
     ]
   }, {
     name: "Lawrence Grodeska",
-    image: wrapper("../../../img/global/photos/Lawrence_Grodeska-200x200.jpg"),
+    image: "../../../img/global/photos/Lawrence_Grodeska-200x200.jpg",
     title: [
       "c3 Board Chair",
       "Civic Tech communications and innovation at CivicMakers. Formerly at Change.org."
     ]
   }, {
     name: "Dale John McGrew",
-    image: wrapper("../../../img/global/photos/Dale_McGrew-200x200.jpg"),
+    image: "../../../img/global/photos/Dale_McGrew-200x200.jpg",
     title: [
       "Co-Founder / CTO & c3 + c4 Board Member",
       "Managed large software projects for companies like Disney and over 60 nonprofits."
     ]
   }, {
     name: "Barbara Shannon",
-    image: wrapper("../../../img/global/photos/Barbara_Shannon-200x200.jpg"),
+    image: "../../../img/global/photos/Barbara_Shannon-200x200.jpg",
     title: [
       "Co-Founder / CTO & c3 + c4 Board Member",
       "Adviser to entrepreneurs and C-level Fortune 500 leaders. MBA The Wharton School."
     ]
   }, {
     name: "Anat Shenker-Osorio",
-    image: wrapper("../../../img/global/photos/Anat_Shenker_Osario-200x200.jpg"),
+    image: "../../../img/global/photos/Anat_Shenker_Osario-200x200.jpg",
     title: [
       "c4 Board Member",
       "Communications expert, researcher and political pundit."
     ]
   }, {
     name: "Betsy Sikma",
-    image: wrapper("../../../img/global/photos/Betsy_Sikma-200x200.jpg"),
+    image: "../../../img/global/photos/Betsy_Sikma-200x200.jpg",
     title: [
       "c3 Board Member",
       ""
     ]
   }, {
     name: "Billy Wimsatt",
-    image: wrapper("../../../img/global/photos/Billy_Wimsatt-200x200.jpg"),
+    image: "../../../img/global/photos/Billy_Wimsatt-200x200.jpg",
     title: [
       "Senior Adviser",
       "Author and political activist. Founder of Gamechanger Labs, the League of Young Voters & TheBallot.org."
     ]
   }, {
     name: "William Winters",
-    image: wrapper("../../../img/global/photos/William_Winters-200x200.jpg"),
+    image: "../../../img/global/photos/William_Winters-200x200.jpg",
     title: [
       "c4 Board Member",
       "Campaign Manager. Courage Campaign, Color Of Change, CEL & Change.org."
@@ -84,112 +78,112 @@ const weVoteBoard = [ {
   }
 ];
 
-const weVoteStaff = [ {
+export const weVoteStaff = [ {
     name: "Alicia Prevost",
-    image: wrapper("../../../img/global/photos/Alicia_Prevost-200x200.jpg"),
+    image: "../../../img/global/photos/Alicia_Prevost-200x200.jpg",
     title: [
       "Executive Director",
     ]
   }, {
     name: "Dale John McGrew",
-    image: wrapper("../../../img/global/photos/Dale_McGrew-200x200.jpg"),
+    image: "../../../img/global/photos/Dale_McGrew-200x200.jpg",
     title: [
       "Co-Founder / CTO"
     ]
   }, {
     name: "Rohan Bhambhoria",
-    image: wrapper("../../../img/global/photos/Rohan_Bhambhoria-200x200.jpg"),
+    image: "../../../img/global/photos/Rohan_Bhambhoria-200x200.jpg",
     title: [
       "Engineering Intern"
     ]
   }, {
     name: "Yuanhsin Chang",
-    image: wrapper("../../../img/global/photos/Yuanhsin_Chang-200x200.jpg"),
+    image: "../../../img/global/photos/Yuanhsin_Chang-200x200.jpg",
     title: [
       "User Experience Design Intern"
     ]
   }, {
     name: "Sarah Clements",
-    image: wrapper("../../../img/global/photos/Sarah_Clements-200x200.jpg"),
+    image: "../../../img/global/photos/Sarah_Clements-200x200.jpg",
     title: [
       "Engineering Intern"
     ]
   }, {
     name: "Mansi Desai",
-    image: wrapper("../../../img/global/photos/Mansi_Desai-200x200.jpg"),
+    image: "../../../img/global/photos/Mansi_Desai-200x200.jpg",
     title: [
       "Digital Marketing Intern"
     ]
   }, {
     name: "Neil Dullaghan",
-    image: wrapper("../../../img/global/photos/Neil_Dullaghan-200x200.jpg"),
+    image: "../../../img/global/photos/Neil_Dullaghan-200x200.jpg",
     title: [
       "Political Data Manager"
     ]
   }, {
     name: "Irene Florez",
-    image: wrapper("../../../img/global/photos/Irene_Florez-200x200.jpg"),
+    image: "../../../img/global/photos/Irene_Florez-200x200.jpg",
     title: [
       "Marketing Manager"
     ]
   }, {
     name: "Jeff French",
-    image: wrapper("../../../img/global/photos/Jeff_French-200x200.jpg"),
+    image: "../../../img/global/photos/Jeff_French-200x200.jpg",
     title: [
       "Lead Designer"
     ]
   }, {
     name: "Anisha Jain",
-    image: wrapper("../../../img/global/photos/Anisha_Jain-200x200.jpg"),
+    image: "../../../img/global/photos/Anisha_Jain-200x200.jpg",
     title: [
       "Sr. Software Engineer"
     ]
   }, {
     name: "Judy Johnson",
-    image: wrapper("../../../img/global/photos/Judy_Johnson-200x200.jpg"),
+    image: "../../../img/global/photos/Judy_Johnson-200x200.jpg",
     title: [
       "Operations"
     ]
   }, {
     name: "Neelam Joshi",
-    image: wrapper("../../../img/global/photos/Neelam_Joshi-200x200.jpg"),
+    image: "../../../img/global/photos/Neelam_Joshi-200x200.jpg",
     title: [
       "Sr. Software Engineer"
     ]
   }, {
     name: "Ciero Kilpatrick",
-    image: wrapper("../../../img/global/photos/Ciero_Kilpatrick-200x200.jpg"),
+    image: "../../../img/global/photos/Ciero_Kilpatrick-200x200.jpg",
     title: [
       "User Experience Design Intern"
     ]
   }, {
     name: "Edward Ly",
-    image: wrapper("../../../img/global/photos/Edward_Ly-200x200.jpg"),
+    image: "../../../img/global/photos/Edward_Ly-200x200.jpg",
     title: [
       "Engineering Intern"
     ]
   }, {
     name: "Eric Ogawa",
-    image: wrapper("../../../img/global/photos/Eric_Ogawa-200x200.jpg"),
+    image: "../../../img/global/photos/Eric_Ogawa-200x200.jpg",
     title: [
       "User Experience Design Intern"
     ]
   }, {
     name: "Steve Podell",
-    image: wrapper("../../../img/global/photos/Steve_Podell-200x200.jpg"),
+    image: "../../../img/global/photos/Steve_Podell-200x200.jpg",
     title: [
       "Volunteer"
     ]
   }, {
     name: "Bharath Reddy",
-    image: wrapper("../../../img/global/photos/Bharath_Reddy-200x200.jpg"),
+    image: "../../../img/global/photos/Bharath_Reddy-200x200.jpg",
     title: [
       "Software Engineer"
     ]
   }
 ];
 
-const organizationalDonors = [ {
+export const organizationalDonors = [ {
     name: "Amazon Web Services",
     title: "Servers",
   }, {
@@ -252,7 +246,7 @@ const organizationalDonors = [ {
   }
 ];
 
-const teamOfVolunteers = [ {
+export const teamOfVolunteers = [ {
     name: "Dale McGrew",
     title: "Oakland, CA"
   }, {
@@ -482,6 +476,3 @@ const teamOfVolunteers = [ {
     title: "Oakland, CA",
   }
 ];
-
-
-module.exports = {weVoteBoard, weVoteStaff, organizationalDonors, teamOfVolunteers};
