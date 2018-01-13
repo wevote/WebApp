@@ -165,8 +165,8 @@ export default class Network extends Component {
               <ul className="nav tabs__tabs">
                 <li className="tab-item">
                   <Link to="/more/network/organizations" className={this.state.edit_mode === "organizations" ? "tab tab-active" : "tab tab-default"}>
-                    <span className="visible-xs">Organizations to Follow</span>
-                    <span className="hidden-xs">Organizations</span>
+                    <span className="visible-xs">Organizations</span>
+                    <span className="hidden-xs">Organizations to Follow</span>
                   </Link>
                 </li>
 
