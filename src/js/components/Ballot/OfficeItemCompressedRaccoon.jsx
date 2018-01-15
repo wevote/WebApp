@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { Button, OverlayTrigger, Popover } from "react-bootstrap";
 import { Link, browserHistory } from "react-router";
 import TextTruncate from "react-text-truncate";
 import { capitalizeString } from "../../utils/textFormat";
@@ -41,6 +42,8 @@ export default class OfficeItemCompressedRaccoon extends Component {
       transitioning: false,
     };
 
+    this.closeYourNetworkIsUndecidedPopover = this.closeYourNetworkIsUndecidedPopover.bind(this);
+    this.closeYourNetworkSupportsPopover = this.closeYourNetworkSupportsPopover.bind(this);
     this.getCandidateLink = this.getCandidateLink.bind(this);
     this.getOfficeLink = this.getOfficeLink.bind(this);
     this.goToCandidateLink = this.goToCandidateLink.bind(this);
@@ -166,6 +169,14 @@ export default class OfficeItemCompressedRaccoon extends Component {
     browserHistory.push(office_link);
   }
 
+  closeYourNetworkSupportsPopover () {
+    this.refs[`supports-overlay`].hide();
+  }
+
+  closeYourNetworkIsUndecidedPopover () {
+    this.refs[`undecided-overlay`].hide();
+  }
+
   render () {
     // console.log("OfficeItemCompressedRaccoon render");
     let { ballot_item_display_name, we_vote_id } = this.props;
@@ -241,6 +252,18 @@ export default class OfficeItemCompressedRaccoon extends Component {
         }
       });
     }
+
+    const yourNetworkIsUndecidedPopover =
+      <Popover id="popover-trigger-click-root-close"
+               title={<span>Your Network is Undecided <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+               onClick={this.closeYourNetworkIsUndecidedPopover}>
+        Your friends, and the organizations you follow, are <strong>Your Network</strong>.
+        Each friend or organization in your network
+        that <span className="u-no-break"><img src="/img/global/icons/thumbs-up-color-icon.svg"
+                                               width="20" height="20" /> supports</span> a candidate adds
+        +1 to that candidate's <strong>Score in Your Network</strong>. None of the candidates running
+        for {ballot_item_display_name} have more support in your network than the other candidates.
+      </Popover>;
 
     return <div className="card-main office-item">
       <a name={we_vote_id} />
@@ -380,6 +403,19 @@ export default class OfficeItemCompressedRaccoon extends Component {
         { !this.state.display_raccoon_details_flag ?
           <div>
             { candidate_list_to_display.map( (one_candidate) => {
+
+              const yourNetworkSupportsPopover =
+                <Popover id="popover-trigger-click-root-close"
+                         title={<span>Your Network Supports <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+                         onClick={this.closeYourNetworkSupportsPopover}>
+                  Your friends, and the organizations you follow, are <strong>Your Network</strong>.
+                  Each friend or organization in your network
+                  that <span className="u-no-break"><img src="/img/global/icons/thumbs-up-color-icon.svg"
+                                                         width="20" height="20" /> supports</span> {one_candidate.ballot_item_display_name} adds
+                  +1 to {one_candidate.ballot_item_display_name}'s <strong>Score in Your Network</strong>. {one_candidate.ballot_item_display_name} has
+                  the highest score in your network.
+                </Popover>;
+
               return <div key={one_candidate.we_vote_id}>
                 {/* *** Candidate name *** */}
                 { SupportStore.get(one_candidate.we_vote_id) && SupportStore.get(one_candidate.we_vote_id).is_support ?
@@ -406,12 +442,30 @@ export default class OfficeItemCompressedRaccoon extends Component {
                       </h2>
                     </div>
                     <div className="u-flex-none u-justify-end">
-                      <span className="u-push--xs">Your network supports</span>
-                      <img src="/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" />
+                      <OverlayTrigger trigger="click"
+                                      ref="supports-overlay"
+                                      onExit={this.closeYourNetworkSupportsPopover}
+                                      rootClose
+                                      placement="top"
+                                      overlay={yourNetworkSupportsPopover}>
+                        <div>
+                          <span className="u-push--xs">Your network supports</span>
+                          <img src="/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" />
+                        </div>
+                      </OverlayTrigger>
                     </div>
                   </div> :
                     is_support_array === 0 && candidate_with_most_support !== one_candidate.ballot_item_display_name && !voter_supports_at_least_one_candidate ?
-                    <div className="u-flex-none u-justify-end">Your network is undecided</div> :
+                    <div className="u-flex-none u-justify-end">
+                      <OverlayTrigger trigger="click"
+                                      ref="undecided-overlay"
+                                      onExit={this.closeYourNetworkIsUndecidedPopover}
+                                      rootClose
+                                      placement="top"
+                                      overlay={yourNetworkIsUndecidedPopover}>
+                        <span>Your network is undecided</span>
+                      </OverlayTrigger>
+                    </div> :
                       null}
                 {/* *** "Positions in your Network" bar OR items you can follow *** */}
               </div>;
@@ -422,7 +476,15 @@ export default class OfficeItemCompressedRaccoon extends Component {
               <span>
                 { at_least_one_candidate_chosen ?
                   null :
-                  <div className="u-tr">Your network is undecided</div> }
+                  <OverlayTrigger trigger="click"
+                                  ref="undecided-overlay"
+                                  onExit={this.closeYourNetworkIsUndecidedPopover}
+                                  rootClose
+                                  placement="top"
+                                  overlay={yourNetworkIsUndecidedPopover}>
+                    <div className="u-tr">Your network is undecided</div>
+                  </OverlayTrigger>
+                }
               </span>
             }
           </div> :

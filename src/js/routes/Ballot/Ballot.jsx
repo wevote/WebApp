@@ -163,7 +163,7 @@ export default class Ballot extends Component {
     BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onBallotStoreChange.bind(this));
-    this.onVoterStoreChange(); // We call this to properly set showBallotIntroModal
+    this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // Once a voter hits the ballot, they have gone through orientation
     cookies.setItem("show_full_navigation", "1", Infinity, "/");
@@ -506,7 +506,6 @@ export default class Ballot extends Component {
     if (voter_ballot_location && voter_ballot_location.voter_specific_ballot_from_google_civic) {
       voter_specific_ballot_from_google_civic = true;
     }
-
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_location_display_name) {
       ballot_location_display_name = BallotStore.ballot_properties.ballot_location_display_name;
     } else if (voter_ballot_location && voter_ballot_location.ballot_location_display_name) {
