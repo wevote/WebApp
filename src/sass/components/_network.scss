@@ -3,6 +3,7 @@ $button-margin-horizontal: 10px;
 $description-margin-top: 10px;
 $social-left-padding-mobile: 40px;
 $social-right-padding-mobile: 9px;
+$network-card-margin-mobile: (-$space-md) (-$space-md) $space-none (-$space-md);
 
 .buttons-container {
   display: flex;
@@ -94,5 +95,11 @@ $follow-card-title-color: #fff;
       left: 8px;
       font-size: .6rem;
     }
+  }
+}
+
+.network__card {
+  @include breakpoints (max mid-small) {
+    margin: $network-card-margin-mobile;
   }
 }

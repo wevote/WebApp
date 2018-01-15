@@ -98,7 +98,7 @@ export default class Network extends Component {
     return <span>
       <Helmet title="Your Network - We Vote" />
       <BrowserPushMessage incomingProps={this.props} />
-      <section className="card">
+      <section className="card network__card">
         <div className="card-main">
           <h3 className="h3 text-center">Build Your We Vote Network</h3>
 
