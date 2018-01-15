@@ -145,7 +145,7 @@ export default class Ballot extends Component {
       browserHistory.push("/settings/location");
     }
 
-    let filter_type = this.props.location.query ? this.props.location.query.type : "all";
+    let filter_type = this.props.location && this.props.location.query ? this.props.location.query.type : "all";
     let ballot_with_all_items = BallotStore.getBallotByFilterType(filter_type);
     if (ballot_with_all_items !== undefined) {
       // console.log("ballot_with_all_items !== undefined");
@@ -330,7 +330,7 @@ export default class Ballot extends Component {
         // console.log("onBallotStoreChange: ballot_with_all_items is empty");
       } else {
         let prior_filter_type = this.state.filter_type || "all";
-        let new_filter_type = this.state.location.query && this.state.location.query.type !== "" ? this.state.location.query.type : prior_filter_type;
+        let new_filter_type = this.state.location && this.state.location.query && this.state.location.query.type !== "" ? this.state.location.query.type : prior_filter_type;
         this.setState({
           ballot_with_all_items: BallotStore.getBallotByFilterType(new_filter_type),
           filter_type: new_filter_type
@@ -506,6 +506,7 @@ export default class Ballot extends Component {
     if (voter_ballot_location && voter_ballot_location.voter_specific_ballot_from_google_civic) {
       voter_specific_ballot_from_google_civic = true;
     }
+
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_location_display_name) {
       ballot_location_display_name = BallotStore.ballot_properties.ballot_location_display_name;
     } else if (voter_ballot_location && voter_ballot_location.ballot_location_display_name) {
@@ -557,6 +558,7 @@ export default class Ballot extends Component {
                                          google_civic_data_exists={ElectionStore.googleCivicDataExists(this.state.google_civic_election_id)}
                                          voter_specific_ballot_from_google_civic={voter_specific_ballot_from_google_civic}
                                          toggleSelectBallotModal={this.toggleSelectBallotModal}
+                                         google_civic_election_id={this.state.google_civic_election_id}
                     />
                   </div> :
                   null }

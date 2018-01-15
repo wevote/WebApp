@@ -19,11 +19,11 @@ export default class BallotIntroModal extends Component {
   constructor (props) {
     super(props);
     this.state = {};
-  }
-
-  componentDidMount () {
     this._nextSliderPage = this._nextSliderPage.bind(this);
   }
+
+  // componentDidMount () {
+  // }
 
   _nextSliderPage () {
     VoterActions.voterUpdateRefresh();

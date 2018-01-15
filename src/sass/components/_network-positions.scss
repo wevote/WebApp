@@ -128,11 +128,13 @@
     color: $gray-dark;
     font-size: 2rem;
     font-weight: 500;
+    display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  &__support-score-label {
+  &__support-score-label,
+  &__support-label {
     color: $gray-dark;
     font-size: .875rem;
     font-weight: 200;

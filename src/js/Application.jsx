@@ -14,6 +14,8 @@ import SearchAllActions from "./actions/SearchAllActions";
 import VoterStore from "./stores/VoterStore";
 const web_app_config = require("./config");
 import { stringContains } from "./utils/textFormat";
+import IssueActions from "./actions/IssueActions";
+import IssueStore from "././stores/IssueStore";
 
 var loadingScreenStyles = {
   position: "fixed",
@@ -46,6 +48,7 @@ export default class Application extends Component {
     };
     this.loadedHeader = false;
     this.initFacebook();
+    this.preloadIssueImages = this.preloadIssueImages.bind(this);
   }
 
   initFacebook (){
@@ -79,6 +82,9 @@ export default class Application extends Component {
     ElectionActions.electionsRetrieve();
 
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+   //preload images
+    IssueActions.retrieveIssuesToFollow();
+    this.issueStoreListener = IssueStore.addListener(this.preloadIssueImages);
   }
 
   componentWillUnmount () {
@@ -190,6 +196,15 @@ export default class Application extends Component {
 
   hideSearchContainer () {
     SearchAllActions.exitSearch();
+  }
+
+  preloadIssueImages () {
+    // console.log("preloadIssueImages func")
+    IssueStore.getIssuesVoterCanFollow().forEach(issue => {
+      document.createElement("img").src = issue.issue_image_url;
+    });
+    //only need to preload once
+    this.issueStoreListener.remove();
   }
 
   render () {
