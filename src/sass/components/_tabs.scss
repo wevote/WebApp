@@ -55,6 +55,7 @@ $tab-spacing-mobile: $space-md;
 $scrollbar-height: 20px;
 $tab-height: 47px;
 $tab-height-visible: $tab-height - $scrollbar-height;
+$tab-margin-mobile: (-$space-md);
 
 .tabs {
   &__tabs-container-wrap {
@@ -67,8 +68,8 @@ $tab-height-visible: $tab-height - $scrollbar-height;
     overflow: hidden;
     height: $tab-height-visible;
     @include breakpoints (small mid-small) {
-      margin-right: $space-none - $space-md;
-      margin-left: $space-none - $space-md;
+      margin-right: $tab-margin-mobile;
+      margin-left: $tab-margin-mobile;
     }
   }
 
