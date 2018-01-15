@@ -67,7 +67,8 @@ $tab-height-visible: $tab-height - $scrollbar-height;
     overflow: hidden;
     height: $tab-height-visible;
     @include breakpoints (small mid-small) {
-      margin: $space-none -$space-md;
+      margin-right: $space-none - $space-md;
+      margin-left: $space-none - $space-md;
     }
   }
 
