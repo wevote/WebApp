@@ -91,7 +91,7 @@ export default class PositionsNotShownList extends Component {
             <div className="card-child__media-object-anchor">
               <Link to={speakerLink} className="u-no-underline">
                 <ImageHandler className=""
-                              sizeClassName="organization-image-tiny"
+                              sizeClassName="organization__image--tiny"
                               imageUrl={speaker_image_url_https_tiny}/>
               </Link>
               <br />

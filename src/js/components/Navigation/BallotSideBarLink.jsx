@@ -20,10 +20,10 @@ export default class BallotSideBarLink extends Component {
     let label_in_sentence_case = capitalizeString(this.props.label);
     let subtitle_in_sentence_case = sentenceCaseString(this.props.subtitle);
 
-    return <div className="BallotItem__summary-item-container" onClick={this.props.onClick.bind(this) }>
+    return <div className="BallotItem__summary__item-container" onClick={this.props.onClick.bind(this) }>
       <div>
-        <a href={this.props.url} className="BallotItem__summary-item" >
-          <span className="BallotItem__summary-display-name">{label_in_sentence_case}</span>
+        <a href={this.props.url} className="BallotItem__summary__item" >
+          <span className="BallotItem__summary__display-name">{label_in_sentence_case}</span>
           { this.props.displaySubtitles ?
             <span className="BallotItem__summary-subtitle"> {subtitle_in_sentence_case}</span> : null }
         </a>

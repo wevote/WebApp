@@ -20,7 +20,7 @@ const twitter_info_text = "Signing into Twitter is the fastest way to find voter
 
 const facebook_info_text = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 
-const email_info_text = "Send email invitations to your friends. Share your vision, and get your friends help on figuring out everything on your ballot.";
+const email_info_text = "Send email invitations to your friends. Share your vision, and get help from your friends as you make decisions about how to vote.";
 
 export default class Network extends Component {
   static propTypes = {
@@ -165,8 +165,8 @@ export default class Network extends Component {
               <ul className="nav tabs__tabs">
                 <li className="tab-item">
                   <Link to="/more/network/organizations" className={this.state.edit_mode === "organizations" ? "tab tab-active" : "tab tab-default"}>
-                    <span className="visible-xs">Organizations to Follow</span>
-                    <span className="hidden-xs">Organizations</span>
+                    <span className="visible-xs">Organizations</span>
+                    <span className="hidden-xs">Organizations to Follow</span>
                   </Link>
                 </li>
 
