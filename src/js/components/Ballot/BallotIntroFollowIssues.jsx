@@ -29,21 +29,13 @@ export default class BallotIntroFollowIssues extends Component {
     this._onIssueStoreChange = this._onIssueStoreChange.bind(this);
   }
 
-  componentDidUpdate (prevProps, prevState) {
-    if (prevState.issues[0] !== this.state.issues[0]) {
-      console.log("issues array loaded at" + Date.now() + "num of issues = " + this.state.issues.length);
-    }
-  }
-
   componentWillMount () {
     IssueActions.retrieveIssuesForVoter();
-    IssueActions.retrieveIssuesToFollow();
-    console.log("CWM: " + Date.now());
+    // IssueActions.retrieveIssuesToFollow();
   }
 
   componentDidMount () {
     this._onIssueStoreChange();
-    console.log("CDM: " + Date.now())
     this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange);
   }
 
