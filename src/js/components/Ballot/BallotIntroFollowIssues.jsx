@@ -23,16 +23,28 @@ export default class BallotIntroFollowIssues extends Component {
       next_button_text: NEXT_BUTTON_TEXT,
       number_of_required_issues: 5,
     };
-  }
-
-  componentDidMount () {
-    IssueActions.retrieveIssuesForVoter();
-    IssueActions.retrieveIssuesToFollow();
-    this._onIssueStoreChange();
     this.onIssueFollow = this.onIssueFollow.bind(this);
     this.onIssueStopFollowing = this.onIssueStopFollowing.bind(this);
     this.onNext = this.onNext.bind(this);
-    this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange.bind(this));
+    this._onIssueStoreChange = this._onIssueStoreChange.bind(this);
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (prevState.issues[0] !== this.state.issues[0]) {
+      console.log("issues array loaded at" + Date.now() + "num of issues = " + this.state.issues.length);
+    }
+  }
+
+  componentWillMount () {
+    IssueActions.retrieveIssuesForVoter();
+    IssueActions.retrieveIssuesToFollow();
+    console.log("CWM: " + Date.now());
+  }
+
+  componentDidMount () {
+    this._onIssueStoreChange();
+    console.log("CDM: " + Date.now())
+    this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange);
   }
 
   componentWillUnmount () {
@@ -127,7 +139,7 @@ export default class BallotIntroFollowIssues extends Component {
   }
 
   render () {
-    let issue_list = this.state.issues || [];
+    let issue_list = this.state.issues;
     let remaining_issues = this.remainingIssues();
 
     let edit_mode = true;
