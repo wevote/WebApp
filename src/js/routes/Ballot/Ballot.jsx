@@ -145,7 +145,7 @@ export default class Ballot extends Component {
       browserHistory.push("/settings/location");
     }
 
-    let filter_type = this.props.location.query ? this.props.location.query.type : "all";
+    let filter_type = this.props.location && this.props.location.query ? this.props.location.query.type : "all";
     let ballot_with_all_items = BallotStore.getBallotByFilterType(filter_type);
     if (ballot_with_all_items !== undefined) {
       // console.log("ballot_with_all_items !== undefined");
@@ -330,7 +330,7 @@ export default class Ballot extends Component {
         // console.log("onBallotStoreChange: ballot_with_all_items is empty");
       } else {
         let prior_filter_type = this.state.filter_type || "all";
-        let new_filter_type = this.state.location.query && this.state.location.query.type !== "" ? this.state.location.query.type : prior_filter_type;
+        let new_filter_type = this.state.location && this.state.location.query && this.state.location.query.type !== "" ? this.state.location.query.type : prior_filter_type;
         this.setState({
           ballot_with_all_items: BallotStore.getBallotByFilterType(new_filter_type),
           filter_type: new_filter_type
