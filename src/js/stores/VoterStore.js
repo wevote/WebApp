@@ -146,6 +146,9 @@ class VoterStore extends ReduceStore {
 
   getInterfaceFlagState (flag) {
     // Look in js/Constants/VoterConstants.js for list of flag constant definitions
+    if (!this.getState().voter) {
+      return false;
+    }
     let interfaceStatusFlags = this.getState().voter.interface_status_flags || 0;
     // return True if bit specified by the flag is also set in interfaceStatusFlags (voter.interface_status_flags)
     // Eg: if interfaceStatusFlags = 5, then we can confirm that bits representing 1 and 4 are set (i.e., 0101)
@@ -156,6 +159,9 @@ class VoterStore extends ReduceStore {
 
   getNotificationSettingsFlagState (flag) {
     // Look in js/Constants/VoterConstants.js for list of flag constant definitions
+    if (!this.getState().voter) {
+      return false;
+    }
     let notificationSettingsFlags = this.getState().voter.notification_settings_flags || 0;
     // return True if bit specified by the flag is also set
     //  in notificationSettingsFlags (voter.notification_settings_flags)

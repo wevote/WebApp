@@ -12,7 +12,7 @@ export default class BallotStatusMessage extends Component {
     voter_entered_address: PropTypes.bool.isRequired,
     voter_specific_ballot_from_google_civic: PropTypes.bool.isRequired,
     toggleSelectBallotModal: PropTypes.func,
-    google_civic_election_id: PropTypes.number
+    google_civic_election_id: PropTypes.number,
   };
 
   constructor (props) {
@@ -26,14 +26,17 @@ export default class BallotStatusMessage extends Component {
       show_ballot_status: true,
       voter_entered_address: false,
       voter_specific_ballot_from_google_civic: false,
-      viewed_warning_messages_of_elections_array: []
+      elections_with_ballot_status_message_closed: [],
     };
   }
 
   componentDidMount () {
     // console.log("In BallotStatusMessage componentDidMount");
-    let viewed_warning_messages_of_elections_array = JSON.parse(cookies.getItem("viewed_warning_messages_of_elections_array")) || [];
-    // console.log("initial WM arrays", viewed_warning_messages_of_elections_array);
+    let elections_with_ballot_status_message_closed_value_from_cookie = cookies.getItem("elections_with_ballot_status_message_closed");
+    let elections_with_ballot_status_message_closed = [];
+    if (elections_with_ballot_status_message_closed_value_from_cookie) {
+      elections_with_ballot_status_message_closed = JSON.parse(elections_with_ballot_status_message_closed_value_from_cookie) || []
+    }
     this.setState({
       ballot_location_chosen: this.props.ballot_location_chosen,
       ballot_location_display_name: this.props.ballot_location_display_name,
@@ -43,7 +46,7 @@ export default class BallotStatusMessage extends Component {
       show_ballot_status: true,
       voter_entered_address: this.props.voter_entered_address,
       voter_specific_ballot_from_google_civic: this.props.voter_specific_ballot_from_google_civic,
-      viewed_warning_messages_of_elections_array
+      elections_with_ballot_status_message_closed
     });
   }
   componentWillReceiveProps (nextProps) {
@@ -62,8 +65,14 @@ export default class BallotStatusMessage extends Component {
 
   handleMessageClose () {
     //setting cookie to track the elections where user has closed the warning messages for them
-    cookies.setItem("viewed_warning_messages_of_elections_array", JSON.stringify([...this.state.viewed_warning_messages_of_elections_array, this.props.google_civic_election_id]), Infinity, "/");
-    // console.log([...this.state.viewed_warning_messages_of_elections_array, this.props.google_civic_election_id]);
+    if (this.props.google_civic_election_id) {
+      let elections_with_ballot_status_message_closed_updated = [...this.state.elections_with_ballot_status_message_closed, this.props.google_civic_election_id];
+      let elections_with_ballot_status_message_closed_for_cookie = JSON.stringify(elections_with_ballot_status_message_closed_updated);
+      cookies.setItem("elections_with_ballot_status_message_closed", elections_with_ballot_status_message_closed_for_cookie, Infinity, "/");
+      this.setState({
+        elections_with_ballot_status_message_closed: elections_with_ballot_status_message_closed_updated
+      });
+    }
   }
 
   render () {
@@ -109,7 +118,17 @@ export default class BallotStatusMessage extends Component {
       }
     }
 
-    if (this.state.show_ballot_status && message_string.length > 0 && !this.state.viewed_warning_messages_of_elections_array.includes(this.props.google_civic_election_id)) {
+    let message_string_length = 0;
+    if (message_string) {
+      message_string_length = message_string.length;
+    }
+    let election_ballot_status_message_should_be_closed = false;
+    if (this.props.google_civic_election_id) {
+      election_ballot_status_message_should_be_closed = this.state.elections_with_ballot_status_message_closed.includes(this.props.google_civic_election_id);
+    }
+    if (election_ballot_status_message_should_be_closed) {
+      return null;
+    } else if (this.state.show_ballot_status && message_string_length > 0) {
       return <div className="u-stack--sm hidden-print">
         <div className={"alert " + ballot_status_style}>
           <a href="#" className="close" data-dismiss="alert">
