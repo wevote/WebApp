@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Button, OverlayTrigger, Popover } from "react-bootstrap";
+import { OverlayTrigger, Popover } from "react-bootstrap";
 import { Link, browserHistory } from "react-router";
 import TextTruncate from "react-text-truncate";
 import { capitalizeString } from "../../utils/textFormat";
@@ -170,11 +170,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
   }
 
   closeYourNetworkSupportsPopover () {
-    this.refs[`supports-overlay`].hide();
+    this.refs["supports-overlay"].hide();
   }
 
   closeYourNetworkIsUndecidedPopover () {
-    this.refs[`undecided-overlay`].hide();
+    this.refs["undecided-overlay"].hide();
   }
 
   render () {
@@ -342,7 +342,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
               </div>
             </div>;
 
-            // TODO: NOT WORKING
+            // TODO: NOT WORKING YET
             let comment_display_raccoon_desktop = this.state.display_raccoon_details_flag && (is_support || is_oppose || voter_statement_text) ?
               <div className="hidden-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
                 <div
@@ -359,7 +359,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
               </div> :
               null;
 
-            // TODO: NOT WORKING
+            // TODO: NOT WORKING YET
             let comment_display_raccoon_mobile = this.state.display_raccoon_details_flag && (is_support || is_oppose || voter_statement_text) ?
               <div className="visible-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
                 <div
@@ -449,7 +449,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                                       placement="top"
                                       overlay={yourNetworkSupportsPopover}>
                         <div>
-                          <span className="u-push--xs">Your network supports</span>
+                          <span className="u-push--xs u-cursor--pointer">Your network supports</span>
                           <img src="/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" />
                         </div>
                       </OverlayTrigger>
@@ -463,7 +463,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                                       rootClose
                                       placement="top"
                                       overlay={yourNetworkIsUndecidedPopover}>
-                        <span>Your network is undecided</span>
+                        <span className=" u-cursor--pointer">Your network is undecided</span>
                       </OverlayTrigger>
                     </div> :
                       null}
@@ -476,14 +476,16 @@ export default class OfficeItemCompressedRaccoon extends Component {
               <span>
                 { at_least_one_candidate_chosen ?
                   null :
-                  <OverlayTrigger trigger="click"
+                  <div className="u-tr">
+                    <OverlayTrigger trigger="click"
                                   ref="undecided-overlay"
                                   onExit={this.closeYourNetworkIsUndecidedPopover}
                                   rootClose
                                   placement="top"
                                   overlay={yourNetworkIsUndecidedPopover}>
-                    <div className="u-tr">Your network is undecided</div>
-                  </OverlayTrigger>
+                      <span className=" u-cursor--pointer">Your network is undecided</span>
+                    </OverlayTrigger>
+                  </div>
                 }
               </span>
             }

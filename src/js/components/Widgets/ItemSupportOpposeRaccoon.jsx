@@ -235,11 +235,11 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   closePositionsPopover () {
-    this.refs[`positions-overlay`].hide();
+    this.refs["positions-overlay"].hide();
   }
 
   closeScorePopover () {
-    this.refs[`score-overlay`].hide();
+    this.refs["score-overlay"].hide();
   }
 
   render () {
@@ -391,8 +391,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
                           placement="top"
                           overlay={positionsPopover}>
             <span className="network-positions-stacked__support-label u-cursor--pointer">Positions&nbsp;</span>
-          </OverlayTrigger>
-          : null }
+          </OverlayTrigger> :
+          null }
         {/* Show a break-down of the current positions in your network */}
         <span className="u-flex u-justify-between u-inset__v--xs hidden-xs">
           <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}

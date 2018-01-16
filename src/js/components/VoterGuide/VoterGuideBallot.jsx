@@ -16,7 +16,6 @@ import cookies from "../../utils/cookies";
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
 import Helmet from "react-helmet";
-import IssueStore from "../../stores/IssueStore";
 import MeasureActions from "../../actions/MeasureActions";
 import MeasureModal from "../../components/Ballot/MeasureModal";
 import moment from "moment";
@@ -29,8 +28,6 @@ import PledgeToVoteStatusBar from "../../components/VoterGuide/PledgeToVoteStatu
 import SelectBallotModal from "../../components/Ballot/SelectBallotModal";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
-import VoterActions from "../../actions/VoterActions";
-import VoterConstants from "../../constants/VoterConstants";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideBallotItemCompressed from "../../components/VoterGuide/VoterGuideBallotItemCompressed";
 import VoterGuideStore from "../../stores/VoterGuideStore";
@@ -85,9 +82,8 @@ export default class VoterGuideBallot extends Component {
     let hide_intro_modal_from_url = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
     let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal") || 0;
     let wait_until_voter_sign_in_completes = this.props.location.query ? this.props.location.query.wait_until_voter_sign_in_completes : 0;
-    let issues_voter_can_follow = IssueStore.getIssuesVoterCanFollow(); // Check to see if the issues have been retrieved yet
 
-    if ( wait_until_voter_sign_in_completes !== undefined || hide_intro_modal_from_cookie || hide_intro_modal_from_url || !issues_voter_can_follow ) {
+    if ( wait_until_voter_sign_in_completes !== undefined || hide_intro_modal_from_cookie || hide_intro_modal_from_url) {
       this.setState({
         mounted: true,
       });
@@ -466,8 +462,6 @@ export default class VoterGuideBallot extends Component {
   render () {
     // console.log("VoterGuideBallot render, this.state: ", this.state);
     let ballot_with_all_items = this.state.ballot_with_all_items;
-    let text_for_map_search = VoterStore.getTextForMapSearch();
-    let issues_voter_can_follow = IssueStore.getIssuesVoterCanFollow(); // Don't auto-open intro until Issues are loaded
 
     if (!ballot_with_all_items) {
       return <div className="ballot container-fluid well u-stack--md u-inset--md">
@@ -518,7 +512,6 @@ export default class VoterGuideBallot extends Component {
     const electionTooltip = election_day_text ? <Tooltip id="tooltip">Election day {moment(election_day_text).format("MMM Do, YYYY")}</Tooltip> : <span />;
 
     let in_remaining_decisions_mode = this.state.filter_type === "filterRemaining";
-    let in_ready_to_vote_mode = this.state.filter_type === "filterReadyToVote";
 
     let voter_ballot_location = VoterStore.getBallotLocationForVoter();
     let voter_entered_address = false;

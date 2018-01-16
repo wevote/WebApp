@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router";
 import TextTruncate from "react-text-truncate";
 import { capitalizeString } from "../../utils/textFormat";
 import BallotSideBarLink from "../Navigation/BallotSideBarLink";
@@ -11,8 +11,6 @@ import ImageHandler from "../ImageHandler";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeCheetah from "../Widgets/ItemSupportOpposeCheetah";
-import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
-import ItemTinyOpinionsToFollow from "../VoterGuide/ItemTinyOpinionsToFollow";
 import LearnMore from "../Widgets/LearnMore";
 import SupportStore from "../../stores/SupportStore";
 
@@ -90,7 +88,6 @@ export default class OfficeItemCompressed extends Component {
 
   render () {
     let { ballot_item_display_name, we_vote_id } = this.props;
-    let officeLink = "/office/" + we_vote_id;
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
@@ -116,18 +113,6 @@ export default class OfficeItemCompressed extends Component {
                             textTruncateChild={null} />
             </Link>;
 
-    let ballot_item_display_name_walrus = this.props.link_to_ballot_item_page ?
-            <Link to={officeLink}>
-              <TextTruncate line={1}
-                            truncateText="…"
-                            text={ballot_item_display_name}
-                            textTruncateChild={null} />
-            </Link> :
-            <TextTruncate line={1}
-                          truncateText="…"
-                          text={ballot_item_display_name}
-                          textTruncateChild={null} />;
-
     return <div className="card-main office-item">
       <a name={we_vote_id} />
       <div className="card-main__content">
@@ -135,7 +120,6 @@ export default class OfficeItemCompressed extends Component {
         <h2 className="u-f3 card-main__ballot-name u-stack--sm">{ballot_item_display_name_cheetah}</h2>
         { candidate_list_to_display.map( (one_candidate) => {
           let candidate_we_vote_id = one_candidate.we_vote_id;
-          let candidateGuidesList = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(candidate_we_vote_id);
           let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidate_we_vote_id);
           let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidate_we_vote_id);
 
@@ -162,14 +146,6 @@ export default class OfficeItemCompressed extends Component {
               </div> :
               null;
 
-          let candidate_photo_walrus = <div onClick={this.props.link_to_ballot_item_page ? () => browserHistory.push("/candidate/" + candidate_we_vote_id) : null}>
-                <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
-                              sizeClassName="icon-candidate-small u-push--sm "
-                              imageUrl={one_candidate.candidate_photo_url_large}
-                              alt="candidate-photo"
-                              kind_of_ballot_item="CANDIDATE" />
-              </div>;
-
           let candidate_name_cheetah = <h4 className="card-main__candidate-name u-f5">
                 <a onClick={this.props.link_to_ballot_item_page ? this.toggleExpandCheetahDetails : null}>
                   <TextTruncate line={1}
@@ -178,15 +154,6 @@ export default class OfficeItemCompressed extends Component {
                                 textTruncateChild={null} />
                 </a>
               </h4>;
-
-          let candidate_name_walrus = <h4 className="card-main__candidate-name u-f4">
-                  <a onClick={this.props.link_to_ballot_item_page ? () => browserHistory.push("/candidate/" + candidate_we_vote_id) : null}>
-                    <TextTruncate line={1}
-                                  truncateText="…"
-                                  text={one_candidate.ballot_item_display_name}
-                                  textTruncateChild={null} />
-                  </a>
-                </h4>;
 
           let candidate_description_cheetah = this.state.display_cheetah_details_flag ?
               <div className="card-main__candidate-description">
@@ -208,11 +175,6 @@ export default class OfficeItemCompressed extends Component {
               </div> :
             null;
 
-          let candidate_description_walrus = <div className="card-main__candidate-description">
-                  <LearnMore text_to_display={candidate_text}
-                             on_click={ this.props.link_to_ballot_item_page ? () => browserHistory.push("/candidate/" + candidate_we_vote_id) : null } />
-                </div>;
-
           // We are experimenting with different display options
           let positions_display_cheetah = <div>
             <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
@@ -229,51 +191,7 @@ export default class OfficeItemCompressed extends Component {
             </div>
           </div>;
 
-          let positions_display_walrus = <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
-                  {/* Positions in Your Network */}
-                  <div className={ this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null }
-                       onClick={ this.props.link_to_ballot_item_page ? () => this.props.toggleCandidateModal(one_candidate) : null }>
-                    <ItemSupportOpposeCounts we_vote_id={candidate_we_vote_id}
-                                             supportProps={candidateSupportStore}
-                                             guideProps={candidateGuidesList}
-                                             type="CANDIDATE" />
-                  </div>
-
-                  {/* Possible Voter Guides to Follow (Desktop) */}
-                  { candidateGuidesList && candidateGuidesList.length ?
-                    <ItemTinyOpinionsToFollow ballotItemWeVoteId={candidate_we_vote_id}
-                                              organizationsToFollow={candidateGuidesList}
-                                              maximumOrganizationDisplay={this.state.maximum_organization_display}
-                                              supportProps={candidateSupportStore} /> : null }
-
-                  {/* Support or Oppose actions for voter */}
-                  <div className="u-cursor--pointer">
-                    <ItemActionBar ballot_item_we_vote_id={candidate_we_vote_id}
-                                   supportProps={candidateSupportStore}
-                                   shareButtonHide
-                                   commentButtonHide
-                                   transitioning={this.state.transitioning}
-                                   ballot_item_display_name={one_candidate.ballot_item_display_name}
-                                   type="CANDIDATE" />
-                  </div>
-                </div>;
-
           let comment_display_cheetah = this.state.display_cheetah_details_flag && (is_support || is_oppose || voter_statement_text) ?
-              <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-                <div className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
-                </div>
-                <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-                    <ItemPositionStatementActionBar ballot_item_we_vote_id={candidate_we_vote_id}
-                                                    ballot_item_display_name={one_candidate.ballot_item_display_name}
-                                                    supportProps={candidateSupportStore}
-                                                    transitioning={this.state.transitioning}
-                                                    type="CANDIDATE"
-                                                    shown_in_list />
-                </div>
-              </div> :
-              null;
-
-          let comment_display_walrus = is_support || is_oppose || voter_statement_text ?
               <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
                 <div className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
                 </div>
