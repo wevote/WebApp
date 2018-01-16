@@ -295,7 +295,7 @@ export default class EmailBallotModal extends Component {
     return (
     <div className="intro-modal">
       <div className="intro-modal__h1">
-        Send This Ballot to Yourself Through Email or Facebook
+        Send This Ballot to Yourself
       </div>
 
       <div>

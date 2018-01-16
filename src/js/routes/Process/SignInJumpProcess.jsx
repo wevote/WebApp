@@ -1,9 +1,9 @@
-import React, { Component, PropTypes } from "react";
+import { Component, PropTypes } from "react";
 import { browserHistory } from "react-router";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
-import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
+// import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
 
 // This component allows us to jump from the native apps to WebApp, and preserve the sign in state
 // TODO DALE: Is a work in progress
@@ -32,7 +32,7 @@ export default class SignInJumpProcess extends Component {
       incoming_voter_device_id_belongs_to_this_voter: true, // We want to actually set this in response to voterAnalysisForJumpProcess
       jump_path: this.props.location.query.jump_path,
       voter: VoterStore.getVoter(),
-    })
+    });
   }
 
   componentWillUnmount () {
@@ -58,7 +58,7 @@ export default class SignInJumpProcess extends Component {
   }
 
   voterMergeTwoAccountsByJumpProcess (incoming_voter_device_id, voter_has_data_to_preserve = true) {
-    console.log("voterMergeTwoAccountsByJumpProcess, incoming_voter_device_id: ", incoming_voter_device_id);
+    console.log("voterMergeTwoAccountsByJumpProcess, incoming_voter_device_id: ", incoming_voter_device_id, voter_has_data_to_preserve);
     // VoterActions.voterMergeTwoAccountsByJumpProcess(incoming_voter_device_id);
     browserHistory.push({
       pathname: this.state.jump_path,

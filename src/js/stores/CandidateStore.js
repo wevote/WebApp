@@ -47,6 +47,7 @@ class CandidateStore extends ReduceStore {
     let all_cached_positions_about_candidates;
     let ballot_item_we_vote_id;
     let candidate;
+    let candidate_we_vote_id;
     let new_position_list;
     let one_position;
     let position_list_for_candidate;
@@ -74,7 +75,7 @@ class CandidateStore extends ReduceStore {
       case "organizationFollow":
         // Go through all of the candidates currently on the ballot and update their positions
         if (state.all_cached_candidates) {
-          for (var candidate_we_vote_id in state.all_cached_candidates) {
+          for (candidate_we_vote_id in state.all_cached_candidates) {
             CandidateActions.positionListForBallotItem(candidate_we_vote_id);
           }
         }
@@ -83,7 +84,7 @@ class CandidateStore extends ReduceStore {
       case "organizationStopFollowing":
         // Go through all of the candidates currently on the ballot and update their positions
         if (state.all_cached_candidates) {
-          for (var candidate_we_vote_id in state.all_cached_candidates) {
+          for (candidate_we_vote_id in state.all_cached_candidates) {
             CandidateActions.positionListForBallotItem(candidate_we_vote_id);
           }
         }
@@ -92,7 +93,7 @@ class CandidateStore extends ReduceStore {
       case "organizationFollowIgnore":
         // Go through all of the candidates currently on the ballot and update their positions
         if (state.all_cached_candidates) {
-          for (var candidate_we_vote_id in state.all_cached_candidates) {
+          for (candidate_we_vote_id in state.all_cached_candidates) {
             CandidateActions.positionListForBallotItem(candidate_we_vote_id);
           }
         }
