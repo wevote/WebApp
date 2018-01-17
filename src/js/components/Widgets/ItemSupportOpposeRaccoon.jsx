@@ -355,6 +355,17 @@ export default class ItemSupportOpposeRaccoon extends Component {
             </Button> an organization to add their position to the <strong>Score in Your Network</strong>.
       </Popover>;
 
+    const positionsLabel = positions_exist ?
+      <OverlayTrigger trigger="click"
+                      ref="positions-overlay"
+                      onExit={this.closePositionsPopover}
+                      rootClose
+                      placement="top"
+                      overlay={positionsPopover}>
+        <span className="network-positions-stacked__support-label u-cursor--pointer">Positions&nbsp;</span>
+      </OverlayTrigger> :
+      null;
+
     return <div className="network-positions-stacked">
       <div className="network-positions-stacked__support">
         {/* Support toggle here */}
@@ -383,75 +394,45 @@ export default class ItemSupportOpposeRaccoon extends Component {
         </div>
       </div>
       <div className="network-positions-stacked__support">
-        { positions_exist ?
-          <OverlayTrigger trigger="click"
-                          ref="positions-overlay"
-                          onExit={this.closePositionsPopover}
-                          rootClose
-                          placement="top"
-                          overlay={positionsPopover}>
-            <span className="network-positions-stacked__support-label u-cursor--pointer">Positions&nbsp;</span>
-          </OverlayTrigger> :
-          null }
         {/* Show a break-down of the current positions in your network */}
-        <span className="u-flex u-justify-between u-inset__v--xs hidden-xs">
+        <span className="network-positions-stacked__support-list u-flex u-justify-between u-items-center u-inset__v--xs hidden-xs">
+          { positionsLabel }
           <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
                                          ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
                                          position_list={this.state.position_list_from_advisers_followed_by_voter}
                                          showSupport
                                          supportProps={this.state.supportProps}
                                          visibility="desktop" />
-        </span>
-        <span className="u-flex u-justify-between u-inset__v--xs hidden-xs">
           <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
                                          ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
                                          position_list={this.state.position_list_from_advisers_followed_by_voter}
                                          showOppose
                                          supportProps={this.state.supportProps}
                                          visibility="desktop" />
+          {/* Show support positions the voter can follow Desktop */}
+          { organizations_to_follow_support_desktop.length ? organizations_to_follow_support_desktop : null }
+          {/* Show oppose positions the voter can follow Desktop */}
+          { organizations_to_follow_oppose_desktop.length ? organizations_to_follow_oppose_desktop : null }
         </span>
-        <span className="u-flex u-justify-between u-inset__v--xs visible-xs">
+        <span className="network-positions-stacked__support-list u-flex u-justify-between u-items-center u-inset__v--xs visible-xs">
+          { positionsLabel }
           <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
                                          ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
                                          position_list={this.state.position_list_from_advisers_followed_by_voter}
                                          showSupport
                                          supportProps={this.state.supportProps}
                                          visibility="mobile" />
-        </span>
-        <span className="u-flex u-justify-between u-inset__v--xs visible-xs">
           <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
                                          ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
                                          position_list={this.state.position_list_from_advisers_followed_by_voter}
                                          showOppose
                                          supportProps={this.state.supportProps}
                                          visibility="mobile" />
+          {/* Show support positions the voter can follow Mobile */}
+          { organizations_to_follow_support_mobile.length ? organizations_to_follow_support_mobile : null }
+          {/* Show oppose positions the voter can follow Mobile */}
+          { organizations_to_follow_oppose_mobile.length ? organizations_to_follow_oppose_mobile : null }
         </span>
-
-        {/* Show support positions the voter can follow Desktop */}
-        { organizations_to_follow_support_desktop.length ?
-          <span className="hidden-xs">
-            {organizations_to_follow_support_desktop}
-          </span> :
-          null }
-        {/* Show support positions the voter can follow Mobile */}
-        { organizations_to_follow_support_mobile.length ?
-          <span className="visible-xs">
-            {organizations_to_follow_support_mobile}
-          </span> :
-          null }
-        {/* Show oppose positions the voter can follow Desktop */}
-        { organizations_to_follow_oppose_desktop.length ?
-          <span className="hidden-xs">
-            {organizations_to_follow_oppose_desktop}
-          </span> :
-          null }
-
-        {/* Show oppose positions the voter can follow Mobile */}
-        { organizations_to_follow_oppose_mobile.length ?
-          <span className="visible-xs">
-            {organizations_to_follow_oppose_mobile}
-          </span> :
-          null }
       </div>
     </div>;
   }
