@@ -16,6 +16,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     maximumOrganizationDisplay: PropTypes.number,
     organizationsToFollowSupport: PropTypes.array,
     organizationsToFollowOppose: PropTypes.array,
+    popoverBottom: PropTypes.bool,
     positionBarIsClickable: PropTypes.bool,
     supportProps: PropTypes.object,
   };
@@ -366,7 +367,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                           ref="score-overlay"
                           onExit={this.closeScorePopover}
                           rootClose
-                          placement="top"
+                          placement={this.props.popoverBottom ? "bottom" : "top"}
                           overlay={scoreInYourNetworkPopover}>
             <span className="network-positions-stacked__support-score u-cursor--pointer u-no-break">
               { total_score === 0 ?
@@ -374,8 +375,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
                 <span className="u-margin-left--xs">{ total_score_with_sign }&nbsp;</span>
               }
               <span className="network-positions-stacked__support-score-label">
-                <span className="visible-xs">Network Score</span>
-                <span className="hidden-xs">Score in Your Network</span>
+                <span className="visible-xs">Network Score <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover" aria-hidden="true" /></span>
+                <span className="hidden-xs">Score in Your Network <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover" aria-hidden="true" /></span>
               </span>
             </span>
           </OverlayTrigger>
@@ -388,9 +389,9 @@ export default class ItemSupportOpposeRaccoon extends Component {
                           ref="positions-overlay"
                           onExit={this.closePositionsPopover}
                           rootClose
-                          placement="top"
+                          placement={this.props.popoverBottom ? "bottom" : "top"}
                           overlay={positionsPopover}>
-            <span className="network-positions-stacked__support-label u-cursor--pointer">Positions&nbsp;</span>
+            <span className="network-positions-stacked__support-label u-cursor--pointer">Positions&nbsp;<i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover" aria-hidden="true" />&nbsp;</span>
           </OverlayTrigger> :
           null }
         {/* Show a break-down of the current positions in your network */}

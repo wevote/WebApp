@@ -113,6 +113,10 @@
     box-sizing: content-box;
   }
 
+  &__info-icon-for-popover {
+    color: $gray-mid;
+  }
+
   &__support,
   &__oppose {
     display: flex;

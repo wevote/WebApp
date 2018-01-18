@@ -163,6 +163,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
                                   maximumOrganizationDisplay={8}
                                   organizationsToFollowSupport={organizationsToFollowSupport}
                                   organizationsToFollowOppose={organizationsToFollowOppose}
+                                  popoverBottom
                                   supportProps={candidateSupportStore}
                                   type="CANDIDATE"/>
       </div>
