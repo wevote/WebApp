@@ -217,7 +217,8 @@ export default class ItemTinyPositionBreakdownList extends Component {
                                 followToggleOn />
             </Popover>;
 
-          return <OverlayTrigger
+          return <span className="position-rating__source with-popover">
+            <OverlayTrigger
               key={`trigger-${organization_we_vote_id}`}
               ref={`position-overlay-${organization_we_vote_id}`}
               onMouseOver={() => this.onTriggerEnter(organization_we_vote_id)}
@@ -227,13 +228,12 @@ export default class ItemTinyPositionBreakdownList extends Component {
               rootClose
               placement="bottom"
               overlay={organizationPopover}>
-            <span className="position-rating__source with-popover">
               <OrganizationTinyDisplay {...one_organization}
                                        showPlaceholderImage
                                        showSupport={this.props.showSupport}
                                        showOppose={this.props.showOppose}/>
-            </span>
-          </OverlayTrigger>;
+            </OverlayTrigger>
+          </span>
         }
       });
       organizations_to_display.push(temp_organizations_to_display);

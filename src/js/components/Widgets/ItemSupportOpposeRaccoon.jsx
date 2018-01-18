@@ -227,7 +227,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                                      showSupport={supports_this_ballot_item}
                                      showOppose={opposes_this_ballot_item} />
           </span>
-        </OverlayTrigger>;
+        </OverlayTrigger>
       }
     });
   }
