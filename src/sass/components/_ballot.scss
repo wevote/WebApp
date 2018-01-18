@@ -9,6 +9,7 @@ $minus-header-extension-top-voter-guide: -1%;
 $scrollbar-height: 20px;
 $tab-height: 47px;
 $tab-height-visible: $tab-height - $scrollbar-height;
+$neg-space-lg: -$space-lg;
 
 .ballot {
   // ===========================================
@@ -119,7 +120,7 @@ $tab-height-visible: $tab-height - $scrollbar-height;
 
   &__voter-guide-body {
     margin-top: $space-md;
-    margin-left: -$space-lg;
-    margin-right: -$space-lg;
+    margin-left: $neg-space-lg;
+    margin-right: $neg-space-lg;
   }
 }
