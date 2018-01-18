@@ -118,6 +118,8 @@ $tab-height-visible: $tab-height - $scrollbar-height;
   }
 
   &__voter-guide-body {
-    //margin-top: $space-md;
+    margin-top: $space-md;
+    margin-left: -$space-lg;
+    margin-right: -$space-lg;
   }
 }
