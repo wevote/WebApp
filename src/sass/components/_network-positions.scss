@@ -143,6 +143,36 @@
       font-size: .675rem;
     }
   }
+
+  // Tiny Organization Position Breakdown List
+
+  $scrollbar-height: 21px;
+  $list-height: 60px;
+  $list-height-visible: $list-height - $scrollbar-height;
+
+  &__support-list-container-wrap {
+    box-sizing: content-box;
+    overflow: hidden;
+    height: $list-height-visible;
+  }
+
+  &__support-list-container {
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    height: $list-height;
+  }
+
+  &__support-list {
+    padding: 0;
+    list-style: none;
+  }
+
+  &__support-list-item {
+    position: relative;
+    display: inline-block;
+    float: none;
+  }
 }
 
 .red-bar { background-color: $red; }
