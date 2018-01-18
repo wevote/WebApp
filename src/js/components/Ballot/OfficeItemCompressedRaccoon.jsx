@@ -307,9 +307,8 @@ export default class OfficeItemCompressedRaccoon extends Component {
               voter_statement_text = candidateSupportStore.voter_statement_text;
             }
 
-            // Was:  className="hidden-xs"
             let candidate_photo_raccoon = this.state.display_raccoon_details_flag ?
-              <div onClick={this.props.link_to_ballot_item_page ? this.toggleExpandCheetahDetails : null}>
+              <div onClick={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(one_candidate.we_vote_id) : null}>
                 <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
                               sizeClassName="icon-candidate-small u-push--sm "
                               imageUrl={one_candidate.candidate_photo_url_large}
