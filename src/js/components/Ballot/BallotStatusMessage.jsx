@@ -35,7 +35,7 @@ export default class BallotStatusMessage extends Component {
     let elections_with_ballot_status_message_closed_value_from_cookie = cookies.getItem("elections_with_ballot_status_message_closed");
     let elections_with_ballot_status_message_closed = [];
     if (elections_with_ballot_status_message_closed_value_from_cookie) {
-      elections_with_ballot_status_message_closed = JSON.parse(elections_with_ballot_status_message_closed_value_from_cookie) || []
+      elections_with_ballot_status_message_closed = JSON.parse(elections_with_ballot_status_message_closed_value_from_cookie) || [];
     }
     this.setState({
       ballot_location_chosen: this.props.ballot_location_chosen,

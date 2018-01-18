@@ -187,7 +187,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
 
     // Ready to Vote code
     let is_support_array = [];
-    let candidate_with_most_support = null;
     let voter_supports_at_least_one_candidate = false;
     let supportProps;
     let candidate_has_voter_support;
@@ -224,7 +223,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
           if (network_support_count > network_oppose_count) {
             if (network_support_count > largest_support_count) {
               largest_support_count = network_support_count;
-              candidate_with_most_support = candidate.ballot_item_display_name;
               at_least_one_candidate_chosen = true;
             }
           }
@@ -354,7 +352,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                 <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
                   {/* Candidate Name */}
                   {candidate_name_raccoon}
-                  
+
                   {/* Description under candidate name */}
                   <LearnMore text_to_display={candidate_text}
                              on_click={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(one_candidate.we_vote_id) : null} />

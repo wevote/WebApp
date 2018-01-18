@@ -57,7 +57,7 @@ export default class PledgeToVoteButton extends Component {
     let i_stand_with_text = "I Will Vote";
     let i_stand_with_text_mobile = shortenText(i_stand_with_text, 32);
 
-    return <span>
+    return <div className="u-stack--sm">
       <Button block
               bsSize={"large"}
               bsStyle={"danger"}
@@ -65,6 +65,6 @@ export default class PledgeToVoteButton extends Component {
         <span className="voter-guide__pledge-to-support__i-stand-with-button hidden-xs">{i_stand_with_text}</span>
         <span className="voter-guide__pledge-to-support__i-stand-with-button visible-xs">{i_stand_with_text_mobile}</span>
       </Button>
-    </span>;
+    </div>;
   }
 }

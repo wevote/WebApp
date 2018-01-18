@@ -544,7 +544,7 @@ export default class EmailBallotToFriendsModal extends Component {
     return (
     <div className="intro-modal">
       <div className="intro-modal__h1">
-        Send This Ballot to Friends Through Email or Facebook
+        Send This Ballot to Friends
       </div>
 
       <div>

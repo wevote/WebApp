@@ -111,16 +111,16 @@ export default class AddFriendsByEmail extends Component {
   friendInvitationByEmailSend (e) {
     e.preventDefault();
     //console.log("friendInvitationByEmailSend);
-    let _state = this.state; 
+    let _state = this.state;
     let email_address_array = [];
     let first_name_array = [];
     let last_name_array = [];
     //create temporary arrays so friendInvitationByEmailSend can work
     for (let friend_index = 1; friend_index <= this.state.friend_total; friend_index++) {
       if (validateEmail(_state[`friend${friend_index}_email_address`])){
-        email_address_array.push(_state[`friend${friend_index}_email_address`])
-        first_name_array.push(_state[`friend${friend_index}_first_name`]) 
-        last_name_array.push(_state[`friend${friend_index}_last_name`]) 
+        email_address_array.push(_state[`friend${friend_index}_email_address`]);
+        first_name_array.push(_state[`friend${friend_index}_first_name`]);
+        last_name_array.push(_state[`friend${friend_index}_last_name`]);
       }
     }
     // console.log("email_address_array: ", email_address_array);
