@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { OverlayTrigger, Popover } from "react-bootstrap";
+import { Button, OverlayTrigger, Popover } from "react-bootstrap";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
 import ItemActionBar from "../Widgets/ItemActionBar";
@@ -37,6 +37,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
       position_list_from_advisers_followed_by_voter: [],
       supportProps: this.props.supportProps,
     };
+    this.closePositionsPopover = this.closePositionsPopover.bind(this);
+    this.closeScorePopover = this.closeScorePopover.bind(this);
     this.goToCandidateLinkLocal = this.goToCandidateLinkLocal.bind(this);
   }
 
@@ -233,6 +235,14 @@ export default class ItemSupportOpposeRaccoon extends Component {
     });
   }
 
+  closePositionsPopover () {
+    this.refs["positions-overlay"].hide();
+  }
+
+  closeScorePopover () {
+    this.refs["score-overlay"].hide();
+  }
+
   render () {
     // console.log("ItemSupportOpposeRaccoon render");
     let candidateSupportStore = SupportStore.get(this.state.ballot_item_we_vote_id);
@@ -310,6 +320,41 @@ export default class ItemSupportOpposeRaccoon extends Component {
       organizations_to_follow_oppose_desktop = this.organizationsToDisplay(this.state.organizations_to_follow_oppose, organizations_to_follow_oppose_desktop_to_show, this.state.ballot_item_we_vote_id, "desktop", false, true);
       organizations_to_follow_oppose_mobile = this.organizationsToDisplay(this.state.organizations_to_follow_oppose, organizations_to_follow_oppose_mobile_to_show, this.state.ballot_item_we_vote_id, "mobile", false, true);
     }
+
+    const scoreInYourNetworkPopover =
+      <Popover id="popover-trigger-click-root-close"
+               title={<span>Score in Your Network <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+               onClick={this.closeScorePopover}>
+        Your friends, and the organizations you follow, are <strong>Your Network</strong>.
+        Each friend or organization you follow
+        that <span className="u-no-break"><img src="/img/global/icons/thumbs-up-color-icon.svg"
+                                               width="20" height="20" /> supports</span> {this.state.ballot_item_display_name} adds
+        +1 to this <strong>Score</strong>.
+        Each one that <span className="u-no-break"><img src="/img/global/icons/thumbs-down-color-icon.svg"
+                                               width="20" height="20" /> opposes</span> subtracts
+        1 from this <strong>Score</strong>. <Button bsStyle="info"
+                                                    bsSize="xsmall"
+                                                    >
+                                              <span>Follow</span>
+                                            </Button> an
+        organization to add their position to the <strong>Score in Your Network</strong>.
+      </Popover>;
+
+    const positionsPopover =
+      <Popover id="popover-trigger-click-root-close"
+               title={<span>Positions about {this.state.ballot_item_display_name} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+               onClick={this.closePositionsPopover}>
+        These organizations <span className="u-no-break"><img src="/img/global/icons/thumbs-up-color-icon.svg"
+                                               width="20" height="20" /> support</span> or&nbsp;
+        <span className="u-no-break"><img src="/img/global/icons/thumbs-down-color-icon.svg"
+                                               width="20" height="20" /> oppose</span> {this.state.ballot_item_display_name}.
+        Click on the logo
+        and <Button bsStyle="info"
+                    bsSize="xsmall"
+                    >
+              <span>Follow</span>
+            </Button> an organization to add their position to the <strong>Score in Your Network</strong>.
+      </Popover>;
 
     return <div className="network-positions-stacked">
       <div className="network-positions-stacked__support">
