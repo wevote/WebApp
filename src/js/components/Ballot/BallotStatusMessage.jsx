@@ -90,7 +90,7 @@ export default class BallotStatusMessage extends Component {
         message_string += "You are looking at the ballot for " + this.state.ballot_location_display_name + ". Some items below may not be on your official ballot.";
       } else {
         if (this.state.voter_entered_address) {
-          message_string += "This is a ballot near you. ";
+          message_string += "This is our best guess for what's on your ballot. ";
         }
         message_string += "Some items below may not be on your official ballot.";
       }

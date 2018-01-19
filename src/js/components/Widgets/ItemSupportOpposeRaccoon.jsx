@@ -16,6 +16,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     maximumOrganizationDisplay: PropTypes.number,
     organizationsToFollowSupport: PropTypes.array,
     organizationsToFollowOppose: PropTypes.array,
+    popoverBottom: PropTypes.bool,
     positionBarIsClickable: PropTypes.bool,
     supportProps: PropTypes.object,
   };
@@ -317,21 +318,37 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
         {/* Support Score here */}
         <div>
-          <span className="network-positions-stacked__support-score u-cursor--pointer u-no-break" onClick={this.goToCandidateLinkLocal}>
-            { total_score === 0 ?
-              <span className="u-margin-left--md">{ total_score_with_sign }&nbsp;</span> :
-              <span className="u-margin-left--xs">{ total_score_with_sign }&nbsp;</span>
-            }
-            <span className="network-positions-stacked__support-score-label">
-              <span className="visible-xs">Score in Your Network</span>
-              <span className="hidden-xs">Score in Your Network</span>
+          <OverlayTrigger trigger="click"
+                          ref="score-overlay"
+                          onExit={this.closeScorePopover}
+                          rootClose
+                          placement={this.props.popoverBottom ? "bottom" : "top"}
+                          overlay={scoreInYourNetworkPopover}>
+            <span className="network-positions-stacked__support-score u-cursor--pointer u-no-break">
+              { total_score === 0 ?
+                <span className="u-margin-left--md">{ total_score_with_sign }&nbsp;</span> :
+                <span className="u-margin-left--xs">{ total_score_with_sign }&nbsp;</span>
+              }
+              <span className="network-positions-stacked__support-score-label">
+                <span className="visible-xs">Network Score <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover" aria-hidden="true" /></span>
+                <span className="hidden-xs">Score in Your Network <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover" aria-hidden="true" /></span>
+              </span>
             </span>
-          </span>
+          </OverlayTrigger>
           <span className="sr-only">{total_score > 0 ? total_score + " Support" : null }{total_score < 0 ? total_score + " Oppose" : null }</span>
         </div>
       </div>
       <div className="network-positions-stacked__support">
-        { positions_exist ? <span className="network-positions-stacked__support-label">Positions&nbsp;</span> : null }
+        { positions_exist ?
+          <OverlayTrigger trigger="click"
+                          ref="positions-overlay"
+                          onExit={this.closePositionsPopover}
+                          rootClose
+                          placement={this.props.popoverBottom ? "bottom" : "top"}
+                          overlay={positionsPopover}>
+            <span className="network-positions-stacked__support-label u-cursor--pointer">Positions&nbsp;<i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover" aria-hidden="true" />&nbsp;</span>
+          </OverlayTrigger> :
+          null }
         {/* Show a break-down of the current positions in your network */}
         <span className="u-flex u-justify-between u-inset__v--xs hidden-xs">
           <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
