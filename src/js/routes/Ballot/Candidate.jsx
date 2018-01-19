@@ -138,7 +138,9 @@ export default class Candidate extends Component {
                        hideOpinionsToFollow
                        position_list={this.state.position_list_from_advisers_followed_by_voter}
                        showLargeImage
-                       showPositionsInYourNetworkBreakdown />
+                       showPositionsInYourNetworkBreakdown
+                       showPositionStatementActionBar
+        />
         <div className="card__additional">
           { this.state.position_list_from_advisers_followed_by_voter ?
             <div>

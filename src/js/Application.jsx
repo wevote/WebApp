@@ -82,7 +82,8 @@ export default class Application extends Component {
     ElectionActions.electionsRetrieve();
 
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-   //preload images
+    
+    //preload images
     IssueActions.retrieveIssuesToFollow();
     this.issueStoreListener = IssueStore.addListener(this.preloadIssueImages);
   }

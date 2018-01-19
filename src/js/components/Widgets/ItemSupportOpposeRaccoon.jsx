@@ -3,6 +3,7 @@ import { Button, OverlayTrigger, Popover } from "react-bootstrap";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
 import ItemActionBar from "../Widgets/ItemActionBar";
+import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdownList";
 import OrganizationCard from "../VoterGuide/OrganizationCard";
 import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
@@ -18,6 +19,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     organizationsToFollowOppose: PropTypes.array,
     popoverBottom: PropTypes.bool,
     positionBarIsClickable: PropTypes.bool,
+    showPositionStatementActionBar: PropTypes.bool,
     supportProps: PropTypes.object,
   };
 
@@ -288,6 +290,46 @@ export default class ItemSupportOpposeRaccoon extends Component {
         total_score_with_sign = total_score;
       }
     }
+    let is_support = false;
+    let is_oppose = false;
+    let voter_statement_text = false;
+    if (candidateSupportStore !== undefined) {
+      is_support = candidateSupportStore.is_support;
+      is_oppose = candidateSupportStore.is_oppose;
+      voter_statement_text = candidateSupportStore.voter_statement_text;
+    }
+
+    let comment_display_raccoon_desktop = this.props.showPositionStatementActionBar || is_support || is_oppose || voter_statement_text ?
+      <div className="hidden-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+        <div
+          className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
+        </div>
+        <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
+          <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
+                                          ballot_item_display_name={this.state.ballot_item_display_name}
+                                          supportProps={candidateSupportStore}
+                                          transitioning={this.state.transitioning}
+                                          type="CANDIDATE"
+                                          shown_in_list/>
+        </div>
+      </div> :
+      null;
+
+    let comment_display_raccoon_mobile = this.props.showPositionStatementActionBar || is_support || is_oppose || voter_statement_text ?
+      <div className="visible-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+        <div
+          className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
+        </div>
+        <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
+          <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
+                                          ballot_item_display_name={this.state.ballot_item_display_name}
+                                          supportProps={candidateSupportStore}
+                                          transitioning={this.state.transitioning}
+                                          type="CANDIDATE"
+                                          shown_in_list/>
+        </div>
+      </div> :
+      null;
 
     let positions_exist = support_count || oppose_count || this.state.organizations_to_follow_support.length || this.state.organizations_to_follow_oppose.length;
     let maximum_organizations_to_show_desktop = 50;
@@ -408,6 +450,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
           <span className="sr-only">{total_score > 0 ? total_score + " Support" : null }{total_score < 0 ? total_score + " Oppose" : null }</span>
         </div>
       </div>
+      {comment_display_raccoon_desktop}
+      {comment_display_raccoon_mobile}
       { positions_exist ?
         <div className="network-positions-stacked__support-list u-flex u-justify-between u-items-center">
           <div className="network-positions-stacked__support-list-container-wrap">

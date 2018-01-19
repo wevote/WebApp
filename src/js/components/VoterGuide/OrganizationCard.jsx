@@ -52,7 +52,7 @@ export default class OrganizationCard extends Component {
           organization_position: organization_position,
         });
       } else {
-        OrganizationActions.retrievePositions(this.props.organization.organization_we_vote_id, true);
+        OrganizationActions.positionListForOpinionMaker(this.props.organization.organization_we_vote_id, true);
         this.setState({
           organization_positions_requested: true,
         });
@@ -79,7 +79,7 @@ export default class OrganizationCard extends Component {
           organization_position: organization_position,
         });
       } else if (!this.state.organization_positions_requested) {
-        OrganizationActions.retrievePositions(nextProps.organization.organization_we_vote_id, true);
+        OrganizationActions.positionListForOpinionMaker(nextProps.organization.organization_we_vote_id, true);
         this.setState({
           organization_positions_requested: true,
         });

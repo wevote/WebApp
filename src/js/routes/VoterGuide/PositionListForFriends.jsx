@@ -25,9 +25,9 @@ export default class PositionListForFriends extends Component {
 
     OrganizationActions.organizationRetrieve(organization_we_vote_id);
     // Positions for this organization, for this voter / election
-    OrganizationActions.retrieveFriendsPositions(organization_we_vote_id, true);
+    OrganizationActions.positionListForOpinionMakerForFriends(organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
-    OrganizationActions.retrieveFriendsPositions(organization_we_vote_id, false, true);
+    OrganizationActions.positionListForOpinionMakerForFriends(organization_we_vote_id, false, true);
 
     // Display the organization's name in the search box
     // var { organization } = this.state;
@@ -42,9 +42,9 @@ export default class PositionListForFriends extends Component {
 
     OrganizationActions.organizationRetrieve(nextProps.params.organization_we_vote_id);
     // Positions for this organization, for this voter / election
-    OrganizationActions.retrieveFriendsPositions(nextProps.params.organization_we_vote_id, true);
+    OrganizationActions.positionListForOpinionMakerForFriends(nextProps.params.organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
-    OrganizationActions.retrieveFriendsPositions(nextProps.params.organization_we_vote_id, false, true);
+    OrganizationActions.positionListForOpinionMakerForFriends(nextProps.params.organization_we_vote_id, false, true);
 
     // Display the candidate's name in the search box
     // var { candidate } = this.state;

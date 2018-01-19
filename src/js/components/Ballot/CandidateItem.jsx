@@ -25,6 +25,7 @@ export default class CandidateItem extends Component {
     party: PropTypes.string,
     position_list: PropTypes.array,
     showPositionsInYourNetworkBreakdown: PropTypes.bool,
+    showPositionStatementActionBar: PropTypes.bool,
     twitter_description: PropTypes.string,
     twitter_followers_count: PropTypes.number,
     twitter_handle: PropTypes.string,
@@ -157,6 +158,7 @@ export default class CandidateItem extends Component {
                                   organizationsToFollowSupport={organizationsToFollowSupport}
                                   organizationsToFollowOppose={organizationsToFollowOppose}
                                   popoverBottom
+                                  showPositionStatementActionBar={this.props.showPositionStatementActionBar}
                                   supportProps={candidateSupportStore}
                                   type="CANDIDATE"/>
       </div>
@@ -224,13 +226,13 @@ export default class CandidateItem extends Component {
       <div className="card-main__actions">
         {positions_display_raccoon}
 
-        { this.state.hide_position_statement ?
+        {/* this.state.hide_position_statement ?
           null :
           <ItemPositionStatementActionBar ballot_item_we_vote_id={we_vote_id}
                                         ballot_item_display_name={ballot_item_display_name}
                                         supportProps={supportProps}
                                         transitioning={transitioning}
-                                        type="CANDIDATE" /> }
+                                        type="CANDIDATE" /> */}
       </div>
     </div>;
   }

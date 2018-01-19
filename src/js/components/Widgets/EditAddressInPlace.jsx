@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from "react";
 import AddressBox from "../AddressBox";
-import { shortenText } from "../../utils/textFormat";
+import { calculateBallotBaseUrl, shortenText } from "../../utils/textFormat";
 
 export default class EditAddressInPlace extends Component {
   static propTypes = {
     address: PropTypes.object.isRequired,
+    noAddressMessage: PropTypes.string,
+    pathname: PropTypes.string,
     toggleFunction: PropTypes.func.isRequired,
   };
 
@@ -37,13 +39,15 @@ export default class EditAddressInPlace extends Component {
   }
 
   render () {
-    let no_address_message = "- no address entered -";
+    let no_address_message = this.props.noAddressMessage ? this.props.noAddressMessage : "- no address entered -";
     let maximum_address_display_length = 60;
+    let ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
+    // console.log("EditAddressInPlace render, ballotBaseUrl: ", ballotBaseUrl);
 
     if (this.state.editingAddress) {
       return <span>
           <h4 className="h4">Please Enter the Address Where You Are Registered to Vote</h4>
-          <AddressBox cancelEditAddress={this.toggleEditingAddress} saveUrl="/ballot" toggleSelectAddressModal={this.props.toggleFunction} />
+          <AddressBox cancelEditAddress={this.toggleEditingAddress} saveUrl={ballotBaseUrl} toggleSelectAddressModal={this.props.toggleFunction} />
         </span>;
 
     } else {

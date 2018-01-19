@@ -40,7 +40,7 @@ export default class OrganizationVoterGuideEdit extends Component {
     // console.log("is_voter_owner: ", is_voter_owner);
     if (is_voter_owner) {
       OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
-      // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
+      // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
       this.setState({
         organization_we_vote_id: this.props.params.organization_we_vote_id,
         voter: VoterStore.getVoter(),
@@ -61,7 +61,7 @@ export default class OrganizationVoterGuideEdit extends Component {
     if (is_voter_owner) {
       // We refresh the data for all three tabs here on the top level
       OrganizationActions.organizationRetrieve(nextProps.params.organization_we_vote_id);
-      // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
+      // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
 
       this.setState({organization_we_vote_id: nextProps.params.organization_we_vote_id});
     } else {

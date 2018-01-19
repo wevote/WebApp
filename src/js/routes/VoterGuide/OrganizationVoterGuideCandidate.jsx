@@ -143,7 +143,9 @@ export default class OrganizationVoterGuideCandidate extends Component {
                        organization_we_vote_id={this.state.organization_we_vote_id}
                        position_list={this.state.position_list_from_advisers_followed_by_voter}
                        showLargeImage
-                       showPositionsInYourNetworkBreakdown />
+                       showPositionsInYourNetworkBreakdown
+                       showPositionStatementActionBar
+        />
         <div className="card__additional">
           { this.state.position_list_from_advisers_followed_by_voter ?
             <div>

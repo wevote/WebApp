@@ -8,6 +8,7 @@ import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
 import {vimeo_reg, youtube_reg} from "../../utils/textFormat";
+import { stringContains } from "../../utils/textFormat";
 var Icon = require("react-svg-icons");
 
 export default class ItemPositionStatementActionBar extends Component {
@@ -172,7 +173,7 @@ export default class ItemPositionStatementActionBar extends Component {
     // }
 
     let speaker_image_url_https = voter_photo_url_medium;
-    let speaker_display_name = voter_full_name;
+    let speaker_display_name = stringContains ("Voter-", voter_full_name) ? "" : voter_full_name;
 
     let image_placeholder = "";
     let speaker_type = "V";  // TODO DALE make this dynamic

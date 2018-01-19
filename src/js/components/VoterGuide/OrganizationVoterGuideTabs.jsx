@@ -41,9 +41,10 @@ export default class OrganizationVoterGuideTabs extends Component {
     VoterGuideActions.voterGuideFollowersRetrieve(this.props.organization.organization_we_vote_id);
     VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
     // Positions for this organization, for this voter / election
-    OrganizationActions.retrievePositions(this.props.organization.organization_we_vote_id, true);
+    OrganizationActions.positionListForOpinionMaker(this.props.organization.organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
-    OrganizationActions.retrievePositions(this.props.organization.organization_we_vote_id, false, true);
+    OrganizationActions.positionListForOpinionMaker(this.props.organization.organization_we_vote_id, false, true);
+    // console.log("OrganizationVoterGuideTabs, componentDidMount, active_route: ", this.props.active_route);
     this.setState({
       active_route: this.props.active_route || "ballot",
       current_organization_we_vote_id: this.props.organization.organization_we_vote_id,
@@ -64,9 +65,9 @@ export default class OrganizationVoterGuideTabs extends Component {
       VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id, VoterStore.election_id());
       // DALE 2017-12-24 Causes too much churn when here
       // Positions for this organization, for this voter / election
-      OrganizationActions.retrievePositions(nextProps.organization.organization_we_vote_id, true);
+      OrganizationActions.positionListForOpinionMaker(nextProps.organization.organization_we_vote_id, true);
       // Positions for this organization, NOT including for this voter / election
-      OrganizationActions.retrievePositions(nextProps.organization.organization_we_vote_id, false, true);
+      OrganizationActions.positionListForOpinionMaker(nextProps.organization.organization_we_vote_id, false, true);
       this.setState({
         current_organization_we_vote_id: nextProps.organization.organization_we_vote_id,
         organization: nextProps.organization,

@@ -15,6 +15,7 @@ export default class SelectBallotModal extends Component {
     ballotElectionList: PropTypes.array,
     google_civic_election_id: PropTypes.number,
     location: PropTypes.object,
+    organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
     pathname: PropTypes.string,
     show: PropTypes.bool,
     toggleFunction: PropTypes.func.isRequired,
@@ -44,11 +45,12 @@ export default class SelectBallotModal extends Component {
   render () {
 
     let ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
+    // console.log("SelectBallotModal render, ballotBaseUrl: ", ballotBaseUrl);
 
     let ballotElectionList = this.props.ballotElectionList || [];
 
     let voter_address_object = VoterStore.getAddressObject();
-    // console.log("Ballot render, voter_address_object: ", voter_address_object);
+    // console.log("SelectBallotModal render, voter_address_object: ", voter_address_object);
 
     return <Modal className="ballot-election-list ballot-election-list__modal ballot-election-list__modal-mobile"
                   show={this.props.show}
@@ -58,6 +60,7 @@ export default class SelectBallotModal extends Component {
       </Modal.Header>
       <Modal.Body>
         <EditAddressInPlace address={voter_address_object}
+                            pathname={this.state.pathname}
                             toggleFunction={this.props.toggleFunction} />
         <br />
         <br />
@@ -69,9 +72,11 @@ export default class SelectBallotModal extends Component {
         <br />
         <br />
 
-        <BallotElectionList ballotElectionList={ballotElectionList}
+        <BallotElectionList ballotBaseUrl={ballotBaseUrl}
+                            ballotElectionList={ballotElectionList}
+                            organization_we_vote_id={this.props.organization_we_vote_id}
                             toggleFunction={this.props.toggleFunction}
-                            ballotBaseUrl={ballotBaseUrl} />
+                             />
       </Modal.Body>
     </Modal>;
   }
