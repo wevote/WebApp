@@ -289,9 +289,9 @@ export default class HeaderBar extends Component {
 
   transitionToYourVoterGuide () {
     // Positions for this organization, for this voter / election
-    OrganizationActions.retrievePositions(this.props.voter.linked_organization_we_vote_id, true);
+    OrganizationActions.positionListForOpinionMaker(this.props.voter.linked_organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
-    OrganizationActions.retrievePositions(this.props.voter.linked_organization_we_vote_id, false, true);
+    OrganizationActions.positionListForOpinionMaker(this.props.voter.linked_organization_we_vote_id, false, true);
     OrganizationActions.organizationsFollowedRetrieve();
     VoterGuideActions.voterGuideFollowersRetrieve(this.props.voter.linked_organization_we_vote_id);
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.voter.linked_organization_we_vote_id);

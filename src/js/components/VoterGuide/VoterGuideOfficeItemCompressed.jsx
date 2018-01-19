@@ -185,7 +185,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                             textTruncateChild={null} />
             </Link>;
 
-    // Ready to Vote code
     let is_support_array = [];
     let voter_supports_at_least_one_candidate = false;
     let supportProps;
@@ -231,6 +230,8 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     }
 
     let organization_position_for_this_candidate;
+    let candidate_we_vote_id;
+    let candidateSupportStore;
 
     return <div className="card-main office-item">
       <a name={we_vote_id} />
@@ -255,25 +256,19 @@ export default class VoterGuideOfficeItemCompressed extends Component {
         {/* On the voter guide, we bring the size of the office name down so we can emphasize the candidate being supported */}
         <h2 className="h4 u-f5 card-main__ballot-name u-stack--sm">{ballot_item_display_name_raccoon}</h2>
 
-        {/* Only show the candidates if the Office is "unfurled" */}
+        {/* *************************
+        Only show the candidates if the Office is "unfurled"
+        ************************* */}
         { this.state.display_raccoon_details_flag ?
           <span>{candidate_list_to_display.map((one_candidate) => {
-            let candidate_we_vote_id = one_candidate.we_vote_id;
-            let candidateSupportStore = SupportStore.get(candidate_we_vote_id);
+            candidate_we_vote_id = one_candidate.we_vote_id;
+            candidateSupportStore = SupportStore.get(one_candidate.we_vote_id);
             let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidate_we_vote_id);
             let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidate_we_vote_id);
 
             let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + ". " : "";
             let candidate_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
             let candidate_text = candidate_party_text + candidate_description_text;
-            let is_support = false;
-            let is_oppose = false;
-            let voter_statement_text = false;
-            if (candidateSupportStore !== undefined) {
-              is_support = candidateSupportStore.is_support;
-              is_oppose = candidateSupportStore.is_oppose;
-              voter_statement_text = candidateSupportStore.voter_statement_text;
-            }
 
             let candidate_photo_raccoon = this.state.display_raccoon_details_flag ?
               <div className="hidden-xs" onClick={this.props.link_to_ballot_item_page ? this.toggleExpandCheetahDetails : null}>
@@ -309,40 +304,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
               </div>
             </div>;
 
-            // TODO: NOT WORKING
-            let comment_display_raccoon_desktop = this.state.display_raccoon_details_flag && (is_support || is_oppose || voter_statement_text) ?
-              <div className="hidden-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-                <div
-                  className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
-                </div>
-                <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-                  <ItemPositionStatementActionBar ballot_item_we_vote_id={candidate_we_vote_id}
-                                                  ballot_item_display_name={one_candidate.ballot_item_display_name}
-                                                  supportProps={candidateSupportStore}
-                                                  transitioning={this.state.transitioning}
-                                                  type="CANDIDATE"
-                                                  shown_in_list/>
-                </div>
-              </div> :
-              null;
-
-            // TODO: NOT WORKING
-            let comment_display_raccoon_mobile = this.state.display_raccoon_details_flag && (is_support || is_oppose || voter_statement_text) ?
-              <div className="visible-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-                <div
-                  className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
-                </div>
-                <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-                  <ItemPositionStatementActionBar ballot_item_we_vote_id={candidate_we_vote_id}
-                                                  ballot_item_display_name={one_candidate.ballot_item_display_name}
-                                                  supportProps={candidateSupportStore}
-                                                  transitioning={this.state.transitioning}
-                                                  type="CANDIDATE"
-                                                  shown_in_list/>
-                </div>
-              </div> :
-              null;
-
             organization_position_for_this_candidate = this.getOrganizationPositionForThisCandidate(candidate_we_vote_id, this.state.organization.position_list_for_one_election);
 
             return <div key={candidate_we_vote_id} className="u-stack--md">
@@ -370,35 +331,72 @@ export default class VoterGuideOfficeItemCompressed extends Component {
 
                   {/* Organization's Followed AND to Follow Items -- only show for promoted candidate */}
                   { this.doesOrganizationHavePositionOnCandidate(candidate_we_vote_id) ? positions_display_raccoon : null}
-
-                  {/* DESKTOP: If voter has taken position, offer the comment bar */}
-                  {/* comment_display_raccoon_desktop */}
                 </div>
-                {/* MOBILE: If voter has taken position, offer the comment bar */}
-                {/* comment_display_raccoon_mobile */}
               </div>
             </div>;
           })}</span> :
           null
         }
 
-        {/* If the office is "rolled up", show some details for the organization's endorsement */}
+        {/* *************************
+        If the office is "rolled up", show some details for the organization's endorsement
+        ************************* */}
         { !this.state.display_raccoon_details_flag ?
           <div>
             { candidate_list_to_display.map( (one_candidate) => {
                 if (this.doesOrganizationHavePositionOnCandidate(one_candidate.we_vote_id) ) {
                   organization_position_for_this_candidate = this.getOrganizationPositionForThisCandidate(one_candidate.we_vote_id, this.state.organization.position_list_for_one_election);
-                  // console.log("Rolled up, one_candidate: ", one_candidate);
-                  // console.log("Rolled up, this.state.organization.position_list_for_one_election: ", this.state.organization.position_list_for_one_election);
-                  // console.log("Rolled up, just tested doesOrganizationHavePositionOnCandidate, getOrganizationPositionForThisCandidate: ", organization_position_for_this_candidate);
 
                   if (organization_position_for_this_candidate) {
-                    let candidateSupportStore = SupportStore.get(one_candidate.we_vote_id);
+                    candidate_we_vote_id = one_candidate.we_vote_id;
+                    candidateSupportStore = SupportStore.get(candidate_we_vote_id);
+
+                    let is_support = false;
+                    let is_oppose = false;
+                    let voter_statement_text = false;
+                    if (candidateSupportStore !== undefined) {
+                      is_support = candidateSupportStore.is_support;
+                      is_oppose = candidateSupportStore.is_oppose;
+                      voter_statement_text = candidateSupportStore.voter_statement_text;
+                    }
+
+                    let comment_display_raccoon_desktop = is_support || is_oppose || voter_statement_text ?
+                      <div className="hidden-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+                        <div
+                          className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
+                        </div>
+                        <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
+                          <ItemPositionStatementActionBar ballot_item_display_name={one_candidate.ballot_item_display_name}
+                                                          ballot_item_we_vote_id={candidate_we_vote_id}
+                                                          supportProps={candidateSupportStore}
+                                                          transitioning={this.state.transitioning}
+                                                          type="CANDIDATE"
+                                                          shown_in_list/>
+                        </div>
+                      </div> :
+                      null;
+
+                    let comment_display_raccoon_mobile = is_support || is_oppose || voter_statement_text ?
+                      <div className="visible-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+                        <div
+                          className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
+                        </div>
+                        <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
+                          <ItemPositionStatementActionBar ballot_item_display_name={one_candidate.ballot_item_display_name}
+                                                          ballot_item_we_vote_id={candidate_we_vote_id}
+                                                          supportProps={candidateSupportStore}
+                                                          transitioning={this.state.transitioning}
+                                                          type="CANDIDATE"
+                                                          shown_in_list/>
+                        </div>
+                      </div> :
+                      null;
+
                     // console.log("Rolled up, one_candidate:", one_candidate);
                     // Removed from ItemActionBar  opposeHideInMobile
-                    return <div key={one_candidate.we_vote_id}>
+                    return <div key={candidate_we_vote_id}>
                       {/* Organization Endorsement */}
-                      <OrganizationPositionItem ballotItemLink={this.getCandidateLink(one_candidate.we_vote_id)}
+                      <OrganizationPositionItem ballotItemLink={this.getCandidateLink(candidate_we_vote_id)}
                                                 key={organization_position_for_this_candidate.position_we_vote_id}
                                                 position={organization_position_for_this_candidate}
                                                 organization={this.state.organization}
@@ -406,13 +404,17 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                       />
                       <div className="flex">
                           <ItemActionBar ballot_item_display_name={one_candidate.ballot_item_display_name}
-                                         ballot_item_we_vote_id={one_candidate.we_vote_id}
+                                         ballot_item_we_vote_id={candidate_we_vote_id}
                                          commentButtonHide
                                          shareButtonHide
                                          supportProps={candidateSupportStore}
                                          transitioning={this.state.transitioning}
                                          type="CANDIDATE"/>
                       </div>
+                      {/* DESKTOP: If voter has taken position, offer the comment bar */}
+                      {comment_display_raccoon_desktop}
+                      {/* MOBILE: If voter has taken position, offer the comment bar */}
+                      {comment_display_raccoon_mobile}
                     </div>;
                   }
                 }

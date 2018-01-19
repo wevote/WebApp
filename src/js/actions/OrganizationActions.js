@@ -49,17 +49,18 @@ module.exports = {
       });
   },
 
-  retrievePositions: function (we_vote_id, filter_for_voter, filter_out_voter) { // Calls positionListForOpinionMaker endpoint
+  positionListForOpinionMaker: function (we_vote_id, filter_for_voter, filter_out_voter, google_civic_election_id=0) { // Calls positionListForOpinionMaker endpoint
     Dispatcher.loadEndpoint("positionListForOpinionMaker",
       {
         opinion_maker_we_vote_id: we_vote_id,
         filter_for_voter: filter_for_voter,
         filter_out_voter: filter_out_voter,
+        google_civic_election_id: google_civic_election_id,
         kind_of_opinion_maker: "ORGANIZATION"
       });
   },
 
-  retrieveFriendsPositions: function (we_vote_id, filter_for_voter, filter_out_voter) { // Calls positionListForOpinionMaker endpoint
+  positionListForOpinionMakerForFriends: function (we_vote_id, filter_for_voter, filter_out_voter) { // Calls positionListForOpinionMaker endpoint
     Dispatcher.loadEndpoint("positionListForOpinionMaker",
       {
         opinion_maker_we_vote_id: we_vote_id,

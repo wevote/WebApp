@@ -385,10 +385,10 @@ export default class OfficeItemCompressedRaccoon extends Component {
                   {/* Description under candidate name */}
                   <LearnMore text_to_display={candidate_text}
                              on_click={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(one_candidate.we_vote_id) : null} />
-                  {/* Organization's Followed AND to Follow Items */}
-                  {positions_display_raccoon}
                   {/* DESKTOP: If voter has taken position, offer the comment bar */}
                   {/* comment_display_raccoon_desktop */}
+                  {/* Organization's Followed AND to Follow Items */}
+                  {positions_display_raccoon}
                 </div>
                 {/* MOBILE: If voter has taken position, offer the comment bar */}
                 {/* comment_display_raccoon_mobile */}

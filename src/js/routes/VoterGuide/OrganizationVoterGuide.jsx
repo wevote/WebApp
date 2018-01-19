@@ -38,8 +38,8 @@ export default class OrganizationVoterGuide extends Component {
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
-    // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
-    // console.log("action_variable: " + this.props.params.action_variable);
+    // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
+    // console.log("action_variable:" + this.props.params.action_variable);
     if (this.props.params.action_variable === AUTO_FOLLOW && this.props.params.organization_we_vote_id) {
       // If we are here,
       // console.log("Auto following");
@@ -65,6 +65,7 @@ export default class OrganizationVoterGuide extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    // console.log("OrganizationVoterGuide, componentWillReceiveProps, nextProps.params.organization_we_vote_id: ", nextProps.params.organization_we_vote_id);
     // When a new organization is passed in, update this component to show the new data
     if (nextProps.params.action_variable === AUTO_FOLLOW) {
       // Wait until we get the path without the "/af" action variable
@@ -81,7 +82,7 @@ export default class OrganizationVoterGuide extends Component {
       OrganizationActions.organizationRetrieve(nextProps.params.organization_we_vote_id);
       // console.log("VoterStore.getAddressObject(): ", VoterStore.getAddressObject());
       AnalyticsActions.saveActionVoterGuideVisit(nextProps.params.organization_we_vote_id, VoterStore.election_id());
-      // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
+      // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
     }
   }
 

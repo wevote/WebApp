@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { browserHistory } from "react-router";
 import BallotActions from "../../actions/BallotActions";
+import OrganizationActions from "../../actions/OrganizationActions";
 import VoterActions from "../../actions/VoterActions";
 import { cleanArray } from "../../utils/textFormat";
 import moment from "moment";
@@ -12,6 +13,7 @@ export default class BallotElectionList extends Component {
   static propTypes = {
     ballotElectionList: PropTypes.array.isRequired,
     ballotBaseUrl: PropTypes.string,
+    organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
     toggleFunction: PropTypes.func,
   };
 
@@ -42,6 +44,12 @@ export default class BallotElectionList extends Component {
       // console.log("goToDifferentElection, googleCivicElectionId: ", googleCivicElectionId);
       browserHistory.push(ballot_base_url + "/election/" + googleCivicElectionId);
     }
+    // Request positions for the different election
+    if (this.props.organization_we_vote_id && this.props.organization_we_vote_id !== "") {
+      // console.log("BallotElectionList calling positionListForOpinionMaker, this.props.organization_we_vote_id: ", this.props.organization_we_vote_id, ", googleCivicElectionId:", googleCivicElectionId);
+      OrganizationActions.positionListForOpinionMaker(this.props.organization_we_vote_id, true, false, googleCivicElectionId);
+    }
+
     if (this.props.toggleFunction) {
       this.props.toggleFunction();
     }

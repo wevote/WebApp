@@ -344,9 +344,9 @@ class OrganizationStore extends ReduceStore {
           all_cached_organizations_dict: all_cached_organizations_dict
         };
 
-      case "positionListForOpinionMaker":  // retrievePositions and retrieveFriendsPositions
+      case "positionListForOpinionMaker":  // ...and positionListForOpinionMakerForFriends
         organization_we_vote_id = action.res.opinion_maker_we_vote_id;
-        if (action.res.friends_vs_public === "FRIENDS_ONLY") {  // retrieveFriendsPositions
+        if (action.res.friends_vs_public === "FRIENDS_ONLY") {  // positionListForOpinionMakerForFriends
           if (action.res.filter_for_voter) {
             var friends_position_list_for_one_election = action.res.position_list;
             all_cached_organizations_dict = state.all_cached_organizations_dict;
@@ -402,7 +402,7 @@ class OrganizationStore extends ReduceStore {
               all_cached_organizations_dict: all_cached_organizations_dict
             };
           }
-        } else // retrievePositions
+        } else // positionListForOpinionMaker
         if (action.res.filter_for_voter) {
           var position_list_for_one_election = action.res.position_list;
           all_cached_organizations_dict = state.all_cached_organizations_dict;
