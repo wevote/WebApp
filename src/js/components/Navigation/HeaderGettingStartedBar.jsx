@@ -297,12 +297,14 @@ export default class HeaderGettingStartedBar extends Component {
                                      completed={this.state.ballot_intro_issues_completed} /> :
               null }
             {/* Organizations Icon & Modal */}
+            {/*
             {!this.props.hideGettingStartedOrganizationsButton ?
               <GettingStartedBarItem show={this._toggleBallotIntroOrganizations}
                                      source="/img/global/svg-icons/organizations-v2-31x26.svg"
                                      title="Organizations"
                                      completed={this.state.ballot_intro_organizations_completed} /> :
               null }
+            */}
             <GettingStartedBarItem show={this._openPrintModal}
                                    title="Print"
                                    printIcon/>

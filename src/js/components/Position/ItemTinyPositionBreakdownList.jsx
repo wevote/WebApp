@@ -232,6 +232,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
                                        showPlaceholderImage
                                        showSupport={this.props.showSupport}
                                        showOppose={this.props.showOppose}/>
+
             </span>
           </OverlayTrigger>;
         }

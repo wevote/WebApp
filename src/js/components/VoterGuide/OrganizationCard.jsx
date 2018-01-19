@@ -97,7 +97,7 @@ export default class OrganizationCard extends Component {
 
   render () {
     if (!this.state.organization_we_vote_id.length){
-      return <div>{LoadingWheel}</div>;
+      return <div className="card-popover__width--minimum">{LoadingWheel}</div>;
     }
 
     const {organization_twitter_handle, twitter_description,
