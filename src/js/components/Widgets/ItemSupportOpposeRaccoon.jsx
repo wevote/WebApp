@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Button, OverlayTrigger, Popover } from "react-bootstrap";
+import { OverlayTrigger, Popover } from "react-bootstrap";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
 import ItemActionBar from "../Widgets/ItemActionBar";
@@ -36,8 +36,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
       position_list_from_advisers_followed_by_voter: [],
       supportProps: this.props.supportProps,
     };
-    this.closePositionsPopover = this.closePositionsPopover.bind(this);
-    this.closeScorePopover = this.closeScorePopover.bind(this);
     this.goToCandidateLinkLocal = this.goToCandidateLinkLocal.bind(this);
   }
 
@@ -234,14 +232,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
     });
   }
 
-  closePositionsPopover () {
-    this.refs["positions-overlay"].hide();
-  }
-
-  closeScorePopover () {
-    this.refs["score-overlay"].hide();
-  }
-
   render () {
     // console.log("ItemSupportOpposeRaccoon render");
     let candidateSupportStore = SupportStore.get(this.state.ballot_item_we_vote_id);
@@ -320,41 +310,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
       organizations_to_follow_oppose_mobile = this.organizationsToDisplay(this.state.organizations_to_follow_oppose, organizations_to_follow_oppose_mobile_to_show, this.state.ballot_item_we_vote_id, "mobile", false, true);
     }
 
-    const scoreInYourNetworkPopover =
-      <Popover id="popover-trigger-click-root-close"
-               title={<span>Score in Your Network <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-               onClick={this.closeScorePopover}>
-        Your friends, and the organizations you follow, are <strong>Your Network</strong>.
-        Each friend or organization you follow
-        that <span className="u-no-break"><img src="/img/global/icons/thumbs-up-color-icon.svg"
-                                               width="20" height="20" /> supports</span> {this.state.ballot_item_display_name} adds
-        +1 to this <strong>Score</strong>.
-        Each one that <span className="u-no-break"><img src="/img/global/icons/thumbs-down-color-icon.svg"
-                                               width="20" height="20" /> opposes</span> subtracts
-        1 from this <strong>Score</strong>. <Button bsStyle="info"
-                                                    bsSize="xsmall"
-                                                    >
-                                              <span>Follow</span>
-                                            </Button> an
-        organization to add their position to the <strong>Score in Your Network</strong>.
-      </Popover>;
-
-    const positionsPopover =
-      <Popover id="popover-trigger-click-root-close"
-               title={<span>Positions about {this.state.ballot_item_display_name} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-               onClick={this.closePositionsPopover}>
-        These organizations <span className="u-no-break"><img src="/img/global/icons/thumbs-up-color-icon.svg"
-                                               width="20" height="20" /> support</span> or&nbsp;
-        <span className="u-no-break"><img src="/img/global/icons/thumbs-down-color-icon.svg"
-                                               width="20" height="20" /> oppose</span> {this.state.ballot_item_display_name}.
-        Click on the logo
-        and <Button bsStyle="info"
-                    bsSize="xsmall"
-                    >
-              <span>Follow</span>
-            </Button> an organization to add their position to the <strong>Score in Your Network</strong>.
-      </Popover>;
-
     return <div className="network-positions-stacked">
       <div className="network-positions-stacked__support">
         {/* Support toggle here */}
@@ -362,37 +317,21 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
         {/* Support Score here */}
         <div>
-          <OverlayTrigger trigger="click"
-                          ref="score-overlay"
-                          onExit={this.closeScorePopover}
-                          rootClose
-                          placement="top"
-                          overlay={scoreInYourNetworkPopover}>
-            <span className="network-positions-stacked__support-score u-cursor--pointer u-no-break">
-              { total_score === 0 ?
-                <span className="u-margin-left--md">{ total_score_with_sign }&nbsp;</span> :
-                <span className="u-margin-left--xs">{ total_score_with_sign }&nbsp;</span>
-              }
-              <span className="network-positions-stacked__support-score-label">
-                <span className="visible-xs">Network Score</span>
-                <span className="hidden-xs">Score in Your Network</span>
-              </span>
+          <span className="network-positions-stacked__support-score u-cursor--pointer u-no-break" onClick={this.goToCandidateLinkLocal}>
+            { total_score === 0 ?
+              <span className="u-margin-left--md">{ total_score_with_sign }&nbsp;</span> :
+              <span className="u-margin-left--xs">{ total_score_with_sign }&nbsp;</span>
+            }
+            <span className="network-positions-stacked__support-score-label">
+              <span className="visible-xs">Score in Your Network</span>
+              <span className="hidden-xs">Score in Your Network</span>
             </span>
-          </OverlayTrigger>
+          </span>
           <span className="sr-only">{total_score > 0 ? total_score + " Support" : null }{total_score < 0 ? total_score + " Oppose" : null }</span>
         </div>
       </div>
       <div className="network-positions-stacked__support">
-        { positions_exist ?
-          <OverlayTrigger trigger="click"
-                          ref="positions-overlay"
-                          onExit={this.closePositionsPopover}
-                          rootClose
-                          placement="top"
-                          overlay={positionsPopover}>
-            <span className="network-positions-stacked__support-label u-cursor--pointer">Positions&nbsp;</span>
-          </OverlayTrigger> :
-          null }
+        { positions_exist ? <span className="network-positions-stacked__support-label">Positions&nbsp;</span> : null }
         {/* Show a break-down of the current positions in your network */}
         <span className="u-flex u-justify-between u-inset__v--xs hidden-xs">
           <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
