@@ -3,7 +3,6 @@ import { Link, browserHistory } from "react-router";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import CandidateStore from "../../stores/CandidateStore";
 import ImageHandler from "../ImageHandler";
-import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
 import OfficeNameText from "../Widgets/OfficeNameText";
 import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
@@ -127,7 +126,6 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
       // twitter_handle,
     } = this.props;
 
-    const { supportProps, transitioning } = this.state;
     let candidate_we_vote_id = this.props.we_vote_id;
 
     let candidate_photo_url;

@@ -49,7 +49,7 @@ export default class VoterGuideRecommendationsFromOneOrganization extends Compon
   render () {
     if (this.state.voter_guides_to_follow_organization_recommendation_this_election.length) {
       return <div className="">
-        These are recommended voter guides to follow from this election.
+        These are recommended voter guides to listen to from this election.
         <GuideList organizationsToFollow={this.state.voter_guides_to_follow_organization_recommendation_this_election}
                    hide_stop_following_button
                    hide_ignore_button
@@ -57,7 +57,7 @@ export default class VoterGuideRecommendationsFromOneOrganization extends Compon
       </div>;
     } else if (this.state.voter_guides_to_follow_organization_recommendation_all_elections.length) {
       return <div className="">
-        These are recommended voter guides to follow.
+        These are recommended voter guides to listen to.
         <GuideList organizationsToFollow={this.state.voter_guides_to_follow_organization_recommendation_all_elections}
                    hide_stop_following_button
                    hide_ignore_button

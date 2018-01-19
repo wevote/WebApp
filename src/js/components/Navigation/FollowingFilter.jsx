@@ -10,12 +10,12 @@ export default class FollowingFilter extends Component {
   getFollowingTitle (following_type){
     switch (following_type) {
       case "WHO_YOU_FOLLOW":
-        return "Who You're Following";
+        return "Who You're Listening To";
       case "YOUR_FRIENDS":
         return "Your Friends";
       case "WHO_YOU_CAN_FOLLOW":
       default :
-        return "Who You Can Follow";
+        return "Who You Can Listen To";
     }
   }
 
@@ -24,10 +24,10 @@ export default class FollowingFilter extends Component {
 
     return <div className="btn-group u-stack--md">
       <Link to="/opinions" className={ following_type === "WHO_YOU_CAN_FOLLOW" ? "active btn btn-default" : "btn btn-default"}>
-        To Follow
+        Listen To
       </Link>
       <Link to="/opinions_followed" className={ following_type === "WHO_YOU_FOLLOW" ? "active btn btn-default" : "btn btn-default"}>
-        Following
+        Listening
       </Link>
       <Link to="/more/connect" className={ following_type === "YOUR_FRIENDS" ? "active btn btn-default" : "btn btn-default"}>
         Friends

@@ -150,7 +150,7 @@ export default class OrganizationVoterGuide extends Component {
       <div className="page-content-container">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-md-12">
+            <div className="col-md-12 hidden-print">
               { this.state.organization.organization_banner_url !== "" ?
                 <div className="organization-banner-image-div">
                   <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />

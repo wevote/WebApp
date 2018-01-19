@@ -82,8 +82,8 @@ export default class Application extends Component {
     ElectionActions.electionsRetrieve();
 
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    
-    //preload images
+
+    // Preload Issue images. Note that for brand new browsers that don't have a voter_device_id yet, we retrieve all issues
     IssueActions.retrieveIssuesToFollow();
     this.issueStoreListener = IssueStore.addListener(this.preloadIssueImages);
   }

@@ -157,7 +157,7 @@ export default class AddFriendsByFacebook extends Component {
                   }
                 </Button>
               </span>
-              <p>These friends will see what you support, oppose, and which opinions you follow.</p>
+              <p>These friends will see what you support, oppose, and which opinions you listen to.</p>
           </div>
         </div> :
         null }

@@ -49,7 +49,7 @@ module.exports = {
       });
   },
 
-  positionListForOpinionMaker: function (we_vote_id, filter_for_voter, filter_out_voter, google_civic_election_id=0) { // Calls positionListForOpinionMaker endpoint
+  positionListForOpinionMaker: function (we_vote_id, filter_for_voter, filter_out_voter, google_civic_election_id = 0) { // Calls positionListForOpinionMaker endpoint
     Dispatcher.loadEndpoint("positionListForOpinionMaker",
       {
         opinion_maker_we_vote_id: we_vote_id,

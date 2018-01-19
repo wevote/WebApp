@@ -54,6 +54,9 @@ $neg-space-lg: -$space-lg;
     &__title-voter-guide {
       display: inline-block;
       font-size: 1.1rem;
+      @include print {
+        font-size: 2rem;
+      }
     }
 
     &__address {

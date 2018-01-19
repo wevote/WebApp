@@ -177,6 +177,21 @@ export function removeTwitterNameFromDescription (displayName, twitterDescriptio
     return twitterDescriptionMinusName;
 }
 
+export function returnFirstXWords (originalString, numberOfWordsToReturn) {
+  var wordsArray = originalString.split(" ");
+  var xWords = "";
+  for (var i = 0; i < wordsArray.length; i++) {
+    if (i >= numberOfWordsToReturn) {
+      break;
+    }
+    xWords += wordsArray[i] + " ";
+  }
+  // Finally remove leading or trailing spaces
+  xWords = xWords.trim();
+
+  return xWords;
+}
+
 export function shortenText (incoming_string, maximum_length){
   let maximum_length_int = parseInt(maximum_length, 10);
   let crop_length_to_make_room_for_ellipses = maximum_length_int - 2;

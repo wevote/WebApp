@@ -123,8 +123,8 @@ export default class Connect extends Component {
       { this.state.voter_guides_to_follow_all && this.state.voter_guides_to_follow_all.length ?
         <div className="container-fluid well u-stack--md u-inset--md">
           <Link className="u-cursor--pointer u-no-underline" to="/opinions">
-            <h4 className="text-left">Organizations to Follow</h4>
-            <p>Follow organizations to see what they recommend</p>
+            <h4 className="text-left">Organizations to Listen To</h4>
+            <p>Listen to organizations to see what they recommend</p>
           </Link>
           <div className="card-child__list-group">
             {
@@ -159,7 +159,7 @@ export default class Connect extends Component {
                     organizationsFollowedOnTwitter={this.state.organizations_followed_on_twitter_list}
                     maximumOrganizationDisplay={this.state.maximum_organization_display} />
             }
-            <Link className="pull-right" to="/opinions_followed">See all organizations you follow </Link>
+            <Link className="pull-right" to="/opinions_followed">See all organizations you listen to </Link>
           </div>
         </div> : null }
 

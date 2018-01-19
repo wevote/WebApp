@@ -96,16 +96,16 @@ export default class FollowToggle extends Component {
                   bsSize="small"
                   className={classNameOverride.length ? classNameOverride : "pull-right"}
                   onClick={stopFollowingInstantly}>
-            <span>Unfollow</span>
+            <span>Listening</span>
           </Button>
         }
       </span> :
       <span className="hidden-print">
-        <Button bsStyle="info"
+        <Button bsStyle="success"
                 bsSize="small"
                 className={classNameOverride.length ? classNameOverride : "pull-right"}
                 onClick={followInstantly}>
-          <span>Follow</span>
+          <span>Listen</span>
         </Button>
       </span>;
   }
