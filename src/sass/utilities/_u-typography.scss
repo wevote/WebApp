@@ -131,17 +131,6 @@
   width: auto; // helpful for form inputs
 }
 
-.u-no-break { // Replacement for nobr and &nbsp;
-  white-space: nowrap;
-}
-
-.u-wrap-links {
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  -ms-word-break: break-all;
-  word-break: break-word;
-}
-
 // Alignment
 
 .u-tr { text-align: right; }

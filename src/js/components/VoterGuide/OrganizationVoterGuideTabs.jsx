@@ -137,17 +137,17 @@ export default class OrganizationVoterGuideTabs extends Component {
     if (looking_at_self) {
       positions_title = "Your Positions";
       following_title_long = this.state.voter_guide_followed_list.length === 0 ?
-        "You Are Following" : "You Are Following " + this.state.voter_guide_followed_list.length;
-      following_title_short = "Following";
+        "You Are Listening To" : "You Are Listening To " + this.state.voter_guide_followed_list.length;
+      following_title_short = "Listening To";
       followers_title = voter_guide_followers_list.length === 0 ?
-        "Followers" : voter_guide_followers_list.length + " Followers";
+        "Listeners" : voter_guide_followers_list.length + " Listeners";
     } else {
       positions_title = "All Positions";
       following_title_long = this.state.voter_guide_followed_list.length === 0 ?
-        "Following" : "Following " + this.state.voter_guide_followed_list.length;
-      following_title_short = "Following";
+        "Listening To" : "Listening To " + this.state.voter_guide_followed_list.length;
+      following_title_short = "Listening To";
       followers_title = voter_guide_followers_list.length === 0 ?
-        "Followers" : voter_guide_followers_list.length + " Followers";
+        "Listeners" : voter_guide_followers_list.length + " Listeners";
     }
 
     let voter_guide_component_to_display = null;

@@ -276,14 +276,14 @@ $candidate-font-size: .875rem;
         border-radius: $radius-rounded;
         max-width: 50px;
         @include print {
-          // font-size: 5px; // TODO TESTING
+          max-width: 50px; // TODO TESTING - not working
         }
       }
     }
     .icon-lg { // temp - for placeholder icons
       font-size: 50px;
       @include print {
-        // font-size: 5px; // TODO TESTING
+        max-width: 50px; // TODO TESTING - not working
       }
     }
 

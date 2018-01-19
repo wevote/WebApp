@@ -173,7 +173,7 @@ export default class ItemPositionStatementActionBar extends Component {
     // }
 
     let speaker_image_url_https = voter_photo_url_medium;
-    let speaker_display_name = stringContains ("Voter-", voter_full_name) ? "" : voter_full_name;
+    let speaker_display_name = stringContains("Voter-", voter_full_name) ? "" : voter_full_name;
 
     let image_placeholder = "";
     let speaker_type = "V";  // TODO DALE make this dynamic

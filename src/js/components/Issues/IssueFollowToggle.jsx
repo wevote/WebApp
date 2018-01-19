@@ -70,7 +70,7 @@ export default class IssueFollowToggle extends Component {
         </span>
         { this.props.edit_mode ?
           <Button bsStyle="warning" bsSize="small" onClick={this.onIssueStopFollowing}>
-            <span>Following</span>
+            <span>Listening</span>
           </Button> :
           null }
       </div> :
@@ -97,7 +97,7 @@ export default class IssueFollowToggle extends Component {
 
         { this.props.edit_mode ?
           <Button bsStyle="info" bsSize="small" onClick={this.onIssueFollow}>
-            <span>Follow</span>
+            <span>Listen</span>
           </Button> :
           null }
       </div>;

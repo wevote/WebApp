@@ -5,6 +5,7 @@ import { calculateBallotBaseUrl, shortenText } from "../../utils/textFormat";
 export default class EditAddressInPlace extends Component {
   static propTypes = {
     address: PropTypes.object.isRequired,
+    ballotBaseUrl: PropTypes.string,
     noAddressMessage: PropTypes.string,
     pathname: PropTypes.string,
     toggleFunction: PropTypes.func.isRequired,
