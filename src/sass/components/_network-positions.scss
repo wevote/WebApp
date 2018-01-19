@@ -146,37 +146,39 @@
 
   // Tiny Organization Position Breakdown List
 
-  $scrollbar-height: 21px;
-  $list-height: 60px;
-  $list-height-visible: $list-height - $scrollbar-height;
-  $scroll-icon-margin: 6px $space-none $space-none $space-sm;
+  &__support-list {
+    $scrollbar-height: 21px;
+    $list-height: 60px;
+    $list-height-visible: $list-height - $scrollbar-height;
+    $scroll-icon-margin: 6px $space-none $space-none $space-sm;
 
-  &__support-list-container-wrap {
-    box-sizing: content-box;
-    overflow: hidden;
-    height: $list-height-visible;
-  }
+    &-container-wrap {
+      box-sizing: content-box;
+      overflow: hidden;
+      height: $list-height-visible;
+    }
 
-  &__support-list-container {
-    white-space: nowrap;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    height: $list-height;
-  }
+    &-container {
+      white-space: nowrap;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      height: $list-height;
+    }
 
-  &__support-list-items {
-    padding: $space-none;
-    list-style: none;
-  }
+    &-items {
+      padding: $space-none;
+      list-style: none;
+    }
 
-  &__support-list-item {
-    position: relative;
-    display: inline-block;
-    float: none;
-  }
+    &-item {
+      position: relative;
+      display: inline-block;
+      float: none;
+    }
 
-  &__support-list-scroll-icon {
-    margin: $scroll-icon-margin;
+    &-scroll-icon {
+      margin: $scroll-icon-margin;
+    }
   }
 }
 
