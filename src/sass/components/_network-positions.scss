@@ -149,6 +149,7 @@
   $scrollbar-height: 21px;
   $list-height: 60px;
   $list-height-visible: $list-height - $scrollbar-height;
+  $scroll-icon-margin: 6px $space-none $space-none $space-sm;
 
   &__support-list-container-wrap {
     box-sizing: content-box;
@@ -163,8 +164,8 @@
     height: $list-height;
   }
 
-  &__support-list {
-    padding: 0;
+  &__support-list-items {
+    padding: $space-none;
     list-style: none;
   }
 
@@ -172,6 +173,10 @@
     position: relative;
     display: inline-block;
     float: none;
+  }
+
+  &__support-list-scroll-icon {
+    margin: $scroll-icon-margin;
   }
 }
 
