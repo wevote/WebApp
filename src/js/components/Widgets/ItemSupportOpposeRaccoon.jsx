@@ -421,7 +421,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                       rootClose
                       placement={this.props.popoverBottom ? "bottom" : "top"}
                       overlay={positionsPopover}>
-        <span className="network-positions-stacked__support-label u-cursor--pointer u-no-break">Opinions about {returnFirstXWords(this.state.ballot_item_display_name, 1)}&nbsp;<i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover" aria-hidden="true" />&nbsp;</span>
+        <span className="network-positions-stacked__support-label u-cursor--pointer u-no-break">Opinions about {returnFirstXWords(this.state.ballot_item_display_name, 1)}&nbsp;<i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" />&nbsp;</span>
       </OverlayTrigger>;
 
     return <div className="network-positions-stacked">
@@ -443,8 +443,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
                 <span className="u-margin-left--xs">{ total_score_with_sign }&nbsp;</span>
               }
               <span className="network-positions-stacked__support-score-label">
-                <span className="visible-xs">Network Score <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover" aria-hidden="true" /></span>
-                <span className="hidden-xs">Score in Your Network <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover" aria-hidden="true" /></span>
+                <span className="visible-xs">Network Score <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
+                <span className="hidden-xs">Score in Your Network <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
               </span>
             </span>
           </OverlayTrigger>
