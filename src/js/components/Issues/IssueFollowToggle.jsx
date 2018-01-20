@@ -97,7 +97,7 @@ export default class IssueFollowToggle extends Component {
 
         { this.props.edit_mode ?
           <Button bsStyle="info" bsSize="small" onClick={this.onIssueFollow}>
-            <span>Listen</span>
+            <span>Follow</span>
           </Button> :
           null }
       </div>;
