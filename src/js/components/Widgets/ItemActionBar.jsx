@@ -180,8 +180,8 @@ export default class ItemActionBar extends Component {
       opposeButtonUnselectedPopOverText += ".";
     }
 
-    const supportButtonPopoverTooltip = <Tooltip id="supportButtonTooltip">{is_support ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }</Tooltip>;
-    const opposeButtonPopoverTooltip = <Tooltip id="opposeButtonTooltip">{is_oppose ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}</Tooltip>;
+    const supportButtonPopoverTooltip = <Tooltip id="supportButtonTooltip" className="hidden-xs">{is_support ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }</Tooltip>;
+    const opposeButtonPopoverTooltip = <Tooltip id="opposeButtonTooltip" className="hidden-xs">{is_oppose ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}</Tooltip>;
 
     return <div className={ this.props.shareButtonHide ? "item-actionbar--inline hidden-print" : "item-actionbar hidden-print" }>
       <div className={"btn-group" + (!this.props.shareButtonHide ? " u-push--sm" : "")}>
