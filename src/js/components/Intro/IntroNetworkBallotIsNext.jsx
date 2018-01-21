@@ -31,14 +31,14 @@ export default class IntroNetworkBallotIsNext extends Component {
     return <div className="intro-story intro-story__background background--image3">
       <Helmet title="See Your Ballot - We Vote" />
       <div className="intro-story__h1--alt">We Vote</div>
-      <div ref="header2" className="intro-story__h2">On the next screen, you'll see<br />
-       the next election<br />
-       in your area.
-      </div>
       <div ref="header2" className="intro-story__h2 intro-story__padding-top">
         Ready to <strong>vote your values</strong>?<br />
         Research what's on your ballot<br />
         and invite your friends.
+      </div>
+      <div ref="header2" className="intro-story__h2">On the next screen, you'll see<br />
+       the next election<br />
+       in your area.
       </div>
       <div><br /></div>
       <div className="intro-story__padding">
