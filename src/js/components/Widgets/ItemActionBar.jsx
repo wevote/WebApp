@@ -7,6 +7,8 @@ import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
 
+import { toast } from "react-toastify";
+
 var Icon = require("react-svg-icons");
 
 const web_app_config = require("../../config");
@@ -43,6 +45,14 @@ export default class ItemActionBar extends Component {
     });
   }
 
+  showToast = () => {
+    toast.info("TOASTY!!@", {
+      position: toast.POSITION.BOTTOM_CENTER,
+      // onOpen: () => window.alert('I counted to infinity once then..'),
+      // onClose: () => window.alert('I counted to infinity twice')
+    });
+  }
+
   supportItem (is_support) {
     if (is_support) {this.stopSupportingItem(); return;}
     if (this.state.transitioning){ return; }
@@ -53,12 +63,16 @@ export default class ItemActionBar extends Component {
     }
     SupportActions.voterSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
+
+    this.showToast();
   }
 
   stopSupportingItem () {
     if (this.state.transitioning){ return; }
     SupportActions.voterStopSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
+
+    this.showToast();
   }
 
   opposeItem (is_oppose) {
@@ -185,6 +199,7 @@ export default class ItemActionBar extends Component {
 
     return <div className={ this.props.shareButtonHide ? "item-actionbar--inline hidden-print" : "item-actionbar hidden-print" }>
       <div className={"btn-group" + (!this.props.shareButtonHide ? " u-push--sm" : "")}>
+
         {/* Start of Support Button */}
         <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
           <button className={"item-actionbar__btn item-actionbar__btn--support btn btn-default" + (is_support ? " support-at-state" : "")} onClick={this.supportItem.bind(this, is_support)}>
