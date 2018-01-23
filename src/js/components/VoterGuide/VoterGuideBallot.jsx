@@ -472,7 +472,7 @@ export default class VoterGuideBallot extends Component {
   render () {
     // console.log("VoterGuideBallot render, this.state: ", this.state);
     let ballot_with_all_items = this.state.ballot_with_all_items;
-    let ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.location.pathname);
+    let ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
     // console.log("VoterGuideBallot render, ballotBaseUrl: ", ballotBaseUrl);
 
     if (!ballot_with_all_items) {

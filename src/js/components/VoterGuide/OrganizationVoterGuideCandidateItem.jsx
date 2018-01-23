@@ -129,7 +129,6 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
       // twitter_handle,
     } = this.props;
 
-    const { supportProps, transitioning } = this.state;
     let candidate_we_vote_id = this.props.we_vote_id;
 
     let candidate_photo_url;

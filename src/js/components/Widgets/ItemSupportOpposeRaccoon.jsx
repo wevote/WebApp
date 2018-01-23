@@ -385,10 +385,12 @@ export default class ItemSupportOpposeRaccoon extends Component {
                title={<span>Score in Your Network <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closeScorePopover}>
         Your friends, and the organizations you listen to, are <strong>Your Network</strong>.
-        Everyone in your network
-        that <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")}
-                                               width="20" height="20" /> supports</span> {this.state.ballot_item_display_name} adds
-        +1 to this <strong>Score</strong>.
+        Everyone in your network that
+        <span className="u-no-break">
+          <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")}
+               width="20" height="20" /> supports
+        </span> {this.state.ballot_item_display_name} 
+        adds +1 to this <strong>Score</strong>.
         Each one that <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
                                                width="20" height="20" /> opposes</span> subtracts
         1 from this <strong>Score</strong>. <Button bsStyle="success"

@@ -6,8 +6,8 @@ import VoterGuideStore from "../../stores/VoterGuideStore";
 
 const NEXT_BUTTON_TEXT = "Next >";
 const SKIP_BUTTON_TEXT = "Skip >";
-// const PREVIOUS_ADVISERS_PROMPT_TEXT = "Follow three or more advisers to get recommendations on your ballot.";
-const SELECT_ORGANIZATION_PROMPT = "Are you sure you don't want to follow at least one organization that shares your values? Following will show you recommendations on your ballot.";
+// const PREVIOUS_ADVISERS_PROMPT_TEXT = "Listen to three or more advisers to get recommendations on your ballot.";
+const SELECT_ORGANIZATION_PROMPT = "Are you sure you don't want to listen to at least one organization that shares your values? Listening will show you recommendations on your ballot.";
 
 
 export default class BallotIntroFollowAdvisers extends Component {
@@ -104,8 +104,8 @@ export default class BallotIntroFollowAdvisers extends Component {
     );
 
     return <div className="intro-modal">
-      <div className="intro-modal__h1">Follow Organizations or People</div>
-      <div className="intro-modal__h2">These are organizations or people that might share your values. Follow them to see their recommendations.</div>
+      <div className="intro-modal__h1">Listen to Organizations or People</div>
+      <div className="intro-modal__h2">These are organizations or people that might share your values. Listen to them to see their recommendations.</div>
       <br/>
       <div className="intro-modal-vertical-scroll-contain">
         <div className="intro-modal-vertical-scroll card">

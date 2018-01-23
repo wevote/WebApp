@@ -99,7 +99,7 @@ export default class Friends extends Component {
                   {this.state.editMode ? "Done Editing" : "Edit"}
                 </a>
                 <p>
-                  Your friends see what you support, oppose, and which opinions you follow.
+                  Your friends see what you support, oppose, and which opinions you listen to.
                 </p>
                 <input type="text"
                     className="form-control"

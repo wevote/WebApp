@@ -246,8 +246,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                title={<span>Your Network is Undecided <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closeYourNetworkIsUndecidedPopover}>
         Your friends, and the organizations you listen to, are <strong>Your Network</strong>.
-        Everyone in your network
-        that
+        Everyone in your network that
         <span className="u-no-break">
           <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /> supports
         </span> a candidate adds

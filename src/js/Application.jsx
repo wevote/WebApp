@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
 import ElectionActions from "./actions/ElectionActions";
 import FriendActions from "./actions/FriendActions";

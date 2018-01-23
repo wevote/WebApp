@@ -137,14 +137,14 @@ export default class VoterGuideFollowing extends Component {
                  tabIndex="0"
                  onKeyDown={this.onKeyDownEditMode.bind(this)}
                  onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit"}</a> :
-              <Button bsStyle="info" bsSize="small" className="fa-pull-right u-push--md"
-                  onClick={this.followAllOrganizations.bind(this)}><span>Follow All</span></Button>
+              <Button bsStyle="success" bsSize="small" className="fa-pull-right u-push--md"
+                  onClick={this.followAllOrganizations.bind(this)}><span>Listen to All</span></Button>
               }
               { !this.state.search_filter ?
                 <span>
                   {this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id ?
-                    <h4 className="card__additional-heading">You Are Following<span className={"hidden-xs"}> {this.state.voter_guide_followed_list.length} Organizations or People</span></h4> :
-                    <h4 className="card__additional-heading">{this.state.organization.organization_name} is Following</h4>
+                    <h4 className="card__additional-heading">You Are Listening To<span className={"hidden-xs"}> {this.state.voter_guide_followed_list.length} Organizations or People</span></h4> :
+                    <h4 className="card__additional-heading">{this.state.organization.organization_name} is Listening To</h4>
                   }
                 </span> :
                 <h4 className="card__additional-heading">Search Results</h4>
@@ -174,8 +174,8 @@ export default class VoterGuideFollowing extends Component {
             </span> :
             <span>
               {this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id ?
-                <h4 className="card__additional-heading">You're not following anyone.</h4> :
-                <h4 className="card__additional-heading">{this.state.organization.organization_name} is not following anyone.</h4>
+                <h4 className="card__additional-heading">You're not listening to anyone.</h4> :
+                <h4 className="card__additional-heading">{this.state.organization.organization_name} is not listening to anyone.</h4>
               }
             </span>
           }

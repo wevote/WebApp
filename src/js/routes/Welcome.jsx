@@ -64,7 +64,6 @@ export default class Intro extends Component {
     this.setState({
       we_vote_branding_off: we_vote_branding_off_from_url || we_vote_branding_off_from_cookie,
     });
-
   }
 
   componentWillUnmount () {
@@ -297,7 +296,7 @@ export default class Intro extends Component {
 
                     <img className={ this.state.show_features_organizations ? "hidden-xs features__image" : "features__image" } src={cordovaDot("/img/welcome/benefits/learn-issues-orgs.svg")} width="60%" />
                     <h3 className="features__h3">Learn From Issues and Organizations</h3>
-                    <p className={ this.state.show_features_organizations ? "features__p" : "features__p hidden-xs" }>Follow the issues and voter guides of groups you trust. See what they support or oppose.</p>
+                    <p className={ this.state.show_features_organizations ? "features__p" : "features__p hidden-xs" }>Follow the issues and Listen to the voter guides of groups you trust. See what they support or oppose.</p>
 
                 </Link>
               </div>
@@ -306,6 +305,7 @@ export default class Intro extends Component {
               <div className="features__block features__block__row2" onClick={this._togglePositionsFeature}>
                 <Link to={"/ballot"}>
                   <img className={ this.state.show_features_positions ? "hidden-xs features__image" : "features__image" } src={ cordovaDot("/img/welcome/benefits/network-position.svg") } />
+
                   <h3 className="features__h3">See Your Network's Positions</h3>
                   <p className={ this.state.show_features_positions ? "features__p" : "features__p hidden-xs" }>See how many in your network support or oppose each candidate or measure.</p>
                 </Link>

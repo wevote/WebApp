@@ -535,7 +535,7 @@ export default class AddFriendsByEmail extends Component {
                     }
                   </Button>
                 </span>
-                <span>These friends will see what you support, oppose, and which opinions you follow.
+                <span>These friends will see what you support, oppose, and which opinions you listen to.
                    We will never sell your email.</span>
             </div>
         </div> :

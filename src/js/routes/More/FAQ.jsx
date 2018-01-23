@@ -68,13 +68,13 @@ export default class About extends Component {
           <br />
 
           <strong>How does We Vote work?</strong><br />
-            Follow people and groups you trust to get info on candidates and ballot measures. Ask your friends
+            Listen to people and groups you trust to get info on candidates and ballot measures. Ask your friends
             what they think. Then take We Vote with you to
             the polls for an easy-to-use cheat sheet.<br />
           <br />
 
           <strong>Is this an app or a website?</strong><br />
-            We have a mobile-ready website now, and we’re working on iPhone and Android apps for 2017-2018.
+            We have a mobile-ready website now, and we’re working on iPhone and Android apps for 2018.
             We are free and open source:
             <a href="https://github.com/WeVote"
                target="_blank"> https://github.com/WeVote</a><br />
@@ -119,12 +119,12 @@ export default class About extends Component {
 
           <strong>How will you handle trolls?</strong><br />
             Unless your name is J.R.R. Tolkien, we know how much you hate trolls. That’s why on We Vote you only hear from
-            people and organizations that you Friend or Follow. We Vote eliminates noise from people with radically
+            people and organizations that you Friend or Listen to. We Vote eliminates noise from people with radically
             different values.<br />
           <br />
 
           <strong>What’s next for We Vote?</strong><br />
-            iPhone and Android apps in 2017-2018. Better tools to let organizations promote their voter guides and
+            iPhone and Android apps in 2018. Better tools to let organizations promote their voter guides and
             poll their members. Plus more ways to share and discuss a wide range of political topics.<br />
           <br />
 

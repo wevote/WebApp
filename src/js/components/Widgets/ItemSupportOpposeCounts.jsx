@@ -71,7 +71,7 @@ export default class ItemSupportOpposeCounts extends Component {
 
     let nonSupportOpposePopoverText = "This will show a summary of the “support” and “oppose” positions from your network.";
     if (!this.props.positionBarIsClickable) {
-      nonSupportOpposePopoverText += " Click to see voter guides you can follow.";
+      nonSupportOpposePopoverText += " Click to see voter guides you can listen to.";
     }
     const nonSupportOpposePopoverTooltip = <Tooltip id="nonSupportOpposeTooltip">{nonSupportOpposePopoverText}</Tooltip>;
 

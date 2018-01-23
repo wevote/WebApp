@@ -57,15 +57,15 @@ export default class NetworkOpinions extends Component {
     };
 
     return <div className="opinions-followed__container">
-    <Helmet title="Organizations to Follow - We Vote" />
+    <Helmet title="Listen to Organizations - We Vote" />
       <section className="card">
         <div className="card-main">
           <p className="hidden-print">
             Find opinions about your ballot (ordered by Twitter followers).
-            Follow those you trust. Unfollow at any time.
-            Following won't add you to mailing lists.
+            Listen to those you trust. Stop Listening at any time.
+            Listening won't add you to mailing lists.
             <span style={floatRight} className="hidden-print">
-              <Link to="/opinions_followed" className="u-margin-left--md u-no-break">See organizations you follow</Link>
+              <Link to="/opinions_followed" className="u-margin-left--md u-no-break">See organizations you listen to</Link>
             </span>
           </p>
           <div className="hidden-print">

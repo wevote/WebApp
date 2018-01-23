@@ -95,7 +95,7 @@ export default class MeasureModal extends Component {
       voter_statement_text = this.state.measureSupportProps.voter_statement_text;
     }
 
-    const NO_VOTER_GUIDES_TEXT = "We couldn't find any more voter guides to follow related to this measure.";
+    const NO_VOTER_GUIDES_TEXT = "We couldn't find any more voter guides to listen to related to this measure.";
     return <Modal show={this.props.show}
                   onHide={this.props.toggleFunction} >
       <Modal.Header closeButton onHide={this.props.toggleFunction}>
@@ -110,7 +110,7 @@ export default class MeasureModal extends Component {
           <section className="card">
             {/* Show positions in your network with the tiny icons */}
             <p className="card__no-additional">
-              This is a summary of the positions you are following.
+              This is a summary of the positions you are listening to.
             </p>
             <ItemSupportOpposeCounts we_vote_id={this.props.measure.we_vote_id}
                                      supportProps={this.state.measureSupportProps}
@@ -172,7 +172,7 @@ export default class MeasureModal extends Component {
                 <div>
                   <h3 className="card__additional-heading">{"More opinions about " + this.props.measure.ballot_item_display_name}</h3>
                   <p className="card__no-additional">
-                      <strong>Follow</strong> the voter guides of organizations and people you trust.<br />
+                      <strong>Listen</strong> to the voter guides of organizations and people you trust.<br />
                       <strong>Ignore</strong> voter guides that don't share your values.
                   </p>
                   <GuideList ballotItemWeVoteId={this.props.measure.we_vote_id}
