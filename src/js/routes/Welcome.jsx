@@ -112,7 +112,7 @@ export default class Intro extends Component {
   }
 
   goToGetStarted () {
-    const getStartedNow = "/ballot";
+    const getStartedNow = "/wevoteintro/network";
     historyPush(getStartedNow);
   }
 
@@ -228,7 +228,7 @@ export default class Intro extends Component {
                       null
                     }
                     <section className="quick-links__section--mobile u-flex">
-                      <a className="quick-links__button quick-links__button--left" onClick={() => historyPush("/ballot")}>Get Started</a>
+                      <a className="quick-links__button quick-links__button--left" onClick={() => historyPush("/wevoteintro/network")}>Get Started</a>
                     </section>
 
                     <div className="share-your-vision__h1">
@@ -252,7 +252,7 @@ export default class Intro extends Component {
                       null
                     }
                     <section className="quick-links__section--desktop u-flex">
-                      <a className="quick-links__button quick-links__button--left" onClick={() => historyPush("/ballot")}>Get Started</a>
+                      <a className="quick-links__button quick-links__button--left" onClick={() => historyPush("/wevoteintro/network")}>Get Started</a>
                     </section>
                   </h1>
 
@@ -283,8 +283,7 @@ export default class Intro extends Component {
           <Row className="u-stack--lg">
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
               <div className="features__block features__block__row1" onClick={this._toggleBallotFeature}>
-                <Link to={"/ballot"}>
-
+                <Link to={"/wevoteintro/network"}>
                   <img className={ this.state.show_features_ballot ? "hidden-xs features__image" : "features__image" } src={cordovaDot("/img/welcome/benefits/view-your-ballot.svg")} width="55%" />
                   <h3 className="features__h3">View Your Ballot</h3>
                   <p className={ this.state.show_features_ballot ? "features__p" : "features__p hidden-xs" }>See your actual ballot, including candidates and measures.</p>
@@ -296,7 +295,7 @@ export default class Intro extends Component {
               <div className="features__block features__block__row1" onClick={this._toggleOrganizationsFeature}>
                 <Link to={"/more/network"}>
 
-                    <img className={ this.state.show_features_organizations ? "hidden-xs features__image" : "features__image" } src={ cordovaDot("/img/welcome/benefits/learn-issues-orgs.svg")} width="60%" />
+                    <img className={ this.state.show_features_organizations ? "hidden-xs features__image" : "features__image" } src={cordovaDot("/img/welcome/benefits/learn-issues-orgs.svg")} width="60%" />
                     <h3 className="features__h3">Learn From Issues and Organizations</h3>
                     <p className={ this.state.show_features_organizations ? "features__p" : "features__p hidden-xs" }>Follow the issues and voter guides of groups you trust. See what they support or oppose.</p>
 
@@ -332,7 +331,7 @@ export default class Intro extends Component {
             </div>
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
               <div className="features__block features__block__row3" onClick={this._toggleVoteFeature}>
-                <Link to={"/ballot"}>
+                <Link to={"/wevoteintro/network"}>
                   <img className={ this.state.show_features_vote ? "hidden-xs features__image" : "features__image" } src={ cordovaDot("/img/welcome/benefits/decide.svg")} width="60%" />
                   <h3 className="features__h3">Decide & Vote</h3>
                   <p className={ this.state.show_features_vote ? "features__p" : "features__p hidden-xs" }>Cast your vote with confidence after using We Vote.</p>
@@ -457,7 +456,7 @@ export default class Intro extends Component {
                   <Link to={"/more/about"}>About</Link>
                 </li>
                 <li className="u-push--md u-stack--sm">
-                  <Link to={"/ballot"}>Get Started</Link>
+                  <Link to={"/wevoteintro/network"}>Get Started</Link>
                 </li>
                 <li className="u-push--md u-stack--sm">
                   <Link to={"/more/sign_in"}>Sign In</Link>

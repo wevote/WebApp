@@ -9,6 +9,7 @@ import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdown
 import OrganizationCard from "../VoterGuide/OrganizationCard";
 import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
 import SupportStore from "../../stores/SupportStore";
+import { returnFirstXWords } from "../../utils/textFormat";
 
 export default class ItemSupportOpposeRaccoon extends Component {
   static propTypes = {
@@ -383,41 +384,35 @@ export default class ItemSupportOpposeRaccoon extends Component {
       <Popover id="popover-trigger-click-root-close"
                title={<span>Score in Your Network <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closeScorePopover}>
-        Your friends, and the organizations you follow, are <strong>Your Network</strong>.
-        Each friend or organization you follow that
-        <span className="u-no-break">
-          <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /> supports
-        </span> {this.state.ballot_item_display_name} adds
+        Your friends, and the organizations you listen to, are <strong>Your Network</strong>.
+        Everyone in your network
+        that <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")}
+                                               width="20" height="20" /> supports</span> {this.state.ballot_item_display_name} adds
         +1 to this <strong>Score</strong>.
-        Each one that
-        <span className="u-no-break">
-          <img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" /> opposes
-        </span> subtracts
-        1 from this <strong>Score</strong>. <Button bsStyle="info"
+        Each one that <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
+                                               width="20" height="20" /> opposes</span> subtracts
+        1 from this <strong>Score</strong>. <Button bsStyle="success"
                                                     bsSize="xsmall"
                                                     >
-                                              <span>Follow</span>
-                                            </Button> an
-        organization to add their position to the <strong>Score in Your Network</strong>.
+                                              <span>Listen</span>
+                                            </Button> to an
+        organization to add their opinion to the <strong>Score in Your Network</strong>.
       </Popover>;
 
     const positionsPopover =
       <Popover id="popover-trigger-click-root-close"
-               title={<span>Positions about {this.state.ballot_item_display_name} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+               title={<span>Opinions about {this.state.ballot_item_display_name} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closePositionsPopover}>
-        These organizations
-        <span className="u-no-break">
-          <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /> support
-        </span> or&nbsp;
-        <span className="u-no-break">
-          <img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" /> oppose
-        </span> {this.state.ballot_item_display_name}.
+        These organizations <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")}
+                                               width="20" height="20" /> support</span> or&nbsp;
+        <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
+                                               width="20" height="20" /> oppose</span> {this.state.ballot_item_display_name}.
         Click on the logo
-        and <Button bsStyle="info"
+        and <Button bsStyle="success"
                     bsSize="xsmall"
                     >
-              <span>Follow</span>
-            </Button> an organization to add their position to the <strong>Score in Your Network</strong>.
+              <span>Listen</span>
+            </Button> to an organization to add their opinion to the <strong>Score in Your Network</strong>.
       </Popover>;
 
     const positionsLabel =
@@ -427,7 +422,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                       rootClose
                       placement={this.props.popoverBottom ? "bottom" : "top"}
                       overlay={positionsPopover}>
-        <span className="network-positions-stacked__support-label u-cursor--pointer">Positions&nbsp;<i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover" aria-hidden="true" />&nbsp;</span>
+        <span className="network-positions-stacked__support-label u-cursor--pointer u-no-break">Opinions about {returnFirstXWords(this.state.ballot_item_display_name, 1)}&nbsp;<i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" />&nbsp;</span>
       </OverlayTrigger>;
 
     return <div className="network-positions-stacked">
@@ -449,8 +444,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
                 <span className="u-margin-left--xs">{ total_score_with_sign }&nbsp;</span>
               }
               <span className="network-positions-stacked__support-score-label">
-                <span className="visible-xs">Network Score <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover" aria-hidden="true" /></span>
-                <span className="hidden-xs">Score in Your Network <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover" aria-hidden="true" /></span>
+                <span className="visible-xs">Network Score <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
+                <span className="hidden-xs">Score in Your Network <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
               </span>
             </span>
           </OverlayTrigger>

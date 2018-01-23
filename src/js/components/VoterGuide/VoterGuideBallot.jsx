@@ -81,8 +81,7 @@ export default class VoterGuideBallot extends Component {
 
   componentDidMount () {
     // console.log("VoterGuideBallot componentDidMount");
-    let ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.location.pathname);
-    // console.log("VoterGuideBallot componentDidMount, ballotBaseUrl: ", ballotBaseUrl);
+    let ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
 
     let hide_intro_modal_from_url = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
     let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal") || 0;
@@ -481,18 +480,6 @@ export default class VoterGuideBallot extends Component {
       return <div className="ballot container-fluid well u-stack--md u-inset--md">
         <div className="ballot__header">
           <BrowserPushMessage incomingProps={this.props} />
-          {/*
-          <p className="ballot__date_location">
-            OLD If your ballot does not appear momentarily, please <Link to="/settings/location">change your address</Link>.
-          </p>
-          */}
-          {/* We always show the change election option
-          <span className="u-no-break hidden-print u-f8 u-cursor--pointer"
-                onClick={this.toggleSelectBallotModal} >
-            If your ballot does not appear momentarily, please click <img src={cordovaDot("/img/global/icons/gear-icon.png")}
-                role="button"
-                alt={"change address or election"}/> to change address or election.</span>
-                 */}
           <EditAddressInPlace address={voter_address_object}
                               noAddressMessage={"We are guessing your location. If a ballot does not appear here momentarily, please enter your address, or choose an election below."}
                               pathname={this.state.pathname}
@@ -625,7 +612,7 @@ export default class VoterGuideBallot extends Component {
                    <PledgeToVoteStatusBar organization={this.state.organization} /> */}
                 </div>
 
-                <div>
+                <div className="hidden-print">
                   {ballot_with_organization_items.length > 0 ?
                     <PledgeToSupportOrganizationButton organization={this.state.organization}
                                                      pledgeToVoteAction={this.pledgeToVoteWithVoterGuide} /> :

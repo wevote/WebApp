@@ -19,11 +19,11 @@ export default class BallotIntroMission extends Component {
       <div className="intro-modal-features">
         <div className="intro-modal-features__block">
           <img className="intro-modal-features__image" src={cordovaDot("/img/welcome/benefits/learn-from-orgs.png")} width="50%" height="50%" />
-          <h3 className="intro-modal-features__text">Follow Organizations</h3>
+          <h3 className="intro-modal-features__text">Listen to Organizations</h3>
         </div>
         <div className="intro-modal-features__block">
           <img className="intro-modal-features__image" src={cordovaDot("/img/welcome/benefits/choose-friends.png")} width="50%" height="50%" />
-          <h3 className="intro-modal-features__text">Follow Friends</h3>
+          <h3 className="intro-modal-features__text">Listen to Friends</h3>
         </div>
       </div>
       <p className="intro-modal__p">We Vote helps you decide how to vote your values, based on advice from organizations and friends you trust.</p>

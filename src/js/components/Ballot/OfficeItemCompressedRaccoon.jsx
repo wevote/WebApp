@@ -9,7 +9,6 @@ import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import ImageHandler from "../ImageHandler";
-import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
 import LearnMore from "../Widgets/LearnMore";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -78,18 +77,6 @@ export default class OfficeItemCompressedRaccoon extends Component {
   }
 
   componentWillReceiveProps (nextProps){
-    // console.log("VoterGuideOfficeItemCompressed componentWillReceiveProps");
-    // console.log("nextProps.candidate_list: ", nextProps.candidate_list);
-    // Doesn't seem necessary
-    // if (nextProps.candidate_list && nextProps.candidate_list.length) {
-    //   nextProps.candidate_list.forEach( function (candidate) {
-    //     // console.log("OfficeItemCompressed, candidate: ", candidate);
-    //     if (candidate && candidate.hasOwnProperty("we_vote_id") && !CandidateStore.isCandidateInStore(candidate.we_vote_id)) {
-    //       // console.log("OfficeItemCompressed, retrieving");
-    //       CandidateActions.candidateRetrieve(candidate.we_vote_id);
-    //     }
-    //   });
-    // }
     if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
       this.setState({
          organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
@@ -184,9 +171,9 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
-    var candidate_list_to_display = this.props.candidate_list;
+    let candidate_list_to_display = this.props.candidate_list;
     let total_number_of_candidates_to_display = this.props.candidate_list.length;
-    var remaining_candidates_to_display_count = 0;
+    let remaining_candidates_to_display_count = 0;
 
     if (!this.state.display_all_candidates_flag && this.props.candidate_list.length > NUMBER_OF_CANDIDATES_TO_DISPLAY) {
       candidate_list_to_display = this.props.candidate_list.slice(0, NUMBER_OF_CANDIDATES_TO_DISPLAY);
@@ -258,8 +245,9 @@ export default class OfficeItemCompressedRaccoon extends Component {
       <Popover id="popover-trigger-click-root-close"
                title={<span>Your Network is Undecided <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closeYourNetworkIsUndecidedPopover}>
-        Your friends, and the organizations you follow, are <strong>Your Network</strong>.
-        Each friend or organization in your network that
+        Your friends, and the organizations you listen to, are <strong>Your Network</strong>.
+        Everyone in your network
+        that
         <span className="u-no-break">
           <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /> supports
         </span> a candidate adds
@@ -300,14 +288,6 @@ export default class OfficeItemCompressedRaccoon extends Component {
             let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + ". " : "";
             let candidate_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
             let candidate_text = candidate_party_text + candidate_description_text;
-            let is_support = false;
-            let is_oppose = false;
-            let voter_statement_text = false;
-            if (candidateSupportStore !== undefined) {
-              is_support = candidateSupportStore.is_support;
-              is_oppose = candidateSupportStore.is_oppose;
-              voter_statement_text = candidateSupportStore.voter_statement_text;
-            }
 
             let candidate_photo_raccoon = this.state.display_raccoon_details_flag ?
               <div onClick={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(one_candidate.we_vote_id) : null}>
@@ -343,40 +323,6 @@ export default class OfficeItemCompressedRaccoon extends Component {
               </div>
             </div>;
 
-            // TODO: NOT WORKING YET
-            let comment_display_raccoon_desktop = this.state.display_raccoon_details_flag && (is_support || is_oppose || voter_statement_text) ?
-              <div className="hidden-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-                <div
-                  className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
-                </div>
-                <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-                  <ItemPositionStatementActionBar ballot_item_we_vote_id={candidate_we_vote_id}
-                                                  ballot_item_display_name={one_candidate.ballot_item_display_name}
-                                                  supportProps={candidateSupportStore}
-                                                  transitioning={this.state.transitioning}
-                                                  type="CANDIDATE"
-                                                  shown_in_list/>
-                </div>
-              </div> :
-              null;
-
-            // TODO: NOT WORKING YET
-            let comment_display_raccoon_mobile = this.state.display_raccoon_details_flag && (is_support || is_oppose || voter_statement_text) ?
-              <div className="visible-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-                <div
-                  className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
-                </div>
-                <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-                  <ItemPositionStatementActionBar ballot_item_we_vote_id={candidate_we_vote_id}
-                                                  ballot_item_display_name={one_candidate.ballot_item_display_name}
-                                                  supportProps={candidateSupportStore}
-                                                  transitioning={this.state.transitioning}
-                                                  type="CANDIDATE"
-                                                  shown_in_list/>
-                </div>
-              </div> :
-              null;
-
             return <div key={candidate_we_vote_id} className="u-stack--md">
               <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
                 {/* Candidate Photo, only shown in Desktop */}
@@ -410,7 +356,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                          title={<span>Your Network Supports <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                          onClick={this.closeYourNetworkSupportsPopover}>
                   Your friends, and the organizations you follow, are <strong>Your Network</strong>.
-                  Each friend or organization in your network that
+                  Everyone in your network that
                   <span className="u-no-break">
                     <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /> supports
                   </span> {one_candidate.ballot_item_display_name} adds
