@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router";
-import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
+import { historyPush } from "../../utils/cordovaUtils";
 import IssueActions from "../../actions/IssueActions";
 import IssueLinkToggle from "../Issues/IssueLinkToggle";
 import IssueStore from "../../stores/IssueStore";

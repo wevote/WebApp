@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router";
+import { historyPush } from "../../utils/cordovaUtils";
 import TextTruncate from "react-text-truncate";
 import { capitalizeString } from "../../utils/textFormat";
 import BallotSideBarLink from "../Navigation/BallotSideBarLink";
@@ -60,7 +61,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
 
     // console.log("this.props.candidate_list: ", this.props.candidate_list);
     if (this.props.candidate_list && this.props.candidate_list.length) {
-      this.props.candidate_list.forEach( function (candidate) {
+      this.props.candidate_list.forEach(function (candidate) {
         // console.log("OfficeItemCompressed, candidate: ", candidate);
         if (candidate && candidate.hasOwnProperty("we_vote_id") && !CandidateStore.isCandidateInStore(candidate.we_vote_id)) {
           // console.log("OfficeItemCompressed, retrieving");
@@ -73,7 +74,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps){
+  componentWillReceiveProps (nextProps) {
     // console.log("VoterGuideOfficeItemCompressed componentWillReceiveProps, nextProps: ", nextProps);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
@@ -154,6 +155,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
         }
       });
     }
+
     return one_position_to_return;
   }
 
@@ -162,9 +164,9 @@ export default class VoterGuideOfficeItemCompressed extends Component {
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
-    var candidate_list_to_display = this.props.candidate_list;
+    let candidate_list_to_display = this.props.candidate_list;
     let total_number_of_candidates_to_display = this.props.candidate_list.length;
-    var remaining_candidates_to_display_count = 0;
+    let remaining_candidates_to_display_count = 0;
 
     if (!this.state.display_all_candidates_flag && this.props.candidate_list.length > NUMBER_OF_CANDIDATES_TO_DISPLAY) {
       candidate_list_to_display = this.props.candidate_list.slice(0, NUMBER_OF_CANDIDATES_TO_DISPLAY);

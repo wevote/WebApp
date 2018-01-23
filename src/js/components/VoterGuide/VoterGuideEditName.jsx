@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
+import { historyPush } from "../../utils/cordovaUtils";
 
 export default class VoterGuideEditName extends Component {
   static propTypes = {
@@ -28,9 +28,6 @@ export default class VoterGuideEditName extends Component {
     this.setState({
       active_tab: nextProps.params.active_tab || "issues_to_link",
     });
-  }
-
-  componentWillUnmount () {
   }
 
   onDoneButton () {

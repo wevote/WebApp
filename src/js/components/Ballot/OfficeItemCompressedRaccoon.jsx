@@ -79,8 +79,8 @@ export default class OfficeItemCompressedRaccoon extends Component {
   componentWillReceiveProps (nextProps){
     if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
       this.setState({
-         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
-       });
+        organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
+      });
     }
   }
 
@@ -92,11 +92,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
   onVoterGuideStoreChange () {
     this.setState({
-      transitioning: false
+      transitioning: false,
     });
   }
 
-  _onOrganizationStoreChange (){
+  _onOrganizationStoreChange () {
     // console.log("VoterGuideOfficeItemCompressed _onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
