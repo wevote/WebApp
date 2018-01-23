@@ -10,9 +10,9 @@ export function historyPush(route) {
   }
 }
 
-export function cordovaDot(path, params) {
+export function cordovaDot(path) {
   if (webAppConfig.IS_CORDOVA) {
-    return '.' + path;
+    return "." + path;
   } else {
     return path;
   }

@@ -79,8 +79,8 @@ export default class OfficeItemCompressedRaccoon extends Component {
   componentWillReceiveProps (nextProps){
     if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
       this.setState({
-         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
-       });
+        organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
+      });
     }
   }
 
@@ -92,11 +92,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
   onVoterGuideStoreChange () {
     this.setState({
-      transitioning: false
+      transitioning: false,
     });
   }
 
-  _onOrganizationStoreChange (){
+  _onOrganizationStoreChange () {
     // console.log("VoterGuideOfficeItemCompressed _onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
@@ -354,7 +354,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                 <Popover id="popover-trigger-click-root-close"
                          title={<span>Your Network Supports <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                          onClick={this.closeYourNetworkSupportsPopover}>
-                  Your friends, and the organizations you follow, are <strong>Your Network</strong>.
+                  Your friends, and the organizations you listen to, are <strong>Your Network</strong>.
                   Everyone in your network that
                   <span className="u-no-break">
                     <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /> supports

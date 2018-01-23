@@ -1,7 +1,7 @@
 /* global google */
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import { browserHistory } from "react-router";
+import { historyPush } from "../utils/cordovaUtils";
 import LoadingWheel from "../components/LoadingWheel";
 import VoterActions from "../actions/VoterActions";
 import VoterStore from "../stores/VoterStore";
@@ -11,7 +11,7 @@ export default class AddressBox extends Component {
   static propTypes = {
     cancelEditAddress: PropTypes.func,
     toggleSelectAddressModal: PropTypes.func,
-    saveUrl: PropTypes.string.isRequired
+    saveUrl: PropTypes.string.isRequired,
   };
 
   constructor (props) {
@@ -30,16 +30,16 @@ export default class AddressBox extends Component {
   componentDidMount () {
     this.setState({
       text_for_map_search: VoterStore.getTextForMapSearch(),
-      ballotCaveat: BallotStore.getBallotCaveat()
+      ballotCaveat: BallotStore.getBallotCaveat(),
     });
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     let addressAutocomplete = new google.maps.places.Autocomplete(this.refs.autocomplete);
-    addressAutocomplete.setComponentRestrictions({country: "us"});
+    addressAutocomplete.setComponentRestrictions({ country: "us" });
     this.googleAutocompleteListener = addressAutocomplete.addListener("place_changed", this._placeChanged.bind(this, addressAutocomplete));
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.voterStoreListener.remove();
     this.ballotStoreListener.remove();
     this.googleAutocompleteListener.remove();
@@ -65,25 +65,21 @@ export default class AddressBox extends Component {
     this.setState({ ballotCaveat: BallotStore.getBallotCaveat() });
   }
 
-  _ballotLoaded () {
-    historyPush(this.props.saveUrl);
-  }
-
   _placeChanged (addressAutocomplete) {
     let place = addressAutocomplete.getPlace();
     if (place.formatted_address) {
       this.setState({
-        text_for_map_search: place.formatted_address
+        text_for_map_search: place.formatted_address,
       });
     } else {
       this.setState({
-        text_for_map_search: place.name
+        text_for_map_search: place.name,
       });
     }
   }
 
   updateVoterAddress (event) {
-    this.setState({text_for_map_search: event.target.value});
+    this.setState({ text_for_map_search: event.target.value });
   }
 
   handleKeyPress (event) {
@@ -92,7 +88,7 @@ export default class AddressBox extends Component {
       event.preventDefault();
       setTimeout(() => {
         VoterActions.voterAddressSave(this.state.text_for_map_search);
-        this.setState({loading: true});
+        this.setState({ loading: true });
       }, 250);
     }
   }
@@ -100,7 +96,7 @@ export default class AddressBox extends Component {
   voterAddressSave (event) {
     event.preventDefault();
     VoterActions.voterAddressSave(this.state.text_for_map_search);
-    this.setState({loading: true});
+    this.setState({ loading: true });
   }
 
   render () {

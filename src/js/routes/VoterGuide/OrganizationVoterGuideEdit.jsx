@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router";
 import { Button } from "react-bootstrap";
+import { historyPush } from "../../utils/cordovaUtils";
 import VoterGuideEditActivityReports from "../../components/VoterGuide/VoterGuideEditActivityReports";
 import VoterGuideEditAddPositions from "../../components/VoterGuide/VoterGuideEditAddPositions";
 import VoterGuideEditIndex from "../../components/VoterGuide/VoterGuideEditIndex";
@@ -30,7 +31,7 @@ export default class OrganizationVoterGuideEdit extends Component {
     };
   }
 
-  componentDidMount (){
+  componentDidMount () {
     // console.log("OrganizationVoterGuideEdit, componentDidMount, this.props.params.organization_we_vote_id: ", this.props.params.organization_we_vote_id);
     // console.log("this.props.params.edit_mode: ", this.props.params.edit_mode);
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
@@ -70,7 +71,7 @@ export default class OrganizationVoterGuideEdit extends Component {
     }
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
   }
@@ -81,18 +82,18 @@ export default class OrganizationVoterGuideEdit extends Component {
 
   _onVoterStoreChange () {
     this.setState({
-      voter: VoterStore.getVoter()
+      voter: VoterStore.getVoter(),
     });
   }
 
-  _onOrganizationStoreChange (){
+  _onOrganizationStoreChange () {
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization_we_vote_id)
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization_we_vote_id),
     });
   }
 
   render () {
-    if (!this.state.organization.organization_we_vote_id || !this.state.voter){
+    if (!this.state.organization.organization_we_vote_id || !this.state.voter) {
       return <div>{LoadingWheel}</div>;
     }
 
@@ -104,14 +105,14 @@ export default class OrganizationVoterGuideEdit extends Component {
     }
 
     if (!this.state.organization) {
-      var floatRight = {
-        float: "right"
+      const floatRight = {
+        float: "right",
       };
       return <div className="card">
           <div className="card-main">
             <h4 className="h4">Organization not Found</h4>
           </div>
-          <div style={{margin: 10}}>
+          <div style={{ margin: 10 }}>
             <span style={floatRight}>
               <Link to="/opinions"><Button bsStyle="primary">Next &#x21AC;</Button></Link>
             </span>

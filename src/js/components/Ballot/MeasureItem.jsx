@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
-import { cordovaDot } from "../../utils/cordovaUtils";
+import { historyPush } from "../../utils/cordovaUtils";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
@@ -25,11 +25,11 @@ export default class MeasureItem extends Component {
     position_list: PropTypes.array,
     regional_display_name: PropTypes.string,
     state_display_name: PropTypes.string,
-    showPositionsInYourNetworkBreakdown: PropTypes.bool
+    showPositionsInYourNetworkBreakdown: PropTypes.bool,
   };
   constructor (props) {
     super(props);
-    this.state = {transitioning: false};
+    this.state = { transitioning: false };
   }
 
   componentDidMount () {
@@ -52,6 +52,7 @@ export default class MeasureItem extends Component {
     if (state_display_name === undefined) {
       state_display_name = this.props.state_code.toUpperCase();
     }
+
     let measureLink = "/measure/" + we_vote_id;
     let goToMeasureLink = function () { historyPush(measureLink); };
     let num_of_lines = 2;
@@ -106,23 +107,23 @@ export default class MeasureItem extends Component {
                   goToMeasureLink :
                   null }
           >
-              <div className="u-stack--md">
-                <ItemSupportOpposeCounts we_vote_id={we_vote_id}
-                                         supportProps={supportProps}
-                                         transitioning={transitioning}
-                                         type="MEASURE"
-                                         positionBarIsClickable />
-             </div>
-                 {/* Show a break-down of the positions in your network */}
-              { positions_in_your_network && this.props.showPositionsInYourNetworkBreakdown ?
-                <div className="u-flex u-justify-between u-inset__v--xs">
-                  {/* In desktop mode, align left with position bar */}
-                  {/* In mobile mode, turn on green up-arrow before icons */}
-                  <ItemTinyPositionBreakdownList ballot_item_display_name={ballot_item_display_name}
-                                                 ballotItemWeVoteId={we_vote_id}
-                                                 position_list={this.props.position_list}
-                                                 showSupport
-                                                 supportProps={this.state.supportProps} />
+            <div className="u-stack--md">
+              <ItemSupportOpposeCounts we_vote_id={we_vote_id}
+                                       supportProps={supportProps}
+                                       transitioning={transitioning}
+                                       type="MEASURE"
+                                       positionBarIsClickable />
+            </div>
+            {/* Show a break-down of the positions in your network */}
+            { positions_in_your_network && this.props.showPositionsInYourNetworkBreakdown ?
+              <div className="u-flex u-justify-between u-inset__v--xs">
+                {/* In desktop mode, align left with position bar */}
+                {/* In mobile mode, turn on green up-arrow before icons */}
+                <ItemTinyPositionBreakdownList ballot_item_display_name={ballot_item_display_name}
+                                               ballotItemWeVoteId={we_vote_id}
+                                               position_list={this.props.position_list}
+                                               showSupport
+                                               supportProps={this.state.supportProps} />
 
                   {/* In desktop mode, align right with position bar */}
                   {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
@@ -131,9 +132,9 @@ export default class MeasureItem extends Component {
                                                  position_list={this.props.position_list}
                                                  showOppose
                                                  supportProps={this.state.supportProps} />
-                </div> :
-                null }
-       </div>
+              </div> : null
+            }
+          </div>
           </div> {/* END .card-main__content */}
           <div className="card-main__actions">
             <ItemActionBar ballot_item_we_vote_id={we_vote_id}
@@ -149,5 +150,5 @@ export default class MeasureItem extends Component {
                                             type="MEASURE" />
           </div>
         </div>;
-      }
-    }
+  }
+}

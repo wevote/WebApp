@@ -23,10 +23,10 @@ function startApp() {
   </Router>, document.getElementById("app"));
 }
 
-// wait for Apache Cordova to be ready, if cordova is available
+// If Apache Cordova is available, wait for it to be ready, otherwise start the WebApp
 if (window.cordova) {
   webAppConfig.IS_CORDOVA = true;
-  document.addEventListener('deviceready', () => {
+  document.addEventListener("deviceready", () => {
     startApp();
   }, false);
 } else {  // browser
