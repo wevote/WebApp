@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { OverlayTrigger, Popover } from "react-bootstrap";
+import { cordovaDot } from "../../utils/cordovaUtils";
 
 export default class RatingPopover extends Component {
   static propTypes = {
@@ -25,10 +26,13 @@ export default class RatingPopover extends Component {
         title={<span>Ratings from Vote Smart <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
         onClick={this.closePopover}>
         Ratings are given by the organization, and collected by the
-        nonprofit Vote Smart. <span className="u-no-break"><img src="/img/global/icons/down-arrow-color-icon.svg"
-                                                                width="20" height="20" /> 0%</span> is a low score,
-        and <span className="u-no-break"><img src="/img/global/icons/up-arrow-color-icon.svg"
-                                          width="20" height="20" /> 100%</span> is a high score.
+        nonprofit Vote Smart.
+        <span className="u-no-break">
+          <img src={cordovaDot("/img/global/icons/down-arrow-color-icon.svg")} width="20" height="20" /> 0%
+        </span> is a low score, and
+        <span className="u-no-break">
+          <img src={cordovaDot("/img/global/icons/up-arrow-color-icon.svg")} width="20" height="20" /> 100%
+        </span> is a high score.
         Ratings can be invaluable in showing where an incumbent has stood
         on a series of votes. Some groups select votes that tend to favor
         members of one political party over another, rather than choosing

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
-import { browserHistory } from "react-router";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
+import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
@@ -33,10 +33,10 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   }
 
   cancelMergeFunction () {
-    browserHistory.push({
+    historyPush({
       pathname: "/more/network",
       state: {
-      }
+      },
     });
     // message: "You have chosen to NOT merge your two accounts.",
     // message_type: "success"
@@ -52,12 +52,12 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
   voterMergeTwoAccountsByInvitationKey (invitation_secret_key) {
     VoterActions.voterMergeTwoAccountsByInvitationKey(invitation_secret_key);
-    browserHistory.push({
+    historyPush({
       pathname: "/more/network",
       state: {
         message: "You have successfully signed in.",
-        message_type: "success"
-      }
+        message_type: "success",
+      },
     });
   }
 
@@ -66,7 +66,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     // voter_device_id =
     this.setState({
       invitation_status: FriendStore.getInvitationStatus(),
-      saving: false
+      saving: false,
     });
   }
 
@@ -90,35 +90,35 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
     // This process starts when we return from attempting friendInvitationByEmailVerify
     if (!this.state.invitation_status.invitation_found) {
-      browserHistory.push({
+      historyPush({
         pathname: "/more/network",
         state: {
           message: "Invitation not found. You may have already accepted this invitation. Invitation links may only be used once.",
-          message_type: "warning"
-        }
+          message_type: "warning",
+        },
       });
       return LoadingWheel;
     }
 
     if (this.state.invitation_status.attempted_to_approve_own_invitation) {
-      browserHistory.push({
+      historyPush({
         pathname: "/more/network",
         state: {
           message: "You are not allowed to approve your own invitation.",
-          message_type: "danger"
-        }
+          message_type: "danger",
+        },
       });
       return LoadingWheel;
     }
 
     if (this.state.invitation_status.invitation_secret_key_belongs_to_this_voter) {
       // We don't need to do anything more except redirect to the email management page
-      browserHistory.push({
+      historyPush({
         pathname: "/more/network",
         state: {
           message: "You have accepted your friend's invitation. Visit your ballot to see what your friends are supporting or opposing.",
-          message_type: "success"
-        }
+          message_type: "success",
+        },
       });
       return LoadingWheel;
     } else if (this.state.invitation_status.voter_has_data_to_preserve) {

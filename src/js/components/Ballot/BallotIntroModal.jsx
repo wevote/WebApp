@@ -5,6 +5,7 @@ import Slider from "react-slick";
 import BallotIntroFollowIssues from "./BallotIntroFollowIssues";
 import BallotIntroFollowAdvisers from "./BallotIntroFollowAdvisers";
 import BallotIntroPositionBar from "./BallotIntroPositionBar";
+import { cordovaDot } from "../../utils/cordovaUtils";
 import VoterActions from "../../actions/VoterActions";
 
 
@@ -49,7 +50,7 @@ export default class BallotIntroModal extends Component {
       <Modal.Body>
         <div className="intro-modal__close">
           <a onClick={this.props.toggleFunction} className="intro-modal__close-anchor">
-            <img src="/img/global/icons/x-close.png" alt="close" />
+            <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
           </a>
         </div>
         <Slider dotsClass="slick-dots intro-modal__gray-dots"

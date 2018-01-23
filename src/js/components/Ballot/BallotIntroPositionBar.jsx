@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { cordovaDot } from "../../utils/cordovaUtils";
 
 export default class BallotIntroPositionBar extends Component {
   static propTypes = {
@@ -16,7 +17,7 @@ export default class BallotIntroPositionBar extends Component {
       <div className="intro-modal__h2">Each position bar shows where your network stands on a
         candidate, measure or referendum.</div>
       <div className="intro-modal__position-wrap">
-        <img className="intro-modal__position-img" src="/img/global/icons/position-bar-v1-265x43.png" alt="position bar" />
+        <img className="intro-modal__position-img" src={cordovaDot("/img/global/icons/position-bar-v1-265x43.png")} alt="position bar" />
         <div className="intro-modal__position-description-wrap">
           <p className="intro-modal__p">Supporters in your network</p>
           <p className="intro-modal__p">Opposers in your network</p>

@@ -1,7 +1,7 @@
-import React, {Component} from "react";
-import {browserHistory} from "react-router";
+import React, { Component } from "react";
 import cookies from "../../utils/cookies";
 import Helmet from "react-helmet";
+import { historyPush } from "../../utils/cordovaUtils";
 
 export default class SampleBallot extends Component {
 
@@ -10,9 +10,9 @@ export default class SampleBallot extends Component {
     this.state = {};
   }
 
- goToBallotLink () {
-    var goToBallot = "/ballot";
-    browserHistory.push(goToBallot);
+  goToBallotLink () {
+    let goToBallot = "/ballot";
+    historyPush(goToBallot);
   }
 
   componentWillMount () {

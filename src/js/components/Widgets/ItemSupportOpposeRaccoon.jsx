@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { Button, OverlayTrigger, Popover } from "react-bootstrap";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
+import { cordovaDot } from "../../utils/cordovaUtils";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdownList";
@@ -383,12 +384,15 @@ export default class ItemSupportOpposeRaccoon extends Component {
                title={<span>Score in Your Network <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closeScorePopover}>
         Your friends, and the organizations you follow, are <strong>Your Network</strong>.
-        Each friend or organization you follow
-        that <span className="u-no-break"><img src="/img/global/icons/thumbs-up-color-icon.svg"
-                                               width="20" height="20" /> supports</span> {this.state.ballot_item_display_name} adds
+        Each friend or organization you follow that
+        <span className="u-no-break">
+          <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /> supports
+        </span> {this.state.ballot_item_display_name} adds
         +1 to this <strong>Score</strong>.
-        Each one that <span className="u-no-break"><img src="/img/global/icons/thumbs-down-color-icon.svg"
-                                               width="20" height="20" /> opposes</span> subtracts
+        Each one that
+        <span className="u-no-break">
+          <img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" /> opposes
+        </span> subtracts
         1 from this <strong>Score</strong>. <Button bsStyle="info"
                                                     bsSize="xsmall"
                                                     >
@@ -401,10 +405,13 @@ export default class ItemSupportOpposeRaccoon extends Component {
       <Popover id="popover-trigger-click-root-close"
                title={<span>Positions about {this.state.ballot_item_display_name} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closePositionsPopover}>
-        These organizations <span className="u-no-break"><img src="/img/global/icons/thumbs-up-color-icon.svg"
-                                               width="20" height="20" /> support</span> or&nbsp;
-        <span className="u-no-break"><img src="/img/global/icons/thumbs-down-color-icon.svg"
-                                               width="20" height="20" /> oppose</span> {this.state.ballot_item_display_name}.
+        These organizations
+        <span className="u-no-break">
+          <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /> support
+        </span> or&nbsp;
+        <span className="u-no-break">
+          <img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" /> oppose
+        </span> {this.state.ballot_item_display_name}.
         Click on the logo
         and <Button bsStyle="info"
                     bsSize="xsmall"

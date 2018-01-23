@@ -9,6 +9,7 @@ import BallotIntroPositions from "../../components/Ballot/BallotIntroPositions";
 import BallotIntroPositionBar from "../../components/Ballot/BallotIntroPositionBar";
 import BallotIntroShare from "../../components/Ballot/BallotIntroShare";
 import BallotIntroVote from "../../components/Ballot/BallotIntroVote";
+import { cordovaDot } from "../../utils/cordovaUtils";
 import GettingStartedBarItem from "./GettingStartedBarItem";
 import EmailBallotModal from "../Ballot/EmailBallotModal";
 import PollingPlaceLocator from "../Ballot/PollingPlaceLocator";
@@ -166,7 +167,7 @@ export default class HeaderGettingStartedBar extends Component {
         <Modal.Body>
           <div className="intro-modal__close">
             <a onClick={this._toggleBallotIntroFollowIssues} className="intro-modal__close-anchor">
-              <img src="/img/global/icons/x-close.png" alt="close" />
+              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
@@ -184,7 +185,7 @@ export default class HeaderGettingStartedBar extends Component {
         <Modal.Body>
           <div className="intro-modal__close">
             <a onClick={this._toggleBallotIntroOrganizations} className="intro-modal__close-anchor">
-              <img src="/img/global/icons/x-close.png" alt="close" />
+              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
@@ -200,7 +201,7 @@ export default class HeaderGettingStartedBar extends Component {
         <Modal.Body>
           <div className="intro-modal__close">
             <a onClick={this._toggleBallotIntroPositions} className="intro-modal__close-anchor">
-              <img src="/img/global/icons/x-close.png" alt="close" />
+              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
@@ -216,7 +217,7 @@ export default class HeaderGettingStartedBar extends Component {
         <Modal.Body>
           <div className="intro-modal__close">
             <a onClick={this._toggleBallotIntroFriends} className="intro-modal__close-anchor">
-              <img src="/img/global/icons/x-close.png" alt="close" />
+              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
@@ -232,7 +233,7 @@ export default class HeaderGettingStartedBar extends Component {
         <Modal.Body>
           <div className="intro-modal__close">
             <a onClick={this._toggleBallotIntroShare} className="intro-modal__close-anchor">
-              <img src="/img/global/icons/x-close.png" alt="close" />
+              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
@@ -248,7 +249,7 @@ export default class HeaderGettingStartedBar extends Component {
         <Modal.Body>
           <div className="intro-modal__close">
             <a onClick={this._toggleBallotIntroVote} className="intro-modal__close-anchor">
-              <img src="/img/global/icons/x-close.png" alt="close" />
+              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
@@ -264,7 +265,7 @@ export default class HeaderGettingStartedBar extends Component {
       <Modal.Body>
         <div className="intro-modal__close">
           <a onClick={this._openEmailModal} className="intro-modal__close-anchor">
-            <img src="/img/global/icons/x-close.png" alt="close" />
+            <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
           </a>
         </div>
         <div key={1}><EmailBallotModal ballot_link={this.props.pathname}/></div>
@@ -277,7 +278,7 @@ export default class HeaderGettingStartedBar extends Component {
       <Modal.Body>
         <div className="intro-modal__close">
           <a onClick={this._openPollingLocatorModal} className="intro-modal__close-anchor">
-            <img src="/img/global/icons/x-close.png" alt="close" />
+            <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
           </a>
         </div>
         <div key={1}><PollingPlaceLocator /></div>
@@ -292,7 +293,7 @@ export default class HeaderGettingStartedBar extends Component {
             {/* Issues Icon & Modal */}
             {!this.props.hideGettingStartedIssuesButton ?
               <GettingStartedBarItem show={this._toggleBallotIntroFollowIssues}
-                                     source="/img/global/svg-icons/issues-v1-64x42.svg"
+                                     source={cordovaDot("/img/global/svg-icons/issues-v1-64x42.svg")}
                                      title="Issues"
                                      completed={this.state.ballot_intro_issues_completed} /> :
               null }

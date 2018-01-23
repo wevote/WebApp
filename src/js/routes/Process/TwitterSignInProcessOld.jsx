@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
-import { browserHistory } from "react-router";
 import { $ajax } from "../../utils/service";
+import { historyPush } from "../../utils/cordovaUtils";
 import TwitterActions from "../../actions/TwitterActions";
 import VoterStore from "../../stores/VoterStore";
 const web_app_config = require("../../config");
@@ -17,7 +17,7 @@ export default class TwitterSignInProcessOld extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      "twitter_redirect_url": ""
+      "twitter_redirect_url": "",
     };
   }
 
@@ -40,7 +40,7 @@ export default class TwitterSignInProcessOld extends Component {
       if (voter !== undefined && (voter.signed_in_twitter || voter.signed_in_facebook)) {
         // We don't want to start the sign in process again if they are already signed in, so we redirect to the
         // sign in status page
-        browserHistory.push("/more/sign_in");
+        historyPush("/more/sign_in");
       } else {
         return_url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/more/sign_in/";
         this.twitterSignInStart(return_url);
@@ -58,9 +58,9 @@ export default class TwitterSignInProcessOld extends Component {
       // We have finished the Twitter sign in process, so we redirect to the TwitterHandle page
       // for the screen name in return_url
       if (this.props.params.incoming_twitter_handle !== undefined) {
-        browserHistory.push("/" + this.props.params.incoming_twitter_handle);
+        historyPush("/" + this.props.params.incoming_twitter_handle);
       } else {
-        browserHistory.push("/more/sign_in");
+        historyPush("/more/sign_in");
       }
     }
   }
@@ -75,7 +75,7 @@ export default class TwitterSignInProcessOld extends Component {
       if (voter !== undefined && (voter.signed_in_twitter || voter.signed_in_facebook)) {
         // We don't want to start the sign in process again if they are already signed in, so we redirect to the
         // sign in status page
-        browserHistory.push("/more/sign_in");
+        historyPush("/more/sign_in");
       } else {
         return_url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/more/sign_in/";
         this.twitterSignInStart(return_url);
@@ -93,15 +93,15 @@ export default class TwitterSignInProcessOld extends Component {
       // We have finished the Twitter sign in process, so we redirect to the TwitterHandle page
       // for the screen name in return_url
       if (this.props.params.incoming_twitter_handle !== undefined) {
-        browserHistory.push("/" + this.props.params.incoming_twitter_handle);
+        historyPush("/" + this.props.params.incoming_twitter_handle);
       } else {
-        browserHistory.push("/more/sign_in");
+        historyPush("/more/sign_in");
       }
     }
   }
 
   componentDidUpdate () {
-    var {voter} = this.state;
+    let {voter} = this.state;
     if (this.props.params.sign_in_step === "signinswitchstart") {
       if (voter !== undefined && (voter.signed_in_twitter || voter.signed_in_facebook)) {
         // We are waiting for logout to take hold

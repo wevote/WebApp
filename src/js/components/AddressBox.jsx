@@ -47,25 +47,26 @@ export default class AddressBox extends Component {
 
   _onVoterStoreChange () {
     // console.log("AddressBox, _onVoterStoreChange, this.state:", this.state);
-    if (this.props.toggleSelectAddressModal){
-       this.props.toggleSelectAddressModal();
-     }
-    if (this.state.text_for_map_search){
-      browserHistory.push(this.props.saveUrl);
+    if (this.props.toggleSelectAddressModal) {
+      this.props.toggleSelectAddressModal();
+    }
+
+    if (this.state.text_for_map_search) {
+      historyPush(this.props.saveUrl);
     } else {
       this.setState({
         text_for_map_search: VoterStore.getTextForMapSearch(),
-        loading: false
+        loading: false,
       });
     }
   }
 
   onBallotStoreChange () {
-      this.setState({ ballotCaveat: BallotStore.getBallotCaveat() });
+    this.setState({ ballotCaveat: BallotStore.getBallotCaveat() });
   }
 
-  _ballotLoaded (){
-    browserHistory.push(this.props.saveUrl);
+  _ballotLoaded () {
+    historyPush(this.props.saveUrl);
   }
 
   _placeChanged (addressAutocomplete) {
@@ -103,12 +104,13 @@ export default class AddressBox extends Component {
   }
 
   render () {
-    if (this.state.loading){
+    if (this.state.loading) {
       return <div>
             <h2>Please wait a moment while we adjust your ballot options to the new location...</h2>
             {LoadingWheel}
           </div>;
     }
+
     return <div>
         <form onSubmit={this.voterAddressSave}>
           <input

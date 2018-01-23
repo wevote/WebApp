@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { browserHistory } from "react-router";
+import { historyPush } from "../../utils/cordovaUtils";
 import DonateStore from "../../stores/DonateStore";
-
 
 let loadingScreenStyles = {
   position: "fixed",
@@ -36,9 +35,9 @@ export default class ProcessingDonation extends Component {
   _onDonateStoreChange () {
     if (DonateStore.donation_response_received()) {
       if (DonateStore.donation_success()) {
-        browserHistory.push("/more/donate_thank_you");
+        historyPush("/more/donate_thank_you");
       } else {
-        browserHistory.push("/more/donate");
+        historyPush("/more/donate");
       }
     }
   }

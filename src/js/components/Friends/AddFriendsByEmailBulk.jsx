@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
-import { browserHistory } from "react-router";
+import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../LoadingWheel";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
@@ -11,20 +11,20 @@ export default class AddFriendsByEmail extends Component {
   };
 
   constructor (props) {
-      super(props);
-      this.state = {
-        add_friends_message: "Please join me in preparing for the upcoming election.",
-        email_addresses: "",
-        email_addresses_error: false,
-        sender_email_address: "",
-        sender_email_address_error: false,
-        redirect_url_upon_save: "/friends/sign_in",  // TODO DALE Remove this?
-        loading: false,
-        on_enter_email_addresses_step: true,
-        on_collect_email_step: false,
-        on_friend_invitations_sent_step: false,
-        voter: {},
-      };
+    super(props);
+    this.state = {
+      add_friends_message: "Please join me in preparing for the upcoming election.",
+      email_addresses: "",
+      email_addresses_error: false,
+      sender_email_address: "",
+      sender_email_address_error: false,
+      redirect_url_upon_save: "/friends/sign_in",  // TODO DALE Remove this?
+      loading: false,
+      on_enter_email_addresses_step: true,
+      on_collect_email_step: false,
+      on_friend_invitations_sent_step: false,
+      voter: {},
+    };
   }
 
   componentDidMount () {
@@ -67,7 +67,7 @@ export default class AddFriendsByEmail extends Component {
 
   _ballotLoaded (){
     // TODO DALE Remove this?
-    browserHistory.push(this.state.redirect_url_upon_save);
+    historyPush(this.state.redirect_url_upon_save);
   }
 
   cacheEmailAddresses (e) {

@@ -1,11 +1,12 @@
 import React, {PropTypes} from "react";
 import { Link } from "react-router";
+import { cordovaDot } from "../../utils/cordovaUtils";
 
 const GettingStartedBarItem = props => <Link onClick={props.show} className={ (props.printIcon ? "hidden-xs " : "") + "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
       <span className="header-getting-started-nav__item-image-wrapper" title={props.title}>
         { props.completed ?
           <img className="glyphicon nav-getting-started__image-checked"
-            src="/img/global/svg-icons/check-mark-v2-21x21.svg" /> :
+            src={cordovaDot("/img/global/svg-icons/check-mark-v2-21x21.svg")} /> :
           null
         }
         { props.printIcon ? <span className="glyphicon glyphicon-print fa-2x"/> : null }

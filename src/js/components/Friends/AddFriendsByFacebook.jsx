@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
-import { browserHistory } from "react-router";
-import LoadingWheel from "../LoadingWheel";
+import { historyPush } from "../../utils/cordovaUtils";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
+import LoadingWheel from "../LoadingWheel";
 import VoterStore from "../../stores/VoterStore";
 
 /* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/89479679 */
@@ -12,17 +12,17 @@ export default class AddFriendsByFacebook extends Component {
   };
 
   constructor (props) {
-      super(props);
-      this.state = {
-        add_friends_message: "Please join me in preparing for the upcoming election.",
-        email_addresses: "",
-        redirect_url_upon_save: "/friends/sign_in",  // TODO DALE Remove this?
-        loading: false,
-        on_enter_email_addresses_step: true,
-        on_request_email_step: false,
-        on_friend_invitations_sent_step: false,
-        voter: {}
-      };
+    super(props);
+    this.state = {
+      add_friends_message: "Please join me in preparing for the upcoming election.",
+      email_addresses: "",
+      redirect_url_upon_save: "/friends/sign_in",  // TODO DALE Remove this?
+      loading: false,
+      on_enter_email_addresses_step: true,
+      on_request_email_step: false,
+      on_friend_invitations_sent_step: false,
+      voter: {},
+    };
   }
 
   componentDidMount () {
@@ -44,9 +44,9 @@ export default class AddFriendsByFacebook extends Component {
     this.setState({ voter: VoterStore.getVoter(), loading: false });
   }
 
-  _ballotLoaded (){
+  _ballotLoaded () {
     // TODO DALE Remove this?
-    browserHistory.push(this.state.redirect_url_upon_save);
+    historyPush(this.state.redirect_url_upon_save);
   }
 
   cacheEmailAddresses (e) {

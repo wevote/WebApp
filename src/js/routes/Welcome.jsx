@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { browserHistory, Link } from "react-router";
+import { Link } from "react-router";
 import cookies from "../utils/cookies";
 import Helmet from "react-helmet";
 import { Button, FormGroup, Row, OverlayTrigger, Tooltip } from "react-bootstrap";
@@ -7,6 +7,7 @@ import AnalyticsActions from "../actions/AnalyticsActions";
 import { validateEmail } from "../utils/email-functions";
 import FacebookStore from "../stores/FacebookStore";
 import FacebookActions from "../actions/FacebookActions";
+import { cordovaDot, historyPush } from "../utils/cordovaUtils";
 import VoterActions from "../actions/VoterActions";
 import VoterConstants from "../constants/VoterConstants";
 import VoterStore from "../stores/VoterStore";
@@ -111,8 +112,8 @@ export default class Intro extends Component {
   }
 
   goToGetStarted () {
-    var getStartedNow = "/ballot";
-    browserHistory.push(getStartedNow);
+    const getStartedNow = "/ballot";
+    historyPush(getStartedNow);
   }
 
   updateVoterFullName (event) {
@@ -227,14 +228,14 @@ export default class Intro extends Component {
                       null
                     }
                     <section className="quick-links__section--mobile u-flex">
-                      <a className="quick-links__button quick-links__button--left" onClick={() => browserHistory.push("/ballot")}>Get Started</a>
+                      <a className="quick-links__button quick-links__button--left" onClick={() => historyPush("/ballot")}>Get Started</a>
                     </section>
 
                     <div className="share-your-vision__h1">
                       Share your vision.
 
                       <section className="quick-links__section--mobile u-flex">
-                        <a className="quick-links__button quick-links__button--right" onClick={() => browserHistory.push("/voterguidegetstarted")}>Create Voter Guide</a>
+                        <a className="quick-links__button quick-links__button--right" onClick={() => historyPush("/voterguidegetstarted")}>Create Voter Guide</a>
                       </section>
                     </div>
                   </h1>
@@ -251,7 +252,7 @@ export default class Intro extends Component {
                       null
                     }
                     <section className="quick-links__section--desktop u-flex">
-                      <a className="quick-links__button quick-links__button--left" onClick={() => browserHistory.push("/ballot")}>Get Started</a>
+                      <a className="quick-links__button quick-links__button--left" onClick={() => historyPush("/ballot")}>Get Started</a>
                     </section>
                   </h1>
 
@@ -259,7 +260,7 @@ export default class Intro extends Component {
                     Share your vision.
                      <br /> <br />
                     <section className="quick-links__section--desktop u-flex">
-                      <a className="quick-links__button quick-links__button--right" onClick={() => browserHistory.push("/voterguidegetstarted")}>Create Voter Guide</a>
+                      <a className="quick-links__button quick-links__button--right" onClick={() => historyPush("/voterguidegetstarted")}>Create Voter Guide</a>
                     </section>
                   </h1>
                 </Row>
@@ -284,7 +285,7 @@ export default class Intro extends Component {
               <div className="features__block features__block__row1" onClick={this._toggleBallotFeature}>
                 <Link to={"/ballot"}>
 
-                  <img className={ this.state.show_features_ballot ? "hidden-xs features__image" : "features__image" } src="./img/welcome/benefits/view-your-ballot.svg" width="55%" />
+                  <img className={ this.state.show_features_ballot ? "hidden-xs features__image" : "features__image" } src={cordovaDot("/img/welcome/benefits/view-your-ballot.svg")} width="55%" />
                   <h3 className="features__h3">View Your Ballot</h3>
                   <p className={ this.state.show_features_ballot ? "features__p" : "features__p hidden-xs" }>See your actual ballot, including candidates and measures.</p>
 
@@ -295,7 +296,7 @@ export default class Intro extends Component {
               <div className="features__block features__block__row1" onClick={this._toggleOrganizationsFeature}>
                 <Link to={"/more/network"}>
 
-                    <img className={ this.state.show_features_organizations ? "hidden-xs features__image" : "features__image" } src="./img/welcome/benefits/learn-issues-orgs.svg" width="60%" />
+                    <img className={ this.state.show_features_organizations ? "hidden-xs features__image" : "features__image" } src={ cordovaDot("/img/welcome/benefits/learn-issues-orgs.svg")} width="60%" />
                     <h3 className="features__h3">Learn From Issues and Organizations</h3>
                     <p className={ this.state.show_features_organizations ? "features__p" : "features__p hidden-xs" }>Follow the issues and voter guides of groups you trust. See what they support or oppose.</p>
 
@@ -305,7 +306,7 @@ export default class Intro extends Component {
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
               <div className="features__block features__block__row2" onClick={this._togglePositionsFeature}>
                 <Link to={"/ballot"}>
-                  <img className={ this.state.show_features_positions ? "hidden-xs features__image" : "features__image" } src="./img/welcome/benefits/network-position.svg" />
+                  <img className={ this.state.show_features_positions ? "hidden-xs features__image" : "features__image" } src={ cordovaDot("/img/welcome/benefits/network-position.svg") } />
                   <h3 className="features__h3">See Your Network's Positions</h3>
                   <p className={ this.state.show_features_positions ? "features__p" : "features__p hidden-xs" }>See how many in your network support or oppose each candidate or measure.</p>
                 </Link>
@@ -314,7 +315,7 @@ export default class Intro extends Component {
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
               <div className="features__block features__block__row2" onClick={this._toggleNetworkFeature}>
                 <Link to={"/more/network"}>
-                  <img className={ this.state.show_features_network ? "hidden-xs features__image" : "features__image" } src="./img/welcome/benefits/choose-friends.svg" width="60%" />
+                  <img className={ this.state.show_features_network ? "hidden-xs features__image" : "features__image" } src={ cordovaDot("/img/welcome/benefits/choose-friends.svg")} width="60%" />
                   <h3 className="features__h3">Invite Friends to Your We Vote Network</h3>
                   <p className={ this.state.show_features_network ? "features__p" : "features__p hidden-xs" }>Talk politics with friends who share your values. Avoid flame wars!</p>
                 </Link>
@@ -323,7 +324,7 @@ export default class Intro extends Component {
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
               <div className="features__block features__block__row3" onClick={this._toggleVisionFeature}>
                 <Link to={"/voterguidegetstarted"}>
-                  <img className={ this.state.show_features_vision ? "hidden-xs features__image" : "features__image" } src="./img/welcome/benefits/share-vision.svg" width="55%" />
+                  <img className={ this.state.show_features_vision ? "hidden-xs features__image" : "features__image" } src={ cordovaDot("/img/welcome/benefits/share-vision.svg")} width="55%" />
                   <h3 className="features__h3">Share Your Vision</h3>
                   <p className={ this.state.show_features_vision ? "features__p" : "features__p hidden-xs" }>Empower other voters with what you've learned. Help your friends.</p>
                 </Link>
@@ -332,7 +333,7 @@ export default class Intro extends Component {
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
               <div className="features__block features__block__row3" onClick={this._toggleVoteFeature}>
                 <Link to={"/ballot"}>
-                  <img className={ this.state.show_features_vote ? "hidden-xs features__image" : "features__image" } src="./img/welcome/benefits/decide.svg" width="60%" />
+                  <img className={ this.state.show_features_vote ? "hidden-xs features__image" : "features__image" } src={ cordovaDot("/img/welcome/benefits/decide.svg")} width="60%" />
                   <h3 className="features__h3">Decide & Vote</h3>
                   <p className={ this.state.show_features_vote ? "features__p" : "features__p hidden-xs" }>Cast your vote with confidence after using We Vote.</p>
                 </Link>
@@ -411,10 +412,10 @@ export default class Intro extends Component {
           <div className="container">
             <h2 className="u-f2 u-stack--lg">Our Network</h2>
             <div className="partner__logos">
-                <img className="partner-logo u-push--lg u-stack--lg" src="./img/welcome/partners/google-logo.svg" alt="Google" width="150" />
-                <img className="partner-logo u-push--lg u-stack--lg" src="./img/welcome/partners/center-for-technology.png" alt="Center for Technology and Civic Life" width="200" />
-                <img className="partner-logo u-push--lg u-stack--lg" src="/.img/welcome/partners/vote-org.png" alt="Vote.org" width="169" />
-                <img className="partner-logo u-push--lg u-stack--lg" src="./img/welcome/partners/voting-information-project.png" alt="Voting Information Project" width="193" />
+                <img className="partner-logo u-push--lg u-stack--lg" src={cordovaDot("/img/welcome/partners/google-logo.svg")} alt="Google" width="150" />
+                <img className="partner-logo u-push--lg u-stack--lg" src={cordovaDot("/img/welcome/partners/center-for-technology.png")} alt="Center for Technology and Civic Life" width="200" />
+                <img className="partner-logo u-push--lg u-stack--lg" src={cordovaDot("/img/welcome/partners/vote-org.png")} alt="Vote.org" width="169" />
+                <img className="partner-logo u-push--lg u-stack--lg" src={cordovaDot("/img/welcome/partners/voting-information-project.png")} alt="Voting Information Project" width="193" />
             </div>
           </div>
         </section>

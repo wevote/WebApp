@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from "react";
-import { browserHistory } from "react-router";
 import BallotActions from "../../actions/BallotActions";
 import BallotStore from "../../stores/BallotStore";
 import ElectionStore from "../../stores/ElectionStore";
+import { historyPush } from "../../utils/cordovaUtils";
 import VoterStore from "../../stores/VoterStore";
 import BallotLocationButton from "./BallotLocationButton";
 import { calculateBallotBaseUrl } from "../../utils/textFormat";
@@ -117,11 +117,11 @@ export default class BallotLocationChoices extends Component {
     if (ballot_location_shortcut !== "" && ballot_location_shortcut !== undefined) {
       BallotActions.voterBallotItemsRetrieve(0, "", ballot_location_shortcut);
       // Change the URL to match
-      browserHistory.push(ballotBaseUrl + "/" + ballot_location_shortcut);
+      historyPush(ballotBaseUrl + "/" + ballot_location_shortcut);
     } else if (ballot_returned_we_vote_id !== "" && ballot_returned_we_vote_id !== undefined) {
       BallotActions.voterBallotItemsRetrieve(0, ballot_returned_we_vote_id, "");
       // Change the URL to match
-      browserHistory.push(ballotBaseUrl + "/id/" + ballot_returned_we_vote_id);
+      historyPush(ballotBaseUrl + "/id/" + ballot_returned_we_vote_id);
     }
     if (this.props.toggleFunction) {
       this.props.toggleFunction();

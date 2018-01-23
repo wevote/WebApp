@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import { cordovaDot } from "../../utils/cordovaUtils";
 
 export default class ItemSupportOpposeCounts extends Component {
   static propTypes = {
@@ -82,7 +83,8 @@ export default class ItemSupportOpposeCounts extends Component {
        }
        </div> */}
       <div className="network-positions__support">
-        <img src={ !is_empty && is_majority_support ? "/img/global/icons/up-arrow-color-icon.svg" : "/img/global/icons/up-arrow-gray-icon.svg" } className="network-positions__support-icon u-push--xs" width="20" height="20" />
+        <img src={ !is_empty && is_majority_support ? cordovaDot("/img/global/icons/up-arrow-color-icon.svg") : cordovaDot("/img/global/icons/up-arrow-gray-icon.svg") } 
+             className="network-positions__support-icon u-push--xs" width="20" height="20" />
         <div className="network-positions__count">
           { !is_empty ? support_count : null }
           <span className="sr-only"> Support</span>
@@ -113,7 +115,8 @@ export default class ItemSupportOpposeCounts extends Component {
           { !is_empty ? oppose_count : null }
           <span className="sr-only"> Oppose</span>
         </div>
-        <img src={ !is_empty && !is_majority_support ? "/img/global/icons/down-arrow-color-icon.svg" : "/img/global/icons/down-arrow-gray-icon.svg" } className="network-positions__oppose-icon" width="20" height="20" />
+        <img src={ !is_empty && !is_majority_support ? cordovaDot("/img/global/icons/down-arrow-color-icon.svg") : cordovaDot("/img/global/icons/down-arrow-gray-icon.svg") } 
+             className="network-positions__oppose-icon" width="20" height="20" />
       </div>
     </div>;
   }
