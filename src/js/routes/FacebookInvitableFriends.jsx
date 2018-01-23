@@ -1,5 +1,4 @@
 import React, {Component, PropTypes } from "react";
-import { browserHistory } from "react-router";
 import { Button } from "react-bootstrap";
 import AnalyticsActions from "../actions/AnalyticsActions";
 import CheckBox from "../components/Connect/CheckBox";
@@ -7,6 +6,7 @@ import LoadingWheel from "../components/LoadingWheel";
 import FacebookActions from "../actions/FacebookActions";
 import FriendActions from "../actions/FriendActions";
 import FacebookStore from "../stores/FacebookStore";
+import { historyPush } from "../utils/cordovaUtils";
 import VoterStore from "../stores/VoterStore";
 import VoterActions from "../actions/VoterActions";
 import WouldYouLikeToMergeAccounts from "../components/WouldYouLikeToMergeAccounts";
@@ -95,7 +95,7 @@ export default class FacebookInvitableFriends extends Component {
   }
 
   cancelMergeFunction () {
-    browserHistory.push({
+    historyPush({
       pathname: "/more/network",
       state: {
       }
@@ -184,7 +184,7 @@ export default class FacebookInvitableFriends extends Component {
           const data = {request_id: response.request, recipients_facebook_id_array: response.to, recipients_facebook_name_array: selected_facebook_friends_names};
           // console.log("Final data for all invitations", data);
           FriendActions.friendInvitationByFacebookSend(data);
-          browserHistory.push({
+          historyPush({
             pathname: "/more/network",
             state: {
               message: "You have successfully sent Invitation to your friends.",
@@ -236,7 +236,7 @@ export default class FacebookInvitableFriends extends Component {
 
     if (this.state.facebook_auth_response.facebook_sign_in_failed) {
       // console.log("Facebook sign in failed - push to /more/sign_in");
-      browserHistory.push({
+      historyPush({
         pathname: "/more/network",
         state: {
           message: "Facebook sign in failed. Please try again.",
@@ -292,7 +292,7 @@ export default class FacebookInvitableFriends extends Component {
     // console.log("Facebook friends list", this.state.facebook_invitable_friends.facebook_invitable_friends_list);
     // console.log("facebook friends not exist:", this.state.facebook_invitable_friends.facebook_friends_not_exist);
     if (this.state.facebook_invitable_friends.facebook_friends_not_exist) {
-      browserHistory.push({
+      historyPush({
         pathname: "/more/network",
         state: {
           message: "There are no friends to invite from Facebook. Either there is an error, or you already invited all of your friends on Facebook!",
@@ -303,7 +303,7 @@ export default class FacebookInvitableFriends extends Component {
     }
 
 
-    var facebook_invitable_friends_list = [];
+    let facebook_invitable_friends_list = [];
     if (!this.state.search_filter) {
       facebook_invitable_friends_list = this.state.facebook_invitable_friends.facebook_invitable_friends_list;
     } else {

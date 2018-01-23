@@ -153,8 +153,8 @@ export default class VoterGuidePositions extends Component {
           {/*  <OverlayTrigger placement="top" overlay={electionTooltip} >*/}
             <h4 className="h4 card__additional-heading">
                <span className="u-push--sm">{ election_name ? election_name : "This Election"}</span>
-              {/*{this.state.ballot_election_list.length > 1 ? <img src={"/img/global/icons/gear-icon.png"} className="hidden-print" role="button" onClick={this.toggleSelectBallotModal}
-                alt={"view your ballots"}/> : null}*/}
+              {/*{this.state.ballot_election_list.length > 1 ? <img src={cordovaDot("/img/global/icons/gear-icon.png")} className="hidden-print" role="button" onClick={this.toggleSelectBallotModal}
+                alt={'view your ballots' /> : null}*/}
             </h4>
           {/* </OverlayTrigger> */}
           { at_least_one_position_found_for_this_election ?

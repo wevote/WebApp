@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router";
+import { historyPush } from "../../utils/cordovaUtils";
 import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
 import LoadingWheel from "../../components/LoadingWheel";
 import FollowToggle from "../../components/Widgets/FollowToggle";
@@ -22,7 +23,7 @@ export default class OrganizationVoterGuideCard extends Component {
   }
 
   onEdit () {
-    browserHistory.push("/voterguideedit/" + this.props.organization.organization_we_vote_id);
+    historyPush("/voterguideedit/" + this.props.organization.organization_we_vote_id);
     return <div>{LoadingWheel}</div>;
   }
 

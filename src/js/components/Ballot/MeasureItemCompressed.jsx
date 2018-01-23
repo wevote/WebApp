@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router";
+import { historyPush } from "../../utils/cordovaUtils";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
@@ -108,7 +109,7 @@ export default class MeasureItemCompressed extends Component {
         <BookmarkToggle we_vote_id={measure_we_vote_id} type="MEASURE"/>
         {/* Measure information */}
         <div className={ this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null }
-             onClick={ this.props.link_to_ballot_item_page ? () => browserHistory.push("/measure/" + measure_we_vote_id) : null }>
+             onClick={ this.props.link_to_ballot_item_page ? () => historyPush("/measure/" + measure_we_vote_id) : null }>
           {measure_subtitle}
         </div>
         { measure_text ? <div className="measure_text">{measure_text}</div> : null }

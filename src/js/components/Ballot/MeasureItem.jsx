@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router";
+import { cordovaDot } from "../../utils/cordovaUtils";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
@@ -52,7 +53,7 @@ export default class MeasureItem extends Component {
       state_display_name = this.props.state_code.toUpperCase();
     }
     let measureLink = "/measure/" + we_vote_id;
-    let goToMeasureLink = function () { browserHistory.push(measureLink); };
+    let goToMeasureLink = function () { historyPush(measureLink); };
     let num_of_lines = 2;
     measure_subtitle = capitalizeString(measure_subtitle);
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
@@ -63,11 +64,11 @@ export default class MeasureItem extends Component {
       <div className="card-main__content">
         {/* {
           supportProps && supportProps.is_support ?
-          <img src="/img/global/svg-icons/thumbs-up-color-icon.svg" className="card-main__position-icon" width="24" height="24" /> : null
+          <img src={cordovaDot("/img/global/svg-icons/thumbs-up-color-icon.svg")} className="card-main__position-icon" width="24" height="24" /> : null
         }
         {
           supportProps && supportProps.is_oppose ?
-          <img src="/img/global/svg-icons/thumbs-down-color-icon.svg" className="card-main__position-icon" width="24" height="24" /> : null
+          <img src={cordovaDot("/img/global/svg-icons/thumbs-down-color-icon.svg")} className="card-main__position-icon" width="24" height="24" /> : null
         } */}
         <h2 className="card-main__display-name">
           { this.props.link_to_ballot_item_page ?

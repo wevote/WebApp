@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
-import { browserHistory } from "react-router";
 import BallotActions from "../../actions/BallotActions";
+import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import OrganizationActions from "../../actions/OrganizationActions";
 import VoterActions from "../../actions/VoterActions";
 import { cleanArray } from "../../utils/textFormat";
@@ -28,22 +28,23 @@ export default class BallotElectionList extends Component {
     if (ballot_location_shortcut && ballot_location_shortcut !== "" && ballot_location_shortcut !== "none") {
       // console.log("goToDifferentElection, ballot_location_shortcut: ", ballot_location_shortcut);
       BallotActions.voterBallotItemsRetrieve(0, "", ballot_location_shortcut);
-      browserHistory.push(ballot_base_url + "/" + ballot_location_shortcut);
+      historyPush(ballot_base_url + "/" + ballot_location_shortcut);
     } else if (ballot_returned_we_vote_id && ballot_returned_we_vote_id !== "" && ballot_returned_we_vote_id !== "none") {
       // console.log("goToDifferentElection, ballot_returned_we_vote_id: ", ballot_returned_we_vote_id);
       BallotActions.voterBallotItemsRetrieve(0, ballot_returned_we_vote_id, "");
-      browserHistory.push(ballot_base_url + "/id/" + ballot_returned_we_vote_id);
+      historyPush(ballot_base_url + "/id/" + ballot_returned_we_vote_id);
     } else if (originalTextForMapSearch && originalTextForMapSearch !== "") {
       // Do we still want to be updating addresses? Maybe instead just update google_civic_election_id?
       // console.log("goToDifferentElection, originalTextForMapSearch: ", originalTextForMapSearch);
       let simple_save = false;
       VoterActions.voterAddressSave(originalTextForMapSearch, simple_save, googleCivicElectionId);
-      browserHistory.push(ballot_base_url);
+      historyPush(ballot_base_url);
     } else if (googleCivicElectionId && googleCivicElectionId !== 0) {
       BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, "", "");
       // console.log("goToDifferentElection, googleCivicElectionId: ", googleCivicElectionId);
-      browserHistory.push(ballot_base_url + "/election/" + googleCivicElectionId);
+      historyPush(ballot_base_url + "/election/" + googleCivicElectionId);
     }
+
     // Request positions for the different election
     if (this.props.organization_we_vote_id && this.props.organization_we_vote_id !== "") {
       // console.log("BallotElectionList calling positionListForOpinionMaker, this.props.organization_we_vote_id: ", this.props.organization_we_vote_id, ", googleCivicElectionId:", googleCivicElectionId);
@@ -66,11 +67,11 @@ export default class BallotElectionList extends Component {
                   onClick={this.goToDifferentElection.bind(this, item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search)}>
             {/* Mobile */}
             { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ?
-              <span className="visible-xs">{item.election_description_text}&nbsp;<img src={"/img/global/icons/Circle-Arrow.png"}/></span> :
-              <span className="visible-xs">{item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}...&nbsp;<img src={"/img/global/icons/Circle-Arrow.png"}/></span>
+              <span className="visible-xs">{item.election_description_text}&nbsp;<img src={cordovaDot("/img/global/icons/Circle-Arrow.png")} /></span> :
+              <span className="visible-xs">{item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}...&nbsp;<img src={cordovaDot("/img/global/icons/Circle-Arrow.png")} /></span>
             }
             {/* Desktop */}
-            <span className="hidden-xs">{item.election_description_text}&nbsp;<img src={"/img/global/icons/Circle-Arrow.png"}/></span>
+            <span className="hidden-xs">{item.election_description_text}&nbsp;<img src={cordovaDot("/img/global/icons/Circle-Arrow.png")} /></span>
 
             <div className="ballot-election-list__h2">{moment(item.election_day_text).format("MMMM Do, YYYY")}</div>
           </button>
@@ -89,11 +90,11 @@ export default class BallotElectionList extends Component {
                   onClick={this.goToDifferentElection.bind(this, item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search)}>
             {/* Mobile */}
             { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ?
-              <span className="visible-xs">{item.election_description_text}&nbsp;<img src={"/img/global/icons/Circle-Arrow.png"}/></span> :
-              <span className="visible-xs">{item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}...&nbsp;<img src={"/img/global/icons/Circle-Arrow.png"}/></span>
+              <span className="visible-xs">{item.election_description_text}&nbsp;<img src={cordovaDot("/img/global/icons/Circle-Arrow.png")} /></span> :
+              <span className="visible-xs">{item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}...&nbsp;<img src={cordovaDot("/img/global/icons/Circle-Arrow.png")} /></span>
             }
             {/* Desktop */}
-            <span className="hidden-xs">{item.election_description_text}&nbsp;<img src={"/img/global/icons/Circle-Arrow.png"}/></span>
+            <span className="hidden-xs">{item.election_description_text}&nbsp;<img src={cordovaDot("/img/global/icons/Circle-Arrow.png")} /></span>
 
             <div className="ballot-election-list__h2">{moment(item.election_day_text).format("MMMM Do, YYYY")}</div>
           </button>

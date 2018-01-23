@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import {Button} from "react-bootstrap";
 import Helmet from "react-helmet";
-import { browserHistory } from "react-router";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
+import { historyPush } from "../../utils/cordovaUtils";
 import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 import LoadingWheel from "../../components/LoadingWheel";
 import TwitterActions from "../../actions/TwitterActions";
@@ -142,14 +142,14 @@ export default class SignIn extends Component {
 
 
   render () {
-    if (!this.state.voter){
+    if (!this.state.voter) {
       return LoadingWheel;
     }
 
     // console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
     if (!this.state.voter.signed_in_facebook && this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
       console.log("SignIn.jsx facebook_retrieve_attempted");
-      browserHistory.push("/facebook_sign_in");
+      historyPush("/facebook_sign_in");
       // return <span>SignIn.jsx facebook_retrieve_attempted</span>;
       return LoadingWheel;
     }

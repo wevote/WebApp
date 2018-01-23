@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from "react";
-import { browserHistory, Link } from "react-router";
+import { Link } from "react-router";
 import BallotStore from "../../stores/BallotStore";
 import BookmarkStore from "../../stores/BookmarkStore";
+import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import cookies from "../../utils/cookies";
 import FriendStore from "../../stores/FriendStore";
 import OrganizationActions from "../../actions/OrganizationActions";
@@ -9,13 +10,14 @@ import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
 import SearchAllBox from "../SearchAllBox";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
-var Icon = require("react-svg-icons");
+const Icon = require("react-svg-icons");
+
 
 const links = {
   ballot: function (active) {
-    var icon = "glyphicon glyphicon-list-alt glyphicon-line-adjustment nav-icon";
+    let icon = "glyphicon glyphicon-list-alt glyphicon-line-adjustment nav-icon";
 
-    var jsx =
+    let jsx =
       <Link to="/ballot" className={ "header-nav__item--ballot header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
         <span className={icon} title="Ballot" />
         <span className="header-nav__label">
@@ -27,10 +29,10 @@ const links = {
   },
 
   network: function (active, number_of_incoming_friend_requests) {
-    var jsx =
+    let jsx =
       <Link to="/more/network" className={ "header-nav__item--network header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
         <span title="Network">
-          <img className="glyphicon" src="/img/global/svg-icons/network-icon.svg" />
+          <img className="glyphicon" src={cordovaDot("/img/global/svg-icons/network-icon.svg")} />
           {number_of_incoming_friend_requests ?
             <span className="badge-total badge">{number_of_incoming_friend_requests}</span> :
             null }
@@ -45,9 +47,9 @@ const links = {
 
   donate: function (active) {
 
-    var jsx =
+    let jsx =
       <Link to="/more/donate" className={ "header-nav__item--donate header-nav__item header-nav__item--has-icon hidden-xs" + (active ? " active-icon" : "")}>
-        <img className="glyphicon" src="/img/global/svg-icons/glyphicons-20-heart-empty.svg" />
+        <img className="glyphicon" src={cordovaDot("/img/global/svg-icons/glyphicons-20-heart-empty.svg")} />
         <span className="header-nav__label">
           Donate
           </span>
@@ -151,7 +153,7 @@ export default class HeaderBar extends Component {
   }
 
   accountMenu () {
-    var { is_signed_in, linked_organization_we_vote_id, signed_in_facebook, signed_in_twitter, twitter_screen_name } = this.props.voter;
+    let { is_signed_in, linked_organization_we_vote_id, signed_in_facebook, signed_in_twitter, twitter_screen_name } = this.props.voter;
 
     let show_your_page_from_twitter = signed_in_twitter && twitter_screen_name;
     let show_your_page_from_facebook = signed_in_facebook && linked_organization_we_vote_id && !show_your_page_from_twitter;
@@ -309,8 +311,8 @@ export default class HeaderBar extends Component {
   }
 
   goToGetStarted () {
-    var getStartedNow = "/ballot";
-    browserHistory.push(getStartedNow);
+    let getStartedNow = "/ballot";
+    historyPush(getStartedNow);
   }
 
   render () {

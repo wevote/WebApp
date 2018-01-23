@@ -3,6 +3,7 @@ import { OverlayTrigger, Popover } from "react-bootstrap";
 import { Link } from "react-router";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
+import { cordovaDot } from "../../utils/cordovaUtils";
 import FollowToggle from "./FollowToggle";
 import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdownList";
 import OrganizationCard from "../VoterGuide/OrganizationCard";
@@ -281,7 +282,7 @@ export default class ItemSupportOpposeCheetah extends Component {
         { show_support_row ?
           <div className="network-positions-stacked__support">
             <img
-              src={ is_majority_support ? "/img/global/icons/up-arrow-color-icon.svg" : "/img/global/icons/up-arrow-gray-icon.svg" }
+              src={ is_majority_support ? cordovaDot("/img/global/icons/up-arrow-color-icon.svg") : cordovaDot("/img/global/icons/up-arrow-gray-icon.svg") }
               className="network-positions-stacked__support-icon u-push--xs" width="20" height="20"/>
             <div className="network-positions-stacked__count">
               <span className="u-cursor--pointer u-no-break" onClick={() => this.openCandidateModal()}> { support_count } Support&nbsp;</span>
@@ -316,7 +317,7 @@ export default class ItemSupportOpposeCheetah extends Component {
         { show_oppose_row ?
           <div className="network-positions-stacked__oppose">
             <img
-              src={ is_majority_oppose ? "/img/global/icons/down-arrow-color-icon.svg" : "/img/global/icons/down-arrow-gray-icon.svg" }
+              src={ is_majority_oppose ? cordovaDot("/img/global/icons/down-arrow-color-icon.svg") : cordovaDot("/img/global/icons/down-arrow-gray-icon.svg") }
               className="network-positions-stacked__oppose-icon" width="20" height="20"/>
             <div className="network-positions-stacked__count u-push--xs">
               <span className="u-cursor--pointer u-no-break" onClick={() => this.openCandidateModal()}> { oppose_count } Oppose&nbsp;</span>

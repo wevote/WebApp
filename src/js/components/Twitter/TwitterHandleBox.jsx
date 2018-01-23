@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button, InputGroup } from "react-bootstrap";
-import { browserHistory } from "react-router";
+import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterStore from "../../stores/VoterStore";
 import { extractTwitterHandleFromTextString } from "../../utils/textFormat";
@@ -10,7 +10,7 @@ export default class TwitterHandleBox extends Component {
     super(props);
     this.state = {
       loading: false,
-      twitter_handle: ""
+      twitter_handle: "",
     };
   }
 
@@ -38,7 +38,7 @@ export default class TwitterHandleBox extends Component {
     var { twitter_handle } = this.state;
     this.setState({loading: true});
     twitter_handle = extractTwitterHandleFromTextString(twitter_handle);
-    browserHistory.push("/" + twitter_handle);
+    historyPush("/" + twitter_handle);
   }
 
   twitterHandleStripped () {

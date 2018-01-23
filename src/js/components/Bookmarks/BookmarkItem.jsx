@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router";
+import { historyPush } from "../../utils/cordovaUtils";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
 import BookmarkToggle from "./BookmarkToggle";
 import SupportStore from "../../stores/SupportStore";
@@ -47,7 +48,7 @@ export default class Bookmarks extends Component {
     } else {
       bookmark_link = "/measure/" + we_vote_id;
     }
-    let goToLink = function () { browserHistory.push(bookmark_link); };
+    let goToLink = function () { historyPush(bookmark_link); };
     let what_your_network_thinks;
     if (kind_of_ballot_item === "CANDIDATE" || kind_of_ballot_item === "MEASURE") {
       if (support_count || oppose_count) {

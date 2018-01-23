@@ -130,11 +130,11 @@ export default class VoterGuideOfficeItemCompressed extends Component {
   }
 
   goToCandidateLink (candidate_we_vote_id) {
-    browserHistory.push("/candidate/" + candidate_we_vote_id + "/btvg/" + this.state.organization.organization_we_vote_id);
+    historyPush("/candidate/" + candidate_we_vote_id + "/btvg/" + this.state.organization.organization_we_vote_id);
   }
 
   goToOfficeLink () {
-    browserHistory.push("/office/" + this.props.we_vote_id + "/btvg/" + this.state.organization.organization_we_vote_id);
+    historyPush("/office/" + this.props.we_vote_id + "/btvg/" + this.state.organization.organization_we_vote_id);
   }
 
   doesOrganizationHavePositionOnCandidate (candidate_we_vote_id) {

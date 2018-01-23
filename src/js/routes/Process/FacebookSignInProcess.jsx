@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
-import { browserHistory } from "react-router";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
+import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterActions from "../../actions/VoterActions";
 import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
@@ -40,7 +40,7 @@ export default class FacebookSignInProcess extends Component {
   }
 
   cancelMergeFunction () {
-    browserHistory.push({
+    historyPush({
       pathname: "/more/network",
       state: {
       }
@@ -60,7 +60,7 @@ export default class FacebookSignInProcess extends Component {
       this.setState({merging_two_accounts: true});
     }
     if (voter_has_data_to_preserve) {
-      browserHistory.push({
+      historyPush({
         pathname: "/more/network",
         state: {
           message: "Your accounts have been merged.",
@@ -68,7 +68,7 @@ export default class FacebookSignInProcess extends Component {
         }
       });
     } else {
-      browserHistory.push({
+      historyPush({
         pathname: "/ballot",
         query: { wait_until_voter_sign_in_completes: 1 },
         state: {
@@ -82,7 +82,7 @@ export default class FacebookSignInProcess extends Component {
   voterFacebookSaveToCurrentAccount () {
     // console.log("In voterFacebookSaveToCurrentAccount");
     VoterActions.voterFacebookSaveToCurrentAccount();
-    browserHistory.push({
+    historyPush({
       pathname: "/more/network",
       state: {
         message: "You have successfully signed in with Facebook.",
@@ -119,7 +119,7 @@ export default class FacebookSignInProcess extends Component {
 
     if (facebook_auth_response.facebook_sign_in_failed) {
       // console.log("Facebook sign in failed - push to /more/sign_in");
-      browserHistory.push({
+      historyPush({
         pathname: "/more/sign_in",
         state: {
           message: "Facebook sign in failed. Please try again.",
@@ -141,7 +141,7 @@ export default class FacebookSignInProcess extends Component {
     // If facebook_sign_in_found NOT True, go back to the sign in page to try again
     if (!facebook_auth_response.facebook_sign_in_found) {
       // console.log("facebook_auth_response.facebook_sign_in_found", facebook_auth_response.facebook_sign_in_found);
-      browserHistory.push({
+      historyPush({
         pathname: "/more/sign_in",
         state: {
           message: "Facebook authentication not found. Please try again.",

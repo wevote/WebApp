@@ -1,7 +1,8 @@
 import React from "react";
 import { render } from "react-dom";
-import { browserHistory, Router, applyRouterMiddleware } from "react-router";
+import { browserHistory, hashHistory, Router, applyRouterMiddleware } from "react-router";
 import { useScroll } from "react-router-scroll";
+
 import routes from "./Root";
 const webAppConfig = require("./config");
 
@@ -22,7 +23,7 @@ function startApp() {
   </Router>, document.getElementById("app"));
 }
 
-// wait for Apache Cordova to be ready if available
+// wait for Apache Cordova to be ready, if cordova is available
 if (window.cordova) {
   webAppConfig.IS_CORDOVA = true;
   document.addEventListener('deviceready', () => {

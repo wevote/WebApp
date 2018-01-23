@@ -47,7 +47,7 @@ export default class OrganizationVoterGuideEdit extends Component {
       });
     } else {
       const voter_guide_redirect_link = "/voterguide/" + this.props.params.organization_we_vote_id;
-      browserHistory.push(voter_guide_redirect_link);
+      historyPush(voter_guide_redirect_link);
     }
   }
 
@@ -66,7 +66,7 @@ export default class OrganizationVoterGuideEdit extends Component {
       this.setState({organization_we_vote_id: nextProps.params.organization_we_vote_id});
     } else {
       const voter_guide_redirect_link = "/voterguide/" + nextProps.params.organization_we_vote_id;
-      browserHistory.push(voter_guide_redirect_link);
+      historyPush(voter_guide_redirect_link);
     }
   }
 
@@ -76,7 +76,7 @@ export default class OrganizationVoterGuideEdit extends Component {
   }
 
   onDoneButton () {
-    browserHistory.push("/voterguideedit/" + this.state.organization_we_vote_id);
+    historyPush("/voterguideedit/" + this.state.organization_we_vote_id);
   }
 
   _onVoterStoreChange () {

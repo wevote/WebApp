@@ -1,6 +1,5 @@
 /* global TimelineLite */
 import React, { Component } from "react";
-import { browserHistory } from "react-router";
 import Helmet from "react-helmet";
 import AnimationStory1 from "../../components/Animation/AnimationStory1";
 import AnimationStory2 from "../../components/Animation/AnimationStory2";
@@ -10,6 +9,7 @@ import AnimationStory5 from "../../components/Animation/AnimationStory5";
 // import AnimationStory6 from "../../components/Animation/AnimationStory6";
 import AnimationStory7 from "../../components/Animation/AnimationStory7";
 import cookies from "../../utils/cookies";
+import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 var Slider = require("react-slick");
 
 export default class IntroStory extends Component {
@@ -31,8 +31,8 @@ export default class IntroStory extends Component {
   }
 
   goToBallotLink () {
-    var sampleBallotLink = "/intro/sample_ballot";
-    browserHistory.push(sampleBallotLink);
+    let sampleBallotLink = "/intro/sample_ballot";
+    historyPush(sampleBallotLink);
   }
 
   componentWillMount () {
@@ -50,10 +50,10 @@ export default class IntroStory extends Component {
 
   render () {
     //These are GreenSock animation instances
-    var timeline = new TimelineLite();
+    let timeline = new TimelineLite();
 
     //These are settings for the react-slick slider
-    var settings = {
+    let settings = {
       dots: true,
       infinite: false,
       speed: 500,
@@ -65,13 +65,13 @@ export default class IntroStory extends Component {
       arrows: true,
       beforeChange: function () {
         timeline.restart();
-      }
+      },
     };
 
     return <div>
       <Helmet title="Welcome to We Vote" />
       <div className="intro-story container-fluid well u-inset--md">
-        <img src={"/img/global/icons/x-close.png"} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
+        <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
         <Slider ref="slider" {...settings}>
           <div key={1}><AnimationStory1 next={this.next}/></div>
           <div key={2}><AnimationStory2 next={this.next}/></div>
