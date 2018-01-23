@@ -1,12 +1,13 @@
 import React, { Component, PropTypes } from "react";
 import { OverlayTrigger, Popover } from "react-bootstrap";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router";
 import TextTruncate from "react-text-truncate";
 import { capitalizeString } from "../../utils/textFormat";
 import BallotSideBarLink from "../Navigation/BallotSideBarLink";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
+import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import ImageHandler from "../ImageHandler";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
 import LearnMore from "../Widgets/LearnMore";
@@ -78,8 +79,8 @@ export default class OfficeItemCompressedRaccoon extends Component {
   componentWillReceiveProps (nextProps){
     if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
       this.setState({
-         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
-       });
+        organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
+      });
     }
   }
 
@@ -91,11 +92,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
   onVoterGuideStoreChange () {
     this.setState({
-      transitioning: false
+      transitioning: false,
     });
   }
 
-  _onOrganizationStoreChange (){
+  _onOrganizationStoreChange () {
     // console.log("VoterGuideOfficeItemCompressed _onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
@@ -148,12 +149,12 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
   goToCandidateLink (candidate_we_vote_id) {
     let candidate_link = this.getCandidateLink(candidate_we_vote_id);
-    browserHistory.push(candidate_link);
+    historyPush(candidate_link);
   }
 
   goToOfficeLink () {
     let office_link = this.getOfficeLink();
-    browserHistory.push(office_link);
+    historyPush(office_link);
   }
 
   closeYourNetworkSupportsPopover () {
@@ -170,9 +171,9 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
-    var candidate_list_to_display = this.props.candidate_list;
+    let candidate_list_to_display = this.props.candidate_list;
     let total_number_of_candidates_to_display = this.props.candidate_list.length;
-    var remaining_candidates_to_display_count = 0;
+    let remaining_candidates_to_display_count = 0;
 
     if (!this.state.display_all_candidates_flag && this.props.candidate_list.length > NUMBER_OF_CANDIDATES_TO_DISPLAY) {
       candidate_list_to_display = this.props.candidate_list.slice(0, NUMBER_OF_CANDIDATES_TO_DISPLAY);
@@ -245,9 +246,10 @@ export default class OfficeItemCompressedRaccoon extends Component {
                title={<span>Your Network is Undecided <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closeYourNetworkIsUndecidedPopover}>
         Your friends, and the organizations you listen to, are <strong>Your Network</strong>.
-        Everyone in your network
-        that <span className="u-no-break"><img src="/img/global/icons/thumbs-up-color-icon.svg"
-                                               width="20" height="20" /> supports</span> a candidate adds
+        Everyone in your network that
+        <span className="u-no-break">
+          <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /> supports
+        </span> a candidate adds
         +1 to that candidate's <strong>Score in Your Network</strong>. None of the candidates running
         for {ballot_item_display_name} have more support in your network than the other candidates.
       </Popover>;
@@ -353,9 +355,10 @@ export default class OfficeItemCompressedRaccoon extends Component {
                          title={<span>Your Network Supports <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                          onClick={this.closeYourNetworkSupportsPopover}>
                   Your friends, and the organizations you listen to, are <strong>Your Network</strong>.
-                  Everyone in your network
-                  that <span className="u-no-break"><img src="/img/global/icons/thumbs-up-color-icon.svg"
-                                                         width="20" height="20" /> supports</span> {one_candidate.ballot_item_display_name} adds
+                  Everyone in your network that
+                  <span className="u-no-break">
+                    <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /> supports
+                  </span> {one_candidate.ballot_item_display_name} adds
                   +1 to {one_candidate.ballot_item_display_name}'s <strong>Score in Your Network</strong>. {one_candidate.ballot_item_display_name} has
                   the highest score in your network.
                 </Popover>;
@@ -373,7 +376,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
                     <div className="u-flex-none u-justify-end">
                       <span className="u-push--xs">Supported by you</span>
-                      <img src="/img/global/svg-icons/thumbs-up-color-icon.svg" width="24" height="24" />
+                      <img src={cordovaDot("/img/global/svg-icons/thumbs-up-color-icon.svg")} width="24" height="24" />
                     </div>
                   </div> :
 
@@ -394,7 +397,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                                       overlay={yourNetworkSupportsPopover}>
                         <div>
                           <span className="u-push--xs u-cursor--pointer">Your network supports</span>
-                          <img src="/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" />
+                          <img src={cordovaDot("/img/global/icons/up-arrow-color-icon.svg")} className="network-positions__support-icon" width="20" height="20" />
                         </div>
                       </OverlayTrigger>
                     </div>

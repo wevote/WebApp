@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from "react";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import CandidateStore from "../../stores/CandidateStore";
+import { historyPush } from "../../utils/cordovaUtils";
 import ImageHandler from "../ImageHandler";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
 import OfficeNameText from "../Widgets/OfficeNameText";
@@ -30,7 +31,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     twitter_followers_count: PropTypes.number,
     twitter_handle: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired, // This is the candidate_we_vote_id
-    link_to_ballot_item_page: PropTypes.bool
+    link_to_ballot_item_page: PropTypes.bool,
   };
 
   constructor (props) {
@@ -53,13 +54,14 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    var supportProps = SupportStore.get(this.props.we_vote_id);
+    let supportProps = SupportStore.get(this.props.we_vote_id);
     if (supportProps !== undefined) {
       this.setState({
         supportProps: supportProps,
-        transitioning: false
+        transitioning: false,
       });
     }
+
     // console.log("OrganizationVoterGuideCandidateItem, this.props:", this.props);
     if (this.props.we_vote_id) {
       // If here we want to get the candidate so we can get the office_we_vote_id
@@ -69,9 +71,10 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
         office_we_vote_id: candidate.office_we_vote_id,
       });
     }
+
     if (this.props.organization_we_vote_id) {
       this.setState({
-        organization_we_vote_id: this.props.organization_we_vote_id
+        organization_we_vote_id: this.props.organization_we_vote_id,
       });
     }
   }
@@ -93,8 +96,8 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     }
   }
 
-  togglePositionStatement (){
-    this.setState({hide_position_statement: !this.state.hide_position_statement});
+  togglePositionStatement () {
+    this.setState({ hide_position_statement: !this.state.hide_position_statement });
   }
 
   getCandidateLink () {
@@ -108,11 +111,11 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
 
   goToCandidateLink () {
     // If here, we assume the voter is on the Office page
-    browserHistory.push("/candidate/" + this.state.candidate_we_vote_id + "/bto/" + this.state.organization_we_vote_id);
+    historyPush("/candidate/" + this.state.candidate_we_vote_id + "/bto/" + this.state.organization_we_vote_id);
   }
 
   goToOfficeLink () {
-    browserHistory.push("/office/" + this.state.office_we_vote_id + "/btvg/" + this.state.organization_we_vote_id);
+    historyPush("/office/" + this.state.office_we_vote_id + "/btvg/" + this.state.organization_we_vote_id);
   }
 
   render () {
@@ -146,6 +149,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     } else {
       candidate_photo_url_html = <i className="card-main__avatar icon-office-child icon-main icon-icon-person-placeholder-6-1" />;
     }
+
     // let positions_in_your_network = SupportStore.get(we_vote_id) && ( SupportStore.get(we_vote_id).oppose_count || SupportStore.get(we_vote_id).support_count);
 
     let one_candidate = CandidateStore.getCandidate(candidate_we_vote_id);

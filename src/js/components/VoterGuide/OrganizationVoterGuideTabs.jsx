@@ -110,7 +110,7 @@ export default class OrganizationVoterGuideTabs extends Component {
       });
       // DALE 2017-11-24 This is a partially implemented redirect, to make sure the URL matches the tab.
       // But this is an expensive action as it reloads quite a bit of data from the API server, so we leave this off for now.
-      // browserHistory.push("/resistancevoter/" + destination_tab);
+      // historyPush("/resistancevoter/" + destination_tab);
     }
    }
 

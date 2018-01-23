@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { browserHistory } from "react-router";
+import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
@@ -16,7 +16,7 @@ export default class VerifyEmailProcess extends Component {
     this.state = {
       voter: VoterStore.getVoter(),
       yes_please_merge_accounts: false,
-      saving: true
+      saving: true,
     };
   }
 
@@ -32,10 +32,10 @@ export default class VerifyEmailProcess extends Component {
   }
 
   cancelMergeFunction () {
-    browserHistory.push({
+    historyPush({
       pathname: "/more/sign_in",
       state: {
-      }
+      },
     });
     // message: "You have chosen to NOT merge your two accounts.",
     // message_type: "success"
@@ -46,30 +46,31 @@ export default class VerifyEmailProcess extends Component {
       voter: VoterStore.getVoter(),
       email_address_status: VoterStore.getEmailAddressStatus(),
       email_sign_in_status: VoterStore.getEmailSignInStatus(),
-      saving: false
+      saving: false,
     });
   }
 
   voterMergeTwoAccountsByEmailKey (email_secret_key, voter_has_data_to_preserve = true) {
     VoterActions.voterMergeTwoAccountsByEmailKey(email_secret_key);
     if (voter_has_data_to_preserve) {
-      browserHistory.push({
+      historyPush({
         pathname: "/more/sign_in",
         state: {
           message: "Your accounts have been merged.",
-          message_type: "success"
-        }
+          message_type: "success",
+        },
       });
     } else {
-      browserHistory.push({
+      historyPush({
         pathname: "/ballot",
         state: {
           message: "You have successfully verified and signed in with your email.",
-          message_type: "success"
-        }
+          message_type: "success",
+        },
       });
     }
   }
+
   voterEmailAddressVerify (email_secret_key) {
     VoterActions.voterEmailAddressVerify(email_secret_key);
     this.setState({saving: true});
@@ -93,12 +94,12 @@ export default class VerifyEmailProcess extends Component {
     // This process starts when we return from attempting voterEmailAddressVerify
     if (!this.state.email_sign_in_status.email_address_found) {
       console.log("Could not find secret_key - push to /more/sign_in");
-      browserHistory.push({
+      historyPush({
         pathname: "/more/sign_in",
         state: {
           message: "Email verification did not work. Please try 'Send Verification Email' again.",
-          message_type: "danger"
-        }
+          message_type: "danger",
+        },
       });
       return LoadingWheel;
     }
@@ -113,8 +114,8 @@ export default class VerifyEmailProcess extends Component {
 
     if (!this.state.email_sign_in_status.email_ownership_is_verified) {
       console.log("email_ownership_is_verified not true - push to /more/sign_in");
-      browserHistory.push({
-        pathname: "/more/sign_in"
+      historyPush({
+        pathname: "/more/sign_in",
       });
       return LoadingWheel;
     }
@@ -122,12 +123,12 @@ export default class VerifyEmailProcess extends Component {
     if (this.state.email_sign_in_status.email_secret_key_belongs_to_this_voter) {
       // We don't need to do anything more except redirect
       console.log("secret key owned by this voter - push to /ballot");
-      browserHistory.push({
+      historyPush({
         pathname: "/ballot",
         state: {
           message: "You have successfully verified your email.",
-          message_type: "success"
-        }
+          message_type: "success",
+        },
       });
       return LoadingWheel;
     } else if (this.state.voter.has_data_to_preserve) {

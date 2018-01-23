@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from "react";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import CandidateStore from "../../stores/CandidateStore";
+import { historyPush } from "../../utils/cordovaUtils";
 import ImageHandler from "../ImageHandler";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
 import OfficeNameText from "../Widgets/OfficeNameText";
@@ -51,13 +52,14 @@ export default class CandidateItem extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    var supportProps = SupportStore.get(this.props.we_vote_id);
+    let supportProps = SupportStore.get(this.props.we_vote_id);
     if (supportProps !== undefined) {
       this.setState({
         supportProps: supportProps,
-        transitioning: false
+        transitioning: false,
       });
     }
+
     // console.log("CandidateItem, this.props:", this.props);
     if (this.props.we_vote_id) {
       // If here we want to get the candidate so we can get the office_we_vote_id
@@ -101,11 +103,11 @@ export default class CandidateItem extends Component {
 
   goToCandidateLink () {
     // If here, we assume the voter is on the Office page
-    browserHistory.push("/candidate/" + this.state.candidate_we_vote_id + "/b/bto/");
+    historyPush("/candidate/" + this.state.candidate_we_vote_id + "/b/bto/");
   }
 
   goToOfficeLink () {
-    browserHistory.push("/office/" + this.state.office_we_vote_id + "/b/btvg/");
+    historyPush("/office/" + this.state.office_we_vote_id + "/b/btvg/");
   }
 
   render () {

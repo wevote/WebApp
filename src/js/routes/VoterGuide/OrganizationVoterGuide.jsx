@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from "react";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router";
 import { Button } from "react-bootstrap";
 import AnalyticsActions from "../../actions/AnalyticsActions";
+import { historyPush } from "../../utils/cordovaUtils";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import HeaderBar from "../../components/Navigation/HeaderBar";
@@ -50,7 +51,7 @@ export default class OrganizationVoterGuide extends Component {
       // AUTO_FOLLOW is "af"
       let current_path_name_without_auto_follow = current_path_name.replace("/" + AUTO_FOLLOW, "");
       // console.log("OrganizationVoterGuide, current_path_name_without_auto_follow: ", current_path_name_without_auto_follow);
-      browserHistory.push(current_path_name_without_auto_follow);
+      historyPush(current_path_name_without_auto_follow);
       this.setState({
         auto_follow_redirect_happening: true,
       });
@@ -93,7 +94,7 @@ export default class OrganizationVoterGuide extends Component {
   }
 
   onEdit () {
-    browserHistory.push("/voterguideedit/" + this.state.organization_we_vote_id);
+    historyPush("/voterguideedit/" + this.state.organization_we_vote_id);
     return <div>{LoadingWheel}</div>;
   }
 
@@ -124,8 +125,8 @@ export default class OrganizationVoterGuide extends Component {
       this.state.organization.organization_we_vote_id === this.state.voter.linked_organization_we_vote_id;
 
     if (!organization_id) {
-      var floatRight = {
-        float: "right"
+      let floatRight = {
+        float: "right",
       };
       return <div className="card">
           <div className="card-main">

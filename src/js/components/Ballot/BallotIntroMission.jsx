@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { cordovaDot } from "../../utils/cordovaUtils";
 
 export default class BallotIntroMission extends Component {
   static propTypes = {
@@ -17,11 +18,11 @@ export default class BallotIntroMission extends Component {
       <div className="intro-modal__h2">Make the world a better place.</div>
       <div className="intro-modal-features">
         <div className="intro-modal-features__block">
-          <img className="intro-modal-features__image" src="/img/welcome/benefits/learn-from-orgs.png" width="50%" height="50%" />
+          <img className="intro-modal-features__image" src={cordovaDot("/img/welcome/benefits/learn-from-orgs.png")} width="50%" height="50%" />
           <h3 className="intro-modal-features__text">Listen to Organizations</h3>
         </div>
         <div className="intro-modal-features__block">
-          <img className="intro-modal-features__image" src="/img/welcome/benefits/choose-friends.png" width="50%" height="50%" />
+          <img className="intro-modal-features__image" src={cordovaDot("/img/welcome/benefits/choose-friends.png")} width="50%" height="50%" />
           <h3 className="intro-modal-features__text">Listen to Friends</h3>
         </div>
       </div>

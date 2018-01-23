@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import { Alert, Button } from "react-bootstrap";
-import { browserHistory } from "react-router";
 import FacebookActions from "../actions/FacebookActions";
 import FacebookStore from "../stores/FacebookStore";
+import { historyPush } from "../utils/cordovaUtils";
 import LoadingWheel from "../components/LoadingWheel";
 import VoterActions from "../actions/VoterActions";
 import VoterStore from "../stores/VoterStore";
@@ -16,23 +16,23 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
   };
 
   constructor (props) {
-      super(props);
-      this.state = {
-        loading: true,
-        email_address_status: {
-          email_address_already_owned_by_other_voter: false,
-          email_address_created: false,
-          email_address_deleted: false,
-          verification_email_sent: false
-        },
-        facebook_sign_in_status: {
-          email_address_created: false,
-          email_address_deleted: false,
-          verification_email_sent: false
-        },
-        voter_email_address: "",
-        voter_email_address_list: []
-      };
+    super(props);
+    this.state = {
+      loading: true,
+      email_address_status: {
+        email_address_already_owned_by_other_voter: false,
+        email_address_created: false,
+        email_address_deleted: false,
+        verification_email_sent: false,
+      },
+      facebook_sign_in_status: {
+        email_address_created: false,
+        email_address_deleted: false,
+        verification_email_sent: false,
+      },
+      voter_email_address: "",
+      voter_email_address_list: [],
+    };
   }
 
   componentDidMount () {
@@ -53,26 +53,26 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
   _onFacebookStoreChange () {
     this.setState({
       facebook_sign_in_status: FacebookStore.getFacebookAuthResponse(),
-      saving: false
+      saving: false,
     });
   }
 
   _onVoterStoreChange () {
     this.setState({
       email_sign_in_status: VoterStore.getEmailSignInStatus(),
-      saving: false
+      saving: false,
     });
   }
 
   cancelMerge () {
-    browserHistory.push("/more/sign_in");
+    historyPush("/more/sign_in");
   }
 
   voterEmailAddressSignInConfirm (email_secret_key) {
     // console.log("voterEmailAddressSignInConfirm, email_secret_key:", email_secret_key);
     VoterActions.voterEmailAddressSignInConfirm(email_secret_key);
     this.setState({
-      saving: true
+      saving: true,
     });
   }
 
@@ -82,7 +82,7 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
   }
 
   render () {
-    var { saving } = this.state;
+    let { saving } = this.state;
     if (saving || !this.state.email_sign_in_status){
       return LoadingWheel;
     }

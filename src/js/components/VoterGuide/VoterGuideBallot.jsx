@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
-import { browserHistory, Link } from "react-router";
+import { Link } from "react-router";
 import AddressBox from "../../components/AddressBox";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import BallotActions from "../../actions/BallotActions";
@@ -12,6 +12,7 @@ import BallotSummaryModal from "../../components/Ballot/BallotSummaryModal";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateModal from "../../components/Ballot/CandidateModal";
+import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import cookies from "../../utils/cookies";
 import EditAddressInPlace from "../../components/Widgets/EditAddressInPlace";
 import ElectionActions from "../../actions/ElectionActions";
@@ -119,18 +120,18 @@ export default class VoterGuideBallot extends Component {
         // Change the ballot on load to make sure we are getting what we expect from the url
         BallotActions.voterBallotItemsRetrieve(0, "", ballot_location_shortcut);
         // Change the URL to match
-        browserHistory.push(ballotBaseUrl + "/" + ballot_location_shortcut);
+        historyPush(ballotBaseUrl + "/" + ballot_location_shortcut);
       } else if (ballot_returned_we_vote_id !== "") {
         // Change the ballot on load to make sure we are getting what we expect from the url
         BallotActions.voterBallotItemsRetrieve(0, ballot_returned_we_vote_id, "");
         // Change the URL to match
-        browserHistory.push(ballotBaseUrl + "/id/" + ballot_returned_we_vote_id);
+        historyPush(ballotBaseUrl + "/id/" + ballot_returned_we_vote_id);
       } else if (google_civic_election_id_from_url !== 0) {
         // Change the ballot on load to make sure we are getting what we expect from the url
         if (google_civic_election_id !== google_civic_election_id_from_url) {
           BallotActions.voterBallotItemsRetrieve(google_civic_election_id_from_url, "", "");
           // Change the URL to match
-          browserHistory.push(ballotBaseUrl + "/election/" + google_civic_election_id_from_url);
+          historyPush(ballotBaseUrl + "/election/" + google_civic_election_id_from_url);
         }
         // No change to the URL needed
         // Now set google_civic_election_id
@@ -138,13 +139,13 @@ export default class VoterGuideBallot extends Component {
       } else if (google_civic_election_id !== 0) {
         // No need to retrieve data again
         // Change the URL to match the current google_civic_election_id
-        browserHistory.push(ballotBaseUrl + "/election/" + google_civic_election_id);
+        historyPush(ballotBaseUrl + "/election/" + google_civic_election_id);
       }
     }
     // DALE NOTE 2018-1-18 Commented this out because it will take voter away from voter guide. Needs further testing.
     // else if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
     //   // console.log("if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false");
-    //   browserHistory.push("/settings/location");
+    //   historyPush("/settings/location");
     // }
 
     let filter_type = this.props.location && this.props.location.query ? this.props.location.query.type : "all";
@@ -304,8 +305,8 @@ export default class VoterGuideBallot extends Component {
         if ( this.state.voter && this.state.voter.is_signed_in ) {
           consider_opening_ballot_intro_modal = true;
           this.setState({ wait_until_voter_sign_in_completes: undefined });
-          // console.log("onVoterStoreChange, about to browserHistory.push(this.state.pathname):", this.state.pathname);
-          browserHistory.push(this.state.pathname);
+          // console.log("onVoterStoreChange, about to historyPush(this.state.pathname):", this.state.pathname);
+          historyPush(this.state.pathname);
         }
       }
 
@@ -550,7 +551,7 @@ export default class VoterGuideBallot extends Component {
     }
 
     if (ballot_with_all_items.length === 0 && in_remaining_decisions_mode) {
-      browserHistory.push(this.state.pathname);
+      historyPush(this.state.pathname);
     }
     // console.log("VoterGuideBallot.jsx, this.state.google_civic_election_id: ", this.state.google_civic_election_id);
 
@@ -597,7 +598,7 @@ export default class VoterGuideBallot extends Component {
                       null }
                     {/* We always show the change election option */}
                     <span className="u-no-break hidden-print u-f8 u-cursor--pointer"
-                          onClick={this.toggleSelectBallotModal} ><img src={"/img/global/icons/gear-icon.png"}
+                          onClick={this.toggleSelectBallotModal} ><img src={cordovaDot("/img/global/icons/gear-icon.png")}
                           role="button"
                           alt={"change address or election"}/> change address or election</span>
                   </h1>

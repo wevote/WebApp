@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
-import { browserHistory } from "react-router";
 import GuidePositionListForVoter from "./VoterGuide/GuidePositionListForVoter";
+import { historyPush } from "../utils/cordovaUtils";
 import LoadingWheel from "../components/LoadingWheel";
 import OrganizationActions from "../actions/OrganizationActions";
 import TwitterHandleBox from "../components/Twitter/TwitterHandleBox";
@@ -10,12 +10,12 @@ import VoterStore from "../stores/VoterStore";
 // This file is only for use with people who aren't signed in
 export default class YourPage extends Component {
   static propTypes = {
-    params: PropTypes.object
+    params: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
-    this.state = {voter: VoterStore.getVoter()};
+    this.state = { voter: VoterStore.getVoter() };
   }
 
   componentWillMount () {
@@ -23,12 +23,12 @@ export default class YourPage extends Component {
 
     let voter_has_twitter_handle = voter.twitter_screen_name ? true : false;
     if (voter_has_twitter_handle) {
-      browserHistory.push("/" + voter.twitter_screen_name);
+      historyPush("/" + voter.twitter_screen_name);
     }
 
     let voter_has_public_page = voter.linked_organization_we_vote_id ? true : false;
     if (voter_has_public_page) {
-      browserHistory.push("/voterguide/" + voter.linked_organization_we_vote_id);
+      historyPush("/voterguide/" + voter.linked_organization_we_vote_id);
     }
   }
 
@@ -48,12 +48,12 @@ export default class YourPage extends Component {
 
     let voter_has_twitter_handle = voter.twitter_screen_name ? true : false;
     if (voter_has_twitter_handle) {
-      browserHistory.push("/" + voter.twitter_screen_name);
+      historyPush("/" + voter.twitter_screen_name);
     }
 
     let voter_has_public_page = voter.linked_organization_we_vote_id ? true : false;
     if (voter_has_public_page) {
-      browserHistory.push("/voterguide/" + voter.linked_organization_we_vote_id);
+      historyPush("/voterguide/" + voter.linked_organization_we_vote_id);
     }
   }
 
@@ -73,7 +73,7 @@ export default class YourPage extends Component {
 
     const { voter } = this.state;
 
-    var signed_in_facebook = voter === undefined ? false : voter.signed_in_facebook;
+    let signed_in_facebook = voter === undefined ? false : voter.signed_in_facebook;
     if (signed_in_facebook) {
       let voter_not_linked_to_organization = !voter.linked_organization_we_vote_id;
       if (voter_not_linked_to_organization) {

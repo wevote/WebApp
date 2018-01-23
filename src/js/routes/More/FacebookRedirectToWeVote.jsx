@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { browserHistory } from "react-router";
+import { historyPush } from "../../utils/cordovaUtils";
 const web_app_config = require("../../config");
 
 export default class FacebookRedirectToWeVote extends Component {
@@ -12,7 +12,7 @@ export default class FacebookRedirectToWeVote extends Component {
     console.log("Redirecting to live we vote site on facebooklandingprocess page");
 
     return <div className="facebook-redirect" id="facebook-landing-id">
-      { browserHistory.push(facebook_request_link) }
+      { historyPush(facebook_request_link) }
     </div>;
   }
 

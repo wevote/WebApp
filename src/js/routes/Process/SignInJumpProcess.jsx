@@ -1,5 +1,5 @@
 import { Component, PropTypes } from "react";
-import { browserHistory } from "react-router";
+import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
@@ -40,10 +40,10 @@ export default class SignInJumpProcess extends Component {
   }
 
   cancelMergeFunction () {
-    browserHistory.push({
+    historyPush({
       pathname: this.state.jump_path,
       state: {
-      }
+      },
     });
   }
 
@@ -60,14 +60,15 @@ export default class SignInJumpProcess extends Component {
   voterMergeTwoAccountsByJumpProcess (incoming_voter_device_id, voter_has_data_to_preserve = true) {
     console.log("voterMergeTwoAccountsByJumpProcess, incoming_voter_device_id: ", incoming_voter_device_id, voter_has_data_to_preserve);
     // VoterActions.voterMergeTwoAccountsByJumpProcess(incoming_voter_device_id);
-    browserHistory.push({
+    historyPush({
       pathname: this.state.jump_path,
       state: {
         // message: "You have successfully verified and signed in with your email.",
         // message_type: "success"
-      }
+      },
     });
   }
+
   voterAnalysisForJumpProcess (incoming_voter_device_id) {
     VoterActions.voterAnalysisForJumpProcess(incoming_voter_device_id);
     this.setState({saving: true});
@@ -91,7 +92,7 @@ export default class SignInJumpProcess extends Component {
     // // This process starts when we return from attempting voterAnalysisForJumpProcess
     // if (!this.state.email_sign_in_status.email_address_found) {
     //   console.log("Could not find secret_key - push to /more/sign_in");
-    //   browserHistory.push({
+    //  historyPush({
     //     pathname: "/more/sign_in",
     //     state: {
     //       message: "Email verification did not work. Please try 'Send Verification Email' again.",
@@ -112,12 +113,12 @@ export default class SignInJumpProcess extends Component {
     if (this.state.incoming_voter_device_id_belongs_to_this_voter) {
       // We don't need to do anything more except redirect
       console.log("incoming_voter_device_id owned by this voter - push to jump_to location: ", this.state.jump_path);
-      browserHistory.push({
+      historyPush({
         pathname: this.state.jump_path,
         state: {
           // message: "You have successfully verified your email.",
           // message_type: "success"
-        }
+        },
       });
       return LoadingWheel;
     // } else if (this.state.voter.has_data_to_preserve) {

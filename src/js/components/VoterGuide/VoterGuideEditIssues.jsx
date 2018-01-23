@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router";
+import { historyPush } from "../../utils/cordovaUtils";
 import IssueActions from "../../actions/IssueActions";
 import IssueLinkToggle from "../Issues/IssueLinkToggle";
 import IssueStore from "../../stores/IssueStore";
@@ -74,7 +75,7 @@ export default class VoterGuideEditIssues extends Component {
   }
 
   onDoneButton () {
-    browserHistory.push("/voterguideedit/" + this.props.organization_we_vote_id);
+    historyPush("/voterguideedit/" + this.props.organization_we_vote_id);
   }
 
   render () {

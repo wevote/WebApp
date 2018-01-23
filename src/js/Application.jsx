@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import { browserHistory } from "react-router";
 import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
 import ElectionActions from "./actions/ElectionActions";
@@ -8,6 +7,7 @@ import HeaderBackToBar from "./components/Navigation/HeaderBackToBar";
 import HeaderBar from "./components/Navigation/HeaderBar";
 import HeaderGettingStartedBar from "./components/Navigation/HeaderGettingStartedBar";
 import Headroom from "headroom.js";
+import { historyPush } from "./utils/cordovaUtils";
 import IssueActions from "./actions/IssueActions";
 import IssueStore from "././stores/IssueStore";
 import OrganizationActions from "./actions/OrganizationActions";
@@ -17,7 +17,7 @@ import VoterStore from "./stores/VoterStore";
 const web_app_config = require("./config");
 import { stringContains } from "./utils/textFormat";
 
-var loadingScreenStyles = {
+const loadingScreenStyles = {
   position: "fixed",
   height: "100vh",
   width: "100vw",
@@ -62,11 +62,11 @@ export default class Application extends Component {
     };
 
     (function (d, s, id){
-       var js;
-       var fjs = d.getElementsByTagName(s)[0];
+       let js;
+       let fjs = d.getElementsByTagName(s)[0];
        if (d.getElementById(id)) {return;}
        js = d.createElement(s); js.id = id;
-       js.src = "//connect.facebook.net/en_US/sdk.js";
+       js.src = "https://connect.facebook.net/en_US/sdk.js";
        fjs.parentNode.insertBefore(js, fjs);
      }(document, "script", "facebook-jssdk"));
   }
@@ -189,7 +189,7 @@ export default class Application extends Component {
         if (at_least_one_query_variable_found && this.props.location.pathname) {
           // console.log("at_least_one_query_variable_found push: ", at_least_one_query_variable_found);
           // console.log("this.props.location.pathname: ", this.props.location.pathname);
-          browserHistory.push(this.props.location.pathname);
+          historyPush(this.props.location.pathname);
         }
       }
     }

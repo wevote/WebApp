@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
-import { browserHistory } from "react-router";
 import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 import FacebookStore from "../../stores/FacebookStore";
+import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../../components/LoadingWheel";
 import TwitterSignIn from "../../components/Twitter/TwitterSignIn";
 import VoterStore from "../../stores/VoterStore";
@@ -17,8 +17,8 @@ export default class SignIn extends Component {
   }
 
   goToBallotLink () {
-    var sampleBallotLink = "/intro/sample_ballot";
-    browserHistory.push(sampleBallotLink);
+    let sampleBallotLink = "/intro/sample_ballot";
+    historyPush(sampleBallotLink);
   }
 
   componentWillMount () {
@@ -57,21 +57,21 @@ export default class SignIn extends Component {
     }
 
     if (this.state.voter.signed_in_facebook && this.state.voter.signed_in_twitter) {
-      browserHistory.push("/intro/sample_ballot");
+      historyPush("/intro/sample_ballot");
       return LoadingWheel;
     }
 
     if (!this.state.voter.signed_in_facebook && this.state.facebook_auth_response &&
         this.state.facebook_auth_response.facebook_retrieve_attempted) {
       console.log("GetStarted.jsx facebook_retrieve_attempted");
-      browserHistory.push("/facebook_sign_in");
+      historyPush("/facebook_sign_in");
       return LoadingWheel;
     }
 
     return <div>
       <Helmet title="Welcome to We Vote" />
         <div className="intro-story container-fluid well u-inset--md">
-          <img src={"/img/global/icons/x-close.png"} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
+          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
           <div className="intro-story__h1 xs-text-left">Sign In</div>
           <div className="intro-story__padding--btm">It's not required but it helps<br />you get started faster.</div>
           {this.state.voter.signed_in_facebook ?

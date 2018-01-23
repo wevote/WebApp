@@ -1,6 +1,6 @@
 import { Component } from "react";
-import { browserHistory } from "react-router";
 import FacebookActions from "../../actions/FacebookActions";
+import { historyPush } from "../../utils/cordovaUtils";
 import VoterStore from "../../stores/VoterStore";
 import FacebookStore from "../../stores/FacebookStore";
 import FriendStore from "../../stores/FriendStore";
@@ -37,8 +37,8 @@ export default class FacebookLandingProcess extends Component {
     console.log("_onFriendStoreChange invitation_status", FriendStore.getInvitationFromFacebookStatus());
     this.setState({
       invitation_status: FriendStore.getInvitationFromFacebookStatus(),
-      saving: false
-     });
+      saving: false,
+    });
   }
 
   componentWillUnmount () {
@@ -55,8 +55,8 @@ export default class FacebookLandingProcess extends Component {
   render () {
 
     if (this.state.app_request_already_processed) {
-      browserHistory.push({
-        pathname: "/ballot"
+      historyPush({
+        pathname: "/ballot",
       });
       return LoadingWheel;
     }
@@ -84,22 +84,22 @@ export default class FacebookLandingProcess extends Component {
     console.log("Invitation status:", this.state.invitation_status);
     // This process starts when we return from attempting friendInvitationByFacebookVerify
     if (!this.state.invitation_status.invitation_found) {
-      browserHistory.push({
+      historyPush({
         pathname: "/more/network",
         state: {
           message: "Invitation not found. You may have already accepted this invitation. Invitation links may only be used once.",
-          message_type: "warning"
-        }
+          message_type: "warning",
+        },
       });
       return LoadingWheel;
     }
 
     if (this.state.invitation_status.attempted_to_approve_own_invitation) {
-      browserHistory.push({
+      historyPush({
         pathname: "/more/network",
         state: {
           message: "You are not allowed to approve your own invitation.",
-          message_type: "danger"
+          message_type: "danger",
         }
       });
       return LoadingWheel;
@@ -107,15 +107,16 @@ export default class FacebookLandingProcess extends Component {
 
     if (this.state.invitation_status.invitation_found) {
       FacebookActions.deleteFacebookAppRequest(this.state.invitation_status.facebook_request_id);
-      browserHistory.push({
+      historyPush({
         pathname: "/more/network",
         state: {
           message: "You have accepted your friend's invitation. Visit your ballot to see what your friends are supporting or opposing.",
-          message_type: "success"
-        }
+          message_type: "success",
+        },
       });
       return LoadingWheel;
     }
+
     return LoadingWheel;
   }
 
