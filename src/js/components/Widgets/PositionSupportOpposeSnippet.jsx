@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import ReactPlayer from "react-player";
+import { cordovaDot } from "../../utils/cordovaUtils";
 import ReadMore from "../../components/Widgets/ReadMore";
 import {vimeo_reg, youtube_reg} from "../../utils/textFormat";
 // import ViewSourceModal from "../../components/Widgets/ViewSourceModal";
@@ -36,21 +37,21 @@ export default class PositionSupportOpposeSnippet extends Component {
   }
 
   render () {
-    var stance_icon_src;
-    var className;
-    var alt;
-    var actorSupportsBallotItemLabel;
-    var ballotItemIsSupportedByActorLabel;
-    var { is_looking_at_self, more_info_url } = this.props;
-    var statement_text = this.props.statement_text || "";
-    var statement_text_html = <ReadMore text_to_display={statement_text} />;
+    let stance_icon_src;
+    let className;
+    let alt;
+    let actorSupportsBallotItemLabel;
+    let ballotItemIsSupportedByActorLabel;
+    let { is_looking_at_self, more_info_url } = this.props;
+    let statement_text = this.props.statement_text || "";
+    let statement_text_html = <ReadMore text_to_display={statement_text} />;
     // onViewSourceClick is onClick function for view source modal in mobile browser
     // const onViewSourceClick = this.state.showViewSourceModal ? this.closeViewSourceModal.bind(this) : this.openViewSourceModal.bind(this);
 
-    var video_url = "";
-    var youtube_url;
-    var vimeo_url;
-    var statement_text_no_url;
+    let video_url = "";
+    let youtube_url;
+    let vimeo_url;
+    let statement_text_no_url;
 
     if (statement_text) {
       youtube_url = statement_text.match(youtube_reg);
@@ -70,13 +71,13 @@ export default class PositionSupportOpposeSnippet extends Component {
     }
 
     if (this.props.is_support){
-      stance_icon_src = "/img/global/svg-icons/thumbs-up-color-icon.svg";
+      stance_icon_src = cordovaDot("/img/global/svg-icons/thumbs-up-color-icon.svg");
       className = "explicit-position__icon";
       alt = "Supports";
       actorSupportsBallotItemLabel = is_looking_at_self ? "You Support" : "Supports"; // Actor supports Ballot item (Active voice)
       ballotItemIsSupportedByActorLabel = is_looking_at_self ? "is Supported by You" : "is Supported by"; // Ballot item is supported by Actor (Passive voice)
     } else if (this.props.is_oppose) {
-      stance_icon_src = "/img/global/svg-icons/thumbs-down-color-icon.svg";
+      stance_icon_src = cordovaDot("/img/global/svg-icons/thumbs-down-color-icon.svg");
       className = "explicit-position__icon";
       alt = "Opposes";
       actorSupportsBallotItemLabel = is_looking_at_self ? "You Oppose" : "Opposes";

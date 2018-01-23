@@ -1,5 +1,6 @@
 import React from "react";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import { cordovaDot } from "../../utils/cordovaUtils";
 import ImageHandler from "../ImageHandler";
 import IssueFollowToggle from "./IssueFollowToggle";
 
@@ -23,7 +24,7 @@ export default class IssueFollowToggleSquare extends IssueFollowToggle {
                       alt={this.props.issue_name}
                       kind_of_image="ISSUE-PHOTO" />
         <ImageHandler className="intro-modal__square-check-mark"
-                      imageUrl="/img/global/svg-icons/check-mark-v2-40x43.svg"
+                      imageUrl={cordovaDot("/img/global/svg-icons/check-mark-v2-40x43.svg")}
                       alt="Following" />
         <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.issue_name}</h4>
         { this.props.issue_description && this.props.issue_description.length ?
@@ -41,7 +42,7 @@ export default class IssueFollowToggleSquare extends IssueFollowToggle {
                         alt={this.props.issue_name}
                         kind_of_image="ISSUE-PHOTO" />
           <ImageHandler className="intro-modal__square-check-mark"
-                        imageUrl="/img/global/svg-icons/check-mark-v2-40x43.svg"
+                        imageUrl={cordovaDot("/img/global/svg-icons/check-mark-v2-40x43.svg")}
                         alt="Following" />
           <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.issue_name}</h4>
           { this.props.issue_description && this.props.issue_description.length ?

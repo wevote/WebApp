@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import { browserHistory } from "react-router";
+import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import DonateActions from "../../actions/DonateActions";
 const web_app_config = require("../../config");
 
@@ -23,19 +23,19 @@ export default class DonationForm extends Component {
     let self = this;
     this.stripeHandler = window.StripeCheckout.configure({
       key: web_app_config.STRIPE_API_KEY,
-      image: "https://stripe.com/img/documentation/checkout/marketplace.png",
+      image: cordovaDot("https://stripe.com/img/documentation/checkout/marketplace.png"),
       locale: "auto",
       token: function (token) {
         // console.log("token generated " + token.id + " token.email " + token.email);
         DonateActions.donationWithStripe(token.id, token.email, self.props.donationAmount, self.props.donateMonthly);
-        browserHistory.push("/more/processing_donation");
-      }
+        historyPush("/more/processing_donation");
+      },
     });
   }
 
   componentWillUnmount () {
     if (this.stripeHandler) {
-        this.stripeHandler.close();
+      this.stripeHandler.close();
     }
   }
 
@@ -58,17 +58,17 @@ export default class DonationForm extends Component {
     });
   }
 
-	render () {
+  render () {
     let donate_button_text = "Donate Now";
     if (this.props.donateButtonText) {
       donate_button_text = this.props.donateButtonText;
     }
 
-		return <span>
+    return <span>
       <Button className={this.props.donateOther ? "" : "btn_donate"} bsStyle="success"
               onClick={this._openStripeModal}>
         {donate_button_text}
       </Button>
   </span>;
-	}
+  }
 }

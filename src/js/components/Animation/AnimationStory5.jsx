@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { cordovaDot } from "../../utils/cordovaUtils";
 
 export default class AnimationStory5 extends Component {
   static propTypes = {
@@ -14,7 +15,7 @@ export default class AnimationStory5 extends Component {
   render () {
     return <div className="intro-story__background background--image5">
       <div className="intro-story__h1">We Vote with Confidence</div>
-      <div><img className="center-block intro-story__img-width" src={"/img/global/intro-story/slide5-candidate-position-300x140-min.jpg"}/></div>
+      <div><img className="center-block intro-story__img-width" src={cordovaDot("/img/global/intro-story/slide5-candidate-position-300x140-min.jpg")} /></div>
       <div className="intro-story__h2">Find out what your friends<br />
         think about candidates,<br />
         including comments.

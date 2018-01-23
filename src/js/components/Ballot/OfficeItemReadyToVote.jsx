@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router";
+import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
@@ -47,7 +48,7 @@ export default class OfficeItemReadyToVote extends Component {
   render () {
     let { ballot_item_display_name, we_vote_id } = this.props;
     let officeLink = "/office/" + we_vote_id;
-    let goToOfficeLink = function () { browserHistory.push(officeLink); };
+    let goToOfficeLink = function () { historyPush(officeLink); };
     let is_support_array = [];
     let candidate_with_most_support = null;
     let voter_supports_at_least_one_candidate = false;
@@ -119,7 +120,7 @@ export default class OfficeItemReadyToVote extends Component {
 
                   <div className="u-flex-none u-justify-end">
                     <span className="u-push--xs">Supported by you</span>
-                    <img src="/img/global/svg-icons/thumbs-up-color-icon.svg" width="24" height="24" />
+                    <img src={cordovaDot("/img/global/svg-icons/thumbs-up-color-icon.svg")} width="24" height="24" />
                   </div>
                 </div> :
 
@@ -134,7 +135,7 @@ export default class OfficeItemReadyToVote extends Component {
                   </div>
                   <div className="u-flex-none u-justify-end">
                     <span className="u-push--xs">Your network supports</span>
-                    <img src="/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" />
+                    <img src={cordovaDot("/img/global/icons/up-arrow-color-icon.svg")} className="network-positions__support-icon" width="20" height="20" />
                   </div>
                 </div> :
                   is_support_array === 0 && candidate_with_most_support !== one_candidate.ballot_item_display_name && !voter_supports_at_least_one_candidate ?

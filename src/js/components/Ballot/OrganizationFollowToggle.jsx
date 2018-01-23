@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
 import OrganizationActions from "../../actions/OrganizationActions";
 import ImageHandler from "../ImageHandler";
+import {cordovaDot} from "../../utils/cordovaUtils";
 
 export default class OrganizationFollowToggle extends Component {
   static propTypes = {
@@ -53,7 +54,7 @@ export default class OrganizationFollowToggle extends Component {
                       kind_of_image="ORGANIZATION"
                       alt="organization-photo" />
         { is_following && <ImageHandler className="intro-modal__square-check-mark"
-                      imageUrl="/img/global/svg-icons/check-mark-v2-40x43.svg"
+                      imageUrl={cordovaDot("/img/global/svg-icons/check-mark-v2-40x43.svg")}
                       alt="Following" /> }
         <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.organization_name}</h4>
         { this.props.organization_description && this.props.organization_description.length ?

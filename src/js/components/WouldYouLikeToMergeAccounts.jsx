@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Alert, Button } from "react-bootstrap";
-import { browserHistory } from "react-router";
+import { historyPush } from "../utils/cordovaUtils";
 
 export default class WouldYouLikeToMergeAccounts extends Component {
   static propTypes = {
@@ -9,11 +9,11 @@ export default class WouldYouLikeToMergeAccounts extends Component {
   };
 
   constructor (props) {
-      super(props);
+    super(props);
   }
 
   cancelMerge () {
-    browserHistory.push("/more/sign_in");
+    historyPush("/more/sign_in");
   }
 
   render () {

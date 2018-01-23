@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { cordovaDot } from "../../utils/cordovaUtils";
 import ImageHandler from "../ImageHandler";
 
 export default class CheckBox extends Component {
@@ -13,7 +14,7 @@ export default class CheckBox extends Component {
   constructor (props) {
     super(props);
     this.state = {
-        isChecked: false,
+      isChecked: false,
     };
     this.toggleCheckboxChange = this.toggleCheckboxChange.bind(this);
   }
@@ -34,7 +35,7 @@ export default class CheckBox extends Component {
                       imageUrl={this.props.friendImage}
                       alt={this.props.friendName} />
         { isChecked && <ImageHandler className="friends-list__square-check-mark"
-                      imageUrl="/img/global/svg-icons/check-mark-v2-40x43.svg"
+                      imageUrl={cordovaDot("/img/global/svg-icons/check-mark-v2-40x43.svg")}
                       alt="Inviting" /> }
         <h4 className="intro-modal__white-space friends-list__square-name">{this.props.friendName}</h4>
       </div>

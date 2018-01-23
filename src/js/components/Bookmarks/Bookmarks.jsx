@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { browserHistory } from "react-router";
 import BallotStore from "../../stores/BallotStore";
 import BallotFilter from "../Navigation/BallotFilter";
 import BookmarkItem from "./BookmarkItem";
 import EditAddress from "../../components/Widgets/EditAddress";
 import Helmet from "react-helmet";
+import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../LoadingWheel";
 import moment from "moment";
 import SelectAddressModal from "../../components/Ballot/SelectAddressModal";
@@ -40,8 +40,9 @@ export default class Bookmarks extends Component {
 
   toggleSelectAddressModal () {
     // Clear out any # from anchors in the URL
-    if (!this.state.showSelectAddressModal)
-      browserHistory.push("/bookmarks");
+    if (!this.state.showSelectAddressModal) {
+      historyPush("/bookmarks");
+    }
 
     this.setState({ showSelectAddressModal: !this.state.showSelectAddressModal });
   }

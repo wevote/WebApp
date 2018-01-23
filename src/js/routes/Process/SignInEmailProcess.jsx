@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { browserHistory } from "react-router";
+import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
@@ -62,12 +62,12 @@ export default class SignInEmailProcess extends Component {
     // We redirect after voterMergeTwoAccountsByEmailKey comes back
     if (this.state.email_sign_in_status.voter_merge_two_accounts_attempted) {
       // console.log("voterMergeTwoAccountsByEmailKey attempted - push to /more/sign_in");
-      browserHistory.push({
+      historyPush({
         pathname: "/ballot",
         state: {
           message: "You have successfully signed in.",
-          message_type: "success"
-        }
+          message_type: "success",
+        },
       });
       return LoadingWheel;
     }
@@ -75,7 +75,7 @@ export default class SignInEmailProcess extends Component {
     // This process starts when we return from attempting voterEmailAddressSignIn
     if (!this.state.email_sign_in_status.email_address_found) {
       // console.log("Could not find secret_key in database - push to /more/sign_in");
-      browserHistory.push("/more/sign_in");
+      historyPush("/more/sign_in");
       return LoadingWheel;
     }
 
@@ -84,12 +84,12 @@ export default class SignInEmailProcess extends Component {
       if (this.state.email_sign_in_status.email_secret_key_belongs_to_this_voter) {
         // We don't need to do anything more except redirect to the email management page
         // console.log("secret key owned by this voter - push to /more/sign_in");
-        browserHistory.push({
+        historyPush({
           pathname: "/ballot",
           state: {
             message: "You have successfully signed in.",
-            message_type: "success"
-          }
+            message_type: "success",
+          },
         });
         return LoadingWheel;
       } else if (this.state.voter.has_data_to_preserve) {
@@ -115,8 +115,9 @@ export default class SignInEmailProcess extends Component {
       }
     } else {
       // console.log("Voter may not be verified yet, redirecting to verfiy page");
-      browserHistory.push("/verify_email/" + email_secret_key);
+      historyPush("/verify_email/" + email_secret_key);
     }
+
     return LoadingWheel;
   }
 }

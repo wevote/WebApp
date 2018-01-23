@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { browserHistory } from "react-router";
+import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import { Modal } from "react-bootstrap";
 import PollingPlaceLocator from "../../components/Ballot/PollingPlaceLocator";
 
@@ -16,7 +16,7 @@ export default class PollingPlaceLocatorModal extends Component {
 
   _openPollingLocatorModal () {
     this.setState({ showPollingLocatorModal: !this.state.showPollingLocatorModal });
-    browserHistory.push("/ballot");
+    historyPush("/ballot");
   }
 
   render () {
@@ -27,7 +27,7 @@ export default class PollingPlaceLocatorModal extends Component {
         <Modal.Body>
           <div className="intro-modal__close">
             <a onClick={this._openPollingLocatorModal} className="intro-modal__close-anchor">
-              <img src="/img/global/icons/x-close.png" alt="close" />
+              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
             </a>
           </div>
           <div key={1}><PollingPlaceLocator /></div>
