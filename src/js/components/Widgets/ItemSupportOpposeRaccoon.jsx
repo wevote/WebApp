@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Button, OverlayTrigger, Popover } from "react-bootstrap";
+import { findDOMNode } from "react-dom";
+import $ from "jquery";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
 import { cordovaDot } from "../../utils/cordovaUtils";
@@ -248,20 +250,23 @@ export default class ItemSupportOpposeRaccoon extends Component {
     this.refs["score-overlay"].hide();
   }
 
-  // TODO: implement organization list scrolling on click
-  // scrollLeft (visible_tag) {
-  //   console.log("#" + this.state.ballot_item_we_vote_id + "-org-list-" + visible_tag);
-  //   document.getElementById("#" + this.state.ballot_item_we_vote_id + "-org-list-" + visible_tag).animate({
-  //       scrollLeft: "-=153"
-  //   }, 1000, "easeOutQuad");
-  // }
-  //
-  // scrollRight (visible_tag) {
-  //   console.log("#" + this.state.ballot_item_we_vote_id + "-org-list-" + visible_tag);
-  //   document.getElementById("#" + this.state.ballot_item_we_vote_id + "-org-list-" + visible_tag).animate({
-  //       scrollLeft: "+=153"
-  //   }, 1000, "easeOutQuad");
-  // }
+  scrollLeft (visible_tag) {
+    const element = findDOMNode(this.refs[`${this.state.candidate.we_vote_id}-org-list-${visible_tag}`]);
+    let position = $(element).scrollLeft();
+    let width = $(element).width();
+    $(element).animate({
+      scrollLeft: position - width,
+    }, 350);
+  }
+
+  scrollRight (visible_tag) {
+    const element = findDOMNode(this.refs[`${this.state.candidate.we_vote_id}-org-list-${visible_tag}`]);
+    let position = $(element).scrollLeft();
+    let width = $(element).width();
+    $(element).animate({
+      scrollLeft: position + width,
+    }, 350);
+  }
 
   render () {
     // console.log("ItemSupportOpposeRaccoon render");
@@ -461,8 +466,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
         <div className="network-positions-stacked__support-list u-flex u-justify-between u-items-center">
           <div className="network-positions-stacked__support-list-container-wrap">
             {/* Show a break-down of the current positions in your network */}
-            <span className="network-positions-stacked__support-list-container u-flex u-justify-between u-items-center u-inset__v--xs hidden-xs">
-              <ul id={this.state.ballot_item_we_vote_id + "-org-list-desktop"} className="network-positions-stacked__support-list-items">
+            <span ref={`${this.state.candidate.we_vote_id}-org-list-desktop`} className="network-positions-stacked__support-list-container u-flex u-justify-between u-items-center u-inset__v--xs hidden-xs">
+              <ul className="network-positions-stacked__support-list-items">
                 <li className="network-positions-stacked__support-list-item">
                   { positionsLabel }
                 </li>
@@ -492,8 +497,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
                 </li>
               </ul>
             </span>
-            <span className="network-positions-stacked__support-list-container u-flex u-justify-between u-items-center u-inset__v--xs visible-xs">
-              <ul id={this.state.ballot_item_we_vote_id + "-org-list-mobile"} className="network-positions-stacked__support-list-items">
+            <span ref={`${this.state.candidate.we_vote_id}-org-list-mobile`} className="network-positions-stacked__support-list-container u-flex u-justify-between u-items-center u-inset__v--xs visible-xs">
+              <ul className="network-positions-stacked__support-list-items">
                 <li className="network-positions-stacked__support-list-item">
                   { positionsLabel }
                 </li>
@@ -524,13 +529,12 @@ export default class ItemSupportOpposeRaccoon extends Component {
               </ul>
             </span>
           </div>
-          {/* TODO: make these scroll buttons work */}
           {/* Click to scroll through list Desktop */}
-          {/* <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list-scroll-icon u-cursor--pointer hidden-xs" id={this.state.ballot_item_we_vote_id + "-org-list-scroll-left"} onClick={this.scrollLeft.bind(this, "desktop")} />
-          <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list-scroll-icon u-cursor--pointer hidden-xs" id={this.state.ballot_item_we_vote_id + "-org-list-scroll-right"} onClick={this.scrollRight.bind(this, "desktop")} /> */}
+          <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list-scroll-icon u-cursor--pointer hidden-xs" aria-hidden="true" onClick={this.scrollLeft.bind(this, "desktop")} />
+          <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list-scroll-icon u-cursor--pointer hidden-xs" aria-hidden="true" onClick={this.scrollRight.bind(this, "desktop")} />
           {/* Click to scroll through list Mobile */}
-          {/* <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list-scroll-icon u-cursor--pointer visible-xs" id={this.state.ballot_item_we_vote_id + "-org-list-scroll-left"} onClick={this.scrollLeft.bind(this, "mobile")} />
-          <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list-scroll-icon u-cursor--pointer visible-xs" id={this.state.ballot_item_we_vote_id + "-org-list-scroll-right"} onClick={this.scrollRight.bind(this, "mobile")} /> */}
+          <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list-scroll-icon u-cursor--pointer visible-xs" aria-hidden="true" onClick={this.scrollLeft.bind(this, "mobile")} />
+          <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list-scroll-icon u-cursor--pointer visible-xs" aria-hidden="true" onClick={this.scrollRight.bind(this, "mobile")} />
         </div> :
         null
       }
