@@ -7,7 +7,7 @@ import AnalyticsActions from "../actions/AnalyticsActions";
 import { validateEmail } from "../utils/email-functions";
 import FacebookStore from "../stores/FacebookStore";
 import FacebookActions from "../actions/FacebookActions";
-import { cordovaDot, historyPush } from "../utils/cordovaUtils";
+import { cordovaDot, historyPush, isCordova } from "../utils/cordovaUtils";
 import VoterActions from "../actions/VoterActions";
 import VoterConstants from "../constants/VoterConstants";
 import VoterStore from "../stores/VoterStore";
@@ -207,10 +207,11 @@ export default class Intro extends Component {
       });
 
     // && this.state.is_verification_email_sent ?
+    // urls in css are problematic in cordova
     return <div className="welcome-page">
       <Helmet title="Welcome to We Vote" />
       <section className="hero__section__container">
-        <div className="hero__section">
+        <div className="hero__section" style={isCordova() ? { backgroundImage: "url(./img/welcome/header-image-desktop.png)" } : null} >
           <div className="container">
             <Row className="hero__section__row">
               <div className="col-md-12">

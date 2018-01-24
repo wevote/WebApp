@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
+import { isCordova } from "../../utils/cordovaUtils";
 
 export default class IntroNetworkScore extends Component {
   static propTypes = {
     history: PropTypes.object,
-    next: React.PropTypes.func
+    next: React.PropTypes.func,
   };
 
   constructor (props) {
@@ -13,7 +14,8 @@ export default class IntroNetworkScore extends Component {
   }
 
   render () {
-    return <div className="intro-story__background background--image5">
+    return <div className="intro-story__background background--image5"
+                style={isCordova() ? { backgroundImage: "url(./img/global/intro-story/slide5-flagpole-698x600.jpg)" } : null} >
       <div className="intro-story__h1">We Keep Score</div>
       <div className="intro-story__h2">
         <Button bsStyle="success" bsSize="xsmall" >
