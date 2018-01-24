@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { browserHistory } from "react-router";
 import Helmet from "react-helmet";
+import Slider from "react-slick";
+import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import IntroNetworkSafety from "../../components/Intro/IntroNetworkSafety";
 import IntroNetworkDefinition from "../../components/Intro/IntroNetworkDefinition";
 import IntroNetworkScore from "../../components/Intro/IntroNetworkScore";
 import IntroNetworkBallotIsNext from "../../components/Intro/IntroNetworkBallotIsNext";
-var Slider = require("react-slick");
 
 export default class IntroNetwork extends Component {
 
@@ -25,9 +25,9 @@ export default class IntroNetwork extends Component {
     this.refs.slider.slickPrev();
   }
 
-  goToBallotLink () {
-    var ballotLink = "/ballot";
-    browserHistory.push(ballotLink);
+  static goToBallotLink () {
+    const ballotLink = "/ballot";
+    historyPush(ballotLink);
   }
 
   componentWillMount () {
@@ -42,7 +42,7 @@ export default class IntroNetwork extends Component {
 
   render () {
     //These are settings for the react-slick slider
-    var settings = {
+    const settings = {
       dots: true,
       infinite: false,
       speed: 500,
@@ -50,16 +50,13 @@ export default class IntroNetwork extends Component {
       slidesToScroll: 1,
       swipe: true,
       accessibility: true,
-      //react-slick default left & right nav arrows
       arrows: true,
-      beforeChange: function () {
-      }
     };
 
     return <div>
       <Helmet title="Welcome to We Vote" />
       <div className="intro-story container-fluid well u-inset--md">
-        <img src={"/img/global/icons/x-close.png"} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
+        <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={IntroNetwork.goToBallotLink} className="x-close" alt={"close"}/>
         <Slider ref="slider" {...settings}>
           <div key={1}><IntroNetworkSafety next={this.next}/></div>
           <div key={2}><IntroNetworkDefinition next={this.next}/></div>
