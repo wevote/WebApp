@@ -8,6 +8,7 @@ import VoterStore from "../../stores/VoterStore";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
 
 import { toast } from "react-toastify";
+import isMobile from '../../utils/isMobile';
 
 var Icon = require("react-svg-icons");
 
@@ -45,12 +46,13 @@ export default class ItemActionBar extends Component {
     });
   }
 
-  showToast = () => {
-    toast.info("TOASTY!!@", {
-      position: toast.POSITION.BOTTOM_CENTER,
-      // onOpen: () => window.alert('I counted to infinity once then..'),
-      // onClose: () => window.alert('I counted to infinity twice')
-    });
+  showToast = (msg) => {
+    if (isMobile()) {
+      toast.info(msg, {
+        position: toast.POSITION.BOTTOM_CENTER,
+        className: 'visible-xs-block',
+      });
+    }
   }
 
   supportItem (is_support) {
@@ -63,16 +65,14 @@ export default class ItemActionBar extends Component {
     }
     SupportActions.voterSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
-
-    this.showToast();
+    this.showToast('Support added!');
   }
 
   stopSupportingItem () {
     if (this.state.transitioning){ return; }
     SupportActions.voterStopSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
-
-    this.showToast();
+    this.showToast('Support removed!');
   }
 
   opposeItem (is_oppose) {
@@ -85,12 +85,14 @@ export default class ItemActionBar extends Component {
     }
     SupportActions.voterOpposingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
+    this.showToast('Opposition added!');
   }
 
   stopOpposingItem () {
     if (this.state.transitioning){ return; }
     SupportActions.voterStopOpposingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
+    this.showToast('Opposition removed!');
   }
 
   toggleSupportOrOpposeHelpModal () {
