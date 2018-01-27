@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
-import { browserHistory } from "react-router";
+import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../LoadingWheel";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
@@ -12,17 +12,17 @@ export default class AddFriendsByTwitter extends Component {
   };
 
   constructor (props) {
-      super(props);
-      this.state = {
-        add_friends_message: "Please join me in preparing for the upcoming election.",
-        twitter_handles: "",
-        redirect_url_upon_save: "/friends/sign_in",  // TODO DALE Remove this?
-        loading: false,
-        on_enter_twitter_handles_step: true,
-        on_request_email_step: false,
-        on_friend_invitations_sent_step: false,
-        voter: {}
-      };
+    super(props);
+    this.state = {
+      add_friends_message: "Please join me in preparing for the upcoming election.",
+      twitter_handles: "",
+      redirect_url_upon_save: "/friends/sign_in",  // TODO DALE Remove this?
+      loading: false,
+      on_enter_twitter_handles_step: true,
+      on_request_email_step: false,
+      on_friend_invitations_sent_step: false,
+      voter: {}
+    };
   }
 
   componentDidMount () {
@@ -44,21 +44,21 @@ export default class AddFriendsByTwitter extends Component {
     this.setState({ voter: VoterStore.getVoter(), loading: false });
   }
 
-  _ballotLoaded (){
+  _ballotLoaded () {
     // TODO DALE Remove this?
-    browserHistory.push(this.state.redirect_url_upon_save);
+    historyPush(this.state.redirect_url_upon_save);
   }
 
   cacheTwitterHandles (e) {
     this.setState({
       twitter_handles: e.target.value,
-      on_friend_invitations_sent_step: false
+      on_friend_invitations_sent_step: false,
     });
   }
 
   cacheAddFriendsByTwitterMessage (e) {
     this.setState({
-      add_friends_message: e.target.value
+      add_friends_message: e.target.value,
     });
   }
 
@@ -70,7 +70,7 @@ export default class AddFriendsByTwitter extends Component {
       twitter_handles: "",
       on_enter_twitter_handles_step: true,
       on_request_email_step: false,
-      on_friend_invitations_sent_step: true
+      on_friend_invitations_sent_step: true,
     });
   }
 
@@ -104,7 +104,7 @@ export default class AddFriendsByTwitter extends Component {
       this.setState({
         loading: false,
         twitter_handles_error: true,
-        error_message: error_message
+        error_message: error_message,
       });
     } else if (!this.hasValidEmail()) {
       console.log("AddFriendsByTwitterStepsManager, NOT hasValidEmail");
@@ -118,16 +118,17 @@ export default class AddFriendsByTwitter extends Component {
     }
   }
 
-	render () {
-    var { loading } = this.state;
-    if (loading){
+  render () {
+    let { loading } = this.state;
+    if (loading) {
       return LoadingWheel;
     }
-    var floatRight = {
-        float: "right"
+
+    let floatRight = {
+      float: "right",
     };
 
-		return <div>
+    return <div>
       {this.state.on_friend_invitations_sent_step ?
         <div className="alert alert-success">
           Invitations sent. Is there anyone else you'd like to invite?
@@ -171,7 +172,7 @@ export default class AddFriendsByTwitter extends Component {
                 </Button>
               </span>
               <p>
-                These friends will see what you support, oppose, and which opinions you follow.
+                These friends will see what you support, oppose, and which opinions you listen to.
               </p>
           </div>
         </div> :
@@ -183,5 +184,5 @@ export default class AddFriendsByTwitter extends Component {
         </div> :
         null }
 		</div>;
-	}
+  }
 }

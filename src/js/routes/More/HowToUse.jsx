@@ -26,9 +26,9 @@ export default class HowToUse extends Component {
         <h1 className="h1">Getting Started</h1>
         Here are the top 6 things to try.
 
-        <h3 className="h3">Step 1: Follow Voter Guides</h3>
-        <Link to="/opinions">Find organizations</Link> that you trust, and follow those
-        organizations. <strong>Why?</strong> When you follow an
+        <h3 className="h3">Step 1: Listen to Voter Guides</h3>
+        <Link to="/opinions">Find organizations</Link> that you trust, and listen to those
+        organizations. <strong>Why?</strong> When you listen to an
         organization's voter guide, their recommendations will show up on your ballot.
         This will make it easier for you to make choices all the way down your ballot.<br />
 

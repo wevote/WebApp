@@ -289,9 +289,9 @@ export default class HeaderBackToBar extends Component {
 
   transitionToYourVoterGuide () {
     // Positions for this organization, for this voter / election
-    OrganizationActions.retrievePositions(this.state.voter.linked_organization_we_vote_id, true);
+    OrganizationActions.positionListForOpinionMaker(this.state.voter.linked_organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
-    OrganizationActions.retrievePositions(this.state.voter.linked_organization_we_vote_id, false, true);
+    OrganizationActions.positionListForOpinionMaker(this.state.voter.linked_organization_we_vote_id, false, true);
     OrganizationActions.organizationsFollowedRetrieve();
     VoterGuideActions.voterGuideFollowersRetrieve(this.state.voter.linked_organization_we_vote_id);
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.state.voter.linked_organization_we_vote_id);

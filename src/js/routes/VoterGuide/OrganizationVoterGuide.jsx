@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from "react";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router";
 import { Button } from "react-bootstrap";
 import AnalyticsActions from "../../actions/AnalyticsActions";
+import { historyPush } from "../../utils/cordovaUtils";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import HeaderBar from "../../components/Navigation/HeaderBar";
@@ -38,8 +39,8 @@ export default class OrganizationVoterGuide extends Component {
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
-    // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
-    // console.log("action_variable: " + this.props.params.action_variable);
+    // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
+    // console.log("action_variable:" + this.props.params.action_variable);
     if (this.props.params.action_variable === AUTO_FOLLOW && this.props.params.organization_we_vote_id) {
       // If we are here,
       // console.log("Auto following");
@@ -50,7 +51,7 @@ export default class OrganizationVoterGuide extends Component {
       // AUTO_FOLLOW is "af"
       let current_path_name_without_auto_follow = current_path_name.replace("/" + AUTO_FOLLOW, "");
       // console.log("OrganizationVoterGuide, current_path_name_without_auto_follow: ", current_path_name_without_auto_follow);
-      browserHistory.push(current_path_name_without_auto_follow);
+      historyPush(current_path_name_without_auto_follow);
       this.setState({
         auto_follow_redirect_happening: true,
       });
@@ -65,6 +66,7 @@ export default class OrganizationVoterGuide extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    // console.log("OrganizationVoterGuide, componentWillReceiveProps, nextProps.params.organization_we_vote_id: ", nextProps.params.organization_we_vote_id);
     // When a new organization is passed in, update this component to show the new data
     if (nextProps.params.action_variable === AUTO_FOLLOW) {
       // Wait until we get the path without the "/af" action variable
@@ -81,7 +83,7 @@ export default class OrganizationVoterGuide extends Component {
       OrganizationActions.organizationRetrieve(nextProps.params.organization_we_vote_id);
       // console.log("VoterStore.getAddressObject(): ", VoterStore.getAddressObject());
       AnalyticsActions.saveActionVoterGuideVisit(nextProps.params.organization_we_vote_id, VoterStore.election_id());
-      // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
+      // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
     }
   }
 
@@ -92,7 +94,7 @@ export default class OrganizationVoterGuide extends Component {
   }
 
   onEdit () {
-    browserHistory.push("/voterguideedit/" + this.state.organization_we_vote_id);
+    historyPush("/voterguideedit/" + this.state.organization_we_vote_id);
     return <div>{LoadingWheel}</div>;
   }
 
@@ -123,8 +125,8 @@ export default class OrganizationVoterGuide extends Component {
       this.state.organization.organization_we_vote_id === this.state.voter.linked_organization_we_vote_id;
 
     if (!organization_id) {
-      var floatRight = {
-        float: "right"
+      let floatRight = {
+        float: "right",
       };
       return <div className="card">
           <div className="card-main">
@@ -149,7 +151,7 @@ export default class OrganizationVoterGuide extends Component {
       <div className="page-content-container">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-md-12">
+            <div className="col-md-12 hidden-print">
               { this.state.organization.organization_banner_url !== "" ?
                 <div className="organization-banner-image-div">
                   <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />

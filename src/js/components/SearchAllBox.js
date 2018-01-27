@@ -1,7 +1,8 @@
 /* global $ */
 import React, {Component, PropTypes} from "react";
 import classNames from "classnames";
-import { browserHistory, Link } from "react-router";
+import { Link } from "react-router";
+import { historyPush } from "../utils/cordovaUtils";
 import SearchAllActions from "../actions/SearchAllActions";
 import SearchAllStore from "../stores/SearchAllStore";
 import { makeSearchLink } from "../utils/search-functions";
@@ -173,7 +174,7 @@ export default class SearchAllBox extends Component {
   }
 
   navigateToSelectedLink () {
-    browserHistory.push(this.links[this.state.selected_index]);
+    historyPush(this.links[this.state.selected_index]);
     this.hideResults();
   }
 

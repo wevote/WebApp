@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <!--
+      Customize this policy to fit your own app's needs. For more guidance, see:
+          https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+      Some notes:
+          * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+          * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+          * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+              * Enable inline JS: add 'unsafe-inline' to default-src
+      Steve 1/18/18:  I was working on making all the correct policies, and decided to just make it wide open for now.  We will want to close this down at some point.  Apple might insist.
+      <meta http-equiv="Content-Security-Policy"
+          content="
+            default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'
+              https://www.google-analytics.com https://maps.googleapis.com https://code.jquery.com https://cdnjs.cloudflare.com/
+              http://maxcdn.bootstrapcdn.com;
+            style-src 'self' 'unsafe-inline'
+              <!--data: https://fonts.gstatic.com https://fonts.googleapis.com;
+            media-src *; img-src 'self' data: content:;">
+       -->
+
+    <!-- Wide open security policy for Apache Cordova. TODO: We should close this down -->
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src * gap: ;
+      style-src * 'unsafe-inline';
+      script-src * 'unsafe-inline';
+      media-src *; img-src * data:;
+    " />
+
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport"
+          content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <title> We Vote </title>
+    <meta charset="utf-8">
+    <meta property="og:url"           content="https://WeVote.US" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="We Vote" />
+    <meta property="og:description"   content="View your ballot. Learn from friends. Share your vision." />
+    <meta property="og:image"         content="https://WeVote.US/img/global/logos/we-vote-button-235x235.png" />
+    <link href="css/loading-screen.css" rel="stylesheet" />
+    <!--<script src="javascript/google-tag-manager.js"></script>-->
+  </head>
+  <body>
+
+    <div id="app" class="app-wrapper">
+      <div className="loading-screen">
+        <div className="u-loading-spinner u-loading-spinner--light" style="
+          display: flex;
+          position: fixed;
+          height: 100vh;
+          width: 100vw;
+          top: 0;
+          left: 0;
+          background-color: #337ec9;
+          justify-content: center;
+          align-items: center;
+          font-size: 30px;
+          color: #337ec9;
+          flex-direction: column;
+          font-family: "Source Sans Pro", sans-serif;
+        text-align: center;
+        ">
+        <h1 style="
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 32px;
+            font-weight: normal;
+            color: #fff;
+            ">Loading We Vote...
+        </h1>
+        <div class="u-loading-spinner u-loading-spinner--light">Loading We Vote...</div>
+      </div>
+      <!--<div id="deviceready" class="blink">-->
+        <!--<p class="event listening">Connecting to Device</p>-->
+        <!--<p class="event received">Device is Ready for loading the We Vote WebApp's bundle.js</p>-->
+      <!--</div>-->
+    </div>
+
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script>
+      const cssTags = [
+        '<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" />',
+        '<link href="css/bootstrap.css" rel="stylesheet" />',
+        '<link href="https://cdn.bootcss.com/bootstrap-social/4.12.0/bootstrap-social.min.css" rel="stylesheet" />',
+        '<link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" rel="stylesheet"/>',
+        '<link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" rel="stylesheet" />',
+        '<link href="css/main.css" rel="stylesheet" />'];
+      (function(rest) {
+        $("head").append(...rest);
+      })(cssTags);
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_EFCwt863dYRD8hmqAogdQS16FAlNAeM&libraries=places"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/plugins/CSSPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/easing/EasePack.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenLite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TimelineLite.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="bundle.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+    <!--<script src="javascript/google-analytics-template.js"></script>-->
+    <script src="https://www.google-analytics.com/analytics.js"></script>
+    <script src="https://tool.votinginfoproject.org/app.js"></script>
+  </body>
+</html>
+
+

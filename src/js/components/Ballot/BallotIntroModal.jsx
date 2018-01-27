@@ -3,8 +3,9 @@ import { Modal } from "react-bootstrap";
 import Slider from "react-slick";
 // import BallotIntroMission from "./BallotIntroMission";
 import BallotIntroFollowIssues from "./BallotIntroFollowIssues";
-import BallotIntroFollowAdvisers from "./BallotIntroFollowAdvisers";
-import BallotIntroPositionBar from "./BallotIntroPositionBar";
+// import BallotIntroFollowAdvisers from "./BallotIntroFollowAdvisers";
+import BallotIntroIssuesSuccess from "./BallotIntroIssuesSuccess";
+import { cordovaDot } from "../../utils/cordovaUtils";
 import VoterActions from "../../actions/VoterActions";
 
 
@@ -49,16 +50,16 @@ export default class BallotIntroModal extends Component {
       <Modal.Body>
         <div className="intro-modal__close">
           <a onClick={this.props.toggleFunction} className="intro-modal__close-anchor">
-            <img src="/img/global/icons/x-close.png" alt="close" />
+            <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
           </a>
         </div>
         <Slider dotsClass="slick-dots intro-modal__gray-dots"
                 className="calc-height intro-modal__height-full"
                 ref="slider" {...slider_settings}>
-          {/* <div className="intro-modal__height-full" key={1}><BallotIntroMission next={this._nextSliderPage}/></div>*/}
+          {/* <div className="intro-modal__height-full" key={1}><BallotIntroMission next={this._nextSliderPage}/></div> */}
           <div className="intro-modal__height-full" key={2}><BallotIntroFollowIssues next={this._nextSliderPage}/></div>
-          <div className="intro-modal__height-full" key={3}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div>
-          <div className="intro-modal__height-full" key={4}><BallotIntroPositionBar next={this.props.toggleFunction}/></div>
+          {/* <div className="intro-modal__height-full" key={3}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div> */}
+          <div className="intro-modal__height-full" key={4}><BallotIntroIssuesSuccess next={this.props.toggleFunction}/></div>
         </Slider>
       </Modal.Body>
     </Modal>;

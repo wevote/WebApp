@@ -46,7 +46,7 @@ export default class VoterEmailAddressEntry extends Component {
   }
 
   _ballotLoaded (){
-    // browserHistory.push(this.props.saveUrl);
+    //historyPush(this.props.saveUrl);
   }
 
   editVerifiedEmailsOn () {

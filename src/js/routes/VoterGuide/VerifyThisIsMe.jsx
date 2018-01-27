@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import { browserHistory, Link } from "react-router";
+import { Link } from "react-router";
 import CandidateItem from "../../components/Ballot/CandidateItem";
 import CandidateStore from "../../stores/CandidateStore";
+import { historyPush } from "../../utils/cordovaUtils";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import Helmet from "react-helmet";
 import LoadingWheel from "../../components/LoadingWheel";
@@ -16,7 +17,7 @@ import VoterStore from "../../stores/VoterStore";
 export default class VerifyThisIsMe extends Component {
   static propTypes = {
     params: PropTypes.object,
-    twitter_handle: PropTypes.string
+    twitter_handle: PropTypes.string,
   };
 
   constructor (props) {
@@ -34,7 +35,7 @@ export default class VerifyThisIsMe extends Component {
       twitter_name: "",
       twitter_photo_url: "",
       twitter_user_website: "",
-      status: ""
+      status: "",
     };
   }
 
@@ -53,7 +54,7 @@ export default class VerifyThisIsMe extends Component {
     this.twitterStoreListener = TwitterStore.addListener(this._onTwitterStoreChange.bind(this));
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
@@ -65,7 +66,7 @@ export default class VerifyThisIsMe extends Component {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-  _onOrganizationStoreChange (){
+  _onOrganizationStoreChange () {
     let { owner_we_vote_id } = TwitterStore.get();
     console.log("Entering _onOrganizationStoreChange, owner_we_vote_id: " + owner_we_vote_id);
     this.setState({
@@ -73,7 +74,7 @@ export default class VerifyThisIsMe extends Component {
     });
   }
 
-  _onCandidateStoreChange (){
+  _onCandidateStoreChange () {
     let { owner_we_vote_id } = TwitterStore.get();
     this.setState({
       candidate: CandidateStore.getCandidate(owner_we_vote_id),
@@ -97,15 +98,15 @@ export default class VerifyThisIsMe extends Component {
       twitter_name: twitter_name,
       twitter_photo_url: twitter_photo_url,
       twitter_user_website: twitter_user_website,
-      status: status
-   });
+      status: status,
+    });
   }
 
   render () {
     // Manage the control over this organization voter guide
-    var {candidate, organization, voter} = this.state;
-    var signed_in_twitter = voter === undefined ? false : voter.signed_in_twitter;
-    var signed_in_with_this_twitter_account = false;
+    let { candidate, organization, voter } = this.state;
+    let signed_in_twitter = voter === undefined ? false : voter.signed_in_twitter;
+    let signed_in_with_this_twitter_account = false;
     if (signed_in_twitter) {
       console.log("In render, voter: ", voter);
       console.log("this.props.params.twitter_handle: " + this.props.params.twitter_handle);
@@ -113,15 +114,15 @@ export default class VerifyThisIsMe extends Component {
       if (signed_in_with_this_twitter_account) {
         // If we are being asked to verify the account we are already signed into, return to the TwitterHandle page
         console.log("signed_in_with_this_twitter_account is True");
-        browserHistory.push("/" + voter.twitter_screen_name);
+        historyPush("/" + voter.twitter_screen_name);
         return LoadingWheel;
       }
     }
 
-    if (this.state.status === undefined){
+    if (this.state.status === undefined) {
       // Show a loading wheel while this component's data is loading
       return LoadingWheel;
-    } else if (this.state.kind_of_owner === "CANDIDATE"){
+    } else if (this.state.kind_of_owner === "CANDIDATE") {
       console.log("this.state.kind_of_owner === CANDIDATE");
       this.props.params.we_vote_id = this.state.owner_we_vote_id;
       return <span>
@@ -145,12 +146,12 @@ export default class VerifyThisIsMe extends Component {
             Twitter</Button></Link>
         }
       </span>;
-    } else if (this.state.kind_of_owner === "ORGANIZATION"){
+    } else if (this.state.kind_of_owner === "ORGANIZATION") {
       console.log("this.state.kind_of_owner === ORGANIZATION");
       console.log("this.state.owner_we_vote_id: " + this.state.owner_we_vote_id);
       this.props.params.we_vote_id = this.state.owner_we_vote_id;
 
-      if (!organization){
+      if (!organization) {
         return <div>{LoadingWheel}</div>;
       }
 
@@ -172,7 +173,7 @@ export default class VerifyThisIsMe extends Component {
               Twitter</Button></Link>
           }
         </span>;
-    } else if (this.state.kind_of_owner === "TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE"){
+    } else if (this.state.kind_of_owner === "TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE") {
       console.log("this.state.kind_of_owner === TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE");
       return <div>
         <Helmet title="Claim This Page - We Vote" />

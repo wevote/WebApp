@@ -41,9 +41,10 @@ export default class OrganizationVoterGuideTabs extends Component {
     VoterGuideActions.voterGuideFollowersRetrieve(this.props.organization.organization_we_vote_id);
     VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
     // Positions for this organization, for this voter / election
-    OrganizationActions.retrievePositions(this.props.organization.organization_we_vote_id, true);
+    OrganizationActions.positionListForOpinionMaker(this.props.organization.organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
-    OrganizationActions.retrievePositions(this.props.organization.organization_we_vote_id, false, true);
+    OrganizationActions.positionListForOpinionMaker(this.props.organization.organization_we_vote_id, false, true);
+    // console.log("OrganizationVoterGuideTabs, componentDidMount, active_route: ", this.props.active_route);
     this.setState({
       active_route: this.props.active_route || "ballot",
       current_organization_we_vote_id: this.props.organization.organization_we_vote_id,
@@ -64,9 +65,9 @@ export default class OrganizationVoterGuideTabs extends Component {
       VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id, VoterStore.election_id());
       // DALE 2017-12-24 Causes too much churn when here
       // Positions for this organization, for this voter / election
-      OrganizationActions.retrievePositions(nextProps.organization.organization_we_vote_id, true);
+      OrganizationActions.positionListForOpinionMaker(nextProps.organization.organization_we_vote_id, true);
       // Positions for this organization, NOT including for this voter / election
-      OrganizationActions.retrievePositions(nextProps.organization.organization_we_vote_id, false, true);
+      OrganizationActions.positionListForOpinionMaker(nextProps.organization.organization_we_vote_id, false, true);
       this.setState({
         current_organization_we_vote_id: nextProps.organization.organization_we_vote_id,
         organization: nextProps.organization,
@@ -109,7 +110,7 @@ export default class OrganizationVoterGuideTabs extends Component {
       });
       // DALE 2017-11-24 This is a partially implemented redirect, to make sure the URL matches the tab.
       // But this is an expensive action as it reloads quite a bit of data from the API server, so we leave this off for now.
-      // browserHistory.push("/resistancevoter/" + destination_tab);
+      // historyPush("/resistancevoter/" + destination_tab);
     }
    }
 
@@ -136,17 +137,17 @@ export default class OrganizationVoterGuideTabs extends Component {
     if (looking_at_self) {
       positions_title = "Your Positions";
       following_title_long = this.state.voter_guide_followed_list.length === 0 ?
-        "You Are Following" : "You Are Following " + this.state.voter_guide_followed_list.length;
-      following_title_short = "Following";
+        "You Are Listening To" : "You Are Listening To " + this.state.voter_guide_followed_list.length;
+      following_title_short = "Listening To";
       followers_title = voter_guide_followers_list.length === 0 ?
-        "Followers" : voter_guide_followers_list.length + " Followers";
+        "Listeners" : voter_guide_followers_list.length + " Listeners";
     } else {
       positions_title = "All Positions";
       following_title_long = this.state.voter_guide_followed_list.length === 0 ?
-        "Following" : "Following " + this.state.voter_guide_followed_list.length;
-      following_title_short = "Following";
+        "Listening To" : "Listening To " + this.state.voter_guide_followed_list.length;
+      following_title_short = "Listening To";
       followers_title = voter_guide_followers_list.length === 0 ?
-        "Followers" : voter_guide_followers_list.length + " Followers";
+        "Listeners" : voter_guide_followers_list.length + " Listeners";
     }
 
     let voter_guide_component_to_display = null;

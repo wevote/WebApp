@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { browserHistory } from "react-router";
+import { historyPush } from "../../utils/cordovaUtils";
 import TwitterActions from "../../actions/TwitterActions";
 import TwitterStore from "../../stores/TwitterStore";
 import VoterStore from "../../stores/VoterStore";
@@ -39,10 +39,10 @@ export default class TwitterSignInProcess extends Component {
   }
 
   cancelMergeFunction () {
-    browserHistory.push({
+    historyPush({
       pathname: "/more/network",
       state: {
-      }
+      },
     });
     // message: "You have chosen to NOT merge your two accounts.",
     // message_type: "success"
@@ -51,33 +51,33 @@ export default class TwitterSignInProcess extends Component {
   voterMergeTwoAccountsByTwitterKey (twitter_secret_key, voter_has_data_to_preserve = true) {
     VoterActions.voterMergeTwoAccountsByTwitterKey(twitter_secret_key);
     if (voter_has_data_to_preserve) {
-      browserHistory.push({
+      historyPush({
         pathname: "/more/network",
         state: {
           message: "Your accounts have been merged.",
-          message_type: "success"
-        }
+          message_type: "success",
+        },
       });
     } else {
-      browserHistory.push({
+      historyPush({
         pathname: "/ballot",
         query: { wait_until_voter_sign_in_completes: 1 },
         state: {
           message: "You have successfully signed in with Twitter.",
-          message_type: "success"
-        }
+          message_type: "success",
+        },
       });
     }
   }
 
   voterTwitterSaveToCurrentAccount () {
     VoterActions.voterTwitterSaveToCurrentAccount();
-    browserHistory.push({
+    historyPush({
       pathname: "/more/network",
       state: {
         message: "You have successfully signed in with Twitter.",
-        message_type: "success"
-      }
+        message_type: "success",
+      },
     });
     if (VoterStore.getVoterPhotoUrlMedium().length === 0) {
       // This only fires once, for brand new users on their very first login
@@ -110,12 +110,12 @@ export default class TwitterSignInProcess extends Component {
 
     if (twitter_auth_response.twitter_sign_in_failed) {
       // console.log("Twitter sign in failed - push to /more/sign_in");
-      browserHistory.push({
+      historyPush({
         pathname: "/more/sign_in",
         state: {
           message: "Twitter sign in failed. Please try again.",
-          message_type: "success"
-        }
+          message_type: "success",
+        },
       });
       return LoadingWheel;
     }
@@ -132,12 +132,12 @@ export default class TwitterSignInProcess extends Component {
     // If twitter_sign_in_found NOT True, go back to the sign in page to try again
     if (!twitter_auth_response.twitter_sign_in_found) {
       // console.log("twitter_auth_response.twitter_sign_in_found", twitter_auth_response.twitter_sign_in_found);
-      browserHistory.push({
+      historyPush({
         pathname: "/more/sign_in",
         state: {
           message: "Twitter authentication not found. Please try again.",
-          message_type: "warning"
-        }
+          message_type: "warning",
+        },
       });
       return LoadingWheel;
     }

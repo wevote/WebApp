@@ -93,8 +93,8 @@ export default class BallotIntroFollowAdvisers extends Component {
     if (organization_followed_length > 0 || this.state.next_button_text === SKIP_BUTTON_TEXT) {
       this.props.next();
     } else if (organization_followed_length === 0) {
-      const SELECT_ORGANIZATION_PROMPT = "Are you sure you don't want to follow at least one organization that " +
-        "shares your values? Following will show you recommendations on your ballot.";
+      const SELECT_ORGANIZATION_PROMPT = "Are you sure you don't want to listen to at least one organization that " +
+        "shares your values? Listening will show you recommendations on your ballot.";
       this.setState({
         description_text: SELECT_ORGANIZATION_PROMPT,
         next_button_text: SKIP_BUTTON_TEXT,
@@ -166,12 +166,12 @@ export default class BallotIntroFollowAdvisers extends Component {
     );
 
     return <div className="intro-modal">
-      <div className="intro-modal__h1">Follow organizations</div>
+      <div className="intro-modal__h1">Listen to organizations</div>
         <div>
           <div className="intro-modal__top-description">
             { this.state.description_text ?
               this.state.description_text :
-              <span>Great work! Next, follow any of these organizations to see their opinions on your ballot.</span>
+              <span>Great work! Next, click to listen to any of these organizations to see their opinions on your ballot.</span>
             }
           </div>
           <div className="intro-modal-vertical-scroll-contain intro-modal-vertical-scroll-contain__advisers">
@@ -181,7 +181,7 @@ export default class BallotIntroFollowAdvisers extends Component {
                 { voter_guides_to_follow_all_for_display.length ? voter_guides_to_follow_all_for_display : null }
                 { voter_guides_to_follow_by_issues_for_display.length || voter_guides_to_follow_all_for_display.length ?
                   null :
-                  <h4 className="intro-modal__default-text">There are no more organizations to follow!</h4>
+                  <h4 className="intro-modal__default-text">There are no more organizations to listen to!</h4>
                 }
               </div>
             </div>

@@ -24,6 +24,7 @@ import GetStarted from "./routes/Intro/GetStarted";
 import HowToUse from "./routes/More/HowToUse";
 import Intro from "./routes/Intro/Intro";
 import IntroContests from "./routes/Intro/IntroContests";
+import IntroNetwork from "./routes/Intro/IntroNetwork";
 import IntroOpinions from "./routes/Intro/IntroOpinions";
 import IntroStory from "./routes/Intro/IntroStory";
 import IssuesToFollow from "./routes/IssuesToFollow";
@@ -102,6 +103,7 @@ const routes = () =>
 
     <Route path="/intro" component={Intro} />
     <Route path="/intro/contests" component={IntroContests} />
+    <Route path="/wevoteintro/network" component={IntroNetwork} />
     <Route path="/intro/opinions" component={IntroOpinions} />
     <Route path="/intro/story" component={IntroStory} />
     <Route path="/intro/sample_ballot" component={SampleBallot} />

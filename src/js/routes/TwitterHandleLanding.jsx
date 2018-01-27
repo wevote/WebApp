@@ -81,6 +81,7 @@ export default class TwitterHandleLanding extends Component {
 
   getIncomingActiveRoute () {
     let incoming_active_route = this.props.active_route || "";
+    // console.log("TwitterHandleLanding, getIncomingActiveRoute incoming_active_route: ", incoming_active_route);
     return incoming_active_route;
   }
 

@@ -61,10 +61,10 @@ export default class Opinions extends Component {
     guides = <div>
       <p>
         Find opinions about your ballot (ordered by Twitter followers).
-        Follow those you trust. Unfollow at any time.
-        Following won't add you to mailing lists.
+        Listen to those you trust. Stop Listening at any time.
+        Listening won't add you to mailing lists.
         <span style={floatRight} className="hidden-print">
-          <Link to="/opinions_followed" className="u-margin-left--md u-no-break">See organizations you follow</Link>
+          <Link to="/opinions_followed" className="u-margin-left--md u-no-break">See organizations you listen to</Link>
         </span>
       </p>
       <SearchGuidesToFollowBox />

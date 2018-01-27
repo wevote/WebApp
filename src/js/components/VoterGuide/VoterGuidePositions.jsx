@@ -34,9 +34,9 @@ export default class VoterGuidePositions extends Component {
     VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
     // TODO: COMMENT OUT because they were added to OrganizationVoterGuideTabs?
     // Positions for this organization, for this voter / election
-    OrganizationActions.retrievePositions(this.props.organization.organization_we_vote_id, true);
+    OrganizationActions.positionListForOpinionMaker(this.props.organization.organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
-    OrganizationActions.retrievePositions(this.props.organization.organization_we_vote_id, false, true);
+    OrganizationActions.positionListForOpinionMaker(this.props.organization.organization_we_vote_id, false, true);
     this.setState({
       current_google_civic_election_id: VoterStore.election_id(),
       current_organization_we_vote_id: this.props.organization.organization_we_vote_id,
@@ -55,9 +55,9 @@ export default class VoterGuidePositions extends Component {
       // console.log("VoterGuidePositions, componentWillReceiveProps, nextProps.organization: ", nextProps.organization);
       VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id, VoterStore.election_id());
       // // Positions for this organization, for this voter / election
-      // OrganizationActions.retrievePositions(nextProps.organization.organization_we_vote_id, true);
+      // OrganizationActions.positionListForOpinionMaker(nextProps.organization.organization_we_vote_id, true);
       // // Positions for this organization, NOT including for this voter / election
-      // OrganizationActions.retrievePositions(nextProps.organization.organization_we_vote_id, false, true);
+      // OrganizationActions.positionListForOpinionMaker(nextProps.organization.organization_we_vote_id, false, true);
       this.setState({
         current_google_civic_election_id: VoterStore.election_id(),
         current_organization_we_vote_id: nextProps.organization.organization_we_vote_id,
@@ -153,8 +153,8 @@ export default class VoterGuidePositions extends Component {
           {/*  <OverlayTrigger placement="top" overlay={electionTooltip} >*/}
             <h4 className="h4 card__additional-heading">
                <span className="u-push--sm">{ election_name ? election_name : "This Election"}</span>
-              {/*{this.state.ballot_election_list.length > 1 ? <img src={"/img/global/icons/gear-icon.png"} className="hidden-print" role="button" onClick={this.toggleSelectBallotModal}
-                alt={"view your ballots"}/> : null}*/}
+              {/*{this.state.ballot_election_list.length > 1 ? <img src={cordovaDot("/img/global/icons/gear-icon.png")} className="hidden-print" role="button" onClick={this.toggleSelectBallotModal}
+                alt={'view your ballots' /> : null}*/}
             </h4>
           {/* </OverlayTrigger> */}
           { at_least_one_position_found_for_this_election ?

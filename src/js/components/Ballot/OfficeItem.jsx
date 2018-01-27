@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from "react";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import { capitalizeString } from "../../utils/textFormat";
+import { historyPush } from "../../utils/cordovaUtils";
 
 export default class OfficeItem extends Component {
   static propTypes = {
@@ -18,7 +19,7 @@ export default class OfficeItem extends Component {
   render () {
     let { ballot_item_display_name, we_vote_id } = this.props;
     let officeLink = "/office/" + we_vote_id;
-    let goToOfficeLink = function () { browserHistory.push(officeLink); };
+    let goToOfficeLink = function () { historyPush(officeLink); };
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
     let candidates_html = <span />;  // For a preview of the candidates

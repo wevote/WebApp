@@ -1,12 +1,17 @@
 import React, { Component, PropTypes } from "react";
 import { Button, OverlayTrigger, Popover } from "react-bootstrap";
+import { findDOMNode } from "react-dom";
+import $ from "jquery";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
+import { cordovaDot } from "../../utils/cordovaUtils";
 import ItemActionBar from "../Widgets/ItemActionBar";
+import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdownList";
 import OrganizationCard from "../VoterGuide/OrganizationCard";
 import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
 import SupportStore from "../../stores/SupportStore";
+import { returnFirstXWords } from "../../utils/textFormat";
 
 export default class ItemSupportOpposeRaccoon extends Component {
   static propTypes = {
@@ -18,6 +23,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     organizationsToFollowOppose: PropTypes.array,
     popoverBottom: PropTypes.bool,
     positionBarIsClickable: PropTypes.bool,
+    showPositionStatementActionBar: PropTypes.bool,
     supportProps: PropTypes.object,
   };
 
@@ -116,27 +122,28 @@ export default class ItemSupportOpposeRaccoon extends Component {
     }, 100);
   }
 
-  onTriggerToggle (e, org_id, visible_tag) {
-    if (this.mobile) {
-      e.preventDefault();
-      e.stopPropagation();
-      if (!this.popover_state[org_id]) {
-        // If it wasn't created, create it now
-        this.popover_state[org_id] = {show: false, timer: null};
-      }
-
-      if (this.popover_state[org_id].show) {
-        this.onTriggerLeave(org_id, visible_tag);
-      } else {
-        this.onTriggerEnter(org_id, visible_tag);
-      }
-    }
-  }
-
-  percentageMajority () {
-    const { support_count, oppose_count } = this.state.supportProps;
-    return Math.round(100 * Math.max(support_count, oppose_count) / (support_count + oppose_count));
-  }
+  // Unused Jan 23, 2018
+  // onTriggerToggle (e, org_id, visible_tag) {
+  //   if (this.mobile) {
+  //     e.preventDefault();
+  //     e.stopPropagation();
+  //     if (!this.popover_state[org_id]) {
+  //       // If it wasn't created, create it now
+  //       this.popover_state[org_id] = {show: false, timer: null};
+  //     }
+  //
+  //     if (this.popover_state[org_id].show) {
+  //       this.onTriggerLeave(org_id, visible_tag);
+  //     } else {
+  //       this.onTriggerEnter(org_id, visible_tag);
+  //     }
+  //   }
+  // }
+  //
+  // percentageMajority () {
+  //   const { support_count, oppose_count } = this.state.supportProps;
+  //   return Math.round(100 * Math.max(support_count, oppose_count) / (support_count + oppose_count));
+  // }
 
   organizationsToDisplay (organizations_to_follow, maximum_organization_display, ballot_item_we_vote_id, visible_tag, supports_this_ballot_item = false, opposes_this_ballot_item = false) {
     if (!maximum_organization_display || maximum_organization_display === 0) {
@@ -243,6 +250,24 @@ export default class ItemSupportOpposeRaccoon extends Component {
     this.refs["score-overlay"].hide();
   }
 
+  scrollLeft (visible_tag) {
+    const element = findDOMNode(this.refs[`${this.state.candidate.we_vote_id}-org-list-${visible_tag}`]);
+    let position = $(element).scrollLeft();
+    let width = $(element).width();
+    $(element).animate({
+      scrollLeft: position - width,
+    }, 350);
+  }
+
+  scrollRight (visible_tag) {
+    const element = findDOMNode(this.refs[`${this.state.candidate.we_vote_id}-org-list-${visible_tag}`]);
+    let position = $(element).scrollLeft();
+    let width = $(element).width();
+    $(element).animate({
+      scrollLeft: position + width,
+    }, 350);
+  }
+
   render () {
     // console.log("ItemSupportOpposeRaccoon render");
     let candidateSupportStore = SupportStore.get(this.state.ballot_item_we_vote_id);
@@ -273,10 +298,50 @@ export default class ItemSupportOpposeRaccoon extends Component {
         total_score_with_sign = total_score;
       }
     }
+    let is_support = false;
+    let is_oppose = false;
+    let voter_statement_text = false;
+    if (candidateSupportStore !== undefined) {
+      is_support = candidateSupportStore.is_support;
+      is_oppose = candidateSupportStore.is_oppose;
+      voter_statement_text = candidateSupportStore.voter_statement_text;
+    }
+
+    let comment_display_raccoon_desktop = this.props.showPositionStatementActionBar || is_support || is_oppose || voter_statement_text ?
+      <div className="hidden-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+        <div
+          className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
+        </div>
+        <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
+          <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
+                                          ballot_item_display_name={this.state.ballot_item_display_name}
+                                          supportProps={candidateSupportStore}
+                                          transitioning={this.state.transitioning}
+                                          type="CANDIDATE"
+                                          shown_in_list/>
+        </div>
+      </div> :
+      null;
+
+    let comment_display_raccoon_mobile = this.props.showPositionStatementActionBar || is_support || is_oppose || voter_statement_text ?
+      <div className="visible-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+        <div
+          className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
+        </div>
+        <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
+          <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
+                                          ballot_item_display_name={this.state.ballot_item_display_name}
+                                          supportProps={candidateSupportStore}
+                                          transitioning={this.state.transitioning}
+                                          type="CANDIDATE"
+                                          shown_in_list/>
+        </div>
+      </div> :
+      null;
 
     let positions_exist = support_count || oppose_count || this.state.organizations_to_follow_support.length || this.state.organizations_to_follow_oppose.length;
-    let maximum_organizations_to_show_desktop = 12;
-    let maximum_organizations_to_show_mobile = 7;
+    let maximum_organizations_to_show_desktop = 50;
+    let maximum_organizations_to_show_mobile = 50;
 
     let organizations_to_follow_support_desktop = [];
     let organizations_to_follow_support_mobile = [];
@@ -325,36 +390,48 @@ export default class ItemSupportOpposeRaccoon extends Component {
       <Popover id="popover-trigger-click-root-close"
                title={<span>Score in Your Network <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closeScorePopover}>
-        Your friends, and the organizations you follow, are <strong>Your Network</strong>.
-        Each friend or organization you follow
-        that <span className="u-no-break"><img src="/img/global/icons/thumbs-up-color-icon.svg"
-                                               width="20" height="20" /> supports</span> {this.state.ballot_item_display_name} adds
-        +1 to this <strong>Score</strong>.
-        Each one that <span className="u-no-break"><img src="/img/global/icons/thumbs-down-color-icon.svg"
+        Your friends, and the organizations you listen to, are <strong>Your Network</strong>.
+        Everyone in your network that
+        <span className="u-no-break">
+          <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")}
+               width="20" height="20" /> supports
+        </span> {this.state.ballot_item_display_name}
+        adds +1 to this <strong>Score</strong>.
+        Each one that <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
                                                width="20" height="20" /> opposes</span> subtracts
-        1 from this <strong>Score</strong>. <Button bsStyle="info"
+        1 from this <strong>Score</strong>. <Button bsStyle="success"
                                                     bsSize="xsmall"
                                                     >
-                                              <span>Follow</span>
-                                            </Button> an
-        organization to add their position to the <strong>Score in Your Network</strong>.
+                                              <span>Listen</span>
+                                            </Button> to an
+        organization to add their opinion to the <strong>Score in Your Network</strong>.
       </Popover>;
 
     const positionsPopover =
       <Popover id="popover-trigger-click-root-close"
-               title={<span>Positions about {this.state.ballot_item_display_name} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+               title={<span>Opinions about {this.state.ballot_item_display_name} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closePositionsPopover}>
-        These organizations <span className="u-no-break"><img src="/img/global/icons/thumbs-up-color-icon.svg"
+        These organizations <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")}
                                                width="20" height="20" /> support</span> or&nbsp;
-        <span className="u-no-break"><img src="/img/global/icons/thumbs-down-color-icon.svg"
+        <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
                                                width="20" height="20" /> oppose</span> {this.state.ballot_item_display_name}.
         Click on the logo
-        and <Button bsStyle="info"
+        and <Button bsStyle="success"
                     bsSize="xsmall"
                     >
-              <span>Follow</span>
-            </Button> an organization to add their position to the <strong>Score in Your Network</strong>.
+              <span>Listen</span>
+            </Button> to an organization to add their opinion to the <strong>Score in Your Network</strong>.
       </Popover>;
+
+    const positionsLabel =
+      <OverlayTrigger trigger="click"
+                      ref="positions-overlay"
+                      onExit={this.closePositionsPopover}
+                      rootClose
+                      placement={this.props.popoverBottom ? "bottom" : "top"}
+                      overlay={positionsPopover}>
+        <span className="network-positions-stacked__support-label u-cursor--pointer u-no-break">Opinions about {returnFirstXWords(this.state.ballot_item_display_name, 1)}&nbsp;<i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" />&nbsp;</span>
+      </OverlayTrigger>;
 
     return <div className="network-positions-stacked">
       <div className="network-positions-stacked__support">
@@ -375,85 +452,92 @@ export default class ItemSupportOpposeRaccoon extends Component {
                 <span className="u-margin-left--xs">{ total_score_with_sign }&nbsp;</span>
               }
               <span className="network-positions-stacked__support-score-label">
-                <span className="visible-xs">Network Score <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover" aria-hidden="true" /></span>
-                <span className="hidden-xs">Score in Your Network <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover" aria-hidden="true" /></span>
+                <span className="visible-xs">Network Score <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
+                <span className="hidden-xs">Score in Your Network <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
               </span>
             </span>
           </OverlayTrigger>
           <span className="sr-only">{total_score > 0 ? total_score + " Support" : null }{total_score < 0 ? total_score + " Oppose" : null }</span>
         </div>
       </div>
-      <div className="network-positions-stacked__support">
-        { positions_exist ?
-          <OverlayTrigger trigger="click"
-                          ref="positions-overlay"
-                          onExit={this.closePositionsPopover}
-                          rootClose
-                          placement={this.props.popoverBottom ? "bottom" : "top"}
-                          overlay={positionsPopover}>
-            <span className="network-positions-stacked__support-label u-cursor--pointer">Positions&nbsp;<i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover" aria-hidden="true" />&nbsp;</span>
-          </OverlayTrigger> :
-          null }
-        {/* Show a break-down of the current positions in your network */}
-        <span className="u-flex u-justify-between u-inset__v--xs hidden-xs">
-          <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
-                                         ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
-                                         position_list={this.state.position_list_from_advisers_followed_by_voter}
-                                         showSupport
-                                         supportProps={this.state.supportProps}
-                                         visibility="desktop" />
-        </span>
-        <span className="u-flex u-justify-between u-inset__v--xs hidden-xs">
-          <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
-                                         ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
-                                         position_list={this.state.position_list_from_advisers_followed_by_voter}
-                                         showOppose
-                                         supportProps={this.state.supportProps}
-                                         visibility="desktop" />
-        </span>
-        <span className="u-flex u-justify-between u-inset__v--xs visible-xs">
-          <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
-                                         ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
-                                         position_list={this.state.position_list_from_advisers_followed_by_voter}
-                                         showSupport
-                                         supportProps={this.state.supportProps}
-                                         visibility="mobile" />
-        </span>
-        <span className="u-flex u-justify-between u-inset__v--xs visible-xs">
-          <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
-                                         ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
-                                         position_list={this.state.position_list_from_advisers_followed_by_voter}
-                                         showOppose
-                                         supportProps={this.state.supportProps}
-                                         visibility="mobile" />
-        </span>
-
-        {/* Show support positions the voter can follow Desktop */}
-        { organizations_to_follow_support_desktop.length ?
-          <span className="hidden-xs">
-            {organizations_to_follow_support_desktop}
-          </span> :
-          null }
-        {/* Show support positions the voter can follow Mobile */}
-        { organizations_to_follow_support_mobile.length ?
-          <span className="visible-xs">
-            {organizations_to_follow_support_mobile}
-          </span> :
-          null }
-        {/* Show oppose positions the voter can follow Desktop */}
-        { organizations_to_follow_oppose_desktop.length ?
-          <span className="hidden-xs">
-            {organizations_to_follow_oppose_desktop}
-          </span> :
-          null }
-
-        {/* Show oppose positions the voter can follow Mobile */}
-        { organizations_to_follow_oppose_mobile.length ?
-          <span className="visible-xs">
-            {organizations_to_follow_oppose_mobile}
-          </span> :
-          null }
-      </div>
+      {comment_display_raccoon_desktop}
+      {comment_display_raccoon_mobile}
+      { positions_exist ?
+        <div className="network-positions-stacked__support-list u-flex u-justify-between u-items-center">
+          <div className="network-positions-stacked__support-list-container-wrap">
+            {/* Show a break-down of the current positions in your network */}
+            <span ref={`${this.state.candidate.we_vote_id}-org-list-desktop`} className="network-positions-stacked__support-list-container u-flex u-justify-between u-items-center u-inset__v--xs hidden-xs">
+              <ul className="network-positions-stacked__support-list-items">
+                <li className="network-positions-stacked__support-list-item">
+                  { positionsLabel }
+                </li>
+                <li className="network-positions-stacked__support-list-item">
+                  <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
+                                                 ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
+                                                 position_list={this.state.position_list_from_advisers_followed_by_voter}
+                                                 showSupport
+                                                 supportProps={this.state.supportProps}
+                                                 visibility="desktop" />
+                </li>
+                <li className="network-positions-stacked__support-list-item">
+                  <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
+                                                 ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
+                                                 position_list={this.state.position_list_from_advisers_followed_by_voter}
+                                                 showOppose
+                                                 supportProps={this.state.supportProps}
+                                                 visibility="desktop" />
+                </li>
+                <li className="network-positions-stacked__support-list-item">
+                  {/* Show support positions the voter can follow Desktop */}
+                  { organizations_to_follow_support_desktop.length ? organizations_to_follow_support_desktop : null }
+                </li>
+                <li className="network-positions-stacked__support-list-item">
+                  {/* Show oppose positions the voter can follow Desktop */}
+                  { organizations_to_follow_oppose_desktop.length ? organizations_to_follow_oppose_desktop : null }
+                </li>
+              </ul>
+            </span>
+            <span ref={`${this.state.candidate.we_vote_id}-org-list-mobile`} className="network-positions-stacked__support-list-container u-flex u-justify-between u-items-center u-inset__v--xs visible-xs">
+              <ul className="network-positions-stacked__support-list-items">
+                <li className="network-positions-stacked__support-list-item">
+                  { positionsLabel }
+                </li>
+                <li className="network-positions-stacked__support-list-item">
+                  <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
+                                                 ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
+                                                 position_list={this.state.position_list_from_advisers_followed_by_voter}
+                                                 showSupport
+                                                 supportProps={this.state.supportProps}
+                                                 visibility="mobile" />
+                </li>
+                <li className="network-positions-stacked__support-list-item">
+                  <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
+                                                 ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
+                                                 position_list={this.state.position_list_from_advisers_followed_by_voter}
+                                                 showOppose
+                                                 supportProps={this.state.supportProps}
+                                                 visibility="mobile" />
+                </li>
+                <li className="network-positions-stacked__support-list-item">
+                  {/* Show support positions the voter can follow Mobile */}
+                  { organizations_to_follow_support_mobile.length ? organizations_to_follow_support_mobile : null }
+                </li>
+                <li className="network-positions-stacked__support-list-item">
+                  {/* Show oppose positions the voter can follow Mobile */}
+                  { organizations_to_follow_oppose_mobile.length ? organizations_to_follow_oppose_mobile : null }
+                </li>
+              </ul>
+            </span>
+          </div>
+          {/* Click to scroll through list Desktop */}
+          <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list-scroll-icon u-cursor--pointer hidden-xs" aria-hidden="true" onClick={this.scrollLeft.bind(this, "desktop")} />
+          <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list-scroll-icon u-cursor--pointer hidden-xs" aria-hidden="true" onClick={this.scrollRight.bind(this, "desktop")} />
+          {/* Click to scroll through list Mobile */}
+          <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list-scroll-icon u-cursor--pointer visible-xs" aria-hidden="true" onClick={this.scrollLeft.bind(this, "mobile")} />
+          <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list-scroll-icon u-cursor--pointer visible-xs" aria-hidden="true" onClick={this.scrollRight.bind(this, "mobile")} />
+        </div> :
+        null
+      }
     </div>;
   }
 }

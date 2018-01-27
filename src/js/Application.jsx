@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { browserHistory } from "react-router";
+import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
 import ElectionActions from "./actions/ElectionActions";
 import FriendActions from "./actions/FriendActions";
@@ -7,17 +7,17 @@ import HeaderBackToBar from "./components/Navigation/HeaderBackToBar";
 import HeaderBar from "./components/Navigation/HeaderBar";
 import HeaderGettingStartedBar from "./components/Navigation/HeaderGettingStartedBar";
 import Headroom from "headroom.js";
-import BookmarkActions from "./actions/BookmarkActions";
+import { historyPush } from "./utils/cordovaUtils";
+import IssueActions from "./actions/IssueActions";
+import IssueStore from "././stores/IssueStore";
 import OrganizationActions from "./actions/OrganizationActions";
-import VoterActions from "./actions/VoterActions";
 import SearchAllActions from "./actions/SearchAllActions";
+import VoterActions from "./actions/VoterActions";
 import VoterStore from "./stores/VoterStore";
 const web_app_config = require("./config");
 import { stringContains } from "./utils/textFormat";
-import IssueActions from "./actions/IssueActions";
-import IssueStore from "././stores/IssueStore";
 
-var loadingScreenStyles = {
+const loadingScreenStyles = {
   position: "fixed",
   height: "100vh",
   width: "100vw",
@@ -62,11 +62,11 @@ export default class Application extends Component {
     };
 
     (function (d, s, id){
-       var js;
-       var fjs = d.getElementsByTagName(s)[0];
+       let js;
+       let fjs = d.getElementsByTagName(s)[0];
        if (d.getElementById(id)) {return;}
        js = d.createElement(s); js.id = id;
-       js.src = "//connect.facebook.net/en_US/sdk.js";
+       js.src = "https://connect.facebook.net/en_US/sdk.js";
        fjs.parentNode.insertBefore(js, fjs);
      }(document, "script", "facebook-jssdk"));
   }
@@ -82,7 +82,8 @@ export default class Application extends Component {
     ElectionActions.electionsRetrieve();
 
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-   //preload images
+
+    // Preload Issue images. Note that for brand new browsers that don't have a voter_device_id yet, we retrieve all issues
     IssueActions.retrieveIssuesToFollow();
     this.issueStoreListener = IssueStore.addListener(this.preloadIssueImages);
   }
@@ -188,7 +189,7 @@ export default class Application extends Component {
         if (at_least_one_query_variable_found && this.props.location.pathname) {
           // console.log("at_least_one_query_variable_found push: ", at_least_one_query_variable_found);
           // console.log("this.props.location.pathname: ", this.props.location.pathname);
-          browserHistory.push(this.props.location.pathname);
+          historyPush(this.props.location.pathname);
         }
       }
     }
@@ -224,7 +225,7 @@ export default class Application extends Component {
     var voter_guide_mode = false;
     let voter_guide_show_getting_started_navigation = false;
     if (pathname === "/intro/story" || pathname === "/intro/sample_ballot" || pathname === "/intro/get_started" ||
-      pathname === "/voterguidegetstarted") {
+      pathname === "/voterguidegetstarted" || pathname === "/wevoteintro/network") {
       in_theater_mode = true;
     } else if (pathname.startsWith("/candidate/") ||
       pathname === "/facebook_invitable_friends" || pathname === "/friends" || pathname === "/friends/invitebyemail" ||

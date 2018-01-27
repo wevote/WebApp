@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router";
+import { historyPush } from "../../utils/cordovaUtils";
 
 export default class VoterGuideEditIndex extends Component {
   static propTypes = {
@@ -19,7 +20,7 @@ export default class VoterGuideEditIndex extends Component {
   }
 
   onDoneButton () {
-    browserHistory.push("/voterguide/" + this.props.organization_we_vote_id);
+    historyPush("/voterguide/" + this.props.organization_we_vote_id);
   }
 
   render () {

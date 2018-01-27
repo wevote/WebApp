@@ -486,7 +486,7 @@ export default class EmailBallotToFriendsModal extends Component {
   // }, function (response) {
   //   if ( response ) {
   //       console.log("Successfully send", response);
-  //       browserHistory.push({
+  //       historyPush({
   //         pathname: "/ballot",
   //         state: {
   //           message: "You have successfully sent Ballot to your Facebook friends.",

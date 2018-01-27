@@ -1,18 +1,18 @@
 import React, { Component, PropTypes } from "react";
-import { browserHistory } from "react-router";
+import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterStore from "../../stores/VoterStore";
 
 export default class AnimationStory7 extends Component {
   static propTypes = {
     history: PropTypes.object,
-    timeline: PropTypes.object
+    timeline: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      animation_complete: false
+      animation_complete: false,
     };
   }
 
@@ -24,30 +24,30 @@ export default class AnimationStory7 extends Component {
   componentDidUpdate () {
     //  This will start the GreenSock animation
     if (this.state.voter && !this.state.animation_complete) {
-      this.props.timeline.from(this.refs.header1, 0.75, {left: 100, autoAlpha: 0})
-      .from(this.refs.header2, 0.50, {left: 100, autoAlpha: 0})
-      .from(this.refs.header3, 0.50, {left: 100, autoAlpha: 0})
-      .from(this.refs.signInBtn, 0.50, {left: 100, autoAlpha: 0, onComplete: this.setState({animation_complete: true})});
+      this.props.timeline.from(this.refs.header1, 0.75, { left: 100, autoAlpha: 0 })
+      .from(this.refs.header2, 0.50, { left: 100, autoAlpha: 0 })
+      .from(this.refs.header3, 0.50, { left: 100, autoAlpha: 0 })
+      .from(this.refs.signInBtn, 0.50, { left: 100, autoAlpha: 0, onComplete: this.setState({ animation_complete: true }) });
     }
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.voterStoreListener.remove();
   }
 
   _onVoterStoreChange () {
     this.setState({
-      voter: VoterStore.getVoter()
+      voter: VoterStore.getVoter(),
     });
   }
 
   goToGetStarted () {
-    var getStartedNow = "/intro/get_started";
-    browserHistory.push(getStartedNow);
+    let getStartedNow = "/intro/get_started";
+    historyPush(getStartedNow);
   }
 
   render () {
-    if (!this.state.voter){
+    if (!this.state.voter) {
       return LoadingWheel;
     }
 

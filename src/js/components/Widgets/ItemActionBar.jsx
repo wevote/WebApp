@@ -203,37 +203,43 @@ export default class ItemActionBar extends Component {
     const supportButtonPopoverTooltip = <Tooltip id="supportButtonTooltip" className="hidden-xs">{is_support ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }</Tooltip>;
     const opposeButtonPopoverTooltip = <Tooltip id="opposeButtonTooltip" className="hidden-xs">{is_oppose ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}</Tooltip>;
 
+    const supportButton = <button className={"item-actionbar__btn item-actionbar__btn--support btn btn-default" + (is_support ? " support-at-state" : "")} onClick={this.supportItem.bind(this, is_support)}>
+      <span className="btn__icon">
+        <Icon name="thumbs-up-icon" width={icon_size} height={icon_size} color={support_icon_color} />
+      </span>
+      { is_support ?
+        <span
+          className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label item-actionbar__position-at-state" }>Support</span> :
+        <span
+          className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label" }>Support</span>
+      }
+    </button>;
+
+    const opposeButton = <button className={(this.props.opposeHideInMobile ? "hidden-xs " : "") + "item-actionbar__btn item-actionbar__btn--oppose btn btn-default" + (is_oppose ? " oppose-at-state" : "")} onClick={this.opposeItem.bind(this, is_oppose)}>
+      <span className="btn__icon">
+        <Icon name="thumbs-down-icon" width={icon_size} height={icon_size} color={oppose_icon_color} />
+      </span>
+      { is_oppose ?
+        <span
+          className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label item-actionbar__position-at-state" }>Oppose</span> :
+        <span
+          className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label" }>Oppose</span>
+      }
+    </button>;
+
     return <div className={ this.props.shareButtonHide ? "item-actionbar--inline hidden-print" : "item-actionbar hidden-print" }>
       <div className={"btn-group" + (!this.props.shareButtonHide ? " u-push--sm" : "")}>
 
         {/* Start of Support Button */}
-        <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
-          <button className={"item-actionbar__btn item-actionbar__btn--support btn btn-default" + (is_support ? " support-at-state" : "")} onClick={this.supportItem.bind(this, is_support)}>
-                <span className="btn__icon">
-                  <Icon name="thumbs-up-icon" width={icon_size} height={icon_size} color={support_icon_color} />
-                </span>
-            { is_support ?
-              <span
-                className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label item-actionbar__position-at-state" }>Support</span> :
-              <span
-                className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label" }>Support</span>
-            }
-          </button>
-        </OverlayTrigger>
+        <div className="hidden-xs">
+          <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>{supportButton}</OverlayTrigger>
+        </div>
+        <div className="visible-xs">{supportButton}</div>
         {/* Start of Oppose Button */}
-        <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
-          <button className={(this.props.opposeHideInMobile ? "hidden-xs " : "") + "item-actionbar__btn item-actionbar__btn--oppose btn btn-default" + (is_oppose ? " oppose-at-state" : "")} onClick={this.opposeItem.bind(this, is_oppose)}>
-                <span className="btn__icon">
-                  <Icon name="thumbs-down-icon" width={icon_size} height={icon_size} color={oppose_icon_color} />
-                </span>
-            { is_oppose ?
-              <span
-                className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label item-actionbar__position-at-state" }>Oppose</span> :
-              <span
-                className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label" }>Oppose</span>
-            }
-          </button>
-        </OverlayTrigger>
+        <div className="hidden-xs">
+          <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>{opposeButton}</OverlayTrigger>
+        </div>
+        <div className="visible-xs">{opposeButton}</div>
       </div>
       { this.props.commentButtonHide ?
         null :

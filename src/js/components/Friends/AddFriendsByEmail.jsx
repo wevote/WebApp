@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import { browserHistory } from "react-router";
+import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../LoadingWheel";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
@@ -93,7 +93,7 @@ export default class AddFriendsByEmail extends Component {
 
   _ballotLoaded (){
     // TODO DALE Remove this?
-    browserHistory.push(this.state.redirect_url_upon_save);
+    historyPush(this.state.redirect_url_upon_save);
   }
 
   cacheSenderEmailAddress (e) {
@@ -535,7 +535,7 @@ export default class AddFriendsByEmail extends Component {
                     }
                   </Button>
                 </span>
-                <span>These friends will see what you support, oppose, and which opinions you follow.
+                <span>These friends will see what you support, oppose, and which opinions you listen to.
                    We will never sell your email.</span>
             </div>
         </div> :

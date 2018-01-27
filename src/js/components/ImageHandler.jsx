@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { cordovaDot } from "../utils/cordovaUtils";
 
 export default class ImageHandler extends Component {
   static propTypes = {
@@ -34,21 +35,21 @@ export default class ImageHandler extends Component {
     switch (kind_of_image) {
       case "CANDIDATE":
         replacementClass = "icon-main image-person-placeholder";
-        place_holder_image_url = "/img/global/svg-icons/avatar-generic.svg";
+        place_holder_image_url = cordovaDot("/img/global/svg-icons/avatar-generic.svg");
         break;
       case "MEASURE" || "OFFICE":
         // TODO: Refactor to remove font icons
         return <i className="search-image__filler" />;
       case "ISSUE":
         replacementClass = "icon-main image-person-placeholder";
-        place_holder_image_url = "/img/global/svg-icons/issue-generic.svg";
+        place_holder_image_url = cordovaDot("/img/global/svg-icons/issue-generic.svg");
         break;
       case "ISSUE-PHOTO":
-        place_holder_image_url = "/img/global/svg-icons/issue-photo-generic.svg";
+        place_holder_image_url = cordovaDot("/img/global/svg-icons/issue-photo-generic.svg");
         break;
       default:
         replacementClass = "icon-main image-organization-placeholder";
-        place_holder_image_url = "/img/global/svg-icons/organization-icon.svg";
+        place_holder_image_url = cordovaDot("/img/global/svg-icons/organization-icon.svg");
         break;
     }
 

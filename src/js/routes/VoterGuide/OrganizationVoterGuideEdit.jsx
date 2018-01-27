@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router";
 import { Button } from "react-bootstrap";
+import { historyPush } from "../../utils/cordovaUtils";
 import VoterGuideEditActivityReports from "../../components/VoterGuide/VoterGuideEditActivityReports";
 import VoterGuideEditAddPositions from "../../components/VoterGuide/VoterGuideEditAddPositions";
 import VoterGuideEditIndex from "../../components/VoterGuide/VoterGuideEditIndex";
@@ -30,7 +31,7 @@ export default class OrganizationVoterGuideEdit extends Component {
     };
   }
 
-  componentDidMount (){
+  componentDidMount () {
     // console.log("OrganizationVoterGuideEdit, componentDidMount, this.props.params.organization_we_vote_id: ", this.props.params.organization_we_vote_id);
     // console.log("this.props.params.edit_mode: ", this.props.params.edit_mode);
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
@@ -40,14 +41,14 @@ export default class OrganizationVoterGuideEdit extends Component {
     // console.log("is_voter_owner: ", is_voter_owner);
     if (is_voter_owner) {
       OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
-      // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
+      // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
       this.setState({
         organization_we_vote_id: this.props.params.organization_we_vote_id,
         voter: VoterStore.getVoter(),
       });
     } else {
       const voter_guide_redirect_link = "/voterguide/" + this.props.params.organization_we_vote_id;
-      browserHistory.push(voter_guide_redirect_link);
+      historyPush(voter_guide_redirect_link);
     }
   }
 
@@ -61,38 +62,38 @@ export default class OrganizationVoterGuideEdit extends Component {
     if (is_voter_owner) {
       // We refresh the data for all three tabs here on the top level
       OrganizationActions.organizationRetrieve(nextProps.params.organization_we_vote_id);
-      // retrievePositions is called in js/components/VoterGuide/VoterGuidePositions
+      // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
 
       this.setState({organization_we_vote_id: nextProps.params.organization_we_vote_id});
     } else {
       const voter_guide_redirect_link = "/voterguide/" + nextProps.params.organization_we_vote_id;
-      browserHistory.push(voter_guide_redirect_link);
+      historyPush(voter_guide_redirect_link);
     }
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
   onDoneButton () {
-    browserHistory.push("/voterguideedit/" + this.state.organization_we_vote_id);
+    historyPush("/voterguideedit/" + this.state.organization_we_vote_id);
   }
 
   _onVoterStoreChange () {
     this.setState({
-      voter: VoterStore.getVoter()
+      voter: VoterStore.getVoter(),
     });
   }
 
-  _onOrganizationStoreChange (){
+  _onOrganizationStoreChange () {
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization_we_vote_id)
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization_we_vote_id),
     });
   }
 
   render () {
-    if (!this.state.organization.organization_we_vote_id || !this.state.voter){
+    if (!this.state.organization.organization_we_vote_id || !this.state.voter) {
       return <div>{LoadingWheel}</div>;
     }
 
@@ -104,14 +105,14 @@ export default class OrganizationVoterGuideEdit extends Component {
     }
 
     if (!this.state.organization) {
-      var floatRight = {
-        float: "right"
+      const floatRight = {
+        float: "right",
       };
       return <div className="card">
           <div className="card-main">
             <h4 className="h4">Organization not Found</h4>
           </div>
-          <div style={{margin: 10}}>
+          <div style={{ margin: 10 }}>
             <span style={floatRight}>
               <Link to="/opinions"><Button bsStyle="primary">Next &#x21AC;</Button></Link>
             </span>
