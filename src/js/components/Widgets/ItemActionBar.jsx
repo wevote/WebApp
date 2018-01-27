@@ -1,14 +1,13 @@
 import React, { Component, PropTypes } from "react";
 import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
+import { toast } from "react-toastify";
+import isMobile from '../../utils/isMobile';
 import SupportActions from "../../actions/SupportActions";
 import ShareButtonDropdown from "./ShareButtonDropdown";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
-
-import { toast } from "react-toastify";
-import isMobile from '../../utils/isMobile';
 
 var Icon = require("react-svg-icons");
 
@@ -47,10 +46,15 @@ export default class ItemActionBar extends Component {
   }
 
   showToast = (msg) => {
+    // only show toasts on mobile
     if (isMobile()) {
       toast.info(msg, {
-        position: toast.POSITION.BOTTOM_CENTER,
         className: 'visible-xs-block',
+        bodyClassName: {
+          fontFamily: 'Source Sans Pro, sans-serif',
+          fontWeight: '700',
+          textAlign: 'center',
+        }
       });
     }
   }
