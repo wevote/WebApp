@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from "react";
 import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
-import { toast } from "react-toastify";
-import isMobile from '../../utils/isMobile';
+import showToast from '../../utils/showToast';
 import SupportActions from "../../actions/SupportActions";
 import ShareButtonDropdown from "./ShareButtonDropdown";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
+
 
 var Icon = require("react-svg-icons");
 
@@ -45,20 +45,6 @@ export default class ItemActionBar extends Component {
     });
   }
 
-  showToast = (msg) => {
-    // only show toasts on mobile
-    if (isMobile()) {
-      toast.info(msg, {
-        className: 'visible-xs-block',
-        bodyClassName: {
-          fontFamily: 'Source Sans Pro, sans-serif',
-          fontWeight: '700',
-          textAlign: 'center',
-        }
-      });
-    }
-  }
-
   supportItem (is_support) {
     if (is_support) {this.stopSupportingItem(); return;}
     if (this.state.transitioning){ return; }
@@ -69,14 +55,14 @@ export default class ItemActionBar extends Component {
     }
     SupportActions.voterSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
-    this.showToast('Support added!');
+    showToast('Support added!');
   }
 
   stopSupportingItem () {
     if (this.state.transitioning){ return; }
     SupportActions.voterStopSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
-    this.showToast('Support removed!');
+    showToast('Support removed!');
   }
 
   opposeItem (is_oppose) {
@@ -89,14 +75,14 @@ export default class ItemActionBar extends Component {
     }
     SupportActions.voterOpposingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
-    this.showToast('Opposition added!');
+    showToast('Opposition added!');
   }
 
   stopOpposingItem () {
     if (this.state.transitioning){ return; }
     SupportActions.voterStopOpposingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
-    this.showToast('Opposition removed!');
+    showToast('Opposition removed!');
   }
 
   toggleSupportOrOpposeHelpModal () {
@@ -200,8 +186,8 @@ export default class ItemActionBar extends Component {
       opposeButtonUnselectedPopOverText += ".";
     }
 
-    const supportButtonPopoverTooltip = <Tooltip id="supportButtonTooltip" className="hidden-xs">{is_support ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }</Tooltip>;
-    const opposeButtonPopoverTooltip = <Tooltip id="opposeButtonTooltip" className="hidden-xs">{is_oppose ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}</Tooltip>;
+    const supportButtonPopoverTooltip = <Tooltip id="supportButtonTooltip">{is_support ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }</Tooltip>;
+    const opposeButtonPopoverTooltip = <Tooltip id="opposeButtonTooltip">{is_oppose ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}</Tooltip>;
 
     const supportButton = <button className={"item-actionbar__btn item-actionbar__btn--support btn btn-default" + (is_support ? " support-at-state" : "")} onClick={this.supportItem.bind(this, is_support)}>
       <span className="btn__icon">
