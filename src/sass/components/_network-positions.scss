@@ -1,5 +1,4 @@
 // Network Positions bar (ItemSupportOpposeCounts)
-$support_list_items_margin_bottom: 25px;
 
 .network-positions {
   $bar-height: 10px;
@@ -155,7 +154,7 @@ $support_list_items_margin_bottom: 25px;
     $scrollbar-height: 21px;
     $list-height: 60px;
     $list-height-visible: $list-height - $scrollbar-height;
-    $scroll-icon-margin: 6px $space-none $space-none $space-sm;
+    $scroll-icon-margin: $space-none $space-none $space-none $space-sm;
 
     &-container-wrap {
       box-sizing: content-box;
@@ -172,7 +171,7 @@ $support_list_items_margin_bottom: 25px;
 
     &-items {
       padding: $space-none;
-      margin-bottom: $support_list_items_margin_bottom;
+      margin-bottom: $space-md;
       list-style: none;
     }
 
