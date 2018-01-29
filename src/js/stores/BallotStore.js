@@ -231,6 +231,12 @@ class BallotStore extends ReduceStore {
           }
         }
         return state;
+      
+      //Chi
+      case "officeOpenOrClosedRetrieve":
+      console.log("BallotStore, officeOpenOrClosedRetrieve");
+      
+      return state;
 
       case "error-voterBallotItemsRetrieve":
       default:

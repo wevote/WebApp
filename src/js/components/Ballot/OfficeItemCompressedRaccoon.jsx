@@ -74,6 +74,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
         organization: this.props.organization,
       });
     }
+    //retrieve officeOpenOrClosedStatus
   }
 
   componentWillReceiveProps (nextProps){
@@ -118,6 +119,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
   toggleExpandCheetahDetails () {
     this.setState({ display_raccoon_details_flag: !this.state.display_raccoon_details_flag });
+    console.log('toggling!')
   }
 
   openCandidateModal (candidate) {
