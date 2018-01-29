@@ -12,6 +12,7 @@ import BallotIntroVote from "../../components/Ballot/BallotIntroVote";
 import { cordovaDot } from "../../utils/cordovaUtils";
 import GettingStartedBarItem from "./GettingStartedBarItem";
 import EmailBallotModal from "../Ballot/EmailBallotModal";
+import FacebookBallotModal from "../Ballot/FacebookBallotModal";
 import PollingPlaceLocator from "../Ballot/PollingPlaceLocator";
 import Slider from "react-slick";
 import VoterActions from "../../actions/VoterActions";
@@ -35,6 +36,7 @@ export default class HeaderGettingStartedBar extends Component {
     this._toggleBallotIntroShare = this._toggleBallotIntroShare.bind(this);
     this._toggleBallotIntroVote = this._toggleBallotIntroVote.bind(this);
     this._openEmailModal = this._openEmailModal.bind(this);
+    this._openFacebookModal = this._openFacebookModal.bind(this);
     this._openPollingLocatorModal = this._openPollingLocatorModal.bind(this);
     this._nextSliderPage = this._nextSliderPage.bind(this);
     this.state = {
@@ -51,6 +53,7 @@ export default class HeaderGettingStartedBar extends Component {
       showBallotIntroShare: false,
       showBallotIntroVote: false,
       showEmailModal: false,
+      showFacebookModal: false,
     };
   }
 
@@ -81,6 +84,10 @@ export default class HeaderGettingStartedBar extends Component {
 
   _openEmailModal () {
     this.setState({ showEmailModal: !this.state.showEmailModal });
+  }
+
+  _openFacebookModal () {
+    this.setState({ showFacebookModal: !this.state.showFacebookModal });
   }
 
   _openPollingLocatorModal () {
@@ -272,6 +279,19 @@ export default class HeaderGettingStartedBar extends Component {
       </Modal.Body>
     </Modal>;
 
+    const SendFacebookModal = <Modal bsClass="background-brand-blue modal"
+                                  show={this.state.showFacebookModal}
+                                  onHide={() => this._openFacebookModal(this)}>
+      <Modal.Body>
+        <div className="intro-modal__close">
+          <a onClick={this._openFacebookModal} className="intro-modal__close-anchor">
+            <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
+          </a>
+        </div>
+        <div key={1}><FacebookBallotModal ballot_link={this.props.pathname}/></div>
+      </Modal.Body>
+    </Modal>;
+
     const ShowPollingLocatorModal = <Modal bsClass="background-brand-blue modal"
                                   show={this.state.showPollingLocatorModal}
                                   onHide={() => this._openPollingLocatorModal(this)}>
@@ -312,6 +332,9 @@ export default class HeaderGettingStartedBar extends Component {
             <GettingStartedBarItem show={this._openEmailModal}
                                    title="Email"
                                    emailIcon/>
+            <GettingStartedBarItem show={this._openFacebookModal}
+                                   title="Share Ballot"
+                                   facebookIcon/>
             <GettingStartedBarItem show={this._openPollingLocatorModal}
                                    title="Polling Location"
                                    mapMarkerIcon/>
@@ -345,6 +368,7 @@ export default class HeaderGettingStartedBar extends Component {
       { this.state.showBallotIntroShare ? BallotIntroShareModal : null }
       { this.state.showBallotIntroVote ? BallotIntroVoteModal : null }
       { this.state.showEmailModal ? SendEmailModal : null }
+      { this.state.showFacebookModal ? SendFacebookModal : null }
       { this.state.showPollingLocatorModal ? ShowPollingLocatorModal : null }
     </div>;
   }
