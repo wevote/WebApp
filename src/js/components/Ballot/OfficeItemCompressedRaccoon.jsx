@@ -89,6 +89,8 @@ export default class OfficeItemCompressedRaccoon extends Component {
     this.organizationStoreListener.remove();
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
+
+    //write to officeOpenOrClosedStatus
   }
 
   onVoterGuideStoreChange () {

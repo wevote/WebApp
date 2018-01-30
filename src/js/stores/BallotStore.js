@@ -169,6 +169,10 @@ class BallotStore extends ReduceStore {
     }
   }
 
+  getOfficesOpenOrClosedStatus (){
+    //
+  }
+
   reduce (state, action) {
 
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
@@ -187,7 +191,7 @@ class BallotStore extends ReduceStore {
         return state;
 
       case "voterBallotItemsRetrieve":
-        // console.log("BallotStore, voterBallotItemsRetrieve response received.");
+        console.log("BallotStore, voterBallotItemsRetrieve response received.");
         // console.log("BallotStore, voterBallotItemsRetrieve, action.res.ballot_item_list: ", action.res.ballot_item_list);
         google_civic_election_id = action.res.google_civic_election_id || 0;
         google_civic_election_id = parseInt(google_civic_election_id, 10);
@@ -196,7 +200,12 @@ class BallotStore extends ReduceStore {
 
           VoterGuideActions.voterGuidesToFollowRetrieve(google_civic_election_id);
           VoterGuideActions.voterGuidesFollowedRetrieve(google_civic_election_id);
-
+          console.log("state.ballots:", state.ballot);
+          console.log("newBallot", newBallot);
+          console.log("yes civic election id, state:", {
+            ...state,
+            ballots: assign({}, state.ballots, newBallot),
+          });
           return {
             ...state,
             ballots: assign({}, state.ballots, newBallot),
@@ -205,6 +214,7 @@ class BallotStore extends ReduceStore {
         return state;
 
       case "voterBallotListRetrieve":
+        // console.log("BallotStore, voterBallotListRetrieve response received.");
         let ballot_election_list = action.res.voter_ballot_list;
         return {
          ...state,
@@ -212,6 +222,7 @@ class BallotStore extends ReduceStore {
         };
 
       case "voterAddressSave":
+      // console.log("BallotStore, voterAddressSave response received.");
         if (action.res.status === "SIMPLE_ADDRESS_SAVE") {
           return state;
         } else {
@@ -231,11 +242,10 @@ class BallotStore extends ReduceStore {
           }
         }
         return state;
-      
       //Chi
-      case "officeOpenOrClosedRetrieve":
-      console.log("BallotStore, officeOpenOrClosedRetrieve");
-      
+      case "officeOpenOrClosedSave":
+      console.log("BallotStore, officeOpenOrClosedSave");
+      //
       return state;
 
       case "error-voterBallotItemsRetrieve":
