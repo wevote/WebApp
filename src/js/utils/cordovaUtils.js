@@ -1,15 +1,15 @@
 import { browserHistory, hashHistory } from "react-router";
 
-export function isWebApp() {
+export function isWebApp () {
   return window.cordova === undefined;
 }
 
-export function isCordova() {
+export function isCordova () {
   return window.cordova !== undefined;
 }
 
 // see https://github.com/ReactTraining/react-router/blob/v3/docs/guides/Histories.md
-export function historyPush(route) {
+export function historyPush (route) {
   if (isCordova()) {
     hashHistory.push(route);
   } else {
@@ -17,7 +17,7 @@ export function historyPush(route) {
   }
 }
 
-export function cordovaDot(path) {
+export function cordovaDot (path) {
   if (isCordova()) {
     return "." + path;
   } else {
