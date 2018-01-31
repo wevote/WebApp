@@ -339,7 +339,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
       </div> :
       null;
 
-    let positions_exist = support_count || oppose_count || this.state.organizations_to_follow_support.length || this.state.organizations_to_follow_oppose.length;
     let positions_count = support_count + oppose_count + this.state.organizations_to_follow_support.length + this.state.organizations_to_follow_oppose.length;
     let maximum_organizations_to_show_desktop = 50;
     let maximum_organizations_to_show_mobile = 50;
@@ -350,7 +349,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     let organizations_to_follow_oppose_mobile = [];
 
     // console.log("this.state.position_list_from_advisers_followed_by_voter: ", this.state.position_list_from_advisers_followed_by_voter);
-    if (positions_exist) {
+    if (positions_count) {
       // console.log("ItemSupportOpposeCheetah, this.state.ballot_item_we_vote_id: ", this.state.ballot_item_we_vote_id);
       let support_positions_list_count = 0;
       let oppose_positions_list_count = 0;
@@ -463,7 +462,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       </div>
       {comment_display_raccoon_desktop}
       {comment_display_raccoon_mobile}
-      { positions_exist ?
+      { positions_count ?
         <div className="network-positions-stacked__support-list u-flex u-justify-between u-items-center">
           <div className="network-positions-stacked__support-list-container-wrap">
             {/* Show a break-down of the current positions in your network */}
