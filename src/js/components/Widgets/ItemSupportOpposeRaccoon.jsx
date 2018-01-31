@@ -494,6 +494,16 @@ export default class ItemSupportOpposeRaccoon extends Component {
       {comment_display_raccoon_mobile}
       { positions_count ?
         <div className="network-positions-stacked__support-list u-flex u-justify-between u-items-center">
+          {/* Click to scroll left through list Desktop */}
+          { positions_count > 7 && this.state.can_scroll_left_desktop ?
+            <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list-scroll-icon u-cursor--pointer hidden-xs" aria-hidden="true" onClick={this.scrollLeft.bind(this, "desktop")} /> :
+            null
+          }
+          {/* Click to scroll left through list Mobile */}
+          { positions_count > 4 && this.state.can_scroll_left_mobile ?
+            <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list-scroll-icon u-cursor--pointer visible-xs" aria-hidden="true" onClick={this.scrollLeft.bind(this, "mobile")} /> :
+            null
+          }
           <div className="network-positions-stacked__support-list-container-wrap">
             {/* Show a break-down of the current positions in your network */}
             <span ref={`${this.state.candidate.we_vote_id}-org-list-desktop`} className="network-positions-stacked__support-list-container u-flex u-justify-between u-items-center u-inset__v--xs hidden-xs">
@@ -559,20 +569,12 @@ export default class ItemSupportOpposeRaccoon extends Component {
               </ul>
             </span>
           </div>
-          {/* Click to scroll through list Desktop */}
-          { positions_count > 7 && this.state.can_scroll_left_desktop ?
-            <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list-scroll-icon u-cursor--pointer hidden-xs" aria-hidden="true" onClick={this.scrollLeft.bind(this, "desktop")} /> :
-            null
-          }
+          {/* Click to scroll right through list Desktop */}
           { positions_count > 7 && this.state.can_scroll_right_desktop ?
             <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list-scroll-icon u-cursor--pointer hidden-xs" aria-hidden="true" onClick={this.scrollRight.bind(this, "desktop")} /> :
             null
           }
-          {/* Click to scroll through list Mobile */}
-          { positions_count > 4 && this.state.can_scroll_left_mobile ?
-            <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list-scroll-icon u-cursor--pointer visible-xs" aria-hidden="true" onClick={this.scrollLeft.bind(this, "mobile")} /> :
-            null
-          }
+          {/* Click to scroll right through list Mobile */}
           { positions_count > 4 && this.state.can_scroll_right_mobile ?
             <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list-scroll-icon u-cursor--pointer visible-xs" aria-hidden="true" onClick={this.scrollRight.bind(this, "mobile")} /> :
             null
