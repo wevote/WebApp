@@ -36,6 +36,10 @@ export default class ItemSupportOpposeRaccoon extends Component {
     this.state = {
       ballot_item_display_name: "",
       ballot_item_we_vote_id: "",
+      can_scroll_left_desktop: false,
+      can_scroll_left_mobile: false,
+      can_scroll_right_desktop: true,
+      can_scroll_right_mobile: true,
       candidate: {},
       maximum_organization_display: 0,
       organizations_to_follow_support: [],
@@ -256,7 +260,20 @@ export default class ItemSupportOpposeRaccoon extends Component {
     let width = $(element).width();
     $(element).animate({
       scrollLeft: position - width,
-    }, 350);
+    }, 350, () => {
+      let new_position = $(element).scrollLeft();
+      if (visible_tag === "desktop") {
+        this.setState({
+          can_scroll_left_desktop: new_position > 0,
+          can_scroll_right_desktop: true,
+        });
+      } else {
+        this.setState({
+          can_scroll_left_mobile: new_position > 0,
+          can_scroll_right_mobile: true,
+        });
+      }
+    });
   }
 
   scrollRight (visible_tag) {
@@ -265,7 +282,20 @@ export default class ItemSupportOpposeRaccoon extends Component {
     let width = $(element).width();
     $(element).animate({
       scrollLeft: position + width,
-    }, 350);
+    }, 350, () => {
+      let new_position = $(element).scrollLeft();
+      if (visible_tag === "desktop") {
+        this.setState({
+          can_scroll_left_desktop: new_position > 0,
+          can_scroll_right_desktop: position + width === new_position,
+        });
+      } else {
+        this.setState({
+          can_scroll_left_mobile: new_position > 0,
+          can_scroll_right_mobile: position + width === new_position,
+        });
+      }
+    });
   }
 
   render () {
@@ -530,20 +560,20 @@ export default class ItemSupportOpposeRaccoon extends Component {
             </span>
           </div>
           {/* Click to scroll through list Desktop */}
-          { positions_count > 7 ?
+          { positions_count > 7 && this.state.can_scroll_left_desktop ?
             <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list-scroll-icon u-cursor--pointer hidden-xs" aria-hidden="true" onClick={this.scrollLeft.bind(this, "desktop")} /> :
             null
           }
-          { positions_count > 7 ?
+          { positions_count > 7 && this.state.can_scroll_right_desktop ?
             <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list-scroll-icon u-cursor--pointer hidden-xs" aria-hidden="true" onClick={this.scrollRight.bind(this, "desktop")} /> :
             null
           }
           {/* Click to scroll through list Mobile */}
-          { positions_count > 4 ?
+          { positions_count > 4 && this.state.can_scroll_left_mobile ?
             <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list-scroll-icon u-cursor--pointer visible-xs" aria-hidden="true" onClick={this.scrollLeft.bind(this, "mobile")} /> :
             null
           }
-          { positions_count > 4 ?
+          { positions_count > 4 && this.state.can_scroll_right_mobile ?
             <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list-scroll-icon u-cursor--pointer visible-xs" aria-hidden="true" onClick={this.scrollRight.bind(this, "mobile")} /> :
             null
           }
