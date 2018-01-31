@@ -26,7 +26,7 @@ export default class IntroNetworkDefinition extends Component {
             </Button> to, <br />
         are your <strong>We Vote</strong> network.</div>
         <div><br /></div>
-      <div><img className="center-block intro-story__img-height--extra" src={cordovaDot("/img/global/intro-story/slide4-connect-friends-300x370-min.png")}/></div>
+      <div><img className="center-block intro-story__img-height--extra u-bg-white" src={cordovaDot("/img/global/intro-story/intro-listen-to-friends-graphic.svg")}/></div>
       <div className="intro-story__padding-btn">
         <button type="button" className="btn btn-success" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
       </div>

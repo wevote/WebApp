@@ -20,6 +20,7 @@ const NUMBER_OF_CANDIDATES_TO_DISPLAY = 5; // Set to 5 in raccoon, and 3 in walr
 // This is related to components/VoterGuide/VoterGuideOfficeItemCompressed
 export default class OfficeItemCompressedRaccoon extends Component {
   static propTypes = {
+    allBallotItemsCount: PropTypes.number,
     we_vote_id: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string.isRequired,
     candidate_list: PropTypes.array,
@@ -74,6 +75,12 @@ export default class OfficeItemCompressedRaccoon extends Component {
         organization: this.props.organization,
       });
     }
+    // If there three or fewer offices on this ballot, unfurl them
+    if (this.props.allBallotItemsCount && this.props.allBallotItemsCount <= 3) {
+      this.setState({
+        display_office_unfurled: true,
+      });
+    }
   }
 
   componentWillReceiveProps (nextProps){
@@ -117,7 +124,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
   }
 
   toggleExpandCheetahDetails () {
-    this.setState({ display_raccoon_details_flag: !this.state.display_raccoon_details_flag });
+    this.setState({ display_office_unfurled: !this.state.display_office_unfurled });
   }
 
   openCandidateModal (candidate) {
@@ -180,7 +187,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
       remaining_candidates_to_display_count = this.props.candidate_list.length - NUMBER_OF_CANDIDATES_TO_DISPLAY;
     }
 
-    let ballot_item_display_name_raccoon = this.state.display_raccoon_details_flag ?
+    let ballot_item_display_name_raccoon = this.state.display_office_unfurled ?
             <Link onClick={this.toggleExpandCheetahDetails}>
               <TextTruncate line={1}
                             truncateText="…"
@@ -266,7 +273,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
         </span>
         {/* Mobile */}
         <span className="visible-xs">
-          { this.state.display_raccoon_details_flag ?
+          { this.state.display_office_unfurled ?
             <span className="BallotItem__learn-more hidden-print pull-right">
               <Link className="BallotItem__learn-more" onClick={this.goToOfficeLink}>learn more</Link>
             </span> :
@@ -277,7 +284,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
         <h2 className="u-f3 card-main__ballot-name u-stack--sm">{ballot_item_display_name_raccoon}</h2>
 
         {/* Only show the candidates if the Office is "unfurled" */}
-        { this.state.display_raccoon_details_flag ?
+        { this.state.display_office_unfurled ?
           <span>{candidate_list_to_display.map((one_candidate) => {
             let candidate_we_vote_id = one_candidate.we_vote_id;
             let candidateSupportStore = SupportStore.get(candidate_we_vote_id);
@@ -288,7 +295,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
             let candidate_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
             let candidate_text = candidate_party_text + candidate_description_text;
 
-            let candidate_photo_raccoon = this.state.display_raccoon_details_flag ?
+            let candidate_photo_raccoon = this.state.display_office_unfurled ?
               <div onClick={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(one_candidate.we_vote_id) : null}>
                 <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
                               sizeClassName="icon-candidate-small u-push--sm "
@@ -312,7 +319,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                 {/* Positions in Your Network and Possible Voter Guides to Follow */}
                 <ItemSupportOpposeRaccoon ballotItemWeVoteId={candidate_we_vote_id}
                                           ballot_item_display_name={one_candidate.ballot_item_display_name}
-                                          display_raccoon_details_flag={this.state.display_raccoon_details_flag}
+                                          display_raccoon_details_flag={this.state.display_office_unfurled}
                                           goToCandidate={() => this.goToCandidateLink(one_candidate.we_vote_id)}
                                           maximumOrganizationDisplay={this.state.maximum_organization_display}
                                           organizationsToFollowSupport={organizationsToFollowSupport}
@@ -346,7 +353,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
         }
 
         {/* If the office is "rolled up", show some details */}
-        { !this.state.display_raccoon_details_flag ?
+        { !this.state.display_office_unfurled ?
           <div>
             { candidate_list_to_display.map( (one_candidate) => {
 
@@ -440,7 +447,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
           null
         }
 
-        { !this.state.display_all_candidates_flag && this.state.display_raccoon_details_flag && remaining_candidates_to_display_count ?
+        { !this.state.display_all_candidates_flag && this.state.display_office_unfurled && remaining_candidates_to_display_count ?
           <Link onClick={this.toggleDisplayAllCandidates}>
             <span className="u-items-center u-no-break hidden-print">
               Click to show {remaining_candidates_to_display_count} more candidate{ remaining_candidates_to_display_count !== 1 ? "s" : null }...</span>
@@ -452,7 +459,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                              displaySubtitles={false}
                              onClick={this.toggleDisplayAllCandidates} /> : null
         }
-        { this.state.display_raccoon_details_flag ?
+        { this.state.display_office_unfurled ?
           <Link onClick={this.toggleExpandCheetahDetails}>
             <div className="BallotItem__view-more u-items-center u-no-break hidden-print">
               Show less...</div>

@@ -84,6 +84,21 @@ class IssueStore extends ReduceStore {
     return issues_list;
   }
 
+  getOrganizationsForOneIssue (issue_we_vote_id) {
+    // We want a list of all organizations tagged with this issue, so we can offer organizations to listen to
+
+  }
+
+  getPositionsForBallotItemForOneIssue (ballot_item_we_vote_id, issue_we_vote_id) {
+    // We want a list of positions about this candidate or measure, where the org taking the position
+    // is tagged with this issue
+  }
+
+  getVoterGuidesForElectionForOneIssue (google_civic_election_id, issue_we_vote_id) {
+    // We want a list of all voter_guides/organizations tagged with this issue that have a position in this election
+
+  }
+
   reduce (state, action) {
     let issue_list;
     let organization_we_vote_id;
