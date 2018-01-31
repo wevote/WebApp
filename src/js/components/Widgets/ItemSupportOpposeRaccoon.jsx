@@ -340,6 +340,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       null;
 
     let positions_exist = support_count || oppose_count || this.state.organizations_to_follow_support.length || this.state.organizations_to_follow_oppose.length;
+    let positions_count = support_count + oppose_count + this.state.organizations_to_follow_support.length + this.state.organizations_to_follow_oppose.length;
     let maximum_organizations_to_show_desktop = 50;
     let maximum_organizations_to_show_mobile = 50;
 
@@ -530,11 +531,23 @@ export default class ItemSupportOpposeRaccoon extends Component {
             </span>
           </div>
           {/* Click to scroll through list Desktop */}
-          <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list-scroll-icon u-cursor--pointer hidden-xs" aria-hidden="true" onClick={this.scrollLeft.bind(this, "desktop")} />
-          <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list-scroll-icon u-cursor--pointer hidden-xs" aria-hidden="true" onClick={this.scrollRight.bind(this, "desktop")} />
+          { positions_count > 7 ?
+            <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list-scroll-icon u-cursor--pointer hidden-xs" aria-hidden="true" onClick={this.scrollLeft.bind(this, "desktop")} /> :
+            null
+          }
+          { positions_count > 7 ?
+            <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list-scroll-icon u-cursor--pointer hidden-xs" aria-hidden="true" onClick={this.scrollRight.bind(this, "desktop")} /> :
+            null
+          }
           {/* Click to scroll through list Mobile */}
-          <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list-scroll-icon u-cursor--pointer visible-xs" aria-hidden="true" onClick={this.scrollLeft.bind(this, "mobile")} />
-          <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list-scroll-icon u-cursor--pointer visible-xs" aria-hidden="true" onClick={this.scrollRight.bind(this, "mobile")} />
+          { positions_count > 4 ?
+            <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list-scroll-icon u-cursor--pointer visible-xs" aria-hidden="true" onClick={this.scrollLeft.bind(this, "mobile")} /> :
+            null
+          }
+          { positions_count > 4 ?
+            <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list-scroll-icon u-cursor--pointer visible-xs" aria-hidden="true" onClick={this.scrollRight.bind(this, "mobile")} /> :
+            null
+          }
         </div> :
         null
       }
