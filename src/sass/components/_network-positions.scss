@@ -154,7 +154,7 @@
     $scrollbar-height: 21px;
     $list-height: 60px;
     $list-height-visible: $list-height - $scrollbar-height;
-    $scroll-icon-margin: $space-none $space-none $space-none $space-sm;
+    $scroll-icon-margin: $space-xxs $space-sm $space-none $space-sm;
 
     &-container-wrap {
       box-sizing: content-box;
