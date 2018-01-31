@@ -85,6 +85,22 @@
   }
 }
 
+// For display of medium thumbnail images for issues
+.issue {
+  &__image {
+    display: inline;
+
+    &--medium {
+      margin-left: $space-xxs;
+      width: 48px; // 48px is set in WeVoteServer environment_variables as PROFILE_IMAGE_MEDIUM_WIDTH
+      border-radius: $radius-xs;
+    }
+  }
+  &__image-modal {
+    display: inline;
+  }
+}
+
 .BallotItemsSummary {
   padding-top: $space-md;
   margin-bottom: -$space-md; // stylelint-disable-line sh-waqar/declaration-use-variable
@@ -96,3 +112,4 @@
   text-decoration: underline;
   font-weight: bold;
 }
+
