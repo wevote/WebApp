@@ -24,4 +24,3 @@ export function cordovaDot (path) {
     return path;
   }
 }
-
