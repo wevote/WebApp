@@ -11,7 +11,7 @@ if (!Object.assign) {
   Object.assign = React.__spread;
 }
 
-function startApp() {
+function startApp () {
   // prevent keyboard scrolling our view
   // if (window.cordova && window.cordova.plugins.Keyboard) {
   //   window.cordova.plugins.Keyboard.disableScroll(true);
