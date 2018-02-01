@@ -181,7 +181,7 @@ export default class Ballot extends Component {
       AnalyticsActions.saveActionBallotVisit(VoterStore.election_id());
     }
     // console.log("End of componentDidMount");
-    //also read raccoon detail flag tracker!! 
+    //also read raccoon detail flag tracker!!
     this.setState({
       ballotElectionList: BallotStore.ballotElectionList(),
       ballot_returned_we_vote_id: ballot_returned_we_vote_id,
@@ -192,7 +192,6 @@ export default class Ballot extends Component {
       location: this.props.location,
       pathname: this.props.location.pathname,
       wait_until_voter_sign_in_completes: wait_until_voter_sign_in_completes,
-      
     });
   }
 
@@ -241,7 +240,7 @@ export default class Ballot extends Component {
     this.voterStoreListener.remove();
     // save current raccon open/close status to BallotStore
     BallotActions.voterBallotOfficeOpenOrClosedSave(this.state.raccoon_details_flag_tracker)
-  }
+  };
 
   toggleCandidateModal (candidate_for_modal) {
     if (candidate_for_modal) {
@@ -339,7 +338,7 @@ export default class Ballot extends Component {
         let new_filter_type = this.state.location && this.state.location.query && this.state.location.query.type !== "" ? this.state.location.query.type : prior_filter_type;
         this.setState({
           ballot_with_all_items: BallotStore.getBallotByFilterType(new_filter_type),
-          filter_type: new_filter_type, 
+          filter_type: new_filter_type,
         });
       }
     }
@@ -356,7 +355,7 @@ export default class Ballot extends Component {
       // console.log("current tracker in Ballotstore", BallotStore.current_raccoon_details_flag_tracker)
       this.setState({
         raccoon_details_flag_tracker: BallotStore.current_raccoon_details_flag_tracker
-      })
+      });
     }
   }
 
@@ -451,7 +450,7 @@ export default class Ballot extends Component {
   }
 
   updateRaccoonDetailsFlagTracker (we_vote_id, status) {
-    const new_raccoon_details_flag_tracker = { ... this.state.raccoon_details_flag_tracker, [we_vote_id]: status}
+    const new_raccoon_details_flag_tracker = { ... this.state.raccoon_details_flag_tracker, [we_vote_id]: status};
     this.setState({
       raccoon_details_flag_tracker: new_raccoon_details_flag_tracker
     });

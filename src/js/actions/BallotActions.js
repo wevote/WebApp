@@ -16,7 +16,7 @@ module.exports = {
   },
   voterBallotOfficeOpenOrClosedSave: (raccoon_details_flag_tracker) => {
     Dispatcher.dispatch({
-      type: "voterBallotOfficeOpenOrClosedSave", 
+      type: "voterBallotOfficeOpenOrClosedSave",
       res: {
         raccoon_details_flag_tracker,
         success: true

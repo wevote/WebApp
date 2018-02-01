@@ -129,12 +129,12 @@ class BallotStore extends ReduceStore {
   }
 
   get current_raccoon_details_flag_tracker () {
-    return this.getState().raccoon_details_flag_tracker; 
+    return this.getState().raccoon_details_flag_tracker;
   }
 
   getSingleRaccoonStatus (we_vote_id){
     if (we_vote_id ) {
-      //note: this method is made to always returns a Boolean 
+      //note: this method is made to always returns a Boolean
       // console.log(getSingleRaccoonStatus, this.getState())
       return !!this.getState().raccoon_details_flag_tracker[we_vote_id];
     } else {
@@ -213,9 +213,9 @@ class BallotStore extends ReduceStore {
           //tracking displaying raccoon flags for offices
           newBallot[google_civic_election_id].ballot_item_list.forEach(ballot_item => {
             if (ballot_item.kind_of_ballot_item === "OFFICE") {
-              new_raccoon_details_flag_tracker[ballot_item.we_vote_id] = false; 
+              new_raccoon_details_flag_tracker[ballot_item.we_vote_id] = false;
             }
-          })
+          });
           return {
             ...state,
             ballots: assign({}, state.ballots, newBallot),

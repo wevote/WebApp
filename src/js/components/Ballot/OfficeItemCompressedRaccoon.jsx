@@ -82,8 +82,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
     // console.log("setState", BallotStore.getSingleRaccoonStatus(this.props.we_vote_id))
     this.setState({
       display_raccoon_details_flag: BallotStore.getSingleRaccoonStatus(this.props.we_vote_id)
-    })
-
+    });
   }
 
   componentWillReceiveProps (nextProps){
