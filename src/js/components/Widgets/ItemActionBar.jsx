@@ -1,11 +1,13 @@
 import React, { Component, PropTypes } from "react";
 import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
-import SupportActions from "../../actions/SupportActions";
+import { showToastError, showToastSuccess } from "../../utils/showToast";
 import ShareButtonDropdown from "./ShareButtonDropdown";
+import SupportActions from "../../actions/SupportActions";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
+
 
 var Icon = require("react-svg-icons");
 
@@ -53,12 +55,14 @@ export default class ItemActionBar extends Component {
     }
     SupportActions.voterSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
+    showToastSuccess("Support added!");
   }
 
   stopSupportingItem () {
     if (this.state.transitioning){ return; }
     SupportActions.voterStopSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
+    showToastSuccess("Support removed!");
   }
 
   opposeItem (is_oppose) {
@@ -71,12 +75,14 @@ export default class ItemActionBar extends Component {
     }
     SupportActions.voterOpposingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
+    showToastError("Opposition added!");
   }
 
   stopOpposingItem () {
     if (this.state.transitioning){ return; }
     SupportActions.voterStopOpposingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
+    showToastError("Opposition removed!");
   }
 
   toggleSupportOrOpposeHelpModal () {
@@ -209,6 +215,7 @@ export default class ItemActionBar extends Component {
 
     return <div className={ this.props.shareButtonHide ? "item-actionbar--inline hidden-print" : "item-actionbar hidden-print" }>
       <div className={"btn-group" + (!this.props.shareButtonHide ? " u-push--sm" : "")}>
+
         {/* Start of Support Button */}
         <div className="hidden-xs">
           <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>{supportButton}</OverlayTrigger>
