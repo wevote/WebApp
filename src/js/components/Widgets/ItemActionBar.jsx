@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
-import showToast from "../../utils/showToast";
+import { showToastError, showToastSuccess } from "../../utils/showToast";
 import ShareButtonDropdown from "./ShareButtonDropdown";
 import SupportActions from "../../actions/SupportActions";
 import VoterActions from "../../actions/VoterActions";
@@ -55,14 +55,14 @@ export default class ItemActionBar extends Component {
     }
     SupportActions.voterSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
-    showToast("Support added!");
+    showToastSuccess("Support added!");
   }
 
   stopSupportingItem () {
     if (this.state.transitioning){ return; }
     SupportActions.voterStopSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
-    showToast("Support removed!");
+    showToastSuccess("Support removed!");
   }
 
   opposeItem (is_oppose) {
@@ -75,14 +75,14 @@ export default class ItemActionBar extends Component {
     }
     SupportActions.voterOpposingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
-    showToast("Opposition added!");
+    showToastError("Opposition added!");
   }
 
   stopOpposingItem () {
     if (this.state.transitioning){ return; }
     SupportActions.voterStopOpposingSave(this.props.ballot_item_we_vote_id, this.props.type);
     this.setState({transitioning: true});
-    showToast("Opposition removed!");
+    showToastError("Opposition removed!");
   }
 
   toggleSupportOrOpposeHelpModal () {
