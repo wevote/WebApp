@@ -169,13 +169,12 @@ class BallotStore extends ReduceStore {
     }
   }
 
-  getOfficesOpenOrClosedStatus (){
-    //
-  }
-
   reduce (state, action) {
-
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
+    if (action.type === "voterBallotOfficeOpenOrClosedSave"){
+      console.log("voterBallotOfficeOpenOrClosedSave received")
+    }
+    
     if (!action.res || !action.res.success)
       return state;
 
@@ -193,28 +192,30 @@ class BallotStore extends ReduceStore {
       case "voterBallotItemsRetrieve":
         console.log("BallotStore, voterBallotItemsRetrieve response received.");
         // console.log("BallotStore, voterBallotItemsRetrieve, action.res.ballot_item_list: ", action.res.ballot_item_list);
+        const raccoon_details_flag_tracker = {};
         google_civic_election_id = action.res.google_civic_election_id || 0;
         google_civic_election_id = parseInt(google_civic_election_id, 10);
         if (google_civic_election_id !== 0) {
           newBallot[google_civic_election_id] = action.res;
-
           VoterGuideActions.voterGuidesToFollowRetrieve(google_civic_election_id);
           VoterGuideActions.voterGuidesFollowedRetrieve(google_civic_election_id);
-          console.log("state.ballots:", state.ballot);
+          //tracking displaying raccoon flags for offices
           console.log("newBallot", newBallot);
-          console.log("yes civic election id, state:", {
-            ...state,
-            ballots: assign({}, state.ballots, newBallot),
-          });
+          newBallot[google_civic_election_id].ballot_item_list.forEach(ballot_item => {
+            if (ballot_item.kind_of_ballot_item === "OFFICE") {
+              raccoon_details_flag_tracker[ballot_item.we_vote_id] = false; 
+            }
+          })
           return {
             ...state,
             ballots: assign({}, state.ballots, newBallot),
+            raccoon_details_flag_tracker
           };
         }
         return state;
 
       case "voterBallotListRetrieve":
-        // console.log("BallotStore, voterBallotListRetrieve response received.");
+        console.log("BallotStore, voterBallotListRetrieve response received.");
         let ballot_election_list = action.res.voter_ballot_list;
         return {
          ...state,
@@ -243,10 +244,14 @@ class BallotStore extends ReduceStore {
         }
         return state;
       //Chi
-      case "officeOpenOrClosedSave":
-      console.log("BallotStore, officeOpenOrClosedSave");
-      //
-      return state;
+      case "voterBallotOfficeOpenOrClosedSave":
+        console.log("BallotStore, voterBallotOfficeOpenOrClosedSave");
+        // let { ballot_item_list } = action.res;
+        console.log("action.res", action.res)
+      return {
+        ...state,
+        // ballot_item_list
+      };
 
       case "error-voterBallotItemsRetrieve":
       default:

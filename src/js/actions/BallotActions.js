@@ -13,5 +13,17 @@ module.exports = {
 
   voterBallotListRetrieve: function () {
     Dispatcher.loadEndpoint("voterBallotListRetrieve");
+  },
+  voterBallotOfficeOpenOrClosedSave: (google_civic_election_id = 0, we_vote_id = "", display_raccoon_details_flag = false) => {
+    Dispatcher.dispatch({
+      type: "voterBallotOfficeOpenOrClosedSave", 
+      res: {
+        google_civic_election_id,
+        we_vote_id,
+        display_raccoon_details_flag,
+        success: true
+      }
+    });
+    // console.log("Ballot action triggered")
   }
 };

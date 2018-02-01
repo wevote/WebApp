@@ -604,6 +604,7 @@ export default class Ballot extends Component {
                     {ballot_with_all_items.map( (item) => <BallotItemCompressed toggleCandidateModal={this.toggleCandidateModal}
                                                                  toggleMeasureModal={this.toggleMeasureModal}
                                                                  key={item.we_vote_id}
+                                                                 google_civic_election_id={this.state.google_civic_election_id}
                                                                  {...item} />)}
                   </div>
                 </div>

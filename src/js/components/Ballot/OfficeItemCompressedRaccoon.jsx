@@ -14,6 +14,7 @@ import LearnMore from "../Widgets/LearnMore";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SupportStore from "../../stores/SupportStore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
+import BallotActions from "../../actions/BallotActions";
 
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 5; // Set to 5 in raccoon, and 3 in walrus
 
@@ -74,18 +75,23 @@ export default class OfficeItemCompressedRaccoon extends Component {
         organization: this.props.organization,
       });
     }
-    //retrieve officeOpenOrClosedStatus
   }
 
   componentWillReceiveProps (nextProps){
+    // console.log("officeItem nextProps", nextProps);
     if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
       this.setState({
         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
       });
     }
+
+    //read officeOpenOrClosedStatus
+
   }
 
   componentWillUnmount () {
+    const { we_vote_id } = this.props;
+    const { display_raccoon_details_flag } = this.state;
     this.organizationStoreListener.remove();
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
@@ -121,7 +127,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
   toggleExpandCheetahDetails () {
     this.setState({ display_raccoon_details_flag: !this.state.display_raccoon_details_flag });
-    console.log('toggling!')
+    console.log('toggling Cheetah Details!')
   }
 
   openCandidateModal (candidate) {
