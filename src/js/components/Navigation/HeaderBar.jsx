@@ -34,7 +34,9 @@ const links = {
         <span title="Network">
           <img className="glyphicon" src={cordovaDot("/img/global/svg-icons/network-icon.svg")} />
           {number_of_incoming_friend_requests ?
-            <span className="badge-total badge">{number_of_incoming_friend_requests}</span> :
+            number_of_incoming_friend_requests < 9 ?
+            <span className="badge-total badge-total badge">{number_of_incoming_friend_requests}</span> :
+            <span className="badge-total badge-total--overLimit badge">9+</span> :
             null }
         </span>
         <span className="header-nav__label">
@@ -321,7 +323,7 @@ export default class HeaderBar extends Component {
     let speaker_type = "V";  // TODO DALE make this dynamic
     let { ballot, network, donate } = links;
     let number_of_incoming_friend_requests = this.state.friend_invitations_sent_to_me.length;
-    let voter_is_signed_in = this.props.voter && this.props.voter.is_signed_in;
+    let voter_i = this.props.voter && this.props.voter.is_signed_in;
     let show_full_navigation = cookies.getItem("show_full_navigation") || voter_is_signed_in;
     let we_vote_branding_off = this.state.we_vote_branding_off;
     let in_network_section = pathname === "/more/network" || pathname === "/more/network/organizations" || pathname === "/more/network/issues" || pathname === "/more/network/friends";

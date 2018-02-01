@@ -180,11 +180,14 @@ $header-height-getting-started: 104px;
 .header-nav {
   .badge-total {
     $badge-color: #db4437;
-    left: 1em;
     position: absolute;
-    top: -7px;
     font-family: $body-font-stack;
     background-color: $badge-color; // Override for Bootstrap class .badge
+    top: $space-none;
+    right: $space-none;
+    &--overLimit {
+      right: -.5em;
+    }
   }
 }
 
