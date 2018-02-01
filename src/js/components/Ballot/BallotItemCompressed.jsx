@@ -17,7 +17,7 @@ export default class BallotItemCompressed extends Component {
     toggleCandidateModal: PropTypes.func,
     toggleMeasureModal: PropTypes.func,
     we_vote_id: PropTypes.string.isRequired,
-    google_civic_election_id: PropTypes.string
+    updateRaccoonDetailsFlagTracker: PropTypes.func,
   };
 
   isMeasure () {

@@ -14,7 +14,7 @@ import LearnMore from "../Widgets/LearnMore";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SupportStore from "../../stores/SupportStore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
-import BallotActions from "../../actions/BallotActions";
+import BallotStore from "../../stores/BallotStore";
 
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 5; // Set to 5 in raccoon, and 3 in walrus
 
@@ -29,6 +29,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
     organization: PropTypes.object,
     organization_we_vote_id: PropTypes.string,
     toggleCandidateModal: PropTypes.func,
+    updateRaccoonDetailsFlagTracker: PropTypes.func,
   };
 
   constructor (props) {
@@ -75,6 +76,14 @@ export default class OfficeItemCompressedRaccoon extends Component {
         organization: this.props.organization,
       });
     }
+
+    //read current raccon open/close status to BallotStore
+    // console.log("raccoon, compnentDidMount, setting state for we_vote_id", this.props.we_vote_id)
+    // console.log("setState", BallotStore.getSingleRaccoonStatus(this.props.we_vote_id))
+    this.setState({
+      display_raccoon_details_flag: BallotStore.getSingleRaccoonStatus(this.props.we_vote_id)
+    })
+
   }
 
   componentWillReceiveProps (nextProps){
@@ -84,19 +93,12 @@ export default class OfficeItemCompressedRaccoon extends Component {
         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
       });
     }
-
-    //read officeOpenOrClosedStatus
-
   }
 
   componentWillUnmount () {
-    const { we_vote_id } = this.props;
-    const { display_raccoon_details_flag } = this.state;
     this.organizationStoreListener.remove();
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
-
-    //write to officeOpenOrClosedStatus
   }
 
   onVoterGuideStoreChange () {
@@ -126,8 +128,10 @@ export default class OfficeItemCompressedRaccoon extends Component {
   }
 
   toggleExpandCheetahDetails () {
+    const { we_vote_id, updateRaccoonDetailsFlagTracker} = this.props;  
     this.setState({ display_raccoon_details_flag: !this.state.display_raccoon_details_flag });
-    console.log('toggling Cheetah Details!')
+    updateRaccoonDetailsFlagTracker(we_vote_id, !this.state.display_raccoon_details_flag);
+    // console.log('toggling raccoon Details!');
   }
 
   openCandidateModal (candidate) {

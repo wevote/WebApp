@@ -69,6 +69,7 @@ export default class Ballot extends Component {
       showBallotSummaryModal: false,
       voter_ballot_list: [],
       waiting_for_new_ballot_items: false,
+      raccoon_details_flag_tracker: {},
     };
 
     this.toggleBallotIntroModal = this.toggleBallotIntroModal.bind(this);
@@ -76,6 +77,7 @@ export default class Ballot extends Component {
     this.toggleMeasureModal = this.toggleMeasureModal.bind(this);
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
     this.toggleBallotSummaryModal = this.toggleBallotSummaryModal.bind(this);
+    this.updateRaccoonDetailsFlagTracker = this.updateRaccoonDetailsFlagTracker.bind(this);
   }
 
   componentDidMount () {
@@ -179,7 +181,7 @@ export default class Ballot extends Component {
       AnalyticsActions.saveActionBallotVisit(VoterStore.election_id());
     }
     // console.log("End of componentDidMount");
-
+    //also read raccoon detail flag tracker!! 
     this.setState({
       ballotElectionList: BallotStore.ballotElectionList(),
       ballot_returned_we_vote_id: ballot_returned_we_vote_id,
@@ -189,7 +191,8 @@ export default class Ballot extends Component {
       hide_intro_modal_from_cookie: hide_intro_modal_from_cookie,
       location: this.props.location,
       pathname: this.props.location.pathname,
-      wait_until_voter_sign_in_completes: wait_until_voter_sign_in_completes
+      wait_until_voter_sign_in_completes: wait_until_voter_sign_in_completes,
+      
     });
   }
 
@@ -236,6 +239,8 @@ export default class Ballot extends Component {
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
+    // save current raccon open/close status to BallotStore
+    BallotActions.voterBallotOfficeOpenOrClosedSave(this.state.raccoon_details_flag_tracker)
   }
 
   toggleCandidateModal (candidate_for_modal) {
@@ -334,7 +339,7 @@ export default class Ballot extends Component {
         let new_filter_type = this.state.location && this.state.location.query && this.state.location.query.type !== "" ? this.state.location.query.type : prior_filter_type;
         this.setState({
           ballot_with_all_items: BallotStore.getBallotByFilterType(new_filter_type),
-          filter_type: new_filter_type
+          filter_type: new_filter_type, 
         });
       }
     }
@@ -346,6 +351,13 @@ export default class Ballot extends Component {
       });
     }
     this.setState({ballotElectionList: BallotStore.ballotElectionList()});
+
+    if (Object.keys(this.state.raccoon_details_flag_tracker).length === 0) {
+      // console.log("current tracker in Ballotstore", BallotStore.current_raccoon_details_flag_tracker)
+      this.setState({
+        raccoon_details_flag_tracker: BallotStore.current_raccoon_details_flag_tracker
+      })
+    }
   }
 
   onElectionStoreChange (){
@@ -436,6 +448,13 @@ export default class Ballot extends Component {
       default :
         return "";
     }
+  }
+
+  updateRaccoonDetailsFlagTracker (we_vote_id, status) {
+    const new_raccoon_details_flag_tracker = { ... this.state.raccoon_details_flag_tracker, [we_vote_id]: status}
+    this.setState({
+      raccoon_details_flag_tracker: new_raccoon_details_flag_tracker
+    });
   }
 
   render () {
@@ -605,6 +624,7 @@ export default class Ballot extends Component {
                                                                  toggleMeasureModal={this.toggleMeasureModal}
                                                                  key={item.we_vote_id}
                                                                  google_civic_election_id={this.state.google_civic_election_id}
+                                                                 updateRaccoonDetailsFlagTracker={this.updateRaccoonDetailsFlagTracker}
                                                                  {...item} />)}
                   </div>
                 </div>

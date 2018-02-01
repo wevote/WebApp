@@ -11,6 +11,7 @@ class BallotStore extends ReduceStore {
 
   getInitialState () {
     return {
+      raccoon_details_flag_tracker: {},
     };
   }
 
@@ -127,6 +128,20 @@ class BallotStore extends ReduceStore {
     });
   }
 
+  get current_raccoon_details_flag_tracker () {
+    return this.getState().raccoon_details_flag_tracker; 
+  }
+
+  getSingleRaccoonStatus (we_vote_id){
+    if (we_vote_id ) {
+      //note: this method is made to always returns a Boolean 
+      // console.log(getSingleRaccoonStatus, this.getState())
+      return !!this.getState().raccoon_details_flag_tracker[we_vote_id];
+    } else {
+      return false;
+    }
+  }
+
   //Filters the ballot items which are type OFFICE
   ballot_filtered_unsupported_candidates () {
     return this.ballot.map( item =>{
@@ -171,10 +186,6 @@ class BallotStore extends ReduceStore {
 
   reduce (state, action) {
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
-    if (action.type === "voterBallotOfficeOpenOrClosedSave"){
-      console.log("voterBallotOfficeOpenOrClosedSave received")
-    }
-    
     if (!action.res || !action.res.success)
       return state;
 
@@ -190,9 +201,9 @@ class BallotStore extends ReduceStore {
         return state;
 
       case "voterBallotItemsRetrieve":
-        console.log("BallotStore, voterBallotItemsRetrieve response received.");
+        // console.log("BallotStore, voterBallotItemsRetrieve response received.");
         // console.log("BallotStore, voterBallotItemsRetrieve, action.res.ballot_item_list: ", action.res.ballot_item_list);
-        const raccoon_details_flag_tracker = {};
+        const new_raccoon_details_flag_tracker = {};
         google_civic_election_id = action.res.google_civic_election_id || 0;
         google_civic_election_id = parseInt(google_civic_election_id, 10);
         if (google_civic_election_id !== 0) {
@@ -200,22 +211,21 @@ class BallotStore extends ReduceStore {
           VoterGuideActions.voterGuidesToFollowRetrieve(google_civic_election_id);
           VoterGuideActions.voterGuidesFollowedRetrieve(google_civic_election_id);
           //tracking displaying raccoon flags for offices
-          console.log("newBallot", newBallot);
           newBallot[google_civic_election_id].ballot_item_list.forEach(ballot_item => {
             if (ballot_item.kind_of_ballot_item === "OFFICE") {
-              raccoon_details_flag_tracker[ballot_item.we_vote_id] = false; 
+              new_raccoon_details_flag_tracker[ballot_item.we_vote_id] = false; 
             }
           })
           return {
             ...state,
             ballots: assign({}, state.ballots, newBallot),
-            raccoon_details_flag_tracker
+            raccoon_details_flag_tracker: assign({}, state.raccoon_details_flag_tracker, new_raccoon_details_flag_tracker)
           };
         }
         return state;
 
       case "voterBallotListRetrieve":
-        console.log("BallotStore, voterBallotListRetrieve response received.");
+        // console.log("BallotStore, voterBallotListRetrieve response received.");
         let ballot_election_list = action.res.voter_ballot_list;
         return {
          ...state,
@@ -245,12 +255,10 @@ class BallotStore extends ReduceStore {
         return state;
       //Chi
       case "voterBallotOfficeOpenOrClosedSave":
-        console.log("BallotStore, voterBallotOfficeOpenOrClosedSave");
-        // let { ballot_item_list } = action.res;
-        console.log("action.res", action.res)
+        // console.log("action.res", action.res)
       return {
         ...state,
-        // ballot_item_list
+        raccoon_details_flag_tracker: action.res.raccoon_details_flag_tracker,
       };
 
       case "error-voterBallotItemsRetrieve":
