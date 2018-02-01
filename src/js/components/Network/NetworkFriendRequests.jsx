@@ -26,6 +26,7 @@ export default class NetworkFriendRequests extends Component {
     // FriendActions.friendInvitationsSentToMe();
     // FriendActions.friendInvitationsProcessed();
     // FriendActions.suggestedFriendList();
+    this._onFriendStoreChange();
     this._onVoterStoreChange();
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
