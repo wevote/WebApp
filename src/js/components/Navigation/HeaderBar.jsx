@@ -34,7 +34,7 @@ const links = {
         <span title="Network">
           <img className="glyphicon" src={cordovaDot("/img/global/svg-icons/network-icon.svg")} />
           {number_of_incoming_friend_requests ?
-            number_of_incoming_friend_requests < 9 ?
+            number_of_incoming_friend_requests < 2 ?
             <span className="badge-total badge-total badge">{number_of_incoming_friend_requests}</span> :
             <span className="badge-total badge-total--overLimit badge">9+</span> :
             null }
