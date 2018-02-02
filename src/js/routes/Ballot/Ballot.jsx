@@ -71,6 +71,7 @@ export default class Ballot extends Component {
       showBallotSummaryModal: false,
       voter_ballot_list: [],
       waiting_for_new_ballot_items: false,
+      office_display_unfurled_tracker: {},
     };
 
     this.toggleBallotIntroModal = this.toggleBallotIntroModal.bind(this);
@@ -78,6 +79,7 @@ export default class Ballot extends Component {
     this.toggleMeasureModal = this.toggleMeasureModal.bind(this);
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
     this.toggleBallotSummaryModal = this.toggleBallotSummaryModal.bind(this);
+    this.updateOfficeDisplayUnfurledTracker = this.updateOfficeDisplayUnfurledTracker.bind(this);
   }
 
   componentDidMount () {
@@ -181,7 +183,7 @@ export default class Ballot extends Component {
       AnalyticsActions.saveActionBallotVisit(VoterStore.election_id());
     }
     // console.log("End of componentDidMount");
-
+    //also read raccoon detail flag tracker!!
     this.setState({
       ballotElectionList: BallotStore.ballotElectionList(),
       ballot_returned_we_vote_id: ballot_returned_we_vote_id,
@@ -191,7 +193,7 @@ export default class Ballot extends Component {
       hide_intro_modal_from_cookie: hide_intro_modal_from_cookie,
       location: this.props.location,
       pathname: this.props.location.pathname,
-      wait_until_voter_sign_in_completes: wait_until_voter_sign_in_completes
+      wait_until_voter_sign_in_completes: wait_until_voter_sign_in_completes,
     });
   }
 
@@ -238,7 +240,9 @@ export default class Ballot extends Component {
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
-  }
+    // save current raccon open/close status to BallotStore
+    BallotActions.voterBallotOfficeOpenOrClosedSave(this.state.office_display_unfurled_tracker)
+  };
 
   toggleCandidateModal (candidate_for_modal) {
     if (candidate_for_modal) {
@@ -336,7 +340,7 @@ export default class Ballot extends Component {
         let new_filter_type = this.state.location && this.state.location.query && this.state.location.query.type !== "" ? this.state.location.query.type : prior_filter_type;
         this.setState({
           ballot_with_all_items: BallotStore.getBallotByFilterType(new_filter_type),
-          filter_type: new_filter_type
+          filter_type: new_filter_type,
         });
       }
     }
@@ -348,6 +352,13 @@ export default class Ballot extends Component {
       });
     }
     this.setState({ballotElectionList: BallotStore.ballotElectionList()});
+
+    if (Object.keys(this.state.office_display_unfurled_tracker).length === 0) {
+      // console.log("current tracker in Ballotstore", BallotStore.current_office_display_unfurled_tracker)
+      this.setState({
+        office_display_unfurled_tracker: BallotStore.current_office_display_unfurled_tracker
+      });
+    }
   }
 
   onElectionStoreChange (){
@@ -438,6 +449,13 @@ export default class Ballot extends Component {
       default :
         return "";
     }
+  }
+
+  updateOfficeDisplayUnfurledTracker (we_vote_id, status) {
+    const new_office_display_unfurled_tracker = { ... this.state.office_display_unfurled_tracker, [we_vote_id]: status};
+    this.setState({
+      office_display_unfurled_tracker: new_office_display_unfurled_tracker
+    });
   }
 
   render () {
@@ -606,10 +624,11 @@ export default class Ballot extends Component {
                 <div>
                   <div className="BallotList">
                     {ballot_with_all_items.map( (item) => <BallotItemCompressed toggleCandidateModal={this.toggleCandidateModal}
-                                                                                toggleMeasureModal={this.toggleMeasureModal}
-                                                                                allBallotItemsCount={ballot_with_all_items.length}
-                                                                                key={item.we_vote_id}
-                                                                                {...item} />)}
+                                                                 toggleMeasureModal={this.toggleMeasureModal}
+                                                                 key={item.we_vote_id}
+                                                                 updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
+                                                                 allBallotItemsCount={ballot_with_all_items.length}
+                                                                 {...item} />)}
                   </div>
                 </div>
               }

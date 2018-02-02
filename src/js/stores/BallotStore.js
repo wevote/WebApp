@@ -11,6 +11,7 @@ class BallotStore extends ReduceStore {
 
   getInitialState () {
     return {
+      office_display_unfurled_tracker: {},
     };
   }
 
@@ -127,6 +128,20 @@ class BallotStore extends ReduceStore {
     });
   }
 
+  get current_office_display_unfurled_tracker () {
+    return this.getState().office_display_unfurled_tracker;
+  }
+
+  getSingleRaccoonStatus (we_vote_id){
+    if (we_vote_id ) {
+      //note: this method is made to always returns a Boolean
+      // console.log(getSingleRaccoonStatus, this.getState())
+      return !!this.getState().office_display_unfurled_tracker[we_vote_id];
+    } else {
+      return false;
+    }
+  }
+
   //Filters the ballot items which are type OFFICE
   ballot_filtered_unsupported_candidates () {
     return this.ballot.map( item =>{
@@ -170,7 +185,6 @@ class BallotStore extends ReduceStore {
   }
 
   reduce (state, action) {
-
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success)
       return state;
@@ -189,22 +203,29 @@ class BallotStore extends ReduceStore {
       case "voterBallotItemsRetrieve":
         // console.log("BallotStore, voterBallotItemsRetrieve response received.");
         // console.log("BallotStore, voterBallotItemsRetrieve, action.res.ballot_item_list: ", action.res.ballot_item_list);
+        const new_office_display_unfurled_tracker = {};
         google_civic_election_id = action.res.google_civic_election_id || 0;
         google_civic_election_id = parseInt(google_civic_election_id, 10);
         if (google_civic_election_id !== 0) {
           newBallot[google_civic_election_id] = action.res;
-
           VoterGuideActions.voterGuidesToFollowRetrieve(google_civic_election_id);
           VoterGuideActions.voterGuidesFollowedRetrieve(google_civic_election_id);
-
+          //tracking displaying raccoon flags for offices
+          newBallot[google_civic_election_id].ballot_item_list.forEach(ballot_item => {
+            if (ballot_item.kind_of_ballot_item === "OFFICE") {
+              new_office_display_unfurled_tracker[ballot_item.we_vote_id] = false;
+            }
+          });
           return {
             ...state,
             ballots: assign({}, state.ballots, newBallot),
+            office_display_unfurled_tracker: assign({}, state.office_display_unfurled_tracker, new_office_display_unfurled_tracker)
           };
         }
         return state;
 
       case "voterBallotListRetrieve":
+        // console.log("BallotStore, voterBallotListRetrieve response received.");
         let ballot_election_list = action.res.voter_ballot_list;
         return {
          ...state,
@@ -212,6 +233,7 @@ class BallotStore extends ReduceStore {
         };
 
       case "voterAddressSave":
+      // console.log("BallotStore, voterAddressSave response received.");
         if (action.res.status === "SIMPLE_ADDRESS_SAVE") {
           return state;
         } else {
@@ -231,6 +253,13 @@ class BallotStore extends ReduceStore {
           }
         }
         return state;
+      //Chi
+      case "voterBallotOfficeOpenOrClosedSave":
+        // console.log("action.res", action.res)
+      return {
+        ...state,
+        office_display_unfurled_tracker: action.res.office_display_unfurled_tracker,
+      };
 
       case "error-voterBallotItemsRetrieve":
       default:

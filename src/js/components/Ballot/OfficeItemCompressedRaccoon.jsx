@@ -14,6 +14,7 @@ import LearnMore from "../Widgets/LearnMore";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SupportStore from "../../stores/SupportStore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
+import BallotStore from "../../stores/BallotStore";
 
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 5; // Set to 5 in raccoon, and 3 in walrus
 
@@ -29,13 +30,14 @@ export default class OfficeItemCompressedRaccoon extends Component {
     organization: PropTypes.object,
     organization_we_vote_id: PropTypes.string,
     toggleCandidateModal: PropTypes.func,
+    updateOfficeDisplayUnfurledTracker: PropTypes.func,
   };
 
   constructor (props) {
     super(props);
     this.state = {
       display_all_candidates_flag: false,
-      display_raccoon_details_flag: false,
+      display_office_unfurled: false,
       editMode: false,
       maximum_organization_display: 4,
       organization: {},
@@ -75,15 +77,25 @@ export default class OfficeItemCompressedRaccoon extends Component {
         organization: this.props.organization,
       });
     }
+
+    //read current raccon open/close status to BallotStore
+    // console.log("raccoon, compnentDidMount, setting state for we_vote_id", this.props.we_vote_id)
+    // console.log("setState", BallotStore.getSingleRaccoonStatus(this.props.we_vote_id))
     // If there three or fewer offices on this ballot, unfurl them
     if (this.props.allBallotItemsCount && this.props.allBallotItemsCount <= 3) {
       this.setState({
         display_office_unfurled: true,
       });
+    } else {
+      //read from BallotStore
+      this.setState({
+        display_office_unfurled: BallotStore.getSingleRaccoonStatus(this.props.we_vote_id)
+      });
     }
   }
 
   componentWillReceiveProps (nextProps){
+    // console.log("officeItem nextProps", nextProps);
     if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
       this.setState({
         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
@@ -124,7 +136,14 @@ export default class OfficeItemCompressedRaccoon extends Component {
   }
 
   toggleExpandCheetahDetails () {
+    const { we_vote_id, updateOfficeDisplayUnfurledTracker } = this.props;
     this.setState({ display_office_unfurled: !this.state.display_office_unfurled });
+    if (this.props.allBallotItemsCount && this.props.allBallotItemsCount <= 3) {
+      //only update tracker if there are more than 3 offices
+    } else {
+      updateOfficeDisplayUnfurledTracker(we_vote_id, !this.state.display_office_unfurled);
+    }
+    // console.log('toggling raccoon Details!');
   }
 
   openCandidateModal (candidate) {
