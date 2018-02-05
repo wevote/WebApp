@@ -1,14 +1,17 @@
 import React, { Component, PropTypes } from "react";
+import { Button } from "react-bootstrap";
 import { $ajax } from "../../utils/service";
 import cookies from "../../utils/cookies";
-// import TwitterActions from "../../actions/TwitterActions";
-const web_app_config = require("../../config");
+import { isWebApp, cordovaOpenSafariView } from "../../utils/cordovaUtils";
+import webAppConfig from "../../config";
+
+const returnURL = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + "/twitter_sign_in";
 
 export default class TwitterSignIn extends Component {
   static propTypes = {
     params: PropTypes.object,
     buttonSizeClass: PropTypes.string,
-    buttonText: PropTypes.string
+    buttonText: PropTypes.string,
   };
 
   constructor (props) {
@@ -17,64 +20,61 @@ export default class TwitterSignIn extends Component {
     };
   }
 
-  didClickTwitterSignInButton () {
-    // We search for ":twitter_secret_key" and replace it with the actual TwitterLinkToVoter twitter_secret_key
-    //  at the end of the sign in process.
-    let return_url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/twitter_sign_in";
-    this.twitterSignInStart(return_url);
-  }
-
-  onKeyDown (event) {
-    let enterAndSpaceKeyCodes = [13, 32];
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      this.didClickTwitterSignInButton();
-    }
-  }
-
-  twitterSignInStart () {
-    let we_vote_branding_off_from_cookie = cookies.getItem("we_vote_branding_off") || 0;
-    let return_url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/twitter_sign_in";
+  twitterSignInWebApp () {
+    let brandingOff = cookies.getItem("we_vote_branding_off") || 0;
+    console.log("twitterSignInWebApp isWebApp(): " + isWebApp());
+    console.log("STEVE STEVE GGGGGGG returnURL: " + returnURL);
     $ajax({
       endpoint: "twitterSignInStart",
-      data: { return_url: return_url },
+      data: { return_url: returnURL },
       success: res => {
-        console.log("twitterSignInStart success, res:", res);
+        console.log("twitterSignInWebApp success, res:", res);
         if (res.twitter_redirect_url) {
-          if (we_vote_branding_off_from_cookie) {
+          if (brandingOff) {
             window.open(res.twitter_redirect_url);
           } else {
             window.location.assign(res.twitter_redirect_url);
           }
         } else {
           // There is a problem signing in
-          console.log("twitterSignInStart ERROR res: ", res);
+          console.log("twitterSignInWebApp ERROR res: ", res);
+
           // When we visit this page and delete the voter_device_id cookie, we can get an error that requires
           // reloading the browser page. This is how we do it:
           window.location.assign("");
         }
       },
+
       error: res => {
-        console.log("twitterSignInStart error: ", res);
+        console.log("twitterSignInWebApp error: ", res);
+
         // Try reloading the page
         window.location.assign("");
-      }
+      },
     });
   }
 
+  twitterSignInWebAppCordova () {
+    const requestURL = webAppConfig.WE_VOTE_SERVER_API_ROOT_URL + "twitterSignInStart" +
+      "?cordova=true&voter_device_id=" + cookies.getItem("voter_device_id") + "&return_url=http://nonsense.com";
+    console.log("twitterSignInWebAppCordova requestURL: " + requestURL);
+    cordovaOpenSafariView(requestURL, 50);
+  }
+
   render () {
-    let button_text = "Sign In";
+    let buttonText = "Sign In";
     if (this.props.buttonText) {
-      button_text = this.props.buttonText;
-    }
-    let button_size_class = "btn-lg";
-    if (this.props.buttonSizeClass) {
-      button_size_class = this.props.buttonSizeClass;
+      buttonText = this.props.buttonText;
     }
 
-    return <a tabIndex="0" onKeyDown={this.onKeyDown.bind(this)}
-              className={"btn btn-social btn-twitter " + button_size_class}
-              onClick={this.twitterSignInStart} >
-      <i className="fa fa-twitter" />{ button_text }
-    </a>;
+    let buttonSizeClass = "btn-lg";
+    if (this.props.buttonSizeClass) {
+      buttonSizeClass = this.props.buttonSizeClass;
+    }
+
+    return <Button bsSize="large" className="btn btn-social btn-twitter u-push--lg"
+            onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova }>
+      <span className="fa fa-twitter"/> {buttonText}
+    </Button>;
   }
 }
