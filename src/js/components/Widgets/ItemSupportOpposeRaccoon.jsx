@@ -339,9 +339,9 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
     let comment_display_raccoon_desktop = this.props.showPositionStatementActionBar || is_support || is_oppose || voter_statement_text ?
       <div className="hidden-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-        <div
+        {/* <div
           className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
-        </div>
+        </div> */}
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
           <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
                                           ballot_item_display_name={this.state.ballot_item_display_name}
@@ -355,9 +355,9 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
     let comment_display_raccoon_mobile = this.props.showPositionStatementActionBar || is_support || is_oppose || voter_statement_text ?
       <div className="visible-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-        <div
+        {/* <div
           className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
-        </div>
+        </div> */}
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
           <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
                                           ballot_item_display_name={this.state.ballot_item_display_name}
