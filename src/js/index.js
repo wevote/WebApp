@@ -18,9 +18,10 @@ function startApp () {
   // }
 
   // http://harrymoreno.com/2015/07/14/Deploying-a-React-App-to-Cordova.html
-  if (window.device && device.platform === 'iOS') {
+  if (window.device && device.platform === "iOS") {
     console.log("cordova startup device: ", device);
     console.log("cordova startup window.screen: ", window.screen);
+
     //styles.base.paddingTop = '20px';
   }
 
