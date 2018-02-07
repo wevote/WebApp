@@ -241,8 +241,8 @@ export default class Ballot extends Component {
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
     // save current raccon open/close status to BallotStore
-    BallotActions.voterBallotOfficeOpenOrClosedSave(this.state.office_display_unfurled_tracker)
-  };
+    BallotActions.voterBallotOfficeOpenOrClosedSave(this.state.office_display_unfurled_tracker);
+  }
 
   toggleCandidateModal (candidate_for_modal) {
     if (candidate_for_modal) {
