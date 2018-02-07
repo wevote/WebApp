@@ -7,15 +7,17 @@ import HeaderBackToBar from "./components/Navigation/HeaderBackToBar";
 import HeaderBar from "./components/Navigation/HeaderBar";
 import HeaderGettingStartedBar from "./components/Navigation/HeaderGettingStartedBar";
 import Headroom from "headroom.js";
-import { historyPush } from "./utils/cordovaUtils";
+import { historyPush, isCordova, cordovaOpenSafariView } from "./utils/cordovaUtils";
 import IssueActions from "./actions/IssueActions";
 import IssueStore from "././stores/IssueStore";
 import OrganizationActions from "./actions/OrganizationActions";
 import SearchAllActions from "./actions/SearchAllActions";
+import TwitterActions from "./actions/TwitterActions";
 import VoterActions from "./actions/VoterActions";
 import VoterStore from "./stores/VoterStore";
-const web_app_config = require("./config");
 import { stringContains } from "./utils/textFormat";
+
+const webAppConfig = require("./config");
 
 const loadingScreenStyles = {
   position: "fixed",
@@ -29,7 +31,7 @@ const loadingScreenStyles = {
   alignItems: "center",
   fontSize: "30px",
   color: "#fff",
-  flexDirection: "column"
+  flexDirection: "column",
 };
 
 export default class Application extends Component {
@@ -49,33 +51,67 @@ export default class Application extends Component {
     this.loadedHeader = false;
     this.initFacebook();
     this.preloadIssueImages = this.preloadIssueImages.bind(this);
+
+    if (isCordova()) {
+      window.handleOpenURL = function (url) {
+        if (url.startsWith("wevotetwitterscheme://")) {
+          console.log("window.handleOpenURL received wevotetwitterscheme: " + url);
+          let search = url.replace(new RegExp('&amp;', 'g'), '&');
+          let urlParams = new URLSearchParams(search);
+          if (urlParams.has("twitter_redirect_url")) {
+            let redirectURL = urlParams.get("twitter_redirect_url");
+            console.log("twitterSignIn cordova, redirecting to: " + redirectURL);
+            SafariViewController.hide();  // Hide the previous WKWebView
+            cordovaOpenSafariView(redirectURL, 500);
+          } else if (urlParams.has("access_token_and_secret_returned")) {
+            // SafariViewController.hide();
+            if (urlParams.get("success") === "True") {
+              console.log("twitterSignIn cordova, received secret -- push /ballot");
+              TwitterActions.twitterSignInRetrieve();
+              historyPush("/ballot");
+            } else {
+              console.log("twitterSignIn cordova, FAILED to receive secret -- push /twitter_sign_in");
+              historyPush("/twitter_sign_in");
+            }
+          } else if (urlParams.has("twitter_handle_found") && urlParams.get("twitter_handle_found") === "True") {
+            console.log("twitterSignIn cordova, twitter_handle_found -- push /ballot, twitter_handle: " + urlParams.get("twitter_handle"));
+            TwitterActions.twitterSignInRetrieve();
+            SafariViewController.hide();  // Hide the previous WKWebView
+            // 2/2/18: Needed, but doesnt do the job.  Firing too soon?  VoterActions.voterRetrieve();
+            historyPush("/ballot");
+          } else {
+            console.log("ERROR in window.handleOpenURL, NO MATCH");
+          }
+        }
+      };
+    }
   }
 
-  initFacebook (){
+  initFacebook () {
     window.fbAsyncInit = function () {
       window.FB.init({
-        appId: web_app_config.FACEBOOK_APP_ID,
+        appId: webAppConfig.FACEBOOK_APP_ID,
         xfbml: true,
         version: "v2.8",
-        status: true    // set this status to true, this will fixed popup blocker issue
+        status: true,    // set this status to true, this will fixed popup blocker issue
       });
     };
 
-    (function (d, s, id){
-       let js;
-       let fjs = d.getElementsByTagName(s)[0];
-       if (d.getElementById(id)) {return;}
-       js = d.createElement(s); js.id = id;
-       js.src = "https://connect.facebook.net/en_US/sdk.js";
-       fjs.parentNode.insertBefore(js, fjs);
-     }(document, "script", "facebook-jssdk"));
+    (function (d, s, id) {
+      let js;
+      let fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = "https://connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, "script", "facebook-jssdk"));
   }
 
   componentDidMount () {
-    let voter_device_id = VoterStore.voterDeviceId();
+    let voterDeviceId = VoterStore.voterDeviceId();
     VoterActions.voterRetrieve();
-    // console.log("Application, componentDidMount, voter_device_id:", voter_device_id);
-    if (voter_device_id) {
+    // console.log("Application, componentDidMount, voterDeviceId:", voterDeviceId);
+    if (voterDeviceId) {
       this._onVoterStoreChange();
     }
 
@@ -83,7 +119,7 @@ export default class Application extends Component {
 
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
 
-    // Preload Issue images. Note that for brand new browsers that don't have a voter_device_id yet, we retrieve all issues
+    // Preload Issue images. Note that for brand new browsers that don't have a voterDeviceId yet, we retrieve all issues
     IssueActions.retrieveIssuesToFollow();
     this.issueStoreListener = IssueStore.addListener(this.preloadIssueImages);
   }
@@ -94,20 +130,20 @@ export default class Application extends Component {
   }
 
   componentDidUpdate () {
-    // let voter_device_id = VoterStore.voterDeviceId();
-    // console.log("Application, componentDidUpdate, voter_device_id:", voter_device_id);
+    // let voterDeviceId = VoterStore.voterDeviceId();
+    // console.log("Application, componentDidUpdate, voterDeviceId:", voterDeviceId);
     if (this.loadedHeader) return;
     if (!this.refs.pageHeader) return;
 
     // Initialize headroom element
     new Headroom(this.refs.pageHeader, {
-      "offset": 20,
-      "tolerance": 1,
-      "classes": {
-        "initial": "headroom--animated",
-        "pinned": "headroom--slide-down",
-        "unpinned": "headroom--slide-up"
-      }
+      offset: 20,
+      tolerance: 1,
+      classes: {
+        initial:  "headroom--animated",
+        pinned:   "headroom--slide-down",
+        unpinned: "headroom--slide-up",
+      },
     }).init();
 
     this.loadedHeader = true;
@@ -115,8 +151,8 @@ export default class Application extends Component {
 
   _onVoterStoreChange () {
     // console.log("Application, _onVoterStoreChange");
-    let voter_device_id = VoterStore.voterDeviceId();
-    if (voter_device_id && voter_device_id !== "") {
+    let voterDeviceId = VoterStore.voterDeviceId();
+    if (voterDeviceId && voterDeviceId !== "") {
       if (this.state.voter_initial_retrieve_needed) {
         VoterActions.voterEmailAddressRetrieve();
         BookmarkActions.voterAllBookmarksStatusRetrieve();

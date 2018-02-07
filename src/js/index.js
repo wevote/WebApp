@@ -2,9 +2,8 @@ import React from "react";
 import { render } from "react-dom";
 import { browserHistory, hashHistory, Router, applyRouterMiddleware } from "react-router";
 import { useScroll } from "react-router-scroll";
-
+import { isCordova } from "./utils/cordovaUtils";
 import routes from "./Root";
-const webAppConfig = require("./config");
 
 // polyfill
 if (!Object.assign) {
@@ -18,14 +17,20 @@ function startApp () {
   //   window.cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
   // }
 
-  render(<Router history={webAppConfig.IS_CORDOVA ? hashHistory : browserHistory } render={applyRouterMiddleware(useScroll(()=>true))}>
+  // http://harrymoreno.com/2015/07/14/Deploying-a-React-App-to-Cordova.html
+  if (window.device && device.platform === 'iOS') {
+    console.log("cordova startup device: ", device);
+    console.log("cordova startup window.screen: ", window.screen);
+    //styles.base.paddingTop = '20px';
+  }
+
+  render(<Router history={isCordova() ? hashHistory : browserHistory } render={applyRouterMiddleware(useScroll(()=>true))}>
     { routes() }
   </Router>, document.getElementById("app"));
 }
 
 // If Apache Cordova is available, wait for it to be ready, otherwise start the WebApp
-if (window.cordova) {
-  webAppConfig.IS_CORDOVA = true;
+if (isCordova()) {
   document.addEventListener("deviceready", () => {
     startApp();
   }, false);
