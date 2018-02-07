@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import IssueCard from "./IssueCard";
-// import OrganizationsNotShownList from "./OrganizationsNotShownList";
 import IssueTinyImageDisplay from "./IssueTinyImageDisplay";
 
 // This will be called by VoterIssuesForBallotItem, which will pull from the store all positions about this candidate
@@ -27,8 +26,9 @@ export default class IssuesFollowedAsTinyImages extends Component {
 
     this.state = {
       issues_to_display: [],
-      // ballot_item_we_vote_id: "",
       maximum_issues_display: 0,
+
+      // ballot_item_we_vote_id: "",
       // supportProps: this.props.supportProps,
     };
   }
@@ -36,8 +36,10 @@ export default class IssuesFollowedAsTinyImages extends Component {
   componentDidMount () {
     this.setState({
       issues_to_display: this.props.issueListToDisplay,
+
       // ballot_item_we_vote_id: this.props.ballotItemWeVoteId,
       maximum_issues_display: this.props.maximumIssuesToDisplay ? this.props.maximumIssuesToDisplay : 20,
+
       // supportProps: this.props.supportProps,
     });
   }
@@ -127,7 +129,7 @@ export default class IssuesFollowedAsTinyImages extends Component {
     //   orgs_not_shown_count = this.state.organizations_to_follow.length - this.state.maximum_issues_display;
     //   orgs_not_shown_list = this.state.organizations_to_follow.slice(this.state.maximum_issues_display);
     // }
-    const issues_html_to_display = this.state.issues_to_display.map( (one_issue) => {
+    const issues_html_to_display = this.state.issues_to_display.map((one_issue) => {
       local_counter++;
       // console.log("IssuesFollowedAsTinyImages one_issue: ", one_issue);
       let issue_we_vote_id = one_issue.issue_we_vote_id;
@@ -162,9 +164,10 @@ export default class IssuesFollowedAsTinyImages extends Component {
         // } else {
         //   return "";
         // }
+        return "";
       } else {
 
-        this.popover_state[issue_we_vote_id] = {show: false, timer: null};
+        this.popover_state[issue_we_vote_id] = { show: false, timer: null };
 
         // let issueLink = one_organization.organization_twitter_handle ?
         //                           "/" + one_organization.organization_twitter_handle :

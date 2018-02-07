@@ -1,15 +1,14 @@
 import React, { Component, PropTypes } from "react";
-import { Link, browserHistory } from "react-router";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import IssuesFollowedAsTinyImages from "../Issues/IssuesFollowedAsTinyImages";
 import IssueStore from "../../stores/IssueStore";
 import SupportStore from "../../stores/SupportStore";
 
-
 // Show a voter a horizontal list of all of their issues,
 //  with a dropdown under each one that has all of the organizations they can follow underneath.
 export default class OrganizationsDisplayedUnderIssuesFollowed extends Component {
   static propTypes = {
+    we_vote_id: PropTypes.string,
   };
 
   constructor (props) {
@@ -29,7 +28,7 @@ export default class OrganizationsDisplayedUnderIssuesFollowed extends Component
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.setState({
       issues_voter_is_following: IssueStore.getIssuesVoterIsFollowing(),
-      supportProps: SupportStore.get(this.props.we_vote_id)
+      supportProps: SupportStore.get(this.props.we_vote_id),
     });
   }
 
@@ -56,6 +55,7 @@ export default class OrganizationsDisplayedUnderIssuesFollowed extends Component
       transitioning: false,
     });
   }
+
   render () {
     // console.log("this.state.issues_voter_is_following: ", this.state.issues_voter_is_following);
     return <span className="">
