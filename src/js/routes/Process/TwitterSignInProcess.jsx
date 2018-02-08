@@ -70,6 +70,8 @@ export default class TwitterSignInProcess extends Component {
     }
   }
 
+  // This creates the public.twitter_twitterlinktovoter entry, which is needed
+  // to establish is_signed_in within the voter.voter
   voterTwitterSaveToCurrentAccount () {
     VoterActions.voterTwitterSaveToCurrentAccount();
     historyPush({
@@ -160,7 +162,7 @@ export default class TwitterSignInProcess extends Component {
         return LoadingWheel;
       }
     } else {
-      // console.log("Setting up new Twitter entry - voterTwitterSaveToCurrentAccount");
+      console.log("Setting up new Twitter entry - voterTwitterSaveToCurrentAccount");
       this.voterTwitterSaveToCurrentAccount();
       //return <span>Setting up new Twitter entry - voterTwitterSaveToCurrentAccount</span>;
       return LoadingWheel;

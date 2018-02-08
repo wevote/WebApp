@@ -24,6 +24,7 @@ const email_info_text = "Send email invitations to your friends. Share your visi
 
 export default class Network extends Component {
   static propTypes = {
+    location: PropTypes.object,
     params: PropTypes.object,
   };
 
@@ -44,19 +45,26 @@ export default class Network extends Component {
     FriendActions.friendInvitationsSentToMe();
     FriendActions.friendInvitationsProcessed();
     FriendActions.suggestedFriendList();
+    this._onFriendStoreChange();
     this._onVoterStoreChange();
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    this.setState({
-      edit_mode: this.props.params.edit_mode || "organizations",
-    });
+    this.setState({ pathname: this.props.location.pathname });
     AnalyticsActions.saveActionNetwork(VoterStore.election_id());
   }
 
   componentWillReceiveProps (nextProps) {
-    this.setState({
-      edit_mode: nextProps.params.edit_mode || "organizations",
-    });
+    if (this.state.friend_invitations_sent_to_me.length > 0){  //has invitations
+      if (nextProps.location.pathname === "/more/network" || !nextProps.params.edit_mode){
+        this.setState({ edit_mode: "friends" });
+      } else {
+        this.setState({ edit_mode: nextProps.params.edit_mode });
+      }
+    } else if (nextProps.location.pathname === "/more/network" || !nextProps.params.edit_mode){
+        this.setState({ edit_mode: "issues" });
+    } else {
+        this.setState({ edit_mode: nextProps.params.edit_mode });
+    }
   }
 
   componentWillUnmount (){
@@ -65,12 +73,25 @@ export default class Network extends Component {
   }
 
   _onFriendStoreChange () {
-    this.setState({
+    let newState = {
       friend_invitations_sent_by_me: FriendStore.friendInvitationsSentByMe(),
       friend_invitations_sent_to_me: FriendStore.friendInvitationsSentToMe(),
       friend_invitations_processed: FriendStore.friendInvitationsProcessed(),
       suggested_friend_list: FriendStore.suggestedFriendList()
-    });
+    };
+
+    if (newState.friend_invitations_sent_to_me.length > 0){  //has invitations
+      if (this.state.pathname === "/more/network"){
+        newState.edit_mode = "friends";
+      } else {
+        newState.edit_mode = this.props.params.edit_mode || "friends";
+      }
+    } else if (this.state.pathname === "/more/network"){  //no invitations
+      newState.edit_mode = "issues";
+    } else {
+      newState.edit_mode = this.props.params.edit_mode || "issues";
+    }
+    this.setState(newState);
   }
 
   _onVoterStoreChange () {
@@ -164,13 +185,6 @@ export default class Network extends Component {
             <div className="tabs__tabs-container hidden-print">
               <ul className="nav tabs__tabs">
                 <li className="tab-item">
-                  <Link to="/more/network/organizations" className={this.state.edit_mode === "organizations" ? "tab tab-active" : "tab tab-default"}>
-                    <span className="visible-xs">Organizations</span>
-                    <span className="hidden-xs">Listen to Organizations</span>
-                  </Link>
-                </li>
-
-                <li className="tab-item">
                   <Link to={{ pathname: "/more/network/friends" }} className={this.state.edit_mode === "friends" ? "tab tab-active" : "tab tab-default"}>
                     <span>Friend Requests</span>
                   </Link>
@@ -178,7 +192,15 @@ export default class Network extends Component {
 
                 <li className="tab-item">
                   <Link to={{ pathname: "/more/network/issues" }} className={this.state.edit_mode === "issues" ? "tab tab-active" : "tab tab-default"}>
-                    <span>Issues to Follow</span>
+                    <span className="visible-xs">Issues</span>
+                    <span className="hidden-xs">Issues to Follow</span>
+                  </Link>
+                </li>
+
+                <li className="tab-item">
+                  <Link to="/more/network/organizations" className={this.state.edit_mode === "organizations" ? "tab tab-active" : "tab tab-default"}>
+                    <span className="visible-xs">Organizations</span>
+                    <span className="hidden-xs">Listen to Organizations</span>
                   </Link>
                 </li>
               </ul>

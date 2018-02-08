@@ -23,7 +23,6 @@ export default class TwitterSignIn extends Component {
   twitterSignInWebApp () {
     let brandingOff = cookies.getItem("we_vote_branding_off") || 0;
     console.log("twitterSignInWebApp isWebApp(): " + isWebApp());
-    console.log("STEVE STEVE GGGGGGG returnURL: " + returnURL);
     $ajax({
       endpoint: "twitterSignInStart",
       data: { return_url: returnURL },
@@ -67,10 +66,10 @@ export default class TwitterSignIn extends Component {
       buttonText = this.props.buttonText;
     }
 
-    let buttonSizeClass = "btn-lg";
-    if (this.props.buttonSizeClass) {
-      buttonSizeClass = this.props.buttonSizeClass;
-    }
+    // let buttonSizeClass = "btn-lg";
+    // if (this.props.buttonSizeClass) {
+    //   buttonSizeClass = this.props.buttonSizeClass;
+    // }
 
     return <Button bsSize="large" className="btn btn-social btn-twitter u-push--lg"
             onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova }>
