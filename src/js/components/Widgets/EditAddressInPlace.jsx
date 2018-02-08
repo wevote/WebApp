@@ -26,6 +26,7 @@ export default class EditAddressInPlace extends Component {
       text_for_map_search: this.props.address.text_for_map_search || "",
     });
   }
+
   componentWillReceiveProps (nextProps) {
     // console.log("EditAddressInPlace componentWillReceiveProps");
     this.setState({
@@ -35,14 +36,15 @@ export default class EditAddressInPlace extends Component {
 
   toggleEditingAddress () {
     this.setState({
-      editingAddress: !this.state.editingAddress
+      editingAddress: !this.state.editingAddress,
     });
   }
 
   render () {
-    let no_address_message = this.props.noAddressMessage ? this.props.noAddressMessage : "- no address entered -";
-    let maximum_address_display_length = 60;
+    let noAddressMessage = this.props.noAddressMessage ? this.props.noAddressMessage : "- no address entered -";
+    let maximumAddressDisplayLength = 60;
     let ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
+
     // console.log("EditAddressInPlace render, ballotBaseUrl: ", ballotBaseUrl);
 
     if (this.state.editingAddress) {
@@ -54,7 +56,7 @@ export default class EditAddressInPlace extends Component {
     } else {
       return <span>
           <h4 className="h4">Your Address</h4>
-          <span className="ballot__edit-address-preview">{ this.state.text_for_map_search.length ? shortenText(this.state.text_for_map_search, maximum_address_display_length) : no_address_message }</span>
+          <span className="ballot__edit-address-preview">{ this.state.text_for_map_search.length ? shortenText(this.state.text_for_map_search, maximumAddressDisplayLength) : noAddressMessage }</span>
           <span className="hidden-print"> (<a onClick={this.toggleEditingAddress}>Edit</a>)</span>
         </span>;
     }

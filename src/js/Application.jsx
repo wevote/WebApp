@@ -12,10 +12,10 @@ import IssueActions from "./actions/IssueActions";
 import IssueStore from "././stores/IssueStore";
 import OrganizationActions from "./actions/OrganizationActions";
 import SearchAllActions from "./actions/SearchAllActions";
+import { stringContains } from "./utils/textFormat";
 import TwitterActions from "./actions/TwitterActions";
 import VoterActions from "./actions/VoterActions";
 import VoterStore from "./stores/VoterStore";
-import { stringContains } from "./utils/textFormat";
 
 const webAppConfig = require("./config");
 
@@ -64,6 +64,7 @@ export default class Application extends Component {
           if (urlParams.has("twitter_redirect_url")) {
             let redirectURL = urlParams.get("twitter_redirect_url");
             console.log("twitterSignIn cordova, redirecting to: " + redirectURL);
+            // eslint-disable-next-line no-undef
             SafariViewController.hide();  // Hide the previous WKWebView
             cordovaOpenSafariView(redirectURL, 500);
           } else if (urlParams.has("access_token_and_secret_returned")) {
@@ -78,6 +79,7 @@ export default class Application extends Component {
             }
           } else if (urlParams.has("twitter_handle_found") && urlParams.get("twitter_handle_found") === "True") {
             console.log("twitterSignIn cordova, twitter_handle_found -- push /twitter_sign_in -- received handle = " + urlParams.get("twitter_handle"));
+            // eslint-disable-next-line no-undef
             SafariViewController.hide();  // Hide the previous WKWebView
             historyPush("/twitter_sign_in");
           } else {
