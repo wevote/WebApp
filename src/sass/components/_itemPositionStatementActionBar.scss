@@ -1,5 +1,8 @@
 @include media-object('.position-statement', '.position-statement__avatar', '.position-statement__input-group');
 
+$post-button-margin: 6px $space-none $space-none $space-none;
+$post-button-padding: 3px 7px;
+
 .position-statement {
   display: flex;
   flex: 1 1 100%;
@@ -28,6 +31,11 @@
     &__in-list {
       // margin-left: $space-position-comment;
     }
+  }
+
+  &__post-button {
+    margin: $post-button-margin;
+    padding: $post-button-padding;
   }
 
   &--truncated {
