@@ -163,7 +163,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     //   orgs_not_shown_count = organizations_to_follow.length - maximum_organization_display;
     //   orgs_not_shown_list = organizations_to_follow.slice(maximum_organization_display);
     // }
-    return organizations_to_follow.map( (one_organization) => {
+    return organizations_to_follow.map( one_organization => {
       local_counter++;
       let org_id = one_organization.organization_we_vote_id;
 
@@ -303,13 +303,13 @@ export default class ItemSupportOpposeRaccoon extends Component {
     let candidateSupportStore = SupportStore.get(this.state.ballot_item_we_vote_id);
     // Removed from ItemActionBar opposeHideInMobile
     let candidate_support_action_raccoon = <span>
-      <ItemActionBar ballot_item_display_name={this.state.ballot_item_display_name}
-                     ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
-                     commentButtonHide
-                     shareButtonHide
-                     supportProps={candidateSupportStore}
-                     transitioning={this.state.transitioning}
-                     type="CANDIDATE"/>
+        <ItemActionBar ballot_item_display_name={this.state.ballot_item_display_name}
+                       ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
+                       commentButtonHide
+                       shareButtonHide
+                       supportProps={candidateSupportStore}
+                       transitioning={this.state.transitioning}
+                       type="CANDIDATE" />
       </span>;
 
     let support_count = 0;
@@ -339,32 +339,32 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
     let comment_display_raccoon_desktop = this.props.showPositionStatementActionBar || is_support || is_oppose || voter_statement_text ?
       <div className="hidden-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-        <div
+        {/* <div
           className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
-        </div>
+        </div> */}
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
           <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
                                           ballot_item_display_name={this.state.ballot_item_display_name}
                                           supportProps={candidateSupportStore}
                                           transitioning={this.state.transitioning}
                                           type="CANDIDATE"
-                                          shown_in_list/>
+                                          shown_in_list />
         </div>
       </div> :
       null;
 
     let comment_display_raccoon_mobile = this.props.showPositionStatementActionBar || is_support || is_oppose || voter_statement_text ?
       <div className="visible-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-        <div
+        {/* <div
           className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
-        </div>
+        </div> */}
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
           <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
                                           ballot_item_display_name={this.state.ballot_item_display_name}
                                           supportProps={candidateSupportStore}
                                           transitioning={this.state.transitioning}
                                           type="CANDIDATE"
-                                          shown_in_list/>
+                                          shown_in_list />
         </div>
       </div> :
       null;
@@ -384,7 +384,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       let support_positions_list_count = 0;
       let oppose_positions_list_count = 0;
       // let info_only_positions_list_count = 0;
-      this.state.position_list_from_advisers_followed_by_voter.map((one_position) => {
+      this.state.position_list_from_advisers_followed_by_voter.map( one_position => {
         // console.log("one_position: ", one_position);
         // Filter out the positions that we don't want to display
         if (one_position.is_support_or_positive_rating) {
@@ -430,8 +430,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         Each one that <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
                                                width="20" height="20" /> opposes</span> subtracts
         1 from this <strong>Score</strong>. <Button bsStyle="success"
-                                                    bsSize="xsmall"
-                                                    >
+                                                    bsSize="xsmall">
                                               <span>Listen</span>
                                             </Button> to an
         organization to add their opinion to the <strong>Score in Your Network</strong>.
@@ -447,8 +446,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                                                width="20" height="20" /> oppose</span> {this.state.ballot_item_display_name}.
         Click on the logo
         and <Button bsStyle="success"
-                    bsSize="xsmall"
-                    >
+                    bsSize="xsmall">
               <span>Listen</span>
             </Button> to an organization to add their opinion to the <strong>Score in Your Network</strong>.
       </Popover>;
@@ -490,8 +488,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
           <span className="sr-only">{total_score > 0 ? total_score + " Support" : null }{total_score < 0 ? total_score + " Oppose" : null }</span>
         </div>
       </div>
-      {comment_display_raccoon_desktop}
-      {comment_display_raccoon_mobile}
+      { comment_display_raccoon_desktop }
+      { comment_display_raccoon_mobile }
       { positions_count ?
         <div className="network-positions-stacked__support-list u-flex u-justify-between u-items-center">
           {/* Click to scroll left through list Desktop */}

@@ -1,5 +1,7 @@
-
 @include media-object('.position-statement', '.position-statement__avatar', '.position-statement__input-group');
+
+$post-button-margin: 6px $space-none $space-none $space-none;
+$post-button-padding: 3px 7px;
 
 .position-statement {
   display: flex;
@@ -25,9 +27,15 @@
     background-color: $gray-pale;
     padding: $space-sm $space-md;
     margin: $space-none (-$space-md) (-$space-sm);
+
     &__in-list {
-      margin-left: $space-position-comment;
+      // margin-left: $space-position-comment;
     }
+  }
+
+  &__post-button {
+    margin: $post-button-margin;
+    padding: $post-button-padding;
   }
 
   &--truncated {

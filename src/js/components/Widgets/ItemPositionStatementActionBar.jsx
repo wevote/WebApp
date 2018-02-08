@@ -145,25 +145,25 @@ export default class ItemPositionStatementActionBar extends Component {
       statement_placeholder_text = "Your thoughts…";
     }
 
-    var user_position_text;
-    var user_position_icon;
-    var user_position_subject_name = this.props.ballot_item_display_name ?
-      " " + this.props.ballot_item_display_name :
-      null;
-    if (is_support) {
-      user_position_icon = "thumbs-up-color-icon";
-      user_position_text = <span><strong>You support</strong>{user_position_subject_name}</span>;
-    } else if (is_oppose) {
-      user_position_icon = "thumbs-down-color-icon";
-      user_position_text = <span><strong>You oppose</strong>{user_position_subject_name}</span>;
-    } else {
-      user_position_icon = "no-position-icon";
-      if (this.props.ballot_item_display_name) {
-        user_position_text = <em className="u-gray-mid">No position on {user_position_subject_name}</em>;
-      } else {
-        user_position_text = <em className="u-gray-mid">No position</em>;
-      }
-    }
+    // var user_position_text;
+    // var user_position_icon;
+    // var user_position_subject_name = this.props.ballot_item_display_name ?
+    //   " " + this.props.ballot_item_display_name :
+    //   null;
+    // if (is_support) {
+    //   user_position_icon = "thumbs-up-color-icon";
+    //   user_position_text = <span><strong>You support</strong>{user_position_subject_name}</span>;
+    // } else if (is_oppose) {
+    //   user_position_icon = "thumbs-down-color-icon";
+    //   user_position_text = <span><strong>You oppose</strong>{user_position_subject_name}</span>;
+    // } else {
+    //   user_position_icon = "no-position-icon";
+    //   if (this.props.ballot_item_display_name) {
+    //     user_position_text = <em className="u-gray-mid">No position on {user_position_subject_name}</em>;
+    //   } else {
+    //     user_position_text = <em className="u-gray-mid">No position</em>;
+    //   }
+    // }
 
     // Currently this "Post" text is the same given we display the visibility setting, but we may want to change this
     //  here if the near by visibility setting text changes
@@ -218,16 +218,17 @@ export default class ItemPositionStatementActionBar extends Component {
     }
 
     return <div className={ this.props.shown_in_list ? "position-statement__container__in-list" : "position-statement__container"}>
-      { this.props.stance_display_off ?
+      {/* { this.props.stance_display_off ?
         null :
         <div className="position-statement__overview u-flex items-center u-stack--sm">
-        { is_support || is_oppose ? <Icon className="u-push--xs" name={user_position_icon} width={24} height={24} /> : null }
-        { user_position_text }
+          { is_support || is_oppose ? <Icon className="u-push--xs" name={user_position_icon} width={24} height={24} /> : null }
+          { user_position_text }
           <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
                                 type={this.props.type}
                                 supportProps={this.props.supportProps}
                                 className="u-flex-auto u-tr hidden-print" />
-        </div> }
+        </div>
+      } */}
 
       { // Show the edit box (Viewing self)
         edit_mode ?
@@ -235,18 +236,24 @@ export default class ItemPositionStatementActionBar extends Component {
             <div className="position-statement hidden-print">
               { speaker_image_url_https ?
                 <img className="position-statement__avatar"
-                      src={speaker_image_url_https}
-                      width="34px"
-                /> :
-              image_placeholder }
+                     src={speaker_image_url_https}
+                     width="34px" /> :
+                image_placeholder
+              }
               <span className="position-statement__input-group u-flex u-items-start">
                 <Textarea onChange={this.updateStatementTextToBeSaved.bind(this)}
                   name="statement_text_to_be_saved"
                   className="position-statement__input u-push--sm form-control"
+                  minRows={2}
                   placeholder={statement_placeholder_text}
-                  defaultValue={statement_text_to_be_saved}
-                  />
-                <button className="btn btn-default btn-sm" type="submit">{post_button_text}</button>
+                  defaultValue={statement_text_to_be_saved} />
+              <div className="u-flex u-flex-column u-justify-between u-items-end">
+                <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
+                                      type={this.props.type}
+                                      supportProps={this.props.supportProps}
+                                      className="u-flex-auto u-tr hidden-print" />
+                <button className="position-statement__post-button btn btn-default btn-sm" type="submit">{post_button_text}</button>
+              </div>
               </span>
             </div>
           </form> :
