@@ -2,12 +2,10 @@ import React, { Component, PropTypes } from "react";
 import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
 import BookmarkStore from "../../stores/BookmarkStore";
 import BookmarkActions from "../../actions/BookmarkActions";
+import { showToastError, showToastSuccess } from "../../utils/showToast";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
-
-import { showToastError, showToastSuccess } from "../../utils/showToast";
-
 
 var Icon = require("react-svg-icons");
 
@@ -61,7 +59,6 @@ export default class BookmarkToggle extends Component {
         this.toggleBookmarkToggleHelpModal();
         VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.BOOKMARK_ACTION_MODAL_SHOWN);
       } else {
-        // only show if modal flag isnt set
         showToastSuccess("Bookmark set!");
       }
     }
