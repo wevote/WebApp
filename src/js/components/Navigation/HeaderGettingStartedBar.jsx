@@ -305,8 +305,8 @@ export default class HeaderGettingStartedBar extends Component {
       </Modal.Body>
     </Modal>;
 
-//    let ballotBaseUrl = window.location.href
-//    let twitterData = "https://twitter.com/intent/tweet?text=Share Ballot"+"&amp;url="+ballotBaseUrl
+   let ballotBaseUrl = window.location.href;
+   let twitterData = "https://twitter.com/intent/tweet?text=Share Ballot" + "&amp;url=" + ballotBaseUrl;
 
     return <div className="page-getting-started-header-background">
       { voter_thorough_orientation_complete ?
@@ -337,16 +337,16 @@ export default class HeaderGettingStartedBar extends Component {
                                    emailIcon/>
             <GettingStartedBarItem show={this._openFacebookModal}
                                    title="Share Ballot"
-                                   facebookIcon/>
- {/*           <span className="header-getting-started-nav__item-image-wrapper" title="Twitter Share">
-            <a className="fa fa-twitter fa-2x" href={ twitterData } title="Twitter Share" target="_blank"/></span>
-            <br/>
-            <span>
-                        <a className={`header-getting-started-nav__label`} href={ twitterData } title="Twitter Share" target="_blank">
-                        Share Ballot</a></span> */}
+                                   facebookIcon
+                                    />
+            <GettingStartedBarItem url={twitterData}
+                                   title="Tweet Ballot"
+                                   twitterIcon
+                                   isExternal/>
             <GettingStartedBarItem show={this._openPollingLocatorModal}
                                    title="Polling Location"
                                    mapMarkerIcon/>
+
             {/* Positions Icon & Modal */}
             {/* <GettingStartedBarItem show={this._toggleBallotIntroPositions}
               source="/img/global/svg-icons/stance-v1-59x32.svg"
