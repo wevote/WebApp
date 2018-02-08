@@ -1,15 +1,6 @@
-import React, { Component, PropTypes } from "react";
-import { Link } from "react-router";
-import FollowToggle from "../../components/Widgets/FollowToggle";
-import ImageHandler from "../../components/ImageHandler";
-import LoadingWheel from "../../components/LoadingWheel";
-import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
-import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
-import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
-import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
+import { Component, PropTypes } from "react";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
-import { removeTwitterNameFromDescription } from "../../utils/textFormat";
 
 // This Component is used to display the Organization by TwitterHandle
 // Please see VoterGuide/Organization for the Component used by GuideList for Candidate and Opinions (you can follow)
@@ -20,6 +11,7 @@ export default class OrganizationCard extends Component {
     issue: PropTypes.object.isRequired,
     turnOffDescription: PropTypes.bool,
     turnOffLogo: PropTypes.bool,
+    organization: PropTypes.object,
   };
 
   constructor (props) {

@@ -12,10 +12,10 @@ import IssueActions from "./actions/IssueActions";
 import IssueStore from "././stores/IssueStore";
 import OrganizationActions from "./actions/OrganizationActions";
 import SearchAllActions from "./actions/SearchAllActions";
+import { stringContains } from "./utils/textFormat";
 import TwitterActions from "./actions/TwitterActions";
 import VoterActions from "./actions/VoterActions";
 import VoterStore from "./stores/VoterStore";
-import { stringContains } from "./utils/textFormat";
 
 const webAppConfig = require("./config");
 
@@ -50,17 +50,21 @@ export default class Application extends Component {
     };
     this.loadedHeader = false;
     this.initFacebook();
+    this.initCordova();
     this.preloadIssueImages = this.preloadIssueImages.bind(this);
+  }
 
+  initCordova () {
     if (isCordova()) {
       window.handleOpenURL = function (url) {
         if (url.startsWith("wevotetwitterscheme://")) {
           console.log("window.handleOpenURL received wevotetwitterscheme: " + url);
-          let search = url.replace(new RegExp('&amp;', 'g'), '&');
+          let search = url.replace(new RegExp("&amp;", "g"), "&");
           let urlParams = new URLSearchParams(search);
           if (urlParams.has("twitter_redirect_url")) {
             let redirectURL = urlParams.get("twitter_redirect_url");
             console.log("twitterSignIn cordova, redirecting to: " + redirectURL);
+            // eslint-disable-next-line no-undef
             SafariViewController.hide();  // Hide the previous WKWebView
             cordovaOpenSafariView(redirectURL, 500);
           } else if (urlParams.has("access_token_and_secret_returned")) {
@@ -74,11 +78,10 @@ export default class Application extends Component {
               historyPush("/twitter_sign_in");
             }
           } else if (urlParams.has("twitter_handle_found") && urlParams.get("twitter_handle_found") === "True") {
-            console.log("twitterSignIn cordova, twitter_handle_found -- push /ballot, twitter_handle: " + urlParams.get("twitter_handle"));
-            TwitterActions.twitterSignInRetrieve();
+            console.log("twitterSignIn cordova, twitter_handle_found -- push /twitter_sign_in -- received handle = " + urlParams.get("twitter_handle"));
+            // eslint-disable-next-line no-undef
             SafariViewController.hide();  // Hide the previous WKWebView
-            // 2/2/18: Needed, but doesnt do the job.  Firing too soon?  VoterActions.voterRetrieve();
-            historyPush("/ballot");
+            historyPush("/twitter_sign_in");
           } else {
             console.log("ERROR in window.handleOpenURL, NO MATCH");
           }
@@ -140,8 +143,8 @@ export default class Application extends Component {
       offset: 20,
       tolerance: 1,
       classes: {
-        initial:  "headroom--animated",
-        pinned:   "headroom--slide-down",
+        initial: "headroom--animated",
+        pinned: "headroom--slide-down",
         unpinned: "headroom--slide-up",
       },
     }).init();

@@ -84,20 +84,18 @@ class IssueStore extends ReduceStore {
     return issues_list;
   }
 
-  getOrganizationsForOneIssue (issue_we_vote_id) {
-    // We want a list of all organizations tagged with this issue, so we can offer organizations to listen to
+  // getOrganizationsForOneIssue (issue_we_vote_id) {
+  //   // We want a list of all organizations tagged with this issue, so we can offer organizations to listen to
+  // }
 
-  }
+  // getPositionsForBallotItemForOneIssue (ballot_item_we_vote_id, issue_we_vote_id) {
+  //   // We want a list of positions about this candidate or measure, where the org taking the position
+  //   // is tagged with this issue
+  // }
 
-  getPositionsForBallotItemForOneIssue (ballot_item_we_vote_id, issue_we_vote_id) {
-    // We want a list of positions about this candidate or measure, where the org taking the position
-    // is tagged with this issue
-  }
-
-  getVoterGuidesForElectionForOneIssue (google_civic_election_id, issue_we_vote_id) {
-    // We want a list of all voter_guides/organizations tagged with this issue that have a position in this election
-
-  }
+  // getVoterGuidesForElectionForOneIssue (google_civic_election_id, issue_we_vote_id) {
+  //   // We want a list of all voter_guides/organizations tagged with this issue that have a position in this election
+  // }
 
   reduce (state, action) {
     let issue_list;
@@ -116,8 +114,8 @@ class IssueStore extends ReduceStore {
 
       case "retrieveIssuesToFollow":
         issue_list = action.res.issue_list;
-        var all_cached_issues = state.all_cached_issues;
-        var issue_we_vote_ids_voter_can_follow = [];
+        let all_cached_issues = state.all_cached_issues;
+        let issue_we_vote_ids_voter_can_follow = [];
         issue_list.forEach( issue => {
           all_cached_issues[issue.issue_we_vote_id] = issue;
           issue_we_vote_ids_voter_can_follow.push(issue.issue_we_vote_id);
@@ -131,7 +129,7 @@ class IssueStore extends ReduceStore {
 
       case "issuesRetrieve":
         issue_list = action.res.issue_list;
-        var issue_we_vote_ids_voter_is_following = [];
+        let issue_we_vote_ids_voter_is_following = [];
         all_cached_issues = state.all_cached_issues;
         // Update issue_we_vote_ids_voter_is_following if voter_issues_only flag is set, else update the all_cached_issues
         if (action.res.voter_issues_only) {
@@ -165,8 +163,8 @@ class IssueStore extends ReduceStore {
         console.log("IssueStore issuesToLinkToForOrganization");
         organization_we_vote_id = action.res.organization_we_vote_id;
         issue_list = action.res.issue_list;
-        var issue_we_vote_ids_to_link_to_by_organization_dict = state.issue_we_vote_ids_to_link_to_by_organization_dict;
-        var to_link_to_issue_list_for_one_organization = [];
+        let issue_we_vote_ids_to_link_to_by_organization_dict = state.issue_we_vote_ids_to_link_to_by_organization_dict;
+        let to_link_to_issue_list_for_one_organization = [];
         // We accumulate all issue objects in the all_cached_issues variable
         all_cached_issues = state.all_cached_issues;
         issue_list.forEach(issue => {
@@ -187,8 +185,8 @@ class IssueStore extends ReduceStore {
         organization_we_vote_id = action.res.organization_we_vote_id;
         issue_list = action.res.issue_list;
         console.log("IssueStore, issuesLinkedToOrganization: ", issue_list);
-        var issue_we_vote_ids_linked_to_by_organization_dict = state.issue_we_vote_ids_linked_to_by_organization_dict;
-        var linked_issue_list_for_one_organization = [];
+        let issue_we_vote_ids_linked_to_by_organization_dict = state.issue_we_vote_ids_linked_to_by_organization_dict;
+        let linked_issue_list_for_one_organization = [];
         // We accumulate all issue objects in the all_cached_issues variable
         all_cached_issues = state.all_cached_issues;
         issue_list.forEach(issue => {

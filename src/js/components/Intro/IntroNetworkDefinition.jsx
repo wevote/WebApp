@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import { cordovaDot, isCordova, isWebApp } from "../../utils/cordovaUtils";
+import { cordovaDot, isCordova } from "../../utils/cordovaUtils";
 
 export default class IntroNetworkDefinition extends Component {
   static propTypes = {
