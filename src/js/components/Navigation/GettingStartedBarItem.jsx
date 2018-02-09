@@ -9,8 +9,11 @@ const GettingStartedBarItem = props => {
              { props.twitterIcon ? <i className="fa fa-twitter fa-2x"/> : null }
              { !props.printIcon && !props.emailIcon && !props.mapMarkerIcon && !props.twitterIcon ? <img className={`glyphicon nav-getting-started__image${props.completed ? "-fade" : ""}`} src={props.source} /> : null }
           </span>
-          <span className={`header-getting-started-nav__label${props.completed ? "-fade" : ""}`}>
-             {props.title}
+          <span className={`visible-xs header-getting-started-nav__label${props.completed ? "-fade" : ""}`}>
+             {props.titleMobile ? props.titleMobile : props.title}
+          </span>
+          <span className={`hidden-xs header-getting-started-nav__label${props.completed ? "-fade" : ""}`}>
+             {props.titleDesktop ? props.titleDesktop : props.title}
           </span>
         </a> :
         <Link onClick={props.show} className={ (props.printIcon ? "hidden-xs " : "") + "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
@@ -26,8 +29,11 @@ const GettingStartedBarItem = props => {
             { props.mapMarkerIcon ? <span className="glyphicon glyphicon-map-marker fa-2x"/> : null }
             { !props.printIcon && !props.emailIcon && !props.mapMarkerIcon ? <img className={`glyphicon nav-getting-started__image${props.completed ? "-fade" : ""}`} src={props.source} /> : null }
           </span>
-          <span className={`header-getting-started-nav__label${props.completed ? "-fade" : ""}`}>
-            {props.title}
+          <span className={`visible-xs header-getting-started-nav__label${props.completed ? "-fade" : ""}`}>
+             {props.titleMobile ? props.titleMobile : props.title}
+          </span>
+          <span className={`hidden-xs header-getting-started-nav__label${props.completed ? "-fade" : ""}`}>
+             {props.titleDesktop ? props.titleDesktop : props.title}
           </span>
         </Link>;
 };
@@ -36,7 +42,9 @@ GettingStartedBarItem.propTypes = {
   show: PropTypes.func,
   completed: PropTypes.number,
   source: PropTypes.string,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  titleDesktop: PropTypes.string,
+  titleMobile: PropTypes.string,
   printIcon: PropTypes.bool,
   emailIcon: PropTypes.bool,
   facebookIcon: PropTypes.bool,

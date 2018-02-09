@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import ImageHandler from "../../components/ImageHandler";
 
-// IssueTinyImageDisplay is used by IssuesFollowedAsTinyImages for viewing the icons for issues
+// IssueTinyImageDisplay is used by IssuesDisplayListWithOrganizationPopovers for viewing the icons for issues
 //  you can follow on the Ballot page
 export default class IssueTinyImageDisplay extends Component {
   static propTypes = {
@@ -25,11 +25,18 @@ export default class IssueTinyImageDisplay extends Component {
       issue_name = "";
     }
 
-    let issue_photo_url_medium;
-    if (this.props.issue.issue_photo_url_medium) {
-      issue_photo_url_medium = this.props.issue.issue_photo_url_medium;
+    // let issue_photo_url_medium;
+    // if (this.props.issue.issue_photo_url_medium) {
+    //   issue_photo_url_medium = this.props.issue.issue_photo_url_medium;
+    // } else {
+    //   issue_photo_url_medium = "";
+    // }
+
+    let issue_photo_url_large;
+    if (this.props.issue.issue_photo_url_large) {
+      issue_photo_url_large = this.props.issue.issue_photo_url_large;
     } else {
-      issue_photo_url_medium = "";
+      issue_photo_url_large = "";
     }
 
     let support_oppose_class = "";
@@ -43,9 +50,9 @@ export default class IssueTinyImageDisplay extends Component {
     return <span className="issue__image-modal"><ImageHandler alt={issue_name}
                          className={support_oppose_class}
                          hidePlaceholder={hide_placeholder}
-                         imageUrl={issue_photo_url_medium}
+                         imageUrl={issue_photo_url_large}
                          kind_of_image="ISSUE"
-                         sizeClassName="issue__image--medium"
+                         sizeClassName="issue__image--large"
 
            /></span>;
   }

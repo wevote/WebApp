@@ -50,7 +50,7 @@ export const weVoteBoard = [ {
     name: "Barbara Shannon",
     image: photoPath + "Barbara_Shannon-200x200.jpg",
     title: [
-      "Co-Founder / CTO & c3 + c4 Board Member",
+      "c3 Board Member",
       "Adviser to entrepreneurs and C-level Fortune 500 leaders. MBA The Wharton School."
     ]
   }, {
@@ -143,6 +143,12 @@ export const weVoteStaff = [ {
     image: photoPath + "Anisha_Jain-200x200.jpg",
     title: [
       "Sr. Software Engineer"
+    ]
+  }, {
+    name: "Elizabeth Janeczko",
+    image: photoPath + "Elizabeth_Janeczko-200x200.jpg",
+    title: [
+      "Sr. Writer & Content Marketing Manager"
     ]
   }, {
     name: "Judy Johnson",
