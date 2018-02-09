@@ -26,6 +26,8 @@ class VoterGuideStore extends ReduceStore {
   // Given a list of ids, retrieve the complete all_cached_voter_guides with all attributes and return as array
   returnVoterGuidesFromListOfIds (list_of_organization_we_vote_ids) {
     const state = this.getState();
+    // console.log("VoterGuideStore, returnVoterGuidesFromListOfIds list_of_organization_we_vote_ids: ", list_of_organization_we_vote_ids);
+    // console.log("VoterGuideStore, returnVoterGuidesFromListOfIds state.all_cached_voter_guides: ", state.all_cached_voter_guides);
     let filtered_voter_guides = [];
     if (list_of_organization_we_vote_ids) {
       // voterGuidesFollowedRetrieve API returns more than one voter guide per organization some times.
@@ -33,7 +35,9 @@ class VoterGuideStore extends ReduceStore {
         return self.indexOf(value) === index;
       });
       unique_organization_we_vote_id_array.forEach(organization_we_vote_id => {
-        filtered_voter_guides.push(state.all_cached_voter_guides[organization_we_vote_id]);
+        if (state.all_cached_voter_guides[organization_we_vote_id]) {
+          filtered_voter_guides.push(state.all_cached_voter_guides[organization_we_vote_id]);
+        }
       });
     }
     return filtered_voter_guides;

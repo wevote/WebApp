@@ -71,7 +71,7 @@ export default class Ballot extends Component {
       showBallotSummaryModal: false,
       voter_ballot_list: [],
       waiting_for_new_ballot_items: false,
-      office_display_unfurled_tracker: {},
+      ballot_item_unfurled_tracker: {},
     };
 
     this.toggleBallotIntroModal = this.toggleBallotIntroModal.bind(this);
@@ -240,8 +240,8 @@ export default class Ballot extends Component {
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
-    // save current raccon open/close status to BallotStore
-    BallotActions.voterBallotOfficeOpenOrClosedSave(this.state.office_display_unfurled_tracker);
+    // save current open/close status to BallotStore
+    BallotActions.voterBallotItemOpenOrClosedSave(this.state.ballot_item_unfurled_tracker);
   }
 
   toggleCandidateModal (candidate_for_modal) {
@@ -353,10 +353,10 @@ export default class Ballot extends Component {
     }
     this.setState({ballotElectionList: BallotStore.ballotElectionList()});
 
-    if (Object.keys(this.state.office_display_unfurled_tracker).length === 0) {
-      // console.log("current tracker in Ballotstore", BallotStore.current_office_display_unfurled_tracker)
+    if (Object.keys(this.state.ballot_item_unfurled_tracker).length === 0) {
+      // console.log("current tracker in Ballotstore", BallotStore.current_ballot_item_unfurled_tracker)
       this.setState({
-        office_display_unfurled_tracker: BallotStore.current_office_display_unfurled_tracker
+        ballot_item_unfurled_tracker: BallotStore.current_ballot_item_unfurled_tracker
       });
     }
   }
@@ -452,9 +452,9 @@ export default class Ballot extends Component {
   }
 
   updateOfficeDisplayUnfurledTracker (we_vote_id, status) {
-    const new_office_display_unfurled_tracker = { ... this.state.office_display_unfurled_tracker, [we_vote_id]: status};
+    const new_ballot_item_unfurled_tracker = { ... this.state.ballot_item_unfurled_tracker, [we_vote_id]: status};
     this.setState({
-      office_display_unfurled_tracker: new_office_display_unfurled_tracker
+      ballot_item_unfurled_tracker: new_ballot_item_unfurled_tracker
     });
   }
 

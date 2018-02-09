@@ -344,7 +344,8 @@ export default class HeaderGettingStartedBar extends Component {
                                    twitterIcon
                                    isExternal/>
             <GettingStartedBarItem show={this._openPollingLocatorModal}
-                                   title="Polling Location"
+                                   titleDesktop="Polling Location"
+                                   titleMobile="Vote"
                                    mapMarkerIcon/>
 
             {/* Positions Icon & Modal */}
