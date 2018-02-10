@@ -270,14 +270,14 @@ export default class Application extends Component {
       pathname === "/facebook_invitable_friends" || pathname === "/friends" || pathname === "/friends/invitebyemail" ||
       pathname === "/intro" || pathname === "/issues_followed" || pathname === "/issues_to_follow" ||
       pathname.startsWith("/measure/") ||
-      pathname === "/more/about" || pathname === "/more/connect" || pathname === "/more/credits" ||
+      pathname === "/more/about" || pathname === "/more/absentee" || pathname === "/more/connect" || pathname === "/more/credits" ||
       pathname === "/more/donate" || pathname === "/more/donate_thank_you" || pathname === "/more/elections" ||
       pathname === "/more/howtouse" || pathname.startsWith("/office/") ||
       pathname === "/more/network" ||
       pathname === "/more/network/friends" || pathname === "/more/network/issues" || pathname === "/more/network/organizations" ||
       pathname === "/more/organization" || pathname === "/more/privacy" ||
       pathname === "/more/register" || pathname === "/more/sign_in" || pathname === "/more/team" ||
-      pathname === "/more/terms" || pathname === "/more/tools" || pathname === "/more/vision" ||
+      pathname === "/more/terms" || pathname === "/more/tools" || pathname === "/more/verify" || pathname === "/more/vision" ||
       pathname === "/opinions" || pathname === "/opinions_followed" || pathname === "/opinions_ignored" ||
       pathname === "/settings/location" || pathname.startsWith("/verifythisisme/") || pathname === "/welcome") {
       content_full_width_mode = true;
