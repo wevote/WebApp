@@ -22,7 +22,7 @@ class OrganizationStore extends ReduceStore {
   // Given a list of ids, retrieve the complete all_cached_organizations_dict with all attributes and return as array
   returnOrganizationsFromListOfIds (list_of_organization_we_vote_ids) {
     const state = this.getState();
-    let filtered_organizations_followed = [];
+    let filtered_organizations = [];
     if (list_of_organization_we_vote_ids) {
       // organizationsFollowedRetrieve API returns more than one voter guide per organization some times.
       let unique_organization_we_vote_id_array = list_of_organization_we_vote_ids.filter((value, index, self) => {
@@ -30,11 +30,11 @@ class OrganizationStore extends ReduceStore {
       });
       unique_organization_we_vote_id_array.forEach(organization_we_vote_id => {
         if (state.all_cached_organizations_dict[organization_we_vote_id]) {
-          filtered_organizations_followed.push(state.all_cached_organizations_dict[organization_we_vote_id]);
+          filtered_organizations.push(state.all_cached_organizations_dict[organization_we_vote_id]);
         }
       });
     }
-    return filtered_organizations_followed;
+    return filtered_organizations;
   }
 
   getOrganizationByWeVoteId (organization_we_vote_id){

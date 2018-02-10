@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import OrganizationsDisplayedUnderIssuesFollowed from "../Issues/OrganizationsDisplayedUnderIssuesFollowed";
+import IssuesFollowedDisplayList from "../Issues/IssuesFollowedDisplayList";
 
 export default class BallotIntroIssuesSuccess extends Component {
   static propTypes = {
@@ -16,7 +16,7 @@ export default class BallotIntroIssuesSuccess extends Component {
     return <div className="intro-modal">
       <div className="intro-modal__h1">Nice job!</div>
       <div className="intro-modal__h2">Watch for your issues under each candidate or measure.</div>
-      <span className=""><OrganizationsDisplayedUnderIssuesFollowed /></span>
+      <span className=""><IssuesFollowedDisplayList /></span>
       <div className="intro-modal__h2"><br /></div>
       <div className="intro-modal__h2">By clicking on an issue image,<br />
         you will find advisers<br />

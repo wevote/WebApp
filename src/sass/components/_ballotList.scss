@@ -95,10 +95,18 @@
       width: 48px; // 48px is set in WeVoteServer environment_variables as PROFILE_IMAGE_MEDIUM_WIDTH
       border-radius: $radius-xs;
     }
+
+    &--large {
+      margin-left: $space-xxs;
+      width: 125px; // 48px is set in WeVoteServer environment_variables as PROFILE_IMAGE_MEDIUM_WIDTH
+      border-radius: $radius-xs;
+    }
   }
   &__image-modal {
     display: inline;
   }
+  // This img override is needed because the carousel (slick-slide img)
+  &__image-modal img { display: inline; } // stylelint-disable-line selector-no-type
 }
 
 .BallotItemsSummary {
