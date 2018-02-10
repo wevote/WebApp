@@ -263,23 +263,48 @@ export default class Application extends Component {
     var content_full_width_mode = false;
     var voter_guide_mode = false;
     let voter_guide_show_getting_started_navigation = false;
-    if (pathname === "/intro/story" || pathname === "/intro/sample_ballot" || pathname === "/intro/get_started" ||
-      pathname === "/voterguidegetstarted" || pathname === "/wevoteintro/network") {
+    if (pathname === "/intro/story" ||
+        pathname === "/intro/sample_ballot" ||
+        pathname === "/intro/get_started" ||
+        pathname === "/voterguidegetstarted" ||
+        pathname === "/wevoteintro/network") {
       in_theater_mode = true;
     } else if (pathname.startsWith("/candidate/") ||
-      pathname === "/facebook_invitable_friends" || pathname === "/friends" || pathname === "/friends/invitebyemail" ||
-      pathname === "/intro" || pathname === "/issues_followed" || pathname === "/issues_to_follow" ||
-      pathname.startsWith("/measure/") ||
-      pathname === "/more/about" || pathname === "/more/absentee" || pathname === "/more/connect" || pathname === "/more/credits" ||
-      pathname === "/more/donate" || pathname === "/more/donate_thank_you" || pathname === "/more/elections" ||
-      pathname === "/more/howtouse" || pathname.startsWith("/office/") ||
-      pathname === "/more/network" ||
-      pathname === "/more/network/friends" || pathname === "/more/network/issues" || pathname === "/more/network/organizations" ||
-      pathname === "/more/organization" || pathname === "/more/privacy" ||
-      pathname === "/more/register" || pathname === "/more/sign_in" || pathname === "/more/team" ||
-      pathname === "/more/terms" || pathname === "/more/tools" || pathname === "/more/verify" || pathname === "/more/vision" ||
-      pathname === "/opinions" || pathname === "/opinions_followed" || pathname === "/opinions_ignored" ||
-      pathname === "/settings/location" || pathname.startsWith("/verifythisisme/") || pathname === "/welcome") {
+        pathname === "/facebook_invitable_friends" ||
+        pathname === "/friends" ||
+        pathname === "/friends/invitebyemail" ||
+        pathname === "/intro" ||
+        pathname === "/issues_followed" ||
+        pathname === "/issues_to_follow" ||
+        pathname.startsWith("/measure/") ||
+        pathname === "/more/about" ||
+        pathname === "/more/absentee" ||
+        pathname === "/more/connect" ||
+        pathname === "/more/credits" ||
+        pathname === "/more/donate" ||
+        pathname === "/more/donate_thank_you" ||
+        pathname === "/more/elections" ||
+        pathname === "/more/howtouse" ||
+        pathname.startsWith("/office/") ||
+        pathname === "/more/network" ||
+        pathname === "/more/network/friends" ||
+        pathname === "/more/network/issues" ||
+        pathname === "/more/network/organizations" ||
+        pathname === "/more/organization" ||
+        pathname === "/more/privacy" ||
+        pathname === "/more/register" ||
+        pathname === "/more/sign_in" ||
+        pathname === "/more/team" ||
+        pathname === "/more/terms" ||
+        pathname === "/more/tools" ||
+        pathname === "/more/verify" ||
+        pathname === "/more/vision" ||
+        pathname === "/opinions" ||
+        pathname === "/opinions_followed" ||
+        pathname === "/opinions_ignored" ||
+        pathname === "/settings/location" ||
+        pathname.startsWith("/verifythisisme/") ||
+        pathname === "/welcome") {
       content_full_width_mode = true;
     } else if (pathname.startsWith("/ballot") || pathname === "/bookmarks") {
       content_full_width_mode = false;
