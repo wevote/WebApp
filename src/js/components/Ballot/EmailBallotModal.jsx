@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 import EmailBallotToFriendsModal from "./EmailBallotToFriendsModal";
-import FacebookActions from "../../actions/FacebookActions";
-import FacebookStore from "../../stores/FacebookStore";
+// import FacebookActions from "../../actions/FacebookActions";
+// import FacebookStore from "../../stores/FacebookStore";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
 import LoadingWheel from "../LoadingWheel";
@@ -34,8 +34,8 @@ export default class EmailBallotModal extends Component {
       sender_email_address_error: false,
       on_enter_email_addresses_step: true,
       on_ballot_email_sent_step: false,
-      on_facebook_login_step: false,
-      facebook_login_started: false,
+      // on_facebook_login_step: false,
+      // facebook_login_started: false,
       verification_email_sent: false,
       on_mobile: false,
       ballot_link: ballotLink,
@@ -43,13 +43,13 @@ export default class EmailBallotModal extends Component {
   }
 
   componentDidMount () {
-    this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
+    // this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
-    this.facebookStoreListener.remove();
+    // this.facebookStoreListener.remove();
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
   }
@@ -62,22 +62,22 @@ export default class EmailBallotModal extends Component {
     });
   }
 
-  _onFacebookStoreChange () {
-    let facebookAuthResponse = FacebookStore.getFacebookAuthResponse();
-    let emailData = FacebookStore.getFacebookData();
-    // console.log("_onFacebookStoreChange", facebookAuthResponse, emailData);
-    if ( facebookAuthResponse.facebookIsLoggedIn && emailData.userId && !this.state.facebook_login_started ) {
-      this.setState({
-        facebook_login_started: true,
-        on_facebook_login_step: true,
-      });
-      if ( this.state.on_mobile ) {
-        this.shareOnFacebook();
-      } else {
-        this.sendDirectMessageToSelfFacebook();
-      }
-    }
-  }
+  // _onFacebookStoreChange () {
+  //   let facebookAuthResponse = FacebookStore.getFacebookAuthResponse();
+  //   let emailData = FacebookStore.getFacebookData();
+  //   // console.log("_onFacebookStoreChange", facebookAuthResponse, emailData);
+  //   if ( facebookAuthResponse.facebookIsLoggedIn && emailData.userId && !this.state.facebook_login_started ) {
+  //     this.setState({
+  //       facebook_login_started: true,
+  //       on_facebook_login_step: true,
+  //     });
+  //     if ( this.state.on_mobile ) {
+  //       this.shareOnFacebook();
+  //     } else {
+  //       this.sendDirectMessageToSelfFacebook();
+  //     }
+  //   }
+  // }
 
   _onFriendStoreChange () {
     let email_ballot_data_step = FriendStore.switchToEmailBallotDataStep();
@@ -96,7 +96,6 @@ export default class EmailBallotModal extends Component {
         loading: false,
         error_message_to_show_voter: ""
       });
-
     }
   }
 
@@ -125,11 +124,11 @@ export default class EmailBallotModal extends Component {
   ballotEmailSend () {
     let success_message = "";
     let verification_email_sent = false;
-    if ( this.state.on_facebook_login_step ) {
-      success_message = <span>Success! This ballot has been sent to Facebook and the email address {this.state.sender_email_address} </span>;
-    } else {
+    // if ( this.state.on_facebook_login_step ) {
+    //   success_message = <span>Success! This ballot has been sent to Facebook and the email address {this.state.sender_email_address} </span>;
+    // } else {
       success_message = <span>Success! This ballot has been sent to the email address {this.state.sender_email_address} </span>;
-    }
+    // }
 
     FriendActions.emailBallotData("", "", "", this.state.sender_email_address, this.state.email_ballot_message,
       this.state.ballot_link, this.state.sender_email_address, this.state.verification_email_sent);
@@ -161,6 +160,7 @@ export default class EmailBallotModal extends Component {
     let error_message = "";
 
     if (this.state.on_enter_email_addresses_step) {
+      console.log('ballotEmailSendStepsManager ')
       // Validate friends' email addresses
       let sender_email_address_error = false;
       if (!this.state.sender_email_address || !validateEmail(this.state.sender_email_address)) {
@@ -169,7 +169,7 @@ export default class EmailBallotModal extends Component {
       }
 
       if (sender_email_address_error) {
-        // console.log("ballotEmailSendStepsManager, sender_email_address_error");
+        console.log("ballotEmailSendStepsManager, sender_email_address_error", sender_email_address_error);
         this.setState({
           loading: false,
           sender_email_address_error: true,
@@ -189,72 +189,72 @@ export default class EmailBallotModal extends Component {
     }
   }
 
-  sendDirectMessageToSelfFacebook () {
-    let emailData = FacebookStore.getFacebookData();
-    let facebookAuthResponse = FacebookStore.getFacebookAuthResponse();
-    // console.log("sendDirectMessageToSelfFacebook", emailData, facebookAuthResponse);
-    if ( facebookAuthResponse.facebookIsLoggedIn ) {
-      if ( emailData.userId ) {
-        window.FB.ui({
-          title: "We Vote USA",
-          to: emailData.userId,
-          method: "send",
-          mobile_iframe: true,
-          link: this.state.ballot_link,
-          redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/ballot",
-        }, function (response) {
-          if (response) {
-            if (response.success) {
-              // console.log("Successfully send", response);
-              if ( emailData.email ) {
-                if (emailData.email !== this.state.sender_email_address) {
-                  this.setState({sender_email_address: emailData.email});
-                }
-                this.ballotEmailSend();
-              }
-            }
-          } else {
-            console.log("Failed to send", response);
-          }
-          this.setState({ on_facebook_login_step: false });
-        }.bind(this));
-      }
-    } else {
-      FacebookActions.login();
-    }
-  }
+  // sendDirectMessageToSelfFacebook () {
+  //   let emailData = FacebookStore.getFacebookData();
+  //   let facebookAuthResponse = FacebookStore.getFacebookAuthResponse();
+  //   // console.log("sendDirectMessageToSelfFacebook", emailData, facebookAuthResponse);
+  //   if ( facebookAuthResponse.facebookIsLoggedIn ) {
+  //     if ( emailData.userId ) {
+  //       window.FB.ui({
+  //         title: "We Vote USA",
+  //         to: emailData.userId,
+  //         method: "send",
+  //         mobile_iframe: true,
+  //         link: this.state.ballot_link,
+  //         redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/ballot",
+  //       }, function (response) {
+  //         if (response) {
+  //           if (response.success) {
+  //             // console.log("Successfully send", response);
+  //             if ( emailData.email ) {
+  //               if (emailData.email !== this.state.sender_email_address) {
+  //                 this.setState({sender_email_address: emailData.email});
+  //               }
+  //               this.ballotEmailSend();
+  //             }
+  //           }
+  //         } else {
+  //           console.log("Failed to send", response);
+  //         }
+  //         // this.setState({ on_facebook_login_step: false });
+  //       }.bind(this));
+  //     }
+  //   } else {
+  //     FacebookActions.login();
+  //   }
+  // }
 
-  shareOnFacebook () {
-    let emailData = FacebookStore.getFacebookData();
-    let facebookAuthResponse = FacebookStore.getFacebookAuthResponse();
-    // console.log("shareOnFacebook", emailData, facebookAuthResponse);
-    if ( facebookAuthResponse.facebookIsLoggedIn ) {
-      if ( emailData.userId ) {
-        window.FB.ui({
-          title: "We Vote USA",
-          method: "share",
-          href: this.state.ballot_link,
-          redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/ballot",
-        }, function (response) {
-          if (response) {
-            // console.log("Successfully send", response);
-            if ( emailData.email ) {
-              if (emailData.email !== this.state.sender_email_address) {
-                this.setState({sender_email_address: emailData.email});
-              }
-              this.ballotEmailSend();
-            }
-          } else {
-            console.log("Failed to send", response);
-          }
-          this.setState({ on_facebook_login_step: false });
-        }.bind(this));
-      }
-    } else {
-      FacebookActions.login();
-      this.setState({on_mobile: true});
-    }
-  }
+  // shareOnFacebook () {
+  //   let emailData = FacebookStore.getFacebookData();
+  //   let facebookAuthResponse = FacebookStore.getFacebookAuthResponse();
+  //   // console.log("shareOnFacebook", emailData, facebookAuthResponse);
+  //   if ( facebookAuthResponse.facebookIsLoggedIn ) {
+  //     if ( emailData.userId ) {
+  //       window.FB.ui({
+  //         title: "We Vote USA",
+  //         method: "share",
+  //         href: this.state.ballot_link,
+  //         redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/ballot",
+  //       }, function (response) {
+  //         if (response) {
+  //           // console.log("Successfully send", response);
+  //           if ( emailData.email ) {
+  //             if (emailData.email !== this.state.sender_email_address) {
+  //               this.setState({sender_email_address: emailData.email});
+  //             }
+  //             this.ballotEmailSend();
+  //           }
+  //         } else {
+  //           console.log("Failed to send", response);
+  //         }
+  //         // this.setState({ on_facebook_login_step: false });
+  //       }.bind(this));
+  //     }
+  //   } else {
+  //     FacebookActions.login();
+  //     this.setState({on_mobile: true});
+  //   }
+  // }
 
   onKeyDown (event) {
     let enterAndSpaceKeyCodes = [13, 32];
@@ -265,17 +265,18 @@ export default class EmailBallotModal extends Component {
   }
 
   render () {
+    console.log('this.state', this.state);
     let { loading } = this.state;
     if (loading) {
       return LoadingWheel;
     }
 
-    let floatRight = { float: "right" };
-    let textGray = { color: "gray" };
+    let floatRight = { float: "right" };  //TODO refactor
+    let textGray = { color: "gray" };     //TODO refactor
 
-    if ( this.state.on_facebook_login_step ){
-      return LoadingWheel;
-    }
+    // if ( this.state.on_facebook_login_step ){
+    //   return LoadingWheel;
+    // }
 
     if (this.state.showEmailToFriendsModal) {
       this.componentWillUnmount();
@@ -348,8 +349,11 @@ export default class EmailBallotModal extends Component {
                         Click here to send to friends &gt;
                       </span>
                     </div>
-                    <div className="col-12 u-inset--md" />
-                    <div className="text-center col-12">
+
+                  {/*  <div className="col-12 u-inset--md" /> */}
+
+                  {/* <div className="text-center col-12"> */}
+                      {/*
                       <div className="hidden-xs">
                         <span >Send this ballot to yourself through Facebook and your Facebook Email.</span>
                         <div className="u-inset--xs"/>
@@ -360,23 +364,28 @@ export default class EmailBallotModal extends Component {
                           <span className="fa fa-facebook" />Send Ballot Through Facebook
                         </Button>
                       </div>
+                       */}
+                      {/*
                       <div className="mobile-container">
                         <div>
                           <span >Share this ballot to your Facebook Timeline and Facebook Email.</span>
                           <div className="u-inset--xs"/>
                           <Button className="btn btn-social btn-facebook u-push--sm"
-                                  bsStyle="danger"
+                                  bsStyle ="danger"
                                   type="submit"
                                   onClick={this.shareOnFacebook.bind(this)}>
                             <span className="fa fa-facebook" />Share Ballot on Facebook
                           </Button>
                         </div>
                       </div>
-                    </div>
-                  <div className="col-12 u-inset--md" />
+                      */}
+                      {/* </div> */}
+                  {/*<div className="col-12 u-inset--md" /> */}
                 </div> : null
                 }
-                <span style={textGray}>We will never sell your email.</span>
+                <div className="text-center">
+                  <span style={textGray}>We will never sell your email.</span>
+                </div>
               </div>
             </div>
           </div>
