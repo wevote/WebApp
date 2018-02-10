@@ -45,6 +45,7 @@ import OrganizationVoterGuideOffice from "./routes/VoterGuide/OrganizationVoterG
 import PollingPlaceLocatorModal from "./routes/Ballot/PollingPlaceLocatorModal";
 import Privacy from "./routes/More/Privacy";
 import ProcessingDonation from "./routes/More/ProcessingDonation";
+import RegisterToVote from "./routes/More/RegisterToVote";
 import SampleBallot from "./routes/Intro/SampleBallot";
 import ScratchPad from "./routes/ScratchPad";
 import Settings from "./routes/Settings/Settings";
@@ -151,6 +152,7 @@ const routes = () =>
     <Route path="/more/organization" component={Organization} />
     <Route path="/more/privacy" component={Privacy} />
     <Route path="/more/processing_donation" component={ProcessingDonation} />
+    <Route path="/more/register" component={RegisterToVote} />
     <Route path="/more/sign_in" component={SignIn} />
     <Route path="/more/team" component={Team} />
     <Route path="/more/tools" component={ToolsToShareOnOtherWebsites} />
