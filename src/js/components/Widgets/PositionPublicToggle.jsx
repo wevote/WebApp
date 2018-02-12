@@ -7,7 +7,7 @@ import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
 const Icon = require("react-svg-icons");
 
-import { showToastError, showToastSuccess } from "../../utils/showToast";
+import { showToastSuccess } from "../../utils/showToast";
 
 
 export default class PositionPublicToggle extends Component {

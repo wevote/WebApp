@@ -314,11 +314,12 @@ export default class Application extends Component {
         </div>
       </div>;
     } else if (voter_guide_mode) {
-      // console.log("voter_guide_mode", voter_guide_mode);
+      console.log("voter_guide_mode", voter_guide_mode);
       let hideGettingStartedIssuesButton = voter_guide_show_getting_started_navigation;
       let hideGettingStartedOrganizationsButton = voter_guide_show_getting_started_navigation;
 
       return <div className="app-base" id="app-base-id">
+        <ToastContainer closeButton={false} />
         <div className={headRoomSize}>
           <div ref="pageHeader" className={ this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom" }>
             { show_back_to_header ?

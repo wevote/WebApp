@@ -18,6 +18,8 @@ const DEFAULT_OPTIONS = {
 };
 
 export function showToastError (msg, options = {}) {
+  console.log('now showing ERROR')
+
   toast.error(msg, {
     ...DEFAULT_OPTIONS,
     ...options,
@@ -25,6 +27,7 @@ export function showToastError (msg, options = {}) {
 }
 
 export function showToastSuccess (msg, options = {}) {
+  console.log('now showing SUCCESS')
   toast.success(msg, {
     ...DEFAULT_OPTIONS,
     ...options,
