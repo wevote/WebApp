@@ -29,9 +29,6 @@ import OrganizationActions from "../../actions/OrganizationActions";
 import SelectBallotModal from "../../components/Ballot/SelectBallotModal";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
-
-// import { ToastContainer } from "react-toastify";
-
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterGuideActions from "../../actions/VoterGuideActions";

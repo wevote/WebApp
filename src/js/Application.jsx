@@ -314,7 +314,7 @@ export default class Application extends Component {
         </div>
       </div>;
     } else if (voter_guide_mode) {
-      console.log("voter_guide_mode", voter_guide_mode);
+      // console.log("voter_guide_mode", voter_guide_mode);
       let hideGettingStartedIssuesButton = voter_guide_show_getting_started_navigation;
       let hideGettingStartedOrganizationsButton = voter_guide_show_getting_started_navigation;
 

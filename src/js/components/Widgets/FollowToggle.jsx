@@ -4,10 +4,8 @@ import VoterGuideStore from "../../stores/VoterGuideStore";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
-import VoterStore from "../../stores/VoterStore";
-
-
 import { showToastError, showToastSuccess } from "../../utils/showToast";
+import VoterStore from "../../stores/VoterStore";
 
 
 export default class FollowToggle extends Component {
@@ -80,14 +78,11 @@ export default class FollowToggle extends Component {
     const stopFollowingFunc = OrganizationActions.organizationStopFollowing.bind(this, we_vote_id);
 
     const stopFollowingInstantly = () => {
-      console.log('no follow')
       is_following = false;
       stopFollowingFunc();
       showToastError("No longer following!");
     };
     const followInstantly = () => {
-      console.log('follow')
-
       is_following = true;
       followFunc();
       showToastSuccess("Now following!");

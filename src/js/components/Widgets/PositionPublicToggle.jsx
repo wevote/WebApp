@@ -1,14 +1,13 @@
 import React, { Component, PropTypes } from "react";
-import SupportActions from "../../actions/SupportActions";
 import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
 import ReactBootstrapToggle from "react-bootstrap-toggle";
+import { showToastSuccess } from "../../utils/showToast";
+import SupportActions from "../../actions/SupportActions";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
+
 const Icon = require("react-svg-icons");
-
-import { showToastSuccess } from "../../utils/showToast";
-
 
 export default class PositionPublicToggle extends Component {
   static propTypes = {
