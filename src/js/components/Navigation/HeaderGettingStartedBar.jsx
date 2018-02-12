@@ -18,6 +18,7 @@ import Slider from "react-slick";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
+const webAppConfig = require("../../config");
 
 export default class HeaderGettingStartedBar extends Component {
   static propTypes = {
@@ -305,8 +306,11 @@ export default class HeaderGettingStartedBar extends Component {
       </Modal.Body>
     </Modal>;
 
-   let ballotBaseUrl = window.location.href;
-   let twitterData = "https://twitter.com/intent/tweet?text=Share Ballot" + "&amp;url=" + ballotBaseUrl;
+
+    let current_pathname = this.props.pathname ? this.props.pathname : "/ballot";
+    let ballotBaseUrl = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + current_pathname;
+    let encodedMessage = encodeURIComponent("Check out your ballot, and make sure to #Vote! #WeVote");
+    let twitterData = "https://twitter.com/intent/tweet?text=" + encodedMessage + "&amp;url=" + ballotBaseUrl;
 
     return <div className="page-getting-started-header-background">
       { voter_thorough_orientation_complete ?
