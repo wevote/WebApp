@@ -91,7 +91,7 @@ class IssueStore extends ReduceStore {
     // We want a list of all organizations tagged with this issue, so we can offer organizations to listen to
     // These are issues that an organization has linked itself to, to help Voters find the organization
     let organization_we_vote_ids_linked_to_issue = this.getState().organization_we_vote_ids_linked_to_issue_dict[issue_we_vote_id];
-    console.log("getOrganizationsForOneIssue: ", organization_we_vote_ids_linked_to_issue);
+    // console.log("getOrganizationsForOneIssue: ", organization_we_vote_ids_linked_to_issue);
     if (organization_we_vote_ids_linked_to_issue === undefined) {
       return [];
     }
@@ -102,8 +102,9 @@ class IssueStore extends ReduceStore {
   getVoterGuidesForOneIssue (issue_we_vote_id) {
     // We want a list of all organizations tagged with this issue, so we can offer organizations to listen to
     // These are issues that an organization has linked itself to, to help Voters find the organization
+    // console.log("IssueStore, getVoterGuidesForOneIssue, this.getState().organization_we_vote_ids_linked_to_issue_dict: ", this.getState().organization_we_vote_ids_linked_to_issue_dict);
     let organization_we_vote_ids_linked_to_issue = this.getState().organization_we_vote_ids_linked_to_issue_dict[issue_we_vote_id];
-    console.log("getOrganizationsForOneIssue: ", organization_we_vote_ids_linked_to_issue);
+    // console.log("getOrganizationsForOneIssue: ", organization_we_vote_ids_linked_to_issue);
     if (organization_we_vote_ids_linked_to_issue === undefined) {
       return [];
     }

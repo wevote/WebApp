@@ -100,7 +100,7 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
     let local_counter = 0;
     const issues_html_to_display = this.state.issues_to_display.map( (one_issue) => {
       local_counter++;
-      console.log("IssuesDisplayListWithOrganizationPopovers one_issue: ", one_issue);
+      // console.log("IssuesDisplayListWithOrganizationPopovers one_issue: ", one_issue);
       let issue_we_vote_id = one_issue.issue_we_vote_id;
 
       // Once we have more organizations than we want to show, put them into a drop-down

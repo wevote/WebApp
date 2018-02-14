@@ -126,29 +126,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
     }, 100);
   }
 
-  // Unused Jan 23, 2018
-  // onTriggerToggle (e, org_id, visible_tag) {
-  //   if (this.mobile) {
-  //     e.preventDefault();
-  //     e.stopPropagation();
-  //     if (!this.popover_state[org_id]) {
-  //       // If it wasn't created, create it now
-  //       this.popover_state[org_id] = {show: false, timer: null};
-  //     }
-  //
-  //     if (this.popover_state[org_id].show) {
-  //       this.onTriggerLeave(org_id, visible_tag);
-  //     } else {
-  //       this.onTriggerEnter(org_id, visible_tag);
-  //     }
-  //   }
-  // }
-  //
-  // percentageMajority () {
-  //   const { support_count, oppose_count } = this.state.supportProps;
-  //   return Math.round(100 * Math.max(support_count, oppose_count) / (support_count + oppose_count));
-  // }
-
   organizationsToDisplay (organizations_to_follow, maximum_organization_display, ballot_item_we_vote_id, visible_tag, supports_this_ballot_item = false, opposes_this_ballot_item = false) {
     if (!maximum_organization_display || maximum_organization_display === 0) {
       return [];
@@ -168,39 +145,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       let org_id = one_organization.organization_we_vote_id;
 
       // Once we have more organizations than we want to show, put them into a drop-down
-      if (local_counter > maximum_organization_display) {
-        // For now we don't want the dropdown
-        // if (local_counter === maximum_organization_display + 1) {
-        //   // If here, we want to show how many organizations there are to follow
-        //   // Using orgs_not_shown_count as the key seems arbitrary and could cause a collision
-        //   this.popover_state[orgs_not_shown_count] = {show: false, timer: null};
-        //   let organizationPopover = <Popover
-        //       id={`organization-popover-${orgs_not_shown_count}-${visible_tag}`}
-        //       onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count, visible_tag)}
-        //       onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count, visible_tag)}
-        //       className="card-popover">
-        //       <OrganizationsNotShownList orgs_not_shown_list={orgs_not_shown_list} />
-        //     </Popover>;
-        //
-        //   return <OverlayTrigger
-        //       key={`trigger-${orgs_not_shown_count}-${visible_tag}`}
-        //       ref={`cheetah-overlay-${orgs_not_shown_count}-${visible_tag}`}
-        //       onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count, visible_tag)}
-        //       onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count, visible_tag)}
-        //       onExiting={() => this.onTriggerLeave(orgs_not_shown_count, visible_tag)}
-        //       trigger={["focus", "hover", "click"]}
-        //       rootClose
-        //       placement="bottom"
-        //       overlay={organizationPopover}>
-        //     <span className="position-rating__source with-popover">
-        //       <Link to="/opinions"> +{orgs_not_shown_count}</Link>
-        //     </span>
-        //   </OverlayTrigger>;
-        // } else {
-        //   return "";
-        // }
-        return null;
-      } else {
+      if (local_counter <= maximum_organization_display) {
         one_organization_for_organization_card = {
             organization_we_vote_id: one_organization.organization_we_vote_id,
             organization_name: one_organization.voter_guide_display_name,
@@ -332,6 +277,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     let is_oppose = false;
     let voter_statement_text = false;
     if (candidateSupportStore !== undefined) {
+      // console.log("candidateSupportStore: ", candidateSupportStore);
       is_support = candidateSupportStore.is_support;
       is_oppose = candidateSupportStore.is_oppose;
       voter_statement_text = candidateSupportStore.voter_statement_text;
@@ -339,9 +285,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
     let comment_display_raccoon_desktop = this.props.showPositionStatementActionBar || is_support || is_oppose || voter_statement_text ?
       <div className="hidden-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-        {/* <div
-          className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
-        </div> */}
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
           <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
                                           ballot_item_display_name={this.state.ballot_item_display_name}
@@ -355,9 +298,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
     let comment_display_raccoon_mobile = this.props.showPositionStatementActionBar || is_support || is_oppose || voter_statement_text ?
       <div className="visible-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-        {/* <div
-          className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
-        </div> */}
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
           <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
                                           ballot_item_display_name={this.state.ballot_item_display_name}
@@ -417,7 +357,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     }
 
     const scoreInYourNetworkPopover =
-      <Popover id="popover-trigger-click-root-close"
+      <Popover id="score-popover-trigger-click-root-close"
                title={<span>Score in Your Network <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closeScorePopover}>
         Your friends, and the organizations you listen to, are <strong>Your Network</strong>.
@@ -437,7 +377,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       </Popover>;
 
     const positionsPopover =
-      <Popover id="popover-trigger-click-root-close"
+      <Popover id="positions-popover-trigger-click-root-close"
                title={<span>Opinions about {this.state.ballot_item_display_name} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closePositionsPopover}>
         These organizations <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")}
