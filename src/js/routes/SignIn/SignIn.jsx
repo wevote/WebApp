@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import {Button} from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
-import { historyPush } from "../../utils/cordovaUtils";
+import { historyPush, isCordova, isWebApp } from "../../utils/cordovaUtils";
 import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 import LoadingWheel from "../../components/LoadingWheel";
 import TwitterActions from "../../actions/TwitterActions";
@@ -140,7 +140,6 @@ export default class SignIn extends Component {
     }
   }
 
-
   render () {
     if (!this.state.voter) {
       return LoadingWheel;
@@ -162,7 +161,8 @@ export default class SignIn extends Component {
       if (this.state.voter.signed_in_facebook && !this.state.voter.signed_in_twitter) {
         your_account_title = "Have Twitter Too?";
         your_account_explanation = "By adding your Twitter account to your We Vote profile, you get access to the voter guides of everyone you follow.";
-      } else if (this.state.voter.signed_in_twitter && !this.state.voter.signed_in_facebook) {
+      } else if (this.state.voter.signed_in_twitter && isWebApp() && !this.state.voter.signed_in_facebook) {
+        /* February 2018, Facebook and Magic Email disabled for Cordova */
         your_account_title = "Have Facebook Too?";
         your_account_explanation = "By adding Facebook to your We Vote profile, it is easier to invite friends.";
       }
@@ -190,7 +190,8 @@ export default class SignIn extends Component {
                 <TwitterSignIn />
               }
               <span>&nbsp;</span>
-              {this.state.voter.signed_in_facebook ?
+              {/* February 2018, Facebook and Magic Email disabled for Cordova */}
+              {this.state.voter.signed_in_facebook || isCordova() ?
                 null :
                 <FacebookSignIn />
               }
@@ -271,7 +272,8 @@ export default class SignIn extends Component {
                     </span> :
                     null
                   }
-                  {this.state.voter.signed_in_facebook ?
+                  {/* February 2018, Facebook and Magic Email disabled for Cordova */}
+                  {this.state.voter.signed_in_facebook && isWebApp() ?
                     <span>
                       <span className="btn btn-social-icon btn-lg btn-facebook">
                         <span className="fa fa-facebook" />
@@ -280,7 +282,8 @@ export default class SignIn extends Component {
                     </span> :
                     null
                   }
-                  {this.state.voter.signed_in_with_email ?
+                  {/* February 2018, Facebook and Magic Email disabled for Cordova */}
+                  {this.state.voter.signed_in_with_email && isWebApp() ?
                     <span>
                       <span className="btn btn-warning btn-lg">
                       <span className="glyphicon glyphicon-envelope" /></span>
