@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import { Link } from "react-router";
 import FollowToggle from "../Widgets/FollowToggle";
 import ImageHandler from "../../components/ImageHandler";
 import IssueStore from "../../stores/IssueStore";
@@ -64,7 +63,6 @@ export default class OrganizationListUnderIssue extends Component {
       let organization_we_vote_id = one_voter_guide.organization_we_vote_id;
       let organization_name = one_voter_guide.voter_guide_display_name;
       let organization_photo_url_tiny = one_voter_guide.voter_guide_image_url_tiny;
-      let organization_twitter_handle = one_voter_guide.twitter_handle;
 
       let num_of_lines = 2;
       let twitterDescription = one_voter_guide.twitter_description ? one_voter_guide.twitter_description : "";

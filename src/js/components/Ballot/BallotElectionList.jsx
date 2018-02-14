@@ -61,8 +61,9 @@ export default class BallotElectionList extends Component {
     let currentDate = moment().format("YYYY-MM-DD");
     let ballotElectionListUpcomingSorted = this.props.ballotElectionList;
     // We want to sort ascending so the next upcoming election is first
-    ballotElectionListUpcomingSorted.sort(function(a, b){
-      var election_day_text_A=a.election_day_text.toLowerCase(), election_day_text_B=b.election_day_text.toLowerCase();
+    ballotElectionListUpcomingSorted.sort(function (a, b) {
+      let election_day_text_A = a.election_day_text.toLowerCase();
+      let election_day_text_B = b.election_day_text.toLowerCase();
       if (election_day_text_A < election_day_text_B) //sort string ascending
         return -1;
       if (election_day_text_A > election_day_text_B)
@@ -93,8 +94,9 @@ export default class BallotElectionList extends Component {
 
     let ballotElectionListPastSorted = this.props.ballotElectionList;
     // We want to sort descending so the most recent election is first
-    ballotElectionListPastSorted.sort(function(a, b){
-      var election_day_text_A=a.election_day_text.toLowerCase(), election_day_text_B=b.election_day_text.toLowerCase();
+    ballotElectionListPastSorted.sort(function (a, b) {
+      let election_day_text_A = a.election_day_text.toLowerCase();
+      let election_day_text_B = b.election_day_text.toLowerCase();
       if (election_day_text_A < election_day_text_B) //sort string descending
         return 1;
       if (election_day_text_A > election_day_text_B)
