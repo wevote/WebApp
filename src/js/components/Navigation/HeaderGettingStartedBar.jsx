@@ -353,10 +353,13 @@ export default class HeaderGettingStartedBar extends Component {
                                    title="Tweet Ballot"
                                    twitterIcon
                                    isExternal/>
+            {/* February 2018, Facebook and Magic Email disabled for Cordova -- In this case it is the PollingLocator with the iFrame */}
+            { isWebApp() && <div>
             <GettingStartedBarItem show={this._openPollingLocatorModal}
                                    titleDesktop="Polling Location"
                                    titleMobile="Vote"
                                    mapMarkerIcon/>
+            </div>}
 
             {/* Positions Icon & Modal */}
             {/* <GettingStartedBarItem show={this._toggleBallotIntroPositions}
