@@ -37,6 +37,7 @@ export default class SearchAllBox extends Component {
     this.onSearchResultMouseOver = this.onSearchResultMouseOver.bind(this);
     this.onSearchResultClick = this.onSearchResultClick.bind(this);
     this.onSearchFormSubmit = this.onSearchFormSubmit.bind(this);
+    this.onSearchElectionResultClick = this.onSearchElectionResultClick.bind(this);
     this.onClearSearch = this.onClearSearch.bind(this);
     this.searchHasContent = this.searchHasContent.bind(this);
     this.navigateToSelectedLink = this.navigateToSelectedLink.bind(this);
@@ -300,7 +301,7 @@ export default class SearchAllBox extends Component {
                              data-idx={idx}
                              onMouseOver={this.onSearchResultMouseOver}
                              className="search-container__links"
-                             onClick={this.onSearchElectionResultClick.bind(this, one_result.google_civic_election_id)}>
+                             onClick={() => this.onSearchElectionResultClick(one_result.google_civic_election_id)}>
                   <div className={search_result_classes}>
                       <span className="search-container__election_summary">{capitalized_title}</span>
                       <span className="search-container__election_summary">{election_day}</span>
