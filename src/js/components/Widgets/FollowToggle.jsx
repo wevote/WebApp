@@ -80,12 +80,15 @@ export default class FollowToggle extends Component {
     const stopFollowingInstantly = () => {
       is_following = false;
       stopFollowingFunc();
+      // todo: can we display org name??
+      console.log('not following...', this.props)
       showToastError("No longer following!");
     };
     const followInstantly = () => {
       is_following = true;
       followFunc();
       showToastSuccess("Now following!");
+      console.log('not following...', this.props)
     };
 
     if (organization_for_display) {
