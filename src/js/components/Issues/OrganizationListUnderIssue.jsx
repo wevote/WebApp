@@ -1,46 +1,92 @@
 import React, { Component, PropTypes } from "react";
-import { Link } from "react-router";
+import FollowToggle from "../Widgets/FollowToggle";
 import ImageHandler from "../../components/ImageHandler";
-import LoadingWheel from "../../components/LoadingWheel";
+import IssueStore from "../../stores/IssueStore";
+import ReadMore from "../../components/Widgets/ReadMore";
+import VoterGuideStore from "../../stores/VoterGuideStore";
+import { removeTwitterNameFromDescription } from "../../utils/textFormat";
 
 export default class OrganizationListUnderIssue extends Component {
   static propTypes = {
-    orgs_not_shown_list: PropTypes.array.isRequired,
+    issue_we_vote_id: PropTypes.string.isRequired,
   };
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      issue_we_vote_id: "",
+      organizations_for_this_issue: [],
+    };
+  }
+
+  componentDidMount () {
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+    let voter_guides_for_this_issue = IssueStore.getVoterGuidesForOneIssue(this.props.issue_we_vote_id);
+    // console.log("OrganizationListUnderIssue, componentDidMount, voter_guides_for_this_issue: ", voter_guides_for_this_issue);
+    this.setState({
+      issue_we_vote_id: this.props.issue_we_vote_id,
+      voter_guides_for_this_issue: voter_guides_for_this_issue,
+    });
+  }
+
+  componentWillUnmount () {
+    this.issueStoreListener.remove();
+    this.voterGuideStoreListener.remove();
+  }
+
+  onIssueStoreChange () {
+    let voter_guides_for_this_issue = IssueStore.getVoterGuidesForOneIssue(this.state.issue_we_vote_id);
+    // console.log("OrganizationListUnderIssue, onIssueStoreChange, voter_guides_for_this_issue: ", voter_guides_for_this_issue);
+    this.setState({
+      voter_guides_for_this_issue: voter_guides_for_this_issue,
+    });
+  }
+
+  onVoterGuideStoreChange () {
+    // We just want to trigger a re-render
+    let voter_guides_for_this_issue = IssueStore.getVoterGuidesForOneIssue(this.state.issue_we_vote_id);
+    // console.log("OrganizationListUnderIssue, onVoterGuideStoreChange, voter_guides_for_this_issue: ", voter_guides_for_this_issue);
+    this.setState({
+      voter_guides_for_this_issue: voter_guides_for_this_issue,
+    });
   }
 
   render () {
-    if (!this.props.orgs_not_shown_list){
-      return <div>{LoadingWheel}</div>;
+    // console.log("OrganizationListUnderIssue render, issue_we_vote_id: ", this.state.issue_we_vote_id, ", this.state.voter_guides_for_this_issue: ", this.state.voter_guides_for_this_issue);
+    if (!this.state.voter_guides_for_this_issue || !this.state.voter_guides_for_this_issue.length){
+      return null;
     }
 
-    const organizations_not_shown_display = this.props.orgs_not_shown_list.map( (one_organization) => {
-      let organization_we_vote_id = one_organization.organization_we_vote_id;
-      let organization_name = one_organization.voter_guide_display_name;
-      let organization_photo_url_tiny = one_organization.voter_guide_image_url_tiny;
-      let organization_twitter_handle = one_organization.twitter_handle;
+    const organizations_not_shown_display = this.state.voter_guides_for_this_issue.map( (one_voter_guide) => {
+      // console.log("one_voter_guide: ", one_voter_guide);
+      let organization_we_vote_id = one_voter_guide.organization_we_vote_id;
+      let organization_name = one_voter_guide.voter_guide_display_name;
+      let organization_photo_url_tiny = one_voter_guide.voter_guide_image_url_tiny;
+
+      let num_of_lines = 2;
+      let twitterDescription = one_voter_guide.twitter_description ? one_voter_guide.twitter_description : "";
+      // If the organization_name is in the twitter_description, remove it
+      let twitterDescriptionMinusName = removeTwitterNameFromDescription(organization_name, twitterDescription);
 
       // If the displayName is in the twitterDescription, remove it from twitterDescription
-      let displayName = organization_name ? organization_name : "";
-      var voterGuideLink = organization_twitter_handle ? "/" + organization_twitter_handle : "/voterguide/" + organization_we_vote_id;
-      return <div key={organization_we_vote_id} className="card-main__media-object">
+      let organizationDisplayName = organization_name ? organization_name : "";
+      return <div key={organization_we_vote_id} className="card-main__media-object u-stack--md">
         <div className="card-main__media-object-anchor">
-          <Link to={voterGuideLink} className="u-no-underline">
-            <ImageHandler imageUrl={organization_photo_url_tiny}
-              className=""
-              sizeClassName="organization__image--tiny"/>
-          </Link>
-          <br/>
+          <ImageHandler imageUrl={organization_photo_url_tiny}
+                        className=""
+                        sizeClassName="organization__image--tiny"/>
         </div>
         &nbsp;&nbsp;
         <div className="card-main__media-object-content">
-          <Link to={voterGuideLink}>
-            <h3 className="card-main__display-name">{displayName}</h3>
-          </Link>
+          <h3 className="card-main__display-name">{organizationDisplayName}</h3>
+          { twitterDescriptionMinusName ? <ReadMore text_to_display={twitterDescriptionMinusName} num_of_lines={num_of_lines} /> :
+            null}
+        </div>
+        <div className="card-child__additional">
+          <div className="card-child__follow-buttons">
+            <FollowToggle we_vote_id={organization_we_vote_id} />
+          </div>
         </div>
       </div>;
     });

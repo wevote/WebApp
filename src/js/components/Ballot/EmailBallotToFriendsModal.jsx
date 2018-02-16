@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
+import { isWebApp } from "../../utils/cordovaUtils";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
 import FriendActions from "../../actions/FriendActions";
@@ -776,16 +777,18 @@ export default class EmailBallotToFriendsModal extends Component {
                         </Button>
                       </div>
                       <div className="mobile-container">
-                        <div>
+                        {/* February 2018, Facebook and Magic Email disabled for Cordova */}
+                        { isWebApp() && <div>
                           <span>Share this ballot to your (or a friend's) Facebook Timeline, or as a private message through Facebook.</span>
                           <div className="u-inset--xs"/>
                           <Button className="btn btn-social btn-facebook u-push--sm"
-                                bsStyle="danger"
-                                type="submit"
-                                onClick={this.shareOnFacebook.bind(this)}>
-                            <span className="fa fa-facebook" />Share Ballot on Facebook
+                                  bsStyle="danger"
+                                  type="submit"
+                                  onClick={this.shareOnFacebook.bind(this)}>
+                            <span className="fa fa-facebook"/>Share Ballot on Facebook
                           </Button>
                         </div>
+                        }
                       </div>
                     </div>
 

@@ -13,10 +13,10 @@ import IssueActions from "./actions/IssueActions";
 import IssueStore from "././stores/IssueStore";
 import OrganizationActions from "./actions/OrganizationActions";
 import SearchAllActions from "./actions/SearchAllActions";
+import { stringContains } from "./utils/textFormat";
 import TwitterActions from "./actions/TwitterActions";
 import VoterActions from "./actions/VoterActions";
 import VoterStore from "./stores/VoterStore";
-import { stringContains } from "./utils/textFormat";
 
 const webAppConfig = require("./config");
 
@@ -51,17 +51,21 @@ export default class Application extends Component {
     };
     this.loadedHeader = false;
     this.initFacebook();
+    this.initCordova();
     this.preloadIssueImages = this.preloadIssueImages.bind(this);
+  }
 
+  initCordova () {
     if (isCordova()) {
       window.handleOpenURL = function (url) {
         if (url.startsWith("wevotetwitterscheme://")) {
           console.log("window.handleOpenURL received wevotetwitterscheme: " + url);
-          let search = url.replace(new RegExp('&amp;', 'g'), '&');
+          let search = url.replace(new RegExp("&amp;", "g"), "&");
           let urlParams = new URLSearchParams(search);
           if (urlParams.has("twitter_redirect_url")) {
             let redirectURL = urlParams.get("twitter_redirect_url");
             console.log("twitterSignIn cordova, redirecting to: " + redirectURL);
+            // eslint-disable-next-line no-undef
             SafariViewController.hide();  // Hide the previous WKWebView
             cordovaOpenSafariView(redirectURL, 500);
           } else if (urlParams.has("access_token_and_secret_returned")) {
@@ -75,11 +79,10 @@ export default class Application extends Component {
               historyPush("/twitter_sign_in");
             }
           } else if (urlParams.has("twitter_handle_found") && urlParams.get("twitter_handle_found") === "True") {
-            console.log("twitterSignIn cordova, twitter_handle_found -- push /ballot, twitter_handle: " + urlParams.get("twitter_handle"));
-            TwitterActions.twitterSignInRetrieve();
+            console.log("twitterSignIn cordova, twitter_handle_found -- push /twitter_sign_in -- received handle = " + urlParams.get("twitter_handle"));
+            // eslint-disable-next-line no-undef
             SafariViewController.hide();  // Hide the previous WKWebView
-            // 2/2/18: Needed, but doesnt do the job.  Firing too soon?  VoterActions.voterRetrieve();
-            historyPush("/ballot");
+            historyPush("/twitter_sign_in");
           } else {
             console.log("ERROR in window.handleOpenURL, NO MATCH");
           }
@@ -141,8 +144,8 @@ export default class Application extends Component {
       offset: 20,
       tolerance: 1,
       classes: {
-        initial:  "headroom--animated",
-        pinned:   "headroom--slide-down",
+        initial: "headroom--animated",
+        pinned: "headroom--slide-down",
         unpinned: "headroom--slide-up",
       },
     }).init();
@@ -261,23 +264,48 @@ export default class Application extends Component {
     var content_full_width_mode = false;
     var voter_guide_mode = false;
     let voter_guide_show_getting_started_navigation = false;
-    if (pathname === "/intro/story" || pathname === "/intro/sample_ballot" || pathname === "/intro/get_started" ||
-      pathname === "/voterguidegetstarted" || pathname === "/wevoteintro/network") {
+    if (pathname === "/intro/story" ||
+        pathname === "/intro/sample_ballot" ||
+        pathname === "/intro/get_started" ||
+        pathname === "/voterguidegetstarted" ||
+        pathname === "/wevoteintro/network") {
       in_theater_mode = true;
     } else if (pathname.startsWith("/candidate/") ||
-      pathname === "/facebook_invitable_friends" || pathname === "/friends" || pathname === "/friends/invitebyemail" ||
-      pathname === "/intro" || pathname === "/issues_followed" || pathname === "/issues_to_follow" ||
-      pathname.startsWith("/measure/") ||
-      pathname === "/more/about" || pathname === "/more/connect" || pathname === "/more/credits" ||
-      pathname === "/more/donate" || pathname === "/more/donate_thank_you" || pathname === "/more/elections" ||
-      pathname === "/more/howtouse" || pathname.startsWith("/office/") ||
-      pathname === "/more/network" ||
-      pathname === "/more/network/friends" || pathname === "/more/network/issues" || pathname === "/more/network/organizations" ||
-      pathname === "/more/organization" ||
-      pathname === "/more/privacy" || pathname === "/more/sign_in" || pathname === "/more/team" ||
-      pathname === "/more/terms" || pathname === "/more/tools" || pathname === "/more/vision" ||
-      pathname === "/opinions" || pathname === "/opinions_followed" || pathname === "/opinions_ignored" ||
-      pathname === "/settings/location" || pathname.startsWith("/verifythisisme/") || pathname === "/welcome") {
+        pathname === "/facebook_invitable_friends" ||
+        pathname === "/friends" ||
+        pathname === "/friends/invitebyemail" ||
+        pathname === "/intro" ||
+        pathname === "/issues_followed" ||
+        pathname === "/issues_to_follow" ||
+        pathname.startsWith("/measure/") ||
+        pathname === "/more/about" ||
+        pathname === "/more/absentee" ||
+        pathname === "/more/connect" ||
+        pathname === "/more/credits" ||
+        pathname === "/more/donate" ||
+        pathname === "/more/donate_thank_you" ||
+        pathname === "/more/elections" ||
+        pathname === "/more/howtouse" ||
+        pathname.startsWith("/office/") ||
+        pathname === "/more/network" ||
+        pathname === "/more/network/friends" ||
+        pathname === "/more/network/issues" ||
+        pathname === "/more/network/organizations" ||
+        pathname === "/more/organization" ||
+        pathname === "/more/privacy" ||
+        pathname === "/more/register" ||
+        pathname === "/more/sign_in" ||
+        pathname === "/more/team" ||
+        pathname === "/more/terms" ||
+        pathname === "/more/tools" ||
+        pathname === "/more/verify" ||
+        pathname === "/more/vision" ||
+        pathname === "/opinions" ||
+        pathname === "/opinions_followed" ||
+        pathname === "/opinions_ignored" ||
+        pathname === "/settings/location" ||
+        pathname.startsWith("/verifythisisme/") ||
+        pathname === "/welcome") {
       content_full_width_mode = true;
     } else if (pathname.startsWith("/ballot") || pathname === "/bookmarks") {
       content_full_width_mode = false;

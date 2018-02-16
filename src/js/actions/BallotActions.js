@@ -14,14 +14,14 @@ module.exports = {
   voterBallotListRetrieve: function () {
     Dispatcher.loadEndpoint("voterBallotListRetrieve");
   },
-  voterBallotOfficeOpenOrClosedSave: (office_display_unfurled_tracker) => {
+  voterBallotItemOpenOrClosedSave: (ballot_item_unfurled_tracker) => {
     Dispatcher.dispatch({
-      type: "voterBallotOfficeOpenOrClosedSave",
+      type: "voterBallotItemOpenOrClosedSave",
       res: {
-        office_display_unfurled_tracker,
+        ballot_item_unfurled_tracker,
         success: true
       }
     });
-    // console.log("dispatching new office_display_unfurled_tracker")
+    // console.log("dispatching new ballot_item_unfurled_tracker")
   }
 };

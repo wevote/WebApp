@@ -4,12 +4,11 @@ import AnalyticsActions from "../../actions/AnalyticsActions";
 import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
 import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
 import BallotIntroFriends from "../../components/Ballot/BallotIntroFriends";
-// import BallotIntroOrganizations from "../../components/Ballot/BallotIntroOrganizations";
 import BallotIntroPositions from "../../components/Ballot/BallotIntroPositions";
 import BallotIntroIssuesSuccess from "../../components/Ballot/BallotIntroIssuesSuccess";
 import BallotIntroShare from "../../components/Ballot/BallotIntroShare";
 import BallotIntroVote from "../../components/Ballot/BallotIntroVote";
-import { cordovaDot } from "../../utils/cordovaUtils";
+import { cordovaDot, isWebApp } from "../../utils/cordovaUtils";
 import GettingStartedBarItem from "./GettingStartedBarItem";
 import EmailBallotModal from "../Ballot/EmailBallotModal";
 import FacebookBallotModal from "../Ballot/FacebookBallotModal";
@@ -18,16 +17,17 @@ import Slider from "react-slick";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
+const webAppConfig = require("../../config");
 
 export default class HeaderGettingStartedBar extends Component {
   static propTypes = {
     hideGettingStartedIssuesButton: PropTypes.bool,
     hideGettingStartedOrganizationsButton: PropTypes.bool,
     voter: PropTypes.object,
-    pathname: PropTypes.string
+    pathname: PropTypes.string,
   };
 
-  constructor (props){
+  constructor (props) {
     super(props);
     this._toggleBallotIntroFollowIssues = this._toggleBallotIntroFollowIssues.bind(this);
     this._toggleBallotIntroOrganizations = this._toggleBallotIntroOrganizations.bind(this);
@@ -62,7 +62,7 @@ export default class HeaderGettingStartedBar extends Component {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.voterStoreListener.remove();
   }
 
@@ -78,7 +78,7 @@ export default class HeaderGettingStartedBar extends Component {
     });
   }
 
-  _openPrintModal () {
+  static _openPrintModal () {
     window.print();
   }
 
@@ -100,6 +100,7 @@ export default class HeaderGettingStartedBar extends Component {
       // Save action when going from off to on
       AnalyticsActions.saveActionModalIssues(VoterStore.election_id());
     }
+
     this.setState({ showBallotIntroFollowIssues: !this.state.showBallotIntroFollowIssues });
   }
 
@@ -109,6 +110,7 @@ export default class HeaderGettingStartedBar extends Component {
       // Save action when going from off to on
       AnalyticsActions.saveActionModalOrganizations(VoterStore.election_id());
     }
+
     this.setState({ showBallotIntroOrganizations: !this.state.showBallotIntroOrganizations });
   }
 
@@ -118,6 +120,7 @@ export default class HeaderGettingStartedBar extends Component {
       // Save action when going from off to on
       AnalyticsActions.saveActionModalPositions(VoterStore.election_id());
     }
+
     this.setState({ showBallotIntroPositions: !this.state.showBallotIntroPositions });
   }
 
@@ -127,6 +130,7 @@ export default class HeaderGettingStartedBar extends Component {
       // Save action when going from off to on
       AnalyticsActions.saveActionModalFriends(VoterStore.election_id());
     }
+
     this.setState({ showBallotIntroFriends: !this.state.showBallotIntroFriends });
   }
 
@@ -136,6 +140,7 @@ export default class HeaderGettingStartedBar extends Component {
       // Save action when going from off to on
       AnalyticsActions.saveActionModalShare(VoterStore.election_id());
     }
+
     this.setState({ showBallotIntroShare: !this.state.showBallotIntroShare });
   }
 
@@ -145,6 +150,7 @@ export default class HeaderGettingStartedBar extends Component {
       // Save action when going from off to on
       AnalyticsActions.saveActionModalVote(VoterStore.election_id());
     }
+
     this.setState({ showBallotIntroVote: !this.state.showBallotIntroVote });
   }
 
@@ -154,7 +160,7 @@ export default class HeaderGettingStartedBar extends Component {
   }
 
   render () {
-    var slider_settings = {
+    let sliderSettings = {
       dots: true,
       infinite: false,
       speed: 500,
@@ -162,12 +168,11 @@ export default class HeaderGettingStartedBar extends Component {
       slidesToScroll: 1,
       swipe: true,
       accessibility: true,
-      //react-slick default left & right nav arrows
       arrows: false,
     };
 
     // Have all of the 6 major steps been taken?
-    let voter_thorough_orientation_complete = false;
+    let voterThoroughOrientationComplete = false;
     const BallotIntroFollowIssuesModal = <Modal bsClass="background-brand-blue modal"
                                     show={this.state.showBallotIntroFollowIssues}
                                     onHide={() => this._toggleBallotIntroFollowIssues(this)}>
@@ -177,7 +182,7 @@ export default class HeaderGettingStartedBar extends Component {
               <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
             </a>
           </div>
-          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
+          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...sliderSettings}>
             <div key={1}><BallotIntroFollowIssues next={this._nextSliderPage}/></div>
             {/* <div key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div> */}
             <div key={3}><BallotIntroIssuesSuccess next={this._toggleBallotIntroFollowIssues}/></div>
@@ -195,7 +200,7 @@ export default class HeaderGettingStartedBar extends Component {
               <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
             </a>
           </div>
-          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
+          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...sliderSettings}>
             <div key={1}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div>
             <div key={2}><BallotIntroIssuesSuccess next={this._toggleBallotIntroOrganizations}/></div>
           </Slider>
@@ -211,7 +216,7 @@ export default class HeaderGettingStartedBar extends Component {
               <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
             </a>
           </div>
-          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
+          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...sliderSettings}>
             <div key={1}><BallotIntroPositions next={this._nextSliderPage}/></div>
             <div key={2}><BallotIntroIssuesSuccess next={this._toggleBallotIntroPositions}/></div>
           </Slider>
@@ -227,7 +232,7 @@ export default class HeaderGettingStartedBar extends Component {
               <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
             </a>
           </div>
-          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
+          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...sliderSettings}>
             <div key={1}><BallotIntroFriends next={this._nextSliderPage}/></div>
             <div key={2}><BallotIntroIssuesSuccess next={this._toggleBallotIntroFriends}/></div>
           </Slider>
@@ -243,7 +248,7 @@ export default class HeaderGettingStartedBar extends Component {
               <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
             </a>
           </div>
-          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
+          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...sliderSettings}>
             <div key={1}><BallotIntroShare next={this._nextSliderPage}/></div>
             <div key={2}><BallotIntroIssuesSuccess next={this._toggleBallotIntroShare}/></div>
           </Slider>
@@ -259,7 +264,7 @@ export default class HeaderGettingStartedBar extends Component {
               <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
             </a>
           </div>
-          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...slider_settings}>
+          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...sliderSettings}>
             <div key={1}><BallotIntroVote next={this._nextSliderPage}/></div>
             <div key={2}><BallotIntroIssuesSuccess next={this._toggleBallotIntroVote}/></div>
           </Slider>
@@ -305,8 +310,13 @@ export default class HeaderGettingStartedBar extends Component {
       </Modal.Body>
     </Modal>;
 
+    let currentPathname = this.props.pathname ? this.props.pathname : "/ballot";
+    let ballotBaseUrl = webAppConfig.WE_VOTE_URL_PROTOCOL + (isWebApp() ? webAppConfig.WE_VOTE_HOSTNAME : "wevote.us") + currentPathname;
+    let encodedMessage = encodeURIComponent("Check out your ballot, and make sure to #Vote! #WeVote");
+    let twitterData = "https://twitter.com/intent/tweet?text=" + encodedMessage + "&amp;url=" + encodeURIComponent(ballotBaseUrl);
+
     return <div className="page-getting-started-header-background">
-      { voter_thorough_orientation_complete ?
+      { voterThoroughOrientationComplete ?
         null :
         <header className="page-getting-started-header">
           <div className="header-getting-started-nav">
@@ -332,12 +342,25 @@ export default class HeaderGettingStartedBar extends Component {
             <GettingStartedBarItem show={this._openEmailModal}
                                    title="Email"
                                    emailIcon/>
+            {/* February 2018, Facebook and Magic Email disabled for Cordova */}
+            { isWebApp() && <div>
             <GettingStartedBarItem show={this._openFacebookModal}
                                    title="Share Ballot"
-                                   facebookIcon/>
+                                   facebookIcon
+                                    />
+            </div>}
+            <GettingStartedBarItem url={twitterData}
+                                   title="Tweet Ballot"
+                                   twitterIcon
+                                   isExternal/>
+            {/* February 2018, Facebook and Magic Email disabled for Cordova -- In this case it is the PollingLocator with the iFrame */}
+            { isWebApp() && <div>
             <GettingStartedBarItem show={this._openPollingLocatorModal}
-                                   title="Polling Location"
+                                   titleDesktop="Polling Location"
+                                   titleMobile="Vote"
                                    mapMarkerIcon/>
+            </div>}
+
             {/* Positions Icon & Modal */}
             {/* <GettingStartedBarItem show={this._toggleBallotIntroPositions}
               source="/img/global/svg-icons/stance-v1-59x32.svg"
