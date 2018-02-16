@@ -59,7 +59,7 @@ export default class BookmarkToggle extends Component {
         this.toggleBookmarkToggleHelpModal();
         VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.BOOKMARK_ACTION_MODAL_SHOWN);
       } else {
-        showToastSuccess("Bookmark set!");
+        showToastSuccess("Bookmark saved!");
       }
     }
   }
