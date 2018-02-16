@@ -80,12 +80,12 @@ export default class FollowToggle extends Component {
     const stopFollowingInstantly = () => {
       is_following = false;
       stopFollowingFunc();
-      showToastError("No longer following!");
+      showToastError("No longer listening.");
     };
     const followInstantly = () => {
       is_following = true;
       followFunc();
-      showToastSuccess("Now following!");
+      showToastSuccess("Now listening!");
     };
 
     if (organization_for_display) {
