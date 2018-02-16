@@ -21,6 +21,7 @@ import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
 import Helmet from "react-helmet";
+import IssueActions from "../../actions/IssueActions";
 import IssueStore from "../../stores/IssueStore";
 import MeasureActions from "../../actions/MeasureActions";
 import MeasureModal from "../../components/Ballot/MeasureModal";
@@ -34,8 +35,6 @@ import VoterConstants from "../../constants/VoterConstants";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
-
-
 const web_app_config = require("../../config");
 
 
@@ -117,6 +116,7 @@ export default class Ballot extends Component {
       google_civic_election_id = BallotStore.ballot_properties.google_civic_election_id;
     }
 
+    IssueActions.issuesRetrieve();
     // console.log("ballot_returned_we_vote_id: ", ballot_returned_we_vote_id, ", ballot_location_shortcut:", ballot_location_shortcut, ", google_civic_election_id_from_url: ", google_civic_election_id_from_url);
     if (ballot_returned_we_vote_id || ballot_location_shortcut || google_civic_election_id_from_url) {
       if (ballot_location_shortcut !== "") {

@@ -30,7 +30,7 @@ export default class BallotIntroFollowIssues extends Component {
   }
 
   componentWillMount () {
-    IssueActions.retrieveIssuesForVoter();
+    IssueActions.issuesRetrieve();
     // IssueActions.retrieveIssuesToFollow();
   }
 

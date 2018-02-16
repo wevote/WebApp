@@ -178,6 +178,8 @@ export function removeTwitterNameFromDescription (displayName, twitterDescriptio
 }
 
 export function returnFirstXWords (originalString, numberOfWordsToReturn) {
+  if (!originalString) return "";
+
   var wordsArray = originalString.split(" ");
   var xWords = "";
   for (var i = 0; i < wordsArray.length; i++) {

@@ -136,7 +136,7 @@ class IssueStore extends ReduceStore {
       case "issueFollow":
         // When a voter follows or unfollows an issue on the ballot intro modal screen, update the voter guide list
         VoterGuideActions.voterGuidesToFollowRetrieveByIssuesFollowed();
-        IssueActions.retrieveIssuesForVoter();
+        IssueActions.issuesRetrieve();
         return state;
 
       case "retrieveIssuesToFollow":

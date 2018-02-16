@@ -28,7 +28,7 @@ export default class IssuesFollowed extends Component {
   }
 
   componentDidMount () {
-    IssueActions.retrieveIssuesForVoter();
+    IssueActions.issuesRetrieve();
     this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange.bind(this));
   }
 

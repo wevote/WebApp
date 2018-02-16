@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import IssueCard from "./IssueCard";
-import IssueTinyImageDisplay from "./IssueTinyImageDisplay";
+import IssueImageDisplay from "./IssueImageDisplay";
 import OrganizationListUnderIssue from "./OrganizationListUnderIssue";
 
 // We use this for IssuesFollowedDisplayList, to show a voter a horizontal list of all of their
@@ -10,6 +10,7 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
 
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
+    issueImageSize: PropTypes.string,
     issueListToDisplay: PropTypes.array,
     instantRefreshOn: PropTypes.bool,
     maximumIssuesToDisplay: PropTypes.number,
@@ -22,20 +23,33 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
     this.mobile = "ontouchstart" in document.documentElement;
 
     this.state = {
+      issueImageSize: "SMALL", // We support SMALL, MEDIUM, LARGE
       issues_to_display: [],
       maximum_issues_display: 0,
     };
   }
 
   componentDidMount () {
+    const imageSizes = new Set(["SMALL", "MEDIUM", "LARGE"]);
+    let issueImageSize = "SMALL"; // Set the default
+    if (imageSizes.has(this.props.issueImageSize)) {
+      issueImageSize = this.props.issueImageSize;
+    }
     this.setState({
+      issueImageSize: issueImageSize,
       issues_to_display: this.props.issueListToDisplay,
       maximum_issues_display: this.props.maximumIssuesToDisplay ? this.props.maximumIssuesToDisplay : 20,
     });
   }
 
   componentWillReceiveProps (nextProps) {
+    const imageSizes = new Set(["SMALL", "MEDIUM", "LARGE"]);
+    let issueImageSize = "SMALL"; // Set the default
+    if (imageSizes.has(nextProps.issueImageSize)) {
+      issueImageSize = nextProps.issueImageSize;
+    }
     this.setState({
+      issueImageSize: issueImageSize,
       issues_to_display: nextProps.issueListToDisplay,
       maximum_issues_display: nextProps.maximumIssuesToDisplay ? nextProps.maximumIssuesToDisplay : 20,
     });
@@ -112,9 +126,11 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
                                     onMouseOut={() => this.onTriggerLeave(issue_we_vote_id)}
                                     className="issue-popover"
                             >
-            <IssueCard issue={one_issue}
-                       ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
-                       followToggleOn />
+            <IssueCard ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
+                       followToggleOn
+                       issue={one_issue}
+                       issueImageSize={"MEDIUM"}
+            />
             <OrganizationListUnderIssue issue_we_vote_id={issue_we_vote_id} />
           </Popover>;
 
@@ -130,7 +146,9 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
                                overlay={issuePopover}
                 >
           <span className="">
-            <IssueTinyImageDisplay issue={one_issue} showPlaceholderImage />
+            <IssueImageDisplay issue={one_issue}
+                                   issueImageSize={this.state.issueImageSize}
+                                   showPlaceholderImage />
           </span>
         </OverlayTrigger>;
       } else {
