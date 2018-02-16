@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { ToastContainer } from "react-toastify";
 import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
 import ElectionActions from "./actions/ElectionActions";
@@ -346,6 +347,7 @@ export default class Application extends Component {
       let hideGettingStartedOrganizationsButton = voter_guide_show_getting_started_navigation;
 
       return <div className="app-base" id="app-base-id">
+        <ToastContainer closeButton={false} />
         <div className={headRoomSize}>
           <div ref="pageHeader" className={ this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom" }>
             { show_back_to_header ?
@@ -364,6 +366,7 @@ export default class Application extends Component {
     }
 
     return <div className="app-base" id="app-base-id">
+      <ToastContainer closeButton={false} />
       <div className={headRoomSize}>
         <div ref="pageHeader" className={ this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom" }>
           { show_back_to_header ?

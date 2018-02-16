@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from "react";
-import SupportActions from "../../actions/SupportActions";
 import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
 import ReactBootstrapToggle from "react-bootstrap-toggle";
+import { showToastSuccess } from "../../utils/showToast";
+import SupportActions from "../../actions/SupportActions";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
+
 const Icon = require("react-svg-icons");
 
 export default class PositionPublicToggle extends Component {
@@ -39,6 +41,7 @@ export default class PositionPublicToggle extends Component {
 
   showItemToFriendsOnly () {
     SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, "FRIENDS_ONLY");
+    showToastSuccess("Position now visible to friends only!");
   }
 
   showItemToPublic () {
@@ -49,7 +52,10 @@ export default class PositionPublicToggle extends Component {
       if (!position_public_toggle_modal_has_been_shown) {
         this.togglePositionPublicHelpModal();
         VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
+      } else {
+        showToastSuccess("This position now visible to anyone on We Vote!");
       }
+
     } else {
       this.togglePositionPublicHelpModal();
     }
@@ -132,11 +138,12 @@ export default class PositionPublicToggle extends Component {
             We Vote makes it easy to share your views either publicly, or privately with your We Vote friends.<br />
             <br />
             Test the privacy toggle here:<br />
-            <PositionPublicToggle ballot_item_we_vote_id="null"
-                                  className="null"
-                                  type="MEASURE"
-                                  supportProps={modalSupportProps}
-                                  inTestMode
+            <PositionPublicToggle
+              ballot_item_we_vote_id="null"
+              className="null"
+              type="MEASURE"
+              supportProps={modalSupportProps}
+              inTestMode
             />
             <br />
           </div>
@@ -148,14 +155,18 @@ export default class PositionPublicToggle extends Component {
       <div style={{display: "inline-block"}}>
         <OverlayTrigger className="trigger" placement="top" overlay={in_test_mode ? no_tooltip : tooltip}>
           <div tabIndex="0" onKeyDown={onKeyDown}> {/*tabIndex and onKeyDown are for accessibility*/}
-            <ReactBootstrapToggle on={publicIcon} off={friendsIcon}
-                                    active={is_public_position}
-                                    onstyle="success" size="mini"
-                                    width="40px"
-                                    onChange={onChange} /></div>
-                                  </OverlayTrigger>
-                                </div>
-                                { this.state.showPositionPublicHelpModal ? PositionPublicToggleHelpModal : null}
-                              </div>;
+            <ReactBootstrapToggle
+              on={publicIcon}
+              off={friendsIcon}
+              active={is_public_position}
+              onstyle="success" size="mini"
+              width="40px"
+              onChange={onChange}
+            />
+          </div>
+        </OverlayTrigger>
+      </div>
+      { this.state.showPositionPublicHelpModal ? PositionPublicToggleHelpModal : null}
+    </div>;
   }
 }

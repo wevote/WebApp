@@ -40,7 +40,7 @@ export default class OrganizationVoterGuideOffice extends Component {
 
     AnalyticsActions.saveActionOffice(VoterStore.election_id(), this.props.params.office_we_vote_id);
     SearchAllActions.exitSearch();
-    console.log("OrganizationVoterGuideOffice, organization_we_vote_id: ", this.props.params.organization_we_vote_id);
+    // console.log("OrganizationVoterGuideOffice, organization_we_vote_id: ", this.props.params.organization_we_vote_id);
   }
 
   componentWillReceiveProps (nextProps) {
