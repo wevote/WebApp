@@ -2,8 +2,6 @@ import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 import IssueActions from "../../actions/IssueActions";
 import ImageHandler from "../ImageHandler";
-
-
 import { showToastError, showToastSuccess } from "../../utils/showToast";
 
 
