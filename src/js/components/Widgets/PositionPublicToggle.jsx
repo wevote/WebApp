@@ -41,7 +41,7 @@ export default class PositionPublicToggle extends Component {
 
   showItemToFriendsOnly () {
     SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, "FRIENDS_ONLY");
-    showToastSuccess("Positions now visible to friends only!");
+    showToastSuccess("Position now visible to friends only!");
   }
 
   showItemToPublic () {
@@ -53,7 +53,7 @@ export default class PositionPublicToggle extends Component {
         this.togglePositionPublicHelpModal();
         VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
       } else {
-        showToastSuccess("Your positions are now public!");
+        showToastSuccess("This position now visible to anyone on We Vote!");
       }
 
     } else {
