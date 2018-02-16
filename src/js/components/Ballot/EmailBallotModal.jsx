@@ -200,7 +200,6 @@ export default class EmailBallotModal extends Component {
           title: "We Vote USA",
           to: emailData.userId,
           method: "send",
-          mobile_iframe: true,
           link: this.state.ballot_link,
           redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/ballot",
         }, function (response) {
@@ -235,6 +234,7 @@ export default class EmailBallotModal extends Component {
           title: "We Vote USA",
           method: "share",
           href: this.state.ballot_link,
+          mobile_iframe: true,
           redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/ballot",
         }, function (response) {
           if (response) {
@@ -273,10 +273,6 @@ export default class EmailBallotModal extends Component {
 
     let floatRight = { float: "right" };
     let textGray = { color: "gray" };
-
-    if ( this.state.on_facebook_login_step ){
-      return LoadingWheel;
-    }
 
     if (this.state.showEmailToFriendsModal) {
       this.componentWillUnmount();
