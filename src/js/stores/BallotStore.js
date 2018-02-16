@@ -132,10 +132,10 @@ class BallotStore extends ReduceStore {
     return this.getState().ballot_item_unfurled_tracker;
   }
 
-  getSingleRaccoonStatus (we_vote_id){
+  getBallotItemUnfurledStatus (we_vote_id){
     if (we_vote_id ) {
       //note: this method is made to always returns a Boolean
-      // console.log(getSingleRaccoonStatus, this.getState())
+      // console.log(getBallotItemUnfurledStatus, this.getState())
       return !!this.getState().ballot_item_unfurled_tracker[we_vote_id];
     } else {
       return false;

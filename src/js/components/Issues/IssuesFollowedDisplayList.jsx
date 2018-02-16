@@ -53,10 +53,12 @@ export default class IssuesFollowedDisplayList extends Component {
     return <span className="">
       {/* We want to display the images of the issues in the list we pass in */}
       <span className="visible-xs">
-        <IssuesDisplayListWithOrganizationPopovers issueListToDisplay={issues_voter_is_following_mobile} />
+        <IssuesDisplayListWithOrganizationPopovers issueImageSize={"LARGE"}
+                                                   issueListToDisplay={issues_voter_is_following_mobile} />
       </span>
       <span className="hidden-xs">
-        <IssuesDisplayListWithOrganizationPopovers issueListToDisplay={issues_voter_is_following_desktop} />
+        <IssuesDisplayListWithOrganizationPopovers issueImageSize={"LARGE"}
+                                                   issueListToDisplay={issues_voter_is_following_desktop} />
       </span>
     </span>;
   }

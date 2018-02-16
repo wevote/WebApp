@@ -1,7 +1,6 @@
 import React, {Component, PropTypes } from "react";
 import { Link } from "react-router";
 import IssueActions from "../../actions/IssueActions";
-// import IssueFollowToggle from "../Issues/IssueFollowToggle";
 import IssueFollowToggleSquare from "../Issues/IssueFollowToggleSquare";
 import IssueStore from "../../stores/IssueStore";
 
@@ -21,7 +20,7 @@ export default class NetworkIssuesFollowed extends Component {
   }
 
   componentDidMount () {
-    IssueActions.retrieveIssuesForVoter();
+    IssueActions.issuesRetrieve();
     this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange.bind(this));
   }
 

@@ -6,6 +6,7 @@ import CandidateStore from "../../stores/CandidateStore";
 import { capitalizeString } from "../../utils/textFormat";
 import GuideList from "../../components/VoterGuide/GuideList";
 import Helmet from "react-helmet";
+import IssueActions from "../../actions/IssueActions";
 import LoadingWheel from "../../components/LoadingWheel";
 import OrganizationActions from "../../actions/OrganizationActions";
 import PositionList from "../../components/Ballot/PositionList";
@@ -40,6 +41,8 @@ export default class Candidate extends Component {
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     CandidateActions.candidateRetrieve(this.props.params.candidate_we_vote_id);
     CandidateActions.positionListForBallotItem(this.props.params.candidate_we_vote_id);
+
+    IssueActions.issuesRetrieve();
 
     // Get the latest guides to follow for this candidate
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));

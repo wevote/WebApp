@@ -66,7 +66,6 @@ import FriendInvitationByEmailVerifyProcess from "./routes/Process/FriendInvitat
 import VoterGuideGetStarted from "./routes/VoterGuide/VoterGuideGetStarted";
 import VerifyRegistration from "./routes/More/VerifyRegistration";
 import VerifyThisIsMe from "./routes/VoterGuide/VerifyThisIsMe";
-import Vision from "./routes/More/Vision";
 import Welcome from "./routes/Welcome";
 import YourPage from "./routes/YourPage";
 
@@ -161,7 +160,7 @@ const routes = () =>
     <Route path="/more/tools" component={ToolsToShareOnOtherWebsites} />
     <Route path="/more/terms" component={TermsOfService} />
     <Route path="/more/verify" component={VerifyRegistration} />
-    <Route path="/more/vision" component={Vision} />
+    <Route path="/more/vision" component={Organization} />
 
     {/* Voter Guide Pages */}
     <Route path="/voterguide/:organization_we_vote_id" component={OrganizationVoterGuide} />
