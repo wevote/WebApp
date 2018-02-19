@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from "react";
+import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import CandidateStore from "../../stores/CandidateStore";
 import FollowToggle from "../Widgets/FollowToggle";
 import MeasureStore from "../../stores/MeasureStore";
 import OrganizationActions from "../../actions/OrganizationActions";
 import VoterGuideDisplayForList from "./VoterGuideDisplayForList";
-import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import { showToastSuccess } from "../../utils/showToast";
 import { stringContains } from "../../utils/textFormat";
 
 export default class GuideList extends Component {
@@ -49,6 +50,7 @@ export default class GuideList extends Component {
   handleIgnore (id) {
     OrganizationActions.organizationFollowIgnore(id);
     this.setState({ organizations_to_follow: this.state.organizations_to_follow.filter( (org) => { return org.organization_we_vote_id !== id;})});
+    showToastSuccess("Added to ignore list.");
   }
 
   render () {

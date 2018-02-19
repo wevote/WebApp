@@ -4,7 +4,9 @@ import VoterGuideStore from "../../stores/VoterGuideStore";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
+import { showToastError, showToastSuccess } from "../../utils/showToast";
 import VoterStore from "../../stores/VoterStore";
+
 
 export default class FollowToggle extends Component {
   static propTypes = {
@@ -27,9 +29,11 @@ export default class FollowToggle extends Component {
 
   componentDidMount () {
     // console.log("componentDidMount, this.props: ", this.props);
-    this._onOrganizationStoreChange();
+    this.setState({
+      is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.we_vote_id),
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.props.we_vote_id),
+    });
     this._onVoterStoreChange();
-    this.onVoterGuideStoreChange();
     // We need the voterGuideStoreListener until we take the follow functions out of OrganizationActions and VoterGuideStore
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
@@ -45,12 +49,18 @@ export default class FollowToggle extends Component {
 
   onVoterGuideStoreChange () {
     // console.log("FollowToggle, onVoterGuideStoreChange, organization_we_vote_id: ", this.props.we_vote_id);
-    this.setState({ is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.we_vote_id) });
+    this.setState({
+      is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.we_vote_id),
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.props.we_vote_id),
+    });
   }
 
   _onOrganizationStoreChange () {
     // console.log("FollowToggle, _onOrganizationStoreChange, organization_we_vote_id: ", this.props.we_vote_id);
-    this.setState({ is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.we_vote_id) });
+    this.setState({
+      is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.we_vote_id),
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.props.we_vote_id),
+    });
   }
 
   _onVoterStoreChange () {
@@ -75,9 +85,30 @@ export default class FollowToggle extends Component {
     const followFunc = OrganizationActions.organizationFollow.bind(this, we_vote_id);
     const stopFollowingFunc = OrganizationActions.organizationStopFollowing.bind(this, we_vote_id);
 
-    var stopFollowingInstantly = () => { is_following = false; stopFollowingFunc(); };
-    var followInstantly = () => { is_following = true; followFunc(); };
+    const stopFollowingInstantly = () => {
+      let toast_message = "No longer listening!";
+      // We use this.state.organization instead of this.props.organization_for_display on purpose - there is some weird behavior to be debugged
+      if (this.state.organization && this.state.organization.organization_name) {
+        let organization_name = this.state.organization.organization_name;
+        toast_message = "No longer listening to " + organization_name + "!";
+      }
+      is_following = false;
+      stopFollowingFunc();
+      showToastError(toast_message);
+    };
+    const followInstantly = () => {
+      let toast_message = "Now listening!";
+      // We use this.state.organization instead of this.props.organization_for_display on purpose - there is some weird behavior to be debugged
+      if (this.state.organization && this.state.organization.organization_name) {
+        let organization_name = this.state.organization.organization_name;
+        toast_message = "Now listening to " + organization_name + "!";
+      }
+      is_following = true;
+      followFunc();
+      showToastSuccess(toast_message);
+    };
 
+    // NOTE: We want to leave this as showing only if this.props.organization_for_display comes in
     if (organization_for_display) {
       return <span onClick={followInstantly}>
         <OrganizationTinyDisplay {...organization_for_display}

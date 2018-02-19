@@ -3,6 +3,7 @@ import { Route, IndexRoute, IndexRedirect } from "react-router";
 import cookies from "./utils/cookies";
 import Application from "./Application";
 import About from "./routes/More/About";
+import AbsenteeBallot from "./routes/More/AbsenteeBallot";
 import Activity from "./routes/Activity";
 import Ballot from "./routes/Ballot/Ballot";
 import BallotIndex from "./routes/Ballot/BallotIndex";
@@ -45,6 +46,7 @@ import OrganizationVoterGuideOffice from "./routes/VoterGuide/OrganizationVoterG
 import PollingPlaceLocatorModal from "./routes/Ballot/PollingPlaceLocatorModal";
 import Privacy from "./routes/More/Privacy";
 import ProcessingDonation from "./routes/More/ProcessingDonation";
+import RegisterToVote from "./routes/More/RegisterToVote";
 import SampleBallot from "./routes/Intro/SampleBallot";
 import ScratchPad from "./routes/ScratchPad";
 import Settings from "./routes/Settings/Settings";
@@ -62,8 +64,8 @@ import TwitterSignInProcess from "./routes/Process/TwitterSignInProcess";
 import VerifyEmailProcess from "./routes/Process/VerifyEmailProcess";
 import FriendInvitationByEmailVerifyProcess from "./routes/Process/FriendInvitationByEmailVerifyProcess";
 import VoterGuideGetStarted from "./routes/VoterGuide/VoterGuideGetStarted";
+import VerifyRegistration from "./routes/More/VerifyRegistration";
 import VerifyThisIsMe from "./routes/VoterGuide/VerifyThisIsMe";
-import Vision from "./routes/More/Vision";
 import Welcome from "./routes/Welcome";
 import YourPage from "./routes/YourPage";
 
@@ -133,6 +135,7 @@ const routes = () =>
 
     {/* More Menu Pages */}
     <Route path="/more/about" component={About} />
+    <Route path="/more/absentee" component={AbsenteeBallot} />
     <Route path="/more/connect" component={Connect} />
     <Route path="/more/credits" component={Credits} />
     <Route path="/more/donate" component={Donate} />
@@ -151,11 +154,13 @@ const routes = () =>
     <Route path="/more/organization" component={Organization} />
     <Route path="/more/privacy" component={Privacy} />
     <Route path="/more/processing_donation" component={ProcessingDonation} />
+    <Route path="/more/register" component={RegisterToVote} />
     <Route path="/more/sign_in" component={SignIn} />
     <Route path="/more/team" component={Team} />
     <Route path="/more/tools" component={ToolsToShareOnOtherWebsites} />
     <Route path="/more/terms" component={TermsOfService} />
-    <Route path="/more/vision" component={Vision} />
+    <Route path="/more/verify" component={VerifyRegistration} />
+    <Route path="/more/vision" component={Organization} />
 
     {/* Voter Guide Pages */}
     <Route path="/voterguide/:organization_we_vote_id" component={OrganizationVoterGuide} />

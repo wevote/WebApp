@@ -29,7 +29,7 @@ export default class NetworkIssuesToFollow extends Component {
 
   componentDidMount () {
     IssueActions.retrieveIssuesToFollow();
-    IssueActions.retrieveIssuesForVoter();
+    IssueActions.issuesRetrieve();
     this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange.bind(this));
   }
 

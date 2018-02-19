@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
+import { isWebApp } from "../../utils/cordovaUtils";
 import FacebookBallotToFriendsModal from "./FacebookBallotToFriendsModal";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
@@ -199,7 +200,6 @@ export default class FacebookBallotModal extends Component {
           title: "We Vote USA",
           to: emailData.userId,
           method: "send",
-          mobile_iframe: true,
           link: this.state.ballot_link,
           redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/ballot",
         }, function (response) {
@@ -234,6 +234,7 @@ export default class FacebookBallotModal extends Component {
           title: "We Vote USA",
           method: "share",
           href: this.state.ballot_link,
+          mobile_iframe: true,
           redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/ballot",
         }, function (response) {
           if (response) {
@@ -272,10 +273,6 @@ export default class FacebookBallotModal extends Component {
 
     let floatRight = { float: "right" };
     let textGray = { color: "gray" };
-
-    if ( this.state.on_facebook_login_step ){
-      return LoadingWheel;
-    }
 
     if (this.state.showFacebookToFriendsModal) {
       this.componentWillUnmount();
@@ -361,16 +358,18 @@ export default class FacebookBallotModal extends Component {
                         </Button>
                       </div>
                       <div className="mobile-container">
-                        <div>
-                          <span >Share this ballot to your Facebook Timeline and Facebook Email.</span>
+                        {/* February 2018, Facebook and Magic Email disabled for Cordova */}
+                        {isWebApp() && <div>
+                          <span>Share this ballot to your Facebook Timeline and Facebook Email.</span>
                           <div className="u-inset--xs"/>
                           <Button className="btn btn-social btn-facebook u-push--sm"
                                   bsStyle="danger"
                                   type="submit"
                                   onClick={this.shareOnFacebook.bind(this)}>
-                            <span className="fa fa-facebook" />Share Ballot on Facebook
+                            <span className="fa fa-facebook"/>Share Ballot on Facebook
                           </Button>
                         </div>
+                        }
                       </div>
                     </div>
                   <div className="col-12 u-inset--md" />

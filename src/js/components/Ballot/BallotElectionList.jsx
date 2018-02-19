@@ -59,7 +59,18 @@ export default class BallotElectionList extends Component {
   render () {
     // console.log("BallotElectionList, this.props.ballotElectionList", this.props.ballotElectionList);
     let currentDate = moment().format("YYYY-MM-DD");
-    let upcomingElectionList = this.props.ballotElectionList.map((item, index) =>
+    let ballotElectionListUpcomingSorted = this.props.ballotElectionList;
+    // We want to sort ascending so the next upcoming election is first
+    ballotElectionListUpcomingSorted.sort(function (a, b) {
+      let election_day_text_A = a.election_day_text.toLowerCase();
+      let election_day_text_B = b.election_day_text.toLowerCase();
+      if (election_day_text_A < election_day_text_B) //sort string ascending
+        return -1;
+      if (election_day_text_A > election_day_text_B)
+        return 1;
+      return 0; //default return value (no sorting)
+    });
+    let upcomingElectionList = ballotElectionListUpcomingSorted.map((item, index) =>
       item.election_day_text > currentDate ?
       <div key={index}>
         <dl className="list-unstyled text-center">
@@ -81,7 +92,18 @@ export default class BallotElectionList extends Component {
      );
     upcomingElectionList = cleanArray(upcomingElectionList);
 
-    let priorElectionList = this.props.ballotElectionList.map((item, index) =>
+    let ballotElectionListPastSorted = this.props.ballotElectionList;
+    // We want to sort descending so the most recent election is first
+    ballotElectionListPastSorted.sort(function (a, b) {
+      let election_day_text_A = a.election_day_text.toLowerCase();
+      let election_day_text_B = b.election_day_text.toLowerCase();
+      if (election_day_text_A < election_day_text_B) //sort string descending
+        return 1;
+      if (election_day_text_A > election_day_text_B)
+        return -1;
+      return 0; //default return value (no sorting)
+    });
+    let priorElectionList = ballotElectionListPastSorted.map((item, index) =>
       item.election_day_text > currentDate ?
       null :
       <div key={index}>

@@ -2,9 +2,11 @@ import React, { Component, PropTypes } from "react";
 import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
 import BookmarkStore from "../../stores/BookmarkStore";
 import BookmarkActions from "../../actions/BookmarkActions";
+import { showToastError, showToastSuccess } from "../../utils/showToast";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
+
 var Icon = require("react-svg-icons");
 
 export default class BookmarkToggle extends Component {
@@ -47,12 +49,17 @@ export default class BookmarkToggle extends Component {
     var bookmarked = this.state.is_bookmarked;
     if (bookmarked) {
       BookmarkActions.voterBookmarkOffSave(we_vote_id, this.props.type);
+      showToastError("Bookmark removed!");
     } else {
-      BookmarkActions.voterBookmarkOnSave(we_vote_id, this.props.type);
       let bookmark_action_modal_has_been_shown = VoterStore.getInterfaceFlagState(VoterConstants.BOOKMARK_ACTION_MODAL_SHOWN);
+
+      BookmarkActions.voterBookmarkOnSave(we_vote_id, this.props.type);
+
       if (!bookmark_action_modal_has_been_shown) {
         this.toggleBookmarkToggleHelpModal();
         VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.BOOKMARK_ACTION_MODAL_SHOWN);
+      } else {
+        showToastSuccess("Bookmark saved!");
       }
     }
   }

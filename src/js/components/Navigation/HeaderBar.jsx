@@ -128,13 +128,6 @@ export default class HeaderBar extends Component {
                 </Link>
               </li>
               <li>
-                <Link onClick={this.toggleAboutMenu} to={"/more/vision"}>
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Our Vision</span>
-                  </div>
-                </Link>
-              </li>
-              <li>
                 <Link onClick={this.toggleAboutMenu} to={"/more/organization"}>
                   <div>
                     <span className="header-slide-out-menu-text-left">Organization</span>

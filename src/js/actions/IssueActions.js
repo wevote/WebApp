@@ -6,7 +6,7 @@ module.exports = {
     Dispatcher.loadEndpoint("retrieveIssuesToFollow");
   },
 
-  retrieveIssuesForVoter: function () {
+  issuesRetrieve: function () {
     Dispatcher.loadEndpoint("issuesRetrieve", {voter_issues_only: true, include_voter_follow_status: true});
   },
 

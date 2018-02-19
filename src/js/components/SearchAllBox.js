@@ -1,5 +1,6 @@
 /* global $ */
 import React, {Component, PropTypes} from "react";
+import BallotActions from "../actions/BallotActions";
 import classNames from "classnames";
 import { Link } from "react-router";
 import { historyPush } from "../utils/cordovaUtils";
@@ -36,6 +37,7 @@ export default class SearchAllBox extends Component {
     this.onSearchResultMouseOver = this.onSearchResultMouseOver.bind(this);
     this.onSearchResultClick = this.onSearchResultClick.bind(this);
     this.onSearchFormSubmit = this.onSearchFormSubmit.bind(this);
+    this.onSearchElectionResultClick = this.onSearchElectionResultClick.bind(this);
     this.onClearSearch = this.onClearSearch.bind(this);
     this.searchHasContent = this.searchHasContent.bind(this);
     this.navigateToSelectedLink = this.navigateToSelectedLink.bind(this);
@@ -187,6 +189,17 @@ export default class SearchAllBox extends Component {
     this.updateSearchText();
   }
 
+  onSearchElectionResultClick (googleCivicElectionId) {
+    let ballot_base_url = "/ballot";
+    if (googleCivicElectionId && googleCivicElectionId !== 0) {
+      BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, "", "");
+      // console.log("onSearchElectionResultClick, googleCivicElectionId: ", googleCivicElectionId);
+      historyPush(ballot_base_url + "/election/" + googleCivicElectionId);
+    }
+    this.updateSearchText();
+
+  }
+
   onClearSearch (e) {
     // Close up the search box and reset the navigation
     this.onSearchBlur();
@@ -284,18 +297,16 @@ export default class SearchAllBox extends Component {
                 let today = new Date();
                 let election_date = new Date(election_day + " 0:00:00");
                 let past_election = today > election_date ? " IN PAST" : "UPCOMING ELECTION";
-                console.log("Election election_date ", election_date);
                 return <Link key={one_result.local_id}
                              data-idx={idx}
-                             to={this.links[idx]}
                              onMouseOver={this.onSearchResultMouseOver}
                              className="search-container__links"
-                             onClick={this.onSearchResultClick}>
+                             onClick={() => this.onSearchElectionResultClick(one_result.google_civic_election_id)}>
                   <div className={search_result_classes}>
                       <span className="search-container__election_summary">{capitalized_title}</span>
                       <span className="search-container__election_summary">{election_day}</span>
                       <span style={{float: "right"}}>{past_election}</span>
-                    </div>
+                  </div>
                 </Link>;
               } else {
                 let search_result_classes = classNames({

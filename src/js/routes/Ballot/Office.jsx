@@ -3,6 +3,7 @@ import CandidateList from "../../components/Ballot/CandidateList";
 import { capitalizeString } from "../../utils/textFormat";
 import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
+import IssueActions from "../../actions/IssueActions";
 import LoadingWheel from "../../components/LoadingWheel";
 import OfficeActions from "../../actions/OfficeActions";
 import OfficeItem from "../../components/Ballot/OfficeItem";
@@ -25,6 +26,8 @@ export default class Office extends Component {
   }
 
   componentDidMount (){
+    IssueActions.issuesRetrieve();
+
     this.officeStoreListener = OfficeStore.addListener(this._onOfficeStoreChange.bind(this));
     let office = OfficeStore.getOffice(this.props.params.office_we_vote_id);
 		if ( !office || !office.ballot_item_display_name ) {

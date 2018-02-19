@@ -80,7 +80,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
     //read current raccon open/close status to BallotStore
     // console.log("raccoon, compnentDidMount, setting state for we_vote_id", this.props.we_vote_id)
-    // console.log("setState", BallotStore.getSingleRaccoonStatus(this.props.we_vote_id))
+    // console.log("setState", BallotStore.getBallotItemUnfurledStatus(this.props.we_vote_id))
     // If there three or fewer offices on this ballot, unfurl them
     if (this.props.allBallotItemsCount && this.props.allBallotItemsCount <= 3) {
       this.setState({
@@ -89,7 +89,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
     } else {
       //read from BallotStore
       this.setState({
-        display_office_unfurled: BallotStore.getSingleRaccoonStatus(this.props.we_vote_id)
+        display_office_unfurled: BallotStore.getBallotItemUnfurledStatus(this.props.we_vote_id)
       });
     }
   }
@@ -272,10 +272,9 @@ export default class OfficeItemCompressedRaccoon extends Component {
                title={<span>Your Network is Undecided <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closeYourNetworkIsUndecidedPopover}>
         Your friends, and the organizations you listen to, are <strong>Your Network</strong>.
-        Everyone in your network that
-        <span className="u-no-break">
-          <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /> supports
-        </span> a candidate adds
+        Everyone in your network
+        that <span className="u-no-break"> <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /> supports</span> a
+        candidate adds
         +1 to that candidate's <strong>Score in Your Network</strong>. None of the candidates running
         for {ballot_item_display_name} have more support in your network than the other candidates.
       </Popover>;
@@ -381,10 +380,8 @@ export default class OfficeItemCompressedRaccoon extends Component {
                          title={<span>Your Network Supports <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                          onClick={this.closeYourNetworkSupportsPopover}>
                   Your friends, and the organizations you listen to, are <strong>Your Network</strong>.
-                  Everyone in your network that
-                  <span className="u-no-break">
-                    <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /> supports
-                  </span> {one_candidate.ballot_item_display_name} adds
+                  Everyone in your network
+                  that <span className="u-no-break"> <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /> supports</span> {one_candidate.ballot_item_display_name} adds
                   +1 to {one_candidate.ballot_item_display_name}'s <strong>Score in Your Network</strong>. {one_candidate.ballot_item_display_name} has
                   the highest score in your network.
                 </Popover>;

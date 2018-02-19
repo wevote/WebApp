@@ -7,7 +7,7 @@ import AnalyticsActions from "../actions/AnalyticsActions";
 import { validateEmail } from "../utils/email-functions";
 import FacebookStore from "../stores/FacebookStore";
 import FacebookActions from "../actions/FacebookActions";
-import { cordovaDot, historyPush, isCordova } from "../utils/cordovaUtils";
+import { cordovaDot, historyPush, isCordova, isWebApp } from "../utils/cordovaUtils";
 import VoterActions from "../actions/VoterActions";
 import VoterConstants from "../constants/VoterConstants";
 import VoterStore from "../stores/VoterStore";
@@ -428,22 +428,28 @@ export default class Intro extends Component {
             <span>
               <h3 className="u-f3 u-stack--lg">Please share or donate to help us reach more voters.</h3>
               <div className="u-stack--lg">
+                {/* February 2018, Facebook and Magic Email disabled for Cordova */}
+                {isWebApp() &&
                 <Button className="btn btn-social btn-facebook u-push--sm"
-                    bsStyle="danger"
-                    type="submit"
-                    onClick={this.shareToFacebookButton}>
-                  <span className="fa fa-facebook" /> Facebook
+                        bsStyle="danger"
+                        type="submit"
+                        onClick={this.shareToFacebookButton}>
+                  <span className="fa fa-facebook"/> Facebook
                 </Button>
+                }
                 <Button className="btn btn-social btn-twitter u-push--sm"
                     bsStyle="danger"
                     onClick={this.shareToTwitterButton}>
                   <span className="fa fa-twitter" /> Twitter
                 </Button>
+                {/* February 2018, Facebook and Magic Email disabled for Cordova */}
+                {isWebApp() &&
                 <a href={mailto_url} title="Submit this to Email">
                   <button className="btn btn-social btn--email u-push--sm">
-                    <span className="fa fa-envelope" />Email
+                    <span className="fa fa-envelope"/>Email
                   </button>
                 </a>
+                }
                 <Link to="/more/donate">
                   <button className="btn btn-social btn-danger u-push--sm">
                     <span className="fa fa-heart" /> Donate

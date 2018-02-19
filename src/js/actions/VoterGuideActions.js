@@ -12,7 +12,7 @@ module.exports = {
   voterGuidesToFollowRetrieve: function (election_id, search_string, add_voter_guides_not_from_election) {
     Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", {
       google_civic_election_id: election_id,
-      maximum_number_to_retrieve: 300,
+      maximum_number_to_retrieve: 150,
       search_string: search_string || "",
       add_voter_guides_not_from_election: add_voter_guides_not_from_election || false,
     });
