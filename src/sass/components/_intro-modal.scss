@@ -1,6 +1,6 @@
 .intro-modal {
   padding: $space-none;
-  min-height: 480px;
+  // min-height: 480px;
   height: 100%;
   width: 100%;
   color: $white;
@@ -420,7 +420,7 @@
 }
 
 .intro-modal-vertical-scroll-contain_without_slider {
-  height: calc(100vh - 100px);
+  // height: calc(100vh - 100px);
   max-height: 540px; // Scroll area in modal: 990 - 350 = 640px We set this so that when We Vote is in a frame, the modal isn't too long.
   overflow-y: auto;
   -webkit-overflow-scrolling: auto;
@@ -553,7 +553,7 @@
     }
 
     .intro-modal-vertical-scroll-contain_without_slider {
-      height: calc(100vh - 100px);
+      // height: calc(100vh - 100px);
       max-height: 540px; // Scroll area in modal: 990 - 350 = 640px We set this so that when We Vote is in a frame, the modal isn't too long.
     }
   }

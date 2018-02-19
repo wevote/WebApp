@@ -443,7 +443,6 @@ export default class FacebookBallotToFriendsModal extends Component {
   sendDirectMessageToFacebookFriends () {
     let emailData = FacebookStore.getFacebookData();
     let facebookAuthResponse = FacebookStore.getFacebookAuthResponse();
-    // console.log("sendDirectMessageToSelfFacebook", emailData, facebookAuthResponse);
     if (facebookAuthResponse.facebookIsLoggedIn) {
       if (emailData.userId) {
         window.FB.ui({
@@ -565,7 +564,7 @@ export default class FacebookBallotToFriendsModal extends Component {
                     </div> : null
                   }
 
-                  <form onSubmit={this.prepareApiArraysFromForm.bind(this)}>
+                  {/* <form onSubmit={this.prepareApiArraysFromForm.bind(this)}>
                       <span>Email this ballot to your friends so they can get prepared to vote. These friends will see what you support or oppose.<br />&nbsp;<br /></span>
                       <div className="row invite-inputs">
                         <div className="form-group col-12 col-sm-12 col-md-6">
@@ -763,7 +762,7 @@ export default class FacebookBallotToFriendsModal extends Component {
                       </div>
                       <div className="col-12 u-inset--md" />
                       <div className="col-12 u-inset--xs" />
-                    </form>
+                    </form> */}
                     <div className="text-center col-12">
                       <div className="hidden-xs">
                         <span>Send this ballot to specific friends through Facebook. The friends you choose will see what you support or oppose.</span>
@@ -772,7 +771,7 @@ export default class FacebookBallotToFriendsModal extends Component {
                                 bsStyle="danger"
                                 type="submit"
                                 onClick={this.sendDirectMessageToFacebookFriends.bind(this)}>
-                          <span className="fa fa-facebook" />Send Ballot Through Facebook
+                          <span className="fa fa-facebook" />!!Send Ballot Through Facebook
                         </Button>
                       </div>
                       <div className="mobile-container">
