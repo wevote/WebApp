@@ -1,16 +1,17 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
+import Icon from "react-svg-icons";
 import BallotStore from "../../stores/BallotStore";
 import BookmarkStore from "../../stores/BookmarkStore";
 import CandidateStore from "../../stores/CandidateStore";
 import cookies from "../../utils/cookies";
+import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
 import SearchAllBox from "../SearchAllBox";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
-var Icon = require("react-svg-icons");
 import { shortenText } from "../../utils/textFormat";
 
 export default class HeaderBackToBar extends Component {
@@ -24,17 +25,17 @@ export default class HeaderBackToBar extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      about_menu_open: false,
-      accountMenuOpen: false,
+      profilePopUpOpen: false,
       bookmarks: [],
-      candidate_we_vote_id: "",
+      candidateWeVoteId: "",
       office_we_vote_id: "",
       organization: {},
-      organization_we_vote_id: "",
+      organizationWeVoteId: "",
       voter: {},
     };
     this.toggleAccountMenu = this.toggleAccountMenu.bind(this);
     this.hideAccountMenu = this.hideAccountMenu.bind(this);
+    this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
   }
 
   componentDidMount () {
@@ -45,320 +46,215 @@ export default class HeaderBackToBar extends Component {
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.onBallotStoreChange();
 
-    let candidate_we_vote_id;
-    let office_we_vote_id;
-    let office_name;
+    let candidateWeVoteId;
+    let officeWeVoteId;
+    let officeName;
     let organization = {};
-    let organization_we_vote_id;
+    let organizationWeVoteId;
     if (this.props.params) {
-      candidate_we_vote_id = this.props.params.candidate_we_vote_id || "";
-      if (candidate_we_vote_id && candidate_we_vote_id !== "") {
-        let candidate = CandidateStore.getCandidate(candidate_we_vote_id);
-        // console.log("HeaderBackToBar, candidate_we_vote_id:", candidate_we_vote_id, ", candidate:", candidate);
-        office_we_vote_id = candidate.contest_office_we_vote_id;
-        office_name = candidate.contest_office_name;
+      candidateWeVoteId = this.props.params.candidate_we_vote_id || "";
+      if (candidateWeVoteId && candidateWeVoteId !== "") {
+        let candidate = CandidateStore.getCandidate(candidateWeVoteId);
+
+        // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
+        officeWeVoteId = candidate.contest_officeWeVoteId;
+        officeName = candidate.contest_office_name;
       }
-      organization_we_vote_id = this.props.params.organization_we_vote_id || "";
-      organization = OrganizationStore.getOrganizationByWeVoteId(organization_we_vote_id);
-      if (organization_we_vote_id && organization_we_vote_id !== "" && !organization.organization_we_vote_id) {
+
+      organizationWeVoteId = this.props.params.organization_we_vote_id || "";
+      organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      if (organizationWeVoteId && organizationWeVoteId !== "" && !organization.organization_we_vote_id) {
         // Retrieve the organization object
-        OrganizationActions.organizationRetrieve(organization_we_vote_id);
+        OrganizationActions.organizationRetrieve(organizationWeVoteId);
       }
     }
-    // console.log("candidate_we_vote_id: ", candidate_we_vote_id);
-    // console.log("organization_we_vote_id: ", organization_we_vote_id);
 
-    let we_vote_branding_off_from_url = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-    let we_vote_branding_off_from_cookie = cookies.getItem("we_vote_branding_off");
+    // console.log("candidateWeVoteId: ", candidateWeVoteId);
+    // console.log("organizationWeVoteId: ", organizationWeVoteId);
+
+    let weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
+    let weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
     this.setState({
-      candidate_we_vote_id: candidate_we_vote_id,
-      office_name: office_name,
-      office_we_vote_id: office_we_vote_id,
+      candidateWeVoteId: candidateWeVoteId,
+      officeName: officeName,
+      officeWeVoteId: officeWeVoteId,
       organization: organization,
-      organization_we_vote_id: organization_we_vote_id,
+      organizationWeVoteId: organizationWeVoteId,
       voter: this.props.voter,
-      we_vote_branding_off: we_vote_branding_off_from_url || we_vote_branding_off_from_cookie,
+      we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
 
-  componentWillReceiveProps (nextProps){
+  componentWillReceiveProps (nextProps) {
     // console.log("HeaderBackToBar componentWillReceiveProps, nextProps: ", nextProps);
-    let candidate_we_vote_id;
-    let office_we_vote_id;
-    let office_name;
+    let candidateWeVoteId;
+    let officeWeVoteId;
+    let officeName;
     let organization = {};
-    let organization_we_vote_id;
+    let organizationWeVoteId;
     if (nextProps.params) {
-      candidate_we_vote_id = nextProps.params.candidate_we_vote_id || "";
-      if (candidate_we_vote_id && candidate_we_vote_id !== "") {
-        let candidate = CandidateStore.getCandidate(candidate_we_vote_id);
-        // console.log("HeaderBackToBar, candidate_we_vote_id:", candidate_we_vote_id, ", candidate:", candidate);
-        office_we_vote_id = candidate.contest_office_we_vote_id;
-        office_name = candidate.contest_office_name;
+      candidateWeVoteId = nextProps.params.candidate_we_vote_id || "";
+      if (candidateWeVoteId && candidateWeVoteId !== "") {
+        let candidate = CandidateStore.getCandidate(candidateWeVoteId);
+
+        // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
+        officeWeVoteId = candidate.contest_office_we_vote_id;
+        officeName = candidate.contest_office_name;
       }
-      organization_we_vote_id = nextProps.params.organization_we_vote_id || "";
-      organization = OrganizationStore.getOrganizationByWeVoteId(organization_we_vote_id);
-      if (organization_we_vote_id && organization_we_vote_id !== "" && !organization.organization_we_vote_id) {
+
+      organizationWeVoteId = nextProps.params.organization_we_vote_id || "";
+      organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      if (organizationWeVoteId && organizationWeVoteId !== "" && !organization.organization_we_vote_id) {
         // Retrieve the organization object
-        OrganizationActions.organizationRetrieve(organization_we_vote_id);
+        OrganizationActions.organizationRetrieve(organizationWeVoteId);
       }
     }
-    // console.log("candidate_we_vote_id: ", candidate_we_vote_id);
-    // console.log("organization_we_vote_id: ", organization_we_vote_id);
 
-    let we_vote_branding_off_from_url = nextProps.location.query ? nextProps.location.query.we_vote_branding_off : 0;
-    let we_vote_branding_off_from_cookie = cookies.getItem("we_vote_branding_off");
+    // console.log("candidateWeVoteId: ", candidateWeVoteId);
+    // console.log("organizationWeVoteId: ", organizationWeVoteId);
+
+    let weVoteBrandingOffFromUrl = nextProps.location.query ? nextProps.location.query.we_vote_branding_off : 0;
+    let weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
     this.setState({
-      candidate_we_vote_id: candidate_we_vote_id,
-      office_name: office_name,
-      office_we_vote_id: office_we_vote_id,
+      candidateWeVoteId: candidateWeVoteId,
+      officeName: officeName,
+      officeWeVoteId: officeWeVoteId,
       organization: organization,
-      organization_we_vote_id: organization_we_vote_id,
+      organizationWeVoteId: organizationWeVoteId,
       voter: nextProps.voter,
-      we_vote_branding_off: we_vote_branding_off_from_url || we_vote_branding_off_from_cookie,
+      we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.ballotStoreListener.remove();
     this.bookmarkStoreListener.remove();
     this.candidateStoreListener.remove();
     this.organizationStoreListener.remove();
   }
 
-  onBallotStoreChange (){
-    this.setState({bookmarks: BallotStore.bookmarks });
+  onBallotStoreChange () {
+    this.setState({ bookmarks: BallotStore.bookmarks });
   }
 
-  onCandidateStoreChange (){
+  onCandidateStoreChange () {
     // console.log("Candidate onCandidateStoreChange");
 
-    let office_name;
-    let office_we_vote_id;
-    if (this.state.candidate_we_vote_id && this.state.candidate_we_vote_id !== "") {
-      let candidate = CandidateStore.getCandidate(this.state.candidate_we_vote_id);
-      // console.log("HeaderBackToBar -- onCandidateStoreChange, candidate_we_vote_id:", this.state.candidate_we_vote_id, ", candidate:", candidate);
-      office_name = candidate.contest_office_name;
-      office_we_vote_id = candidate.contest_office_we_vote_id;
+    let officeName;
+    let officeWeVoteId;
+    if (this.state.candidateWeVoteId && this.state.candidateWeVoteId !== "") {
+      let candidate = CandidateStore.getCandidate(this.state.candidateWeVoteId);
+
+      // console.log("HeaderBackToBar -- onCandidateStoreChange, candidateWeVoteId:", this.state.candidateWeVoteId, ", candidate:", candidate);
+      officeName = candidate.contest_office_name;
+      officeWeVoteId = candidate.contest_office_we_vote_id;
     }
+
     this.setState({
-      candidate: CandidateStore.getCandidate(this.state.candidate_we_vote_id),
-      office_name: office_name,
-      office_we_vote_id: office_we_vote_id,
+      candidate: CandidateStore.getCandidate(this.state.candidateWeVoteId),
+      officeName: officeName,
+      officeWeVoteId: officeWeVoteId,
     });
   }
 
-  onOrganizationStoreChange (){
+  onOrganizationStoreChange () {
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization_we_vote_id),
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organizationWeVoteId),
     });
-  }
-
-  accountMenu () {
-    var { is_signed_in, linked_organization_we_vote_id, signed_in_facebook, signed_in_twitter, twitter_screen_name } = this.state.voter;
-
-    let show_your_page_from_twitter = signed_in_twitter && twitter_screen_name;
-    let show_your_page_from_facebook = signed_in_facebook && linked_organization_we_vote_id && !show_your_page_from_twitter;
-
-    let accountMenuOpen = this.state.accountMenuOpen ? "account-menu--open" : "";
-
-    return (
-      <div className={accountMenuOpen}>
-      <div className="page-overlay" onClick={this.hideAccountMenu} />
-      <div className="account-menu">
-          <ul className="nav nav-stacked">
-            <li>
-              <div><span className="we-vote-promise">Our Promise: We'll never sell your email.</span></div>
-            </li>
-          </ul>
-          <h4 className="text-left" />
-          <ul className="nav nav-stacked">
-            { show_your_page_from_twitter ?
-              <li>
-                <Link onClick={this.transitionToYourVoterGuide.bind(this)} to={"/" + twitter_screen_name}>
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Your Voter Guide</span>
-                  </div>
-                </Link>
-              </li> :
-              null
-            }
-            { show_your_page_from_facebook ?
-              <li>
-                <Link onClick={this.transitionToYourVoterGuide.bind(this)} to={"/voterguide/" + linked_organization_we_vote_id}>
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Your Voter Guide</span>
-                  </div>
-                </Link>
-              </li> :
-              null
-            }
-            { !show_your_page_from_twitter && !show_your_page_from_facebook && is_signed_in ?
-              <li>
-                <Link onClick={this.transitionToYourVoterGuide.bind(this)} to="/yourpage">
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Your Voter Guide</span>
-                  </div>
-                </Link>
-              </li> :
-              null
-            }
-            { this.state.voter && this.state.voter.is_signed_in ?
-              <li>
-                <Link onClick={this.hideAccountMenu.bind(this)} to="/more/sign_in">
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Your Account</span>
-                  </div>
-                </Link>
-              </li> :
-              <li>
-                <Link onClick={this.hideAccountMenu.bind(this)} to="/more/sign_in">
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Sign In</span>
-                  </div>
-                </Link>
-              </li> }
-            { this.state.voter && this.state.voter.is_signed_in ?
-              <li>
-                <Link onClick={this.signOutAndHideAccountMenu.bind(this)} to="/more/sign_in">
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Sign Out</span>
-                  </div>
-                </Link>
-              </li> :
-              null
-            }
-            { this.state.bookmarks && this.state.bookmarks.length ?
-              <li>
-                <Link onClick={this.hideAccountMenu.bind(this)} to="/bookmarks">
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Your Bookmarked Items</span>
-                  </div>
-                </Link>
-              </li> :
-              null }
-            { this.state.we_vote_branding_off ? null :
-              <li className="visible-xs-block">
-                <Link onClick={this.hideAccountMenu.bind(this)} to="/more/howtouse">
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Getting Started</span>
-                  </div>
-                </Link>
-              </li>
-            }
-            { this.state.we_vote_branding_off ? null :
-              <li className="visible-xs-block">
-                <Link onClick={this.hideAccountMenu.bind(this)} to="/more/about">
-                  <div>
-                    <span className="header-slide-out-menu-text-left">About We Vote</span>
-                  </div>
-                </Link>
-              </li>
-            }
-            { this.state.we_vote_branding_off ? null :
-              <li className="visible-xs-block">
-                <Link onClick={this.hideAccountMenu.bind(this)} to="/more/donate">
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Donate</span>
-                  </div>
-                </Link>
-              </li>
-            }
-          </ul>
-          <span className="terms-and-privacy">
-            <br />
-            <Link onClick={this.hideAccountMenu.bind(this)} to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link onClick={this.hideAccountMenu.bind(this)} to="/more/privacy">Privacy Policy</Link>
-          </span>
-        </div>
-      </div>
-    );
   }
 
   toggleAccountMenu () {
-    this.setState({accountMenuOpen: !this.state.accountMenuOpen});
+    this.setState({ profilePopUpOpen: !this.state.profilePopUpOpen });
   }
 
   hideAccountMenu () {
-    this.setState({accountMenuOpen: false});
+    this.setState({ profilePopUpOpen: false });
   }
 
   signOutAndHideAccountMenu () {
     VoterSessionActions.voterSignOut();
-    this.setState({accountMenuOpen: false});
+    this.setState({ profilePopUpOpen: false });
   }
 
   transitionToYourVoterGuide () {
     // Positions for this organization, for this voter / election
     OrganizationActions.positionListForOpinionMaker(this.state.voter.linked_organization_we_vote_id, true);
+
     // Positions for this organization, NOT including for this voter / election
     OrganizationActions.positionListForOpinionMaker(this.state.voter.linked_organization_we_vote_id, false, true);
     OrganizationActions.organizationsFollowedRetrieve();
     VoterGuideActions.voterGuideFollowersRetrieve(this.state.voter.linked_organization_we_vote_id);
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.state.voter.linked_organization_we_vote_id);
-    this.setState({accountMenuOpen: false});
+    this.setState({ profilePopUpOpen: false });
   }
 
-  imagePlaceholder (speaker_type) {
-    let image_placeholder = "";
-    if (isSpeakerTypeOrganization(speaker_type)) {
-        image_placeholder = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} /></div>;
+  imagePlaceholder (speakerType) {
+    let imagePlaceholderString = "";
+    if (isSpeakerTypeOrganization(speakerType)) {
+      imagePlaceholderString = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} /></div>;
     } else {
-        image_placeholder = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} /></div>;
+      imagePlaceholderString = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} /></div>;
     }
-    return image_placeholder;
+
+    return imagePlaceholderString;
   }
 
   getVoterGuideLink () {
-    let organization_twitter_handle;
-    return organization_twitter_handle ? "/" + organization_twitter_handle : "/voterguide/" + this.state.organization_we_vote_id;
+    // Steve 2/16/18, the following messed up code -- replaced below
+    // let organization_twitter_handle;
+    // return organization_twitter_handle ? "/" + organization_twitter_handle : "/voterguide/" + this.state.organizationWeVoteId;
+    return "/voterguide/" + this.state.organizationWeVoteId;
   }
 
   getOfficeLink () {
-    if (this.state.organization_we_vote_id && this.state.organization_we_vote_id !== "") {
-      return "/office/" + this.state.office_we_vote_id + "/btvg/" + this.state.organization_we_vote_id;
+    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
+      return "/office/" + this.state.officeWeVoteId + "/btvg/" + this.state.organizationWeVoteId;
     } else {
-      return "/office/" + this.state.office_we_vote_id + "/b/btdb/";
+      return "/office/" + this.state.officeWeVoteId + "/b/btdb/";
     }
   }
 
   render () {
-    let { voter_photo_url_medium } = this.state.voter;
-    let speaker_type = "V";  // TODO DALE make this dynamic
+    let voterPhotoUrlMedium = this.state.voter.voter_photo_url_medium;
+    let speakerType = "V";  // TODO DALE make this dynamic
 
-    let back_to_link;
-    if (this.state.organization_we_vote_id && this.state.organization_we_vote_id !== "") {
-      back_to_link = this.getVoterGuideLink(); // Default to this when there is an organization_we_vote_id
+    let backToLink;
+    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
+      backToLink = this.getVoterGuideLink(); // Default to this when there is an organizationWeVoteId
     } else {
-      back_to_link = "/ballot"; // Default to this
-    }
-    if (this.props.params.back_to_variable === "bto" || this.props.params.back_to_variable === "btdo") {
-      back_to_link = this.getOfficeLink();
+      backToLink = "/ballot"; // Default to this
     }
 
-    let back_to_organization_link_text;
-    if (this.state.organization_we_vote_id && this.state.organization_we_vote_id !== "") {
-      back_to_organization_link_text = "Back to Voter Guide";
-    } else {
-      back_to_organization_link_text = "Back to Ballot";
-    }
     if (this.props.params.back_to_variable === "bto" || this.props.params.back_to_variable === "btdo") {
-      if (this.state.office_name) {
-        back_to_organization_link_text = "Back to " + this.state.office_name;
+      backToLink = this.getOfficeLink();
+    }
+
+    let backToOrganizationLinkText;
+    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
+      backToOrganizationLinkText = "Back to Voter Guide";
+    } else {
+      backToOrganizationLinkText = "Back to Ballot";
+    }
+
+    if (this.props.params.back_to_variable === "bto" || this.props.params.back_to_variable === "btdo") {
+      if (this.state.officeName) {
+        backToOrganizationLinkText = "Back to " + this.state.officeName;
       } else {
-        back_to_organization_link_text = "Back";
+        backToOrganizationLinkText = "Back";
       }
     } else if (this.state.organization && this.state.organization.organization_name) {
-      back_to_organization_link_text = "Back to " + this.state.organization.organization_name;
+      backToOrganizationLinkText = "Back to " + this.state.organization.organization_name;
     }
-    let back_to_organization_link_text_mobile = shortenText(back_to_organization_link_text, 30);
+
+    let backToOrganizationLinkTextMobile = shortenText(backToOrganizationLinkText, 30);
 
     return (
       <header className="page-header">
-        <Link to={back_to_link} className="page-logo page-logo-full-size h4 hidden-xs">
-          &lt; {back_to_organization_link_text}
+        <Link to={backToLink} className="page-logo page-logo-full-size h4 hidden-xs">
+          &lt; {backToOrganizationLinkText}
         </Link>
-        <Link to={back_to_link} className="page-logo page-logo-full-size h4 visible-xs">
-          &lt; {back_to_organization_link_text_mobile}
+        <Link to={backToLink} className="page-logo page-logo-full-size h4 visible-xs">
+          &lt; {backToOrganizationLinkTextMobile}
         </Link>
 
         <span className="hidden-xs">
@@ -366,16 +262,28 @@ export default class HeaderBackToBar extends Component {
         </span>
 
         <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
-          {voter_photo_url_medium ?
+          {voterPhotoUrlMedium ?
             <div id="js-header-avatar" className="header-nav__avatar-container">
                 <img className="header-nav__avatar"
-                      src={voter_photo_url_medium}
+                      src={voterPhotoUrlMedium}
                       height={34}
                       width={34}
                  />
-            </div> : this.imagePlaceholder(speaker_type)}
+            </div> : this.imagePlaceholder(speakerType)}
          </div>
-        {this.accountMenu()}
+        {this.state.profilePopUpOpen &&
+        <HeaderBarProfilePopUp {...this.props}
+                               onClick={this.toggleProfilePopUp}
+                               profilePopUpOpen={this.state.profilePopUpOpen}
+                               bookmarks={this.state.bookmarks}
+                               weVoteBrandingOff={this.state.we_vote_branding_off}
+                               toggleProfilePopUp={this.toggleProfilePopUp}
+                               hideProfilePopUp={this.hideProfilePopUp}
+                               transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
+                               signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)}
+        />
+        }
+
       </header>
     );
   }
