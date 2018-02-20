@@ -1,8 +1,10 @@
 import React, { Component, PropTypes } from "react";
 import BallotActions from "../../actions/BallotActions";
+import BallotStore from "../../stores/BallotStore";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import OrganizationActions from "../../actions/OrganizationActions";
 import VoterActions from "../../actions/VoterActions";
+import VoterStore from "../../stores/VoterStore";
 import { cleanArray } from "../../utils/textFormat";
 import moment from "moment";
 
@@ -19,7 +21,21 @@ export default class BallotElectionList extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {};
+    let prior_election_id = "";
+    if (BallotStore.ballot_properties) {
+      prior_election_id = BallotStore.ballot_properties.google_civic_election_id;
+    } else if (VoterStore.election_id()) {
+      prior_election_id = VoterStore.election_id();
+    }
+
+    this.state = {
+      loading_new_ballot_items: false,
+      prior_election_id: prior_election_id,
+      updated_election_id: ""
+    };
+
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
   goToDifferentElection (ballot_location_shortcut, ballot_returned_we_vote_id, googleCivicElectionId, originalTextForMapSearch = "") {
@@ -52,12 +68,63 @@ export default class BallotElectionList extends Component {
     }
 
     if (this.props.toggleFunction) {
+        // console.log("goToDifferentElection", this.state.loading_new_ballot_items, this.state.prior_election_id, this.state.updated_election_id);
+        this.setState({
+          loading_new_ballot_items: true,
+          prior_election_id: BallotStore.ballot_properties.google_civic_election_id || VoterStore.election_id() || 0,
+          updated_election_id: 0
+        });
+    }
+
+    // if (this.props.toggleFunction) {
+    //   console.log("BallotElectionList---------", this.props.toggleFunction);
+    //   this.props.toggleFunction();
+    // }
+  }
+
+  componentWillUnmount (){
+    this.ballotStoreListener.remove();
+    this.voterStoreListener.remove();
+  }
+
+  onBallotStoreChange () {
+    // console.log("BallotElectionList.jsx onBallotStoreChange, BallotStore.ballot_properties: ", BallotStore.ballot_properties,
+    //   this.state.prior_election_id, this.state.updated_election_id);
+    if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) {
+      // Ballot is found but ballot is empty. We want to stay put.
+      console.log("onBallotStoreChange: ballot_with_all_items is empty");
+    }
+    if (this.state.prior_election_id !== this.state.updated_election_id && this.state.loading_new_ballot_items && this.props.toggleFunction) {
+      // console.log("onBallotStoreChange---------", this.state.loading_new_ballot_items);
+      this.setState({
+        loading_new_ballot_items: false,
+        updated_election_id: BallotStore.ballot_properties.google_civic_election_id,
+      });
       this.props.toggleFunction();
     }
   }
 
+  onVoterStoreChange () {
+    // console.log("BallotElectionList.jsx onVoterStoreChange ", VoterStore.election_id(),
+    //   this.state.prior_election_id, this.state.updated_election_id);
+    // if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length !== 0) {
+    if (VoterStore.election_id() && VoterStore.election_id() !== this.state.prior_election_id) {
+      if (this.state.loading_new_ballot_items && this.props.toggleFunction) {
+        // console.log("onVoterStoreChange---------", this.state.loading_new_ballot_items);
+        this.setState({
+          loading_new_ballot_items: false,
+          updated_election_id: VoterStore.election_id()
+        });
+        this.props.toggleFunction();
+      }
+    }
+  }
+
   render () {
-    // console.log("BallotElectionList, this.props.ballotElectionList", this.props.ballotElectionList);
+    if (this.state.loading_new_ballot_items) {
+      return <h1 className="h1">Switching ballot data now...</h1>;
+    }
+
     let currentDate = moment().format("YYYY-MM-DD");
     let ballotElectionListUpcomingSorted = this.props.ballotElectionList;
     // We want to sort ascending so the next upcoming election is first
