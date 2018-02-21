@@ -205,7 +205,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   scrollLeft (visible_tag) {
     const element = findDOMNode(this.refs[`${this.state.candidate.we_vote_id}-org-list-${visible_tag}`]);
     let position = $(element).scrollLeft();
-    let width = $(element).width();
+    let width = Math.round($(element).width());
     $(element).animate({
       scrollLeft: position - width,
     }, 350, () => {
@@ -227,7 +227,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   scrollRight (visible_tag) {
     const element = findDOMNode(this.refs[`${this.state.candidate.we_vote_id}-org-list-${visible_tag}`]);
     let position = $(element).scrollLeft();
-    let width = $(element).width();
+    let width = Math.round($(element).width());
     $(element).animate({
       scrollLeft: position + width,
     }, 350, () => {
