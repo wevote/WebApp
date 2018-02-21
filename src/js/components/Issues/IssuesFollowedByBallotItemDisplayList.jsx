@@ -10,7 +10,7 @@ import IssueStore from "../../stores/IssueStore";
 export default class IssuesFollowedByBallotItemDisplayList extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string,
-    ballotItemWeVoteId: PropTypes.string,
+    ballotItemWeVoteId: PropTypes.string.isRequired,
     popoverBottom: PropTypes.bool,
   };
 
@@ -19,6 +19,9 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
     this.state = {
       transitioning: false,
       showModal: false,
+      issues_under_this_ballot_item: [],
+      issues_under_this_ballot_item_voter_is_following: [],
+      issues_under_this_ballot_item_voter_not_following: [],
       issues_voter_is_following: [],
       maximum_organization_display: 4,
     };
@@ -30,14 +33,22 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
     this.setState({
+      ballotItemWeVoteId: this.props.ballotItemWeVoteId,
       ballot_item_display_name: this.props.ballot_item_display_name ? this.props.ballot_item_display_name : "this candidate",
+      issues_under_this_ballot_item: IssueStore.getIssuesUnderThisBallotItem(this.props.ballotItemWeVoteId),
+      issues_under_this_ballot_item_voter_is_following: IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(this.props.ballotItemWeVoteId),
+      issues_under_this_ballot_item_voter_not_following: IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(this.props.ballotItemWeVoteId),
       issues_voter_is_following: IssueStore.getIssuesVoterIsFollowing(),
     });
   }
 
   componentWillReceiveProps (nextProps) {
     this.setState({
+      ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
       ballot_item_display_name: nextProps.ballot_item_display_name ? nextProps.ballot_item_display_name : "this candidate",
+      issues_under_this_ballot_item: IssueStore.getIssuesUnderThisBallotItem(nextProps.ballotItemWeVoteId),
+      issues_under_this_ballot_item_voter_is_following: IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(nextProps.ballotItemWeVoteId),
+      issues_under_this_ballot_item_voter_not_following: IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(nextProps.ballotItemWeVoteId),
       issues_voter_is_following: IssueStore.getIssuesVoterIsFollowing(),
     });
   }
@@ -53,6 +64,9 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
 
   onIssueStoreChange () {
     this.setState({
+      issues_under_this_ballot_item: IssueStore.getIssuesUnderThisBallotItem(this.state.ballotItemWeVoteId),
+      issues_under_this_ballot_item_voter_is_following: IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(this.state.ballotItemWeVoteId),
+      issues_under_this_ballot_item_voter_not_following: IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(this.state.ballotItemWeVoteId),
       issues_voter_is_following: IssueStore.getIssuesVoterIsFollowing(),
     });
   }
@@ -64,8 +78,9 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
   }
 
   render () {
-    // console.log("this.state.issues_voter_is_following: ", this.state.issues_voter_is_following);
-    if (!this.state.issues_voter_is_following || this.state.issues_voter_is_following.length === 0) {
+    let issues_under_this_ballot_item_voter_is_following_found = this.state.issues_under_this_ballot_item_voter_is_following && this.state.issues_under_this_ballot_item_voter_is_following.length !== 0;
+    // console.log("this.state.issues_under_this_ballot_item_voter_is_following: ", this.state.issues_under_this_ballot_item_voter_is_following);
+    if (!issues_under_this_ballot_item_voter_is_following_found) {
       return null;
     }
 
@@ -89,9 +104,12 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
     return <span className="">
       {issuesLabel}
 
-      {/* We want to display the images of the issues in the list we pass in */}
+      {/* Issues the voter is already following */}
       <IssuesDisplayListWithOrganizationPopovers issueImageSize={"MEDIUM"}
-                                                 issueListToDisplay={this.state.issues_voter_is_following} />
+                                                 issueListToDisplay={this.state.issues_under_this_ballot_item_voter_is_following} />
+      {/* Issues the voter is not following yet */}
+      {/* <IssuesDisplayListWithOrganizationPopovers issueImageSize={"MEDIUM"}
+                                                 issueListToDisplay={this.state.issues_under_this_ballot_item_voter_not_following} /> */}
     </span>;
   }
 }

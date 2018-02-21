@@ -12,6 +12,7 @@ import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdown
 import OrganizationCard from "../VoterGuide/OrganizationCard";
 import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
 import SupportStore from "../../stores/SupportStore";
+import VoterGuideActions from "../../actions/VoterGuideActions";
 import { returnFirstXWords } from "../../utils/textFormat";
 
 export default class ItemSupportOpposeRaccoon extends Component {
@@ -56,6 +57,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   componentDidMount () {
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     CandidateActions.positionListForBallotItem(this.props.ballotItemWeVoteId);
+    VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(this.props.ballotItemWeVoteId, "CANDIDATE");
     this.setState({
       ballot_item_display_name: this.props.ballot_item_display_name,
       ballot_item_we_vote_id: this.props.ballotItemWeVoteId,
