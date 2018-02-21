@@ -771,7 +771,7 @@ export default class FacebookBallotToFriendsModal extends Component {
                                 bsStyle="danger"
                                 type="submit"
                                 onClick={this.sendDirectMessageToFacebookFriends.bind(this)}>
-                          <span className="fa fa-facebook" />!!Send Ballot Through Facebook
+                          <span className="fa fa-facebook" />Send Ballot Through Facebook
                         </Button>
                       </div>
                       <div className="mobile-container">

@@ -320,11 +320,6 @@ export default class FacebookBallotModal extends Component {
                       </span>
                     </div> */}
                     <div className="col-12 u-inset--sm" />
-                    <div className="col-12">
-                      <span style={floatRight} onClick={this._openFacebookToFriendsModal.bind(this)}>
-                        Click here to send to friends &gt;
-                      </span>
-                    </div>
                     <div className="col-12 u-inset--md" />
                     <div className="text-center col-12">
                       <div className="hidden-xs">
@@ -355,6 +350,11 @@ export default class FacebookBallotModal extends Component {
                   <div className="col-12 u-inset--md" />
                 </div> : null
                 }
+                <div className="col-12">
+                  <span style={floatRight} onClick={this._openFacebookToFriendsModal.bind(this)}>
+                    Click here to send to friends &gt;
+                  </span>
+                </div>
                 <span style={textGray}>We will never sell your email.</span>
               </div>
             </div>

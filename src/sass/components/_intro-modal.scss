@@ -290,7 +290,8 @@
   &__default-text {
     width: 100%;
     color: $black;
-    padding: $space-md;
+    margin: $space-none !important;
+    padding: $space-none !important;
     text-align: center;
   }
 
@@ -522,6 +523,41 @@
 }
 
 .modal-body {
+  .intro-modal__container {
+    width: 100%;
+    margin: $space-none 15px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .intro-modal__input {
+    flex-basis: 80%;
+    @include breakpoints (small mid-small) {
+      flex-basis: 70%;
+    }
+    @include breakpoints (mid-small medium) {
+      flex-basis: 80%;
+    }
+    @include breakpoints (medium large) {
+      flex-basis: 75%;
+    }
+  }
+
+  .intro-modal__button--send {
+    flex-basis: 20%;
+    @include breakpoints (small mid-small) {
+      flex-basis: 30%;
+    }
+    @include breakpoints (mid-small medium) {
+      flex-basis: 20%;
+    }
+    @include breakpoints (medium large) {
+      flex-basis: 25%;
+    }
+  }
+
   @include breakpoints (small) {
     height: inherit;
 
