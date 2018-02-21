@@ -4,6 +4,7 @@ import IssueActions from "../actions/IssueActions";
 import OrganizationStore from "../stores/OrganizationStore";
 import VoterGuideStore from "../stores/VoterGuideStore";
 import VoterGuideActions from "../actions/VoterGuideActions";
+import { arrayContains } from "../utils/textFormat";
 
 class IssueStore extends ReduceStore {
 
@@ -18,6 +19,7 @@ class IssueStore extends ReduceStore {
       issue_we_vote_ids_voter_can_follow: [], // These are issues a particular voter can follow
       issue_we_vote_ids_to_link_to_by_organization_dict: {}, // Dictionary with key: organization_we_vote_id, list: issue_we_vote_id that the organization can link to
       issue_we_vote_ids_linked_to_by_organization_dict: {}, // Dictionary with key: organization_we_vote_id, list: issue_we_vote_id that the organization is linked to
+      issue_we_vote_ids_under_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, list: issue_we_vote_id. An org with that issue has a position in this election
       organization_we_vote_ids_linked_to_issue_dict: {}, // Dictionary with key: issue_we_vote_id, list: organization_we_vote_id that is linked to this issue
       all_cached_issues: {}, // Dictionary with key: issue_we_vote_id, and value: complete issue object
     };
@@ -52,9 +54,27 @@ class IssueStore extends ReduceStore {
     return this.getIssuesFromListOfWeVoteIds(issue_we_vote_id_list_to_link_for_organization);
   }
 
-  getIssuesLinkedToByOrganization (organization_we_vote_id) {
+  getIssueWeVoteIdsLinkedToByOrganization (organization_we_vote_id) {
+    if (!organization_we_vote_id) {
+      return [];
+    }
     // These are issues that an organization has linked itself to, to help Voters find the organization
     let issue_we_vote_ids_linked_to_organization = this.getState().issue_we_vote_ids_linked_to_by_organization_dict[organization_we_vote_id];
+    // console.log("getIssueWeVoteIdsLinkedToByOrganization issue_we_vote_ids_linked_to_organization:", issue_we_vote_ids_linked_to_organization);
+    if (issue_we_vote_ids_linked_to_organization === undefined) {
+      return [];
+    }
+    // List of issue objects that an organization is linked to
+    return issue_we_vote_ids_linked_to_organization;
+  }
+
+  getIssuesLinkedToByOrganization (organization_we_vote_id) {
+    if (!organization_we_vote_id) {
+      return [];
+    }
+    // These are issues that an organization has linked itself to, to help Voters find the organization
+    let issue_we_vote_ids_linked_to_organization = this.getState().issue_we_vote_ids_linked_to_by_organization_dict[organization_we_vote_id];
+    // console.log("getIssuesLinkedToByOrganization issue_we_vote_ids_linked_to_organization:", issue_we_vote_ids_linked_to_organization);
     if (issue_we_vote_ids_linked_to_organization === undefined) {
       return [];
     }
@@ -63,6 +83,9 @@ class IssueStore extends ReduceStore {
   }
 
   getIssuesLinkedToByOrganizationCount (organization_we_vote_id) {
+    if (!organization_we_vote_id) {
+      return 0;
+    }
     // These are issues that an organization has linked itself to, to help Voters find the organization
     let issue_we_vote_ids_linked_to_organization = this.getState().issue_we_vote_ids_linked_to_by_organization_dict[organization_we_vote_id];
     if (issue_we_vote_ids_linked_to_organization === undefined) {
@@ -73,6 +96,7 @@ class IssueStore extends ReduceStore {
   }
 
   getIssuesFromListOfWeVoteIds (list_of_issue_we_vote_ids) {
+    // console.log("getIssuesFromListOfWeVoteIds list_of_issue_we_vote_ids: ", list_of_issue_we_vote_ids);
     let all_cached_issues = this.getState().all_cached_issues;
     // make sure that list_of_issue_we_vote_ids has unique values
     let uniq_list_of_issue_we_vote_ids = list_of_issue_we_vote_ids.filter((value, index, self) => {
@@ -83,6 +107,7 @@ class IssueStore extends ReduceStore {
     uniq_list_of_issue_we_vote_ids.forEach(issue_we_vote_id => {
       issues_list.push(all_cached_issues[issue_we_vote_id]);
     });
+    // console.log("getIssuesFromListOfWeVoteIds issues_list: ", issues_list);
 
     return issues_list;
   }
@@ -122,10 +147,70 @@ class IssueStore extends ReduceStore {
 
   }
 
+  getIssuesUnderThisBallotItem (ballot_item_we_vote_id) {
+    // What are the issues that have positions for this election under this ballot item?
+    // console.log("getIssuesUnderThisBallotItem, ballot_item_we_vote_id:", ballot_item_we_vote_id);
+    if (ballot_item_we_vote_id && this.getState().issue_we_vote_ids_under_each_ballot_item) {
+      let issues_for_this_ballot_item = this.getState().issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id] || [];
+      // console.log("getIssuesUnderThisBallotItem, issues_for_this_ballot_item: ", issues_for_this_ballot_item);
+      return this.getIssuesFromListOfWeVoteIds(issues_for_this_ballot_item);
+    } else {
+      return [];
+    }
+  }
+
+  getIssuesUnderThisBallotItemVoterIsFollowing (ballot_item_we_vote_id) {
+    // What are the issues that have positions for this election under this ballot item?
+    // console.log("getIssuesUnderThisBallotItemVoterIsFollowing, ballot_item_we_vote_id:", ballot_item_we_vote_id);
+    // console.log("getIssuesUnderThisBallotItemVoterIsFollowing, this.getState().issue_we_vote_ids_under_each_ballot_item:", this.getState().issue_we_vote_ids_under_each_ballot_item);
+    let issues_under_this_ballot_item_voter_is_following = [];
+    if (ballot_item_we_vote_id && this.getState().issue_we_vote_ids_under_each_ballot_item) {
+      let issues_for_this_ballot_item = this.getState().issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id] || [];
+      // Remove issues the voter is not following
+      issues_for_this_ballot_item.forEach( issue_we_vote_id => {
+        if (arrayContains(issue_we_vote_id, this.getState().issue_we_vote_ids_voter_is_following)) {
+          issues_under_this_ballot_item_voter_is_following.push(issue_we_vote_id);
+        }
+      });
+      // console.log("getIssuesUnderThisBallotItemVoterIsFollowing, issues_under_this_ballot_item_voter_is_following: ", issues_under_this_ballot_item_voter_is_following);
+      return this.getIssuesFromListOfWeVoteIds(issues_under_this_ballot_item_voter_is_following);
+    } else {
+      // console.log("getIssuesUnderThisBallotItemVoterIsFollowing missing required variables");
+      return [];
+    }
+  }
+
+  getIssuesUnderThisBallotItemVoterNotFollowing (ballot_item_we_vote_id) {
+    // What are the issues that have positions for this election under this ballot item?
+    // console.log("getIssuesUnderThisBallotItemVoterNotFollowing, ballot_item_we_vote_id:", ballot_item_we_vote_id)
+    let issues_under_this_ballot_item_voter_not_following = [];
+    if (ballot_item_we_vote_id && this.getState().issue_we_vote_ids_under_each_ballot_item) {
+      let issues_for_this_ballot_item = this.getState().issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id] || [];
+      // Remove issues the voter is already following
+      issues_for_this_ballot_item.forEach( issue_we_vote_id => {
+        if (!arrayContains(issue_we_vote_id, this.getState().issue_we_vote_ids_voter_is_following)) {
+          issues_under_this_ballot_item_voter_not_following.push(issue_we_vote_id);
+        }
+      });
+      // console.log("getIssuesUnderThisBallotItemVoterNotFollowing, issues_for_this_ballot_item: ", issues_for_this_ballot_item);
+      return this.getIssuesFromListOfWeVoteIds(issues_under_this_ballot_item_voter_not_following);
+    } else {
+      return [];
+    }
+  }
+
   reduce (state, action) {
     let all_cached_issues;
+    let ballot_item_we_vote_id;
     let issue_list;
+    let issue_we_vote_ids_linked_to_by_organization_dict;
+    let issue_we_vote_ids_to_link_to_by_organization_dict;
+    let issue_we_vote_ids_under_each_ballot_item;
+    let linked_issue_list_for_one_organization = [];
+    let list_of_issues_for_this_org;
+    let new_position_list;
     let organization_we_vote_id;
+    let organization_we_vote_ids_linked_to_issue_dict;
     let voter_guides;
 
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
@@ -138,21 +223,6 @@ class IssueStore extends ReduceStore {
         VoterGuideActions.voterGuidesToFollowRetrieveByIssuesFollowed();
         IssueActions.issuesRetrieve();
         return state;
-
-      case "retrieveIssuesToFollow":
-        issue_list = action.res.issue_list;
-        all_cached_issues = state.all_cached_issues;
-        let issue_we_vote_ids_voter_can_follow = [];
-        issue_list.forEach( issue => {
-          all_cached_issues[issue.issue_we_vote_id] = issue;
-          issue_we_vote_ids_voter_can_follow.push(issue.issue_we_vote_id);
-        });
-
-        return {
-          ...state,
-          all_cached_issues: all_cached_issues,
-          issue_we_vote_ids_voter_can_follow: issue_we_vote_ids_voter_can_follow,
-        };
 
       case "issuesRetrieve":
         issue_list = action.res.issue_list;
@@ -179,18 +249,11 @@ class IssueStore extends ReduceStore {
           };
         }
 
-      case "organizationLinkToIssue":
-        // When an organization is linked/unlinked to an issue, we need to refresh the linked and to_link issue lists
-        organization_we_vote_id = action.res.organization_we_vote_id;
-        IssueActions.retrieveIssuesToLinkForOrganization(organization_we_vote_id);
-        IssueActions.retrieveIssuesLinkedForOrganization(organization_we_vote_id);
-        return state;
-
       case "issuesToLinkToForOrganization":
-        console.log("IssueStore issuesToLinkToForOrganization");
+        // console.log("IssueStore issuesToLinkToForOrganization");
         organization_we_vote_id = action.res.organization_we_vote_id;
         issue_list = action.res.issue_list;
-        let issue_we_vote_ids_to_link_to_by_organization_dict = state.issue_we_vote_ids_to_link_to_by_organization_dict;
+        issue_we_vote_ids_to_link_to_by_organization_dict = state.issue_we_vote_ids_to_link_to_by_organization_dict;
         let to_link_to_issue_list_for_one_organization = [];
         // We accumulate all issue objects in the all_cached_issues variable
         all_cached_issues = state.all_cached_issues;
@@ -212,8 +275,7 @@ class IssueStore extends ReduceStore {
         organization_we_vote_id = action.res.organization_we_vote_id;
         issue_list = action.res.issue_list;
         // console.log("IssueStore, issuesLinkedToOrganization: ", issue_list);
-        let issue_we_vote_ids_linked_to_by_organization_dict = state.issue_we_vote_ids_linked_to_by_organization_dict;
-        let linked_issue_list_for_one_organization = [];
+        issue_we_vote_ids_linked_to_by_organization_dict = state.issue_we_vote_ids_linked_to_by_organization_dict;
         // We accumulate all issue objects in the all_cached_issues variable
         all_cached_issues = state.all_cached_issues;
         issue_list.forEach(issue => {
@@ -229,27 +291,145 @@ class IssueStore extends ReduceStore {
           issue_we_vote_ids_linked_to_by_organization_dict: issue_we_vote_ids_linked_to_by_organization_dict,
         };
 
+      case "organizationLinkToIssue":
+        // When an organization is linked/unlinked to an issue, we need to refresh the linked and to_link issue lists
+        organization_we_vote_id = action.res.organization_we_vote_id;
+        IssueActions.retrieveIssuesToLinkForOrganization(organization_we_vote_id);
+        IssueActions.retrieveIssuesLinkedForOrganization(organization_we_vote_id);
+        return state;
+
+      case "positionListForBallotItem":
+        // We want to create an entry in this.state.issue_we_vote_ids_under_each_ballot_item for this ballot_item_we_vote_id
+        // with a list of the issues connected to this position
+        // issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id] = list of issues that have positions under this ballot item
+
+        // Also:
+        // issue_support_by_ballot_item[ballot_item_we_vote_id][issue_we_vote_id] = list of organizations that support
+        // issue_oppose_by_ballot_item[ballot_item_we_vote_id][issue_we_vote_id] = list of organizations that support
+
+        // Note, this function only organizes the organizations the voter is already following
+
+        // console.log("positionListForBallotItem action.res.ballot_item_we_vote_id:", action.res.ballot_item_we_vote_id);
+        ballot_item_we_vote_id = action.res.ballot_item_we_vote_id;
+        new_position_list = action.res.position_list;
+        // console.log("new_position_list: ", new_position_list);
+        // console.log("state.issue_we_vote_ids_linked_to_by_organization_dict: ", state.issue_we_vote_ids_linked_to_by_organization_dict);
+        if (ballot_item_we_vote_id && new_position_list && state.issue_we_vote_ids_linked_to_by_organization_dict) {
+          issue_we_vote_ids_under_each_ballot_item = state.issue_we_vote_ids_under_each_ballot_item || {};
+          if (!issue_we_vote_ids_under_each_ballot_item) {
+            issue_we_vote_ids_under_each_ballot_item = {};
+          }
+          if (!issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id]) {
+            issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id] = [];
+          }
+          new_position_list.forEach( one_position => {
+            // console.log("one_position.speaker_we_vote_id: ", one_position.speaker_we_vote_id);
+            if (one_position.speaker_we_vote_id) {
+              // Loop through the issues associated with this speaker.
+              if (state.issue_we_vote_ids_linked_to_by_organization_dict[one_position.speaker_we_vote_id]) {
+                // console.log("state.issue_we_vote_ids_linked_to_by_organization_dict[one_position.speaker_we_vote_id] FOUND");
+                list_of_issues_for_this_org = state.issue_we_vote_ids_linked_to_by_organization_dict[one_position.speaker_we_vote_id];
+                // console.log("list_of_issues_for_this_org:", list_of_issues_for_this_org);
+                if (list_of_issues_for_this_org) {
+                  list_of_issues_for_this_org.forEach( one_issue => {
+                    if (!arrayContains(one_issue, issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id])) {
+                      issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id].push(one_issue);
+                    }
+                  });
+                }
+              }
+            }
+          });
+          // console.log("positionListForBallotItem issue_we_vote_ids_under_each_ballot_item:", issue_we_vote_ids_under_each_ballot_item);
+          return {
+            ...state,
+            issue_we_vote_ids_under_each_ballot_item: issue_we_vote_ids_under_each_ballot_item,
+          };
+        } else {
+          return state;
+        }
+
+      case "retrieveIssuesToFollow":
+        issue_list = action.res.issue_list;
+        all_cached_issues = state.all_cached_issues;
+        let issue_we_vote_ids_voter_can_follow = [];
+        issue_list.forEach( issue => {
+          all_cached_issues[issue.issue_we_vote_id] = issue;
+          issue_we_vote_ids_voter_can_follow.push(issue.issue_we_vote_id);
+        });
+
+        return {
+          ...state,
+          all_cached_issues: all_cached_issues,
+          issue_we_vote_ids_voter_can_follow: issue_we_vote_ids_voter_can_follow,
+        };
+
       case "voterGuidesToFollowRetrieve":
         // Collect all of the issues an organization is tagged with
         // console.log("IssueStore, case voterGuidesToFollowRetrieve");
         voter_guides = action.res.voter_guides;
-        var issue_we_vote_ids_linked;
-        var organization_we_vote_ids_for_issue;
-        var organization_we_vote_ids_linked_to_issue_dict = state.organization_we_vote_ids_linked_to_issue_dict;
+        let issue_we_vote_ids_linked;
+        let organization_we_vote_ids_for_issue;
+        // Dictionary with key: issue_we_vote_id, list: organization_we_vote_id that is linked to this issue
+        organization_we_vote_ids_linked_to_issue_dict = state.organization_we_vote_ids_linked_to_issue_dict || {};
+        // Dictionary with key: organization_we_vote_id, list: issue_we_vote_id that the organization is linked to
+        issue_we_vote_ids_linked_to_by_organization_dict = state.issue_we_vote_ids_linked_to_by_organization_dict || {};
         voter_guides.forEach( voter_guide => {
           issue_we_vote_ids_linked = voter_guide.issue_we_vote_ids_linked;
+          linked_issue_list_for_one_organization = issue_we_vote_ids_linked_to_by_organization_dict[voter_guide.organization_we_vote_id] || [];
           // console.log("IssueStore, case voterGuidesToFollowRetrieve, issue_we_vote_ids_linked:", issue_we_vote_ids_linked);
           issue_we_vote_ids_linked.forEach( issue_we_vote_id => {
             organization_we_vote_ids_for_issue = organization_we_vote_ids_linked_to_issue_dict[issue_we_vote_id] || [];
             organization_we_vote_ids_for_issue.push(voter_guide.organization_we_vote_id);
             organization_we_vote_ids_linked_to_issue_dict[issue_we_vote_id] = organization_we_vote_ids_for_issue;
+            if (!arrayContains(issue_we_vote_id, linked_issue_list_for_one_organization)) {
+              linked_issue_list_for_one_organization.push(issue_we_vote_id);
+            }
           });
+          // Add the "issues linked to orgs" to the master dict, with the organization_we_vote_id as the key
+          issue_we_vote_ids_linked_to_by_organization_dict[voter_guide.organization_we_vote_id] = linked_issue_list_for_one_organization;
         });
-
         // console.log("IssueStore, case voterGuidesToFollowRetrieve, organization_we_vote_ids_linked_to_issue_dict:", organization_we_vote_ids_linked_to_issue_dict);
+
+        // We want to start a fresh loop after issue_we_vote_ids_linked_to_by_organization_dict has been updated
+        // console.log("voterGuidesToFollowRetrieve action.res.ballot_item_we_vote_id:", action.res.ballot_item_we_vote_id);
+        ballot_item_we_vote_id = action.res.ballot_item_we_vote_id;
+        voter_guides = action.res.voter_guides;
+        // console.log("voter_guides: ", voter_guides);
+        // console.log("issue_we_vote_ids_linked_to_by_organization_dict: ", issue_we_vote_ids_linked_to_by_organization_dict);
+        issue_we_vote_ids_under_each_ballot_item = state.issue_we_vote_ids_under_each_ballot_item || {};
+        if (ballot_item_we_vote_id && voter_guides && issue_we_vote_ids_linked_to_by_organization_dict) {
+          if (!issue_we_vote_ids_under_each_ballot_item) {
+            issue_we_vote_ids_under_each_ballot_item = {};
+          }
+          if (!issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id]) {
+            issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id] = [];
+          }
+          voter_guides.forEach(one_voter_guide => {
+            // console.log("one_voter_guide.organization_we_vote_id: ", one_voter_guide.organization_we_vote_id);
+            if (one_voter_guide.organization_we_vote_id) {
+              // Loop through the issues associated with this organization
+              if (issue_we_vote_ids_linked_to_by_organization_dict[one_voter_guide.organization_we_vote_id]) {
+                // console.log("issue_we_vote_ids_linked_to_by_organization_dict[one_voter_guide.organization_we_vote_id] FOUND");
+                list_of_issues_for_this_org = issue_we_vote_ids_linked_to_by_organization_dict[one_voter_guide.organization_we_vote_id];
+                // console.log("list_of_issues_for_this_org:", list_of_issues_for_this_org);
+                if (list_of_issues_for_this_org) {
+                  list_of_issues_for_this_org.forEach(one_issue => {
+                    if (!arrayContains(one_issue, issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id])) {
+                      issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id].push(one_issue);
+                    }
+                  });
+                }
+              }
+            }
+          });
+        }
+        // console.log("voterGuidesToFollowRetrieve issue_we_vote_ids_under_each_ballot_item:", issue_we_vote_ids_under_each_ballot_item);
 
         return {
           ...state,
+          issue_we_vote_ids_linked_to_by_organization_dict: issue_we_vote_ids_linked_to_by_organization_dict,
+          issue_we_vote_ids_under_each_ballot_item: issue_we_vote_ids_under_each_ballot_item,
           organization_we_vote_ids_linked_to_issue_dict: organization_we_vote_ids_linked_to_issue_dict,
         };
 

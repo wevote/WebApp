@@ -12,6 +12,7 @@ import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdown
 import OrganizationCard from "../VoterGuide/OrganizationCard";
 import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
 import SupportStore from "../../stores/SupportStore";
+import VoterGuideActions from "../../actions/VoterGuideActions";
 import { returnFirstXWords } from "../../utils/textFormat";
 
 export default class ItemSupportOpposeRaccoon extends Component {
@@ -56,6 +57,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   componentDidMount () {
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     CandidateActions.positionListForBallotItem(this.props.ballotItemWeVoteId);
+    VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(this.props.ballotItemWeVoteId, "CANDIDATE");
     this.setState({
       ballot_item_display_name: this.props.ballot_item_display_name,
       ballot_item_we_vote_id: this.props.ballotItemWeVoteId,
@@ -205,7 +207,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   scrollLeft (visible_tag) {
     const element = findDOMNode(this.refs[`${this.state.candidate.we_vote_id}-org-list-${visible_tag}`]);
     let position = $(element).scrollLeft();
-    let width = $(element).width();
+    let width = Math.round($(element).width());
     $(element).animate({
       scrollLeft: position - width,
     }, 350, () => {
@@ -227,7 +229,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   scrollRight (visible_tag) {
     const element = findDOMNode(this.refs[`${this.state.candidate.we_vote_id}-org-list-${visible_tag}`]);
     let position = $(element).scrollLeft();
-    let width = $(element).width();
+    let width = Math.round($(element).width());
     $(element).animate({
       scrollLeft: position + width,
     }, 350, () => {
@@ -456,28 +458,20 @@ export default class ItemSupportOpposeRaccoon extends Component {
               <ul className="network-positions-stacked__support-list__items">
                 <li className="network-positions-stacked__support-list__item">
                   { positionsLabel }
-                </li>
-                <li className="network-positions-stacked__support-list__item">
                   <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
                                                  ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
                                                  position_list={this.state.position_list_from_advisers_followed_by_voter}
                                                  showSupport
                                                  supportProps={this.state.supportProps}
                                                  visibility="desktop" />
-                </li>
-                <li className="network-positions-stacked__support-list__item">
                   <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
                                                  ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
                                                  position_list={this.state.position_list_from_advisers_followed_by_voter}
                                                  showOppose
                                                  supportProps={this.state.supportProps}
                                                  visibility="desktop" />
-                </li>
-                <li className="network-positions-stacked__support-list__item">
                   {/* Show support positions the voter can follow Desktop */}
                   { organizations_to_follow_support_desktop.length ? organizations_to_follow_support_desktop : null }
-                </li>
-                <li className="network-positions-stacked__support-list__item">
                   {/* Show oppose positions the voter can follow Desktop */}
                   { organizations_to_follow_oppose_desktop.length ? organizations_to_follow_oppose_desktop : null }
                 </li>
@@ -487,28 +481,20 @@ export default class ItemSupportOpposeRaccoon extends Component {
               <ul className="network-positions-stacked__support-list__items">
                 <li className="network-positions-stacked__support-list__item">
                   { positionsLabel }
-                </li>
-                <li className="network-positions-stacked__support-list__item">
                   <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
                                                  ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
                                                  position_list={this.state.position_list_from_advisers_followed_by_voter}
                                                  showSupport
                                                  supportProps={this.state.supportProps}
                                                  visibility="mobile" />
-                </li>
-                <li className="network-positions-stacked__support-list__item">
                   <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
                                                  ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
                                                  position_list={this.state.position_list_from_advisers_followed_by_voter}
                                                  showOppose
                                                  supportProps={this.state.supportProps}
                                                  visibility="mobile" />
-                </li>
-                <li className="network-positions-stacked__support-list__item">
                   {/* Show support positions the voter can follow Mobile */}
                   { organizations_to_follow_support_mobile.length ? organizations_to_follow_support_mobile : null }
-                </li>
-                <li className="network-positions-stacked__support-list__item">
                   {/* Show oppose positions the voter can follow Mobile */}
                   { organizations_to_follow_oppose_mobile.length ? organizations_to_follow_oppose_mobile : null }
                 </li>
