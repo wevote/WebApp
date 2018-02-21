@@ -15,23 +15,26 @@ export default class ToolsToShareOnOtherWebsites extends React.Component {
     return <div>
       <Helmet title="Free civic engagement tools - We Vote" />
       <div className="container-fluid well">
-        <h1 className="h1">Free civic engagement tools</h1>
+        <h1 className="h1">Free Civic Engagement Tools</h1>
 
-        <p><strong>WeVote.US wants to give you our technology to use — for FREE — on your website.</strong></p>
+        <p>WeVote.US wants to give you our technology to use — for <strong>FREE</strong><br />on your website.</p>
 
         <h2 className="h3">Why use WeVote.US tools?</h2>
         <ul>
           <li>All our of tools work in all 50 states and the District of Columbia.</li>
           <li>They’re fast and mobile-optimized, they’re free to use, and they’re the best tools on the market.</li>
-          <li>Battle tested: these are the exact same tools we use at WeVote.US</li>
+          <li>Battle tested: these are the exact same tools we use at WeVote.US.</li>
         </ul>
 
         <h2 className="h3">Adding the tools to your website takes less than 2 minutes.</h2>
-        <ul>
-          <li>Copy the code for the tool</li>
-          <li>Paste the code on your website where you want the tool to appear</li>
-          <li>We recommend putting each tool on its own page so you don’t overwhelm your visitors</li>
-        </ul>
+        <ol>
+          <li>
+            Copy the code for the tool, or click to view the code.<br />
+            {/* Image here */}
+        </li>
+          <li>Paste the code on your website where you want the tool to appear.</li>
+          <li>We recommend putting each tool on its own page so you don’t overwhelm your visitors.</li>
+        </ol>
 
         {/* eslint quotes: [1, "double", { "allowTemplateLiterals": true }] */}
 
@@ -70,7 +73,11 @@ export default class ToolsToShareOnOtherWebsites extends React.Component {
           {`<script type="text/javascript">iFrameResize({ log:true, checkOrigin:false});</script>`}
         </CodeCopier>
         <p>&nbsp;</p>
-        <p>If you need access to the data gathered via your instance of the Vote.org toolset, <a href="https://vip.vote.org" target="_blank">check out Vote.org premium tools. </a></p>
+        <h2 className="h3">Access even more:</h2>
+        <ul>
+          <li>You can place any page on www.WeVote.US on your organizational website. Learn more about fine-tuning our tools for your website.</li>
+          <li>If you need access to the data gathered via your instance of the Vote.org toolset, <a href="https://vip.vote.org" target="_blank">check out Vote.org premium tools.</a></li>
+        </ul>
         <p>&nbsp;</p>
       </div>
     </div>;
