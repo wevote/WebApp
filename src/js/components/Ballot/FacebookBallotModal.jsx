@@ -290,13 +290,13 @@ export default class FacebookBallotModal extends Component {
     }
 
     return (
-    <div className="intro-modal">
+    <div className="share-modal">
       <div className="intro-modal__h1">
         Send This Ballot to Yourself
       </div>
 
       <div>
-        <div className="intro-modal-vertical-scroll-contain_without_slider">
+        {/* <div className="intro-modal-vertical-scroll-contain_without_slider"> */}
           <div className="intro-modal-vertical-scroll card">
             <div className="row intro-modal__grid intro-modal__default-text">
               <div className="container-fluid u-inset--md text-left">
@@ -306,21 +306,6 @@ export default class FacebookBallotModal extends Component {
                   </div> :
                   null }
                 {this.state.on_enter_email_addresses_step ? <div className="row invite-inputs">
-                    {/* <span className="col-12 text-left">Email this ballot to yourself so you can print it, or come back to it later.&nbsp;<br />&nbsp;<br /></span>
-                    <div className="col-12">
-                      <span style={floatRight}>
-                        <Button
-                          tabIndex="0"
-                          onKeyDown={this.onKeyDown.bind(this)}
-                          onClick={this.ballotEmailSendStepsManager.bind(this)}
-                          bsStyle="primary"
-                        >
-                          <span>Send This Ballot &gt;</span>
-                        </Button>
-                      </span>
-                    </div> */}
-                    <div className="col-12 u-inset--sm" />
-                    <div className="col-12 u-inset--md" />
                     <div className="text-center col-12">
                       <div className="hidden-xs">
                         <span >Send this ballot to yourself through Facebook and your Facebook Email.</span>
@@ -355,11 +340,12 @@ export default class FacebookBallotModal extends Component {
                     Click here to send to friends &gt;
                   </span>
                 </div>
+                <div className="col-12 u-inset--sm" />
                 <span style={textGray}>We will never sell your email.</span>
               </div>
             </div>
           </div>
-        </div>
+        {/* </div> */}
       </div>
     </div>
     );

@@ -194,58 +194,42 @@ export default class EmailBallotModal extends Component {
     }
 
     return (
-    <div className="intro-modal">
+    <div className="share-modal">
       <div className="intro-modal__h1">
         Send This Ballot to Yourself
       </div>
 
       <div>
-        <div className="intro-modal-vertical-scroll-contain_without_slider">
-          <div className="intro-modal-vertical-scroll card">
-            <div className="row intro-modal__grid intro-modal__default-text">
-              <div className="container-fluid u-inset--md text-left">
-                {this.state.sender_email_address_error ?
-                  <div className="alert alert-danger">
-                    {this.state.error_message}
-                  </div> :
-                  null }
-                {this.state.on_enter_email_addresses_step ? <div className="row invite-inputs">
-                    <span className="col-12 text-left">Email this ballot to yourself so you can print it, or come back to it later.&nbsp;<br />&nbsp;<br /></span>
-                  <div className="col-12 text-left">
-                      { this.hasValidEmail() ? <label>Your Email Address</label> : <label>What is your email address?</label> }
-                  </div>
-                  <div className="form-group intro-modal__container text-left">
-                      <div className="intro-modal__input">
-                        <input type="text" name="self_email_address"
-                               className="form-control"
-                               value={this.state.sender_email_address || ""}
-                               onChange={this.cacheSenderEmailAddress.bind(this)}
-                               placeholder="For example: name@domain.com"/>
-                      </div>
-
-                      {/*<form onSubmit={this.ballotEmailSendStepsManager.bind(this)} className="u-stack--md">*/}
-                        {/*<span>*/}
-                          {/*<label htmlFor="last-name">Include a Message <span className="small">(Optional)</span></label><br />*/}
-                          {/*<textarea className="form-control" name="email_ballot_message" rows="5"*/}
-                                    {/*onChange={this.cacheEmailMessage.bind(this)}*/}
-                                    {/*placeholder="This is WeVote Ballot data for the upcoming election."/>*/}
-                        {/*</span>*/}
-                      {/*</form>*/}
-
-                    <div className="intro-modal__button--send hidden-xs">
-                      <span style={floatRight}>
-                        <Button
-                          tabIndex="0"
-                          onKeyDown={this.onKeyDown.bind(this)}
-                          onClick={this.ballotEmailSendStepsManager.bind(this)}
-                          bsStyle="primary"
-                        >
-                          <span>Send This Ballot &gt;</span>
-                        </Button>
-                      </span>
+        <div className="intro-modal-vertical-scroll card">
+          <div className="intro-modal__grid intro-modal__default-text">
+            <div className="container-fluid u-inset--md text-left">
+              {this.state.sender_email_address_error ?
+                <div className="alert alert-danger">
+                  {this.state.error_message}
+                </div> :
+                null }
+              {this.state.on_enter_email_addresses_step ? <div className="row invite-inputs">
+                  <span className="col-12 text-left">Email this ballot to yourself so you can print it, or come back to it later.&nbsp;<br />&nbsp;<br /></span>
+                <div className="col-12 text-left">
+                    { this.hasValidEmail() ? <label>Your Email Address</label> : <label>What is your email address?</label> }
+                </div>
+                <div className="form-group share-modal__container text-left">
+                    <div className="share-modal__input">
+                      <input type="text" name="self_email_address"
+                             className="form-control"
+                             value={this.state.sender_email_address || ""}
+                             onChange={this.cacheSenderEmailAddress.bind(this)}
+                             placeholder="For example: name@domain.com"/>
                     </div>
-
-                  <div className="intro-modal__button--send visible-xs">
+                    {/*<form onSubmit={this.ballotEmailSendStepsManager.bind(this)} className="u-stack--md">*/}
+                      {/*<span>*/}
+                        {/*<label htmlFor="last-name">Include a Message <span className="small">(Optional)</span></label><br />*/}
+                        {/*<textarea className="form-control" name="email_ballot_message" rows="5"*/}
+                                  {/*onChange={this.cacheEmailMessage.bind(this)}*/}
+                                  {/*placeholder="This is WeVote Ballot data for the upcoming election."/>*/}
+                      {/*</span>*/}
+                    {/*</form>*/}
+                  <div className="share-modal__button--send hidden-xs">
                     <span style={floatRight}>
                       <Button
                         tabIndex="0"
@@ -253,22 +237,32 @@ export default class EmailBallotModal extends Component {
                         onClick={this.ballotEmailSendStepsManager.bind(this)}
                         bsStyle="primary"
                       >
-                        <span>Send &gt;</span>
+                        <span>Send This Ballot &gt;</span>
                       </Button>
                     </span>
                   </div>
+                <div className="share-modal__button--send visible-xs">
+                  <span style={floatRight}>
+                    <Button
+                      tabIndex="0"
+                      onKeyDown={this.onKeyDown.bind(this)}
+                      onClick={this.ballotEmailSendStepsManager.bind(this)}
+                      bsStyle="primary"
+                    >
+                      <span>Send &gt;</span>
+                    </Button>
+                  </span>
                 </div>
-
-                    <div className="col-12 u-inset--sm" />
-                    <div className="col-12">
-                      <span style={floatRight} onClick={this._openEmailToFriendsModal.bind(this)}>
-                        Click here to send to friends &gt;
-                      </span>
-                    </div>
-                </div> : null
-                }
-                <span style={textGray}>We will never sell your email.</span>
               </div>
+                  <div className="col-12 u-inset--sm" />
+                  <div className="col-12">
+                    <span style={floatRight} onClick={this._openEmailToFriendsModal.bind(this)}>
+                      Click here to send to friends &gt;
+                    </span>
+                  </div>
+              </div> : null
+              }
+              <span style={textGray}>We will never sell your email.</span>
             </div>
           </div>
         </div>

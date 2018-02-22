@@ -1,6 +1,6 @@
 .intro-modal {
   padding: $space-none;
-  // min-height: 480px;
+  min-height: 480px;
   height: 100%;
   width: 100%;
   color: $white;
@@ -290,8 +290,7 @@
   &__default-text {
     width: 100%;
     color: $black;
-    margin: $space-none !important;
-    padding: $space-none !important;
+    padding: $space-md;
     text-align: center;
   }
 
@@ -421,7 +420,7 @@
 }
 
 .intro-modal-vertical-scroll-contain_without_slider {
-  // height: calc(100vh - 100px);
+  height: calc(100vh - 100px);
   max-height: 540px; // Scroll area in modal: 990 - 350 = 640px We set this so that when We Vote is in a frame, the modal isn't too long.
   overflow-y: auto;
   -webkit-overflow-scrolling: auto;
@@ -523,41 +522,6 @@
 }
 
 .modal-body {
-  .intro-modal__container {
-    width: 100%;
-    margin: $space-none 15px;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-
-  .intro-modal__input {
-    flex-basis: 80%;
-    @include breakpoints (small mid-small) {
-      flex-basis: 70%;
-    }
-    @include breakpoints (mid-small medium) {
-      flex-basis: 80%;
-    }
-    @include breakpoints (medium large) {
-      flex-basis: 75%;
-    }
-  }
-
-  .intro-modal__button--send {
-    flex-basis: 20%;
-    @include breakpoints (small mid-small) {
-      flex-basis: 30%;
-    }
-    @include breakpoints (mid-small medium) {
-      flex-basis: 20%;
-    }
-    @include breakpoints (medium large) {
-      flex-basis: 25%;
-    }
-  }
-
   @include breakpoints (small) {
     height: inherit;
 
@@ -589,7 +553,7 @@
     }
 
     .intro-modal-vertical-scroll-contain_without_slider {
-      // height: calc(100vh - 100px);
+      height: calc(100vh - 100px);
       max-height: 540px; // Scroll area in modal: 990 - 350 = 640px We set this so that when We Vote is in a frame, the modal isn't too long.
     }
   }
@@ -598,5 +562,47 @@
     .intro-modal-vertical-scroll-contain {
       height: calc(100vh - 400px); // slight bug with new shadow that needs this
     }
+  }
+}
+
+.share-modal {
+  padding: $space-none;
+  width: 100%;
+  color: $white;
+  text-align: center;
+
+  &__input {
+    flex-basis: 80%;
+    @include breakpoints (small mid-small) {
+      flex-basis: 70%;
+    }
+    @include breakpoints (mid-small medium) {
+      flex-basis: 80%;
+    }
+    @include breakpoints (medium large) {
+      flex-basis: 75%;
+    }
+  }
+
+  &__button {
+    flex-basis: 20%;
+    @include breakpoints (small mid-small) {
+      flex-basis: 30%;
+    }
+    @include breakpoints (mid-small medium) {
+      flex-basis: 20%;
+    }
+    @include breakpoints (medium large) {
+      flex-basis: 25%;
+    }
+  }
+
+  &__container {
+    width: 100%;
+    margin: $space-none 15px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: flex-start;
   }
 }
