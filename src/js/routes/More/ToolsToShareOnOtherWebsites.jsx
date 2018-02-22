@@ -31,32 +31,36 @@ export default function ToolsToShareOnOtherWebsites () {
       {/* enclose html within {` and `} to make them literal string in JSX */}
       <h2 className="h3">Tools</h2>
       <div className="row">
-        <CodeCopier title="Voter Registration Tool">
+        <CodeCopier title="Voter Registration Tool"
+                    imageUrl="/img/tools/register.png">
           {`<iframe src="https://register.vote.org/?partner=111111&campaign=free-tools" width="100%" marginheight="0" frameborder="0" id="frame1" scrollable ="no"></iframe>`}
           {`<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.3/iframeResizer.min.js"></script>`}
           {`<script type="text/javascript">iFrameResize({ log:true, checkOrigin:false});</script>`}
         </CodeCopier>
-        <CodeCopier title="Absentee Ballot Tool">
+        <CodeCopier title="Absentee Ballot Tool"
+                    imageUrl="/img/tools/absentee.png">
           {`<iframe src="https://absentee.vote.org/?partner=111111&campaign=free-tools" width="100%" marginheight="0" frameborder="0" id="frame2" scrollable="no"></iframe>`}
           {`<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.3/iframeResizer.min.js"></script>`}
           {`<script type="text/javascript">iFrameResize({ log:true, checkOrigin:false});</script>`}
         </CodeCopier>
-        <CodeCopier title="Check Registration Status Tool">
+        <CodeCopier title="Check Registration Status Tool"
+                    imageUrl="/img/tools/verify.png">
           {`<iframe src="https://verify.vote.org/?partner=111111&campaign=free-tools" width="100%" marginheight="0" frameborder="0" id="frame3" scrollable="no"></iframe>`}
           {`<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.3/iframeResizer.min.js" ></script>`}
           {`<script type="text/javascript">iFrameResize({ log:true, checkOrigin:false});</script>`}
         </CodeCopier>
-        <CodeCopier title="Election Reminder Tool">
+        <CodeCopier title="Election Reminder Tool"
+                    imageUrl="/img/tools/reminder.png">
           {`<iframe src="https://reminders.vote.org/?partner=111111&campaign=free-tools" width="100%" marginheight="0" frameborder="0" id="frame1" scrollable ="no"></iframe>`}
           {`<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.3/iframeResizer.min.js"></script>`}
           {`<script type="text/javascript">iFrameResize({ log:true, checkOrigin:false});</script>`}
         </CodeCopier>
       </div>
 
-      <h2 className="h3">Access even more:</h2>
+      <h2 className="h3">Notes:</h2>
       <ul>
-        <li>You can place any page on www.WeVote.US on your organizational website. Learn more about fine-tuning our tools for your website.</li>
-        <li>If you need access to the data gathered via your instance of the Vote.org toolset, <a href="https://vip.vote.org" target="_blank">check out Vote.org premium tools.</a></li>
+        <li>You can place any page on www.WeVote.US on your organizational website.</li>
+        <li>If you need access to the data gathered via your instance of the Vote.org toolset, <a href="https://vip.vote.org" target="_blank">check out the Vote.org premium tools.</a></li>
       </ul>
       <p>&nbsp;</p>
     </div>
