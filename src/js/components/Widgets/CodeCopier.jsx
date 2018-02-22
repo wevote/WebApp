@@ -58,7 +58,7 @@ export default class CodeCopier extends Component {
             <div>
               <ImageHandler className="code-copier__image u-stack--sm"
                             hidePlaceholder
-                            src={this.props.imageUrl}
+                            imageUrl={this.props.imageUrl}
                             alt={this.props.title} />
               <br />
               <a className="code-copier__link" href={this.props.imageUrl} target="_blank">
