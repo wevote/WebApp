@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import ImageHandler from "../ImageHandler";
+import { showToastSuccess } from "../../utils/showToast";
 
 export default class CodeCopier extends Component {
   static propTypes = {
@@ -24,6 +25,7 @@ export default class CodeCopier extends Component {
       //  const successful = document.execCommand("copy");
       document.execCommand("copy");
 
+      showToastSuccess("Code copied to clipboard!");
       // console.log('copy_status', successful);
       // perhaps a tooltip that fades out after a moment should be created
     } else {
