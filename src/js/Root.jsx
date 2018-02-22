@@ -14,6 +14,7 @@ import Connect from "./routes/Connect";
 import Credits from "./routes/More/Credits";
 import Donate from "./routes/More/Donate";
 import DonateThankYou from "./routes/More/DonateThankYou";
+import ElectionReminder from "./routes/More/ElectionReminder";
 import Elections from "./routes/More/Elections";
 import EmailBallot from "./routes/More/EmailBallot";
 import EmptyBallot from "./routes/Ballot/EmptyBallot";
@@ -136,6 +137,7 @@ const routes = () =>
     {/* More Menu Pages */}
     <Route path="/more/about" component={About} />
     <Route path="/more/absentee" component={AbsenteeBallot} />
+    <Route path="/more/alerts" component={ElectionReminder} />
     <Route path="/more/connect" component={Connect} />
     <Route path="/more/credits" component={Credits} />
     <Route path="/more/donate" component={Donate} />
