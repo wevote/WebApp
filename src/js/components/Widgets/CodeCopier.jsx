@@ -3,7 +3,7 @@ import ImageHandler from "../ImageHandler";
 
 export default class CodeCopier extends Component {
   static propTypes = {
-    children: PropTypes.object,
+    children: PropTypes.node,
     imageUrl: PropTypes.string,
     title: PropTypes.string,
   };
