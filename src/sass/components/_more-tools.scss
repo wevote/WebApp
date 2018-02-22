@@ -1,6 +1,14 @@
 $margin-below-textarea: .1em 0;
 $padding-within-textarea: .5rem .7em;
 
+.code-copier {
+  background-color: $white;
+  box-shadow: 2px 2px 4px 2px $gray-light;
+  margin-bottom: $space-lg;
+  padding: $space-xs $space-md $space-md $space-md;
+  text-align: center;
+}
+
 .textarea-clipboard {
   -webkit-appearance: none;
   background-color: $white;
@@ -15,7 +23,7 @@ $padding-within-textarea: .5rem .7em;
   height: 5rem;
   line-height: 1.3;
   margin: $margin-below-textarea;
-  max-width: 46rem;
+  // max-width: 46rem;
   outline: none;
   padding: $padding-within-textarea;
   resize: auto;
