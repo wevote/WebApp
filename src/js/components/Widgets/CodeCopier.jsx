@@ -2,10 +2,12 @@ import React, { PropTypes, Component } from "react";
 
 export default class CodeCopier extends Component {
   static propTypes = {
-    children: PropTypes.object
+    children: PropTypes.object,
+    screenshot: PropTypes.string,
+    title: PropTypes.string,
   };
 
-  constructor (props){
+  constructor (props) {
     super(props);
 
     this.copyCode = this.copyCode.bind(this); // I'd forget my context if it wasn't bound
@@ -26,7 +28,7 @@ export default class CodeCopier extends Component {
         <textarea ref={(text) => { this.textareaCode = text; }}
                   className="clipboard textarea-clipboard"
                   defaultValue={this.props.children} />
-        <button className="btn-success" onClick={this.copyCode}>Click to copy code</button>
+        <button className="btn btn-success" onClick={this.copyCode}>Click to copy code</button>
       </div>
     );
   }
