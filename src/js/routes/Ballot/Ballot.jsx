@@ -116,7 +116,6 @@ export default class Ballot extends Component {
       google_civic_election_id = BallotStore.ballot_properties.google_civic_election_id;
     }
 
-    IssueActions.issuesRetrieve();
     // console.log("ballot_returned_we_vote_id: ", ballot_returned_we_vote_id, ", ballot_location_shortcut:", ballot_location_shortcut, ", google_civic_election_id_from_url: ", google_civic_election_id_from_url);
     if (ballot_returned_we_vote_id || ballot_location_shortcut || google_civic_election_id_from_url) {
       if (ballot_location_shortcut !== "") {
@@ -148,6 +147,8 @@ export default class Ballot extends Component {
       // console.log("if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false");
       historyPush("/settings/location");
     }
+
+    IssueActions.issuesRetrieveForElection(google_civic_election_id);
 
     let filter_type = this.props.location && this.props.location.query ? this.props.location.query.type : "all";
     let ballot_with_all_items = BallotStore.getBallotByFilterType(filter_type);

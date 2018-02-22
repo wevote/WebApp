@@ -15,6 +15,9 @@ class IssueStore extends ReduceStore {
 
   getInitialState () {
     return {
+      issue_support_score_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: support_score
+      issue_oppose_score_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: oppose_score
+      issue_score_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: calculated score
       issue_we_vote_ids_voter_is_following: [], // These are issues a particular voter is following
       issue_we_vote_ids_voter_can_follow: [], // These are issues a particular voter can follow
       issue_we_vote_ids_to_link_to_by_organization_dict: {}, // Dictionary with key: organization_we_vote_id, list: issue_we_vote_id that the organization can link to
@@ -112,6 +115,19 @@ class IssueStore extends ReduceStore {
     return issues_list;
   }
 
+  getIssuesScoreByBallotItemWeVoteId (ballot_item_we_vote_id) {
+    if (!ballot_item_we_vote_id) {
+      return 0;
+    }
+    // These are scores based on all of the organizations under all of the issues a voter follows
+    let issue_score = this.getState().issue_score_for_each_ballot_item[ballot_item_we_vote_id];
+    if (issue_score === undefined) {
+      return 0;
+    }
+    //
+    return issue_score;
+  }
+
   getOrganizationsForOneIssue (issue_we_vote_id) {
     // We want a list of all organizations tagged with this issue, so we can offer organizations to listen to
     // These are issues that an organization has linked itself to, to help Voters find the organization
@@ -203,6 +219,10 @@ class IssueStore extends ReduceStore {
     let all_cached_issues;
     let ballot_item_we_vote_id;
     let issue_list;
+    let issue_score_list;
+    let issue_score_for_each_ballot_item;
+    let issue_support_score_for_each_ballot_item;
+    let issue_oppose_score_for_each_ballot_item;
     let issue_we_vote_ids_linked_to_by_organization_dict;
     let issue_we_vote_ids_to_link_to_by_organization_dict;
     let issue_we_vote_ids_under_each_ballot_item;
@@ -228,6 +248,17 @@ class IssueStore extends ReduceStore {
         issue_list = action.res.issue_list;
         let issue_we_vote_ids_voter_is_following = [];
         all_cached_issues = state.all_cached_issues;
+        issue_support_score_for_each_ballot_item = state.issue_support_score_for_each_ballot_item;
+        issue_oppose_score_for_each_ballot_item = state.issue_oppose_score_for_each_ballot_item;
+        issue_score_for_each_ballot_item = state.issue_score_for_each_ballot_item;
+        if (action.res.issue_score_list) {
+          issue_score_list = action.res.issue_score_list;
+          issue_score_list.forEach(issue_score_block => {
+            issue_support_score_for_each_ballot_item[issue_score_block.ballot_item_we_vote_id] = issue_score_block.issue_support_score;
+            issue_oppose_score_for_each_ballot_item[issue_score_block.ballot_item_we_vote_id] = issue_score_block.issue_oppose_score;
+            issue_score_for_each_ballot_item[issue_score_block.ballot_item_we_vote_id] = issue_score_block.issue_support_score - issue_score_block.issue_oppose_score;
+          });
+        }
         // Update issue_we_vote_ids_voter_is_following if voter_issues_only flag is set, else update the all_cached_issues
         if (action.res.voter_issues_only) {
           issue_list.forEach(issue => {
@@ -238,6 +269,9 @@ class IssueStore extends ReduceStore {
             ...state,
             all_cached_issues: all_cached_issues,
             issue_we_vote_ids_voter_is_following: issue_we_vote_ids_voter_is_following,
+            issue_support_score_for_each_ballot_item: issue_support_score_for_each_ballot_item,
+            issue_oppose_score_for_each_ballot_item: issue_oppose_score_for_each_ballot_item,
+            issue_score_for_each_ballot_item: issue_score_for_each_ballot_item
           };
         } else {
           issue_list.forEach(issue => {
@@ -246,6 +280,9 @@ class IssueStore extends ReduceStore {
           return {
             ...state,
             all_cached_issues: all_cached_issues,
+            issue_support_score_for_each_ballot_item: issue_support_score_for_each_ballot_item,
+            issue_oppose_score_for_each_ballot_item: issue_oppose_score_for_each_ballot_item,
+            issue_score_for_each_ballot_item: issue_score_for_each_ballot_item
           };
         }
 

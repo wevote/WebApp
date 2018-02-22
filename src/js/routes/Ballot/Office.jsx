@@ -26,7 +26,7 @@ export default class Office extends Component {
   }
 
   componentDidMount (){
-    IssueActions.issuesRetrieve();
+    IssueActions.issuesRetrieveForElection(VoterStore.election_id());
 
     this.officeStoreListener = OfficeStore.addListener(this._onOfficeStoreChange.bind(this));
     let office = OfficeStore.getOffice(this.props.params.office_we_vote_id);

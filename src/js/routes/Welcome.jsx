@@ -474,6 +474,9 @@ export default class Intro extends Component {
                 <li className="u-push--md u-stack--sm">
                   <Link to={"/more/elections"}>Supported Elections</Link>
                 </li>
+                <li className="u-push--md u-stack--sm">
+                  <a href="https://blog.wevote.us/" target="_blank">We Vote Blog</a>
+                </li>
               </ul>
             </span>
           }

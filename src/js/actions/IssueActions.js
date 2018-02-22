@@ -7,7 +7,18 @@ module.exports = {
   },
 
   issuesRetrieve: function () {
-    Dispatcher.loadEndpoint("issuesRetrieve", {voter_issues_only: true, include_voter_follow_status: true});
+    Dispatcher.loadEndpoint("issuesRetrieve", {
+      include_voter_follow_status: true,
+      voter_issues_only: true, 
+    });
+  },
+
+  issuesRetrieveForElection: function (google_civic_election_id) {
+    Dispatcher.loadEndpoint("issuesRetrieve", {
+      google_civic_election_id: google_civic_election_id,
+      include_voter_follow_status: true,
+      voter_issues_only: true, 
+    });
   },
 
   issueFollow: function (issue_we_vote_id ) {

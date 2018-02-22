@@ -42,7 +42,7 @@ export default class Candidate extends Component {
     CandidateActions.candidateRetrieve(this.props.params.candidate_we_vote_id);
     CandidateActions.positionListForBallotItem(this.props.params.candidate_we_vote_id);
 
-    IssueActions.issuesRetrieve();
+    IssueActions.issuesRetrieveForElection(VoterStore.election_id());
 
     // Get the latest guides to follow for this candidate
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
