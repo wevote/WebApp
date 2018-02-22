@@ -48,7 +48,7 @@ export default class CodeCopier extends Component {
           <br />
           <div className="u-stack--sm">
             <a className="code-copier__link" onClick={this.toggleCode}>
-              <u>{ this.state.view_code ? "Hide Code" : "Show Code" }</u>
+              { this.state.view_code ? "Hide Code" : "Show Code" }
             </a>
           </div>
           { this.state.view_code ?
@@ -62,7 +62,7 @@ export default class CodeCopier extends Component {
                             alt={this.props.title} />
               <br />
               <a className="code-copier__link" href={this.props.imageUrl} target="_blank">
-                <u>Click to view full size</u>
+                Click to view full size
               </a>
             </div>
           }
