@@ -24,11 +24,14 @@ export default class CodeCopier extends Component {
 
   render () {
     return (
-      <div className="code-copier">
-        <textarea ref={(text) => { this.textareaCode = text; }}
-                  className="clipboard textarea-clipboard"
-                  defaultValue={this.props.children} />
-        <button className="btn btn-success" onClick={this.copyCode}>Click to copy code</button>
+      <div className="col-xs-12 col-sm-6 col-md-4">
+        <div className="code-copier">
+          <h3 className="h3">{this.props.title}</h3>
+          <textarea ref={(text) => { this.textareaCode = text; }}
+                    className="clipboard textarea-clipboard"
+                    defaultValue={this.props.children} />
+          <button className="btn btn-success" onClick={this.copyCode}>Click to copy code</button>
+        </div>
       </div>
     );
   }
