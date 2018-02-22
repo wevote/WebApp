@@ -1,25 +1,42 @@
 import React, { PropTypes, Component } from "react";
+import ImageHandler from "../ImageHandler";
 
 export default class CodeCopier extends Component {
   static propTypes = {
     children: PropTypes.object,
-    screenshot: PropTypes.string,
+    imageUrl: PropTypes.string,
     title: PropTypes.string,
   };
 
   constructor (props) {
     super(props);
+    this.state = {
+      view_code: false,
+    };
 
     this.copyCode = this.copyCode.bind(this); // I'd forget my context if it wasn't bound
+    this.toggleCode = this.toggleCode.bind(this);
   }
 
   copyCode () {
-    this.textareaCode.select();
-    //  const successful = document.execCommand("copy");
-    document.execCommand("copy");
+    if (this.state.view_code) {
+      this.textareaCode.select();
+      //  const successful = document.execCommand("copy");
+      document.execCommand("copy");
 
-    // console.log('copy_status', successful);
-    // perhaps a tooltip that fades out after a moment should be created
+      // console.log('copy_status', successful);
+      // perhaps a tooltip that fades out after a moment should be created
+    } else {
+      this.setState({
+        view_code: true,
+      }, () => this.copyCode());
+    }
+  }
+
+  toggleCode () {
+    this.setState({
+      view_code: !this.state.view_code,
+    });
   }
 
   render () {
@@ -27,10 +44,28 @@ export default class CodeCopier extends Component {
       <div className="col-xs-12 col-sm-6 col-md-4">
         <div className="code-copier">
           <h3 className="h3">{this.props.title}</h3>
-          <textarea ref={(text) => { this.textareaCode = text; }}
-                    className="clipboard textarea-clipboard"
-                    defaultValue={this.props.children} />
-          <button className="btn btn-success" onClick={this.copyCode}>Click to copy code</button>
+          <button className="btn btn-success u-stack--sm" onClick={this.copyCode}>Click to copy code</button>
+          <br />
+          <div className="u-stack--sm">
+            <a className="code-copier__link" onClick={this.toggleCode}>
+              <u>{ this.state.view_code ? "Hide Code" : "Show Code" }</u>
+            </a>
+          </div>
+          { this.state.view_code ?
+            <textarea ref={(text) => { this.textareaCode = text; }}
+                      className="clipboard textarea-clipboard u-stack--sm"
+                      defaultValue={this.props.children} /> :
+            <div>
+              <ImageHandler className="code-copier__image u-stack--sm"
+                            hidePlaceholder
+                            src={this.props.imageUrl}
+                            alt={this.props.title} />
+              <br />
+              <a className="code-copier__link" href={this.props.imageUrl} target="_blank">
+                <u>Click to view full size</u>
+              </a>
+            </div>
+          }
         </div>
       </div>
     );
