@@ -11,6 +11,7 @@ import BallotIntroVote from "../../components/Ballot/BallotIntroVote";
 import { cordovaDot, isWebApp } from "../../utils/cordovaUtils";
 import GettingStartedBarItem from "./GettingStartedBarItem";
 import EmailBallotModal from "../Ballot/EmailBallotModal";
+import EmailBallotToFriendsModal from "../Ballot/EmailBallotToFriendsModal";
 import FacebookBallotModal from "../Ballot/FacebookBallotModal";
 import PollingPlaceLocator from "../Ballot/PollingPlaceLocator";
 import Slider from "react-slick";
@@ -271,17 +272,21 @@ export default class HeaderGettingStartedBar extends Component {
         </Modal.Body>
       </Modal>;
 
-    const SendEmailModal = <Modal bsClass="background-brand-blue modal"
-                                  show={this.state.showEmailModal}
-                                  onHide={() => this._openEmailModal(this)}>
-      <Modal.Body>
-        <div className="intro-modal__close">
-          <a onClick={this._openEmailModal} className="intro-modal__close-anchor">
-            <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
-          </a>
-        </div>
-        <div key={1}><EmailBallotModal ballot_link={this.props.pathname}/></div>
-      </Modal.Body>
+      const SendEmailModal = <Modal bsClass="background-brand-blue modal"
+                                    show={this.state.showEmailModal}
+                                    onHide={() => this._openEmailModal(this)}>
+        <Modal.Body>
+         <div className="intro-modal__close">
+           <a onClick={this._openEmailModal} className="intro-modal__close-anchor">
+             <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
+           </a>
+         </div>
+          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...sliderSettings}>
+            <div key={1}><EmailBallotModal ballot_link={this.props.pathname}/></div>
+            {/* <div key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div> */}
+            <div key={2}><EmailBallotToFriendsModal ballot_link={this.props.pathname}/></div>
+          </Slider>
+        </Modal.Body>
     </Modal>;
 
     const SendFacebookModal = <Modal bsClass="background-brand-blue modal"
