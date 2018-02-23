@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import ImageHandler from "../../components/ImageHandler";
+import IssueFollowToggleButton from "../../components/Issues/IssueFollowToggleButton";
 import IssueStore from "../../stores/IssueStore";
 import LoadingWheel from "../../components/LoadingWheel";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -18,7 +19,8 @@ export default class IssueCard extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      ballot_item_we_vote_id: "",
+      ballotItemWeVoteId: "",
+      followToggleOn: false,
       organization_position: {},
       organization_positions_requested: false,
       issueImageSize: "SMALL", // We support SMALL, MEDIUM, LARGE
@@ -37,6 +39,8 @@ export default class IssueCard extends Component {
         issueImageSize = this.props.issueImageSize;
       }
       this.setState({
+        ballotItemWeVoteId: this.props.ballotItemWeVoteId,
+        followToggleOn: this.props.followToggleOn,
         issue: this.props.issue,
         issueImageSize: issueImageSize,
         issue_we_vote_id: this.props.issue.issue_we_vote_id,
@@ -53,6 +57,8 @@ export default class IssueCard extends Component {
         issueImageSize = nextProps.issueImageSize;
       }
       this.setState({
+        ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
+        followToggleOn: nextProps.followToggleOn,
         issue: nextProps.issue,
         issueImageSize: issueImageSize,
         issue_we_vote_id: nextProps.issue.issue_we_vote_id,
@@ -89,19 +95,31 @@ export default class IssueCard extends Component {
                                  className="card-main__org-avatar"
                                  kind_of_image="ISSUE"
                                  sizeClassName="icon-small "/>;
-      numberOfLines = 2;
+      if (this.state.followToggleOn) {
+        numberOfLines = 5; // Allow more vertical space for Follow button
+      } else {
+        numberOfLines = 2;
+      }
     } else if (this.state.issueImageSize === "MEDIUM") {
       issueImage = <ImageHandler imageUrl={this.state.issue.issue_photo_url_medium}
                                  className="card-main__org-avatar"
                                  kind_of_image="ISSUE"
                                  sizeClassName="icon-medium "/>;
-      numberOfLines = 3;
+      if (this.state.followToggleOn) {
+        numberOfLines = 6; // Allow more vertical space for Follow button
+      } else {
+        numberOfLines = 3;
+      }
     } else if (this.state.issueImageSize === "LARGE") {
       issueImage = <ImageHandler imageUrl={this.state.issue.issue_photo_url_large}
                                  className="card-main__org-avatar"
                                  kind_of_image="ISSUE"
                                  sizeClassName="icon-lg "/>;
-      numberOfLines = 4;
+      if (this.state.followToggleOn) {
+        numberOfLines = 7; // Allow more vertical space for Follow button
+      } else {
+        numberOfLines = 4;
+      }
     }
 
 
@@ -111,12 +129,15 @@ export default class IssueCard extends Component {
           null :
           issueImage
         }
-        {/*this.props.followToggleOn ?
-          <div className="u-margin-top--md">
-            <FollowToggle we_vote_id={this.state.issue_we_vote_id}
-                          classNameOverride="pull-left" />
+        {this.props.followToggleOn && this.state.issue_we_vote_id ?
+          <div className="">
+            <IssueFollowToggleButton ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+                                     issue_name={this.state.issue.issue_name}
+                                     issue_we_vote_id={this.state.issue_we_vote_id}
+                                     classNameOverride="pull-left"
+                                     />
           </div> :
-          null */}
+          null}
       </div>
       <div className="card-main__media-object-content">
         <h3 className="card-main__display-name">{issueDisplayName}</h3>

@@ -13,7 +13,6 @@ import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdown
 import OrganizationCard from "../VoterGuide/OrganizationCard";
 import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
 import SupportStore from "../../stores/SupportStore";
-import VoterGuideActions from "../../actions/VoterGuideActions";
 import { returnFirstXWords } from "../../utils/textFormat";
 
 export default class ItemSupportOpposeRaccoon extends Component {
@@ -58,8 +57,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
   componentDidMount () {
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     CandidateActions.positionListForBallotItem(this.props.ballotItemWeVoteId);
-    VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(this.props.ballotItemWeVoteId, "CANDIDATE");
     this.setState({
       ballot_item_display_name: this.props.ballot_item_display_name,
       ballot_item_we_vote_id: this.props.ballotItemWeVoteId,
@@ -87,6 +86,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
+    this.issueStoreListener.remove();
   }
 
   goToCandidateLinkLocal () {
@@ -100,6 +100,13 @@ export default class ItemSupportOpposeRaccoon extends Component {
     this.setState({
       candidate: CandidateStore.getCandidate(this.state.ballot_item_we_vote_id),
       position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(this.state.ballot_item_we_vote_id),
+    });
+  }
+
+  onIssueStoreChange () {
+    // We want to re-render so issue data can update
+    this.setState({
+      forceReRender: true,
     });
   }
 
@@ -269,7 +276,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       </span>;
 
     // Issue Score
-    let voterIssuesScore = IssueStore.getIssuesScoreByBallotItemWeVoteId (this.state.ballot_item_we_vote_id);
+    let voterIssuesScore = IssueStore.getIssuesScoreByBallotItemWeVoteId(this.state.ballot_item_we_vote_id);
     let voterIssuesScoreWithSign;
     if (voterIssuesScore > 0) {
       voterIssuesScoreWithSign = "+" + voterIssuesScore;
@@ -278,6 +285,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     } else {
       voterIssuesScoreWithSign = voterIssuesScore;
     }
+    let issueCountUnderThisBallotItem = IssueStore.getIssuesCountUnderThisBallotItem(this.state.ballot_item_we_vote_id);
 
     // Network Score
     let network_support_count = 0;
@@ -298,11 +306,15 @@ export default class ItemSupportOpposeRaccoon extends Component {
     }
 
     let showIssueScore = true;
-    if (total_network_score > 0 && voterIssuesScore === 0) {
+    if (issueCountUnderThisBallotItem === 0) {
+      // There can't be an issue score because there aren't any issues tagged to organizations with a position on this candidate
+      showIssueScore = false;
+    } else if (total_network_score !== 0 && voterIssuesScore === 0) {
+      // We only show the network score when there IS a network score and not voterIssuesScore
       showIssueScore = false;
     }
     let showNetworkScore = true;
-    if (voterIssuesScore > 0 && total_network_score === 0) {
+    if (voterIssuesScore !== 0 && total_network_score === 0) {
       showNetworkScore = false;
     } else if (voterIssuesScore === 0 && total_network_score === 0) {
       showNetworkScore = false;

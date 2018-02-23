@@ -9,10 +9,12 @@ import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import ImageHandler from "../ImageHandler";
+import IssueStore from "../../stores/IssueStore";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
 import LearnMore from "../Widgets/LearnMore";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SupportStore from "../../stores/SupportStore";
+import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import BallotStore from "../../stores/BallotStore";
 
@@ -69,6 +71,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
         if (candidate && candidate.hasOwnProperty("we_vote_id") && !CandidateStore.isCandidateInStore(candidate.we_vote_id)) {
           // console.log("OfficeItemCompressed, retrieving");
           CandidateActions.candidateRetrieve(candidate.we_vote_id);
+          VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidate.we_vote_id, "CANDIDATE");
         }
       });
     }
@@ -221,8 +224,9 @@ export default class OfficeItemCompressedRaccoon extends Component {
             </Link>;
 
     // Ready to Vote code
-    let is_support_array = [];
-    let candidate_with_most_support = null;
+    let array_of_candidates_voter_supports = [];
+    let candidate_with_most_support_from_network = null;
+    let candidateWithHighestIssueScore = null;
     let voter_supports_at_least_one_candidate = false;
     let supportProps;
     let candidate_has_voter_support;
@@ -234,35 +238,46 @@ export default class OfficeItemCompressedRaccoon extends Component {
         candidate_has_voter_support = supportProps.is_support;
 
         if (candidate_has_voter_support) {
-          is_support_array.push(candidate.ballot_item_display_name);
+          array_of_candidates_voter_supports.push(candidate.ballot_item_display_name);
           voter_supports_at_least_one_candidate = true;
         }
       }
     });
 
-    // This function finds the highest support count for each office but does not handle ties. If two candidates have
-    // the same network support count, only the first candidate will be displayed.
-    let largest_support_count = 0;
-    let at_least_one_candidate_chosen = false;
+    let at_least_one_candidate_chosen_by_network = false;
+    let atLeastOneCandidateChosenByIssueScore = false;
 
     // If the voter isn't supporting any candidates, then figure out which candidate the voter's network likes the best
-    if (is_support_array.length === 0){
+    if (array_of_candidates_voter_supports.length === 0){
+      // This function finds the highest support count for each office but does not handle ties. If two candidates have
+      // the same network support count, only the first candidate will be displayed.
+      let largestNetworkSupportCount = 0;
       let network_support_count;
       let network_oppose_count;
+      let largestIssueScore = 0;
+      let voterIssuesScoreForCandidate;
 
       this.props.candidate_list.forEach((candidate) => {
+        // Support in voter's network
         supportProps = SupportStore.get(candidate.we_vote_id);
         if (supportProps) {
           network_support_count = supportProps.support_count;
           network_oppose_count = supportProps.oppose_count;
 
           if (network_support_count > network_oppose_count) {
-            if (network_support_count > largest_support_count) {
-              largest_support_count = network_support_count;
-              candidate_with_most_support = candidate.ballot_item_display_name;
-              at_least_one_candidate_chosen = true;
+            if (network_support_count > largestNetworkSupportCount) {
+              largestNetworkSupportCount = network_support_count;
+              candidate_with_most_support_from_network = candidate.ballot_item_display_name;
+              at_least_one_candidate_chosen_by_network = true;
             }
           }
+        }
+        // Support based on Issue score
+        voterIssuesScoreForCandidate = IssueStore.getIssuesScoreByBallotItemWeVoteId(candidate.we_vote_id);
+        if (voterIssuesScoreForCandidate > largestIssueScore) {
+          largestIssueScore = voterIssuesScoreForCandidate;
+          candidateWithHighestIssueScore = candidate.ballot_item_display_name;
+          atLeastOneCandidateChosenByIssueScore = true;
         }
       });
     }
@@ -386,24 +401,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
                   the highest score in your network.
                 </Popover>;
 
-              return <div key={one_candidate.we_vote_id}>
-                {/* *** Candidate name *** */}
-                { SupportStore.get(one_candidate.we_vote_id) && SupportStore.get(one_candidate.we_vote_id).is_support ?
-                  <div className="u-flex u-items-center">
-                    <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
-                    () => this.goToCandidateLink(one_candidate.we_vote_id) : null }>
-                      <h2 className="h5">
-                      {one_candidate.ballot_item_display_name}
-                      </h2>
-                    </div>
+              const voter_supports_this_candidate = SupportStore.get(one_candidate.we_vote_id) && SupportStore.get(one_candidate.we_vote_id).is_support;
 
-                    <div className="u-flex-none u-justify-end">
-                      <span className="u-push--xs">Supported by you</span>
-                      <img src={cordovaDot("/img/global/svg-icons/thumbs-up-color-icon.svg")} width="24" height="24" />
-                    </div>
-                  </div> :
-
-                  candidate_with_most_support === one_candidate.ballot_item_display_name ?
+              let networkOrIssueScoreSupport;
+              if (at_least_one_candidate_chosen_by_network) {
+                networkOrIssueScoreSupport = candidate_with_most_support_from_network === one_candidate.ballot_item_display_name ?
                   <div className="u-flex u-items-center">
                     <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
                       () => this.goToCandidateLink(one_candidate.we_vote_id) : null }>
@@ -425,26 +427,60 @@ export default class OfficeItemCompressedRaccoon extends Component {
                       </OverlayTrigger>
                     </div>
                   </div> :
-                    is_support_array === 0 && candidate_with_most_support !== one_candidate.ballot_item_display_name && !voter_supports_at_least_one_candidate ?
+                  null;
+              } else if (atLeastOneCandidateChosenByIssueScore) {
+                networkOrIssueScoreSupport = candidateWithHighestIssueScore === one_candidate.ballot_item_display_name ?
+                  <div className="u-flex u-items-center">
+                    <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
+                      () => this.goToCandidateLink(one_candidate.we_vote_id) : null }>
+                      <h2 className="h5">
+                        {one_candidate.ballot_item_display_name}
+                      </h2>
+                    </div>
                     <div className="u-flex-none u-justify-end">
                       <OverlayTrigger trigger="click"
-                                      ref="undecided-overlay"
-                                      onExit={this.closeYourNetworkIsUndecidedPopover}
+                                      ref="supports-overlay"
+                                      onExit={this.closeYourNetworkSupportsPopover}
                                       rootClose
                                       placement="top"
-                                      overlay={yourNetworkIsUndecidedPopover}>
-                        <span className=" u-cursor--pointer">Your network is undecided</span>
+                                      overlay={yourNetworkSupportsPopover}>
+                        <div>
+                          <span className="u-push--xs u-cursor--pointer">Has the highest <strong>Issue Score</strong></span>
+                          <img src={cordovaDot("/img/global/icons/up-arrow-color-icon.svg")} className="network-positions__support-icon" width="20" height="20" />
+                        </div>
                       </OverlayTrigger>
-                    </div> :
-                      null}
+                    </div>
+                  </div> :
+                  null;
+              }
+
+              return <div key={one_candidate.we_vote_id}>
+                {/* *** Candidate name *** */}
+                { voter_supports_this_candidate ?
+                  <div className="u-flex u-items-center">
+                    <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
+                    () => this.goToCandidateLink(one_candidate.we_vote_id) : null }>
+                      <h2 className="h5">
+                      {one_candidate.ballot_item_display_name}
+                      </h2>
+                    </div>
+
+                    <div className="u-flex-none u-justify-end">
+                      <span className="u-push--xs">Supported by you</span>
+                      <img src={cordovaDot("/img/global/svg-icons/thumbs-up-color-icon.svg")} width="24" height="24" />
+                    </div>
+                  </div> :
+                  <span>{ networkOrIssueScoreSupport }</span>
+                }
                 {/* *** "Positions in your Network" bar OR items you can follow *** */}
               </div>;
               })
             }
+            {/* Now that we are out of the candidate loop... */}
             { voter_supports_at_least_one_candidate ?
               null :
               <span>
-                { at_least_one_candidate_chosen ?
+                { at_least_one_candidate_chosen_by_network || atLeastOneCandidateChosenByIssueScore ?
                   null :
                   <div className="u-tr">
                     <OverlayTrigger trigger="click"

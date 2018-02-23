@@ -11,6 +11,7 @@ export default class IssueImageDisplay extends Component {
     showInfoOnly: PropTypes.bool,
     showOppose: PropTypes.bool,
     showSupport: PropTypes.bool,
+    isVoterFollowingThisIssue: PropTypes.bool,
   };
 
   render () {
@@ -26,11 +27,16 @@ export default class IssueImageDisplay extends Component {
       issue_name = "";
     }
 
-    let support_oppose_class = "";
+    let supportOrOpposeClass = "";
     if (this.props.showSupport) {
-      support_oppose_class = "network-positions__show-support-underline ";
+      supportOrOpposeClass = "network-positions__show-support-underline ";
     } else if (this.props.showOppose) {
-      support_oppose_class = "network-positions__show-oppose-underline ";
+      supportOrOpposeClass = "network-positions__show-oppose-underline ";
+    }
+
+    let voterIsNotFollowingThisIssueClass = "";
+    if (!this.props.isVoterFollowingThisIssue) {
+      voterIsNotFollowingThisIssueClass = "network-positions__to-follow-fade ";
     }
 
     let hide_placeholder = !this.props.showPlaceholderImage;
@@ -44,21 +50,19 @@ export default class IssueImageDisplay extends Component {
     let issueImage;
     if (issueImageSize === "SMALL") {
       issueImage = <ImageHandler alt={issue_name}
-                                 className={support_oppose_class}
+                                 className={"card-main__org-avatar " + supportOrOpposeClass + voterIsNotFollowingThisIssueClass}
                                  hidePlaceholder={hide_placeholder}
                                  imageUrl={this.props.issue.issue_photo_url_tiny}
-                                 className="card-main__org-avatar"
                                  sizeClassName="issue__image--small "/>;
     } else if (issueImageSize === "MEDIUM") {
       issueImage = <ImageHandler alt={issue_name}
-                                 className={support_oppose_class}
+                                 className={"card-main__org-avatar " + supportOrOpposeClass + voterIsNotFollowingThisIssueClass}
                                  hidePlaceholder={hide_placeholder}
                                  imageUrl={this.props.issue.issue_photo_url_medium}
-                                 className="card-main__org-avatar"
                                  sizeClassName="issue__image--medium "/>;
     } else if (issueImageSize === "LARGE") {
       issueImage = <ImageHandler alt={issue_name}
-                                 className={support_oppose_class}
+                                 className={"card-main__org-avatar " + supportOrOpposeClass + voterIsNotFollowingThisIssueClass}
                                  hidePlaceholder={hide_placeholder}
                                  imageUrl={this.props.issue.issue_photo_url_large}
                                  sizeClassName="issue__image--large "/>;
