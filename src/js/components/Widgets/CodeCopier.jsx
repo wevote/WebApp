@@ -103,6 +103,7 @@ export default class CodeCopier extends Component {
                    onChange={this.validateTwitterHandle}
                    autoComplete />
             <button onClick={this.copyCode}
+                    disabled={ !this.state.is_voter_guide_valid }
                     className={ this.state.is_voter_guide_valid ? "btn btn-success u-stack--sm" : "btn u-stack--sm" }>
               Click to copy code
             </button>
