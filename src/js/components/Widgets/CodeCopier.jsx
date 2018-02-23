@@ -12,6 +12,7 @@ export default class CodeCopier extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      is_voter_guide_valid: false,
       twitter_handle: "",
       view_code: false,
     };
@@ -22,18 +23,20 @@ export default class CodeCopier extends Component {
   }
 
   copyCode () {
-    if (this.state.view_code) {
-      this.textareaCode.select();
-      //  const successful = document.execCommand("copy");
-      document.execCommand("copy");
+    if (this.props.sourceUrl || !this.props.sourceUrl && this.state.is_voter_guide_valid) {
+      if (this.state.view_code) {
+        this.textareaCode.select();
+        //  const successful = document.execCommand("copy");
+        document.execCommand("copy");
 
-      showToastSuccess("Code copied to clipboard!");
-      // console.log('copy_status', successful);
-      // perhaps a tooltip that fades out after a moment should be created
-    } else {
-      this.setState({
-        view_code: true,
-      }, () => this.copyCode());
+        showToastSuccess("Code copied to clipboard!");
+        // console.log('copy_status', successful);
+        // perhaps a tooltip that fades out after a moment should be created
+      } else {
+        this.setState({
+          view_code: true,
+        }, () => this.copyCode());
+      }
     }
   }
 
@@ -45,6 +48,7 @@ export default class CodeCopier extends Component {
 
   validateTwitterHandle (event) {
     this.setState({
+      is_voter_guide_valid: event.target.value.length,
       twitter_handle: event.target.value,
     });
   }
@@ -98,7 +102,10 @@ export default class CodeCopier extends Component {
                    placeholder="Enter Twitter Handle"
                    onChange={this.validateTwitterHandle}
                    autoComplete />
-            <button className="btn u-stack--sm" onClick={this.copyCode}>Click to copy code</button>
+            <button onClick={this.copyCode}
+                    className={ this.state.is_voter_guide_valid ? "btn btn-success u-stack--sm" : "btn u-stack--sm" }>
+              Click to copy code
+            </button>
             <br />
             <div className="u-stack--sm">
               <a className="code-copier__link" onClick={this.toggleCode}>
