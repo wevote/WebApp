@@ -33,45 +33,24 @@ export default function ToolsToShareOnOtherWebsites () {
         <li>We recommend putting each tool on its own page so you don’t overwhelm your visitors.</li>
       </ol>
 
-      {/* eslint quotes: [1, "double", { "allowTemplateLiterals": true }] */}
-      {/* enclose html within {` and `} to make them literal string in JSX */}
       <h2 className="h3">Tools</h2>
       <div className="row">
         <CodeCopier title="Interactive Ballot Tool"
-                    imageUrl="/img/tools/ballot.png">
-          {`<iframe src="https://wevote.us/ballot" width="100%" marginheight="0" frameborder="0" id="frame1" scrollable ="no"></iframe>`}
-          {`<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.3/iframeResizer.min.js"></script>`}
-          {`<script type="text/javascript">iFrameResize({ log:true, checkOrigin:false});</script>`}
-        </CodeCopier>
-        <CodeCopier title="Voter Guide Tool">
-          {`<iframe src="https://register.vote.org/?partner=111111&campaign=free-tools" width="100%" marginheight="0" frameborder="0" id="frame1" scrollable ="no"></iframe>`}
-          {`<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.3/iframeResizer.min.js"></script>`}
-          {`<script type="text/javascript">iFrameResize({ log:true, checkOrigin:false});</script>`}
-        </CodeCopier>
+                    sourceUrl="https://wevote.us/ballot"
+                    imageUrl="/img/tools/ballot.png" />
+        <CodeCopier title="Voter Guide Tool" />
         <CodeCopier title="Voter Registration Tool"
-                    imageUrl="/img/tools/register.png">
-          {`<iframe src="https://register.vote.org/?partner=111111&campaign=free-tools" width="100%" marginheight="0" frameborder="0" id="frame1" scrollable ="no"></iframe>`}
-          {`<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.3/iframeResizer.min.js"></script>`}
-          {`<script type="text/javascript">iFrameResize({ log:true, checkOrigin:false});</script>`}
-        </CodeCopier>
+                    sourceUrl="https://register.vote.org/?partner=111111&campaign=free-tools"
+                    imageUrl="/img/tools/register.png" />
         <CodeCopier title="Absentee Ballot Tool"
-                    imageUrl="/img/tools/absentee.png">
-          {`<iframe src="https://absentee.vote.org/?partner=111111&campaign=free-tools" width="100%" marginheight="0" frameborder="0" id="frame2" scrollable="no"></iframe>`}
-          {`<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.3/iframeResizer.min.js"></script>`}
-          {`<script type="text/javascript">iFrameResize({ log:true, checkOrigin:false});</script>`}
-        </CodeCopier>
+                    sourceUrl="https://absentee.vote.org/?partner=111111&campaign=free-tools"
+                    imageUrl="/img/tools/absentee.png" />
         <CodeCopier title="Check Registration Status Tool"
-                    imageUrl="/img/tools/verify.png">
-          {`<iframe src="https://verify.vote.org/?partner=111111&campaign=free-tools" width="100%" marginheight="0" frameborder="0" id="frame3" scrollable="no"></iframe>`}
-          {`<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.3/iframeResizer.min.js" ></script>`}
-          {`<script type="text/javascript">iFrameResize({ log:true, checkOrigin:false});</script>`}
-        </CodeCopier>
+                    sourceUrl="https://verify.vote.org/?partner=111111&campaign=free-tools"
+                    imageUrl="/img/tools/verify.png" />
         <CodeCopier title="Election Reminder Tool"
-                    imageUrl="/img/tools/reminders.png">
-          {`<iframe src="https://reminders.vote.org/?partner=111111&campaign=free-tools" width="100%" marginheight="0" frameborder="0" id="frame1" scrollable ="no"></iframe>`}
-          {`<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.3/iframeResizer.min.js"></script>`}
-          {`<script type="text/javascript">iFrameResize({ log:true, checkOrigin:false});</script>`}
-        </CodeCopier>
+                    sourceUrl="https://reminders.vote.org/?partner=111111&campaign=free-tools"
+                    imageUrl="/img/tools/reminders.png" />
       </div>
 
       <h2 className="h3">Notes:</h2>
