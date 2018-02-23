@@ -1,6 +1,7 @@
 import React from "react";
 import Helmet from "react-helmet";
 import CodeCopier from "../../components/Widgets/CodeCopier";
+import ImageHandler from "../../components/ImageHandler";
 
 export default function ToolsToShareOnOtherWebsites () {
   return <div>
@@ -20,8 +21,13 @@ export default function ToolsToShareOnOtherWebsites () {
       <h2 className="h3">Adding the tools to your website takes less than 2 minutes.</h2>
       <ol>
         <li>
-          Copy the code for the tool, or click to view the code.<br />
-          {/* Image here */}
+          <p>Copy the code for the tool, or click to view the code.</p>
+          <div className="row">
+            <div className="col-xs-12 col-sm-6 col-md-4">
+              <ImageHandler imageUrl="/img/tools/example.png" hidePlaceholder />
+            </div>
+          </div>
+          <p>&nbsp;</p>
       </li>
         <li>Paste the code on your website where you want the tool to appear.</li>
         <li>We recommend putting each tool on its own page so you don’t overwhelm your visitors.</li>
