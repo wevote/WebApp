@@ -52,7 +52,7 @@ export default class IssueFollowToggle extends Component {
     if (this.props.on_issue_stop_following) {
       this.props.on_issue_stop_following(this.props.issue_we_vote_id);
     }
-    showToastError(`No longer following ${this.props.issue_name}!`);
+    showToastError(`You've stopped following ${this.props.issue_name}.`);
   }
 
   render () {

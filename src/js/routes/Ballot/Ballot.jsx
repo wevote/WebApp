@@ -148,7 +148,7 @@ export default class Ballot extends Component {
       historyPush("/settings/location");
     }
 
-    IssueActions.issuesRetrieveForElection(google_civic_election_id);
+    IssueActions.issuesRetrieveForElection(google_civic_election_id, ballot_location_shortcut, ballot_returned_we_vote_id);
 
     let filter_type = this.props.location && this.props.location.query ? this.props.location.query.type : "all";
     let ballot_with_all_items = BallotStore.getBallotByFilterType(filter_type);

@@ -79,8 +79,9 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
 
   render () {
     let issues_under_this_ballot_item_voter_is_following_found = this.state.issues_under_this_ballot_item_voter_is_following && this.state.issues_under_this_ballot_item_voter_is_following.length !== 0;
+    let issues_under_this_ballot_item_voter_is_not_following = this.state.issues_under_this_ballot_item_voter_not_following && this.state.issues_under_this_ballot_item_voter_not_following.length !== 0;
     // console.log("this.state.issues_under_this_ballot_item_voter_is_following: ", this.state.issues_under_this_ballot_item_voter_is_following);
-    if (!issues_under_this_ballot_item_voter_is_following_found) {
+    if (!issues_under_this_ballot_item_voter_is_following_found && !issues_under_this_ballot_item_voter_is_not_following) {
       return null;
     }
 
@@ -105,11 +106,15 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
       {issuesLabel}
 
       {/* Issues the voter is already following */}
-      <IssuesDisplayListWithOrganizationPopovers issueImageSize={"MEDIUM"}
-                                                 issueListToDisplay={this.state.issues_under_this_ballot_item_voter_is_following} />
+      <IssuesDisplayListWithOrganizationPopovers ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+                                                 issueImageSize={"MEDIUM"}
+                                                 issueListToDisplay={this.state.issues_under_this_ballot_item_voter_is_following}
+                                                 toFollow />
       {/* Issues the voter is not following yet */}
-      {/* <IssuesDisplayListWithOrganizationPopovers issueImageSize={"MEDIUM"}
-                                                 issueListToDisplay={this.state.issues_under_this_ballot_item_voter_not_following} /> */}
+      <IssuesDisplayListWithOrganizationPopovers ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+                                                 issueImageSize={"MEDIUM"}
+                                                 issueListToDisplay={this.state.issues_under_this_ballot_item_voter_not_following}
+                                                 toFollow />
     </span>;
   }
 }

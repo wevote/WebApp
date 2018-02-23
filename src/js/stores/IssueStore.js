@@ -47,6 +47,13 @@ class IssueStore extends ReduceStore {
     return this.getState().issue_we_vote_ids_voter_is_following;
   }
 
+  isVoterFollowingThisIssue (issue_we_vote_id) {
+    if (!issue_we_vote_id) {
+      return false;
+    }
+    return arrayContains(issue_we_vote_id, this.getState().issue_we_vote_ids_voter_is_following);
+  }
+
   getIssuesToLinkToByOrganization (organization_we_vote_id) {
     // These are issues that an organization can link itself to, to help Voters find the organization
     let issue_we_vote_id_list_to_link_for_organization = this.getState().issue_we_vote_ids_to_link_to_by_organization_dict[organization_we_vote_id];
@@ -175,6 +182,18 @@ class IssueStore extends ReduceStore {
     }
   }
 
+  getIssuesCountUnderThisBallotItem (ballot_item_we_vote_id) {
+    // What are the issues that have positions for this election under this ballot item?
+    // console.log("getIssuesUnderThisBallotItem, ballot_item_we_vote_id:", ballot_item_we_vote_id);
+    if (ballot_item_we_vote_id && this.getState().issue_we_vote_ids_under_each_ballot_item) {
+      let issues_for_this_ballot_item = this.getState().issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id] || [];
+      // console.log("getIssuesUnderThisBallotItem, issues_for_this_ballot_item: ", issues_for_this_ballot_item);
+      return issues_for_this_ballot_item.length;
+    } else {
+      return 0;
+    }
+  }
+
   getIssuesUnderThisBallotItemVoterIsFollowing (ballot_item_we_vote_id) {
     // What are the issues that have positions for this election under this ballot item?
     // console.log("getIssuesUnderThisBallotItemVoterIsFollowing, ballot_item_we_vote_id:", ballot_item_we_vote_id);
@@ -241,7 +260,11 @@ class IssueStore extends ReduceStore {
       case "issueFollow":
         // When a voter follows or unfollows an issue on the ballot intro modal screen, update the voter guide list
         VoterGuideActions.voterGuidesToFollowRetrieveByIssuesFollowed();
-        IssueActions.issuesRetrieve();
+        if (action.res.google_civic_election_id) {
+          IssueActions.issuesRetrieveForElection(action.res.google_civic_election_id);
+        } else {
+          IssueActions.issuesRetrieve();
+        }
         return state;
 
       case "issuesRetrieve":
@@ -385,6 +408,15 @@ class IssueStore extends ReduceStore {
         } else {
           return state;
         }
+
+      case "removeBallotItemIssueScoreFromCache":
+        ballot_item_we_vote_id = action.res.ballot_item_we_vote_id;
+        issue_score_for_each_ballot_item = state.issue_score_for_each_ballot_item;
+        issue_score_for_each_ballot_item[ballot_item_we_vote_id] = 0;
+        return {
+          ...state,
+          issue_score_for_each_ballot_item: issue_score_for_each_ballot_item,
+        };
 
       case "retrieveIssuesToFollow":
         issue_list = action.res.issue_list;
