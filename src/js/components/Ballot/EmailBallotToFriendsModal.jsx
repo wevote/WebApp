@@ -645,7 +645,6 @@ export default class EmailBallotToFriendsModal extends Component {
                         </Button>
                     </div>
                   </form>
-                  <div className="row invite-inputs col-12 u-inset--md" />
                   <div className="text-center">
                       <span style={textGray}>We will never sell your email.</span>
                   </div>

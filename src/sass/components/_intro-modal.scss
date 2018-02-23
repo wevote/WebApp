@@ -605,4 +605,20 @@
     justify-content: space-between;
     align-items: flex-start;
   }
+
+  &-calc-height {
+    @include breakpoints (max mid-small) {
+      height: 430px;
+
+      // height: calc(100vh - 52px);
+      // max-height: 320px; // Scroll area in modal: 600 - 52 = 548px We set this so that when We Vote is in a frame, the modal isn't too long.
+    }
+
+    @include breakpoints (mid-small) {
+      height: 330px;
+
+      // height: calc(100vh - 104px);
+      // max-height: 320px; // Scroll area in modal: 600 - 104 = 496px We set this so that when We Vote is in a frame, the modal isn't too long.
+    }
+  }
 }

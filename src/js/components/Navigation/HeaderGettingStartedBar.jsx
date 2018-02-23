@@ -281,7 +281,7 @@ export default class HeaderGettingStartedBar extends Component {
              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
            </a>
          </div>
-          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...sliderSettings}>
+          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="share-modal-calc-height" ref="slider" {...sliderSettings}>
             <div key={1}><EmailBallotModal ballot_link={this.props.pathname}/></div>
             {/* <div key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div> */}
             <div key={2}><EmailBallotToFriendsModal ballot_link={this.props.pathname}/></div>

@@ -255,11 +255,7 @@ export default class EmailBallotModal extends Component {
                 </div>
               </div>
                   <div className="col-12 u-inset--sm" />
-                  <div className="col-12">
-                    <span style={floatRight} onClick={this._openEmailToFriendsModal.bind(this)}>
-                      Click here to send to friends &gt;
-                    </span>
-                  </div>
+                  <div className="col-12 u-inset--md" />
               </div> : null
               }
               <span style={textGray}>We will never sell your email.</span>
