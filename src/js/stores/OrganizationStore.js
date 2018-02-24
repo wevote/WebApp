@@ -16,6 +16,12 @@ class OrganizationStore extends ReduceStore {
       organization_we_vote_ids_voter_is_following: [],
       organization_we_vote_ids_voter_is_ignoring: [],
       organization_we_vote_ids_voter_is_following_on_twitter: [],
+      organization_search_results: {
+        organization_search_term: "",
+        organization_twitter_handle: "",
+        number_of_search_results: 0,
+        search_results: [],
+      },
     };
   }
 
@@ -130,6 +136,16 @@ class OrganizationStore extends ReduceStore {
     }
   }
 
+  getOrganizationSearchResultsTwitterHandle () {
+    // if only one organization is found, return the organization_twitter_handle
+    let number_of_search_results = this.getState().organization_search_results.number_of_search_results || 0;
+    if (number_of_search_results === 1) {
+      let organizations_list = this.getState().organization_search_results.organizations_list;
+      return organizations_list[0].organization_twitter_handle;
+    }
+    return "";
+  }
+
   _copyListsToNewOrganization (new_organization, prior_copy_of_organization){
     // console.log("new_organization (_copyListsToNewOrganization): ", new_organization);
     // console.log("prior_copy_of_organization (_copyListsToNewOrganization): ", prior_copy_of_organization);
@@ -158,7 +174,6 @@ class OrganizationStore extends ReduceStore {
     let voter_guides;
 
     switch (action.type) {
-
       case "organizationFollow":
         // We also listen to "organizationFollow" in VoterGuideStore so we can alter organization_we_vote_ids_to_follow_all and organization_we_vote_ids_to_follow_for_latest_ballot_item
         // voter_linked_organization_we_vote_id is the voter who clicked the Follow button
@@ -194,6 +209,19 @@ class OrganizationStore extends ReduceStore {
           ...state,
           organization_we_vote_ids_voter_is_following: organization_we_vote_ids_voter_is_following,
           organization_we_vote_ids_voter_is_ignoring: state.organization_we_vote_ids_voter_is_ignoring.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== voter_linked_organization_we_vote_id; })
+        };
+
+      case "organizationSearch":
+        let organizations_list = action.res.organizations_list || [];
+        let number_of_search_results = organizations_list.length;
+        return {
+          ...state,
+          organization_search_results: {
+            organization_search_term: action.res.organization_search_term,
+            organization_twitter_handle: action.res.organization_twitter_handle,
+            number_of_search_results: number_of_search_results,
+            organizations_list: organizations_list,
+          }
         };
 
       case "organizationStopFollowing":
