@@ -64,7 +64,15 @@ export default class CodeCopier extends Component {
   }
 
   validateTwitterHandleAction (twitter_handle) {
-    OrganizationActions.organizationSearch("", twitter_handle, true);
+    if (twitter_handle.length) {
+      OrganizationActions.organizationSearch("", twitter_handle, true);
+    } else {
+      this.setState({
+        is_twitter_handle_valid: false,
+        status: "",
+        twitter_handle: "",
+      });
+    }
   }
 
   _onOrganizationStoreChange () {
