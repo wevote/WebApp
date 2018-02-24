@@ -79,6 +79,8 @@ export default class Donate extends Component {
   }
 
   render () {
+    let donate_mailto_url = "mailto:donate@WeVoteEducation.org" + "?subject=Donate to We Vote's 501(c)(3)" + "&body=I am interested in making at tax deductible donating to We Vote's 501(c)(3).";
+
     return <div>
       <Helmet title="Donate - We Vote"/>
       <div className="container-fluid card">
@@ -154,7 +156,8 @@ export default class Donate extends Component {
             </span> : null}
           <div className="hidden-xs"><br /></div>
           <br />
-          Contributions or gifts are not tax deductible. We Vote is a 501(c)(4) nonprofit.<br />
+          These contributions or gifts are not tax deductible. These donations are for We Vote's 501(c)(4) nonprofit.
+          We Vote's 501(c)(3) nonprofit also <a href={donate_mailto_url} title="Donate to We Vote's 501(c)(3)">accepts tax deductible donations.</a><br />
           <br />
           <DonationListForm />
         </div>

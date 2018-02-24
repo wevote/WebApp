@@ -564,3 +564,45 @@
     }
   }
 }
+
+.share-modal {
+  padding: $space-none;
+  width: 100%;
+  color: $white;
+  text-align: center;
+
+  &__input {
+    flex-basis: 80%;
+    @include breakpoints (small mid-small) {
+      flex-basis: 70%;
+    }
+    @include breakpoints (mid-small medium) {
+      flex-basis: 80%;
+    }
+    @include breakpoints (medium large) {
+      flex-basis: 75%;
+    }
+  }
+
+  &__button {
+    flex-basis: 20%;
+    @include breakpoints (small mid-small) {
+      flex-basis: 30%;
+    }
+    @include breakpoints (mid-small medium) {
+      flex-basis: 20%;
+    }
+    @include breakpoints (medium large) {
+      flex-basis: 25%;
+    }
+  }
+
+  &__container {
+    width: 100%;
+    margin: $space-none 15px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}

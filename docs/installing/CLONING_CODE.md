@@ -39,7 +39,6 @@ Click the "New SSH key" button to the right of "SSH keys".
 
 Paste the contents of the "~/.ssh/id_rsa.pub" key file into the "Key" text area, and give it any Title you would like.  
 
-
 ---
 
 Next: [Running WebApp for the First Time](RUNNING_FIRST_TIME.md)
