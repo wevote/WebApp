@@ -286,6 +286,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       voterIssuesScoreWithSign = voterIssuesScore;
     }
     let issueCountUnderThisBallotItem = IssueStore.getIssuesCountUnderThisBallotItem(this.state.ballot_item_we_vote_id);
+    let issueCountUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesCountUnderThisBallotItemVoterIsFollowing(this.state.ballot_item_we_vote_id);
 
     // Network Score
     let network_support_count = 0;
@@ -306,13 +307,16 @@ export default class ItemSupportOpposeRaccoon extends Component {
     }
 
     let showIssueScore = true;
-    if (issueCountUnderThisBallotItem === 0) {
+    if (voterIssuesScore === undefined) {
+      showIssueScore = false;
+    } else if (issueCountUnderThisBallotItem === 0 && voterIssuesScore === 0) {
       // There can't be an issue score because there aren't any issues tagged to organizations with a position on this candidate
       showIssueScore = false;
     } else if (total_network_score !== 0 && voterIssuesScore === 0) {
-      // We only show the network score when there IS a network score and not voterIssuesScore
+      // We show the network score when there isn't a network score and there is a voterIssuesScore
       showIssueScore = false;
     }
+
     let showNetworkScore = true;
     if (voterIssuesScore !== 0 && total_network_score === 0) {
       showNetworkScore = false;
@@ -404,14 +408,59 @@ export default class ItemSupportOpposeRaccoon extends Component {
       organizations_to_follow_oppose_mobile = this.organizationsToDisplay(this.state.organizations_to_follow_oppose, organizations_to_follow_oppose_mobile_to_show, this.state.ballot_item_we_vote_id, "mobile", false, true);
     }
 
-    const scoreFromYourIssuesPopover =
-      <Popover id="score-popover-trigger-click-root-close"
-               title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-               onClick={this.closeIssueScorePopover}>
-        We add up all of the ratings and positions for {this.state.ballot_item_display_name} from of all organizations
-        tagged with the <strong>Related Issues</strong> you follow. This
-        gives you a personalized <strong>Issue Score</strong> for {this.state.ballot_item_display_name}.
-      </Popover>;
+    let scoreFromYourIssuesPopover;
+    let issuesPopoverPlacement = "top";
+    let displayAdvisorsThatMakeVoterIssuesScore;
+    if (issueCountUnderThisBallotItemVoterIsFollowing) {
+      // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
+      let organizationNameSupportList = IssueStore.getOrganizationNameSupportListUnderThisBallotItem(this.state.ballot_item_we_vote_id);
+      let organizationNameSupportListDisplay = organizationNameSupportList.map( organization_name => {
+        return <span key={organization_name}><br />{organization_name} <strong>+1 <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /></strong></span>;
+      });
+      let organizationNameOpposeList = IssueStore.getOrganizationNameOpposeListUnderThisBallotItem(this.state.ballot_item_we_vote_id);
+      let organizationNameOpposeListDisplay = organizationNameOpposeList.map( organization_name => {
+        return <span key={organization_name}><br />{organization_name} <strong>-1 <img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" /></strong></span>;
+      });
+      displayAdvisorsThatMakeVoterIssuesScore = <span>
+        { organizationNameSupportList.length ? <span>{organizationNameSupportListDisplay}</span> : null}
+        { organizationNameOpposeList.length ? <span>{organizationNameOpposeListDisplay}</span> : null}
+      </span>;
+    }
+    if (showIssueScore) {
+      // If here, we know this Ballot item has at least one related issue
+      if (!issueCountUnderThisBallotItem) {
+        // At this point the Issue Score is showing, but the issues haven't loaded yet
+        scoreFromYourIssuesPopover =
+          <Popover id="score-popover-trigger-click-root-close"
+                   title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+                   onClick={this.closeIssueScorePopover}>
+            We've added up the opinions from all the organizations tagged with the issues you follow for {this.state.ballot_item_display_name}. Loading issues now...
+          </Popover>;
+        issuesPopoverPlacement = "top";
+      } else if (issueCountUnderThisBallotItemVoterIsFollowing === 0 || voterIssuesScore === 0) {
+        // Voter isn't following any Issues related to this ballot item, or none that contribute to the Issues score.
+        // Encourage voter to follow Issues
+        scoreFromYourIssuesPopover =
+          <Popover id="score-popover-trigger-click-root-close"
+                   title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+                   onClick={this.closeIssueScorePopover}>
+            Follow <strong>Related Issues</strong> below to see get your personalized <strong>Issue Score</strong> for {this.state.ballot_item_display_name}.
+            We add up the opinions from all
+            organizations tagged with the issues you follow. Whew, that's a mouthful!
+          </Popover>;
+        issuesPopoverPlacement = "top";
+      } else {
+        // There is a voterIssuesScore, and we have some advisers to display
+        scoreFromYourIssuesPopover =
+          <Popover id="score-popover-trigger-click-root-close"
+                   title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+                   onClick={this.closeIssueScorePopover}>
+            We've added up the opinions from all the organizations tagged with the issues you follow for {this.state.ballot_item_display_name}:
+            {displayAdvisorsThatMakeVoterIssuesScore}
+          </Popover>;
+        issuesPopoverPlacement = "bottom";
+      }
+    }
 
     const scoreInYourNetworkPopover =
       <Popover id="score-popover-trigger-click-root-close"
@@ -468,7 +517,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                             ref="issue-score-overlay"
                             onExit={this.closeIssueScorePopover}
                             rootClose
-                            placement={this.props.popoverBottom ? "bottom" : "top"}
+                            placement={issuesPopoverPlacement}
                             overlay={scoreFromYourIssuesPopover}>
               <span className="network-positions-stacked__support-score u-cursor--pointer u-no-break">
                 { voterIssuesScore === 0 ?
