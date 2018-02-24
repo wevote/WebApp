@@ -1,5 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import ImageHandler from "../ImageHandler";
+import OrganizationActions from "../../actions/OrganizationActions";
+import OrganizationStore from "../../stores/OrganizationStore";
 import { showToastSuccess } from "../../utils/showToast";
 
 export default class CodeCopier extends Component {
@@ -17,9 +19,18 @@ export default class CodeCopier extends Component {
       view_code: false,
     };
 
-    this.copyCode = this.copyCode.bind(this); // I'd forget my context if it wasn't bound
+    this.copyCode = this.copyCode.bind(this);
     this.toggleCode = this.toggleCode.bind(this);
     this.validateTwitterHandle = this.validateTwitterHandle.bind(this);
+  }
+
+  componentDidMount () {
+    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
+  }
+
+  componentWillUnmount () {
+    this.organizationStoreListener.remove();
+    this.timer = null;
   }
 
   copyCode () {
@@ -47,10 +58,19 @@ export default class CodeCopier extends Component {
   }
 
   validateTwitterHandle (event) {
-    // TODO: use Twitter API to validate input handle
+    clearTimeout(this.timer);
+    this.timer = setTimeout(this.validateTwitterHandleAction.bind(this, event.target.value), 1200);
+  }
+
+  validateTwitterHandleAction (twitter_handle) {
+    OrganizationActions.organizationSearch("", twitter_handle, true);
+  }
+
+  _onOrganizationStoreChange () {
+    let result = OrganizationStore.getOrganizationSearchResultsTwitterHandle();
     this.setState({
-      is_twitter_handle_valid: event.target.value.length,
-      twitter_handle: event.target.value,
+      is_twitter_handle_valid: result.length,
+      twitter_handle: result,
     });
   }
 
