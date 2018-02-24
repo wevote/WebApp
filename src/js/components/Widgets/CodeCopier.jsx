@@ -12,7 +12,7 @@ export default class CodeCopier extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      is_voter_guide_valid: false,
+      is_twitter_handle_valid: false,
       twitter_handle: "",
       view_code: false,
     };
@@ -23,7 +23,7 @@ export default class CodeCopier extends Component {
   }
 
   copyCode () {
-    if (this.props.sourceUrl || !this.props.sourceUrl && this.state.is_voter_guide_valid) {
+    if (this.props.sourceUrl || !this.props.sourceUrl && this.state.is_twitter_handle_valid) {
       if (this.state.view_code) {
         this.textareaCode.select();
         //  const successful = document.execCommand("copy");
@@ -47,8 +47,9 @@ export default class CodeCopier extends Component {
   }
 
   validateTwitterHandle (event) {
+    // TODO: use Twitter API to validate input handle
     this.setState({
-      is_voter_guide_valid: event.target.value.length,
+      is_twitter_handle_valid: event.target.value.length,
       twitter_handle: event.target.value,
     });
   }
@@ -103,8 +104,8 @@ export default class CodeCopier extends Component {
                    onChange={this.validateTwitterHandle}
                    autoComplete />
             <button onClick={this.copyCode}
-                    disabled={ !this.state.is_voter_guide_valid }
-                    className={ this.state.is_voter_guide_valid ? "btn btn-success u-stack--sm" : "btn u-stack--sm" }>
+                    disabled={ !this.state.is_twitter_handle_valid }
+                    className={ this.state.is_twitter_handle_valid ? "btn btn-success u-stack--sm" : "btn u-stack--sm" }>
               Click to copy code
             </button>
             <br />
