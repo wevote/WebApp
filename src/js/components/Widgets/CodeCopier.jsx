@@ -21,6 +21,7 @@ export default class CodeCopier extends Component {
     };
 
     this.copyCode = this.copyCode.bind(this);
+    this.resetState = this.resetState.bind(this);
     this.toggleCode = this.toggleCode.bind(this);
     this.validateTwitterHandle = this.validateTwitterHandle.bind(this);
   }
@@ -52,6 +53,14 @@ export default class CodeCopier extends Component {
     }
   }
 
+  resetState () {
+    this.setState({
+      is_twitter_handle_valid: false,
+      status: "",
+      twitter_handle: "",
+    });
+  }
+
   toggleCode () {
     this.setState({
       view_code: !this.state.view_code,
@@ -67,11 +76,7 @@ export default class CodeCopier extends Component {
     if (twitter_handle.length) {
       OrganizationActions.organizationSearch("", twitter_handle, true);
     } else {
-      this.setState({
-        is_twitter_handle_valid: false,
-        status: "",
-        twitter_handle: "",
-      });
+      this.resetState();
     }
   }
 
@@ -141,6 +146,7 @@ export default class CodeCopier extends Component {
                                "form-control u-stack--sm" }
                    name="twitter_handle"
                    placeholder="Enter Twitter Handle"
+                   onKeyDown={this.resetState}
                    onChange={this.validateTwitterHandle}
                    autoComplete />
             { this.state.status.length ?
