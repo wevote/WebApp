@@ -15,6 +15,7 @@ export default class CodeCopier extends Component {
     super(props);
     this.state = {
       is_twitter_handle_valid: false,
+      status: "",
       twitter_handle: "",
       view_code: false,
     };
@@ -68,8 +69,17 @@ export default class CodeCopier extends Component {
 
   _onOrganizationStoreChange () {
     let result = OrganizationStore.getOrganizationSearchResultsTwitterHandle();
+
+    let status = "";
+    if (result.length) {
+      status += "Voter guide found!";
+    } else {
+      status += "Voter guide not found.";
+    }
+
     this.setState({
       is_twitter_handle_valid: result.length,
+      status: status,
       twitter_handle: result,
     });
   }
@@ -118,14 +128,26 @@ export default class CodeCopier extends Component {
           <div className="code-copier">
             <h3 className="h3">{this.props.title}</h3>
             <input type="text"
-                   className="form-control u-stack--sm"
+                   className={ this.state.status.length ?
+                               "form-control" :
+                               "form-control u-stack--sm" }
                    name="twitter_handle"
                    placeholder="Enter Twitter Handle"
                    onChange={this.validateTwitterHandle}
                    autoComplete />
+            { this.state.status.length ?
+              <p className={ this.state.is_twitter_handle_valid ?
+                             "code-copier__status-success" :
+                             "code-copier__status-error" }>
+                {this.state.status}
+              </p> :
+              null
+            }
             <button onClick={this.copyCode}
                     disabled={ !this.state.is_twitter_handle_valid }
-                    className={ this.state.is_twitter_handle_valid ? "btn btn-success u-stack--sm" : "btn u-stack--sm" }>
+                    className={ this.state.is_twitter_handle_valid ?
+                                "btn btn-success u-stack--sm" :
+                                "btn u-stack--sm" }>
               Click to copy code
             </button>
             <br />
