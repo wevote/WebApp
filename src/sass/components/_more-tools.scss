@@ -17,6 +17,14 @@ $padding-within-textarea: .5rem .7em;
     color: $gray-mid;
     text-decoration: underline;
   }
+
+  &__status-success {
+    color: $green;
+  }
+
+  &__status-error {
+    color: $red;
+  }
 }
 
 .textarea-clipboard {
