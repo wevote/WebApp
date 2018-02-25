@@ -280,6 +280,7 @@ export default class Application extends Component {
         pathname.startsWith("/measure/") ||
         pathname === "/more/about" ||
         pathname === "/more/absentee" ||
+        pathname === "/more/alerts" ||
         pathname === "/more/connect" ||
         pathname === "/more/credits" ||
         pathname === "/more/donate" ||
