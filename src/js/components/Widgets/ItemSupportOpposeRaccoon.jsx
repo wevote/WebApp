@@ -510,49 +510,52 @@ export default class ItemSupportOpposeRaccoon extends Component {
         {/* Support toggle here */}
         {candidate_support_action_raccoon}
 
-        <div>
-          {/* Issue Score here */}
-          { showIssueScore ?
-            <OverlayTrigger trigger="click"
-                            ref="issue-score-overlay"
-                            onExit={this.closeIssueScorePopover}
-                            rootClose
-                            placement={issuesPopoverPlacement}
-                            overlay={scoreFromYourIssuesPopover}>
-              <span className="network-positions-stacked__support-score u-cursor--pointer u-no-break">
-                { voterIssuesScore === 0 ?
-                  <span className="u-margin-left--md">{ voterIssuesScoreWithSign }&nbsp;</span> :
-                  <span className="u-margin-left--xs">{ voterIssuesScoreWithSign }&nbsp;</span>
-                }
-                <span className="network-positions-stacked__support-score-label">
-                  <span>Issue Score <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
-                </span>
+        {/* Issue Score here */}
+        { showIssueScore ?
+          <OverlayTrigger trigger="click"
+                          ref="issue-score-overlay"
+                          onExit={this.closeIssueScorePopover}
+                          rootClose
+                          placement={issuesPopoverPlacement}
+                          overlay={scoreFromYourIssuesPopover}>
+            <span className="network-positions-stacked__support-score u-cursor--pointer u-no-break">
+              { voterIssuesScore === 0 ?
+                <span className="u-margin-left--md">{ voterIssuesScoreWithSign }&nbsp;</span> :
+                <span className="u-margin-left--xs">{ voterIssuesScoreWithSign }&nbsp;</span>
+              }
+              <span className="network-positions-stacked__support-score-label">
+                <span>Issue Score <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
               </span>
-            </OverlayTrigger> :
-            null }
+            </span>
+          </OverlayTrigger> :
+          null
+        }
 
-          {/* Network Score here */}
-          { showNetworkScore ?
-            <OverlayTrigger trigger="click"
-                            ref="network-score-overlay"
-                            onExit={this.closeNetworkScorePopover}
-                            rootClose
-                            placement={this.props.popoverBottom ? "bottom" : "top"}
-                            overlay={scoreInYourNetworkPopover}>
-              <span className="network-positions-stacked__support-score u-cursor--pointer u-no-break">
-                { total_network_score === 0 ?
-                  <span className="u-margin-left--md">{ total_network_score_with_sign }&nbsp;</span> :
-                  <span className="u-margin-left--xs">{ total_network_score_with_sign }&nbsp;</span>
-                }
-                <span className="network-positions-stacked__support-score-label">
-                  <span className="visible-xs">Network Score <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
-                  <span className="hidden-xs">Score in Your Network <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
-                </span>
+        {/* Network Score here */}
+        { showNetworkScore ?
+          <OverlayTrigger trigger="click"
+                          ref="network-score-overlay"
+                          onExit={this.closeNetworkScorePopover}
+                          rootClose
+                          placement={this.props.popoverBottom ? "bottom" : "top"}
+                          overlay={scoreInYourNetworkPopover}>
+            <span className="network-positions-stacked__support-score u-cursor--pointer u-no-break">
+              { total_network_score === 0 ?
+                <span className="u-margin-left--md">{ total_network_score_with_sign }&nbsp;</span> :
+                <span className="u-margin-left--xs">{ total_network_score_with_sign }&nbsp;</span>
+              }
+              <span className="network-positions-stacked__support-score-label">
+                <span className="visible-xs">Network Score <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
+                <span className="hidden-xs">Score in Your Network <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
               </span>
-            </OverlayTrigger> :
-            null }
-          <span className="sr-only">{total_network_score > 0 ? total_network_score + " Support" : null }{total_network_score < 0 ? total_network_score + " Oppose" : null }</span>
-        </div>
+            </span>
+          </OverlayTrigger> :
+          null
+        }
+        <span className="sr-only">
+          {total_network_score > 0 ? total_network_score + " Support" : null }
+          {total_network_score < 0 ? total_network_score + " Oppose" : null }
+        </span>
       </div>
       { comment_display_raccoon_desktop }
       { comment_display_raccoon_mobile }
