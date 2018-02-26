@@ -518,7 +518,9 @@ export default class ItemSupportOpposeRaccoon extends Component {
                           rootClose
                           placement={issuesPopoverPlacement}
                           overlay={scoreFromYourIssuesPopover}>
-            <span className="network-positions-stacked__support-score u-cursor--pointer u-no-break">
+            <span className={ showNetworkScore ?
+                              "network-positions-stacked__support-score u-cursor--pointer u-no-break hidden-xs" :
+                              "network-positions-stacked__support-score u-cursor--pointer u-no-break" }>
               { voterIssuesScore === 0 ?
                 <span className="u-margin-left--md">{ voterIssuesScoreWithSign }&nbsp;</span> :
                 <span className="u-margin-left--xs">{ voterIssuesScoreWithSign }&nbsp;</span>
