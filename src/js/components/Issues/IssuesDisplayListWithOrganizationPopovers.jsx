@@ -16,6 +16,7 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
     instantRefreshOn: PropTypes.bool,
     maximumIssuesToDisplay: PropTypes.number,
     toFollow: PropTypes.bool,
+    visibility: PropTypes.string,
   };
 
   constructor (props) {
@@ -147,7 +148,7 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
                                onMouseOver={() => this.onTriggerEnter(issue_we_vote_id)}
                                onMouseOut={() => this.onTriggerLeave(issue_we_vote_id)}
                                onExiting={() => this.onTriggerLeave(issue_we_vote_id)}
-                               trigger={["click", "focus", "hover"]}
+                               trigger={this.props.visibility === "mobile" ? "click" : ["focus", "hover", "click"]}
                                rootClose
                                placement="bottom"
                                overlay={issuePopover}
