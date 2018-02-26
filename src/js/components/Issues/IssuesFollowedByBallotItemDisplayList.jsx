@@ -107,12 +107,12 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
 
       {/* Issues the voter is already following */}
       <IssuesDisplayListWithOrganizationPopovers ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-                                                 issueImageSize={"MEDIUM"}
+                                                 issueImageSize={"SMALL"}
                                                  issueListToDisplay={this.state.issues_under_this_ballot_item_voter_is_following}
                                                  toFollow />
       {/* Issues the voter is not following yet */}
       <IssuesDisplayListWithOrganizationPopovers ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-                                                 issueImageSize={"MEDIUM"}
+                                                 issueImageSize={"SMALL"}
                                                  issueListToDisplay={this.state.issues_under_this_ballot_item_voter_not_following}
                                                  toFollow />
     </span>;
