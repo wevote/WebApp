@@ -148,7 +148,16 @@ export default class Ballot extends Component {
       historyPush("/settings/location");
     }
 
-    IssueActions.issuesRetrieveForElection(google_civic_election_id, ballot_location_shortcut, ballot_returned_we_vote_id);
+    // console.log("Ballot, google_civic_election_id: ", google_civic_election_id, ", ballot_location_shortcut: ", ballot_location_shortcut, "ballot_returned_we_vote_id: ", ballot_returned_we_vote_id);
+    // console.log("VoterStore.election_id: ", VoterStore.election_id());
+    if (google_civic_election_id || ballot_location_shortcut || ballot_returned_we_vote_id) {
+      IssueActions.issuesRetrieveForElection(google_civic_election_id, ballot_location_shortcut, ballot_returned_we_vote_id);
+      this.setState({
+        issues_retrieved_from_google_civic_election_id: google_civic_election_id,
+        issues_retrieved_from_ballot_returned_we_vote_id: ballot_returned_we_vote_id,
+        issues_retrieved_from_ballot_location_shortcut: ballot_location_shortcut,
+      });
+   }
 
     let filter_type = this.props.location && this.props.location.query ? this.props.location.query.type : "all";
     let ballot_with_all_items = BallotStore.getBallotByFilterType(filter_type);
@@ -198,8 +207,8 @@ export default class Ballot extends Component {
   }
 
   componentWillReceiveProps (nextProps){
-    // console.log("Ballot componentWillReceiveProps, nextProps: ", nextProps);
-    // console.log("Ballot this.state: ", this.state);
+    console.log("Ballot componentWillReceiveProps, nextProps: ", nextProps);
+    console.log("Ballot this.state: ", this.state);
     let filter_type = nextProps.location && nextProps.location.query ? nextProps.location.query.type : "all";
 
     // We don't want to let the google_civic_election_id disappear
@@ -345,6 +354,19 @@ export default class Ballot extends Component {
       }
     }
     if (BallotStore.ballot_properties) {
+      // If the incoming google_civic_election_id, ballot_returned_we_vote_id, or ballot_location_shortcut are different, call issuesRetrieveForElection
+      if (parseInt(BallotStore.ballot_properties.google_civic_election_id, 10) !== this.state.issues_retrieved_from_google_civic_election_id ||
+          BallotStore.ballot_properties.ballot_returned_we_vote_id !== this.state.issues_retrieved_from_ballot_returned_we_vote_id ||
+          BallotStore.ballot_properties.ballot_location_shortcut !== this.state.issues_retrieved_from_ballot_location_shortcut) {
+        // console.log("Calling issuesRetrieveForElection");
+        IssueActions.issuesRetrieveForElection(BallotStore.ballot_properties.google_civic_election_id, BallotStore.ballot_properties.ballot_location_shortcut, BallotStore.ballot_properties.ballot_returned_we_vote_id);
+        this.setState({
+          issues_retrieved_from_google_civic_election_id: parseInt(BallotStore.ballot_properties.google_civic_election_id, 10),
+          issues_retrieved_from_ballot_returned_we_vote_id: BallotStore.ballot_properties.ballot_returned_we_vote_id,
+          issues_retrieved_from_ballot_location_shortcut: BallotStore.ballot_properties.ballot_location_shortcut,
+        });
+      }
+
       this.setState({
         ballot_returned_we_vote_id: BallotStore.ballot_properties.ballot_returned_we_vote_id || "",
         ballot_location_shortcut: BallotStore.ballot_properties.ballot_location_shortcut || "",
