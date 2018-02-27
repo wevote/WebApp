@@ -61,6 +61,7 @@ export default class CodeCopier extends Component {
       is_twitter_handle_valid: false,
       status: "",
       twitter_handle: "",
+      view_code: false,
     });
   }
 
@@ -77,6 +78,7 @@ export default class CodeCopier extends Component {
       this.setState({
         is_loading: true,
         status: "Searching...",
+        view_code: false,
       });
     } else {
       this.resetState();
@@ -181,12 +183,15 @@ export default class CodeCopier extends Component {
                 Click to copy code
               </button>
               <br />
-              <div className="u-stack--sm">
-                <a className="code-copier__link" onClick={this.toggleCode}>
-                  { this.state.view_code ? "Hide Code" : "Show Code" }
-                </a>
-              </div>
-              { this.state.view_code ?
+              { !this.state.is_loading && this.state.is_twitter_handle_valid ?
+                <div className="u-stack--sm">
+                  <a className="code-copier__link" onClick={this.toggleCode}>
+                    { this.state.view_code ? "Hide Code" : "Show Code" }
+                  </a>
+                </div> :
+                null
+              }
+              { !this.state.is_loading && this.state.is_twitter_handle_valid && this.state.view_code ?
                 <textarea ref={(text) => { this.textareaCode = text; }}
                           className="clipboard textarea-clipboard u-stack--sm"
                           value={source_code}
