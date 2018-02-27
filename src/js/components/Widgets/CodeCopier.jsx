@@ -196,7 +196,10 @@ export default class CodeCopier extends Component {
                           className="clipboard textarea-clipboard u-stack--sm"
                           value={source_code}
                           readOnly /> :
-                null
+                <ImageHandler className="code-copier__image u-stack--sm"
+                              hidePlaceholder
+                              imageUrl={this.props.imageUrl}
+                              alt={this.props.title} />
               }
               {/* <a className="code-copier__link" onClick={this.toggleOptions}>
                 More Options

@@ -38,7 +38,8 @@ export default function ToolsToShareOnOtherWebsites () {
         <CodeCopier title="Interactive Ballot Tool"
                     sourceUrl="https://wevote.us/ballot"
                     imageUrl="/img/tools/ballot.png" />
-        <CodeCopier title="Voter Guide Tool" />
+        <CodeCopier title="Voter Guide Tool"
+                    imageUrl="/img/tools/guide.png" />
         <CodeCopier title="Voter Registration Tool"
                     sourceUrl="https://register.vote.org/?partner=111111&campaign=free-tools"
                     exampleUrl="https://wevote.us/more/register"
