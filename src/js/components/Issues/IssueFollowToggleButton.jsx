@@ -46,7 +46,7 @@ export default class IssueFollowToggleButton extends Component {
   onIssueStopFollowing () {
     this.setState({ is_following: false });
     IssueActions.issueStopFollowing(this.props.issue_we_vote_id, VoterStore.election_id());
-    console.log("IssueFollowToggleButton, this.props.ballotItemWeVoteId:", this.props.ballotItemWeVoteId);
+    // console.log("IssueFollowToggleButton, this.props.ballotItemWeVoteId:", this.props.ballotItemWeVoteId);
     if (this.props.ballotItemWeVoteId) {
       IssueActions.removeBallotItemIssueScoreFromCache(this.props.ballotItemWeVoteId);
     }
