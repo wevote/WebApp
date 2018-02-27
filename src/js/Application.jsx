@@ -3,6 +3,7 @@ import { ToastContainer } from "react-toastify";
 import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
 import ElectionActions from "./actions/ElectionActions";
+import FooterBarCordova from "./components/Navigation/FooterBarCordova";
 import FriendActions from "./actions/FriendActions";
 import HeaderBackToBar from "./components/Navigation/HeaderBackToBar";
 import HeaderBar from "./components/Navigation/HeaderBar";
@@ -249,9 +250,9 @@ export default class Application extends Component {
   }
 
   render () {
-    var { location: { pathname }} = this.props;
+    let { location: { pathname } } = this.props;
 
-    if (this.state.voter === undefined || location === undefined ) {
+    if (this.state.voter === undefined || location === undefined) {
       return <div style={loadingScreenStyles}>
                 <div>
                   <h1 className="h1">Loading We Vote...</h1>
@@ -259,17 +260,18 @@ export default class Application extends Component {
                 </div>
               </div>;
     }
+
     // If looking at these paths, we want to enter theater mode
-    var in_theater_mode = false;
-    var content_full_width_mode = false;
-    var voter_guide_mode = false;
-    let voter_guide_show_getting_started_navigation = false;
+    let inTheaterMode = false;
+    let contentFullWidthMode = false;
+    let voterGuideMode = false;
+    let voterGuideShowGettingStartedNavigation = false;
     if (pathname === "/intro/story" ||
         pathname === "/intro/sample_ballot" ||
         pathname === "/intro/get_started" ||
         pathname === "/voterguidegetstarted" ||
         pathname === "/wevoteintro/network") {
-      in_theater_mode = true;
+      inTheaterMode = true;
     } else if (pathname.startsWith("/candidate/") ||
         pathname === "/facebook_invitable_friends" ||
         pathname === "/friends" ||
@@ -307,30 +309,32 @@ export default class Application extends Component {
         pathname === "/settings/location" ||
         pathname.startsWith("/verifythisisme/") ||
         pathname === "/welcome") {
-      content_full_width_mode = true;
+      contentFullWidthMode = true;
     } else if (pathname.startsWith("/ballot") || pathname === "/bookmarks") {
-      content_full_width_mode = false;
+      contentFullWidthMode = false;
     } else {
-      voter_guide_mode = true;
+      voterGuideMode = true;
+
       // Consider limiting "HeaderGettingStartedBar" to ballot tab only
-      voter_guide_show_getting_started_navigation = true;
+      voterGuideShowGettingStartedNavigation = true;
     }
 
-    let show_back_to_header = false;
+    let showBackToHeader = false;
     if (stringContains("/btdb/", pathname) || stringContains("/btdo/", pathname) || stringContains("/bto/", pathname) || stringContains("/btvg/", pathname)) {
+
       // If here, we want the top header to be "Back To..."
       // "/btdb/" stands for "Back To Default Ballot Page"
       // "/btdo/" stands for "Back To Default Office Page"
       // "/btvg/" stands for "Back To Voter Guide Page"
       // "/bto/" stands for "Back To Voter Guide Office Page"
-      show_back_to_header = true;
+      showBackToHeader = true;
     }
 
-    const headRoomSize = voter_guide_show_getting_started_navigation || stringContains("/ballot", pathname) || pathname === "/bookmarks" ?
+    const headRoomSize = voterGuideShowGettingStartedNavigation || stringContains("/ballot", pathname) || pathname === "/bookmarks" ?
       "headroom-getting-started__margin" :
       "headroom-wrapper";
 
-    if (in_theater_mode) {
+    if (inTheaterMode) {
       return <div className="app-base" id="app-base-id">
         <div className="page-content-container">
           <div className="container-fluid">
@@ -342,21 +346,20 @@ export default class Application extends Component {
           </div>
         </div>
       </div>;
-    } else if (voter_guide_mode) {
-      // console.log("voter_guide_mode", voter_guide_mode);
-      let hideGettingStartedIssuesButton = voter_guide_show_getting_started_navigation;
-      let hideGettingStartedOrganizationsButton = voter_guide_show_getting_started_navigation;
+    } else if (voterGuideMode) {
+      // console.log("voterGuideMode", voterGuideMode);
+      let hideGettingStartedButtons = voterGuideShowGettingStartedNavigation;
 
       return <div className="app-base" id="app-base-id">
         <ToastContainer closeButton={false} />
         <div className={headRoomSize}>
           <div ref="pageHeader" className={ this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom" }>
-            { show_back_to_header ?
+            { showBackToHeader ?
               <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
               <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/> }
-            { voter_guide_show_getting_started_navigation || stringContains("/ballot", pathname) ?
-              <HeaderGettingStartedBar hideGettingStartedOrganizationsButton={hideGettingStartedOrganizationsButton}
-                                       hideGettingStartedIssuesButton={hideGettingStartedIssuesButton}
+            { voterGuideShowGettingStartedNavigation || stringContains("/ballot", pathname) ?
+              <HeaderGettingStartedBar hideGettingStartedOrganizationsButton={hideGettingStartedButtons}
+                                       hideGettingStartedIssuesButton={hideGettingStartedButtons}
                                        pathname={pathname}
                                        voter={this.state.voter}/> :
               null }
@@ -370,7 +373,7 @@ export default class Application extends Component {
       <ToastContainer closeButton={false} />
       <div className={headRoomSize}>
         <div ref="pageHeader" className={ this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom" }>
-          { show_back_to_header ?
+          { showBackToHeader ?
             <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
             <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/> }
           { stringContains("/ballot", pathname) || pathname === "/bookmarks" ?
@@ -378,13 +381,18 @@ export default class Application extends Component {
             null }
         </div>
       </div>
-      { pathname === "/welcome" || !content_full_width_mode ? <div>{ this.props.children }</div> :
+      { pathname === "/welcome" || !contentFullWidthMode ? <div>{ this.props.children }</div> :
         <div className="page-content-container">
           <div className="container-fluid">
             <div className="container-main">
               { this.props.children }
             </div>
           </div>
+        </div>
+      }
+      { isCordova() &&
+        <div className={"room-wrapper"}>
+          <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter}/>
         </div>
       }
     </div>;

@@ -190,6 +190,11 @@ export default class Intro extends Component {
       }
     }
 
+    let pleaseShareString = "Please share or donate to help us reach more voters.";
+    if (isCordova()) {
+      pleaseShareString = "Please share to help us reach more voters.";
+    }
+
     let local_counter = 0;
     const facebook_friends_using_we_vote_list_for_display = this.state.facebook_friends_using_we_vote_list.map( (friend) => {
       local_counter++;
@@ -426,7 +431,7 @@ export default class Intro extends Component {
         <div className="container">
           { this.state.we_vote_branding_off ? null :
             <span>
-              <h3 className="u-f3 u-stack--lg">Please share or donate to help us reach more voters.</h3>
+              <h3 className="u-f3 u-stack--lg">{pleaseShareString}</h3>
               <div className="u-stack--lg">
                 {/* February 2018, Facebook and Magic Email disabled for Cordova */}
                 {isWebApp() &&

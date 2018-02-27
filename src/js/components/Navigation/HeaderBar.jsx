@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import Icon from "react-svg-icons";
 import BallotStore from "../../stores/BallotStore";
 import BookmarkStore from "../../stores/BookmarkStore";
-import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
+import { cordovaDot, historyPush, isWebApp } from "../../utils/cordovaUtils";
 import cookies from "../../utils/cookies";
 import FriendStore from "../../stores/FriendStore";
 import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
@@ -158,7 +158,7 @@ export default class HeaderBar extends Component {
 
     return (
       <header className="page-header">
-        { weVoteBrandingOff ? null :
+        { !weVoteBrandingOff &&
           <Link to="/welcome" className="page-logo page-logo-full-size h4 hidden-xs">
             We Vote
             <span className="page-logo__version"> alpha</span>
@@ -167,7 +167,7 @@ export default class HeaderBar extends Component {
         { weVoteBrandingOff ?
           null :
           <span>
-            { showFullNavigation ?
+            { showFullNavigation && isWebApp() ?
               <Link to="/welcome" className="page-logo page-logo-short h4 visible-xs">
                 WV
               </Link> :
@@ -179,9 +179,10 @@ export default class HeaderBar extends Component {
           </span>
         }
         <div className="header-nav">
-          { showFullNavigation ? HeaderBar.ballot(pathname === "/ballot") : null }
+          { showFullNavigation && isWebApp() && HeaderBar.ballot(pathname === "/ballot") }
 
-          { showFullNavigation ? HeaderBar.network(inNetworkSection, numberOfIncomingFriendRequests) : null }
+          { showFullNavigation && isWebApp() && HeaderBar.network(inNetworkSection, numberOfIncomingFriendRequests) }
+
           { weVoteBrandingOff ? null :
             <span>
               { showFullNavigation ?
@@ -199,24 +200,24 @@ export default class HeaderBar extends Component {
               }
             </span>
           }
+
           { showFullNavigation && !weVoteBrandingOff ? HeaderBar.donate(pathname === "/more/donate") : null }
 
-          { showFullNavigation ?
-            null :
+          { !showFullNavigation &&
             <button type="button" className="btn btn-sm btn-success"
                 onClick={this.goToGetStarted}>Sample Ballot</button> }
 
-          { showFullNavigation ?
-            null :
+          { !showFullNavigation &&
             <Link to="/more/sign_in" className="sign_in header-nav__item">
               Sign In
             </Link>
           }
         </div>
 
-        { showFullNavigation ? <SearchAllBox /> : null }
+        { showFullNavigation && <SearchAllBox /> }
 
-        { showFullNavigation ? <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleProfilePopUp}>
+        { showFullNavigation && isWebApp() &&
+          <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleProfilePopUp}>
           {voterPhotoUrlMedium ?
             <div id="js-header-avatar" className="header-nav__avatar-container">
                 <img className="header-nav__avatar"
@@ -224,11 +225,12 @@ export default class HeaderBar extends Component {
                       height={34}
                       width={34}
                  />
-            </div> : this.imagePlaceholder(speakerType)}
-         </div> :
-          null }
+            </div> : this.imagePlaceholder(speakerType)
+          }
+         </div>
+        }
         {/* Was AccountMenu */}
-        {this.state.profilePopUpOpen &&
+        {this.state.profilePopUpOpen && isWebApp() &&
           <HeaderBarProfilePopUp {...this.props}
                                  onClick={this.toggleProfilePopUp}
                                  profilePopUpOpen={this.state.profilePopUpOpen}
