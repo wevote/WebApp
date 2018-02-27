@@ -41,15 +41,19 @@ export default function ToolsToShareOnOtherWebsites () {
         <CodeCopier title="Voter Guide Tool" />
         <CodeCopier title="Voter Registration Tool"
                     sourceUrl="https://register.vote.org/?partner=111111&campaign=free-tools"
+                    exampleUrl="https://wevote.us/more/register"
                     imageUrl="/img/tools/register.png" />
         <CodeCopier title="Absentee Ballot Tool"
                     sourceUrl="https://absentee.vote.org/?partner=111111&campaign=free-tools"
+                    exampleUrl="https://wevote.us/more/absentee"
                     imageUrl="/img/tools/absentee.png" />
         <CodeCopier title="Check Registration Status Tool"
                     sourceUrl="https://verify.vote.org/?partner=111111&campaign=free-tools"
+                    exampleUrl="https://wevote.us/more/verify"
                     imageUrl="/img/tools/verify.png" />
         <CodeCopier title="Election Reminder Tool"
                     sourceUrl="https://reminders.vote.org/?partner=111111&campaign=free-tools"
+                    exampleUrl="https://wevote.us/more/alerts"
                     imageUrl="/img/tools/reminders.png" />
       </div>
 
