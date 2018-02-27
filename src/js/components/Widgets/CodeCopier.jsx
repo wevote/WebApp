@@ -15,6 +15,7 @@ export default class CodeCopier extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      is_loading: false,
       is_twitter_handle_valid: false,
       status: "",
       twitter_handle: "",
@@ -56,6 +57,7 @@ export default class CodeCopier extends Component {
 
   resetState () {
     this.setState({
+      is_loading: false,
       is_twitter_handle_valid: false,
       status: "",
       twitter_handle: "",
@@ -70,15 +72,19 @@ export default class CodeCopier extends Component {
 
   validateTwitterHandle (event) {
     clearTimeout(this.timer);
-    this.timer = setTimeout(this.validateTwitterHandleAction.bind(this, event.target.value), 1200);
-  }
-
-  validateTwitterHandleAction (twitter_handle) {
-    if (twitter_handle.length) {
-      OrganizationActions.organizationSearch("", twitter_handle, true);
+    if (event.target.value.length) {
+      this.validateTwitterHandleAction(event.target.value);
+      this.setState({
+        is_loading: true,
+        status: "Searching...",
+      });
     } else {
       this.resetState();
     }
+  }
+
+  validateTwitterHandleAction (twitter_handle) {
+    this.timer = setTimeout(() => OrganizationActions.organizationSearch("", twitter_handle, true), 1200);
   }
 
   _onOrganizationStoreChange () {
@@ -92,6 +98,7 @@ export default class CodeCopier extends Component {
     }
 
     this.setState({
+      is_loading: false,
       is_twitter_handle_valid: result.length,
       status: status,
       twitter_handle: result,
@@ -157,9 +164,11 @@ export default class CodeCopier extends Component {
                      onChange={this.validateTwitterHandle}
                      autoComplete />
               { this.state.status.length ?
-                <p className={ this.state.is_twitter_handle_valid ?
-                               "code-copier__status-success" :
-                               "code-copier__status-error" }>
+                <p className={ !this.state.is_loading ?
+                                 this.state.is_twitter_handle_valid ?
+                                 "code-copier__status-success" :
+                                 "code-copier__status-error" :
+                               null }>
                   {this.state.status}
                 </p> :
                 null
