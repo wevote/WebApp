@@ -6,6 +6,7 @@ import { showToastSuccess } from "../../utils/showToast";
 
 export default class CodeCopier extends Component {
   static propTypes = {
+    exampleUrl: PropTypes.string,
     imageUrl: PropTypes.string,
     sourceUrl: PropTypes.string,
     title: PropTypes.string,
@@ -208,13 +209,15 @@ export default class CodeCopier extends Component {
                           value={source_code}
                           readOnly /> :
                 <div>
-                  <ImageHandler className="code-copier__image u-stack--sm"
-                                hidePlaceholder
-                                imageUrl={this.props.imageUrl}
-                                alt={this.props.title} />
+                  <a href={this.props.exampleUrl} target="_blank">
+                    <ImageHandler className="code-copier__image u-stack--sm"
+                                  hidePlaceholder
+                                  imageUrl={this.props.imageUrl}
+                                  alt={this.props.title} />
+                  </a>
                   <br />
-                  <a className="code-copier__link" href={this.props.imageUrl} target="_blank">
-                    Click to view full size
+                  <a className="code-copier__link" href={this.props.exampleUrl} target="_blank">
+                    Click to view example
                   </a>
                 </div>
               }
