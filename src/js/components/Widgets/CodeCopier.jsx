@@ -6,6 +6,7 @@ import { showToastSuccess } from "../../utils/showToast";
 
 export default class CodeCopier extends Component {
   static propTypes = {
+    exampleUrl: PropTypes.string,
     imageUrl: PropTypes.string,
     sourceUrl: PropTypes.string,
     title: PropTypes.string,
@@ -14,6 +15,7 @@ export default class CodeCopier extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      is_loading: false,
       is_twitter_handle_valid: false,
       status: "",
       twitter_handle: "",
@@ -55,9 +57,11 @@ export default class CodeCopier extends Component {
 
   resetState () {
     this.setState({
+      is_loading: false,
       is_twitter_handle_valid: false,
       status: "",
       twitter_handle: "",
+      view_code: false,
     });
   }
 
@@ -69,15 +73,20 @@ export default class CodeCopier extends Component {
 
   validateTwitterHandle (event) {
     clearTimeout(this.timer);
-    this.timer = setTimeout(this.validateTwitterHandleAction.bind(this, event.target.value), 1200);
-  }
-
-  validateTwitterHandleAction (twitter_handle) {
-    if (twitter_handle.length) {
-      OrganizationActions.organizationSearch("", twitter_handle, true);
+    if (event.target.value.length) {
+      this.validateTwitterHandleAction(event.target.value);
+      this.setState({
+        is_loading: true,
+        status: "Searching...",
+        view_code: false,
+      });
     } else {
       this.resetState();
     }
+  }
+
+  validateTwitterHandleAction (twitter_handle) {
+    this.timer = setTimeout(() => OrganizationActions.organizationSearch("", twitter_handle, true), 1200);
   }
 
   _onOrganizationStoreChange () {
@@ -91,6 +100,7 @@ export default class CodeCopier extends Component {
     }
 
     this.setState({
+      is_loading: false,
       is_twitter_handle_valid: result.length,
       status: status,
       twitter_handle: result,
@@ -108,81 +118,139 @@ export default class CodeCopier extends Component {
     let source_code =
     `<iframe src="${source_url}" width="100%" marginheight="0" frameborder="0" id="frame1" scrollable ="no"></iframe>\n<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.3/iframeResizer.min.js"></script>\n<script type="text/javascript">iFrameResize({ log:true, checkOrigin:false });</script>`;
 
-    return (
-      <div className="col-xs-12 col-sm-6 col-md-4">
-        { this.props.imageUrl && this.props.imageUrl.length ?
-          <div className="code-copier">
-            <h3 className="h3">{this.props.title}</h3>
-            <button className="btn btn-success u-stack--sm" onClick={this.copyCode}>Click to copy code</button>
-            <br />
-            <div className="u-stack--sm">
-              <a className="code-copier__link" onClick={this.toggleCode}>
-                { this.state.view_code ? "Hide Code" : "Show Code" }
-              </a>
-            </div>
-            { this.state.view_code ?
-              <textarea ref={(text) => { this.textareaCode = text; }}
-                        className="clipboard textarea-clipboard u-stack--sm"
-                        value={source_code}
-                        readOnly /> :
-              <div>
-                <ImageHandler className="code-copier__image u-stack--sm"
-                              hidePlaceholder
-                              imageUrl={this.props.imageUrl}
-                              alt={this.props.title} />
-                <br />
-                <a className="code-copier__link" href={this.props.imageUrl} target="_blank">
-                  Click to view full size
+    switch (this.props.title) {
+      case "Interactive Ballot Tool":
+        return (
+          <div className="col-xs-12 col-sm-6 col-md-4">
+            <div className="code-copier">
+              <h3 className="h3">{this.props.title}</h3>
+              <button className="btn btn-success u-stack--sm" onClick={this.copyCode}>Click to copy code</button>
+              <br />
+              <div className="u-stack--sm">
+                <a className="code-copier__link" onClick={this.toggleCode}>
+                  { this.state.view_code ? "Hide Code" : "Show Code" }
                 </a>
               </div>
-            }
-          </div> :
-          // Voter Guide Tool
-          <div className="code-copier">
-            <h3 className="h3">{this.props.title}</h3>
-            <input type="text"
-                   className={ this.state.status.length ?
-                               "form-control" :
-                               "form-control u-stack--sm" }
-                   name="twitter_handle"
-                   placeholder="Enter Twitter Handle"
-                   onKeyDown={this.resetState}
-                   onChange={this.validateTwitterHandle}
-                   autoComplete />
-            { this.state.status.length ?
-              <p className={ this.state.is_twitter_handle_valid ?
-                             "code-copier__status-success" :
-                             "code-copier__status-error" }>
-                {this.state.status}
-              </p> :
-              null
-            }
-            <button onClick={this.copyCode}
-                    disabled={ !this.state.is_twitter_handle_valid }
-                    className={ this.state.is_twitter_handle_valid ?
-                                "btn btn-success u-stack--sm" :
-                                "btn u-stack--sm" }>
-              Click to copy code
-            </button>
-            <br />
-            <div className="u-stack--sm">
-              <a className="code-copier__link" onClick={this.toggleCode}>
-                { this.state.view_code ? "Hide Code" : "Show Code" }
-              </a>
+              { this.state.view_code ?
+                <textarea ref={(text) => { this.textareaCode = text; }}
+                          className="clipboard textarea-clipboard u-stack--sm"
+                          value={source_code}
+                          readOnly /> :
+                <div>
+                  <a href={this.props.imageUrl} target="_blank">
+                    <ImageHandler className="code-copier__image u-stack--sm"
+                                  hidePlaceholder
+                                  imageUrl={this.props.imageUrl}
+                                  alt={this.props.title} />
+                  </a>
+                  <br />
+                  <a className="code-copier__link" href={this.props.imageUrl} target="_blank">
+                    Click to view full size
+                  </a>
+                </div>
+              }
             </div>
-            { this.state.view_code ?
-              <textarea ref={(text) => { this.textareaCode = text; }}
-                        className="clipboard textarea-clipboard u-stack--sm"
-                        value={source_code}
-                        readOnly /> :
-              null
-            }
-            {/* <a className="code-copier__link" onClick={this.toggleOptions}>
-              More Options
-            </a> */}
           </div>
-        }
-      </div>
-    );
+        );
+
+      case "Voter Guide Tool":
+        return (
+          <div className="col-xs-12 col-sm-6 col-md-4">
+            <div className="code-copier">
+              <h3 className="h3">{this.props.title}</h3>
+              <input type="text"
+                     className={ this.state.status.length ?
+                                 "form-control" :
+                                 "form-control u-stack--sm" }
+                     name="twitter_handle"
+                     placeholder="Enter Twitter Handle"
+                     onKeyDown={this.resetState}
+                     onChange={this.validateTwitterHandle}
+                     autoComplete />
+              { this.state.status.length ?
+                <p className={ !this.state.is_loading ?
+                                 this.state.is_twitter_handle_valid ?
+                                 "code-copier__status-success" :
+                                 "code-copier__status-error" :
+                               null }>
+                  {this.state.status}
+                </p> :
+                null
+              }
+              <button onClick={this.copyCode}
+                      disabled={ !this.state.is_twitter_handle_valid }
+                      className={ this.state.is_twitter_handle_valid ?
+                                  "btn btn-success u-stack--sm" :
+                                  "btn u-stack--sm" }>
+                Click to copy code
+              </button>
+              <br />
+              { !this.state.is_loading && this.state.is_twitter_handle_valid ?
+                <div className="u-stack--sm">
+                  <a className="code-copier__link" onClick={this.toggleCode}>
+                    { this.state.view_code ? "Hide Code" : "Show Code" }
+                  </a>
+                </div> :
+                null
+              }
+              { !this.state.is_loading && this.state.is_twitter_handle_valid && this.state.view_code ?
+                <textarea ref={(text) => { this.textareaCode = text; }}
+                          className="clipboard textarea-clipboard u-stack--sm"
+                          value={source_code}
+                          readOnly /> :
+                <div>
+                  <a href={this.props.exampleUrl} target="_blank">
+                    <ImageHandler className="code-copier__image u-stack--sm"
+                                  hidePlaceholder
+                                  imageUrl={this.props.imageUrl}
+                                  alt={this.props.title} />
+                  </a>
+                  <br />
+                  <a className="code-copier__link" href={this.props.exampleUrl} target="_blank">
+                    Click to view example
+                  </a>
+                </div>
+              }
+              {/* <a className="code-copier__link" onClick={this.toggleOptions}>
+                More Options
+              </a> */}
+            </div>
+          </div>
+        );
+
+      default:
+        return (
+          <div className="col-xs-12 col-sm-6 col-md-4">
+            <div className="code-copier">
+              <h3 className="h3">{this.props.title}</h3>
+              <button className="btn btn-success u-stack--sm" onClick={this.copyCode}>Click to copy code</button>
+              <br />
+              <div className="u-stack--sm">
+                <a className="code-copier__link" onClick={this.toggleCode}>
+                  { this.state.view_code ? "Hide Code" : "Show Code" }
+                </a>
+              </div>
+              { this.state.view_code ?
+                <textarea ref={(text) => { this.textareaCode = text; }}
+                          className="clipboard textarea-clipboard u-stack--sm"
+                          value={source_code}
+                          readOnly /> :
+                <div>
+                  <a href={this.props.exampleUrl} target="_blank">
+                    <ImageHandler className="code-copier__image u-stack--sm"
+                                  hidePlaceholder
+                                  imageUrl={this.props.imageUrl}
+                                  alt={this.props.title} />
+                  </a>
+                  <br />
+                  <a className="code-copier__link" href={this.props.exampleUrl} target="_blank">
+                    Click to view example
+                  </a>
+                </div>
+              }
+            </div>
+          </div>
+        );
+    }
   }
 }
