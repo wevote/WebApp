@@ -78,7 +78,7 @@ export default class HeaderGettingStartedBar extends Component {
     });
   }
 
-  static _openPrintModal () {
+  _openPrintModal () {
     window.print();
   }
 
