@@ -13,7 +13,6 @@ import { historyPush, isCordova, cordovaOpenSafariView } from "./utils/cordovaUt
 import IssueActions from "./actions/IssueActions";
 import IssueStore from "././stores/IssueStore";
 import OrganizationActions from "./actions/OrganizationActions";
-import SearchAllActions from "./actions/SearchAllActions";
 import { stringContains } from "./utils/textFormat";
 import TwitterActions from "./actions/TwitterActions";
 import VoterActions from "./actions/VoterActions";
@@ -66,6 +65,7 @@ export default class Application extends Component {
           if (urlParams.has("twitter_redirect_url")) {
             let redirectURL = urlParams.get("twitter_redirect_url");
             console.log("twitterSignIn cordova, redirecting to: " + redirectURL);
+
             // eslint-disable-next-line no-undef
             SafariViewController.hide();  // Hide the previous WKWebView
             cordovaOpenSafariView(redirectURL, 500);
@@ -81,6 +81,7 @@ export default class Application extends Component {
             }
           } else if (urlParams.has("twitter_handle_found") && urlParams.get("twitter_handle_found") === "True") {
             console.log("twitterSignIn cordova, twitter_handle_found -- push /twitter_sign_in -- received handle = " + urlParams.get("twitter_handle"));
+
             // eslint-disable-next-line no-undef
             SafariViewController.hide();  // Hide the previous WKWebView
             historyPush("/twitter_sign_in");
@@ -105,7 +106,10 @@ export default class Application extends Component {
     (function (d, s, id) {
       let js;
       let fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) {return;}
+      if (d.getElementById(id)) {
+        return;
+      }
+
       js = d.createElement(s); js.id = id;
       js.src = "https://connect.facebook.net/en_US/sdk.js";
       fjs.parentNode.insertBefore(js, fjs);
@@ -115,6 +119,7 @@ export default class Application extends Component {
   componentDidMount () {
     let voterDeviceId = VoterStore.voterDeviceId();
     VoterActions.voterRetrieve();
+
     // console.log("Application, componentDidMount, voterDeviceId:", voterDeviceId);
     if (voterDeviceId) {
       this._onVoterStoreChange();
@@ -179,56 +184,62 @@ export default class Application extends Component {
     // console.log("Application, incomingVariableManagement, this.props.location.query: ", this.props.location.query);
     if (this.props.location.query) {
       // Cookie needs to expire in One day i.e. 24*60*60 = 86400
-      let at_least_one_query_variable_found = false;
-      let one_day_expires = 86400;
-      let we_vote_branding_off_from_url = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-      let we_vote_branding_off_from_cookie = cookies.getItem("we_vote_branding_off") || 0;
-      if (we_vote_branding_off_from_url && !we_vote_branding_off_from_cookie) {
-        cookies.setItem("we_vote_branding_off", we_vote_branding_off_from_url, one_day_expires, "/");
+      let atLeastOneQueryVariableFound = false;
+      let oneDayExpires = 86400;
+      let weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
+      let weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off") || 0;
+      if (weVoteBrandingOffFromUrl && !weVoteBrandingOffFromCookie) {
+        cookies.setItem("we_vote_branding_off", weVoteBrandingOffFromUrl, oneDayExpires, "/");
       }
-      if (we_vote_branding_off_from_url || we_vote_branding_off_from_cookie) {
+
+      if (weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie) {
         cookies.setItem("show_full_navigation", "1", Infinity, "/");
       }
-      this.setState({we_vote_branding_off: we_vote_branding_off_from_url || we_vote_branding_off_from_cookie});
 
-      let hide_intro_modal_from_url = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
-      let hide_intro_modal_from_url_true = hide_intro_modal_from_url === 1 || hide_intro_modal_from_url === "1" || hide_intro_modal_from_url === "true";
-      if (hide_intro_modal_from_url) {
-        // console.log("hide_intro_modal_from_url: ", hide_intro_modal_from_url);
-        at_least_one_query_variable_found = true;
-      }
-      let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal");
-      let hide_intro_modal_from_cookie_true = hide_intro_modal_from_cookie === 1 || hide_intro_modal_from_cookie === "1" || hide_intro_modal_from_cookie === "true";
-      if (hide_intro_modal_from_url_true && !hide_intro_modal_from_cookie_true) {
-        cookies.setItem("hide_intro_modal", hide_intro_modal_from_url, one_day_expires, "/");
+      this.setState({ we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie });
+
+      let hideIntroModalFromUrl = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
+      let hideIntroModalFromUrlTrue = hideIntroModalFromUrl === 1 || hideIntroModalFromUrl === "1" || hideIntroModalFromUrl === "true";
+      if (hideIntroModalFromUrl) {
+        // console.log("hideIntroModalFromUrl: ", hideIntroModalFromUrl);
+        atLeastOneQueryVariableFound = true;
       }
 
-      let auto_follow_list_from_url = "";
+      let hideIntroModalFromCookie = cookies.getItem("hide_intro_modal");
+      let hideIntroModalFromCookieTrue = hideIntroModalFromCookie === 1 || hideIntroModalFromCookie === "1" || hideIntroModalFromCookie === "true";
+      if (hideIntroModalFromUrlTrue && !hideIntroModalFromCookieTrue) {
+        cookies.setItem("hide_intro_modal", hideIntroModalFromUrl, oneDayExpires, "/");
+      }
+
+      let autoFollowListFromUrl = "";
       if (this.props.location.query) {
         // console.log("this.props.location.query: ", this.props.location.query);
         if (this.props.location.query.af) {
-          auto_follow_list_from_url = this.props.location.query.af;
-          at_least_one_query_variable_found = true;
+          autoFollowListFromUrl = this.props.location.query.af;
+          atLeastOneQueryVariableFound = true;
         } else if (this.props.location.query.auto_follow) {
-          at_least_one_query_variable_found = true;
-          auto_follow_list_from_url = this.props.location.query.auto_follow;
+          atLeastOneQueryVariableFound = true;
+          autoFollowListFromUrl = this.props.location.query.auto_follow;
         }
-        let auto_follow_list = auto_follow_list_from_url ? auto_follow_list_from_url.split(",") : [];
-        auto_follow_list.forEach((organization_twitter_handle) => {
-          OrganizationActions.organizationFollow("", organization_twitter_handle);
+
+        let autoFollowList = autoFollowListFromUrl ? autoFollowListFromUrl.split(",") : [];
+        autoFollowList.forEach((organizationTwitterHandle) => {
+          OrganizationActions.organizationFollow("", organizationTwitterHandle);
         });
 
         if (this.props.location.query.voter_address) {
           // console.log("this.props.location.query.voter_address: ", this.props.location.query.voter_address);
-          at_least_one_query_variable_found = true;
-          let voter_address = this.props.location.query.voter_address;
-          if (voter_address && voter_address !== "") {
-            // Do not save a blank voter_address -- we don't want to over-ride an existing address with a blank
-            VoterActions.voterAddressSave(voter_address);
+          atLeastOneQueryVariableFound = true;
+          let voterAddress = this.props.location.query.voter_address;
+          if (voterAddress && voterAddress !== "") {
+
+            // Do not save a blank voterAddress -- we don't want to over-ride an existing address with a blank
+            VoterActions.voterAddressSave(voterAddress);
           }
         }
-        if (at_least_one_query_variable_found && this.props.location.pathname) {
-          // console.log("at_least_one_query_variable_found push: ", at_least_one_query_variable_found);
+
+        if (atLeastOneQueryVariableFound && this.props.location.pathname) {
+          // console.log("atLeastOneQueryVariableFound push: ", AtLeastOneQueryVariableFound);
           // console.log("this.props.location.pathname: ", this.props.location.pathname);
           historyPush(this.props.location.pathname);
         }
@@ -236,15 +247,12 @@ export default class Application extends Component {
     }
   }
 
-  hideSearchContainer () {
-    SearchAllActions.exitSearch();
-  }
-
   preloadIssueImages () {
     // console.log("preloadIssueImages func")
     IssueStore.getIssuesVoterCanFollow().forEach(issue => {
       document.createElement("img").src = issue.issue_image_url;
     });
+
     //only need to preload once
     this.issueStoreListener.remove();
   }
@@ -261,6 +269,16 @@ export default class Application extends Component {
               </div>;
     }
 
+    if (isCordova()) {
+      let gotoWevoteIntroNetwork = cookies.getItem("cordova_goto_wevoteintro_network");
+      if (gotoWevoteIntroNetwork === null) {
+        //On the first entry in a new Cordoba session, immediately navigate to "/wevoteintro/network"
+        cookies.setItem("cordova_goto_wevoteintro_network", false);  // no expiration time, so a session cookie
+        historyPush("/wevoteintro/network");
+      }
+    }
+
+    // console.log("Application pathname on entry = " + pathname);
     // If looking at these paths, we want to enter theater mode
     let inTheaterMode = false;
     let contentFullWidthMode = false;
