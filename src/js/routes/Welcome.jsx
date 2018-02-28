@@ -152,7 +152,7 @@ export default class Intro extends Component {
         method: "share",
         mobile_iframe: true,
         href: web_app_config.WE_VOTE_HOSTNAME,
-        quote: "Check out https://WeVote.US! View your ballot. Learn from friends. Share your vision. @WeVote #Voting #WeVote",
+        quote: "Check out https://WeVote.US! View your ballot, learn from friends, share your vision, and make sure to #Vote. #WeVote via @WeVote",
       }, function (response) {
         if ( response === undefined || response.error_code === 4201 ) {
           console.log("Voter Canceled the share request");

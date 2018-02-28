@@ -312,7 +312,7 @@ export default class HeaderGettingStartedBar extends Component {
 
     let currentPathname = this.props.pathname ? this.props.pathname : "/ballot";
     let ballotBaseUrl = webAppConfig.WE_VOTE_URL_PROTOCOL + (isWebApp() ? webAppConfig.WE_VOTE_HOSTNAME : "wevote.us") + currentPathname;
-    let encodedMessage = encodeURIComponent("Check out your ballot, and make sure to #Vote! #WeVote");
+    let encodedMessage = encodeURIComponent("View your ballot, learn from friends, share your vision, and make sure to #Vote! #WeVote via @WeVote");
     let twitterData = "https://twitter.com/intent/tweet?text=" + encodedMessage + "&amp;url=" + encodeURIComponent(ballotBaseUrl);
 
     return <div className="page-getting-started-header-background">

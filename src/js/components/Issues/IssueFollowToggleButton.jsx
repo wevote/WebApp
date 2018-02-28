@@ -62,7 +62,7 @@ export default class IssueFollowToggleButton extends Component {
     return this.state.is_following ?
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
         <Button bsStyle="warning" bsSize="small" onClick={this.onIssueStopFollowing}>
-          <span>Listening</span>
+          <span>Following</span>
         </Button>
       </div> :
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
