@@ -59,3 +59,32 @@ function cordovaOpenSafariViewSub (requestURL) {
 export function cordovaOpenSafariView (requestURL, timeout) {
   setTimeout(cordovaOpenSafariViewSub, timeout, requestURL);
 }
+
+/*
+  bottom, Set or retrieves the bottom coordinate of the rectangle surrounding the object content. (relative to top of screen)
+  height, Gets the height of the rectangle that surrounds the object content.
+  left, Sets or retrieves the left coordinate of the rectangle surrounding the object content. (relative to left of screen)
+  length, Sets or retrieves the number of objects in a collection.
+  right, Sets or retrieves the right coordinate of the rectangle surrounding the object content. (relative to left of screen)
+  top, Sets or retrieves the top coordinate of the rectangle surrounding the object content. (relative to top of screen)
+  width, Gets the width of the rectangle that surrounds the object content.
+  ----
+  Needed in div you want to get the rectangle info from:
+       <div className={profilePopUpOpen} ref={ (el) => (this.instance = el) }>
+  Then ...
+    componentDidMount () {
+      enclosingRectangle("HeaderBarProfilePopUp, ", this.instance);
+    }
+*/
+export function enclosingRectangle (objectNameString, instance) {
+  let rect = instance.getBoundingClientRect();
+  console.log(objectNameString +
+    " BoundingClientRect: left " + rect.left +
+    ", top " + rect.top +
+    ", right " + rect.right +
+    ", bottom " + rect.bottom +
+    ", x " + rect.x +
+    ", y " + rect.y +
+    ", width " + rect.width +
+    ", height " + rect.height);
+}

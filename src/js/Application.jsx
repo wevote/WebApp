@@ -3,6 +3,7 @@ import { ToastContainer } from "react-toastify";
 import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
 import ElectionActions from "./actions/ElectionActions";
+import FooterBarCordova from "./components/Navigation/FooterBarCordova";
 import FriendActions from "./actions/FriendActions";
 import HeaderBackToBar from "./components/Navigation/HeaderBackToBar";
 import HeaderBar from "./components/Navigation/HeaderBar";
@@ -12,7 +13,6 @@ import { historyPush, isCordova, cordovaOpenSafariView } from "./utils/cordovaUt
 import IssueActions from "./actions/IssueActions";
 import IssueStore from "././stores/IssueStore";
 import OrganizationActions from "./actions/OrganizationActions";
-import SearchAllActions from "./actions/SearchAllActions";
 import { stringContains } from "./utils/textFormat";
 import TwitterActions from "./actions/TwitterActions";
 import VoterActions from "./actions/VoterActions";
@@ -65,6 +65,7 @@ export default class Application extends Component {
           if (urlParams.has("twitter_redirect_url")) {
             let redirectURL = urlParams.get("twitter_redirect_url");
             console.log("twitterSignIn cordova, redirecting to: " + redirectURL);
+
             // eslint-disable-next-line no-undef
             SafariViewController.hide();  // Hide the previous WKWebView
             cordovaOpenSafariView(redirectURL, 500);
@@ -80,6 +81,7 @@ export default class Application extends Component {
             }
           } else if (urlParams.has("twitter_handle_found") && urlParams.get("twitter_handle_found") === "True") {
             console.log("twitterSignIn cordova, twitter_handle_found -- push /twitter_sign_in -- received handle = " + urlParams.get("twitter_handle"));
+
             // eslint-disable-next-line no-undef
             SafariViewController.hide();  // Hide the previous WKWebView
             historyPush("/twitter_sign_in");
@@ -104,7 +106,10 @@ export default class Application extends Component {
     (function (d, s, id) {
       let js;
       let fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) {return;}
+      if (d.getElementById(id)) {
+        return;
+      }
+
       js = d.createElement(s); js.id = id;
       js.src = "https://connect.facebook.net/en_US/sdk.js";
       fjs.parentNode.insertBefore(js, fjs);
@@ -114,6 +119,7 @@ export default class Application extends Component {
   componentDidMount () {
     let voterDeviceId = VoterStore.voterDeviceId();
     VoterActions.voterRetrieve();
+
     // console.log("Application, componentDidMount, voterDeviceId:", voterDeviceId);
     if (voterDeviceId) {
       this._onVoterStoreChange();
@@ -178,56 +184,62 @@ export default class Application extends Component {
     // console.log("Application, incomingVariableManagement, this.props.location.query: ", this.props.location.query);
     if (this.props.location.query) {
       // Cookie needs to expire in One day i.e. 24*60*60 = 86400
-      let at_least_one_query_variable_found = false;
-      let one_day_expires = 86400;
-      let we_vote_branding_off_from_url = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-      let we_vote_branding_off_from_cookie = cookies.getItem("we_vote_branding_off") || 0;
-      if (we_vote_branding_off_from_url && !we_vote_branding_off_from_cookie) {
-        cookies.setItem("we_vote_branding_off", we_vote_branding_off_from_url, one_day_expires, "/");
+      let atLeastOneQueryVariableFound = false;
+      let oneDayExpires = 86400;
+      let weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
+      let weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off") || 0;
+      if (weVoteBrandingOffFromUrl && !weVoteBrandingOffFromCookie) {
+        cookies.setItem("we_vote_branding_off", weVoteBrandingOffFromUrl, oneDayExpires, "/");
       }
-      if (we_vote_branding_off_from_url || we_vote_branding_off_from_cookie) {
+
+      if (weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie) {
         cookies.setItem("show_full_navigation", "1", Infinity, "/");
       }
-      this.setState({we_vote_branding_off: we_vote_branding_off_from_url || we_vote_branding_off_from_cookie});
 
-      let hide_intro_modal_from_url = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
-      let hide_intro_modal_from_url_true = hide_intro_modal_from_url === 1 || hide_intro_modal_from_url === "1" || hide_intro_modal_from_url === "true";
-      if (hide_intro_modal_from_url) {
-        // console.log("hide_intro_modal_from_url: ", hide_intro_modal_from_url);
-        at_least_one_query_variable_found = true;
-      }
-      let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal");
-      let hide_intro_modal_from_cookie_true = hide_intro_modal_from_cookie === 1 || hide_intro_modal_from_cookie === "1" || hide_intro_modal_from_cookie === "true";
-      if (hide_intro_modal_from_url_true && !hide_intro_modal_from_cookie_true) {
-        cookies.setItem("hide_intro_modal", hide_intro_modal_from_url, one_day_expires, "/");
+      this.setState({ we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie });
+
+      let hideIntroModalFromUrl = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
+      let hideIntroModalFromUrlTrue = hideIntroModalFromUrl === 1 || hideIntroModalFromUrl === "1" || hideIntroModalFromUrl === "true";
+      if (hideIntroModalFromUrl) {
+        // console.log("hideIntroModalFromUrl: ", hideIntroModalFromUrl);
+        atLeastOneQueryVariableFound = true;
       }
 
-      let auto_follow_list_from_url = "";
+      let hideIntroModalFromCookie = cookies.getItem("hide_intro_modal");
+      let hideIntroModalFromCookieTrue = hideIntroModalFromCookie === 1 || hideIntroModalFromCookie === "1" || hideIntroModalFromCookie === "true";
+      if (hideIntroModalFromUrlTrue && !hideIntroModalFromCookieTrue) {
+        cookies.setItem("hide_intro_modal", hideIntroModalFromUrl, oneDayExpires, "/");
+      }
+
+      let autoFollowListFromUrl = "";
       if (this.props.location.query) {
         // console.log("this.props.location.query: ", this.props.location.query);
         if (this.props.location.query.af) {
-          auto_follow_list_from_url = this.props.location.query.af;
-          at_least_one_query_variable_found = true;
+          autoFollowListFromUrl = this.props.location.query.af;
+          atLeastOneQueryVariableFound = true;
         } else if (this.props.location.query.auto_follow) {
-          at_least_one_query_variable_found = true;
-          auto_follow_list_from_url = this.props.location.query.auto_follow;
+          atLeastOneQueryVariableFound = true;
+          autoFollowListFromUrl = this.props.location.query.auto_follow;
         }
-        let auto_follow_list = auto_follow_list_from_url ? auto_follow_list_from_url.split(",") : [];
-        auto_follow_list.forEach((organization_twitter_handle) => {
-          OrganizationActions.organizationFollow("", organization_twitter_handle);
+
+        let autoFollowList = autoFollowListFromUrl ? autoFollowListFromUrl.split(",") : [];
+        autoFollowList.forEach((organizationTwitterHandle) => {
+          OrganizationActions.organizationFollow("", organizationTwitterHandle);
         });
 
         if (this.props.location.query.voter_address) {
           // console.log("this.props.location.query.voter_address: ", this.props.location.query.voter_address);
-          at_least_one_query_variable_found = true;
-          let voter_address = this.props.location.query.voter_address;
-          if (voter_address && voter_address !== "") {
-            // Do not save a blank voter_address -- we don't want to over-ride an existing address with a blank
-            VoterActions.voterAddressSave(voter_address);
+          atLeastOneQueryVariableFound = true;
+          let voterAddress = this.props.location.query.voter_address;
+          if (voterAddress && voterAddress !== "") {
+
+            // Do not save a blank voterAddress -- we don't want to over-ride an existing address with a blank
+            VoterActions.voterAddressSave(voterAddress);
           }
         }
-        if (at_least_one_query_variable_found && this.props.location.pathname) {
-          // console.log("at_least_one_query_variable_found push: ", at_least_one_query_variable_found);
+
+        if (atLeastOneQueryVariableFound && this.props.location.pathname) {
+          // console.log("atLeastOneQueryVariableFound push: ", AtLeastOneQueryVariableFound);
           // console.log("this.props.location.pathname: ", this.props.location.pathname);
           historyPush(this.props.location.pathname);
         }
@@ -235,23 +247,20 @@ export default class Application extends Component {
     }
   }
 
-  hideSearchContainer () {
-    SearchAllActions.exitSearch();
-  }
-
   preloadIssueImages () {
     // console.log("preloadIssueImages func")
     IssueStore.getIssuesVoterCanFollow().forEach(issue => {
       document.createElement("img").src = issue.issue_image_url;
     });
+
     //only need to preload once
     this.issueStoreListener.remove();
   }
 
   render () {
-    var { location: { pathname }} = this.props;
+    let { location: { pathname } } = this.props;
 
-    if (this.state.voter === undefined || location === undefined ) {
+    if (this.state.voter === undefined || location === undefined) {
       return <div style={loadingScreenStyles}>
                 <div>
                   <h1 className="h1">Loading We Vote...</h1>
@@ -259,17 +268,28 @@ export default class Application extends Component {
                 </div>
               </div>;
     }
+
+    if (isCordova()) {
+      let gotoWevoteIntroNetwork = cookies.getItem("cordova_goto_wevoteintro_network");
+      if (gotoWevoteIntroNetwork === null) {
+        //On the first entry in a new Cordoba session, immediately navigate to "/wevoteintro/network"
+        cookies.setItem("cordova_goto_wevoteintro_network", false);  // no expiration time, so a session cookie
+        historyPush("/wevoteintro/network");
+      }
+    }
+
+    // console.log("Application pathname on entry = " + pathname);
     // If looking at these paths, we want to enter theater mode
-    var in_theater_mode = false;
-    var content_full_width_mode = false;
-    var voter_guide_mode = false;
-    let voter_guide_show_getting_started_navigation = false;
+    let inTheaterMode = false;
+    let contentFullWidthMode = false;
+    let voterGuideMode = false;
+    let voterGuideShowGettingStartedNavigation = false;
     if (pathname === "/intro/story" ||
         pathname === "/intro/sample_ballot" ||
         pathname === "/intro/get_started" ||
         pathname === "/voterguidegetstarted" ||
         pathname === "/wevoteintro/network") {
-      in_theater_mode = true;
+      inTheaterMode = true;
     } else if (pathname.startsWith("/candidate/") ||
         pathname === "/facebook_invitable_friends" ||
         pathname === "/friends" ||
@@ -307,30 +327,32 @@ export default class Application extends Component {
         pathname === "/settings/location" ||
         pathname.startsWith("/verifythisisme/") ||
         pathname === "/welcome") {
-      content_full_width_mode = true;
+      contentFullWidthMode = true;
     } else if (pathname.startsWith("/ballot") || pathname === "/bookmarks") {
-      content_full_width_mode = false;
+      contentFullWidthMode = false;
     } else {
-      voter_guide_mode = true;
+      voterGuideMode = true;
+
       // Consider limiting "HeaderGettingStartedBar" to ballot tab only
-      voter_guide_show_getting_started_navigation = true;
+      voterGuideShowGettingStartedNavigation = true;
     }
 
-    let show_back_to_header = false;
+    let showBackToHeader = false;
     if (stringContains("/btdb/", pathname) || stringContains("/btdo/", pathname) || stringContains("/bto/", pathname) || stringContains("/btvg/", pathname)) {
+
       // If here, we want the top header to be "Back To..."
       // "/btdb/" stands for "Back To Default Ballot Page"
       // "/btdo/" stands for "Back To Default Office Page"
       // "/btvg/" stands for "Back To Voter Guide Page"
       // "/bto/" stands for "Back To Voter Guide Office Page"
-      show_back_to_header = true;
+      showBackToHeader = true;
     }
 
-    const headRoomSize = voter_guide_show_getting_started_navigation || stringContains("/ballot", pathname) || pathname === "/bookmarks" ?
+    const headRoomSize = voterGuideShowGettingStartedNavigation || stringContains("/ballot", pathname) || pathname === "/bookmarks" ?
       "headroom-getting-started__margin" :
       "headroom-wrapper";
 
-    if (in_theater_mode) {
+    if (inTheaterMode) {
       return <div className="app-base" id="app-base-id">
         <div className="page-content-container">
           <div className="container-fluid">
@@ -342,21 +364,20 @@ export default class Application extends Component {
           </div>
         </div>
       </div>;
-    } else if (voter_guide_mode) {
-      // console.log("voter_guide_mode", voter_guide_mode);
-      let hideGettingStartedIssuesButton = voter_guide_show_getting_started_navigation;
-      let hideGettingStartedOrganizationsButton = voter_guide_show_getting_started_navigation;
+    } else if (voterGuideMode) {
+      // console.log("voterGuideMode", voterGuideMode);
+      let hideGettingStartedButtons = voterGuideShowGettingStartedNavigation;
 
       return <div className="app-base" id="app-base-id">
         <ToastContainer closeButton={false} />
         <div className={headRoomSize}>
           <div ref="pageHeader" className={ this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom" }>
-            { show_back_to_header ?
+            { showBackToHeader ?
               <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
               <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/> }
-            { voter_guide_show_getting_started_navigation || stringContains("/ballot", pathname) ?
-              <HeaderGettingStartedBar hideGettingStartedOrganizationsButton={hideGettingStartedOrganizationsButton}
-                                       hideGettingStartedIssuesButton={hideGettingStartedIssuesButton}
+            { voterGuideShowGettingStartedNavigation || stringContains("/ballot", pathname) ?
+              <HeaderGettingStartedBar hideGettingStartedOrganizationsButton={hideGettingStartedButtons}
+                                       hideGettingStartedIssuesButton={hideGettingStartedButtons}
                                        pathname={pathname}
                                        voter={this.state.voter}/> :
               null }
@@ -370,7 +391,7 @@ export default class Application extends Component {
       <ToastContainer closeButton={false} />
       <div className={headRoomSize}>
         <div ref="pageHeader" className={ this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom" }>
-          { show_back_to_header ?
+          { showBackToHeader ?
             <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
             <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/> }
           { stringContains("/ballot", pathname) || pathname === "/bookmarks" ?
@@ -378,13 +399,18 @@ export default class Application extends Component {
             null }
         </div>
       </div>
-      { pathname === "/welcome" || !content_full_width_mode ? <div>{ this.props.children }</div> :
+      { pathname === "/welcome" || !contentFullWidthMode ? <div>{ this.props.children }</div> :
         <div className="page-content-container">
           <div className="container-fluid">
             <div className="container-main">
               { this.props.children }
             </div>
           </div>
+        </div>
+      }
+      { isCordova() &&
+        <div className={"room-wrapper"}>
+          <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter}/>
         </div>
       }
     </div>;
