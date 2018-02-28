@@ -207,8 +207,8 @@ export default class Ballot extends Component {
   }
 
   componentWillReceiveProps (nextProps){
-    console.log("Ballot componentWillReceiveProps, nextProps: ", nextProps);
-    console.log("Ballot this.state: ", this.state);
+    // console.log("Ballot componentWillReceiveProps, nextProps: ", nextProps);
+    // console.log("Ballot this.state: ", this.state);
     let filter_type = nextProps.location && nextProps.location.query ? nextProps.location.query.type : "all";
 
     // We don't want to let the google_civic_election_id disappear
