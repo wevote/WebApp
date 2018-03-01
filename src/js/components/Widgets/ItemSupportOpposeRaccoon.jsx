@@ -416,11 +416,11 @@ export default class ItemSupportOpposeRaccoon extends Component {
       // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
       let organizationNameSupportList = IssueStore.getOrganizationNameSupportListUnderThisBallotItem(this.state.ballot_item_we_vote_id);
       let organizationNameSupportListDisplay = organizationNameSupportList.map( organization_name => {
-        return <span key={organization_name}><br /><span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /> {organization_name} <strong>+1</strong></span></span>;
+        return <span key={organization_name} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{organization_name} <strong>+1</strong></span></span>;
       });
       let organizationNameOpposeList = IssueStore.getOrganizationNameOpposeListUnderThisBallotItem(this.state.ballot_item_we_vote_id);
       let organizationNameOpposeListDisplay = organizationNameOpposeList.map( organization_name => {
-        return <span key={organization_name}><br /><span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" /> {organization_name} <strong>-1</strong></span></span>;
+        return <span key={organization_name} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{organization_name} <strong>-1</strong></span></span>;
       });
       displayAdvisorsThatMakeVoterIssuesScore = <span>
         { organizationNameSupportList.length ? <span>{organizationNameSupportListDisplay}</span> : null}
