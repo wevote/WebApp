@@ -35,15 +35,6 @@ $neg-space-lg: -$space-lg;
     padding-top: $header-extension-top;
     margin-top: $minus-header-extension-top;
     overflow: hidden;
-
-    &__voter-guide {
-      width: 100%;
-      background-color: $white;
-      border-bottom: 1px solid #aaa;
-      padding-top: $header-extension-top-voter-guide;
-      margin-top: $minus-header-extension-top-voter-guide;
-      overflow: hidden;
-    }
   }
 
   &__header {

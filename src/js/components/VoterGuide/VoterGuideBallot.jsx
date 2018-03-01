@@ -582,65 +582,63 @@ export default class VoterGuideBallot extends Component {
                                                               /> : null }
       { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this.toggleBallotSummaryModal} /> : null }
 
-      <div className="ballot__heading__voter-guide">
-        <div className="card">
-          <div className="card-main">
-            <Helmet title={this.state.organization.organization_name + " - We Vote"} />
-            <BrowserPushMessage incomingProps={this.props} />
-            <header className="ballot__header__group">
-              <h1 className="h3 ballot__header__title-voter-guide">
-                { election_name ?
-                  <OverlayTrigger placement="top" overlay={electionTooltip} >
-                   <span className="u-push--sm">{election_name}</span>
-                  </OverlayTrigger> :
-                  null
-                }
-                {/* We always show the change election option */}
-                <span className="u-no-break hidden-print u-f8 u-cursor--pointer"
-                      onClick={this.toggleSelectBallotModal}>
-                  <img src={cordovaDot("/img/global/icons/gear-icon.png")}
-                       role="button"
-                       alt={"change address or election"} />
-                  &nbsp;change address or election
-                </span>
-              </h1>
-            </header>
-
-            <div className="hidden-print">
-              { ballot_with_organization_items.length ?
-                <PledgeToSupportOrganizationStatusBar organization={this.state.organization} /> :
+      <div className="card">
+        <div className="card-main">
+          <Helmet title={this.state.organization.organization_name + " - We Vote"} />
+          <BrowserPushMessage incomingProps={this.props} />
+          <header className="ballot__header__group">
+            <h1 className="h3 ballot__header__title-voter-guide">
+              { election_name ?
+                <OverlayTrigger placement="top" overlay={electionTooltip} >
+                 <span className="u-push--sm">{election_name}</span>
+                </OverlayTrigger> :
                 null
               }
-              {/* Turned off for now:
-               <PledgeToVoteStatusBar organization={this.state.organization} /> */}
-            </div>
+              {/* We always show the change election option */}
+              <span className="u-no-break hidden-print u-f8 u-cursor--pointer"
+                    onClick={this.toggleSelectBallotModal}>
+                <img src={cordovaDot("/img/global/icons/gear-icon.png")}
+                     role="button"
+                     alt={"change address or election"} />
+                &nbsp;change address or election
+              </span>
+            </h1>
+          </header>
 
-            <div className="hidden-print">
-              { ballot_with_organization_items.length ?
-                <PledgeToSupportOrganizationButton organization={this.state.organization}
-                                                 pledgeToVoteAction={this.pledgeToVoteWithVoterGuide} /> :
-                null
-              }
-              {/* Turned off for now:
-               <PledgeToVoteButton organization={this.state.organization}
-                                   pledgeToVoteAction={this.pledgeToVoteWithVoterGuide} />*/}
-            </div>
-
-            { this.state.ballot_with_all_items.length ?
-              <div>
-                <BallotStatusMessage ballot_location_chosen
-                                     ballot_location_display_name={ballot_location_display_name}
-                                     election_day_text={ElectionStore.getElectionDayText(this.state.google_civic_election_id)}
-                                     election_is_upcoming={ElectionStore.isElectionUpcoming(this.state.google_civic_election_id)}
-                                     voter_entered_address={voter_entered_address}
-                                     google_civic_data_exists={ElectionStore.googleCivicDataExists(this.state.google_civic_election_id)}
-                                     voter_specific_ballot_from_google_civic={voter_specific_ballot_from_google_civic}
-                                     toggleSelectBallotModal={this.toggleSelectBallotModal}
-                                     google_civic_election_id={this.state.google_civic_election_id} />
-              </div> :
+          <div className="hidden-print">
+            { ballot_with_organization_items.length ?
+              <PledgeToSupportOrganizationStatusBar organization={this.state.organization} /> :
               null
             }
+            {/* Turned off for now:
+             <PledgeToVoteStatusBar organization={this.state.organization} /> */}
           </div>
+
+          <div className="hidden-print">
+            { ballot_with_organization_items.length ?
+              <PledgeToSupportOrganizationButton organization={this.state.organization}
+                                               pledgeToVoteAction={this.pledgeToVoteWithVoterGuide} /> :
+              null
+            }
+            {/* Turned off for now:
+             <PledgeToVoteButton organization={this.state.organization}
+                                 pledgeToVoteAction={this.pledgeToVoteWithVoterGuide} />*/}
+          </div>
+
+          { this.state.ballot_with_all_items.length ?
+            <div>
+              <BallotStatusMessage ballot_location_chosen
+                                   ballot_location_display_name={ballot_location_display_name}
+                                   election_day_text={ElectionStore.getElectionDayText(this.state.google_civic_election_id)}
+                                   election_is_upcoming={ElectionStore.isElectionUpcoming(this.state.google_civic_election_id)}
+                                   voter_entered_address={voter_entered_address}
+                                   google_civic_data_exists={ElectionStore.googleCivicDataExists(this.state.google_civic_election_id)}
+                                   voter_specific_ballot_from_google_civic={voter_specific_ballot_from_google_civic}
+                                   toggleSelectBallotModal={this.toggleSelectBallotModal}
+                                   google_civic_election_id={this.state.google_civic_election_id} />
+            </div> :
+            null
+          }
         </div>
       </div>
 
