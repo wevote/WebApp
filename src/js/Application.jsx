@@ -352,6 +352,11 @@ export default class Application extends Component {
       "headroom-getting-started__margin" :
       "headroom-wrapper";
 
+    let pageHeaderStyle = this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom";
+    if (isCordova()) {
+      pageHeaderStyle += " page-header-cordova";
+    }
+
     if (inTheaterMode) {
       return <div className="app-base" id="app-base-id">
         <div className="page-content-container">
@@ -370,8 +375,9 @@ export default class Application extends Component {
 
       return <div className="app-base" id="app-base-id">
         <ToastContainer closeButton={false} />
+        { isCordova() && <div className={"ios7plus-spacer"} /> }
         <div className={headRoomSize}>
-          <div ref="pageHeader" className={ this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom" }>
+          <div ref="pageHeader" className={pageHeaderStyle}>
             { showBackToHeader ?
               <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
               <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/> }
@@ -389,8 +395,9 @@ export default class Application extends Component {
 
     return <div className="app-base" id="app-base-id">
       <ToastContainer closeButton={false} />
+      { isCordova() && <div className={"ios7plus-spacer"} /> }
       <div className={headRoomSize}>
-        <div ref="pageHeader" className={ this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom" }>
+        <div ref="pageHeader" className={pageHeaderStyle}>
           { showBackToHeader ?
             <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
             <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/> }

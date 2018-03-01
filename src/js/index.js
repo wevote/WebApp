@@ -11,18 +11,20 @@ if (!Object.assign) {
 }
 
 function startApp () {
-  // prevent keyboard scrolling our view
-  // if (window.cordova && window.cordova.plugins.Keyboard) {
-  //   window.cordova.plugins.Keyboard.disableScroll(true);
-  //   window.cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
-  // }
 
   // http://harrymoreno.com/2015/07/14/Deploying-a-React-App-to-Cordova.html
   if (window.device && device.platform === "iOS") {   // eslint-disable-line no-undef
     console.log("cordova startup device: " + device); // eslint-disable-line no-undef
     console.log("cordova startup window.screen: ", window.screen);
 
-    //styles.base.paddingTop = '20px';
+    // prevent keyboard scrolling our view, https://www.npmjs.com/package/cordova-plugin-keyboard
+    if (window.Keyboard) {
+      console.log("STEVE startupApp keyboard plugin found");
+      Keyboard.shrinkView(true);
+      window.addEventListener('keyboardDidShow', function () {
+        document.activeElement.scrollIntoView();
+      });
+    } else console.log("STEVE startupApp keyboard NOT NOT NOT plugin found");
   }
 
   render(<Router history={isCordova() ? hashHistory : browserHistory } render={applyRouterMiddleware(useScroll(()=>true))}>
