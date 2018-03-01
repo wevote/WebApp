@@ -34,7 +34,6 @@ import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 import { calculateBallotBaseUrl } from "../../utils/textFormat";
 
-
 const web_app_config = require("../../config");
 
 // Related to WebApp/src/js/routes/Ballot/Ballot.jsx
@@ -45,7 +44,7 @@ export default class VoterGuideBallot extends Component {
     params: PropTypes.object,
   };
 
-  constructor (props){
+  constructor (props) {
     super(props);
     this.state = {
       ballotElectionList: [],
@@ -53,13 +52,13 @@ export default class VoterGuideBallot extends Component {
       ballot_location_shortcut: "",
       candidate_for_modal: {
         voter_guides_to_follow_for_latest_ballot_item: [],
-        position_list: []
+        position_list: [],
       },
       hide_intro_modal_from_url: 0,
       hide_intro_modal_from_cookie: 0,
       measure_for_modal: {
         voter_guides_to_follow_for_latest_ballot_item: [],
-        position_list: []
+        position_list: [],
       },
       mounted: false,
       organization: {},
@@ -154,7 +153,7 @@ export default class VoterGuideBallot extends Component {
       // console.log("ballot_with_all_items !== undefined");
       this.setState({
         ballot_with_all_items: ballot_with_all_items,
-        filter_type: filter_type
+        filter_type: filter_type,
       });
     }
     // We need a ballotStoreListener here because we want the ballot to display before positions are received
@@ -194,11 +193,11 @@ export default class VoterGuideBallot extends Component {
       organization: this.props.organization,
       pathname: this.props.location.pathname,
       voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.props.organization.organization_we_vote_id, VoterStore.election_id()),
-      wait_until_voter_sign_in_completes: wait_until_voter_sign_in_completes
+      wait_until_voter_sign_in_completes: wait_until_voter_sign_in_completes,
     });
   }
 
-  componentWillReceiveProps (nextProps){
+  componentWillReceiveProps (nextProps) {
     // console.log("VoterGuideBallot componentWillReceiveProps, nextProps: ", nextProps);
     // console.log("VoterGuideBallot this.state: ", this.state);
     let filter_type = nextProps.location && nextProps.location.query ? nextProps.location.query.type : "all";
@@ -238,10 +237,12 @@ export default class VoterGuideBallot extends Component {
     }
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     // console.log("VoterGuideBallot componentWillUnmount");
-    this.setState({mounted: false});
-    if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){
+    this.setState({
+      mounted: false,
+    });
+    if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false) {
       // No ballot found
     }
     this.ballotStoreListener.remove();
@@ -264,7 +265,7 @@ export default class VoterGuideBallot extends Component {
 
     this.setState({
       candidate_for_modal: candidate_for_modal,
-      showCandidateModal: !this.state.showCandidateModal
+      showCandidateModal: !this.state.showCandidateModal,
     });
   }
 
@@ -277,7 +278,7 @@ export default class VoterGuideBallot extends Component {
     }
     this.setState({
       measure_for_modal: measure_for_modal,
-      showMeasureModal: !this.state.showMeasureModal
+      showMeasureModal: !this.state.showMeasureModal,
     });
   }
 
@@ -286,13 +287,13 @@ export default class VoterGuideBallot extends Component {
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
     this.setState({
-      showSelectBallotModal: !this.state.showSelectBallotModal
+      showSelectBallotModal: !this.state.showSelectBallotModal,
     });
   }
 
   toggleBallotSummaryModal () {
     this.setState({
-      showBallotSummaryModal: !this.state.showBallotSummaryModal
+      showBallotSummaryModal: !this.state.showBallotSummaryModal,
     });
   }
 
@@ -300,21 +301,23 @@ export default class VoterGuideBallot extends Component {
     // console.log("VoterGuideBallot.jsx onVoterStoreChange");
     if (this.state.mounted) {
       let consider_opening_ballot_intro_modal = true;
-      if ( this.state.wait_until_voter_sign_in_completes ) {
+      if (this.state.wait_until_voter_sign_in_completes) {
         consider_opening_ballot_intro_modal = false;
-        if ( this.state.voter && this.state.voter.is_signed_in ) {
+        if (this.state.voter && this.state.voter.is_signed_in) {
           consider_opening_ballot_intro_modal = true;
-          this.setState({ wait_until_voter_sign_in_completes: undefined });
+          this.setState({
+            wait_until_voter_sign_in_completes: undefined,
+          });
           // console.log("onVoterStoreChange, about to historyPush(this.state.pathname):", this.state.pathname);
           historyPush(this.state.pathname);
         }
       }
 
-      if ( this.state.hide_intro_modal_from_cookie || this.state.hide_intro_modal_from_url ) {
+      if (this.state.hide_intro_modal_from_cookie || this.state.hide_intro_modal_from_url) {
         consider_opening_ballot_intro_modal = false;
       }
       // console.log("VoterGuideBallot.jsx onVoterStoreChange VoterStore.getVoter: ", VoterStore.getVoter());
-      if ( consider_opening_ballot_intro_modal ) {
+      if (consider_opening_ballot_intro_modal) {
         this.setState({
           voter: VoterStore.getVoter(),
           google_civic_election_id: parseInt(VoterStore.election_id(), 10),
@@ -328,7 +331,7 @@ export default class VoterGuideBallot extends Component {
     }
   }
 
-  onBallotStoreChange (){
+  onBallotStoreChange () {
     // console.log("VoterGuideBallot.jsx onBallotStoreChange, BallotStore.ballot_properties: ", BallotStore.ballot_properties);
     if (this.state.mounted) {
       if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) {
@@ -339,7 +342,7 @@ export default class VoterGuideBallot extends Component {
         let new_filter_type = this.state.location && this.state.location.query && this.state.location.query.type !== "" ? this.state.location.query.type : prior_filter_type;
         this.setState({
           ballot_with_all_items: BallotStore.getBallotByFilterType(new_filter_type),
-          filter_type: new_filter_type
+          filter_type: new_filter_type,
         });
       }
     }
@@ -347,13 +350,15 @@ export default class VoterGuideBallot extends Component {
       this.setState({
         ballot_returned_we_vote_id: BallotStore.ballot_properties.ballot_returned_we_vote_id || "",
         ballot_location_shortcut: BallotStore.ballot_properties.ballot_location_shortcut || "",
-        google_civic_election_id: parseInt(BallotStore.ballot_properties.google_civic_election_id, 10)
+        google_civic_election_id: parseInt(BallotStore.ballot_properties.google_civic_election_id, 10),
       });
     }
-    this.setState({ballotElectionList: BallotStore.ballotElectionList()});
+    this.setState({
+      ballotElectionList: BallotStore.ballotElectionList(),
+    });
   }
 
-  onElectionStoreChange (){
+  onElectionStoreChange () {
     // console.log("Elections, onElectionStoreChange");
     let elections_list = ElectionStore.getElectionList();
     let elections_locations_list = [];
@@ -363,7 +368,7 @@ export default class VoterGuideBallot extends Component {
     let ballot_location_shortcut;
     let ballot_returned_we_vote_id;
 
-    for (var i = 0; i < elections_list.length; i++){
+    for (var i = 0; i < elections_list.length; i++) {
       var election = elections_list[i];
       elections_locations_list.push(election);
       ballot_returned_we_vote_id = "";
@@ -393,7 +398,7 @@ export default class VoterGuideBallot extends Component {
     });
   }
 
-  _onOrganizationStoreChange (){
+  _onOrganizationStoreChange () {
     // console.log("VoterGuideBallot _onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
@@ -415,22 +420,22 @@ export default class VoterGuideBallot extends Component {
       this.setState({
         candidate_for_modal: {
           ...this.state.candidate_for_modal,
-          voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem()
+          voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
         },
-        voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id())
+        voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id()),
       });
     } else if (this.state.measure_for_modal) {
       this.setState({
         measure_for_modal: {
           ...this.state.measure_for_modal,
-          voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem()
+          voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
         },
-        voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id())
+        voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id()),
       });
     }
   }
 
-  componentDidUpdate (){
+  componentDidUpdate () {
     this.hashLinkScroll();
   }
 
@@ -449,13 +454,13 @@ export default class VoterGuideBallot extends Component {
     }
   }
 
-  getEmptyMessageByFilterType (filter_type){
+  getEmptyMessageByFilterType (filter_type) {
     switch (filter_type) {
       case "filterRemaining":
         return "You already chose a candidate or position for each ballot item";
       case "filterSupport":
         return "You haven't supported any candidates or measures yet.";
-      default :
+      default:
         return "";
     }
   }
