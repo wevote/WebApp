@@ -12,20 +12,20 @@ import ImageHandler from "../components/ImageHandler";
 
 export default class SearchAllBox extends Component {
   static propTypes = {
+    open: PropTypes.bool,
+    selected_index: PropTypes.number,
     text_from_search_field: PropTypes.string,
     voter: PropTypes.object,
-    selected_index: PropTypes.number,
-    open: PropTypes.bool
   };
 
-  constructor (props){
+  constructor (props) {
     super(props);
 
     this.state = {
       open: false,
-      selected_index: 0,
       search_results: [],
-      text_from_search_field: ""
+      selected_index: 0,
+      text_from_search_field: "",
     };
 
     this.links = [];
@@ -43,7 +43,7 @@ export default class SearchAllBox extends Component {
     this.navigateToSelectedLink = this.navigateToSelectedLink.bind(this);
   }
 
-  componentDidMount (){
+  componentDidMount () {
     this.siteLogoText = $(".page-logo:nth-child(1)");
     this.ballot = $(".header-nav__item:nth-child(1)");
     this.network = $(".header-nav__item:nth-child(2)");
@@ -66,15 +66,15 @@ export default class SearchAllBox extends Component {
     this.searchAllStoreListener = SearchAllStore.addListener(this._onSearchAllStoreChange.bind(this));
   }
 
-  componentWillReceiveProps (){
+  componentWillReceiveProps () {
     this._onSearchAllStoreChange();
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.searchAllStoreListener.remove();
   }
 
-  _onSearchAllStoreChange (){
+  _onSearchAllStoreChange () {
     var new_state = {};
 
     if (SearchAllStore.getSearchResults()) {
@@ -94,9 +94,11 @@ export default class SearchAllBox extends Component {
     this.setState(new_state);
   }
 
-  onSearchFieldTextChange (event){
+  onSearchFieldTextChange (event) {
     let search_text = event.target.value;
-    this.setState({text_from_search_field: search_text});
+    this.setState({
+      text_from_search_field: search_text,
+    });
     //If text field is empty, hide the results. If not, perform search
     if (search_text === "") {
       this.clearSearch();
@@ -167,9 +169,13 @@ export default class SearchAllBox extends Component {
     e.preventDefault();
 
     if (keyArrowUp) {
-      this.setState({selected_index: Math.max(0, this.state.selected_index - 1)});
+      this.setState({
+        selected_index: Math.max(0, this.state.selected_index - 1),
+      });
     } else if (keyArrowDown) {
-      this.setState({selected_index: Math.min(this.state.selected_index + 1, this.state.search_results.length - 1)});
+      this.setState({
+        selected_index: Math.min(this.state.selected_index + 1, this.state.search_results.length - 1),
+      });
     } else if (keyEscape) {
       this.clearSearch();
     }
@@ -182,7 +188,9 @@ export default class SearchAllBox extends Component {
 
   onSearchResultMouseOver (e) {
     let idx = parseInt(e.currentTarget.getAttribute("data-idx"), 10);
-    this.setState({selected_index: idx});
+    this.setState({
+      selected_index: idx,
+    });
   }
 
   onSearchResultClick () {
@@ -209,7 +217,12 @@ export default class SearchAllBox extends Component {
     e.preventDefault();
     e.stopPropagation();
 
-    this.setState({text_from_search_field: "", open: true, selected_index: 0, search_results: []});
+    this.setState({
+      text_from_search_field: "",
+      open: true,
+      selected_index: 0,
+      search_results: [],
+    });
 
     //setTimeout(() => {
     //   this.refs.searchAllBox.focus();
@@ -226,7 +239,10 @@ export default class SearchAllBox extends Component {
       return;
     }
 
-    this.setState({text_from_search_field: selectedResultText, open: false});
+    this.setState({
+      text_from_search_field: selectedResultText,
+      open: false,
+    });
     //Update the search results to the selected query
     SearchAllActions.searchAll(selectedResultText);
   }
@@ -237,29 +253,38 @@ export default class SearchAllBox extends Component {
 
   clearSearch () {
     setTimeout(() => {
-      this.setState({open: false, text_from_search_field: "", selected_index: 0, search_results: []});
+      this.setState({
+        open: false,
+        text_from_search_field: "",
+        selected_index: 0,
+        search_results: [],
+      });
     }, 0);
   }
 
   hideResults () {
-    this.setState({open: false});
+    this.setState({
+      open: false,
+    });
   }
 
   displayResults () {
-    this.setState({open: true});
+    this.setState({
+      open: true,
+    });
   }
 
   render () {
     let search_results = this.state.search_results;
     let search_container_classes = classNames({
       "search-container__hidden": !this.state.open,
-      "search-container": true
+      "search-container": true,
     });
     let clear_button_classes = classNames({
       "site-search__clear": true,
       "btn": true,
       "btn-default": true,
-      "site-search__clear__hidden": !this.state.text_from_search_field.length
+      "site-search__clear__hidden": !this.state.text_from_search_field.length,
     });
 
     return <div className="page-header__search">
@@ -279,8 +304,12 @@ export default class SearchAllBox extends Component {
                    value={this.state.text_from_search_field}
                    ref="searchAllBox" />
             <div className="input-group-btn">
-              <button className={clear_button_classes} onClick={this.onClearSearch}><i className="glyphicon glyphicon-remove-circle u-gray-light" /></button>
-              <button className="site-search__button btn btn-default" type="submit"><i className="glyphicon glyphicon-search" /></button>
+              <button className={clear_button_classes} onClick={this.onClearSearch}>
+                <i className="glyphicon glyphicon-remove-circle u-gray-light" />
+              </button>
+              <button className="site-search__button btn btn-default" type="submit">
+                <i className="glyphicon glyphicon-search" />
+              </button>
             </div>
           </div>
         </form>
@@ -331,7 +360,8 @@ export default class SearchAllBox extends Component {
                   </div>
                 </Link>;
               }
-          }) }
+            })
+          }
         </div>
       </div>;
   }
