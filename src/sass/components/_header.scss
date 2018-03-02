@@ -150,6 +150,11 @@ $space-header-height:  20px;
   min-width: 80%;
   z-index: 1;
 
+  @include breakpoints(max mid-small) {
+    left: -86px;
+    width: 100vw;
+  }
+
   &__hidden {
     display: none !important;
   }
