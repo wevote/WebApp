@@ -43,6 +43,10 @@ export default class PledgeToVoteStatusBar extends Component {
   }
 
   render () {
+    let turned_off = true; // We don't want to use the status bar yet
+    if (turned_off) {
+      return null;
+    }
     let number_of_supporters_goal = 0;
     let number_of_supporters = 0;
     let percent_complete = 0;

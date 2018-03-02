@@ -7,15 +7,14 @@ export default function ToolsToShareOnOtherWebsites () {
   return <div>
     <Helmet title="Free civic engagement tools - We Vote" />
     <div className="container-fluid well">
-      <h1 className="h1">Free Civic Engagement Tools</h1>
+      <h1 className="h1">Tools For Your Website</h1>
 
-      <p>WeVote.US wants to give you our technology to use — for <strong>FREE</strong><br />on your website.</p>
+      <p>WeVote.US wants to give you our technology to use, for <strong>FREE</strong>, on your website.</p>
 
       <h2 className="h3">Why use WeVote.US tools?</h2>
       <ul>
         <li>All our of tools work in all 50 states and the District of Columbia.</li>
-        <li>They’re fast and mobile-optimized, they’re free to use, and they’re the best tools on the market.</li>
-        <li>Battle tested: these are the exact same tools we use at WeVote.US.</li>
+        <li>They’re fast and mobile-optimized, they’re free to use, and they’re the best tools available.</li>
       </ul>
 
       <h2 className="h3">Adding the tools to your website takes less than 2 minutes.</h2>
@@ -37,7 +36,7 @@ export default function ToolsToShareOnOtherWebsites () {
       <div className="row">
         <CodeCopier title="Interactive Ballot Tool"
                     sourceUrl="https://wevote.us/ballot"
-                    imageUrl="/img/tools/ballot.png" />
+                    imageUrl="/img/tools/We-Vote-Example-Ballot.png" />
         <CodeCopier title="Voter Guide Tool"
                     exampleUrl="https://wevote.us/lwv_oakland"
                     imageUrl="/img/tools/guide.png" />

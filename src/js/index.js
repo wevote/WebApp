@@ -21,7 +21,7 @@ function startApp () {
     if (window.Keyboard) {
       console.log("STEVE startupApp keyboard plugin found");
       Keyboard.shrinkView(true);
-      window.addEventListener('keyboardDidShow', function () {
+      window.addEventListener("keyboardDidShow", function () {
         document.activeElement.scrollIntoView();
       });
     } else console.log("STEVE startupApp keyboard NOT NOT NOT plugin found");
