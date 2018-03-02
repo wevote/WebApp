@@ -7,6 +7,7 @@ $header-height-getting-started: 104px;
 $nav-item-getting-started-background-hover-color: darken($page-header-getting-started-background-color, 5%);
 $nav-item-getting-started-background-active-color: darken($page-header-getting-started-background-color, 10%);
 $footer-menu-margin: 130px;
+$space-hamburger: 5px;
 
 // Header Nav
 // ================================
@@ -209,7 +210,7 @@ $footer-menu-margin: 130px;
     display: block;
   }
   &__avatar-wrapper {
-    z-index: 3; //to float above the account menu option grey div
+    z-index: 3; //to float above the account/ProfilePopUp menu option grey div
   }
 }
 
@@ -293,4 +294,10 @@ $footer-menu-margin: 130px;
     justify-content: center;
     align-items: center;
   }
+}
+
+.hamburger {
+  font-size: 20px;
+  padding-top: $space-hamburger;
+  z-index: 3; //to float above the ProfilePopUp menu option grey div
 }

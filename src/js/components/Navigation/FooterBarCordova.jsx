@@ -131,54 +131,56 @@ export default class FooterBarCordova extends Component {
 
     return <div style={footStyle}>
       <div style={footContainer} >
-      <span className="fa fa-bars" style={{ fontSize: 20, paddingTop: 5 }} onClick={this.toggleProfilePopUp} />
-      {this.state.profilePopUpOpen &&
-      <HeaderBarProfilePopUp {...this.props}
-                             onClick={this.toggleProfilePopUp}
-                             profilePopUpOpen={this.state.profilePopUpOpen}
-                             bookmarks={this.state.bookmarks}
-                             weVoteBrandingOff={this.state.we_vote_branding_off}
-                             toggleProfilePopUp={this.toggleProfilePopUp}
-                             hideProfilePopUp={this.hideProfilePopUp}
-                             transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
-                             signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)}
-      />
-      }
-      {showFullNavigation && <span>{HeaderBar.ballot(pathname === "/ballot")}</span>}
+        <span className={"hamburger"}>
+          <span className="fa fa-bars" onClick={this.toggleProfilePopUp} />
+        </span>
+        {this.state.profilePopUpOpen &&
+        <HeaderBarProfilePopUp {...this.props}
+                               onClick={this.toggleProfilePopUp}
+                               profilePopUpOpen={this.state.profilePopUpOpen}
+                               bookmarks={this.state.bookmarks}
+                               weVoteBrandingOff={this.state.we_vote_branding_off}
+                               toggleProfilePopUp={this.toggleProfilePopUp}
+                               hideProfilePopUp={this.hideProfilePopUp}
+                               transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
+                               signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)}
+        />
+        }
+        {showFullNavigation && <span>{HeaderBar.ballot(pathname === "/ballot")}</span>}
 
-      {showFullNavigation && <span>{HeaderBar.network(inNetworkSection, numberOfIncomingFriendRequests)}</span>}
-      {weVoteBrandingOff ? null :
-        <span>
-           {showFullNavigation ?
-             <span onClick={this.toggleAboutMenu}
-                   className={"header-nav__item header-nav__item--about header-nav__item--has-icon hidden-xs" + (pathname === "/more/about" ? " active-icon" : "")}>
-               <span className="header-nav__icon--about">About</span>
-               <span className="header-nav__label">We Vote</span>
-               <HeaderBarAboutMenu toggleAboutMenu={this.toggleAboutMenu} aboutMenuOpen={this.state.aboutMenuOpen}/>
-             </span> :
-             <div>
-               <Link to="/more/about"
-                     className={"header-nav__item header-nav__item--about" + (pathname === "/more/about" ? " active-icon" : "")}>
+        {showFullNavigation && <span>{HeaderBar.network(inNetworkSection, numberOfIncomingFriendRequests)}</span>}
+        {weVoteBrandingOff ? null :
+          <span>
+             {showFullNavigation ?
+               <span onClick={this.toggleAboutMenu}
+                     className={"header-nav__item header-nav__item--about header-nav__item--has-icon hidden-xs" + (pathname === "/more/about" ? " active-icon" : "")}>
                  <span className="header-nav__icon--about">About</span>
                  <span className="header-nav__label">We Vote</span>
-               </Link>
-             </div>
-           }
-         </span>
-      }
+                 <HeaderBarAboutMenu toggleAboutMenu={this.toggleAboutMenu} aboutMenuOpen={this.state.aboutMenuOpen}/>
+               </span> :
+               <div>
+                 <Link to="/more/about"
+                       className={"header-nav__item header-nav__item--about" + (pathname === "/more/about" ? " active-icon" : "")}>
+                   <span className="header-nav__icon--about">About</span>
+                   <span className="header-nav__label">We Vote</span>
+                 </Link>
+               </div>
+             }
+           </span>
+        }
 
-      {showFullNavigation ?
-        null :
-        <button type="button" className="btn btn-sm btn-success"
-                onClick={this.goToGetStarted}>Sample Ballot</button>}
+        {showFullNavigation ?
+          null :
+          <button type="button" className="btn btn-sm btn-success"
+                  onClick={this.goToGetStarted}>Sample Ballot</button>}
 
-      {showFullNavigation ?
-        null :
-        <Link to="/more/sign_in" className="sign_in header-nav__item">
-          Sign In
-        </Link>
-      }
-    </div>
+        {showFullNavigation ?
+          null :
+          <Link to="/more/sign_in" className="sign_in header-nav__item">
+            Sign In
+          </Link>
+        }
+      </div>
     </div>;
   }
 }
