@@ -311,9 +311,10 @@ export default class HeaderGettingStartedBar extends Component {
     </Modal>;
 
     let currentPathname = this.props.pathname ? this.props.pathname : "/ballot";
-    let ballotBaseUrl = webAppConfig.WE_VOTE_URL_PROTOCOL + (isWebApp() ? webAppConfig.WE_VOTE_HOSTNAME : "wevote.us") + currentPathname;
-    let encodedMessage = encodeURIComponent("View your ballot, learn from friends, share your vision, and make sure to #Vote! #WeVote via @WeVote");
-    let twitterData = "https://twitter.com/intent/tweet?text=" + encodedMessage + "&amp;url=" + encodeURIComponent(ballotBaseUrl);
+    let ballotBaseUrl = webAppConfig.WE_VOTE_URL_PROTOCOL + (isWebApp() ? webAppConfig.WE_VOTE_HOSTNAME : "WeVote.US") + currentPathname;
+    // We want to add a tracking code here so we can count shares. Vote.org does it this way: https://www.vote.org/#.WpiRvFhU3V4.twitter
+    let encodedMessage = encodeURIComponent("Check out your ballot, and get ready to vote. #Vote via @WeVote");
+    let twitterIntent = "https://twitter.com/intent/tweet?url=" + encodeURIComponent(ballotBaseUrl) + "&text=" + encodedMessage + "&hashtags=Voting,WeVote";
 
     return <div className="page-getting-started-header-background">
       { voterThoroughOrientationComplete ?
@@ -349,7 +350,7 @@ export default class HeaderGettingStartedBar extends Component {
                                    facebookIcon
                                     />
             </div>}
-            <GettingStartedBarItem url={twitterData}
+            <GettingStartedBarItem url={twitterIntent}
                                    title="Tweet Ballot"
                                    twitterIcon
                                    isExternal/>

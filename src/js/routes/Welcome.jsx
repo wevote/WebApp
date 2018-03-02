@@ -163,17 +163,17 @@ export default class Intro extends Component {
   }
 
   shareToTwitterButton () {
-    let url = "https://twitter.com/share?url=https%3A%2F%2FWeVote.US%2F%20&text=Check%20out%20https%3A%2F%2FWeVote.US%2F!%20View%20your%20ballot.%20Learn%20from%20friends.%20Share%20your%20vision.%20@WeVote&hashtags=Voting,WeVote";
-    let title = "Share On Twitter";
-    let default_width = 600;
-    let default_height = 600;
-    let half_screen_width = screen.width / 2;
-    let half_default_width = default_width / 2;
-    let half_screen_height = screen.height / 2;
-    let half_default_height = default_height / 2;
-    var left = half_screen_width - half_default_width;
-    var top = half_screen_height - half_default_height;
-    return window.open(url, title, "toolbar=no, width=" + default_width + ", height=" + default_height + ", top=" + top + " left=" + left);
+    // let url = "https://twitter.com/share?url=https%3A%2F%2FWeVote.US%2F%20&text=Check%20out%20https%3A%2F%2FWeVote.US%2F!%20View%20your%20ballot.%20Learn%20from%20friends.%20Share%20your%20vision.%20@WeVote&hashtags=Voting,WeVote";
+    // let title = "Share On Twitter";
+    // let default_width = 600;
+    // let default_height = 600;
+    // let half_screen_width = screen.width / 2;
+    // let half_default_width = default_width / 2;
+    // let half_screen_height = screen.height / 2;
+    // let half_default_height = default_height / 2;
+    // var left = half_screen_width - half_default_width;
+    // var top = half_screen_height - half_default_height;
+    //return window.open(url, title, "toolbar=no, width=" + default_width + ", height=" + default_height + ", top=" + top + " left=" + left);
   }
 
   render () {
@@ -194,6 +194,10 @@ export default class Intro extends Component {
     if (isCordova()) {
       pleaseShareString = "Please share to help us reach more voters.";
     }
+
+    let ballotBaseUrl = "https://WeVote.US/welcome";
+    let encodedMessage = encodeURIComponent("Get ready to vote, with a little help from your friends. #Vote via @WeVote");
+    let twitterIntent = "https://twitter.com/intent/tweet?url=" + encodeURIComponent(ballotBaseUrl) + "&text=" + encodedMessage + "&hashtags=Voting,WeVote";
 
     let local_counter = 0;
     const facebook_friends_using_we_vote_list_for_display = this.state.facebook_friends_using_we_vote_list.map( (friend) => {
@@ -442,11 +446,12 @@ export default class Intro extends Component {
                   <span className="fa fa-facebook"/> Facebook
                 </Button>
                 }
-                <Button className="btn btn-social btn-twitter u-push--sm"
-                    bsStyle="danger"
-                    onClick={this.shareToTwitterButton}>
-                  <span className="fa fa-twitter" /> Twitter
-                </Button>
+                <a href={twitterIntent} title="Share to Twitter">
+                  <Button className="btn btn-social btn-twitter u-push--sm"
+                          bsStyle="danger">
+                    <span className="fa fa-twitter" /> Twitter
+                  </Button>
+                </a>
                 {/* February 2018, Facebook and Magic Email disabled for Cordova */}
                 {isWebApp() &&
                 <a href={mailto_url} title="Submit this to Email">
