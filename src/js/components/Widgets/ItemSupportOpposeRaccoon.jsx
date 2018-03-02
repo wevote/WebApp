@@ -434,6 +434,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         // There is a voterIssuesScore, and we have some advisers to display
         scoreFromYourIssuesPopover =
           <Popover id="score-popover-trigger-click-root-close"
+                   className="card-popover"
                    title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                    onClick={this.closeIssueScorePopover}>
             We've added up the opinions about {this.state.ballot_item_display_name} from all the organizations tagged with your issues:
@@ -444,6 +445,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         // At this point the Issue Score is showing, but the issues haven't loaded yet
         scoreFromYourIssuesPopover =
           <Popover id="score-popover-trigger-click-root-close"
+                   className="card-popover"
                    title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                    onClick={this.closeIssueScorePopover}>
             We've added up the opinions about {this.state.ballot_item_display_name} from all the organizations tagged with your issues. Loading issues now...
@@ -454,6 +456,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         // Encourage voter to follow Issues
         scoreFromYourIssuesPopover =
           <Popover id="score-popover-trigger-click-root-close"
+                   className="card-popover"
                    title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                    onClick={this.closeIssueScorePopover}>
             Follow <strong>Related Issues</strong> below to see get your personalized <strong>Issue Score</strong> for {this.state.ballot_item_display_name}.
@@ -465,6 +468,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         // There is a voterIssuesScore, and we have some advisers to display
         scoreFromYourIssuesPopover =
           <Popover id="score-popover-trigger-click-root-close"
+                   className="card-popover"
                    title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                    onClick={this.closeIssueScorePopover}>
             We've added up the opinions about {this.state.ballot_item_display_name} from all the organizations tagged with your issues:
