@@ -390,6 +390,11 @@ export default class Application extends Component {
           </div>
         </div>
         { this.props.children }
+        { isCordova() &&
+          <div className={"room-wrapper"}>
+            <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter}/>
+          </div>
+        }\
       </div>;
     }
 
