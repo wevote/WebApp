@@ -416,11 +416,11 @@ export default class ItemSupportOpposeRaccoon extends Component {
       // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
       let organizationNameSupportList = IssueStore.getOrganizationNameSupportListUnderThisBallotItem(this.state.ballot_item_we_vote_id);
       let organizationNameSupportListDisplay = organizationNameSupportList.map( organization_name => {
-        return <span key={organization_name}><br /><span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /> {organization_name} <strong>+1</strong></span></span>;
+        return <span key={organization_name} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{organization_name} <strong>+1</strong></span></span>;
       });
       let organizationNameOpposeList = IssueStore.getOrganizationNameOpposeListUnderThisBallotItem(this.state.ballot_item_we_vote_id);
       let organizationNameOpposeListDisplay = organizationNameOpposeList.map( organization_name => {
-        return <span key={organization_name}><br /><span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" /> {organization_name} <strong>-1</strong></span></span>;
+        return <span key={organization_name} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{organization_name} <strong>-1</strong></span></span>;
       });
       displayAdvisorsThatMakeVoterIssuesScore = <span>
         { organizationNameSupportList.length ? <span>{organizationNameSupportListDisplay}</span> : null}
@@ -434,6 +434,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         // There is a voterIssuesScore, and we have some advisers to display
         scoreFromYourIssuesPopover =
           <Popover id="score-popover-trigger-click-root-close"
+                   className="card-popover"
                    title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                    onClick={this.closeIssueScorePopover}>
             We've added up the opinions about {this.state.ballot_item_display_name} from all the organizations tagged with your issues:
@@ -444,6 +445,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         // At this point the Issue Score is showing, but the issues haven't loaded yet
         scoreFromYourIssuesPopover =
           <Popover id="score-popover-trigger-click-root-close"
+                   className="card-popover"
                    title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                    onClick={this.closeIssueScorePopover}>
             We've added up the opinions about {this.state.ballot_item_display_name} from all the organizations tagged with your issues. Loading issues now...
@@ -454,6 +456,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         // Encourage voter to follow Issues
         scoreFromYourIssuesPopover =
           <Popover id="score-popover-trigger-click-root-close"
+                   className="card-popover"
                    title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                    onClick={this.closeIssueScorePopover}>
             Follow <strong>Related Issues</strong> below to see get your personalized <strong>Issue Score</strong> for {this.state.ballot_item_display_name}.
@@ -465,6 +468,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         // There is a voterIssuesScore, and we have some advisers to display
         scoreFromYourIssuesPopover =
           <Popover id="score-popover-trigger-click-root-close"
+                   className="card-popover"
                    title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                    onClick={this.closeIssueScorePopover}>
             We've added up the opinions about {this.state.ballot_item_display_name} from all the organizations tagged with your issues:
