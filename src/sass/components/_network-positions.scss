@@ -146,7 +146,7 @@
     font-weight: 200;
     vertical-align: middle;
     @include breakpoints (small mid-small) {
-      font-size: .675rem;
+      font-size: .875rem;
     }
   }
 
@@ -157,8 +157,10 @@
     $list-height: 76px;
     $list-height-visible: $list-height - $scrollbar-height;
     $scroll-icon-margin: $space-xxs $space-sm $space-none $space-sm;
-    margin-left: -36px;
-    margin-right: -16px;
+    $support-list-margin-left: -36px;
+    $support-list-margin-right: -16px;
+    margin-left: $support-list-margin-left;
+    margin-right: $support-list-margin-right;
 
     &__container-wrap {
       box-sizing: content-box;
@@ -191,7 +193,7 @@
       margin: $scroll-icon-margin;
 
       &-disabled {
-        color: transparent;
+        color: $transparent;
         margin: $scroll-icon-margin;
       }
     }
