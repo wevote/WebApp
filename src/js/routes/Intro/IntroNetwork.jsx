@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
 import Slider from "react-slick";
-import {cordovaDot, historyPush, isCordova} from "../../utils/cordovaUtils";
+import { cordovaDot, historyPush, isCordova } from "../../utils/cordovaUtils";
 import IntroNetworkSafety from "../../components/Intro/IntroNetworkSafety";
 import IntroNetworkDefinition from "../../components/Intro/IntroNetworkDefinition";
 import IntroNetworkScore from "../../components/Intro/IntroNetworkScore";
