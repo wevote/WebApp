@@ -589,12 +589,12 @@ export default class ItemSupportOpposeRaccoon extends Component {
           {/* Click to scroll left through list Desktop */}
           { positions_count > 7 && this.state.can_scroll_left_desktop ?
             <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list__scroll-icon u-cursor--pointer hidden-xs" aria-hidden="true" onClick={this.scrollLeft.bind(this, "desktop")} /> :
-            null
+            <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list__scroll-icon-disabled hidden-xs" aria-hidden="true" />
           }
           {/* Click to scroll left through list Mobile */}
           { positions_count > 4 && this.state.can_scroll_left_mobile ?
             <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list__scroll-icon u-cursor--pointer visible-xs" aria-hidden="true" onClick={this.scrollLeft.bind(this, "mobile")} /> :
-            null
+            <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list__scroll-icon-disabled visible-xs" aria-hidden="true" />
           }
           <div className="network-positions-stacked__support-list__container-wrap">
             {/* Show a break-down of the current positions in your network */}
@@ -648,12 +648,12 @@ export default class ItemSupportOpposeRaccoon extends Component {
           {/* Click to scroll right through list Desktop */}
           { positions_count > 7 && this.state.can_scroll_right_desktop ?
             <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list__scroll-icon u-cursor--pointer hidden-xs" aria-hidden="true" onClick={this.scrollRight.bind(this, "desktop")} /> :
-            null
+            <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list__scroll-icon-disabled hidden-xs" aria-hidden="true" />
           }
           {/* Click to scroll right through list Mobile */}
           { positions_count > 4 && this.state.can_scroll_right_mobile ?
             <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list__scroll-icon u-cursor--pointer visible-xs" aria-hidden="true" onClick={this.scrollRight.bind(this, "mobile")} /> :
-            null
+            <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list__scroll-icon-disabled visible-xs" aria-hidden="true" />
           }
         </div> :
         null
