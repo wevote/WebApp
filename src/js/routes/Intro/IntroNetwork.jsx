@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
 import Slider from "react-slick";
-import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
+import {cordovaDot, historyPush, isCordova} from "../../utils/cordovaUtils";
 import IntroNetworkSafety from "../../components/Intro/IntroNetworkSafety";
 import IntroNetworkDefinition from "../../components/Intro/IntroNetworkDefinition";
 import IntroNetworkScore from "../../components/Intro/IntroNetworkScore";
@@ -56,7 +56,11 @@ export default class IntroNetwork extends Component {
     return <div>
       <Helmet title="Welcome to We Vote" />
       <div className="intro-story container-fluid well u-inset--md">
-        <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={IntroNetwork.goToBallotLink} className="x-close" alt={"close"}/>
+        <img src={cordovaDot("/img/global/icons/x-close.png")}
+             onClick={IntroNetwork.goToBallotLink}
+             className="x-close"
+             alt={"close"}
+             style={isCordova() && { marginTop: 20, marginRight: 4 }}/>
         <Slider ref="slider" {...settings}>
           <div key={1}><IntroNetworkSafety next={this.next}/></div>
           <div key={2}><IntroNetworkDefinition next={this.next}/></div>
