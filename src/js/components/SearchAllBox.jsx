@@ -1,9 +1,9 @@
 /* global $ */
-import React, {Component, PropTypes} from "react";
+import React, { Component, PropTypes } from "react";
 import BallotActions from "../actions/BallotActions";
 import classNames from "classnames";
 import { Link } from "react-router";
-import { historyPush } from "../utils/cordovaUtils";
+import { historyPush, isWebApp } from "../utils/cordovaUtils";
 import SearchAllActions from "../actions/SearchAllActions";
 import SearchAllStore from "../stores/SearchAllStore";
 import { makeSearchLink } from "../utils/search-functions";
@@ -23,9 +23,9 @@ export default class SearchAllBox extends Component {
 
     this.state = {
       open: false,
-      search_results: [],
-      selected_index: 0,
-      text_from_search_field: "",
+      searchResults: [],
+      selectedIndex: 0,
+      textFromSearchField: "",
     };
 
     this.links = [];
@@ -50,8 +50,9 @@ export default class SearchAllBox extends Component {
     this.avatar = $("#js-header-avatar");
     this.about = document.getElementsByClassName("header-nav__item--about")[0];
     this.donate = document.getElementsByClassName("header-nav__item--donate")[0];
+
     // When we first enter we want to retrieve values to have for a click in the search box
-    let text_from_search_field = this.props.text_from_search_field;
+    let textFromSearchField = this.props.text_from_search_field;
 
     // Search type one - Recent searches
     if (SearchAllStore.isRecentSearch()) {
@@ -61,8 +62,9 @@ export default class SearchAllBox extends Component {
       SearchAllActions.retrieveRelatedSearches();
     } else if (SearchAllStore.isSearchInProgress()) {
       // Search type three - Search in progress
-      SearchAllActions.searchAll(text_from_search_field);
+      SearchAllActions.searchAll(textFromSearchField);
     }
+
     this.searchAllStoreListener = SearchAllStore.addListener(this._onSearchAllStoreChange.bind(this));
   }
 
@@ -75,35 +77,36 @@ export default class SearchAllBox extends Component {
   }
 
   _onSearchAllStoreChange () {
-    var new_state = {};
+    let newState = {};
 
     if (SearchAllStore.getSearchResults()) {
-      new_state.search_results = SearchAllStore.getSearchResults();
-      this.links = new_state.search_results.map((r) => makeSearchLink(r.twitter_handle, r.we_vote_id, r.kind_of_owner,
+      newState.searchResults = SearchAllStore.getSearchResults();
+      this.links = newState.searchResults.map((r) => makeSearchLink(r.twitter_handle, r.we_vote_id, r.kind_of_owner,
         r.link_internal, r.google_civic_election_id));
     }
 
     if (SearchAllStore.getForceClosed()) {
-      new_state.open = false;
+      newState.open = false;
     }
 
     if (SearchAllStore.getTextFromSearchField()) {
-      new_state.text_from_search_field = SearchAllStore.getTextFromSearchField();
+      newState.textFromSearchField = SearchAllStore.getTextFromSearchField();
     }
 
-    this.setState(new_state);
+    this.setState(newState);
   }
 
   onSearchFieldTextChange (event) {
-    let search_text = event.target.value;
+    let searchText = event.target.value;
     this.setState({
-      text_from_search_field: search_text,
+      textFromSearchField: searchText,
     });
+
     //If text field is empty, hide the results. If not, perform search
-    if (search_text === "") {
+    if (searchText === "") {
       this.clearSearch();
     } else {
-      SearchAllActions.searchAll(search_text);
+      SearchAllActions.searchAll(searchText);
       this.displayResults();
     }
   }
@@ -146,6 +149,7 @@ export default class SearchAllBox extends Component {
     if (this.searchHasContent()) {
       this.updateSearchText();
       this.navigateToSelectedLink();
+
       //Remove focus from search bar to close it
       document.getElementById("SearchAllBox-input").blur();
     } else if (!this.state.open) {
@@ -170,11 +174,11 @@ export default class SearchAllBox extends Component {
 
     if (keyArrowUp) {
       this.setState({
-        selected_index: Math.max(0, this.state.selected_index - 1),
+        selectedIndex: Math.max(0, this.state.selectedIndex - 1),
       });
     } else if (keyArrowDown) {
       this.setState({
-        selected_index: Math.min(this.state.selected_index + 1, this.state.search_results.length - 1),
+        selectedIndex: Math.min(this.state.selectedIndex + 1, this.state.searchResults.length - 1),
       });
     } else if (keyEscape) {
       this.clearSearch();
@@ -182,14 +186,14 @@ export default class SearchAllBox extends Component {
   }
 
   navigateToSelectedLink () {
-    historyPush(this.links[this.state.selected_index]);
+    historyPush(this.links[this.state.selectedIndex]);
     this.hideResults();
   }
 
   onSearchResultMouseOver (e) {
     let idx = parseInt(e.currentTarget.getAttribute("data-idx"), 10);
     this.setState({
-      selected_index: idx,
+      selectedIndex: idx,
     });
   }
 
@@ -198,14 +202,15 @@ export default class SearchAllBox extends Component {
   }
 
   onSearchElectionResultClick (googleCivicElectionId) {
-    let ballot_base_url = "/ballot";
+    let ballotBaseUrl = "/ballot";
     if (googleCivicElectionId && googleCivicElectionId !== 0) {
       BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, "", "");
-      // console.log("onSearchElectionResultClick, googleCivicElectionId: ", googleCivicElectionId);
-      historyPush(ballot_base_url + "/election/" + googleCivicElectionId);
-    }
-    this.updateSearchText();
 
+      // console.log("onSearchElectionResultClick, googleCivicElectionId: ", googleCivicElectionId);
+      historyPush(ballotBaseUrl + "/election/" + googleCivicElectionId);
+    }
+
+    this.updateSearchText();
   }
 
   onClearSearch (e) {
@@ -218,10 +223,10 @@ export default class SearchAllBox extends Component {
     e.stopPropagation();
 
     this.setState({
-      text_from_search_field: "",
+      textFromSearchField: "",
       open: true,
-      selected_index: 0,
-      search_results: [],
+      selectedIndex: 0,
+      searchResults: [],
     });
 
     //setTimeout(() => {
@@ -230,7 +235,7 @@ export default class SearchAllBox extends Component {
   }
 
   updateSearchText () {
-    let selectedResultElement = this.state.search_results[this.state.selected_index];
+    let selectedResultElement = this.state.searchResults[this.state.selectedIndex];
     let selectedResultText = "";
 
     if (selectedResultElement) {
@@ -240,24 +245,25 @@ export default class SearchAllBox extends Component {
     }
 
     this.setState({
-      text_from_search_field: selectedResultText,
+      textFromSearchField: selectedResultText,
       open: false,
     });
+
     //Update the search results to the selected query
     SearchAllActions.searchAll(selectedResultText);
   }
 
   searchHasContent () {
-    return this.state.search_results.length > 0;
+    return this.state.searchResults.length > 0;
   }
 
   clearSearch () {
     setTimeout(() => {
       this.setState({
         open: false,
-        text_from_search_field: "",
-        selected_index: 0,
-        search_results: [],
+        textFromSearchField: "",
+        selectedIndex: 0,
+        searchResults: [],
       });
     }, 0);
   }
@@ -275,19 +281,21 @@ export default class SearchAllBox extends Component {
   }
 
   render () {
-    let search_results = this.state.search_results;
-    let search_container_classes = classNames({
+    let searchResults = this.state.searchResults;
+    let searchContainerClasses = classNames({
       "search-container__hidden": !this.state.open,
       "search-container": true,
     });
-    let clear_button_classes = classNames({
+    let clearButtonClasses = classNames({
       "site-search__clear": true,
       "btn": true,
       "btn-default": true,
-      "site-search__clear__hidden": !this.state.text_from_search_field.length,
+      "site-search__clear__hidden": !this.state.textFromSearchField.length,
     });
 
-    return <div className="page-header__search">
+    let searchStyle = isWebApp() ? "page-header__search" : "page-header__search search-cordova";
+
+    return <div className={searchStyle}>
         <form onSubmit={this.onSearchFormSubmit} role="search">
           <div className="input-group site-search">
 
@@ -301,10 +309,10 @@ export default class SearchAllBox extends Component {
                    onBlur={this.onSearchBlur}
                    onChange={this.onSearchFieldTextChange}
                    onKeyDown={this.onSearchKeyDown}
-                   value={this.state.text_from_search_field}
+                   value={this.state.textFromSearchField}
                    ref="searchAllBox" />
             <div className="input-group-btn">
-              <button className={clear_button_classes} onClick={this.onClearSearch}>
+              <button className={clearButtonClasses} onClick={this.onClearSearch}>
                 <i className="glyphicon glyphicon-remove-circle u-gray-light" />
               </button>
               <button className="site-search__button btn btn-default" type="submit">
@@ -313,50 +321,50 @@ export default class SearchAllBox extends Component {
             </div>
           </div>
         </form>
-        <div className={search_container_classes}
+        <div className={searchContainerClasses}
              ref="searchContainer">
-           { search_results.map((one_result, idx) => {
-              let capitalized_title = capitalizeString(one_result.result_title);
-              if (one_result.kind_of_owner === "ELECTION") {
-                let search_result_classes = classNames({
+           { searchResults.map((oneResult, idx) => {
+              let capitalizedTitle = capitalizeString(oneResult.result_title);
+              if (oneResult.kind_of_owner === "ELECTION") {
+                let searchResultClasses = classNames({
                   "search-container__election_results": true,
-                  "search-container__election_results--highlighted": idx === this.state.selected_index
+                  "search-container__election_results--highlighted": idx === this.state.selectedIndex,
                 });
-                let election_day = one_result.result_summary.split(" ").splice(-1);
+                let electionDay = oneResult.result_summary.split(" ").splice(-1);
                 let today = new Date();
-                let election_date = new Date(election_day + " 0:00:00");
-                let past_election = today > election_date ? " IN PAST" : "UPCOMING ELECTION";
-                return <Link key={one_result.local_id}
+                let electionDate = new Date(electionDay + " 0:00:00");
+                let pastElection = today > electionDate ? " IN PAST" : "UPCOMING ELECTION";
+                return <Link key={oneResult.local_id}
                              data-idx={idx}
                              onMouseOver={this.onSearchResultMouseOver}
                              className="search-container__links"
-                             onClick={() => this.onSearchElectionResultClick(one_result.google_civic_election_id)}>
-                  <div className={search_result_classes}>
-                      <span className="search-container__election_summary">{capitalized_title}</span>
-                      <span className="search-container__election_summary">{election_day}</span>
-                      <span style={{float: "right"}}>{past_election}</span>
+                             onClick={() => this.onSearchElectionResultClick(oneResult.google_civic_election_id)}>
+                  <div className={searchResultClasses}>
+                      <span className="search-container__election_summary">{capitalizedTitle}</span>
+                      <span className="search-container__election_summary">{electionDay}</span>
+                      <span style={{ float: "right" }}>{pastElection}</span>
                   </div>
                 </Link>;
               } else {
-                let search_result_classes = classNames({
+                let searchResultClasses = classNames({
                   "search-container__results": true,
-                  "search-container__results--highlighted": idx === this.state.selected_index
+                  "search-container__results--highlighted": idx === this.state.selectedIndex,
                 });
 
-                return <Link key={one_result.we_vote_id}
+                return <Link key={oneResult.we_vote_id}
                              data-idx={idx}
                              to={this.links[idx]}
                              onMouseOver={this.onSearchResultMouseOver}
                              className="search-container__links"
                              onClick={this.onSearchResultClick}>
-                  <div className={search_result_classes}>
+                  <div className={searchResultClasses}>
                   <span>
-                    <ImageHandler imageUrl={one_result.result_image}
-                                  kind_of_ballot_item={one_result.kind_of_owner}
+                    <ImageHandler imageUrl={oneResult.result_image}
+                                  kind_of_ballot_item={oneResult.kind_of_owner}
                                   sizeClassName="search-image "
-                                  className={one_result.kind_of_owner} />
+                                  className={oneResult.kind_of_owner} />
                   </span>
-                    {capitalized_title}
+                    {capitalizedTitle}
                   </div>
                 </Link>;
               }

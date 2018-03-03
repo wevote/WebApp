@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import { Button } from "react-bootstrap";
 import AnalyticsActions from "../../actions/AnalyticsActions";
-import { historyPush } from "../../utils/cordovaUtils";
+import { historyPush, isWebApp } from "../../utils/cordovaUtils";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import HeaderBar from "../../components/Navigation/HeaderBar";
@@ -33,12 +33,13 @@ export default class OrganizationVoterGuide extends Component {
     this.onEdit = this.onEdit.bind(this);
   }
 
-  componentDidMount (){
+  componentDidMount () {
     // console.log("OrganizationVoterGuide, componentDidMount, this.props.params.organization_we_vote_id: ", this.props.params.organization_we_vote_id);
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
+
     // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
     // console.log("action_variable:" + this.props.params.action_variable);
     if (this.props.params.action_variable === AUTO_FOLLOW && this.props.params.organization_we_vote_id) {
@@ -46,12 +47,15 @@ export default class OrganizationVoterGuide extends Component {
       // console.log("Auto following");
       AnalyticsActions.saveActionVoterGuideAutoFollow(this.props.params.organization_we_vote_id, VoterStore.election_id());
       OrganizationActions.organizationFollow(this.props.params.organization_we_vote_id);
+
       // Now redirect to the same page without the "/af" in the route
-      let current_path_name = this.props.location.pathname;
+      let currentPathName = this.props.location.pathname;
+
       // AUTO_FOLLOW is "af"
-      let current_path_name_without_auto_follow = current_path_name.replace("/" + AUTO_FOLLOW, "");
-      // console.log("OrganizationVoterGuide, current_path_name_without_auto_follow: ", current_path_name_without_auto_follow);
-      historyPush(current_path_name_without_auto_follow);
+      let currentPathNameWithoutAutoFollow = currentPathName.replace("/" + AUTO_FOLLOW, "");
+
+      // console.log("OrganizationVoterGuide, currentPathNameWithoutAutoFollow: ", currentPathNameWithoutAutoFollow);
+      historyPush(currentPathNameWithoutAutoFollow);
       this.setState({
         auto_follow_redirect_happening: true,
       });
@@ -68,10 +72,13 @@ export default class OrganizationVoterGuide extends Component {
   componentWillReceiveProps (nextProps) {
     // console.log("OrganizationVoterGuide, componentWillReceiveProps, nextProps.params.organization_we_vote_id: ", nextProps.params.organization_we_vote_id);
     // When a new organization is passed in, update this component to show the new data
-    if (nextProps.params.action_variable === AUTO_FOLLOW) {
-      // Wait until we get the path without the "/af" action variable
-      // console.log("OrganizationVoterGuide, componentWillReceiveProps - waiting");
-    } else if (nextProps.params.organization_we_vote_id && this.state.organization_we_vote_id !== nextProps.params.organization_we_vote_id) {
+    // if (nextProps.params.action_variable === AUTO_FOLLOW) {
+    // Wait until we get the path without the "/af" action variable
+    // console.log("OrganizationVoterGuide, componentWillReceiveProps - waiting");
+    // } else
+
+    if (nextProps.params.organization_we_vote_id && this.state.organization_we_vote_id !== nextProps.params.organization_we_vote_id) {
+
       // Only refresh data if we are working with a new organization
       // console.log("OrganizationVoterGuide, componentWillReceiveProps, nextProps.params: ", nextProps.params);
       this.setState({
@@ -81,13 +88,15 @@ export default class OrganizationVoterGuide extends Component {
 
       // We refresh the data for all three tabs here on the top level
       OrganizationActions.organizationRetrieve(nextProps.params.organization_we_vote_id);
+
       // console.log("VoterStore.getAddressObject(): ", VoterStore.getAddressObject());
       AnalyticsActions.saveActionVoterGuideVisit(nextProps.params.organization_we_vote_id, VoterStore.election_id());
+
       // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
     }
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.voterGuideStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
@@ -98,33 +107,36 @@ export default class OrganizationVoterGuide extends Component {
     return <div>{LoadingWheel}</div>;
   }
 
-  onVoterGuideStoreChange (){
+  onVoterGuideStoreChange () {
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization_we_vote_id)
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization_we_vote_id),
     });
   }
 
-  _onOrganizationStoreChange (){
+  _onOrganizationStoreChange () {
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization_we_vote_id)
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization_we_vote_id),
     });
   }
 
   _onVoterStoreChange () {
     this.setState({
-      voter: VoterStore.getVoter()
+      voter: VoterStore.getVoter(),
     });
   }
 
   render () {
-    if (!this.state.organization || !this.state.voter || this.state.auto_follow_redirect_happening){
+    if (!this.state.organization || !this.state.voter || this.state.auto_follow_redirect_happening) {
       return <div>{LoadingWheel}</div>;
     }
-    const { organization_id } = this.state.organization;
-    let is_voter_owner = this.state.organization.organization_we_vote_id !== undefined &&
+
+    const organizationId = this.state.organization.organization_id;
+    let isVoterOwner = this.state.organization.organization_we_vote_id !== undefined &&
       this.state.organization.organization_we_vote_id === this.state.voter.linked_organization_we_vote_id;
 
-    if (!organization_id) {
+    let pageHeaderStyle = isWebApp() ? "page-header__container headroom" : "page-header__container headroom page-header-cordova";
+
+    if (!organizationId) {
       let floatRight = {
         float: "right",
       };
@@ -132,7 +144,7 @@ export default class OrganizationVoterGuide extends Component {
           <div className="card-main">
             <h4 className="h4">Organization not Found</h4>
           </div>
-          <div style={{margin: 10}}>
+          <div style={{ margin: 10 }}>
             <span style={floatRight}>
               <Link to="/opinions"><Button bsStyle="primary">Next &#x21AC;</Button></Link>
             </span>
@@ -144,7 +156,7 @@ export default class OrganizationVoterGuide extends Component {
 
     return <div>
       <div className="headroom-wrapper">
-        <div ref="pageHeader" className="page-header__container headroom">
+        <div ref="pageHeader" className={pageHeaderStyle}>
           <HeaderBar location={this.props.location} pathname={this.props.location.pathname} voter={this.state.voter} />
         </div>
       </div>
@@ -164,7 +176,7 @@ export default class OrganizationVoterGuide extends Component {
             <div className="col-md-4 hidden-xs" >
               <div className="card">
                 <div className="card-main">
-                  <OrganizationVoterGuideCard organization={this.state.organization} is_voter_owner={is_voter_owner} />
+                  <OrganizationVoterGuideCard organization={this.state.organization} is_voter_owner={isVoterOwner} />
                 </div>
                 <br />
               </div>
@@ -173,7 +185,7 @@ export default class OrganizationVoterGuide extends Component {
             <div className="col-md-12 visible-xs">
               <div className="card">
                 <div className="card-main">
-                  { is_voter_owner ?
+                  { isVoterOwner ?
                     <Button bsStyle="warning" bsSize="small" className="pull-right" onClick={this.onEdit}>
                       <span>Edit</span>
                     </Button> :

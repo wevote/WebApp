@@ -158,24 +158,23 @@ export default class HeaderBar extends Component {
 
     return (
       <header className="page-header">
-        { !weVoteBrandingOff &&
-          <Link to="/welcome" className="page-logo page-logo-full-size h4 hidden-xs">
-            We Vote
-            <span className="page-logo__version"> alpha</span>
-          </Link>
-        }
-        { weVoteBrandingOff ?
-          null :
+        { !weVoteBrandingOff &&  isWebApp() &&
           <span>
-            { showFullNavigation && isWebApp() ?
-              <Link to="/welcome" className="page-logo page-logo-short h4 visible-xs">
-                WV
-              </Link> :
-              <Link to="/welcome" className="page-logo page-logo-short h4 visible-xs">
-                We Vote
-                <span className="page-logo__version"> alpha</span>
-              </Link>
-            }
+            <Link to="/welcome" className="page-logo page-logo-full-size h4 hidden-xs">
+              We Vote
+              <span className="page-logo__version"> alpha</span>
+            </Link>
+            <span>
+              { showFullNavigation && isWebApp() ?
+                <Link to="/welcome" className="page-logo page-logo-short h4 visible-xs">
+                  WV
+                </Link> :
+                <Link to="/welcome" className="page-logo page-logo-short h4 visible-xs">
+                  We Vote
+                  <span className="page-logo__version"> alpha</span>
+                </Link>
+              }
+            </span>
           </span>
         }
         <div className="header-nav">
