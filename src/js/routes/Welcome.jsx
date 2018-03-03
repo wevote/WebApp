@@ -196,7 +196,7 @@ export default class Intro extends Component {
     }
 
     let ballotBaseUrl = "https://WeVote.US/welcome";
-    let encodedMessage = encodeURIComponent("Get ready to vote, with a little help from your friends. #Vote via @WeVote");
+    let encodedMessage = encodeURIComponent("I am reviewing my ballot, and getting ready to vote @WeVote.");
     let twitterIntent = "https://twitter.com/intent/tweet?url=" + encodeURIComponent(ballotBaseUrl) + "&text=" + encodedMessage + "&hashtags=Voting,WeVote";
 
     let local_counter = 0;

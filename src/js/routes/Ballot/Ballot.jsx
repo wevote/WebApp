@@ -583,10 +583,15 @@ export default class Ballot extends Component {
                       </OverlayTrigger> :
                       null }
                     {/* We always show the change election option */}
-                    <span className="u-no-break hidden-print u-f8 u-cursor--pointer"
-                          onClick={this.toggleSelectBallotModal} ><img src={cordovaDot("/img/global/icons/gear-icon.png")}
-                          role="button"
-                          alt={"change address or election"}/> change address or election</span>
+                    <span className="u-no-break hidden-print u-cursor--pointer"
+                          onClick={this.toggleSelectBallotModal} >
+                      <span className="u-no-break u-f8 hidden-xs"><img src={cordovaDot("/img/global/icons/gear-icon.png")}
+                           role="button"
+                           alt={"change address or election"}/> change address or election</span>
+                      <span className="u-no-break u-f6 visible-xs"><img src={cordovaDot("/img/global/icons/gear-icon.png")}
+                           role="button"
+                           alt={"change address or election"}/> change address or election</span>
+                    </span>
                   </h1>
                 </header>
 

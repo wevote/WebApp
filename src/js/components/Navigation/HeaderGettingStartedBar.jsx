@@ -313,8 +313,8 @@ export default class HeaderGettingStartedBar extends Component {
     let currentPathname = this.props.pathname ? this.props.pathname : "/ballot";
     let ballotBaseUrl = webAppConfig.WE_VOTE_URL_PROTOCOL + (isWebApp() ? webAppConfig.WE_VOTE_HOSTNAME : "WeVote.US") + currentPathname;
     // We want to add a tracking code here so we can count shares. Vote.org does it this way: https://www.vote.org/#.WpiRvFhU3V4.twitter
-    let encodedMessage = encodeURIComponent("Check out your ballot, and get ready to vote. #Vote via @WeVote");
-    let twitterIntent = "https://twitter.com/intent/tweet?url=" + encodeURIComponent(ballotBaseUrl) + "&text=" + encodedMessage + "&hashtags=Voting,WeVote";
+    let encodedMessage = encodeURIComponent("I am reviewing my ballot, and getting ready to vote @WeVote.");
+    let twitterIntent = "https://twitter.com/intent/tweet?url=" + encodeURIComponent(ballotBaseUrl) + "&text=" + encodedMessage + "&hashtags=Vote,Voting,WeVote";
 
     return <div className="page-getting-started-header-background">
       { voterThoroughOrientationComplete ?
