@@ -60,7 +60,7 @@ export default class IntroNetwork extends Component {
              onClick={IntroNetwork.goToBallotLink}
              className="x-close"
              alt={"close"}
-             style={isCordova() && { marginTop: 20, marginRight: 4 }}/>
+             style={isCordova() && { marginTop: 20, marginRight: 4 } }/>
         <Slider ref="slider" {...settings}>
           <div key={1}><IntroNetworkSafety next={this.next}/></div>
           <div key={2}><IntroNetworkDefinition next={this.next}/></div>
