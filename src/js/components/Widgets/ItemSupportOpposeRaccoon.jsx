@@ -38,6 +38,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
     this.state = {
       ballot_item_display_name: "",
       ballot_item_we_vote_id: "",
+      can_scroll_desktop: false,
+      can_scroll_mobile: false,
       can_scroll_left_desktop: false,
       can_scroll_left_mobile: false,
       can_scroll_right_desktop: true,
@@ -59,6 +61,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     CandidateActions.positionListForBallotItem(this.props.ballotItemWeVoteId);
+    this.setScrollState();
     this.setState({
       ballot_item_display_name: this.props.ballot_item_display_name,
       ballot_item_we_vote_id: this.props.ballotItemWeVoteId,
@@ -72,6 +75,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    this.setScrollState();
     this.setState({
       ballot_item_display_name: nextProps.ballot_item_display_name,
       ballot_item_we_vote_id: nextProps.ballotItemWeVoteId,
@@ -97,6 +101,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   onCandidateStoreChange () {
+    this.setScrollState();
     this.setState({
       candidate: CandidateStore.getCandidate(this.state.ballot_item_we_vote_id),
       position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(this.state.ballot_item_we_vote_id),
@@ -258,6 +263,19 @@ export default class ItemSupportOpposeRaccoon extends Component {
           can_scroll_right_mobile: position + width === new_position,
         });
       }
+    });
+  }
+
+  setScrollState () {
+    const desktop_list = findDOMNode(this.refs[`${this.state.candidate.we_vote_id}-org-list-desktop`]);
+    const mobile_list = findDOMNode(this.refs[`${this.state.candidate.we_vote_id}-org-list-mobile`]);
+    let desktop_list_visible_width = $(desktop_list).width();
+    let desktop_list_width = $(desktop_list).children().eq(0).children().eq(0).width();
+    let mobile_list_visible_width = $(mobile_list).width();
+    let mobile_list_width = $(mobile_list).children().eq(0).children().eq(0).width();
+    this.setState({
+      can_scroll_desktop: desktop_list_visible_width <= desktop_list_width,
+      can_scroll_mobile: mobile_list_visible_width <= mobile_list_width,
     });
   }
 
@@ -587,14 +605,14 @@ export default class ItemSupportOpposeRaccoon extends Component {
       { positions_count ?
         <div className="network-positions-stacked__support-list u-flex u-justify-between u-items-center">
           {/* Click to scroll left through list Desktop */}
-          { positions_count > 7 && this.state.can_scroll_left_desktop ?
+          { this.state.can_scroll_desktop && this.state.can_scroll_left_desktop ?
             <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list__scroll-icon u-cursor--pointer hidden-xs" aria-hidden="true" onClick={this.scrollLeft.bind(this, "desktop")} /> :
-            null
+            <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list__scroll-icon-disabled hidden-xs" aria-hidden="true" />
           }
           {/* Click to scroll left through list Mobile */}
-          { positions_count > 4 && this.state.can_scroll_left_mobile ?
+          { this.state.can_scroll_mobile && this.state.can_scroll_left_mobile ?
             <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list__scroll-icon u-cursor--pointer visible-xs" aria-hidden="true" onClick={this.scrollLeft.bind(this, "mobile")} /> :
-            null
+            <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list__scroll-icon-disabled visible-xs" aria-hidden="true" />
           }
           <div className="network-positions-stacked__support-list__container-wrap">
             {/* Show a break-down of the current positions in your network */}
@@ -646,14 +664,14 @@ export default class ItemSupportOpposeRaccoon extends Component {
             </span>
           </div>
           {/* Click to scroll right through list Desktop */}
-          { positions_count > 7 && this.state.can_scroll_right_desktop ?
+          { this.state.can_scroll_desktop && this.state.can_scroll_right_desktop ?
             <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list__scroll-icon u-cursor--pointer hidden-xs" aria-hidden="true" onClick={this.scrollRight.bind(this, "desktop")} /> :
-            null
+            <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list__scroll-icon-disabled hidden-xs" aria-hidden="true" />
           }
           {/* Click to scroll right through list Mobile */}
-          { positions_count > 4 && this.state.can_scroll_right_mobile ?
+          { this.state.can_scroll_mobile && this.state.can_scroll_right_mobile ?
             <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list__scroll-icon u-cursor--pointer visible-xs" aria-hidden="true" onClick={this.scrollRight.bind(this, "mobile")} /> :
-            null
+            <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list__scroll-icon-disabled visible-xs" aria-hidden="true" />
           }
         </div> :
         null
