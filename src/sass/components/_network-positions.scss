@@ -157,11 +157,14 @@
     $list-height: 76px;
     $list-height-visible: $list-height - $scrollbar-height;
     $scroll-icon-margin: $space-xxs $space-sm $space-none $space-sm;
+    margin-left: -36px;
+    margin-right: -16px;
 
     &__container-wrap {
       box-sizing: content-box;
       overflow: hidden;
       height: $list-height-visible;
+      flex-grow: 1;
     }
 
     &__container {
@@ -186,6 +189,11 @@
     &__scroll-icon {
       color: $gray-mid;
       margin: $scroll-icon-margin;
+
+      &-disabled {
+        color: transparent;
+        margin: $scroll-icon-margin;
+      }
     }
   }
 }
