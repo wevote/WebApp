@@ -1,6 +1,7 @@
 @import 'base/variables';
 
 $space-header-height:  20px;
+$space-search-right: 10%;
 
 .page-header {
   // required overrides for Bootstrap :(
@@ -37,14 +38,20 @@ $space-header-height:  20px;
   margin: $space-header-height auto $space-none;
 }
 
+.search-cordova {
+  width: 55%;
+  margin-right: $space-search-right;
+}
+
 // To cover the space under the iPhone top line menu "Carrier" or "ATT" etc.
 .ios7plus-spacer {
   top: $space-none;
   position: fixed;
   height: $space-header-height;
-  background: $white;
+  background: $page-header-color;
   width: 100%;
   opacity: 1;
+  z-index: 3;
 }
 
 .page-getting-started-header {

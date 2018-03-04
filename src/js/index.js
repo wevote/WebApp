@@ -19,12 +19,12 @@ function startApp () {
 
     // prevent keyboard scrolling our view, https://www.npmjs.com/package/cordova-plugin-keyboard
     if (window.Keyboard) {
-      console.log("STEVE startupApp keyboard plugin found");
+      console.log("Cordova startupApp keyboard plugin found");
       Keyboard.shrinkView(true);
       window.addEventListener("keyboardDidShow", function () {
         document.activeElement.scrollIntoView();
       });
-    } else console.log("STEVE startupApp keyboard NOT NOT NOT plugin found");
+    } else console.log("Cordova startupApp keyboard plugin WAS NOT found");
   }
 
   render(<Router history={isCordova() ? hashHistory : browserHistory } render={applyRouterMiddleware(useScroll(()=>true))}>
