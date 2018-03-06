@@ -82,11 +82,27 @@ export default class HeaderBarProfilePopUp extends Component {
               </li> :
               null
             }
+            <li className="hidden-xs">
+              <Link onClick={this.hideProfilePopUp} to="/settings/address">
+                <div>
+                  <span className="header-slide-out-menu-text-left">Your Settings</span>
+                </div>
+              </Link>
+            </li>
             {this.props.voter && isSignedIn ?
-              <li>
-                <Link onClick={this.hideProfilePopUp} to="/settings/profile">
+              <li className="visible-xs">
+                <Link onClick={this.hideProfilePopUp} to="/more/sign_in">
                   <div>
                     <span className="header-slide-out-menu-text-left">Your Settings</span>
+                  </div>
+                </Link>
+              </li> :
+              null }
+            {this.props.voter && isSignedIn ?
+              <li>
+                <Link onClick={this.signOutAndHideProfilePopUp} to="/more/sign_in">
+                  <div>
+                    <span className="header-slide-out-menu-text-left">Sign Out</span>
                   </div>
                 </Link>
               </li> :
@@ -96,16 +112,7 @@ export default class HeaderBarProfilePopUp extends Component {
                     <span className="header-slide-out-menu-text-left">Sign In</span>
                   </div>
                 </Link>
-              </li>}
-            {this.props.voter && isSignedIn ?
-              <li>
-                <Link onClick={this.signOutAndHideProfilePopUp} to="/more/sign_in">
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Sign Out</span>
-                  </div>
-                </Link>
-              </li> :
-              null
+              </li>
             }
             {this.props.bookmarks && this.props.bookmarks.length ?
               <li>
@@ -125,7 +132,7 @@ export default class HeaderBarProfilePopUp extends Component {
                 </Link>
               </li>
             }
-            {this.props.weVoteBrandingOff ? null :
+            {this.props.weVoteBrandingOff || isCordova() ? null :
               <li className="visible-xs-block">
                 <Link onClick={this.hideProfilePopUp} to="/more/about">
                   <div>

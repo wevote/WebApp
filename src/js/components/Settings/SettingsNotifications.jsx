@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router";
 import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
@@ -158,7 +159,7 @@ export default class SettingsNotifications extends Component {
                 <span className="pull-right u-gray-mid">{this.state.notifications_saved_status}</span>
               </div>
             </div> :
-            <div>Please Sign In</div>
+            <div><Link to="/settings/account">Please Sign In</Link></div>
           }
         </div>
       </div>

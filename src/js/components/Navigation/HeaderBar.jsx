@@ -158,7 +158,7 @@ export default class HeaderBar extends Component {
 
     return (
       <header className="page-header">
-        { !weVoteBrandingOff &&  isWebApp() &&
+        { !weVoteBrandingOff && isWebApp() &&
           <span>
             <Link to="/welcome" className="page-logo page-logo-full-size h4 hidden-xs">
               We Vote
