@@ -37,7 +37,7 @@ export default class SettingsVoterGuidesSideBar extends Component {
     }
     return <div className="container-fluid card">
       <div className="SettingsItem__summary__title">Your Voter Guides</div>
-        <SettingsVoterGuidesSideBarLink linkTo={"#"}
+        <SettingsVoterGuidesSideBarLink linkTo={"/voterguidegetstarted"}
                                label={"Create New Voter Guide"}
                                />
 

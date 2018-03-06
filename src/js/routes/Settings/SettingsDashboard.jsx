@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import SettingsAccount from "../../components/Settings/SettingsAccount";
+import SettingsAddress from "../../components/Settings/SettingsAddress";
+import SettingsElection from "../../components/Settings/SettingsElection";
 import SettingsNotifications from "../../components/Settings/SettingsNotifications";
 import SettingsProfile from "../../components/Settings/SettingsProfile";
 import SettingsPersonalSideBar from "../../components/Navigation/SettingsPersonalSideBar";
@@ -22,7 +24,7 @@ export default class SettingsDashboard extends Component {
     if (this.props.params.edit_mode) {
       this.setState({ editMode: this.props.params.edit_mode });
     } else {
-      this.setState({ editMode: "profile" });
+      this.setState({ editMode: "address" });
     }
     this.setState({ pathname: this.props.location.pathname });
   }
@@ -36,15 +38,21 @@ export default class SettingsDashboard extends Component {
   render () {
     let settingsComponentToDisplay = null;
     switch (this.state.editMode) {
-      default:
-      case "profile":
-        settingsComponentToDisplay = <SettingsProfile />;
+      case "account":
+        settingsComponentToDisplay = <SettingsAccount />;
+        break;
+      case "address":
+        settingsComponentToDisplay = <SettingsAddress />;
+        break;
+      case "election":
+        settingsComponentToDisplay = <SettingsElection />;
         break;
       case "notifications":
         settingsComponentToDisplay = <SettingsNotifications />;
         break;
-      case "account":
-        settingsComponentToDisplay = <SettingsAccount />;
+      default:
+      case "profile":
+        settingsComponentToDisplay = <SettingsProfile />;
         break;
     }
 

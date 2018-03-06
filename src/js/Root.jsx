@@ -114,9 +114,9 @@ const routes = () =>
     {/* Personal Settings go in this structure... */}
     <Route path="/settings" component={SettingsDashboard}>
       <IndexRoute component={SettingsDashboard} />
-      <Route path="/settings/:edit_mode" component={SettingsDashboard} />
       <Route path="/settings/claim" component={ClaimYourPage} />
       <Route path="/settings/location" component={Location} />  /* Complete path on one line for searching */
+      <Route path="/settings/:edit_mode" component={SettingsDashboard} />
     </Route>
 
     {/* Voter Guide Settings go in this structure... */}
