@@ -324,8 +324,13 @@ export default class Application extends Component {
         pathname === "/opinions" ||
         pathname === "/opinions_followed" ||
         pathname === "/opinions_ignored" ||
+        pathname === "/settings" ||
+        pathname === "/settings/account" ||
         pathname === "/settings/location" ||
+        pathname === "/settings/notifications" ||
+        pathname === "/settings/profile" ||
         pathname.startsWith("/verifythisisme/") ||
+        stringContains("/settings", pathname) ||
         pathname === "/welcome") {
       contentFullWidthMode = true;
     } else if (pathname.startsWith("/ballot") || pathname === "/bookmarks") {

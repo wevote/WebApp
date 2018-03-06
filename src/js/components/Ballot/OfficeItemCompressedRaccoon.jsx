@@ -49,6 +49,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
     this.closeYourNetworkIsUndecidedPopover = this.closeYourNetworkIsUndecidedPopover.bind(this);
     this.closeYourNetworkSupportsPopover = this.closeYourNetworkSupportsPopover.bind(this);
+    this.closeHighestIssueScorePopover = this.closeHighestIssueScorePopover.bind(this);
     this.getCandidateLink = this.getCandidateLink.bind(this);
     this.getOfficeLink = this.getOfficeLink.bind(this);
     this.goToCandidateLink = this.goToCandidateLink.bind(this);
@@ -188,6 +189,10 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
   closeYourNetworkSupportsPopover () {
     this.refs["supports-overlay"].hide();
+  }
+
+  closeHighestIssueScorePopover () {
+    this.refs["highest-issue-score-overlay"].hide();
   }
 
   closeYourNetworkIsUndecidedPopover () {
@@ -401,6 +406,17 @@ export default class OfficeItemCompressedRaccoon extends Component {
                   the highest score in your network.
                 </Popover>;
 
+              const hasHighestIssueScorePopover =
+                <Popover id="popover-trigger-click-root-close"
+                         title={<span>Highest Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+                         onClick={this.closeHighestIssueScorePopover}>
+                  We took the issues you are following, and added up the opinions of all of the organizations
+                  under those issues. <strong>{one_candidate.ballot_item_display_name}</strong> has
+                  the most support from these
+                  organizations.<br />
+                  <Link onClick={this.toggleExpandCheetahDetails}> learn more</Link>
+                </Popover>;
+
               const voter_supports_this_candidate = SupportStore.get(one_candidate.we_vote_id) && SupportStore.get(one_candidate.we_vote_id).is_support;
 
               let networkOrIssueScoreSupport;
@@ -439,11 +455,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
                     </div>
                     <div className="u-flex-none u-justify-end">
                       <OverlayTrigger trigger="click"
-                                      ref="supports-overlay"
-                                      onExit={this.closeYourNetworkSupportsPopover}
+                                      ref="highest-issue-score-overlay"
+                                      onExit={this.closeHighestIssueScorePopover}
                                       rootClose
                                       placement="top"
-                                      overlay={yourNetworkSupportsPopover}>
+                                      overlay={hasHighestIssueScorePopover}>
                         <div>
                           <span className="u-push--xs u-cursor--pointer">Has the highest <strong>Issue Score</strong></span>
                           <img src={cordovaDot("/img/global/icons/up-arrow-color-icon.svg")} className="network-positions__support-icon" width="20" height="20" />

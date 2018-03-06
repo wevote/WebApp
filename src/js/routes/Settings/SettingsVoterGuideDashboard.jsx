@@ -2,10 +2,9 @@ import React, { Component, PropTypes } from "react";
 import SettingsAccount from "../../components/Settings/SettingsAccount";
 import SettingsNotifications from "../../components/Settings/SettingsNotifications";
 import SettingsProfile from "../../components/Settings/SettingsProfile";
-import SettingsPersonalSideBar from "../../components/Navigation/SettingsPersonalSideBar";
-import SettingsVoterGuidesSideBar from "../../components/Navigation/SettingsVoterGuidesSideBar";
+import VoterGuideSettingsSideBar from "../../components/Navigation/VoterGuideSettingsSideBar";
 
-export default class SettingsDashboard extends Component {
+export default class SettingsVoterGuideDashboard extends Component {
   static propTypes = {
     location: PropTypes.object,
     params: PropTypes.object,
@@ -15,6 +14,7 @@ export default class SettingsDashboard extends Component {
     super(props);
     this.state = {
       editMode: "",
+      voterGuideWeVoteId: "",
     };
   }
 
@@ -24,12 +24,18 @@ export default class SettingsDashboard extends Component {
     } else {
       this.setState({ editMode: "profile" });
     }
+    if (this.props.params.voter_guide_we_vote_id) {
+      this.setState({ voterGuideWeVoteId: this.props.params.voter_guide_we_vote_id });
+    }
     this.setState({ pathname: this.props.location.pathname });
   }
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.params.edit_mode) {
       this.setState({ editMode: nextProps.params.edit_mode });
+    }
+    if (nextProps.params.voter_guide_we_vote_id) {
+      this.setState({ voterGuideWeVoteId: nextProps.params.voter_guide_we_vote_id });
     }
   }
 
@@ -53,13 +59,11 @@ export default class SettingsDashboard extends Component {
         <div className="container-fluid">
           <div className="row ballot__body">
 
-            <div className="col-md-4 hidden-xs sidebar-menu">
-              <SettingsPersonalSideBar editMode={this.state.editMode} />
-
-              <SettingsVoterGuidesSideBar />
+            <div className="col-md-3 hidden-xs sidebar-menu">
+              <VoterGuideSettingsSideBar editMode={this.state.editMode} />
             </div>
 
-            <div className="col-xs-12 col-md-8">
+            <div className="col-xs-12 col-md-9">
               {settingsComponentToDisplay}
             </div>
 

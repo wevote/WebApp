@@ -59,9 +59,9 @@ export default class BallotSideBar extends Component {
   }
 
   render () {
-    let displaySubtitles = this.props.displaySubtitles;
     let click = this.handleClick;
     let ballot = this.state.ballot;
+    let displaySubtitles = this.props.displaySubtitles;
     if (ballot && ballot.length) {
       return <div className="container-fluid card">
         {this.props.displayTitle ?

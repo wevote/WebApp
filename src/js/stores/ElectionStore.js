@@ -24,6 +24,17 @@ class ElectionStore extends ReduceStore {
     return [];
   }
 
+  getElectionName (google_civic_election_id) {
+    if (this.getState().election_list_by_google_civic_election_id) {
+      let google_civic_election_id_int = parseInt(google_civic_election_id, 10);
+      let one_election = this.getState().election_list_by_google_civic_election_id[google_civic_election_id_int];
+      if (one_election) {
+        return one_election.election_name || "";
+      }
+    }
+    return "";
+  }
+
   getElectionDayText (google_civic_election_id) {
     if (this.getState().election_list_by_google_civic_election_id) {
       let google_civic_election_id_int = parseInt(google_civic_election_id, 10);

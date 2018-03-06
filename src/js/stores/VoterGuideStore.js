@@ -14,6 +14,7 @@ class VoterGuideStore extends ReduceStore {
     return {
       all_cached_voter_guides: {}, // Dictionary with organization_we_vote_id as key and the voter_guide as value
       all_cached_voter_guides_by_election: {}, // Dictionary with organization_we_vote_id and google_civic_election_id as keys and the voter_guide as value
+      all_voter_guides_owned_by_voter: {}, // Dictionary with voter_guide_we_vote_id as key and the voter_guide as value
       ballot_has_guides: true,
       organization_we_vote_ids_to_follow_all: [],
       organization_we_vote_ids_to_follow_ballot_items_dict: {}, // This is a dictionary with ballot_item_we_vote_id as key and list of organization we_vote_ids as value
@@ -45,6 +46,15 @@ class VoterGuideStore extends ReduceStore {
 
   ballotHasGuides () {
     return this.getState().ballot_has_guides;
+  }
+
+  getAllVoterGuidesOwnedByVoter () {
+    let voter_guides_owned_by_voter = this.getState().all_voter_guides_owned_by_voter || {};
+    let voter_guides_owned_by_voter_list = [];
+    for (var voter_guide_we_vote_id in voter_guides_owned_by_voter) {
+      voter_guides_owned_by_voter_list.push(voter_guides_owned_by_voter[voter_guide_we_vote_id]);
+    }
+    return voter_guides_owned_by_voter_list;
   }
 
   getVoterGuidesToFollowAll () {

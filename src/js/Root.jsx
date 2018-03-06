@@ -50,8 +50,8 @@ import ProcessingDonation from "./routes/More/ProcessingDonation";
 import RegisterToVote from "./routes/More/RegisterToVote";
 import SampleBallot from "./routes/Intro/SampleBallot";
 import ScratchPad from "./routes/ScratchPad";
-import Settings from "./routes/Settings/Settings";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
+import SettingsVoterGuideDashboard from "./routes/Settings/SettingsVoterGuideDashboard";
 import SignIn from "./routes/SignIn/SignIn";
 import SignInJumpProcess from "./routes/Process/SignInJumpProcess";
 import FacebookLandingProcess from "./routes/Process/FacebookLandingProcess";
@@ -111,11 +111,18 @@ const routes = () =>
     <Route path="/intro/sample_ballot" component={SampleBallot} />
     <Route path="/intro/get_started" component={GetStarted} />
 
-    {/* Settings go in this structure... */}
+    {/* Personal Settings go in this structure... */}
     <Route path="/settings" component={SettingsDashboard}>
-      <IndexRoute component={Settings} />
+      <IndexRoute component={SettingsDashboard} />
+      <Route path="/settings/:edit_mode" component={SettingsDashboard} />
       <Route path="/settings/claim" component={ClaimYourPage} />
       <Route path="/settings/location" component={Location} />  /* Complete path on one line for searching */
+    </Route>
+
+    {/* Voter Guide Settings go in this structure... */}
+    <Route path="/vg/:voter_guide_we_vote_id/settings" component={SettingsVoterGuideDashboard}>
+      <IndexRoute component={SettingsVoterGuideDashboard} />
+      <Route path="/vg/:voter_guide_we_vote_id/settings/:edit_mode" component={SettingsVoterGuideDashboard} />
     </Route>
 
     {/* Ballot Off-shoot Pages */}

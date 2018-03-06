@@ -73,14 +73,15 @@
 // -------------------------------
 // Styles specific to React Components
 
+@import 'components/about';
 @import 'components/ballot';
 @import 'components/ballotList';
-@import 'components/itemActionBar';
-@import 'components/itemPositionStatementActionBar';
 @import 'components/bookmarkAction';
 @import 'components/friends';
-@import 'components/about';
+@import 'components/itemActionBar';
+@import 'components/itemPositionStatementActionBar';
 @import 'components/searchbar'; // move if necessary
+@import 'components/settings';
 
 // -------------------------------
 // Sections

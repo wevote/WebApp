@@ -1,0 +1,50 @@
+$selected-border-left-space: 2px;
+
+.SettingsItem {
+  position: relative;
+  margin-bottom: $space-md;
+
+  &__summary {
+    &__title {
+      font-family: $heading-font-stack;
+      font-size: 18px;
+      color: $gray-dark;
+      padding-bottom: $space-md;
+      padding-top: $space-sm;
+    }
+
+    &__item {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; // Not working currently
+      color: $gray-mid;
+      line-height: 19.6px;
+      position: relative;
+      font-size: 14px;
+    }
+
+    &__item-container {
+      align-items: center;
+      margin-bottom: $space-md;
+      margin-top: $space-none;
+      overflow: hidden;
+      position: relative;
+      &--selected {
+        border-left: $selected-border-left-space solid $red;
+        margin-left: $negative-space-md;
+      }
+    }
+
+    &__display-name {
+      color: $link-color;
+      font-family: $heading-font-stack;
+      font-size: 15px;
+      &--selected {
+        color: $black;
+        font-weight: bold;
+        margin-left: $space-md - $selected-border-left-space;
+      }
+    }
+  }
+}
