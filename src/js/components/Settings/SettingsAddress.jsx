@@ -7,7 +7,7 @@ import ElectionStore from "../../stores/ElectionStore";
 import Helmet from "react-helmet";
 import VoterStore from "../../stores/VoterStore";
 
-export default class Location extends Component {
+export default class SettingsAddress extends Component {
   static propTypes = {
       location: PropTypes.object
   };
