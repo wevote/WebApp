@@ -84,9 +84,9 @@ export default class HeaderBarProfilePopUp extends Component {
             }
             {this.props.voter && isSignedIn ?
               <li>
-                <Link onClick={this.hideProfilePopUp} to="/more/sign_in">
+                <Link onClick={this.hideProfilePopUp} to="/settings/profile">
                   <div>
-                    <span className="header-slide-out-menu-text-left">Your Account</span>
+                    <span className="header-slide-out-menu-text-left">Your Settings</span>
                   </div>
                 </Link>
               </li> :

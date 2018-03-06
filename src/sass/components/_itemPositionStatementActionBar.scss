@@ -26,7 +26,7 @@ $post-button-padding: 3px 7px;
   &__container {
     background-color: $gray-pale;
     padding: $space-sm $space-md;
-    margin: $space-none (-$space-md) (-$space-sm);
+    margin: $space-none $negative-space-md (-$space-sm);
 
     &__in-list {
       // margin-left: $space-position-comment;

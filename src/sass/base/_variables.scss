@@ -32,6 +32,7 @@ $space-xxs:  2px;
 $space-xs:   4px;
 $space-sm:   8px;
 $space-md:  16px;
+$negative-space-md: (-$space-md);
 $space-lg:  32px;
 $space-xl:  64px;
 $space-auto: auto; // this is currently required because the 'declaration-use-variable' linter doesn't allow for specific value exceptions when requriing variables
