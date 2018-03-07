@@ -178,13 +178,13 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
       <div className="issues-list-stacked__support-list u-flex u-justify-between u-items-center">
         {/* Click to scroll left through list Desktop */}
         { this.state.can_scroll_desktop && this.state.can_scroll_left_desktop ?
-          <i className="fa fa-2x fa-chevron-left issues-list-stacked__support-list__scroll-icon u-cursor--pointer hidden-xs" aria-hidden="true" onClick={this.scrollLeft.bind(this, "desktop")} /> :
-          <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list__scroll-icon-disabled hidden-xs" aria-hidden="true" />
+          <i className="fa fa-2x fa-chevron-left issues-list-stacked__support-list__scroll-icon u-cursor--pointer hidden-xs hidden-print" aria-hidden="true" onClick={this.scrollLeft.bind(this, "desktop")} /> :
+          <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list__scroll-icon-disabled hidden-xs hidden-print" aria-hidden="true" />
         }
         {/* Click to scroll left through list Mobile */}
         { this.state.can_scroll_mobile && this.state.can_scroll_left_mobile ?
-          <i className="fa fa-2x fa-chevron-left issues-list-stacked__support-list__scroll-icon u-cursor--pointer visible-xs" aria-hidden="true" onClick={this.scrollLeft.bind(this, "mobile")} /> :
-          <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list__scroll-icon-disabled visible-xs" aria-hidden="true" />
+          <i className="fa fa-2x fa-chevron-left issues-list-stacked__support-list__scroll-icon u-cursor--pointer visible-xs hidden-print" aria-hidden="true" onClick={this.scrollLeft.bind(this, "mobile")} /> :
+          <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list__scroll-icon-disabled visible-xs hidden-print" aria-hidden="true" />
         }
         <div className="issues-list-stacked__support-list__container-wrap">
           {/* Show a break-down of the current positions in your network */}
@@ -231,13 +231,13 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
         </div>
         {/* Click to scroll right through list Desktop */}
         { this.state.can_scroll_desktop && this.state.can_scroll_right_desktop ?
-          <i className="fa fa-2x fa-chevron-right issues-list-stacked__support-list__scroll-icon u-cursor--pointer hidden-xs" aria-hidden="true" onClick={this.scrollRight.bind(this, "desktop")} /> :
-          <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list__scroll-icon-disabled hidden-xs" aria-hidden="true" />
+          <i className="fa fa-2x fa-chevron-right issues-list-stacked__support-list__scroll-icon u-cursor--pointer hidden-xs hidden-print" aria-hidden="true" onClick={this.scrollRight.bind(this, "desktop")} /> :
+          <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list__scroll-icon-disabled hidden-xs hidden-print" aria-hidden="true" />
         }
         {/* Click to scroll right through list Mobile */}
         { this.state.can_scroll_mobile && this.state.can_scroll_right_mobile ?
-          <i className="fa fa-2x fa-chevron-right issues-list-stacked__support-list__scroll-icon u-cursor--pointer visible-xs" aria-hidden="true" onClick={this.scrollRight.bind(this, "mobile")} /> :
-          <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list__scroll-icon-disabled visible-xs" aria-hidden="true" />
+          <i className="fa fa-2x fa-chevron-right issues-list-stacked__support-list__scroll-icon u-cursor--pointer visible-xs hidden-print" aria-hidden="true" onClick={this.scrollRight.bind(this, "mobile")} /> :
+          <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list__scroll-icon-disabled visible-xs hidden-print" aria-hidden="true" />
         }
       </div>
     );
