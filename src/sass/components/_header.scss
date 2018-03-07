@@ -197,13 +197,13 @@ $space-search-right: 10%;
     }
   }
 
-  &__election-title {
-    // margin-right: $space-md;
+  &__election-details {
+    text-align: right;
   }
 
-  &__election-details {
-    // margin-right: $space-md;
-    text-align: right;
+  &__election-type {
+    font-size: 14px;
+    color: $gray-mid;
   }
 }
 

@@ -334,15 +334,18 @@ export default class SearchAllBox extends Component {
                 let electionDay = oneResult.result_summary.split(" ").splice(-1);
                 let today = new Date();
                 let electionDate = new Date(electionDay + " 0:00:00");
-                let pastElection = today > electionDate ? " IN PAST" : "UPCOMING ELECTION";
+                let pastElection = today > electionDate ? " In Past" : "Upcoming Election";
                 return <Link key={oneResult.local_id}
                              data-idx={idx}
                              onMouseOver={this.onSearchResultMouseOver}
                              className="search-container__links"
                              onClick={() => this.onSearchElectionResultClick(oneResult.google_civic_election_id)}>
                   <div className={searchResultClasses}>
-                      <div className="search-container__election-title">{capitalizedTitle}</div>
-                      <div className="search-container__election-details">{electionDay}<br />{pastElection}</div>
+                    <div className="search-container__election-title">{capitalizedTitle}</div>
+                    <div className="search-container__election-details u-no-break">
+                      <div className="search-container__election-date">{electionDay}</div>
+                      <div className="search-container__election-type">{pastElection}</div>
+                    </div>
                   </div>
                 </Link>;
               } else {
