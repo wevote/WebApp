@@ -191,15 +191,19 @@ $space-search-right: 10%;
     background-color: $white;
     padding: $space-md;
     font-size: 1rem;
-    align-items: center;
 
     &--highlighted {
       background-color: $search-result-highlight-color;
     }
   }
 
-  &__election_summary {
-    margin-right: $space-md;
+  &__election-details {
+    text-align: right;
+  }
+
+  &__election-type {
+    font-size: 14px;
+    color: $gray-mid;
   }
 }
 
