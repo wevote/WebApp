@@ -81,8 +81,7 @@ export default class SearchAllBox extends Component {
 
     if (SearchAllStore.getSearchResults()) {
       newState.searchResults = SearchAllStore.getSearchResults();
-      this.links = newState.searchResults.map((r) => makeSearchLink(r.twitter_handle, r.we_vote_id, r.kind_of_owner,
-        r.link_internal, r.google_civic_election_id));
+      this.links = newState.searchResults.map(r => makeSearchLink(r.twitter_handle, r.we_vote_id, r.kind_of_owner, r.link_internal, r.google_civic_election_id));
     }
 
     if (SearchAllStore.getForceClosed()) {
@@ -102,7 +101,7 @@ export default class SearchAllBox extends Component {
       textFromSearchField: searchText,
     });
 
-    //If text field is empty, hide the results. If not, perform search
+    // If text field is empty, hide the results. If not, perform search
     if (searchText === "") {
       this.clearSearch();
     } else {
@@ -112,7 +111,6 @@ export default class SearchAllBox extends Component {
   }
 
   onSearchFocus () {
-
     this.refs.searchAllBox.setSelectionRange(0, 999);
 
     // Hide the site name
@@ -150,10 +148,10 @@ export default class SearchAllBox extends Component {
       this.updateSearchText();
       this.navigateToSelectedLink();
 
-      //Remove focus from search bar to close it
+      // Remove focus from search bar to close it
       document.getElementById("SearchAllBox-input").blur();
     } else if (!this.state.open) {
-      //add focus from search bar, so a search logo tap opens/closes
+      // Add focus from search bar, so a search logo tap opens/closes
       document.getElementById("SearchAllBox-input").focus();
     }
 
@@ -229,7 +227,7 @@ export default class SearchAllBox extends Component {
       searchResults: [],
     });
 
-    //setTimeout(() => {
+    // setTimeout(() => {
     //   this.refs.searchAllBox.focus();
     // }, 0);
   }
@@ -249,7 +247,7 @@ export default class SearchAllBox extends Component {
       open: false,
     });
 
-    //Update the search results to the selected query
+    // Update the search results to the selected query
     SearchAllActions.searchAll(selectedResultText);
   }
 
@@ -293,87 +291,93 @@ export default class SearchAllBox extends Component {
       "site-search__clear__hidden": !this.state.textFromSearchField.length,
     });
 
+    let searchResultsDisplay = null;
+    if (this.searchHasContent()) {
+      searchResultsDisplay = searchResults.map((oneResult, idx) => {
+        let capitalizedTitle = capitalizeString(oneResult.result_title);
+        if (oneResult.kind_of_owner === "ELECTION") {
+          let searchResultClasses = classNames({
+            "search-container__election_results": true,
+            "search-container__election_results--highlighted": idx === this.state.selectedIndex,
+            "u-flex u-align-start u-justify-between": true,
+          });
+          let electionDay = oneResult.result_summary.split(" ").splice(-1);
+          let today = new Date();
+          let electionDate = new Date(electionDay + " 0:00:00");
+          let pastElection = today > electionDate ? " In Past" : "Upcoming Election";
+          return <Link key={oneResult.local_id}
+                       data-idx={idx}
+                       onMouseOver={this.onSearchResultMouseOver}
+                       className="search-container__links"
+                       onClick={() => this.onSearchElectionResultClick(oneResult.google_civic_election_id)}>
+            <div className={searchResultClasses}>
+              <div className="search-container__election-title">{capitalizedTitle}</div>
+              <div className="search-container__election-details u-no-break">
+                <div className="search-container__election-date">{electionDay}</div>
+                <div className="search-container__election-type">{pastElection}</div>
+              </div>
+            </div>
+          </Link>;
+        } else {
+          let searchResultClasses = classNames({
+            "search-container__results": true,
+            "search-container__results--highlighted": idx === this.state.selectedIndex,
+          });
+
+          return <Link key={oneResult.we_vote_id}
+                       data-idx={idx}
+                       to={this.links[idx]}
+                       onMouseOver={this.onSearchResultMouseOver}
+                       className="search-container__links"
+                       onClick={this.onSearchResultClick}>
+            <div className={searchResultClasses}>
+              <span>
+                <ImageHandler imageUrl={oneResult.result_image}
+                              kind_of_ballot_item={oneResult.kind_of_owner}
+                              sizeClassName="search-image "
+                              className={oneResult.kind_of_owner} />
+              </span>
+              {capitalizedTitle}
+            </div>
+          </Link>;
+        }
+      });
+    } else if (this.state.textFromSearchField.length) {
+      searchResultsDisplay = <div className="search-container__results">
+        <div className="search-container__election-title">Nothing found for "{this.state.textFromSearchField}".</div>
+      </div>;
+    }
+
     let searchStyle = isWebApp() ? "page-header__search" : "page-header__search search-cordova";
 
     return <div className={searchStyle}>
-        <form onSubmit={this.onSearchFormSubmit} role="search">
-          <div className="input-group site-search">
-
-            <input type="text"
-                   id="SearchAllBox-input"
-                   className="form-control site-search__input-field"
-                   placeholder="Search We Vote…"
-                   name="master_search_field"
-                   autoComplete="off"
-                   onFocus={this.onSearchFocus}
-                   onBlur={this.onSearchBlur}
-                   onChange={this.onSearchFieldTextChange}
-                   onKeyDown={this.onSearchKeyDown}
-                   value={this.state.textFromSearchField}
-                   ref="searchAllBox" />
-            <div className="input-group-btn">
-              <button className={clearButtonClasses} onClick={this.onClearSearch}>
-                <i className="glyphicon glyphicon-remove-circle u-gray-light" />
-              </button>
-              <button className="site-search__button btn btn-default" type="submit">
-                <i className="glyphicon glyphicon-search" />
-              </button>
-            </div>
+      <form onSubmit={this.onSearchFormSubmit} role="search">
+        <div className="input-group site-search">
+          <input type="text"
+                 id="SearchAllBox-input"
+                 className="form-control site-search__input-field"
+                 placeholder="Search We Vote…"
+                 name="master_search_field"
+                 autoComplete="off"
+                 onFocus={this.onSearchFocus}
+                 onBlur={this.onSearchBlur}
+                 onChange={this.onSearchFieldTextChange}
+                 onKeyDown={this.onSearchKeyDown}
+                 value={this.state.textFromSearchField}
+                 ref="searchAllBox" />
+          <div className="input-group-btn">
+            <button className={clearButtonClasses} onClick={this.onClearSearch}>
+              <i className="glyphicon glyphicon-remove-circle u-gray-light" />
+            </button>
+            <button className="site-search__button btn btn-default" type="submit">
+              <i className="glyphicon glyphicon-search" />
+            </button>
           </div>
-        </form>
-        <div className={searchContainerClasses}
-             ref="searchContainer">
-           { searchResults.map((oneResult, idx) => {
-              let capitalizedTitle = capitalizeString(oneResult.result_title);
-              if (oneResult.kind_of_owner === "ELECTION") {
-                let searchResultClasses = classNames({
-                  "search-container__election_results": true,
-                  "search-container__election_results--highlighted": idx === this.state.selectedIndex,
-                  "u-flex u-align-start u-justify-between": true,
-                });
-                let electionDay = oneResult.result_summary.split(" ").splice(-1);
-                let today = new Date();
-                let electionDate = new Date(electionDay + " 0:00:00");
-                let pastElection = today > electionDate ? " In Past" : "Upcoming Election";
-                return <Link key={oneResult.local_id}
-                             data-idx={idx}
-                             onMouseOver={this.onSearchResultMouseOver}
-                             className="search-container__links"
-                             onClick={() => this.onSearchElectionResultClick(oneResult.google_civic_election_id)}>
-                  <div className={searchResultClasses}>
-                    <div className="search-container__election-title">{capitalizedTitle}</div>
-                    <div className="search-container__election-details u-no-break">
-                      <div className="search-container__election-date">{electionDay}</div>
-                      <div className="search-container__election-type">{pastElection}</div>
-                    </div>
-                  </div>
-                </Link>;
-              } else {
-                let searchResultClasses = classNames({
-                  "search-container__results": true,
-                  "search-container__results--highlighted": idx === this.state.selectedIndex,
-                });
-
-                return <Link key={oneResult.we_vote_id}
-                             data-idx={idx}
-                             to={this.links[idx]}
-                             onMouseOver={this.onSearchResultMouseOver}
-                             className="search-container__links"
-                             onClick={this.onSearchResultClick}>
-                  <div className={searchResultClasses}>
-                  <span>
-                    <ImageHandler imageUrl={oneResult.result_image}
-                                  kind_of_ballot_item={oneResult.kind_of_owner}
-                                  sizeClassName="search-image "
-                                  className={oneResult.kind_of_owner} />
-                  </span>
-                    {capitalizedTitle}
-                  </div>
-                </Link>;
-              }
-            })
-          }
         </div>
-      </div>;
+      </form>
+      <div className={searchContainerClasses} ref="searchContainer">
+        {searchResultsDisplay}
+      </div>
+    </div>;
   }
 }
