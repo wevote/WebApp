@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { capitalizeString, sentenceCaseString } from "../../utils/textFormat";
 
 
-export default class SettingsVoterGuidesSideBarLink extends Component {
+export default class SelectVoterGuidesSideBarLink extends Component {
   static propTypes = {
     linkTo: PropTypes.string,
     label: PropTypes.string,

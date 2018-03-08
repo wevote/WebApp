@@ -5,12 +5,33 @@ $selected-border-left-space: 2px;
   margin-bottom: $space-md;
 
   &__summary {
+    &__organization-title {
+      font-family: $heading-font-stack;
+      font-size: 24px;
+      color: $gray-dark;
+      padding-bottom: $space-none;
+      padding-top: $space-sm;
+    }
     &__title {
       font-family: $heading-font-stack;
       font-size: 18px;
       color: $gray-dark;
+      padding-bottom: $space-none;
+      padding-top: $space-md;
+    }
+    &__election-title {
+      font-family: $heading-font-stack;
+      font-size: 15px;
+      color: $gray-dark;
+      padding-bottom: $space-none;
+      padding-top: $space-xs;
+    }
+    &__election-date {
+      font-family: $heading-font-stack;
+      font-size: 12px;
+      color: $gray-light;
       padding-bottom: $space-md;
-      padding-top: $space-sm;
+      padding-top: $space-xs;
     }
 
     &__item {
