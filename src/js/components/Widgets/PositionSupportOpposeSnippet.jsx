@@ -121,7 +121,7 @@ export default class PositionSupportOpposeSnippet extends Component {
           </span>
           { comment_text_off ? null :
             <span>
-              <span>{statement_text_html}</span>
+              <span className="u-wrap-links hidden-print">{statement_text_html}</span>
               {/* if there's an external source for the explicit position/endorsement, show it */}
               { video_url ?
                 <ReactPlayer className="explicit-position__media-player" url={`${video_url}`} width="100%" height="100%"/> :
