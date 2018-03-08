@@ -7,7 +7,7 @@
 import { toast } from "react-toastify";
 
 const DEFAULT_OPTIONS = {
-  autoClose: 3000,
+  autoClose: 2000,
   bodyClassName: {
     fontFamily: "'Source Sans Pro', sans-serif",
     fontSize: "1.2rem",

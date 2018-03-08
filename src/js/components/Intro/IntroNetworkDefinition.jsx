@@ -28,7 +28,7 @@ export default class IntroNetworkDefinition extends Component {
         <div><br /></div>
       <div><img className="center-block intro-story__img-height--extra u-bg-white" src={cordovaDot("/img/global/intro-story/intro-listen-to-friends-graphic.svg")}/></div>
       <div className="intro-story__padding-btn">
-        <button type="button" className="btn btn-success" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
+        <button type="button" className="btn btn-success btn-lg" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
       </div>
     </div>;
   }
