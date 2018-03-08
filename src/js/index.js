@@ -21,10 +21,19 @@ function startApp () {
     if (window.Keyboard) {
       console.log("Cordova startupApp keyboard plugin found");
       Keyboard.shrinkView(true);
+
       window.addEventListener("keyboardDidShow", function () {
         document.activeElement.scrollIntoView();
       });
-    } else console.log("Cordova startupApp keyboard plugin WAS NOT found");
+    } else console.log("ERROR: Cordova index.js startApp keyboard plugin WAS NOT found");
+
+    if (window.StatusBar) {
+      StatusBar.styleLightContent();
+    } else {
+      // 3/5/18:  Not sure but this failure might be due to    https://issues.apache.org/jira/browse/CB-13843
+      console.log("ERROR: Cordova index.js startApp StatusBar plugin WAS NOT found");
+    }
+
   }
 
   render(<Router history={isCordova() ? hashHistory : browserHistory } render={applyRouterMiddleware(useScroll(()=>true))}>

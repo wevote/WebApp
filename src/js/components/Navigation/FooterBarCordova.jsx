@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import BallotStore from "../../stores/BallotStore";
 import BookmarkStore from "../../stores/BookmarkStore";
-import { historyPush } from "../../utils/cordovaUtils";
+import {historyPush, isCordova, isWebApp} from "../../utils/cordovaUtils";
 import cookies from "../../utils/cookies";
 import FriendStore from "../../stores/FriendStore";
 import HeaderBar from "./HeaderBar";
@@ -11,23 +11,25 @@ import HeaderBarAboutMenu from "./HeaderBarAboutMenu";
 import OrganizationActions from "../../actions/OrganizationActions";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
+import HeaderBarProfileSlideIn from "./HeaderBarProfileSlideIn";
 
 const footStyle = {
   backgroundColor: "#1c2f4b",
   borderTop: "1px solid #E7E7E7",
   color: "#fff",
-  padding: 10,
   position: "fixed",
   left: 0,
   bottom: 0,
   height: 54,
   width: "100%",
-  paddingLeft: 15,
 };
 
 // TODO: 2/24/18, replace this with sass Steve
 const footContainer = {
+  paddingLeft: 20,
+  paddingRight: 20,
   paddingBottom: 12,
+  paddingTop: 10,
   display: "flex",
   alignItems: "flex-start",
   position: "relative",
@@ -129,56 +131,59 @@ export default class FooterBarCordova extends Component {
     let weVoteBrandingOff = this.state.we_vote_branding_off === null ? false : this.state.we_vote_branding_off;
     let inNetworkSection = pathname === "/more/network" || pathname === "/more/network/organizations" || pathname === "/more/network/issues" || pathname === "/more/network/friends";
 
-    return <div style={footStyle}>
-      <div style={footContainer} >
-        <span className={"hamburger"}>
-          <span className="fa fa-bars" onClick={this.toggleProfilePopUp} />
-        </span>
-        {this.state.profilePopUpOpen &&
-        <HeaderBarProfilePopUp {...this.props}
-                               onClick={this.toggleProfilePopUp}
-                               profilePopUpOpen={this.state.profilePopUpOpen}
-                               bookmarks={this.state.bookmarks}
-                               weVoteBrandingOff={this.state.we_vote_branding_off}
-                               toggleProfilePopUp={this.toggleProfilePopUp}
-                               hideProfilePopUp={this.hideProfilePopUp}
-                               transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
-                               signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)}
-        />
-        }
-        {showFullNavigation && <span>{HeaderBar.ballot(pathname === "/ballot")}</span>}
+    return <div className= "footer-bar-cordova" style={footStyle}>
+      <div className= "inner-footer-container" >
+        <div className= "footer-container" style={footContainer} >
+          {(showFullNavigation || isCordova()) && <span>{HeaderBar.ballot(pathname === "/ballot")}</span>}
 
-        {showFullNavigation && <span>{HeaderBar.network(inNetworkSection, numberOfIncomingFriendRequests)}</span>}
-        {weVoteBrandingOff ? null :
-          <span>
-             {showFullNavigation ?
-               <span onClick={this.toggleAboutMenu}
-                     className={"header-nav__item header-nav__item--about header-nav__item--has-icon hidden-xs" + (pathname === "/more/about" ? " active-icon" : "")}>
-                 <span className="header-nav__icon--about">About</span>
-                 <span className="header-nav__label">We Vote</span>
-                 <HeaderBarAboutMenu toggleAboutMenu={this.toggleAboutMenu} aboutMenuOpen={this.state.aboutMenuOpen}/>
-               </span> :
-               <div>
-                 <Link to="/more/about"
-                       className={"header-nav__item header-nav__item--about" + (pathname === "/more/about" ? " active-icon" : "")}>
+          {(showFullNavigation || isCordova()) &&  <span>{HeaderBar.network(inNetworkSection, numberOfIncomingFriendRequests)}</span>}
+
+          {(!weVoteBrandingOff && isWebApp()) &&
+            <span>
+               {showFullNavigation ?
+                 <span onClick={this.toggleAboutMenu}
+                       className={"header-nav__item header-nav__item--about header-nav__item--has-icon hidden-xs" + (pathname === "/more/about" ? " active-icon" : "")}>
                    <span className="header-nav__icon--about">About</span>
                    <span className="header-nav__label">We Vote</span>
-                 </Link>
-               </div>
-             }
-           </span>
-        }
+                   <HeaderBarAboutMenu toggleAboutMenu={this.toggleAboutMenu} aboutMenuOpen={this.state.aboutMenuOpen}/>
+                 </span> :
+                 <div>
+                   <Link to="/more/about"
+                         className={"header-nav__item header-nav__item--about" + (pathname === "/more/about" ? " active-icon" : "")}>
+                     <span className="header-nav__icon--about">About</span>
+                     <span className="header-nav__label">We Vote</span>
+                   </Link>
+                 </div>
+               }
+             </span>
+          }
 
-        {showFullNavigation ?
-          null :
-          <button type="button" className="btn btn-sm btn-success"
-                  onClick={this.goToGetStarted}>Sample Ballot</button>}
+          {(!showFullNavigation && isWebApp()) &&
+            <button type="button" className="btn btn-sm btn-success"
+                    onClick={this.goToGetStarted}>Sample Ballot</button>
+          }
 
-        {showFullNavigation ?
-          null :
-          <Link to="/more/sign_in" className="sign_in header-nav__item">
-            Sign In
-          </Link>
+          {(!showFullNavigation && isWebApp()) &&
+            <Link to="/more/sign_in" className="sign_in header-nav__item">
+              Sign In
+            </Link>
+          }
+
+          <span className={"hamburger"}>
+            <span className="fa fa-bars" onClick={this.toggleProfilePopUp} />
+          </span>
+        </div>
+        {this.state.profilePopUpOpen &&
+          <HeaderBarProfileSlideIn {...this.props}
+                                   onClick={this.toggleProfilePopUp}
+                                   profilePopUpOpen={this.state.profilePopUpOpen}
+                                   bookmarks={this.state.bookmarks}
+                                   weVoteBrandingOff={this.state.we_vote_branding_off}
+                                   toggleProfilePopUp={this.toggleProfilePopUp}
+                                   hideProfilePopUp={this.hideProfilePopUp}
+                                   transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
+                                   signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)}
+          />
         }
       </div>
     </div>;

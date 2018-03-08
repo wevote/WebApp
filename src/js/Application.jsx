@@ -381,8 +381,6 @@ export default class Application extends Component {
         { isCordova() && <div className={"ios7plus-spacer"} /> }
         <div className={headRoomSize}>
           <div ref="pageHeader" className={pageHeaderStyle}>
-            {/* March 2018: One of HeaderBackToBar OR HeaderBar is displayed, AND under some circumstances HeaderGettingStartedBar is
-           displayed on top.  As long as they are in the same location it works, but ideally we would get this sorted out someday */}
             { showBackToHeader ?
               <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
               <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/> }

@@ -102,7 +102,7 @@ export default class HeaderBarProfilePopUp extends Component {
               <li>
                 <Link onClick={this.signOutAndHideProfilePopUp} to="/more/sign_in">
                   <div>
-                    <span className="header-slide-out-menu-text-left">Sign Out</span>
+                    <span className="header-slide-out-menu-text-left">{isSignedIn ? "Sign Out" : "Sign In"}</span>
                   </div>
                 </Link>
               </li> :
@@ -121,9 +121,10 @@ export default class HeaderBarProfilePopUp extends Component {
                     <span className="header-slide-out-menu-text-left">Your Bookmarked Items</span>
                   </div>
                 </Link>
-              </li> :
-              null}
-            {this.props.weVoteBrandingOff || isCordova() ? null :
+              </li>
+              : null
+            }
+            {this.props.weVoteBrandingOff || isWebApp() &&
               <li className="visible-xs-block">
                 <Link onClick={this.hideProfilePopUp} to="/more/howtouse">
                   <div>
