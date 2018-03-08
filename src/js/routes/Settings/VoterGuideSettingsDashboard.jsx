@@ -127,7 +127,6 @@ export default class VoterGuideSettingsDashboard extends Component {
       OrganizationActions.organizationRetrieve(linked_organization_we_vote_id);
       this.setState({
         linked_organization_we_vote_id: linked_organization_we_vote_id,
-        organization: OrganizationStore.getOrganizationByWeVoteId(linked_organization_we_vote_id),
       });
     }
     if (linked_organization_we_vote_id) {

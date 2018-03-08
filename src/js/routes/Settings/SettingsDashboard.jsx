@@ -69,6 +69,14 @@ export default class SettingsDashboard extends Component {
       this.setState({
         linked_organization_we_vote_id: linked_organization_we_vote_id,
       });
+      let organization = OrganizationStore.getOrganizationByWeVoteId(linked_organization_we_vote_id);
+      if (organization) {
+        this.setState({
+          organization: organization,
+        });
+      } else {
+        OrganizationActions.organizationRetrieve(linked_organization_we_vote_id);
+      }
     }
     if (nextProps.params.edit_mode) {
       this.setState({ editMode: nextProps.params.edit_mode });
