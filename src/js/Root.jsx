@@ -51,7 +51,7 @@ import RegisterToVote from "./routes/More/RegisterToVote";
 import SampleBallot from "./routes/Intro/SampleBallot";
 import ScratchPad from "./routes/ScratchPad";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
-import SettingsVoterGuideDashboard from "./routes/Settings/SettingsVoterGuideDashboard";
+import VoterGuideSettingsDashboard from "./routes/Settings/VoterGuideSettingsDashboard";
 import SignIn from "./routes/SignIn/SignIn";
 import SignInJumpProcess from "./routes/Process/SignInJumpProcess";
 import FacebookLandingProcess from "./routes/Process/FacebookLandingProcess";
@@ -120,9 +120,9 @@ const routes = () =>
     </Route>
 
     {/* Voter Guide Settings go in this structure... */}
-    <Route path="/vg/:voter_guide_we_vote_id/settings" component={SettingsVoterGuideDashboard}>
-      <IndexRoute component={SettingsVoterGuideDashboard} />
-      <Route path="/vg/:voter_guide_we_vote_id/settings/:edit_mode" component={SettingsVoterGuideDashboard} />
+    <Route path="/vg/:voter_guide_we_vote_id/settings" component={VoterGuideSettingsDashboard}>
+      <IndexRoute component={VoterGuideSettingsDashboard} />
+      <Route path="/vg/:voter_guide_we_vote_id/settings/:edit_mode" component={VoterGuideSettingsDashboard} />
     </Route>
 
     {/* Ballot Off-shoot Pages */}

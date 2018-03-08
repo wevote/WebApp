@@ -28,7 +28,7 @@ export default class VoterGuidePositions extends Component {
 
   componentDidMount (){
     // console.log("VoterGuidePositions, componentDidMount, this.props.organization: ", this.props.organization);
-    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
@@ -63,12 +63,10 @@ export default class VoterGuidePositions extends Component {
         current_organization_we_vote_id: nextProps.organization.organization_we_vote_id,
         organization: nextProps.organization
       });
-    // } else {
-    //   console.log("VoterGuidePositions, componentWillReceiveProps, not different");
-      // We do not refresh the organization since we don't want to cause the positions to have to re-render and
-      //  "flash" on the screen
-      // this.setState({organization: nextProps.organization});
     }
+    // We do not refresh the organization since we don't want to cause the positions to have to re-render and
+    //  "flash" on the screen
+    // this.setState({organization: nextProps.organization});
   }
 
   componentWillUnmount (){
@@ -77,8 +75,8 @@ export default class VoterGuidePositions extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onOrganizationStoreChange (){
-    // console.log("VoterGuidePositions _onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
+  onOrganizationStoreChange (){
+    // console.log("VoterGuidePositions onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
     });
@@ -196,25 +194,25 @@ export default class VoterGuidePositions extends Component {
       { at_least_one_position_found_for_other_elections ?
         <div className="card">
           <ul className="card-child__list-group">
-          { position_list_for_all_except_one_election.length && !at_least_one_position_found_for_this_election ?
-            <span>
-            { looking_at_self ?
-              <a className="fa-pull-right u-push--md"
-                 tabIndex="0"
-                 onKeyDown={this.onKeyDownEditMode.bind(this)}
-                 onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit Positions"}</a> :
-              null }
-              <h4 className="card__additional-heading">Positions for Other Elections</h4>
-              { position_list_for_all_except_one_election.map( item => {
-                return <OrganizationPositionItem key={item.position_we_vote_id}
-                                                 position={item}
-                                                 organization={this.state.organization}
-                                                 editMode={this.state.editMode}
-                       />;
-              }) }
-            </span> :
-            null
-          }
+            { position_list_for_all_except_one_election.length && !at_least_one_position_found_for_this_election ?
+              <span>
+              { looking_at_self ?
+                <a className="fa-pull-right u-push--md"
+                   tabIndex="0"
+                   onKeyDown={this.onKeyDownEditMode.bind(this)}
+                   onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit Positions"}</a> :
+                null }
+                <h4 className="card__additional-heading">Positions for Other Elections</h4>
+                { position_list_for_all_except_one_election.map(item => {
+                  return <OrganizationPositionItem key={item.position_we_vote_id}
+                                                   position={item}
+                                                   organization={this.state.organization}
+                                                   editMode={this.state.editMode}
+                  />;
+                }) }
+              </span> :
+              null
+            }
           </ul>
         </div> :
         null

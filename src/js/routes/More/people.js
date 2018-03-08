@@ -47,6 +47,13 @@ export const weVoteBoard = [ {
       "Managed large software projects for companies like Disney and over 60 nonprofits."
     ]
   }, {
+    name: "Alicia Kolar Prevost",
+    image: photoPath + "Alicia_Prevost-200x200.jpg",
+    title: [
+      "Senior Adviser",
+      "Led Defend Our Future (Environmental Defense Fund), mobilizing young people around climate action. PhD in political science, American University."
+    ]
+  }, {
     name: "Barbara Shannon",
     image: photoPath + "Barbara_Shannon-200x200.jpg",
     title: [
@@ -85,16 +92,10 @@ export const weVoteBoard = [ {
 ];
 
 export const weVoteStaff = [ {
-    name: "Alicia Prevost",
-    image: photoPath + "Alicia_Prevost-200x200.jpg",
-    title: [
-      "Executive Director",
-    ]
-  }, {
     name: "Dale John McGrew",
     image: photoPath + "Dale_McGrew-200x200.jpg",
     title: [
-      "Co-Founder / CTO"
+      "Executive Director / Co-Founder / CTO"
     ]
   }, {
     name: "Rohan Bhambhoria",
@@ -167,6 +168,12 @@ export const weVoteStaff = [ {
     image: photoPath + "Ciero_Kilpatrick-200x200.jpg",
     title: [
       "User Experience Design Intern"
+    ]
+  }, {
+    name: "Michael Kushman",
+    image: photoPath + "Michael_Kushman-200x200.jpg",
+    title: [
+      "Product Marketing"
     ]
   }, {
     name: "Edward Ly",

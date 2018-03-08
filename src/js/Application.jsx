@@ -282,6 +282,7 @@ export default class Application extends Component {
     // If looking at these paths, we want to enter theater mode
     let inTheaterMode = false;
     let contentFullWidthMode = false;
+    let settingsMode = false;
     let voterGuideMode = false;
     let voterGuideShowGettingStartedNavigation = false;
     if (pathname === "/intro/story" ||
@@ -324,17 +325,14 @@ export default class Application extends Component {
         pathname === "/opinions" ||
         pathname === "/opinions_followed" ||
         pathname === "/opinions_ignored" ||
-        pathname === "/settings" ||
-        pathname === "/settings/account" ||
-        pathname === "/settings/location" ||
-        pathname === "/settings/notifications" ||
-        pathname === "/settings/profile" ||
         pathname.startsWith("/verifythisisme/") ||
-        stringContains("/settings", pathname) ||
         pathname === "/welcome") {
       contentFullWidthMode = true;
     } else if (pathname.startsWith("/ballot") || pathname === "/bookmarks") {
       contentFullWidthMode = false;
+    } else if (stringContains("/settings", pathname)) {
+      contentFullWidthMode = true;
+      settingsMode = true;
     } else {
       voterGuideMode = true;
 
@@ -397,6 +395,33 @@ export default class Application extends Component {
           </div>
         </div>
         { this.props.children }
+        { isCordova() &&
+          <div className={"footroom-wrapper"}>
+            <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter}/>
+          </div>
+        }
+      </div>;
+    } else if (settingsMode) {
+      return <div className="app-base" id="app-base-id">
+        <ToastContainer closeButton={false} />
+        { isCordova() && <div className={"ios7plus-spacer"} /> }
+        <div className={headRoomSize}>
+          <div ref="pageHeader" className={pageHeaderStyle}>
+            {/* March 2018: One of HeaderBackToBar OR HeaderBar is displayed, AND under some circumstances HeaderGettingStartedBar is
+             displayed on top.  As long as they are in the same location it works, but ideally we would get this sorted out someday */}
+            { showBackToHeader ?
+              <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
+              <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
+            }
+          </div>
+        </div>
+        <div className="page-content-container">
+          <div className="container-fluid">
+            <div className="container-settings">
+              { this.props.children }
+            </div>
+          </div>
+        </div>
         { isCordova() &&
           <div className={"footroom-wrapper"}>
             <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter}/>

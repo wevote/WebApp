@@ -14,7 +14,7 @@ import VoterStore from "../../stores/VoterStore";
 const delay_before_user_name_update_api_call = 1200;
 
 
-export default class SettingsProfile extends Component {
+export default class VoterGuideSettingsGeneral extends Component {
 
   constructor (props) {
     super(props);
@@ -146,7 +146,8 @@ export default class SettingsProfile extends Component {
         <div className="card-main">
           {this.state.voter.is_signed_in ?
             <div>
-                <h3 className="h3">Your Public Profile</h3>
+              <div className="card">
+                <h3 className="h3">General Settings</h3>
                 <br />
                 <label htmlFor="last-name">First Name
                 <input type="text"
@@ -169,6 +170,7 @@ export default class SettingsProfile extends Component {
                 /> </label>
                 <br />
                 <span className="pull-right u-gray-mid">{this.state.name_saved_status}</span>
+              </div>
             </div> :
             <div><Link to="/settings/account">Please Sign In</Link></div>
           }

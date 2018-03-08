@@ -9,6 +9,12 @@ module.exports = {
     });
   },
 
+  voterGuidesRetrieve: function (organization_we_vote_id) {
+    Dispatcher.loadEndpoint("voterGuidesRetrieve", {
+      organization_we_vote_id: organization_we_vote_id
+    });
+  },
+
   voterGuidesToFollowRetrieve: function (election_id, search_string, add_voter_guides_not_from_election) {
     Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", {
       google_civic_election_id: election_id,
