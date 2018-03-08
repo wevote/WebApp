@@ -81,8 +81,7 @@ export default class SearchAllBox extends Component {
 
     if (SearchAllStore.getSearchResults()) {
       newState.searchResults = SearchAllStore.getSearchResults();
-      this.links = newState.searchResults.map((r) => makeSearchLink(r.twitter_handle, r.we_vote_id, r.kind_of_owner,
-        r.link_internal, r.google_civic_election_id));
+      this.links = newState.searchResults.map(r => makeSearchLink(r.twitter_handle, r.we_vote_id, r.kind_of_owner, r.link_internal, r.google_civic_election_id));
     }
 
     if (SearchAllStore.getForceClosed()) {
@@ -102,7 +101,7 @@ export default class SearchAllBox extends Component {
       textFromSearchField: searchText,
     });
 
-    //If text field is empty, hide the results. If not, perform search
+    // If text field is empty, hide the results. If not, perform search
     if (searchText === "") {
       this.clearSearch();
     } else {
@@ -112,7 +111,6 @@ export default class SearchAllBox extends Component {
   }
 
   onSearchFocus () {
-
     this.refs.searchAllBox.setSelectionRange(0, 999);
 
     // Hide the site name
@@ -150,10 +148,10 @@ export default class SearchAllBox extends Component {
       this.updateSearchText();
       this.navigateToSelectedLink();
 
-      //Remove focus from search bar to close it
+      // Remove focus from search bar to close it
       document.getElementById("SearchAllBox-input").blur();
     } else if (!this.state.open) {
-      //add focus from search bar, so a search logo tap opens/closes
+      // Add focus from search bar, so a search logo tap opens/closes
       document.getElementById("SearchAllBox-input").focus();
     }
 
@@ -229,7 +227,7 @@ export default class SearchAllBox extends Component {
       searchResults: [],
     });
 
-    //setTimeout(() => {
+    // setTimeout(() => {
     //   this.refs.searchAllBox.focus();
     // }, 0);
   }
@@ -249,7 +247,7 @@ export default class SearchAllBox extends Component {
       open: false,
     });
 
-    //Update the search results to the selected query
+    // Update the search results to the selected query
     SearchAllActions.searchAll(selectedResultText);
   }
 
@@ -353,34 +351,33 @@ export default class SearchAllBox extends Component {
     let searchStyle = isWebApp() ? "page-header__search" : "page-header__search search-cordova";
 
     return <div className={searchStyle}>
-        <form onSubmit={this.onSearchFormSubmit} role="search">
-          <div className="input-group site-search">
-
-            <input type="text"
-                   id="SearchAllBox-input"
-                   className="form-control site-search__input-field"
-                   placeholder="Search We Vote…"
-                   name="master_search_field"
-                   autoComplete="off"
-                   onFocus={this.onSearchFocus}
-                   onBlur={this.onSearchBlur}
-                   onChange={this.onSearchFieldTextChange}
-                   onKeyDown={this.onSearchKeyDown}
-                   value={this.state.textFromSearchField}
-                   ref="searchAllBox" />
-            <div className="input-group-btn">
-              <button className={clearButtonClasses} onClick={this.onClearSearch}>
-                <i className="glyphicon glyphicon-remove-circle u-gray-light" />
-              </button>
-              <button className="site-search__button btn btn-default" type="submit">
-                <i className="glyphicon glyphicon-search" />
-              </button>
-            </div>
+      <form onSubmit={this.onSearchFormSubmit} role="search">
+        <div className="input-group site-search">
+          <input type="text"
+                 id="SearchAllBox-input"
+                 className="form-control site-search__input-field"
+                 placeholder="Search We Vote…"
+                 name="master_search_field"
+                 autoComplete="off"
+                 onFocus={this.onSearchFocus}
+                 onBlur={this.onSearchBlur}
+                 onChange={this.onSearchFieldTextChange}
+                 onKeyDown={this.onSearchKeyDown}
+                 value={this.state.textFromSearchField}
+                 ref="searchAllBox" />
+          <div className="input-group-btn">
+            <button className={clearButtonClasses} onClick={this.onClearSearch}>
+              <i className="glyphicon glyphicon-remove-circle u-gray-light" />
+            </button>
+            <button className="site-search__button btn btn-default" type="submit">
+              <i className="glyphicon glyphicon-search" />
+            </button>
           </div>
-        </form>
-        <div className={searchContainerClasses} ref="searchContainer">
-          {searchResultsDisplay}
         </div>
-      </div>;
+      </form>
+      <div className={searchContainerClasses} ref="searchContainer">
+        {searchResultsDisplay}
+      </div>
+    </div>;
   }
 }
