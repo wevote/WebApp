@@ -59,8 +59,11 @@ export default class IntroNetwork extends Component {
         <img src={cordovaDot("/img/global/icons/x-close.png")}
              onClick={IntroNetwork.goToBallotLink}
              className="x-close"
-             alt={"close"}
-             style={isCordova() && { marginTop: 20, marginRight: 4 } }/>
+             alt={"close"} />
+
+             {/* This style, that was inside the above img, is creating an error. I think React inline style needs to be defined. */}
+             {/*style={isCordova() && { marginTop: 0, marginRight: 0} */}
+
         <Slider ref="slider" {...settings}>
           <div key={1}><IntroNetworkSafety next={this.next}/></div>
           <div key={2}><IntroNetworkDefinition next={this.next}/></div>
