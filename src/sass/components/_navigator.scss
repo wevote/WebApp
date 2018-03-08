@@ -8,6 +8,7 @@ $nav-item-getting-started-background-hover-color: darken($page-header-getting-st
 $nav-item-getting-started-background-active-color: darken($page-header-getting-started-background-color, 10%);
 $footer-menu-margin: 130px;
 $space-hamburger: 5px;
+$transparent-background: transparent;
 
 // Header Nav
 // ================================
@@ -29,7 +30,6 @@ $space-hamburger: 5px;
 .profile-foot-menu {
   max-width: 320px;
   position: absolute;
-  left: 5px;
   bottom: -60px;
   margin-bottom: $footer-menu-margin;
   background-color: $white;
@@ -40,6 +40,7 @@ $space-hamburger: 5px;
   opacity: 1;
 }
 
+// This is the little triangular arrow, https://css-tricks.com/snippets/css/css-triangle/
 .profile-menu::before,
 .about-menu::before {
   content: '';
@@ -55,21 +56,6 @@ $space-hamburger: 5px;
   top: -16px;
 }
 
-// This is the little triangular arrow, https://css-tricks.com/snippets/css/css-triangle/
-.profile-foot-menu::before {
-  content: '';
-  display: block;
-  width: 0;
-  height: 0;
-  position: absolute;
-  border-top: 8px solid #fff;
-  border-bottom: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-left: 8px solid transparent;
-  left: 0;
-  bottom: -16px;
-}
-
 .page-overlay {
   position: fixed;
   width: 200vw;
@@ -81,6 +67,20 @@ $space-hamburger: 5px;
   pointer-events: none;
   transition: opacity .4s ease-in-out;
   opacity: 0;
+}
+
+.page-overlay-slidein {
+  position: fixed;
+  width: 200vw;
+  height: 200vh;
+  top: -10px;
+  left: -10px;
+  background-color: $transparent-background;
+  z-index: 2;
+  pointer-events: none;
+  // background: none !important;
+  //transition: opacity .4s ease-in-out;
+  //opacity: 0;
 }
 
 .profile-menu--open .page-overlay,
@@ -299,5 +299,28 @@ $space-hamburger: 5px;
 .hamburger {
   font-size: 20px;
   padding-top: $space-hamburger;
+  padding-right: $space-md;
+  padding-left: $space-sm;
   z-index: 3; //to float above the ProfilePopUp menu option grey div
+}
+
+.slide-in-tr {
+  height: 50px;
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.slide-in-td-left {
+  padding: $space-md;
+  width: 10%;
+}
+
+.slide-in-td-mid {
+  padding: $space-md;
+  width: 75%;
+  font-size: 20pt;
+}
+
+.slide-in-td-right {
+  padding: $space-md;
+  width: 10%;
 }
