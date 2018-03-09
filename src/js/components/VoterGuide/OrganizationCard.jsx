@@ -20,6 +20,7 @@ export default class OrganizationCard extends Component {
     organization: PropTypes.object.isRequired,
     turnOffDescription: PropTypes.bool,
     turnOffLogo: PropTypes.bool,
+    turnOffTwitterHandle: PropTypes.bool,
   };
 
   constructor (props) {
@@ -155,7 +156,7 @@ export default class OrganizationCard extends Component {
         }
         { !this.props.turnOffDescription ?
           <div>
-            { organization_twitter_handle ?
+            { organization_twitter_handle && !this.props.turnOffTwitterHandle ?
               <span>@{organization_twitter_handle}&nbsp;&nbsp;</span> :
               null
             }

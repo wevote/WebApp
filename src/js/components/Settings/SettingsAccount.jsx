@@ -11,13 +11,11 @@ import LoadingWheel from "../../components/LoadingWheel";
 import TwitterActions from "../../actions/TwitterActions";
 import TwitterSignIn from "../../components/Twitter/TwitterSignIn";
 import VoterActions from "../../actions/VoterActions";
-import VoterConstants from "../../constants/VoterConstants";
 import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import VoterStore from "../../stores/VoterStore";
 
 const debug_mode = false;
-const delay_before_user_name_update_api_call = 1200;
 
 
 export default class SettingsAccount extends Component {
@@ -29,49 +27,41 @@ export default class SettingsAccount extends Component {
       first_name: "",
       last_name: "",
       initial_name_loaded: false,
-      name_saved_status: "",
       show_twitter_disconnect: false,
-      newsletter_opt_in: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
-      notifications_saved_status: ""
     };
-
-    this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.updateNewsletterOptIn = this.updateNewsletterOptIn.bind(this);
-    this.updateVoterName = this.updateVoterName.bind(this);
   }
 
   // Set up this component upon first entry
   // componentWillMount is used in WebApp
   componentDidMount () {
     // console.log("SignIn componentDidMount");
-    this._onVoterStoreChange();
-    this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.onVoterStoreChange();
+    this.facebookListener = FacebookStore.addListener(this.onFacebookChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionAccountPage(VoterStore.election_id());
   }
 
   componentWillUnmount () {
-    console.log("SignIn ---- UN mount");
+    // console.log("SignIn ---- UN mount");
     this.facebookListener.remove();
     this.voterStoreListener.remove();
     this.timer = null;
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     if (VoterStore.isVoterFound() && !this.state.initial_name_loaded) {
       this.setState({
         first_name: VoterStore.getFirstName(),
         last_name: VoterStore.getLastName(),
         initial_name_loaded: true,
         voter: VoterStore.getVoter(),
-        newsletter_opt_in: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN)
       });
     } else {
       this.setState({voter: VoterStore.getVoter()});
     }
   }
 
-  _onFacebookChange () {
+  onFacebookChange () {
     this.setState({
       facebook_auth_response: FacebookStore.getFacebookAuthResponse(),
     });
@@ -102,42 +92,6 @@ export default class SettingsAccount extends Component {
   voterSplitIntoTwoAccounts () {
     VoterActions.voterSplitIntoTwoAccounts();
     this.setState({show_twitter_disconnect: false});
-  }
-
-  handleKeyPress () {
-    clearTimeout(this.timer);
-    this.timer = setTimeout(() => {
-      VoterActions.voterNameSave(this.state.first_name, this.state.last_name);
-      this.setState({name_saved_status: "Saved"});
-    }, delay_before_user_name_update_api_call);
-  }
-
-  updateVoterName (event) {
-    if (event.target.name === "first_name") {
-      this.setState({
-        first_name: event.target.value,
-        name_saved_status: "Saving First Name..."
-      });
-    } else if (event.target.name === "last_name") {
-      this.setState({
-        last_name: event.target.value,
-        name_saved_status: "Saving Last Name..."
-      });
-    }
-  }
-
-  updateNewsletterOptIn (event) {
-    if (event.target.name === "newsletter_opt_in") {
-      if (event.target.checked) {
-        VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
-        this.setState({ newsletter_opt_in: true });
-      } else {
-        VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_ZERO, VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
-        this.setState({ newsletter_opt_in: false });
-      }
-
-      this.setState({ notifications_saved_status: "Saved" });
-    }
   }
 
   render () {

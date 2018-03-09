@@ -58,6 +58,14 @@ module.exports = {
       });
   },
 
+  organizationTypeSave: function (organization_we_vote_id, organization_type) {
+    Dispatcher.loadEndpoint("organizationSave",
+      {
+        organization_type: organization_type,
+        organization_we_vote_id: organization_we_vote_id
+      });
+  },
+
   positionListForOpinionMaker: function (we_vote_id, filter_for_voter, filter_out_voter, google_civic_election_id = 0) { // Calls positionListForOpinionMaker endpoint
     Dispatcher.loadEndpoint("positionListForOpinionMaker",
       {
