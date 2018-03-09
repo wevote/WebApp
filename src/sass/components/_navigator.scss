@@ -28,16 +28,16 @@ $transparent-background: transparent;
 }
 
 .profile-foot-menu {
-  max-width: 320px;
-  position: absolute;
-  bottom: -60px;
-  margin-bottom: $footer-menu-margin;
+  position: fixed; /* Stay in place */
+  z-index: 10; /* Sit on top */
+  left: 0;
+  top: 70px !important;
+  bottom: 50px !important;
+  width: 100%; /* Full width */
+  overflow: auto; /* Enable scroll if needed */
   background-color: $white;
-  padding: $space-md;
-  transition: opacity .25s ease-in-out;
-  z-index: 2;
   pointer-events: none;
-  opacity: 1;
+  transition: 10s ease-in-out;
 }
 
 // This is the little triangular arrow, https://css-tricks.com/snippets/css/css-triangle/
@@ -69,6 +69,7 @@ $transparent-background: transparent;
   opacity: 0;
 }
 
+// css for the Slider, which is commented out 3/8/18
 .page-overlay-slidein {
   position: fixed;
   width: 200vw;

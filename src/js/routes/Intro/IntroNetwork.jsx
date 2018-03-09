@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
 import Slider from "react-slick";
-import { cordovaDot, historyPush, isCordova } from "../../utils/cordovaUtils";
+import { cordovaDot, historyPush, isWebApp } from "../../utils/cordovaUtils";
 import IntroNetworkSafety from "../../components/Intro/IntroNetworkSafety";
 import IntroNetworkDefinition from "../../components/Intro/IntroNetworkDefinition";
 import IntroNetworkScore from "../../components/Intro/IntroNetworkScore";
@@ -58,12 +58,8 @@ export default class IntroNetwork extends Component {
       <div className="intro-story container-fluid well u-inset--md">
         <img src={cordovaDot("/img/global/icons/x-close.png")}
              onClick={IntroNetwork.goToBallotLink}
-             className="x-close"
+             className={ isWebApp() ? "x-close" : "x-close x-close__cordova" }
              alt={"close"} />
-
-             {/* This style, that was inside the above img, is creating an error. I think React inline style needs to be defined. */}
-             {/*style={isCordova() && { marginTop: 0, marginRight: 0} */}
-
         <Slider ref="slider" {...settings}>
           <div key={1}><IntroNetworkSafety next={this.next}/></div>
           <div key={2}><IntroNetworkDefinition next={this.next}/></div>
