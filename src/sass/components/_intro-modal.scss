@@ -458,6 +458,11 @@
   right: 10px;
   z-index: 2;
   color: $white;
+
+  &__cordova {
+    top: 20px;
+    right: 14px;
+  }
   @include breakpoints (small mid-small) {
     height: 30px;
     width: 30px;
