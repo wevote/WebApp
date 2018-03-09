@@ -1,30 +1,23 @@
 import React, { Component } from "react";
 import { Link } from "react-router";
-import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
-import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import LoadingWheel from "../../components/LoadingWheel";
-import SettingsWidgetAccountType from "../../components/Settings/SettingsWidgetAccountType";
-import SettingsWidgetFirstLastName from "../../components/Settings/SettingsWidgetFirstLastName";
 import VoterActions from "../../actions/VoterActions";
-import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
 
-const delay_before_user_name_update_api_call = 1200;
+const delay_before_api_update_call = 1200;
+const delay_before_removing_saved_status = 4000;
 
-
-export default class SettingsProfile extends Component {
+export default class SettingsWidgetFirstLastName extends Component {
 
   constructor (props) {
     super(props);
     this.state = {
-      facebook_auth_response: {},
       first_name: "",
       last_name: "",
       initial_name_loaded: false,
       name_saved_status: "",
       show_twitter_disconnect: false,
-      newsletter_opt_in: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
       notifications_saved_status: ""
     };
 
@@ -45,6 +38,7 @@ export default class SettingsProfile extends Component {
     // console.log("SettingsProfile ---- UN mount");
     this.voterStoreListener.remove();
     this.timer = null;
+    this.clear_status_timer = null;
   }
 
   onVoterStoreChange () {
@@ -65,7 +59,7 @@ export default class SettingsProfile extends Component {
     this.timer = setTimeout(() => {
       VoterActions.voterNameSave(this.state.first_name, this.state.last_name);
       this.setState({name_saved_status: "Saved"});
-    }, delay_before_user_name_update_api_call);
+    }, delay_before_api_update_call);
   }
 
   updateVoterName (event) {
@@ -80,6 +74,11 @@ export default class SettingsProfile extends Component {
         name_saved_status: "Saving Last Name..."
       });
     }
+    // After some time, clear saved message
+    clearTimeout(this.clear_status_timer);
+    this.clear_status_timer = setTimeout(() => {
+      this.setState({name_saved_status: ""});
+    }, delay_before_removing_saved_status);
   }
 
   render () {
@@ -88,20 +87,32 @@ export default class SettingsProfile extends Component {
     }
 
     return <div className="">
-      <Helmet title={"Your Profile - We Vote"} />
-      <BrowserPushMessage incomingProps={this.props} />
-      <div className="card">
-        <div className="card-main">
-          <h1 className="h3">Your Public Profile</h1>
-          {this.state.voter.is_signed_in ?
-            <div>
-              <SettingsWidgetFirstLastName />
-              <SettingsWidgetAccountType />
-            </div> :
-            <div><Link to="/settings/account">Please Sign In</Link></div>
-          }
-        </div>
-      </div>
+      {this.state.voter.is_signed_in ?
+        <div>
+            <label htmlFor="last-name">First Name
+            <input type="text"
+                   className="form-control"
+                   name="first_name"
+                   placeholder="First Name"
+                   onKeyDown={this.handleKeyPress}
+                   onChange={this.updateVoterName}
+                   value={this.state.first_name}
+            /> </label>
+            <br />
+            <label htmlFor="last-name">Last Name
+            <input type="text"
+                   className="form-control"
+                   name="last_name"
+                   placeholder="Last Name"
+                   onKeyDown={this.handleKeyPress}
+                   onChange={this.updateVoterName}
+                   value={this.state.last_name}
+            /> </label>
+            <br />
+            <span className="pull-right u-gray-mid">{this.state.name_saved_status}</span>
+        </div> :
+        <div><Link to="/settings/account">Please Sign In</Link></div>
+      }
     </div>;
   }
 }

@@ -40,9 +40,9 @@ Confirm the versions of your main packages are >= to these versions:
 IF you find that your node or npm versions are below that, run this command:
 
     (WebAppEnv) $ sudo npm install -g npm
-    (WebAppEnv) $ npm rebuild node-sass
     (WebAppEnv) $ brew unlink node
     (WebAppEnv) $ brew install node
+    (WebAppEnv) $ npm rebuild node-sass
 
 ## Install node.js - Windows
 

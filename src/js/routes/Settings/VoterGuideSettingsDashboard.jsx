@@ -66,7 +66,7 @@ export default class VoterGuideSettingsDashboard extends Component {
           linked_organization_we_vote_id: linked_organization_we_vote_id,
         });
         let organization = OrganizationStore.getOrganizationByWeVoteId(linked_organization_we_vote_id);
-        if (organization) {
+        if (organization && organization.organization_we_vote_id) {
           this.setState({
             organization: organization,
           });
@@ -174,7 +174,8 @@ export default class VoterGuideSettingsDashboard extends Component {
                   <div className="card">
                     <div className="card-main">
                       <FollowToggle we_vote_id={this.state.organization.organization_we_vote_id} />
-                      <OrganizationCard organization={this.state.organization} />
+                      <OrganizationCard organization={this.state.organization}
+                                        turnOffTwitterHandle />
                     </div>
                   </div>
                 </div>
