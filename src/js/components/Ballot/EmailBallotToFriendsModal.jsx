@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
+import { deviceTypeString } from "../../utils/cordovaUtils";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
 import LoadingWheel from "../LoadingWheel";
@@ -138,7 +139,7 @@ export default class EmailBallotToFriendsModal extends Component {
 
     FriendActions.emailBallotData(this.email_address_array, this.first_name_array,
       this.last_name_array, "", this.state.email_ballot_message, this.props.ballot_link,
-      sender_email_address, this.props.verification_email_sent);
+      sender_email_address, this.props.verification_email_sent, deviceTypeString());
 
     // After calling the API, reset the form
     this.setState({
@@ -292,11 +293,11 @@ export default class EmailBallotToFriendsModal extends Component {
   }
 
   prepareApiArraysFromForm () {
-    var _state = this.state;
-    var result;
-    var tmpEmailArray = _state.email_address_array.slice();
-    var tmpFirstNameArray = _state.first_name_array.slice();
-    var tmpLastNameArray = _state.last_name_array.slice();
+    let _state = this.state;
+    let result;
+    let tmpEmailArray = _state.email_address_array.slice();
+    let tmpFirstNameArray = _state.first_name_array.slice();
+    let tmpLastNameArray = _state.last_name_array.slice();
 
     if (_state.friend1_email_address) {
       result = validateEmail(_state.friend1_email_address);
@@ -403,7 +404,7 @@ export default class EmailBallotToFriendsModal extends Component {
   }
 
   addAnotherInvitation () {
-    var _state = this.state;
+    let _state = this.state;
     if (!_state.row2_open)
       this.setState({ row2_open: true});
     else if (!_state.row3_open)
