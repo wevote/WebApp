@@ -14,6 +14,7 @@ import Connect from "./routes/Connect";
 import Credits from "./routes/More/Credits";
 import Donate from "./routes/More/Donate";
 import DonateThankYou from "./routes/More/DonateThankYou";
+import ElectionReminder from "./routes/More/ElectionReminder";
 import Elections from "./routes/More/Elections";
 import EmailBallot from "./routes/More/EmailBallot";
 import EmptyBallot from "./routes/Ballot/EmptyBallot";
@@ -49,8 +50,8 @@ import ProcessingDonation from "./routes/More/ProcessingDonation";
 import RegisterToVote from "./routes/More/RegisterToVote";
 import SampleBallot from "./routes/Intro/SampleBallot";
 import ScratchPad from "./routes/ScratchPad";
-import Settings from "./routes/Settings/Settings";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
+import VoterGuideSettingsDashboard from "./routes/Settings/VoterGuideSettingsDashboard";
 import SignIn from "./routes/SignIn/SignIn";
 import SignInJumpProcess from "./routes/Process/SignInJumpProcess";
 import FacebookLandingProcess from "./routes/Process/FacebookLandingProcess";
@@ -110,11 +111,18 @@ const routes = () =>
     <Route path="/intro/sample_ballot" component={SampleBallot} />
     <Route path="/intro/get_started" component={GetStarted} />
 
-    {/* Settings go in this structure... */}
+    {/* Personal Settings go in this structure... */}
     <Route path="/settings" component={SettingsDashboard}>
-      <IndexRoute component={Settings} />
+      <IndexRoute component={SettingsDashboard} />
       <Route path="/settings/claim" component={ClaimYourPage} />
       <Route path="/settings/location" component={Location} />  /* Complete path on one line for searching */
+      <Route path="/settings/:edit_mode" component={SettingsDashboard} />
+    </Route>
+
+    {/* Voter Guide Settings go in this structure... */}
+    <Route path="/vg/:voter_guide_we_vote_id/settings" component={VoterGuideSettingsDashboard}>
+      <IndexRoute component={VoterGuideSettingsDashboard} />
+      <Route path="/vg/:voter_guide_we_vote_id/settings/:edit_mode" component={VoterGuideSettingsDashboard} />
     </Route>
 
     {/* Ballot Off-shoot Pages */}
@@ -136,6 +144,7 @@ const routes = () =>
     {/* More Menu Pages */}
     <Route path="/more/about" component={About} />
     <Route path="/more/absentee" component={AbsenteeBallot} />
+    <Route path="/more/alerts" component={ElectionReminder} />
     <Route path="/more/connect" component={Connect} />
     <Route path="/more/credits" component={Credits} />
     <Route path="/more/donate" component={Donate} />

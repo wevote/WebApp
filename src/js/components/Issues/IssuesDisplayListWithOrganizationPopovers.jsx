@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import IssueCard from "./IssueCard";
 import IssueImageDisplay from "./IssueImageDisplay";
+import IssueStore from "../../stores/IssueStore";
 import OrganizationListUnderIssue from "./OrganizationListUnderIssue";
 
 // We use this for IssuesFollowedDisplayList, to show a voter a horizontal list of all of their
@@ -14,6 +15,8 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
     issueListToDisplay: PropTypes.array,
     instantRefreshOn: PropTypes.bool,
     maximumIssuesToDisplay: PropTypes.number,
+    toFollow: PropTypes.bool,
+    visibility: PropTypes.string,
   };
 
   constructor (props) {
@@ -36,6 +39,7 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
       issueImageSize = this.props.issueImageSize;
     }
     this.setState({
+      ballotItemWeVoteId: this.props.ballotItemWeVoteId,
       issueImageSize: issueImageSize,
       issues_to_display: this.props.issueListToDisplay,
       maximum_issues_display: this.props.maximumIssuesToDisplay ? this.props.maximumIssuesToDisplay : 20,
@@ -49,6 +53,7 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
       issueImageSize = nextProps.issueImageSize;
     }
     this.setState({
+      ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
       issueImageSize: issueImageSize,
       issues_to_display: nextProps.issueListToDisplay,
       maximum_issues_display: nextProps.maximumIssuesToDisplay ? nextProps.maximumIssuesToDisplay : 20,
@@ -129,8 +134,8 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
                                     onMouseOut={() => this.onTriggerLeave(issue_we_vote_id)}
                                     className="issue-popover"
                             >
-            <IssueCard ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
-                       followToggleOn
+            <IssueCard ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+                       followToggleOn={this.props.toFollow}
                        issue={one_issue}
                        issueImageSize={"MEDIUM"}
             />
@@ -143,15 +148,16 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
                                onMouseOver={() => this.onTriggerEnter(issue_we_vote_id)}
                                onMouseOut={() => this.onTriggerLeave(issue_we_vote_id)}
                                onExiting={() => this.onTriggerLeave(issue_we_vote_id)}
-                               trigger={["click", "focus", "hover"]}
+                               trigger={this.props.visibility === "mobile" ? "click" : ["focus", "hover", "click"]}
                                rootClose
                                placement="bottom"
                                overlay={issuePopover}
                 >
           <span className="">
             <IssueImageDisplay issue={one_issue}
-                                   issueImageSize={this.state.issueImageSize}
-                                   showPlaceholderImage />
+                               issueImageSize={this.state.issueImageSize}
+                               showPlaceholderImage
+                               isVoterFollowingThisIssue={IssueStore.isVoterFollowingThisIssue(issue_we_vote_id)}/>
           </span>
         </OverlayTrigger>;
       } else {

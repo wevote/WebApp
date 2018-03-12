@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
+import { isWebApp, enclosingRectangle, isCordova } from "../../utils/cordovaUtils";
 
 export default class HeaderBarProfilePopUp extends Component {
   static propTypes = {
@@ -23,6 +24,10 @@ export default class HeaderBarProfilePopUp extends Component {
     this.signOutAndHideProfilePopUp = this.props.signOutAndHideProfilePopUp.bind(this);
   }
 
+  componentDidMount () {
+    enclosingRectangle("HeaderBarProfilePopUp, ", this.instance);
+  }
+
   render () {
     let isSignedIn = this.props.voter.is_signed_in;
     let linkedOrganizationWeVoteId = this.props.voter.linked_organization_we_vote_id;
@@ -32,12 +37,13 @@ export default class HeaderBarProfilePopUp extends Component {
     let showYourPageFromTwitter = signedInTwitter && twitterScreenName;
     let showYourPageFromFacebook = signedInFacebook && linkedOrganizationWeVoteId && !showYourPageFromTwitter;
 
-    let profilePopUpOpen = this.props.profilePopUpOpen ? "account-menu--open" : "";
+    /* eslint-disable no-extra-parens */
+    let profilePopUpOpen = this.props.profilePopUpOpen ? (isWebApp() ? "profile-menu--open" : "profile-foot-menu--open") : "";
 
     return (
       <div className={profilePopUpOpen}>
-        <div className="page-overlay" onClick={this.hideProfilePopUp}/>
-        <div className="account-menu">
+        <div className="page-overlay" onClick={this.hideProfilePopUp} />
+        <div className={isWebApp() ? "profile-menu" : "profile-foot-menu"} ref={ (el) => (this.instance = el) }>
           <ul className="nav nav-stacked">
             <li>
               <div><span className="we-vote-promise">Our Promise: We'll never sell your email.</span></div>
@@ -76,11 +82,27 @@ export default class HeaderBarProfilePopUp extends Component {
               </li> :
               null
             }
+            <li className="hidden-xs">
+              <Link onClick={this.hideProfilePopUp} to="/settings/address">
+                <div>
+                  <span className="header-slide-out-menu-text-left">Your Settings</span>
+                </div>
+              </Link>
+            </li>
             {this.props.voter && isSignedIn ?
-              <li>
+              <li className="visible-xs">
                 <Link onClick={this.hideProfilePopUp} to="/more/sign_in">
                   <div>
-                    <span className="header-slide-out-menu-text-left">Your Account</span>
+                    <span className="header-slide-out-menu-text-left">Your Settings</span>
+                  </div>
+                </Link>
+              </li> :
+              null }
+            {this.props.voter && isSignedIn ?
+              <li>
+                <Link onClick={this.signOutAndHideProfilePopUp} to="/more/sign_in">
+                  <div>
+                    <span className="header-slide-out-menu-text-left">{isSignedIn ? "Sign Out" : "Sign In"}</span>
                   </div>
                 </Link>
               </li> :
@@ -90,16 +112,7 @@ export default class HeaderBarProfilePopUp extends Component {
                     <span className="header-slide-out-menu-text-left">Sign In</span>
                   </div>
                 </Link>
-              </li>}
-            {this.props.voter && isSignedIn ?
-              <li>
-                <Link onClick={this.signOutAndHideProfilePopUp} to="/more/sign_in">
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Sign Out</span>
-                  </div>
-                </Link>
-              </li> :
-              null
+              </li>
             }
             {this.props.bookmarks && this.props.bookmarks.length ?
               <li>
@@ -108,9 +121,10 @@ export default class HeaderBarProfilePopUp extends Component {
                     <span className="header-slide-out-menu-text-left">Your Bookmarked Items</span>
                   </div>
                 </Link>
-              </li> :
-              null}
-            {this.props.weVoteBrandingOff ? null :
+              </li>
+              : null
+            }
+            {this.props.weVoteBrandingOff || isWebApp() &&
               <li className="visible-xs-block">
                 <Link onClick={this.hideProfilePopUp} to="/more/howtouse">
                   <div>
@@ -119,7 +133,7 @@ export default class HeaderBarProfilePopUp extends Component {
                 </Link>
               </li>
             }
-            {this.props.weVoteBrandingOff ? null :
+            {this.props.weVoteBrandingOff || isCordova() ? null :
               <li className="visible-xs-block">
                 <Link onClick={this.hideProfilePopUp} to="/more/about">
                   <div>
@@ -128,7 +142,7 @@ export default class HeaderBarProfilePopUp extends Component {
                 </Link>
               </li>
             }
-            {this.props.weVoteBrandingOff ? null :
+            {this.props.weVoteBrandingOff || isCordova() ? null :
               <li className="visible-xs-block">
                 <Link onClick={this.hideProfilePopUp} to="/more/donate">
                   <div>

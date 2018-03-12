@@ -2,6 +2,15 @@ import Dispatcher from "../dispatcher/Dispatcher";
 
 module.exports = {
 
+  organizationSearch: function (organization_search_term, organization_twitter_handle = "", exact_match = false) {
+    // console.log("OrganizationActions.organizationSearch, organization_search_term: ", organization_search_term);
+    Dispatcher.loadEndpoint("organizationSearch", {
+      exact_match: exact_match,
+      organization_search_term: organization_search_term,
+      organization_twitter_handle: organization_twitter_handle,
+    });
+  },
+
   organizationFollow: function (organization_we_vote_id, organization_twitter_handle = "", organization_follow_based_on_issue = false) {
     // console.log("OrganizationActions.organizationFollow, organization_twitter_handle: ", organization_twitter_handle);
     Dispatcher.loadEndpoint("organizationFollow", {
@@ -46,6 +55,14 @@ module.exports = {
     Dispatcher.loadEndpoint("organizationRetrieve",
       {
         organization_we_vote_id: we_vote_id
+      });
+  },
+
+  organizationTypeSave: function (organization_we_vote_id, organization_type) {
+    Dispatcher.loadEndpoint("organizationSave",
+      {
+        organization_type: organization_type,
+        organization_we_vote_id: organization_we_vote_id
       });
   },
 

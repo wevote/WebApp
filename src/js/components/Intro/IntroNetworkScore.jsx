@@ -30,7 +30,7 @@ export default class IntroNetworkScore extends Component {
         the organizations you listen to.
       </div>
       <div className="intro-story__padding-btn">
-        <button type="button" className="btn btn-success" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
+        <button type="button" className="btn btn-success btn-lg" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
       </div>
     </div>;
   }

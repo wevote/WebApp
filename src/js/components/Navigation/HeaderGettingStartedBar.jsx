@@ -13,7 +13,7 @@ import GettingStartedBarItem from "./GettingStartedBarItem";
 import EmailBallotModal from "../Ballot/EmailBallotModal";
 import EmailBallotToFriendsModal from "../Ballot/EmailBallotToFriendsModal";
 import FacebookBallotModal from "../Ballot/FacebookBallotModal";
-import PollingPlaceLocator from "../Ballot/PollingPlaceLocator";
+import PollingPlaceLocatorModal from "../../routes/Ballot/PollingPlaceLocatorModal";
 import Slider from "react-slick";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
@@ -79,7 +79,7 @@ export default class HeaderGettingStartedBar extends Component {
     });
   }
 
-  static _openPrintModal () {
+  _openPrintModal () {
     window.print();
   }
 
@@ -302,28 +302,18 @@ export default class HeaderGettingStartedBar extends Component {
       </Modal.Body>
     </Modal>;
 
-    const ShowPollingLocatorModal = <Modal bsClass="background-brand-blue modal"
-                                  show={this.state.showPollingLocatorModal}
-                                  onHide={() => this._openPollingLocatorModal(this)}>
-      <Modal.Body>
-        <div className="intro-modal__close">
-          <a onClick={this._openPollingLocatorModal} className="intro-modal__close-anchor">
-            <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
-          </a>
-        </div>
-        <div key={1}><PollingPlaceLocator /></div>
-      </Modal.Body>
-    </Modal>;
-
     let currentPathname = this.props.pathname ? this.props.pathname : "/ballot";
-    let ballotBaseUrl = webAppConfig.WE_VOTE_URL_PROTOCOL + (isWebApp() ? webAppConfig.WE_VOTE_HOSTNAME : "wevote.us") + currentPathname;
-    let encodedMessage = encodeURIComponent("Check out your ballot, and make sure to #Vote! #WeVote");
-    let twitterData = "https://twitter.com/intent/tweet?text=" + encodedMessage + "&amp;url=" + encodeURIComponent(ballotBaseUrl);
+    let ballotBaseUrl = webAppConfig.WE_VOTE_URL_PROTOCOL + (isWebApp() ? webAppConfig.WE_VOTE_HOSTNAME : "WeVote.US") + currentPathname;
+
+    // We want to add a tracking code here so we can count shares. Vote.org does it this way: https://www.vote.org/#.WpiRvFhU3V4.twitter
+    let encodedMessage = encodeURIComponent("I am reviewing my ballot, and getting ready to vote @WeVote.");
+    let twitterIntent = "https://twitter.com/intent/tweet?url=" + encodeURIComponent(ballotBaseUrl) + "&text=" + encodedMessage + "&hashtags=Vote,Voting,WeVote";
+    let searchStyle = isWebApp() ? "page-getting-started-header" : "page-getting-started-header page-header-cordova-getting-started";
 
     return <div className="page-getting-started-header-background">
       { voterThoroughOrientationComplete ?
         null :
-        <header className="page-getting-started-header">
+        <header className={searchStyle}>
           <div className="header-getting-started-nav">
             {/* Issues Icon & Modal */}
             {!this.props.hideGettingStartedIssuesButton ?
@@ -332,15 +322,6 @@ export default class HeaderGettingStartedBar extends Component {
                                      title="Issues"
                                      completed={this.state.ballot_intro_issues_completed} /> :
               null }
-            {/* Organizations Icon & Modal */}
-            {/*
-            {!this.props.hideGettingStartedOrganizationsButton ?
-              <GettingStartedBarItem show={this._toggleBallotIntroOrganizations}
-                                     source="/img/global/svg-icons/organizations-v2-31x26.svg"
-                                     title="Organizations"
-                                     completed={this.state.ballot_intro_organizations_completed} /> :
-              null }
-            */}
             <GettingStartedBarItem show={this._openPrintModal}
                                    title="Print"
                                    printIcon/>
@@ -354,39 +335,19 @@ export default class HeaderGettingStartedBar extends Component {
                                    facebookIcon
                                     />
             </div>}
-            <GettingStartedBarItem url={twitterData}
+            <GettingStartedBarItem url={twitterIntent}
                                    title="Tweet Ballot"
                                    twitterIcon
                                    isExternal/>
             {/* February 2018, Facebook and Magic Email disabled for Cordova -- In this case it is the PollingLocator with the iFrame */}
             { isWebApp() && <div>
-            <GettingStartedBarItem show={this._openPollingLocatorModal}
-                                   titleDesktop="Polling Location"
-                                   titleMobile="Vote"
-                                   mapMarkerIcon/>
-            </div>}
-
-            {/* Positions Icon & Modal */}
-            {/* <GettingStartedBarItem show={this._toggleBallotIntroPositions}
-              source="/img/global/svg-icons/stance-v1-59x32.svg"
-              title="Positions"
-              completed={this.state.ballot_intro_positions_completed} /> */}
-            {/* Friends Icon & Modal */}
-            {/* <GettingStartedBarItem show={this._toggleBallotIntroFriends}
-              source="/img/global/svg-icons/friends-v2-59x28.svg"
-              title="Friends"
-              completed={this.state.ballot_intro_friends_completed} /> */}
-            {/* Share Icon & Modal */}
-            {/* <GettingStartedBarItem show={this._toggleBallotIntroShare}
-              source="/img/global/svg-icons/share-v2-28x24.svg"
-              title="Share"
-              completed={this.state.ballot_intro_share_completed} /> */}
-            {/* Vote Icon & Modal */}
-            {/* <GettingStartedBarItem show={this._toggleBallotIntroVote}
-              source="/img/global/svg-icons/vote-v6-28x28.svg"
-              title="Vote"
-              completed={this.state.ballot_intro_vote_completed} /> */}
-          </div>
+              <GettingStartedBarItem show={this._openPollingLocatorModal}
+                                     titleDesktop="Polling Location"
+                                     titleMobile="Vote"
+                                     mapMarkerIcon/>
+              </div>
+            }
+            </div>
         </header>
       }
       { this.state.showBallotIntroFollowIssues ? BallotIntroFollowIssuesModal : null }
@@ -397,7 +358,10 @@ export default class HeaderGettingStartedBar extends Component {
       { this.state.showBallotIntroVote ? BallotIntroVoteModal : null }
       { this.state.showEmailModal ? SendEmailModal : null }
       { this.state.showFacebookModal ? SendFacebookModal : null }
-      { this.state.showPollingLocatorModal ? ShowPollingLocatorModal : null }
+      { this.state.showPollingLocatorModal &&
+        <PollingPlaceLocatorModal show={this.state.showPollingLocatorModal}
+                                  onHide={() => this._openPollingLocatorModal(this)}/>
+      }
     </div>;
   }
 }

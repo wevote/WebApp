@@ -152,7 +152,7 @@ export default class Intro extends Component {
         method: "share",
         mobile_iframe: true,
         href: web_app_config.WE_VOTE_HOSTNAME,
-        quote: "Check out https://WeVote.US! View your ballot. Learn from friends. Share your vision. @WeVote #Voting #WeVote",
+        quote: "Check out https://WeVote.US! View your ballot, learn from friends, share your vision, and make sure to #Vote. #WeVote via @WeVote",
       }, function (response) {
         if ( response === undefined || response.error_code === 4201 ) {
           console.log("Voter Canceled the share request");
@@ -163,17 +163,17 @@ export default class Intro extends Component {
   }
 
   shareToTwitterButton () {
-    let url = "https://twitter.com/share?url=https%3A%2F%2FWeVote.US%2F%20&text=Check%20out%20https%3A%2F%2FWeVote.US%2F!%20View%20your%20ballot.%20Learn%20from%20friends.%20Share%20your%20vision.%20@WeVote&hashtags=Voting,WeVote";
-    let title = "Share On Twitter";
-    let default_width = 600;
-    let default_height = 600;
-    let half_screen_width = screen.width / 2;
-    let half_default_width = default_width / 2;
-    let half_screen_height = screen.height / 2;
-    let half_default_height = default_height / 2;
-    var left = half_screen_width - half_default_width;
-    var top = half_screen_height - half_default_height;
-    return window.open(url, title, "toolbar=no, width=" + default_width + ", height=" + default_height + ", top=" + top + " left=" + left);
+    // let url = "https://twitter.com/share?url=https%3A%2F%2FWeVote.US%2F%20&text=Check%20out%20https%3A%2F%2FWeVote.US%2F!%20View%20your%20ballot.%20Learn%20from%20friends.%20Share%20your%20vision.%20@WeVote&hashtags=Voting,WeVote";
+    // let title = "Share On Twitter";
+    // let default_width = 600;
+    // let default_height = 600;
+    // let half_screen_width = screen.width / 2;
+    // let half_default_width = default_width / 2;
+    // let half_screen_height = screen.height / 2;
+    // let half_default_height = default_height / 2;
+    // var left = half_screen_width - half_default_width;
+    // var top = half_screen_height - half_default_height;
+    //return window.open(url, title, "toolbar=no, width=" + default_width + ", height=" + default_height + ", top=" + top + " left=" + left);
   }
 
   render () {
@@ -189,6 +189,15 @@ export default class Intro extends Component {
         }
       }
     }
+
+    let pleaseShareString = "Please share or donate to help us reach more voters.";
+    if (isCordova()) {
+      pleaseShareString = "Please share to help us reach more voters.";
+    }
+
+    let ballotBaseUrl = "https://WeVote.US/welcome";
+    let encodedMessage = encodeURIComponent("I am reviewing my ballot, and getting ready to vote @WeVote.");
+    let twitterIntent = "https://twitter.com/intent/tweet?url=" + encodeURIComponent(ballotBaseUrl) + "&text=" + encodedMessage + "&hashtags=Voting,WeVote";
 
     let local_counter = 0;
     const facebook_friends_using_we_vote_list_for_display = this.state.facebook_friends_using_we_vote_list.map( (friend) => {
@@ -426,7 +435,7 @@ export default class Intro extends Component {
         <div className="container">
           { this.state.we_vote_branding_off ? null :
             <span>
-              <h3 className="u-f3 u-stack--lg">Please share or donate to help us reach more voters.</h3>
+              <h3 className="u-f3 u-stack--lg">{pleaseShareString}</h3>
               <div className="u-stack--lg">
                 {/* February 2018, Facebook and Magic Email disabled for Cordova */}
                 {isWebApp() &&
@@ -437,11 +446,12 @@ export default class Intro extends Component {
                   <span className="fa fa-facebook"/> Facebook
                 </Button>
                 }
-                <Button className="btn btn-social btn-twitter u-push--sm"
-                    bsStyle="danger"
-                    onClick={this.shareToTwitterButton}>
-                  <span className="fa fa-twitter" /> Twitter
-                </Button>
+                <a href={twitterIntent} title="Share to Twitter">
+                  <Button className="btn btn-social btn-twitter u-push--sm"
+                          bsStyle="danger">
+                    <span className="fa fa-twitter" /> Twitter
+                  </Button>
+                </a>
                 {/* February 2018, Facebook and Magic Email disabled for Cordova */}
                 {isWebApp() &&
                 <a href={mailto_url} title="Submit this to Email">

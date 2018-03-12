@@ -121,6 +121,7 @@ $candidate-font-size: .875rem;
       font-size: 18px;
       font-weight: 700;
       // margin-right: 24px; // space for bookmark button
+      margin-right: $space-sm;  // space between candidate name and description
       margin-bottom: $space-sm;
       vertical-align: middle;
       @include breakpoints(mid-small) {

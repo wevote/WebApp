@@ -86,22 +86,22 @@ export default class FollowToggle extends Component {
     const stopFollowingFunc = OrganizationActions.organizationStopFollowing.bind(this, we_vote_id);
 
     const stopFollowingInstantly = () => {
-      let toast_message = "No longer listening!";
+      let toast_message = "You've stopped listening to this organization's opinions.";
       // We use this.state.organization instead of this.props.organization_for_display on purpose - there is some weird behavior to be debugged
       if (this.state.organization && this.state.organization.organization_name) {
         let organization_name = this.state.organization.organization_name;
-        toast_message = "No longer listening to " + organization_name + "!";
+        toast_message = "You've stopped listening to " + organization_name + "'s opinions!";
       }
       is_following = false;
       stopFollowingFunc();
       showToastError(toast_message);
     };
     const followInstantly = () => {
-      let toast_message = "Now listening!";
+      let toast_message = "Now listening to this organization's opinions!";
       // We use this.state.organization instead of this.props.organization_for_display on purpose - there is some weird behavior to be debugged
       if (this.state.organization && this.state.organization.organization_name) {
         let organization_name = this.state.organization.organization_name;
-        toast_message = "Now listening to " + organization_name + "!";
+        toast_message = "Now listening to " + organization_name + "'s opinions!";
       }
       is_following = true;
       followFunc();

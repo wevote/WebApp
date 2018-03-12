@@ -6,11 +6,14 @@ $header-height: 54px;
 $header-height-getting-started: 104px;
 $nav-item-getting-started-background-hover-color: darken($page-header-getting-started-background-color, 5%);
 $nav-item-getting-started-background-active-color: darken($page-header-getting-started-background-color, 10%);
+$footer-menu-margin: 130px;
+$space-hamburger: 5px;
+$transparent-background: transparent;
 
 // Header Nav
 // ================================
 
-.account-menu,
+.profile-menu,
 .about-menu {
   max-width: 320px;
   position: absolute;
@@ -24,7 +27,21 @@ $nav-item-getting-started-background-active-color: darken($page-header-getting-s
   pointer-events: none;
 }
 
-.account-menu::before,
+.profile-foot-menu {
+  position: fixed; /* Stay in place */
+  z-index: 10; /* Sit on top */
+  left: 0;
+  top: 70px !important;
+  bottom: 50px !important;
+  width: 100%; /* Full width */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: $white;
+  pointer-events: none;
+  transition: 10s ease-in-out;
+}
+
+// This is the little triangular arrow, https://css-tricks.com/snippets/css/css-triangle/
+.profile-menu::before,
 .about-menu::before {
   content: '';
   display: block;
@@ -52,13 +69,30 @@ $nav-item-getting-started-background-active-color: darken($page-header-getting-s
   opacity: 0;
 }
 
-.account-menu--open .page-overlay,
+// css for the Slider, which is commented out 3/8/18
+.page-overlay-slidein {
+  position: fixed;
+  width: 200vw;
+  height: 200vh;
+  top: -10px;
+  left: -10px;
+  background-color: $transparent-background;
+  z-index: 2;
+  pointer-events: none;
+  // background: none !important;
+  //transition: opacity .4s ease-in-out;
+  //opacity: 0;
+}
+
+.profile-menu--open .page-overlay,
+.profile-foot-menu--open .page-overlay,
 .about-menu--open .page-overlay {
   opacity: 1;
   pointer-events: all;
 }
 
-.account-menu--open .account-menu,
+.profile-menu--open .profile-menu,
+.profile-foot-menu--open .profile-foot-menu,
 .about-menu--open .about-menu {
   opacity: 1;
   pointer-events: all;
@@ -66,6 +100,10 @@ $nav-item-getting-started-background-active-color: darken($page-header-getting-s
 
 .headroom-wrapper {
   margin-top: $header-height;
+}
+
+.footroom-wrapper {
+  margin-bottom: $header-height;
 }
 
 .headroom-getting-started__margin {
@@ -173,7 +211,7 @@ $nav-item-getting-started-background-active-color: darken($page-header-getting-s
     display: block;
   }
   &__avatar-wrapper {
-    z-index: 3; //to float above the account menu option grey div
+    z-index: 3; //to float above the account/ProfilePopUp menu option grey div
   }
 }
 
@@ -257,4 +295,33 @@ $nav-item-getting-started-background-active-color: darken($page-header-getting-s
     justify-content: center;
     align-items: center;
   }
+}
+
+.hamburger {
+  font-size: 20px;
+  padding-top: $space-hamburger;
+  padding-right: $space-md;
+  padding-left: $space-sm;
+  z-index: 3; //to float above the ProfilePopUp menu option grey div
+}
+
+.slide-in-tr {
+  height: 50px;
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.slide-in-td-left {
+  padding: $space-md;
+  width: 10%;
+}
+
+.slide-in-td-mid {
+  padding: $space-md;
+  width: 75%;
+  font-size: 20pt;
+}
+
+.slide-in-td-right {
+  padding: $space-md;
+  width: 10%;
 }

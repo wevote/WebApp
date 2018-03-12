@@ -14,6 +14,8 @@ class VoterGuideStore extends ReduceStore {
     return {
       all_cached_voter_guides: {}, // Dictionary with organization_we_vote_id as key and the voter_guide as value
       all_cached_voter_guides_by_election: {}, // Dictionary with organization_we_vote_id and google_civic_election_id as keys and the voter_guide as value
+      all_cached_voter_guides_by_organization: {}, // Dictionary with organization_we_vote_id as key and list of ALL voter_guides (regardless of election) as value
+      all_cached_voter_guides_by_voter_guide: {}, // Dictionary with voter_guide_we_vote_id as key and voter_guides as value
       ballot_has_guides: true,
       organization_we_vote_ids_to_follow_all: [],
       organization_we_vote_ids_to_follow_ballot_items_dict: {}, // This is a dictionary with ballot_item_we_vote_id as key and list of organization we_vote_ids as value
@@ -47,6 +49,14 @@ class VoterGuideStore extends ReduceStore {
     return this.getState().ballot_has_guides;
   }
 
+  getAllVoterGuidesOwnedByVoter () {
+    let all_cached_voter_guides_by_organization = this.getState().all_cached_voter_guides_by_organization || {};
+    let voter = VoterStore.getVoter();
+    let linked_organization_we_vote_id = voter.linked_organization_we_vote_id;
+    // console.log("VoterGuideStore getAllVoterGuidesOwnedByVoter, linked_organization_we_vote_id: ", linked_organization_we_vote_id);
+    return all_cached_voter_guides_by_organization[linked_organization_we_vote_id] || [];
+  }
+
   getVoterGuidesToFollowAll () {
     return this.returnVoterGuidesFromListOfIds(this.getState().organization_we_vote_ids_to_follow_all) || [];
   }
@@ -63,6 +73,16 @@ class VoterGuideStore extends ReduceStore {
     let all_cached_voter_guides_by_election = this.getState().all_cached_voter_guides_by_election || [];
     let organization_list = all_cached_voter_guides_by_election[organization_we_vote_id] || [];
     return organization_list[google_civic_election_id] || {};
+  }
+
+  getVoterGuidesForOrganizationId (organization_we_vote_id) {
+    let all_cached_voter_guides_by_organization = this.getState().all_cached_voter_guides_by_organization || {};
+    return all_cached_voter_guides_by_organization[organization_we_vote_id] || [];
+  }
+
+  getVoterGuideByVoterGuideId (voter_guide_we_vote_id) {
+    let all_cached_voter_guides_by_voter_guide = this.getState().all_cached_voter_guides_by_voter_guide || {};
+    return all_cached_voter_guides_by_voter_guide[voter_guide_we_vote_id] || {};
   }
 
   getVoterGuidesToFollowForBallotItemId (ballot_item_we_vote_id) {
@@ -121,6 +141,8 @@ class VoterGuideStore extends ReduceStore {
     let voter_guides;
     let all_cached_voter_guides;
     let all_cached_voter_guides_by_election;
+    let all_cached_voter_guides_by_organization;
+    let all_cached_voter_guides_by_voter_guide;
     let google_civic_election_id;
     let voter_guide_with_pledge_info;
     let organization_we_vote_id;
@@ -437,6 +459,39 @@ class VoterGuideStore extends ReduceStore {
             organization_we_vote_ids_to_follow_organization_recommendation_dict: organization_we_vote_ids_to_follow_organization_recommendation_dict,
           };
         }
+
+      case "voterGuidesRetrieve":
+        voter_guides = action.res.voter_guides;
+        all_cached_voter_guides_by_organization = state.all_cached_voter_guides_by_organization || {};
+        all_cached_voter_guides_by_voter_guide = state.all_cached_voter_guides_by_voter_guide || {};
+        let replaced_existing_voter_guide;
+        let temp_cached_voter_guides_for_organization;
+        voter_guides.forEach( one_voter_guide => {
+          // Store them by organization
+          if (all_cached_voter_guides_by_organization[one_voter_guide.organization_we_vote_id] === undefined) {
+            all_cached_voter_guides_by_organization[one_voter_guide.organization_we_vote_id] = [];
+          }
+          replaced_existing_voter_guide = false;
+          temp_cached_voter_guides_for_organization = all_cached_voter_guides_by_organization[one_voter_guide.organization_we_vote_id];
+          for (let count = 0; count < temp_cached_voter_guides_for_organization.length; count++) {
+            if (temp_cached_voter_guides_for_organization[count].we_vote_id === one_voter_guide.we_vote_id) {
+              // Replace the former voter_guide with the new one
+              temp_cached_voter_guides_for_organization[count] = one_voter_guide;
+              replaced_existing_voter_guide = true;
+            }
+          }
+          if (!replaced_existing_voter_guide) {
+            temp_cached_voter_guides_for_organization.push(one_voter_guide);
+          }
+          all_cached_voter_guides_by_organization[one_voter_guide.organization_we_vote_id] = temp_cached_voter_guides_for_organization;
+          // Store them by voter guide
+          all_cached_voter_guides_by_voter_guide[one_voter_guide.we_vote_id] = one_voter_guide;
+        });
+        return {
+          ...state,
+          all_cached_voter_guides_by_organization: all_cached_voter_guides_by_organization,
+          all_cached_voter_guides_by_voter_guide: all_cached_voter_guides_by_voter_guide,
+        };
 
       case "organizationFollow":
         // The heavy lift of the reaction to "organizationFollow" is in OrganizationStore

@@ -96,10 +96,12 @@
   }
 }
 
+.issues-list-stacked,
 .network-positions-stacked {
   $bar-height: 10px;
   $icon-size: 20px;
   position: relative;
+  width: 100%;
   align-items: center;
   // flex: 5 0 130px;
   // min-width: 130px; // flex-basis not being respected (Chrome)
@@ -144,22 +146,27 @@
     font-weight: 200;
     vertical-align: middle;
     @include breakpoints (small mid-small) {
-      font-size: .675rem;
+      font-size: .875rem;
     }
   }
 
-  // Tiny Organization Position Breakdown List
+  // Issues Display List / Tiny Organization Position Breakdown List
 
   &__support-list {
     $scrollbar-height: 21px;
-    $list-height: 60px;
+    $list-height: 76px;
     $list-height-visible: $list-height - $scrollbar-height;
     $scroll-icon-margin: $space-xxs $space-sm $space-none $space-sm;
+    $support-list-margin-left: -36px;
+    $support-list-margin-right: -16px;
+    margin-left: $support-list-margin-left;
+    margin-right: $support-list-margin-right;
 
     &__container-wrap {
       box-sizing: content-box;
       overflow: hidden;
       height: $list-height-visible;
+      flex-grow: 1;
     }
 
     &__container {
@@ -184,6 +191,11 @@
     &__scroll-icon {
       color: $gray-mid;
       margin: $scroll-icon-margin;
+
+      &-disabled {
+        color: $transparent;
+        margin: $scroll-icon-margin;
+      }
     }
   }
 }
