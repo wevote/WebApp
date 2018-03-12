@@ -69,14 +69,7 @@ $follow-card-title-color: #fff;
     color: $white;
     text-shadow: 1px 1px 2px rgba($black, .6);
 
-    @include breakpoints (small-bootstrap medium-bootstrap) {
-      right: 8px;
-      bottom: 8px;
-      left: 8px;
-      font-size: .9rem;
-    }
-
-    @include breakpoints (xsmall-bootstrap small-bootstrap) {
+    @include breakpoints (xsmall-bootstrap medium-bootstrap) {
       right: 8px;
       bottom: 8px;
       left: 8px;
