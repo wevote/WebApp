@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
-import { isWebApp } from "../../utils/cordovaUtils";
+import { deviceTypeString, isWebApp } from "../../utils/cordovaUtils";
 import FacebookBallotToFriendsModal from "./FacebookBallotToFriendsModal";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
@@ -133,7 +133,7 @@ export default class FacebookBallotModal extends Component {
     }
 
     FriendActions.emailBallotData("", "", "", this.state.sender_email_address, this.state.email_ballot_message,
-      this.state.ballot_link, this.state.sender_email_address, this.state.verification_email_sent);
+      this.state.ballot_link, this.state.sender_email_address, this.state.verification_email_sent, deviceTypeString());
 
     if (!this.hasValidEmail()) {
       verification_email_sent = true;

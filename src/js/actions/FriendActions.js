@@ -19,18 +19,18 @@ module.exports = {
     Dispatcher.loadEndpoint("friendInviteResponse", {
       voter_we_vote_id: other_voter_we_vote_id,
       kind_of_invite_response: "DELETE_INVITATION_VOTER_SENT_BY_ME"
-    } );
+    });
   },
 
   deleteFriendInviteEmail: function (other_voter_email_address) {
     Dispatcher.loadEndpoint("friendInviteResponse", {
       recipient_voter_email: other_voter_email_address,
       kind_of_invite_response: "DELETE_INVITATION_EMAIL_SENT_BY_ME"
-    } );
+    });
   },
 
   emailBallotData: function ( email_address_array, first_name_array, last_name_array, email_addresses,
-                              invitation_message, ballot_link, sender_email_address, verification_email_sent) {
+                              invitation_message, ballot_link, sender_email_address, verification_email_sent, deviceType) {
     Dispatcher.loadEndpoint("emailBallotData",
       {
         email_address_array: email_address_array,
@@ -40,7 +40,8 @@ module.exports = {
         invitation_message: invitation_message,
         ballot_link: ballot_link,
         sender_email_address: sender_email_address,
-        verification_email_sent: verification_email_sent
+        verification_email_sent: verification_email_sent,
+        device_type: deviceType,
       });
   },
 
@@ -53,7 +54,7 @@ module.exports = {
         last_name_array: last_name_array,
         email_addresses_raw: email_addresses,
         invitation_message: invitation_message,
-        sender_email_address: sender_email_address
+        sender_email_address: sender_email_address,
       });
   },
 

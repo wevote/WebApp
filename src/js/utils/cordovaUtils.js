@@ -88,3 +88,13 @@ export function enclosingRectangle (objectNameString, instance) {
     ", width " + rect.width +
     ", height " + rect.height);
 }
+
+// webapp, webapp:iOS, webapp:Android
+export function deviceTypeString() {
+  let deviceString = isWebApp() ? "webapp" : "cordova";
+  if (isCordova() && window.device) {
+    deviceString += ":" + device.platform;
+  }
+
+  return deviceString;
+}
