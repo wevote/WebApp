@@ -48,7 +48,7 @@ $network-card-margin-mobile: (-$space-md) (-$space-md) $space-none (-$space-md);
 }
 
 // temporary until moved until a more general style
-$network-issue-list-padding: 1em;
+$network-issue-list-padding: $space-none;
 $follow-card-title-color: #fff;
 
 .network-issues-list {
@@ -64,7 +64,8 @@ $follow-card-title-color: #fff;
     right: 10px;
     bottom: 10px;
     left: 10px;
-    font-size: .65rem;
+    font-size: 1rem;
+    word-wrap: break-word;
     color: $white;
     text-shadow: 1px 1px 2px rgba($black, .6);
 
@@ -72,28 +73,28 @@ $follow-card-title-color: #fff;
       right: 8px;
       bottom: 8px;
       left: 8px;
-      font-size: .5rem;
+      font-size: .9rem;
     }
 
     @include breakpoints (xsmall-bootstrap small-bootstrap) {
       right: 8px;
       bottom: 8px;
       left: 8px;
-      font-size: .6rem;
+      font-size: .9rem;
     }
 
     @include breakpoints (iphone5 mid-small) {
       right: 10px;
       bottom: 10px;
       left: 10px;
-      font-size: .65rem;
+      font-size: .9rem;
     }
 
     @include breakpoints (max iphone5) {
       right: 8px;
       bottom: 8px;
       left: 8px;
-      font-size: .6rem;
+      font-size: .9rem;
     }
   }
 }
