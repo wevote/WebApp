@@ -47,16 +47,14 @@ $network-card-margin-mobile: (-$space-md) (-$space-md) $space-none (-$space-md);
   text-align: left;
 }
 
-// temporary until moved until a more general style
-$network-issue-list-padding: $space-none;
-$follow-card-title-color: #fff;
+// Network: list of issues to follow
 
 .network-issues-list {
-  padding: $network-issue-list-padding;
+  padding: $space-none;
 
   .intro-modal__square {
     float: left;
-    color: $follow-card-title-color;
+    color: $white;
   }
 
   .intro-modal__square-name {
