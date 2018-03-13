@@ -89,6 +89,8 @@ $opaque-grey: rgba($gray-dark, .5);
   }
 
   .quick-links {
+    $quick-links-button-padding: 1em;
+
     &__button {
       display: -ms-flexbox;
       display: flex;
@@ -99,7 +101,7 @@ $opaque-grey: rgba($gray-dark, .5);
       color: $white;
       font-size: 18px;
       text-align: center;
-      padding: $network-issue-list-padding;
+      padding: $quick-links-button-padding;
       line-height: 1em;
       transition: background .3s;
       width: 60%;
