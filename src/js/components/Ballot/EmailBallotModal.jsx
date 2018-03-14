@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
+import { deviceTypeString } from "../../utils/cordovaUtils";
 import EmailBallotToFriendsModal from "./EmailBallotToFriendsModal";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
@@ -100,17 +101,18 @@ export default class EmailBallotModal extends Component {
   }
 
   ballotEmailSend () {
-    let success_message = "";
-    let verification_email_sent = false;
-    success_message = <span>Success! This ballot has been sent to the email address {this.state.sender_email_address} </span>;
+    let successMessage = "";
+    let verificationEmailSent = false;
+    successMessage = <span>Success! This ballot has been sent to the email address {this.state.sender_email_address} </span>;
 
     FriendActions.emailBallotData("", "", "", this.state.sender_email_address, this.state.email_ballot_message,
-      this.state.ballot_link, this.state.sender_email_address, this.state.verification_email_sent);
+      this.state.ballot_link, this.state.sender_email_address, this.state.verification_email_sent, deviceTypeString());
 
     if (!this.hasValidEmail()) {
-      verification_email_sent = true;
-      success_message = <span>Success! This ballot has been sent to the email address {this.state.sender_email_address}. Please check your email and verify your email address to send Ballot to your friends. </span>;
+      verificationEmailSent = true;
+      successMessage = <span>Success! This ballot has been sent to the email address {this.state.sender_email_address}. Please check your email and verify your email address to send Ballot to your friends. </span>;
     }
+
     // After calling the API, reset the form
     this.setState({
       loading: true,
@@ -118,8 +120,8 @@ export default class EmailBallotModal extends Component {
       on_enter_email_addresses_step: true,
       on_ballot_email_sent_step: true,
       showEmailToFriendsModal: false,
-      verification_email_sent: verification_email_sent,
-      success_message: success_message,
+      verification_email_sent: verificationEmailSent,
+      success_message: successMessage,
     });
   }
 

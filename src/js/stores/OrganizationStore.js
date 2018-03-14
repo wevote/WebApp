@@ -136,12 +136,36 @@ class OrganizationStore extends ReduceStore {
     }
   }
 
-  getOrganizationSearchResultsTwitterHandle () {
+  getOrganizationSearchResultsOrganization () {
     // if only one organization is found, return the organization_twitter_handle
     let number_of_search_results = this.getState().organization_search_results.number_of_search_results || 0;
     if (number_of_search_results === 1) {
       let organizations_list = this.getState().organization_search_results.organizations_list;
-      return organizations_list[0].organization_twitter_handle;
+      return organizations_list[0];
+    }
+    return {};
+  }
+
+  getOrganizationSearchResultsOrganizationName () {
+    let organization = this.getOrganizationSearchResultsOrganization();
+    if (organization && organization.organization_name) {
+      return organization.organization_name;
+    }
+    return "";
+  }
+
+  getOrganizationSearchResultsTwitterHandle () {
+    let organization = this.getOrganizationSearchResultsOrganization();
+    if (organization && organization.organization_twitter_handle) {
+      return organization.organization_twitter_handle;
+    }
+    return "";
+  }
+
+  getOrganizationSearchResultsWebsite () {
+    let organization = this.getOrganizationSearchResultsOrganization();
+    if (organization && organization.organization_website) {
+      return organization.organization_website;
     }
     return "";
   }

@@ -288,7 +288,10 @@ export default class Application extends Component {
     if (pathname === "/intro/story" ||
         pathname === "/intro/sample_ballot" ||
         pathname === "/intro/get_started" ||
+        pathname === "/voterguidechooseelection" ||
         pathname === "/voterguidegetstarted" ||
+        pathname === "/voterguideorgtype" ||
+        pathname === "/voterguideorginfo" ||
         pathname === "/wevoteintro/network") {
       inTheaterMode = true;
     } else if (pathname.startsWith("/candidate/") ||

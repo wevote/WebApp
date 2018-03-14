@@ -3,6 +3,7 @@ export function isSpeakerTypeIndividual (speaker_type) {
   switch (speaker_type) {
     // These are defined in https://github.com/wevote/WeVoteServer/organization/models.py
     case "I": // INDIVIDUAL
+    case "PF": // PUBLIC_FIGURE
     case "V": // VOTER
       is_individual = true;
       break;

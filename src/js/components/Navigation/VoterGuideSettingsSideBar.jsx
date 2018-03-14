@@ -72,7 +72,7 @@ export default class VoterGuideSettingsSideBar extends Component {
           </Link>
         </div>
       </div>
-
+      {/*
       <div className={this.state.editMode === "account" ?
            "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
            "SettingsItem__summary__item-container"} >
@@ -137,7 +137,7 @@ export default class VoterGuideSettingsSideBar extends Component {
           </Link>
         </div>
       </div>
-
+      */}
     </div>;
   }
 }

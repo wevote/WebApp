@@ -72,6 +72,12 @@ module.exports = {
   voterGuidesIgnoredRetrieve: function () {
     // We do not currently limit the maximum_number_to_retrieve
     Dispatcher.loadEndpoint("voterGuidesIgnoredRetrieve");
-  }
+  },
 
+  voterGuideSave: function (google_civic_election_id, voter_guide_we_vote_id) {
+    Dispatcher.loadEndpoint("voterGuideSave", {
+      google_civic_election_id: google_civic_election_id,
+      voter_guide_we_vote_id: voter_guide_we_vote_id
+    } );
+  }
 };

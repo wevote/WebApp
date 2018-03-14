@@ -29,7 +29,7 @@ export default class CodeCopier extends Component {
   }
 
   componentDidMount () {
-    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
   }
 
   componentWillUnmount () {
@@ -89,7 +89,7 @@ export default class CodeCopier extends Component {
     this.timer = setTimeout(() => OrganizationActions.organizationSearch("", twitter_handle, true), 1200);
   }
 
-  _onOrganizationStoreChange () {
+  onOrganizationStoreChange () {
     let result = OrganizationStore.getOrganizationSearchResultsTwitterHandle();
 
     let status = "";

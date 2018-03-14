@@ -132,7 +132,10 @@ export default class OrganizationCard extends Component {
         {this.props.turnOffLogo ?
           null :
           <Link to={voterGuideLink} className="u-no-underline">
-            <ImageHandler imageUrl={organization_photo_url_large} className="card-main__org-avatar" sizeClassName="icon-lg "/>
+            <ImageHandler imageUrl={organization_photo_url_large}
+                          className="card-main__org-avatar"
+                          hidePlaceholder
+                          sizeClassName="icon-lg "/>
           </Link> }
         {this.props.followToggleOn ?
           <div className="u-margin-top--md">

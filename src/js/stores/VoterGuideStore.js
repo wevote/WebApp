@@ -138,14 +138,16 @@ class VoterGuideStore extends ReduceStore {
   }
 
   reduce (state, action) {
-    let voter_guides;
     let all_cached_voter_guides;
     let all_cached_voter_guides_by_election;
     let all_cached_voter_guides_by_organization;
     let all_cached_voter_guides_by_voter_guide;
     let google_civic_election_id;
-    let voter_guide_with_pledge_info;
     let organization_we_vote_id;
+    let replaced_existing_voter_guide;
+    let temp_cached_voter_guides_for_organization;
+    let voter_guide_with_pledge_info;
+    let voter_guides;
     let voter_linked_organization_we_vote_id;
 
     switch (action.type) {
@@ -464,8 +466,6 @@ class VoterGuideStore extends ReduceStore {
         voter_guides = action.res.voter_guides;
         all_cached_voter_guides_by_organization = state.all_cached_voter_guides_by_organization || {};
         all_cached_voter_guides_by_voter_guide = state.all_cached_voter_guides_by_voter_guide || {};
-        let replaced_existing_voter_guide;
-        let temp_cached_voter_guides_for_organization;
         voter_guides.forEach( one_voter_guide => {
           // Store them by organization
           if (all_cached_voter_guides_by_organization[one_voter_guide.organization_we_vote_id] === undefined) {
@@ -487,6 +487,37 @@ class VoterGuideStore extends ReduceStore {
           // Store them by voter guide
           all_cached_voter_guides_by_voter_guide[one_voter_guide.we_vote_id] = one_voter_guide;
         });
+        return {
+          ...state,
+          all_cached_voter_guides_by_organization: all_cached_voter_guides_by_organization,
+          all_cached_voter_guides_by_voter_guide: all_cached_voter_guides_by_voter_guide,
+        };
+
+      case "voterGuideSave":
+        let voter_guide_temp = action.res;
+        all_cached_voter_guides_by_organization = state.all_cached_voter_guides_by_organization || {};
+        all_cached_voter_guides_by_voter_guide = state.all_cached_voter_guides_by_voter_guide || {};
+
+        // Store it by organization
+        if (all_cached_voter_guides_by_organization[voter_guide_temp.organization_we_vote_id] === undefined) {
+          all_cached_voter_guides_by_organization[voter_guide_temp.organization_we_vote_id] = [];
+        }
+        replaced_existing_voter_guide = false;
+        temp_cached_voter_guides_for_organization = all_cached_voter_guides_by_organization[voter_guide_temp.organization_we_vote_id];
+        for (let count = 0; count < temp_cached_voter_guides_for_organization.length; count++) {
+          if (temp_cached_voter_guides_for_organization[count].we_vote_id === voter_guide_temp.we_vote_id) {
+            // Replace the former voter_guide with the new one
+            temp_cached_voter_guides_for_organization[count] = voter_guide_temp;
+            replaced_existing_voter_guide = true;
+          }
+        }
+        if (!replaced_existing_voter_guide) {
+          temp_cached_voter_guides_for_organization.push(voter_guide_temp);
+        }
+        all_cached_voter_guides_by_organization[voter_guide_temp.organization_we_vote_id] = temp_cached_voter_guides_for_organization;
+        // Store them by voter guide
+        all_cached_voter_guides_by_voter_guide[voter_guide_temp.we_vote_id] = voter_guide_temp;
+
         return {
           ...state,
           all_cached_voter_guides_by_organization: all_cached_voter_guides_by_organization,
