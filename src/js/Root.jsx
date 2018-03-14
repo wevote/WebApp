@@ -23,6 +23,7 @@ import FAQ from "./routes/More/FAQ";
 import FacebookInvitableFriends from "./routes/FacebookInvitableFriends";
 import Friends from "./routes/Friends";
 import GetStarted from "./routes/Intro/GetStarted";
+import HamburgerMenu from "./routes/More/HamburgerMenu";
 import HowToUse from "./routes/More/HowToUse";
 import Intro from "./routes/Intro/Intro";
 import IntroContests from "./routes/Intro/IntroContests";
@@ -72,6 +73,7 @@ import VerifyRegistration from "./routes/More/VerifyRegistration";
 import VerifyThisIsMe from "./routes/VoterGuide/VerifyThisIsMe";
 import Welcome from "./routes/Welcome";
 import YourPage from "./routes/YourPage";
+import { isWebApp } from "./utils/cordovaUtils";
 
 
 // See /js/components/Navigation/HeaderBar.jsx for show_full_navigation cookie
@@ -80,9 +82,7 @@ const firstVisit = !cookies.getItem("voter_device_id");
 const routes = () =>
   <Route path="/" component={Application}>
     <Route component={Intro} />
-    { firstVisit ?
-      <IndexRedirect to="/welcome" /> :
-      <IndexRedirect to="/welcome" /> }
+    { isWebApp() ? <IndexRedirect to="/welcome" /> : (firstVisit ? <IndexRedirect to="/wevoteintro/network" /> : <IndexRedirect to="/ballot" />)}
     <Route path="/welcome" component={Welcome} />
     <Route path="/activity" component={Activity} />
     <Route path="/ballot" component={BallotIndex}>
@@ -158,6 +158,7 @@ const routes = () =>
     <Route path="/more/facebookredirecttowevote" component={FacebookRedirectToWeVote} />
     <Route path="/more/faq" component={FAQ} />
     <Route path="/more/howtouse" component={HowToUse} />
+    <Route path="/more/hamburger" component={HamburgerMenu} />
     <Route path="/more/jump" component={SignInJumpProcess} />
     <Route path="/more/network" component={Network} />
     <Route path="/more/network/key/:invitation_secret_key" component={FriendInvitationByEmailVerifyProcess} />

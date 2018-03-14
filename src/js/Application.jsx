@@ -269,16 +269,8 @@ export default class Application extends Component {
               </div>;
     }
 
-    if (isCordova()) {
-      let gotoWevoteIntroNetwork = cookies.getItem("cordova_goto_wevoteintro_network");
-      if (gotoWevoteIntroNetwork === null) {
-        //On the first entry in a new Cordoba session, immediately navigate to "/wevoteintro/network"
-        cookies.setItem("cordova_goto_wevoteintro_network", false);  // no expiration time, so a session cookie
-        historyPush("/wevoteintro/network");
-      }
-    }
-
     // console.log("Application pathname on entry = " + pathname);
+
     // If looking at these paths, we want to enter theater mode
     let inTheaterMode = false;
     let contentFullWidthMode = false;
@@ -310,6 +302,7 @@ export default class Application extends Component {
         pathname === "/more/donate" ||
         pathname === "/more/donate_thank_you" ||
         pathname === "/more/elections" ||
+        pathname === "/more/hamburger" ||
         pathname === "/more/howtouse" ||
         pathname.startsWith("/office/") ||
         pathname === "/more/network" ||

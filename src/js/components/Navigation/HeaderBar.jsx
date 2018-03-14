@@ -7,7 +7,6 @@ import { cordovaDot, historyPush, isCordova, isWebApp } from "../../utils/cordov
 import cookies from "../../utils/cookies";
 import FriendStore from "../../stores/FriendStore";
 import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
-import HeaderBarProfileSlideIn from "./HeaderBarProfileSlideIn";
 import HeaderBarAboutMenu from "./HeaderBarAboutMenu";
 import OrganizationActions from "../../actions/OrganizationActions";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
@@ -159,7 +158,7 @@ export default class HeaderBar extends Component {
 
     return (
       <header className="page-header">
-        { (!weVoteBrandingOff &&  isWebApp()) &&
+        { (!weVoteBrandingOff && isWebApp()) &&
           <span>
             <Link to="/welcome" className="page-logo page-logo-full-size h4 hidden-xs">
               We Vote
@@ -240,18 +239,7 @@ export default class HeaderBar extends Component {
                                  hideProfilePopUp={this.hideProfilePopUp}
                                  transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
                                  signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)}
-          />
-          :
-          <HeaderBarProfileSlideIn {...this.props}
-                                 onClick={this.toggleProfilePopUp}
-                                 profilePopUpOpen={this.state.profilePopUpOpen}
-                                 bookmarks={this.state.bookmarks}
-                                 weVoteBrandingOff={this.state.we_vote_branding_off}
-                                 toggleProfilePopUp={this.toggleProfilePopUp}
-                                 hideProfilePopUp={this.hideProfilePopUp}
-                                 transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
-                                 signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)}
-          />
+          /> : null
         }
       </header>
     );

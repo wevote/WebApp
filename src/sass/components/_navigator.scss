@@ -298,30 +298,75 @@ $transparent-background: transparent;
 }
 
 .hamburger {
+  $nav-item-active-color: darken($page-header-color, 10%);
+  $hamburger-space: 20px;
   font-size: 20px;
-  padding-top: $space-hamburger;
-  padding-right: $space-md;
-  padding-left: $space-sm;
-  z-index: 3; //to float above the ProfilePopUp menu option grey div
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  width: 60px;
+  height: $header-height;
+  padding: $space-sm;
+  padding-left: $hamburger-space;
+  color: $white !important;
+  opacity: .8;
+  // temporary offsets for .page-header__container padding
+  margin-top: -.5em; // stylelint-disable-line sh-waqar/declaration-use-variable
+  margin-bottom: -.5em; // stylelint-disable-line sh-waqar/declaration-use-variable
+
+  &.active-icon {
+    color: $gray-dark;
+    opacity: .9;
+    text-decoration: none;
+    background-color: $nav-item-active-color !important;
+  }
 }
 
-.slide-in-tr {
-  height: 50px;
-  border-bottom: 1px solid #e7e7e7;
+.hamburger-menu {
+  background-color: $white;
+  &__table {
+    border-top: 40px;
+    border-top-color: $white;
+  }
+  &__tr {
+    height: 50px;
+    border-bottom: 1px solid #e7e7e7;
+  }
+  &__td-left {
+    padding: $space-md !important;
+    width: 10%;
+  }
+  &__td-mid {
+    padding-right: $space-md !important;
+    padding-top: $space-xs !important;
+    vertical-align: middle !important;
+    width: 75%;
+    font-size: 20pt;
+  }
+  &__right {
+    padding: $space-md;
+    width: 10%;
+  }
 }
 
-.slide-in-td-left {
-  padding: $space-md;
-  width: 10%;
-}
+.hamburger-terms {
+  $terms-top: 23px;
+  $blue: blue;
+  &__tr {
+    height: 50px !important;
+  }
 
-.slide-in-td-mid {
-  padding: $space-md;
-  width: 75%;
-  font-size: 20pt;
-}
+  &__td {
+    padding-left: $space-md !important;
+    padding-bottom: $space-sm !important;
+    padding-top: $terms-top !important;
+  }
 
-.slide-in-td-right {
-  padding: $space-md;
-  width: 10%;
+  &__text {
+    font-weight: 400 !important;
+    font-size: 14pt !important;
+    color: $blue !important;
+  }
 }
