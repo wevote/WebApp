@@ -433,9 +433,10 @@ export default class EmailBallotToFriendsModal extends Component {
         Send This Ballot to Friends
       </div>
 
-      <div>
+      <div className="share-modal-vertical-scroll-contain">
         <div className="intro-modal-vertical-scroll card">
-          <div className="row intro-modal__grid intro-modal__default-text">
+          {/* <div className="row intro-modal__grid intro-modal__default-text"> */}
+          <div className="share-modal__default-text">
             <div className="container-fluid u-inset--md text-left">
               {this.state.on_enter_email_addresses_step ? <div>
                 { this.state.success_message ?
@@ -679,6 +680,8 @@ export default class EmailBallotToFriendsModal extends Component {
                               disabled={!this.state.sender_email_address} >
                         <span>Send</span>
                       </Button>
+                      <div className="col-12 u-inset--md" />
+
                     </span>
                   </div>
                 </div> : null

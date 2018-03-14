@@ -6,11 +6,12 @@ import FriendStore from "../../stores/FriendStore";
 import LoadingWheel from "../LoadingWheel";
 import { validateEmail } from "../../utils/email-functions";
 import VoterStore from "../../stores/VoterStore";
-
+//IN PROGRESS
 const web_app_config = require("../../config");
 
 export default class EmailBallotModal extends Component {
   static propTypes = {
+    next: PropTypes.func.isRequired,  //Used by react-slick
     history: PropTypes.object,
     ballot_link: PropTypes.string,
   };
@@ -201,7 +202,7 @@ export default class EmailBallotModal extends Component {
 
       <div>
         <div className="intro-modal-vertical-scroll card">
-          <div className="intro-modal__grid intro-modal__default-text">
+          <div className="share-modal__default-text">
             <div className="container-fluid u-inset--md text-left">
               {this.state.sender_email_address_error ?
                 <div className="alert alert-danger">
@@ -249,13 +250,19 @@ export default class EmailBallotModal extends Component {
                       onClick={this.ballotEmailSendStepsManager.bind(this)}
                       bsStyle="primary"
                     >
-                      <span>Send &gt;</span>
+                      <span>Send</span>
                     </Button>
                   </span>
                 </div>
               </div>
-                  <div className="col-12 u-inset--sm" />
-                  <div className="col-12 u-inset--md" />
+              <div className="col-12 u-inset--sm" />
+              {/* <span style="float: right;">Click here to send to friends &gt;</span> */}
+              <div className="col-12">
+                <span style={floatRight} onClick={this.props.next}>
+                {/* <span style={floatRight} onClick={this._openEmailToFriendsModal.bind(this)}> */}
+                  Click here to send to friends &gt;
+                </span>
+              </div>
               </div> : null
               }
               <span style={textGray}>We will never sell your email.</span>

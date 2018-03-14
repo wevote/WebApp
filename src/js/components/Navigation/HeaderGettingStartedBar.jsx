@@ -13,6 +13,7 @@ import GettingStartedBarItem from "./GettingStartedBarItem";
 import EmailBallotModal from "../Ballot/EmailBallotModal";
 import EmailBallotToFriendsModal from "../Ballot/EmailBallotToFriendsModal";
 import FacebookBallotModal from "../Ballot/FacebookBallotModal";
+import FacebookBallotToFriendsModal from "../Ballot/FacebookBallotToFriendsModal";
 import PollingPlaceLocatorModal from "../../routes/Ballot/PollingPlaceLocatorModal";
 import Slider from "react-slick";
 import VoterActions from "../../actions/VoterActions";
@@ -281,10 +282,9 @@ export default class HeaderGettingStartedBar extends Component {
              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
            </a>
          </div>
-          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="share-modal-calc-height" ref="slider" {...sliderSettings}>
-            <div key={1}><EmailBallotModal ballot_link={this.props.pathname}/></div>
-            {/* <div key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div> */}
-            <div key={2}><EmailBallotToFriendsModal ballot_link={this.props.pathname}/></div>
+          <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettings}>
+            <div key={1} className="share-modal-calc-height"><EmailBallotModal next={this._nextSliderPage} ballot_link={this.props.pathname}/></div>
+            <div key={2} className="share-modal-calc-height"><EmailBallotToFriendsModal ballot_link={this.props.pathname}/></div>
           </Slider>
         </Modal.Body>
     </Modal>;
@@ -298,7 +298,10 @@ export default class HeaderGettingStartedBar extends Component {
             <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
           </a>
         </div>
-        <div key={1}><FacebookBallotModal ballot_link={this.props.pathname}/></div>
+        <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettings}>
+          <div key={1} className="share-modal-calc-height"><FacebookBallotModal next={this._nextSliderPage} ballot_link={this.props.pathname}/></div>
+          <div key={2} className="share-modal-calc-height"><FacebookBallotToFriendsModal ballot_link={this.props.pathname}/></div>
+        </Slider>
       </Modal.Body>
     </Modal>;
 

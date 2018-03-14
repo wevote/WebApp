@@ -14,6 +14,7 @@ const web_app_config = require("../../config");
 
 export default class FacebookBallotModal extends Component {
   static propTypes = {
+    next: PropTypes.func.isRequired,  //Used by react-slick
     history: PropTypes.object,
     ballot_link: PropTypes.string,
   };
@@ -298,7 +299,7 @@ export default class FacebookBallotModal extends Component {
       <div>
         {/* <div className="intro-modal-vertical-scroll-contain_without_slider"> */}
           <div className="intro-modal-vertical-scroll card">
-            <div className="row intro-modal__grid intro-modal__default-text">
+            <div className="share-modal__default-text">
               <div className="container-fluid u-inset--md text-left">
                 {this.state.sender_email_address_error ?
                   <div className="alert alert-danger">
@@ -336,12 +337,11 @@ export default class FacebookBallotModal extends Component {
                 </div> : null
                 }
                 <div className="col-12">
-                  <span style={floatRight} onClick={this._openFacebookToFriendsModal.bind(this)}>
+                  <span style={floatRight} onClick={this.props.next}>
                     Click here to send to friends &gt;
                   </span>
+                  <span className="u-no-break" style={textGray}>We will never sell your email.</span>
                 </div>
-                <div className="col-12 u-inset--sm" />
-                <span style={textGray}>We will never sell your email.</span>
               </div>
             </div>
           </div>

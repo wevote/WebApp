@@ -611,19 +611,29 @@
     align-items: flex-start;
   }
 
-  &-calc-height {
-    @include breakpoints (max mid-small) {
-      height: 430px;
+  &__default-text {
+    width: 100%;
+    color: $black;
+    text-align: center;
+  }
 
-      // height: calc(100vh - 52px);
-      // max-height: 320px; // Scroll area in modal: 600 - 52 = 548px We set this so that when We Vote is in a frame, the modal isn't too long.
+  &__span--right {
+    text-align: right;
+  }
+
+  &-vertical-scroll-contain {
+    height: 300px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: auto;
+    overflow-x: hidden;
+    @include breakpoints (small medium) {
+      height: calc(90vh - 100px);
     }
-
-    @include breakpoints (mid-small) {
-      height: 330px;
-
-      // height: calc(100vh - 104px);
-      // max-height: 320px; // Scroll area in modal: 600 - 104 = 496px We set this so that when We Vote is in a frame, the modal isn't too long.
+  }
+  &-calc-height {
+    height: 420px;
+    @include breakpoints (small medium) {
+      height: calc(100vh - 50px);
     }
   }
 }
