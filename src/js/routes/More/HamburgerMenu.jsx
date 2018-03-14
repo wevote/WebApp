@@ -13,7 +13,6 @@ import VoterGuideActions from "../../actions/VoterGuideActions";
 import OrganizationActions from "../../actions/OrganizationActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 
-
 export default class HamburgerMenu extends Component {
   constructor (props) {
     super(props);
@@ -90,13 +89,15 @@ export default class HamburgerMenu extends Component {
             </td>
           </tr>
 
-          <HamburgerMenuRow onClickAction={this.transitionToYourVoterGuide}
+          {isSignedIn ?
+            <HamburgerMenuRow onClickAction={this.transitionToYourVoterGuide}
                             to={yourVoterGuideTo}
                             icon={"fa fa-list"}
                             iconStyle={{ fontSize: 20, color: "#1c2f4b" }}
-                            linkText={"Your Voter Guide"} />
+                            linkText={"Your Voter Guide"} /> : null
+          }
 
-           {isSignedIn ?
+          {isSignedIn ?
             <HamburgerMenuRow onClickAction={null}
                               to={"/more/sign_in"}
                               fullIcon={this.yourAccountIcon(voterPhotoUrlMedium)}
