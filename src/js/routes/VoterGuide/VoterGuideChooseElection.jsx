@@ -1,15 +1,21 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
+import ChooseElectionForVoterGuide from "../../components/VoterGuide/ChooseElectionForVoterGuide";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
+import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterStore from "../../stores/VoterStore";
 
-const delayBeforeApiSearchCall = 1200;
 
+export default class VoterGuideChooseElection extends Component {
+  static propTypes = {
+    closeEditFormOnChoice: PropTypes.bool, // When a voter makes a choice, close the edit form
+    editFormOpen: PropTypes.bool, // Normally we load this component with the edit options closed
+    showEditToggleOption: PropTypes.bool, // Should the voter be able to hide/show the form fields
+  };
 
-export default class VoterGuideGetStarted extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -18,12 +24,11 @@ export default class VoterGuideGetStarted extends Component {
       searchResultsOrganizationName: "",
       twitterHandleEntered: "",
       twitterSearchStatus: "",
+      electionsLocationsList: [],
     };
-    this.hitEnterKey = this.hitEnterKey.bind(this);
     this.onOrganizationStoreChange = this.onOrganizationStoreChange.bind(this);
     this.resetState = this.resetState.bind(this);
     this.saveAndGoToOrganizationInfo = this.saveAndGoToOrganizationInfo.bind(this);
-    this.validateTwitterHandle = this.validateTwitterHandle.bind(this);
   }
 
   componentWillMount () {
@@ -32,6 +37,7 @@ export default class VoterGuideGetStarted extends Component {
   }
 
   componentDidMount () {
+    AnalyticsActions.saveActionElections(VoterStore.election_id());
     AnalyticsActions.saveActionVoterGuideGetStarted(VoterStore.election_id());
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.setState({
@@ -40,9 +46,6 @@ export default class VoterGuideGetStarted extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // Get Voter and Voter's Organization
     let voter = VoterStore.getVoter();
-    if (voter && voter.is_signed_in) {
-      historyPush("/voterguidechooseelection");
-    }
     let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log("SettingsDashboard componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId) {
@@ -93,9 +96,6 @@ export default class VoterGuideGetStarted extends Component {
 
   onVoterStoreChange () {
     let voter = VoterStore.getVoter();
-    if (voter && voter.is_signed_in) {
-      historyPush("/voterguidechooseelection");
-    }
     let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log("SettingsDashboard onVoterStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
@@ -119,8 +119,13 @@ export default class VoterGuideGetStarted extends Component {
     historyPush(sampleBallotLink);
   }
 
-  goToOrganizationType () {
-    historyPush("/voterguideorgtype");
+  saveVoterGuideForElection (google_civic_election_id) {
+    VoterGuideActions.voterGuideSave(google_civic_election_id, "");
+  }
+
+  goToVoterGuideBallotItems () {
+    let voterGuideBallotItems = "/vg/wv02vg2634/settings";
+    historyPush(voterGuideBallotItems);
   }
 
   saveAndGoToOrganizationInfo () {
@@ -130,91 +135,22 @@ export default class VoterGuideGetStarted extends Component {
     historyPush("/voterguideorgtype");
   }
 
-  hitEnterKey (event) {
-    // console.log("hitEnterKey");
-    this.setState({
-      autoFocus: false,
-    });
-  }
-
-  validateTwitterHandle (event) {
-    clearTimeout(this.timer);
-    if (event.target.value.length) {
-      this.validateTwitterHandleAction(event.target.value);
-      this.setState({
-        isLoading: true,
-        twitterHandleEntered: event.target.value,
-        twitterSearchStatus: "Searching...",
-      });
-    } else {
-      this.resetState();
-    }
-  }
-
-  validateTwitterHandleAction (twitterHandle) {
-    this.timer = setTimeout(() => {
-      OrganizationActions.organizationSearch("", twitterHandle, true);
-    }, delayBeforeApiSearchCall);
-  }
-
   render () {
-    let actionButtonHtml;
-    if (this.state.isTwitterHandleValid) {
-      actionButtonHtml = <button type="button" className="btn btn-lg btn-success"
-                    onClick={this.saveAndGoToOrganizationInfo}>Use This Information&nbsp;&nbsp;&gt;</button>;
-    } else {
-      actionButtonHtml = <button type="button" className="btn btn-lg btn-success"
-                    onClick={this.goToOrganizationType}>Skip Twitter&nbsp;&nbsp;&gt;</button>;
-    }
 
     return <div>
       <Helmet title="Welcome to We Vote" />
         <div className="intro-story container well u-inset--md">
           <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
-          <div className="intro-story__h1 xs-text-left">Create Your Voter Guide</div>
+          <div className="intro-story__h1 xs-text-left">Choose Election</div>
           <div className="row">
             <div className="col-2">&nbsp;</div>
             <div className="col-8">
-              <form onSubmit={(e) => {this.hitEnterKey(); e.preventDefault();}}>
-                <div className="form-group">
-                  { this.state.twitterSearchStatus.length ?
-                    <p className={ !this.state.isLoading ?
-                                     this.state.isTwitterHandleValid ?
-                                     "voter-guide-get-started__status-success" :
-                                     "voter-guide-get-started__status-error" :
-                                   "u-stack--md" }>
-                      {this.state.twitterSearchStatus}
-                    </p> :
-                    <p className="u-stack--md">See if your voter guide already exists.</p>
-                  }
-                  <input type="text"
-                         className={this.state.twitterSearchStatus.length ?
-                                     "form-control input-lg " :
-                                     "form-control input-lg u-margin-top--sm" }
-                         name="twitterHandle"
-                         placeholder="Enter Twitter Handle"
-                         onKeyDown={this.resetState}
-                         onChange={this.validateTwitterHandle}
-                         autoFocus={this.state.autoFocus} />
-                </div>
-              </form>
+              <div className="elections-list-container">
+                <ChooseElectionForVoterGuide destinationFunction={this.saveVoterGuideForElection.bind(this)} />
+              </div>
             </div>
             <div className="col-2">&nbsp;</div>
           </div>
-          <div className="row">
-            <div className="col-xs-2 col-md-4">&nbsp;</div>
-            <div className="col-xs-8 col-md-4">
-              <div>
-                <div className="u-margin-top--lg u-f2">{this.state.searchResultsOrganizationName}</div>
-                {this.state.searchResultsTwitterHandle ? <div className="u-f2">@{this.state.searchResultsTwitterHandle}</div> : null }
-                {this.state.searchResultsWebsite ? <div className="u-f2">{this.state.searchResultsWebsite}</div> : null }
-              </div>
-            </div>
-            <div className="col-xs-2 col-md-4">&nbsp;</div>
-          </div>
-          <footer className="intro-story__footer">
-            {actionButtonHtml}
-          </footer>
         </div>
       </div>;
   }

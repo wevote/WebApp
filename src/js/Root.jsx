@@ -51,7 +51,6 @@ import RegisterToVote from "./routes/More/RegisterToVote";
 import SampleBallot from "./routes/Intro/SampleBallot";
 import ScratchPad from "./routes/ScratchPad";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
-import VoterGuideSettingsDashboard from "./routes/Settings/VoterGuideSettingsDashboard";
 import SignIn from "./routes/SignIn/SignIn";
 import SignInJumpProcess from "./routes/Process/SignInJumpProcess";
 import FacebookLandingProcess from "./routes/Process/FacebookLandingProcess";
@@ -64,7 +63,11 @@ import TwitterHandleLanding from "./routes/TwitterHandleLanding";
 import TwitterSignInProcess from "./routes/Process/TwitterSignInProcess";
 import VerifyEmailProcess from "./routes/Process/VerifyEmailProcess";
 import FriendInvitationByEmailVerifyProcess from "./routes/Process/FriendInvitationByEmailVerifyProcess";
+import VoterGuideChooseElection from "./routes/VoterGuide/VoterGuideChooseElection";
 import VoterGuideGetStarted from "./routes/VoterGuide/VoterGuideGetStarted";
+import VoterGuideOrganizationInfo from "./routes/VoterGuide/VoterGuideOrganizationInfo";
+import VoterGuideOrganizationType from "./routes/VoterGuide/VoterGuideOrganizationType";
+import VoterGuideSettingsDashboard from "./routes/Settings/VoterGuideSettingsDashboard";
 import VerifyRegistration from "./routes/More/VerifyRegistration";
 import VerifyThisIsMe from "./routes/VoterGuide/VerifyThisIsMe";
 import Welcome from "./routes/Welcome";
@@ -187,6 +190,9 @@ const routes = () =>
     <Route path="/voterguideedit/:organization_we_vote_id/:edit_mode/:active_tab" component={OrganizationVoterGuideEdit} />
 
     <Route path="/voterguidegetstarted" component={VoterGuideGetStarted} />
+    <Route path="/voterguideorgtype" component={VoterGuideOrganizationType} />
+    <Route path="/voterguideorginfo" component={VoterGuideOrganizationInfo} />
+    <Route path="/voterguidechooseelection" component={VoterGuideChooseElection} />
     <Route path="/yourpage" component={YourPage} />
 
     <Route path="/facebook_sign_in" component={FacebookSignInProcess} />

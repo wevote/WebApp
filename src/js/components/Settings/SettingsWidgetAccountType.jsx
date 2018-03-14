@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import { Link } from "react-router";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import LoadingWheel from "../../components/LoadingWheel";
 import OrganizationActions from "../../actions/OrganizationActions";
@@ -11,7 +10,8 @@ const delay_before_removing_saved_status = 2000;
 
 export default class SettingsWidgetAccountType extends Component {
   static propTypes = {
-    editFormClosedByDefault: PropTypes.bool, // Normally we load this component with the edit options displaying
+    closeEditFormOnChoice: PropTypes.bool, // When a voter makes a choice, close the edit form
+    editFormOpen: PropTypes.bool, // Normally we load this component with the edit options closed
     showEditToggleOption: PropTypes.bool, // Should the voter be able to hide/show the form fields
   };
 
@@ -19,12 +19,15 @@ export default class SettingsWidgetAccountType extends Component {
     super(props);
     // We intentionally don't define this.state.organization or this.state.voter
     this.state = {
-      linked_organization_we_vote_id: "",
+      closeEditFormOnChoice: false,
+      editFormOpen: false,
+      linkedOrganizationWeVoteId: "",
       organizationType: "",
       organizationTypeSavedStatus: "",
     };
 
     this.renderOrganizationType = this.renderOrganizationType.bind(this);
+    this.toggleEditForm = this.toggleEditForm.bind(this);
     this.updateOrganizationType = this.updateOrganizationType.bind(this);
   }
 
@@ -35,18 +38,22 @@ export default class SettingsWidgetAccountType extends Component {
     if (VoterStore.election_id()) {
       AnalyticsActions.saveActionAccountPage(VoterStore.election_id());
     }
+    this.setState({
+      closeEditFormOnChoice: this.props.closeEditFormOnChoice,
+      editFormOpen: this.props.editFormOpen,
+      showEditToggleOption: this.props.showEditToggleOption,
+    });
   }
 
   componentWillUnmount () {
-    // console.log("SettingsProfile ---- UN mount");
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
-    this.clear_timer = null;
+    this.clearTimer = null;
   }
 
   onOrganizationStoreChange (){
-    let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linked_organization_we_vote_id);
-    if (organization && organization.organization_type) {
+    let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
+    if (organization && organization.organization_we_vote_id) {
       this.setState({
         organization: organization,
         organizationType: organization.organization_type,
@@ -62,11 +69,11 @@ export default class SettingsWidgetAccountType extends Component {
       });
       if (voter && voter.linked_organization_we_vote_id) {
         this.setState({
-          linked_organization_we_vote_id: voter.linked_organization_we_vote_id
+          linkedOrganizationWeVoteId: voter.linked_organization_we_vote_id
         });
-        if (voter.linked_organization_we_vote_id !== this.state.linked_organization_we_vote_id) {
+        if (voter.linked_organization_we_vote_id !== this.state.linkedOrganizationWeVoteId) {
           let organization = OrganizationStore.getOrganizationByWeVoteId(voter.linked_organization_we_vote_id);
-          if (organization && organization.organization_type) {
+          if (organization && organization.organization_we_vote_id) {
             this.setState({
               organization: organization,
               organizationType: organization.organization_type,
@@ -77,30 +84,71 @@ export default class SettingsWidgetAccountType extends Component {
     }
   }
 
+  displayOrganizationType (organizationType){
+    switch (organizationType) {
+      case "I":
+        return "Individual";
+      case "C3":
+        return "Nonprofit 501(c)(3)";
+      case "C4":
+        return "Nonprofit 501(c)(4)";
+      case "P":
+        return "Political Action Committee";
+      case "NP":
+        return "Nonprofit (Type Not Specified)";
+      case "G":
+        return "Group or Club (10+ people)";
+      case "PF":
+        return "Politician";
+      case "NW":
+        return "News Organization";
+      case "C":
+        return "Company";
+      case "U":
+        return "Not specified (Individual vs. Organization)";
+      default :
+        return "";
+    }
+  }
+
+  toggleEditForm () {
+    this.setState({
+      editFormOpen: !this.state.editFormOpen,
+    });
+  }
+
   updateOrganizationType (event) {
     // console.log("updateOrganizationType event.target:", event.target);
     if (event.target.name === "organizationType") {
-      // console.log("UPDATING, this.state.linked_organization_we_vote_id: ", this.state.linked_organization_we_vote_id, ", event.target.value: ", event.target.value);
-      OrganizationActions.organizationTypeSave(this.state.linked_organization_we_vote_id, event.target.value);
+      // console.log("UPDATING, this.state.linkedOrganizationWeVoteId: ", this.state.linkedOrganizationWeVoteId, ", event.target.value: ", event.target.value);
+      OrganizationActions.organizationTypeSave(this.state.linkedOrganizationWeVoteId, event.target.value);
       this.setState({
         organizationType: event.target.value,
         organizationTypeSavedStatus: "Saved"
       });
+      if (this.state.closeEditFormOnChoice) {
+        this.toggleEditForm();
+      }
       if (VoterStore.election_id()) {
         AnalyticsActions.saveActionAccountPage(VoterStore.election_id());
       }
       // After some time, clear saved message
-      clearTimeout(this.clear_timer);
-      this.clear_timer = setTimeout(() => {
+      clearTimeout(this.clearTimer);
+      this.clearTimer = setTimeout(() => {
         this.setState({organizationTypeSavedStatus: ""});
       }, delay_before_removing_saved_status);
     }
   }
 
-  renderOrganizationType (organizationType, stateOrganizationType, organizationTypeLabel, organizationTypeId) {
+  renderOrganizationType (organizationType, organizationTypeCurrentState, organizationTypeLabel, organizationTypeId) {
+    let organizationTypeTrimmed = organizationType.trim();
+    let organizationTypeCurrentStateTrimmed = organizationTypeCurrentState.trim();
+    let organizationTypeChecked = organizationTypeCurrentStateTrimmed === organizationTypeTrimmed;
+    // console.log("renderOrganizationType organizationType: ", organizationType, ", organizationTypeCurrentState: ", organizationTypeCurrentState);
+    // console.log("renderOrganizationType organizationTypeChecked: ", organizationTypeChecked);
     return <div className="form-check">
             <input className="form-check-input"
-                   checked={stateOrganizationType === organizationType}
+                   checked={organizationTypeChecked}
                    id={organizationTypeId}
                    name="organizationType"
                    onChange={this.updateOrganizationType}
@@ -120,29 +168,32 @@ export default class SettingsWidgetAccountType extends Component {
     }
 
     return <div className="">
-      {this.state.voter.is_signed_in ?
-        <div>
-          <h4 className="h4">Type of Account</h4>
+      <div>
+        <h3 className="h3">Type of Profile</h3>
+        { this.state.editFormOpen ?
+          <span>
+            <div className="">
+              {this.state.showEditToggleOption ? <span className="pull-right">(<a className="" onClick={() => this.toggleEditForm()}>close</a>)</span> : null}
+           </div>
+            {this.renderOrganizationType("I", this.state.organizationType, "Individual", "organizationTypeIdIndividual")}
+            {this.renderOrganizationType("C3", this.state.organizationType, "Nonprofit 501(c)(3)", "organizationTypeIdC3")}
+            {this.renderOrganizationType("C4", this.state.organizationType, "Nonprofit 501(c)(4)", "organizationTypeIdC4")}
+            {this.renderOrganizationType("P", this.state.organizationType, "Political Action Committee", "organizationTypeIdPAC")}
+            {this.renderOrganizationType("NP", this.state.organizationType, "Other Nonprofit", "organizationTypeIdNonprofit")}
+            {this.renderOrganizationType("G", this.state.organizationType, "Other Group or Club (10+ people)", "organizationTypeIdGroup")}
+            {this.renderOrganizationType("PF", this.state.organizationType, "Politician", "organizationTypeIdPolitician")}
+            {this.renderOrganizationType("NW", this.state.organizationType, "News Organization", "organizationTypeIdNews")}
+            {this.renderOrganizationType("C", this.state.organizationType, "Company", "organizationTypeIdCompany")}
+            {this.renderOrganizationType("U", this.state.organizationType, "Other", "organizationTypeIdUnknown")}
+            <br />
+            <span className="pull-right u-gray-mid">{this.state.organizationTypeSavedStatus}</span>
+          </span> :
           <div className="">
-            If you would like to share your opinions publicly as an organization, we recommend
-            that you sign in with your organization's Twitter account, and change this setting based on the kind
-            of organization you are.
-          </div>
-          {this.renderOrganizationType("I", this.state.organizationType, "Individual", "organizationTypeIdIndividual")}
-          {this.renderOrganizationType("C3", this.state.organizationType, "Nonprofit 501(c)(3)", "organizationTypeIdC3")}
-          {this.renderOrganizationType("C4", this.state.organizationType, "Nonprofit 501(c)(4)", "organizationTypeIdC4")}
-          {this.renderOrganizationType("P", this.state.organizationType, "Political Action Committee", "organizationTypeIdPAC")}
-          {this.renderOrganizationType("NP", this.state.organizationType, "Other Nonprofit", "organizationTypeIdNonprofit")}
-          {this.renderOrganizationType("G", this.state.organizationType, "Other Group (10+ people)", "organizationTypeIdGroup")}
-          {this.renderOrganizationType("PF", this.state.organizationType, "Politician", "organizationTypeIdPolitician")}
-          {this.renderOrganizationType("NW", this.state.organizationType, "News Organization", "organizationTypeIdNews")}
-          {this.renderOrganizationType("C", this.state.organizationType, "Company", "organizationTypeIdCompany")}
-          {this.renderOrganizationType("U", this.state.organizationType, "Other", "organizationTypeIdUnknown")}
-          <br />
-          <span className="pull-right u-gray-mid">{this.state.organizationTypeSavedStatus}</span>
-        </div> :
-        <div><Link to="/settings/account">Please Sign In</Link></div>
-      }
+            <span className="pull-right u-gray-mid">{this.state.organizationTypeSavedStatus}</span>
+            <span className="u-f4 u-bold">{this.displayOrganizationType(this.state.organizationType)}</span>
+            {this.state.showEditToggleOption ? <span className=""> (<a className="" onClick={() => this.toggleEditForm()}>edit</a>)</span> : null}
+          </div> }
+      </div>
     </div>;
   }
 }

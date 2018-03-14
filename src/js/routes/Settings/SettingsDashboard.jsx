@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import FollowToggle from "../../components/Widgets/FollowToggle";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -13,6 +12,7 @@ import SelectVoterGuidesSideBar from "../../components/Navigation/SelectVoterGui
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
+// import "react-slide-out/lib/index.css"; // This is included in the index.html file
 
 export default class SettingsDashboard extends Component {
   static propTypes = {
@@ -26,8 +26,11 @@ export default class SettingsDashboard extends Component {
       editMode: "",
       linked_organization_we_vote_id: "",
       organization: {},
+      sliderOpen: false,
       voter: {},
     };
+    this.closeSlider = this.closeSlider.bind(this);
+    this.openSlider = this.openSlider.bind(this);
   }
 
   componentDidMount () {
@@ -111,7 +114,40 @@ export default class SettingsDashboard extends Component {
     }
   }
 
+  openSlider () {
+    this.setState({
+      sliderOpen: true
+    });
+  }
+  closeSlider () {
+    this.setState({
+      sliderOpen: false
+    });
+  }
+                // <a href='#' onClick={this.openSlider}>Open Slider</a>
+
+            // {/* Mobile mode navigation, under react slider */}
+            // <div className="col-xs-12 visible-xs">
+            //   <SettingsPersonalSideBar editMode={this.state.editMode} />
+            //
+            //   <SelectVoterGuidesSideBar />
+            // </div>
+
+            // {/* Mobile mode content */}
+            // <Slider title='test title'
+            //                 footer={
+            //                   <div style={{padding: '15px'}}>
+            //                     <a href='#' onClick={this.closeSlider}>Close Slider</a>
+            //                   </div>
+            //                 }
+            //                 isOpen={this.state.sliderOpen}
+            //                 onOutsideClick={this.closeSlider}
+            //   >
+            //     <div>Hello World</div>
+            // </Slider>
+
   render () {
+    // console.log("SettingsDashboard render");
     let settingsComponentToDisplay = null;
     switch (this.state.editMode) {
       case "account":
@@ -135,39 +171,45 @@ export default class SettingsDashboard extends Component {
     return <div className="settings-dashboard">
       <div className="page-content-container">
         <div className="container-fluid">
-          <div className="row ballot__body">
-            { this.state.organization && this.state.organization.organization_we_vote_id ?
-              <div>
-                <div className="col-md-12">
-                  { this.state.organization && this.state.organization.organization_banner_url !== "" ?
-                    <div className="organization-banner-image-div">
-                      <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
-                    </div> :
-                    <div className="organization-banner-image-non-twitter-users" />
-                  }
-                </div>
-                <div className="col-md-12">
-                  <div className="card">
-                    <div className="card-main">
-                      <FollowToggle we_vote_id={this.state.organization.organization_we_vote_id} />
-                      <OrganizationCard organization={this.state.organization}
-                                        turnOffTwitterHandle />
-                    </div>
+          { this.state.organization && this.state.organization.organization_we_vote_id ?
+            <div className="row">
+              <div className="col-md-12">
+                { this.state.organization && this.state.organization.organization_banner_url !== "" ?
+                  <div className="organization-banner-image-div">
+                    <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
+                  </div> :
+                  <div className="organization-banner-image-non-twitter-users" />
+                }
+              </div>
+              <div className="col-md-12">
+                <div className="card">
+                  <div className="card-main">
+                    <OrganizationCard organization={this.state.organization}
+                                      turnOffTwitterHandle />
                   </div>
                 </div>
-              </div> :
-              null }
+              </div>
+            </div> :
+            null }
 
-            <div className="col-md-4 hidden-xs sidebar-menu">
+          <div className="row hidden-xs">
+            {/* Desktop mode left navigation */}
+            <div className="col-md-4 sidebar-menu">
               <SettingsPersonalSideBar editMode={this.state.editMode} />
 
               <SelectVoterGuidesSideBar />
             </div>
-
-            <div className="col-xs-12 col-md-8">
+            {/* Desktop mode content */}
+            <div className="col-md-8">
               {settingsComponentToDisplay}
             </div>
+          </div>
 
+          <div className="row visible-xs">
+            {/* Mobile mode content */}
+            <div className="col-xs-12">
+              {settingsComponentToDisplay}
+            </div>
           </div>
         </div>
       </div>
