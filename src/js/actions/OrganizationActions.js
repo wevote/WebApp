@@ -58,11 +58,44 @@ module.exports = {
       });
   },
 
+  organizationDescriptionSave: function (organization_we_vote_id, organization_description) {
+    Dispatcher.loadEndpoint("organizationSave",
+      {
+        organization_description: organization_description,
+        organization_we_vote_id: organization_we_vote_id
+      });
+  },
+
+  organizationGetStartedSave: function (organization_we_vote_id, organization_name, organization_website) {
+    Dispatcher.loadEndpoint("organizationSave",
+      {
+        organization_name: organization_name,
+        organization_we_vote_id: organization_we_vote_id,
+        organization_website: organization_website
+      });
+  },
+
+  organizationNameSave: function (organization_we_vote_id, organization_name) {
+    Dispatcher.loadEndpoint("organizationSave",
+      {
+        organization_name: organization_name,
+        organization_we_vote_id: organization_we_vote_id
+      });
+  },
+
   organizationTypeSave: function (organization_we_vote_id, organization_type) {
     Dispatcher.loadEndpoint("organizationSave",
       {
         organization_type: organization_type,
         organization_we_vote_id: organization_we_vote_id
+      });
+  },
+
+  organizationWebsiteSave: function (organization_we_vote_id, organization_website) {
+    Dispatcher.loadEndpoint("organizationSave",
+      {
+        organization_we_vote_id: organization_we_vote_id,
+        organization_website: organization_website
       });
   },
 

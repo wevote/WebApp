@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
-import FollowToggle from "../../components/Widgets/FollowToggle";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -22,7 +21,7 @@ export default class VoterGuideSettingsDashboard extends Component {
     super(props);
     this.state = {
       editMode: "",
-      linked_organization_we_vote_id: "",
+      linkedOrganizationWeVoteId: "",
       organization: {},
       organizationName: "",
       voter: {},
@@ -38,9 +37,6 @@ export default class VoterGuideSettingsDashboard extends Component {
     } else {
       this.setState({ editMode: "general" });
     }
-    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // Get Voter Guide information
     let voterGuideFound = false;
     if (this.props.params.voter_guide_we_vote_id) {
@@ -59,26 +55,29 @@ export default class VoterGuideSettingsDashboard extends Component {
     let voter = VoterStore.getVoter();
     if (voter) {
       this.setState({ voter: voter });
-      let linked_organization_we_vote_id = voter.linked_organization_we_vote_id;
-      // console.log("VoterGuideSettingsDashboard componentDidMount linked_organization_we_vote_id: ", linked_organization_we_vote_id);
-      if (linked_organization_we_vote_id) {
+      let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+      // console.log("VoterGuideSettingsDashboard componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
+      if (linkedOrganizationWeVoteId) {
         this.setState({
-          linked_organization_we_vote_id: linked_organization_we_vote_id,
+          linkedOrganizationWeVoteId: linkedOrganizationWeVoteId,
         });
-        let organization = OrganizationStore.getOrganizationByWeVoteId(linked_organization_we_vote_id);
+        let organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
         if (organization && organization.organization_we_vote_id) {
           this.setState({
             organization: organization,
           });
         } else {
-          OrganizationActions.organizationRetrieve(linked_organization_we_vote_id);
+          OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
         }
         if (!voterGuideFound) {
           // console.log("VoterGuideSettingsDashboard voterGuide NOT FOUND calling VoterGuideActions.voterGuidesRetrieve");
-          VoterGuideActions.voterGuidesRetrieve(linked_organization_we_vote_id);
+          VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
         }
       }
     }
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
   componentWillReceiveProps (nextProps) {
@@ -100,9 +99,9 @@ export default class VoterGuideSettingsDashboard extends Component {
   }
 
   onOrganizationStoreChange (){
-    // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linked_organization_we_vote_id);
+    // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.linked_organization_we_vote_id),
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId),
     });
   }
 
@@ -121,22 +120,22 @@ export default class VoterGuideSettingsDashboard extends Component {
 
   onVoterStoreChange () {
     let voter = VoterStore.getVoter();
-    let linked_organization_we_vote_id = voter.linked_organization_we_vote_id;
-    // console.log("VoterGuideSettingsDashboard onVoterStoreChange linked_organization_we_vote_id: ", linked_organization_we_vote_id);
-    if (linked_organization_we_vote_id && this.state.linked_organization_we_vote_id !== linked_organization_we_vote_id) {
-      OrganizationActions.organizationRetrieve(linked_organization_we_vote_id);
+    let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+    // console.log("VoterGuideSettingsDashboard onVoterStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
+    if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
+      OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
       this.setState({
-        linked_organization_we_vote_id: linked_organization_we_vote_id,
+        linkedOrganizationWeVoteId: linkedOrganizationWeVoteId,
       });
     }
-    if (linked_organization_we_vote_id) {
+    if (linkedOrganizationWeVoteId) {
       let voterGuideNeeded = true;
       if (this.state.voterGuide && this.state.voterGuide.we_vote_id) {
         voterGuideNeeded = false;
       }
       if (voterGuideNeeded) {
         // console.log("VoterGuideSettingsDashboard onVoterStoreChange calling VoterGuideActions.voterGuidesRetrieve");
-        VoterGuideActions.voterGuidesRetrieve(linked_organization_we_vote_id);
+        VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
       }
     }
   }
@@ -146,7 +145,7 @@ export default class VoterGuideSettingsDashboard extends Component {
     switch (this.state.editMode) {
       default:
       case "general":
-        settingsComponentToDisplay = <VoterGuideSettingsGeneral />;
+        settingsComponentToDisplay = <VoterGuideSettingsGeneral voterGuideWeVoteId={this.state.voterGuideWeVoteId} />;
         break;
       case "notifications":
         settingsComponentToDisplay = <SettingsNotifications />;
@@ -159,31 +158,29 @@ export default class VoterGuideSettingsDashboard extends Component {
     return <div className="settings-dashboard">
       <div className="page-content-container">
         <div className="container-fluid">
-          <div className="row ballot__body">
-            { this.state.organization && this.state.organization.organization_we_vote_id ?
-              <div>
-                <div className="col-md-12">
-                  { this.state.organization && this.state.organization.organization_banner_url !== "" ?
-                    <div className="organization-banner-image-div">
-                      <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
-                    </div> :
-                    <div className="organization-banner-image-non-twitter-users" />
-                  }
-                </div>
-                <div className="col-md-12">
-                  <div className="card">
-                    <div className="card-main">
-                      <FollowToggle we_vote_id={this.state.organization.organization_we_vote_id} />
-                      <OrganizationCard organization={this.state.organization}
-                                        turnOffTwitterHandle />
-                    </div>
-                  </div>
-                </div>
-              </div> :
-              null }
-
+        { this.state.organization && this.state.organization.organization_we_vote_id ?
+          <div className="row">
             <div className="col-md-12">
-              <Link to="/settings/address">&lt; Back to Personal Settings</Link>
+              { this.state.organization && this.state.organization.organization_banner_url !== "" ?
+                <div className="organization-banner-image-div">
+                  <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
+                </div> :
+                <div className="organization-banner-image-non-twitter-users" />
+              }
+            </div>
+            <div className="col-md-12">
+              <div className="card">
+                <div className="card-main">
+                  <OrganizationCard organization={this.state.organization}
+                                    turnOffTwitterHandle />
+                </div>
+              </div>
+            </div>
+          </div> :
+          null }
+          <div className="row">
+            <div className="col-md-12">
+              <Link to="/settings/profile">&lt; Back to Personal Settings</Link>
             </div>
 
             <div className="col-md-3 hidden-xs sidebar-menu">
