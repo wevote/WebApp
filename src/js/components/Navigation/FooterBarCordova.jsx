@@ -2,16 +2,14 @@ import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import BallotStore from "../../stores/BallotStore";
 import BookmarkStore from "../../stores/BookmarkStore";
-import {historyPush, isCordova, isWebApp} from "../../utils/cordovaUtils";
+import { isCordova, isWebApp } from "../../utils/cordovaUtils";
 import cookies from "../../utils/cookies";
 import FriendStore from "../../stores/FriendStore";
 import HeaderBar from "./HeaderBar";
-import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
 import HeaderBarAboutMenu from "./HeaderBarAboutMenu";
 import OrganizationActions from "../../actions/OrganizationActions";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
-import HeaderBarProfileSlideIn from "./HeaderBarProfileSlideIn";
 
 const footStyle = {
   backgroundColor: "#1c2f4b",
@@ -53,7 +51,7 @@ export default class FooterBarCordova extends Component {
       aboutMenuOpen: false,
       profilePopUpOpen: false,
       bookmarks: [],
-      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      friendInvitationsSentToMe: [],
     };
   }
 
@@ -117,11 +115,6 @@ export default class FooterBarCordova extends Component {
     this.setState({ profilePopUpOpen: false });
   }
 
-  goToGetStarted () {
-    let getStartedNow = "/ballot";
-    historyPush(getStartedNow);
-  }
-
   render () {
     let { pathname } = this.props;
     let numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length;
@@ -136,26 +129,26 @@ export default class FooterBarCordova extends Component {
         <div className= "footer-container" style={footContainer} >
           {(showFullNavigation || isCordova()) && <span>{HeaderBar.ballot(pathname === "/ballot")}</span>}
 
-          {(showFullNavigation || isCordova()) &&  <span>{HeaderBar.network(inNetworkSection, numberOfIncomingFriendRequests)}</span>}
+          {(showFullNavigation || isCordova()) && <span>{HeaderBar.network(inNetworkSection, numberOfIncomingFriendRequests)}</span>}
 
           {(!weVoteBrandingOff && isWebApp()) &&
             <span>
-               {showFullNavigation ?
-                 <span onClick={this.toggleAboutMenu}
-                       className={"header-nav__item header-nav__item--about header-nav__item--has-icon hidden-xs" + (pathname === "/more/about" ? " active-icon" : "")}>
+              {showFullNavigation ?
+                <span onClick={this.toggleAboutMenu}
+                     className={"header-nav__item header-nav__item--about header-nav__item--has-icon hidden-xs" + (pathname === "/more/about" ? " active-icon" : "")}>
+                 <span className="header-nav__icon--about">About</span>
+                 <span className="header-nav__label">We Vote</span>
+                 <HeaderBarAboutMenu toggleAboutMenu={this.toggleAboutMenu} aboutMenuOpen={this.state.aboutMenuOpen}/>
+                </span> :
+                <div>
+                 <Link to="/more/about"
+                       className={"header-nav__item header-nav__item--about" + (pathname === "/more/about" ? " active-icon" : "")}>
                    <span className="header-nav__icon--about">About</span>
                    <span className="header-nav__label">We Vote</span>
-                   <HeaderBarAboutMenu toggleAboutMenu={this.toggleAboutMenu} aboutMenuOpen={this.state.aboutMenuOpen}/>
-                 </span> :
-                 <div>
-                   <Link to="/more/about"
-                         className={"header-nav__item header-nav__item--about" + (pathname === "/more/about" ? " active-icon" : "")}>
-                     <span className="header-nav__icon--about">About</span>
-                     <span className="header-nav__label">We Vote</span>
-                   </Link>
-                 </div>
-               }
-             </span>
+                 </Link>
+                </div>
+              }
+            </span>
           }
 
           {(!showFullNavigation && isWebApp()) &&
@@ -169,22 +162,13 @@ export default class FooterBarCordova extends Component {
             </Link>
           }
 
-          <span className={"hamburger"}>
-            <span className="fa fa-bars" onClick={this.toggleProfilePopUp} />
-          </span>
+          {(isCordova()) &&
+            <Link to="/more/hamburger" className={"hamburger" + (pathname === "/more/hamburger" ? " active-icon" : "")}>
+              <span className="fa fa-bars" />
+            </Link>
+          }
+
         </div>
-        {this.state.profilePopUpOpen &&
-          <HeaderBarProfileSlideIn {...this.props}
-                                   onClick={this.toggleProfilePopUp}
-                                   profilePopUpOpen={this.state.profilePopUpOpen}
-                                   bookmarks={this.state.bookmarks}
-                                   weVoteBrandingOff={this.state.we_vote_branding_off}
-                                   toggleProfilePopUp={this.toggleProfilePopUp}
-                                   hideProfilePopUp={this.hideProfilePopUp}
-                                   transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
-                                   signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)}
-          />
-        }
       </div>
     </div>;
   }
