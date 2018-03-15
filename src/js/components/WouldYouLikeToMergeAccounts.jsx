@@ -21,7 +21,7 @@ export default class WouldYouLikeToMergeAccounts extends Component {
 
     const merge_status_html = <span>
         <Alert bsStyle="warning">
-          The choices you've made in this browser (when not logged in) can be merged with choices stored the previous time you signed in.<br />
+          The choices you've made in this browser (when not signed in) can be merged with choices stored the previous time you signed in.<br />
           <br />
           Press "Cancel Sign In" to stop signing in, and keep your recent changes.<br />
           <br />
