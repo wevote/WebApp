@@ -40,8 +40,11 @@ export default class VoterGuideGetStarted extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // Get Voter and Voter's Organization
     let voter = VoterStore.getVoter();
+    this.setState({
+      voter: voter,
+    });
     let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
-    // console.log("SettingsDashboard componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
+    console.log("VoterGuideGetStarted componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId) {
       this.setState({
         linkedOrganizationWeVoteId: linkedOrganizationWeVoteId,
@@ -94,8 +97,11 @@ export default class VoterGuideGetStarted extends Component {
 
   onVoterStoreChange () {
     let voter = VoterStore.getVoter();
+    this.setState({
+      voter: voter,
+    });
     let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
-    // console.log("SettingsDashboard onVoterStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
+    // console.log("VoterGuideGetStarted onVoterStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
       OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
       this.setState({ linkedOrganizationWeVoteId: linkedOrganizationWeVoteId });
