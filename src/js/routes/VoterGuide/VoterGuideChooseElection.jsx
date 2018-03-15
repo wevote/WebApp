@@ -5,7 +5,6 @@ import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import ChooseElectionForVoterGuide from "../../components/VoterGuide/ChooseElectionForVoterGuide";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
-import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterStore from "../../stores/VoterStore";
 
 
@@ -119,12 +118,8 @@ export default class VoterGuideChooseElection extends Component {
     historyPush(sampleBallotLink);
   }
 
-  saveVoterGuideForElection (google_civic_election_id) {
-    VoterGuideActions.voterGuideSave(google_civic_election_id, "");
-  }
-
-  goToVoterGuideBallotItems () {
-    let voterGuideBallotItems = "/vg/wv02vg2634/settings";
+  goToVoterGuideBallotItems (voterGuideWeVoteId) {
+    let voterGuideBallotItems = "/vg/" + voterGuideWeVoteId + "/settings";
     historyPush(voterGuideBallotItems);
   }
 
@@ -138,7 +133,7 @@ export default class VoterGuideChooseElection extends Component {
   render () {
 
     return <div>
-      <Helmet title="Welcome to We Vote" />
+      <Helmet title="Choose Election - We Vote" />
         <div className="intro-story container well u-inset--md">
           <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
           <div className="intro-story__h1 xs-text-left">Choose Election</div>
@@ -146,7 +141,7 @@ export default class VoterGuideChooseElection extends Component {
             <div className="col-2">&nbsp;</div>
             <div className="col-8">
               <div className="elections-list-container">
-                <ChooseElectionForVoterGuide destinationFunction={this.saveVoterGuideForElection.bind(this)} />
+                <ChooseElectionForVoterGuide destinationFunction={this.goToVoterGuideBallotItems.bind(this)} />
               </div>
             </div>
             <div className="col-2">&nbsp;</div>

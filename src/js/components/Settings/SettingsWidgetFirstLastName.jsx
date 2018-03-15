@@ -14,6 +14,7 @@ const delayBeforeRemovingSavedStatus = 4000;
 export default class SettingsWidgetFirstLastName extends Component {
   static propTypes = {
     displayOnly: PropTypes.bool,
+    voterHasMadeChangesFunction: PropTypes.func,
   };
 
   constructor (props) {
@@ -96,6 +97,9 @@ export default class SettingsWidgetFirstLastName extends Component {
 
   handleKeyPressOrganizationName () {
     clearTimeout(this.timer);
+    if (this.props.voterHasMadeChangesFunction) {
+      this.props.voterHasMadeChangesFunction();
+    }
     this.timer = setTimeout(() => {
       OrganizationActions.organizationNameSave(this.state.linkedOrganizationWeVoteId, this.state.organizationName);
       this.setState({organizationNameSavedStatus: "Saved"});
@@ -104,6 +108,9 @@ export default class SettingsWidgetFirstLastName extends Component {
 
   handleKeyPressVoterName () {
     clearTimeout(this.timer);
+    if (this.props.voterHasMadeChangesFunction) {
+      this.props.voterHasMadeChangesFunction();
+    }
     this.timer = setTimeout(() => {
       VoterActions.voterNameSave(this.state.firstName, this.state.lastName);
       this.setState({voterNameSavedStatus: "Saved"});

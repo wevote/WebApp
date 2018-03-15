@@ -90,7 +90,7 @@ export function enclosingRectangle (objectNameString, instance) {
 }
 
 // webapp, webapp:iOS, webapp:Android
-export function deviceTypeString() {
+export function deviceTypeString () {
   let deviceString = isWebApp() ? "webapp" : "cordova";
   if (isCordova() && window.device) {
     deviceString += ":" + device.platform;

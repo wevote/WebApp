@@ -82,7 +82,7 @@ const firstVisit = !cookies.getItem("voter_device_id");
 const routes = () =>
   <Route path="/" component={Application}>
     <Route component={Intro} />
-    { isWebApp() ? <IndexRedirect to="/welcome" /> : (firstVisit ? <IndexRedirect to="/wevoteintro/network" /> : <IndexRedirect to="/ballot" />)}
+    { isWebApp() ? <IndexRedirect to="/welcome" /> : firstVisit ? <IndexRedirect to="/wevoteintro/network" /> : <IndexRedirect to="/ballot" />}
     <Route path="/welcome" component={Welcome} />
     <Route path="/activity" component={Activity} />
     <Route path="/ballot" component={BallotIndex}>

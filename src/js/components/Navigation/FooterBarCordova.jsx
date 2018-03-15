@@ -131,7 +131,7 @@ export default class FooterBarCordova extends Component {
 
           {(showFullNavigation || isCordova()) && <span>{HeaderBar.network(inNetworkSection, numberOfIncomingFriendRequests)}</span>}
 
-          {(!weVoteBrandingOff && isWebApp()) &&
+          {!weVoteBrandingOff && isWebApp() &&
             <span>
               {showFullNavigation ?
                 <span onClick={this.toggleAboutMenu}
@@ -151,18 +151,18 @@ export default class FooterBarCordova extends Component {
             </span>
           }
 
-          {(!showFullNavigation && isWebApp()) &&
+          {!showFullNavigation && isWebApp() &&
             <button type="button" className="btn btn-sm btn-success"
                     onClick={this.goToGetStarted}>Sample Ballot</button>
           }
 
-          {(!showFullNavigation && isWebApp()) &&
+          {!showFullNavigation && isWebApp() &&
             <Link to="/more/sign_in" className="sign_in header-nav__item">
               Sign In
             </Link>
           }
 
-          {(isCordova()) &&
+          {isCordova() &&
             <Link to="/more/hamburger" className={"hamburger" + (pathname === "/more/hamburger" ? " active-icon" : "")}>
               <span className="fa fa-bars" />
             </Link>
