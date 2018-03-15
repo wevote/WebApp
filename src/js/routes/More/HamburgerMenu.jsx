@@ -13,7 +13,6 @@ import VoterGuideActions from "../../actions/VoterGuideActions";
 import OrganizationActions from "../../actions/OrganizationActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 
-
 export default class HamburgerMenu extends Component {
   constructor (props) {
     super(props);
@@ -74,11 +73,7 @@ export default class HamburgerMenu extends Component {
     let bookmarks = BallotStore.bookmarks;
     let isSignedIn = voter && voter.is_signed_in;
     isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
-    let voterPhotoUrlMedium = voter.voter_photo_url_medium;
-    let signInColor = isSignedIn ? { fontSize: 28, color: "red" } : { fontSize: 28, color: "green" };
-    let signInLabel = isSignedIn ? "Sign Out" : "Sign In";
     let weVoteBrandingOff = cookies.getItem("we_vote_branding_off") === null ? false : cookies.getItem("we_vote_branding_off");
-    let yourVoterGuideTo = this.getYourVoterGuidePath();
 
     return <div>
       <Helmet title="Settings Menu"/>
@@ -90,26 +85,26 @@ export default class HamburgerMenu extends Component {
             </td>
           </tr>
 
-          <HamburgerMenuRow onClickAction={this.transitionToYourVoterGuide}
-                            to={yourVoterGuideTo}
+          {isSignedIn ?
+            <HamburgerMenuRow onClickAction={this.transitionToYourVoterGuide}
+                            to={this.getYourVoterGuidePath()}
                             icon={"fa fa-list"}
                             iconStyle={{ fontSize: 20, color: "#1c2f4b" }}
-                            linkText={"Your Voter Guide"} />
+                            linkText={"Your Voter Guide"} /> : null
+          }
 
-           {isSignedIn ?
+          {isSignedIn ?
             <HamburgerMenuRow onClickAction={null}
                               to={"/more/sign_in"}
-                              fullIcon={this.yourAccountIcon(voterPhotoUrlMedium)}
+                              fullIcon={this.yourAccountIcon(voter.voter_photo_url_medium)}
                               linkText={"Your Account"}/> : null
           }
 
-          {voter ?
-            <HamburgerMenuRow onClickAction={() => VoterSessionActions.voterSignOut()}
-                              to={"/more/sign_in"}
-                              icon={isSignedIn ? "fa fa-sign-out" : "fa fa-sign-in"}
-                              iconStyle={signInColor}
-                              linkText={signInLabel} /> : null
-          }
+          <HamburgerMenuRow onClickAction={() => VoterSessionActions.voterSignOut()}
+                            to={"/more/sign_in"}
+                            icon={isSignedIn ? "fa fa-sign-out" : "fa fa-sign-in"}
+                            iconStyle={isSignedIn ? { fontSize: 28, color: "red" } : { fontSize: 28, color: "green" }}
+                            linkText={isSignedIn ? "Sign Out" : "Sign In"} />
 
           { bookmarks && bookmarks.length ?
             <HamburgerMenuRow onClickAction={null}

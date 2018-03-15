@@ -5,11 +5,11 @@ import { Link } from "react-router";
 export default class HamburgerMenuRow extends Component {
   static propTypes = {
     onClickAction: PropTypes.func,
+    to: PropTypes.string.isRequired,
     icon: PropTypes.string,
     iconStyle: PropTypes.object,
     fullIcon: PropTypes.object,
-    linkText: PropTypes.string.required,
-    to: PropTypes.string.required,
+    linkText: PropTypes.string.isRequired,
   };
 
   constructor (props) {
@@ -18,6 +18,7 @@ export default class HamburgerMenuRow extends Component {
 
   render () {
     let onClickAction = this.props.onClickAction ? this.props.onClickAction.bind(this) : null;
+
     return (
       <tr className={"hamburger-menu__tr"}>
         <td className={"hamburger-menu__td-left"}>
