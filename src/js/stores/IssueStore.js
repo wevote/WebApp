@@ -164,15 +164,15 @@ class IssueStore extends ReduceStore {
     return VoterGuideStore.returnVoterGuidesFromListOfIds(organization_we_vote_ids_linked_to_issue);
   }
 
-  getPositionsForBallotItemForOneIssue (ballot_item_we_vote_id, issue_we_vote_id) {
-    // We want a list of positions about this candidate or measure, where the org taking the position
-    // is tagged with this issue
-  }
+  // getPositionsForBallotItemForOneIssue (ballot_item_we_vote_id, issue_we_vote_id) {
+  //   // We want a list of positions about this candidate or measure, where the org taking the position
+  //   // is tagged with this issue
+  // }
 
-  getVoterGuidesForElectionForOneIssue (google_civic_election_id, issue_we_vote_id) {
-    // We want a list of all voter_guides/organizations tagged with this issue that have a position in this election
-
-  }
+  // getVoterGuidesForElectionForOneIssue (google_civic_election_id, issue_we_vote_id) {
+  //   // We want a list of all voter_guides/organizations tagged with this issue that have a position in this election
+  //
+  // }
 
   getOrganizationWeVoteIdSupportListUnderThisBallotItem (ballot_item_we_vote_id) {
     // What are the issues that have positions for this election under this ballot item?

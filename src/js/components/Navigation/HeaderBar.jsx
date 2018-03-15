@@ -158,7 +158,7 @@ export default class HeaderBar extends Component {
 
     return (
       <header className="page-header">
-        { (!weVoteBrandingOff && isWebApp()) &&
+        {!weVoteBrandingOff && isWebApp() &&
           <span>
             <Link to="/welcome" className="page-logo page-logo-full-size h4 hidden-xs">
               We Vote
@@ -202,11 +202,11 @@ export default class HeaderBar extends Component {
 
           { showFullNavigation && !weVoteBrandingOff ? HeaderBar.donate(pathname === "/more/donate") : null }
 
-          { (!showFullNavigation && isWebApp()) &&
+          { !showFullNavigation && isWebApp() &&
             <button type="button" className="btn btn-sm btn-success"
                 onClick={this.goToGetStarted}>Sample Ballot</button> }
 
-          { (!showFullNavigation && isWebApp()) &&
+          { !showFullNavigation && isWebApp() &&
             <Link to="/more/sign_in" className="sign_in header-nav__item">
               Sign In
             </Link>
@@ -215,7 +215,7 @@ export default class HeaderBar extends Component {
 
         { (showFullNavigation || isCordova()) && <SearchAllBox /> }
 
-        { (showFullNavigation && isWebApp()) &&
+        { showFullNavigation && isWebApp() &&
           <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleProfilePopUp}>
           {voterPhotoUrlMedium ?
             <div id="js-header-avatar" className="header-nav__avatar-container">

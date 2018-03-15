@@ -121,8 +121,8 @@ export default class HeaderBarProfilePopUp extends Component {
                     <span className="header-slide-out-menu-text-left">Your Bookmarked Items</span>
                   </div>
                 </Link>
-              </li>
-              : null
+              </li> :
+              null
             }
             {this.props.weVoteBrandingOff || isWebApp() &&
               <li className="visible-xs-block">

@@ -40,9 +40,6 @@ export default class VoterGuideGetStarted extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // Get Voter and Voter's Organization
     let voter = VoterStore.getVoter();
-    if (voter && voter.is_signed_in) {
-      historyPush("/voterguidechooseelection");
-    }
     let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log("SettingsDashboard componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId) {
@@ -54,6 +51,7 @@ export default class VoterGuideGetStarted extends Component {
         this.setState({
           organization: organization,
         });
+        this.leaveThisComponentIfProfileComplete(voter, organization);
       } else {
         OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
       }
@@ -78,11 +76,14 @@ export default class VoterGuideGetStarted extends Component {
         twitterSearchStatus += "Voter guide not found.";
       }
     }
+    let voter = VoterStore.getVoter();
+    let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
+    this.leaveThisComponentIfProfileComplete(voter, organization);
 
     this.setState({
       isLoading: false,
       isTwitterHandleValid: twitterHandleFound.length,
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId),
+      organization: organization,
       searchResultsOrganizationName: OrganizationStore.getOrganizationSearchResultsOrganizationName(),
       searchResultsTwitterHandle: OrganizationStore.getOrganizationSearchResultsTwitterHandle(),
       searchResultsWebsite: OrganizationStore.getOrganizationSearchResultsWebsite(),
@@ -93,9 +94,6 @@ export default class VoterGuideGetStarted extends Component {
 
   onVoterStoreChange () {
     let voter = VoterStore.getVoter();
-    if (voter && voter.is_signed_in) {
-      historyPush("/voterguidechooseelection");
-    }
     let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log("SettingsDashboard onVoterStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
@@ -130,11 +128,43 @@ export default class VoterGuideGetStarted extends Component {
     historyPush("/voterguideorgtype");
   }
 
-  hitEnterKey (event) {
-    // console.log("hitEnterKey");
+  hitEnterKey () {
     this.setState({
       autoFocus: false,
     });
+  }
+
+  leaveThisComponentIfProfileComplete (voter, organization) {
+    if (voter && organization) {
+      let validOrganizationNameExists = this.validOrganizationNameExists(voter, organization);
+      if (voter && voter.is_signed_in) {
+        // If voter is signed in, skip "/voterguideorgtype"
+        historyPush("/voterguideorginfo");
+      } else if (voter && voter.organization_type && voter.organization_type !== "I") {
+        // If voter is NOT an INDIVIDUAL, skip "/voterguideorgtype"
+        historyPush("/voterguideorginfo");
+      } else if (validOrganizationNameExists) {
+        // If they have already chosen a valid name, then don't ask for Twitter handle
+        historyPush("/voterguideorginfo");
+      }
+    }
+  }
+
+  validOrganizationNameExists (voter, organization) {
+    // We want to keep encouraging organizations to enter a Website
+    if (voter && organization) {
+      let voter_and_organization_name_matches = false;
+      if (voter.first_name && organization.organization_name) {
+        if (voter.first_name === organization.organization_name) {
+          voter_and_organization_name_matches = true;
+        }
+      }
+      // Everyone requires a valid organization name
+      if (organization.organization_name && organization.organization_name.length > 3 && !organization.organization_name.startsWith("Voter-") && !voter_and_organization_name_matches) {
+        return true;
+      }
+    }
+    return false;
   }
 
   validateTwitterHandle (event) {
@@ -158,6 +188,10 @@ export default class VoterGuideGetStarted extends Component {
   }
 
   render () {
+    if (!this.state.voter || !this.state.organization) {
+      return null;
+    }
+
     let actionButtonHtml;
     if (this.state.isTwitterHandleValid) {
       actionButtonHtml = <button type="button" className="btn btn-lg btn-success"
@@ -168,7 +202,7 @@ export default class VoterGuideGetStarted extends Component {
     }
 
     return <div>
-      <Helmet title="Welcome to We Vote" />
+      <Helmet title="Create Your Voter Guide - We Vote" />
         <div className="intro-story container well u-inset--md">
           <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
           <div className="intro-story__h1 xs-text-left">Create Your Voter Guide</div>

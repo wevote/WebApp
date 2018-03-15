@@ -103,7 +103,7 @@ export default class VoterGuideOrganizationType extends Component {
                     onClick={this.goToOrganizationInfo}>Next&nbsp;&nbsp;&gt;</button>;
 
     return <div>
-      <Helmet title="Welcome to We Vote" />
+      <Helmet title="Type of Profile - We Vote" />
         <div className="intro-story container well u-inset--md">
           <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
           <div className="intro-story__h1 xs-text-left">Create Your Voter Guide</div>
