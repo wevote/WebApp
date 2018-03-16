@@ -88,19 +88,19 @@ export default class HamburgerMenu extends Component {
           <HamburgerMenuRow onClickAction={null}
                             to={"/settings/address"}
                             icon={"fa fa-address-card"}
-                            iconStyle={{ fontSize: 28, color: "#1c2f4b" }}
+                            iconStyle={{ fontSize: 24, color: "#1c2f4b" }}
                             linkText={"Your Address"} />
 
           <HamburgerMenuRow onClickAction={null}
                             to={"/settings/election"}
-                            icon={"fa fa-arrows-h"}
-                            iconStyle={{ fontSize: 28, color: "orange" }}
+                            icon={"fa fa-adjust"}
+                            iconStyle={{ fontSize: 28, color: "teal" }}
                             linkText={"Change Election"} />
 
           { bookmarks && bookmarks.length ?
             <HamburgerMenuRow onClickAction={null}
                               to={"/bookmarks"}
-                              icon={"fa fa-arrow-circle-right"}
+                              icon={"fa fa-bookmark"}
                               iconStyle={{ fontSize: 28, color: "green" }}
                               linkText={"Your Bookmarked Items"} /> : null
           }
