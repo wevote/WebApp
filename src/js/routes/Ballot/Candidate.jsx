@@ -8,6 +8,7 @@ import GuideList from "../../components/VoterGuide/GuideList";
 import Helmet from "react-helmet";
 import IssueActions from "../../actions/IssueActions";
 import LoadingWheel from "../../components/LoadingWheel";
+import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import OrganizationActions from "../../actions/OrganizationActions";
 import PositionList from "../../components/Ballot/PositionList";
 import SupportActions from "../../actions/SupportActions";
@@ -20,7 +21,7 @@ const web_app_config = require("../../config");
 
 export default class Candidate extends Component {
   static propTypes = {
-    params: PropTypes.object.isRequired
+    params: PropTypes.object.isRequired,
   };
 
   constructor (props) {
@@ -124,15 +125,16 @@ export default class Candidate extends Component {
                 <br />
             </div>;
     }
-    let candidate_name = capitalizeString(this.state.candidate.ballot_item_display_name);
-    let title_text = candidate_name + " - We Vote";
-    let description_text = "Information about " + candidate_name + ", candidate for " + this.state.candidate.contest_office_name;
+
+    let candidateName = capitalizeString(this.state.candidate.ballot_item_display_name);
+    let titleText = candidateName + " - We Vote";
+    let descriptionText = "Information about " + candidateName + ", candidate for " + this.state.candidate.contest_office_name;
     let voter = VoterStore.getVoter();
-    let candidate_admin_edit_url = web_app_config.WE_VOTE_SERVER_ROOT_URL + "c/" + this.state.candidate.id + "/edit/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
+    let candidateAdminEditUrl = web_app_config.WE_VOTE_SERVER_ROOT_URL + "c/" + this.state.candidate.id + "/edit/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
 
     return <span>
-      <Helmet title={title_text}
-              meta={[{"name": "description", "content": description_text}]}
+      <Helmet title={titleText}
+              meta={[{"name": "description", "content": descriptionText}]}
               />
       <section className="card">
         <CandidateItem {...this.state.candidate}
@@ -169,7 +171,12 @@ export default class Candidate extends Component {
       <br />
     {/* Show links to this candidate in the admin tools */}
     { voter.is_admin || voter.is_verified_volunteer ?
-      <span className="u-wrap-links hidden-print">Admin: <a href={candidate_admin_edit_url} target="_blank">edit {candidate_name}</a></span> :
+      <span className="u-wrap-links hidden-print">Admin:
+        <OpenExternalWebSite url={candidateAdminEditUrl}
+                             target="_blank"
+                             className="open-web-site open-web-site__no-right-padding"
+                             body={<span>edit {candidateName}</span>} />
+      </span> :
       null
     }
     </span>;

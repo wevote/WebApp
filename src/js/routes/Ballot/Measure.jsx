@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-// import AnalyticsActions from "../../actions/AnalyticsActions";
 import { capitalizeString } from "../../utils/textFormat";
 import GuideList from "../../components/VoterGuide/GuideList";
 import Helmet from "react-helmet";
@@ -7,6 +6,7 @@ import LoadingWheel from "../../components/LoadingWheel";
 import MeasureItem from "../../components/Ballot/MeasureItem";
 import MeasureActions from "../../actions/MeasureActions";
 import MeasureStore from "../../stores/MeasureStore";
+import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import OrganizationActions from "../../actions/OrganizationActions";
 import PositionList from "../../components/Ballot/PositionList";
 import SupportActions from "../../actions/SupportActions";
@@ -19,7 +19,7 @@ const web_app_config = require("../../config");
 
 export default class Measure extends Component {
   static propTypes = {
-    params: PropTypes.object.isRequired
+    params: PropTypes.object.isRequired,
   };
 
   constructor (props) {
@@ -48,6 +48,7 @@ export default class Measure extends Component {
     OrganizationActions.organizationsFollowedRetrieve();
 
     SearchAllActions.exitSearch();
+
     // TODO CREATE THIS
     // AnalyticsActions.saveActionMeasure(VoterStore.election_id(), this.props.params.measure_we_vote_id);
     this.setState({
@@ -80,7 +81,7 @@ export default class Measure extends Component {
     this.voterGuideStoreListener.remove();
   }
 
-  _onMeasureStoreChange (){
+  _onMeasureStoreChange () {
     // console.log("Measure, _onMeasureStoreChange");
     this.setState({
       measure: MeasureStore.getMeasure(this.state.measure_we_vote_id),
@@ -88,15 +89,17 @@ export default class Measure extends Component {
     });
   }
 
-  onVoterGuideStoreChange (){
+  onVoterGuideStoreChange () {
     //MeasureActions.measureRetrieve(this.state.measure_we_vote_id);
     MeasureActions.positionListForBallotItem(this.state.measure_we_vote_id);
-   // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
+    // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
+
     SupportActions.retrievePositionsCountsForOneBallotItem(this.state.measure_we_vote_id);
     // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidate_we_vote_id, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
     this.setState({
       voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
+
       // voter_guides_to_follow_for_this_ballot_item: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.state.candidate_we_vote_id),
     });
   }
@@ -112,15 +115,16 @@ export default class Measure extends Component {
                 <br />
             </div>;
     }
-    let measure_name = capitalizeString(this.state.measure.ballot_item_display_name);
-    let title_text = measure_name + " - We Vote";
-    let description_text = "Information about " + measure_name;
+
+    let measureName = capitalizeString(this.state.measure.ballot_item_display_name);
+    let titleText = measureName + " - We Vote";
+    let descriptionText = "Information about " + measureName;
     let voter = VoterStore.getVoter();
-    let measure_admin_edit_url = web_app_config.WE_VOTE_SERVER_ROOT_URL + "m/" + this.state.measure.id + "/edit/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
+    let measureAdminEditUrl = web_app_config.WE_VOTE_SERVER_ROOT_URL + "m/" + this.state.measure.id + "/edit/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
 
     return <section className="card">
-      <Helmet title={title_text}
-              meta={[{"name": "description", "content": description_text}]}
+      <Helmet title={titleText}
+              meta={[{ "name": "description", "content": descriptionText }]}
               />
           <MeasureItem {...this.state.measure}
                        position_list={this.state.position_list_from_advisers_followed_by_voter}
@@ -143,12 +147,15 @@ export default class Measure extends Component {
                          organizationsToFollow={this.state.voter_guides_to_follow_for_latest_ballot_item}/></div>
             }
           </div>
-    {/* Show links to this candidate in the admin tools */}
-    { voter.is_admin || voter.is_verified_volunteer ?
-      <span className="u-wrap-links hidden-print">Admin: <a href={measure_admin_edit_url} target="_blank">edit {measure_name}</a></span> :
-      null
-    }
+          {/* Show links to this candidate in the admin tools */}
+          { voter.is_admin || voter.is_verified_volunteer ?
+            <span className="u-wrap-links hidden-print">Admin:
+              <OpenExternalWebSite url={measureAdminEditUrl}
+                                   target="_blank"
+                                   className="open-web-site open-web-site__no-right-padding"
+                                   body={<span>edit {measureName}</span>} />
+            </span> : null
+          }
         </section>;
-
   }
 }

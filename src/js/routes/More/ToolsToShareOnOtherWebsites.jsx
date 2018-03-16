@@ -2,6 +2,7 @@ import React from "react";
 import Helmet from "react-helmet";
 import CodeCopier from "../../components/Widgets/CodeCopier";
 import ImageHandler from "../../components/ImageHandler";
+import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 
 export default function ToolsToShareOnOtherWebsites () {
   return <div>
@@ -61,7 +62,11 @@ export default function ToolsToShareOnOtherWebsites () {
       <h2 className="h3">Notes:</h2>
       <ul>
         <li>You can place any page on www.WeVote.US on your organizational website.</li>
-        <li>If you need access to the data gathered via your instance of the Vote.org toolset, <a href="https://vip.vote.org" target="_blank">check out the Vote.org premium tools.</a></li>
+        <li>If you need access to the data gathered via your instance of the Vote.org toolset,
+          <OpenExternalWebSite url="https://vip.vote.org"
+                               target="_blank"
+                               body="check out the Vote.org premium tools."/>
+        </li>
       </ul>
       <p>&nbsp;</p>
     </div>

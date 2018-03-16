@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
+import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import { organizationalDonors, teamOfVolunteers } from "./people";
 
 export default class Credits extends Component {
@@ -31,9 +32,12 @@ export default class Credits extends Component {
           <br />
 
           <h3>Join Us!</h3>
-            We couldn’t do what we do without volunteers and donors. Please sign up to volunteer at
-            <a href="http://WeVoteTeam.org/volunteer"
-               target="_blank"> http://WeVoteTeam.org</a>.<br />
+          We couldn’t do what we do without volunteers and donors. Please sign up to volunteer at
+          <OpenExternalWebSite url="http://WeVoteTeam.org/volunteer"
+                               target="_blank"
+                               className="open-web-site open-web-site__no-right-padding"
+                               body="http://WeVoteTeam.org" />
+          .<br />
           <br />
         </div>
       </div>;
