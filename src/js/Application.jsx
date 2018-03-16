@@ -302,7 +302,6 @@ export default class Application extends Component {
         pathname === "/more/donate" ||
         pathname === "/more/donate_thank_you" ||
         pathname === "/more/elections" ||
-        pathname === "/more/hamburger" ||
         pathname === "/more/howtouse" ||
         pathname.startsWith("/office/") ||
         pathname === "/more/network" ||
@@ -326,7 +325,8 @@ export default class Application extends Component {
       contentFullWidthMode = true;
     } else if (pathname.startsWith("/ballot") || pathname === "/bookmarks") {
       contentFullWidthMode = false;
-    } else if (stringContains("/settings", pathname)) {
+    } else if (stringContains("/settings", pathname) ||
+        pathname === "/more/hamburger") {
       contentFullWidthMode = true;
       settingsMode = true;
     } else {

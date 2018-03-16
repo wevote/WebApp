@@ -52,6 +52,7 @@ import RegisterToVote from "./routes/More/RegisterToVote";
 import SampleBallot from "./routes/Intro/SampleBallot";
 import ScratchPad from "./routes/ScratchPad";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
+import SettingsMenuMobile from "./routes/Settings/SettingsMenuMobile";
 import SignIn from "./routes/SignIn/SignIn";
 import SignInJumpProcess from "./routes/Process/SignInJumpProcess";
 import FacebookLandingProcess from "./routes/Process/FacebookLandingProcess";
@@ -69,6 +70,8 @@ import VoterGuideGetStarted from "./routes/VoterGuide/VoterGuideGetStarted";
 import VoterGuideOrganizationInfo from "./routes/VoterGuide/VoterGuideOrganizationInfo";
 import VoterGuideOrganizationType from "./routes/VoterGuide/VoterGuideOrganizationType";
 import VoterGuideSettingsDashboard from "./routes/Settings/VoterGuideSettingsDashboard";
+import VoterGuideSettingsMenuMobile from "./routes/Settings/VoterGuideSettingsMenuMobile";
+import VoterGuidesMenuMobile from "./routes/Settings/VoterGuidesMenuMobile";
 import VerifyRegistration from "./routes/More/VerifyRegistration";
 import VerifyThisIsMe from "./routes/VoterGuide/VerifyThisIsMe";
 import Welcome from "./routes/Welcome";
@@ -114,19 +117,18 @@ const routes = () =>
     <Route path="/intro/sample_ballot" component={SampleBallot} />
     <Route path="/intro/get_started" component={GetStarted} />
 
-    {/* Personal Settings go in this structure... */}
-    <Route path="/settings" component={SettingsDashboard}>
-      <IndexRoute component={SettingsDashboard} />
-      <Route path="/settings/claim" component={ClaimYourPage} />
-      <Route path="/settings/location" component={Location} />  /* Complete path on one line for searching */
-      <Route path="/settings/:edit_mode" component={SettingsDashboard} />
-    </Route>
+    {/* Your Settings go in this structure... */}
+    <Route path="/settings" component={SettingsDashboard} />
+    <Route path="/settings/claim" component={ClaimYourPage} />
+    <Route path="/settings/location" component={Location} />  /* Complete path on one line for searching */
+    <Route path="/settings/menu" component={SettingsMenuMobile} />
+    <Route path="/settings/voterguidesmenu" component={VoterGuidesMenuMobile} />
+    <Route path="/settings/:edit_mode" component={SettingsDashboard} />
 
     {/* Voter Guide Settings go in this structure... */}
-    <Route path="/vg/:voter_guide_we_vote_id/settings" component={VoterGuideSettingsDashboard}>
-      <IndexRoute component={VoterGuideSettingsDashboard} />
-      <Route path="/vg/:voter_guide_we_vote_id/settings/:edit_mode" component={VoterGuideSettingsDashboard} />
-    </Route>
+    <Route path="/vg/:voter_guide_we_vote_id/settings" component={VoterGuideSettingsDashboard} />
+    <Route path="/vg/:voter_guide_we_vote_id/settings/menu" component={VoterGuideSettingsMenuMobile} />
+    <Route path="/vg/:voter_guide_we_vote_id/settings/:edit_mode" component={VoterGuideSettingsDashboard} />
 
     {/* Ballot Off-shoot Pages */}
     <Route path="/opinions" component={Opinions} />

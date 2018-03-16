@@ -9,7 +9,7 @@ import VoterStore from "../../stores/VoterStore";
 import { cleanArray } from "../../utils/textFormat";
 import moment from "moment";
 
-const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 36;
+const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 32;
 
 export default class ChooseElectionForVoterGuide extends Component {
   static propTypes = {
@@ -186,6 +186,7 @@ export default class ChooseElectionForVoterGuide extends Component {
         </div>;
     });
     priorElectionList = cleanArray(priorElectionList);
+    priorElectionList = []; // Delete once testing is fully complete
 
     return <div>
       {upcomingElectionList}

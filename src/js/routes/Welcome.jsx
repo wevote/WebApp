@@ -280,6 +280,67 @@ export default class Intro extends Component {
          </div>
       </section>
 
+      {/* Sign up for email list */}
+      { voter_signed_in ?
+        null :
+        <section className="form__section">
+          <div className="container">
+            <Row>
+              <div className="col-md-12">
+                { this.state.we_vote_branding_off ? null :
+                  <span>
+                    { this.state.newsletter_opt_in_true ?
+                      <h1 className="u-f1 u-bold u-stack--lg">Please check your email for a verification link.</h1> :
+                      <div className="form__container">
+                        <h2 className="form__header">Sign up to get updates about We Vote.</h2>
+
+                        <form className="row form-inline" onSubmit={this.voterEmailAddressSignUpSave.bind(this)}>
+                          <FormGroup className="col-md-4">
+                            <label className="sr-only" htmlFor="name">Name</label>
+                            <input className="form-control"
+                                   type="text"
+                                   name="voter_full_name"
+                                   id=""
+                                   value={this.state.voter_full_name}
+                                   onChange={this.updateVoterFullName.bind(this)}
+                                   placeholder="Name"/>
+                          </FormGroup>
+                          <FormGroup className="col-md-4">
+                            <label className="sr-only" htmlFor="exampleEmail">Email</label>
+                            <input className="form-control"
+                                   type="email"
+                                   name="voter_email_address"
+                                   id=""
+                                   value={this.state.voter_email_address}
+                                   onChange={this.updateVoterEmailAddress.bind(this)}
+                                   placeholder="Email Address"/>
+                          </FormGroup>
+                          <FormGroup className="col-md-4">
+                            {this.state.submit_enabled ?
+                              <Button className="form-control"
+                                      bsStyle="success"
+                                      type="submit"
+                                      onClick={this.voterEmailAddressSignUpSave.bind(this)}
+                              >Sign Up</Button> :
+                              <Button className="form-control form__button--disabled"
+                                      bsStyle="success"
+                                      type="submit"
+                                      disabled
+                                      onClick={this.voterEmailAddressSignUpSave.bind(this)}
+                              >Enter Your Email to Sign Up</Button>
+                            }
+                          </FormGroup>
+                        </form>
+                      </div>
+                    }
+                  </span>
+                }
+              </div>
+            </Row>
+          </div>
+        </section>
+      }
+
       {/* Description of benefits of We Vote */}
       <section className="features__section">
         <div className="container">
@@ -353,67 +414,6 @@ export default class Intro extends Component {
           <Button bsStyle="danger" bsSize="large" className="u-stack--md center-block" onClick={this.goToGetStarted}>Get Started</Button>
         </div>
       </section>
-
-      {/* Sign up for email list */}
-      { voter_signed_in ?
-        null :
-        <section className="form__section">
-          <div className="container">
-            <Row>
-              <div className="col-md-12">
-                { this.state.we_vote_branding_off ? null :
-                  <span>
-                    { this.state.newsletter_opt_in_true ?
-                      <h1 className="u-f1 u-bold u-stack--lg">Please check your email for a verification link.</h1> :
-                      <div className="form__container">
-                        <h2 className="form__header">Sign up to get updates about We Vote.</h2>
-
-                        <form className="row form-inline" onSubmit={this.voterEmailAddressSignUpSave.bind(this)}>
-                          <FormGroup className="col-md-4">
-                            <label className="sr-only" htmlFor="name">Name</label>
-                            <input className="form-control"
-                                   type="text"
-                                   name="voter_full_name"
-                                   id=""
-                                   value={this.state.voter_full_name}
-                                   onChange={this.updateVoterFullName.bind(this)}
-                                   placeholder="Name"/>
-                          </FormGroup>
-                          <FormGroup className="col-md-4">
-                            <label className="sr-only" htmlFor="exampleEmail">Email</label>
-                            <input className="form-control"
-                                   type="email"
-                                   name="voter_email_address"
-                                   id=""
-                                   value={this.state.voter_email_address}
-                                   onChange={this.updateVoterEmailAddress.bind(this)}
-                                   placeholder="Email Address"/>
-                          </FormGroup>
-                          <FormGroup className="col-md-4">
-                            {this.state.submit_enabled ?
-                              <Button className="form-control"
-                                      bsStyle="success"
-                                      type="submit"
-                                      onClick={this.voterEmailAddressSignUpSave.bind(this)}
-                              >Sign Up</Button> :
-                              <Button className="form-control form__button--disabled"
-                                      bsStyle="success"
-                                      type="submit"
-                                      disabled
-                                      onClick={this.voterEmailAddressSignUpSave.bind(this)}
-                              >Enter Your Email to Sign Up</Button>
-                            }
-                          </FormGroup>
-                        </form>
-                      </div>
-                    }
-                  </span>
-                }
-              </div>
-            </Row>
-          </div>
-        </section>
-      }
 
       {/* We Vote Partners */}
       { this.state.we_vote_branding_off ? null :

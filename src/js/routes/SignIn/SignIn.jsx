@@ -44,9 +44,9 @@ export default class SignIn extends Component {
   // componentWillMount is used in WebApp
   componentDidMount () {
     // console.log("SignIn componentDidMount");
-    this._onVoterStoreChange();
+    this.onVoterStoreChange();
     this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionAccountPage(VoterStore.election_id());
   }
 
@@ -57,7 +57,7 @@ export default class SignIn extends Component {
     this.timer = null;
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     if (VoterStore.isVoterFound() && !this.state.initial_name_loaded) {
       this.setState({
         first_name: VoterStore.getFirstName(),
@@ -171,8 +171,8 @@ export default class SignIn extends Component {
     return <div className="">
       <Helmet title={page_title} />
       <BrowserPushMessage incomingProps={this.props} />
-      <div className="card">
-        <div className="card-main">
+      <div className="">
+        <div className="">
           {this.state.voter.signed_in_twitter && this.state.voter.signed_in_facebook ?
             null :
             <h1 className="h3">{this.state.voter.is_signed_in ? <span>{your_account_title}</span> : null}</h1>
