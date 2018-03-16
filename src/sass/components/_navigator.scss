@@ -343,7 +343,7 @@ $transparent-background: transparent;
     padding-top: $space-xs !important;
     vertical-align: middle !important;
     width: 75%;
-    font-size: 20pt;
+    font-size: 1.6rem;
   }
   &__right {
     padding: $space-md;
@@ -365,8 +365,8 @@ $transparent-background: transparent;
   }
 
   &__text {
-    font-weight: 400 !important;
-    font-size: 14pt !important;
+    font-weight: 200 !important;
+    font-size: 13pt !important;
     color: $blue !important;
   }
 }

@@ -134,17 +134,15 @@ export default class VoterGuideChooseElection extends Component {
 
     return <div>
       <Helmet title="Choose Election - We Vote" />
-        <div className="intro-story container well u-inset--md">
+        <div className="intro-story container well">
           <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
           <div className="intro-story__h1 xs-text-left">Choose Election</div>
           <div className="row">
-            <div className="col-2">&nbsp;</div>
-            <div className="col-8">
-              <div className="elections-list-container">
-                <ChooseElectionForVoterGuide destinationFunction={this.goToVoterGuideBallotItems.bind(this)} />
-              </div>
+            <div className="col-1 col-md-2">&nbsp;</div>
+            <div className="col-10 col-md-8">
+              <ChooseElectionForVoterGuide destinationFunction={this.goToVoterGuideBallotItems.bind(this)} />
             </div>
-            <div className="col-2">&nbsp;</div>
+            <div className="col-1 col-md-2">&nbsp;</div>
           </div>
         </div>
       </div>;

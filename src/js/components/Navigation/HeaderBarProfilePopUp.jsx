@@ -30,12 +30,6 @@ export default class HeaderBarProfilePopUp extends Component {
 
   render () {
     let isSignedIn = this.props.voter.is_signed_in;
-    let linkedOrganizationWeVoteId = this.props.voter.linked_organization_we_vote_id;
-    let signedInFacebook = this.props.voter.signed_in_facebook;
-    let signedInTwitter = this.props.voter.signed_in_twitter;
-    let twitterScreenName = this.props.voter.twitter_screen_name;
-    let showYourPageFromTwitter = signedInTwitter && twitterScreenName;
-    let showYourPageFromFacebook = signedInFacebook && linkedOrganizationWeVoteId && !showYourPageFromTwitter;
 
     /* eslint-disable no-extra-parens */
     let profilePopUpOpen = this.props.profilePopUpOpen ? (isWebApp() ? "profile-menu--open" : "profile-foot-menu--open") : "";
@@ -51,61 +45,25 @@ export default class HeaderBarProfilePopUp extends Component {
           </ul>
           <h4 className="text-left"/>
           <ul className="nav nav-stacked">
-            {showYourPageFromTwitter ?
-              <li>
-                <Link onClick={this.transitionToYourVoterGuide} to={"/" + twitterScreenName}>
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Your Voter Guide</span>
-                  </div>
-                </Link>
-              </li> :
-              null
-            }
-            {showYourPageFromFacebook ?
-              <li>
-                <Link onClick={this.transitionToYourVoterGuide}
-                      to={"/voterguide/" + linkedOrganizationWeVoteId}>
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Your Voter Guide</span>
-                  </div>
-                </Link>
-              </li> :
-              null
-            }
-            {!showYourPageFromTwitter && !showYourPageFromFacebook && isSignedIn ?
-              <li>
-                <Link onClick={this.transitionToYourVoterGuide} to="/yourpage">
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Your Voter Guide</span>
-                  </div>
-                </Link>
-              </li> :
-              null
-            }
+            {/* Desktop only */}
             <li className="hidden-xs">
-              <Link onClick={this.hideProfilePopUp} to="/settings/address">
+              <Link onClick={this.hideProfilePopUp} to="/settings/profile">
                 <div>
                   <span className="header-slide-out-menu-text-left">Your Settings</span>
                 </div>
               </Link>
             </li>
+            {/* Mobile only */}
+            <li className="visible-xs">
+              <Link onClick={this.hideProfilePopUp} to="/settings/menu">
+                <div>
+                  <span className="header-slide-out-menu-text-left">Your Settings</span>
+                </div>
+              </Link>
+            </li>
+            {/* Desktop or Mobile */}
             {this.props.voter && isSignedIn ?
-              <li className="visible-xs">
-                <Link onClick={this.hideProfilePopUp} to="/more/sign_in">
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Your Settings</span>
-                  </div>
-                </Link>
-              </li> :
-              null }
-            {this.props.voter && isSignedIn ?
-              <li>
-                <Link onClick={this.signOutAndHideProfilePopUp} to="/more/sign_in">
-                  <div>
-                    <span className="header-slide-out-menu-text-left">{isSignedIn ? "Sign Out" : "Sign In"}</span>
-                  </div>
-                </Link>
-              </li> :
+              null :
               <li>
                 <Link onClick={this.hideProfilePopUp} to="/more/sign_in">
                   <div>
@@ -150,6 +108,17 @@ export default class HeaderBarProfilePopUp extends Component {
                   </div>
                 </Link>
               </li>
+            }
+            {/* Desktop or Mobile */}
+            {this.props.voter && isSignedIn ?
+              <li>
+                <Link onClick={this.signOutAndHideProfilePopUp} to="/more/sign_in">
+                  <div>
+                    <span className="header-slide-out-menu-text-left">Sign Out</span>
+                  </div>
+                </Link>
+              </li> :
+              null
             }
           </ul>
           <span className="terms-and-privacy">

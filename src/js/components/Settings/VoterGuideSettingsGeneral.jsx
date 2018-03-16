@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from "react";
-import { Link } from "react-router";
 import Helmet from "react-helmet";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import LoadingWheel from "../../components/LoadingWheel";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
+import SettingsWidgetFirstLastName from "../../components/Settings/SettingsWidgetFirstLastName";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
@@ -157,16 +157,12 @@ export default class VoterGuideSettingsGeneral extends Component {
     }
 
     return <div className="">
-      <Helmet title={"Voter Guide General Settings - We Vote"} />
+      <Helmet title={"Voter Guide Settings - We Vote"} />
       <BrowserPushMessage incomingProps={this.props} />
       <div className="card">
         <div className="card-main">
-          <div>
-            <div className="card">
-              <h3 className="h3">General Settings</h3>
-              <div>{this.state.voterGuideName} (<Link to="/settings/profile">edit organization name</Link>)</div>
-            </div>
-          </div>
+          <h3 className="h3">Voter Guide Settings</h3>
+            <SettingsWidgetFirstLastName hideFirstLastName />
         </div>
       </div>
     </div>;

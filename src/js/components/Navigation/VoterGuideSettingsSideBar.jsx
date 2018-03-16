@@ -56,7 +56,6 @@ export default class VoterGuideSettingsSideBar extends Component {
     }
     // <div className="SettingsItem__summary__organization-title" >{organizationName}</div>
     return <div className="container-fluid card">
-      <div className="SettingsItem__summary__title" >Voter Guide Settings</div>
       <div className="SettingsItem__summary__election-title" >{electionName}</div>
       <div className="SettingsItem__summary__election-date" >{electionDayText}</div>
 
@@ -66,9 +65,9 @@ export default class VoterGuideSettingsSideBar extends Component {
         <div>
           <Link to={"/vg/" + this.state.voterGuide.we_vote_id + "/settings/general"} className="SettingsItem__summary__item" >
             <span className={this.state.editMode === "general" ?
-                  "SettingsItem__summary__display-name SettingsItem__summary__display-name--selected" :
-                  "SettingsItem__summary__display-name"}>
-              General Settings</span>
+                  "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
+                  "SettingsItem__summary__item__display-name"}>
+              Voter Guide Settings</span>
           </Link>
         </div>
       </div>
@@ -79,8 +78,8 @@ export default class VoterGuideSettingsSideBar extends Component {
         <div>
           <Link to="/settings/account" className="SettingsItem__summary__item" >
             <span className={this.state.editMode === "account" ?
-                  "SettingsItem__summary__display-name SettingsItem__summary__display-name--selected" :
-                  "SettingsItem__summary__display-name"}>
+                  "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
+                  "SettingsItem__summary__item__display-name"}>
               Candidates</span>
           </Link>
         </div>
@@ -92,8 +91,8 @@ export default class VoterGuideSettingsSideBar extends Component {
         <div>
           <Link to="/settings/notifications" className="SettingsItem__summary__item" >
             <span className={this.state.editMode === "notifications" ?
-                  "SettingsItem__summary__display-name SettingsItem__summary__display-name--selected" :
-                  "SettingsItem__summary__display-name"}>
+                  "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
+                  "SettingsItem__summary__item__display-name"}>
               Measures</span>
           </Link>
         </div>
@@ -105,8 +104,8 @@ export default class VoterGuideSettingsSideBar extends Component {
         <div>
           <Link to="/settings/notifications" className="SettingsItem__summary__item" >
             <span className={this.state.editMode === "notifications" ?
-                  "SettingsItem__summary__display-name SettingsItem__summary__display-name--selected" :
-                  "SettingsItem__summary__display-name"}>
+                  "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
+                  "SettingsItem__summary__item__display-name"}>
               Partner Organizations</span>
           </Link>
         </div>
@@ -118,8 +117,8 @@ export default class VoterGuideSettingsSideBar extends Component {
         <div>
           <Link to="/settings/notifications" className="SettingsItem__summary__item" >
             <span className={this.state.editMode === "notifications" ?
-                  "SettingsItem__summary__display-name SettingsItem__summary__display-name--selected" :
-                  "SettingsItem__summary__display-name"}>
+                  "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
+                  "SettingsItem__summary__item__display-name"}>
               Issues</span>
           </Link>
         </div>
@@ -131,8 +130,8 @@ export default class VoterGuideSettingsSideBar extends Component {
         <div>
           <Link to="/settings/notifications" className="SettingsItem__summary__item" >
             <span className={this.state.editMode === "notifications" ?
-                  "SettingsItem__summary__display-name SettingsItem__summary__display-name--selected" :
-                  "SettingsItem__summary__display-name"}>
+                  "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
+                  "SettingsItem__summary__item__display-name"}>
               Activity Reports</span>
           </Link>
         </div>

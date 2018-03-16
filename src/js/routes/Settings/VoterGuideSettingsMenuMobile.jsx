@@ -3,15 +3,13 @@ import { Link } from "react-router";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
-import SettingsAccount from "../../components/Settings/SettingsAccount";
-import SettingsNotifications from "../../components/Settings/SettingsNotifications";
 import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterGuideSettingsGeneral from "../../components/Settings/VoterGuideSettingsGeneral";
 import VoterGuideSettingsSideBar from "../../components/Navigation/VoterGuideSettingsSideBar";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
+import { isWebApp } from "../../utils/cordovaUtils";
 
-export default class VoterGuideSettingsDashboard extends Component {
+export default class VoterGuideSettingsMenuMobile extends Component {
   static propTypes = {
     location: PropTypes.object,
     params: PropTypes.object,
@@ -35,7 +33,7 @@ export default class VoterGuideSettingsDashboard extends Component {
     if (this.props.params.edit_mode) {
       this.setState({ editMode: this.props.params.edit_mode });
     } else {
-      this.setState({ editMode: "general" });
+      this.setState({ editMode: "" });
     }
     // Get Voter Guide information
     let voterGuideFound = false;
@@ -141,64 +139,41 @@ export default class VoterGuideSettingsDashboard extends Component {
   }
 
   render () {
-    let settingsComponentToDisplay = null;
-    switch (this.state.editMode) {
-      default:
-      case "general":
-        settingsComponentToDisplay = <VoterGuideSettingsGeneral voterGuideWeVoteId={this.state.voterGuideWeVoteId} />;
-        break;
-      case "notifications":
-        settingsComponentToDisplay = <SettingsNotifications />;
-        break;
-      case "account":
-        settingsComponentToDisplay = <SettingsAccount />;
-        break;
-    }
-
     return <div className="settings-dashboard">
       <div className="page-content-container">
         <div className="container-fluid">
         { this.state.organization && this.state.organization.organization_we_vote_id ?
           <div className="row">
             <div className="col-md-12">
-              { this.state.organization && this.state.organization.organization_banner_url !== "" ?
+              { this.state.organization && this.state.organization.organization_banner_url && this.state.organization.organization_banner_url !== "" ?
                 <div className="organization-banner-image-div">
                   <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
                 </div> :
-                <div className="organization-banner-image-non-twitter-users" />
+                null
               }
             </div>
-            <div className="col-md-12">
-              <div className="card">
-                <div className="card-main">
-                  <OrganizationCard organization={this.state.organization}
-                                    turnOffTwitterHandle />
+            {this.state.organization.organization_name && !this.state.organization.organization_name.startsWith("Voter-") ?
+              <div className="col-md-12">
+                <div className="card">
+                  <div className="card-main">
+                    <OrganizationCard organization={this.state.organization}
+                                      turnOffTwitterHandle />
+                  </div>
                 </div>
-              </div>
-            </div>
+              </div> :
+              null }
           </div> :
           null }
           <div className="row">
-            {/* Desktop mode */}
-            <div className="col-md-12 hidden-xs">
-              <Link to="/settings/profile">&lt; Back to Your Settings</Link>
-            </div>
-            {/* Mobile mode */}
-            <div className="col-md-12 visible-xs">
-              <Link to={"/vg/" + this.state.voterGuideWeVoteId + "/settings/menu"}>&lt; Voter Guide</Link>
+            <div className="col-md-12">
+              <Link to={isWebApp() ? "/settings/menu" : "/more/hamburger"}>&lt; Back to Your Settings</Link>
             </div>
 
-            {/* Desktop mode */}
-            <div className="col-md-4 hidden-xs sidebar-menu">
+            <div className="col-md-12 sidebar-menu">
               <VoterGuideSettingsSideBar editMode={this.state.editMode}
                                          organization={this.state.organization}
                                          voterGuide={this.state.voterGuide} />
             </div>
-
-            <div className="col-xs-12 col-md-8">
-              {settingsComponentToDisplay}
-            </div>
-
           </div>
         </div>
       </div>

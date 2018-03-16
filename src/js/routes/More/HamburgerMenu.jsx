@@ -6,11 +6,7 @@ import { Table } from "react-bootstrap";
 
 import VoterStore from "../../stores/VoterStore";
 import BallotStore from "../../stores/BallotStore";
-import { isCordova } from "../../utils/cordovaUtils";
-import cookies from "../../utils/cookies";
 import HamburgerMenuRow from "../../components/Navigation/HamburgerMenuRow";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import OrganizationActions from "../../actions/OrganizationActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 
 export default class HamburgerMenu extends Component {
@@ -19,6 +15,20 @@ export default class HamburgerMenu extends Component {
     this.state = {
       bookmarks: [],
     };
+  }
+  componentDidMount () {
+    // console.log("SignIn componentDidMount");
+    this.onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+  }
+
+  componentWillUnmount () {
+    this.voterStoreListener.remove();
+    this.timer = null;
+  }
+
+  onVoterStoreChange () {
+    this.setState({voter: VoterStore.getVoter()});
   }
 
   yourAccountIcon (voterPhotoUrlMedium) {
@@ -41,39 +51,13 @@ export default class HamburgerMenu extends Component {
     );
   }
 
-  transitionToYourVoterGuide () {
-    // Positions for this organization, for this voter/election
-    OrganizationActions.positionListForOpinionMaker(this.state.voter.linked_organization_we_vote_id, true);
-
-    // Positions for this organization, NOT including for this voter / election
-    OrganizationActions.positionListForOpinionMaker(this.state.voter.linked_organization_we_vote_id, false, true);
-    OrganizationActions.organizationsFollowedRetrieve();
-    VoterGuideActions.voterGuideFollowersRetrieve(this.state.voter.linked_organization_we_vote_id);
-    VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.state.voter.linked_organization_we_vote_id);
-  }
-
-  getYourVoterGuidePath () {
-    let voter = VoterStore.getVoter();
-    let showYourPageFromTwitter = voter.signed_in_twitter && voter.twitter_screen_name;
-    let showYourPageFromFacebook = voter.signed_in_facebook && voter.linked_organization_we_vote_id && !showYourPageFromTwitter;
-    let yourVoterGuideTo = null;
-    if (showYourPageFromTwitter) {
-      yourVoterGuideTo = "/" + voter.twitter_screen_name;
-    } else if (showYourPageFromTwitter) {
-      yourVoterGuideTo = "/voterguide/" + voter.linked_organization_we_vote_id;
-    } else if (!showYourPageFromTwitter && !showYourPageFromFacebook && voter.is_signed_in) {
-      yourVoterGuideTo = "/yourpage";
-    }
-
-    return yourVoterGuideTo;
-  }
-
   render () {
-    let voter = VoterStore.getVoter();
+    if (!this.state.voter) {
+      return null;
+    }
     let bookmarks = BallotStore.bookmarks;
-    let isSignedIn = voter && voter.is_signed_in;
+    let isSignedIn = this.state.voter && this.state.voter.is_signed_in;
     isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
-    let weVoteBrandingOff = cookies.getItem("we_vote_branding_off") === null ? false : cookies.getItem("we_vote_branding_off");
 
     return <div>
       <Helmet title="Settings Menu"/>
@@ -85,26 +69,34 @@ export default class HamburgerMenu extends Component {
             </td>
           </tr>
 
-          {isSignedIn ?
-            <HamburgerMenuRow onClickAction={this.transitionToYourVoterGuide}
-                            to={this.getYourVoterGuidePath()}
-                            icon={"fa fa-list"}
-                            iconStyle={{ fontSize: 20, color: "#1c2f4b" }}
-                            linkText={"Your Voter Guide"} /> : null
-          }
+          <HamburgerMenuRow onClickAction={null}
+                            to={"/settings/profile"}
+                            icon={"fa fa-arrow-circle-right"}
+                            iconStyle={{ fontSize: 28, color: "green" }}
+                            linkText={"Your Profile"} />
 
           {isSignedIn ?
             <HamburgerMenuRow onClickAction={null}
+                              to={"/settings/account"}
+                              fullIcon={this.yourAccountIcon(this.state.voter.voter_photo_url_medium)}
+                              linkText={"Your Account"}/> :
+            <HamburgerMenuRow onClickAction={null}
                               to={"/more/sign_in"}
-                              fullIcon={this.yourAccountIcon(voter.voter_photo_url_medium)}
-                              linkText={"Your Account"}/> : null
+                              fullIcon={this.yourAccountIcon(this.state.voter.voter_photo_url_medium)}
+                              linkText={"Sign In"}/>
           }
 
-          <HamburgerMenuRow onClickAction={() => VoterSessionActions.voterSignOut()}
-                            to={"/more/sign_in"}
-                            icon={isSignedIn ? "fa fa-sign-out" : "fa fa-sign-in"}
-                            iconStyle={isSignedIn ? { fontSize: 28, color: "red" } : { fontSize: 28, color: "green" }}
-                            linkText={isSignedIn ? "Sign Out" : "Sign In"} />
+          <HamburgerMenuRow onClickAction={null}
+                            to={"/settings/address"}
+                            icon={"fa fa-arrow-circle-right"}
+                            iconStyle={{ fontSize: 28, color: "green" }}
+                            linkText={"Your Address"} />
+
+          <HamburgerMenuRow onClickAction={null}
+                            to={"/settings/election"}
+                            icon={"fa fa-arrow-circle-right"}
+                            iconStyle={{ fontSize: 28, color: "green" }}
+                            linkText={"Change Election"} />
 
           { bookmarks && bookmarks.length ?
             <HamburgerMenuRow onClickAction={null}
@@ -115,10 +107,19 @@ export default class HamburgerMenu extends Component {
           }
 
           <HamburgerMenuRow onClickAction={null}
-                            to={"/more/howtouse"}
-                            icon={"fa fa-arrow-circle-right"}
-                            iconStyle={{ fontSize: 28, color: "green" }}
-                            linkText={"Getting Started"} />
+                            to={"/settings/voterguidesmenu"}
+                            icon={"fa fa-list"}
+                            iconStyle={{ fontSize: 20, color: "#1c2f4b" }}
+                            linkText={"Your Voter Guides"} />
+
+          {isSignedIn ?
+            <HamburgerMenuRow onClickAction={null}
+                              to={"/settings/notifications"}
+                              icon={"fa fa-arrow-circle-right"}
+                              iconStyle={{ fontSize: 28, color: "green" }}
+                              linkText={"Notification Settings"}/> :
+            null
+          }
 
           <HamburgerMenuRow onClickAction={null}
                             to={"/more/about"}
@@ -126,12 +127,13 @@ export default class HamburgerMenu extends Component {
                             iconStyle={{ fontSize: 20, color: "#1c2f4b" }}
                             linkText={"About We Vote"} />
 
-          {weVoteBrandingOff || isCordova() ? null :
-            <HamburgerMenuRow onClickAction={null}
-                              to={"/more/donate"}
-                              icon={"fa fa-money"}
-                              iconStyle={{ fontSize: 20, color: "green" }}
-                              linkText={"Donate"} />
+          {isSignedIn ?
+            <HamburgerMenuRow onClickAction={() => VoterSessionActions.voterSignOut()}
+                              to={"/more/sign_in"}
+                              icon={isSignedIn ? "fa fa-sign-out" : "fa fa-sign-in"}
+                              iconStyle={isSignedIn ? { fontSize: 28, color: "red" } : { fontSize: 28, color: "green" }}
+                              linkText={"Sign Out"}/> :
+            null
           }
 
           <tr className={"hamburger-terms__tr"}>
