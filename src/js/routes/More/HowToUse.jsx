@@ -1,7 +1,9 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import Helmet from "react-helmet";
-import {Link} from "react-router";
+import { Link } from "react-router";
 import AnalyticsActions from "../../actions/AnalyticsActions";
+import { isWebApp } from "../../utils/cordovaUtils";
+import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
 import VoterStore from "../../stores/VoterStore";
 
@@ -62,12 +64,29 @@ export default class HowToUse extends Component {
         to make their voices heard. When more people vote, we get better outcomes.<br />
 
         <h3 className="h3">Step 6: Share the Love</h3>
-        If you like We Vote, please <Link to="/more/donate">give what you can</Link> to help us reach more voters.
-        Since we are a nonprofit, your donations make our work possible! Thank you.<br />
+        { isWebApp() ?
+          <span>
+            If you like We Vote, please <Link to="/more/donate">give what you can</Link> to help us reach more voters.
+            Since we are a nonprofit, your donations make our work possible! Thank you.<br />
+          </span> :
+          <span>
+            If you like We Vote, please go to our website and
+            <OpenExternalWebSite url="http://wevote.us/donate"
+                                 target="_blank"
+                                 body={<span>WeVote.US/donate</span>} />
 
-        <h3 className="h3"><a href="https://help.wevote.us/hc/en-us/categories/115000098688-Using-We-Vote"
-                              target="_blank">Visit our help center for answers to common questions.&nbsp;<i
-          className="fa fa-external-link"/></a></h3>
+            <strong>give what you can</strong> to help us reach more voters.
+            Since we are a nonprofit, your donations make our work possible! Thank you.<br />
+          </span>
+        }
+
+        <h3 className="h3">
+           <OpenExternalWebSite url="https://help.wevote.us/hc/en-us/categories/115000098688-Using-We-Vote"
+                               target="_blank"
+                               className="open-web-site open-web-site__no-left-padding"
+                               body={<span>Visit our help center for answers to common questions.&nbsp;<i className="fa fa-external-link"/></span>}
+           />
+        </h3>
         <span className="terms-and-privacy">
           <br />
           <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy Policy</Link>

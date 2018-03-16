@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import ReactPlayer from "react-player";
+import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import ReadMore from "../../components/Widgets/ReadMore";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
-import {vimeo_reg, youtube_reg} from "../../utils/textFormat";
+import { vimeo_reg, youtube_reg } from "../../utils/textFormat";
 var Icon = require("react-svg-icons");
+
 // import ViewSourceModal from "../../components/Widgets/ViewSourceModal";
 
 export default class PositionInformationOnlySnippet extends Component {
@@ -16,7 +18,7 @@ export default class PositionInformationOnlySnippet extends Component {
     speaker_display_name: PropTypes.string,
     statement_text: PropTypes.string,
     stance_display_off: PropTypes.bool,
-    comment_text_off: PropTypes.bool
+    comment_text_off: PropTypes.bool,
   };
 
   componentWillMount () {
@@ -37,24 +39,25 @@ export default class PositionInformationOnlySnippet extends Component {
   }
 
   render () {
-    var className;
-    var alt;
-    var positionLabel;
-    var hasThisToSay;
-    var { is_looking_at_self, more_info_url } = this.props;
-    var statement_text = this.props.statement_text || "";
-    var statement_text_html = <ReadMore text_to_display={statement_text} />;
+    let className;
+    let alt;
+    let positionLabel;
+    let hasThisToSay;
+    let { is_looking_at_self, more_info_url } = this.props;
+    let moreInfoUrl = more_info_url;
+    let statement_text = this.props.statement_text || "";
+    let statement_text_html = <ReadMore text_to_display={statement_text} />;
     // onViewSourceClick is onClick function for view source modal in mobile browser
     // const onViewSourceClick = this.state.showViewSourceModal ? this.closeViewSourceModal.bind(this) : this.openViewSourceModal.bind(this);
 
-    var video_url = "";
-    var youtube_url;
-    var vimeo_url;
-    var statement_text_no_url;
+    let video_url = "";
+    let youtube_url;
+    let vimeo_url;
+    let statement_text_no_url;
 
-    if (more_info_url) {
-      youtube_url = more_info_url.match(youtube_reg);
-      vimeo_url = more_info_url.match(vimeo_reg);
+    if (moreInfoUrl) {
+      youtube_url = moreInfoUrl.match(youtube_reg);
+      vimeo_url = moreInfoUrl.match(vimeo_reg);
     }
 
     if (statement_text) {
@@ -86,11 +89,11 @@ export default class PositionInformationOnlySnippet extends Component {
     if (this.props.comment_text_off !== undefined) {
       comment_text_off = this.props.comment_text_off ? true : false;
     }
-    if (more_info_url) {
-      if (more_info_url.toLowerCase().startsWith("http")) {
-        more_info_url = more_info_url;
+    if (moreInfoUrl) {
+      if (moreInfoUrl.toLowerCase().startsWith("http")) {
+        moreInfoUrl = moreInfoUrl;
       } else {
-        more_info_url = "http://" + more_info_url;
+        moreInfoUrl = "http://" + moreInfoUrl;
       }
     }
 
@@ -125,14 +128,13 @@ export default class PositionInformationOnlySnippet extends Component {
             { video_url ?
               <ReactPlayer className="explicit-position__media-player" url={`${video_url}`} width="100%" height="100%"/> :
               null }
-            {more_info_url ?
+            {moreInfoUrl ?
               <div className="hidden-xs">
                 {/* default: open in new tab*/}
-                <a href={more_info_url}
-                   target="_blank"
-                   className="u-gray-mid">
-                  view source <i className="fa fa-external-link" aria-hidden="true" />
-                </a>
+                <OpenExternalWebSite url={moreInfoUrl}
+                                     target="_blank"
+                                     className="u-gray-mid"
+                                     body={<span>view source <i className="fa fa-external-link" aria-hidden="true" /></span>} />
                 {/* link for mobile browser: open in bootstrap modal */}
                 {/*<a onClick={onViewSourceClick}>
                   (view source)
@@ -144,7 +146,7 @@ export default class PositionInformationOnlySnippet extends Component {
       </div>
       {/*<ViewSourceModal show={this.state.showViewSourceModal}
                      onHide={this.closeViewSourceModal.bind(this)}
-                     url={this.props.more_info_url} /> */}
+                     url={this.props.moreInfoUrl} /> */}
     </div>;
   }
 }

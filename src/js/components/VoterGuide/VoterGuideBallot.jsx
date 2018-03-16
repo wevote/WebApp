@@ -21,6 +21,7 @@ import Helmet from "react-helmet";
 import MeasureActions from "../../actions/MeasureActions";
 import MeasureModal from "../../components/Ballot/MeasureModal";
 import moment from "moment";
+import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import PledgeToSupportOrganizationButton from "../../components/VoterGuide/PledgeToSupportOrganizationButton";
@@ -681,10 +682,11 @@ export default class VoterGuideBallot extends Component {
 
               {/* Show links to this candidate in the admin tools */}
               { this.state.voter && polling_location_we_vote_id_source && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ?
-                <span className="u-wrap-links hidden-print">Admin: <a href={ballot_returned_admin_edit_url} target="_blank">
-                    Ballot copied from polling location "{polling_location_we_vote_id_source}"
-                  </a></span> :
-                null
+                <span className="u-wrap-links hidden-print">Admin:
+                  <OpenExternalWebSite url={ballot_returned_admin_edit_url}
+                                       target="_blank"
+                                       body={<span>Ballot copied from polling location "{polling_location_we_vote_id_source}"</span>} />
+                </span> : null
               }
             </div>
           </div>

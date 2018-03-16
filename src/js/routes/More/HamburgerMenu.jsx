@@ -71,8 +71,7 @@ export default class HamburgerMenu extends Component {
 
           <HamburgerMenuRow onClickAction={null}
                             to={"/settings/profile"}
-                            icon={"fa fa-arrow-circle-right"}
-                            iconStyle={{ fontSize: 28, color: "green" }}
+                            fullIcon={this.yourAccountIcon(this.state.voter.voter_photo_url_medium)}
                             linkText={"Your Profile"} />
 
           {isSignedIn ?
@@ -88,20 +87,20 @@ export default class HamburgerMenu extends Component {
 
           <HamburgerMenuRow onClickAction={null}
                             to={"/settings/address"}
-                            icon={"fa fa-arrow-circle-right"}
-                            iconStyle={{ fontSize: 28, color: "green" }}
+                            icon={"fa fa-address-card"}
+                            iconStyle={{ fontSize: 24, color: "#1c2f4b" }}
                             linkText={"Your Address"} />
 
           <HamburgerMenuRow onClickAction={null}
                             to={"/settings/election"}
-                            icon={"fa fa-arrow-circle-right"}
-                            iconStyle={{ fontSize: 28, color: "green" }}
+                            icon={"fa fa-adjust"}
+                            iconStyle={{ fontSize: 28, color: "teal" }}
                             linkText={"Change Election"} />
 
           { bookmarks && bookmarks.length ?
             <HamburgerMenuRow onClickAction={null}
                               to={"/bookmarks"}
-                              icon={"fa fa-arrow-circle-right"}
+                              icon={"fa fa-bookmark"}
                               iconStyle={{ fontSize: 28, color: "green" }}
                               linkText={"Your Bookmarked Items"} /> : null
           }

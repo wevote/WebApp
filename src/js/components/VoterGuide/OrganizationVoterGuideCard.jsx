@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router";
 import { historyPush } from "../../utils/cordovaUtils";
+import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
 import LoadingWheel from "../../components/LoadingWheel";
 import FollowToggle from "../../components/Widgets/FollowToggle";
@@ -13,7 +14,7 @@ export default class OrganizationVoterGuideCard extends Component {
   static propTypes = {
     organization: PropTypes.object.isRequired,
     is_voter_owner: PropTypes.bool,
-    turnOffDescription: PropTypes.bool
+    turnOffDescription: PropTypes.bool,
   };
 
   constructor (props) {
@@ -35,6 +36,7 @@ export default class OrganizationVoterGuideCard extends Component {
     const {organization_twitter_handle, twitter_description,
       organization_photo_url_large, organization_website,
       organization_name, organization_we_vote_id} = this.props.organization; // , twitter_followers_count
+    let organizationWebsite = organization_website;
 
     // If the displayName is in the twitterDescription, remove it from twitterDescription
     let displayName = organization_name ? organization_name : "";
@@ -71,9 +73,13 @@ export default class OrganizationVoterGuideCard extends Component {
         <p className="card-main__description" />
       }
 
-      { organization_website ?
-        <span className="u-wrap-links"><a href={organization_website} target="_blank"> {organization_website} <i className="fa fa-external-link" /></a></span> :
-        null }
+      { organizationWebsite ?
+        <span className="u-wrap-links">
+          <OpenExternalWebSite url={organizationWebsite}
+                              target="_blank"
+                              body={<span>{organizationWebsite} <i className="fa fa-external-link" /></span>} />
+        </span> : null
+      }
       {/* 5 of your friends follow Organization Name<br />*/}
 
       {/* twitter_followers_count ?
@@ -85,5 +91,5 @@ export default class OrganizationVoterGuideCard extends Component {
       */}
 
     </div>;
-}
+  }
 }

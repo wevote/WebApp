@@ -1,5 +1,6 @@
 import React from "react";
 import Helmet from "react-helmet";
+import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 
 export default class Privacy extends React.Component {
   constructor (props) {
@@ -16,8 +17,13 @@ export default class Privacy extends React.Component {
       <div className="container-fluid well">
         <h1 className="text-center">WeVote.US Privacy Policy</h1>
         <p><strong>Last updated: December 26, 2016</strong></p>
-        <p><span>We Vote USA has created this privacy policy to explain how We Vote (or “we”) uses information that we collect from you while you visit the We Vote websites, currently located at </span><a
-          href="http://WeVote.US/"><span>WeVote.US</span></a><span> (the “Site”), or while you use a portion of We Vote that is embedded on another website (the “Services”).  We Vote may modify this policy from time to time, so we encourage you to check this page when revisiting the Site.  The date of the most recent revision is listed below.</span>
+        <p><span>We Vote USA has created this privacy policy to explain how We Vote (or “we”) uses information that we collect from you while you visit the We Vote websites, currently located at</span>
+        <span>
+          <OpenExternalWebSite url="http://WeVote.US/"
+                             target="_blank"
+                             body={<span>WeVote.US</span>} />
+          (the “Site”), or while you use a portion of We Vote that is embedded on another website (the “Services”).  We Vote may modify this policy from time to time, so we encourage you to check this page when revisiting the Site.  The date of the most recent revision is listed below.
+        </span>
         </p>
         <h2><b>How we use your information</b></h2>
         <p><span>When you request your ballot, send messages to friends, donate, join our newsletter, or take any other action on this Site, we may ask you to give us contact information, including your name, address, email address and telephone number. We may also obtain information about you from outside sources and combine it with the information we collect through this Site. We use this information to operate this Site, to sends you news and information about We Vote, to measure the effectiveness of our programs, and to send you timely election reminders.
