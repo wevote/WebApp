@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router";
 import Candidate from "./Ballot/Candidate";
@@ -134,7 +135,7 @@ export default class TwitterHandleLanding extends Component {
       if (looking_at_positions_for_friends_only) {
         return <PositionListForFriends we_vote_id {...this.props} />;
       } else {
-        return <OrganizationVoterGuide we_vote_id {...this.props}
+        return <OrganizationVoterGuide {...this.props}
                                        location={this.props.location}
                                        params={this.props.params}
                                        active_route={this.getIncomingActiveRoute()} />;

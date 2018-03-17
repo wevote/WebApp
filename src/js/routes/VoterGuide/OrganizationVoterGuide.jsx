@@ -28,17 +28,21 @@ export default class OrganizationVoterGuide extends Component {
       organization_we_vote_id: "",
       organization: {},
       voter: {},
+      voterGuideWeVoteId: "",
       auto_follow_redirect_happening: false,
     };
     this.onEdit = this.onEdit.bind(this);
   }
 
   componentDidMount () {
+    // We can enter OrganizationVoterGuide with either organization_we_vote_id or voter_guide_we_vote_id
     // console.log("OrganizationVoterGuide, componentDidMount, this.props.params.organization_we_vote_id: ", this.props.params.organization_we_vote_id);
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    if (this.props.params.organization_we_vote_id) {
+      OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
+    }
 
     // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
     // console.log("action_variable:" + this.props.params.action_variable);
@@ -113,13 +117,13 @@ export default class OrganizationVoterGuide extends Component {
     });
   }
 
-  _onOrganizationStoreChange () {
+  onOrganizationStoreChange () {
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization_we_vote_id),
     });
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({
       voter: VoterStore.getVoter(),
     });

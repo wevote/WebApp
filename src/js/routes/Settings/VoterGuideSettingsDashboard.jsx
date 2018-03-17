@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
@@ -10,6 +11,7 @@ import VoterGuideSettingsGeneral from "../../components/Settings/VoterGuideSetti
 import VoterGuideSettingsSideBar from "../../components/Navigation/VoterGuideSettingsSideBar";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
+import { isProperlyFormattedVoterGuideWeVoteId } from "../../utils/textFormat";
 
 export default class VoterGuideSettingsDashboard extends Component {
   static propTypes = {
@@ -39,7 +41,7 @@ export default class VoterGuideSettingsDashboard extends Component {
     }
     // Get Voter Guide information
     let voterGuideFound = false;
-    if (this.props.params.voter_guide_we_vote_id) {
+    if (this.props.params.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(this.props.params.voter_guide_we_vote_id)) {
       this.setState({
         voterGuideWeVoteId: this.props.params.voter_guide_we_vote_id,
       });
@@ -84,9 +86,9 @@ export default class VoterGuideSettingsDashboard extends Component {
     if (nextProps.params.edit_mode) {
       this.setState({ editMode: nextProps.params.edit_mode });
     }
-    if (nextProps.params.voter_guide_we_vote_id) {
+    if (nextProps.params.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(nextProps.params.voter_guide_we_vote_id)) {
       this.setState({
-        voterGuide: VoterGuideStore.getVoterGuideByVoterGuideId(this.props.params.voter_guide_we_vote_id),
+        voterGuide: VoterGuideStore.getVoterGuideByVoterGuideId(nextProps.params.voter_guide_we_vote_id),
         voterGuideWeVoteId: nextProps.params.voter_guide_we_vote_id,
       });
     }
@@ -107,7 +109,7 @@ export default class VoterGuideSettingsDashboard extends Component {
 
   onVoterGuideStoreChange () {
     // console.log("VoterGuideSettingsDashboard onVoterGuideStoreChange, this.state.voterGuideWeVoteId", this.state.voterGuideWeVoteId);
-    if (this.state.voterGuideWeVoteId) {
+    if (this.state.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(this.state.voterGuideWeVoteId)) {
       let voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.state.voterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
         // console.log("VoterGuideSettingsDashboard onVoterGuideStoreChange voterGuide FOUND");

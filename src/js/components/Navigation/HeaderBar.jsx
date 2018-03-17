@@ -171,7 +171,6 @@ export default class HeaderBar extends Component {
                 </Link> :
                 <Link to="/welcome" className="page-logo page-logo-short h4 visible-xs">
                   We Vote
-                  <span className="page-logo__version"> alpha</span>
                 </Link>
               }
             </span>
@@ -207,7 +206,7 @@ export default class HeaderBar extends Component {
                 onClick={this.goToGetStarted}>Sample Ballot</button> }
 
           { !showFullNavigation && isWebApp() &&
-            <Link to="/more/sign_in" className="sign_in header-nav__item">
+            <Link to="/settings/account" className="sign_in header-nav__item">
               Sign In
             </Link>
           }
