@@ -125,11 +125,6 @@ const routes = () =>
     <Route path="/settings/voterguidesmenu" component={VoterGuidesMenuMobile} />
     <Route path="/settings/:edit_mode" component={SettingsDashboard} />
 
-    {/* Voter Guide Settings go in this structure... */}
-    <Route path="/vg/:voter_guide_we_vote_id/settings" component={VoterGuideSettingsDashboard} />
-    <Route path="/vg/:voter_guide_we_vote_id/settings/menu" component={VoterGuideSettingsMenuMobile} />
-    <Route path="/vg/:voter_guide_we_vote_id/settings/:edit_mode" component={VoterGuideSettingsDashboard} />
-
     {/* Ballot Off-shoot Pages */}
     <Route path="/opinions" component={Opinions} />
     <Route path="/opinions_followed" component={OpinionsFollowed} />
@@ -177,7 +172,7 @@ const routes = () =>
     <Route path="/more/verify" component={VerifyRegistration} />
     <Route path="/more/vision" component={Organization} />
 
-    {/* Voter Guide Pages */}
+    {/* Voter Guide Pages - By Organization */}
     <Route path="/voterguide/:organization_we_vote_id" component={OrganizationVoterGuide} />
     <Route path="/voterguide/:organization_we_vote_id/ballot" component={OrganizationVoterGuide} />
     <Route path="/voterguide/:organization_we_vote_id/ballot/empty" component={OrganizationVoterGuide} />
@@ -189,8 +184,14 @@ const routes = () =>
     <Route path="/voterguide/:organization_we_vote_id/positions" component={props => <OrganizationVoterGuide {...props} active_route="positions" />} />
     <Route path="/voterguide/:organization_we_vote_id/:action_variable" component={OrganizationVoterGuide} />
     <Route path="/voterguideedit/:organization_we_vote_id" component={OrganizationVoterGuideEdit} />
-    <Route path="/voterguideedit/:organization_we_vote_id/:edit_mode" component={OrganizationVoterGuideEdit} />
-    <Route path="/voterguideedit/:organization_we_vote_id/:edit_mode/:active_tab" component={OrganizationVoterGuideEdit} />
+    <Route path="/voterguideedit/:organization_we_vote_id/:google_civic_election_id" component={OrganizationVoterGuideEdit} />
+    {/*<Route path="/voterguideedit/:organization_we_vote_id/:edit_mode" component={OrganizationVoterGuideEdit} />*/}
+    {/*<Route path="/voterguideedit/:organization_we_vote_id/:edit_mode/:active_tab" component={OrganizationVoterGuideEdit} />*/}
+
+    {/* Voter Guide Settings go in this structure... */}
+    <Route path="/vg/:voter_guide_we_vote_id/settings" component={VoterGuideSettingsDashboard} />
+    <Route path="/vg/:voter_guide_we_vote_id/settings/menu" component={VoterGuideSettingsMenuMobile} />
+    <Route path="/vg/:voter_guide_we_vote_id/settings/:edit_mode" component={VoterGuideSettingsDashboard} />
 
     <Route path="/voterguidegetstarted" component={VoterGuideGetStarted} />
     <Route path="/voterguideorgtype" component={VoterGuideOrganizationType} />

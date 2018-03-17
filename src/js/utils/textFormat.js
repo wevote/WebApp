@@ -20,6 +20,15 @@ export function abbreviateNumber (num) {
   return num;
 }
 
+export function arrayContains (needle, array_haystack) {
+  // console.log("arrayContains, needle:", needle, ", haystack: ", array_haystack);
+  if (array_haystack) {
+    return array_haystack.indexOf(needle) > -1;
+  } else {
+    return false;
+  }
+}
+
 // Gives preference to the earlier entry in the incoming array
 export function arrayUnique (array) {
   var a = array.concat();
@@ -30,24 +39,6 @@ export function arrayUnique (array) {
     }
   }
   return a;
-}
-
-export function arrayContains (needle, array_haystack) {
-  // console.log("arrayContains, needle:", needle, ", haystack: ", array_haystack);
-  if (array_haystack) {
-    return array_haystack.indexOf(needle) > -1;
-  } else {
-    return false;
-  }
-}
-
-export function stringContains (needle, string_haystack) {
-  // console.log("stringContains, needle:", needle, ", haystack: ", string_haystack);
-  if (string_haystack) {
-    return string_haystack.indexOf(needle) !== -1;
-  } else {
-    return false;
-  }
 }
 
 export function calculateBallotBaseUrl (incoming_ballot_base_url, incoming_pathname) {
@@ -81,29 +72,6 @@ export function capitalizeString (raw_string) {
   }
 }
 
-export function sentenceCaseString (raw_string_incoming) {
-  if (raw_string_incoming === undefined) {
-    return "";
-  }
-  var raw_string = raw_string_incoming.toLowerCase();
-  var string_array = raw_string.split(".");
-  var final_string = "";
-  var count;
-  var count2;
-  for (count = 0; count < string_array.length; count++) {
-     var spaceput = "";
-     var spaceCount = string_array[count].replace(/^(\s*).*$/, "$1").length;
-     string_array[count] = string_array[count].replace(/^\s+/, "");
-     var new_string = string_array[count].charAt(string_array[count]).toUpperCase() + string_array[count].slice(1);
-     for (count2 = 0; count2 < spaceCount; count2++) {
-       spaceput = spaceput + " ";
-     }
-     final_string = final_string + spaceput + new_string + ".";
-  }
-  final_string = final_string.substring(0, final_string.length - 1);
-  return final_string;
-}
-
 export function cleanArray (actual) {
   var newArray = [];
   for (var i = 0; i < actual.length; i++) {
@@ -114,10 +82,11 @@ export function cleanArray (actual) {
   return newArray;
 }
 
-export function isValidUrl (raw_string) {
-  let raw_string_trimmed = raw_string.trim();
-  let regexp = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
-  return regexp.test(raw_string_trimmed);
+export function elipses (name, mobile){
+  function cut (position){
+    return name.length < position ? name : `${name.slice(0, position)}...`;
+  }
+  return mobile ? cut(3) : cut(8);
 }
 
 export function extractTwitterHandleFromTextString (raw_string) {
@@ -135,6 +104,17 @@ export function extractTwitterHandleFromTextString (raw_string) {
   lowerCaseString = lowerCaseString.replace("/", "");
   return lowerCaseString;
 }
+
+export function isProperlyFormattedVoterGuideWeVoteId (voterGuideWeVoteId) {
+  return voterGuideWeVoteId && stringContains("wv", voterGuideWeVoteId) && stringContains("vg", voterGuideWeVoteId);
+}
+
+export function isValidUrl (raw_string) {
+  let raw_string_trimmed = raw_string.trim();
+  let regexp = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+  return regexp.test(raw_string_trimmed);
+}
+
 /**
  * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
  * Duplicate values in the second object will overwrite those in the first
@@ -200,6 +180,29 @@ export function returnFirstXWords (originalString, numberOfWordsToReturn) {
   return xWords;
 }
 
+export function sentenceCaseString (raw_string_incoming) {
+  if (raw_string_incoming === undefined) {
+    return "";
+  }
+  var raw_string = raw_string_incoming.toLowerCase();
+  var string_array = raw_string.split(".");
+  var final_string = "";
+  var count;
+  var count2;
+  for (count = 0; count < string_array.length; count++) {
+     var spaceput = "";
+     var spaceCount = string_array[count].replace(/^(\s*).*$/, "$1").length;
+     string_array[count] = string_array[count].replace(/^\s+/, "");
+     var new_string = string_array[count].charAt(string_array[count]).toUpperCase() + string_array[count].slice(1);
+     for (count2 = 0; count2 < spaceCount; count2++) {
+       spaceput = spaceput + " ";
+     }
+     final_string = final_string + spaceput + new_string + ".";
+  }
+  final_string = final_string.substring(0, final_string.length - 1);
+  return final_string;
+}
+
 export function shortenText (incoming_string, maximum_length){
   let maximum_length_int = parseInt(maximum_length, 10);
   let crop_length_to_make_room_for_ellipses = maximum_length_int - 2;
@@ -209,11 +212,13 @@ export function shortenText (incoming_string, maximum_length){
   return incoming_string.length < maximum_length_int ? incoming_string : `${incoming_string.slice(0, crop_length_to_make_room_for_ellipses)}...`;
 }
 
-export function elipses (name, mobile){
-  function cut (position){
-    return name.length < position ? name : `${name.slice(0, position)}...`;
+export function stringContains (needle, string_haystack) {
+  // console.log("stringContains, needle:", needle, ", haystack: ", string_haystack);
+  if (string_haystack) {
+    return string_haystack.indexOf(needle) !== -1;
+  } else {
+    return false;
   }
-  return mobile ? cut(3) : cut(8);
 }
 
 export let youtube_reg = /(http:|https:)?\/\/(www\.)?(youtube.com|youtu.be)\/(watch)?(\?v=)?(\S+)?/;

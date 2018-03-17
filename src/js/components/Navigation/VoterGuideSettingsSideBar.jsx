@@ -59,6 +59,15 @@ export default class VoterGuideSettingsSideBar extends Component {
       <div className="SettingsItem__summary__election-title" >{electionName}</div>
       <div className="SettingsItem__summary__election-date" >{electionDayText}</div>
 
+      <div className="SettingsItem__summary__item-container " >
+        <div>
+          <Link to={"/voterguide/" + this.state.voterGuide.organization_we_vote_id + "/ballot/election/" + this.state.voterGuide.google_civic_election_id} className="SettingsItem__summary__item" >
+            <span className="SettingsItem__summary__item__display-name">
+              Jump to this Voter Guide</span>
+          </Link>
+        </div>
+      </div>
+
       <div className={this.state.editMode === "general" ?
            "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
            "SettingsItem__summary__item-container "} >
