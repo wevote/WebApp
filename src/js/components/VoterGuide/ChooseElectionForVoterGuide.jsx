@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import BallotStore from "../../stores/BallotStore";
 import { cordovaDot } from "../../utils/cordovaUtils";
 import ElectionActions from "../../actions/ElectionActions";

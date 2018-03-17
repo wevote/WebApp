@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import GuidePositionListForVoter from "./VoterGuide/GuidePositionListForVoter";
 import { historyPush } from "../utils/cordovaUtils";
 import LoadingWheel from "../components/LoadingWheel";

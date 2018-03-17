@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
 import { showToastError, showToastSuccess } from "../../utils/showToast";
 import ShareButtonDropdown from "./ShareButtonDropdown";

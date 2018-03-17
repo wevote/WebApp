@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
 import { historyPush } from "../../utils/cordovaUtils";

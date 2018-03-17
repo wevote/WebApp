@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { capitalizeString } from "../../utils/textFormat";
 import GuideList from "../../components/VoterGuide/GuideList";
 import Helmet from "react-helmet";

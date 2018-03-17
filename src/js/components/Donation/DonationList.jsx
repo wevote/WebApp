@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import {Table, Panel} from "react-bootstrap";
 import moment from "moment";
 import VoterStore from "../../stores/VoterStore";

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
 import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
