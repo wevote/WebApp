@@ -57,7 +57,7 @@ export default class HeaderBarProfileSlideIn extends Component {
   }
 
   render () {
-    console.log("STEVE STEVE HeaderBarProfileSlideIn render");
+    // console.log("STEVE STEVE HeaderBarProfileSlideIn render");
     let isSignedIn = this.props.voter.is_signed_in;
     let voter = this.props.voter;
     let voterPhotoUrlMedium = voter.voter_photo_url_medium;

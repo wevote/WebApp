@@ -68,6 +68,8 @@ export default class VoterGuideBallot extends Component {
       showBallotSummaryModal: false,
       voter_ballot_list: [],
       waiting_for_new_ballot_items: false,
+
+      ballot_item_unfurled_tracker: {},
     };
 
     this.nullFunction = this.nullFunction.bind(this);
@@ -251,6 +253,9 @@ export default class VoterGuideBallot extends Component {
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
+
+    // save current open/close status to BallotStore
+    BallotActions.voterBallotItemOpenOrClosedSave(this.state.ballot_item_unfurled_tracker);
   }
 
   nullFunction () {
@@ -294,6 +299,20 @@ export default class VoterGuideBallot extends Component {
   toggleBallotSummaryModal () {
     this.setState({
       showBallotSummaryModal: !this.state.showBallotSummaryModal,
+    });
+  }
+
+  updateOfficeDisplayUnfurledTracker = (we_vote_id, status) => {
+    console.log('hi', we_vote_id, status)
+
+    // TODO: Add state prop above -DONE
+    // TODO: Add action function to VoterGuideActions???
+    // TODO: Add state var update in onBallotStoreChange ???
+    // TODO: add store update to componentWillUnmount ???
+
+    const new_ballot_item_unfurled_tracker = { ... this.state.ballot_item_unfurled_tracker, [we_vote_id]: status};
+    this.setState({
+      ballot_item_unfurled_tracker: new_ballot_item_unfurled_tracker
     });
   }
 
@@ -356,6 +375,13 @@ export default class VoterGuideBallot extends Component {
     this.setState({
       ballotElectionList: BallotStore.ballotElectionList(),
     });
+
+
+    if (Object.keys(this.state.ballot_item_unfurled_tracker).length === 0) {
+      this.setState({
+        ballot_item_unfurled_tracker: BallotStore.current_ballot_item_unfurled_tracker
+      });
+    }
   }
 
   onElectionStoreChange () {
@@ -673,6 +699,7 @@ export default class VoterGuideBallot extends Component {
                   {ballot_with_remaining_items.map( (item) => <BallotItemCompressed toggleCandidateModal={this.toggleCandidateModal}
                                                                toggleMeasureModal={this.toggleMeasureModal}
                                                                key={item.we_vote_id}
+                                                               updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
                                                                organization={this.props.organization}
                                                                organization_we_vote_id={this.props.organization.organization_we_vote_id}
                                                                {...item} />)}
