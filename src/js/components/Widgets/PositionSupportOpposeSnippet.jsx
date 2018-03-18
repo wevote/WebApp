@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import ReactPlayer from "react-player";
 import { cordovaDot } from "../../utils/cordovaUtils";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";

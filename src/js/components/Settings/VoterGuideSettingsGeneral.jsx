@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import LoadingWheel from "../../components/LoadingWheel";

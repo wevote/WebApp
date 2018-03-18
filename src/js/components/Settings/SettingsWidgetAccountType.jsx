@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import LoadingWheel from "../../components/LoadingWheel";
 import OrganizationActions from "../../actions/OrganizationActions";

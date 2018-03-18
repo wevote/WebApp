@@ -120,7 +120,6 @@ export default class VoterEmailAddressEntry extends Component {
       return LoadingWheel;
     }
     //console.log("Entering VoterEmailAddressEntry.jsx");
-
     const email_address_status_html = <span>
       { this.state.email_address_status.email_address_already_owned_by_other_voter &&
         !this.state.email_address_status.link_to_sign_in_email_sent ?

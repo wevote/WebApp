@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import FollowToggle from "../Widgets/FollowToggle";
 import ImageHandler from "../../components/ImageHandler";
 import IssueStore from "../../stores/IssueStore";

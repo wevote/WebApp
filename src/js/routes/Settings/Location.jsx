@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import AddressBox from "../../components/AddressBox";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";

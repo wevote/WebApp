@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
 import OrganizationActions from "../../actions/OrganizationActions";
 import ImageHandler from "../ImageHandler";

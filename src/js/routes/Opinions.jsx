@@ -1,9 +1,10 @@
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router";
 import VoterGuideStore from "../stores/VoterGuideStore";
 import Helmet from "react-helmet";
 import SearchGuidesToFollowBox from "../components/Search/SearchGuidesToFollowBox";
 import GuideList from "../components/VoterGuide/GuideList";
-import { Link } from "react-router";
-import React, {Component, PropTypes } from "react";
 
 /* VISUAL DESIGN HERE: https://invis.io/TR4A1NYAQ */
 
