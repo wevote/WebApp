@@ -48,6 +48,7 @@ export default class VoterGuideBallot extends Component {
     super(props);
     this.state = {
       ballotElectionList: [],
+      ballot_item_unfurled_tracker: {},
       ballot_returned_we_vote_id: "",
       ballot_location_shortcut: "",
       candidate_for_modal: {
@@ -68,8 +69,6 @@ export default class VoterGuideBallot extends Component {
       showBallotSummaryModal: false,
       voter_ballot_list: [],
       waiting_for_new_ballot_items: false,
-
-      ballot_item_unfurled_tracker: {},
     };
 
     this.nullFunction = this.nullFunction.bind(this);
@@ -302,20 +301,6 @@ export default class VoterGuideBallot extends Component {
     });
   }
 
-  updateOfficeDisplayUnfurledTracker = (we_vote_id, status) => {
-    console.log('hi', we_vote_id, status)
-
-    // TODO: Add state prop above -DONE
-    // TODO: Add action function to VoterGuideActions???
-    // TODO: Add state var update in onBallotStoreChange ???
-    // TODO: add store update to componentWillUnmount ???
-
-    const new_ballot_item_unfurled_tracker = { ... this.state.ballot_item_unfurled_tracker, [we_vote_id]: status};
-    this.setState({
-      ballot_item_unfurled_tracker: new_ballot_item_unfurled_tracker
-    });
-  }
-
   onVoterStoreChange () {
     // console.log("VoterGuideBallot.jsx onVoterStoreChange");
     if (this.state.mounted) {
@@ -375,7 +360,6 @@ export default class VoterGuideBallot extends Component {
     this.setState({
       ballotElectionList: BallotStore.ballotElectionList(),
     });
-
 
     if (Object.keys(this.state.ballot_item_unfurled_tracker).length === 0) {
       this.setState({
@@ -498,6 +482,13 @@ export default class VoterGuideBallot extends Component {
   pledgeToVoteWithVoterGuide () {
     // console.log("VoterGuideBallot pledgeToVoteWithVoterGuide, this.state.voter_guide:", this.state.voter_guide);
     VoterGuideActions.pledgeToVoteWithVoterGuide(this.state.voter_guide.we_vote_id);
+  }
+
+  updateOfficeDisplayUnfurledTracker = (we_vote_id, status) => {
+    const new_ballot_item_unfurled_tracker = { ... this.state.ballot_item_unfurled_tracker, [we_vote_id]: status};
+    this.setState({
+      ballot_item_unfurled_tracker: new_ballot_item_unfurled_tracker
+    });
   }
 
   render () {
