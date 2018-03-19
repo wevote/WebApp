@@ -96,13 +96,10 @@ export default class IssuesToFollow extends Component {
                      searchUpdateDelayTime={0} />
           <br />
           <div className="network-issues-list voter-guide-list card">
-            <div className="card-child__list-group">
-              {
-                this.state.issues_to_follow && this.state.issues_to_follow.length ?
-                  issue_list_for_display :
-                  null
-              }
-            </div>
+            { this.state.issues_to_follow && this.state.issues_to_follow.length ?
+              issue_list_for_display :
+              null
+            }
           </div>
           <Link className="pull-left" to="/issues_followed">Issues you are following</Link>
           <br />
