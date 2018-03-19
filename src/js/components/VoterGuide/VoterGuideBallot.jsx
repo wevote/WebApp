@@ -50,6 +50,7 @@ export default class VoterGuideBallot extends Component {
     super(props);
     this.state = {
       ballotElectionList: [],
+      ballot_item_unfurled_tracker: {},
       ballot_returned_we_vote_id: "",
       ballot_location_shortcut: "",
       candidate_for_modal: {
@@ -253,6 +254,9 @@ export default class VoterGuideBallot extends Component {
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
+
+    // save current open/close status to BallotStore
+    BallotActions.voterBallotItemOpenOrClosedSave(this.state.ballot_item_unfurled_tracker);
   }
 
   nullFunction () {
@@ -358,6 +362,12 @@ export default class VoterGuideBallot extends Component {
     this.setState({
       ballotElectionList: BallotStore.ballotElectionList(),
     });
+
+    if (Object.keys(this.state.ballot_item_unfurled_tracker).length === 0) {
+      this.setState({
+        ballot_item_unfurled_tracker: BallotStore.current_ballot_item_unfurled_tracker
+      });
+    }
   }
 
   onElectionStoreChange () {
@@ -474,6 +484,13 @@ export default class VoterGuideBallot extends Component {
   pledgeToVoteWithVoterGuide () {
     // console.log("VoterGuideBallot pledgeToVoteWithVoterGuide, this.state.voter_guide:", this.state.voter_guide);
     VoterGuideActions.pledgeToVoteWithVoterGuide(this.state.voter_guide.we_vote_id);
+  }
+
+  updateOfficeDisplayUnfurledTracker = (we_vote_id, status) => {
+    const new_ballot_item_unfurled_tracker = { ... this.state.ballot_item_unfurled_tracker, [we_vote_id]: status};
+    this.setState({
+      ballot_item_unfurled_tracker: new_ballot_item_unfurled_tracker
+    });
   }
 
   render () {
@@ -675,6 +692,7 @@ export default class VoterGuideBallot extends Component {
                   {ballot_with_remaining_items.map( (item) => <BallotItemCompressed toggleCandidateModal={this.toggleCandidateModal}
                                                                toggleMeasureModal={this.toggleMeasureModal}
                                                                key={item.we_vote_id}
+                                                               updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
                                                                organization={this.props.organization}
                                                                organization_we_vote_id={this.props.organization.organization_we_vote_id}
                                                                {...item} />)}
