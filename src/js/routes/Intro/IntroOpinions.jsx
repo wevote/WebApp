@@ -1,10 +1,11 @@
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router";
 import { Button } from "react-bootstrap";
 import SearchGuidesToFollowBox from "../../components/Search/SearchGuidesToFollowBox";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 import GuideList from "../../components/VoterGuide/GuideList";
-import { Link } from "react-router";
-import React, {Component, PropTypes } from "react";
 
 export default class IntroOpinionsPage extends Component {
   static propTypes = {

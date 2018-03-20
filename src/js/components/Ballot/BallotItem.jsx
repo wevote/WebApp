@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import CandidateList from "../Ballot/CandidateList";
 import MeasureItem from "../Ballot/MeasureItem";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
@@ -26,7 +27,7 @@ export default class BallotItem extends Component {
             <MeasureItem {...this.props}
                      link_to_ballot_item_page /> :
           <span>
-            <h2 className="BallotItem__summary__display-name">
+            <h2 className="BallotItem__summary__item__display-name">
               { this.props.ballot_item_display_name }
             </h2>
             <BookmarkToggle

@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import ChooseElectionForVoterGuide from "../../components/VoterGuide/ChooseElectionForVoterGuide";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
-import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterStore from "../../stores/VoterStore";
 
 
@@ -119,12 +119,8 @@ export default class VoterGuideChooseElection extends Component {
     historyPush(sampleBallotLink);
   }
 
-  saveVoterGuideForElection (google_civic_election_id) {
-    VoterGuideActions.voterGuideSave(google_civic_election_id, "");
-  }
-
-  goToVoterGuideBallotItems () {
-    let voterGuideBallotItems = "/vg/wv02vg2634/settings";
+  goToVoterGuideBallotItems (voterGuideWeVoteId) {
+    let voterGuideBallotItems = "/vg/" + voterGuideWeVoteId + "/settings";
     historyPush(voterGuideBallotItems);
   }
 
@@ -138,18 +134,16 @@ export default class VoterGuideChooseElection extends Component {
   render () {
 
     return <div>
-      <Helmet title="Welcome to We Vote" />
-        <div className="intro-story container well u-inset--md">
+      <Helmet title="Choose Election - We Vote" />
+        <div className="intro-story container well">
           <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
           <div className="intro-story__h1 xs-text-left">Choose Election</div>
           <div className="row">
-            <div className="col-2">&nbsp;</div>
-            <div className="col-8">
-              <div className="elections-list-container">
-                <ChooseElectionForVoterGuide destinationFunction={this.saveVoterGuideForElection.bind(this)} />
-              </div>
+            <div className="col-1 col-md-2">&nbsp;</div>
+            <div className="col-10 col-md-8">
+              <ChooseElectionForVoterGuide destinationFunction={this.goToVoterGuideBallotItems.bind(this)} />
             </div>
-            <div className="col-2">&nbsp;</div>
+            <div className="col-1 col-md-2">&nbsp;</div>
           </div>
         </div>
       </div>;

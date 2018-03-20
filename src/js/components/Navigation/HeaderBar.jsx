@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router";
 import Icon from "react-svg-icons";
 import BallotStore from "../../stores/BallotStore";
@@ -7,7 +8,6 @@ import { cordovaDot, historyPush, isCordova, isWebApp } from "../../utils/cordov
 import cookies from "../../utils/cookies";
 import FriendStore from "../../stores/FriendStore";
 import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
-import HeaderBarProfileSlideIn from "./HeaderBarProfileSlideIn";
 import HeaderBarAboutMenu from "./HeaderBarAboutMenu";
 import OrganizationActions from "../../actions/OrganizationActions";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
@@ -159,7 +159,7 @@ export default class HeaderBar extends Component {
 
     return (
       <header className="page-header">
-        { (!weVoteBrandingOff &&  isWebApp()) &&
+        {!weVoteBrandingOff && isWebApp() &&
           <span>
             <Link to="/welcome" className="page-logo page-logo-full-size h4 hidden-xs">
               We Vote
@@ -172,7 +172,6 @@ export default class HeaderBar extends Component {
                 </Link> :
                 <Link to="/welcome" className="page-logo page-logo-short h4 visible-xs">
                   We Vote
-                  <span className="page-logo__version"> alpha</span>
                 </Link>
               }
             </span>
@@ -203,12 +202,12 @@ export default class HeaderBar extends Component {
 
           { showFullNavigation && !weVoteBrandingOff ? HeaderBar.donate(pathname === "/more/donate") : null }
 
-          { (!showFullNavigation && isWebApp()) &&
+          { !showFullNavigation && isWebApp() &&
             <button type="button" className="btn btn-sm btn-success"
                 onClick={this.goToGetStarted}>Sample Ballot</button> }
 
-          { (!showFullNavigation && isWebApp()) &&
-            <Link to="/more/sign_in" className="sign_in header-nav__item">
+          { !showFullNavigation && isWebApp() &&
+            <Link to="/settings/account" className="sign_in header-nav__item">
               Sign In
             </Link>
           }
@@ -216,7 +215,7 @@ export default class HeaderBar extends Component {
 
         { (showFullNavigation || isCordova()) && <SearchAllBox /> }
 
-        { (showFullNavigation && isWebApp()) &&
+        { showFullNavigation && isWebApp() &&
           <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleProfilePopUp}>
           {voterPhotoUrlMedium ?
             <div id="js-header-avatar" className="header-nav__avatar-container">
@@ -240,18 +239,7 @@ export default class HeaderBar extends Component {
                                  hideProfilePopUp={this.hideProfilePopUp}
                                  transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
                                  signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)}
-          />
-          :
-          <HeaderBarProfileSlideIn {...this.props}
-                                 onClick={this.toggleProfilePopUp}
-                                 profilePopUpOpen={this.state.profilePopUpOpen}
-                                 bookmarks={this.state.bookmarks}
-                                 weVoteBrandingOff={this.state.we_vote_branding_off}
-                                 toggleProfilePopUp={this.toggleProfilePopUp}
-                                 hideProfilePopUp={this.hideProfilePopUp}
-                                 transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
-                                 signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)}
-          />
+          /> : null
         }
       </header>
     );

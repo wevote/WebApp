@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -12,7 +14,7 @@ import SelectVoterGuidesSideBar from "../../components/Navigation/SelectVoterGui
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
-// import "react-slide-out/lib/index.css"; // This is included in the index.html file
+import { isWebApp } from "../../utils/cordovaUtils";
 
 export default class SettingsDashboard extends Component {
   static propTypes = {
@@ -45,6 +47,9 @@ export default class SettingsDashboard extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // Get Voter and Voter's Organization
     let voter = VoterStore.getVoter();
+    this.setState({
+      voter: voter,
+    });
     let linked_organization_we_vote_id = voter.linked_organization_we_vote_id;
     // console.log("SettingsDashboard componentDidMount linked_organization_we_vote_id: ", linked_organization_we_vote_id);
     if (linked_organization_we_vote_id) {
@@ -65,6 +70,9 @@ export default class SettingsDashboard extends Component {
 
   componentWillReceiveProps (nextProps) {
     let voter = VoterStore.getVoter();
+    this.setState({
+      voter: voter,
+    });
     let linked_organization_we_vote_id = voter.linked_organization_we_vote_id;
     // console.log("SettingsDashboard componentWillReceiveProps linked_organization_we_vote_id: ", linked_organization_we_vote_id);
     if (linked_organization_we_vote_id && this.state.linked_organization_we_vote_id !== linked_organization_we_vote_id) {
@@ -105,6 +113,9 @@ export default class SettingsDashboard extends Component {
 
   onVoterStoreChange () {
     let voter = VoterStore.getVoter();
+    this.setState({
+      voter: voter,
+    });
     let linked_organization_we_vote_id = voter.linked_organization_we_vote_id;
     // console.log("SettingsDashboard onVoterStoreChange linked_organization_we_vote_id: ", linked_organization_we_vote_id);
     if (linked_organization_we_vote_id && this.state.linked_organization_we_vote_id !== linked_organization_we_vote_id) {
@@ -124,27 +135,6 @@ export default class SettingsDashboard extends Component {
       sliderOpen: false
     });
   }
-                // <a href='#' onClick={this.openSlider}>Open Slider</a>
-
-            // {/* Mobile mode navigation, under react slider */}
-            // <div className="col-xs-12 visible-xs">
-            //   <SettingsPersonalSideBar editMode={this.state.editMode} />
-            //
-            //   <SelectVoterGuidesSideBar />
-            // </div>
-
-            // {/* Mobile mode content */}
-            // <Slider title='test title'
-            //                 footer={
-            //                   <div style={{padding: '15px'}}>
-            //                     <a href='#' onClick={this.closeSlider}>Close Slider</a>
-            //                   </div>
-            //                 }
-            //                 isOpen={this.state.sliderOpen}
-            //                 onOutsideClick={this.closeSlider}
-            //   >
-            //     <div>Hello World</div>
-            // </Slider>
 
   render () {
     // console.log("SettingsDashboard render");
@@ -168,19 +158,21 @@ export default class SettingsDashboard extends Component {
         break;
     }
 
+    // console.log("this.state.organization.organization_banner_url:", this.state.organization.organization_banner_url);
     return <div className="settings-dashboard">
       <div className="page-content-container">
         <div className="container-fluid">
           { this.state.organization && this.state.organization.organization_we_vote_id ?
-            <div className="row">
-              <div className="col-md-12">
-                { this.state.organization && this.state.organization.organization_banner_url !== "" ?
-                  <div className="organization-banner-image-div">
-                    <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
-                  </div> :
-                  <div className="organization-banner-image-non-twitter-users" />
-                }
-              </div>
+          <div className="row">
+            <div className="col-md-12">
+              { this.state.organization && this.state.organization.organization_banner_url && this.state.organization.organization_banner_url !== "" ?
+                <div className="organization-banner-image-div">
+                  <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
+                </div> :
+                null
+              }
+            </div>
+            {this.state.organization.organization_name && !this.state.organization.organization_name.startsWith("Voter-") ?
               <div className="col-md-12">
                 <div className="card">
                   <div className="card-main">
@@ -188,16 +180,26 @@ export default class SettingsDashboard extends Component {
                                       turnOffTwitterHandle />
                   </div>
                 </div>
-              </div>
-            </div> :
-            null }
+              </div> :
+              null }
+          </div> :
+          null }
+
+          <div className="row visible-xs u-padding-top--md">
+            <Link to={isWebApp() ? "/settings/menu" : "/more/hamburger"}>&lt; Back to Your Settings</Link>
+          </div>
 
           <div className="row hidden-xs">
             {/* Desktop mode left navigation */}
             <div className="col-md-4 sidebar-menu">
-              <SettingsPersonalSideBar editMode={this.state.editMode} />
+              <SettingsPersonalSideBar editMode={this.state.editMode} isSignedIn={this.state.voter.is_signed_in} />
 
               <SelectVoterGuidesSideBar />
+
+              <h4 className="text-left" />
+              <div className="terms-and-privacy u-padding-top--md">
+                <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy Policy</Link>
+              </div>
             </div>
             {/* Desktop mode content */}
             <div className="col-md-8">

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { capitalizeString, sentenceCaseString } from "../../utils/textFormat";
 
 
@@ -17,15 +18,15 @@ export default class BallotSideBarLink extends Component {
   }
 
   render () {
-    let label_in_sentence_case = capitalizeString(this.props.label);
-    let subtitle_in_sentence_case = sentenceCaseString(this.props.subtitle);
+    let labelInSentenceCase = capitalizeString(this.props.label);
+    let subtitleInSentenceCase = sentenceCaseString(this.props.subtitle);
 
     return <div className="BallotItem__summary__item-container" onClick={this.props.onClick.bind(this) }>
       <div>
-        <a href={this.props.url} className="BallotItem__summary__item" >
-          <span className="BallotItem__summary__display-name">{label_in_sentence_case}</span>
+        <a href={this.props.url} className="BallotItem__summary__item__display-name" >
+          <span className="BallotItem__summary__display-name">{labelInSentenceCase}</span>
           { this.props.displaySubtitles ?
-            <span className="BallotItem__summary-subtitle"> {subtitle_in_sentence_case}</span> : null }
+            <span className="BallotItem__summary__item__subtitle"> {subtitleInSentenceCase}</span> : null }
         </a>
       </div>
     </div>;

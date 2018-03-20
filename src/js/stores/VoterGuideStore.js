@@ -137,6 +137,10 @@ class VoterGuideStore extends ReduceStore {
     return this.returnVoterGuidesFromListOfIds(OrganizationStore.getState().organization_we_vote_ids_voter_is_ignoring) || [];
   }
 
+  getVoterGuideSaveResults () {
+    return this.getState().voter_guide_save_results;
+  }
+
   reduce (state, action) {
     let all_cached_voter_guides;
     let all_cached_voter_guides_by_election;
@@ -494,34 +498,35 @@ class VoterGuideStore extends ReduceStore {
         };
 
       case "voterGuideSave":
-        let voter_guide_temp = action.res;
+        let voter_guide_save_results = action.res;
         all_cached_voter_guides_by_organization = state.all_cached_voter_guides_by_organization || {};
         all_cached_voter_guides_by_voter_guide = state.all_cached_voter_guides_by_voter_guide || {};
 
         // Store it by organization
-        if (all_cached_voter_guides_by_organization[voter_guide_temp.organization_we_vote_id] === undefined) {
-          all_cached_voter_guides_by_organization[voter_guide_temp.organization_we_vote_id] = [];
+        if (all_cached_voter_guides_by_organization[voter_guide_save_results.organization_we_vote_id] === undefined) {
+          all_cached_voter_guides_by_organization[voter_guide_save_results.organization_we_vote_id] = [];
         }
         replaced_existing_voter_guide = false;
-        temp_cached_voter_guides_for_organization = all_cached_voter_guides_by_organization[voter_guide_temp.organization_we_vote_id];
+        temp_cached_voter_guides_for_organization = all_cached_voter_guides_by_organization[voter_guide_save_results.organization_we_vote_id];
         for (let count = 0; count < temp_cached_voter_guides_for_organization.length; count++) {
-          if (temp_cached_voter_guides_for_organization[count].we_vote_id === voter_guide_temp.we_vote_id) {
+          if (temp_cached_voter_guides_for_organization[count].we_vote_id === voter_guide_save_results.we_vote_id) {
             // Replace the former voter_guide with the new one
-            temp_cached_voter_guides_for_organization[count] = voter_guide_temp;
+            temp_cached_voter_guides_for_organization[count] = voter_guide_save_results;
             replaced_existing_voter_guide = true;
           }
         }
         if (!replaced_existing_voter_guide) {
-          temp_cached_voter_guides_for_organization.push(voter_guide_temp);
+          temp_cached_voter_guides_for_organization.push(voter_guide_save_results);
         }
-        all_cached_voter_guides_by_organization[voter_guide_temp.organization_we_vote_id] = temp_cached_voter_guides_for_organization;
+        all_cached_voter_guides_by_organization[voter_guide_save_results.organization_we_vote_id] = temp_cached_voter_guides_for_organization;
         // Store them by voter guide
-        all_cached_voter_guides_by_voter_guide[voter_guide_temp.we_vote_id] = voter_guide_temp;
+        all_cached_voter_guides_by_voter_guide[voter_guide_save_results.we_vote_id] = voter_guide_save_results;
 
         return {
           ...state,
           all_cached_voter_guides_by_organization: all_cached_voter_guides_by_organization,
           all_cached_voter_guides_by_voter_guide: all_cached_voter_guides_by_voter_guide,
+          voter_guide_save_results: voter_guide_save_results,
         };
 
       case "organizationFollow":

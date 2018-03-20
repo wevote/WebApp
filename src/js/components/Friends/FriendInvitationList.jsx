@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import FriendInvitationDisplayForList from "./FriendInvitationDisplayForList";
 import FriendInvitationEmailForList from "./FriendInvitationEmailForList";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";

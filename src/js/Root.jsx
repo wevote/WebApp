@@ -23,6 +23,7 @@ import FAQ from "./routes/More/FAQ";
 import FacebookInvitableFriends from "./routes/FacebookInvitableFriends";
 import Friends from "./routes/Friends";
 import GetStarted from "./routes/Intro/GetStarted";
+import HamburgerMenu from "./routes/More/HamburgerMenu";
 import HowToUse from "./routes/More/HowToUse";
 import Intro from "./routes/Intro/Intro";
 import IntroContests from "./routes/Intro/IntroContests";
@@ -51,6 +52,7 @@ import RegisterToVote from "./routes/More/RegisterToVote";
 import SampleBallot from "./routes/Intro/SampleBallot";
 import ScratchPad from "./routes/ScratchPad";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
+import SettingsMenuMobile from "./routes/Settings/SettingsMenuMobile";
 import SignIn from "./routes/SignIn/SignIn";
 import SignInJumpProcess from "./routes/Process/SignInJumpProcess";
 import FacebookLandingProcess from "./routes/Process/FacebookLandingProcess";
@@ -68,10 +70,13 @@ import VoterGuideGetStarted from "./routes/VoterGuide/VoterGuideGetStarted";
 import VoterGuideOrganizationInfo from "./routes/VoterGuide/VoterGuideOrganizationInfo";
 import VoterGuideOrganizationType from "./routes/VoterGuide/VoterGuideOrganizationType";
 import VoterGuideSettingsDashboard from "./routes/Settings/VoterGuideSettingsDashboard";
+import VoterGuideSettingsMenuMobile from "./routes/Settings/VoterGuideSettingsMenuMobile";
+import VoterGuidesMenuMobile from "./routes/Settings/VoterGuidesMenuMobile";
 import VerifyRegistration from "./routes/More/VerifyRegistration";
 import VerifyThisIsMe from "./routes/VoterGuide/VerifyThisIsMe";
 import Welcome from "./routes/Welcome";
 import YourPage from "./routes/YourPage";
+import { isWebApp } from "./utils/cordovaUtils";
 
 
 // See /js/components/Navigation/HeaderBar.jsx for show_full_navigation cookie
@@ -80,9 +85,7 @@ const firstVisit = !cookies.getItem("voter_device_id");
 const routes = () =>
   <Route path="/" component={Application}>
     <Route component={Intro} />
-    { firstVisit ?
-      <IndexRedirect to="/welcome" /> :
-      <IndexRedirect to="/welcome" /> }
+    { isWebApp() ? <IndexRedirect to="/welcome" /> : firstVisit ? <IndexRedirect to="/wevoteintro/network" /> : <IndexRedirect to="/ballot" />}
     <Route path="/welcome" component={Welcome} />
     <Route path="/activity" component={Activity} />
     <Route path="/ballot" component={BallotIndex}>
@@ -114,19 +117,13 @@ const routes = () =>
     <Route path="/intro/sample_ballot" component={SampleBallot} />
     <Route path="/intro/get_started" component={GetStarted} />
 
-    {/* Personal Settings go in this structure... */}
-    <Route path="/settings" component={SettingsDashboard}>
-      <IndexRoute component={SettingsDashboard} />
-      <Route path="/settings/claim" component={ClaimYourPage} />
-      <Route path="/settings/location" component={Location} />  /* Complete path on one line for searching */
-      <Route path="/settings/:edit_mode" component={SettingsDashboard} />
-    </Route>
-
-    {/* Voter Guide Settings go in this structure... */}
-    <Route path="/vg/:voter_guide_we_vote_id/settings" component={VoterGuideSettingsDashboard}>
-      <IndexRoute component={VoterGuideSettingsDashboard} />
-      <Route path="/vg/:voter_guide_we_vote_id/settings/:edit_mode" component={VoterGuideSettingsDashboard} />
-    </Route>
+    {/* Your Settings go in this structure... */}
+    <Route path="/settings" component={SettingsDashboard} />
+    <Route path="/settings/claim" component={ClaimYourPage} />
+    <Route path="/settings/location" component={Location} />  /* Complete path on one line for searching */
+    <Route path="/settings/menu" component={SettingsMenuMobile} />
+    <Route path="/settings/voterguidesmenu" component={VoterGuidesMenuMobile} />
+    <Route path="/settings/:edit_mode" component={SettingsDashboard} />
 
     {/* Ballot Off-shoot Pages */}
     <Route path="/opinions" component={Opinions} />
@@ -158,6 +155,7 @@ const routes = () =>
     <Route path="/more/facebookredirecttowevote" component={FacebookRedirectToWeVote} />
     <Route path="/more/faq" component={FAQ} />
     <Route path="/more/howtouse" component={HowToUse} />
+    <Route path="/more/hamburger" component={HamburgerMenu} />
     <Route path="/more/jump" component={SignInJumpProcess} />
     <Route path="/more/network" component={Network} />
     <Route path="/more/network/key/:invitation_secret_key" component={FriendInvitationByEmailVerifyProcess} />
@@ -174,7 +172,7 @@ const routes = () =>
     <Route path="/more/verify" component={VerifyRegistration} />
     <Route path="/more/vision" component={Organization} />
 
-    {/* Voter Guide Pages */}
+    {/* Voter Guide Pages - By Organization */}
     <Route path="/voterguide/:organization_we_vote_id" component={OrganizationVoterGuide} />
     <Route path="/voterguide/:organization_we_vote_id/ballot" component={OrganizationVoterGuide} />
     <Route path="/voterguide/:organization_we_vote_id/ballot/empty" component={OrganizationVoterGuide} />
@@ -186,8 +184,14 @@ const routes = () =>
     <Route path="/voterguide/:organization_we_vote_id/positions" component={props => <OrganizationVoterGuide {...props} active_route="positions" />} />
     <Route path="/voterguide/:organization_we_vote_id/:action_variable" component={OrganizationVoterGuide} />
     <Route path="/voterguideedit/:organization_we_vote_id" component={OrganizationVoterGuideEdit} />
-    <Route path="/voterguideedit/:organization_we_vote_id/:edit_mode" component={OrganizationVoterGuideEdit} />
-    <Route path="/voterguideedit/:organization_we_vote_id/:edit_mode/:active_tab" component={OrganizationVoterGuideEdit} />
+    <Route path="/voterguideedit/:organization_we_vote_id/:google_civic_election_id" component={OrganizationVoterGuideEdit} />
+    {/*<Route path="/voterguideedit/:organization_we_vote_id/:edit_mode" component={OrganizationVoterGuideEdit} />*/}
+    {/*<Route path="/voterguideedit/:organization_we_vote_id/:edit_mode/:active_tab" component={OrganizationVoterGuideEdit} />*/}
+
+    {/* Voter Guide Settings go in this structure... */}
+    <Route path="/vg/:voter_guide_we_vote_id/settings" component={VoterGuideSettingsDashboard} />
+    <Route path="/vg/:voter_guide_we_vote_id/settings/menu" component={VoterGuideSettingsMenuMobile} />
+    <Route path="/vg/:voter_guide_we_vote_id/settings/:edit_mode" component={VoterGuideSettingsDashboard} />
 
     <Route path="/voterguidegetstarted" component={VoterGuideGetStarted} />
     <Route path="/voterguideorgtype" component={VoterGuideOrganizationType} />

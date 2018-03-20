@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
 import BookmarkStore from "../../stores/BookmarkStore";
 import BookmarkActions from "../../actions/BookmarkActions";

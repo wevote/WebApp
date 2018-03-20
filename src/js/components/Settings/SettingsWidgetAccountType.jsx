@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import LoadingWheel from "../../components/LoadingWheel";
 import OrganizationActions from "../../actions/OrganizationActions";
@@ -169,12 +170,13 @@ export default class SettingsWidgetAccountType extends Component {
 
     return <div className="">
       <div>
+        <span className="pull-right u-gray-mid">{this.state.organizationTypeSavedStatus}</span>
         <h3 className="h3">Type of Profile</h3>
         { this.state.editFormOpen ?
           <span>
             <div className="">
               {this.state.showEditToggleOption ? <span className="pull-right">(<a className="" onClick={() => this.toggleEditForm()}>close</a>)</span> : null}
-           </div>
+            </div>
             {this.renderOrganizationType("I", this.state.organizationType, "Individual", "organizationTypeIdIndividual")}
             {this.renderOrganizationType("C3", this.state.organizationType, "Nonprofit 501(c)(3)", "organizationTypeIdC3")}
             {this.renderOrganizationType("C4", this.state.organizationType, "Nonprofit 501(c)(4)", "organizationTypeIdC4")}
@@ -185,8 +187,6 @@ export default class SettingsWidgetAccountType extends Component {
             {this.renderOrganizationType("NW", this.state.organizationType, "News Organization", "organizationTypeIdNews")}
             {this.renderOrganizationType("C", this.state.organizationType, "Company", "organizationTypeIdCompany")}
             {this.renderOrganizationType("U", this.state.organizationType, "Other", "organizationTypeIdUnknown")}
-            <br />
-            <span className="pull-right u-gray-mid">{this.state.organizationTypeSavedStatus}</span>
           </span> :
           <div className="">
             <span className="pull-right u-gray-mid">{this.state.organizationTypeSavedStatus}</span>

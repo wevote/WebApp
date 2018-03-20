@@ -3,7 +3,8 @@ import VoterGuideStore from "../../stores/VoterGuideStore";
 import SearchGuidesToFollowBox from "../Search/SearchGuidesToFollowBox";
 import GuideList from "../VoterGuide/GuideList";
 import { Link } from "react-router";
-import React, {Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 
 export default class NetworkOpinions extends Component {

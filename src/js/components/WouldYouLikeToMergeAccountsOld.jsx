@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Alert, Button } from "react-bootstrap";
 import FacebookActions from "../actions/FacebookActions";
 import FacebookStore from "../stores/FacebookStore";
@@ -89,8 +90,11 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
     const merge_status_html = <span>
       { !this.state.email_sign_in_status.yes_please_merge_accounts ?
         <Alert bsStyle="danger">
-          If you sign in now, all of your positions and friends will be merged with the account
-          that is already signed into this browser. Would you like to merge? (If NOT, please cancel.)
+          The choices you've made in this browser (when not signed in) can be merged with choices stored the previous time you signed in.<br />
+          <br />
+          Press "Cancel Sign In" to stop signing in, and keep your recent changes.<br />
+          <br />
+          Press "Sign In and Merge My Offline Changes" to merge your recent choices with the choices that were saved when you previously signed in.
         </Alert> :
         null }
       { this.state.email_sign_in_status.email_address_created ?
@@ -104,11 +108,11 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
     if (this.props.emailSecretKey && this.props.emailSecretKey !== "") {
       merge_action_button = <Button onClick={this.voterEmailAddressSignInConfirm.bind(this, this.props.emailSecretKey)}
                   bsStyle="primary">
-            Merge These Accounts</Button>;
+            Sign In and Merge My Offline Changes</Button>;
     } else {
       merge_action_button = <Button onClick={this.voterFacebookSignInConfirm.bind(this)}
                   bsStyle="primary">
-            Merge These Accounts</Button>;
+            Sign In and Merge My Offline Changes</Button>;
     }
 
     return <div className="guidelist card-child__list-group">
@@ -118,7 +122,7 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
           <Button onClick={this.cancelMerge.bind(this)}
                   bsStyle="default"
                   bsSize="small">
-            Cancel
+            Cancel Sign In
           </Button>
           {merge_action_button}
         </div>

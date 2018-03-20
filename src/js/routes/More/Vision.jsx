@@ -1,7 +1,9 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import Helmet from "react-helmet";
 import ReactPlayer from "react-player";
 import AnalyticsActions from "../../actions/AnalyticsActions";
+import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
+import ToolBar from "./ToolBar";
 import VoterStore from "../../stores/VoterStore";
 
 export default class Vision extends Component {
@@ -13,7 +15,7 @@ export default class Vision extends Component {
     return {};
   }
 
-  componentDidMount (){
+  componentDidMount () {
     AnalyticsActions.saveActionAboutVision(VoterStore.election_id());
   }
 
@@ -22,29 +24,7 @@ export default class Vision extends Component {
       <Helmet title="Vision - We Vote"/>
       <div className="container-fluid card">
         <h1 className="h1">Our Vision</h1>
-        <div className="btn-toolbar">
-          <a className="btn btn-social-icon btn-twitter" href="https://twitter.com/WeVote" target="_blank">
-            <span className="fa fa-twitter"/>
-          </a>
-
-          <a className="btn btn-social-icon btn-facebook" href="https://www.facebook.com/WeVoteUSA" target="_blank">
-            <span className="fa fa-facebook"/>
-          </a>
-
-          <a className="btn btn--email" href="http://eepurl.com/cx_frP" target="_blank">
-            <span>
-              <span className="btn--email__icon glyphicon glyphicon-envelope"/> Join Newsletter
-            </span>
-          </a>
-
-          <a className="btn btn-social-icon btn-github" href="https://github.com/WeVote" target="_blank">
-            <span className="fa fa-github"/>
-          </a>
-
-          <a className="btn btn-social-icon btn--medium" href="https://medium.com/@WeVote" target="_blank">
-            <span className="fa fa-medium"/>
-          </a>
-        </div>
+        <ToolBar />
 
         <br />
         <ReactPlayer url="https://player.vimeo.com/video/121315141" width="400px" height="308px"/>
@@ -63,9 +43,12 @@ export default class Vision extends Component {
         Our open platform empowers voters to create and share voter guides that aggregate information
         and opinions across personal networks. So you can help your friends be better voters too.<br />
         <br />
-        <h3 className="h3"><a href="https://help.wevote.us/hc/en-us/sections/115000140947-What-is-We-Vote-"
-                            target="_blank">Visit our help center to learn more about We Vote.&nbsp;<i
-          className="fa fa-external-link"/></a></h3>
+        <h3 className="h3">
+          <OpenExternalWebSite url="https://help.wevote.us/hc/en-us/sections/115000140947-What-is-We-Vote-"
+                               target="_blank"
+                               className="open-web-site open-web-site__no-left-padding"
+                               body={<span>Visit our help center to learn more about We Vote.&nbsp;<i className="fa fa-external-link"/></span>} />
+        </h3>
      </div>
     </div>;
   }

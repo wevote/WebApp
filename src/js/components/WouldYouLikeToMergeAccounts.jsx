@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Alert, Button } from "react-bootstrap";
 import { historyPush } from "../utils/cordovaUtils";
 
@@ -21,7 +22,11 @@ export default class WouldYouLikeToMergeAccounts extends Component {
 
     const merge_status_html = <span>
         <Alert bsStyle="warning">
-          If you sign in now, all of your positions and friends will be merged with the account that is already signed into this browser. Would you like to merge? (If NOT, please cancel.)
+          The choices you've made in this browser (when not signed in) can be merged with choices stored the previous time you signed in.<br />
+          <br />
+          Press "Cancel Sign In" to stop signing in, and keep your recent changes.<br />
+          <br />
+          Press "Sign In and Merge My Offline Changes" to merge your recent choices with the choices that were saved when you previously signed in.
         </Alert>
       </span>;
 
@@ -32,11 +37,11 @@ export default class WouldYouLikeToMergeAccounts extends Component {
           <Button onClick={cancelMergeFunction}
                   bsStyle="default"
                   bsSize="small">
-            Cancel
+            Cancel Sign In
           </Button>
           <Button onClick={pleaseMergeAccountsFunction}
                   bsStyle="primary">
-            Merge These Accounts</Button>
+            Sign In and Merge My Offline Changes</Button>
         </div>
       </div>;
   }

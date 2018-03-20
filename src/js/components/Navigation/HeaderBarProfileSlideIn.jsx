@@ -1,9 +1,15 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router";
 import Icon from "react-svg-icons";
 import { Table } from "react-bootstrap";
 import { isWebApp, enclosingRectangle, isCordova } from "../../utils/cordovaUtils";
-import HeaderBarProfileSlideInRow from "./HeaderBarProfileSlideInRow";
+import HamburgerMenuRow from "./HamburgerMenuRow";
+
+/* This class is deprecated March 15, 2018, Steve
+   We may want to revive a sliding in menu, if so this could be the basis.
+   Ok to delete this file/class in September 2018 (or earlier if you are certain)
+ */
 
 export default class HeaderBarProfileSlideIn extends Component {
   static propTypes = {
@@ -52,7 +58,7 @@ export default class HeaderBarProfileSlideIn extends Component {
   }
 
   render () {
-    console.log("STEVE STEVE HeaderBarProfileSlideIn render");
+    // console.log("STEVE STEVE HeaderBarProfileSlideIn render");
     let isSignedIn = this.props.voter.is_signed_in;
     let voter = this.props.voter;
     let voterPhotoUrlMedium = voter.voter_photo_url_medium;
@@ -80,14 +86,14 @@ export default class HeaderBarProfileSlideIn extends Component {
       <div className={profilePopUpOpen}>
         <div className={"profile-foot-menu"} ref={ (el) => (this.instance = el)} onClick={this.hideProfilePopUp}>
           <Table striped bordered condensed hover responsive style={{ borderTop: 40, borderTopColor: "white" }}>
-            <tr className={"slide-in-tr"}>
+            <tr className={"hamburger-tr"}>
               <td colSpan={3} style={{ padding: 15, color: "DarkGrey" }}>
                 <span className="we-vote-promise" style={{ fontSize: 15 }}>Our Promise: We'll never sell your email.</span>
               </td>
             </tr>
 
             {yourVoterGuideTo &&
-              <HeaderBarProfileSlideInRow onClickAction={this.transitionToYourVoterGuide}
+              <HamburgerMenuRow onClickAction={this.transitionToYourVoterGuide}
                                           to={yourVoterGuideTo}
                                           icon={"fa fa-list"}
                                           iconStyle={{ fontSize: 20, color: "#1c2f4b" }}
@@ -95,14 +101,14 @@ export default class HeaderBarProfileSlideIn extends Component {
             }
 
             {this.props.voter && isSignedIn &&
-              <HeaderBarProfileSlideInRow onClickAction={this.hideProfilePopUp}
+              <HamburgerMenuRow onClickAction={this.hideProfilePopUp}
                                           to={"/more/sign_in"}
                                           fullIcon={this.yourAccountIcon(voterPhotoUrlMedium)}
                                           linkText={"Your Account"} />
             }
 
             {this.props.voter &&
-              <HeaderBarProfileSlideInRow onClickAction={this.signOutAndHideProfilePopUp}
+              <HamburgerMenuRow onClickAction={this.signOutAndHideProfilePopUp}
                                           to={"/more/sign_in"}
                                           icon={isSignedIn ? "fa fa-sign-out" : "fa fa-sign-in"}
                                           iconStyle={signInColor}
@@ -110,27 +116,27 @@ export default class HeaderBarProfileSlideIn extends Component {
             }
 
             { this.props.bookmarks && this.props.bookmarks.length ?
-              <HeaderBarProfileSlideInRow onClickAction={this.hideProfilePopUp}
+              <HamburgerMenuRow onClickAction={this.hideProfilePopUp}
                                           to={"/bookmarks"}
                                           icon={"fa fa-arrow-circle-right"}
                                           iconStyle={{ fontSize: 28, color: "green" }}
                                           linkText={"Your Bookmarked Items"} /> : null
             }
 
-            <HeaderBarProfileSlideInRow onClickAction={this.signOutAndHideProfilePopUp}
+            <HamburgerMenuRow onClickAction={this.signOutAndHideProfilePopUp}
                                         to={"/more/howtouse"}
                                         icon={"fa fa-arrow-circle-right"}
                                         iconStyle={{ fontSize: 28, color: "green" }}
                                         linkText={"Getting Started"} />
 
-            <HeaderBarProfileSlideInRow onClickAction={this.hideProfilePopUp}
+            <HamburgerMenuRow onClickAction={this.hideProfilePopUp}
                                         to={"/more/about"}
                                         icon={"fa fa-users"}
                                         iconStyle={{ fontSize: 20, color: "#1c2f4b" }}
                                         linkText={"About We Vote"} />
 
             {this.props.weVoteBrandingOff || isCordova() ? null :
-              <HeaderBarProfileSlideInRow onClickAction={this.hideProfilePopUp}
+              <HamburgerMenuRow onClickAction={this.hideProfilePopUp}
                                           to={"/more/donate"}
                                           icon={"fa fa-money"}
                                           iconStyle={{ fontSize: 20, color: "green" }}

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
 import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
@@ -269,16 +270,8 @@ export default class Application extends Component {
               </div>;
     }
 
-    if (isCordova()) {
-      let gotoWevoteIntroNetwork = cookies.getItem("cordova_goto_wevoteintro_network");
-      if (gotoWevoteIntroNetwork === null) {
-        //On the first entry in a new Cordoba session, immediately navigate to "/wevoteintro/network"
-        cookies.setItem("cordova_goto_wevoteintro_network", false);  // no expiration time, so a session cookie
-        historyPush("/wevoteintro/network");
-      }
-    }
-
     // console.log("Application pathname on entry = " + pathname);
+
     // If looking at these paths, we want to enter theater mode
     let inTheaterMode = false;
     let contentFullWidthMode = false;
@@ -333,7 +326,8 @@ export default class Application extends Component {
       contentFullWidthMode = true;
     } else if (pathname.startsWith("/ballot") || pathname === "/bookmarks") {
       contentFullWidthMode = false;
-    } else if (stringContains("/settings", pathname)) {
+    } else if (stringContains("/settings", pathname) ||
+        pathname === "/more/hamburger") {
       contentFullWidthMode = true;
       settingsMode = true;
     } else {

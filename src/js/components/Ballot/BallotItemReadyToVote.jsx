@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import MeasureItemReadyToVote from "../../components/Ballot/MeasureItemReadyToVote";
 import OfficeItemReadyToVote from "../../components/Ballot/OfficeItemReadyToVote";
 

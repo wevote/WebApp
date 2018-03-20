@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import FollowToggle from "../Widgets/FollowToggle";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationDisplayForListCompressed from "./OrganizationDisplayForListCompressed";

@@ -20,3 +20,20 @@
     padding-left: $space-xs;
   }
 }
+
+.open-web-site {
+  $space-space: 3px;
+  color: $link-color;
+  padding-right: $space-space;
+  padding-left: $space-space;
+  &__no-right-padding {
+    padding-right: $space-none;
+  }
+  &__no-left-padding {
+    padding-left: $space-none;
+  }
+  &__no-padding {
+    padding-left: $space-none;
+    padding-right: $space-none;
+  }
+}

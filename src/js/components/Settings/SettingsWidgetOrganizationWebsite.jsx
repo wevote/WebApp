@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
 import LoadingWheel from "../../components/LoadingWheel";
 import OrganizationActions from "../../actions/OrganizationActions";
@@ -9,6 +10,9 @@ const delayBeforeApiUpdateCall = 1200;
 const delayBeforeRemovingSavedStatus = 4000;
 
 export default class SettingsWidgetOrganizationWebsite extends Component {
+  static propTypes = {
+    voterHasMadeChangesFunction: PropTypes.func,
+  };
 
   constructor (props) {
     super(props);
@@ -73,6 +77,9 @@ export default class SettingsWidgetOrganizationWebsite extends Component {
 
   handleKeyPress () {
     clearTimeout(this.timer);
+    if (this.props.voterHasMadeChangesFunction) {
+      this.props.voterHasMadeChangesFunction();
+    }
     this.timer = setTimeout(() => {
       OrganizationActions.organizationWebsiteSave(this.state.linkedOrganizationWeVoteId, this.state.organizationWebsite);
       this.setState({organizationWebsiteSavedStatus: "Saved"});

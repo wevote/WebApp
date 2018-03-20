@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Link } from "react-router";
 import AddressBox from "../../components/AddressBox";
@@ -23,6 +24,7 @@ import ElectionStore from "../../stores/ElectionStore";
 import Helmet from "react-helmet";
 import IssueActions from "../../actions/IssueActions";
 import IssueStore from "../../stores/IssueStore";
+import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import MeasureActions from "../../actions/MeasureActions";
 import MeasureModal from "../../components/Ballot/MeasureModal";
 import moment from "moment";
@@ -639,8 +641,9 @@ export default class Ballot extends Component {
                     We Vote helps you get ready to vote, <strong>but you cannot use We Vote to cast your vote</strong>.
                     Make sure to return your official ballot to your polling
                     place!<br />
-                    <a href="https://help.wevote.us/hc/en-us/articles/115002401353-Can-I-cast-my-vote-with-We-Vote-"
-                       target="_blank">See more information about casting your official vote.</a>
+                    <OpenExternalWebSite url="https://help.wevote.us/hc/en-us/articles/115002401353-Can-I-cast-my-vote-with-We-Vote-"
+                                         target="_blank"
+                                         body={"See more information about casting your official vote."} />
                   </div>
                   <div className="BallotList">
                     {ballot_with_all_items.map( (item) => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
@@ -659,9 +662,12 @@ export default class Ballot extends Component {
               }
               {/* Show links to this candidate in the admin tools */}
               { this.state.voter && polling_location_we_vote_id_source && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ?
-                <span className="u-wrap-links hidden-print">Admin: <a href={ballot_returned_admin_edit_url} target="_blank">
-                    Ballot copied from polling location "{polling_location_we_vote_id_source}"
-                  </a></span> :
+                <span className="u-wrap-links hidden-print"><span>Admin:</span>
+                  <OpenExternalWebSite url={ballot_returned_admin_edit_url}
+                                       target="_blank"
+                                       body={<span>Ballot copied from polling location "{polling_location_we_vote_id_source}"</span>} />
+
+                </span> :
                 null
               }
             </div>

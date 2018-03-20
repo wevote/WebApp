@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import BallotStore from "../../stores/BallotStore";
 import { shortenText } from "../../utils/textFormat";

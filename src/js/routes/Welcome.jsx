@@ -1,18 +1,20 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Helmet from "react-helmet";
 import { Link } from "react-router";
 import cookies from "../utils/cookies";
-import Helmet from "react-helmet";
+import { cordovaDot, historyPush, isCordova, isWebApp } from "../utils/cordovaUtils";
 import { Button, FormGroup, Row, OverlayTrigger, Tooltip } from "react-bootstrap";
 import AnalyticsActions from "../actions/AnalyticsActions";
 import { validateEmail } from "../utils/email-functions";
 import FacebookStore from "../stores/FacebookStore";
 import FacebookActions from "../actions/FacebookActions";
-import { cordovaDot, historyPush, isCordova, isWebApp } from "../utils/cordovaUtils";
+import OpenExternalWebSite from "../utils/OpenExternalWebSite";
 import VoterActions from "../actions/VoterActions";
 import VoterConstants from "../constants/VoterConstants";
 import VoterStore from "../stores/VoterStore";
 
-const web_app_config = require("../config");
+const webAppConfig = require("../config");
 
 export default class Intro extends Component {
   static propTypes = {
@@ -59,10 +61,10 @@ export default class Intro extends Component {
     FacebookActions.facebookFriendsAction();
     this._onFacebookStoreChange();
     this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
-    let we_vote_branding_off_from_url = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-    let we_vote_branding_off_from_cookie = cookies.getItem("we_vote_branding_off");
+    let weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
+    let weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
     this.setState({
-      we_vote_branding_off: we_vote_branding_off_from_url || we_vote_branding_off_from_cookie,
+      we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
 
@@ -99,6 +101,7 @@ export default class Intro extends Component {
     // console.log("is_verification_email_sent:  " + VoterStore.isVerificationEmailSent());
     this.setState({
       newsletter_opt_in_true: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
+
       // is_verification_email_sent: VoterStore.isVerificationEmailSent(),
       voter: VoterStore.getVoter(),
     });
@@ -117,19 +120,20 @@ export default class Intro extends Component {
 
   updateVoterFullName (event) {
     this.setState({
-      voter_full_name: event.target.value
+      voter_full_name: event.target.value,
     });
   }
 
   updateVoterEmailAddress (event) {
-    let is_email_valid = validateEmail(event.target.value);
-    let submit_enabled = false;
-    if (is_email_valid) {
-      submit_enabled = true;
+    let isEmailValid = validateEmail(event.target.value);
+    let submitEnabled = false;
+    if (isEmailValid) {
+      submitEnabled = true;
     }
+
     this.setState({
       voter_email_address: event.target.value,
-      submit_enabled: submit_enabled,
+      submit_enabled: submitEnabled,
     });
   }
 
@@ -137,55 +141,55 @@ export default class Intro extends Component {
     // Only proceed after we have a valid email address, which will enable the submit
     if (this.state.submit_enabled) {
       event.preventDefault();
-      let send_link_to_sign_in = true;
-      VoterActions.voterEmailAddressSave(this.state.voter_email_address, send_link_to_sign_in);
+      let sendLinkToSignIn = true;
+      VoterActions.voterEmailAddressSave(this.state.voter_email_address, sendLinkToSignIn);
       VoterActions.voterFullNameSoftSave("", "", this.state.voter_full_name);
       VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
-      this.setState({loading: true});
+      this.setState({ loading: true });
     }
   }
 
   shareToFacebookButton () {
-      window.FB.ui({
-        display: "popup",
-        redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/welcome",
-        method: "share",
-        mobile_iframe: true,
-        href: web_app_config.WE_VOTE_HOSTNAME,
-        quote: "Check out https://WeVote.US! View your ballot, learn from friends, share your vision, and make sure to #Vote. #WeVote via @WeVote",
-      }, function (response) {
-        if ( response === undefined || response.error_code === 4201 ) {
-          console.log("Voter Canceled the share request");
-        } else if ( response ) {
-          //console.log("Successfully Shared", response);
-        }
-      });
+    window.FB.ui({
+      display: "popup",
+      redirect_uri: webAppConfig.WE_VOTE_HOSTNAME + "/welcome",
+      method: "share",
+      mobile_iframe: true,
+      href: webAppConfig.WE_VOTE_HOSTNAME,
+      quote: "Check out https://WeVote.US! View your ballot, learn from friends, share your vision, and make sure to #Vote. #WeVote via @WeVote",
+    }, function (response) {
+      if (response === undefined || response.error_code === 4201) {
+        console.log("Voter Canceled the share request");
+      } else if (response) {
+        // console.log("Successfully Shared", response);
+      }
+    });
   }
 
-  shareToTwitterButton () {
-    // let url = "https://twitter.com/share?url=https%3A%2F%2FWeVote.US%2F%20&text=Check%20out%20https%3A%2F%2FWeVote.US%2F!%20View%20your%20ballot.%20Learn%20from%20friends.%20Share%20your%20vision.%20@WeVote&hashtags=Voting,WeVote";
-    // let title = "Share On Twitter";
-    // let default_width = 600;
-    // let default_height = 600;
-    // let half_screen_width = screen.width / 2;
-    // let half_default_width = default_width / 2;
-    // let half_screen_height = screen.height / 2;
-    // let half_default_height = default_height / 2;
-    // var left = half_screen_width - half_default_width;
-    // var top = half_screen_height - half_default_height;
-    //return window.open(url, title, "toolbar=no, width=" + default_width + ", height=" + default_height + ", top=" + top + " left=" + left);
-  }
+  // shareToTwitterButton () {
+  //   let url = "https://twitter.com/share?url=https%3A%2F%2FWeVote.US%2F%20&text=Check%20out%20https%3A%2F%2FWeVote.US%2F!%20View%20your%20ballot.%20Learn%20from%20friends.%20Share%20your%20vision.%20@WeVote&hashtags=Voting,WeVote";
+  //   let title = "Share On Twitter";
+  //   let default_width = 600;
+  //   let default_height = 600;
+  //   let half_screen_width = screen.width / 2;
+  //   let half_default_width = default_width / 2;
+  //   let half_screen_height = screen.height / 2;
+  //   let half_default_height = default_height / 2;
+  //   var left = half_screen_width - half_default_width;
+  //   var top = half_screen_height - half_default_height;
+  //   return window.open(url, title, "toolbar=no, width=" + default_width + ", height=" + default_height + ", top=" + top + " left=" + left);
+  // }
 
   render () {
-    let actual_full_name = "";
-    let voter_signed_in = false;
-    let mailto_url = "mailto:" + "?subject=Check out We Vote" + "&body=I am using We Vote to discuss what is on my ballot. You can see it at https://WeVote.US too.";
+    let actualFullName = "";
+    let isVoterSignedIn = false;
+    let mailToUrl = "mailto:" + "?subject=Check out We Vote" + "&body=I am using We Vote to discuss what is on my ballot. You can see it at https://WeVote.US too.";
     if (this.state.voter) {
-      voter_signed_in = this.state.voter.is_signed_in;
+      isVoterSignedIn = this.state.voter.is_signed_in;
       if (this.state.voter.first_name || this.state.voter.last_name) {
-        actual_full_name = this.state.voter.full_name;
-        if (actual_full_name.startsWith("voter")) {
-          actual_full_name = "";
+        actualFullName = this.state.voter.full_name;
+        if (actualFullName.startsWith("voter")) {
+          actualFullName = "";
         }
       }
     }
@@ -199,20 +203,21 @@ export default class Intro extends Component {
     let encodedMessage = encodeURIComponent("I am reviewing my ballot, and getting ready to vote @WeVote.");
     let twitterIntent = "https://twitter.com/intent/tweet?url=" + encodeURIComponent(ballotBaseUrl) + "&text=" + encodedMessage + "&hashtags=Voting,WeVote";
 
-    let local_counter = 0;
-    const facebook_friends_using_we_vote_list_for_display = this.state.facebook_friends_using_we_vote_list.map( (friend) => {
-      local_counter++;
-      if (friend.facebook_profile_image_url_https && local_counter <= this.state.maximum_friends_display) {
-        const friendName = friend.facebook_user_name ? <Tooltip id="tooltip">{friend.facebook_user_name}</Tooltip> : <span />;
-        return <OverlayTrigger key={friend.facebook_user_id} placement="bottom" overlay={friendName} >
+    let localCounter = 0;
+    const facebookFriendsUsingWeVoteListForDisplay = this.state.facebook_friends_using_we_vote_list.map(
+      (friend) => {
+        localCounter++;
+        if (friend.facebook_profile_image_url_https && localCounter <= this.state.maximum_friends_display) {
+          const friendName = friend.facebook_user_name ? <Tooltip id="tooltip">{friend.facebook_user_name}</Tooltip> : <span />;
+          return <OverlayTrigger key={friend.facebook_user_id} placement="bottom" overlay={friendName} >
             <img className="friends-list__welcome-image"
               src={friend.facebook_profile_image_url_https}
               height={this.state.facebook_friends_image_height}
               width={this.state.facebook_friends_image_width} />
           </OverlayTrigger>;
-      } else {
-        return null;
-      }
+        } else {
+          return null;
+        }
       });
 
     // && this.state.is_verification_email_sent ?
@@ -232,7 +237,7 @@ export default class Intro extends Component {
 
                     { this.state.facebook_friends_using_we_vote_list.length > 0 ?
                       <div className="u-flex-row friends-list__welcome">
-                        { facebook_friends_using_we_vote_list_for_display }
+                        { facebookFriendsUsingWeVoteListForDisplay }
                       </div> :
                       null
                     }
@@ -256,7 +261,7 @@ export default class Intro extends Component {
                     Learn from friends.
                     { this.state.facebook_friends_using_we_vote_list.length > 0 ?
                       <div className="u-flex-row friends-list__welcome">
-                        { facebook_friends_using_we_vote_list_for_display }
+                        { facebookFriendsUsingWeVoteListForDisplay }
                       </div> :
                       null
                     }
@@ -279,6 +284,67 @@ export default class Intro extends Component {
           </div>
          </div>
       </section>
+
+      {/* Sign up for email list */}
+      { isVoterSignedIn ?
+        null :
+        <section className="form__section">
+          <div className="container">
+            <Row>
+              <div className="col-md-12">
+                { this.state.we_vote_branding_off ? null :
+                  <span>
+                    { this.state.newsletter_opt_in_true ?
+                      <h1 className="u-f1 u-bold u-stack--lg">Please check your email for a verification link.</h1> :
+                      <div className="form__container">
+                        <h2 className="form__header">Sign up to get updates about We Vote.</h2>
+
+                        <form className="row form-inline" onSubmit={this.voterEmailAddressSignUpSave.bind(this)}>
+                          <FormGroup className="col-md-4">
+                            <label className="sr-only" htmlFor="name">Name</label>
+                            <input className="form-control"
+                                   type="text"
+                                   name="voter_full_name"
+                                   id=""
+                                   value={this.state.voter_full_name}
+                                   onChange={this.updateVoterFullName.bind(this)}
+                                   placeholder="Name"/>
+                          </FormGroup>
+                          <FormGroup className="col-md-4">
+                            <label className="sr-only" htmlFor="exampleEmail">Email</label>
+                            <input className="form-control"
+                                   type="email"
+                                   name="voter_email_address"
+                                   id=""
+                                   value={this.state.voter_email_address}
+                                   onChange={this.updateVoterEmailAddress.bind(this)}
+                                   placeholder="Email Address"/>
+                          </FormGroup>
+                          <FormGroup className="col-md-4">
+                            {this.state.submit_enabled ?
+                              <Button className="form-control"
+                                      bsStyle="success"
+                                      type="submit"
+                                      onClick={this.voterEmailAddressSignUpSave.bind(this)}
+                              >Sign Up</Button> :
+                              <Button className="form-control form__button--disabled"
+                                      bsStyle="success"
+                                      type="submit"
+                                      disabled
+                                      onClick={this.voterEmailAddressSignUpSave.bind(this)}
+                              >Enter Your Email to Sign Up</Button>
+                            }
+                          </FormGroup>
+                        </form>
+                      </div>
+                    }
+                  </span>
+                }
+              </div>
+            </Row>
+          </div>
+        </section>
+      }
 
       {/* Description of benefits of We Vote */}
       <section className="features__section">
@@ -354,67 +420,6 @@ export default class Intro extends Component {
         </div>
       </section>
 
-      {/* Sign up for email list */}
-      { voter_signed_in ?
-        null :
-        <section className="form__section">
-          <div className="container">
-            <Row>
-              <div className="col-md-12">
-                { this.state.we_vote_branding_off ? null :
-                  <span>
-                    { this.state.newsletter_opt_in_true ?
-                      <h1 className="u-f1 u-bold u-stack--lg">Please check your email for a verification link.</h1> :
-                      <div className="form__container">
-                        <h2 className="form__header">Sign up to get updates about We Vote.</h2>
-
-                        <form className="row form-inline" onSubmit={this.voterEmailAddressSignUpSave.bind(this)}>
-                          <FormGroup className="col-md-4">
-                            <label className="sr-only" htmlFor="name">Name</label>
-                            <input className="form-control"
-                                   type="text"
-                                   name="voter_full_name"
-                                   id=""
-                                   value={this.state.voter_full_name}
-                                   onChange={this.updateVoterFullName.bind(this)}
-                                   placeholder="Name"/>
-                          </FormGroup>
-                          <FormGroup className="col-md-4">
-                            <label className="sr-only" htmlFor="exampleEmail">Email</label>
-                            <input className="form-control"
-                                   type="email"
-                                   name="voter_email_address"
-                                   id=""
-                                   value={this.state.voter_email_address}
-                                   onChange={this.updateVoterEmailAddress.bind(this)}
-                                   placeholder="Email Address"/>
-                          </FormGroup>
-                          <FormGroup className="col-md-4">
-                            {this.state.submit_enabled ?
-                              <Button className="form-control"
-                                      bsStyle="success"
-                                      type="submit"
-                                      onClick={this.voterEmailAddressSignUpSave.bind(this)}
-                              >Sign Up</Button> :
-                              <Button className="form-control form__button--disabled"
-                                      bsStyle="success"
-                                      type="submit"
-                                      disabled
-                                      onClick={this.voterEmailAddressSignUpSave.bind(this)}
-                              >Enter Your Email to Sign Up</Button>
-                            }
-                          </FormGroup>
-                        </form>
-                      </div>
-                    }
-                  </span>
-                }
-              </div>
-            </Row>
-          </div>
-        </section>
-      }
-
       {/* We Vote Partners */}
       { this.state.we_vote_branding_off ? null :
         <section className="network__section">
@@ -446,19 +451,23 @@ export default class Intro extends Component {
                   <span className="fa fa-facebook"/> Facebook
                 </Button>
                 }
-                <a href={twitterIntent} title="Share to Twitter">
-                  <Button className="btn btn-social btn-twitter u-push--sm"
-                          bsStyle="danger">
-                    <span className="fa fa-twitter" /> Twitter
-                  </Button>
-                </a>
+                <OpenExternalWebSite url={twitterIntent}
+                                     target="_blank"
+                                     title="Share to Twitter"
+                                     body={<Button className="btn btn-social btn-twitter u-push--sm"
+                                                   bsStyle="danger">
+                                              <span className="fa fa-twitter" /><span> Twitter</span>
+                                           </Button>}
+                />
                 {/* February 2018, Facebook and Magic Email disabled for Cordova */}
                 {isWebApp() &&
-                <a href={mailto_url} title="Submit this to Email">
-                  <button className="btn btn-social btn--email u-push--sm">
-                    <span className="fa fa-envelope"/>Email
-                  </button>
-                </a>
+                  <OpenExternalWebSite url={mailToUrl}
+                                       target="_blank"
+                                       title="Submit this to Email"
+                                       body={<button className="btn btn-social btn--email u-push--sm">
+                                              <span className="fa fa-envelope"/>Email
+                                             </button>}
+                  />
                 }
                 <Link to="/more/donate">
                   <button className="btn btn-social btn-danger u-push--sm">
@@ -485,7 +494,10 @@ export default class Intro extends Component {
                   <Link to={"/more/elections"}>Supported Elections</Link>
                 </li>
                 <li className="u-push--md u-stack--sm">
-                  <a href="https://blog.wevote.us/" target="_blank">We Vote Blog</a>
+                  <OpenExternalWebSite url="https://blog.wevote.us/"
+                                       target="_blank"
+                                       body="We Vote Blog"
+                  />
                 </li>
               </ul>
             </span>
@@ -499,7 +511,10 @@ export default class Intro extends Component {
                We do not support or oppose any political candidate or party.
             </p>
             <p>
-              <a href="https://github.com/WeVote" target="_blank">The software that powers We Vote is open source and built by volunteers.</a>
+              <OpenExternalWebSite url="https://github.com/WeVote"
+                                   target="_blank"
+                                   body="The software that powers We Vote is open source and built by volunteers."
+              />
             </p>
           </div>
 
@@ -511,7 +526,10 @@ export default class Intro extends Component {
               <Link to="/more/terms">Terms of Use</Link>
             </li>
             <li>
-              <a href="https://help.wevote.us/hc/en-us/requests/new" target="_blank">Contact</a>
+              <OpenExternalWebSite url="https://help.wevote.us/hc/en-us/requests/new"
+                                   target="_blank"
+                                   body="Contact"
+              />
             </li>
           </ul>
 

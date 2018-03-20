@@ -1,13 +1,16 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import BallotStore from "../../stores/BallotStore";
 import { cordovaDot } from "../../utils/cordovaUtils";
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
+import VoterGuideActions from "../../actions/VoterGuideActions";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 import { cleanArray } from "../../utils/textFormat";
 import moment from "moment";
 
-const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 36;
+const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 32;
 
 export default class ChooseElectionForVoterGuide extends Component {
   static propTypes = {
@@ -26,19 +29,18 @@ export default class ChooseElectionForVoterGuide extends Component {
   componentDidMount () {
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     ElectionActions.electionsRetrieve();
   }
 
   componentWillUnmount (){
     this.ballotStoreListener.remove();
     this.electionListListener.remove();
-    this.voterStoreListener.remove();
+    this.voterGuideStoreListener.remove();
   }
 
-  saveVoterGuideForElection (googleCivicElectionId) {
-    console.log("ChooseElectionForVoterGuide saveVoterGuideForElection, googleCivicElectionId", googleCivicElectionId);
-    this.props.destinationFunction(googleCivicElectionId);
+  saveVoterGuideForElection (google_civic_election_id) {
+    VoterGuideActions.voterGuideSave(google_civic_election_id, "");
   }
 
   onBallotStoreChange () {
@@ -88,10 +90,12 @@ export default class ChooseElectionForVoterGuide extends Component {
     });
   }
 
-  onVoterStoreChange () {
-    // console.log("BallotElectionList.jsx onVoterStoreChange ", VoterStore.election_id(),
-    //   this.state.prior_election_id, this.state.updated_election_id);
-    // if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length !== 0) {
+  onVoterGuideStoreChange (){
+    let voter = VoterStore.getVoter();
+    let voterGuideSaveResults = VoterGuideStore.getVoterGuideSaveResults();
+    if (voterGuideSaveResults && voter && voterGuideSaveResults.organization_we_vote_id === voter.linked_organization_we_vote_id) {
+      this.props.destinationFunction(voterGuideSaveResults.we_vote_id);
+    }
   }
 
   render () {
@@ -183,6 +187,7 @@ export default class ChooseElectionForVoterGuide extends Component {
         </div>;
     });
     priorElectionList = cleanArray(priorElectionList);
+    priorElectionList = []; // Delete once testing is fully complete
 
     return <div>
       {upcomingElectionList}

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router";
 import Icon from "react-svg-icons";
 import BallotStore from "../../stores/BallotStore";
@@ -214,6 +215,19 @@ export default class HeaderBackToBar extends Component {
     }
   }
 
+  toggleProfilePopUp () {
+    this.setState({ profilePopUpOpen: !this.state.profilePopUpOpen });
+  }
+
+  hideProfilePopUp () {
+    this.setState({ profilePopUpOpen: false });
+  }
+
+  signOutAndHideProfilePopUp () {
+    VoterSessionActions.voterSignOut();
+    this.setState({ profilePopUpOpen: false });
+  }
+
   render () {
     let voterPhotoUrlMedium = this.state.voter.voter_photo_url_medium;
     let speakerType = "V";  // TODO DALE make this dynamic
@@ -277,8 +291,8 @@ export default class HeaderBackToBar extends Component {
                                profilePopUpOpen={this.state.profilePopUpOpen}
                                bookmarks={this.state.bookmarks}
                                weVoteBrandingOff={this.state.we_vote_branding_off}
-                               toggleProfilePopUp={this.toggleProfilePopUp}
-                               hideProfilePopUp={this.hideProfilePopUp}
+                               toggleProfilePopUp={this.toggleProfilePopUp.bind(this)}
+                               hideProfilePopUp={this.hideProfilePopUp.bind(this)}
                                transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
                                signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)}
         />

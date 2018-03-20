@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import CandidateItem from "../../components/Ballot/CandidateItem";
 
 // This is related to components/VoterGuide/OrganizationVoterGuideCandidateList.jsx

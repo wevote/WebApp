@@ -56,6 +56,12 @@
       line-height: 19.6px;
       position: relative;
       font-size: 14px;
+
+      &__display-name {
+        font-family: $heading-font-stack;
+        font-size: 15px;
+        color: $link-color;
+      }
     }
 
     &__item-container {
@@ -64,12 +70,6 @@
       position: relative;
       margin-top: $space-none;
       margin-bottom: $space-md;
-    }
-
-    &__display-name {
-      font-family: $heading-font-stack;
-      font-size: 15px;
-      color: $link-color;
     }
   }
 }

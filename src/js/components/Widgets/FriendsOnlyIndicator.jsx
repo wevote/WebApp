@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
 const Icon = require("react-svg-icons");
 

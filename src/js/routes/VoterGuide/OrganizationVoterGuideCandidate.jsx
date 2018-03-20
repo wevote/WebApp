@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import CandidateActions from "../../actions/CandidateActions";
 import OrganizationVoterGuideCandidateItem from "../../components/VoterGuide/OrganizationVoterGuideCandidateItem";
@@ -7,6 +8,7 @@ import { capitalizeString } from "../../utils/textFormat";
 import GuideList from "../../components/VoterGuide/GuideList";
 import Helmet from "react-helmet";
 import LoadingWheel from "../../components/LoadingWheel";
+import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import OrganizationActions from "../../actions/OrganizationActions";
 import PositionList from "../../components/Ballot/PositionList";
 import SupportActions from "../../actions/SupportActions";
@@ -20,7 +22,7 @@ const web_app_config = require("../../config");
 // This is based on routes/Ballot/Candidate
 export default class OrganizationVoterGuideCandidate extends Component {
   static propTypes = {
-    params: PropTypes.object.isRequired
+    params: PropTypes.object.isRequired,
   };
 
   constructor (props) {
@@ -52,7 +54,7 @@ export default class OrganizationVoterGuideCandidate extends Component {
     OrganizationActions.organizationsFollowedRetrieve();
 
     // Display the candidate's name in the search box
-    var searchBoxText = this.state.candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
+    let searchBoxText = this.state.candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
     SearchAllActions.exitSearch(searchBoxText); // TODO: still not used :)
     AnalyticsActions.saveActionCandidate(VoterStore.election_id(), this.props.params.candidate_we_vote_id);
     this.setState({
@@ -125,11 +127,12 @@ export default class OrganizationVoterGuideCandidate extends Component {
                 <br />
             </div>;
     }
-    let candidate_name = capitalizeString(this.state.candidate.ballot_item_display_name);
-    let title_text = candidate_name + " - We Vote";
-    let description_text = "Information about " + candidate_name + ", candidate for " + this.state.candidate.contest_office_name;
+
+    let candidateName = capitalizeString(this.state.candidate.ballot_item_display_name);
+    let title_text = candidateName + " - We Vote";
+    let description_text = "Information about " + candidateName + ", candidate for " + this.state.candidate.contest_office_name;
     let voter = VoterStore.getVoter();
-    let candidate_admin_edit_url = web_app_config.WE_VOTE_SERVER_ROOT_URL + "c/" + this.state.candidate.id + "/edit/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
+    let candidateAdminEditUrl = web_app_config.WE_VOTE_SERVER_ROOT_URL + "c/" + this.state.candidate.id + "/edit/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
 
     return <span>
       <Helmet title={title_text}
@@ -171,8 +174,12 @@ export default class OrganizationVoterGuideCandidate extends Component {
       <br />
     {/* Show links to this candidate in the admin tools */}
     { voter.is_admin || voter.is_verified_volunteer ?
-      <span className="u-wrap-links hidden-print">Admin: <a href={candidate_admin_edit_url} target="_blank">edit {candidate_name}</a></span> :
-      null
+      <span className="u-wrap-links hidden-print">Admin:
+        <OpenExternalWebSite url={candidateAdminEditUrl}
+                             target="_blank"
+                             className="open-web-site open-web-site__no-right-padding"
+                             body={<span>edit {candidateName}</span>} />
+      </span> : null
     }
     </span>;
   }

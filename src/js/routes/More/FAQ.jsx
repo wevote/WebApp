@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
 import { Link } from "react-router";
+import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
+import ToolBar from "./ToolBar";
 
 export default class About extends Component {
   constructor (props) {
@@ -16,29 +18,7 @@ export default class About extends Component {
       <Helmet title="FAQ - We Vote" />
         <div className="container-fluid card">
           <h1 className="h1">Frequently Asked Questions</h1>
-          <div className="btn-toolbar">
-          <a className="btn btn-social-icon btn-twitter" href="https://twitter.com/WeVote" target="_blank">
-            <span className="fa fa-twitter" />
-          </a>
-
-          <a className="btn btn-social-icon btn-facebook" href="https://www.facebook.com/WeVoteUSA" target="_blank">
-            <span className="fa fa-facebook" />
-          </a>
-
-          <a className="btn btn--email" href="http://eepurl.com/cx_frP" target="_blank">
-            <span>
-              <span className="btn--email__icon glyphicon glyphicon-envelope" /> Join Newsletter
-            </span>
-          </a>
-
-          <a className="btn btn-social-icon btn-github" href="https://github.com/WeVote" target="_blank">
-            <span className="fa fa-github" />
-          </a>
-
-          <a className="btn btn-social-icon btn--medium" href="https://medium.com/@WeVote" target="_blank">
-            <span className="fa fa-medium" />
-          </a>
-          </div>
+          <ToolBar />
 
           <br />
           <strong>What is We Vote?</strong><br />
@@ -61,8 +41,10 @@ export default class About extends Component {
             We Vote is a volunteer-driven movement. We
             rely on volunteers across the country who use
             their engineering, design, and other skills to build
-            We Vote. We are over 70 people who have donated 1,800+ volunteer hours, including <a href="https://github.com/WeVote"
-               target="_blank">25+ contributors on GitHub</a>.
+            We Vote. We are over 70 people who have donated 1,800+ volunteer hours, including
+            <OpenExternalWebSite url="https://github.com/WeVote"
+                                 target="_blank"
+                                 body="25+ contributors on GitHub" />
             We also have a small team of
             core staff that eats way too much Thai food, and volunteer board members.<br />
           <br />
@@ -76,8 +58,9 @@ export default class About extends Component {
           <strong>Is this an app or a website?</strong><br />
             We have a mobile-ready website now, and we’re working on iPhone and Android apps for 2018.
             We are free and open source:
-            <a href="https://github.com/WeVote"
-               target="_blank"> https://github.com/WeVote</a><br />
+            <OpenExternalWebSite url="https://github.com/WeVote"
+                                 target="_blank"
+                                 body="https://github.com/WeVote" />
           <br />
 
           <strong>So who should I vote for?</strong><br />
@@ -130,10 +113,16 @@ export default class About extends Component {
 
           <strong>Sounds great! How can I help?</strong><br />
             We couldn’t do what we do without volunteers and donors. Please sign up to volunteer at
-            <a href="http://WeVoteTeam.org/volunteer"
-               target="_blank"> http://WeVoteTeam.org</a>, and if you live in the San Francisco Bay Area, come find us every Wednesday night at
-          <a href="http://codeforsanfrancisco.org/" target="_blank"> Code for San Francisco&nbsp;<i
-          className="fa fa-external-link"/></a>.<br />
+            <OpenExternalWebSite url="http://WeVoteTeam.org/volunteer"
+                                 target="_blank"
+                                 className="open-web-site open-web-site__no-right-padding"
+                                 body="http://WeVoteTeam.org" />
+            , and if you live in the San Francisco Bay Area, come find us every Wednesday night at
+          <OpenExternalWebSite url="http://codeforsanfrancisco.org/"
+                               target="_blank"
+                               className="open-web-site open-web-site__no-right-padding"
+                               body={<span>Code for America&nbsp;<i className="fa fa-external-link" /></span>} />
+          .<br />
           <br />
 
           <Link to="/ballot">Let's get started!</Link><br />

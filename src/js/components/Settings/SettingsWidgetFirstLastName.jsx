@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
 import LoadingWheel from "../../components/LoadingWheel";
@@ -14,6 +15,8 @@ const delayBeforeRemovingSavedStatus = 4000;
 export default class SettingsWidgetFirstLastName extends Component {
   static propTypes = {
     displayOnly: PropTypes.bool,
+    hideFirstLastName: PropTypes.bool,
+    voterHasMadeChangesFunction: PropTypes.func,
   };
 
   constructor (props) {
@@ -96,6 +99,9 @@ export default class SettingsWidgetFirstLastName extends Component {
 
   handleKeyPressOrganizationName () {
     clearTimeout(this.timer);
+    if (this.props.voterHasMadeChangesFunction) {
+      this.props.voterHasMadeChangesFunction();
+    }
     this.timer = setTimeout(() => {
       OrganizationActions.organizationNameSave(this.state.linkedOrganizationWeVoteId, this.state.organizationName);
       this.setState({organizationNameSavedStatus: "Saved"});
@@ -104,6 +110,9 @@ export default class SettingsWidgetFirstLastName extends Component {
 
   handleKeyPressVoterName () {
     clearTimeout(this.timer);
+    if (this.props.voterHasMadeChangesFunction) {
+      this.props.voterHasMadeChangesFunction();
+    }
     this.timer = setTimeout(() => {
       VoterActions.voterNameSave(this.state.firstName, this.state.lastName);
       this.setState({voterNameSavedStatus: "Saved"});
@@ -159,7 +168,7 @@ export default class SettingsWidgetFirstLastName extends Component {
                 </div> :
                 <form onSubmit={(e) => {e.preventDefault();}}>
                   <span className="pull-right u-gray-mid">{this.state.organizationNameSavedStatus}</span>
-                  <label htmlFor="organization-name">Organization Name</label>
+                  <label htmlFor="organization-name">Organization Name as Shown on Your Voter Guides</label>
                   <input type="text"
                          className="form-control"
                          id="organization-name"
@@ -179,26 +188,30 @@ export default class SettingsWidgetFirstLastName extends Component {
                 </div> :
                 <form onSubmit={(e) => {e.preventDefault();}}>
                   <span className="pull-right u-gray-mid">{this.state.voterNameSavedStatus}</span>
-                  <label htmlFor="first-name">First Name</label>
-                  <input type="text"
-                         className="form-control"
-                         id="first-name"
-                         name="firstName"
-                         placeholder="First Name"
-                         onKeyDown={this.handleKeyPressVoterName}
-                         onChange={this.updateVoterName}
-                         value={this.state.firstName}
-                  />
-                  <label htmlFor="last-name">Last Name</label>
-                  <input type="text"
-                         className="form-control"
-                         id="last-name"
-                         name="lastName"
-                         placeholder="Last Name"
-                         onKeyDown={this.handleKeyPressVoterName}
-                         onChange={this.updateVoterName}
-                         value={this.state.lastName}
-                  />
+                  {!this.props.hideFirstLastName ?
+                    <span>
+                      <label htmlFor="first-name">First Name</label>
+                      <input type="text"
+                             className="form-control"
+                             id="first-name"
+                             name="firstName"
+                             placeholder="First Name"
+                             onKeyDown={this.handleKeyPressVoterName}
+                             onChange={this.updateVoterName}
+                             value={this.state.firstName}
+                      />
+                      <label htmlFor="last-name">Last Name</label>
+                      <input type="text"
+                             className="form-control"
+                             id="last-name"
+                             name="lastName"
+                             placeholder="Last Name"
+                             onKeyDown={this.handleKeyPressVoterName}
+                             onChange={this.updateVoterName}
+                             value={this.state.lastName}
+                      />
+                    </span> :
+                    null }
                   <span className="pull-right u-gray-mid">{this.state.organizationNameSavedStatus}</span>
                   <label htmlFor="organization-name">Name Shown on Your Voter Guides</label>
                   <input type="text"

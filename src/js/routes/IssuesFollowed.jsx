@@ -1,4 +1,5 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
 import IssueActions from "../actions/IssueActions";
@@ -118,13 +119,10 @@ export default class IssuesFollowed extends Component {
                      searchUpdateDelayTime={0} />
           <br />
           <div className="network-issues-list voter-guide-list card">
-            <div className="card-child__list-group">
-              {
-                issue_list.length ?
-                  issue_list_for_display :
-                  <h4 className="intro-modal__default-text">You are not following any issues yet.</h4>
-              }
-            </div>
+            { issue_list.length ?
+              issue_list_for_display :
+              <h4 className="intro-modal__default-text">You are not following any issues yet.</h4>
+            }
           </div>
           <Link className="pull-left" to="/issues_to_follow">Find Issues to follow</Link>
           <br />

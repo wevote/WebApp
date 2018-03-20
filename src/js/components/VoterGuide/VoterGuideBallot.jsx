@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Link } from "react-router";
 import AddressBox from "../../components/AddressBox";
@@ -21,6 +22,7 @@ import Helmet from "react-helmet";
 import MeasureActions from "../../actions/MeasureActions";
 import MeasureModal from "../../components/Ballot/MeasureModal";
 import moment from "moment";
+import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import PledgeToSupportOrganizationButton from "../../components/VoterGuide/PledgeToSupportOrganizationButton";
@@ -48,6 +50,7 @@ export default class VoterGuideBallot extends Component {
     super(props);
     this.state = {
       ballotElectionList: [],
+      ballot_item_unfurled_tracker: {},
       ballot_returned_we_vote_id: "",
       ballot_location_shortcut: "",
       candidate_for_modal: {
@@ -251,6 +254,9 @@ export default class VoterGuideBallot extends Component {
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
+
+    // save current open/close status to BallotStore
+    BallotActions.voterBallotItemOpenOrClosedSave(this.state.ballot_item_unfurled_tracker);
   }
 
   nullFunction () {
@@ -356,6 +362,12 @@ export default class VoterGuideBallot extends Component {
     this.setState({
       ballotElectionList: BallotStore.ballotElectionList(),
     });
+
+    if (Object.keys(this.state.ballot_item_unfurled_tracker).length === 0) {
+      this.setState({
+        ballot_item_unfurled_tracker: BallotStore.current_ballot_item_unfurled_tracker
+      });
+    }
   }
 
   onElectionStoreChange () {
@@ -472,6 +484,13 @@ export default class VoterGuideBallot extends Component {
   pledgeToVoteWithVoterGuide () {
     // console.log("VoterGuideBallot pledgeToVoteWithVoterGuide, this.state.voter_guide:", this.state.voter_guide);
     VoterGuideActions.pledgeToVoteWithVoterGuide(this.state.voter_guide.we_vote_id);
+  }
+
+  updateOfficeDisplayUnfurledTracker = (we_vote_id, status) => {
+    const new_ballot_item_unfurled_tracker = { ... this.state.ballot_item_unfurled_tracker, [we_vote_id]: status};
+    this.setState({
+      ballot_item_unfurled_tracker: new_ballot_item_unfurled_tracker
+    });
   }
 
   render () {
@@ -673,6 +692,7 @@ export default class VoterGuideBallot extends Component {
                   {ballot_with_remaining_items.map( (item) => <BallotItemCompressed toggleCandidateModal={this.toggleCandidateModal}
                                                                toggleMeasureModal={this.toggleMeasureModal}
                                                                key={item.we_vote_id}
+                                                               updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
                                                                organization={this.props.organization}
                                                                organization_we_vote_id={this.props.organization.organization_we_vote_id}
                                                                {...item} />)}
@@ -681,10 +701,11 @@ export default class VoterGuideBallot extends Component {
 
               {/* Show links to this candidate in the admin tools */}
               { this.state.voter && polling_location_we_vote_id_source && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ?
-                <span className="u-wrap-links hidden-print">Admin: <a href={ballot_returned_admin_edit_url} target="_blank">
-                    Ballot copied from polling location "{polling_location_we_vote_id_source}"
-                  </a></span> :
-                null
+                <span className="u-wrap-links hidden-print">Admin:
+                  <OpenExternalWebSite url={ballot_returned_admin_edit_url}
+                                       target="_blank"
+                                       body={<span>Ballot copied from polling location "{polling_location_we_vote_id_source}"</span>} />
+                </span> : null
               }
             </div>
           </div>

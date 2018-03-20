@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Button, OverlayTrigger, Popover } from "react-bootstrap";
 import { findDOMNode } from "react-dom";
 import $ from "jquery";
