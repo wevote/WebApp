@@ -1,4 +1,3 @@
-import _ from "lodash";
 import React, { Component, PropTypes } from "react";
 import { Modal } from "react-bootstrap";
 import AnalyticsActions from "../../actions/AnalyticsActions";

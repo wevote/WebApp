@@ -14,6 +14,7 @@ export default class EmailBallotToFriendsModal extends Component {
     success_message: PropTypes.object,
     sender_email_address_from_email_ballot_modal: PropTypes.string,
     verification_email_sent: PropTypes.bool,
+    ballotEmailWasSent: PropTypes.func.ballotEmailWasSent.isRequired //Used to transition from EmailBallotModal when ballot was sent.
   };
 
   constructor (props) {
