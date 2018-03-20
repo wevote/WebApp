@@ -12,7 +12,7 @@ const web_app_config = require("../../config");
 export default class EmailBallotModal extends Component {
   static propTypes = {
     next: PropTypes.func.isRequired,  //Used by react-slick
-    ballotEmailWasSent: PropTypes.func.ballotEmailWasSent.isRequired, // Used to transition to EmailBallotToFriendsModal whan ballot was sent.
+    ballotEmailWasSent: PropTypes.func.isRequired, // Used to transition to EmailBallotToFriendsModal whan ballot was sent.
     history: PropTypes.object,
     ballot_link: PropTypes.string,
   };
