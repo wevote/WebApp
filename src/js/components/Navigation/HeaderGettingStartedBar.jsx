@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { Component, PropTypes } from "react";
 import { Modal } from "react-bootstrap";
 import AnalyticsActions from "../../actions/AnalyticsActions";
@@ -41,6 +42,7 @@ export default class HeaderGettingStartedBar extends Component {
     this._openFacebookModal = this._openFacebookModal.bind(this);
     this._openPollingLocatorModal = this._openPollingLocatorModal.bind(this);
     this._nextSliderPage = this._nextSliderPage.bind(this);
+    this.ballotEmailWasSent = this.ballotEmailWasSent.bind(this);
     this.state = {
       ballot_intro_issues_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ISSUES_COMPLETED),
       ballot_intro_organizations_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ORGANIZATIONS_COMPLETED),
@@ -56,6 +58,9 @@ export default class HeaderGettingStartedBar extends Component {
       showBallotIntroVote: false,
       showEmailModal: false,
       showFacebookModal: false,
+      success_message: undefined,  //Used by EmailBallotModal and EmailBallotToFriendsModal
+      sender_email_address: "",   //Used by EmailBallotModal and EmailBallotToFriendsModal
+      verification_email_sent: false //Used by EmailBallotModal and EmailBallotToFriendsModal
     };
   }
 
@@ -159,6 +164,20 @@ export default class HeaderGettingStartedBar extends Component {
   _nextSliderPage () {
     VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
     this.refs.slider.slickNext();
+  }
+
+  /**
+   * Method that passes data between EmailBallotModal to EmailBallotToFriendsModal
+   */
+  ballotEmailWasSent (success_message, sender_email_address, verification_email_sent, shouldChangeSlide = true) {
+    this.setState({
+      success_message: success_message,
+      sender_email_address: sender_email_address,
+      verification_email_sent: verification_email_sent
+    });
+    if (shouldChangeSlide){
+      this.refs.slider.slickNext();
+    }
   }
 
   render () {
@@ -283,8 +302,18 @@ export default class HeaderGettingStartedBar extends Component {
            </a>
          </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettings}>
-            <div key={1} className="share-modal-calc-height"><EmailBallotModal next={this._nextSliderPage} ballot_link={this.props.pathname}/></div>
-            <div key={2} className="share-modal-calc-height"><EmailBallotToFriendsModal ballot_link={this.props.pathname}/></div>
+            <div key={1} className="share-modal-calc-height">
+              <EmailBallotModal ballot_link={this.props.pathname}
+                                next={this._nextSliderPage}
+                                ballotEmailWasSent={this.ballotEmailWasSent} />
+            </div>
+            <div key={2} className="share-modal-calc-height">
+              <EmailBallotToFriendsModal ballot_link={this.props.pathname}
+                                         ballotEmailWasSent={this.ballotEmailWasSent}
+                                         success_message={this.state.success_message}
+                                         sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
+                                         verification_email_sent={this.state.verification_email_sent} />
+            </div>
           </Slider>
         </Modal.Body>
     </Modal>;

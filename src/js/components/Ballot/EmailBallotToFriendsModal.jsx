@@ -67,6 +67,7 @@ export default class EmailBallotToFriendsModal extends Component {
   }
 
   componentWillUnmount () {
+    this.props.ballotEmailWasSent(undefined, "", false, false);
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
   }
@@ -443,7 +444,10 @@ export default class EmailBallotToFriendsModal extends Component {
                 { this.state.success_message ?
                   <div className="alert alert-success">
                     {this.state.success_message}
-                  </div> : null
+                  </div> : this.props.success_message ?
+                    <div className="alert alert-success">
+                      {this.props.success_message}
+                    </div> : null
                 }
                 {this.state.email_addresses_error ?
                   <div className="alert alert-danger">
