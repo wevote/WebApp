@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
-import { isWebApp, enclosingRectangle, isCordova } from "../../utils/cordovaUtils";
+import { isWebApp, isCordova } from "../../utils/cordovaUtils";
 
 export default class HeaderBarProfilePopUp extends Component {
   static propTypes = {
@@ -25,10 +25,6 @@ export default class HeaderBarProfilePopUp extends Component {
     this.signOutAndHideProfilePopUp = this.props.signOutAndHideProfilePopUp.bind(this);
   }
 
-  componentDidMount () {
-    enclosingRectangle("HeaderBarProfilePopUp, ", this.instance);
-  }
-
   render () {
     let isSignedIn = this.props.voter.is_signed_in;
 
@@ -38,7 +34,7 @@ export default class HeaderBarProfilePopUp extends Component {
     return (
       <div className={profilePopUpOpen}>
         <div className="page-overlay" onClick={this.hideProfilePopUp} />
-        <div className={isWebApp() ? "profile-menu" : "profile-foot-menu"} ref={ (el) => (this.instance = el) }>
+        <div className={isWebApp() ? "profile-menu" : "profile-foot-menu"} >
           <ul className="nav nav-stacked">
             <li>
               <div><span className="we-vote-promise">Our Promise: We'll never sell your email.</span></div>
