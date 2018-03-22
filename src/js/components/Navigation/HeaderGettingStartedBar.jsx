@@ -185,10 +185,10 @@ export default class HeaderGettingStartedBar extends Component {
   /**
    * Method that passes data between FacebookBallotModal to FacebookBallotToFriendsModal
    */
-  ballotFacebookEmailWasSent (success_message, sender_email_address_from_email_ballot_modal, verification_email_sent, shouldChangeSlide = true) {
+  ballotFacebookEmailWasSent (success_message, sender_email_address, verification_email_sent, shouldChangeSlide = true) {
     this.setState({
       success_message,
-      sender_email_address_from_email_ballot_modal,
+      sender_email_address,
       verification_email_sent
     });
     if (shouldChangeSlide){
