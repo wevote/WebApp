@@ -92,7 +92,8 @@ export default class TwitterHandleLanding extends Component {
   }
 
   render () {
-    if (this.state.status === undefined){
+    if (this.state.status === undefined) {
+      // console.log("TwitterHandleLanding this.state.status undefined");
       // Show a loading wheel while this component's data is loading
       return LoadingWheel;
     }

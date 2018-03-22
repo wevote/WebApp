@@ -79,7 +79,6 @@ import Welcome from "./routes/Welcome";
 import YourPage from "./routes/YourPage";
 import { isWebApp } from "./utils/cordovaUtils";
 
-
 // See /js/components/Navigation/HeaderBar.jsx for show_full_navigation cookie
 const firstVisit = !cookies.getItem("voter_device_id");
 
@@ -231,6 +230,5 @@ const routes = () =>
     <Route path=":twitter_handle/:action_variable" component={TwitterHandleLanding} />
 
   </Route>;
-
 
 export default routes;

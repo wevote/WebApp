@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
 import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
+import { historyPush, isCordova, cordovaOpenSafariView } from "./utils/cordovaUtils";
 import ElectionActions from "./actions/ElectionActions";
 import FooterBarCordova from "./components/Navigation/FooterBarCordova";
 import FriendActions from "./actions/FriendActions";
@@ -10,7 +11,6 @@ import HeaderBackToBar from "./components/Navigation/HeaderBackToBar";
 import HeaderBar from "./components/Navigation/HeaderBar";
 import HeaderGettingStartedBar from "./components/Navigation/HeaderGettingStartedBar";
 import Headroom from "headroom.js";
-import { historyPush, isCordova, cordovaOpenSafariView } from "./utils/cordovaUtils";
 import IssueActions from "./actions/IssueActions";
 import IssueStore from "././stores/IssueStore";
 import OrganizationActions from "./actions/OrganizationActions";
@@ -57,8 +57,10 @@ export default class Application extends Component {
   }
 
   initCordova () {
+    console.log("Application initCordova ------------");
     if (isCordova()) {
       window.handleOpenURL = function (url) {
+        console.log("Application handleOpenUrl: " + url);
         if (url.startsWith("wevotetwitterscheme://")) {
           console.log("window.handleOpenURL received wevotetwitterscheme: " + url);
           let search = url.replace(new RegExp("&amp;", "g"), "&");
@@ -89,6 +91,8 @@ export default class Application extends Component {
           } else {
             console.log("ERROR in window.handleOpenURL, NO MATCH");
           }
+        } else {
+          console.log("ERROR: window.handleOpenURL received invalid url: " + url);
         }
       };
     }
@@ -262,9 +266,12 @@ export default class Application extends Component {
     let { location: { pathname } } = this.props;
 
     if (this.state.voter === undefined || location === undefined) {
-      return <div style={loadingScreenStyles}>
+      return <div style={loadingScreenStyles} >
                 <div>
                   <h1 className="h1">Loading We Vote...</h1>
+                  { isCordova() &&
+                    <h2 className="h1">Does your phone have access to the internet?</h2>
+                  }
                   <div className="u-loading-spinner u-loading-spinner--light" />
                 </div>
               </div>;

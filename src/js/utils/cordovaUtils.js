@@ -27,8 +27,9 @@ export function cordovaDot (path) {
 }
 
 function cordovaOpenSafariViewSub (requestURL) {
-  SafariViewController.isAvailable(function () {                      // eslint-disable-line no-undef
-    console.log("cordovaOpenSafariView requestURL: " + requestURL);
+  // console.log("cordovaOpenSafariView -1- requestURL: " + requestURL);
+  SafariViewController.isAvailable(function () {            // eslint-disable-line no-undef
+    // console.log("cordovaOpenSafariView -2- requestURL: " + requestURL);
     SafariViewController.show({                                       // eslint-disable-line no-undef
         url: requestURL,
       },

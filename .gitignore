@@ -25,10 +25,6 @@ pids
 ###################
 lib-cov
 
-# Coverage directory used by tools like istanbul
-###################
-coverage
-
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 ###################
 .grunt
@@ -61,12 +57,7 @@ venv
 *.class
 *.dll
 *.exe
-*.o
 *.so
-
-
-
-
 
 # PyInstaller #
 #  Usually these files are written by a python script from a template
@@ -110,11 +101,8 @@ target/
 # git has its own built in compression methods
 *.7z
 *.dmg
-*.gz
 *.iso
-*.jar
 *.rar
-*.tar
 *.zip
 
 # OS generated files #
@@ -153,14 +141,16 @@ sftp-config.json
 
 # Vim / emacs #
 ###############
-*~
-*#
 *.swp
 *.swo
 
 # Compass / Sass #
 ##################
 .sass-cache
+
+# Heroku Related #
+##################
+staticfiles
 
 # Other #
 #########
@@ -172,9 +162,9 @@ src/javascript/google-tag-manager.js
 src/javascript/google-analytics.js
 web_app/build/*
 
-# Heroku Related #
-##################
-*.pyc
-staticfiles
-
-yarn.lock
+/www/css/
+/www/javascript/
+/www/img/
+/www/fonts/
+/www/cordova.js
+/www/cordova_plugins.js
