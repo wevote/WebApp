@@ -43,6 +43,7 @@ export default class HeaderGettingStartedBar extends Component {
     this._openPollingLocatorModal = this._openPollingLocatorModal.bind(this);
     this._nextSliderPage = this._nextSliderPage.bind(this);
     this.ballotEmailWasSent = this.ballotEmailWasSent.bind(this);
+    this.ballotFacebookEmailWasSent = this.ballotFacebookEmailWasSent.bind(this);
     this.state = {
       ballot_intro_issues_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ISSUES_COMPLETED),
       ballot_intro_organizations_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ORGANIZATIONS_COMPLETED),
@@ -60,7 +61,8 @@ export default class HeaderGettingStartedBar extends Component {
       showFacebookModal: false,
       success_message: undefined,  //Used by EmailBallotModal and EmailBallotToFriendsModal
       sender_email_address: "",   //Used by EmailBallotModal and EmailBallotToFriendsModal
-      verification_email_sent: false //Used by EmailBallotModal and EmailBallotToFriendsModal
+      verification_email_sent: false, //Used by EmailBallotModal and EmailBallotToFriendsModal
+      sender_email_address_from_email_ballot_modal: "" //Used by FacebookBallotModal and FacebookBallotToFriendsModal
     };
   }
 
@@ -90,7 +92,7 @@ export default class HeaderGettingStartedBar extends Component {
   }
 
   _openEmailModal () {
-    this.setState({ showEmailModal: !this.state.showEmailModal });
+    this.setState({ showEmailModal: !this.state.showEmaiballotEmailWasSentlModal });
   }
 
   _openFacebookModal () {
@@ -171,9 +173,23 @@ export default class HeaderGettingStartedBar extends Component {
    */
   ballotEmailWasSent (success_message, sender_email_address, verification_email_sent, shouldChangeSlide = true) {
     this.setState({
-      success_message: success_message,
-      sender_email_address: sender_email_address,
-      verification_email_sent: verification_email_sent
+      success_message,
+      sender_email_address,
+      verification_email_sent
+    });
+    if (shouldChangeSlide){
+      this.refs.slider.slickNext();
+    }
+  }
+
+  /**
+   * Method that passes data between FacebookBallotModal to FacebookBallotToFriendsModal
+   */
+  ballotFacebookEmailWasSent (success_message, sender_email_address_from_email_ballot_modal, verification_email_sent, shouldChangeSlide = true) {
+    this.setState({
+      success_message,
+      sender_email_address_from_email_ballot_modal,
+      verification_email_sent
     });
     if (shouldChangeSlide){
       this.refs.slider.slickNext();
@@ -310,8 +326,8 @@ export default class HeaderGettingStartedBar extends Component {
             <div key={2} className="share-modal-calc-height">
               <EmailBallotToFriendsModal ballot_link={this.props.pathname}
                                          ballotEmailWasSent={this.ballotEmailWasSent}
-                                         success_message={this.state.success_message}
                                          sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
+                                         success_message={this.state.success_message}
                                          verification_email_sent={this.state.verification_email_sent} />
             </div>
           </Slider>
@@ -328,8 +344,19 @@ export default class HeaderGettingStartedBar extends Component {
           </a>
         </div>
         <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettings}>
-          <div key={1} className="share-modal-calc-height"><FacebookBallotModal next={this._nextSliderPage} ballot_link={this.props.pathname}/></div>
-          <div key={2} className="share-modal-calc-height"><FacebookBallotToFriendsModal ballot_link={this.props.pathname}/></div>
+          <div key={1} className="share-modal-calc-height">
+            <FacebookBallotModal ballot_link={this.props.pathname}
+                                 next={this._nextSliderPage}
+                                 ballotFacebookEmailWasSent={this.ballotFacebookEmailWasSent}/>
+          </div>
+          <div key={2} className="share-modal-calc-height">
+            <FacebookBallotToFriendsModal ballot_link={this.props.pathname}
+                                          ballotFacebookEmailWasSent={this.ballotFacebookEmailWasSent}
+                                          sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
+                                          success_message={this.state.success_message}
+                                          verification_email_sent={this.state.verification_email_sent} />
+
+          </div>
         </Slider>
       </Modal.Body>
     </Modal>;

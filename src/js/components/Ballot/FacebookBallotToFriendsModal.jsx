@@ -18,6 +18,7 @@ export default class FacebookBallotToFriendsModal extends Component {
     success_message: PropTypes.object,
     sender_email_address_from_email_ballot_modal: PropTypes.string,
     verification_email_sent: PropTypes.bool,
+    ballotFacebookEmailWasSent: PropTypes.func.isRequired //Used to transition from FacebookBallotModal when ballot was sent.
   };
 
   constructor (props) {
@@ -72,6 +73,7 @@ export default class FacebookBallotToFriendsModal extends Component {
   }
 
   componentWillUnmount () {
+    this.props.ballotFacebookEmailWasSent(undefined, "", false, false);
     this.facebookStoreListener.remove();
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
@@ -555,6 +557,9 @@ export default class FacebookBallotToFriendsModal extends Component {
               <div className="container-fluid u-inset--md text-left">
                 {this.state.on_enter_email_addresses_step ? <div>
                   { this.state.success_message ?
+                    <div className="alert alert-success">
+                      {this.state.success_message}
+                    </div> : this.props.success_message ?
                     <div className="alert alert-success">
                       {this.state.success_message}
                     </div> : null

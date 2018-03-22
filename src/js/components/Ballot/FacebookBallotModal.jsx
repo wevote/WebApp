@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import { deviceTypeString, isWebApp } from "../../utils/cordovaUtils";
-import FacebookBallotToFriendsModal from "./FacebookBallotToFriendsModal";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
 import FriendActions from "../../actions/FriendActions";
@@ -18,6 +17,7 @@ export default class FacebookBallotModal extends Component {
     next: PropTypes.func.isRequired,  //Used by react-slick
     history: PropTypes.object,
     ballot_link: PropTypes.string,
+    ballotFacebookEmailWasSent: PropTypes.func
   };
 
   constructor (props) {
@@ -141,6 +141,9 @@ export default class FacebookBallotModal extends Component {
       verification_email_sent = true;
       success_message = <span>Success! This ballot has been sent to the email address {this.state.sender_email_address}. Please check your email and verify your email address to send Ballot to your friends. </span>;
     }
+
+    this.props.ballotFacebookEmailWasSent(success_message, this.state.sender_email_address, this.state.verification_email_sent);
+
     // After calling the API, reset the form
     this.setState({
       loading: true,
@@ -276,20 +279,20 @@ export default class FacebookBallotModal extends Component {
     let floatRight = { float: "right" };
     let textGray = { color: "gray" };
 
-    if (this.state.showFacebookToFriendsModal) {
-      this.componentWillUnmount();
-      return <FacebookBallotToFriendsModal ballot_link={this.state.ballot_link}
-                                        sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
-                                        verification_email_sent={this.state.verification_email_sent} />;
-    }
+    // if (this.state.showFacebookToFriendsModal) {
+    //   this.componentWillUnmount();
+    //   return <FacebookBallotToFriendsModal ballot_link={this.state.ballot_link}
+    //                                     sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
+    //                                     verification_email_sent={this.state.verification_email_sent} />;
+    // }
 
-    if (this.state.on_ballot_email_sent_step) {
-      this.componentWillUnmount();
-      return <FacebookBallotToFriendsModal ballot_link={this.state.ballot_link}
-                                        success_message={this.state.success_message}
-                                        sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
-                                        verification_email_sent={this.state.verification_email_sent} />;
-    }
+    // if (this.state.on_ballot_email_sent_step) {
+    //   this.componentWillUnmount();
+    //   return <FacebookBallotToFriendsModal ballot_link={this.state.ballot_link}
+    //                                     sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
+    //                                     success_message={this.state.success_message}
+    //                                     verification_email_sent={this.state.verification_email_sent} />;
+    // }
 
     return (
     <div className="share-modal">
