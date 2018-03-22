@@ -26,6 +26,7 @@ export default class OrganizationVoterGuide extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      active_route: "",
       organization_we_vote_id: "",
       organization: {},
       voter: {},
@@ -72,6 +73,11 @@ export default class OrganizationVoterGuide extends Component {
         voter: VoterStore.getVoter(),
       });
     }
+
+    // console.log("OrganizationVoterGuide, componentDidMount, this.props.active_route: ", this.props.active_route);
+    this.setState({
+      active_route: this.props.active_route,
+    });
   }
 
   componentWillReceiveProps (nextProps) {
@@ -98,6 +104,12 @@ export default class OrganizationVoterGuide extends Component {
       AnalyticsActions.saveActionVoterGuideVisit(nextProps.params.organization_we_vote_id, VoterStore.election_id());
 
       // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
+    }
+    // console.log("OrganizationVoterGuide, componentWillReceiveProps, nextProps.active_route: ", nextProps.active_route);
+    if (nextProps.active_route && nextProps.active_route !== "") {
+      this.setState({
+        active_route: nextProps.active_route,
+      });
     }
   }
 
@@ -134,7 +146,7 @@ export default class OrganizationVoterGuide extends Component {
     if (!this.state.organization || !this.state.voter || this.state.auto_follow_redirect_happening) {
       return <div>{LoadingWheel}</div>;
     }
-
+    // console.log("OrganizationVoterGuide render, this.state.active_route: ", this.state.active_route);
     const organizationId = this.state.organization.organization_id;
     let isVoterOwner = this.state.organization.organization_we_vote_id !== undefined &&
       this.state.organization.organization_we_vote_id === this.state.voter.linked_organization_we_vote_id;
@@ -146,12 +158,9 @@ export default class OrganizationVoterGuide extends Component {
         float: "right",
       };
       return <div className="card">
-          <div className="card-main">
-            <h4 className="h4">Organization not Found</h4>
-          </div>
           <div style={{ margin: 10 }}>
             <span style={floatRight}>
-              <Link to="/opinions"><Button bsStyle="primary">Next &#x21AC;</Button></Link>
+              <Link to="/ballot"><Button bsStyle="primary">Go to Ballot &#x21AC;</Button></Link>
             </span>
             <p>Find voter guides you can follow.
               These voter guides have been created by nonprofits, public figures, your friends, and more. (OrganizationVoterGuide)</p>
@@ -203,7 +212,7 @@ export default class OrganizationVoterGuide extends Component {
             <OrganizationVoterGuideTabs organization={this.state.organization}
                                         location={this.props.location}
                                         params={this.props.params}
-                                        active_route={this.props.active_route} />
+                                        active_route={this.state.active_route} />
           </div>
         </div>
       </div>

@@ -15,7 +15,7 @@ export default class SearchBar extends Component {
     super(props);
 
     this.state = {
-      query: ""
+      searchString: ""
     };
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -24,6 +24,7 @@ export default class SearchBar extends Component {
   }
 
   componentDidMount () {
+    console.log("SearchBar, this.props.searchUpdateDelayTime:", this.props.searchUpdateDelayTime);
   }
 
   componentWillUnmount (){
@@ -31,20 +32,19 @@ export default class SearchBar extends Component {
 
   clearQuery () {
     this.props.clearFunction();
-    this.setState({ query: "" });
+    this.setState({ searchString: "" });
   }
 
   handleKeyPress () {
     clearTimeout(this.timer);
     this.timer = setTimeout(() => {
-      this.props.searchFunction(this.state.query);
+      this.props.searchFunction(this.state.searchString);
     }, this.props.searchUpdateDelayTime);
   }
 
   updateResults (event) {
-    let query = event.target.value;
-    this.props.searchFunction(query);
-    this.setState({ query: query });
+    let searchString = event.target.value;
+    this.setState({ searchString: searchString });
   }
 
   render () {
@@ -54,11 +54,11 @@ export default class SearchBar extends Component {
                type="text"
                className="form-control"
                placeholder={this.props.placeholder}
-               value={this.state.query}
+               value={this.state.searchString}
                onKeyDown={this.handleKeyPress}
                onChange={this.updateResults} />
         <div className="search-bar-options">
-          <button className={this.props.clearButton && this.state.query && this.state.query.length > 0 ? "search-options-btn" : "hidden"}
+          <button className={this.props.clearButton && this.state.searchString && this.state.searchString.length > 0 ? "search-options-btn" : "hidden"}
                   onClick={this.clearQuery}>
             <i className="glyphicon glyphicon-remove-circle u-gray-light" />
           </button>

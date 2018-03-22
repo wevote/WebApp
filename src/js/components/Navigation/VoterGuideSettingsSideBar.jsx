@@ -62,7 +62,7 @@ export default class VoterGuideSettingsSideBar extends Component {
 
       <div className="SettingsItem__summary__item-container " >
         <div>
-          <Link to={"/voterguide/" + this.state.voterGuide.organization_we_vote_id + "/ballot/election/" + this.state.voterGuide.google_civic_election_id} className="SettingsItem__summary__item" >
+          <Link to={"/voterguide/" + this.state.voterGuide.organization_we_vote_id + "/ballot/election/" + this.state.voterGuide.google_civic_election_id + "/positions"} className="SettingsItem__summary__item" >
             <span className="SettingsItem__summary__item__display-name">
               Jump to this Voter Guide</span>
           </Link>

@@ -146,26 +146,6 @@ export default class ItemPositionStatementActionBar extends Component {
       statement_placeholder_text = "Your thoughts…";
     }
 
-    // var user_position_text;
-    // var user_position_icon;
-    // var user_position_subject_name = this.props.ballot_item_display_name ?
-    //   " " + this.props.ballot_item_display_name :
-    //   null;
-    // if (is_support) {
-    //   user_position_icon = "thumbs-up-color-icon";
-    //   user_position_text = <span><strong>You support</strong>{user_position_subject_name}</span>;
-    // } else if (is_oppose) {
-    //   user_position_icon = "thumbs-down-color-icon";
-    //   user_position_text = <span><strong>You oppose</strong>{user_position_subject_name}</span>;
-    // } else {
-    //   user_position_icon = "no-position-icon";
-    //   if (this.props.ballot_item_display_name) {
-    //     user_position_text = <em className="u-gray-mid">No position on {user_position_subject_name}</em>;
-    //   } else {
-    //     user_position_text = <em className="u-gray-mid">No position</em>;
-    //   }
-    // }
-
     // Currently this "Post" text is the same given we display the visibility setting, but we may want to change this
     //  here if the near by visibility setting text changes
     var post_button_text = "Post";

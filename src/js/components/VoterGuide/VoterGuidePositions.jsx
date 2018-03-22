@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { capitalizeString } from "../../utils/textFormat";
 import Helmet from "react-helmet";
+import BallotSearchResults from "../Ballot/BallotSearchResults";
 import BallotStore from "../../stores/BallotStore";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import OrganizationActions from "../../actions/OrganizationActions";
@@ -23,8 +24,10 @@ export default class VoterGuidePositions extends Component {
       current_organization_we_vote_id: "",
       editMode: false,
       organization: {},
+      searchIsUnderway: false,
       voter: {},
     };
+    this.searchUnderway = this.searchUnderway.bind(this);
   }
 
   componentDidMount (){
@@ -97,7 +100,16 @@ export default class VoterGuidePositions extends Component {
     });
    }
 
+  searchUnderway (searchIsUnderway) {
+    // console.log("VoterGuidePositions, searchIsUnderway: ", searchIsUnderway);
+    this.setState({searchIsUnderway: searchIsUnderway});
+  }
+
   toggleEditMode () {
+    if (this.state.editMode) {
+      // If going from editMode == True to editMode == False, we want to refresh the positions
+      OrganizationActions.positionListForOpinionMaker(this.state.organization.organization_we_vote_id, true, false, this.state.current_google_civic_election_id);
+    }
     this.setState({editMode: !this.state.editMode});
   }
 
@@ -105,6 +117,10 @@ export default class VoterGuidePositions extends Component {
     let enterAndSpaceKeyCodes = [13, 32];
     let scope = this;
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+      if (this.state.editMode) {
+        // If going from editMode == True to editMode == False, we want to refresh the positions
+        OrganizationActions.positionListForOpinionMaker(this.state.organization.organization_we_vote_id, true, false, this.state.current_google_civic_election_id);
+      }
       scope.setState({editMode: !this.state.editMode});
     }
   }
@@ -143,7 +159,7 @@ export default class VoterGuidePositions extends Component {
               />
       <div className="card">
         <ul className="card-child__list-group">
-          { looking_at_self && at_least_one_position_found_for_this_election ?
+          { looking_at_self && at_least_one_position_found_for_this_election && !this.state.searchIsUnderway ?
             <a className="fa-pull-right u-push--md"
                tabIndex="0"
                onKeyDown={this.onKeyDownEditMode.bind(this)}
@@ -156,7 +172,14 @@ export default class VoterGuidePositions extends Component {
                 alt='view your ballots' /> : null}*/}
             </h4>
           {/* </OverlayTrigger> */}
-          { at_least_one_position_found_for_this_election ?
+          { looking_at_self ?
+            <div className="u-margin-left--md u-push--md">
+              <BallotSearchResults googleCivicElectionId={this.state.current_google_civic_election_id}
+                                   organizationWeVoteId={this.state.voter.linked_organization_we_vote_id}
+                                   searchUnderwayFunction={this.searchUnderway} />
+            </div> :
+            null }
+          { at_least_one_position_found_for_this_election && !this.state.searchIsUnderway ?
             <span>
               { position_list_for_one_election.map( item => {
                 return <OrganizationPositionItem key={item.position_we_vote_id}
@@ -173,12 +196,7 @@ export default class VoterGuidePositions extends Component {
             null :
             <div className="card-child__content-text">
               { looking_at_self ?
-                <div>You have not taken any positions yet for this election.
-                  Click 'Ballot' in the top navigation bar to see items you can support or oppose.<br />
-                  <br />
-                  <span>Until you take positions, we recommend visitors look at other voter guides you follow. </span>
-                  <VoterGuideRecommendationsFromOneOrganization organization_we_vote_id={this.state.organization.organization_we_vote_id} />
-                </div> :
+                null :
                 <div>
                   There are no positions for this election in this voter guide yet.<br />
                   <br />
@@ -192,7 +210,7 @@ export default class VoterGuidePositions extends Component {
       </div>
 
       {/* We do not display the positions for other elections if we have even one position for this election. */}
-      { at_least_one_position_found_for_other_elections ?
+      { at_least_one_position_found_for_other_elections && !this.state.searchIsUnderway ?
         <div className="card">
           <ul className="card-child__list-group">
             { position_list_for_all_except_one_election.length && !at_least_one_position_found_for_this_election ?

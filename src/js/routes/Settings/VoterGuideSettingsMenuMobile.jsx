@@ -166,9 +166,17 @@ export default class VoterGuideSettingsMenuMobile extends Component {
           </div> :
           null }
           <div className="row">
-            <div className="col-md-12">
-              <Link to={isWebApp() ? "/settings/menu" : "/more/hamburger"}>&lt; Back to Your Settings</Link>
-            </div>
+            {isWebApp() ?
+              <div className="col-md-12">
+                {/* Desktop mode */}
+                <Link to="/settings/voterguidelist" className="hidden-xs">&lt; Back to Your Voter Guides</Link>
+                {/* Mobile mode */}
+                <Link to="/settings/voterguidesmenu" className="visible-xs">&lt; Back to Your Voter Guides</Link>
+              </div> :
+              <div className="col-md-12">
+                <Link to="/settings/voterguidesmenu">&lt; Back to Your Voter Guides</Link>
+              </div>
+            }
 
             <div className="col-md-12 sidebar-menu">
               <VoterGuideSettingsSideBar editMode={this.state.editMode}
