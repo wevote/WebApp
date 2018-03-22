@@ -4,10 +4,11 @@ import PropTypes from "prop-types";
 export default class SearchBar extends Component {
   static propTypes = {
     clearButton: PropTypes.bool,
-    searchButton: PropTypes.bool,
-    placeholder: PropTypes.string,
-    searchFunction: PropTypes.func.isRequired,
     clearFunction: PropTypes.func.isRequired,
+    clearSearchTextNow: PropTypes.bool,
+    placeholder: PropTypes.string,
+    searchButton: PropTypes.bool,
+    searchFunction: PropTypes.func.isRequired,
     searchUpdateDelayTime: PropTypes.number.isRequired,
   };
 
@@ -24,7 +25,23 @@ export default class SearchBar extends Component {
   }
 
   componentDidMount () {
-    console.log("SearchBar, this.props.searchUpdateDelayTime:", this.props.searchUpdateDelayTime);
+    // console.log("SearchBar, this.props.clearSearchTextNow:", this.props.clearSearchTextNow);
+    if (this.props.clearSearchTextNow) {
+      this.props.clearFunction();
+      this.setState({
+        searchString: ""
+      });
+    }
+  }
+
+  componentWillReceiveProps (nextProps) {
+    // console.log("SearchBar, nextProps.clearSearchTextNow:", nextProps.clearSearchTextNow);
+    if (nextProps.clearSearchTextNow) {
+      this.props.clearFunction();
+      this.setState({
+        searchString: ""
+      });
+    }
   }
 
   componentWillUnmount (){
@@ -44,7 +61,9 @@ export default class SearchBar extends Component {
 
   updateResults (event) {
     let searchString = event.target.value;
-    this.setState({ searchString: searchString });
+    this.setState({
+      searchString: searchString
+    });
   }
 
   render () {

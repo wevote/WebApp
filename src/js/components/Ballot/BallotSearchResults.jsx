@@ -9,6 +9,7 @@ import SearchBar from "../../components/Search/SearchBar";
 
 export default class BallotSearchResults extends Component {
   static propTypes = {
+    clearSearchTextNow: PropTypes.bool,
     googleCivicElectionId: PropTypes.number,
     organizationWeVoteId: PropTypes.string,
     searchUnderwayFunction: PropTypes.func,
@@ -18,6 +19,7 @@ export default class BallotSearchResults extends Component {
     super(props);
     this.state = {
       ballotItemSearchResultsList: [],
+      clearSearchTextNow: false,
       searchString: "",
     };
     this.searchFunction = this.searchFunction.bind(this);
@@ -25,12 +27,20 @@ export default class BallotSearchResults extends Component {
   }
 
   componentDidMount () {
-    // console.log("BallotSearchResults componentDidMount");
+    // console.log("BallotSearchResults componentDidMount, this.props.clearSearchTextNow:", this.props.clearSearchTextNow);
     this.setState({
-      ballotItemSearchResultsList: BallotStore.ballotItemSearchResultsList()
+      ballotItemSearchResultsList: BallotStore.ballotItemSearchResultsList(),
+      clearSearchTextNow: this.props.clearSearchTextNow
     });
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     // this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+  }
+
+  componentWillReceiveProps (nextProps) {
+    // console.log("BallotSearchResults componentWillReceiveProps, nextProps.clearSearchTextNow:", nextProps.clearSearchTextNow);
+    this.setState({
+      clearSearchTextNow: nextProps.clearSearchTextNow
+    });
   }
 
   componentWillUnmount (){
@@ -52,13 +62,18 @@ export default class BallotSearchResults extends Component {
   }
 
   searchFunction (searchString) {
-    BallotActions.ballotItemOptionsRetrieve(this.props.googleCivicElectionId, searchString);
     if (searchString && searchString !== "") {
+      BallotActions.ballotItemOptionsRetrieve(this.props.googleCivicElectionId, searchString);
       if (this.props.searchUnderwayFunction) {
         this.props.searchUnderwayFunction(true);
       }
+    } else {
+      BallotActions.ballotItemOptionsClear();
     }
-    this.setState({ searchString: searchString });
+    this.setState({
+      clearSearchTextNow: false,
+      searchString: searchString
+    });
   }
 
   clearFunction () {
@@ -67,7 +82,10 @@ export default class BallotSearchResults extends Component {
     if (this.props.searchUnderwayFunction) {
       this.props.searchUnderwayFunction(false);
     }
-    this.setState({ searchString: "" });
+    this.setState({
+      clearSearchTextNow: false,
+      searchString: ""
+    });
   }
 
   render () {
@@ -80,19 +98,24 @@ export default class BallotSearchResults extends Component {
       <div>
         <div className="u-padding-bottom--sm">
           <SearchBar clearButton
-                     searchButton
-                     placeholder="Search for Candidates or Measures to Add"
-                     searchFunction={this.searchFunction}
                      clearFunction={this.clearFunction}
+                     clearSearchTextNow={this.state.clearSearchTextNow}
+                     placeholder="Search for Candidates or Measures to Add"
+                     searchButton
+                     searchFunction={this.searchFunction}
                      searchUpdateDelayTime={1000} />
 
         </div>
         <div className="ballot_search__results_list">
-          {this.state.ballotItemSearchResultsList.map( ballotItem => {
+          {this.state.ballotItemSearchResultsList && this.state.ballotItemSearchResultsList.length ?
+            this.state.ballotItemSearchResultsList.map( ballotItem => {
             return <BallotItemSearchResult key={ballotItem.we_vote_id}
                                            allBallotItemsCount={this.state.ballotItemSearchResultsList.length}
                                            {...ballotItem} />;
-            })
+            }) :
+            this.state.searchString && this.state.searchString !== "" ?
+              <div>No search results found.</div> :
+              null
           }
         </div>
       </div>

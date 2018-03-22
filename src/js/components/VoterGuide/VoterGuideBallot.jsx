@@ -176,7 +176,7 @@ export default class VoterGuideBallot extends Component {
     SupportActions.voterAllPositionsRetrieve();
     SupportActions.positionsCountForAllBallotItems();
     BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
-    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.onVoterStoreChange();
@@ -420,8 +420,8 @@ export default class VoterGuideBallot extends Component {
     });
   }
 
-  _onOrganizationStoreChange () {
-    // console.log("VoterGuideBallot _onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
+  onOrganizationStoreChange () {
+    // console.log("VoterGuideBallot onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
     });

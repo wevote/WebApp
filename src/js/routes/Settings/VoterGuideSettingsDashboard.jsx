@@ -4,10 +4,9 @@ import { Link } from "react-router";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
-import SettingsAccount from "../../components/Settings/SettingsAccount";
-import SettingsNotifications from "../../components/Settings/SettingsNotifications";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideSettingsGeneral from "../../components/Settings/VoterGuideSettingsGeneral";
+import VoterGuideSettingsPositions from "../../components/Settings/VoterGuideSettingsPositions";
 import VoterGuideSettingsSideBar from "../../components/Navigation/VoterGuideSettingsSideBar";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
@@ -149,11 +148,11 @@ export default class VoterGuideSettingsDashboard extends Component {
       case "general":
         settingsComponentToDisplay = <VoterGuideSettingsGeneral voterGuideWeVoteId={this.state.voterGuideWeVoteId} />;
         break;
-      case "notifications":
-        settingsComponentToDisplay = <SettingsNotifications />;
-        break;
-      case "account":
-        settingsComponentToDisplay = <SettingsAccount />;
+      // case "notifications":
+      //   settingsComponentToDisplay = <SettingsNotifications />;
+      //   break;
+      case "positions":
+        settingsComponentToDisplay = <VoterGuideSettingsPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />;
         break;
     }
 
