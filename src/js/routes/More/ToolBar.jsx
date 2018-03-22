@@ -1,7 +1,12 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 
 export default class ToolBar extends Component {
+  static propTypes = {
+    hideGitHub: PropTypes.bool,
+  };
+
   constructor (props) {
     super(props);
   }

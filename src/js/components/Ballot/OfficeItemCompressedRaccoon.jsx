@@ -323,6 +323,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
         <h2 className="u-f3 card-main__ballot-name u-stack--sm">{ballot_item_display_name_raccoon}</h2>
 
         {/* Only show the candidates if the Office is "unfurled" */}
+        {/* TODO: Note that this next block of code could be replaced with CandidateItemCompressed */}
         { this.state.display_office_unfurled ?
           <span>{candidate_list_to_display.map((one_candidate) => {
             let candidate_we_vote_id = one_candidate.we_vote_id;

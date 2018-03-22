@@ -62,7 +62,7 @@ export default class VoterGuideSettingsSideBar extends Component {
 
       <div className="SettingsItem__summary__item-container " >
         <div>
-          <Link to={"/voterguide/" + this.state.voterGuide.organization_we_vote_id + "/ballot/election/" + this.state.voterGuide.google_civic_election_id} className="SettingsItem__summary__item" >
+          <Link to={"/voterguide/" + this.state.voterGuide.organization_we_vote_id + "/ballot/election/" + this.state.voterGuide.google_civic_election_id + "/positions"} className="SettingsItem__summary__item" >
             <span className="SettingsItem__summary__item__display-name">
               Jump to this Voter Guide</span>
           </Link>
@@ -81,20 +81,19 @@ export default class VoterGuideSettingsSideBar extends Component {
           </Link>
         </div>
       </div>
-      {/*
-      <div className={this.state.editMode === "account" ?
+      <div className={this.state.editMode === "positions" ?
            "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
            "SettingsItem__summary__item-container"} >
         <div>
-          <Link to="/settings/account" className="SettingsItem__summary__item" >
-            <span className={this.state.editMode === "account" ?
+          <Link to={"/vg/" + this.state.voterGuide.we_vote_id + "/settings/positions"} className="SettingsItem__summary__item" >
+            <span className={this.state.editMode === "positions" ?
                   "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
                   "SettingsItem__summary__item__display-name"}>
-              Candidates</span>
+              Your Positions</span>
           </Link>
         </div>
       </div>
-
+      {/*
       <div className={this.state.editMode === "notifications" ?
            "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
            "SettingsItem__summary__item-container"} >

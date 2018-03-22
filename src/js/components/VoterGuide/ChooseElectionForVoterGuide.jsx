@@ -187,7 +187,7 @@ export default class ChooseElectionForVoterGuide extends Component {
         </div>;
     });
     priorElectionList = cleanArray(priorElectionList);
-    priorElectionList = []; // Delete once testing is fully complete
+    // priorElectionList = []; // Delete once testing is fully complete
 
     return <div>
       {upcomingElectionList}

@@ -67,6 +67,7 @@ import VerifyEmailProcess from "./routes/Process/VerifyEmailProcess";
 import FriendInvitationByEmailVerifyProcess from "./routes/Process/FriendInvitationByEmailVerifyProcess";
 import VoterGuideChooseElection from "./routes/VoterGuide/VoterGuideChooseElection";
 import VoterGuideGetStarted from "./routes/VoterGuide/VoterGuideGetStarted";
+import VoterGuideListDashboard from "./routes/Settings/VoterGuideListDashboard";
 import VoterGuideOrganizationInfo from "./routes/VoterGuide/VoterGuideOrganizationInfo";
 import VoterGuideOrganizationType from "./routes/VoterGuide/VoterGuideOrganizationType";
 import VoterGuideSettingsDashboard from "./routes/Settings/VoterGuideSettingsDashboard";
@@ -122,6 +123,7 @@ const routes = () =>
     <Route path="/settings/claim" component={ClaimYourPage} />
     <Route path="/settings/location" component={Location} />  /* Complete path on one line for searching */
     <Route path="/settings/menu" component={SettingsMenuMobile} />
+    <Route path="/settings/voterguidelist" component={VoterGuideListDashboard} />
     <Route path="/settings/voterguidesmenu" component={VoterGuidesMenuMobile} />
     <Route path="/settings/:edit_mode" component={SettingsDashboard} />
 
@@ -179,6 +181,10 @@ const routes = () =>
     <Route path="/voterguide/:organization_we_vote_id/ballot/:ballot_location_shortcut" component={OrganizationVoterGuide} />
     <Route path="/voterguide/:organization_we_vote_id/ballot/id/:ballot_returned_we_vote_id" component={OrganizationVoterGuide} />
     <Route path="/voterguide/:organization_we_vote_id/ballot/election/:google_civic_election_id" component={OrganizationVoterGuide} />
+    <Route path="/voterguide/:organization_we_vote_id/ballot/election/:google_civic_election_id/ballot" component={props => <OrganizationVoterGuide {...props} active_route="ballot" />} />
+    <Route path="/voterguide/:organization_we_vote_id/ballot/election/:google_civic_election_id/following" component={props => <OrganizationVoterGuide {...props} active_route="following" />} />
+    <Route path="/voterguide/:organization_we_vote_id/ballot/election/:google_civic_election_id/followers" component={props => <OrganizationVoterGuide {...props} active_route="followers" />} />
+    <Route path="/voterguide/:organization_we_vote_id/ballot/election/:google_civic_election_id/positions" component={props => <OrganizationVoterGuide {...props} active_route="positions" />} />
     <Route path="/voterguide/:organization_we_vote_id/followers" component={props => <OrganizationVoterGuide {...props} active_route="followers" />} />
     <Route path="/voterguide/:organization_we_vote_id/following" component={props => <OrganizationVoterGuide {...props} active_route="following" />} />
     <Route path="/voterguide/:organization_we_vote_id/positions" component={props => <OrganizationVoterGuide {...props} active_route="positions" />} />

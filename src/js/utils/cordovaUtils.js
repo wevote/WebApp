@@ -10,6 +10,7 @@ export function isCordova () {
 
 // see https://github.com/ReactTraining/react-router/blob/v3/docs/guides/Histories.md
 export function historyPush (route) {
+  // console.log("historyPush, route:", route);
   if (isCordova()) {
     hashHistory.push(route);
   } else {
@@ -78,15 +79,15 @@ export function cordovaOpenSafariView (requestURL, timeout) {
 */
 export function enclosingRectangle (objectNameString, instance) {
   let rect = instance.getBoundingClientRect();
-  console.log(objectNameString +
-    " BoundingClientRect: left " + rect.left +
-    ", top " + rect.top +
-    ", right " + rect.right +
-    ", bottom " + rect.bottom +
-    ", x " + rect.x +
-    ", y " + rect.y +
-    ", width " + rect.width +
-    ", height " + rect.height);
+  // console.log(objectNameString +
+  //   " BoundingClientRect: left " + rect.left +
+  //   ", top " + rect.top +
+  //   ", right " + rect.right +
+  //   ", bottom " + rect.bottom +
+  //   ", x " + rect.x +
+  //   ", y " + rect.y +
+  //   ", width " + rect.width +
+  //   ", height " + rect.height);
 }
 
 // webapp, webapp:iOS, webapp:Android
