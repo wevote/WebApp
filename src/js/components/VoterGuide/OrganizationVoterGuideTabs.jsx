@@ -187,7 +187,10 @@ export default class OrganizationVoterGuideTabs extends Component {
                                                              params={this.props.params} />;
         break;
       case "positions":
-        voter_guide_component_to_display = <VoterGuidePositions organization={this.state.organization} />;
+        voter_guide_component_to_display = <VoterGuidePositions organization={this.state.organization}
+                                                                active_route={this.state.active_route}
+                                                                location={this.props.location}
+                                                                params={this.props.params} />;
         break;
       case "following":
         voter_guide_component_to_display = <VoterGuideFollowing organization={this.state.organization} />;
