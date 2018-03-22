@@ -41,6 +41,7 @@ const web_app_config = require("../../config");
 // Related to WebApp/src/js/routes/Ballot/Ballot.jsx
 export default class VoterGuideBallot extends Component {
   static propTypes = {
+    active_route: PropTypes.string,
     location: PropTypes.object,
     organization: PropTypes.object.isRequired,
     params: PropTypes.object,
@@ -49,6 +50,7 @@ export default class VoterGuideBallot extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      active_route: "",
       ballotElectionList: [],
       ballot_item_unfurled_tracker: {},
       ballot_returned_we_vote_id: "",
@@ -82,8 +84,8 @@ export default class VoterGuideBallot extends Component {
   }
 
   componentDidMount () {
-    // console.log("VoterGuideBallot componentDidMount");
     let ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
+    // console.log("VoterGuideBallot componentDidMount, ballotBaseUrl", ballotBaseUrl);
 
     let hide_intro_modal_from_url = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
     let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal") || 0;
@@ -133,7 +135,11 @@ export default class VoterGuideBallot extends Component {
         if (google_civic_election_id !== google_civic_election_id_from_url) {
           BallotActions.voterBallotItemsRetrieve(google_civic_election_id_from_url, "", "");
           // Change the URL to match
-          historyPush(ballotBaseUrl + "/election/" + google_civic_election_id_from_url);
+          let ballotElectionUrl = ballotBaseUrl + "/election/" + google_civic_election_id_from_url;
+          if (this.props.active_route && this.props.active_route !== "") {
+            ballotElectionUrl += "/" + this.props.active_route;
+          }
+          historyPush(ballotElectionUrl);
         }
         // No change to the URL needed
         // Now set google_civic_election_id
@@ -141,7 +147,11 @@ export default class VoterGuideBallot extends Component {
       } else if (google_civic_election_id !== 0) {
         // No need to retrieve data again
         // Change the URL to match the current google_civic_election_id
-        historyPush(ballotBaseUrl + "/election/" + google_civic_election_id);
+        let ballotElectionUrl2 = ballotBaseUrl + "/election/" + google_civic_election_id;
+        if (this.props.active_route && this.props.active_route !== "") {
+          ballotElectionUrl2 += "/" + this.props.active_route;
+        }
+        historyPush(ballotElectionUrl2);
       }
     }
     // DALE NOTE 2018-1-18 Commented this out because it will take voter away from voter guide. Needs further testing.

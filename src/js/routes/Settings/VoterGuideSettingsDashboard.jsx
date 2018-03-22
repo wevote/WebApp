@@ -167,7 +167,7 @@ export default class VoterGuideSettingsDashboard extends Component {
                 <div className="organization-banner-image-div">
                   <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
                 </div> :
-                <div className="organization-banner-image-non-twitter-users" />
+                null
               }
             </div>
             <div className="col-md-12">
@@ -183,11 +183,14 @@ export default class VoterGuideSettingsDashboard extends Component {
           <div className="row">
             {/* Desktop mode */}
             <div className="col-md-12 hidden-xs">
-              <Link to="/settings/profile">&lt; Back to Your Settings</Link>
+              <Link to="/settings/voterguidelist">&lt; Back to Your Voter Guides</Link>
             </div>
             {/* Mobile mode */}
             <div className="col-md-12 visible-xs">
-              <Link to={"/vg/" + this.state.voterGuideWeVoteId + "/settings/menu"}>&lt; Voter Guide</Link>
+              {this.state.voterGuideWeVoteId && this.state.voterGuideWeVoteId !== "" ?
+                <Link to={"/vg/" + this.state.voterGuideWeVoteId + "/settings/menu"}>&lt; Voter Guide</Link> :
+                <Link to={"/settings/voterguidesmenu"}>&lt; Voter Guide</Link>
+              }
             </div>
 
             {/* Desktop mode */}

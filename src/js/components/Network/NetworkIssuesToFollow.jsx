@@ -100,7 +100,7 @@ export default class NetworkIssuesToFollow extends Component {
           </p>
           <SearchBar clearButton
                      searchButton
-                     placeholder="Search by name or Description"
+                     placeholder="Search by Name or Description"
                      searchFunction={this.searchFunction}
                      clearFunction={this.clearFunction}
                      searchUpdateDelayTime={0} />

@@ -62,6 +62,22 @@ export default class HeaderBarProfilePopUp extends Component {
                 </div>
               </Link>
             </li>
+            {/* Desktop only */}
+            <li className="hidden-xs">
+              <Link onClick={this.hideProfilePopUp} to="/settings/voterguidelist">
+                <div>
+                  <span className="header-slide-out-menu-text-left">Your Voter Guides</span>
+                </div>
+              </Link>
+            </li>
+            {/* Mobile only */}
+            <li className="visible-xs">
+              <Link onClick={this.hideProfilePopUp} to="/settings/voterguidesmenu">
+                <div>
+                  <span className="header-slide-out-menu-text-left">Your Voter Guides</span>
+                </div>
+              </Link>
+            </li>
             {/* Desktop or Mobile */}
             {this.props.voter && isSignedIn ?
               null :

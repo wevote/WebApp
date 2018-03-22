@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router";
-import { Button } from "react-bootstrap";
 import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../../components/LoadingWheel";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -83,7 +81,7 @@ export default class OrganizationVoterGuideEdit extends Component {
     // console.log("OrganizationVoterGuideEdit, componentDidMount, googleCivicElectionId:", googleCivicElectionId);
     if (tryToCreateVoterGuide) {
       // We only pass the election id since you can only create voter guides for your self
-      VoterGuideActions.voterGuideSave(googleCivicElectionId)
+      VoterGuideActions.voterGuideSave(googleCivicElectionId);
     }
 
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
