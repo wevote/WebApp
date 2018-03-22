@@ -92,7 +92,7 @@ export default class HeaderGettingStartedBar extends Component {
   }
 
   _openEmailModal () {
-    this.setState({ showEmailModal: !this.state.showEmaiballotEmailWasSentlModal });
+    this.setState({ showEmailModal: !this.state.showEmailModal });
   }
 
   _openFacebookModal () {

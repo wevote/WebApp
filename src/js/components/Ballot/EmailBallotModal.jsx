@@ -185,29 +185,6 @@ export default class EmailBallotModal extends Component {
     let floatRight = { float: "right" };
     let textGray = { color: "gray" };
 
-    // if (this.state.showEmailToFriendsModal) {
-      // console.log('this.state.showEmailToFriendsModal', this.state.showEmailToFriendsModal);
-      // this.componentWillUnmount();
-      // this.props.saveSuccess({success_message: this.state.success_message, sender_email_address: this.state.sender_email_address, verification_email_sent: this.state.verification_email_sent})
-      // return <EmailBallotToFriendsModal ballot_link={this.state.ballot_link}
-      //                                   sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
-      //                                   verification_email_sent={this.state.verification_email_sent} />;
-    // }
-
-    // if (this.state.on_ballot_email_sent_step) {
-      // console.log('this.state.on_ballot_email_sent_step', this.state.on_ballot_email_sent_step);
-      // this.props.saveSuccess({success_message: this.state.success_message, sender_email_address: this.state.sender_email_address, sender_email_address_from_email_ballot_modal:this.state.sender_email_address, verification_email_sent: this.state.verification_email_sent});
-      // console.log('this.state.success_message', this.state.success_message) //Needs to be passed
-      // console.log('this.state.sender_email_address', this.state.sender_email_address) //Needs to be passed
-      // console.log('this.state.verification_email_sent', this.state.verification_email_sent)
-
-      // this.componentWillUnmount();
-      // return <EmailBallotToFriendsModal ballot_link={this.state.ballot_link}
-      //                                   success_message={this.state.success_message}
-      //                                   sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
-      //                                   verification_email_sent={this.state.verification_email_sent} />;
-    // }
-
     return (
     <div className="share-modal">
       <div className="intro-modal__h1">
