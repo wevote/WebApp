@@ -239,6 +239,7 @@ export default class OrganizationPositionItem extends Component {
               <ItemActionBar ballot_item_we_vote_id={position.ballot_item_we_vote_id}
                              ballot_item_display_name={ballot_item_display_name}
                              commentButtonHide
+                             shareButtonHide
                              supportProps={supportProps}
                              transitioning={this.state.transitioning}
                              type={position.kind_of_ballot_item}

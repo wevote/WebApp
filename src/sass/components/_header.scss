@@ -39,8 +39,7 @@ $space-search-right: 10%;
 }
 
 .search-cordova {
-  width: 55%;
-  margin-right: $space-search-right;
+  width: 100%;
 }
 
 // To cover the space under the iPhone top line menu "Carrier" or "ATT" etc.
@@ -48,7 +47,7 @@ $space-search-right: 10%;
   top: $space-none;
   position: fixed;
   height: $space-header-height;
-  background: $gray-light;
+  background: $brand-blue;
   width: 100%;
   opacity: 1;
   z-index: 3;
@@ -204,6 +203,11 @@ $space-search-right: 10%;
   &__election-type {
     font-size: 14px;
     color: $gray-mid;
+  }
+
+  &--cordova {
+    left: 0;
+    width: auto;
   }
 }
 

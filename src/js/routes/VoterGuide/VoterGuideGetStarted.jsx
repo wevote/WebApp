@@ -44,7 +44,7 @@ export default class VoterGuideGetStarted extends Component {
       voter: voter,
     });
     let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
-    console.log("VoterGuideGetStarted componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
+    // console.log("VoterGuideGetStarted componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId) {
       this.setState({
         linkedOrganizationWeVoteId: linkedOrganizationWeVoteId,

@@ -1,37 +1,120 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { capitalizeString } from "../../utils/textFormat";
+import { calculateBallotBaseUrl, capitalizeString } from "../../utils/textFormat";
 import Helmet from "react-helmet";
+import BallotActions from "../../actions/BallotActions";
+import BallotSearchResults from "../Ballot/BallotSearchResults";
 import BallotStore from "../../stores/BallotStore";
+import FooterDoneBar from "../Navigation/FooterDoneBar";
+import { historyPush } from "../../utils/cordovaUtils";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationPositionItem from "./OrganizationPositionItem";
+import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
 import VoterGuideRecommendationsFromOneOrganization from "./VoterGuideRecommendationsFromOneOrganization";
 import VoterStore from "../../stores/VoterStore";
 
 export default class VoterGuidePositions extends Component {
   static propTypes = {
+    active_route: PropTypes.string,
+    location: PropTypes.object,
     organization: PropTypes.object.isRequired,
+    params: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
+      clearSearchTextNow: false,
       current_google_civic_election_id: 0,
       current_organization_we_vote_id: "",
       editMode: false,
       organization: {},
+      searchIsUnderway: false,
       voter: {},
     };
+    this.clearSearch = this.clearSearch.bind(this);
+    this.searchUnderway = this.searchUnderway.bind(this);
   }
 
   componentDidMount (){
     // console.log("VoterGuidePositions, componentDidMount, this.props.organization: ", this.props.organization);
+    let ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
+    // console.log("VoterGuidePositions componentDidMount, ballotBaseUrl", ballotBaseUrl);
+
+    this.setState({
+      mounted: true,
+    });
+
+    let google_civic_election_id_from_url = this.props.params.google_civic_election_id || 0;
+    // console.log("google_civic_election_id_from_url: ", google_civic_election_id_from_url);
+    let ballot_returned_we_vote_id = this.props.params.ballot_returned_we_vote_id || "";
+    ballot_returned_we_vote_id = ballot_returned_we_vote_id === "none" ? "" : ballot_returned_we_vote_id;
+    // console.log("this.props.params.ballot_returned_we_vote_id: ", this.props.params.ballot_returned_we_vote_id);
+    let ballot_location_shortcut = this.props.params.ballot_location_shortcut || "";
+    ballot_location_shortcut = ballot_location_shortcut.trim();
+    ballot_location_shortcut = ballot_location_shortcut === "none" ? "" : ballot_location_shortcut;
+    let google_civic_election_id = 0;
+    // console.log("componentDidMount, BallotStore.ballot_properties: ", BallotStore.ballot_properties);
+    if (google_civic_election_id_from_url !== 0) {
+      google_civic_election_id_from_url = parseInt(google_civic_election_id_from_url, 10);
+      // google_civic_election_id = google_civic_election_id_from_url;
+    } else if (BallotStore.ballot_properties && BallotStore.ballot_properties.google_civic_election_id) {
+      google_civic_election_id = BallotStore.ballot_properties.google_civic_election_id;
+    }
+
+    // console.log("ballot_returned_we_vote_id: ", ballot_returned_we_vote_id, ", ballot_location_shortcut:", ballot_location_shortcut, ", google_civic_election_id_from_url: ", google_civic_election_id_from_url);
+    if (ballot_returned_we_vote_id || ballot_location_shortcut || google_civic_election_id_from_url) {
+      if (ballot_location_shortcut !== "") {
+        // Change the ballot on load to make sure we are getting what we expect from the url
+        BallotActions.voterBallotItemsRetrieve(0, "", ballot_location_shortcut);
+        // Change the URL to match
+        historyPush(ballotBaseUrl + "/" + ballot_location_shortcut);
+      } else if (ballot_returned_we_vote_id !== "") {
+        // Change the ballot on load to make sure we are getting what we expect from the url
+        BallotActions.voterBallotItemsRetrieve(0, ballot_returned_we_vote_id, "");
+        // Change the URL to match
+        historyPush(ballotBaseUrl + "/id/" + ballot_returned_we_vote_id);
+      } else if (google_civic_election_id_from_url !== 0) {
+        // Change the ballot on load to make sure we are getting what we expect from the url
+        if (google_civic_election_id !== google_civic_election_id_from_url) {
+          BallotActions.voterBallotItemsRetrieve(google_civic_election_id_from_url, "", "");
+          // Change the URL to match
+          let ballotElectionUrl = ballotBaseUrl + "/election/" + google_civic_election_id_from_url;
+          if (this.props.active_route && this.props.active_route !== "") {
+            ballotElectionUrl += "/" + this.props.active_route;
+          }
+          historyPush(ballotElectionUrl);
+        }
+        // No change to the URL needed
+        // Now set google_civic_election_id
+        google_civic_election_id = google_civic_election_id_from_url;
+      } else if (google_civic_election_id !== 0) {
+        // No need to retrieve data again
+        // Change the URL to match the current google_civic_election_id
+        let ballotElectionUrl2 = ballotBaseUrl + "/election/" + google_civic_election_id;
+        if (this.props.active_route && this.props.active_route !== "") {
+          ballotElectionUrl2 += "/" + this.props.active_route;
+        }
+        historyPush(ballotElectionUrl2);
+      }
+    }
+    // DALE NOTE 2018-1-18 Commented this out because it will take voter away from voter guide. Needs further testing.
+    // else if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
+    //   // console.log("if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false");
+    //   historyPush("/settings/location");
+    // }
+
+    // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
+    // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
+    SupportActions.voterAllPositionsRetrieve();
+    SupportActions.positionsCountForAllBallotItems();
+
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
     // TODO: COMMENT OUT because they were added to OrganizationVoterGuideTabs?
     // Positions for this organization, for this voter / election
@@ -91,13 +174,35 @@ export default class VoterGuidePositions extends Component {
     });
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({
       voter: VoterStore.getVoter()
     });
    }
 
+  // This function is called by BallotSearchResults and SearchBar when an API search has been cleared
+  clearSearch () {
+    // console.log("VoterGuidePositions, clearSearch");
+    this.setState({
+      clearSearchTextNow: true,
+      searchIsUnderway: false
+    });
+  }
+
+  // This function is called by BallotSearchResults and SearchBar when an API search has been triggered
+  searchUnderway (searchIsUnderway) {
+    // console.log("VoterGuidePositions, searchIsUnderway: ", searchIsUnderway);
+    this.setState({
+      clearSearchTextNow: false,
+      searchIsUnderway: searchIsUnderway
+    });
+  }
+
   toggleEditMode () {
+    if (this.state.editMode) {
+      // If going from editMode == True to editMode == False, we want to refresh the positions
+      OrganizationActions.positionListForOpinionMaker(this.state.organization.organization_we_vote_id, true, false, this.state.current_google_civic_election_id);
+    }
     this.setState({editMode: !this.state.editMode});
   }
 
@@ -105,6 +210,10 @@ export default class VoterGuidePositions extends Component {
     let enterAndSpaceKeyCodes = [13, 32];
     let scope = this;
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+      if (this.state.editMode) {
+        // If going from editMode == True to editMode == False, we want to refresh the positions
+        OrganizationActions.positionListForOpinionMaker(this.state.organization.organization_we_vote_id, true, false, this.state.current_google_civic_election_id);
+      }
       scope.setState({editMode: !this.state.editMode});
     }
   }
@@ -143,7 +252,7 @@ export default class VoterGuidePositions extends Component {
               />
       <div className="card">
         <ul className="card-child__list-group">
-          { looking_at_self && at_least_one_position_found_for_this_election ?
+          { looking_at_self && at_least_one_position_found_for_this_election && !this.state.searchIsUnderway ?
             <a className="fa-pull-right u-push--md"
                tabIndex="0"
                onKeyDown={this.onKeyDownEditMode.bind(this)}
@@ -156,7 +265,15 @@ export default class VoterGuidePositions extends Component {
                 alt='view your ballots' /> : null}*/}
             </h4>
           {/* </OverlayTrigger> */}
-          { at_least_one_position_found_for_this_election ?
+          { looking_at_self ?
+            <div className="u-margin-left--md u-push--md">
+              <BallotSearchResults clearSearchTextNow={this.state.clearSearchTextNow}
+                                   googleCivicElectionId={this.state.current_google_civic_election_id}
+                                   organizationWeVoteId={this.state.voter.linked_organization_we_vote_id}
+                                   searchUnderwayFunction={this.searchUnderway} />
+            </div> :
+            null }
+          { at_least_one_position_found_for_this_election && !this.state.searchIsUnderway ?
             <span>
               { position_list_for_one_election.map( item => {
                 return <OrganizationPositionItem key={item.position_we_vote_id}
@@ -173,12 +290,7 @@ export default class VoterGuidePositions extends Component {
             null :
             <div className="card-child__content-text">
               { looking_at_self ?
-                <div>You have not taken any positions yet for this election.
-                  Click 'Ballot' in the top navigation bar to see items you can support or oppose.<br />
-                  <br />
-                  <span>Until you take positions, we recommend visitors look at other voter guides you follow. </span>
-                  <VoterGuideRecommendationsFromOneOrganization organization_we_vote_id={this.state.organization.organization_we_vote_id} />
-                </div> :
+                null :
                 <div>
                   There are no positions for this election in this voter guide yet.<br />
                   <br />
@@ -192,7 +304,7 @@ export default class VoterGuidePositions extends Component {
       </div>
 
       {/* We do not display the positions for other elections if we have even one position for this election. */}
-      { at_least_one_position_found_for_other_elections ?
+      { at_least_one_position_found_for_other_elections && !this.state.searchIsUnderway ?
         <div className="card">
           <ul className="card-child__list-group">
             { position_list_for_all_except_one_election.length && !at_least_one_position_found_for_this_election ?
@@ -216,6 +328,12 @@ export default class VoterGuidePositions extends Component {
             }
           </ul>
         </div> :
+        null
+      }
+      {this.state.searchIsUnderway ?
+        <span className="visible-xs">
+          <FooterDoneBar doneFunction={this.clearSearch} doneButtonText={"Clear Search"}/>
+        </span> :
         null
       }
     </div>;

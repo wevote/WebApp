@@ -141,7 +141,7 @@ export default class SettingsAccount extends Component {
             <div>
               {this.state.voter.signed_in_twitter ?
                 null :
-                <TwitterSignIn />
+                <TwitterSignIn className="btn btn-social btn-lg btn-twitter"/>
               }
               <span>&nbsp;</span>
               {/* February 2018, Facebook and Magic Email disabled for Cordova */}

@@ -2,6 +2,10 @@
   @include print {
     column-count: 1;
   }
+
+  &__cordova {
+    margin-bottom: $space-xl;
+  }
 }
 
 .BallotItem {

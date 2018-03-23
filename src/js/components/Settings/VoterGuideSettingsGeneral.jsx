@@ -163,7 +163,7 @@ export default class VoterGuideSettingsGeneral extends Component {
       <div className="card">
         <div className="card-main">
           <h3 className="h3">Voter Guide Settings</h3>
-            <SettingsWidgetFirstLastName hideFirstLastName />
+          <SettingsWidgetFirstLastName hideFirstLastName />
         </div>
       </div>
     </div>;

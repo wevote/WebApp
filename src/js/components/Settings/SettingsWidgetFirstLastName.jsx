@@ -170,6 +170,7 @@ export default class SettingsWidgetFirstLastName extends Component {
                   <span className="pull-right u-gray-mid">{this.state.organizationNameSavedStatus}</span>
                   <label htmlFor="organization-name">Organization Name as Shown on Your Voter Guides</label>
                   <input type="text"
+                         autoComplete="organization"
                          className="form-control"
                          id="organization-name"
                          name="organizationName"
@@ -192,6 +193,7 @@ export default class SettingsWidgetFirstLastName extends Component {
                     <span>
                       <label htmlFor="first-name">First Name</label>
                       <input type="text"
+                             autoComplete="given-name"
                              className="form-control"
                              id="first-name"
                              name="firstName"
@@ -202,6 +204,7 @@ export default class SettingsWidgetFirstLastName extends Component {
                       />
                       <label htmlFor="last-name">Last Name</label>
                       <input type="text"
+                             autoComplete="family-name"
                              className="form-control"
                              id="last-name"
                              name="lastName"
@@ -215,6 +218,7 @@ export default class SettingsWidgetFirstLastName extends Component {
                   <span className="pull-right u-gray-mid">{this.state.organizationNameSavedStatus}</span>
                   <label htmlFor="organization-name">Name Shown on Your Voter Guides</label>
                   <input type="text"
+                         autoComplete="organization"
                          className="form-control"
                          id="organization-name"
                          name="organizationName"

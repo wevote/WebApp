@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import TextTruncate from "react-text-truncate";
 
-export default class ReadMore extends Component {
+export default class LearnMore extends Component {
   static propTypes = {
     text_to_display: PropTypes.node.isRequired,
     show_more_text: PropTypes.node,
     learn_more_text: PropTypes.node,
     num_of_lines: PropTypes.number,
-    on_click: PropTypes.func.isRequired,
+    on_click: PropTypes.func,
   };
 
   constructor (props) {

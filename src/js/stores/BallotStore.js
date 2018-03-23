@@ -11,6 +11,7 @@ class BallotStore extends ReduceStore {
 
   getInitialState () {
     return {
+      ballot_item_search_results_list: [],
       ballot_item_unfurled_tracker: {},
     };
   }
@@ -42,6 +43,10 @@ class BallotStore extends ReduceStore {
 
   ballotElectionList () {
     return this.getState().ballot_election_list || [];
+  }
+
+  ballotItemSearchResultsList () {
+    return this.getState().ballotItemSearchResultsList || [];
   }
 
   get ballotLength () {
@@ -194,6 +199,20 @@ class BallotStore extends ReduceStore {
     let ballotCaveat = "";
 
     switch (action.type) {
+      case "ballotItemOptionsClear":
+        // console.log("action.res", action.res)
+        return {
+          ...state,
+         ballotItemSearchResultsList: []
+        };
+
+      case "ballotItemOptionsRetrieve":
+        // console.log("BallotStore, voterBallotListRetrieve response received.");
+        let ballotItemSearchResultsList = action.res.ballot_item_list;
+        return {
+         ...state,
+         ballotItemSearchResultsList: ballotItemSearchResultsList
+        };
 
       case "voterAddressRetrieve":
         // console.log("BallotStore, voterAddressRetrieve response received, calling voterBallotItemsRetrieve now.");
@@ -253,13 +272,13 @@ class BallotStore extends ReduceStore {
           }
         }
         return state;
-      //Chi
+
       case "voterBallotItemOpenOrClosedSave":
         // console.log("action.res", action.res)
-      return {
-        ...state,
-        ballot_item_unfurled_tracker: action.res.ballot_item_unfurled_tracker,
-      };
+        return {
+          ...state,
+          ballot_item_unfurled_tracker: action.res.ballot_item_unfurled_tracker,
+        };
 
       case "error-voterBallotItemsRetrieve":
       default:

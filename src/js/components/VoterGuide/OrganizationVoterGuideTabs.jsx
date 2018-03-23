@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../LoadingWheel";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -45,11 +46,13 @@ export default class OrganizationVoterGuideTabs extends Component {
     OrganizationActions.positionListForOpinionMaker(this.props.organization.organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
     OrganizationActions.positionListForOpinionMaker(this.props.organization.organization_we_vote_id, false, true);
-    // console.log("OrganizationVoterGuideTabs, componentDidMount, active_route: ", this.props.active_route);
+
+    // console.log("OrganizationVoterGuideTabs, componentDidMount, this.props.active_route: ", this.props.active_route);
     this.setState({
       active_route: this.props.active_route || "ballot",
       current_organization_we_vote_id: this.props.organization.organization_we_vote_id,
       organization: this.props.organization,
+      pathname: this.props.location.pathname,
       voter: VoterStore.getVoter(),
     });
   }
@@ -74,6 +77,15 @@ export default class OrganizationVoterGuideTabs extends Component {
         organization: nextProps.organization,
       });
     }
+    // console.log("OrganizationVoterGuideTabs, componentWillReceiveProps, nextProps.active_route: ", nextProps.active_route);
+    if (nextProps.active_route) {
+      this.setState({
+        active_route: nextProps.active_route || this.state.active_route,
+      });
+    }
+    this.setState({
+        pathname: nextProps.location.pathname,
+    });
   }
 
   componentWillUnmount () {
@@ -103,20 +115,34 @@ export default class OrganizationVoterGuideTabs extends Component {
     });
    }
 
-  switchTab (destination_tab) {
-    let available_tabs_array = ["ballot", "following", "followers", "positions"];
-    if (arrayContains(destination_tab, available_tabs_array) ) {
+  switchTab (destinationTab) {
+    let availableTabsArray = ["ballot", "following", "followers", "positions"];
+    if (arrayContains(destinationTab, availableTabsArray) ) {
       this.setState({
-        active_route: destination_tab,
+        active_route: destinationTab,
       });
-      // DALE 2017-11-24 This is a partially implemented redirect, to make sure the URL matches the tab.
-      // But this is an expensive action as it reloads quite a bit of data from the API server, so we leave this off for now.
-      // historyPush("/resistancevoter/" + destination_tab);
+      // This is an expensive action as it reloads quite a bit of data from the API server
+      let currentUrl = this.state.pathname;
+      var arrayLength = availableTabsArray.length;
+      let modifiedUrl = this.state.pathname;
+      let formerTabLength = 0;
+      let formerTabLengthWithSlash = 0;
+      for (var i = 0; i < arrayLength; i++) {
+        // Remove any values in availableTabsArray from the end of the URL
+        if (currentUrl.endsWith(availableTabsArray[i])) {
+          formerTabLength = availableTabsArray[i].length;
+          formerTabLengthWithSlash = formerTabLength + 1;
+          modifiedUrl = currentUrl.slice(0, -formerTabLengthWithSlash);
+          // break;
+        }
+      }
+      modifiedUrl = modifiedUrl + "/" + destinationTab;
+      historyPush(modifiedUrl);
     }
    }
 
   render () {
-    if (!this.state.organization || !this.state.voter) {
+    if (!this.state.pathname || !this.state.active_route || !this.state.organization || !this.state.voter) {
       return <div>{LoadingWheel}</div>;
     }
 
@@ -156,11 +182,15 @@ export default class OrganizationVoterGuideTabs extends Component {
       default:
       case "ballot":
         voter_guide_component_to_display = <VoterGuideBallot organization={this.state.organization}
+                                                             active_route={this.state.active_route}
                                                              location={this.props.location}
                                                              params={this.props.params} />;
         break;
       case "positions":
-        voter_guide_component_to_display = <VoterGuidePositions organization={this.state.organization} />;
+        voter_guide_component_to_display = <VoterGuidePositions organization={this.state.organization}
+                                                                active_route={this.state.active_route}
+                                                                location={this.props.location}
+                                                                params={this.props.params} />;
         break;
       case "following":
         voter_guide_component_to_display = <VoterGuideFollowing organization={this.state.organization} />;

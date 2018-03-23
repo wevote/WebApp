@@ -4,13 +4,13 @@ import { Link } from "react-router";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
+import SelectVoterGuidesSideBar from "../../components/Navigation/SelectVoterGuidesSideBar";
 import SettingsAccount from "../../components/Settings/SettingsAccount";
 import SettingsAddress from "../../components/Settings/SettingsAddress";
 import SettingsElection from "../../components/Settings/SettingsElection";
 import SettingsNotifications from "../../components/Settings/SettingsNotifications";
 import SettingsProfile from "../../components/Settings/SettingsProfile";
 import SettingsPersonalSideBar from "../../components/Navigation/SettingsPersonalSideBar";
-import SelectVoterGuidesSideBar from "../../components/Navigation/SelectVoterGuidesSideBar";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
@@ -26,13 +26,11 @@ export default class SettingsDashboard extends Component {
     super(props);
     this.state = {
       editMode: "",
-      linked_organization_we_vote_id: "",
+      linkedOrganizationWeVoteId: "",
       organization: {},
       sliderOpen: false,
       voter: {},
     };
-    this.closeSlider = this.closeSlider.bind(this);
-    this.openSlider = this.openSlider.bind(this);
   }
 
   componentDidMount () {
@@ -50,20 +48,20 @@ export default class SettingsDashboard extends Component {
     this.setState({
       voter: voter,
     });
-    let linked_organization_we_vote_id = voter.linked_organization_we_vote_id;
-    // console.log("SettingsDashboard componentDidMount linked_organization_we_vote_id: ", linked_organization_we_vote_id);
-    if (linked_organization_we_vote_id) {
-      VoterGuideActions.voterGuidesRetrieve(linked_organization_we_vote_id);
+    let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+    // console.log("SettingsDashboard componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
+    if (linkedOrganizationWeVoteId) {
+      VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
       this.setState({
-        linked_organization_we_vote_id: linked_organization_we_vote_id,
+        linkedOrganizationWeVoteId: linkedOrganizationWeVoteId,
       });
-      let organization = OrganizationStore.getOrganizationByWeVoteId(linked_organization_we_vote_id);
+      let organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
       if (organization && organization.organization_we_vote_id) {
         this.setState({
           organization: organization,
         });
       } else {
-        OrganizationActions.organizationRetrieve(linked_organization_we_vote_id);
+        OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
       }
     }
   }
@@ -73,20 +71,20 @@ export default class SettingsDashboard extends Component {
     this.setState({
       voter: voter,
     });
-    let linked_organization_we_vote_id = voter.linked_organization_we_vote_id;
-    // console.log("SettingsDashboard componentWillReceiveProps linked_organization_we_vote_id: ", linked_organization_we_vote_id);
-    if (linked_organization_we_vote_id && this.state.linked_organization_we_vote_id !== linked_organization_we_vote_id) {
-      VoterGuideActions.voterGuidesRetrieve(linked_organization_we_vote_id);
+    let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+    // console.log("SettingsDashboard componentWillReceiveProps linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
+    if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
+      VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
       this.setState({
-        linked_organization_we_vote_id: linked_organization_we_vote_id,
+        linkedOrganizationWeVoteId: linkedOrganizationWeVoteId,
       });
-      let organization = OrganizationStore.getOrganizationByWeVoteId(linked_organization_we_vote_id);
+      let organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
       if (organization && organization.organization_we_vote_id) {
         this.setState({
           organization: organization,
         });
       } else {
-        OrganizationActions.organizationRetrieve(linked_organization_we_vote_id);
+        OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
       }
     }
     if (nextProps.params.edit_mode) {
@@ -101,9 +99,9 @@ export default class SettingsDashboard extends Component {
   }
 
   onOrganizationStoreChange (){
-    // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linked_organization_we_vote_id);
+    // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.linked_organization_we_vote_id),
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId),
     });
   }
 
@@ -116,24 +114,13 @@ export default class SettingsDashboard extends Component {
     this.setState({
       voter: voter,
     });
-    let linked_organization_we_vote_id = voter.linked_organization_we_vote_id;
-    // console.log("SettingsDashboard onVoterStoreChange linked_organization_we_vote_id: ", linked_organization_we_vote_id);
-    if (linked_organization_we_vote_id && this.state.linked_organization_we_vote_id !== linked_organization_we_vote_id) {
-      OrganizationActions.organizationRetrieve(linked_organization_we_vote_id);
-      VoterGuideActions.voterGuidesRetrieve(linked_organization_we_vote_id);
-      this.setState({ linked_organization_we_vote_id: linked_organization_we_vote_id });
+    let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+    // console.log("SettingsDashboard onVoterStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
+    if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
+      OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
+      VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
+      this.setState({ linkedOrganizationWeVoteId: linkedOrganizationWeVoteId });
     }
-  }
-
-  openSlider () {
-    this.setState({
-      sliderOpen: true
-    });
-  }
-  closeSlider () {
-    this.setState({
-      sliderOpen: false
-    });
   }
 
   render () {

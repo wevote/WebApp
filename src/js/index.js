@@ -17,33 +17,29 @@ function startApp () {
     console.log("cordova startup device: " + device); // eslint-disable-line no-undef
     console.log("cordova startup window.screen: ", window.screen);
 
+    window.$ = require("jquery");
+
     // prevent keyboard scrolling our view, https://www.npmjs.com/package/cordova-plugin-keyboard
     if (window.Keyboard) {
       console.log("Cordova startupApp keyboard plugin found");
-      Keyboard.shrinkView(true);
+      Keyboard.shrinkView(true);                      // eslint-disable-line no-undef
 
       window.addEventListener("keyboardDidShow", function () {
         document.activeElement.scrollIntoView();
       });
     } else console.log("ERROR: Cordova index.js startApp keyboard plugin WAS NOT found");
-
-    if (window.StatusBar) {
-      StatusBar.styleLightContent();
-    } else {
-      // 3/5/18:  Not sure but this failure might be due to    https://issues.apache.org/jira/browse/CB-13843
-      console.log("ERROR: Cordova index.js startApp StatusBar plugin WAS NOT found");
-    }
-
   }
 
-  render(<Router history={isCordova() ? hashHistory : browserHistory } render={applyRouterMiddleware(useScroll(()=>true))}>
-    { routes() }
+  render(<Router history={isCordova() ? hashHistory : browserHistory}
+                 render={applyRouterMiddleware(useScroll(() => true))}>
+    {routes()}
   </Router>, document.getElementById("app"));
 }
 
 // If Apache Cordova is available, wait for it to be ready, otherwise start the WebApp
 if (isCordova()) {
-  document.addEventListener("deviceready", () => {
+  document.addEventListener("deviceready", (id) => {
+    console.log("Received Cordova Event: ", id.type);
     startApp();
   }, false);
 } else {  // browser

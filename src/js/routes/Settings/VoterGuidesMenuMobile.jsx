@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -8,7 +7,6 @@ import SelectVoterGuidesSideBar from "../../components/Navigation/SelectVoterGui
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
-import { isWebApp } from "../../utils/cordovaUtils";
 
 export default class VoterGuidesMenuMobile extends Component {
   static propTypes = {
@@ -149,13 +147,6 @@ export default class VoterGuidesMenuMobile extends Component {
                 null }
             </div> :
             null }
-
-          <div className="row">
-            {/* Mobile mode */}
-            <div className="col-md-12 visible-xs">
-              <Link to={isWebApp() ? "/settings/menu" : "/more/hamburger"}>&lt; Back to Your Settings</Link>
-            </div>
-          </div>
 
           <div className="row">
             {/* Mobile WebApp navigation */}

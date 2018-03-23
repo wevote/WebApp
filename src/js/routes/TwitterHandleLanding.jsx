@@ -29,7 +29,7 @@ export default class TwitterHandleLanding extends Component {
   }
 
   componentDidMount () {
-    console.log("TwitterHandleLanding componentDidMount, this.props.params.twitter_handle: " + this.props.params.twitter_handle);
+    // console.log("TwitterHandleLanding componentDidMount, this.props.params.twitter_handle: " + this.props.params.twitter_handle);
     this.setState({ twitter_handle: this.props.params.twitter_handle });
     TwitterActions.twitterIdentityRetrieve(this.props.params.twitter_handle);
     this.twitterStoreListener = TwitterStore.addListener(this._onTwitterStoreChange.bind(this));
@@ -92,7 +92,8 @@ export default class TwitterHandleLanding extends Component {
   }
 
   render () {
-    if (this.state.status === undefined){
+    if (this.state.status === undefined) {
+      // console.log("TwitterHandleLanding this.state.status undefined");
       // Show a loading wheel while this component's data is loading
       return LoadingWheel;
     }
