@@ -187,7 +187,6 @@ export default class BallotIntroFollowIssues extends Component {
           <span>{this.state.next_button_text}</span>
         </Button>
       </div>
-      <br/>
     </div>
     );
   }
