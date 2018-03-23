@@ -204,6 +204,11 @@ $space-search-right: 10%;
     font-size: 14px;
     color: $gray-mid;
   }
+
+  &--cordova {
+    left: 0;
+    width: auto;
+  }
 }
 
 .search-image {

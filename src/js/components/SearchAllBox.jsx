@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import BallotActions from "../actions/BallotActions";
 import classNames from "classnames";
 import { Link } from "react-router";
-import { historyPush, isWebApp } from "../utils/cordovaUtils";
+import { historyPush, isCordova, isWebApp } from "../utils/cordovaUtils";
 import SearchAllActions from "../actions/SearchAllActions";
 import SearchAllStore from "../stores/SearchAllStore";
 import { makeSearchLink } from "../utils/search-functions";
@@ -284,6 +284,7 @@ export default class SearchAllBox extends Component {
     let searchContainerClasses = classNames({
       "search-container__hidden": !this.state.open,
       "search-container": true,
+      "search-container--cordova": isCordova(),
     });
     let clearButtonClasses = classNames({
       "site-search__clear": true,
