@@ -13,7 +13,7 @@ import BallotSummaryModal from "../../components/Ballot/BallotSummaryModal";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateModal from "../../components/Ballot/CandidateModal";
-import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
+import {cordovaDot, historyPush, isWebApp} from "../../utils/cordovaUtils";
 import cookies from "../../utils/cookies";
 import EditAddressInPlace from "../../components/Widgets/EditAddressInPlace";
 import ElectionActions from "../../actions/ElectionActions";
@@ -683,7 +683,7 @@ export default class VoterGuideBallot extends Component {
             <div className="col-xs-12 col-md-12">
               {/* The ballot items the organization wants to promote */}
               <div>
-                <div className="BallotList">
+                <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
                   {ballot_with_organization_items.map( (item) => <VoterGuideBallotItemCompressed toggleCandidateModal={this.toggleCandidateModal}
                                                                toggleMeasureModal={this.toggleMeasureModal}
                                                                key={item.we_vote_id}
@@ -698,7 +698,7 @@ export default class VoterGuideBallot extends Component {
                 null }
               {/* The rest of the ballot items */}
               <div>
-                <div className="BallotList">
+                <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
                   {ballot_with_remaining_items.map( (item) => <BallotItemCompressed toggleCandidateModal={this.toggleCandidateModal}
                                                                toggleMeasureModal={this.toggleMeasureModal}
                                                                key={item.we_vote_id}
