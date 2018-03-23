@@ -132,7 +132,7 @@ export default class Network extends Component {
             { this.state.voter.signed_in_twitter ?
               null :
               <div className="network-btn">
-                <TwitterSignIn className="text-center" buttonText="Find Voter Guides" />
+                <TwitterSignIn className="btn btn-social btn-lg btn-twitter text-center" buttonText="Find Voter Guides" />
                 <ReadMore
                   className="social-btn-description"
                   text_to_display={twitterInfoText}
@@ -170,7 +170,7 @@ export default class Network extends Component {
             { this.state.voter.signed_in_twitter ?
               null :
               <div className="network-btn">
-                <TwitterSignIn className="text-center" buttonText="Find" buttonSizeClass="btn-md" />
+                <TwitterSignIn buttonText="Find" className="btn btn-social btn-md btn-twitter" />
               </div>
             }
             <div className="network-btn">
