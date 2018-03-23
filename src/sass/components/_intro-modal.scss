@@ -1,10 +1,13 @@
 .intro-modal {
   padding: $space-none;
-  min-height: 480px;
+  // min-height: 480px;
   height: 100%;
   width: 100%;
   color: $white;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   &__h1 {
     font-weight: 700;
@@ -113,19 +116,13 @@
   }
 
   &__button {
-    position: absolute;
-    bottom: 36px;
-    width: 19%;
-  }
-
-  &__button-follow,
-  &__button-disabled {
-    width: 19%;
+    // position: absolute;
+    margin-bottom: 32px;
+    width: 80%;
   }
 
   &__button-wrap {
-    display: flex;
-    justify-content: space-around;
+    width: 100%;
   }
 
   &__span {
@@ -377,6 +374,10 @@
 }
 
 // Intro Modal shadow
+.intro-modal-shadow-wrap {
+  flex-basis: 0;
+}
+
 .intro-modal-shadow {
   position: relative;
   top: -25px;
@@ -428,26 +429,16 @@
   overflow-x: hidden;
 }
 
+.intro-modal-vertical-scroll-contain-wrap {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
 .intro-modal-vertical-scroll-contain {
-  height: calc(100vh - 336px);
-  max-height: 654px; // Scroll area in modal: 990 - 336 = 654px We set this so that when We Vote is in a frame, the modal isn't too long.
   overflow-y: auto;
   -webkit-overflow-scrolling: auto;
   overflow-x: hidden;
-
-  &__advisers {
-    height: calc(100vh - 345px);
-  }
-
-  @include breakpoints (max mid-small) {
-    height: calc(100vh - 256px);
-    max-height: 344px; // Scroll area in modal: 600 - 256 = 344px We set this so that when We Vote is in a frame, the modal isn't too long.
-  }
-
-  @include breakpoints (mid-small medium) {
-    height: calc(100vh - 312px);
-    max-height: 288px; // Scroll area in modal: 600 - 312 = 654px We set this so that when We Vote is in a frame, the modal isn't too long.
-  }
 }
 
 // TODO Move to separate file if global, otherwise, rename to be scoped to this component '.intro-story__close-btn'
@@ -531,26 +522,8 @@
   @include breakpoints (small) {
     height: inherit;
 
-    .intro-modal__button-disabled,
-    .intro-modal__button {
-      width: 20%;
-      bottom: 65px;
-    }
-
     .intro-modal__button-wrap {
       justify-content: auto;
-    }
-
-    .intro-modal__gray-dots {
-      bottom: 25px;
-    }
-
-    .intro-modal-vertical-scroll-contain {
-      height: calc(100vh - 375px);
-      max-height: 640px; // Scroll area in modal: 990 - 350 = 640px We set this so that when We Vote is in a frame, the modal isn't too long.
-      &__advisers {
-        height: calc(100vh - 345px);
-      }
     }
 
     .calc-height {
@@ -561,12 +534,6 @@
     .intro-modal-vertical-scroll-contain_without_slider {
       height: calc(100vh - 100px);
       max-height: 540px; // Scroll area in modal: 990 - 350 = 640px We set this so that when We Vote is in a frame, the modal isn't too long.
-    }
-  }
-
-  @include breakpoints (mid-small medium) {
-    .intro-modal-vertical-scroll-contain {
-      height: calc(100vh - 400px); // slight bug with new shadow that needs this
     }
   }
 }
