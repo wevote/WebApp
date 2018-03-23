@@ -10,9 +10,8 @@ const returnURL = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTN
 
 export default class TwitterSignIn extends Component {
   static propTypes = {
-    params: PropTypes.object,
-    buttonSizeClass: PropTypes.string,
     buttonText: PropTypes.string,
+    className: PropTypes.string,
   };
 
   constructor (props) {
@@ -62,19 +61,9 @@ export default class TwitterSignIn extends Component {
   }
 
   render () {
-    let buttonText = "Sign In";
-    if (this.props.buttonText) {
-      buttonText = this.props.buttonText;
-    }
-
-    // let buttonSizeClass = "btn-lg";
-    // if (this.props.buttonSizeClass) {
-    //   buttonSizeClass = this.props.buttonSizeClass;
-    // }
-
-    return <Button bsSize="large" className="btn btn-social btn-twitter u-push--lg"
+    return <Button className={this.props.className ? this.props.className : "btn btn-social btn-twitter"}
             onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova }>
-      <span className="fa fa-twitter"/> {buttonText}
+      <span className="fa fa-twitter"/> {this.props.buttonText ? this.props.buttonText : "Sign In"}
     </Button>;
   }
 }
