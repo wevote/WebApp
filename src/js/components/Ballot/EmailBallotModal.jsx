@@ -162,7 +162,6 @@ export default class EmailBallotModal extends Component {
       } else {
         // console.log("ballotEmailSendStepsManager, calling emailBallotData");
         this.ballotEmailSend();
-        // this.props.saveSuccess(this.state.success_message, this.state.sender_email_address, this.state.verification_email_sent)
 
       }
     }

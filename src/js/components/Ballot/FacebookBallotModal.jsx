@@ -279,21 +279,6 @@ export default class FacebookBallotModal extends Component {
     let floatRight = { float: "right" };
     let textGray = { color: "gray" };
 
-    // if (this.state.showFacebookToFriendsModal) {
-    //   this.componentWillUnmount();
-    //   return <FacebookBallotToFriendsModal ballot_link={this.state.ballot_link}
-    //                                     sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
-    //                                     verification_email_sent={this.state.verification_email_sent} />;
-    // }
-
-    // if (this.state.on_ballot_email_sent_step) {
-    //   this.componentWillUnmount();
-    //   return <FacebookBallotToFriendsModal ballot_link={this.state.ballot_link}
-    //                                     sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
-    //                                     success_message={this.state.success_message}
-    //                                     verification_email_sent={this.state.verification_email_sent} />;
-    // }
-
     return (
     <div className="share-modal">
       <div className="intro-modal__h1">
