@@ -18,7 +18,7 @@ import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateModal from "../../components/Ballot/CandidateModal";
 import cookies from "../../utils/cookies";
-import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
+import {cordovaDot, historyPush, isWebApp} from "../../utils/cordovaUtils";
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
 import Helmet from "react-helmet";
@@ -645,12 +645,12 @@ export default class Ballot extends Component {
                                          target="_blank"
                                          body={"See more information about casting your official vote."} />
                   </div>
-                  <div className="BallotList">
+                  <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
                     {ballot_with_all_items.map( (item) => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
                   </div>
                 </div> :
                 <div>
-                  <div className="BallotList">
+                  <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
                     {ballot_with_all_items.map( (item) => <BallotItemCompressed toggleCandidateModal={this.toggleCandidateModal}
                                                                  toggleMeasureModal={this.toggleMeasureModal}
                                                                  key={item.we_vote_id}

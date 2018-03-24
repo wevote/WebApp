@@ -203,7 +203,7 @@ export default class HeaderGettingStartedBar extends Component {
       speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
-      swipe: true,
+      swipe: false,
       accessibility: true,
       arrows: false,
     };

@@ -12,30 +12,6 @@ import OrganizationActions from "../../actions/OrganizationActions";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 
-const footStyle = {
-  backgroundColor: "#1c2f4b",
-  borderTop: "1px solid #E7E7E7",
-  color: "#fff",
-  position: "fixed",
-  left: 0,
-  bottom: 0,
-  height: 54,
-  width: "100%",
-};
-
-// TODO: 2/24/18, replace this with sass Steve
-const footContainer = {
-  paddingLeft: 20,
-  paddingRight: 20,
-  paddingBottom: 12,
-  paddingTop: 10,
-  display: "flex",
-  alignItems: "flex-start",
-  position: "relative",
-  flexDirection: "row",
-  justifyContent: "space-between",
-};
-
 export default class FooterBarCordova extends Component {
   static propTypes = {
     location: PropTypes.object,
@@ -125,9 +101,9 @@ export default class FooterBarCordova extends Component {
     let weVoteBrandingOff = this.state.we_vote_branding_off === null ? false : this.state.we_vote_branding_off;
     let inNetworkSection = pathname === "/more/network" || pathname === "/more/network/organizations" || pathname === "/more/network/issues" || pathname === "/more/network/friends";
 
-    return <div className= "footer-bar-cordova" style={footStyle}>
-      <div className= "inner-footer-container" >
-        <div className= "footer-container" style={footContainer} >
+    return <div className= "pageFooter">
+      <div className= "innerFooterContainer" >
+        <div className= "footerNav">
           {(showFullNavigation || isCordova()) && <span>{HeaderBar.ballot(pathname === "/ballot")}</span>}
 
           {(showFullNavigation || isCordova()) && <span>{HeaderBar.network(inNetworkSection, numberOfIncomingFriendRequests)}</span>}

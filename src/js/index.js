@@ -19,16 +19,15 @@ function startApp () {
 
     window.$ = require("jquery");
 
-  // March 22, 2018, maybe not needed anymore after today's Cordova install refresh?
-  //   // prevent keyboard scrolling our view, https://www.npmjs.com/package/cordova-plugin-keyboard
-  //   if (window.Keyboard) {
-  //     console.log("Cordova startupApp keyboard plugin found");
-  //     Keyboard.shrinkView(true);
-  //
-  //     window.addEventListener("keyboardDidShow", function () {
-  //       document.activeElement.scrollIntoView();
-  //     });
-  //   } else console.log("ERROR: Cordova index.js startApp keyboard plugin WAS NOT found");
+    // prevent keyboard scrolling our view, https://www.npmjs.com/package/cordova-plugin-keyboard
+    if (window.Keyboard) {
+      console.log("Cordova startupApp keyboard plugin found");
+      Keyboard.shrinkView(true);                      // eslint-disable-line no-undef
+
+      window.addEventListener("keyboardDidShow", function () {
+        document.activeElement.scrollIntoView();
+      });
+    } else console.log("ERROR: Cordova index.js startApp keyboard plugin WAS NOT found");
   }
 
   render(<Router history={isCordova() ? hashHistory : browserHistory}
@@ -40,7 +39,7 @@ function startApp () {
 // If Apache Cordova is available, wait for it to be ready, otherwise start the WebApp
 if (isCordova()) {
   document.addEventListener("deviceready", (id) => {
-    console.log('Received Cordova Event: ', id.type);
+    console.log("Received Cordova Event: ", id.type);
     startApp();
   }, false);
 } else {  // browser
