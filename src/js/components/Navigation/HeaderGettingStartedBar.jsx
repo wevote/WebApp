@@ -207,6 +207,7 @@ export default class HeaderGettingStartedBar extends Component {
       accessibility: true,
       arrows: false,
     };
+    let sliderSettingsWithSwipe = {...sliderSettings, swipe: true};
 
     // Have all of the 6 major steps been taken?
     let voterThoroughOrientationComplete = false;
@@ -317,7 +318,7 @@ export default class HeaderGettingStartedBar extends Component {
              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
            </a>
          </div>
-          <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettings}>
+          <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettingsWithSwipe}>
             <div key={1} className="share-modal-calc-height">
               <EmailBallotModal ballot_link={this.props.pathname}
                                 next={this._nextSliderPage}
@@ -328,7 +329,8 @@ export default class HeaderGettingStartedBar extends Component {
                                          ballotEmailWasSent={this.ballotEmailWasSent}
                                          sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
                                          success_message={this.state.success_message}
-                                         verification_email_sent={this.state.verification_email_sent} />
+                                         verification_email_sent={this.state.verification_email_sent}
+                                        />
             </div>
           </Slider>
         </Modal.Body>
@@ -343,7 +345,7 @@ export default class HeaderGettingStartedBar extends Component {
             <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
           </a>
         </div>
-        <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettings}>
+        <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettingsWithSwipe}>
           <div key={1} className="share-modal-calc-height">
             <FacebookBallotModal ballot_link={this.props.pathname}
                                  next={this._nextSliderPage}
