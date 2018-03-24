@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import { deviceTypeString, isWebApp } from "../../utils/cordovaUtils";
-import FacebookBallotToFriendsModal from "./FacebookBallotToFriendsModal";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
 import FriendActions from "../../actions/FriendActions";
@@ -15,8 +14,10 @@ const web_app_config = require("../../config");
 
 export default class FacebookBallotModal extends Component {
   static propTypes = {
+    next: PropTypes.func.isRequired,  //Used by react-slick
     history: PropTypes.object,
     ballot_link: PropTypes.string,
+    ballotFacebookEmailWasSent: PropTypes.func
   };
 
   constructor (props) {
@@ -140,6 +141,9 @@ export default class FacebookBallotModal extends Component {
       verification_email_sent = true;
       success_message = <span>Success! This ballot has been sent to the email address {this.state.sender_email_address}. Please check your email and verify your email address to send Ballot to your friends. </span>;
     }
+
+    this.props.ballotFacebookEmailWasSent(success_message, this.state.sender_email_address, this.state.verification_email_sent);
+
     // After calling the API, reset the form
     this.setState({
       loading: true,
@@ -275,21 +279,6 @@ export default class FacebookBallotModal extends Component {
     let floatRight = { float: "right" };
     let textGray = { color: "gray" };
 
-    if (this.state.showFacebookToFriendsModal) {
-      this.componentWillUnmount();
-      return <FacebookBallotToFriendsModal ballot_link={this.state.ballot_link}
-                                        sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
-                                        verification_email_sent={this.state.verification_email_sent} />;
-    }
-
-    if (this.state.on_ballot_email_sent_step) {
-      this.componentWillUnmount();
-      return <FacebookBallotToFriendsModal ballot_link={this.state.ballot_link}
-                                        success_message={this.state.success_message}
-                                        sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
-                                        verification_email_sent={this.state.verification_email_sent} />;
-    }
-
     return (
     <div className="share-modal">
       <div className="intro-modal__h1">
@@ -299,7 +288,7 @@ export default class FacebookBallotModal extends Component {
       <div>
         {/* <div className="intro-modal-vertical-scroll-contain_without_slider"> */}
           <div className="intro-modal-vertical-scroll card">
-            <div className="row intro-modal__grid intro-modal__default-text">
+            <div className="share-modal__default-text">
               <div className="container-fluid u-inset--md text-left">
                 {this.state.sender_email_address_error ?
                   <div className="alert alert-danger">
@@ -337,12 +326,11 @@ export default class FacebookBallotModal extends Component {
                 </div> : null
                 }
                 <div className="col-12">
-                  <span style={floatRight} onClick={this._openFacebookToFriendsModal.bind(this)}>
+                  <span style={floatRight} onClick={this.props.next}>
                     Click here to send to friends &gt;
                   </span>
+                  <span className="u-no-break" style={textGray}>We will never sell your email.</span>
                 </div>
-                <div className="col-12 u-inset--sm" />
-                <span style={textGray}>We will never sell your email.</span>
               </div>
             </div>
           </div>

@@ -2,17 +2,17 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import { deviceTypeString } from "../../utils/cordovaUtils";
-import EmailBallotToFriendsModal from "./EmailBallotToFriendsModal";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
 import LoadingWheel from "../LoadingWheel";
 import { validateEmail } from "../../utils/email-functions";
 import VoterStore from "../../stores/VoterStore";
-
 const web_app_config = require("../../config");
 
 export default class EmailBallotModal extends Component {
   static propTypes = {
+    next: PropTypes.func.isRequired,  //Used by react-slick
+    ballotEmailWasSent: PropTypes.func.isRequired, // Used to transition to EmailBallotToFriendsModal whan ballot was sent.
     history: PropTypes.object,
     ballot_link: PropTypes.string,
   };
@@ -25,7 +25,6 @@ export default class EmailBallotModal extends Component {
     } else {
       ballotLink = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/ballot";
     }
-
     this.state = {
       email_ballot_message: "This is WeVote Ballot data for the upcoming election.",
       voter: VoterStore.getVoter(),
@@ -38,6 +37,7 @@ export default class EmailBallotModal extends Component {
       on_mobile: false,
       ballot_link: ballotLink,
     };
+    this.ballotEmailSend = this.ballotEmailSend.bind(this);
   }
 
   componentDidMount () {
@@ -113,6 +113,7 @@ export default class EmailBallotModal extends Component {
       successMessage = <span>Success! This ballot has been sent to the email address {this.state.sender_email_address}. Please check your email and verify your email address to send Ballot to your friends. </span>;
     }
 
+    this.props.ballotEmailWasSent(successMessage, this.state.sender_email_address, this.state.verification_email_sent);
     // After calling the API, reset the form
     this.setState({
       loading: true,
@@ -157,9 +158,11 @@ export default class EmailBallotModal extends Component {
           on_enter_email_addresses_step: false,
         });
         this.ballotEmailSend();
+
       } else {
         // console.log("ballotEmailSendStepsManager, calling emailBallotData");
         this.ballotEmailSend();
+
       }
     }
   }
@@ -181,21 +184,6 @@ export default class EmailBallotModal extends Component {
     let floatRight = { float: "right" };
     let textGray = { color: "gray" };
 
-    if (this.state.showEmailToFriendsModal) {
-      this.componentWillUnmount();
-      return <EmailBallotToFriendsModal ballot_link={this.state.ballot_link}
-                                        sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
-                                        verification_email_sent={this.state.verification_email_sent} />;
-    }
-
-    if (this.state.on_ballot_email_sent_step) {
-      this.componentWillUnmount();
-      return <EmailBallotToFriendsModal ballot_link={this.state.ballot_link}
-                                        success_message={this.state.success_message}
-                                        sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
-                                        verification_email_sent={this.state.verification_email_sent} />;
-    }
-
     return (
     <div className="share-modal">
       <div className="intro-modal__h1">
@@ -204,7 +192,7 @@ export default class EmailBallotModal extends Component {
 
       <div>
         <div className="intro-modal-vertical-scroll card">
-          <div className="intro-modal__grid intro-modal__default-text">
+          <div className="share-modal__default-text">
             <div className="container-fluid u-inset--md text-left">
               {this.state.sender_email_address_error ?
                 <div className="alert alert-danger">
@@ -252,20 +240,22 @@ export default class EmailBallotModal extends Component {
                       onClick={this.ballotEmailSendStepsManager.bind(this)}
                       bsStyle="primary"
                     >
-                      <span>Send &gt;</span>
+                      <span>Send</span>
                     </Button>
                   </span>
                 </div>
               </div>
-                  <div className="col-12 u-inset--sm" />
-                  <div className="col-12">
-                    <span style={floatRight} onClick={this._openEmailToFriendsModal.bind(this)}>
-                      Click here to send to friends &gt;
-                    </span>
-                  </div>
+              <div className="col-12 u-inset--sm" />
+              {/* <span style="float: right;">Click here to send to friends &gt;</span> */}
+              <div className="col-12">
+                <span style={floatRight} onClick={this.props.next}>
+                {/* <span style={floatRight} onClick={this._openEmailToFriendsModal.bind(this)}> */}
+                  Click here to send to friends &gt;
+                </span>
+                <span className="u-no-break" style={textGray}>We will never sell your email.</span>
+              </div>
               </div> : null
               }
-              <span style={textGray}>We will never sell your email.</span>
             </div>
           </div>
         </div>

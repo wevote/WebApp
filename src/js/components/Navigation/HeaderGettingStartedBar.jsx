@@ -12,7 +12,9 @@ import BallotIntroVote from "../../components/Ballot/BallotIntroVote";
 import { cordovaDot, isWebApp } from "../../utils/cordovaUtils";
 import GettingStartedBarItem from "./GettingStartedBarItem";
 import EmailBallotModal from "../Ballot/EmailBallotModal";
+import EmailBallotToFriendsModal from "../Ballot/EmailBallotToFriendsModal";
 import FacebookBallotModal from "../Ballot/FacebookBallotModal";
+import FacebookBallotToFriendsModal from "../Ballot/FacebookBallotToFriendsModal";
 import PollingPlaceLocatorModal from "../../routes/Ballot/PollingPlaceLocatorModal";
 import Slider from "react-slick";
 import VoterActions from "../../actions/VoterActions";
@@ -40,6 +42,8 @@ export default class HeaderGettingStartedBar extends Component {
     this._openFacebookModal = this._openFacebookModal.bind(this);
     this._openPollingLocatorModal = this._openPollingLocatorModal.bind(this);
     this._nextSliderPage = this._nextSliderPage.bind(this);
+    this.ballotEmailWasSent = this.ballotEmailWasSent.bind(this);
+    this.ballotFacebookEmailWasSent = this.ballotFacebookEmailWasSent.bind(this);
     this.state = {
       ballot_intro_issues_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ISSUES_COMPLETED),
       ballot_intro_organizations_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ORGANIZATIONS_COMPLETED),
@@ -55,6 +59,10 @@ export default class HeaderGettingStartedBar extends Component {
       showBallotIntroVote: false,
       showEmailModal: false,
       showFacebookModal: false,
+      success_message: undefined,  //Used by EmailBallotModal and EmailBallotToFriendsModal
+      sender_email_address: "",   //Used by EmailBallotModal and EmailBallotToFriendsModal
+      verification_email_sent: false, //Used by EmailBallotModal and EmailBallotToFriendsModal
+      sender_email_address_from_email_ballot_modal: "" //Used by FacebookBallotModal and FacebookBallotToFriendsModal
     };
   }
 
@@ -160,6 +168,34 @@ export default class HeaderGettingStartedBar extends Component {
     this.refs.slider.slickNext();
   }
 
+  /**
+   * Method that passes data between EmailBallotModal to EmailBallotToFriendsModal
+   */
+  ballotEmailWasSent (success_message, sender_email_address, verification_email_sent, shouldChangeSlide = true) {
+    this.setState({
+      success_message,
+      sender_email_address,
+      verification_email_sent
+    });
+    if (shouldChangeSlide){
+      this.refs.slider.slickNext();
+    }
+  }
+
+  /**
+   * Method that passes data between FacebookBallotModal to FacebookBallotToFriendsModal
+   */
+  ballotFacebookEmailWasSent (success_message, sender_email_address, verification_email_sent, shouldChangeSlide = true) {
+    this.setState({
+      success_message,
+      sender_email_address,
+      verification_email_sent
+    });
+    if (shouldChangeSlide){
+      this.refs.slider.slickNext();
+    }
+  }
+
   render () {
     let sliderSettings = {
       dots: true,
@@ -171,6 +207,7 @@ export default class HeaderGettingStartedBar extends Component {
       accessibility: true,
       arrows: false,
     };
+    let sliderSettingsWithSwipe = {...sliderSettings, swipe: true};
 
     // Have all of the 6 major steps been taken?
     let voterThoroughOrientationComplete = false;
@@ -272,17 +309,31 @@ export default class HeaderGettingStartedBar extends Component {
         </Modal.Body>
       </Modal>;
 
-    const SendEmailModal = <Modal bsClass="background-brand-blue modal"
-                                  show={this.state.showEmailModal}
-                                  onHide={() => this._openEmailModal(this)}>
-      <Modal.Body>
-        <div className="intro-modal__close">
-          <a onClick={this._openEmailModal} className="intro-modal__close-anchor">
-            <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
-          </a>
-        </div>
-        <div key={1}><EmailBallotModal ballot_link={this.props.pathname}/></div>
-      </Modal.Body>
+      const SendEmailModal = <Modal bsClass="background-brand-blue modal"
+                                    show={this.state.showEmailModal}
+                                    onHide={() => this._openEmailModal(this)}>
+        <Modal.Body>
+         <div className="intro-modal__close">
+           <a onClick={this._openEmailModal} className="intro-modal__close-anchor">
+             <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
+           </a>
+         </div>
+          <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettingsWithSwipe}>
+            <div key={1} className="share-modal-calc-height">
+              <EmailBallotModal ballot_link={this.props.pathname}
+                                next={this._nextSliderPage}
+                                ballotEmailWasSent={this.ballotEmailWasSent} />
+            </div>
+            <div key={2} className="share-modal-calc-height">
+              <EmailBallotToFriendsModal ballot_link={this.props.pathname}
+                                         ballotEmailWasSent={this.ballotEmailWasSent}
+                                         sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
+                                         success_message={this.state.success_message}
+                                         verification_email_sent={this.state.verification_email_sent}
+                                        />
+            </div>
+          </Slider>
+        </Modal.Body>
     </Modal>;
 
     const SendFacebookModal = <Modal bsClass="background-brand-blue modal"
@@ -294,7 +345,21 @@ export default class HeaderGettingStartedBar extends Component {
             <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
           </a>
         </div>
-        <div key={1}><FacebookBallotModal ballot_link={this.props.pathname}/></div>
+        <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettingsWithSwipe}>
+          <div key={1} className="share-modal-calc-height">
+            <FacebookBallotModal ballot_link={this.props.pathname}
+                                 next={this._nextSliderPage}
+                                 ballotFacebookEmailWasSent={this.ballotFacebookEmailWasSent}/>
+          </div>
+          <div key={2} className="share-modal-calc-height">
+            <FacebookBallotToFriendsModal ballot_link={this.props.pathname}
+                                          ballotFacebookEmailWasSent={this.ballotFacebookEmailWasSent}
+                                          sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
+                                          success_message={this.state.success_message}
+                                          verification_email_sent={this.state.verification_email_sent} />
+
+          </div>
+        </Slider>
       </Modal.Body>
     </Modal>;
 

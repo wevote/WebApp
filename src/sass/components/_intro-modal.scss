@@ -578,4 +578,30 @@
     justify-content: space-between;
     align-items: flex-start;
   }
+
+  &__default-text {
+    width: 100%;
+    color: $black;
+    text-align: center;
+  }
+
+  &__span--right {
+    text-align: right;
+  }
+
+  &-vertical-scroll-contain {
+    height: 300px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: auto;
+    overflow-x: hidden;
+    @include breakpoints (small medium) {
+      height: calc(90vh - 100px);
+    }
+  }
+  &-calc-height {
+    height: 420px;
+    @include breakpoints (small medium) {
+      height: calc(100vh - 50px);
+    }
+  }
 }

@@ -15,6 +15,7 @@ export default class EmailBallotToFriendsModal extends Component {
     success_message: PropTypes.object,
     sender_email_address_from_email_ballot_modal: PropTypes.string,
     verification_email_sent: PropTypes.bool,
+    ballotEmailWasSent: PropTypes.func.isRequired //Used to transition from EmailBallotModal when ballot was sent.
   };
 
   constructor (props) {
@@ -68,6 +69,7 @@ export default class EmailBallotToFriendsModal extends Component {
   }
 
   componentWillUnmount () {
+    this.props.ballotEmailWasSent(undefined, "", false, false);
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
   }
@@ -435,15 +437,19 @@ export default class EmailBallotToFriendsModal extends Component {
         Send This Ballot to Friends
       </div>
 
-      <div>
+      <div className="share-modal-vertical-scroll-contain">
         <div className="intro-modal-vertical-scroll card">
-          <div className="row intro-modal__grid intro-modal__default-text">
+          {/* <div className="row intro-modal__grid intro-modal__default-text"> */}
+          <div className="share-modal__default-text">
             <div className="container-fluid u-inset--md text-left">
               {this.state.on_enter_email_addresses_step ? <div>
                 { this.state.success_message ?
                   <div className="alert alert-success">
                     {this.state.success_message}
-                  </div> : null
+                  </div> : this.props.success_message ?
+                    <div className="alert alert-success">
+                      {this.props.success_message}
+                    </div> : null
                 }
                 {this.state.email_addresses_error ?
                   <div className="alert alert-danger">
@@ -647,7 +653,6 @@ export default class EmailBallotToFriendsModal extends Component {
                         </Button>
                     </div>
                   </form>
-                  <div className="row invite-inputs col-12 u-inset--md" />
                   <div className="text-center">
                       <span style={textGray}>We will never sell your email.</span>
                   </div>
@@ -682,6 +687,8 @@ export default class EmailBallotToFriendsModal extends Component {
                               disabled={!this.state.sender_email_address} >
                         <span>Send</span>
                       </Button>
+                      <div className="col-12 u-inset--md" />
+
                     </span>
                   </div>
                 </div> : null
