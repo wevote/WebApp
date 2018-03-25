@@ -27,7 +27,7 @@ export default class BallotIntroFollowIssues extends Component {
     this.onIssueFollow = this.onIssueFollow.bind(this);
     this.onIssueStopFollowing = this.onIssueStopFollowing.bind(this);
     this.onNext = this.onNext.bind(this);
-    this._onIssueStoreChange = this._onIssueStoreChange.bind(this);
+    this.onIssueStoreChange = this.onIssueStoreChange.bind(this);
   }
 
   componentWillMount () {
@@ -36,15 +36,15 @@ export default class BallotIntroFollowIssues extends Component {
   }
 
   componentDidMount () {
-    this._onIssueStoreChange();
-    this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange);
+    this.onIssueStoreChange();
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange);
   }
 
   componentWillUnmount () {
     this.issueStoreListener.remove();
   }
 
-  _onIssueStoreChange () {
+  onIssueStoreChange () {
     // update followed_issues only for first time, subsequent updates will be made locally
     if (this.state.followed_issues.length) {
       this.setState({ issues: IssueStore.getIssuesVoterCanFollow() });
