@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Table, Modal, Button } from "react-bootstrap";
-import DonateActions from "../../actions/DonateActions";
 import moment from "moment";
-
+import DonateActions from "../../actions/DonateActions";
+import { renderLog } from "../../utils/logging";
 
 export default class DonationCancelOrRefund extends Component {
   static propTypes = {
@@ -33,11 +33,13 @@ export default class DonationCancelOrRefund extends Component {
     } else {
       DonateActions.donationCancelSubscriptionAction(item.subscription_id);
     }
-    this.setState({showModal: false});
+
+    this.setState({ showModal: false });
   }
 
   render () {
-    const {item, refundDonation} = this.props;
+    renderLog(__filename);
+    const { item, refundDonation } = this.props;
     let label = refundDonation ? "Refund Donation" : "Cancel Subscription";
       return <div>
         <Button bsSize="small" onClick={this.open.bind(this)} >{label}</Button>

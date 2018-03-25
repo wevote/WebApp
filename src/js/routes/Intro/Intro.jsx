@@ -2,22 +2,23 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
-const request = require("superagent");
-const web_app_config = require("../../config");
+import request from "superagent";
+import webAppConfig from "../../config";
+import { renderLog } from "../../utils/logging";
 import AddressBox from "../../components/AddressBox";
 import { numberWithCommas } from "../../utils/textFormat";
 
 export default class Intro extends Component {
   static propTypes = {
     history: PropTypes.object,
-    children: PropTypes.object
+    children: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
       voterCount: null,
-      orgCount: null
+      orgCount: null,
     };
   }
 
@@ -32,29 +33,30 @@ export default class Intro extends Component {
 
   getVoterCount () {
     request
-      .get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}voterCount/`)
-      .end( (err, res) => {
+      .get(`${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}voterCount/`)
+      .end((err, res) => {
         if (err) throw err;
 
         this.setState({
-          voterCount: res.body.voter_count
+          voterCount: res.body.voter_count,
         });
       });
   }
 
   getOrgCount () {
     request
-      .get(`${web_app_config.WE_VOTE_SERVER_API_ROOT_URL}organizationCount/`)
-      .end( (err, res) => {
+      .get(`${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}organizationCount/`)
+      .end((err, res) => {
         if (err) throw err;
 
         this.setState({
-          orgCount: res.body.organization_count
+          orgCount: res.body.organization_count,
         });
       });
   }
 
   render () {
+    renderLog(__filename);
     const {
       orgCount,
       voterCount,
@@ -99,5 +101,5 @@ export default class Intro extends Component {
           </div>
         }
       </div>;
-    }
+  }
 }

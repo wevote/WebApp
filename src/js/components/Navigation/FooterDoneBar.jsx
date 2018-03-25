@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { renderLog } from "../../utils/logging";
 
 const footStyle = {
   backgroundColor: "#1c2f4b",
@@ -44,6 +45,7 @@ export default class FooterDoneBar extends Component {
 
 
   render () {
+    renderLog(__filename);
     return <div className= "" style={footStyle}>
       <div className="" >
         <div className="" style={footContainer} >

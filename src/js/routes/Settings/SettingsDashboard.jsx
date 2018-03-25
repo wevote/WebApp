@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import { isWebApp } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SelectVoterGuidesSideBar from "../../components/Navigation/SelectVoterGuidesSideBar";
@@ -15,7 +17,6 @@ import VoterGuideActions from "../../actions/VoterGuideActions";
 import SettingsIssueLinks from "../../components/Settings/SettingsIssueLinks"; // TODO: To be updated
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
-import { isWebApp } from "../../utils/cordovaUtils";
 
 export default class SettingsDashboard extends Component {
   static propTypes = {
@@ -125,7 +126,7 @@ export default class SettingsDashboard extends Component {
   }
 
   render () {
-    // console.log("SettingsDashboard render");
+    renderLog(__filename);
     let settingsComponentToDisplay = null;
     switch (this.state.editMode) {
       case "account":

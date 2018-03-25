@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { cordovaOpenSafariView, isWebApp } from "./cordovaUtils";
+import { renderLog } from "./logging";
 
 export default class OpenExternalWebSite extends Component {
   static propTypes = {
@@ -20,6 +21,7 @@ export default class OpenExternalWebSite extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let integerDelay = this.props.delay && this.props.delay >= 0 ? this.props.delay : 50;
     let classNameString = this.props.className ? this.props.className : "open-web-site";
 

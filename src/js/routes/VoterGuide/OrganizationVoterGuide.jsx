@@ -8,6 +8,7 @@ import FollowToggle from "../../components/Widgets/FollowToggle";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import HeaderBar from "../../components/Navigation/HeaderBar";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -143,6 +144,7 @@ export default class OrganizationVoterGuide extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.organization || !this.state.voter || this.state.auto_follow_redirect_happening) {
       return <div>{LoadingWheel}</div>;
     }

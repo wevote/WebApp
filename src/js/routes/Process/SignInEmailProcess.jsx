@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
 import WouldYouLikeToMergeAccountsOld from "../../components/WouldYouLikeToMergeAccountsOld";
@@ -9,14 +10,14 @@ import WouldYouLikeToMergeAccountsOld from "../../components/WouldYouLikeToMerge
 export default class SignInEmailProcess extends Component {
   static propTypes = {
     params: PropTypes.object,
-    email_secret_key: PropTypes.string
+    email_secret_key: PropTypes.string,
   };
 
   constructor (props) {
     super(props);
     this.state = {
       voter: VoterStore.getVoter(),
-      saving: false
+      saving: false,
     };
   }
 
@@ -35,7 +36,7 @@ export default class SignInEmailProcess extends Component {
     this.setState({
       voter: VoterStore.getVoter(),
       email_sign_in_status: VoterStore.getEmailSignInStatus(),
-      saving: false
+      saving: false,
     });
   }
 
@@ -50,6 +51,7 @@ export default class SignInEmailProcess extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let { email_secret_key } = this.props.params;
     // console.log("SignInEmailProcess, email_secret_key:", email_secret_key);
     if (!email_secret_key ||

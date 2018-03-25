@@ -1,29 +1,30 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {Table, Panel} from "react-bootstrap";
+import { Table, Panel } from "react-bootstrap";
 import moment from "moment";
 import VoterStore from "../../stores/VoterStore";
+import { renderLog } from "../../utils/logging";
 import DonateStore from "../../stores/DonateStore";
-import VoterActions from "../../actions/VoterActions";
 import DonationCancelOrRefund from "./DonationCancelOrRefund";
+import VoterActions from "../../actions/VoterActions";
 
 const styles = {
   table: {
     verticalAlign: "middle",
-    textAlign: "center"
+    textAlign: "center",
   },
   td: {
     verticalAlign: "middle",
-    textAlign: "center"
+    textAlign: "center",
   },
   th: {
-    textAlign: "center"
+    textAlign: "center",
   },
   Panel: {
     borderTopColor: "transparent",
     height: "500px",
-    overflowY: "auto"
-  }
+    overflowY: "auto",
+  },
 };
 
 export default class DonationList extends Component {
@@ -56,7 +57,7 @@ export default class DonationList extends Component {
   }
 
   render () {
-    console.log("DonationList render");
+    renderLog(__filename);
     if (this.state.journal && this.state.journal.length > 0) {
       let donations = this.props.displayDonations;
 

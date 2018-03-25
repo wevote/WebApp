@@ -6,6 +6,7 @@ import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import IssueActions from "../../actions/IssueActions";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import OfficeActions from "../../actions/OfficeActions";
 import OfficeItem from "../../components/Ballot/OfficeItem";
 import OfficeStore from "../../stores/OfficeStore";
@@ -70,7 +71,8 @@ export default class Office extends Component {
   }
 
   render () {
-    var { office } = this.state;
+    renderLog(__filename);
+    let { office } = this.state;
 
     if (!office || !office.ballot_item_display_name){
       // TODO DALE If the office_we_vote_id is not valid, we need to update this with a notice

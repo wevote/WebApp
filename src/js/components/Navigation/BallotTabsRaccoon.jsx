@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import { renderLog } from "../../utils/logging";
 
 export default class BallotTabsRaccoon extends Component {
   static propTypes = {
@@ -12,6 +13,7 @@ export default class BallotTabsRaccoon extends Component {
   };
 
   render () {
+    renderLog(__filename);
     let pathname = "/ballot";
     if (this.props.pathname && this.props.pathname !== "") {
       pathname = this.props.pathname;

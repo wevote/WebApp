@@ -5,6 +5,7 @@ import { historyPush } from "../../utils/cordovaUtils";
 import ImageHandler from "../ImageHandler";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
 import LearnMore from "../Widgets/LearnMore";
+import { renderLog } from "../../utils/logging";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SupportStore from "../../stores/SupportStore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
@@ -119,7 +120,7 @@ export default class CandidateItemCompressed extends Component {
   }
 
   render () {
-    // console.log("CandidateItemCompressed render");
+    renderLog(__filename);
     if (!this.state.oneCandidate || !this.state.oneCandidate.we_vote_id) {
       return null;
     }

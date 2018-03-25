@@ -13,10 +13,11 @@ import FacebookBallotModal from "../Ballot/FacebookBallotModal";
 import FacebookBallotToFriendsModal from "../Ballot/FacebookBallotToFriendsModal";
 import PollingPlaceLocatorModal from "../../routes/Ballot/PollingPlaceLocatorModal";
 import Slider from "react-slick";
+import { renderLog } from "../../utils/logging";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
-const webAppConfig = require("../../config");
+import webAppConfig from "../../config";
 
 export default class HeaderGettingStartedBar extends Component {
   static propTypes = {
@@ -145,6 +146,7 @@ export default class HeaderGettingStartedBar extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let sliderSettings = {
       dots: true,
       infinite: false,

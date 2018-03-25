@@ -10,6 +10,7 @@ $scrollbar-height: 20px;
 $tab-height: 47px;
 $tab-height-visible: $tab-height - $scrollbar-height;
 $neg-space-lg: -$space-lg;
+$bottom-spacing-cordova: 50px;
 
 .ballot {
   // ===========================================
@@ -62,6 +63,10 @@ $neg-space-lg: -$space-lg;
     &__group {
       display: block;
       border-bottom: 0 solid $black;
+    }
+
+    &__cordova {
+      padding-bottom: $bottom-spacing-cordova;
     }
   }
 

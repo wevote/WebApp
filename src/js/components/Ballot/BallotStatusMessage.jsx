@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import cookies from "../../utils/cookies";
+import { renderLog } from "../../utils/logging";
 
 export default class BallotStatusMessage extends Component {
   static propTypes = {
@@ -77,7 +78,7 @@ export default class BallotStatusMessage extends Component {
   }
 
   render () {
-    // console.log("In BallotStatusMessage render");
+    renderLog(__filename);
     let message_string = "";
     let ballot_status_style;
     // this.state.google_civic_data_exists

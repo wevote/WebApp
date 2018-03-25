@@ -7,6 +7,7 @@ import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
+import { renderLog } from "../../utils/logging";
 
 const delayBeforeApiUpdateCall = 1200;
 const delayBeforeRemovingSavedStatus = 4000;
@@ -104,7 +105,7 @@ export default class SettingsWidgetFirstLastName extends Component {
     }
     this.timer = setTimeout(() => {
       OrganizationActions.organizationNameSave(this.state.linkedOrganizationWeVoteId, this.state.organizationName);
-      this.setState({organizationNameSavedStatus: "Saved"});
+      this.setState({ organizationNameSavedStatus: "Saved" });
     }, delayBeforeApiUpdateCall);
   }
 
@@ -113,9 +114,10 @@ export default class SettingsWidgetFirstLastName extends Component {
     if (this.props.voterHasMadeChangesFunction) {
       this.props.voterHasMadeChangesFunction();
     }
+
     this.timer = setTimeout(() => {
       VoterActions.voterNameSave(this.state.firstName, this.state.lastName);
-      this.setState({voterNameSavedStatus: "Saved"});
+      this.setState({ voterNameSavedStatus: "Saved" });
     }, delayBeforeApiUpdateCall);
   }
 
@@ -123,13 +125,13 @@ export default class SettingsWidgetFirstLastName extends Component {
     if (event.target.name === "organizationName") {
       this.setState({
         organizationName: event.target.value,
-        organizationNameSavedStatus: "Saving Organization Name..."
+        organizationNameSavedStatus: "Saving Organization Name...",
       });
     }
     // After some time, clear saved message
     clearTimeout(this.clearStatusTimer);
     this.clearStatusTimer = setTimeout(() => {
-      this.setState({organizationNameSavedStatus: ""});
+      this.setState({ organizationNameSavedStatus: "" });
     }, delayBeforeRemovingSavedStatus);
   }
 
@@ -137,22 +139,23 @@ export default class SettingsWidgetFirstLastName extends Component {
     if (event.target.name === "firstName") {
       this.setState({
         firstName: event.target.value,
-        voterNameSavedStatus: "Saving First Name..."
+        voterNameSavedStatus: "Saving First Name...",
       });
     } else if (event.target.name === "lastName") {
       this.setState({
         lastName: event.target.value,
-        voterNameSavedStatus: "Saving Last Name..."
+        voterNameSavedStatus: "Saving Last Name...",
       });
     }
     // After some time, clear saved message
     clearTimeout(this.clearStatusTimer);
     this.clearStatusTimer = setTimeout(() => {
-      this.setState({voterNameSavedStatus: ""});
+      this.setState({ voterNameSavedStatus: "" });
     }, delayBeforeRemovingSavedStatus);
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.voter) {
       return LoadingWheel;
     }

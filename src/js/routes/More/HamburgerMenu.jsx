@@ -8,6 +8,7 @@ import VoterStore from "../../stores/VoterStore";
 import BallotStore from "../../stores/BallotStore";
 import HamburgerMenuRow from "../../components/Navigation/HamburgerMenuRow";
 import VoterSessionActions from "../../actions/VoterSessionActions";
+import { renderLog } from "../../utils/logging";
 
 export default class HamburgerMenu extends Component {
   constructor (props) {
@@ -52,9 +53,11 @@ export default class HamburgerMenu extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.voter) {
       return null;
     }
+
     let bookmarks = BallotStore.bookmarks;
     let isSignedIn = this.state.voter && this.state.voter.is_signed_in;
     isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;

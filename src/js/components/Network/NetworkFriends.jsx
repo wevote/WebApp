@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import { _ } from "lodash";
 import FriendListCompressed from "../Friends/FriendListCompressed";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
-var _ = require("lodash");
+import { renderLog } from "../../utils/logging";
 
 export default class NetworkFriends extends Component {
   static propTypes = {
@@ -83,6 +84,7 @@ export default class NetworkFriends extends Component {
   }
 
   render () {
+    renderLog(__filename);
     var current_friend_list = [];
     if (!this.state.search_filter) {
       let current_friend_list_complete = this.state.current_friend_list;

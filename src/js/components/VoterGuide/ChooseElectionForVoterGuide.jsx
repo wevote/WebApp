@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import moment from "moment";
 import BallotStore from "../../stores/BallotStore";
 import { cordovaDot } from "../../utils/cordovaUtils";
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
+import { renderLog } from "../../utils/logging";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 import { cleanArray } from "../../utils/textFormat";
-import moment from "moment";
 
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 32;
 
@@ -99,6 +100,7 @@ export default class ChooseElectionForVoterGuide extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.voterBallotList) {
       console.log("Elections list missing");
       return null;

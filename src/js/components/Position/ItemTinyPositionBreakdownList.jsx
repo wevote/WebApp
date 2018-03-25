@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Icon from "react-svg-icons";
 import { OverlayTrigger, Popover } from "react-bootstrap";
+import { renderLog } from "../../utils/logging";
 import OrganizationCard from "../VoterGuide/OrganizationCard";
 import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
 import PositionsNotShownList from "../Ballot/PositionsNotShownList";
 import VoterStore from "../../stores/VoterStore";
-var Icon = require("react-svg-icons");
+
 
 // This component can be used to show either supporters, opposers, or groups with info only
 export default class ItemTinyPositionBreakdownList extends Component {
@@ -64,7 +66,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
   }
 
   render () {
-    // console.log("ItemTinyPositionBreakdownList render");
+    renderLog(__filename);
     if (!this.state.position_list && !this.state.voter_support_oppose_properties) {
       // If neither position_list nor supportProps exist, then return null
       return null;

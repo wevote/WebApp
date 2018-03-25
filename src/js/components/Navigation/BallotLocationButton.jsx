@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import BallotStore from "../../stores/BallotStore";
 import { shortenText } from "../../utils/textFormat";
+import { renderLog } from "../../utils/logging";
 
 export default class BallotLocationButton extends Component {
   static propTypes = {
@@ -15,6 +16,7 @@ export default class BallotLocationButton extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let ballot_location = this.props.ballot_location;
 
     if (ballot_location.ballot_item_display_name !== "" || ballot_location.text_for_map_search !== "") {

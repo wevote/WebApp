@@ -24,6 +24,7 @@ import ElectionStore from "../../stores/ElectionStore";
 import Helmet from "react-helmet";
 import IssueActions from "../../actions/IssueActions";
 import IssueStore from "../../stores/IssueStore";
+import { renderLog } from "../../utils/logging";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import MeasureActions from "../../actions/MeasureActions";
 import MeasureModal from "../../components/Ballot/MeasureModal";
@@ -37,7 +38,7 @@ import VoterConstants from "../../constants/VoterConstants";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
-const web_app_config = require("../../config");
+import webAppConfig from "../../config";
 
 
 // Related to WebApp/src/js/components/VoterGuide/VoterGuideBallot.jsx
@@ -483,6 +484,7 @@ export default class Ballot extends Component {
   }
 
   render () {
+    renderLog(__filename);
     // console.log("Ballot render, this.state: ", this.state);
     let ballot_with_all_items = this.state.ballot_with_all_items;
     let text_for_map_search = VoterStore.getTextForMapSearch();
@@ -507,7 +509,7 @@ export default class Ballot extends Component {
     const election_name = BallotStore.currentBallotElectionName;
     const election_day_text = BallotStore.currentBallotElectionDate;
     const polling_location_we_vote_id_source = BallotStore.currentBallotPollingLocationSource;
-    let ballot_returned_admin_edit_url = web_app_config.WE_VOTE_SERVER_ROOT_URL + "b/" + polling_location_we_vote_id_source + "/list_edit_by_polling_location/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
+    let ballot_returned_admin_edit_url = webAppConfig.WE_VOTE_SERVER_ROOT_URL + "b/" + polling_location_we_vote_id_source + "/list_edit_by_polling_location/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
 
     const emptyBallotButton = this.state.filter_type !== "none" && !missing_address ?
         <span>

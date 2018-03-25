@@ -9,7 +9,7 @@ import FriendStore from "../../stores/FriendStore";
 import LoadingWheel from "../LoadingWheel";
 import VoterStore from "../../stores/VoterStore";
 import { validateEmail } from "../../utils/email-functions";
-const web_app_config = require("../../config");
+import webAppConfig from "../../config";
 
 export default class FacebookBallotToFriendsModal extends Component {
   static propTypes = {
@@ -401,31 +401,31 @@ export default class FacebookBallotToFriendsModal extends Component {
   }
 
   closeRow2 () {
-    this.setState({ friend2_email_address: ""});
-    this.setState({ friend2_first_name: ""});
-    this.setState({ friend2_last_name: ""});
-    this.setState({ row2_open: false});
+    this.setState({ friend2_email_address: "" });
+    this.setState({ friend2_first_name: "" });
+    this.setState({ friend2_last_name: "" });
+    this.setState({ row2_open: false });
   }
 
   closeRow3 () {
-    this.setState({ friend3_email_address: ""});
-    this.setState({ friend3_first_name: ""});
-    this.setState({ friend3_last_name: ""});
-    this.setState({ row3_open: false});
+    this.setState({ friend3_email_address: "" });
+    this.setState({ friend3_first_name: "" });
+    this.setState({ friend3_last_name: "" });
+    this.setState({ row3_open: false });
   }
 
   closeRow4 () {
-    this.setState({ friend4_email_address: ""});
-    this.setState({ friend4_first_name: ""});
-    this.setState({ friend4_last_name: ""});
-    this.setState({ row4_open: false});
+    this.setState({ friend4_email_address: "" });
+    this.setState({ friend4_first_name: "" });
+    this.setState({ friend4_last_name: "" });
+    this.setState({ row4_open: false });
   }
 
   closeRow5 () {
-    this.setState({ friend5_email_address: ""});
-    this.setState({ friend5_first_name: ""});
-    this.setState({ friend5_last_name: ""});
-    this.setState({ row5_open: false});
+    this.setState({ friend5_email_address: "" });
+    this.setState({ friend5_first_name: "" });
+    this.setState({ friend5_last_name: "" });
+    this.setState({ row5_open: false });
   }
 
   addAnotherInvitation () {
@@ -454,7 +454,7 @@ export default class FacebookBallotToFriendsModal extends Component {
           method: "send",
           mobile_iframe: true,
           link: this.props.ballot_link,
-          redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/ballot",
+          redirect_uri: webAppConfig.WE_VOTE_HOSTNAME + "/ballot",
         }, function (response) {
           if (response) {
             if (response.success) {
@@ -478,10 +478,11 @@ export default class FacebookBallotToFriendsModal extends Component {
       FacebookActions.login();
     }
   }
+
   // If we want to send invite through app requests
   // window.FB.ui({
   //   title: "We Vote USA",
-  //   redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/more/network",
+  //   redirect_uri: webAppConfig.WE_VOTE_HOSTNAME + "/more/network",
   //   method: "apprequests",
   //   message: this.state.email_ballot_message + this.props.ballot_link,
   //   display: "popup",
@@ -511,7 +512,7 @@ export default class FacebookBallotToFriendsModal extends Component {
           title: "We Vote USA",
           method: "share",
           href: this.props.ballot_link,
-          redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/ballot",
+          redirect_uri: webAppConfig.WE_VOTE_HOSTNAME + "/ballot",
         }, function (response) {
           if (response) {
             // console.log("Successfully send", response);

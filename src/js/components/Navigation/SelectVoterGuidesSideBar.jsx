@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ElectionStore from "../../stores/ElectionStore";
+import { renderLog } from "../../utils/logging";
 import SelectVoterGuidesSideBarLink from "./SelectVoterGuidesSideBarLink";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
@@ -37,6 +38,7 @@ export default class SelectVoterGuidesSideBar extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let voterGuidesOwnedByVoter = VoterGuideStore.getAllVoterGuidesOwnedByVoter();
     let voterGuideLinksHtml = <span />;
     if (voterGuidesOwnedByVoter) {

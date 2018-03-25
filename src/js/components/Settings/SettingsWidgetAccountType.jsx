@@ -5,6 +5,7 @@ import LoadingWheel from "../../components/LoadingWheel";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import VoterStore from "../../stores/VoterStore";
+import { renderLog } from "../../utils/logging";
 
 const delay_before_removing_saved_status = 2000;
 
@@ -163,6 +164,7 @@ export default class SettingsWidgetAccountType extends Component {
   }
 
   render () {
+    renderLog(__filename);
     // console.log("render organizationType:", this.state.organizationType);
     if (!this.state.voter || !this.state.organization) {
       return LoadingWheel;

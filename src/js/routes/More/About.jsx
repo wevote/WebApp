@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import ReactPlayer from "react-player";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import ImageHandler from "../../components/ImageHandler";
+import { renderLog } from "../../utils/logging";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import ToolBar from "./ToolBar";
 import VoterStore from "../../stores/VoterStore";
@@ -23,6 +24,7 @@ export default class About extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div className="about-us">
       <Helmet title="About Us - We Vote"/>
       <div className="card u-inset--md">

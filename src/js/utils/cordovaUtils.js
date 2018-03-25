@@ -80,15 +80,16 @@ export function cordovaOpenSafariView (requestURL, timeout) {
 */
 export function enclosingRectangle (objectNameString, instance) {
   let rect = instance.getBoundingClientRect();
-  // console.log(objectNameString +
-  //   " BoundingClientRect: left " + rect.left +
-  //   ", top " + rect.top +
-  //   ", right " + rect.right +
-  //   ", bottom " + rect.bottom +
-  //   ", x " + rect.x +
-  //   ", y " + rect.y +
-  //   ", width " + rect.width +
-  //   ", height " + rect.height);
+  // Please don't remove this console.log line
+  console.log(objectNameString +
+    " BoundingClientRect: left " + rect.left +
+    ", top " + rect.top +
+    ", right " + rect.right +
+    ", bottom " + rect.bottom +
+    ", x " + rect.x +
+    ", y " + rect.y +
+    ", width " + rect.width +
+    ", height " + rect.height);
 }
 
 // webapp, webapp:iOS, webapp:Android

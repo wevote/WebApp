@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { renderLog } from "../../utils/logging";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import GuideList from "./GuideList";
 
@@ -48,6 +49,7 @@ export default class VoterGuideRecommendationsFromOneOrganization extends Compon
   }
 
   render () {
+    renderLog(__filename);
     if (this.state.voter_guides_to_follow_organization_recommendation_this_election.length) {
       return <div className="">
         These are recommended voter guides to listen to from this election.

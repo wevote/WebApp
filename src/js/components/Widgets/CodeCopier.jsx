@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ImageHandler from "../ImageHandler";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import { showToastSuccess } from "../../utils/showToast";
@@ -109,6 +110,7 @@ export default class CodeCopier extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let source_url = "";
     if (this.props.sourceUrl && this.props.sourceUrl.length) {
       source_url = this.props.sourceUrl;

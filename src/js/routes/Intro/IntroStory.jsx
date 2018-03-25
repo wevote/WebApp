@@ -1,16 +1,17 @@
 /* global TimelineLite */
 import React, { Component } from "react";
 import Helmet from "react-helmet";
+import Slider from "react-slick";
 import AnimationStory1 from "../../components/Animation/AnimationStory1";
 import AnimationStory2 from "../../components/Animation/AnimationStory2";
 import AnimationStory3 from "../../components/Animation/AnimationStory3";
 import AnimationStory4 from "../../components/Animation/AnimationStory4";
 import AnimationStory5 from "../../components/Animation/AnimationStory5";
-// import AnimationStory6 from "../../components/Animation/AnimationStory6";
 import AnimationStory7 from "../../components/Animation/AnimationStory7";
 import cookies from "../../utils/cookies";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
-var Slider = require("react-slick");
+import { renderLog } from "../../utils/logging";
+// import AnimationStory6 from "../../components/Animation/AnimationStory6";
 
 export default class IntroStory extends Component {
 
@@ -49,6 +50,7 @@ export default class IntroStory extends Component {
   }
 
   render () {
+    renderLog(__filename);
     //These are GreenSock animation instances
     let timeline = new TimelineLite();
 

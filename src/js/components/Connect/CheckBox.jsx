@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { cordovaDot } from "../../utils/cordovaUtils";
 import ImageHandler from "../ImageHandler";
+import { renderLog } from "../../utils/logging";
 
 export default class CheckBox extends Component {
   static propTypes = {
@@ -29,6 +30,7 @@ export default class CheckBox extends Component {
   }
 
   render () {
+    renderLog(__filename);
     const { isChecked } = this.state;
     return (
       <div className={this.props.grid + " friends-list__square u-cursor--pointer"} onClick={this.toggleCheckboxChange}>

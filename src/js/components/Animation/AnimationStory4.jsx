@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { cordovaDot } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 
 export default class AnimationStory4 extends Component {
   static propTypes = {
     history: PropTypes.object,
-    next: React.PropTypes.func
+    next: React.PropTypes.func,
   };
 
   constructor (props) {
@@ -14,6 +15,7 @@ export default class AnimationStory4 extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div className="intro-story__background background--image4">
       <div className="intro-story__h1">We Vote Together</div>
       <div><img className="center-block intro-story__img-height--extra" src={cordovaDot("/img/global/intro-story/slide4-connect-friends-300x370-min.png")} /></div>

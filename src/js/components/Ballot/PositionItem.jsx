@@ -1,20 +1,22 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import moment from "moment";
 import ImageHandler from "../../components/ImageHandler";
 // import EditPositionAboutCandidateModal from "../../components/VoterGuide/EditPositionAboutCandidateModal";
 import FriendsOnlyIndicator from "../../components/Widgets/FriendsOnlyIndicator";
+import { renderLog } from "../../utils/logging";
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from "../../utils/organization-functions";
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
 import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
 import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
-const moment = require("moment");
+
 
 export default class PositionItem extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string.isRequired,
     organization: PropTypes.object,  //.isRequired,
-    position: PropTypes.object.isRequired
+    position: PropTypes.object.isRequired,
   };
 
   constructor (props) {
@@ -31,17 +33,18 @@ export default class PositionItem extends Component {
   // }
 
   render () {
-    var position = this.props.position;
-    var dateStr = position.last_updated;
-    var dateText = moment(dateStr).startOf("day").fromNow();
+    renderLog(__filename);
+    let position = this.props.position;
+    let dateStr = position.last_updated;
+    let dateText = moment(dateStr).startOf("day").fromNow();
     // TwitterHandle-based link
-    var speakerLink = position.speaker_twitter_handle ? "/" + position.speaker_twitter_handle : "/voterguide/" + position.speaker_we_vote_id;
+    let speakerLink = position.speaker_twitter_handle ? "/" + position.speaker_twitter_handle : "/voterguide/" + position.speaker_we_vote_id;
 
     let image_placeholder = "";
     if (isSpeakerTypeOrganization(position.speaker_type)) {
-        image_placeholder = <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color" />;
+      image_placeholder = <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color" />;
     } else if (isSpeakerTypeIndividual(position.speaker_type)) {
-        image_placeholder = <i className="icon-org-lg icon-icon-person-placeholder-6-1 icon-org-resting-color" />;
+      image_placeholder = <i className="icon-org-lg icon-icon-person-placeholder-6-1 icon-org-resting-color" />;
     }
 
     let position_description = "";
@@ -60,10 +63,10 @@ export default class PositionItem extends Component {
           </p>;
     }
 
-    var show_position = true;
-    var nothing_to_display = null;
+    let show_position = true;
+    let nothing_to_display = null;
 
-    var one_position_on_this_candidate = <li className="card-child position-item">
+    let one_position_on_this_candidate = <li className="card-child position-item">
       {/* One Position on this Candidate */}
         <div className="card-child__media-object-anchor">
           <Link to={speakerLink} className="u-no-underline">

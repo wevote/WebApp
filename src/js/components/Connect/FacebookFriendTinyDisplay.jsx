@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ImageHandler from "../../components/ImageHandler";
+import { renderLog } from "../../utils/logging";
 
 export default class FacebookFriendTinyDisplay extends Component {
   static propTypes = {
@@ -10,6 +11,7 @@ export default class FacebookFriendTinyDisplay extends Component {
   };
 
   render () {
+    renderLog(__filename);
     let display_name = "";
     let facebook_profile_image = "";
     if (this.props.name) {

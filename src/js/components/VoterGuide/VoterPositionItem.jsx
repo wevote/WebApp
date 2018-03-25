@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import ImageHandler from "../ImageHandler";
 import VoterStore from "../../stores/VoterStore";
+import { renderLog } from "../../utils/logging";
 import OfficeNameText from "../Widgets/OfficeNameText";
 import PositionInformationOnlySnippet from "../Widgets/PositionInformationOnlySnippet";
 import PositionRatingSnippet from "../Widgets/PositionRatingSnippet";
@@ -67,16 +68,17 @@ export default class VoterPositionItem extends Component {
   //   this.setState({ showEditPositionModal: true });
   // }
 
-  render (){
-    var position = this.props.position;
+  render () {
+    renderLog(__filename);
+    let position = this.props.position;
 
     let { stance_display_off, comment_text_off, popover_off, placement } = this.props;
     const { supportProps } = this.state;
 
-    var statement_text;
-    var is_support;
-    var is_oppose;
-    var is_looking_at_self = true;
+    let statement_text;
+    let is_support;
+    let is_oppose;
+    let is_looking_at_self = true;
     // When component first loads, use the value in the incoming position. If there are any supportProps updates, use those.
     statement_text = supportProps && supportProps.voter_statement_text ? supportProps.voter_statement_text : position.statement_text;
     is_support = supportProps && supportProps.is_support ? supportProps.is_support : position.is_support;
@@ -116,8 +118,8 @@ export default class VoterPositionItem extends Component {
     }
 
     // const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
-    var contest_office_name;
-    var political_party;
+    let contest_office_name;
+    let political_party;
     if (position.kind_of_ballot_item === "CANDIDATE") {
       contest_office_name = position.contest_office_name;
       political_party = position.ballot_item_political_party;

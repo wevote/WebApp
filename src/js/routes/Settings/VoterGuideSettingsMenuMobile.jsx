@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import { isWebApp } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SettingsBannerAndOrganizationCard from "../../components/Settings/SettingsBannerAndOrganizationCard";
@@ -8,7 +10,6 @@ import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideSettingsSideBar from "../../components/Navigation/VoterGuideSettingsSideBar";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
-import { isWebApp } from "../../utils/cordovaUtils";
 
 export default class VoterGuideSettingsMenuMobile extends Component {
   static propTypes = {
@@ -140,6 +141,7 @@ export default class VoterGuideSettingsMenuMobile extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div className="settings-dashboard">
       {/* Header Spacing for Desktop */}
       <div className="col-md-12 hidden-xs hidden-print">

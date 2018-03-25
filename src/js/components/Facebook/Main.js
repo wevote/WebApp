@@ -3,6 +3,7 @@ import FacebookStore from "../../stores/FacebookStore";
 import FacebookDownloadPicture from "../../components/Facebook/FacebookDownloadPicture";
 import FacebookPicture from "../../components/Facebook/FacebookPicture";
 import VoterStore from "../../stores/VoterStore";
+import { renderLog } from "../../utils/logging";
 
 class Main extends React.Component {
     constructor (props) {
@@ -35,6 +36,7 @@ class Main extends React.Component {
     }
 
     render () {
+      renderLog(__filename);
         return <div>
                 {this.state.userId ?
                   <FacebookDownloadPicture userId={this.state.userId} /> :

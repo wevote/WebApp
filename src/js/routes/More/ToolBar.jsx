@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { renderLog } from "../../utils/logging";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 
 export default class ToolBar extends Component {
@@ -12,6 +13,7 @@ export default class ToolBar extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let hideGitHub = this.props.hideGitHub ? this.props.hideGitHub : false;
 
     return (

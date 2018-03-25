@@ -6,6 +6,7 @@ import BallotStore from "../../stores/BallotStore";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import FooterDoneBar from "../Navigation/FooterDoneBar";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -209,10 +210,12 @@ export default class VoterGuideSettingsPositions extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.voter || !this.state.voterGuide || !this.state.organization) {
       return LoadingWheel;
     }
-    const { organization_id, position_list_for_one_election, position_list_for_all_except_one_election } = this.state.organization;
+
+    const { position_list_for_one_election } = this.state.organization;
 
     let looking_at_self = false;
     if (this.state.voter) {

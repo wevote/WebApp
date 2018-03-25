@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import FollowToggle from "../Widgets/FollowToggle";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationDisplayForListCompressed from "./OrganizationDisplayForListCompressed";
+import { renderLog } from "../../utils/logging";
 
 export default class OpinionsFollowedListCompressed extends Component {
 
@@ -10,21 +11,21 @@ export default class OpinionsFollowedListCompressed extends Component {
     ballotItemWeVoteId: PropTypes.string,
     organizationsFollowed: PropTypes.array,
     instantRefreshOn: PropTypes.bool,
-    editMode: PropTypes.bool
+    editMode: PropTypes.bool,
   };
 
   constructor (props) {
     super(props);
     this.state = {
       organizations_followed: [],
-      ballot_item_we_vote_id: ""
+      ballot_item_we_vote_id: "",
     };
   }
 
   componentDidMount () {
     this.setState({
       organizations_followed: this.props.organizationsFollowed,
-      ballot_item_we_vote_id: this.props.ballotItemWeVoteId
+      ballot_item_we_vote_id: this.props.ballotItemWeVoteId,
     });
   }
 
@@ -33,7 +34,7 @@ export default class OpinionsFollowedListCompressed extends Component {
       // NOTE: This is off because we don't want the organization to disappear from the "More opinions" list when clicked
       this.setState({
         organizations_followed: nextProps.organizationsFollowed,
-        ballot_item_we_vote_id: nextProps.ballotItemWeVoteId
+        ballot_item_we_vote_id: nextProps.ballotItemWeVoteId,
       });
     //}
   }
@@ -48,6 +49,7 @@ export default class OpinionsFollowedListCompressed extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (this.state.organizations_followed === undefined) {
       return null;
     }

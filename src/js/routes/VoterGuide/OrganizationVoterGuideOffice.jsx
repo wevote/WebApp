@@ -5,6 +5,7 @@ import { capitalizeString } from "../../utils/textFormat";
 import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import OfficeActions from "../../actions/OfficeActions";
 import OfficeItem from "../../components/Ballot/OfficeItem";
 import OfficeStore from "../../stores/OfficeStore";
@@ -64,12 +65,13 @@ export default class OrganizationVoterGuideOffice extends Component {
     this.officeStoreListener.remove();
   }
 
-  _onOfficeStoreChange (){
+  _onOfficeStoreChange () {
     var office = OfficeStore.getOffice(this.state.office_we_vote_id);
     this.setState({ office: office });
   }
 
   render () {
+    renderLog(__filename);
     var { office } = this.state;
 
     if (!office || !office.ballot_item_display_name){

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router";
 import ImageHandler from "../../components/ImageHandler";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 
 export default class OrganizationsNotShownList extends Component {
   static propTypes = {
@@ -15,7 +16,8 @@ export default class OrganizationsNotShownList extends Component {
   }
 
   render () {
-    if (!this.props.orgs_not_shown_list){
+    renderLog(__filename);
+    if (!this.props.orgs_not_shown_list) {
       return <div>{LoadingWheel}</div>;
     }
 

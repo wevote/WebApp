@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import CopyLinkModal from "../../components/Widgets/CopyLinkModal";
+import { renderLog } from "../../utils/logging";
 
 export default class ShareButtonDropdown extends Component {
   static propTypes = {
@@ -54,14 +55,15 @@ export default class ShareButtonDropdown extends Component {
 
   onButtonBlur () {
     // Delay closing the drop down so that onClick has time to work
-    var temp_this = this;
+    let temp_this = this;
     setTimeout(function () {
       temp_this.closeDropdown();
       }, 250);
   }
 
   render () {
-    const {shareIcon, shareText, urlBeingShared} = this.props;
+    renderLog(__filename);
+    const { shareIcon, shareText, urlBeingShared } = this.props;
     const onClick = this.state.open ? this.closeDropdown.bind(this) : this.openDropdown.bind(this);
     const onCopyLinkClick = this.state.showCopyLinkModal ? this.closeCopyLinkModal.bind(this) : this.openCopyLinkModal.bind(this);
     // const onButtonBlur = ;

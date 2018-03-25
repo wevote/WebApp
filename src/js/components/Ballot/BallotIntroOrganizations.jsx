@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import VoterGuideActions from "../../actions/VoterGuideActions";
+import { renderLog } from "../../utils/logging";
 import OrganizationFollowToggle from "./OrganizationFollowToggle";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 
@@ -89,6 +90,7 @@ export default class BallotIntroFollowAdvisers extends Component {
   }
 
   render () {
+    renderLog(__filename);
     // BallotIntroFollowAdvisers is very similar. Check to see if we want to keep that file and this one in sync.
     let voter_guides_to_follow_by_issues_followed = this.state.voter_guides_to_follow_by_issues_followed || [];
 

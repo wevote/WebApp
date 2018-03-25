@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { renderLog } from "../../utils/logging";
 import OrganizationVoterGuideCandidateItem from "../../components/VoterGuide/OrganizationVoterGuideCandidateItem";
 
 // This is related to components/Ballot/CandidateList.jsx
@@ -11,6 +12,7 @@ export default class OrganizationVoterGuideCandidateList extends Component {
   };
 
   render () {
+    renderLog(__filename);
     return <article className="card-main__list-group">
         { this.props.children.map( (child) =>
           <div key={child.we_vote_id} className="card">

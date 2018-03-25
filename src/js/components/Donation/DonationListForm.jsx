@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import DonationList from "./DonationList";
 import { Tabs, Tab } from "react-bootstrap";
+import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 import VoterActions from "../../actions/VoterActions";
 
@@ -21,23 +22,24 @@ export default class DonationListForm extends Component {
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
-   }
+  }
 
   _onVoterStoreChange () {
-    this.setState({journal: VoterStore.getVoterDonationHistory()});
+    this.setState({ journal: VoterStore.getVoterDonationHistory() });
   }
 
   handleSelect (selectedKey) {
     this.setState({
-      activeKey: selectedKey
+      activeKey: selectedKey,
     });
-    if ( selectedKey === 2) {
+    if (selectedKey === 2) {
       // It takes a 2 to 30 seconds for the charge to come back from the first charge on a subscription,
       VoterActions.voterRefreshDonations();
     }
   }
 
   render () {
+    renderLog(__filename);
     if (this.state.journal && this.state.journal.length > 0) {
       return (
         <div>

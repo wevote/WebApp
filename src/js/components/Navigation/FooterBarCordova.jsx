@@ -8,6 +8,7 @@ import cookies from "../../utils/cookies";
 import FriendStore from "../../stores/FriendStore";
 import HeaderBar from "./HeaderBar";
 import HeaderBarAboutMenu from "./HeaderBarAboutMenu";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
@@ -93,6 +94,7 @@ export default class FooterBarCordova extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let { pathname } = this.props;
     let numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length;
     let voterIsSignedIn = this.props.voter && this.props.voter.is_signed_in;

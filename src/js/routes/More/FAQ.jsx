@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
 import { Link } from "react-router";
+import { renderLog } from "../../utils/logging";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import ToolBar from "./ToolBar";
 
@@ -14,6 +15,7 @@ export default class About extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div>
       <Helmet title="FAQ - We Vote" />
         <div className="container-fluid card">

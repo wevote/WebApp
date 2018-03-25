@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import FollowToggle from "../../components/Widgets/FollowToggle";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -63,6 +64,7 @@ export default class PositionListForFriends extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.organization){
       return <div>{LoadingWheel}</div>;
     }
@@ -71,6 +73,7 @@ export default class PositionListForFriends extends Component {
     var { organization_we_vote_id } = this.state;
 
     return <span>
+
         <div className="card">
           <div className="card-main">
             <FollowToggle we_vote_id={organization_we_vote_id} />

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { capitalizeString, sentenceCaseString } from "../../utils/textFormat";
-
+import { renderLog } from "../../utils/logging";
 
 export default class BallotSideBarLink extends Component {
   static propTypes = {
@@ -18,6 +18,7 @@ export default class BallotSideBarLink extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let labelInSentenceCase = capitalizeString(this.props.label);
     let subtitleInSentenceCase = sentenceCaseString(this.props.subtitle);
 

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { capitalizeString, sentenceCaseString } from "../../utils/textFormat";
+import { renderLog } from "../../utils/logging";
 
 
 export default class SelectVoterGuidesSideBarLink extends Component {
@@ -18,6 +19,7 @@ export default class SelectVoterGuidesSideBarLink extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let label_in_sentence_case = capitalizeString(this.props.label);
     let subtitle_in_sentence_case = sentenceCaseString(this.props.subtitle);
 

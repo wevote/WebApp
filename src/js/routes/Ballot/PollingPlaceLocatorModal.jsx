@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import { Modal } from "react-bootstrap";
+import { renderLog } from "../../utils/logging";
 import PollingPlaceLocator from "../../components/Ballot/PollingPlaceLocator";
 
 export default class PollingPlaceLocatorModal extends Component {
@@ -20,6 +21,7 @@ export default class PollingPlaceLocatorModal extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return (
       <Modal bsClass="background-brand-blue modal"
              show={this.state.showPollingLocatorModal}

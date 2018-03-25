@@ -6,6 +6,7 @@ import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
 import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdownList";
+import { renderLog } from "../../utils/logging";
 import MeasureActions from "../../actions/MeasureActions";
 import MeasureStore from "../../stores/MeasureStore";
 import PositionList from "../../components/Ballot/PositionList";
@@ -87,6 +88,7 @@ export default class MeasureModal extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let is_support = false;
     let is_oppose = false;
     let voter_statement_text = false;
@@ -97,6 +99,7 @@ export default class MeasureModal extends Component {
     }
 
     const NO_VOTER_GUIDES_TEXT = "We couldn't find any more voter guides to listen to related to this measure.";
+
     return <Modal show={this.props.show}
                   onHide={this.props.toggleFunction} >
       <Modal.Header closeButton onHide={this.props.toggleFunction}>

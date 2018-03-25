@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { renderLog } from "../../utils/logging";
 import PositionItem from "./PositionItem";
 
 export default class PositionList extends Component {
@@ -23,6 +24,7 @@ export default class PositionList extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.position_list) {
       return null;
     }

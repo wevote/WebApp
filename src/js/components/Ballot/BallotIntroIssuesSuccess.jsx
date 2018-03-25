@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import IssuesFollowedDisplayList from "../Issues/IssuesFollowedDisplayList";
+import { renderLog } from "../../utils/logging";
 
 export default class BallotIntroIssuesSuccess extends Component {
   static propTypes = {
@@ -14,6 +15,7 @@ export default class BallotIntroIssuesSuccess extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div className="intro-modal">
       <div className="intro-modal__h1">Nice job!</div>
       <div className="intro-modal__h2">Watch for your issues under each candidate or measure.</div>

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { renderLog } from "../../utils/logging";
 import TextTruncate from "react-text-truncate";
 
 export default class ReadMore extends Component {
@@ -37,6 +38,7 @@ export default class ReadMore extends Component {
     }
 
     render () {
+      renderLog(__filename);
         let { text_to_display, link_text, num_of_lines, collapse_text } = this.props;
         // default prop valuess
         if (num_of_lines === undefined) {

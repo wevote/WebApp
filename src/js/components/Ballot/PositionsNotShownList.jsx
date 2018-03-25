@@ -4,6 +4,7 @@ import { OverlayTrigger, Popover } from "react-bootstrap";
 import { Link } from "react-router";
 import ImageHandler from "../../components/ImageHandler";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import OrganizationCard from "../VoterGuide/OrganizationCard";
 
 // This component is used to display the "+X" list in the ItemTinyPositionBreakdownList
@@ -34,6 +35,7 @@ export default class PositionsNotShownList extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.props.positions_not_shown_list) {
       return <div>{LoadingWheel}</div>;
     }

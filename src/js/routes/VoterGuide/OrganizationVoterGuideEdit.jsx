@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import OrganizationStore from "../../stores/OrganizationStore";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
@@ -119,6 +120,7 @@ export default class OrganizationVoterGuideEdit extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.organization || !this.state.organization.organization_we_vote_id || !this.state.voter) {
       return <div>{LoadingWheel}</div>;
     }

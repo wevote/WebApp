@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
@@ -47,6 +48,7 @@ export default class OfficeItemReadyToVote extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let { ballot_item_display_name, we_vote_id } = this.props;
     let officeLink = "/office/" + we_vote_id;
     let goToOfficeLink = function () { historyPush(officeLink); };

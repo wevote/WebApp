@@ -7,6 +7,7 @@ import EditAddress from "../../components/Widgets/EditAddress";
 import Helmet from "react-helmet";
 import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import moment from "moment";
 import SelectAddressModal from "../../components/Ballot/SelectAddressModal";
 import VoterStore from "../../stores/VoterStore";
@@ -48,6 +49,7 @@ export default class Bookmarks extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.bookmarks) {
       return LoadingWheel;
     }

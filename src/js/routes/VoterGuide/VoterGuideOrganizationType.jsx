@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SettingsWidgetAccountType from "../../components/Settings/SettingsWidgetAccountType";
@@ -98,6 +99,7 @@ export default class VoterGuideOrganizationType extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let actionButtonHtml;
     actionButtonHtml = <button type="button" className="btn btn-lg btn-success"
                     onClick={this.goToOrganizationInfo}>Next&nbsp;&nbsp;&gt;</button>;

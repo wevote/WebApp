@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
 import moment from "moment";
+import { renderLog } from "../../utils/logging";
 
 export default class BallotFilter extends Component {
   static propTypes = {
@@ -14,6 +15,7 @@ export default class BallotFilter extends Component {
   };
 
   render () {
+    renderLog(__filename);
     let pathname = "/ballot";
     if (this.props.pathname && this.props.pathname !== "") {
       pathname = this.props.pathname;

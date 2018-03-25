@@ -1,17 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Helmet from "react-helmet";
 import AddressBox from "../../components/AddressBox";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import BallotElectionList from "../../components/Ballot/BallotElectionList";
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
-import Helmet from "react-helmet";
+import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 
 export default class Location extends Component {
   static propTypes = {
-      location: PropTypes.object
+    location: PropTypes.object,
   };
 
   constructor (props) {
@@ -26,17 +27,17 @@ export default class Location extends Component {
     return {};
   }
 
-  componentDidMount (){
+  componentDidMount () {
     this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
     ElectionActions.electionsRetrieve();
     AnalyticsActions.saveActionElections(VoterStore.election_id());
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.electionListListener.remove();
   }
 
-  onElectionStoreChange (){
+  onElectionStoreChange () {
     let elections_list = ElectionStore.getElectionList();
     let elections_locations_list = [];
     let voter_ballot; // A different format for much of the same data
@@ -45,7 +46,7 @@ export default class Location extends Component {
     let ballot_location_shortcut;
     let ballot_returned_we_vote_id;
 
-    for (var i = 0; i < elections_list.length; i++){
+    for (var i = 0; i < elections_list.length; i++) {
       var election = elections_list[i];
       elections_locations_list.push(election);
       ballot_returned_we_vote_id = "";
@@ -76,7 +77,7 @@ export default class Location extends Component {
   }
 
   render () {
-    // console.log("Settings/Location");
+    renderLog(__filename);
     return <div>
         <div className="container-fluid well u-stack--md u-inset--md">
           <Helmet title="Enter Your Address - We Vote" />

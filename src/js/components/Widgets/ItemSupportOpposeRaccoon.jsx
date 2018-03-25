@@ -11,6 +11,7 @@ import IssueStore from "../../stores/IssueStore";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdownList";
+import { renderLog } from "../../utils/logging";
 import OrganizationCard from "../VoterGuide/OrganizationCard";
 import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
 import SupportStore from "../../stores/SupportStore";
@@ -281,7 +282,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   render () {
-    // console.log("ItemSupportOpposeRaccoon render");
+    renderLog(__filename);
     let candidateSupportStore = SupportStore.get(this.state.ballot_item_we_vote_id);
     // Removed from ItemActionBar opposeHideInMobile
     let candidate_support_action_raccoon = <span>

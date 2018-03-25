@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ImageHandler from "../../components/ImageHandler";
+import { renderLog } from "../../utils/logging";
 
 // IssueImageDisplay is used by IssuesDisplayListWithOrganizationPopovers for viewing the icons for issues
 //  you can follow on the Ballot page
@@ -16,6 +17,7 @@ export default class IssueImageDisplay extends Component {
   };
 
   render () {
+    renderLog(__filename);
     if (!this.props.issue) {
       console.log("IssueImageDisplay no props.image");
       return null;

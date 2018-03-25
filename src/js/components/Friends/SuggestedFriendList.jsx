@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import SuggestedFriendDisplayForList from "./SuggestedFriendDisplayForList";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import { renderLog } from "../../utils/logging";
 
 export default class SuggestedFriendList extends Component {
 
@@ -29,6 +30,7 @@ export default class SuggestedFriendList extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (this.state.suggested_friend_list === undefined) {
       return null;
     }

@@ -3,7 +3,7 @@ import FacebookConstants from "../constants/FacebookConstants";
 import FriendActions from "../actions/FriendActions";
 import VoterActions from "../actions/VoterActions";
 import VoterSessionActions from "../actions/VoterSessionActions";
-const web_app_config = require("../config");
+import webAppConfig from "../config";
 // Including FacebookStore causes problems in the WebApp, and again in the Native App
 
 
@@ -18,7 +18,7 @@ module.exports = {
     // Removing connection between We Vote and Facebook
     Dispatcher.dispatch({
       type: FacebookConstants.FACEBOOK_SIGN_IN_DISCONNECT,
-      data: true
+      data: true,
     });
   },
 
@@ -38,7 +38,7 @@ module.exports = {
     window.FB.api("/me?fields=id,email,first_name,middle_name,last_name,cover", (response) => {
       Dispatcher.dispatch({
         type: FacebookConstants.FACEBOOK_RECEIVED_DATA,
-        data: response
+        data: response,
       });
     });
   },
@@ -55,6 +55,7 @@ module.exports = {
       offset_x = data.cover.offset_x;  // zero is a valid value so can't use the short-circuit operation " || false"
       offset_y = data.cover.offset_y;  // zero is a valid value so can't use the short-circuit operation " || false"
     }
+
     Dispatcher.loadEndpoint("voterFacebookSignInSave", {
       facebook_user_id: data.id || false,
       facebook_email: data.email || false,
@@ -75,7 +76,7 @@ module.exports = {
       window.FB.api(`/${userId}/picture?type=large`, (response) => {
         Dispatcher.dispatch({
           type: FacebookConstants.FACEBOOK_RECEIVED_PICTURE,
-          data: response
+          data: response,
         });
       });
     }
@@ -87,7 +88,7 @@ module.exports = {
       // console.log("getFacebookInvitableFriendsList", response);
       Dispatcher.dispatch({
         type: FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS,
-        data: response
+        data: response,
       });
     });
   },
@@ -98,7 +99,7 @@ module.exports = {
       console.log("readFacebookAppRequests", response);
       Dispatcher.dispatch({
         type: FacebookConstants.FACEBOOK_READ_APP_REQUESTS,
-        data: response
+        data: response,
       });
     });
   },
@@ -109,13 +110,13 @@ module.exports = {
       console.log("deleteFacebookAppRequest response", response);
       Dispatcher.dispatch({
         type: FacebookConstants.FACEBOOK_DELETE_APP_REQUEST,
-        data: response
+        data: response,
       });
     });
   },
 
   login: function () {
-    if (!web_app_config.FACEBOOK_APP_ID) {
+    if (!webAppConfig.FACEBOOK_APP_ID) {
       console.log("Missing FACEBOOK_APP_ID from src/js/config.js");
     }
     // FB.getLoginStatus does an ajax call and when you call FB.login on it's response, the popup that would open
@@ -126,27 +127,27 @@ module.exports = {
         if (response.status === "connected") {
           Dispatcher.dispatch({
             type: FacebookConstants.FACEBOOK_LOGGED_IN,
-            data: response
+            data: response,
           });
         } else {
           window.FB.login((res) => {
             Dispatcher.dispatch({
               type: FacebookConstants.FACEBOOK_LOGGED_IN,
-              data: res
+              data: res,
             });
-          }, {scope: "public_profile,email,user_friends"});
+          }, { scope: "public_profile,email,user_friends" });
         }
       });
     }
   },
 
   logout: function () {
-      window.FB.logout((response) => {
-          Dispatcher.dispatch({
-              type: FacebookConstants.FACEBOOK_LOGGED_OUT,
-              data: response
-          });
+    window.FB.logout((response) => {
+      Dispatcher.dispatch({
+        type: FacebookConstants.FACEBOOK_LOGGED_OUT,
+        data: response,
       });
+    });
   },
 
   // July 2017: Not called from anywhere
@@ -163,7 +164,7 @@ module.exports = {
       facebook_expires_in: data.expiresIn || false,
       facebook_signed_request: data.signedRequest || false,
       save_auth_data: true,
-      save_profile_data: false
+      save_profile_data: false,
     });
   },
 
@@ -172,7 +173,7 @@ module.exports = {
     Dispatcher.loadEndpoint("voterFacebookSignInSave", {
       facebook_user_id: facebook_user_id || false,
       facebook_profile_image_url_https: data.url || false,
-      save_photo_data: true
+      save_photo_data: true,
     });
   },
 

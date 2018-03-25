@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import { historyPush } from "../../utils/cordovaUtils";
-import VoterGuideStore from "../../stores/VoterGuideStore";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
 import ItemTinyOpinionsToFollow from "../VoterGuide/ItemTinyOpinionsToFollow";
-import BookmarkToggle from "../Bookmarks/BookmarkToggle";
+import { renderLog } from "../../utils/logging";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 
 
 export default class MeasureItemCompressed extends Component {
@@ -58,7 +59,9 @@ export default class MeasureItemCompressed extends Component {
       transitioning: false,
     });
   }
+
   render () {
+    renderLog(__filename);
     let { ballot_item_display_name, measure_subtitle, measure_text, we_vote_id } = this.props;
     let measure_we_vote_id = we_vote_id;
     measure_subtitle = capitalizeString(measure_subtitle);

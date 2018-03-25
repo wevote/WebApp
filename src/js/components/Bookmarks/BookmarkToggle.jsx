@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Icon from "react-svg-icons";
 import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
 import BookmarkStore from "../../stores/BookmarkStore";
 import BookmarkActions from "../../actions/BookmarkActions";
 import { showToastError, showToastSuccess } from "../../utils/showToast";
+import { renderLog } from "../../utils/logging";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
 
-var Icon = require("react-svg-icons");
 
 export default class BookmarkToggle extends Component {
   static propTypes = {
@@ -79,6 +80,7 @@ export default class BookmarkToggle extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (this.state.is_bookmarked === undefined){
       return <span className="bookmark-action" />;
     }

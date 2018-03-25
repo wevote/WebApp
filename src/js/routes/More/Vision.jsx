@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Helmet from "react-helmet";
 import ReactPlayer from "react-player";
 import AnalyticsActions from "../../actions/AnalyticsActions";
+import { renderLog } from "../../utils/logging";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import ToolBar from "./ToolBar";
 import VoterStore from "../../stores/VoterStore";
@@ -20,6 +21,7 @@ export default class Vision extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div>
       <Helmet title="Vision - We Vote"/>
       <div className="container-fluid card">

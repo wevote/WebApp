@@ -6,6 +6,7 @@ import $ from "jquery";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import IssuesDisplayListWithOrganizationPopovers from "../Issues/IssuesDisplayListWithOrganizationPopovers";
 import IssueStore from "../../stores/IssueStore";
+import { renderLog } from "../../utils/logging";
 
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item,
@@ -147,6 +148,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let issues_under_this_ballot_item_voter_is_following_found = this.state.issues_under_this_ballot_item_voter_is_following && this.state.issues_under_this_ballot_item_voter_is_following.length;
     let issues_under_this_ballot_item_voter_is_not_following = this.state.issues_under_this_ballot_item_voter_not_following && this.state.issues_under_this_ballot_item_voter_not_following.length;
     // console.log("this.state.issues_under_this_ballot_item_voter_is_following: ", this.state.issues_under_this_ballot_item_voter_is_following);

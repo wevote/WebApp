@@ -5,6 +5,7 @@ import FacebookActions from "../actions/FacebookActions";
 import FacebookStore from "../stores/FacebookStore";
 import { historyPush } from "../utils/cordovaUtils";
 import LoadingWheel from "../components/LoadingWheel";
+import { renderLog } from "../utils/logging";
 import VoterActions from "../actions/VoterActions";
 import VoterStore from "../stores/VoterStore";
 
@@ -83,10 +84,12 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let { saving } = this.state;
     if (saving || !this.state.email_sign_in_status){
       return LoadingWheel;
     }
+
     const merge_status_html = <span>
       { !this.state.email_sign_in_status.yes_please_merge_accounts ?
         <Alert bsStyle="danger">

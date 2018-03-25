@@ -1,21 +1,24 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { renderLog } from "../../utils/logging";
 
 export default class AddFriendsFilter extends Component {
   static propTypes = {
     params: PropTypes.object,
     changeAddFriendsTypeFunction: PropTypes.func.isRequired,
-    add_friends_type: PropTypes.string
+    add_friends_type: PropTypes.string,
   };
 
   render () {
-    const {add_friends_type, changeAddFriendsTypeFunction} = this.props;
-    var onKeyDown = function (event) {
+    renderLog(__filename);
+    const { add_friends_type, changeAddFriendsTypeFunction } = this.props;
+    let onKeyDown = function (event) {
       let enterAndSpaceKeyCodes = [13, 32];
       if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
         changeAddFriendsTypeFunction(event);
       }
     };
+
     return <div className="btn-group u-stack--md">
       <span tabIndex="0"
             onKeyDown={onKeyDown}

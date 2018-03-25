@@ -4,6 +4,7 @@ import { Button } from "react-bootstrap";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
 import VoterStore from "../../stores/VoterStore";
+import { renderLog } from "../../utils/logging";
 
 export default class SuggestedFriendToggle extends Component {
   static propTypes = {
@@ -27,24 +28,25 @@ export default class SuggestedFriendToggle extends Component {
     this._onVoterStoreChange();
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
-  _onFriendStoreChange (){
+  _onFriendStoreChange () {
     this.setState({
       is_friend: FriendStore.isFriend(this.props.other_voter_we_vote_id)
     });
   }
 
-  _onVoterStoreChange (){
+  _onVoterStoreChange () {
     this.setState({
-      voter: VoterStore.getVoter()
+      voter: VoterStore.getVoter(),
     });
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state) { return <div />; }
     let other_voter_we_vote_id = this.props.other_voter_we_vote_id;
     let is_friend = this.state.is_friend;

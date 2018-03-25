@@ -5,6 +5,7 @@ import { Link } from "react-router";
 import FriendActions from "../../actions/FriendActions";
 import ImageHandler from "../../components/ImageHandler";
 import VoterStore from "../../stores/VoterStore";
+import { renderLog } from "../../utils/logging";
 
 export default class FriendInvitationEmailForList extends Component {
   static propTypes = {
@@ -17,7 +18,7 @@ export default class FriendInvitationEmailForList extends Component {
     voter_twitter_description: PropTypes.string,
     voter_twitter_followers_count: PropTypes.number,
     voter_email_address: PropTypes.string,
-    invitation_status: PropTypes.string
+    invitation_status: PropTypes.string,
   };
 
   constructor (props) {
@@ -46,6 +47,7 @@ export default class FriendInvitationEmailForList extends Component {
   }
 
   render () {
+    renderLog(__filename);
     const {
       invitationsSentByMe, invitation_status, voter_email_address,
     } = this.props;

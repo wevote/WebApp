@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import { Button } from "react-bootstrap";
+import { _ } from "lodash";
 import GuideList from "./GuideList";
 import LoadingWheel from "../LoadingWheel";
 import OrganizationActions from "../../actions/OrganizationActions";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
-var _ = require("lodash");
+import { renderLog } from "../../utils/logging";
 
 export default class VoterGuideFollowing extends Component {
   static propTypes = {
@@ -108,6 +109,7 @@ export default class VoterGuideFollowing extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.voter) {
       return <div>{LoadingWheel}</div>;
     }

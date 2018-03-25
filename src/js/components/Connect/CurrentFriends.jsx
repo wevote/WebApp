@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import CurrentFriendTinyDisplay from "../../components/Connect/CurrentFriendTinyDisplay";
 import FriendDisplayForList from "../../components/Friends/FriendDisplayForList";
+import { renderLog } from "../../utils/logging";
 
 export default class CurrentFriends extends Component {
 
@@ -57,11 +58,12 @@ export default class CurrentFriends extends Component {
     }, 100);
   }
 
-  toggleEditMode (){
+  toggleEditMode () {
     this.setState({editMode: !this.state.editMode});
   }
 
   render () {
+    renderLog(__filename);
     if (this.state.current_friends_list === undefined) {
       return null;
     }

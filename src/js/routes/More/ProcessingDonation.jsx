@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { historyPush } from "../../utils/cordovaUtils";
 import DonateStore from "../../stores/DonateStore";
+import { renderLog } from "../../utils/logging";
 
 let loadingScreenStyles = {
   position: "fixed",
@@ -43,6 +44,7 @@ export default class ProcessingDonation extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div style={loadingScreenStyles}>
       <div>
         <h1 className="h1">Processing your Donation...</h1>

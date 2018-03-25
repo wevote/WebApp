@@ -4,6 +4,7 @@ import { Button } from "react-bootstrap";
 import IssueActions from "../../actions/IssueActions";
 import IssueFollowToggleSquare from "../Issues/IssueFollowToggleSquare";
 import IssueStore from "../../stores/IssueStore";
+import { renderLog } from "../../utils/logging";
 
 const NEXT_BUTTON_TEXT = "Next >";
 const SKIP_BUTTON_TEXT = "Skip >";
@@ -132,6 +133,7 @@ export default class BallotIntroFollowIssues extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let issue_list = this.state.issues;
     let remaining_issues = this.remainingIssues();
 

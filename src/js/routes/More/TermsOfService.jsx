@@ -1,6 +1,7 @@
 import React from "react";
 import Helmet from "react-helmet";
 import { Link } from "react-router";
+import { renderLog } from "../../utils/logging";
 
 export default class TermsOfService extends React.Component {
   constructor (props) {
@@ -12,6 +13,7 @@ export default class TermsOfService extends React.Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div>
       <Helmet title="Terms of Service - We Vote" />
       <div className="container-fluid well">

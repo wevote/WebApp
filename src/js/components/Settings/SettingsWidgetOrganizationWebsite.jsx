@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import VoterStore from "../../stores/VoterStore";
@@ -55,7 +56,7 @@ export default class SettingsWidgetOrganizationWebsite extends Component {
     if (VoterStore.isVoterFound()) {
       let voter = VoterStore.getVoter();
       this.setState({
-        voter: voter
+        voter: voter,
       });
       if (voter && voter.linked_organization_we_vote_id) {
         this.setState({
@@ -90,17 +91,19 @@ export default class SettingsWidgetOrganizationWebsite extends Component {
     if (event.target.name === "organizationWebsite") {
       this.setState({
         organizationWebsite: event.target.value,
-        organizationWebsiteSavedStatus: "Saving website..."
+        organizationWebsiteSavedStatus: "Saving website...",
       });
     }
+
     // After some time, clear saved message
     clearTimeout(this.clearStatusTimer);
     this.clearStatusTimer = setTimeout(() => {
-      this.setState({organizationWebsiteSavedStatus: ""});
+      this.setState({ organizationWebsiteSavedStatus: "" });
     }, delayBeforeRemovingSavedStatus);
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.voter) {
       return LoadingWheel;
     }

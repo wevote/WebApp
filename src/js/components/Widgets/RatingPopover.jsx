@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import { cordovaDot } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 
 export default class RatingPopover extends Component {
   static propTypes = {
@@ -22,6 +23,7 @@ export default class RatingPopover extends Component {
   }
 
   render () {
+    renderLog(__filename);
     const voteSmartPopover =
       <Popover id="popover-trigger-click-root-close"
         title={<span>Ratings from Vote Smart <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}

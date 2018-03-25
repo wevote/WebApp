@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
+import { renderLog } from "../../utils/logging";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import { organizationalDonors, teamOfVolunteers } from "./people";
 
@@ -13,6 +14,7 @@ export default class Credits extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div>
       <Helmet title="Credits - We Vote" />
         <div className="container-fluid card">

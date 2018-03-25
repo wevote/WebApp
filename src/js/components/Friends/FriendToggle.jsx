@@ -4,6 +4,7 @@ import { Button } from "react-bootstrap";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
 import VoterStore from "../../stores/VoterStore";
+import { renderLog } from "../../utils/logging";
 
 export default class FriendToggle extends Component {
   static propTypes = {
@@ -45,6 +46,7 @@ export default class FriendToggle extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state) { return <div />; }
     let other_voter_we_vote_id = this.props.other_voter_we_vote_id;
     let is_friend = this.state.is_friend;

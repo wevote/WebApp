@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import FollowToggle from "../Widgets/FollowToggle";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationDisplayForList from "./OrganizationDisplayForList";
+import { renderLog } from "../../utils/logging";
 
 export default class OpinionsFollowedList extends Component {
 
@@ -48,6 +49,7 @@ export default class OpinionsFollowedList extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (this.state.organizations_followed === undefined) {
       return null;
     }

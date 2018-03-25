@@ -8,6 +8,7 @@ import { historyPush } from "../../utils/cordovaUtils";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import Helmet from "react-helmet";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
 import TwitterAccountCard from "../../components/Twitter/TwitterAccountCard";
@@ -104,6 +105,8 @@ export default class VerifyThisIsMe extends Component {
   }
 
   render () {
+    renderLog(__filename);
+
     // Manage the control over this organization voter guide
     let { candidate, organization, voter } = this.state;
     let signed_in_twitter = voter === undefined ? false : voter.signed_in_twitter;

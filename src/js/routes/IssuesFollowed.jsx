@@ -2,18 +2,17 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
+import { _ } from "lodash";
 import IssueActions from "../actions/IssueActions";
 import IssueFollowToggleSquare from "../components/Issues/IssueFollowToggleSquare";
 import IssueStore from "../stores/IssueStore";
+import { renderLog } from "../utils/logging";
 import SearchBar from "../components/Search/SearchBar";
-
-var _ = require("lodash");
-
 
 export default class IssuesFollowed extends Component {
   static propTypes = {
     children: PropTypes.object,
-    history: PropTypes.object
+    history: PropTypes.object,
   };
 
   constructor (props) {
@@ -69,6 +68,7 @@ export default class IssuesFollowed extends Component {
   }
 
   render () {
+    renderLog(__filename);
     var issue_list = [];
     if (this.state.issues_followed) {
       issue_list = this.state.issues_followed;

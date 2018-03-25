@@ -6,6 +6,7 @@ import FacebookFriendTinyDisplay from "../../components/Connect/FacebookFriendTi
 import FacebookFriendCard from "../../components/Connect/FacebookFriendCard";
 import FacebookStore from "../../stores/FacebookStore";
 import FacebookActions from "../../actions/FacebookActions";
+import { renderLog } from "../../utils/logging";
 
 export default class FacebookFriendsDisplay extends Component {
 
@@ -75,6 +76,7 @@ export default class FacebookFriendsDisplay extends Component {
   }
 
   render () {
+    renderLog(__filename);
       if (this.state.facebook_invitable_friends_list === undefined) {
         return null;
       }

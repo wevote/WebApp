@@ -10,6 +10,7 @@ import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
+import { renderLog } from "../../utils/logging";
 import SearchAllBox from "../SearchAllBox";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
@@ -229,6 +230,7 @@ export default class HeaderBackToBar extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let voterPhotoUrlMedium = this.state.voter.voter_photo_url_medium;
     let speakerType = "V";  // TODO DALE make this dynamic
 

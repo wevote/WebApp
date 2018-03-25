@@ -1,6 +1,7 @@
 import { ReduceStore } from "flux/utils";
 import BallotActions from "../actions/BallotActions";
 import BookmarkActions from "../actions/BookmarkActions";
+import cookies from "../utils/cookies";
 import Dispatcher from "../dispatcher/Dispatcher";
 import FacebookActions from "../actions/FacebookActions";
 import FacebookStore from "../stores/FacebookStore";
@@ -8,7 +9,6 @@ import FriendActions from "../actions/FriendActions";
 import SupportActions from "../actions/SupportActions";
 import VoterActions from "../actions/VoterActions";
 import VoterGuideActions from "../actions/VoterGuideActions";
-const cookies = require("../utils/cookies");
 
 class VoterStore extends ReduceStore {
 
