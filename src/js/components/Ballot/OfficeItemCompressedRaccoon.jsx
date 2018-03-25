@@ -68,11 +68,12 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
     // console.log("this.props.candidate_list: ", this.props.candidate_list);
     if (this.props.candidate_list && this.props.candidate_list.length) {
+      CandidateActions.candidatesRetrieve(this.props.we_vote_id);
       this.props.candidate_list.forEach( function (candidate) {
         // console.log("OfficeItemCompressed, candidate: ", candidate);
         if (candidate && candidate.hasOwnProperty("we_vote_id") && !CandidateStore.isCandidateInStore(candidate.we_vote_id)) {
           // console.log("OfficeItemCompressed, retrieving");
-          CandidateActions.candidateRetrieve(candidate.we_vote_id);
+          // CandidateActions.candidateRetrieve(candidate.we_vote_id); // Replaced by candidatesRetrieve on the office level
           VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidate.we_vote_id, "CANDIDATE");
         }
       });

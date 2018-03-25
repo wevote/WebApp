@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
 import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
 import VoterGuideActions from "../../actions/VoterGuideActions";
+import SettingsBannerAndOrganizationCard from "../../components/Settings/SettingsBannerAndOrganizationCard";
 import VoterGuideSettingsGeneral from "../../components/Settings/VoterGuideSettingsGeneral";
 import VoterGuideSettingsPositions from "../../components/Settings/VoterGuideSettingsPositions";
 import VoterGuideSettingsSideBar from "../../components/Navigation/VoterGuideSettingsSideBar";
@@ -157,53 +157,50 @@ export default class VoterGuideSettingsDashboard extends Component {
     }
 
     return <div className="settings-dashboard">
-      <div className="page-content-container">
-        <div className="container-fluid">
-        { this.state.organization && this.state.organization.organization_we_vote_id ?
-          <div className="row">
-            <div className="col-md-12">
-              { this.state.organization && this.state.organization.organization_banner_url !== "" ?
-                <div className="organization-banner-image-div">
-                  <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
-                </div> :
-                null
-              }
-            </div>
-            <div className="col-md-12">
-              <div className="card">
-                <div className="card-main">
-                  <OrganizationCard organization={this.state.organization}
-                                    turnOffTwitterHandle />
-                </div>
-              </div>
-            </div>
-          </div> :
-          null }
-          <div className="row">
-            {/* Desktop mode */}
-            <div className="col-md-12 hidden-xs">
-              <Link to="/settings/voterguidelist">&lt; Back to Your Voter Guides</Link>
-            </div>
-            {/* Mobile mode */}
-            <div className="col-md-12 visible-xs">
-              {this.state.voterGuideWeVoteId && this.state.voterGuideWeVoteId !== "" ?
-                <Link to={"/vg/" + this.state.voterGuideWeVoteId + "/settings/menu"}>&lt; Voter Guide</Link> :
-                <Link to={"/settings/voterguidesmenu"}>&lt; Voter Guide</Link>
-              }
-            </div>
+      {/* Header Spacing for Desktop */}
+      <div className="col-md-12 hidden-xs hidden-print">
+        <SettingsBannerAndOrganizationCard organization={this.state.organization} />
+      </div>
+      {/* Header Spacing for Mobile */}
+      <div className="visible-xs hidden-print">
+        <SettingsBannerAndOrganizationCard organization={this.state.organization} />
+      </div>
 
-            {/* Desktop mode */}
-            <div className="col-md-4 hidden-xs sidebar-menu">
+      {/* Desktop mode */}
+      <div className="hidden-xs col-md-12  u-padding-top--md">
+        <Link to="/settings/voterguidelist">&lt; Back to Your Voter Guides</Link>
+      </div>
+      {/* Mobile mode */}
+      <div className="col-12 visible-xs">
+        {this.state.voterGuideWeVoteId && this.state.voterGuideWeVoteId !== "" ?
+          <Link to={"/vg/" + this.state.voterGuideWeVoteId + "/settings/menu"}>&lt; Voter Guide</Link> :
+          <Link to={"/settings/voterguidesmenu"}>&lt; Voter Guide</Link>
+        }
+      </div>
+
+      {/* Desktop left navigation + Settings content */}
+      <div className="hidden-xs">
+        <div className="container-fluid">
+          <div className="row">
+            {/* Desktop mode left navigation */}
+            <div className="col-4 sidebar-menu">
               <VoterGuideSettingsSideBar editMode={this.state.editMode}
                                          organization={this.state.organization}
                                          voterGuide={this.state.voterGuide} />
             </div>
-
-            <div className="col-xs-12 col-md-8">
+            {/* Desktop mode content */}
+            <div className="col-8">
               {settingsComponentToDisplay}
             </div>
-
           </div>
+        </div>
+      </div>
+
+      {/* Mobile Settings content */}
+      <div className="visible-xs">
+        {/* Mobile mode content */}
+        <div className="col-12">
+          {settingsComponentToDisplay}
         </div>
       </div>
     </div>;

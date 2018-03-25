@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
 import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
+import SettingsBannerAndOrganizationCard from "../../components/Settings/SettingsBannerAndOrganizationCard";
 import SettingsPersonalSideBar from "../../components/Navigation/SettingsPersonalSideBar";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
@@ -136,40 +136,17 @@ export default class SettingsMenuMobile extends Component {
     }
 
     return <div className="settings-dashboard">
-      <div className="page-content-container">
-        <div className="container-fluid">
-          { this.state.organization && this.state.organization.organization_we_vote_id ?
-            <div className="row">
-              <div className="col-md-12">
-                { this.state.organization && this.state.organization.organization_banner_url && this.state.organization.organization_banner_url !== "" ?
-                  <div className="organization-banner-image-div">
-                    <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
-                  </div> :
-                  null
-                }
-              </div>
-              {this.state.organization.organization_name && !this.state.organization.organization_name.startsWith("Voter-") ?
-                <div className="col-md-12">
-                  <div className="card">
-                    <div className="card-main">
-                      <OrganizationCard organization={this.state.organization}
-                                        turnOffTwitterHandle />
-                    </div>
-                  </div>
-                </div> :
-                null }
-            </div> :
-            null }
+      <SettingsBannerAndOrganizationCard organization={this.state.organization} />
 
-          <div className="row">
-            {/* Mobile WebApp navigation */}
-            <div className="col-md-12">
-              <SettingsPersonalSideBar onOwnPage isSignedIn={this.state.voter.is_signed_in} />
+      {/* Mobile WebApp navigation */}
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-12">
+            <SettingsPersonalSideBar onOwnPage isSignedIn={this.state.voter.is_signed_in} />
 
-              <h4 className="text-left" />
-              <div className="terms-and-privacy u-padding-top--md">
-                <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy Policy</Link>
-              </div>
+            <h4 className="text-left" />
+            <div className="terms-and-privacy u-padding-top--md">
+              <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy Policy</Link>
             </div>
           </div>
         </div>
