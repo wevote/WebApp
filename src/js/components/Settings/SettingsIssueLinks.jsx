@@ -7,7 +7,7 @@ import IssueActions from "../../actions/IssueActions";
 import IssueLinkToggle from "../Issues/IssueLinkToggle";
 import IssueStore from "../../stores/IssueStore";
 
-export default class VoterGuideEditIssues extends Component {
+export default class SettingsIssueLinks extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired,
     organization_we_vote_id: PropTypes.string.isRequired,
@@ -40,8 +40,8 @@ export default class VoterGuideEditIssues extends Component {
   componentWillReceiveProps (nextProps) {
     let default_active_tab = this.getDefaultActiveIssueTab();
     let active_tab = nextProps.params.active_tab || default_active_tab;
-    console.log("VoterGuideEditIssues, nextProps.organization_we_vote_id: ", nextProps.organization_we_vote_id);
-    // console.log("VoterGuideEditIssues, active_tab: ", active_tab, "default_active_tab: ", default_active_tab);
+    console.log("SettingsIssueLinks, nextProps.organization_we_vote_id: ", nextProps.organization_we_vote_id);
+    // console.log("SettingsIssueLinks, active_tab: ", active_tab, "default_active_tab: ", default_active_tab);
     this.setState({
       active_tab: active_tab,
     });

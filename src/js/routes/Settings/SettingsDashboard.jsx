@@ -12,6 +12,7 @@ import SettingsNotifications from "../../components/Settings/SettingsNotificatio
 import SettingsProfile from "../../components/Settings/SettingsProfile";
 import SettingsPersonalSideBar from "../../components/Navigation/SettingsPersonalSideBar";
 import VoterGuideActions from "../../actions/VoterGuideActions";
+import SettingsIssueLinks from "../../components/Settings/SettingsIssueLinks"; // TODO: To be updated
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 import { isWebApp } from "../../utils/cordovaUtils";
@@ -135,6 +136,9 @@ export default class SettingsDashboard extends Component {
         break;
       case "election":
         settingsComponentToDisplay = <SettingsElection />;
+        break;
+      case "issues":
+        settingsComponentToDisplay = <SettingsIssueLinks />;  // TODO: To be implemented
         break;
       case "notifications":
         settingsComponentToDisplay = <SettingsNotifications />;
