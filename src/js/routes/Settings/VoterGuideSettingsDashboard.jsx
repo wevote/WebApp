@@ -148,9 +148,6 @@ export default class VoterGuideSettingsDashboard extends Component {
       case "general":
         settingsComponentToDisplay = <VoterGuideSettingsGeneral voterGuideWeVoteId={this.state.voterGuideWeVoteId} />;
         break;
-      // case "notifications":
-      //   settingsComponentToDisplay = <SettingsNotifications />;
-      //   break;
       case "positions":
         settingsComponentToDisplay = <VoterGuideSettingsPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />;
         break;
