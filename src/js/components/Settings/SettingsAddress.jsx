@@ -77,14 +77,18 @@ export default class SettingsAddress extends Component {
   render () {
     // console.log("Settings/Location");
     return <div>
-        <div className="container-fluid well u-stack--md u-inset--md">
+        <div className="u-stack--md">
           <Helmet title="Enter Address - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
-          <h3 className="h3">
-            Enter address where you are registered to vote
-          </h3>
-          <div>
-            <AddressBox {...this.props} saveUrl="/ballot" />
+          <div className="card">
+            <div className="card-main">
+              <h3 className="h3">
+                Enter address where you are registered to vote
+              </h3>
+              <div className="u-padding-bottom--md">
+                <AddressBox {...this.props} saveUrl="/ballot" />
+              </div>
+            </div>
           </div>
         </div>
       </div>;

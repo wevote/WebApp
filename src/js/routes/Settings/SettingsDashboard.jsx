@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
 import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SelectVoterGuidesSideBar from "../../components/Navigation/SelectVoterGuidesSideBar";
 import SettingsAccount from "../../components/Settings/SettingsAccount";
 import SettingsAddress from "../../components/Settings/SettingsAddress";
+import SettingsBannerAndOrganizationCard from "../../components/Settings/SettingsBannerAndOrganizationCard";
 import SettingsElection from "../../components/Settings/SettingsElection";
 import SettingsNotifications from "../../components/Settings/SettingsNotifications";
 import SettingsProfile from "../../components/Settings/SettingsProfile";
@@ -147,38 +147,25 @@ export default class SettingsDashboard extends Component {
 
     // console.log("this.state.organization.organization_banner_url:", this.state.organization.organization_banner_url);
     return <div className="settings-dashboard">
-      <div className="page-content-container">
+      {/* Header Spacing for Desktop */}
+      <div className="col-md-12 hidden-xs hidden-print">
+        <SettingsBannerAndOrganizationCard organization={this.state.organization} />
+      </div>
+      {/* Header Spacing for Mobile */}
+      <div className="visible-xs hidden-print">
+        <SettingsBannerAndOrganizationCard organization={this.state.organization} />
+      </div>
+
+      <div className="visible-xs u-padding-top--md">
+        <Link to={isWebApp() ? "/settings/menu" : "/more/hamburger"}>&lt; Back to Your Settings</Link>
+      </div>
+
+      {/* Desktop left navigation + Settings content */}
+      <div className="hidden-xs">
         <div className="container-fluid">
-          { this.state.organization && this.state.organization.organization_we_vote_id ?
           <div className="row">
-            <div className="col-md-12">
-              { this.state.organization && this.state.organization.organization_banner_url && this.state.organization.organization_banner_url !== "" ?
-                <div className="organization-banner-image-div">
-                  <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
-                </div> :
-                null
-              }
-            </div>
-            {this.state.organization.organization_name && !this.state.organization.organization_name.startsWith("Voter-") ?
-              <div className="col-md-12">
-                <div className="card">
-                  <div className="card-main">
-                    <OrganizationCard organization={this.state.organization}
-                                      turnOffTwitterHandle />
-                  </div>
-                </div>
-              </div> :
-              null }
-          </div> :
-          null }
-
-          <div className="row visible-xs u-padding-top--md">
-            <Link to={isWebApp() ? "/settings/menu" : "/more/hamburger"}>&lt; Back to Your Settings</Link>
-          </div>
-
-          <div className="row hidden-xs">
             {/* Desktop mode left navigation */}
-            <div className="col-md-4 sidebar-menu">
+            <div className="col-4 sidebar-menu">
               <SettingsPersonalSideBar editMode={this.state.editMode} isSignedIn={this.state.voter.is_signed_in} />
 
               <SelectVoterGuidesSideBar />
@@ -189,17 +176,18 @@ export default class SettingsDashboard extends Component {
               </div>
             </div>
             {/* Desktop mode content */}
-            <div className="col-md-8">
+            <div className="col-8">
               {settingsComponentToDisplay}
             </div>
           </div>
+        </div>
+      </div>
 
-          <div className="row visible-xs">
-            {/* Mobile mode content */}
-            <div className="col-xs-12">
-              {settingsComponentToDisplay}
-            </div>
-          </div>
+      {/* Mobile Settings content */}
+      <div className="visible-xs">
+        {/* Mobile mode content */}
+        <div className="col-12">
+          {settingsComponentToDisplay}
         </div>
       </div>
     </div>;

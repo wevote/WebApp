@@ -40,7 +40,7 @@ export default class SettingsProfile extends Component {
     return <div className="">
       <Helmet title={"Your Profile - We Vote"} />
       <BrowserPushMessage incomingProps={this.props} />
-      <div className="card">
+      <div className="card u-padding-bottom--lg">
         <div className="card-main">
           <h1 className="h3">Your Profile</h1>
           <div>

@@ -76,10 +76,14 @@ export default class SettingsElection extends Component {
 
   render () {
     return <div>
-        <div className="elections-list-container container-fluid well u-stack--md u-inset--md">
+        <div className="elections-list-container">
           <Helmet title="Choose Election - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
-          <BallotElectionList ballotElectionList={this.state.voter_ballot_list} ballotBaseUrl="/ballot" />
+          <div className="card">
+            <div className="card-main">
+              <BallotElectionList ballotElectionList={this.state.voter_ballot_list} ballotBaseUrl="/ballot" />
+            </div>
+          </div>
         </div>
       </div>;
   }

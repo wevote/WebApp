@@ -42,22 +42,28 @@ export default class SelectVoterGuidesSideBar extends Component {
     if (voterGuidesOwnedByVoter) {
       voterGuideLinksHtml = voterGuidesOwnedByVoter.map((voter_guide, key) => {
         let displaySubtitles = true;
-        return <div key={key}>
-          <SelectVoterGuidesSideBarLink linkTo={this.props.onOwnPage ? "/vg/" + voter_guide.we_vote_id + "/settings/menu" : "/vg/" + voter_guide.we_vote_id + "/settings"}
-                             label={ElectionStore.getElectionName(voter_guide.google_civic_election_id)}
-                             subtitle={ElectionStore.getElectionDayText(voter_guide.google_civic_election_id)}
-                             displaySubtitles={displaySubtitles}
-                             />
-        </div>;
+        if (voter_guide && voter_guide.we_vote_id) {
+          return <div key={key}>
+            <SelectVoterGuidesSideBarLink linkTo={this.props.onOwnPage ? "/vg/" + voter_guide.we_vote_id + "/settings/menu" : "/vg/" + voter_guide.we_vote_id + "/settings"}
+                               label={ElectionStore.getElectionName(voter_guide.google_civic_election_id)}
+                               subtitle={ElectionStore.getElectionDayText(voter_guide.google_civic_election_id)}
+                               displaySubtitles={displaySubtitles}
+                               />
+          </div>;
+        } else {
+          return null;
+        }
       });
     }
-    return <div className={this.props.onOwnPage ? "container-fluid card" : "container-fluid card"}>
-      <div className="SettingsItem__summary__title">Your Voter Guides</div>
+    return <div className="card">
+      <div className="card-main">
+        <div className="SettingsItem__summary__title">Your Voter Guides</div>
         <SelectVoterGuidesSideBarLink linkTo={"/voterguidegetstarted"}
                                label={"Create New Voter Guide"}
                                />
 
         {voterGuideLinksHtml}
-      </div>;
+      </div>
+    </div>;
   }
 }
