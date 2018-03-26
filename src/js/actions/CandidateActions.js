@@ -1,8 +1,12 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
 module.exports = {
-  candidateRetrieve: function (we_vote_id) {
-    Dispatcher.loadEndpoint("candidateRetrieve", {candidate_we_vote_id: we_vote_id});
+  candidateRetrieve: function (candidate_we_vote_id) {
+    Dispatcher.loadEndpoint("candidateRetrieve", {candidate_we_vote_id: candidate_we_vote_id});
+  },
+
+  candidatesRetrieve: function (office_we_vote_id) {
+    Dispatcher.loadEndpoint("candidatesRetrieve", {office_we_vote_id: office_we_vote_id});
   },
 
   positionListForBallotItem: function (we_vote_id) {

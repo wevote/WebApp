@@ -47,6 +47,7 @@ class CandidateStore extends ReduceStore {
     let all_cached_positions_about_candidates;
     let ballot_item_we_vote_id;
     let candidate;
+    let candidate_list;
     let candidate_we_vote_id;
     let new_position_list;
     let one_position;
@@ -67,6 +68,24 @@ class CandidateStore extends ReduceStore {
         candidate = action.res;
         all_cached_candidates = state.all_cached_candidates;
         all_cached_candidates[candidate.we_vote_id] = candidate;
+        return {
+          ...state,
+          all_cached_candidates: all_cached_candidates
+        };
+
+      case "candidatesRetrieve":
+        // Make sure we have information for the office the candidate is running for
+        if (action.res.contest_office_we_vote_id) {
+          let office = OfficeStore.getOffice(action.res.contest_office_we_vote_id);
+          if (!office || !office.ballot_item_display_name) {
+            OfficeActions.officeRetrieve(action.res.contest_office_we_vote_id);
+          }
+        }
+        candidate_list = action.res.candidate_list;
+        all_cached_candidates = state.all_cached_candidates;
+        candidate_list.forEach( one_candidate => {
+          all_cached_candidates[one_candidate.we_vote_id] = one_candidate;
+        });
         return {
           ...state,
           all_cached_candidates: all_cached_candidates

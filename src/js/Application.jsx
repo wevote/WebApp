@@ -396,7 +396,11 @@ export default class Application extends Component {
               null }
           </div>
         </div>
-        { this.props.children }
+        <div className="page-content-container">
+          <div className="container-voter-guide">
+            { this.props.children }
+          </div>
+        </div>
         { isCordova() &&
           <div className={"footroom-wrapper"}>
             <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter}/>
@@ -418,10 +422,8 @@ export default class Application extends Component {
           </div>
         </div>
         <div className="page-content-container">
-          <div className="container-fluid">
-            <div className="container-settings">
-              { this.props.children }
-            </div>
+          <div className="container-settings">
+            { this.props.children }
           </div>
         </div>
         { isCordova() &&
@@ -432,6 +434,7 @@ export default class Application extends Component {
       </div>;
     }
 
+    // This handles other pages, like Welcome and the Ballot display
     return <div className="app-base" id="app-base-id">
       <ToastContainer closeButton={false} />
       { isCordova() && <div className={"ios7plus-spacer"} /> }
@@ -448,7 +451,8 @@ export default class Application extends Component {
             null }
         </div>
       </div>
-      { pathname === "/welcome" || !contentFullWidthMode ? <div>{ this.props.children }</div> :
+      { pathname === "/welcome" || !contentFullWidthMode ?
+        <div>{ this.props.children }</div> :
         <div className="page-content-container">
           <div className="container-fluid">
             <div className="container-main">
