@@ -42,6 +42,12 @@ class TwitterStore extends ReduceStore {
     };
   }
 
+  resetState () {
+    return {
+      success: true,
+    };
+  }
+
   get kindOfOwner (){
     return this.getState().kind_of_owner;
   }
@@ -140,6 +146,10 @@ class TwitterStore extends ReduceStore {
           we_vote_hosted_profile_image_url_medium: action.res.we_vote_hosted_profile_image_url_medium,
           we_vote_hosted_profile_image_url_tiny: action.res.we_vote_hosted_profile_image_url_tiny,
         };
+
+      case "voterSignOut":
+        // console.log("resetting TwitterStore");
+        return this.resetState();
 
       default:
         return {

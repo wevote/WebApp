@@ -29,6 +29,23 @@ class VoterStore extends ReduceStore {
     };
   }
 
+  resetState () {
+    return {
+      voter: {
+        interface_status_flags: 0,
+        state_code_from_ip_address: "",
+      },
+      address: {},
+      email_address_status: {},
+      email_sign_in_status: {},
+      facebook_sign_in_status: {},
+      facebook_photo_retrieve_loop_count: 0,
+      voter_found: false,
+      voter_donation_history_list: {},
+      latest_google_civic_election_id: 0,
+    };
+  }
+
   getVoter () {
     return this.getState().voter;
   }
@@ -473,23 +490,10 @@ class VoterStore extends ReduceStore {
         };
 
       case "voterSignOut":
+        // console.log("resetting voterStore");
         VoterActions.voterRetrieve();
         VoterActions.voterEmailAddressRetrieve();
-        BookmarkActions.voterAllBookmarksStatusRetrieve();
-        FriendActions.currentFriends();
-        FriendActions.friendInvitationsSentByMe();
-        FriendActions.friendInvitationsSentToMe();
-        FriendActions.friendInvitationsProcessed();
-        BallotActions.voterBallotItemsRetrieve();
-        return {
-          ...state,
-          email_address_status: {
-            email_ownership_is_verified: false,
-            email_secret_key_belongs_to_this_voter: false,
-            email_verify_attempted: false,
-            email_address_found: false,
-          },
-        };
+        return this.resetState();
 
       case "voterTwitterSaveToCurrentAccount":
         VoterActions.voterRetrieve();

@@ -25,6 +25,23 @@ class OrganizationStore extends ReduceStore {
     };
   }
 
+  resetState () {
+    return {
+      all_cached_organizations_dict: {}, // This is a dictionary with organization_we_vote_id as key and list of organizations
+      organization_we_vote_ids_followed_by_organization_dict: {}, // Dictionary with organization_we_vote_id as key and list of organization_we_vote_id's being followed as value
+      organization_we_vote_ids_following_by_organization_dict: {}, // Dictionary with organization_we_vote_id as key and list of organization_we_vote_id's following that org as value
+      organization_we_vote_ids_voter_is_following: [],
+      organization_we_vote_ids_voter_is_ignoring: [],
+      organization_we_vote_ids_voter_is_following_on_twitter: [],
+      organization_search_results: {
+        organization_search_term: "",
+        organization_twitter_handle: "",
+        number_of_search_results: 0,
+        search_results: [],
+      },
+    };
+  }
+
   // Given a list of ids, retrieve the complete all_cached_organizations_dict with all attributes and return as array
   returnOrganizationsFromListOfIds (list_of_organization_we_vote_ids) {
     const state = this.getState();
@@ -563,6 +580,10 @@ class OrganizationStore extends ReduceStore {
           ...state,
           organization_we_vote_ids_voter_is_ignoring: organization_we_vote_ids_voter_is_ignoring,
         };
+
+      case "voterSignOut":
+        // console.log("resetting OrganicationStore");
+        return this.resetState();
 
       default:
         return state;
