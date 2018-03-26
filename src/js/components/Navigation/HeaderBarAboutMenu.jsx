@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import { renderLog } from "../../utils/logging";
 
 
 export default class HeaderBarAboutMenu extends Component {
@@ -15,6 +16,7 @@ export default class HeaderBarAboutMenu extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let aboutMenuOpen = this.props.aboutMenuOpen ? "about-menu--open" : "";
 
     return (

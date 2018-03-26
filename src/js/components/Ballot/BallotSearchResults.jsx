@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import BallotActions from "../../actions/BallotActions";
 import BallotItemSearchResult from "../../components/Ballot/BallotItemSearchResult";
 import BallotStore from "../../stores/BallotStore";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import SearchBar from "../../components/Search/SearchBar";
 
@@ -15,7 +16,7 @@ export default class BallotSearchResults extends Component {
     searchUnderwayFunction: PropTypes.func,
   };
 
-  constructor (props){
+  constructor (props) {
     super(props);
     this.state = {
       ballotItemSearchResultsList: [],
@@ -30,7 +31,7 @@ export default class BallotSearchResults extends Component {
     // console.log("BallotSearchResults componentDidMount, this.props.clearSearchTextNow:", this.props.clearSearchTextNow);
     this.setState({
       ballotItemSearchResultsList: BallotStore.ballotItemSearchResultsList(),
-      clearSearchTextNow: this.props.clearSearchTextNow
+      clearSearchTextNow: this.props.clearSearchTextNow,
     });
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     // this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
@@ -39,7 +40,7 @@ export default class BallotSearchResults extends Component {
   componentWillReceiveProps (nextProps) {
     // console.log("BallotSearchResults componentWillReceiveProps, nextProps.clearSearchTextNow:", nextProps.clearSearchTextNow);
     this.setState({
-      clearSearchTextNow: nextProps.clearSearchTextNow
+      clearSearchTextNow: nextProps.clearSearchTextNow,
     });
   }
 
@@ -72,7 +73,7 @@ export default class BallotSearchResults extends Component {
     }
     this.setState({
       clearSearchTextNow: false,
-      searchString: searchString
+      searchString: searchString,
     });
   }
 
@@ -84,12 +85,12 @@ export default class BallotSearchResults extends Component {
     }
     this.setState({
       clearSearchTextNow: false,
-      searchString: ""
+      searchString: "",
     });
   }
 
   render () {
-    //console.log("BallotSearchResults render, this.state: ", this.state);
+    renderLog(__filename);
     if (!this.state.ballotItemSearchResultsList) {
       return null;
     }

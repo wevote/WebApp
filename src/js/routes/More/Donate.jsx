@@ -6,6 +6,7 @@ import DonationForm from "../../components/Donation/DonationForm";
 import DonationError from "../../components/Donation/DonationError";
 import DonateStore from "../../stores/DonateStore";
 import DonationListForm from "../../components/Donation/DonationListForm";
+import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 
 export default class Donate extends Component {
@@ -79,6 +80,7 @@ export default class Donate extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let donateMailtoUrl = "mailto:donate@WeVoteEducation.org" + "?subject=Donate to We Vote's 501(c)(3)" + "&body=I am interested in making at tax deductible donating to We Vote's 501(c)(3).";
 
     return <div>

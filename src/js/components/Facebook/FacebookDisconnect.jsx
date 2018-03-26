@@ -1,23 +1,25 @@
 import React from "react";
 import FacebookActions from "../../actions/FacebookActions";
+import { renderLog } from "../../utils/logging";
 
 class FacebookDisconnect extends React.Component {
-    constructor (props) {
-        super(props);
-    }
+  constructor (props) {
+    super(props);
+  }
 
-    didClickDisconnectFromFacebookButton () {
-        console.log("didClickDisconnectFromFacebookButton");
-        FacebookActions.disconnectFromFacebook();
-    }
+  didClickDisconnectFromFacebookButton () {
+    console.log("didClickDisconnectFromFacebookButton");
+    FacebookActions.disconnectFromFacebook();
+  }
 
-    render () {
-        return <span>
-                <a className="btn btn-social btn-lg btn-facebook" onClick={this.didClickDisconnectFromFacebookButton}>
-                    <i className="fa fa-facebook" />Disconnect from Facebook
-                </a>
-            </span>;
-    }
+  render () {
+    renderLog(__filename);
+    return <span>
+            <a className="btn btn-social btn-lg btn-facebook" onClick={this.didClickDisconnectFromFacebookButton}>
+                <i className="fa fa-facebook" />Disconnect from Facebook
+            </a>
+        </span>;
+  }
 }
 
 export default FacebookDisconnect;

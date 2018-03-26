@@ -6,6 +6,7 @@ import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import TwitterActions from "../../actions/TwitterActions";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
@@ -134,6 +135,7 @@ export default class SettingsNotifications extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.voter) {
       return LoadingWheel;
     }

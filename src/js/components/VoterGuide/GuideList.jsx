@@ -8,6 +8,7 @@ import OrganizationActions from "../../actions/OrganizationActions";
 import VoterGuideDisplayForList from "./VoterGuideDisplayForList";
 import { showToastSuccess } from "../../utils/showToast";
 import { stringContains } from "../../utils/textFormat";
+import { renderLog } from "../../utils/logging";
 
 export default class GuideList extends Component {
 
@@ -16,14 +17,14 @@ export default class GuideList extends Component {
     organizationsToFollow: PropTypes.array,
     instantRefreshOn: PropTypes.bool,
     hide_stop_following_button: PropTypes.bool,
-    hide_ignore_button: PropTypes.bool
+    hide_ignore_button: PropTypes.bool,
   };
 
   constructor (props) {
     super(props);
     this.state = {
       organizations_to_follow: [],
-      ballot_item_we_vote_id: ""
+      ballot_item_we_vote_id: "",
     };
   }
 
@@ -33,17 +34,17 @@ export default class GuideList extends Component {
     //   position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(this.props.candidate.we_vote_id),
     this.setState({
       organizations_to_follow: this.props.organizationsToFollow,
-      ballot_item_we_vote_id: this.props.ballotItemWeVoteId
+      ballot_item_we_vote_id: this.props.ballotItemWeVoteId,
     });
   }
 
-  componentWillReceiveProps (nextProps){
+  componentWillReceiveProps (nextProps) {
     // console.log("GuideList componentWillReceiveProps");
     //if (nextProps.instantRefreshOn ) {
       // NOTE: This is off because we don't want the organization to disappear from the "More opinions" list when clicked
       this.setState({
         organizations_to_follow: nextProps.organizationsToFollow,
-        ballot_item_we_vote_id: nextProps.ballotItemWeVoteId
+        ballot_item_we_vote_id: nextProps.ballotItemWeVoteId,
       });
     //}
   }
@@ -55,6 +56,7 @@ export default class GuideList extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (this.state.organizations_to_follow === undefined) {
       // console.log("GuideList this.state.organizations_to_follow === undefined");
       return null;
@@ -78,6 +80,7 @@ export default class GuideList extends Component {
           }
           // console.log("GuideList organization_position_for_this_ballot_item: ", organization_position_for_this_ballot_item);
         }
+
         return <VoterGuideDisplayForList key={organization.organization_we_vote_id}
                                          {...organization}
                                          {...organization_position_for_this_ballot_item}>

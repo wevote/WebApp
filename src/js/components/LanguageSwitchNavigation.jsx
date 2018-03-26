@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import { renderLog } from "../utils/logging";
 
 export default class LanguageSwitchNavigation extends Component {
     static propTypes = {
@@ -11,6 +12,7 @@ export default class LanguageSwitchNavigation extends Component {
     }
 
 	render () {
+    renderLog(__filename);
 		return <span>
             {this.props.language_selected === "chinese" ? <span /> : <span><Link to="home">中国</Link><br /></span>}
             {this.props.language_selected === null ? <span /> : <span><Link to="home">English</Link><br /></span>}

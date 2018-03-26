@@ -9,6 +9,7 @@ import GuideList from "../../components/VoterGuide/GuideList";
 import Helmet from "react-helmet";
 import IssueActions from "../../actions/IssueActions";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import OrganizationActions from "../../actions/OrganizationActions";
 import PositionList from "../../components/Ballot/PositionList";
@@ -18,7 +19,7 @@ import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 import SearchAllActions from "../../actions/SearchAllActions";
-const web_app_config = require("../../config");
+import webAppConfig from "../../config";
 
 export default class Candidate extends Component {
   static propTypes = {
@@ -115,6 +116,7 @@ export default class Candidate extends Component {
   }
 
   render () {
+    renderLog(__filename);
     const electionId = VoterStore.election_id();
     const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to listen to related to this candidate.";
     // console.log("Candidate render, this.state.position_list_from_advisers_followed_by_voter: ", this.state.position_list_from_advisers_followed_by_voter);
@@ -131,7 +133,7 @@ export default class Candidate extends Component {
     let titleText = candidateName + " - We Vote";
     let descriptionText = "Information about " + candidateName + ", candidate for " + this.state.candidate.contest_office_name;
     let voter = VoterStore.getVoter();
-    let candidateAdminEditUrl = web_app_config.WE_VOTE_SERVER_ROOT_URL + "c/" + this.state.candidate.id + "/edit/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
+    let candidateAdminEditUrl = webAppConfig.WE_VOTE_SERVER_ROOT_URL + "c/" + this.state.candidate.id + "/edit/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
 
     return <span>
       <Helmet title={titleText}

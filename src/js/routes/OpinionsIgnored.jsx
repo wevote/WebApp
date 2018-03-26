@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
+import { renderLog } from "../utils/logging";
+import OpinionsIgnoredList from "../components/Organization/OpinionsIgnoredList";
 import VoterGuideStore from "../stores/VoterGuideStore";
 import VoterGuideActions from "../actions/VoterGuideActions";
-import OpinionsIgnoredList from "../components/Organization/OpinionsIgnoredList";
 
 // NOTE FROM DALE: This should be refactored to pull in Organizations instead of Voter Guides
 export default class OpinionsIgnored extends Component {
@@ -53,6 +54,7 @@ export default class OpinionsIgnored extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div className="opinions-followed__container">
       <Helmet title="Who You're Ignoring - We Vote" />
       <section className="card">

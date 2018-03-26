@@ -1,23 +1,24 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import BallotElectionList from "../../components/Ballot/BallotElectionList";
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
-import Helmet from "react-helmet";
+import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 
 export default class SettingsElection extends Component {
   static propTypes = {
-      location: PropTypes.object
+      location: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
       elections_locations_list: [],
-      voter_ballot_list: []
+      voter_ballot_list: [],
     };
   }
 
@@ -25,7 +26,7 @@ export default class SettingsElection extends Component {
     return {};
   }
 
-  componentDidMount (){
+  componentDidMount () {
     this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
     ElectionActions.electionsRetrieve();
     AnalyticsActions.saveActionElections(VoterStore.election_id());
@@ -75,6 +76,7 @@ export default class SettingsElection extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div>
         <div className="elections-list-container">
           <Helmet title="Choose Election - We Vote" />

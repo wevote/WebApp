@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Icon from "react-svg-icons";
 import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
+import { renderLog } from "../../utils/logging";
 import { showToastError, showToastSuccess } from "../../utils/showToast";
 import ShareButtonDropdown from "./ShareButtonDropdown";
 import SupportActions from "../../actions/SupportActions";
@@ -8,11 +10,7 @@ import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
-
-
-var Icon = require("react-svg-icons");
-
-const web_app_config = require("../../config");
+import webAppConfig from "../../config";
 
 export default class ItemActionBar extends Component {
   static propTypes = {
@@ -75,14 +73,17 @@ export default class ItemActionBar extends Component {
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
     }
     SupportActions.voterOpposingSave(this.props.ballot_item_we_vote_id, this.props.type);
-    this.setState({transitioning: true});
+    this.setState({ transitioning: true });
     showToastError("Opposition added!");
   }
 
   stopOpposingItem () {
-    if (this.state.transitioning){ return; }
+    if (this.state.transitioning) {
+      return;
+    }
+
     SupportActions.voterStopOpposingSave(this.props.ballot_item_we_vote_id, this.props.type);
-    this.setState({transitioning: true});
+    this.setState({ transitioning: true });
     showToastError("Opposition removed!");
   }
 
@@ -93,12 +94,14 @@ export default class ItemActionBar extends Component {
   }
 
   render () {
+    renderLog(__filename);
+
     if (this.props.supportProps === undefined){
       // console.log("ItemActionBar, supportProps undefined");
       return null;
     }
 
-    var {support_count, oppose_count, is_support, is_oppose } = this.props.supportProps;
+    let {support_count, oppose_count, is_support, is_oppose } = this.props.supportProps;
     if (support_count === undefined || oppose_count === undefined || is_support === undefined || is_oppose === undefined){
       // console.log("ItemActionBar, support_count: ", support_count, ", oppose_count: ", oppose_count, ", is_support: ", is_support, ", or is_oppose: ", is_oppose, "");
       return null;
@@ -108,15 +111,15 @@ export default class ItemActionBar extends Component {
       is_public_position = this.props.supportProps.is_public_position;
     }
     const icon_size = 18;
-    var icon_color = "#999";
+    let icon_color = "#999";
     // TODO Refactor the way we color the icons
-    var support_icon_color = is_support ? "white" : "#999";
-    var oppose_icon_color = is_oppose ? "white" : "#999";
-    var url_being_shared;
+    let support_icon_color = is_support ? "white" : "#999";
+    let oppose_icon_color = is_oppose ? "white" : "#999";
+    let url_being_shared;
     if (this.props.type === "CANDIDATE") {
-      url_being_shared = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/candidate/" + this.props.ballot_item_we_vote_id;
+      url_being_shared = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + "/candidate/" + this.props.ballot_item_we_vote_id;
     } else {
-      url_being_shared = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/measure/" + this.props.ballot_item_we_vote_id;
+      url_being_shared = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + "/measure/" + this.props.ballot_item_we_vote_id;
     }
     const share_icon = <span className="btn__icon"><Icon name="share-icon" width={icon_size} height={icon_size} color={icon_color} /></span>;
 

@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import { cordovaDot } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import ImageHandler from "../ImageHandler";
-import {cordovaDot} from "../../utils/cordovaUtils";
 
 export default class OrganizationFollowToggle extends Component {
   static propTypes = {
@@ -45,6 +46,7 @@ export default class OrganizationFollowToggle extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state) { return <div />; }
     let { is_following } = this.state;
 

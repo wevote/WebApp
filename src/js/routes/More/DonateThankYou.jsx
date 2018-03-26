@@ -1,6 +1,7 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import Helmet from "react-helmet";
 import DonationListForm from "../../components/Donation/DonationListForm";
+import { renderLog } from "../../utils/logging";
 
 export default class DonateThankYou extends Component {
   constructor (props) {
@@ -8,6 +9,7 @@ export default class DonateThankYou extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div >
       <Helmet title="Donate - We Vote"/>
       <div className="container-fluid card" >

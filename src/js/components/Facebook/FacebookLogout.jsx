@@ -1,17 +1,20 @@
 import React from "react";
+import { renderLog } from "../../utils/logging";
 import FacebookActions from "../../actions/FacebookActions";
 
 class FacebookLogout extends React.Component {
-    constructor (props) {
-        super(props);
-    }
-    render () {
-        return <button ref="logoutButton" onClick={this.didClickFacebookLogoutButton}>Sign Out of Facebook</button>;
-    }
+  constructor (props) {
+    super(props);
+  }
 
-    didClickFacebookLogoutButton () {
-        FacebookActions.logout();
-    }
+  render () {
+    renderLog(__filename);
+    return <button ref="logoutButton" onClick={this.didClickFacebookLogoutButton}>Sign Out of Facebook</button>;
+  }
+
+  didClickFacebookLogoutButton () {
+    FacebookActions.logout();
+  }
 }
 
 export default FacebookLogout;

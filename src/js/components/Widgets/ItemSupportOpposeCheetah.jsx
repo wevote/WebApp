@@ -7,6 +7,7 @@ import CandidateStore from "../../stores/CandidateStore";
 import { cordovaDot } from "../../utils/cordovaUtils";
 import FollowToggle from "./FollowToggle";
 import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdownList";
+import { renderLog } from "../../utils/logging";
 import OrganizationCard from "../VoterGuide/OrganizationCard";
 import OrganizationsNotShownList from "../VoterGuide/OrganizationsNotShownList";
 
@@ -224,6 +225,7 @@ export default class ItemSupportOpposeCheetah extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let is_majority_support;
     let is_majority_oppose;
     let support_count = 0;

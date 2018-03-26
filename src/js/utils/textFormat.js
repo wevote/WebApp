@@ -60,6 +60,19 @@ export function calculateBallotBaseUrl (incoming_ballot_base_url, incoming_pathn
   return ballotBaseUrl;
 }
 
+// New March 24, 2018
+// Converts "To improve public safety" to "To Improve Public Safety"
+export function toTitleCase (str) {
+  return str.replace(/\w\S*/g,
+    function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    }
+  );
+}
+
+// March 24, 2018:  Poorly named and DOESN'T seem to work.
+// It seems like it is supposed to do what the new "toTitleCase" (above) does,
+// but send this function "Now is the time" and it returns "Now is the time"
 export function capitalizeString (raw_string) {
   if (raw_string === undefined) {
     return "";
@@ -71,6 +84,7 @@ export function capitalizeString (raw_string) {
     return raw_string;
   }
 }
+
 
 export function cleanArray (actual) {
   var newArray = [];

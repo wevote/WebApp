@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
 import ReactBootstrapToggle from "react-bootstrap-toggle";
+import Icon from "react-svg-icons";
+import { renderLog } from "../../utils/logging";
 import { showToastSuccess } from "../../utils/showToast";
 import SupportActions from "../../actions/SupportActions";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
 
-const Icon = require("react-svg-icons");
 
 export default class PositionPublicToggle extends Component {
   static propTypes = {
@@ -69,6 +70,7 @@ export default class PositionPublicToggle extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (this.props.supportProps === undefined){
       return <div className="undefined-props" />;
     }

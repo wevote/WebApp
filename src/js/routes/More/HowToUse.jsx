@@ -3,6 +3,7 @@ import Helmet from "react-helmet";
 import { Link } from "react-router";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import { isWebApp } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
 import VoterStore from "../../stores/VoterStore";
@@ -21,6 +22,7 @@ export default class HowToUse extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let supportProps = { is_public_position: false };
     return <div>
       <Helmet title="Getting Started"/>

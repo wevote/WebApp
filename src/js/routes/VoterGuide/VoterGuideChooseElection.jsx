@@ -4,6 +4,7 @@ import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import ChooseElectionForVoterGuide from "../../components/VoterGuide/ChooseElectionForVoterGuide";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import VoterStore from "../../stores/VoterStore";
@@ -132,6 +133,7 @@ export default class VoterGuideChooseElection extends Component {
   }
 
   render () {
+    renderLog(__filename);
 
     return <div>
       <Helmet title="Choose Election - We Vote" />

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { ProgressBar } from "react-bootstrap";
+import { renderLog } from "../../utils/logging";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 
@@ -44,10 +45,12 @@ export default class PledgeToVoteStatusBar extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let turned_off = true; // We don't want to use the status bar yet
     if (turned_off) {
       return null;
     }
+
     let number_of_supporters_goal = 0;
     let number_of_supporters = 0;
     let percent_complete = 0;

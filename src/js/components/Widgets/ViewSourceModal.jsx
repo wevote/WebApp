@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Modal } from "react-bootstrap";
 // import { $ajax } from "../../utils/service";
 import $ from "jquery";
+import { renderLog } from "../../utils/logging";
 
 export default class ViewSourceModal extends Component {
   static propTypes = {
@@ -26,18 +27,17 @@ export default class ViewSourceModal extends Component {
     // console.log("url:", url);
   }
 
-render () {
-  let content = "";
-  // might be easier to store content in local variable instead of inserting via jquery method
-  return <Modal {...this.props} bsSize="large" aria-labelledby="contained-modal-title-lg">
-    <Modal.Header closeButton>
-      <Modal.Title id="contained-modal-title-lg">Source of position</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-      <span id="external-webpage-content">{content}</span>
-    </Modal.Body>
-  </Modal>;
+  render () {
+    renderLog(__filename);
+    let content = "";
+    // might be easier to store content in local variable instead of inserting via jquery method
+    return <Modal {...this.props} bsSize="large" aria-labelledby="contained-modal-title-lg">
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-lg">Source of position</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <span id="external-webpage-content">{content}</span>
+      </Modal.Body>
+    </Modal>;
   }
-
-
 }

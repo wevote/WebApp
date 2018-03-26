@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { renderLog } from "../../utils/logging";
 import MeasureItemCompressed from "../../components/Ballot/MeasureItemCompressed";
 import VoterGuideOfficeItemCompressed from "../../components/VoterGuide/VoterGuideOfficeItemCompressed";
 
@@ -25,6 +26,7 @@ export default class VoterGuideBallotItemCompressed extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div className="BallotItem card" id={this.props.we_vote_id}>
         { this.isMeasure() ?
           <MeasureItemCompressed {...this.props}

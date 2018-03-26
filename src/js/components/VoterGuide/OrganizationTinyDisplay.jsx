@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ImageHandler from "../../components/ImageHandler";
+import { renderLog } from "../../utils/logging";
 
 // OrganizationTinyDisplay is used by ItemTinyOpinionsToFollow for viewing the logos/icons for voter guides
 //  you can follow on the Ballot page
@@ -19,6 +20,7 @@ export default class OrganizationTinyDisplay extends Component {
   };
 
   render () {
+    renderLog(__filename);
     let display_name;
     if (this.props.voter_guide_display_name) {
       display_name = this.props.voter_guide_display_name;

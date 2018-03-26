@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
 import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
-import { historyPush, isCordova, cordovaOpenSafariView } from "./utils/cordovaUtils";
+import { historyPush, isCordova, cordovaOpenSafariView, isWebApp } from "./utils/cordovaUtils";
 import ElectionActions from "./actions/ElectionActions";
 import FooterBarCordova from "./components/Navigation/FooterBarCordova";
 import FriendActions from "./actions/FriendActions";
@@ -13,13 +13,13 @@ import HeaderGettingStartedBar from "./components/Navigation/HeaderGettingStarte
 import Headroom from "headroom.js";
 import IssueActions from "./actions/IssueActions";
 import IssueStore from "././stores/IssueStore";
+import { renderLog, routingLog } from "./utils/logging";
 import OrganizationActions from "./actions/OrganizationActions";
 import { stringContains } from "./utils/textFormat";
 import TwitterActions from "./actions/TwitterActions";
 import VoterActions from "./actions/VoterActions";
 import VoterStore from "./stores/VoterStore";
-
-const webAppConfig = require("./config");
+import webAppConfig from "./config";
 
 const loadingScreenStyles = {
   position: "fixed",
@@ -57,7 +57,7 @@ export default class Application extends Component {
   }
 
   initCordova () {
-    console.log("Application initCordova ------------");
+    console.log("Application initCordova ------------ " + __filename);
     if (isCordova()) {
       window.handleOpenURL = function (url) {
         console.log("Application handleOpenUrl: " + url);
@@ -263,6 +263,7 @@ export default class Application extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let { location: { pathname } } = this.props;
 
     if (this.state.voter === undefined || location === undefined) {
@@ -277,7 +278,7 @@ export default class Application extends Component {
               </div>;
     }
 
-    // console.log("Application pathname on entry = " + pathname);
+    routingLog(pathname);
 
     // If looking at these paths, we want to enter theater mode
     let inTheaterMode = false;
@@ -356,8 +357,7 @@ export default class Application extends Component {
     }
 
     const headRoomSize = voterGuideShowGettingStartedNavigation || stringContains("/ballot", pathname) || pathname === "/bookmarks" ?
-      "headroom-getting-started__margin" :
-      "headroom-wrapper";
+      "headroom-getting-started__margin" : isWebApp() ? "headroom-wrapper" : "headroom-wrapper__cordova";
 
     let pageHeaderStyle = this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom";
     if (isCordova()) {

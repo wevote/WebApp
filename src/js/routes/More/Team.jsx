@@ -3,6 +3,7 @@ import Helmet from "react-helmet";
 import { Link } from "react-router";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import ImageHandler from "../../components/ImageHandler";
+import { renderLog } from "../../utils/logging";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import VoterStore from "../../stores/VoterStore";
 import { weVoteBoard, weVoteStaff } from "./people";
@@ -21,6 +22,7 @@ export default class Team extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div>
       <Helmet title="Team - We Vote"/>
       <div className="container-fluid card u-inset__v--md">

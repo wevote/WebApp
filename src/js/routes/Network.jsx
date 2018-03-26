@@ -8,6 +8,7 @@ import FriendActions from "../actions/FriendActions";
 import FriendStore from "../stores/FriendStore";
 import Helmet from "react-helmet";
 import LoadingWheel from "../components/LoadingWheel";
+import { renderLog } from "../utils/logging";
 import NetworkFriendRequests from "../components/Network/NetworkFriendRequests";
 import NetworkFriends from "../components/Network/NetworkFriends";
 import NetworkIssuesFollowed from "../components/Network/NetworkIssuesFollowed";
@@ -102,6 +103,7 @@ export default class Network extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.voter) {
       return LoadingWheel;
     }

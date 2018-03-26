@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SettingsBannerAndOrganizationCard from "../../components/Settings/SettingsBannerAndOrganizationCard";
@@ -130,7 +131,7 @@ export default class SettingsMenuMobile extends Component {
   }
 
   render () {
-    // console.log("SettingsMenuMobile render");
+    renderLog(__filename);
     if (!this.state.voter) {
       return null;
     }

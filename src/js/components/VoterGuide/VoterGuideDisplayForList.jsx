@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router";
 import ImageHandler from "../../components/ImageHandler";
 import { removeTwitterNameFromDescription } from "../../utils/textFormat";
+import { renderLog } from "../../utils/logging";
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
 import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
 import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
@@ -29,11 +30,11 @@ export default class VoterGuideDisplayForList extends Component {
     is_information_only: PropTypes.bool,
     vote_smart_rating: PropTypes.string,
     speaker_text: PropTypes.string,
-    more_info_url: PropTypes.string
+    more_info_url: PropTypes.string,
   };
 
   render () {
-    // console.log("VoterGuideDisplayForList render");
+    renderLog(__filename);
     if (this.props.organization_we_vote_id === undefined) {
       // console.log("VoterGuideDisplayForList this.props.organization_we_vote_id === undefined");
       return null;

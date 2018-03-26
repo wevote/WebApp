@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import BookmarkToggle from "./BookmarkToggle";
 import { historyPush } from "../../utils/cordovaUtils";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
-import BookmarkToggle from "./BookmarkToggle";
+import { renderLog } from "../../utils/logging";
 import SupportStore from "../../stores/SupportStore";
 
 export default class Bookmarks extends Component {
@@ -27,7 +28,9 @@ export default class Bookmarks extends Component {
   _onChange () {
     this.setState({ supportProps: SupportStore.get(this.props.bookmark.we_vote_id), transitioning: false });
   }
+
   render () {
+    renderLog(__filename);
     const {kind_of_ballot_item, we_vote_id, ballot_item_display_name } = this.props.bookmark;
     const { supportProps, transitioning } = this.state;
     let support_count = 0;

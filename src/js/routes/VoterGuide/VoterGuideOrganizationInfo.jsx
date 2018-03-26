@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Helmet from "react-helmet";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import { isValidUrl } from "../../utils/textFormat";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SettingsWidgetFirstLastName from "../../components/Settings/SettingsWidgetFirstLastName";
@@ -199,6 +200,7 @@ export default class VoterGuideOrganizationInfo extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.voter || !this.state.organization) {
       return null;
     }

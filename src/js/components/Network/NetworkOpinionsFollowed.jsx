@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import { renderLog } from "../../utils/logging";
 import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OpinionsFollowedListCompressed from "../Organization/OpinionsFollowedListCompressed";
@@ -68,6 +69,7 @@ export default class NetworkOpinionsFollowed extends Component {
   }
 
   render () {
+    renderLog(__filename);
     // console.log("NetworkOpinionsFollowed, this.state.organizations_followed_list: ", this.state.organizations_followed_list);
     return <div className="opinions-followed__container">
       <section className="card">

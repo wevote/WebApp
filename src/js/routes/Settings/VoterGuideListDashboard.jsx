@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SelectVoterGuidesSideBar from "../../components/Navigation/SelectVoterGuidesSideBar";
@@ -86,13 +87,13 @@ export default class VoterGuideListDashboard extends Component {
     }
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
-  onOrganizationStoreChange (){
+  onOrganizationStoreChange () {
     // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId),
@@ -118,6 +119,7 @@ export default class VoterGuideListDashboard extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let settingsComponentToDisplay = null;
     switch (this.state.editMode) {
       default:

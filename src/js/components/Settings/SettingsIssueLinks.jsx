@@ -6,6 +6,7 @@ import { historyPush } from "../../utils/cordovaUtils";
 import IssueActions from "../../actions/IssueActions";
 import IssueLinkToggle from "../Issues/IssueLinkToggle";
 import IssueStore from "../../stores/IssueStore";
+import { renderLog } from "../../utils/logging";
 
 export default class SettingsIssueLinks extends Component {
   static propTypes = {
@@ -80,6 +81,7 @@ export default class SettingsIssueLinks extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let issues_to_display = [];
 
     let active_tab = this.props.params.active_tab || this.state.active_tab;

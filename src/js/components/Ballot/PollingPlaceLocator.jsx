@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { renderLog } from "../../utils/logging";
 
 const iframeStyle = {
   border: "none",
@@ -14,6 +15,7 @@ export default class PollingPlaceLocator extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div className="intro-modal">
       <div className="intro-modal__h1">
         Are you looking for your Polling Location?

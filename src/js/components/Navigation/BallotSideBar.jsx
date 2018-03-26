@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router";
 import BallotStore from "../../stores/BallotStore";
 import BallotSideBarLink from "./BallotSideBarLink";
-
+import { renderLog } from "../../utils/logging";
 
 export default class BallotSideBar extends Component {
   static propTypes = {
@@ -60,6 +60,7 @@ export default class BallotSideBar extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let click = this.handleClick;
     let ballot = this.state.ballot;
     let displaySubtitles = this.props.displaySubtitles;

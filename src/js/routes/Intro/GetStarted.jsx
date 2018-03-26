@@ -4,6 +4,7 @@ import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 import FacebookStore from "../../stores/FacebookStore";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import TwitterSignIn from "../../components/Twitter/TwitterSignIn";
 import VoterStore from "../../stores/VoterStore";
 
@@ -52,6 +53,7 @@ export default class SignIn extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.voter) {
       return LoadingWheel;
     }

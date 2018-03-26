@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
 import ImageHandler from "../../components/ImageHandler";
+import { renderLog } from "../../utils/logging";
 
 export default class FriendDisplayForListCompressed extends Component {
   static propTypes = {
@@ -18,6 +19,7 @@ export default class FriendDisplayForListCompressed extends Component {
   };
 
   render () {
+    renderLog(__filename);
     const {
       voter_photo_url_medium,
     } = this.props;

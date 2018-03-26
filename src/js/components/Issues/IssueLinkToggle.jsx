@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import {Button} from "react-bootstrap";
 import ImageHandler from "../ImageHandler";
 import IssueActions from "../../actions/IssueActions";
+import { renderLog } from "../../utils/logging";
 
 export default class IssueLinkToggle extends Component {
   static propTypes = {
@@ -45,6 +46,7 @@ export default class IssueLinkToggle extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return this.state.is_linked ?
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
         <div className="intro-modal__hide-sm intro-modal__margin-right">

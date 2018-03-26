@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { OverlayTrigger, Popover } from "react-bootstrap";
+import { renderLog } from "../../utils/logging";
 import OrganizationCard from "./OrganizationCard";
 import OrganizationsNotShownList from "./OrganizationsNotShownList";
 import OrganizationTinyDisplay from "./OrganizationTinyDisplay";
@@ -104,6 +105,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (this.state.organizations_to_follow === undefined) {
       return null;
     }

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 
 export default class ThisIsMeAction extends Component {
@@ -8,7 +9,7 @@ export default class ThisIsMeAction extends Component {
     params: PropTypes.object,
     name_being_viewed: PropTypes.string,
     twitter_handle_being_viewed: PropTypes.string,
-    kind_of_owner: PropTypes.string
+    kind_of_owner: PropTypes.string,
   };
 
   constructor (props) {
@@ -31,6 +32,7 @@ export default class ThisIsMeAction extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let twitter_handle_being_viewed = this.props.twitter_handle_being_viewed;
     if (!twitter_handle_being_viewed) {
       // We do not want to show the "This is me" link if there isn't a twitter_handle associated with this organization

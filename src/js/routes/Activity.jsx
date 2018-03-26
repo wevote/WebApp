@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
+import { renderLog } from "../utils/logging";
 
 export default class Activity extends Component {
   static propTypes = {
@@ -16,6 +17,7 @@ export default class Activity extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div>
       <Helmet title="Activity Feed - We Vote" />
       <div className="container-fluid well u-stack--md u-inset--md">

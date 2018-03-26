@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SettingsBannerAndOrganizationCard from "../../components/Settings/SettingsBannerAndOrganizationCard";
@@ -120,7 +121,7 @@ export default class VoterGuidesMenuMobile extends Component {
   }
 
   render () {
-    // console.log("SettingsMenuMobile render");
+    renderLog(__filename);
 
     return <div className="settings-dashboard">
       {/* Header Spacing for Desktop */}

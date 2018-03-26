@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, InputGroup } from "react-bootstrap";
 import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 import { extractTwitterHandleFromTextString } from "../../utils/textFormat";
 
@@ -42,7 +43,7 @@ export default class TwitterHandleBox extends Component {
   }
 
   twitterHandleStripped () {
-    var { twitter_handle } = this.state;
+    let { twitter_handle } = this.state;
     if (twitter_handle === undefined) {
       return "";
     } else {
@@ -51,12 +52,14 @@ export default class TwitterHandleBox extends Component {
   }
 
   render () {
-    var { loading } = this.state;
-    if (loading){
+    renderLog(__filename);
+    let { loading } = this.state;
+    if (loading) {
       return LoadingWheel;
     }
-    var twitter_handle_stripped = this.twitterHandleStripped();
-    var claim_your_page_button_text = twitter_handle_stripped.length === 0 ? "Claim Your Page" : "Claim @" + twitter_handle_stripped;
+
+    let twitter_handle_stripped = this.twitterHandleStripped();
+    let claim_your_page_button_text = twitter_handle_stripped.length === 0 ? "Claim Your Page" : "Claim @" + twitter_handle_stripped;
     return <div>
       <form onSubmit={this.submitTwitterHandle.bind(this)} className="u-stack--md">
         <InputGroup>

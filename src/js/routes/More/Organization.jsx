@@ -3,6 +3,7 @@ import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import ReactPlayer from "react-player";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
+import { renderLog } from "../../utils/logging";
 import ToolBar from "./ToolBar";
 import VoterStore from "../../stores/VoterStore";
 
@@ -20,6 +21,7 @@ export default class Organization extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div>
       <Helmet title="Organization - We Vote"/>
       <div className="container-fluid card">

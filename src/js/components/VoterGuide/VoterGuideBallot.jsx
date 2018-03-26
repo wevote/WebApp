@@ -35,8 +35,9 @@ import VoterGuideBallotItemCompressed from "../../components/VoterGuide/VoterGui
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 import { calculateBallotBaseUrl } from "../../utils/textFormat";
+import { renderLog } from "../../utils/logging";
 
-const web_app_config = require("../../config");
+import webAppConfig from "../../config";
 
 // Related to WebApp/src/js/routes/Ballot/Ballot.jsx
 export default class VoterGuideBallot extends Component {
@@ -504,6 +505,7 @@ export default class VoterGuideBallot extends Component {
   }
 
   render () {
+    renderLog(__filename);
     // console.log("VoterGuideBallot render, this.state: ", this.state);
     let ballot_with_all_items = this.state.ballot_with_all_items;
     let ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
@@ -532,7 +534,7 @@ export default class VoterGuideBallot extends Component {
     const election_name = BallotStore.currentBallotElectionName;
     const election_day_text = BallotStore.currentBallotElectionDate;
     const polling_location_we_vote_id_source = BallotStore.currentBallotPollingLocationSource;
-    let ballot_returned_admin_edit_url = web_app_config.WE_VOTE_SERVER_ROOT_URL + "b/" + polling_location_we_vote_id_source + "/list_edit_by_polling_location/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
+    let ballot_returned_admin_edit_url = webAppConfig.WE_VOTE_SERVER_ROOT_URL + "b/" + polling_location_we_vote_id_source + "/list_edit_by_polling_location/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
 
     const emptyBallotButton = this.state.filter_type !== "none" && !missing_address ?
         <span>

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import VoterGuideStore from "../../stores/VoterGuideStore";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
@@ -73,6 +74,7 @@ export default class FollowToggle extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state) { return <div />; }
 
     let { we_vote_id, organization_for_display } = this.props;

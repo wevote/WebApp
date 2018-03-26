@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import { renderLog } from "../../utils/logging";
 
 
 export default class SettingsPersonalSideBar extends Component {
@@ -22,6 +23,7 @@ export default class SettingsPersonalSideBar extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div className="card">
       <div className="card-main">
         <div className="SettingsItem__summary__title" >Your Settings</div>

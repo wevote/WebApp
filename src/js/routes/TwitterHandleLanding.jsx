@@ -5,6 +5,7 @@ import { Link } from "react-router";
 import Candidate from "./Ballot/Candidate";
 import Helmet from "react-helmet";
 import LoadingWheel from "../components/LoadingWheel";
+import { renderLog } from "../utils/logging";
 import OrganizationVoterGuide from "./VoterGuide/OrganizationVoterGuide";
 import OrganizationActions from "../actions/OrganizationActions";
 import PositionListForFriends from "./VoterGuide/PositionListForFriends";
@@ -92,6 +93,7 @@ export default class TwitterHandleLanding extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (this.state.status === undefined) {
       // console.log("TwitterHandleLanding this.state.status undefined");
       // Show a loading wheel while this component's data is loading

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import { renderLog } from "../../utils/logging";
 
 export default class HamburgerMenuRow extends Component {
   static propTypes = {
@@ -17,6 +18,7 @@ export default class HamburgerMenuRow extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let onClickAction = this.props.onClickAction ? this.props.onClickAction.bind(this) : null;
 
     return (

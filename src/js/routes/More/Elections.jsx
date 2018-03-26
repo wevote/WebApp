@@ -4,6 +4,7 @@ import AnalyticsActions from "../../actions/AnalyticsActions";
 import BallotElectionList from "../../components/Ballot/BallotElectionList";
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
+import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 
 export default class Elections extends Component {
@@ -69,6 +70,7 @@ export default class Elections extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div>
         <Helmet title="Elections - We Vote" />
       <h1 className="h1">Supported Elections</h1>

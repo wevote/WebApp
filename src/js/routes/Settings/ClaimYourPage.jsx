@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
 import TwitterHandleBox from "../../components/Twitter/TwitterHandleBox";
+import { renderLog } from "../../utils/logging";
 
 export default class ClaimYourPage extends Component {
   render () {
+    renderLog(__filename);
     return <div>
       <Helmet title="Claim Your Page - We Vote" />
       <div className="container-fluid well u-stack--md u-inset--md">

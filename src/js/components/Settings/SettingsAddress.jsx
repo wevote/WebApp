@@ -1,16 +1,17 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Helmet from "react-helmet";
 import AddressBox from "../../components/AddressBox";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
-import Helmet from "react-helmet";
+import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 
 export default class SettingsAddress extends Component {
   static propTypes = {
-      location: PropTypes.object
+      location: PropTypes.object,
   };
 
   constructor (props) {
@@ -75,7 +76,7 @@ export default class SettingsAddress extends Component {
   }
 
   render () {
-    // console.log("Settings/Location");
+    renderLog(__filename);
     return <div>
         <div className="u-stack--md">
           <Helmet title="Enter Address - We Vote" />

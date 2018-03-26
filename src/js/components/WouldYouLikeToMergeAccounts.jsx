@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Alert, Button } from "react-bootstrap";
 import { historyPush } from "../utils/cordovaUtils";
+import { renderLog } from "../utils/logging";
 
 export default class WouldYouLikeToMergeAccounts extends Component {
   static propTypes = {
@@ -18,7 +19,8 @@ export default class WouldYouLikeToMergeAccounts extends Component {
   }
 
   render () {
-    const {cancelMergeFunction, pleaseMergeAccountsFunction} = this.props;
+    renderLog(__filename);
+    const { cancelMergeFunction, pleaseMergeAccountsFunction } = this.props;
 
     const merge_status_html = <span>
         <Alert bsStyle="warning">

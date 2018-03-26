@@ -1,4 +1,4 @@
-// Note that we import these values where needed as "web_app_config"
+// Note that we import these values where needed as "webAppConfig"
 module.exports = {
   WE_VOTE_URL_PROTOCOL: "http://",  // "http://" for local dev or "https://" for live server
   WE_VOTE_HOSTNAME: "localhost:3000",  // This should be without "http...". This is "WeVote.US" on live server.
@@ -8,6 +8,12 @@ module.exports = {
   WE_VOTE_SERVER_API_ROOT_URL: "https://api.wevoteusa.org/apis/v1/",
 
   DEBUG_MODE: false,
+
+  LOG_RENDER_EVENTS: false,
+  LOG_ONLY_FIRST_RENDER_EVENTS: false,
+  LOG_HTTP_REQUESTS: false,
+  LOG_ROUTING: false,
+  LOG_SIGNIN_STEPS: false,
 
   // Use 1 or 0 as opposed to true or false
   test: {
@@ -21,6 +27,4 @@ module.exports = {
   FACEBOOK_APP_ID: "",
 
   STRIPE_API_KEY: "",
-
-  IS_CORDOVA: false,
 };

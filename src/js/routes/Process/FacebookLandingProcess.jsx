@@ -1,10 +1,11 @@
 import { Component } from "react";
-import FacebookActions from "../../actions/FacebookActions";
 import { historyPush } from "../../utils/cordovaUtils";
-import VoterStore from "../../stores/VoterStore";
+import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
 import FriendStore from "../../stores/FriendStore";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
+import VoterStore from "../../stores/VoterStore";
 
 
 export default class FacebookLandingProcess extends Component {
@@ -49,10 +50,11 @@ export default class FacebookLandingProcess extends Component {
 
   readFacebookAppRequests () {
     FacebookActions.readFacebookAppRequests();
-    this.setState({saving: true});
+    this.setState({ saving: true });
   }
 
   render () {
+    renderLog(__filename);
 
     if (this.state.app_request_already_processed) {
       historyPush({

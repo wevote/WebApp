@@ -5,6 +5,7 @@ import IssueCard from "./IssueCard";
 import IssueImageDisplay from "./IssueImageDisplay";
 import IssueStore from "../../stores/IssueStore";
 import OrganizationListUnderIssue from "./OrganizationListUnderIssue";
+import { renderLog } from "../../utils/logging";
 
 // We use this for IssuesFollowedDisplayList, to show a voter a horizontal list of all of their
 // issues, with a drop down under each one that has all of the organizations they can follow underneath.
@@ -113,6 +114,7 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
   }
 
   render () {
+    renderLog(__filename);
     if (this.state.issues_to_display === undefined) {
       return null;
     }

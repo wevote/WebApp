@@ -9,6 +9,7 @@ import cookies from "../../utils/cookies";
 import FriendStore from "../../stores/FriendStore";
 import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
 import HeaderBarAboutMenu from "./HeaderBarAboutMenu";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
 import SearchAllBox from "../SearchAllBox";
@@ -147,6 +148,7 @@ export default class HeaderBar extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let { pathname } = this.props;
     let voter = this.props.voter;
     let voterPhotoUrlMedium = voter.voter_photo_url_medium;

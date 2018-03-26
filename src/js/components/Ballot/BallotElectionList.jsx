@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import moment from "moment";
 import BallotActions from "../../actions/BallotActions";
 import BallotStore from "../../stores/BallotStore";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
 import { cleanArray } from "../../utils/textFormat";
-import moment from "moment";
 
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 36;
 
@@ -122,6 +123,7 @@ export default class BallotElectionList extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (this.state.loading_new_ballot_items) {
       return <h1 className="h1">Switching ballot data now...</h1>;
     }

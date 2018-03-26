@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
 import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
@@ -82,6 +83,7 @@ export default class VerifyEmailProcess extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let { email_secret_key } = this.props.params;
     console.log("VerifyEmailProcess, email_secret_key:", email_secret_key);
     if (!email_secret_key ||

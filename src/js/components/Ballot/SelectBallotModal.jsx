@@ -4,8 +4,9 @@ import { Modal } from "react-bootstrap";
 import BallotElectionList from "./BallotElectionList";
 import BallotLocationChoices from "../Navigation/BallotLocationChoices";
 import EditAddressInPlace from "../../components/Widgets/EditAddressInPlace";
-import VoterStore from "../../stores/VoterStore";
 import { calculateBallotBaseUrl } from "../../utils/textFormat";
+import { renderLog } from "../../utils/logging";
+import VoterStore from "../../stores/VoterStore";
 
 
 export default class SelectBallotModal extends Component {
@@ -44,6 +45,7 @@ export default class SelectBallotModal extends Component {
   }
 
   render () {
+    renderLog(__filename);
 
     let ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
     // console.log("SelectBallotModal render, ballotBaseUrl: ", ballotBaseUrl);

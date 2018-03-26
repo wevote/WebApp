@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { renderLog } from "../../utils/logging";
 import RatingPopover from "../../components/Widgets/RatingPopover";
 import { cordovaDot } from "../../utils/cordovaUtils";
 
@@ -12,6 +13,7 @@ export default class PositionRatingSnippet extends Component {
   };
 
   render () {
+    renderLog(__filename);
     const rating = this.props.vote_smart_rating;
     const rating_time_span = this.props.vote_smart_time_span;
     let src;

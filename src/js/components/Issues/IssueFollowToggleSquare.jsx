@@ -3,9 +3,11 @@ import { Tooltip, OverlayTrigger } from "react-bootstrap";
 import { cordovaDot } from "../../utils/cordovaUtils";
 import ImageHandler from "../ImageHandler";
 import IssueFollowToggle from "./IssueFollowToggle";
+import { renderLog } from "../../utils/logging";
 
 export default class IssueFollowToggleSquare extends IssueFollowToggle {
   render () {
+    renderLog(__filename);
     if (!this.state) {
       return <div />;
     }

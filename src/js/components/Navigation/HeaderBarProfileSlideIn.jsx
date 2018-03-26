@@ -5,6 +5,7 @@ import Icon from "react-svg-icons";
 import { Table } from "react-bootstrap";
 import { isWebApp, enclosingRectangle, isCordova } from "../../utils/cordovaUtils";
 import HamburgerMenuRow from "./HamburgerMenuRow";
+import { renderLog } from "../../utils/logging";
 
 /* This class is deprecated March 15, 2018, Steve
    We may want to revive a sliding in menu, if so this could be the basis.
@@ -58,7 +59,7 @@ export default class HeaderBarProfileSlideIn extends Component {
   }
 
   render () {
-    // console.log("STEVE STEVE HeaderBarProfileSlideIn render");
+    renderLog(__filename);
     let isSignedIn = this.props.voter.is_signed_in;
     let voter = this.props.voter;
     let voterPhotoUrlMedium = voter.voter_photo_url_medium;

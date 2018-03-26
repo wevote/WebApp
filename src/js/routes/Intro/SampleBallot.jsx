@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import cookies from "../../utils/cookies";
 import Helmet from "react-helmet";
 import { historyPush } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 
 export default class SampleBallot extends Component {
 
@@ -27,6 +28,7 @@ export default class SampleBallot extends Component {
   }
 
   render () {
+    renderLog(__filename);
 
     return <div className="intro-story intro-story__background background--image3">
       <Helmet title="See Your Ballot - We Vote" />

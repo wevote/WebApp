@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router";
 import ImageHandler from "../../components/ImageHandler";
 import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
+import { renderLog } from "../../utils/logging";
 
 /* This was refactored into /src/js/components/VoterGuide/GuideList.jsx and
 * /src/js/components/VoterGuide/Organization.jsx for "More Opinions" page.
@@ -27,6 +28,7 @@ export default class VoterGuideItem extends Component {
   };
 
   render () {
+    renderLog(__filename);
     // If the displayName is in the twitterDescription, remove it from twitterDescription
     let displayName = this.props.voter_guide_display_name ? this.props.voter_guide_display_name : "";
     let twitterDescription = this.props.twitter_description ? this.props.twitter_description : "";

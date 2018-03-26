@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { Button } from "react-bootstrap";
+import Helmet from "react-helmet";
 import { capitalizeString } from "../../utils/textFormat";
 import FollowToggle from "../../components/Widgets/FollowToggle";
-import Helmet from "react-helmet";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -63,12 +64,13 @@ export default class GuidePositionList extends Component {
     this.organizationStoreListener.remove();
   }
 
-  _onOrganizationStoreChange (){
+  _onOrganizationStoreChange () {
     this.setState({ organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization_we_vote_id)});
   }
 
   render () {
-    if (!this.state.organization){
+    renderLog(__filename);
+    if (!this.state.organization) {
       return <div>{LoadingWheel}</div>;
     }
 

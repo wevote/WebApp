@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import VoterStore from "../../stores/VoterStore";
@@ -194,6 +195,7 @@ export default class VoterGuideGetStarted extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.voter || !this.state.organization) {
       return null;
     }

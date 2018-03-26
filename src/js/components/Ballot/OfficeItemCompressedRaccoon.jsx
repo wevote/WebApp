@@ -13,6 +13,7 @@ import ImageHandler from "../ImageHandler";
 import IssueStore from "../../stores/IssueStore";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
 import LearnMore from "../Widgets/LearnMore";
+import { renderLog } from "../../utils/logging";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SupportStore from "../../stores/SupportStore";
 import VoterGuideActions from "../../actions/VoterGuideActions";
@@ -202,7 +203,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
   }
 
   render () {
-    // console.log("OfficeItemCompressedRaccoon render");
+    renderLog(__filename);
     let { ballot_item_display_name, we_vote_id } = this.props;
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);

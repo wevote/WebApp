@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { renderLog } from "../../utils/logging";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
+import PropTypes from "prop-types";
 
 export default class SettingsBannerAndOrganizationCard extends Component {
   static propTypes = {
@@ -29,7 +30,7 @@ export default class SettingsBannerAndOrganizationCard extends Component {
   }
 
   render () {
-    // console.log("SettingsBannerAndOrganizationCard render");
+    renderLog(__filename);
     if (!this.state.organization && !this.state.organization.organization_we_vote_id) {
       return null;
     }

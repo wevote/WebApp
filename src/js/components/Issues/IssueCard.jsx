@@ -4,6 +4,7 @@ import ImageHandler from "../../components/ImageHandler";
 import IssueFollowToggleButton from "../../components/Issues/IssueFollowToggleButton";
 import IssueStore from "../../stores/IssueStore";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import OrganizationStore from "../../stores/OrganizationStore";
 import ReadMore from "../../components/Widgets/ReadMore";
 
@@ -79,7 +80,7 @@ export default class IssueCard extends Component {
   }
 
   render () {
-    // console.log("IssueCard, issue:", this.state.issue);
+    renderLog(__filename);
     if (!this.state.issue_we_vote_id.length){
       return <div className="card-popover__width--minimum">{LoadingWheel}</div>;
     }

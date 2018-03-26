@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { cordovaDot, isCordova } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 
 /*
 The problem with urls in css for Apache Cordova
@@ -23,6 +24,7 @@ export default class IntroNetworkSafety extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div className="intro-story__background background--image2"
                 style={isCordova() ? { backgroundImage: "url(./img/global/intro-story/slide2-lady-liberty-698x600.jpg)" } : null} >
         <div className="intro-story__h1">We Vote in Safety</div>

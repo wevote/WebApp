@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import VoterGuideActions from "../../actions/VoterGuideActions";
@@ -142,6 +143,7 @@ export default class VoterGuideSettingsDashboard extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let settingsComponentToDisplay = null;
     switch (this.state.editMode) {
       default:

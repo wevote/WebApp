@@ -4,6 +4,7 @@ import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
 import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import VoterActions from "../../actions/VoterActions";
 import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
 
@@ -105,6 +106,7 @@ export default class FacebookSignInProcess extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let {facebook_auth_response, yes_please_merge_accounts} = this.state;
 
     // console.log("FacebookSignInProcess render, this.state.saving:", this.state.saving);
