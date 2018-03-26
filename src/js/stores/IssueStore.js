@@ -10,10 +10,24 @@ class IssueStore extends ReduceStore {
 
   getInitialState () {
     return {
+      issue_support_score_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: support_score
+      issue_oppose_score_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: oppose_score
+      organization_we_vote_id_support_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
+      organization_we_vote_id_oppose_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
+      organization_name_support_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
+      organization_name_oppose_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
+      issue_score_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: calculated score
+      issue_we_vote_ids_voter_is_following: [], // These are issues a particular voter is following
+      issue_we_vote_ids_voter_can_follow: [], // These are issues a particular voter can follow
+      issue_we_vote_ids_to_link_to_by_organization_dict: {}, // Dictionary with key: organization_we_vote_id, list: issue_we_vote_id that the organization can link to
+      issue_we_vote_ids_linked_to_by_organization_dict: {}, // Dictionary with key: organization_we_vote_id, list: issue_we_vote_id that the organization is linked to
+      issue_we_vote_ids_under_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, list: issue_we_vote_id. An org with that issue has a position in this election
+      organization_we_vote_ids_linked_to_issue_dict: {}, // Dictionary with key: issue_we_vote_id, list: organization_we_vote_id that is linked to this issue
+      all_cached_issues: {}, // Dictionary with key: issue_we_vote_id, and value: complete issue object
     };
   }
 
-  getInitialState () {
+  resetState () {
     return {
       issue_support_score_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: support_score
       issue_oppose_score_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: oppose_score
@@ -568,6 +582,10 @@ class IssueStore extends ReduceStore {
           issue_we_vote_ids_under_each_ballot_item: issue_we_vote_ids_under_each_ballot_item,
           organization_we_vote_ids_linked_to_issue_dict: organization_we_vote_ids_linked_to_issue_dict,
         };
+
+      case "voterSignOut":
+        console.log("resetting IssueStore");
+        return this.resetState(); 
 
       default:
         return state;

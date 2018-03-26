@@ -16,6 +16,13 @@ class BallotStore extends ReduceStore {
     };
   }
 
+  resetState () {
+    return {
+      ballot_item_search_results_list: [],
+      ballot_item_unfurled_tracker: {},
+    };
+  }
+
   isLoaded () {
     let civicId = VoterStore.election_id();
     return this.getState().ballots && this.getState().ballots[civicId] && SupportStore.supportList ? true : false;
@@ -279,6 +286,11 @@ class BallotStore extends ReduceStore {
           ...state,
           ballot_item_unfurled_tracker: action.res.ballot_item_unfurled_tracker,
         };
+
+      case "voterSignOut":
+        console.log("resetting BallotStore");
+        BallotActions.voterBallotItemsRetrieve();
+        return this.resetState();
 
       case "error-voterBallotItemsRetrieve":
       default:

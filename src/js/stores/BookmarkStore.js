@@ -1,6 +1,7 @@
 import { ReduceStore } from "flux/utils";
-import Dispatcher from "../dispatcher/Dispatcher";
 import Immutable from "immutable";
+import Dispatcher from "../dispatcher/Dispatcher";
+import BookmarkActions from "../actions/BookmarkActions";
 
 class BookmarkStore extends ReduceStore {
 
@@ -10,6 +11,10 @@ class BookmarkStore extends ReduceStore {
 
   get (ballot_item_we_vote_id) {
     return this._state.get(ballot_item_we_vote_id);
+  }
+
+  resetState () {
+    return Immutable.Map();
   }
 
   reduce (state, action) {
@@ -38,6 +43,11 @@ class BookmarkStore extends ReduceStore {
       case "error-BookmarkRetrieve" || "error-voterBookmarkOnSave" || "error-voterBookmarkOnSave":
         console.log(action.res);
         return state;
+
+      case "voterSignOut":
+        console.log("resetting BookmarkStore");
+        BookmarkActions.voterAllBookmarksStatusRetrieve();
+        return this.resetState();
 
       default:
         return state;
