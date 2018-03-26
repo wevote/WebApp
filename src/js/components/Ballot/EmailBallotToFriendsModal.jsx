@@ -7,7 +7,7 @@ import FriendStore from "../../stores/FriendStore";
 import LoadingWheel from "../LoadingWheel";
 import VoterStore from "../../stores/VoterStore";
 import { validateEmail } from "../../utils/email-functions";
-
+const web_app_config = require("../../config");
 export default class EmailBallotToFriendsModal extends Component {
   static propTypes = {
     history: PropTypes.object,
@@ -20,6 +20,12 @@ export default class EmailBallotToFriendsModal extends Component {
 
   constructor (props) {
     super(props);
+    let ballotLink = "";
+    if (this.props.ballot_link) {
+      ballotLink = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + this.props.ballot_link;
+    } else {
+      ballotLink = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/ballot";
+    }
     this.state = {
       email_ballot_message: "This is a ballot on We Vote for the upcoming election.",
       voter: VoterStore.getVoter(),
@@ -55,6 +61,7 @@ export default class EmailBallotToFriendsModal extends Component {
       success_message: this.props.success_message,
       verification_pending: false,
       on_mobile: false,
+      ballot_link: ballotLink,
     };
     this.email_address_array = [];
     this.sent_email_address_array = [];
@@ -141,7 +148,7 @@ export default class EmailBallotToFriendsModal extends Component {
     }
 
     FriendActions.emailBallotData(this.email_address_array, this.first_name_array,
-      this.last_name_array, "", this.state.email_ballot_message, this.props.ballot_link,
+      this.last_name_array, "", this.state.email_ballot_message, this.state.ballot_link,
       sender_email_address, this.props.verification_email_sent, deviceTypeString());
 
     // After calling the API, reset the form
