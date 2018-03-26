@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ImageHandler from "../../components/ImageHandler";
+import { renderLog } from "../../utils/logging";
 
 // CurrentFriendTinyDisplay is used by ItemTinyOpinionsToFollow for viewing the logos/icons for voter guides
 //  you can follow on the Ballot page
@@ -14,6 +15,7 @@ export default class CurrentFriendTinyDisplay extends Component {
   };
 
   render () {
+    renderLog(__filename);
     // TODO DALE NOTE: We need to generate a popover here
     let display_name;
     if (this.props.voter_display_name) {

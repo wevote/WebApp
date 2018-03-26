@@ -5,6 +5,7 @@ import SuggestedFriendToggle from "../Friends/SuggestedFriendToggle";
 import ImageHandler from "../../components/ImageHandler";
 import FriendActions from "../../actions/FriendActions";
 import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
+import { renderLog } from "../../utils/logging";
 
 export default class SuggestedFriendDisplayForList extends Component {
   static propTypes = {
@@ -40,6 +41,7 @@ export default class SuggestedFriendDisplayForList extends Component {
   }
 
   render () {
+    renderLog(__filename);
     const {
       voter_twitter_followers_count,
       voter_we_vote_id,

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { renderLog } from "../../utils/logging";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import { shortenText } from "../../utils/textFormat";
 
@@ -71,6 +72,7 @@ export default class EditAddressPopover extends Component {
   }
 
   render () {
+    renderLog(__filename);
     // let exclamation_circle_red = "#fc0d1b"; // I tried to replace literal string below with this variable. Didn't work.
     let message_title = "This is our best guess";
     let message_string = "";

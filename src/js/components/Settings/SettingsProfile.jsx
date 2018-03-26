@@ -3,6 +3,7 @@ import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import SettingsWidgetAccountType from "../../components/Settings/SettingsWidgetAccountType";
 import SettingsWidgetFirstLastName from "../../components/Settings/SettingsWidgetFirstLastName";
 import SettingsWidgetOrganizationDescription from "../../components/Settings/SettingsWidgetOrganizationDescription";
@@ -29,10 +30,11 @@ export default class SettingsProfile extends Component {
   }
 
   onVoterStoreChange () {
-    this.setState({voter: VoterStore.getVoter()});
+    this.setState({ voter: VoterStore.getVoter() });
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.voter) {
       return LoadingWheel;
     }
@@ -40,7 +42,7 @@ export default class SettingsProfile extends Component {
     return <div className="">
       <Helmet title={"Your Profile - We Vote"} />
       <BrowserPushMessage incomingProps={this.props} />
-      <div className="card">
+      <div className="card u-padding-bottom--lg">
         <div className="card-main">
           <h1 className="h3">Your Profile</h1>
           <div>

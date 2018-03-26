@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import { capitalizeString } from "../../utils/textFormat";
 import { historyPush } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 
 export default class OfficeItem extends Component {
   static propTypes = {
@@ -18,6 +19,7 @@ export default class OfficeItem extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let { ballot_item_display_name, we_vote_id } = this.props;
     let officeLink = "/office/" + we_vote_id;
     let goToOfficeLink = function () { historyPush(officeLink); };

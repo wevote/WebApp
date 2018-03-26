@@ -1,16 +1,17 @@
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router";
 import Helmet from "react-helmet";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import SearchGuidesToFollowBox from "../Search/SearchGuidesToFollowBox";
 import GuideList from "../VoterGuide/GuideList";
-import { Link } from "react-router";
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { renderLog } from "../../utils/logging";
 
 
 export default class NetworkOpinions extends Component {
   static propTypes = {
     history: PropTypes.object,
-    children: PropTypes.object
+    children: PropTypes.object,
   };
 
   constructor (props){
@@ -52,9 +53,10 @@ export default class NetworkOpinions extends Component {
   }
 
   render () {
+    renderLog(__filename);
     const { ballot_has_guides, voter_guides_to_follow_all } = this.state;
-    var floatRight = {
-        float: "right"
+    let floatRight = {
+        float: "right",
     };
 
     return <div className="opinions-followed__container">

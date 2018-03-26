@@ -6,6 +6,7 @@ import IntroNetworkSafety from "../../components/Intro/IntroNetworkSafety";
 import IntroNetworkDefinition from "../../components/Intro/IntroNetworkDefinition";
 import IntroNetworkScore from "../../components/Intro/IntroNetworkScore";
 import IntroNetworkBallotIsNext from "../../components/Intro/IntroNetworkBallotIsNext";
+import { renderLog } from "../../utils/logging";
 
 export default class IntroNetwork extends Component {
 
@@ -41,6 +42,7 @@ export default class IntroNetwork extends Component {
   }
 
   render () {
+    renderLog(__filename);
     //These are settings for the react-slick slider
     const settings = {
       dots: true,

@@ -3,6 +3,7 @@ $icon-color-active: $link-color;
 $icon-color-hover: $gray-dark;
 $glyph-icon-color: #51708e;
 $header-height: 54px;
+$header-height-cordova: 70px;
 $header-height-getting-started: 104px;
 $nav-item-getting-started-background-hover-color: darken($page-header-getting-started-background-color, 5%);
 $nav-item-getting-started-background-active-color: darken($page-header-getting-started-background-color, 10%);
@@ -100,6 +101,9 @@ $transparent-background: transparent;
 
 .headroom-wrapper {
   margin-top: $header-height;
+  &__cordova {
+    margin-top: $header-height-cordova;
+  }
 }
 
 .footroom-wrapper {

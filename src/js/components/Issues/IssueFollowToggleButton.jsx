@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import IssueActions from "../../actions/IssueActions";
 import IssueStore from "../../stores/IssueStore";
+import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 import { showToastError, showToastSuccess } from "../../utils/showToast";
 
@@ -58,6 +59,7 @@ export default class IssueFollowToggleButton extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state) { return <div />; }
 
     return this.state.is_following ?

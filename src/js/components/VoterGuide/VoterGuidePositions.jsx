@@ -7,12 +7,13 @@ import BallotSearchResults from "../Ballot/BallotSearchResults";
 import BallotStore from "../../stores/BallotStore";
 import FooterDoneBar from "../Navigation/FooterDoneBar";
 import { historyPush } from "../../utils/cordovaUtils";
-import VoterGuideActions from "../../actions/VoterGuideActions";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationPositionItem from "./OrganizationPositionItem";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
+import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideRecommendationsFromOneOrganization from "./VoterGuideRecommendationsFromOneOrganization";
 import VoterStore from "../../stores/VoterStore";
 
@@ -39,7 +40,7 @@ export default class VoterGuidePositions extends Component {
     this.searchUnderway = this.searchUnderway.bind(this);
   }
 
-  componentDidMount (){
+  componentDidMount () {
     // console.log("VoterGuidePositions, componentDidMount, this.props.organization: ", this.props.organization);
     let ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
     // console.log("VoterGuidePositions componentDidMount, ballotBaseUrl", ballotBaseUrl);
@@ -214,11 +215,12 @@ export default class VoterGuidePositions extends Component {
         // If going from editMode == True to editMode == False, we want to refresh the positions
         OrganizationActions.positionListForOpinionMaker(this.state.organization.organization_we_vote_id, true, false, this.state.current_google_civic_election_id);
       }
-      scope.setState({editMode: !this.state.editMode});
+      scope.setState({ editMode: !this.state.editMode });
     }
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.organization) {
       // Wait until this.state.organization has been set to render
       return null;

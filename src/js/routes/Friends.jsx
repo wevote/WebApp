@@ -1,18 +1,19 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Helmet from "react-helmet";
+import { _ } from "lodash";
 import FriendList from "../components/Friends/FriendList";
 import FriendActions from "../actions/FriendActions";
 import FriendStore from "../stores/FriendStore";
-import Helmet from "react-helmet";
-var _ = require("lodash");
+import { renderLog } from "../utils/logging";
 
 export default class Friends extends Component {
   static propTypes = {
     history: PropTypes.object,
-    children: PropTypes.object
+    children: PropTypes.object,
   };
 
-  constructor (props){
+  constructor (props) {
     super(props);
     this.state = {
       current_friend_list: FriendStore.currentFriends(),
@@ -80,6 +81,7 @@ export default class Friends extends Component {
   }
 
   render () {
+    renderLog(__filename);
     var current_friend_list = [];
     if (!this.state.search_filter) {
       current_friend_list = this.state.current_friend_list;

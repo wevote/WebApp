@@ -1,4 +1,5 @@
-import React, {Component } from "react";
+import React, { Component } from "react";
+import { renderLog } from "../utils/logging";
 import SearchBar from "../components/Search/SearchBar";
 
 let updateInputValue = function (event) {
@@ -7,6 +8,7 @@ let updateInputValue = function (event) {
 
 export default class ScratchPad extends Component {
   render () {
+    renderLog(__filename);
     return (
       <div className="container">
         <div className="scratch-pad row">

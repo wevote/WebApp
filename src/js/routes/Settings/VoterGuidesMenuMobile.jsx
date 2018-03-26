@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
+import SettingsBannerAndOrganizationCard from "../../components/Settings/SettingsBannerAndOrganizationCard";
 import SelectVoterGuidesSideBar from "../../components/Navigation/SelectVoterGuidesSideBar";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
@@ -120,40 +121,22 @@ export default class VoterGuidesMenuMobile extends Component {
   }
 
   render () {
-    // console.log("SettingsMenuMobile render");
+    renderLog(__filename);
 
     return <div className="settings-dashboard">
-      <div className="page-content-container">
-        <div className="container-fluid">
-          { this.state.organization && this.state.organization.organization_we_vote_id ?
-            <div className="row">
-              <div className="col-md-12">
-                { this.state.organization && this.state.organization.organization_banner_url && this.state.organization.organization_banner_url !== "" ?
-                  <div className="organization-banner-image-div">
-                    <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
-                  </div> :
-                  null
-                }
-              </div>
-              {this.state.organization.organization_name && !this.state.organization.organization_name.startsWith("Voter-") ?
-                <div className="col-md-12">
-                  <div className="card">
-                    <div className="card-main">
-                      <OrganizationCard organization={this.state.organization}
-                                        turnOffTwitterHandle />
-                    </div>
-                  </div>
-                </div> :
-                null }
-            </div> :
-            null }
+      {/* Header Spacing for Desktop */}
+      <div className="col-md-12 hidden-xs hidden-print">
+        <SettingsBannerAndOrganizationCard organization={this.state.organization} />
+      </div>
+      {/* Header Spacing for Mobile */}
+      <div className="visible-xs hidden-print">
+        <SettingsBannerAndOrganizationCard organization={this.state.organization} />
+      </div>
 
-          <div className="row">
-            {/* Mobile WebApp navigation */}
-            <div className="col-xs-12">
-              <SelectVoterGuidesSideBar onOwnPage />
-            </div>
-          </div>
+      {/* Mobile WebApp navigation */}
+      <div className="container-fluid">
+        <div className="row">
+          <SelectVoterGuidesSideBar onOwnPage />
         </div>
       </div>
     </div>;

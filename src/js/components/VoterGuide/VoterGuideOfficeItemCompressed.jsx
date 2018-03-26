@@ -13,6 +13,7 @@ import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
 import LearnMore from "../Widgets/LearnMore";
+import { renderLog } from "../../utils/logging";
 import OrganizationPositionItem from "./OrganizationPositionItem";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SupportStore from "../../stores/SupportStore";
@@ -161,6 +162,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let { ballot_item_display_name, we_vote_id } = this.props;
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);

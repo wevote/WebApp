@@ -201,7 +201,7 @@ export default class OrganizationVoterGuideTabs extends Component {
     }
 
     return (
-      <div className="col-md-8 col-sm-12">
+      <div className="">
         <div className="tabs__tabs-container-wrap">
           <div className="tabs__tabs-container hidden-print">
             <ul className="nav tabs__tabs">

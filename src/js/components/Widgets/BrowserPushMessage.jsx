@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Alert } from "react-bootstrap";
+import { renderLog } from "../../utils/logging";
 
 export default class BrowserPushMessage extends Component {
   static propTypes = {
@@ -25,6 +26,7 @@ export default class BrowserPushMessage extends Component {
   }
 
 	render () {
+    renderLog(__filename);
     let { browser_history_message, browser_history_message_name, browser_history_message_type } = this.state;
 
     if (browser_history_message_name === "test") {

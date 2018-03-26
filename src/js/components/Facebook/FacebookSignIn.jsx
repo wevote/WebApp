@@ -1,4 +1,5 @@
 import React from "react";
+import { renderLog } from "../../utils/logging";
 import FacebookActions from "../../actions/FacebookActions";
 
 class FacebookSignIn extends React.Component {
@@ -18,6 +19,7 @@ class FacebookSignIn extends React.Component {
   }
 
   render () {
+    renderLog(__filename);
     return <a tabIndex="0" onKeyDown={this.onKeyDown.bind(this)}
               className="btn btn-social btn-lg btn-facebook"
               onClick={this.didClickFacebookSignInButton}>

@@ -1,16 +1,17 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Helmet from "react-helmet";
 import AddressBox from "../../components/AddressBox";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
-import Helmet from "react-helmet";
+import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 
 export default class SettingsAddress extends Component {
   static propTypes = {
-      location: PropTypes.object
+      location: PropTypes.object,
   };
 
   constructor (props) {
@@ -75,16 +76,20 @@ export default class SettingsAddress extends Component {
   }
 
   render () {
-    // console.log("Settings/Location");
+    renderLog(__filename);
     return <div>
-        <div className="container-fluid well u-stack--md u-inset--md">
+        <div className="u-stack--md">
           <Helmet title="Enter Address - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
-          <h3 className="h3">
-            Enter address where you are registered to vote
-          </h3>
-          <div>
-            <AddressBox {...this.props} saveUrl="/ballot" />
+          <div className="card">
+            <div className="card-main">
+              <h3 className="h3">
+                Enter address where you are registered to vote
+              </h3>
+              <div className="u-padding-bottom--md">
+                <AddressBox {...this.props} saveUrl="/ballot" />
+              </div>
+            </div>
           </div>
         </div>
       </div>;

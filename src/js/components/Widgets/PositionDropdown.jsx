@@ -1,17 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { renderLog } from "../../utils/logging";
 
 export default class PositionDropdown extends Component {
   static propTypes = {
     params: PropTypes.object,
     removePositionFunction: PropTypes.func.isRequired,
     positionIcon: PropTypes.object,
-    positionText: PropTypes.string
+    positionText: PropTypes.string,
   };
 
   constructor (props) {
     super(props);
-    this.state = {open: false };
+    this.state = { open: false };
   }
 
   closeDropdown () {
@@ -19,18 +20,19 @@ export default class PositionDropdown extends Component {
   }
 
   openDropdown () {
-    this.setState({open: true});
+    this.setState({ open: true });
   }
 
   onButtonBlur () {
     // Delay closing the drop down so that onClick has time to work
-    var temp_this = this;
+    let temp_this = this;
     setTimeout(function () {
       temp_this.closeDropdown();
       }, 250);
   }
 
   render () {
+    renderLog(__filename);
     const {removePositionFunction, positionIcon, positionText} = this.props;
     const onClick = this.state.open ? this.closeDropdown.bind(this) : this.openDropdown.bind(this);
     const dropdownClass = this.state.open ? " open" : "";

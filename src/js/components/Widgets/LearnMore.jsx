@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import TextTruncate from "react-text-truncate";
+import { renderLog } from "../../utils/logging";
 
 export default class LearnMore extends Component {
   static propTypes = {
@@ -38,6 +39,7 @@ export default class LearnMore extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let { text_to_display, show_more_text, num_of_lines, learn_more_text, on_click } = this.props;
     // default prop valuess
     if (num_of_lines === undefined) {

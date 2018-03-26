@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
 import ElectionStore from "../../stores/ElectionStore";
+import { renderLog } from "../../utils/logging";
 
 
 export default class VoterGuideSettingsSideBar extends Component {
@@ -41,6 +42,7 @@ export default class VoterGuideSettingsSideBar extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.voterGuide) {
       return null;
     }

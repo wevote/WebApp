@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { renderLog } from "../../utils/logging";
 
 export default class EmptyBallot extends Component {
   static propTypes = {
@@ -9,6 +10,7 @@ export default class EmptyBallot extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div>
         <div className="container-fluid well u-stack--md u-inset--md">
           <h3 className="text-center">

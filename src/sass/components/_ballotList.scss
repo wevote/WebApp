@@ -1,4 +1,5 @@
 .BallotList {
+  margin-bottom: $space-xl;
   @include print {
     column-count: 1;
   }

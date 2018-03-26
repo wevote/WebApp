@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import DonateActions from "../../actions/DonateActions";
-const web_app_config = require("../../config");
+import { renderLog } from "../../utils/logging";
+import webAppConfig from "../../config";
 
 export default class DonationForm extends Component {
   static propTypes = {
@@ -23,7 +24,7 @@ export default class DonationForm extends Component {
   componentDidMount () {
     let self = this;
     this.stripeHandler = window.StripeCheckout.configure({
-      key: web_app_config.STRIPE_API_KEY,
+      key: webAppConfig.STRIPE_API_KEY,
       image: cordovaDot("https://stripe.com/img/documentation/checkout/marketplace.png"),
       locale: "auto",
       token: function (token) {
@@ -60,6 +61,7 @@ export default class DonationForm extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let donate_button_text = "Donate Now";
     if (this.props.donateButtonText) {
       donate_button_text = this.props.donateButtonText;

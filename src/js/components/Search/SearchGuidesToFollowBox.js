@@ -1,7 +1,8 @@
-import React, {Component } from "react";
+import React, { Component } from "react";
+import { renderLog } from "../../utils/logging";
+import SearchBar from "./SearchBar";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterStore from "../../stores/VoterStore";
-import SearchBar from "./SearchBar";
 
 export default class SearchGuidesToFollowBox extends Component {
 
@@ -22,6 +23,7 @@ export default class SearchGuidesToFollowBox extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <SearchBar clearButton
                        searchButton
                        placeholder="Search by name or Twitter handle"

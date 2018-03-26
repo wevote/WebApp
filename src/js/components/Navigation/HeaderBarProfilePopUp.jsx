@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { isWebApp, isCordova } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 
 export default class HeaderBarProfilePopUp extends Component {
   static propTypes = {
@@ -26,6 +27,7 @@ export default class HeaderBarProfilePopUp extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let isSignedIn = this.props.voter.is_signed_in;
 
     /* eslint-disable no-extra-parens */

@@ -2,16 +2,17 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
+import { _ } from "lodash";
+import { renderLog } from "../utils/logging";
 import OrganizationActions from "../actions/OrganizationActions";
 import OrganizationStore from "../stores/OrganizationStore";
 import OpinionsFollowedList from "../components/Organization/OpinionsFollowedList";
 import SearchBar from "../components/Search/SearchBar";
-var _ = require("lodash");
 
 export default class OpinionsFollowed extends Component {
   static propTypes = {
     children: PropTypes.object,
-    history: PropTypes.object
+    history: PropTypes.object,
   };
 
   constructor (props) {
@@ -80,6 +81,7 @@ export default class OpinionsFollowed extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let organizations_followed_list_for_display = [];
     if (this.state.search_query.length > 0) {
       const search_query_lowercase = this.state.search_query.toLowerCase();

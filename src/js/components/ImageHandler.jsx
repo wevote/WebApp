@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { cordovaDot } from "../utils/cordovaUtils";
+import { renderLog } from "../utils/logging";
 
 export default class ImageHandler extends Component {
   static propTypes = {
@@ -18,11 +19,12 @@ export default class ImageHandler extends Component {
     this.state = { error: false };
   }
 
-  brokenLink (){
-    this.setState({error: true});
+  brokenLink () {
+    this.setState({ error: true });
   }
 
   render () {
+    renderLog(__filename);
     let this_class = this.props.className || "";
     let alt = this.props.alt || "icon";
     let replacementClass = "";

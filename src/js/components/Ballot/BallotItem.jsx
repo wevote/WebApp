@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import CandidateList from "../Ballot/CandidateList";
+import { renderLog } from "../../utils/logging";
 import MeasureItem from "../Ballot/MeasureItem";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 
 const TYPES = require("keymirror")({
   OFFICE: null,
-  MEASURE: null
+  MEASURE: null,
 });
 
 export default class BallotItem extends Component {
@@ -14,7 +15,7 @@ export default class BallotItem extends Component {
     kind_of_ballot_item: PropTypes.string.isRequired,
     we_vote_id: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string.isRequired,
-    candidate_list: PropTypes.array
+    candidate_list: PropTypes.array,
   };
 
   isMeasure () {
@@ -22,6 +23,7 @@ export default class BallotItem extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div className="BallotItem" id={this.props.we_vote_id}>
         { this.isMeasure() ?
             <MeasureItem {...this.props}

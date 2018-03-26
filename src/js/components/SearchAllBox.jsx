@@ -5,11 +5,12 @@ import BallotActions from "../actions/BallotActions";
 import classNames from "classnames";
 import { Link } from "react-router";
 import { historyPush, isCordova, isWebApp } from "../utils/cordovaUtils";
+import ImageHandler from "../components/ImageHandler";
+import { renderLog } from "../utils/logging";
 import SearchAllActions from "../actions/SearchAllActions";
 import SearchAllStore from "../stores/SearchAllStore";
 import { makeSearchLink } from "../utils/search-functions";
 import { capitalizeString } from "../utils/textFormat";
-import ImageHandler from "../components/ImageHandler";
 
 export default class SearchAllBox extends Component {
   static propTypes = {
@@ -280,6 +281,7 @@ export default class SearchAllBox extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let searchResults = this.state.searchResults;
     let searchContainerClasses = classNames({
       "search-container__hidden": !this.state.open,

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import GuidePositionListForVoter from "./VoterGuide/GuidePositionListForVoter";
 import { historyPush } from "../utils/cordovaUtils";
 import LoadingWheel from "../components/LoadingWheel";
+import { renderLog } from "../utils/logging";
 import OrganizationActions from "../actions/OrganizationActions";
 import TwitterHandleBox from "../components/Twitter/TwitterHandleBox";
 import VoterActions from "../actions/VoterActions";
@@ -67,6 +68,7 @@ export default class YourPage extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (this.state.voter === undefined){
       // Show a loading wheel while this component's data is loading
       return LoadingWheel;

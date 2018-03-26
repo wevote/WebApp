@@ -4,6 +4,7 @@ import { Button } from "react-bootstrap";
 import IssueActions from "../../actions/IssueActions";
 import ImageHandler from "../ImageHandler";
 import { showToastError, showToastSuccess } from "../../utils/showToast";
+import { renderLog } from "../../utils/logging";
 
 
 export default class IssueFollowToggle extends Component {
@@ -57,6 +58,7 @@ export default class IssueFollowToggle extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state) { return <div />; }
 
     return this.state.is_following ?

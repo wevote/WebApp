@@ -2,11 +2,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
+import BallotStore from "../stores/BallotStore";
 import { historyPush } from "../utils/cordovaUtils";
 import LoadingWheel from "../components/LoadingWheel";
+import { renderLog } from "../utils/logging";
 import VoterActions from "../actions/VoterActions";
 import VoterStore from "../stores/VoterStore";
-import BallotStore from "../stores/BallotStore";
 
 export default class AddressBox extends Component {
   static propTypes = {
@@ -101,6 +102,7 @@ export default class AddressBox extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (this.state.loading) {
       return <div>
             <h2>Please wait a moment while we adjust your ballot options to the new location...</h2>

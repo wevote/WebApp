@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import { isWebApp } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
+import SettingsBannerAndOrganizationCard from "../../components/Settings/SettingsBannerAndOrganizationCard";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideSettingsSideBar from "../../components/Navigation/VoterGuideSettingsSideBar";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
-import { isWebApp } from "../../utils/cordovaUtils";
 
 export default class VoterGuideSettingsMenuMobile extends Component {
   static propTypes = {
@@ -140,50 +141,39 @@ export default class VoterGuideSettingsMenuMobile extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div className="settings-dashboard">
-      <div className="page-content-container">
-        <div className="container-fluid">
-        { this.state.organization && this.state.organization.organization_we_vote_id ?
-          <div className="row">
-            <div className="col-md-12">
-              { this.state.organization && this.state.organization.organization_banner_url && this.state.organization.organization_banner_url !== "" ?
-                <div className="organization-banner-image-div">
-                  <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
-                </div> :
-                null
-              }
-            </div>
-            {this.state.organization.organization_name && !this.state.organization.organization_name.startsWith("Voter-") ?
-              <div className="col-md-12">
-                <div className="card">
-                  <div className="card-main">
-                    <OrganizationCard organization={this.state.organization}
-                                      turnOffTwitterHandle />
-                  </div>
-                </div>
-              </div> :
-              null }
-          </div> :
-          null }
-          <div className="row">
-            {isWebApp() ?
-              <div className="col-md-12">
-                {/* Desktop mode */}
-                <Link to="/settings/voterguidelist" className="hidden-xs">&lt; Back to Your Voter Guides</Link>
-                {/* Mobile mode */}
-                <Link to="/settings/voterguidesmenu" className="visible-xs">&lt; Back to Your Voter Guides</Link>
-              </div> :
-              <div className="col-md-12">
-                <Link to="/settings/voterguidesmenu">&lt; Back to Your Voter Guides</Link>
-              </div>
-            }
+      {/* Header Spacing for Desktop */}
+      <div className="col-md-12 hidden-xs hidden-print">
+        <SettingsBannerAndOrganizationCard organization={this.state.organization} />
+      </div>
+      {/* Header Spacing for Mobile */}
+      <div className="visible-xs hidden-print">
+        <SettingsBannerAndOrganizationCard organization={this.state.organization} />
+      </div>
 
-            <div className="col-md-12 sidebar-menu">
-              <VoterGuideSettingsSideBar editMode={this.state.editMode}
-                                         organization={this.state.organization}
-                                         voterGuide={this.state.voterGuide} />
+      <div className="container-fluid">
+        <div className="row">
+          {isWebApp() ?
+            <div className="col-md-12">
+              {/* Desktop mode */}
+              <Link to="/settings/voterguidelist" className="hidden-xs">&lt; Back to Your Voter Guides</Link>
+              {/* Mobile mode */}
+              <Link to="/settings/voterguidesmenu" className="visible-xs">&lt; Back to Your Voter Guides</Link>
+            </div> :
+            <div className="col-md-12">
+              <Link to="/settings/voterguidesmenu">&lt; Back to Your Voter Guides</Link>
             </div>
-          </div>
+          }
+        </div>
+      </div>
+
+      {/* Mobile WebApp navigation */}
+      <div className="container-fluid">
+        <div className="row">
+          <VoterGuideSettingsSideBar editMode={this.state.editMode}
+                                     organization={this.state.organization}
+                                     voterGuide={this.state.voterGuide} />
         </div>
       </div>
     </div>;

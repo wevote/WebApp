@@ -7,6 +7,7 @@ import CurrentFriends from "../../components/Connect/CurrentFriends";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
 import FacebookStore from "../../stores/FacebookStore";
+import { renderLog } from "../../utils/logging";
 import OrganizationStore from "../../stores/OrganizationStore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
@@ -67,6 +68,7 @@ export default class InviteByEmail extends Component {
 	}
 
 	render () {
+    renderLog(__filename);
 		return <div>
 			<Helmet title="Build Your We Vote Network" />
       <h1 className="h1">Add Friends by Email</h1>

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { renderLog } from "../../utils/logging";
 
 export default class SearchBar extends Component {
   static propTypes = {
@@ -16,7 +17,7 @@ export default class SearchBar extends Component {
     super(props);
 
     this.state = {
-      searchString: ""
+      searchString: "",
     };
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -29,7 +30,7 @@ export default class SearchBar extends Component {
     if (this.props.clearSearchTextNow) {
       this.props.clearFunction();
       this.setState({
-        searchString: ""
+        searchString: "",
       });
     }
   }
@@ -62,11 +63,12 @@ export default class SearchBar extends Component {
   updateResults (event) {
     let searchString = event.target.value;
     this.setState({
-      searchString: searchString
+      searchString: searchString,
     });
   }
 
   render () {
+    renderLog(__filename);
     return (
       <div className="search-bar clearfix">
         <input ref="search_input"

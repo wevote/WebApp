@@ -8,6 +8,7 @@ import FollowToggle from "../../components/Widgets/FollowToggle";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import HeaderBar from "../../components/Navigation/HeaderBar";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -143,6 +144,7 @@ export default class OrganizationVoterGuide extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.organization || !this.state.voter || this.state.auto_follow_redirect_happening) {
       return <div>{LoadingWheel}</div>;
     }
@@ -174,20 +176,44 @@ export default class OrganizationVoterGuide extends Component {
           <HeaderBar location={this.props.location} pathname={this.props.location.pathname} voter={this.state.voter} />
         </div>
       </div>
-      <div className="page-content-container">
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-md-12 hidden-print">
-              { this.state.organization.organization_banner_url !== "" ?
-                <div className="organization-banner-image-div">
-                  <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
-                </div> :
-                <div className="organization-banner-image-non-twitter-users" />
+      {/* Header Banner Spacing for Desktop */}
+      <div className="col-md-12 hidden-xs hidden-print">
+        { this.state.organization.organization_banner_url !== "" ?
+          <div className="organization-banner-image-div hidden-print">
+            <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
+          </div> :
+          <div className="organization-banner-image-non-twitter-users" />
+        }
+      </div>
+      {/* Header Banner Spacing for Mobile */}
+      <div className="visible-xs hidden-print">
+        { this.state.organization.organization_banner_url !== "" ?
+          <div className="organization-banner-image-div hidden-print">
+            <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
+          </div> :
+          <div className="organization-banner-image-non-twitter-users" />
+        }
+      </div>
+
+      <div className="visible-xs">
+        <div className="col-12">
+          <div className="card">
+            <div className="card-main">
+              { isVoterOwner ?
+                <Button bsStyle="warning" bsSize="small" className="pull-right" onClick={this.onEdit}>
+                  <span>Edit</span>
+                </Button> :
+                <FollowToggle we_vote_id={this.state.organization.organization_we_vote_id} />
               }
+              <OrganizationCard organization={this.state.organization} />
             </div>
           </div>
+        </div>
+      </div>
+
+        <div className="container-fluid">
           <div className="row">
-            <div className="col-md-4 hidden-xs" >
+            <div className="hidden-xs col-md-4" >
               <div className="card">
                 <div className="card-main">
                   <OrganizationVoterGuideCard organization={this.state.organization} is_voter_owner={isVoterOwner} />
@@ -196,26 +222,14 @@ export default class OrganizationVoterGuide extends Component {
               </div>
             </div>
 
-            <div className="col-md-12 visible-xs">
-              <div className="card">
-                <div className="card-main">
-                  { isVoterOwner ?
-                    <Button bsStyle="warning" bsSize="small" className="pull-right" onClick={this.onEdit}>
-                      <span>Edit</span>
-                    </Button> :
-                    <FollowToggle we_vote_id={this.state.organization.organization_we_vote_id} />
-                  }
-                  <OrganizationCard organization={this.state.organization} />
-                </div>
-              </div>
+            <div className="col-12 col-md-8">
+              <OrganizationVoterGuideTabs organization={this.state.organization}
+                                          location={this.props.location}
+                                          params={this.props.params}
+                                          active_route={this.state.active_route} />
             </div>
-            <OrganizationVoterGuideTabs organization={this.state.organization}
-                                        location={this.props.location}
-                                        params={this.props.params}
-                                        active_route={this.state.active_route} />
           </div>
         </div>
-      </div>
     </div>;
   }
 }

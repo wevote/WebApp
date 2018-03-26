@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SettingsWidgetFirstLastName from "../../components/Settings/SettingsWidgetFirstLastName";
@@ -23,7 +24,7 @@ export default class VoterGuideSettingsGeneral extends Component {
     super(props);
     this.state = {
       voterGuideName: "",
-      voterGuideWeVoteId: ""
+      voterGuideWeVoteId: "",
     };
   }
 
@@ -42,7 +43,7 @@ export default class VoterGuideSettingsGeneral extends Component {
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
           voterGuide: voterGuide,
-          voterGuideName: voterGuide.voter_guide_display_name
+          voterGuideName: voterGuide.voter_guide_display_name,
         });
         voterGuideFound = true;
       }
@@ -153,6 +154,7 @@ export default class VoterGuideSettingsGeneral extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.voter) {
       return LoadingWheel;
     }

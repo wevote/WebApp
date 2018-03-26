@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SelectVoterGuidesSideBar from "../../components/Navigation/SelectVoterGuidesSideBar";
+import SettingsBannerAndOrganizationCard from "../../components/Settings/SettingsBannerAndOrganizationCard";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
@@ -86,13 +87,13 @@ export default class VoterGuideListDashboard extends Component {
     }
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
-  onOrganizationStoreChange (){
+  onOrganizationStoreChange () {
     // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId),
@@ -118,6 +119,7 @@ export default class VoterGuideListDashboard extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let settingsComponentToDisplay = null;
     switch (this.state.editMode) {
       default:
@@ -127,38 +129,24 @@ export default class VoterGuideListDashboard extends Component {
     }
 
     return <div className="settings-dashboard">
-      <div className="page-content-container">
-        <div className="container-fluid">
-        { this.state.organization && this.state.organization.organization_we_vote_id ?
-          <div className="row">
-            <div className="col-md-12">
-              { this.state.organization && this.state.organization.organization_banner_url !== "" ?
-                <div className="organization-banner-image-div">
-                  <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
-                </div> :
-                null
-              }
-            </div>
-            <div className="col-md-12">
-              <div className="card">
-                <div className="card-main">
-                  <OrganizationCard organization={this.state.organization}
-                                    turnOffTwitterHandle />
-                </div>
-              </div>
-            </div>
-          </div> :
-          null }
-          <div className="row">
-            {/* Desktop mode */}
-            <div className="col-md-4 hidden-xs sidebar-menu">
-              <SelectVoterGuidesSideBar />
-            </div>
+      {/* Header Spacing for Desktop */}
+      <div className="col-md-12 hidden-xs hidden-print">
+        <SettingsBannerAndOrganizationCard organization={this.state.organization} />
+      </div>
+      {/* Header Spacing for Mobile */}
+      <div className="visible-xs hidden-print">
+        <SettingsBannerAndOrganizationCard organization={this.state.organization} />
+      </div>
 
-            <div className="col-xs-12 col-md-8">
-              {settingsComponentToDisplay}
-            </div>
+      <div className="container-fluid">
+        <div className="row">
+          {/* Mobile and Desktop mode */}
+          <div className="col-12 col-md-4 sidebar-menu">
+            <SelectVoterGuidesSideBar />
+          </div>
 
+          <div className="hidden-xs col-md-8">
+            {settingsComponentToDisplay}
           </div>
         </div>
       </div>

@@ -6,6 +6,7 @@ import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import TwitterActions from "../../actions/TwitterActions";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
@@ -134,6 +135,7 @@ export default class SettingsNotifications extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.voter) {
       return LoadingWheel;
     }
@@ -145,19 +147,17 @@ export default class SettingsNotifications extends Component {
         <div className="card-main">
           {this.state.voter.is_signed_in ?
             <div>
-              <div className="card">
-                <span className="h3">Notification Settings</span>
-                <br />
-                <input id="newsletter_opt_in"
-                       type="checkbox"
-                       name="newsletter_opt_in"
-                       onChange={this.updateNewsletterOptIn}
-                       checked={this.state.newsletter_opt_in}
-                />
-                { " " }
-                <label htmlFor="newsletter_opt_in">I would like to receive the We Vote newsletter</label>
-                <span className="pull-right u-gray-mid">{this.state.notifications_saved_status}</span>
-              </div>
+              <span className="h3">Notification Settings</span>
+              <br />
+              <input id="newsletter_opt_in"
+                     type="checkbox"
+                     name="newsletter_opt_in"
+                     onChange={this.updateNewsletterOptIn}
+                     checked={this.state.newsletter_opt_in}
+              />
+              { " " }
+              <label htmlFor="newsletter_opt_in">I would like to receive the We Vote newsletter</label>
+              <span className="pull-right u-gray-mid">{this.state.notifications_saved_status}</span>
             </div> :
             <div><Link to="/settings/account">Please Sign In</Link></div>
           }

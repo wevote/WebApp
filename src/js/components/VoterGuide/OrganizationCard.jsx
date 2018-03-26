@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import ImageHandler from "../../components/ImageHandler";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
 import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
@@ -99,6 +100,7 @@ export default class OrganizationCard extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.organization_we_vote_id.length){
       return <div className="card-popover__width--minimum">{LoadingWheel}</div>;
     }

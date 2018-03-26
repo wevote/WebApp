@@ -9,12 +9,12 @@ import AnalyticsActions from "../actions/AnalyticsActions";
 import { validateEmail } from "../utils/email-functions";
 import FacebookStore from "../stores/FacebookStore";
 import FacebookActions from "../actions/FacebookActions";
+import { renderLog } from "../utils/logging";
 import OpenExternalWebSite from "../utils/OpenExternalWebSite";
 import VoterActions from "../actions/VoterActions";
 import VoterConstants from "../constants/VoterConstants";
 import VoterStore from "../stores/VoterStore";
-
-const webAppConfig = require("../config");
+import webAppConfig from "../config";
 
 export default class Intro extends Component {
   static propTypes = {
@@ -181,6 +181,7 @@ export default class Intro extends Component {
   // }
 
   render () {
+    renderLog(__filename);
     let actualFullName = "";
     let isVoterSignedIn = false;
     let mailToUrl = "mailto:" + "?subject=Check out We Vote" + "&body=I am using We Vote to discuss what is on my ballot. You can see it at https://WeVote.US too.";

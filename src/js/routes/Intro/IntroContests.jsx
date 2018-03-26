@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router";
 import { Button } from "react-bootstrap";
+import { renderLog } from "../../utils/logging";
 
 import InfoIconAction from "../../components/InfoIconAction";
 
@@ -14,7 +15,8 @@ export default class IntroBallotContests extends Component {
 	}
 
 	render () {
-        var float = {
+    renderLog(__filename);
+    let float = {
 			right: {
                 float: "right"
 			},

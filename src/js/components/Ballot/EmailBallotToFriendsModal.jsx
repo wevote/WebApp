@@ -5,6 +5,7 @@ import { deviceTypeString } from "../../utils/cordovaUtils";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
 import LoadingWheel from "../LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 import { validateEmail } from "../../utils/email-functions";
 const web_app_config = require("../../config");
@@ -430,6 +431,7 @@ export default class EmailBallotToFriendsModal extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let { loading } = this.state;
     if (loading) {
       return LoadingWheel;

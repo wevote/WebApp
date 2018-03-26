@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ReactPlayer from "react-player";
 import { cordovaDot } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import ReadMore from "../../components/Widgets/ReadMore";
 import { vimeo_reg, youtube_reg } from "../../utils/textFormat";
@@ -40,6 +41,7 @@ export default class PositionSupportOpposeSnippet extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let stance_icon_src;
     let className;
     let alt;

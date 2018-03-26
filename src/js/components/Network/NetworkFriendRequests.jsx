@@ -4,6 +4,7 @@ import Helmet from "react-helmet";
 import FriendInvitationList from "../Friends/FriendInvitationList";
 import FriendStore from "../../stores/FriendStore";
 import LoadingWheel from "../LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import SuggestedFriendList from "../Friends/SuggestedFriendList";
 import VoterStore from "../../stores/VoterStore";
 
@@ -52,12 +53,15 @@ export default class NetworkFriendRequests extends Component {
   }
 
   render () {
-    if (!this.state.voter){
+    renderLog(__filename);
+    if (!this.state.voter) {
       return LoadingWheel;
     }
-    var floatRight = {
-        float: "right"
+
+    let floatRight = {
+      float: "right",
     };
+
     return <div className="opinions-followed__container">
       <Helmet title="Friend Requests - We Vote" />
       <section className="card">

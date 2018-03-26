@@ -4,6 +4,7 @@ import { Button } from "react-bootstrap";
 import IssueActions from "../../actions/IssueActions";
 import IssueFollowToggleSquare from "../Issues/IssueFollowToggleSquare";
 import IssueStore from "../../stores/IssueStore";
+import { renderLog } from "../../utils/logging";
 
 const NEXT_BUTTON_TEXT = "Next >";
 const SKIP_BUTTON_TEXT = "Skip >";
@@ -27,7 +28,7 @@ export default class BallotIntroFollowIssues extends Component {
     this.onIssueFollow = this.onIssueFollow.bind(this);
     this.onIssueStopFollowing = this.onIssueStopFollowing.bind(this);
     this.onNext = this.onNext.bind(this);
-    this._onIssueStoreChange = this._onIssueStoreChange.bind(this);
+    this.onIssueStoreChange = this.onIssueStoreChange.bind(this);
   }
 
   componentWillMount () {
@@ -36,15 +37,15 @@ export default class BallotIntroFollowIssues extends Component {
   }
 
   componentDidMount () {
-    this._onIssueStoreChange();
-    this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange);
+    this.onIssueStoreChange();
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange);
   }
 
   componentWillUnmount () {
     this.issueStoreListener.remove();
   }
 
-  _onIssueStoreChange () {
+  onIssueStoreChange () {
     // update followed_issues only for first time, subsequent updates will be made locally
     if (this.state.followed_issues.length) {
       this.setState({ issues: IssueStore.getIssuesVoterCanFollow() });
@@ -132,6 +133,7 @@ export default class BallotIntroFollowIssues extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let issue_list = this.state.issues;
     let remaining_issues = this.remainingIssues();
 

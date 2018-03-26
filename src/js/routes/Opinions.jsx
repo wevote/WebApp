@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import { renderLog } from "../utils/logging";
 import VoterGuideStore from "../stores/VoterGuideStore";
 import Helmet from "react-helmet";
 import SearchGuidesToFollowBox from "../components/Search/SearchGuidesToFollowBox";
@@ -53,6 +54,7 @@ export default class Opinions extends Component {
   }
 
   render () {
+    renderLog(__filename);
     const { ballot_has_guides, voter_guides_to_follow_all } = this.state;
     let guides;
     var floatRight = {

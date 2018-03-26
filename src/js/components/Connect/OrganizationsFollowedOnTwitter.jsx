@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import FollowToggle from "../../components/Widgets/FollowToggle";
+import { renderLog } from "../../utils/logging";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationTinyDisplay from "../../components/VoterGuide/OrganizationTinyDisplay";
 
@@ -60,6 +61,7 @@ export default class OrganizationsFollowedOnTwitter extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (this.state.organizations_followed_on_twitter === undefined) {
       return null;
     }

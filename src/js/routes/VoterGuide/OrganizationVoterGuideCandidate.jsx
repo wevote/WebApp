@@ -17,7 +17,7 @@ import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 import SearchAllActions from "../../actions/SearchAllActions";
-const web_app_config = require("../../config");
+import webAppConfig from "../../config";
 
 // This is based on routes/Ballot/Candidate
 export default class OrganizationVoterGuideCandidate extends Component {
@@ -132,7 +132,7 @@ export default class OrganizationVoterGuideCandidate extends Component {
     let title_text = candidateName + " - We Vote";
     let description_text = "Information about " + candidateName + ", candidate for " + this.state.candidate.contest_office_name;
     let voter = VoterStore.getVoter();
-    let candidateAdminEditUrl = web_app_config.WE_VOTE_SERVER_ROOT_URL + "c/" + this.state.candidate.id + "/edit/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
+    let candidateAdminEditUrl = webAppConfig.WE_VOTE_SERVER_ROOT_URL + "c/" + this.state.candidate.id + "/edit/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
 
     return <span>
       <Helmet title={title_text}

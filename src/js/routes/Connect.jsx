@@ -8,6 +8,7 @@ import FriendStore from "../stores/FriendStore";
 import FacebookActions from "../actions/FacebookActions";
 import FacebookStore from "../stores/FacebookStore";
 import Helmet from "react-helmet";
+import { renderLog } from "../utils/logging";
 import OrganizationActions from "../actions/OrganizationActions";
 import OrganizationsFollowedOnTwitter from "../components/Connect/OrganizationsFollowedOnTwitter";
 import OrganizationStore from "../stores/OrganizationStore";
@@ -116,6 +117,7 @@ export default class Connect extends Component {
   }
 
 	render () {
+    renderLog(__filename);
 		return <div>
 			<Helmet title="Build Your We Vote Network" />
       <h1 className="h1">Build Your We Vote Network</h1>

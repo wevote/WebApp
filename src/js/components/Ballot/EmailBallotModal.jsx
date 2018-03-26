@@ -7,7 +7,7 @@ import FriendStore from "../../stores/FriendStore";
 import LoadingWheel from "../LoadingWheel";
 import { validateEmail } from "../../utils/email-functions";
 import VoterStore from "../../stores/VoterStore";
-const web_app_config = require("../../config");
+import webAppConfig from "../../config";
 
 export default class EmailBallotModal extends Component {
   static propTypes = {
@@ -21,10 +21,11 @@ export default class EmailBallotModal extends Component {
     super(props);
     let ballotLink = "";
     if (this.props.ballot_link) {
-      ballotLink = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + this.props.ballot_link;
+      ballotLink = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + this.props.ballot_link;
     } else {
-      ballotLink = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/ballot";
+      ballotLink = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + "/ballot";
     }
+
     this.state = {
       email_ballot_message: "This is WeVote Ballot data for the upcoming election.",
       voter: VoterStore.getVoter(),

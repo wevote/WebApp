@@ -6,6 +6,7 @@ import IssueStore from "../../stores/IssueStore";
 import ReadMore from "../../components/Widgets/ReadMore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import { removeTwitterNameFromDescription } from "../../utils/textFormat";
+import { renderLog } from "../../utils/logging";
 
 export default class OrganizationListUnderIssue extends Component {
   static propTypes = {
@@ -54,6 +55,8 @@ export default class OrganizationListUnderIssue extends Component {
   }
 
   render () {
+    renderLog(__filename);
+
     // console.log("OrganizationListUnderIssue render, issue_we_vote_id: ", this.state.issue_we_vote_id, ", this.state.voter_guides_for_this_issue: ", this.state.voter_guides_for_this_issue);
     if (!this.state.voter_guides_for_this_issue || !this.state.voter_guides_for_this_issue.length){
       return null;

@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import FriendToggle from "../Friends/FriendToggle";
 import ImageHandler from "../../components/ImageHandler";
 import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
+import { renderLog } from "../../utils/logging";
 
 export default class FriendDisplayForList extends Component {
   static propTypes = {
@@ -20,6 +21,7 @@ export default class FriendDisplayForList extends Component {
   };
 
   render () {
+    renderLog(__filename);
     const {
       voter_twitter_followers_count,
       voter_we_vote_id,

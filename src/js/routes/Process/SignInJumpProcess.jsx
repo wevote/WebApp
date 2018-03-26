@@ -2,6 +2,7 @@ import { Component } from "react";
 import PropTypes from "prop-types";
 import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
 // import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
@@ -80,6 +81,7 @@ export default class SignInJumpProcess extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let incoming_voter_device_id = this.props.location.query.voter_device_id;
     console.log("SignInJumpProcess, incoming_voter_device_id:", incoming_voter_device_id);
     if (!incoming_voter_device_id ||

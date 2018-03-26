@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Helmet from "react-helmet";
 import { Button } from "react-bootstrap";
+import { _ } from "lodash";
 import AnalyticsActions from "../actions/AnalyticsActions";
 import CheckBox from "../components/Connect/CheckBox";
-import LoadingWheel from "../components/LoadingWheel";
+import webAppConfig from "../config";
+import { historyPush } from "../utils/cordovaUtils";
 import FacebookActions from "../actions/FacebookActions";
 import FriendActions from "../actions/FriendActions";
 import FacebookStore from "../stores/FacebookStore";
-import { historyPush } from "../utils/cordovaUtils";
+import LoadingWheel from "../components/LoadingWheel";
+import { renderLog } from "../utils/logging";
 import VoterStore from "../stores/VoterStore";
 import VoterActions from "../actions/VoterActions";
 import WouldYouLikeToMergeAccounts from "../components/WouldYouLikeToMergeAccounts";
-var _ = require("lodash");
-
-import Helmet from "react-helmet";
-const web_app_config = require("../config");
 
 /*
     NOTE August 2017:  This component uses the Facebook "games" api "invitiable_friends" call.  There is some legacy
@@ -173,7 +173,7 @@ export default class FacebookInvitableFriends extends Component {
   sendFacebookAppRequest (selected_facebook_friends_ids, selected_facebook_friends_names) {
       window.FB.ui({
         title: "We Vote USA",
-        redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/more/network",
+        redirect_uri: webAppConfig.WE_VOTE_HOSTNAME + "/more/network",
         method: "apprequests",
         message: this.state.add_friends_message,
         to: selected_facebook_friends_ids,
@@ -222,6 +222,8 @@ export default class FacebookInvitableFriends extends Component {
   }
 
   render () {
+    renderLog(__filename);
+
     // console.log("this.state.voter", this.state.voter);
     if (!this.state.voter || this.state.saving) {
       // Show a loading wheel while this component's data is loading

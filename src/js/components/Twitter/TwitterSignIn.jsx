@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
+import { renderLog } from "../../utils/logging";
 import { $ajax } from "../../utils/service";
 import cookies from "../../utils/cookies";
 import { isWebApp, cordovaOpenSafariView } from "../../utils/cordovaUtils";
@@ -61,6 +62,7 @@ export default class TwitterSignIn extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <Button className={this.props.className ? this.props.className : "btn btn-social btn-twitter"}
             onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova }>
       <span className="fa fa-twitter"/> {this.props.buttonText ? this.props.buttonText : "Sign In"}

@@ -190,8 +190,6 @@ const routes = () =>
     <Route path="/voterguide/:organization_we_vote_id/:action_variable" component={OrganizationVoterGuide} />
     <Route path="/voterguideedit/:organization_we_vote_id" component={OrganizationVoterGuideEdit} />
     <Route path="/voterguideedit/:organization_we_vote_id/:google_civic_election_id" component={OrganizationVoterGuideEdit} />
-    {/*<Route path="/voterguideedit/:organization_we_vote_id/:edit_mode" component={OrganizationVoterGuideEdit} />*/}
-    {/*<Route path="/voterguideedit/:organization_we_vote_id/:edit_mode/:active_tab" component={OrganizationVoterGuideEdit} />*/}
 
     {/* Voter Guide Settings go in this structure... */}
     <Route path="/vg/:voter_guide_we_vote_id/settings" component={VoterGuideSettingsDashboard} />
@@ -221,6 +219,7 @@ const routes = () =>
     <Route path=":twitter_handle/ballot/:ballot_location_shortcut" component={TwitterHandleLanding} />
     <Route path=":twitter_handle/ballot/id/:ballot_returned_we_vote_id" component={TwitterHandleLanding} />
     <Route path=":twitter_handle/ballot/election/:google_civic_election_id" component={TwitterHandleLanding} />
+    <Route path=":twitter_handle/ballot/election/:google_civic_election_id/:view_mode" component={TwitterHandleLanding} />{/* view_mode not taken in yet */}
 
     {/* Any route that is not found -> @return TwitterHandleLanding component */}
     <Route path=":twitter_handle" component={TwitterHandleLanding} />

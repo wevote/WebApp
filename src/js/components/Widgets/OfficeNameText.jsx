@@ -1,25 +1,26 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { renderLog } from "../../utils/logging";
 
 export default class OfficeNameText extends Component {
   static propTypes = {
     political_party: PropTypes.string,
-    contest_office_name: PropTypes.string
+    contest_office_name: PropTypes.string,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      transitioning: false
+      transitioning: false,
     };
   }
 
   componentWillReceiveProps () {
-    this.setState({transitioning: false});
+    this.setState({ transitioning: false });
   }
 
-
   render () {
+    renderLog(__filename);
     let nameText = "";
     let { contest_office_name, political_party } = this.props;
     if (political_party === undefined) {
@@ -32,7 +33,7 @@ export default class OfficeNameText extends Component {
         { contest_office_name }
       </span></span>;
     }
-    return nameText;
 
+    return nameText;
   }
 }

@@ -9,8 +9,7 @@ import FriendStore from "../../stores/FriendStore";
 import LoadingWheel from "../LoadingWheel";
 import { validateEmail } from "../../utils/email-functions";
 import VoterStore from "../../stores/VoterStore";
-
-const web_app_config = require("../../config");
+import webAppConfig from "../../config";
 
 export default class FacebookBallotModal extends Component {
   static propTypes = {
@@ -24,9 +23,9 @@ export default class FacebookBallotModal extends Component {
     super(props);
     let ballotLink = "";
     if (this.props.ballot_link) {
-      ballotLink = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + this.props.ballot_link;
+      ballotLink = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + this.props.ballot_link;
     } else {
-      ballotLink = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/ballot";
+      ballotLink = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + "/ballot";
     }
 
     this.state = {
@@ -206,7 +205,7 @@ export default class FacebookBallotModal extends Component {
           to: emailData.userId,
           method: "send",
           link: this.state.ballot_link,
-          redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/ballot",
+          redirect_uri: webAppConfig.WE_VOTE_HOSTNAME + "/ballot",
         }, function (response) {
           if (response) {
             if (response.success) {
@@ -240,7 +239,7 @@ export default class FacebookBallotModal extends Component {
           method: "share",
           href: this.state.ballot_link,
           mobile_iframe: true,
-          redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/ballot",
+          redirect_uri: webAppConfig.WE_VOTE_HOSTNAME + "/ballot",
         }, function (response) {
           if (response) {
             // console.log("Successfully send", response);

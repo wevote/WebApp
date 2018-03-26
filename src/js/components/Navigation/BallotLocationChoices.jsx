@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import BallotActions from "../../actions/BallotActions";
+import BallotLocationButton from "./BallotLocationButton";
 import BallotStore from "../../stores/BallotStore";
 import ElectionStore from "../../stores/ElectionStore";
 import { historyPush } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
-import BallotLocationButton from "./BallotLocationButton";
 import { calculateBallotBaseUrl } from "../../utils/textFormat";
-
 
 export default class BallotLocationChoices extends Component {
   static propTypes = {
@@ -134,6 +134,7 @@ export default class BallotLocationChoices extends Component {
   }
 
   render () {
+    renderLog(__filename);
     const default_number_of_ballot_locations_mobile = 5;
     const default_number_of_ballot_locations_desktop = 5;
     const election_name = BallotStore.currentBallotElectionName;

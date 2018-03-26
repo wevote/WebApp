@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Icon from "react-svg-icons";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
-const Icon = require("react-svg-icons");
+import { renderLog } from "../../utils/logging";
 
 export default class FriendsOnlyIndicator extends Component {
   static propTypes = {
-    isFriendsOnly: PropTypes.bool
+    isFriendsOnly: PropTypes.bool,
   };
 
   constructor (props) {
@@ -13,11 +14,13 @@ export default class FriendsOnlyIndicator extends Component {
     this.state = {};
   }
 
-	render () {
+  render () {
+    renderLog(__filename);
     let is_friends_only = this.props.isFriendsOnly;
     if (is_friends_only === undefined){
       is_friends_only = true;
     }
+
     let labelText = "";
     let visibilityIcon = "";
     if (is_friends_only) {
@@ -35,5 +38,5 @@ export default class FriendsOnlyIndicator extends Component {
       </OverlayTrigger>;
 
     return visibilityIndicator;
-	}
+  }
 }

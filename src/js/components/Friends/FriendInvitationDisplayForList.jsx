@@ -5,6 +5,7 @@ import FriendInvitationToggle from "../Friends/FriendInvitationToggle";
 import ImageHandler from "../../components/ImageHandler";
 import FriendActions from "../../actions/FriendActions";
 import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
+import { renderLog } from "../../utils/logging";
 
 export default class FriendInvitationDisplayForList extends Component {
   static propTypes = {
@@ -41,6 +42,7 @@ export default class FriendInvitationDisplayForList extends Component {
   }
 
   render () {
+    renderLog(__filename);
     const {
       invitationsSentByMe,
       voter_twitter_followers_count,

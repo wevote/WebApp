@@ -4,6 +4,7 @@ import { Button } from "react-bootstrap";
 import { shortenText } from "../../utils/textFormat";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
+import { renderLog } from "../../utils/logging";
 
 export default class PledgeToSupportOrganizationButton extends Component {
   static propTypes = {
@@ -35,17 +36,18 @@ export default class PledgeToSupportOrganizationButton extends Component {
     });
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.voterGuideStoreListener.remove();
   }
 
-  onVoterGuideStoreChange (){
+  onVoterGuideStoreChange () {
     this.setState({
       voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id())
     });
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.voter_guide) {
       return null;
     }

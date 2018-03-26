@@ -6,8 +6,9 @@ import { historyPush } from "../../utils/cordovaUtils";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging"; // numberWithCommas,
 import FollowToggle from "../../components/Widgets/FollowToggle";
-import { removeTwitterNameFromDescription } from "../../utils/textFormat"; // numberWithCommas,
+import { removeTwitterNameFromDescription } from "../../utils/textFormat";
 
 // This Component is used to display the Organization by TwitterHandle
 // Please see VoterGuide/Organization for the Component used by GuideList for Candidate and Opinions (you can follow)
@@ -30,7 +31,8 @@ export default class OrganizationVoterGuideCard extends Component {
   }
 
   render () {
-    if (!this.props.organization){
+    renderLog(__filename);
+    if (!this.props.organization) {
       return <div>{LoadingWheel}</div>;
     }
 

@@ -1,6 +1,7 @@
-import React, {Component} from "react";
-import {Alert, Button, FormGroup} from "react-bootstrap";
+import React, { Component } from "react";
+import { Alert, Button, FormGroup } from "react-bootstrap";
 import LoadingWheel from "../components/LoadingWheel";
+import { renderLog } from "../utils/logging";
 import VoterActions from "../actions/VoterActions";
 import VoterStore from "../stores/VoterStore";
 
@@ -9,22 +10,22 @@ export default class VoterEmailAddressEntry extends Component {
   };
 
   constructor (props) {
-      super(props);
-      this.state = {
-        loading: true,
-        email_address_status: {
-          email_address_already_owned_by_other_voter: false,
-          email_address_created: false,
-          email_address_deleted: false,
-          verification_email_sent: false,
-          link_to_sign_in_email_sent: false
-        },
-        edit_verified_emails_on: false,
-        edit_emails_to_verify_on: false,
-        voter: VoterStore.getVoter(),
-        voter_email_address: "",
-        voter_email_address_list: []
-      };
+    super(props);
+    this.state = {
+      loading: true,
+      email_address_status: {
+        email_address_already_owned_by_other_voter: false,
+        email_address_created: false,
+        email_address_deleted: false,
+        verification_email_sent: false,
+        link_to_sign_in_email_sent: false
+      },
+      edit_verified_emails_on: false,
+      edit_emails_to_verify_on: false,
+      voter: VoterStore.getVoter(),
+      voter_email_address: "",
+      voter_email_address_list: []
+    };
   }
 
   componentDidMount () {
@@ -89,13 +90,13 @@ export default class VoterEmailAddressEntry extends Component {
       email_address_status: {
         email_address_already_owned_by_other_voter: false,
       },
-      loading: true
+      loading: true,
     });
   }
 
   sendVerificationEmail (email_we_vote_id) {
     VoterActions.sendVerificationEmail(email_we_vote_id);
-    this.setState({loading: true});
+    this.setState({ loading: true });
   }
 
   setAsPrimaryEmailAddress (email_we_vote_id) {
@@ -104,7 +105,7 @@ export default class VoterEmailAddressEntry extends Component {
 
   updateVoterEmailAddress (e) {
     this.setState({
-      voter_email_address: e.target.value
+      voter_email_address: e.target.value,
     });
   }
 
@@ -112,14 +113,15 @@ export default class VoterEmailAddressEntry extends Component {
     event.preventDefault();
     let send_link_to_sign_in = true;
     VoterActions.voterEmailAddressSave(this.state.voter_email_address, send_link_to_sign_in);
-    this.setState({loading: true});
+    this.setState({ loading: true });
   }
 
   render () {
-    if (this.state.loading){
+    renderLog(__filename);
+    if (this.state.loading) {
       return LoadingWheel;
     }
-    //console.log("Entering VoterEmailAddressEntry.jsx");
+
     const email_address_status_html = <span>
       { this.state.email_address_status.email_address_already_owned_by_other_voter &&
         !this.state.email_address_status.link_to_sign_in_email_sent ?

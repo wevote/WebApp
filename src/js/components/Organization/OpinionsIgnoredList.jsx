@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import FollowToggle from "../Widgets/FollowToggle";
 import VoterGuideDisplayForList from "../VoterGuide/VoterGuideDisplayForList";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import { renderLog } from "../../utils/logging";
 
 // NOTE FROM DALE: When OpinionsIgnoredList is refactored, this should be refactored to display Organizations instead of Voter Guides
 export default class OpinionsIgnoredList extends Component {
@@ -40,6 +41,7 @@ export default class OpinionsIgnoredList extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (this.state.organizations_ignored === undefined) {
       return null;
     }

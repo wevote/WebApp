@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import IssueActions from "../../actions/IssueActions";
 import IssueFollowToggleSquare from "../Issues/IssueFollowToggleSquare";
 import IssueStore from "../../stores/IssueStore";
+import { renderLog } from "../../utils/logging";
 
 
 export default class NetworkIssuesFollowed extends Component {
@@ -53,10 +54,12 @@ export default class NetworkIssuesFollowed extends Component {
   }
 
   render () {
-    var issue_list = [];
+    renderLog(__filename);
+    let issue_list = [];
     if (this.state.issues_followed) {
       issue_list = this.state.issues_followed;
     }
+
     const ISSUES_TO_SHOW = 6;
 
     let is_following = true;

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import EditAddressPopover from "./EditAddressPopover";
+import { renderLog } from "../../utils/logging";
 import { shortenText } from "../../utils/textFormat";
 
 export default class EditAddress extends Component {
@@ -61,6 +62,7 @@ export default class EditAddress extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let no_address_message = "- no address entered -";
     let edit_address_popover_on = true;
     let maximum_address_display_length = 30;

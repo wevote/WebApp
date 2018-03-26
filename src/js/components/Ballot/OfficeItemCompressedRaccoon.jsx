@@ -13,6 +13,7 @@ import ImageHandler from "../ImageHandler";
 import IssueStore from "../../stores/IssueStore";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
 import LearnMore from "../Widgets/LearnMore";
+import { renderLog } from "../../utils/logging";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SupportStore from "../../stores/SupportStore";
 import VoterGuideActions from "../../actions/VoterGuideActions";
@@ -68,11 +69,12 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
     // console.log("this.props.candidate_list: ", this.props.candidate_list);
     if (this.props.candidate_list && this.props.candidate_list.length) {
+      CandidateActions.candidatesRetrieve(this.props.we_vote_id);
       this.props.candidate_list.forEach( function (candidate) {
         // console.log("OfficeItemCompressed, candidate: ", candidate);
         if (candidate && candidate.hasOwnProperty("we_vote_id") && !CandidateStore.isCandidateInStore(candidate.we_vote_id)) {
           // console.log("OfficeItemCompressed, retrieving");
-          CandidateActions.candidateRetrieve(candidate.we_vote_id);
+          // CandidateActions.candidateRetrieve(candidate.we_vote_id); // Replaced by candidatesRetrieve on the office level
           VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidate.we_vote_id, "CANDIDATE");
         }
       });
@@ -201,7 +203,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
   }
 
   render () {
-    // console.log("OfficeItemCompressedRaccoon render");
+    renderLog(__filename);
     let { ballot_item_display_name, we_vote_id } = this.props;
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);

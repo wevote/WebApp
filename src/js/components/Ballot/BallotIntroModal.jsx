@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Modal } from "react-bootstrap";
 import Slider from "react-slick";
-// import BallotIntroMission from "./BallotIntroMission";
 import BallotIntroFollowIssues from "./BallotIntroFollowIssues";
-// import BallotIntroFollowAdvisers from "./BallotIntroFollowAdvisers";
 import BallotIntroIssuesSuccess from "./BallotIntroIssuesSuccess";
 import { cordovaDot } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 import VoterActions from "../../actions/VoterActions";
 
+// import BallotIntroFollowAdvisers from "./BallotIntroFollowAdvisers";
 
 export default class BallotIntroModal extends Component {
   // This Modal is shown to the user, when user visits the ballot page for first time only
@@ -33,13 +33,14 @@ export default class BallotIntroModal extends Component {
   }
 
   render () {
+    renderLog(__filename);
     const slider_settings = {
       dots: true,
       infinite: false,
       speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
-      swipe: true,
+      swipe: false,
       accessibility: true,
       //react-slick default left & right nav arrows
       arrows: false,
@@ -57,9 +58,7 @@ export default class BallotIntroModal extends Component {
         <Slider dotsClass="slick-dots intro-modal__gray-dots"
                 className="calc-height intro-modal__height-full"
                 ref="slider" {...slider_settings}>
-          {/* <div className="intro-modal__height-full" key={1}><BallotIntroMission next={this._nextSliderPage}/></div> */}
           <div className="intro-modal__height-full" key={2}><BallotIntroFollowIssues next={this._nextSliderPage}/></div>
-          {/* <div className="intro-modal__height-full" key={3}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div> */}
           <div className="intro-modal__height-full" key={4}><BallotIntroIssuesSuccess next={this.props.toggleFunction}/></div>
         </Slider>
       </Modal.Body>

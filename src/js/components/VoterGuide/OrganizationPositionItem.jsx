@@ -1,20 +1,21 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import ImageHandler from "../ImageHandler";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import FriendsOnlyIndicator from "../Widgets/FriendsOnlyIndicator";
-import VoterStore from "../../stores/VoterStore";
+import { renderLog } from "../../utils/logging";
 import OfficeNameText from "../Widgets/OfficeNameText";
 import OrganizationStore from "../../stores/OrganizationStore";
 import PositionInformationOnlySnippet from "../Widgets/PositionInformationOnlySnippet";
 import PositionRatingSnippet from "../Widgets/PositionRatingSnippet";
 import PositionPublicToggle from "../Widgets/PositionPublicToggle";
 import PositionSupportOpposeSnippet from "../Widgets/PositionSupportOpposeSnippet";
-import BookmarkToggle from "../Bookmarks/BookmarkToggle";
-import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
+import SupportStore from "../../stores/SupportStore";
+import VoterStore from "../../stores/VoterStore";
 
 export default class OrganizationPositionItem extends Component {
   static propTypes = {
@@ -85,8 +86,9 @@ export default class OrganizationPositionItem extends Component {
     this.setState({hide_position_statement: !this.state.hide_position_statement});
   }
 
-  render (){
-    var position = this.props.position;
+  render () {
+    renderLog(__filename);
+    let position = this.props.position;
     let organization = this.state.organization;
 
     if (!position.ballot_item_we_vote_id) {

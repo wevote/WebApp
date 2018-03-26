@@ -5,6 +5,7 @@ import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
 import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 import FacebookFriendsDisplay from "../../components/Connect/FacebookFriendsDisplay";
 
@@ -53,6 +54,7 @@ export default class AddFacebookFriends extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (this.state.voter === undefined){
       // Show a loading wheel while this component's data is loading
       return LoadingWheel;

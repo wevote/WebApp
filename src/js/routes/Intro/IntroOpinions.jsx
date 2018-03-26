@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { Button } from "react-bootstrap";
+import GuideList from "../../components/VoterGuide/GuideList";
+import { renderLog } from "../../utils/logging";
 import SearchGuidesToFollowBox from "../../components/Search/SearchGuidesToFollowBox";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
-import GuideList from "../../components/VoterGuide/GuideList";
 
 export default class IntroOpinionsPage extends Component {
   static propTypes = {
@@ -39,6 +40,7 @@ export default class IntroOpinionsPage extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let { voter_guides_to_follow_all, ballot_has_guides } = this.state;
     // console.log(ballot_has_guides);
     var float = {

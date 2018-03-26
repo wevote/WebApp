@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import IssuesDisplayListWithOrganizationPopovers from "../Issues/IssuesDisplayListWithOrganizationPopovers";
 import IssueStore from "../../stores/IssueStore";
+import {renderLog} from "../../utils/logging";
 
 
 // Show a voter a horizontal list of all of their issues,
@@ -47,6 +48,8 @@ export default class IssuesFollowedDisplayList extends Component {
   }
 
   render () {
+    renderLog(__filename);
+
     // console.log("this.state.issues_voter_is_following: ", this.state.issues_voter_is_following);
     let issues_voter_is_following_mobile = this.state.issues_voter_is_following.slice(0, 2);
     let issues_voter_is_following_desktop = this.state.issues_voter_is_following.slice(0, 4);

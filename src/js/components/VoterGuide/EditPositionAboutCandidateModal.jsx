@@ -6,6 +6,7 @@ import FollowToggle from "../../components/Widgets/FollowToggle";
 import ItemActionBar from "../../components/Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../../components/Widgets/ItemPositionStatementActionBar";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -94,6 +95,8 @@ export default class EditPositionAboutCandidateModal extends Component {
   }
 
   render () {
+    renderLog(__filename);
+
     // This is the position we are editing
     var position = this.props.position;
     // The owner of this position

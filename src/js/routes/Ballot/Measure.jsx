@@ -4,6 +4,7 @@ import { capitalizeString } from "../../utils/textFormat";
 import GuideList from "../../components/VoterGuide/GuideList";
 import Helmet from "react-helmet";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import MeasureItem from "../../components/Ballot/MeasureItem";
 import MeasureActions from "../../actions/MeasureActions";
 import MeasureStore from "../../stores/MeasureStore";
@@ -15,7 +16,7 @@ import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 import SearchAllActions from "../../actions/SearchAllActions";
-const web_app_config = require("../../config");
+import webAppConfig from "../../config";
 
 
 export default class Measure extends Component {
@@ -106,6 +107,8 @@ export default class Measure extends Component {
   }
 
   render () {
+    renderLog(__filename);
+
     const electionId = VoterStore.election_id();
     const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to listen to related to this measure.";
 
@@ -121,7 +124,7 @@ export default class Measure extends Component {
     let titleText = measureName + " - We Vote";
     let descriptionText = "Information about " + measureName;
     let voter = VoterStore.getVoter();
-    let measureAdminEditUrl = web_app_config.WE_VOTE_SERVER_ROOT_URL + "m/" + this.state.measure.id + "/edit/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
+    let measureAdminEditUrl = webAppConfig.WE_VOTE_SERVER_ROOT_URL + "m/" + this.state.measure.id + "/edit/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
 
     return <section className="card">
       <Helmet title={titleText}

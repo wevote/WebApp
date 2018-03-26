@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { _ } from "lodash";
 import Helmet from "react-helmet";
+import { renderLog } from "../../utils/logging";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import GuideList from "./GuideList";
 import LoadingWheel from "../LoadingWheel";
 import VoterStore from "../../stores/VoterStore";
-var _ = require("lodash");
 
 export default class VoterGuideFollowers extends Component {
   static propTypes = {
@@ -81,13 +82,13 @@ export default class VoterGuideFollowers extends Component {
     }
   }
 
-
   render () {
+    renderLog(__filename);
     if (!this.state.voter || !this.state.organization) {
       return <div>{LoadingWheel}</div>;
     }
 
-    var voter_guide_followers_list = [];
+    let voter_guide_followers_list = [];
     if (!this.state.search_filter) {
       voter_guide_followers_list = this.state.voter_guide_followers_list;
       // console.log("VoterGuideFollowers, voter_guide_followers_list: ", voter_guide_followers_list);

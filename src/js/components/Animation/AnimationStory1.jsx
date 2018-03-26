@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { cordovaDot } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 
 export default class AnimationStory1 extends Component {
   static propTypes = {
@@ -15,6 +16,7 @@ export default class AnimationStory1 extends Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div className="intro-story__background background--image1">
       <div className="intro-story__h1">Welcome to We&nbsp;Vote!</div>
       <div><img className="center-block intro-story__img-height" src={cordovaDot("/img/global/intro-story/slide1-blank-ballot-300x315.svg")}/></div>

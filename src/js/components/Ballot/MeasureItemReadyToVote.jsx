@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { cordovaDot } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
@@ -21,7 +22,7 @@ export default class MeasureItemReadyToVote extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {transitioning: false, showModal: false};
+    this.state = { transitioning: false, showModal: false };
   }
 
   componentDidMount () {
@@ -36,7 +37,7 @@ export default class MeasureItemReadyToVote extends Component {
     this.supportStoreListener.remove();
   }
 
-  onVoterGuideStoreChange (){
+  onVoterGuideStoreChange () {
     // We just want to trigger a re-render
     this.setState({ transitioning: false });
     // console.log("onVoterGuideStoreChange");
@@ -45,7 +46,9 @@ export default class MeasureItemReadyToVote extends Component {
   onSupportStoreChange () {
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id), transitioning: false });
   }
+
   render () {
+    renderLog(__filename);
     const { supportProps } = this.state;
 
     let { ballot_item_display_name,

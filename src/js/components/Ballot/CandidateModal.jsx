@@ -8,6 +8,7 @@ import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
 import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPositionBreakdownList";
+import { renderLog } from "../../utils/logging";
 import PositionList from "../../components/Ballot/PositionList";
 import SupportStore from "../../stores/SupportStore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
@@ -54,7 +55,7 @@ export default class CandidateModal extends Component {
     this.voterGuideStoreListener.remove();
   }
 
-  onCandidateStoreChange (){
+  onCandidateStoreChange () {
     // console.log("CandidateModal onCandidateStoreChange");
     this.setState({
       position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(this.props.candidate.we_vote_id),
@@ -63,7 +64,7 @@ export default class CandidateModal extends Component {
   }
 
   onSupportStoreChange () {
-    var candidateSupportProps = SupportStore.get(this.props.candidate.we_vote_id);
+    let candidateSupportProps = SupportStore.get(this.props.candidate.we_vote_id);
     if (candidateSupportProps !== undefined) {
       this.setState({ candidateSupportProps: candidateSupportProps });
     }
@@ -82,11 +83,13 @@ export default class CandidateModal extends Component {
     });
   }
 
-  togglePositionStatement (){
-    this.setState({hide_position_statement: !this.state.hide_position_statement});
+  togglePositionStatement () {
+    this.setState({ hide_position_statement: !this.state.hide_position_statement });
   }
 
   render () {
+    renderLog(__filename);
+
     let is_support = false;
     let is_oppose = false;
     let voter_statement_text = false;

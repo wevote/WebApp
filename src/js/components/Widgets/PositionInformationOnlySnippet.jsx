@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Icon from "react-svg-icons";
 import ReactPlayer from "react-player";
+import { renderLog } from "../../utils/logging";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import ReadMore from "../../components/Widgets/ReadMore";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
 import { vimeo_reg, youtube_reg } from "../../utils/textFormat";
-var Icon = require("react-svg-icons");
+
 
 // import ViewSourceModal from "../../components/Widgets/ViewSourceModal";
 
@@ -40,6 +42,7 @@ export default class PositionInformationOnlySnippet extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let className;
     let alt;
     let positionLabel;

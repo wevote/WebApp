@@ -8,6 +8,7 @@ import FacebookStore from "../../stores/FacebookStore";
 import { historyPush, isCordova, isWebApp } from "../../utils/cordovaUtils";
 import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 import LoadingWheel from "../../components/LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import TwitterActions from "../../actions/TwitterActions";
 import TwitterSignIn from "../../components/Twitter/TwitterSignIn";
 import VoterActions from "../../actions/VoterActions";
@@ -141,6 +142,7 @@ export default class SignIn extends Component {
   }
 
   render () {
+    renderLog(__filename);
     if (!this.state.voter) {
       return LoadingWheel;
     }

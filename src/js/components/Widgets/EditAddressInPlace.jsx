@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import AddressBox from "../AddressBox";
 import { calculateBallotBaseUrl, shortenText } from "../../utils/textFormat";
+import { renderLog } from "../../utils/logging";
 
 export default class EditAddressInPlace extends Component {
   static propTypes = {
@@ -42,6 +43,7 @@ export default class EditAddressInPlace extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let noAddressMessage = this.props.noAddressMessage ? this.props.noAddressMessage : "- no address entered -";
     let maximumAddressDisplayLength = 60;
     let ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);

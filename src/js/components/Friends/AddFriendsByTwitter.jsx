@@ -4,6 +4,7 @@ import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../LoadingWheel";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
+import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 
 /* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/89479679 */
@@ -119,6 +120,7 @@ export default class AddFriendsByTwitter extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let { loading } = this.state;
     if (loading) {
       return LoadingWheel;

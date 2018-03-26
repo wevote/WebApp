@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { ProgressBar } from "react-bootstrap";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
+import { renderLog } from "../../utils/logging";
 
 export default class PledgeToSupportOrganizationStatusBar extends Component {
   static propTypes = {
@@ -44,6 +45,7 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let turned_off = true; // We don't want to use the status bar yet
     if (turned_off) {
       return null;

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../LoadingWheel";
+import { renderLog } from "../../utils/logging";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
 import VoterStore from "../../stores/VoterStore";
@@ -176,6 +177,7 @@ export default class AddFriendsByEmail extends Component {
   }
 
 	render () {
+    renderLog(__filename);
     var { loading } = this.state;
     if (loading){
       return LoadingWheel;

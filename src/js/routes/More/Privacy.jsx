@@ -1,5 +1,6 @@
 import React from "react";
 import Helmet from "react-helmet";
+import { renderLog } from "../../utils/logging";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 
 export default class Privacy extends React.Component {
@@ -12,6 +13,7 @@ export default class Privacy extends React.Component {
   }
 
   render () {
+    renderLog(__filename);
     return <div>
       <Helmet title="Privacy Policy - We Vote" />
       <div className="container-fluid well">
