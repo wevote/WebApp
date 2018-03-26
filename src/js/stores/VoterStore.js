@@ -1,6 +1,6 @@
 import { ReduceStore } from "flux/utils";
 import BallotActions from "../actions/BallotActions";
-// import BookmarkActions from "../actions/BookmarkActions";
+import BookmarkActions from "../actions/BookmarkActions";
 import Dispatcher from "../dispatcher/Dispatcher";
 import FacebookActions from "../actions/FacebookActions";
 import FacebookStore from "../stores/FacebookStore";
