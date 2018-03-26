@@ -584,8 +584,8 @@ class IssueStore extends ReduceStore {
         };
 
       case "voterSignOut":
-        console.log("resetting IssueStore");
-        return this.resetState(); 
+        // console.log("resetting IssueStore");
+        return this.resetState();
 
       default:
         return state;

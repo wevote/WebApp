@@ -490,24 +490,9 @@ class VoterStore extends ReduceStore {
         };
 
       case "voterSignOut":
-        console.log("resetting voterStore");
+        // console.log("resetting voterStore");
         VoterActions.voterRetrieve();
         VoterActions.voterEmailAddressRetrieve();
-        // BookmarkActions.voterAllBookmarksStatusRetrieve();
-        // FriendActions.currentFriends();
-        // FriendActions.friendInvitationsSentByMe();
-        // FriendActions.friendInvitationsSentToMe();
-        // FriendActions.friendInvitationsProcessed();
-        // BallotActions.voterBallotItemsRetrieve();
-        // return {
-        //   ...state,
-        //   email_address_status: {
-        //     email_ownership_is_verified: false,
-        //     email_secret_key_belongs_to_this_voter: false,
-        //     email_verify_attempted: false,
-        //     email_address_found: false,
-        //   },
-        // };
         return this.resetState();
 
       case "voterTwitterSaveToCurrentAccount":

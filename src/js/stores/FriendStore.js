@@ -255,12 +255,12 @@ class FriendStore extends ReduceStore {
         };
 
       case "voterSignOut":
-        console.log("resetting FriendStore");
+        // console.log("resetting FriendStore");
         FriendActions.currentFriends();
         FriendActions.friendInvitationsSentByMe();
         FriendActions.friendInvitationsSentToMe();
         FriendActions.friendInvitationsProcessed();
-        return this.resetState();  
+        return this.resetState();
 
       default:
         return state;

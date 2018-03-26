@@ -582,7 +582,7 @@ class OrganizationStore extends ReduceStore {
         };
 
       case "voterSignOut":
-        console.log("resetting OrganicationStore");
+        // console.log("resetting OrganicationStore");
         return this.resetState();
 
       default:

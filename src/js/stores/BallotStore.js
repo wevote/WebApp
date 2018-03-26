@@ -288,7 +288,7 @@ class BallotStore extends ReduceStore {
         };
 
       case "voterSignOut":
-        console.log("resetting BallotStore");
+        // console.log("resetting BallotStore");
         BallotActions.voterBallotItemsRetrieve();
         return this.resetState();
 

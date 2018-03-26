@@ -179,7 +179,7 @@ class SupportStore extends ReduceStore {
         };
 
       case "voterSignOut":
-        console.log("resetting SupportStore");
+        // console.log("resetting SupportStore");
         return this.resetState();
 
       default:

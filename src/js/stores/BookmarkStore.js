@@ -45,7 +45,7 @@ class BookmarkStore extends ReduceStore {
         return state;
 
       case "voterSignOut":
-        console.log("resetting BookmarkStore");
+        // console.log("resetting BookmarkStore");
         BookmarkActions.voterAllBookmarksStatusRetrieve();
         return this.resetState();
 

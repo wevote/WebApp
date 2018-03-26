@@ -148,7 +148,7 @@ class TwitterStore extends ReduceStore {
         };
 
       case "voterSignOut":
-        console.log("resetting TwitterStore");
+        // console.log("resetting TwitterStore");
         return this.resetState();
 
       default:

@@ -69,7 +69,7 @@ class DonateStore extends ReduceStore {
         };
 
       case "voterSignOut":
-        console.log("resetting DonateStore");
+        // console.log("resetting DonateStore");
         return this.resetState();
 
       default:

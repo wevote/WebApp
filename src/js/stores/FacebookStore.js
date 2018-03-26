@@ -212,7 +212,7 @@ class FacebookStore extends ReduceStore {
         return state;
 
       case "voterSignOut":
-        console.log("resetting FacebookStore");
+        // console.log("resetting FacebookStore");
         return {
           authData: {},
           pictureData: {},
