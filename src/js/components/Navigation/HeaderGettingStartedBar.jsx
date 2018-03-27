@@ -296,10 +296,18 @@ export default class HeaderGettingStartedBar extends Component {
                                    facebookIcon
                                     />
             </div>}
-            <GettingStartedBarItem url={twitterIntent}
-                                   title="Tweet Ballot"
-                                   twitterIcon
-                                   isExternal/>
+            <span className="visible-xs">
+              <GettingStartedBarItem url={twitterIntent}
+                                     title="Tweet"
+                                     twitterIcon
+                                     isExternal/>
+            </span>
+            <span className="hidden-xs">
+              <GettingStartedBarItem url={twitterIntent}
+                                     title="Tweet Ballot"
+                                     twitterIcon
+                                     isExternal/>
+            </span>
             {/* February 2018, Facebook and Magic Email disabled for Cordova -- In this case it is the PollingLocator with the iFrame */}
             { isWebApp() && <div>
               <GettingStartedBarItem show={this._openPollingLocatorModal}
