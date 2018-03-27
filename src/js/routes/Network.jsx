@@ -175,11 +175,14 @@ export default class Network extends Component {
                 <TwitterSignIn buttonText="Find" className="btn btn-social btn-md btn-twitter" />
               </div>
             }
-            <div className="network-btn">
-              <Link to="/facebook_invitable_friends" className="btn btn-social btn-md btn-facebook">
-                <i className="fa fa-facebook" />Choose
-              </Link>
-            </div>
+            {/* February 2018, Facebook and Magic Email disabled for Cordova */}
+            {isWebApp() &&
+              <div className="network-btn">
+                <Link to="/facebook_invitable_friends" className="btn btn-social btn-md btn-facebook">
+                  <i className="fa fa-facebook"/>Choose
+                </Link>
+              </div>
+            }
             <div className="network-btn">
               <Link to="/friends/invitebyemail" className="btn btn-social btn-md btn--email">
                 <i className="fa fa-envelope" />Invite
