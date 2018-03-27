@@ -23,14 +23,17 @@ export default class SelectVoterGuidesSideBarLink extends Component {
     let label_in_sentence_case = capitalizeString(this.props.label);
     let subtitle_in_sentence_case = sentenceCaseString(this.props.subtitle);
 
-    return <div className="SettingsItem__summary__item-container" >
-      <div>
-        <Link to={this.props.linkTo} className="BallotItem__summary__item" >
-          <span className="SettingsItem__summary__item__display-name">{label_in_sentence_case}</span>
-          { this.props.displaySubtitles ?
-            <span className="SettingsItem__summary__item__subtitle"><br /> {subtitle_in_sentence_case}</span> : null }
-        </Link>
-      </div>
-    </div>;
+    return <span>{label_in_sentence_case && label_in_sentence_case !== "" ?
+      <div className="SettingsItem__summary__item-container">
+        <div>
+          <Link to={this.props.linkTo} className="BallotItem__summary__item">
+            <span className="SettingsItem__summary__item__display-name">{label_in_sentence_case}</span>
+            { this.props.displaySubtitles ?
+              <span className="SettingsItem__summary__item__subtitle"><br /> {subtitle_in_sentence_case}</span> : null }
+          </Link>
+        </div>
+      </div> :
+      null
+      }</span>;
   }
 }

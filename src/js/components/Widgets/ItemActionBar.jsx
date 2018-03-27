@@ -27,25 +27,49 @@ export default class ItemActionBar extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      is_oppose_local_state: undefined,
+      is_support_local_state: undefined,
       showSupportOrOpposeHelpModal: false,
       supportProps: this.props.supportProps,
       transitioning: false,
     };
-  }
-
-  componentDidMount () {
     this.toggleSupportOrOpposeHelpModal = this.toggleSupportOrOpposeHelpModal.bind(this);
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentDidMount () {
+    let is_oppose_local_state;
+    let is_support_local_state;
+    if (this.props.supportProps) {
+      is_oppose_local_state = this.props.supportProps.is_oppose;
+      is_support_local_state = this.props.supportProps.is_support;
+    }
     this.setState({
-      transitioning: false,
+      is_oppose_local_state: is_oppose_local_state,
+      is_support_local_state: is_support_local_state,
+    });
+  }
+
+  componentWillReceiveProps (nextProps) {
+    let is_oppose_local_state;
+    let is_support_local_state;
+    if (nextProps.supportProps) {
+      is_oppose_local_state = nextProps.supportProps.is_oppose;
+      is_support_local_state = nextProps.supportProps.is_support;
+    }
+    this.setState({
+      is_oppose_local_state: is_oppose_local_state,
+      is_support_local_state: is_support_local_state,
       supportProps: nextProps.supportProps,
+      transitioning: false,
     });
   }
 
   supportItem (is_support) {
     if (is_support) {this.stopSupportingItem(); return;}
+    this.setState({
+      is_oppose_local_state: false,
+      is_support_local_state: true,
+    });
     if (this.state.transitioning){ return; }
     let support_oppose_modal_has_been_shown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
     if (!support_oppose_modal_has_been_shown) {
@@ -53,19 +77,31 @@ export default class ItemActionBar extends Component {
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
     }
     SupportActions.voterSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
-    this.setState({transitioning: true});
+    this.setState({
+      transitioning: true,
+    });
     showToastSuccess("Support added!");
   }
 
   stopSupportingItem () {
+    this.setState({
+      is_oppose_local_state: false,
+      is_support_local_state: false,
+    });
     if (this.state.transitioning){ return; }
     SupportActions.voterStopSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
-    this.setState({transitioning: true});
+    this.setState({
+      transitioning: true,
+    });
     showToastSuccess("Support removed!");
   }
 
   opposeItem (is_oppose) {
     if (is_oppose) {this.stopOpposingItem(); return;}
+    this.setState({
+      is_oppose_local_state: true,
+      is_support_local_state: false,
+    });
     if (this.state.transitioning){ return; }
     let support_oppose_modal_has_been_shown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
     if (!support_oppose_modal_has_been_shown) {
@@ -73,17 +109,25 @@ export default class ItemActionBar extends Component {
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
     }
     SupportActions.voterOpposingSave(this.props.ballot_item_we_vote_id, this.props.type);
-    this.setState({ transitioning: true });
+    this.setState({
+      transitioning: true,
+    });
     showToastError("Opposition added!");
   }
 
   stopOpposingItem () {
+    this.setState({
+      is_oppose_local_state: false,
+      is_support_local_state: false,
+    });
     if (this.state.transitioning) {
       return;
     }
 
     SupportActions.voterStopOpposingSave(this.props.ballot_item_we_vote_id, this.props.type);
-    this.setState({ transitioning: true });
+    this.setState({
+      transitioning: true,
+    });
     showToastError("Opposition removed!");
   }
 
@@ -101,9 +145,11 @@ export default class ItemActionBar extends Component {
       return null;
     }
 
-    let {support_count, oppose_count, is_support, is_oppose } = this.props.supportProps;
-    if (support_count === undefined || oppose_count === undefined || is_support === undefined || is_oppose === undefined){
-      // console.log("ItemActionBar, support_count: ", support_count, ", oppose_count: ", oppose_count, ", is_support: ", is_support, ", or is_oppose: ", is_oppose, "");
+    let {support_count, oppose_count } = this.props.supportProps;
+    if (support_count === undefined ||
+      oppose_count === undefined ||
+      this.state.is_support_local_state === undefined ||
+      this.state.is_oppose_local_state === undefined) {
       return null;
     }
     let is_public_position = false;
@@ -113,8 +159,8 @@ export default class ItemActionBar extends Component {
     const icon_size = 18;
     let icon_color = "#999";
     // TODO Refactor the way we color the icons
-    let support_icon_color = is_support ? "white" : "#999";
-    let oppose_icon_color = is_oppose ? "white" : "#999";
+    let support_icon_color = this.state.is_support_local_state ? "white" : "#999";
+    let oppose_icon_color = this.state.is_oppose_local_state ? "white" : "#999";
     let url_being_shared;
     if (this.props.type === "CANDIDATE") {
       url_being_shared = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + "/candidate/" + this.props.ballot_item_we_vote_id;
@@ -190,14 +236,14 @@ export default class ItemActionBar extends Component {
       opposeButtonUnselectedPopOverText += ".";
     }
 
-    const supportButtonPopoverTooltip = <Tooltip id="supportButtonTooltip">{is_support ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }</Tooltip>;
-    const opposeButtonPopoverTooltip = <Tooltip id="opposeButtonTooltip">{is_oppose ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}</Tooltip>;
+    const supportButtonPopoverTooltip = <Tooltip id="supportButtonTooltip">{this.state.is_support_local_state ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }</Tooltip>;
+    const opposeButtonPopoverTooltip = <Tooltip id="opposeButtonTooltip">{this.state.is_oppose_local_state ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}</Tooltip>;
 
-    const supportButton = <button className={"item-actionbar__btn item-actionbar__btn--support btn btn-default" + (is_support ? " support-at-state" : "")} onClick={this.supportItem.bind(this, is_support)}>
+    const supportButton = <button className={"item-actionbar__btn item-actionbar__btn--support btn btn-default" + (this.state.is_support_local_state ? " support-at-state" : "")} onClick={this.supportItem.bind(this, this.state.is_support_local_state)}>
       <span className="btn__icon">
         <Icon name="thumbs-up-icon" width={icon_size} height={icon_size} color={support_icon_color} />
       </span>
-      { is_support ?
+      { this.state.is_support_local_state ?
         <span
           className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label item-actionbar__position-at-state" }>Support</span> :
         <span
@@ -205,11 +251,11 @@ export default class ItemActionBar extends Component {
       }
     </button>;
 
-    const opposeButton = <button className={(this.props.opposeHideInMobile ? "hidden-xs " : "") + "item-actionbar__btn item-actionbar__btn--oppose btn btn-default" + (is_oppose ? " oppose-at-state" : "")} onClick={this.opposeItem.bind(this, is_oppose)}>
+    const opposeButton = <button className={(this.props.opposeHideInMobile ? "hidden-xs " : "") + "item-actionbar__btn item-actionbar__btn--oppose btn btn-default" + (this.state.is_oppose_local_state ? " oppose-at-state" : "")} onClick={this.opposeItem.bind(this, this.state.is_oppose_local_state)}>
       <span className="btn__icon">
         <Icon name="thumbs-down-icon" width={icon_size} height={icon_size} color={oppose_icon_color} />
       </span>
-      { is_oppose ?
+      { this.state.is_oppose_local_state ?
         <span
           className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label item-actionbar__position-at-state" }>Oppose</span> :
         <span

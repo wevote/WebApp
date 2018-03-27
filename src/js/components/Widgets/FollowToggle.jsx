@@ -69,8 +69,12 @@ export default class FollowToggle extends Component {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-  toggleFollow () {
-    this.state.is_following = !this.state.is_following;
+  startFollowingLocalState () {
+    this.setState({ is_following: true });
+  }
+
+  stopFollowingLocalState () {
+    this.setState({ is_following: false });
   }
 
   render () {
@@ -79,7 +83,6 @@ export default class FollowToggle extends Component {
 
     let { we_vote_id, organization_for_display } = this.props;
     let classNameOverride = this.props.classNameOverride || "";
-    let { is_following } = this.state;
 
     let is_looking_at_self = this.state.voter.linked_organization_we_vote_id === we_vote_id;
     // You should not be able to follow yourself
@@ -95,9 +98,9 @@ export default class FollowToggle extends Component {
         let organization_name = this.state.organization.organization_name;
         toast_message = "You've stopped listening to " + organization_name + "'s opinions!";
       }
-      is_following = false;
       stopFollowingFunc();
       showToastError(toast_message);
+      this.stopFollowingLocalState();
     };
     const followInstantly = () => {
       let toast_message = "Now listening to this organization's opinions!";
@@ -106,9 +109,9 @@ export default class FollowToggle extends Component {
         let organization_name = this.state.organization.organization_name;
         toast_message = "Now listening to " + organization_name + "'s opinions!";
       }
-      is_following = true;
       followFunc();
       showToastSuccess(toast_message);
+      this.startFollowingLocalState();
     };
 
     // NOTE: We want to leave this as showing only if this.props.organization_for_display comes in
@@ -122,7 +125,7 @@ export default class FollowToggle extends Component {
       </span>;
     }
 
-    return is_following ?
+    return this.state.is_following ?
       <span className="hidden-print">
         { this.props.hide_stop_following_button ?
           null :

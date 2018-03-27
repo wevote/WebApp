@@ -170,11 +170,13 @@ module.exports = {
 
   voterFacebookSignInPhoto: function (facebook_user_id, data) {
     // console.log("FacebookActions voterFacebookSignInPhoto, data:", data);
-    Dispatcher.loadEndpoint("voterFacebookSignInSave", {
-      facebook_user_id: facebook_user_id || false,
-      facebook_profile_image_url_https: data.url || false,
-      save_photo_data: true,
-    });
+    if (data) {
+      Dispatcher.loadEndpoint("voterFacebookSignInSave", {
+        facebook_user_id: facebook_user_id || false,
+        facebook_profile_image_url_https: data.url || false,
+        save_photo_data: true,
+      });
+    }
   },
 
   voterFacebookSignInRetrieve: function (){
