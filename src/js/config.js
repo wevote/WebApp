@@ -9,6 +9,12 @@ module.exports = {
 
   DEBUG_MODE: false,
 
+  LOG_RENDER_EVENTS: false,
+  LOG_ONLY_FIRST_RENDER_EVENTS: false,
+  LOG_HTTP_REQUESTS: false,
+  LOG_ROUTING: false,
+  LOG_SIGNIN_STEPS: false,
+
   // Use 1 or 0 as opposed to true or false
   test: {
     use_test_election: 0,
@@ -21,6 +27,4 @@ module.exports = {
   FACEBOOK_APP_ID: "",
 
   STRIPE_API_KEY: "",
-
-  IS_CORDOVA: false,
 };
