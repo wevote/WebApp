@@ -1,11 +1,7 @@
-// Note that we import these values into "webAppConfig" (so we can search for it)
+// Note that we import these values where needed as "webAppConfig"
 module.exports = {
   WE_VOTE_URL_PROTOCOL: "http://",  // "http://" for local dev or "https://" for live server
   WE_VOTE_HOSTNAME: "localhost:3000",  // This should be without "http...". This is "WeVote.US" on live server.
-
-  // WE_VOTE_SERVER_ROOT_URL: "http://localhost:8000/",
-  // WE_VOTE_SERVER_ADMIN_ROOT_URL: "http://localhost:8000/admin/",
-  // WE_VOTE_SERVER_API_ROOT_URL: "http://localhost:8000/apis/v1/",
 
   WE_VOTE_SERVER_ROOT_URL: "https://api.wevoteusa.org/",
   WE_VOTE_SERVER_ADMIN_ROOT_URL: "https://api.wevoteusa.org/admin/",
@@ -13,11 +9,11 @@ module.exports = {
 
   DEBUG_MODE: false,
 
-  LOG_RENDER_EVENTS: true,
-  LOG_ONLY_FIRST_RENDER_EVENTS: true,
-  LOG_HTTP_REQUESTS: true,
-  LOG_ROUTING: true,
-  LOG_SIGNIN_STEPS: true,
+  LOG_RENDER_EVENTS: false,
+  LOG_ONLY_FIRST_RENDER_EVENTS: false,
+  LOG_HTTP_REQUESTS: false,
+  LOG_ROUTING: false,
+  LOG_SIGNIN_STEPS: false,
 
   // Use 1 or 0 as opposed to true or false
   test: {
@@ -28,7 +24,7 @@ module.exports = {
     text_for_map_search: "",
   },
 
-  FACEBOOK_APP_ID: "1097389196952441",
+  FACEBOOK_APP_ID: "",
 
-  STRIPE_API_KEY: "pk_test_bWuWGC3jrMIFH3wvRvHR6Z5H",
+  STRIPE_API_KEY: "",
 };
