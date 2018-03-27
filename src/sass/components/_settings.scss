@@ -1,4 +1,5 @@
 $selected-border-left-space: 2px;
+$bottomPaddingCordova: 150px;
 
 .SettingsItem {
   position: relative;
@@ -68,4 +69,8 @@ $selected-border-left-space: 2px;
       }
     }
   }
+}
+
+.SettingsCardBottomCordova {
+  padding-bottom: $bottomPaddingCordova;
 }

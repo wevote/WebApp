@@ -49,6 +49,7 @@ export default class Application extends Component {
     this.state = {
       // Do not define voter here. We rely on it being undefined
       voter_initial_retrieve_needed: true,
+      showFooter: true,
     };
     this.loadedHeader = false;
     this.initFacebook();
@@ -137,11 +138,19 @@ export default class Application extends Component {
     // Preload Issue images. Note that for brand new browsers that don't have a voterDeviceId yet, we retrieve all issues
     IssueActions.retrieveIssuesToFollow();
     this.issueStoreListener = IssueStore.addListener(this.preloadIssueImages);
+    if (isCordova()) {
+      window.addEventListener("keyboardDidShow", this.keyboardDidShow.bind(this));
+      window.addEventListener("keyboardDidHide", this.keyboardDidHide.bind(this));
+    }
   }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
     this.loadedHeader = false;
+    if (isCordova()) {
+      this.keyboardDidShow.removeEventListener();
+      this.keyboardDidHide.removeEventListener();
+    }
   }
 
   componentDidUpdate () {
@@ -150,18 +159,36 @@ export default class Application extends Component {
     if (this.loadedHeader) return;
     if (!this.refs.pageHeader) return;
 
-    // Initialize headroom element
-    new Headroom(this.refs.pageHeader, {
-      offset: 20,
-      tolerance: 1,
-      classes: {
-        initial: "headroom--animated",
-        pinned: "headroom--slide-down",
-        unpinned: "headroom--slide-up",
-      },
-    }).init();
+    if (isWebApp()) {
+      // Initialize headroom element
+      new Headroom(this.refs.pageHeader, {
+        offset: 20,
+        tolerance: 1,
+        classes: {
+          initial: "headroom--animated",
+          pinned: "headroom--slide-down",
+          unpinned: "headroom--slide-up",
+        },
+      }).init();
+    }
 
     this.loadedHeader = true;
+  }
+
+  keyboardDidShow () {
+    this.setState({
+      showFooter: false,
+    });
+
+    // March 26, 2018, these might be valuable when we polish scrolling after selecting an entry field on phones
+    // document.activeElement.scrollTop -= 60;
+    // document.activeElement.scrollIntoView();
+  }
+
+  keyboardDidHide () {
+    this.setState({
+      showFooter: true,
+    });
   }
 
   _onVoterStoreChange () {
@@ -364,6 +391,8 @@ export default class Application extends Component {
       pageHeaderStyle += " page-header-cordova";
     }
 
+    let footerStyle = this.state.showFooter ? "footroom-wrapper" : "footroom-wrapper__hide";
+
     if (inTheaterMode) {
       return <div className="app-base" id="app-base-id">
         <div className="page-content-container">
@@ -402,7 +431,7 @@ export default class Application extends Component {
           </div>
         </div>
         { isCordova() &&
-          <div className={"footroom-wrapper"}>
+          <div className={footerStyle}>
             <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter}/>
           </div>
         }
@@ -427,7 +456,7 @@ export default class Application extends Component {
           </div>
         </div>
         { isCordova() &&
-          <div className={"footroom-wrapper"}>
+          <div className={footerStyle }>
             <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter}/>
           </div>
         }
@@ -462,7 +491,7 @@ export default class Application extends Component {
         </div>
       }
       { isCordova() &&
-        <div className={"footroom-wrapper"}>
+        <div className={footerStyle}>
           <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter}/>
         </div>
       }
