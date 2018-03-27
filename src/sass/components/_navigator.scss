@@ -215,6 +215,7 @@ $transparent-background: transparent;
     background: #fff;
     overflow: hidden;
     height: 34px;
+    width: 34px;
     display: block;
   }
   &__avatar-wrapper {
@@ -350,7 +351,7 @@ $transparent-background: transparent;
     padding-top: $space-xs !important;
     vertical-align: middle !important;
     width: 75%;
-    font-size: 1.6rem;
+    font-size: 1.3rem;
   }
   &__right {
     padding: $space-md;

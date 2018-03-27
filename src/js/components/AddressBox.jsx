@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import BallotStore from "../stores/BallotStore";
 import { historyPush } from "../utils/cordovaUtils";
+import { isCordova } from "../utils/cordovaUtils";
 import LoadingWheel from "../components/LoadingWheel";
 import { renderLog } from "../utils/logging";
 import VoterActions from "../actions/VoterActions";
@@ -121,7 +122,7 @@ export default class AddressBox extends Component {
             className="form-control"
             ref="autocomplete"
             placeholder="Enter address where you are registered to vote"
-            autoFocus
+            autoFocus={!isCordova()}
           />
         </form>
         <div>

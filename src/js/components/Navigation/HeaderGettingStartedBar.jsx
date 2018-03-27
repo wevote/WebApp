@@ -267,7 +267,7 @@ export default class HeaderGettingStartedBar extends Component {
     let ballotBaseUrl = webAppConfig.WE_VOTE_URL_PROTOCOL + (isWebApp() ? webAppConfig.WE_VOTE_HOSTNAME : "WeVote.US") + currentPathname;
 
     // We want to add a tracking code here so we can count shares. Vote.org does it this way: https://www.vote.org/#.WpiRvFhU3V4.twitter
-    let encodedMessage = encodeURIComponent("I am reviewing my ballot, and getting ready to vote @WeVote.");
+    let encodedMessage = encodeURIComponent("I am getting ready to vote @WeVote. Join me!");
     let twitterIntent = "https://twitter.com/intent/tweet?url=" + encodeURIComponent(ballotBaseUrl) + "&text=" + encodedMessage + "&hashtags=Vote,Voting,WeVote";
     let searchStyle = isWebApp() ? "page-getting-started-header" : "page-getting-started-header page-header-cordova-getting-started";
 

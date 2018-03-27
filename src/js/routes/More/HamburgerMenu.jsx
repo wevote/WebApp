@@ -74,7 +74,8 @@ export default class HamburgerMenu extends Component {
 
           <HamburgerMenuRow onClickAction={null}
                             to={"/settings/profile"}
-                            fullIcon={this.yourAccountIcon(this.state.voter.voter_photo_url_medium)}
+                            icon={"fa fa-address-card"}
+                            iconStyle={{ fontSize: 28, color: "#1c2f4b" }}
                             linkText={"Your Profile"} />
 
           {isSignedIn ?
@@ -90,35 +91,35 @@ export default class HamburgerMenu extends Component {
 
           <HamburgerMenuRow onClickAction={null}
                             to={"/settings/address"}
-                            icon={"fa fa-address-card"}
-                            iconStyle={{ fontSize: 24, color: "#1c2f4b" }}
+                            icon={"fa fa-home"}
+                            iconStyle={{ fontSize: 30, color: "#1c2f4b" }}
                             linkText={"Your Address"} />
 
           <HamburgerMenuRow onClickAction={null}
                             to={"/settings/election"}
-                            icon={"fa fa-adjust"}
-                            iconStyle={{ fontSize: 28, color: "teal" }}
+                            icon={"fa fa-cog"}
+                            iconStyle={{ fontSize: 28, color: "#1c2f4b" }}
                             linkText={"Change Election"} />
 
           { bookmarks && bookmarks.length ?
             <HamburgerMenuRow onClickAction={null}
                               to={"/bookmarks"}
                               icon={"fa fa-bookmark"}
-                              iconStyle={{ fontSize: 28, color: "green" }}
+                              iconStyle={{ fontSize: 28, color: "#1c2f4b" }}
                               linkText={"Your Bookmarked Items"} /> : null
           }
 
           <HamburgerMenuRow onClickAction={null}
                             to={"/settings/voterguidesmenu"}
                             icon={"fa fa-list"}
-                            iconStyle={{ fontSize: 20, color: "#1c2f4b" }}
+                            iconStyle={{ fontSize: 24, color: "#1c2f4b" }}
                             linkText={"Your Voter Guides"} />
 
           {isSignedIn ?
             <HamburgerMenuRow onClickAction={null}
                               to={"/settings/notifications"}
-                              icon={"fa fa-arrow-circle-right"}
-                              iconStyle={{ fontSize: 28, color: "green" }}
+                              icon={"fa fa-bell"}
+                              iconStyle={{ fontSize: 26, color: "#1c2f4b" }}
                               linkText={"Notification Settings"}/> :
             null
           }
@@ -126,14 +127,14 @@ export default class HamburgerMenu extends Component {
           <HamburgerMenuRow onClickAction={null}
                             to={"/more/about"}
                             icon={"fa fa-users"}
-                            iconStyle={{ fontSize: 20, color: "#1c2f4b" }}
+                            iconStyle={{ fontSize: 22, color: "#1c2f4b" }}
                             linkText={"About We Vote"} />
 
           {isSignedIn ?
             <HamburgerMenuRow onClickAction={() => VoterSessionActions.voterSignOut()}
                               to={"/more/sign_in"}
                               icon={isSignedIn ? "fa fa-sign-out" : "fa fa-sign-in"}
-                              iconStyle={isSignedIn ? { fontSize: 28, color: "red" } : { fontSize: 28, color: "green" }}
+                              iconStyle={{ fontSize: 28, color: "#1c2f4b" }}
                               linkText={"Sign Out"}/> :
             null
           }
