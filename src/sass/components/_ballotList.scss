@@ -1,3 +1,5 @@
+$ballotBottomPaddingCordova: 300px;  //needed for editable comment on last proposition
+
 .BallotList {
   margin-bottom: $space-xl;
   @include print {
@@ -5,7 +7,7 @@
   }
 
   &__cordova {
-    margin-bottom: $space-xl;
+    padding-bottom: $ballotBottomPaddingCordova;
   }
 }
 

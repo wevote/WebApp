@@ -41,16 +41,19 @@ export default class SettingsDashboard extends Component {
     } else {
       this.setState({ editMode: "address" });
     }
+
     this.setState({ pathname: this.props.location.pathname });
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+
     // Get Voter and Voter's Organization
     let voter = VoterStore.getVoter();
     this.setState({
       voter: voter,
     });
     let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+
     // console.log("SettingsDashboard componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId) {
       VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
@@ -74,6 +77,7 @@ export default class SettingsDashboard extends Component {
       voter: voter,
     });
     let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+
     // console.log("SettingsDashboard componentWillReceiveProps linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
       VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
@@ -89,6 +93,7 @@ export default class SettingsDashboard extends Component {
         OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
       }
     }
+
     if (nextProps.params.edit_mode) {
       this.setState({ editMode: nextProps.params.edit_mode });
     }
@@ -100,7 +105,7 @@ export default class SettingsDashboard extends Component {
     this.voterStoreListener.remove();
   }
 
-  onOrganizationStoreChange (){
+  onOrganizationStoreChange () {
     // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId),
@@ -117,6 +122,7 @@ export default class SettingsDashboard extends Component {
       voter: voter,
     });
     let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+
     // console.log("SettingsDashboard onVoterStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
       OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
@@ -151,7 +157,7 @@ export default class SettingsDashboard extends Component {
     }
 
     // console.log("this.state.organization.organization_banner_url:", this.state.organization.organization_banner_url);
-    return <div className="settings-dashboard">
+    return <div className={ isWebApp() ? "settings-dashboard" : "settings-dashboard SettingsCardBottomCordova" } >
       {/* Header Spacing for Desktop */}
       <div className="col-md-12 hidden-xs hidden-print">
         <SettingsBannerAndOrganizationCard organization={this.state.organization} />

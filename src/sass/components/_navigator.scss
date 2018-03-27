@@ -108,6 +108,9 @@ $transparent-background: transparent;
 
 .footroom-wrapper {
   margin-bottom: $header-height;
+  &__hide {
+    display: none;
+  }
 }
 
 .headroom-getting-started__margin {

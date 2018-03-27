@@ -23,10 +23,7 @@ function startApp () {
     if (window.Keyboard) {
       console.log("Cordova startupApp keyboard plugin found");
       Keyboard.shrinkView(true);                      // eslint-disable-line no-undef
-
-      window.addEventListener("keyboardDidShow", function () {
-        document.activeElement.scrollIntoView();
-      });
+      Keyboard.disableScrollingInShrinkView(true);    // eslint-disable-line no-undef
     } else console.log("ERROR: Cordova index.js startApp keyboard plugin WAS NOT found");
   }
 
