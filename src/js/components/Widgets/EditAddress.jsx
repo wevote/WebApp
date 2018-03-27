@@ -8,13 +8,13 @@ export default class EditAddress extends Component {
   static propTypes = {
     address: PropTypes.object.isRequired,
     toggleSelectAddressModal: PropTypes.func.isRequired,
-    ballot_location_chosen: PropTypes.bool.isRequired,
+    ballot_location_chosen: PropTypes.bool,
     ballot_location_display_name: PropTypes.string,
     election_day_text: PropTypes.string,
-    election_is_upcoming: PropTypes.bool.isRequired,
-    google_civic_data_exists: PropTypes.bool.isRequired,
-    voter_entered_address: PropTypes.bool.isRequired,
-    voter_specific_ballot_from_google_civic: PropTypes.bool.isRequired,
+    election_is_upcoming: PropTypes.bool,
+    google_civic_data_exists: PropTypes.bool,
+    voter_entered_address: PropTypes.bool,
+    voter_specific_ballot_from_google_civic: PropTypes.bool,
   };
 
   constructor (props, context) {
@@ -38,14 +38,15 @@ export default class EditAddress extends Component {
       ballot_location_chosen: this.props.ballot_location_chosen,
       ballot_location_display_name: this.props.ballot_location_display_name,
       election_day_text: this.props.election_day_text,
-      election_is_upcoming: this.props.election_is_upcoming,
+      election_is_upcoming: this.props.election_is_upcoming || false,
       google_civic_data_exists: this.props.google_civic_data_exists,
       show_ballot_status: true,
       text_for_map_search: this.props.address.text_for_map_search || "",
-      voter_entered_address: this.props.voter_entered_address,
+      voter_entered_address: this.props.voter_entered_address || false,
       voter_specific_ballot_from_google_civic: this.props.voter_specific_ballot_from_google_civic,
     });
   }
+
   componentWillReceiveProps (nextProps) {
     // console.log("BallotStatusMessage componentWillReceiveProps");
     this.setState({
@@ -63,13 +64,13 @@ export default class EditAddress extends Component {
 
   render () {
     renderLog(__filename);
-    let no_address_message = "- no address entered -";
-    let edit_address_popover_on = true;
-    let maximum_address_display_length = 30;
+    let noAddressMessage = "- no address entered -";
+    let editAddressPopoverOn = true;
+    let maximumAddressDisplayLength = 30;
 
     return (
       <span className="ballot__date_location">
-        { edit_address_popover_on ?
+        { editAddressPopoverOn ?
           <EditAddressPopover text_for_map_search={this.state.text_for_map_search}
                               placement={"bottom"}
                               onEnterAddressClick={this.props.toggleSelectAddressModal}
@@ -77,11 +78,11 @@ export default class EditAddress extends Component {
                               ballot_location_display_name={this.state.ballot_location_display_name}
                               election_day_text={this.state.election_day_text}
                               election_is_upcoming={this.state.election_is_upcoming}
-                              maxAddressDisplayLength={maximum_address_display_length}
+                              maxAddressDisplayLength={maximumAddressDisplayLength}
                               voter_entered_address={this.state.voter_entered_address}
                               google_civic_data_exists={this.state.google_civic_data_exists}
                               voter_specific_ballot_from_google_civic={this.state.voter_specific_ballot_from_google_civic} /> :
-          <span>{ this.state.text_for_map_search.length ? shortenText(this.state.text_for_map_search, maximum_address_display_length) : no_address_message }</span>
+          <span>{ this.state.text_for_map_search.length ? shortenText(this.state.text_for_map_search, maximumAddressDisplayLength) : noAddressMessage }</span>
         }
         <span className="hidden-print">(<a onClick={this.props.toggleSelectAddressModal}>Edit</a>)</span>
       </span>
