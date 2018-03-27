@@ -156,7 +156,7 @@ export default class Intro extends Component {
       method: "share",
       mobile_iframe: true,
       href: webAppConfig.WE_VOTE_HOSTNAME,
-      quote: "Check out https://WeVote.US! View your ballot, learn from friends, share your vision, and make sure to #Vote. #WeVote via @WeVote",
+      quote: "I am getting ready to vote at We Vote. Join me! https://WeVote.US #Vote #WeVote",
     }, function (response) {
       if (response === undefined || response.error_code === 4201) {
         console.log("Voter Canceled the share request");
@@ -165,20 +165,6 @@ export default class Intro extends Component {
       }
     });
   }
-
-  // shareToTwitterButton () {
-  //   let url = "https://twitter.com/share?url=https%3A%2F%2FWeVote.US%2F%20&text=Check%20out%20https%3A%2F%2FWeVote.US%2F!%20View%20your%20ballot.%20Learn%20from%20friends.%20Share%20your%20vision.%20@WeVote&hashtags=Voting,WeVote";
-  //   let title = "Share On Twitter";
-  //   let default_width = 600;
-  //   let default_height = 600;
-  //   let half_screen_width = screen.width / 2;
-  //   let half_default_width = default_width / 2;
-  //   let half_screen_height = screen.height / 2;
-  //   let half_default_height = default_height / 2;
-  //   var left = half_screen_width - half_default_width;
-  //   var top = half_screen_height - half_default_height;
-  //   return window.open(url, title, "toolbar=no, width=" + default_width + ", height=" + default_height + ", top=" + top + " left=" + left);
-  // }
 
   render () {
     renderLog(__filename);
@@ -201,7 +187,7 @@ export default class Intro extends Component {
     }
 
     let ballotBaseUrl = "https://WeVote.US/welcome";
-    let encodedMessage = encodeURIComponent("I am reviewing my ballot, and getting ready to vote @WeVote.");
+    let encodedMessage = encodeURIComponent("I am getting ready to vote @WeVote. Join me!");
     let twitterIntent = "https://twitter.com/intent/tweet?url=" + encodeURIComponent(ballotBaseUrl) + "&text=" + encodedMessage + "&hashtags=Voting,WeVote";
 
     let localCounter = 0;
