@@ -184,7 +184,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
             onMouseOut={() => this.onTriggerLeave(org_id, visible_tag)}
             className="card-popover"
             title={<span className="visible-xs" onClick={() => this.onTriggerLeave(org_id, visible_tag)}>&nbsp;<span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /> </span>} >
-          
             <OrganizationCard organization={one_organization_for_organization_card}
                               ballotItemWeVoteId={ballot_item_we_vote_id}
                               followToggleOn />

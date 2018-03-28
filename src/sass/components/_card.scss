@@ -209,7 +209,6 @@ $candidate-font-size: .875rem;
     }
 
     &__ballot-name-item {
-      display: inline-block;
       float: left;
     }
 
@@ -390,8 +389,4 @@ $candidate-font-size: .875rem;
   &__width--minimum {
     width: 90vw;
   }
-}
-
-.popover-title {
-  padding: 6px 16px;
 }
