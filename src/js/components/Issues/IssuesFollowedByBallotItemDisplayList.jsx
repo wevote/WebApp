@@ -163,7 +163,8 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
     const issuesLabelPopover =
       <Popover id="positions-popover-trigger-click-root-close"
                title={<span>Issues related to {this.state.ballot_item_display_name} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-               onClick={this.closeIssuesLabelPopover}>
+               onClick={this.closeIssuesLabelPopover}
+               className="card-popover">
         See opinions about {this.state.ballot_item_display_name}, organized by issues you care about.
       </Popover>;
 

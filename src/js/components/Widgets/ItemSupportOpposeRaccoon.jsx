@@ -182,7 +182,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
             id={`organization-popover-${org_id}-${visible_tag}`}
             onMouseOver={() => this.onTriggerEnter(org_id, visible_tag)}
             onMouseOut={() => this.onTriggerLeave(org_id, visible_tag)}
-            className="card-popover">
+            className="card-popover"
+            title={<span className="visible-xs" onClick={() => this.onTriggerLeave(org_id, visible_tag)}>&nbsp;<span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /> </span>} >
             <OrganizationCard organization={one_organization_for_organization_card}
                               ballotItemWeVoteId={ballot_item_we_vote_id}
                               followToggleOn />
@@ -519,7 +520,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
     const positionsPopover =
       <Popover id="positions-popover-trigger-click-root-close"
                title={<span>Opinions{this.state.ballot_item_display_name ? "  about " + this.state.ballot_item_display_name : ""} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-               onClick={this.closePositionsPopover}>
+               onClick={this.closePositionsPopover}
+               className="card-popover">
         These organizations <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")}
                                                width="20" height="20" /> support</span> or&nbsp;
         <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
