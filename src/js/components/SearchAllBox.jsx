@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import BallotActions from "../actions/BallotActions";
 import classNames from "classnames";
 import { Link } from "react-router";
-import { historyPush, isCordova, isWebApp, screenHeight } from "../utils/cordovaUtils";
+import { historyPush, isCordova, isWebApp } from "../utils/cordovaUtils";
 import ImageHandler from "../components/ImageHandler";
 import { renderLog } from "../utils/logging";
 import SearchAllActions from "../actions/SearchAllActions";
