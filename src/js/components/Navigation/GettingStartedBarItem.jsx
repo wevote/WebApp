@@ -8,7 +8,7 @@ const GettingStartedBarItem = props => {
   return props.isExternal ?
     <OpenExternalWebSite url={props.url}
                          target="_blank"
-                         className={ (props.printIcon ? "hidden-xs " : "") + "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}
+                         className={ (props.printIcon || props.completed ? "hidden-xs " : "") + "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}
                          body={
         <span>
           <span className="header-getting-started-nav__item-image-wrapper" title={props.title}>
@@ -26,7 +26,7 @@ const GettingStartedBarItem = props => {
         </span>
       }
       /> :
-    <Link onClick={props.show} className={ (props.printIcon ? "hidden-xs " : "") + "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
+    <Link onClick={props.show} className={ (props.printIcon || props.completed ? "hidden-xs " : "") + "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
       <span className="header-getting-started-nav__item-image-wrapper" title={props.title}>
         { props.completed ?
           <img className="glyphicon nav-getting-started__image-checked"

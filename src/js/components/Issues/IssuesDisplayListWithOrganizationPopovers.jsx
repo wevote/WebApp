@@ -136,7 +136,8 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
                                     onMouseOver={() => this.onTriggerEnter(issue_we_vote_id)}
                                     onMouseOut={() => this.onTriggerLeave(issue_we_vote_id)}
                                     className="card-popover"
-                                    title={<span className="visible-xs" onClick={() => this.onTriggerLeave(issue_we_vote_id)}> &nbsp; <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /> </span>} >
+                                    title={<span onClick={() => this.onTriggerLeave(issue_we_vote_id)}> &nbsp; <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /> </span>}
+                                    >
             <IssueCard ballotItemWeVoteId={this.state.ballotItemWeVoteId}
                        followToggleOn={this.props.toFollow}
                        issue={one_issue}

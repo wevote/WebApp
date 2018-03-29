@@ -54,10 +54,10 @@ export default class SelectBallotModal extends Component {
 
     let voter_address_object = VoterStore.getAddressObject();
     // console.log("SelectBallotModal render, voter_address_object: ", voter_address_object);
-
     return <Modal className="ballot-election-list ballot-election-list__modal ballot-election-list__modal-mobile"
+                  onHide={this.props.toggleFunction}
                   show={this.props.show}
-                  onHide={this.props.toggleFunction} >
+                  >
       <Modal.Header closeButton onHide={this.props.toggleFunction}>
         <Modal.Title className="ballot-election-list__h1">Change to Another Ballot</Modal.Title>
       </Modal.Header>
@@ -74,7 +74,6 @@ export default class SelectBallotModal extends Component {
                                toggleFunction={this.props.toggleFunction} />
         <br />
         <br />
-
         <BallotElectionList ballotBaseUrl={ballotBaseUrl}
                             ballotElectionList={ballotElectionList}
                             organization_we_vote_id={this.props.organization_we_vote_id}
