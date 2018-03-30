@@ -540,7 +540,10 @@ export default class ItemSupportOpposeRaccoon extends Component {
                       rootClose
                       placement={this.props.popoverBottom ? "bottom" : "top"}
                       overlay={positionsPopover}>
-        <span className="network-positions-stacked__support-label u-cursor--pointer u-no-break">Opinions{this.state.ballot_item_display_name ? " about " + returnFirstXWords(this.state.ballot_item_display_name, 1) : ""}&nbsp;<i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" />&nbsp;</span>
+        <span className="network-positions-stacked__support-label u-cursor--pointer u-no-break">
+          <span>Opinions{this.state.ballot_item_display_name ? <br /> : null}{this.state.ballot_item_display_name ? "about " + returnFirstXWords(this.state.ballot_item_display_name, 1) : ""}</span>
+          <span>&nbsp;<i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" />&nbsp;</span>
+        </span>
       </OverlayTrigger>;
 
     return <div className="network-positions-stacked">
