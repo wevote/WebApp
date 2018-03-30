@@ -101,7 +101,7 @@ export default class BallotSearchResults extends Component {
           <SearchBar clearButton
                      clearFunction={this.clearFunction}
                      clearSearchTextNow={this.state.clearSearchTextNow}
-                     placeholder="Search for Candidates or Measures to Add"
+                     placeholder="Search to add Candidates or Measures"
                      searchButton
                      searchFunction={this.searchFunction}
                      searchUpdateDelayTime={1000} />

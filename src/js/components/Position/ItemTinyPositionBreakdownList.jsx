@@ -170,12 +170,13 @@ export default class ItemTinyPositionBreakdownList extends Component {
           //  we want to show a "drop down" with the remaining organizations.
           if (local_counter === MAXIMUM_ORGANIZATION_DISPLAY + 1) {
             // If here we want to show how many organizations there are to follow
-            let organizationPopover = <Popover
-                id={`organization-popover-${orgs_not_shown_count}`}
-                onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
-                onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
-                placement="bottom"
-                className="card-popover">
+            let organizationPopover = <Popover className="card-popover"
+                                               id={`organization-popover-${orgs_not_shown_count}`}
+                                               onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
+                                               onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
+                                               placement="bottom"
+                                               title={<span className="visible-xs" onClick={() => this.onTriggerLeave(orgs_not_shown_count)}>&nbsp;<span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /> </span>}
+                                               >
                 <PositionsNotShownList ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
                                        positions_not_shown_list={positions_not_shown_list} />
               </Popover>;
@@ -209,12 +210,13 @@ export default class ItemTinyPositionBreakdownList extends Component {
             twitter_followers_count: 0,
           };
           let organization_we_vote_id = one_organization.organization_we_vote_id;
-          let organizationPopover = <Popover
-              id={`organization-popover-${organization_we_vote_id}`}
-              onMouseOver={() => this.onTriggerEnter(organization_we_vote_id)}
-              onMouseOut={() => this.onTriggerLeave(organization_we_vote_id)}
-              placement="bottom"
-              className="card-popover">
+          let organizationPopover = <Popover className="card-popover"
+                                             id={`organization-popover-${organization_we_vote_id}`}
+                                             onMouseOver={() => this.onTriggerEnter(organization_we_vote_id)}
+                                             onMouseOut={() => this.onTriggerLeave(organization_we_vote_id)}
+                                             placement="bottom"
+                                             title={<span className="visible-xs" onClick={() => this.onTriggerLeave(organization_we_vote_id)}>&nbsp;<span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /> </span>}
+                                             >
               <OrganizationCard organization={one_organization}
                                 ballotItemWeVoteId={this.props.ballotItemWeVoteId}
                                 followToggleOn />
