@@ -175,7 +175,10 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
                       rootClose
                       placement={this.props.popoverBottom ? "bottom" : "top"}
                       overlay={issuesLabelPopover}>
-        <span className="issues-list-stacked__support-label u-cursor--pointer u-no-break">Related Issues&nbsp;<i className="fa fa-info-circle fa-md issues-list-stacked__info-icon-for-popover hidden-print" aria-hidden="true" />&nbsp;</span>
+        <span className="issues-list-stacked__support-label u-cursor--pointer u-no-break">
+          <span>Related<br />Issues</span>
+          <span>&nbsp;<i className="fa fa-info-circle fa-md issues-list-stacked__info-icon-for-popover hidden-print" aria-hidden="true" />&nbsp;</span>
+        </span>
       </OverlayTrigger>;
 
     return (
