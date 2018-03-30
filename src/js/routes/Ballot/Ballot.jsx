@@ -243,7 +243,8 @@ export default class Ballot extends Component {
 
   componentWillUnmount (){
     // console.log("Ballot componentWillUnmount");
-    this.setState({mounted: false});
+
+    //this.setState({mounted: false});
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){
       // No ballot found
     }
@@ -252,8 +253,6 @@ export default class Ballot extends Component {
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
-    // save current open/close status to BallotStore
-    BallotActions.voterBallotItemOpenOrClosedSave(this.state.ballot_item_unfurled_tracker);
   }
 
   toggleCandidateModal (candidate_for_modal) {
@@ -293,8 +292,13 @@ export default class Ballot extends Component {
     });
   }
 
-  toggleSelectBallotModal () {
-    if (!this.state.showSelectBallotModal) {
+  toggleSelectBallotModal (destinationUrlForHistoryPush = "") {
+    // console.log("Ballot toggleSelectBallotModal destinationUrlForHistoryPush: ", destinationUrlForHistoryPush, ", this.state.pathname : ", this.state.pathname);
+    if (this.state.showSelectBallotModal) {
+      if (destinationUrlForHistoryPush && destinationUrlForHistoryPush !== "" && destinationUrlForHistoryPush !== this.state.pathname) {
+        historyPush(destinationUrlForHistoryPush);
+      }
+    } else {
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
     this.setState({
@@ -478,6 +482,7 @@ export default class Ballot extends Component {
 
   updateOfficeDisplayUnfurledTracker (we_vote_id, status) {
     const new_ballot_item_unfurled_tracker = { ... this.state.ballot_item_unfurled_tracker, [we_vote_id]: status};
+    BallotActions.voterBallotItemOpenOrClosedSave(new_ballot_item_unfurled_tracker);
     this.setState({
       ballot_item_unfurled_tracker: new_ballot_item_unfurled_tracker
     });
@@ -485,7 +490,8 @@ export default class Ballot extends Component {
 
   render () {
     renderLog(__filename);
-    // console.log("Ballot render, this.state: ", this.state);
+    // console.log("Ballot render");
+
     let ballot_with_all_items = this.state.ballot_with_all_items;
     let text_for_map_search = VoterStore.getTextForMapSearch();
     let issues_voter_can_follow = IssueStore.getIssuesVoterCanFollow(); // Don't auto-open intro until Issues are loaded

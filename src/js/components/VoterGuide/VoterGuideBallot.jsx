@@ -265,9 +265,6 @@ export default class VoterGuideBallot extends Component {
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
-
-    // save current open/close status to BallotStore
-    BallotActions.voterBallotItemOpenOrClosedSave(this.state.ballot_item_unfurled_tracker);
   }
 
   nullFunction () {
@@ -499,6 +496,7 @@ export default class VoterGuideBallot extends Component {
 
   updateOfficeDisplayUnfurledTracker = (we_vote_id, status) => {
     const new_ballot_item_unfurled_tracker = { ... this.state.ballot_item_unfurled_tracker, [we_vote_id]: status};
+    BallotActions.voterBallotItemOpenOrClosedSave(new_ballot_item_unfurled_tracker);
     this.setState({
       ballot_item_unfurled_tracker: new_ballot_item_unfurled_tracker
     });
