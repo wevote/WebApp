@@ -144,7 +144,12 @@
     color: $gray-dark;
     font-size: .875rem;
     font-weight: 200;
+    line-height: 1.2;
     vertical-align: middle;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+
     @include breakpoints (small mid-small) {
       font-size: .875rem;
     }
