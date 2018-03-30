@@ -605,7 +605,7 @@ export default class Ballot extends Component {
                   </h1>
                 </header>
 
-                {/*this.state.ballot_with_all_items.length > 0 ?
+                {this.state.ballot_with_all_items.length > 0 ?
                   <div>
                     <BallotStatusMessage ballot_location_chosen
                                          ballot_location_display_name={ballot_location_display_name}
@@ -618,7 +618,7 @@ export default class Ballot extends Component {
                                          google_civic_election_id={this.state.google_civic_election_id}
                     />
                   </div> :
-                  null */}
+                  null }
 
                 { text_for_map_search ?
                   <div className="ballot__filter__container">

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import BallotActions from "../../actions/BallotActions";
 import BallotStore from "../../stores/BallotStore";
-import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
+import { cordovaDot } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import VoterActions from "../../actions/VoterActions";
