@@ -83,12 +83,12 @@ export default class Donate extends Component {
     renderLog(__filename);
     let donateMailtoUrl = "mailto:donate@WeVoteEducation.org" + "?subject=Donate to We Vote's 501(c)(3)" + "&body=I am interested in making at tax deductible donating to We Vote's 501(c)(3).";
 
-    return <div>
+    return <div className="Donate">
       <Helmet title="Donate - We Vote"/>
       <div className="container-fluid card">
-        <h1 className="h4">Your donations keep us going. Thank you!</h1>
+        <div>
+          <h1 className="h4">Your donations keep us going. Thank you!</h1>
 
-        <div className="Donate">
           {this.state.donationErrorMessage.length > 0 ?
             <DonationError errorMessage={this.state.donationErrorMessage} /> :
             <p>Please give what you can to help us reach more voters.</p>}

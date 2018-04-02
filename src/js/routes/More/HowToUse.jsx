@@ -24,7 +24,7 @@ export default class HowToUse extends Component {
   render () {
     renderLog(__filename);
     let supportProps = { is_public_position: false };
-    return <div>
+    return <div className="gettingStarted">
       <Helmet title="Getting Started"/>
       <div className="container-fluid card">
         <h1 className="h1">Getting Started</h1>
