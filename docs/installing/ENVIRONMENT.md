@@ -43,6 +43,10 @@ IF you find that your node or npm versions are below that, run this command:
     (WebAppEnv) $ brew unlink node
     (WebAppEnv) $ brew install node
     (WebAppEnv) $ npm rebuild node-sass
+    (WebAppEnv) $ /usr/local/bin/node -v
+    v9.10.1
+    (WebAppEnv) $ export PATH="/usr/local/bin:$PATH"
+
 
 ## Install node.js - Windows
 

@@ -213,7 +213,11 @@ export default class VoterGuideGetStarted extends Component {
       <Helmet title="Create Your Voter Guide - We Vote" />
         <div className="intro-story container well u-inset--md">
           <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
-          <div className="intro-story__h1 xs-text-left">Create Your Voter Guide</div>
+          <div className="create-voter-guide__h1 xs-text-left">Create Your Voter Guide</div>
+          <div className="create-voter-guide__steps xs-text-left">
+            Step 1 of 5
+          </div>
+          <div className="create-voter-guide__description xs-text-left" />
           <div className="row">
             <div className="col-2">&nbsp;</div>
             <div className="col-8">
@@ -254,7 +258,7 @@ export default class VoterGuideGetStarted extends Component {
             </div>
             <div className="col-xs-2 col-md-4">&nbsp;</div>
           </div>
-          <footer className="intro-story__footer">
+          <footer className="create-voter-guide__footer">
             {actionButtonHtml}
           </footer>
         </div>

@@ -47,3 +47,48 @@ $padding-within-textarea: .5rem .7em;
     font-size: 1.6em;
   }
 }
+
+.create-voter-guide {
+  background-color: $gray-dark;
+  padding: $space-none;
+  width: 100%;
+  &__h1 {
+    color: $white;
+    font-weight: 700;
+    font-size: 30px;
+    padding: $space-lg $space-none $space-none;
+    text-align: center;
+    @include breakpoints (max large) {
+      font-size: 22px;
+    }
+  }
+  &__description {
+    color: $white;
+    font-weight: 400;
+    font-size: 18px;
+    padding: $space-md $space-md $space-md $space-md;
+    text-align: center;
+    @include breakpoints (max large) {
+      font-size: 16px;
+    }
+  }
+  &__steps {
+    color: $white;
+    font-weight: 300;
+    font-size: 16px;
+    padding: $space-xs $space-none $space-xs;
+    text-align: center;
+    @include breakpoints (max large) {
+      font-size: 14px;
+    }
+  }
+
+  &__footer {
+    position: absolute;
+    bottom: 10%;
+    width: 100%;
+    @include breakpoints (mid-small) {
+      bottom: 10%;
+    }
+  }
+}

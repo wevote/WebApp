@@ -320,6 +320,7 @@ export default class Application extends Component {
         pathname === "/voterguidegetstarted" ||
         pathname === "/voterguideorgtype" ||
         pathname === "/voterguideorginfo" ||
+        pathname.startsWith("/voterguidepositions") ||
         pathname === "/wevoteintro/network") {
       inTheaterMode = true;
     } else if (pathname.startsWith("/candidate/") ||

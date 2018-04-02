@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { renderLog } from "../../utils/logging";
+import BallotActions from "../../actions/BallotActions";
+import BallotStore from "../../stores/BallotStore";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import VoterGuideActions from "../../actions/VoterGuideActions";
@@ -51,6 +53,10 @@ export default class VoterGuideSettingsDashboard extends Component {
           voterGuide: voterGuide,
         });
         voterGuideFound = true;
+        if (voterGuide.google_civic_election_id && voterGuide.google_civic_election_id !== BallotStore.currentBallotGoogleCivicElectionId) {
+          // console.log("VoterGuideSettingsDashboard componentDidMount retrieving ballot for: ", voterGuide.google_civic_election_id);
+          BallotActions.voterBallotItemsRetrieve(voterGuide.google_civic_election_id, "", "");
+        }
       }
     }
     // Get Voter and Voter's Organization
@@ -116,6 +122,11 @@ export default class VoterGuideSettingsDashboard extends Component {
         this.setState({
           voterGuide: voterGuide,
         });
+        // May not be necessary
+        // if (voterGuide.google_civic_election_id && voterGuide.google_civic_election_id !== BallotStore.currentBallotGoogleCivicElectionId) {
+        //   console.log("VoterGuideSettingsDashboard onVoterGuideStoreChange retrieving ballot for: ", voterGuide.google_civic_election_id);
+        //   BallotActions.voterBallotItemsRetrieve(voterGuide.google_civic_election_id, "", "");
+        // }
       }
     }
   }

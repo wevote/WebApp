@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import BallotActions from "../../actions/BallotActions";
 import BallotItemSearchResult from "../../components/Ballot/BallotItemSearchResult";
 import BallotStore from "../../stores/BallotStore";
+import Icon from "react-svg-icons";
 import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import SearchBar from "../../components/Search/SearchBar";
@@ -48,7 +49,7 @@ export default class BallotSearchResults extends Component {
     // console.log("BallotSearchResults componentWillUnmount");
     this.ballotStoreListener.remove();
     // this.voterGuideStoreListener.remove();
-    BallotActions.ballotItemOptionsClear();
+    // Cannot call in componentWillUnmount: BallotActions.ballotItemOptionsClear();
   }
 
   onBallotStoreChange (){
@@ -95,6 +96,23 @@ export default class BallotSearchResults extends Component {
       return null;
     }
 
+    const icon_size = 18;
+    let icon_color = "#999";
+
+    let actionDescription = <div>
+        Click <span className="u-no-break"><span className="btn__icon"><Icon name="thumbs-up-icon"
+                                                                             width={icon_size} height={icon_size} color={icon_color} /></span> Support</span> or&nbsp;
+        <span className="u-no-break"><span className="btn__icon"><Icon name="thumbs-down-icon"
+                                                                       width={icon_size} height={icon_size} color={icon_color} /></span> Oppose</span> to
+        add an item to your ballot.
+      </div>;
+
+    let searchResults = this.state.ballotItemSearchResultsList.map( ballotItem => {
+            return <BallotItemSearchResult key={ballotItem.we_vote_id}
+                                           allBallotItemsCount={this.state.ballotItemSearchResultsList.length}
+                                           {...ballotItem} />;
+            });
+
     return <div className="ballot_search">
       <div>
         <div className="u-padding-bottom--sm">
@@ -109,11 +127,10 @@ export default class BallotSearchResults extends Component {
         </div>
         <div className="ballot_search__results_list">
           {this.state.ballotItemSearchResultsList && this.state.ballotItemSearchResultsList.length ?
-            this.state.ballotItemSearchResultsList.map( ballotItem => {
-            return <BallotItemSearchResult key={ballotItem.we_vote_id}
-                                           allBallotItemsCount={this.state.ballotItemSearchResultsList.length}
-                                           {...ballotItem} />;
-            }) :
+            <div>
+              {actionDescription}
+              {searchResults}
+            </div> :
             this.state.searchString && this.state.searchString !== "" ?
               <div>No search results found.</div> :
               null
