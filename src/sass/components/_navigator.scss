@@ -10,6 +10,7 @@ $nav-item-getting-started-background-active-color: darken($page-header-getting-s
 $footer-menu-margin: 130px;
 $space-hamburger: 5px;
 $transparent-background: transparent;
+$container-margin: -15px;
 
 // Header Nav
 // ================================
@@ -26,6 +27,15 @@ $transparent-background: transparent;
   transition: opacity .25s ease-in-out;
   z-index: 2;
   pointer-events: none;
+}
+
+.about-us,
+.Donate,
+.gettingStarted {
+  @include breakpoints(max mid-small) {
+    margin-right: $container-margin !important;
+    margin-left: $container-margin !important;
+  }
 }
 
 .profile-foot-menu {
