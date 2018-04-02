@@ -66,6 +66,7 @@ import TwitterSignInProcess from "./routes/Process/TwitterSignInProcess";
 import VerifyEmailProcess from "./routes/Process/VerifyEmailProcess";
 import FriendInvitationByEmailVerifyProcess from "./routes/Process/FriendInvitationByEmailVerifyProcess";
 import VoterGuideChooseElection from "./routes/VoterGuide/VoterGuideChooseElection";
+import VoterGuideChoosePositions from "./routes/VoterGuide/VoterGuideChoosePositions";
 import VoterGuideGetStarted from "./routes/VoterGuide/VoterGuideGetStarted";
 import VoterGuideListDashboard from "./routes/Settings/VoterGuideListDashboard";
 import VoterGuideOrganizationInfo from "./routes/VoterGuide/VoterGuideOrganizationInfo";
@@ -200,6 +201,7 @@ const routes = () =>
     <Route path="/voterguideorgtype" component={VoterGuideOrganizationType} />
     <Route path="/voterguideorginfo" component={VoterGuideOrganizationInfo} />
     <Route path="/voterguidechooseelection" component={VoterGuideChooseElection} />
+    <Route path="/voterguidepositions/:voter_guide_we_vote_id" component={VoterGuideChoosePositions} />
     <Route path="/yourpage" component={YourPage} />
 
     <Route path="/facebook_sign_in" component={FacebookSignInProcess} />

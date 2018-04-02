@@ -73,6 +73,12 @@ class BallotStore extends ReduceStore {
     return this.getState().ballots[civicId].election_day_text;
   }
 
+  get currentBallotGoogleCivicElectionId () {
+    if (!this.isLoaded()){ return undefined; }
+    let civicId = VoterStore.election_id();
+    return this.getState().ballots[civicId].google_civic_election_id;
+  }
+
   get currentBallotPollingLocationSource () {
     if (!this.isLoaded()){ return undefined; }
     let civicId = VoterStore.election_id();

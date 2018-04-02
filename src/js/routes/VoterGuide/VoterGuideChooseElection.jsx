@@ -120,8 +120,8 @@ export default class VoterGuideChooseElection extends Component {
     historyPush(sampleBallotLink);
   }
 
-  goToVoterGuideBallotItems (voterGuideWeVoteId) {
-    let voterGuideBallotItems = "/vg/" + voterGuideWeVoteId + "/settings";
+  goToVoterGuideChoosePositions (voterGuideWeVoteId) {
+    let voterGuideBallotItems = "/voterguidepositions/" + voterGuideWeVoteId;
     historyPush(voterGuideBallotItems);
   }
 
@@ -137,13 +137,17 @@ export default class VoterGuideChooseElection extends Component {
 
     return <div>
       <Helmet title="Choose Election - We Vote" />
-        <div className="intro-story container well">
+        <div className="create-voter-guide container well">
           <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
-          <div className="intro-story__h1 xs-text-left">Choose Election</div>
+          <div className="create-voter-guide__h1 xs-text-left">Choose Election</div>
+          <div className="create-voter-guide__steps xs-text-left">
+            Step 4 of 5
+          </div>
+          <div className="create-voter-guide__description xs-text-left" />
           <div className="row">
             <div className="col-1 col-md-2">&nbsp;</div>
             <div className="col-10 col-md-8">
-              <ChooseElectionForVoterGuide destinationFunction={this.goToVoterGuideBallotItems.bind(this)} />
+              <ChooseElectionForVoterGuide destinationFunction={this.goToVoterGuideChoosePositions.bind(this)} />
             </div>
             <div className="col-1 col-md-2">&nbsp;</div>
           </div>
