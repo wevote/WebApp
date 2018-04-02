@@ -569,7 +569,7 @@ export default class FacebookBallotToFriendsModal extends Component {
                       {this.state.success_message}
                     </div> : this.props.success_message ?
                     <div className="alert alert-success">
-                      {this.state.success_message}
+                      {this.props.success_message}
                     </div> : null
                   }
 
