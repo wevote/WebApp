@@ -112,7 +112,7 @@ export default class SettingsWidgetOrganizationDescription extends Component {
     return <div className="">
       <form onSubmit={(e) => {e.preventDefault();}}>
         <span className="pull-right u-gray-mid">{this.state.organizationDescriptionSavedStatus}</span>
-        <label htmlFor="organizationDescriptionTextArea">{ this.state.isOrganization ? "Organization Description" : "Description of You"}</label>
+        <label htmlFor="organizationDescriptionTextArea">{ this.state.isOrganization ? "Description Shown on Your Voter Guides" : "Description Shown on Your Voter Guides"}</label>
         <Textarea id="organizationDescriptionTextArea"
                   name="organizationDescription"
                   className="form-control"

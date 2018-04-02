@@ -6,7 +6,10 @@ import LoadingWheel from "../../components/LoadingWheel";
 import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
+import SettingsWidgetAccountType from "../../components/Settings/SettingsWidgetAccountType";
 import SettingsWidgetFirstLastName from "../../components/Settings/SettingsWidgetFirstLastName";
+import SettingsWidgetOrganizationDescription from "../../components/Settings/SettingsWidgetOrganizationDescription";
+import SettingsWidgetOrganizationWebsite from "../../components/Settings/SettingsWidgetOrganizationWebsite";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
@@ -166,6 +169,10 @@ export default class VoterGuideSettingsGeneral extends Component {
         <div className="card-main">
           <h3 className="h3">Voter Guide Settings</h3>
           <SettingsWidgetFirstLastName hideFirstLastName />
+          <SettingsWidgetOrganizationWebsite />
+          <SettingsWidgetOrganizationDescription />
+          <SettingsWidgetAccountType closeEditFormOnChoice
+                                     showEditToggleOption />
         </div>
       </div>
     </div>;

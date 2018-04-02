@@ -15,6 +15,7 @@ export default class CandidateItemCompressed extends Component {
     link_to_ballot_item_page: PropTypes.bool,
     organization: PropTypes.object,
     oneCandidate: PropTypes.object,
+    showPositionStatementActionBar: PropTypes.bool,
   };
 
   constructor (props) {
@@ -161,7 +162,7 @@ export default class CandidateItemCompressed extends Component {
                                   maximumOrganizationDisplay={this.state.maximum_organization_display}
                                   organizationsToFollowSupport={organizationsToFollowSupport}
                                   organizationsToFollowOppose={organizationsToFollowOppose}
-                                  showPositionStatementActionBar
+                                  showPositionStatementActionBar={this.props.showPositionStatementActionBar}
                                   supportProps={candidateSupportStore}
                                   type="CANDIDATE"/>
       </div>
