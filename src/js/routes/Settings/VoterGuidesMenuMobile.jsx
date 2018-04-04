@@ -136,7 +136,9 @@ export default class VoterGuidesMenuMobile extends Component {
       {/* Mobile WebApp navigation */}
       <div className="container-fluid">
         <div className="row">
-          <SelectVoterGuidesSideBar onOwnPage />
+          <div className="col-md-12">
+            <SelectVoterGuidesSideBar onOwnPage />
+          </div>
         </div>
       </div>
     </div>;
