@@ -147,15 +147,14 @@ export default class VoterEmailAddressEntry extends Component {
         null }
       </span>;
 
-    let enter_email_title = "Sign In With Email";
-    let enter_email_explanation = "You will receive a magic link in your email inbox. Click that link to be signed into your We Vote account.";
+    let enter_email_title = "Or, sign in with email";
+    let enter_email_explanation = "You'll receive a magic link in your email. Click that link to be signed into your We Vote account.";
     if (this.state.voter && this.state.voter.is_signed_in) {
       enter_email_title = "Add New Email";
-      enter_email_explanation = "You will receive a magic link in your email inbox. Click that link to verify this new email.";
+      enter_email_explanation = "You'll receive a magic link in your email. Click that link to verify this new email.";
     }
     const enter_email_html = <div>
-      <h3 className="h3">{enter_email_title}</h3>
-      <div>{enter_email_explanation}</div>
+      <div><strong>{enter_email_title}.</strong> {enter_email_explanation}</div>
           <form className="form-inline" onSubmit={this.voterEmailAddressSave.bind(this)}>
             <FormGroup className="u-push--sm">
               <label className="sr-only" htmlFor="exampleEmail">Email</label>
@@ -167,37 +166,13 @@ export default class VoterEmailAddressEntry extends Component {
                      onChange={this.updateVoterEmailAddress.bind(this)}
                      placeholder="Email Address"/>
             </FormGroup>
-            <Button bsStyle="primary"
+            <Button bsStyle="success"
                     type="submit"
                     onClick={this.voterEmailAddressSave.bind(this)}
-                    >Send Verification Link</Button>
+                    >Send Magic Link</Button>
           </form>
 
       </div>;
-
-    // const send_link_to_login_html = <div>
-    //     <form onSubmit={this.sendSignInLinkEmail.bind(this)} className="u-stack--md">
-    //       <input
-    //         type="text"
-    //         onChange={this.updateVoterEmailAddress.bind(this)}
-    //         name="voter_email_address"
-    //         value={this.state.voter_email_address}
-    //         className="form-control text-center"
-    //         placeholder="Sign in with email address"
-    //       />
-    //     </form>
-    //
-    //     <div className="u-stack--md">
-    //       <Button onClick={this.resetEmailForm.bind(this)}
-    //               bsStyle="default"
-    //               bsSize="small">
-    //         Cancel
-    //       </Button>
-    //       <Button onClick={this.sendSignInLinkEmail.bind(this)}
-    //               bsStyle="primary">
-    //         Send Sign In Link in an Email</Button>
-    //     </div>
-    //   </div>;
 
     let allow_remove_email;
     let email_ownership_is_verified;
@@ -289,7 +264,7 @@ export default class VoterEmailAddressEntry extends Component {
       }
     });
 
-    return <div className="guidelist card-child__list-group">
+    return <div className="">
       {email_address_status_html}
       {verified_emails_found ?
         <div>
@@ -336,9 +311,6 @@ export default class VoterEmailAddressEntry extends Component {
           {to_verify_email_list_html}
         </div> :
         null }
-      {/* this.state.email_address_status.email_address_already_owned_by_other_voter ?
-        send_link_to_login_html :
-        null */}
       <span>{ enter_email_html }</span>
     </div>;
   }

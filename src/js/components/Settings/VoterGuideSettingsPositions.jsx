@@ -11,9 +11,11 @@ import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
 import OrganizationStore from "../../stores/OrganizationStore";
+import SettingsAccount from "../../components/Settings/SettingsAccount";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
+import YourPositionsVisibilityMessage from "../../components/VoterGuide/YourPositionsVisibilityMessage";
 import { isProperlyFormattedVoterGuideWeVoteId } from "../../utils/textFormat";
 
 
@@ -85,6 +87,9 @@ export default class VoterGuideSettingsPositions extends Component {
           }
         } else {
           OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
+          // if (voterGuide && voterGuide.google_civic_election_id) {
+            OrganizationActions.positionListForOpinionMaker(linkedOrganizationWeVoteId, true, false); // , voterGuide.google_civic_election_id
+          // }
         }
         if (!voterGuideFound) {
           // console.log("VoterGuideSettingsDashboard voterGuide NOT FOUND calling VoterGuideActions.voterGuidesRetrieve");
@@ -137,6 +142,9 @@ export default class VoterGuideSettingsPositions extends Component {
           // OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, false, true, voterGuide.google_civic_election_id);
         } else {
           OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
+          // if (voterGuide && voterGuide.google_civic_election_id) {
+            OrganizationActions.positionListForOpinionMaker(linkedOrganizationWeVoteId, true, false); // , voterGuide.google_civic_election_id
+          // }
         }
         if (!voterGuideFound) {
           // console.log("VoterGuideSettingsPositions voterGuide NOT FOUND calling VoterGuideActions.voterGuidesRetrieve");
@@ -153,7 +161,7 @@ export default class VoterGuideSettingsPositions extends Component {
   }
 
   onOrganizationStoreChange (){
-    // console.log("VoterGuideSettingsPositions onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
+    console.log("VoterGuideSettingsPositions onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
     let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
     this.setState({
       organization: organization,
@@ -167,7 +175,7 @@ export default class VoterGuideSettingsPositions extends Component {
   }
 
   onVoterGuideStoreChange (){
-    // console.log("VoterGuideSettingsPositions onVoterGuideStoreChange");
+    console.log("VoterGuideSettingsPositions onVoterGuideStoreChange");
     if (this.state.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(this.state.voterGuideWeVoteId)) {
       let voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.state.voterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
@@ -237,6 +245,10 @@ export default class VoterGuideSettingsPositions extends Component {
     return <div className="">
       <Helmet title={"Voter Guide Positions - We Vote"} />
       <BrowserPushMessage incomingProps={this.props} />
+      { this.state.voter.is_signed_in ?
+        null :
+        <SettingsAccount />
+      }
       <div className="card">
         <div className="card-main">
           <h3 className="h3">Your Positions</h3>
@@ -246,10 +258,9 @@ export default class VoterGuideSettingsPositions extends Component {
                onKeyDown={this.onKeyDownEditMode.bind(this)}
                onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit Positions"}</a> :
             null }
-          {/*  <OverlayTrigger placement="top" overlay={electionTooltip} >*/}
-            <h4 className="h4 card__additional-heading">
-               <span className="u-push--sm">{ election_name ? election_name : "This Election"}</span>
-            </h4>
+          <h4 className="h4 card__additional-heading">
+             <span className="u-push--sm">{ election_name ? election_name : "This Election"}</span>
+          </h4>
           { looking_at_self ?
             <div className="u-margin-left--md u-push--md">
               Search for candidates or measures to add to your voter guide.
@@ -261,6 +272,9 @@ export default class VoterGuideSettingsPositions extends Component {
             null }
           { at_least_one_position_found_for_this_election && !this.state.searchIsUnderway ?
             <span>
+              { looking_at_self ?
+                <YourPositionsVisibilityMessage positionList={position_list_for_one_election} /> :
+                null }
               { position_list_for_one_election.map( item => {
                 return <OrganizationPositionItem key={item.position_we_vote_id}
                                                  position={item}

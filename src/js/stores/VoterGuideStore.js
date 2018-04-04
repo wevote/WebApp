@@ -49,12 +49,33 @@ class VoterGuideStore extends ReduceStore {
     return this.getState().ballot_has_guides;
   }
 
+  sortVoterGuidesByDate (unsortedVoterGuides) {
+    // temporary array holds objects with position and sort-value
+    let mapped = unsortedVoterGuides.map( (item, i) => {
+      return { index: i, value: item };
+    });
+
+    // sorting the mapped array based on local_ballot_order which came from the server
+    mapped.sort( (a, b) => {
+      return +(a.value.election_day_text < b.value.election_day_text) ||
+        +(a.value.election_day_text === b.value.election_day_text) - 1;
+    });
+
+    let orderedArray = [];
+    for (let element of mapped) {
+      orderedArray.push(element.value);
+    }
+
+    return orderedArray;
+  }
+
   getAllVoterGuidesOwnedByVoter () {
     let all_cached_voter_guides_by_organization = this.getState().all_cached_voter_guides_by_organization || {};
     let voter = VoterStore.getVoter();
     let linked_organization_we_vote_id = voter.linked_organization_we_vote_id;
     // console.log("VoterGuideStore getAllVoterGuidesOwnedByVoter, linked_organization_we_vote_id: ", linked_organization_we_vote_id);
-    return all_cached_voter_guides_by_organization[linked_organization_we_vote_id] || [];
+    let unsortedVoterGuides = all_cached_voter_guides_by_organization[linked_organization_we_vote_id] || [];
+    return this.sortVoterGuidesByDate(unsortedVoterGuides);
   }
 
   getVoterGuidesToFollowAll () {

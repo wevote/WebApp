@@ -39,7 +39,7 @@ export default class OrganizationVoterGuideEdit extends Component {
       let voterGuide = VoterGuideStore.getVoterGuideForOrganizationIdAndElection(organizationWeVoteId, googleCivicElectionId);
       // console.log("voterGuide: ", voterGuide);
       if (voterGuide && voterGuide.we_vote_id && isProperlyFormattedVoterGuideWeVoteId(voterGuide.we_vote_id)) {
-        historyPush("/vg/" + voterGuide.we_vote_id + "/settings");
+        historyPush("/vg/" + voterGuide.we_vote_id + "/settings/positions");
         continueLookingForLocalVoterGuide = false;
       } else {
         continueLookingForLocalVoterGuide = false;
@@ -66,7 +66,7 @@ export default class OrganizationVoterGuideEdit extends Component {
         let voterGuide = VoterGuideStore.getVoterGuideForOrganizationIdAndElection(organizationWeVoteId, googleCivicElectionId);
         // console.log("voterGuide: ", voterGuide);
         if (voterGuide && voterGuide.we_vote_id && isProperlyFormattedVoterGuideWeVoteId(voterGuide.we_vote_id)) {
-          historyPush("/vg/" + voterGuide.we_vote_id + "/settings");
+          historyPush("/vg/" + voterGuide.we_vote_id + "/settings/positions");
         } else {
           tryToCreateVoterGuide = true;
         }
@@ -103,7 +103,7 @@ export default class OrganizationVoterGuideEdit extends Component {
     });
     // console.log("onVoterGuideStoreChange voterGuide:", voterGuide);
     if (voterGuide && voterGuide.we_vote_id && isProperlyFormattedVoterGuideWeVoteId(voterGuide.we_vote_id)) {
-      historyPush("/vg/" + voterGuide.we_vote_id + "/settings");
+      historyPush("/vg/" + voterGuide.we_vote_id + "/settings/positions");
     }
   }
 

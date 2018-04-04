@@ -306,6 +306,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     } else {
       voterIssuesScoreWithSign = voterIssuesScore;
     }
+    // console.log("ItemSupportOpposeRaccoon, voterIssuesScore: ", voterIssuesScore, ", ballot_item_we_vote_id: ", this.state.ballot_item_we_vote_id);
     let issueCountUnderThisBallotItem = IssueStore.getIssuesCountUnderThisBallotItem(this.state.ballot_item_we_vote_id);
     let issueCountUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesCountUnderThisBallotItemVoterIsFollowing(this.state.ballot_item_we_vote_id);
 

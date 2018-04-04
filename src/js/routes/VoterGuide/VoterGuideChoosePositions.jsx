@@ -192,11 +192,6 @@ export default class VoterGuideChoosePositions extends Component {
     });
   }
 
-  goToBallotLink () {
-    let sampleBallotLink = "/ballot";
-    historyPush(sampleBallotLink);
-  }
-
   goToVoterGuideDisplay () {
     let voterGuideDisplay = "/voterguide/" + this.state.voterGuide.organization_we_vote_id + "/ballot/election/" + this.state.voterGuide.google_civic_election_id + "/positions";
 
@@ -227,7 +222,7 @@ export default class VoterGuideChoosePositions extends Component {
     return <div>
       <Helmet title="Choose Positions - We Vote" />
         <div className="create-voter-guide container well">
-          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
+          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToVoterGuideDisplay} className="x-close" alt={"close"}/>
           <div className="create-voter-guide__h1 xs-text-left">Enter Your Positions</div>
           <div className="create-voter-guide__steps xs-text-left">
             Step 5 of 5
@@ -245,19 +240,9 @@ export default class VoterGuideChoosePositions extends Component {
             <div className="col-10 col-md-8">
               <div className="card">
                 <div className="card-main">
-                  { looking_at_self && at_least_one_position_found_for_this_election && !this.state.searchIsUnderway ?
-                    <a className="fa-pull-right u-push--md"
-                       tabIndex="0"
-                       onKeyDown={this.onKeyDownEditMode.bind(this)}
-                       onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit Positions"}</a> :
-                    null }
-                  {/*  <OverlayTrigger placement="top" overlay={electionTooltip} >*/}
-                    <h4 className="h4 card__additional-heading">
-                       <span className="u-push--sm">{ election_name ? election_name : "This Election"}</span>
-                      {/*{this.state.ballot_election_list.length > 1 ? <img src={cordovaDot("/img/global/icons/gear-icon.png")} className="hidden-print" role="button" onClick={this.toggleSelectBallotModal}
-                        alt='view your ballots' /> : null}*/}
-                    </h4>
-                  {/* </OverlayTrigger> */}
+                  <h4 className="h4 card__additional-heading">
+                     <span className="u-push--sm">{ election_name ? election_name : "This Election"}</span>
+                  </h4>
                   { looking_at_self ?
                     <div className="u-margin-left--md u-push--md">
                       <BallotSearchResults clearSearchTextNow={this.state.clearSearchTextNow}
