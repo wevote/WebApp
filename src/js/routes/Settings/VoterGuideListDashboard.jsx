@@ -4,6 +4,7 @@ import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SelectVoterGuidesSideBar from "../../components/Navigation/SelectVoterGuidesSideBar";
+import SettingsAccount from "../../components/Settings/SettingsAccount";
 import SettingsBannerAndOrganizationCard from "../../components/Settings/SettingsBannerAndOrganizationCard";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
@@ -120,6 +121,7 @@ export default class VoterGuideListDashboard extends Component {
 
   render () {
     renderLog(__filename);
+
     let settingsComponentToDisplay = null;
     switch (this.state.editMode) {
       default:
@@ -146,7 +148,15 @@ export default class VoterGuideListDashboard extends Component {
           </div>
 
           <div className="hidden-xs col-md-8">
-            {settingsComponentToDisplay}
+            { !this.state.voter.is_signed_in ?
+              <SettingsAccount /> :
+              null }
+            <div className="card">
+              <div className="card-main">
+                {settingsComponentToDisplay}
+              </div>
+            </div>
+
           </div>
         </div>
       </div>

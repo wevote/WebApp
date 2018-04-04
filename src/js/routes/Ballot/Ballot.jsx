@@ -257,7 +257,8 @@ export default class Ballot extends Component {
 
   toggleCandidateModal (candidate_for_modal) {
     if (candidate_for_modal) {
-      VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidate_for_modal.we_vote_id, "CANDIDATE");
+      // Slows down the browser too much when run for all candidates
+      // VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidate_for_modal.we_vote_id, "CANDIDATE");
       candidate_for_modal.voter_guides_to_follow_for_latest_ballot_item = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(candidate_for_modal.we_vote_id);
       CandidateActions.positionListForBallotItem(candidate_for_modal.we_vote_id);
     }

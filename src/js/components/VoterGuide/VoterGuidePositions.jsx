@@ -10,12 +10,13 @@ import { historyPush } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
-import OrganizationPositionItem from "./OrganizationPositionItem";
+import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
 import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterGuideRecommendationsFromOneOrganization from "./VoterGuideRecommendationsFromOneOrganization";
+import VoterGuideRecommendationsFromOneOrganization from "../../components/VoterGuide/VoterGuideRecommendationsFromOneOrganization";
 import VoterStore from "../../stores/VoterStore";
+import YourPositionsVisibilityMessage from "../../components/VoterGuide/YourPositionsVisibilityMessage";
 
 export default class VoterGuidePositions extends Component {
   static propTypes = {
@@ -41,9 +42,7 @@ export default class VoterGuidePositions extends Component {
   }
 
   componentDidMount () {
-    // console.log("VoterGuidePositions, componentDidMount, this.props.organization: ", this.props.organization);
     let ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
-    // console.log("VoterGuidePositions componentDidMount, ballotBaseUrl", ballotBaseUrl);
 
     this.setState({
       mounted: true,
@@ -260,13 +259,11 @@ export default class VoterGuidePositions extends Component {
                onKeyDown={this.onKeyDownEditMode.bind(this)}
                onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit Positions"}</a> :
             null }
-          {/*  <OverlayTrigger placement="top" overlay={electionTooltip} >*/}
-            <h4 className="h4 card__additional-heading">
-               <span className="u-push--sm">{ election_name ? election_name : "This Election"}</span>
-              {/*{this.state.ballot_election_list.length > 1 ? <img src={cordovaDot("/img/global/icons/gear-icon.png")} className="hidden-print" role="button" onClick={this.toggleSelectBallotModal}
-                alt='view your ballots' /> : null}*/}
-            </h4>
-          {/* </OverlayTrigger> */}
+          <h4 className="h4 card__additional-heading">
+             <span className="u-push--sm">{ election_name ? election_name : "This Election"}</span>
+            {/*{this.state.ballot_election_list.length > 1 ? <img src={cordovaDot("/img/global/icons/gear-icon.png")} className="hidden-print" role="button" onClick={this.toggleSelectBallotModal}
+              alt='view your ballots' /> : null}*/}
+          </h4>
           { looking_at_self ?
             <div className="u-margin-left--md u-push--md">
               <BallotSearchResults clearSearchTextNow={this.state.clearSearchTextNow}
@@ -277,6 +274,9 @@ export default class VoterGuidePositions extends Component {
             null }
           { at_least_one_position_found_for_this_election && !this.state.searchIsUnderway ?
             <span>
+              { looking_at_self ?
+                <YourPositionsVisibilityMessage positionList={position_list_for_one_election} /> :
+                null }
               { position_list_for_one_election.map( item => {
                 return <OrganizationPositionItem key={item.position_we_vote_id}
                                                  position={item}

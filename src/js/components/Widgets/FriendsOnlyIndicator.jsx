@@ -24,17 +24,17 @@ export default class FriendsOnlyIndicator extends Component {
     let labelText = "";
     let visibilityIcon = "";
     if (is_friends_only) {
-      labelText = "This position is visible to friends only.";
+      labelText = "This position is only visible to We Vote friends.";
       visibilityIcon = <Icon name="group-icon" color="#999" width={18} height={18} />;
     } else {
       labelText = "This position is visible to the public.";
-      visibilityIcon = <Icon name="public-icon" color="#ccc" width={18} height={18} />;
+      visibilityIcon = <Icon name="public-icon" color="#999" width={18} height={18} />;
     }
 
     const tooltip = <Tooltip id="tooltip">{labelText}</Tooltip>;
 
     const visibilityIndicator = <OverlayTrigger placement="top" overlay={tooltip}>
-        <div className="public-friends-indicator">{visibilityIcon}</div>
+        <span className="public-friends-indicator">{visibilityIcon}</span>
       </OverlayTrigger>;
 
     return visibilityIndicator;

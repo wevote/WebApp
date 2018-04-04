@@ -16,7 +16,6 @@ import LearnMore from "../Widgets/LearnMore";
 import { renderLog } from "../../utils/logging";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SupportStore from "../../stores/SupportStore";
-import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import BallotStore from "../../stores/BallotStore";
 
@@ -75,7 +74,8 @@ export default class OfficeItemCompressedRaccoon extends Component {
         if (candidate && candidate.hasOwnProperty("we_vote_id") && !CandidateStore.isCandidateInStore(candidate.we_vote_id)) {
           // console.log("OfficeItemCompressed, retrieving");
           // CandidateActions.candidateRetrieve(candidate.we_vote_id); // Replaced by candidatesRetrieve on the office level
-          VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidate.we_vote_id, "CANDIDATE");
+          // Slows down the browser too much when run for all candidates
+          // VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidate.we_vote_id, "CANDIDATE");
         }
       });
     }

@@ -120,9 +120,7 @@ export default class SettingsWidgetAccountType extends Component {
   }
 
   updateOrganizationType (event) {
-    // console.log("updateOrganizationType event.target:", event.target);
     if (event.target.name === "organizationType") {
-      // console.log("UPDATING, this.state.linkedOrganizationWeVoteId: ", this.state.linkedOrganizationWeVoteId, ", event.target.value: ", event.target.value);
       OrganizationActions.organizationTypeSave(this.state.linkedOrganizationWeVoteId, event.target.value);
       this.setState({
         organizationType: event.target.value,
@@ -143,11 +141,9 @@ export default class SettingsWidgetAccountType extends Component {
   }
 
   renderOrganizationType (organizationType, organizationTypeCurrentState, organizationTypeLabel, organizationTypeId) {
-    let organizationTypeTrimmed = organizationType.trim();
-    let organizationTypeCurrentStateTrimmed = organizationTypeCurrentState.trim();
+    let organizationTypeTrimmed = organizationType ? organizationType.trim() : "";
+    let organizationTypeCurrentStateTrimmed = organizationTypeCurrentState ? organizationTypeCurrentState.trim() : "";
     let organizationTypeChecked = organizationTypeCurrentStateTrimmed === organizationTypeTrimmed;
-    // console.log("renderOrganizationType organizationType: ", organizationType, ", organizationTypeCurrentState: ", organizationTypeCurrentState);
-    // console.log("renderOrganizationType organizationTypeChecked: ", organizationTypeChecked);
     return <div className="form-check">
             <input className="form-check-input"
                    checked={organizationTypeChecked}

@@ -4,6 +4,7 @@ import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../LoadingWheel";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
+import SettingsAccount from "../../components/Settings/SettingsAccount";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideBallot from "./VoterGuideBallot";
 import VoterGuideFollowers from "./VoterGuideFollowers";
@@ -187,10 +188,16 @@ export default class OrganizationVoterGuideTabs extends Component {
                                                              params={this.props.params} />;
         break;
       case "positions":
-        voter_guide_component_to_display = <VoterGuidePositions organization={this.state.organization}
-                                                                active_route={this.state.active_route}
-                                                                location={this.props.location}
-                                                                params={this.props.params} />;
+        voter_guide_component_to_display =
+          <div>
+            { looking_at_self && !this.state.voter.is_signed_in ?
+              <SettingsAccount /> :
+              null }
+            <VoterGuidePositions organization={this.state.organization}
+                                 active_route={this.state.active_route}
+                                 location={this.props.location}
+                                 params={this.props.params} />
+          </div>;
         break;
       case "following":
         voter_guide_component_to_display = <VoterGuideFollowing organization={this.state.organization} />;
