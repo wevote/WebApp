@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
-import IssueActions from "../../actions/IssueActions";
 import ImageHandler from "../ImageHandler";
+import IssueActions from "../../actions/IssueActions";
 import { showToastError, showToastSuccess } from "../../utils/showToast";
 import { renderLog } from "../../utils/logging";
 
