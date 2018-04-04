@@ -125,7 +125,7 @@ export default class VoterGuidesMenuMobile extends Component {
 
     return <div className="settings-dashboard">
       {/* Header Spacing for Desktop */}
-      <div className="col-md-12 hidden-xs hidden-print">
+      <div className="hidden-xs hidden-print">
         <SettingsBannerAndOrganizationCard organization={this.state.organization} />
       </div>
       {/* Header Spacing for Mobile */}
@@ -136,7 +136,9 @@ export default class VoterGuidesMenuMobile extends Component {
       {/* Mobile WebApp navigation */}
       <div className="container-fluid">
         <div className="row">
-          <SelectVoterGuidesSideBar onOwnPage />
+          <div className="col-md-12">
+            <SelectVoterGuidesSideBar onOwnPage />
+          </div>
         </div>
       </div>
     </div>;
