@@ -4,7 +4,6 @@ import assign from "object-assign";
 import BallotActions from "../actions/BallotActions";
 import BookmarkStore from "../stores/BookmarkStore";
 import SupportStore from "../stores/SupportStore";
-import VoterGuideActions from "../actions/VoterGuideActions";
 import VoterStore from "../stores/VoterStore";
 
 class BallotStore extends ReduceStore {
@@ -240,8 +239,6 @@ class BallotStore extends ReduceStore {
         google_civic_election_id = parseInt(google_civic_election_id, 10);
         if (google_civic_election_id !== 0) {
           newBallot[google_civic_election_id] = action.res;
-          VoterGuideActions.voterGuidesToFollowRetrieve(google_civic_election_id);
-          VoterGuideActions.voterGuidesFollowedRetrieve(google_civic_election_id);
           //tracking displaying raccoon flags for offices
           newBallot[google_civic_election_id].ballot_item_list.forEach(ballot_item => {
             if (ballot_item.kind_of_ballot_item === "OFFICE") {

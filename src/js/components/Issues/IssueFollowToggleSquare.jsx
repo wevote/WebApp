@@ -1,11 +1,59 @@
-import React from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
 import { cordovaDot } from "../../utils/cordovaUtils";
 import ImageHandler from "../ImageHandler";
-import IssueFollowToggle from "./IssueFollowToggle";
+import IssueActions from "../../actions/IssueActions";
+import { showToastError, showToastSuccess } from "../../utils/showToast";
 import { renderLog } from "../../utils/logging";
 
-export default class IssueFollowToggleSquare extends IssueFollowToggle {
+export default class IssueFollowToggleSquare extends Component {
+  static propTypes = {
+    issue_we_vote_id: PropTypes.string.isRequired,
+    issue_name: PropTypes.string.isRequired,
+    issue_description: PropTypes.string,
+    issue_image_url: PropTypes.string,
+    on_issue_follow: PropTypes.func,
+    on_issue_stop_following: PropTypes.func,
+    edit_mode: PropTypes.bool,
+    is_following: PropTypes.bool,
+  };
+
+  constructor (props) {
+    super(props);
+
+    let is_following = false;
+    if (this.props.is_following) {
+      is_following = this.props.is_following;
+    }
+    this.state = {
+      is_following: is_following,
+    };
+    this.onIssueFollow = this.onIssueFollow.bind(this);
+    this.onIssueStopFollowing = this.onIssueStopFollowing.bind(this);
+  }
+
+  onIssueFollow () {
+    // This check is necessary as we enable follow when user clicks on Issue text
+    if (!this.state.is_following) {
+      this.setState({is_following: true});
+      IssueActions.issueFollow(this.props.issue_we_vote_id);
+      if (this.props.on_issue_follow) {
+        this.props.on_issue_follow(this.props.issue_we_vote_id);
+      }
+      showToastSuccess(`Now following ${this.props.issue_name}!`);
+    }
+  }
+
+  onIssueStopFollowing () {
+    this.setState({ is_following: false });
+    IssueActions.issueStopFollowing(this.props.issue_we_vote_id);
+    if (this.props.on_issue_stop_following) {
+      this.props.on_issue_stop_following(this.props.issue_we_vote_id);
+    }
+    showToastError(`You've stopped following ${this.props.issue_name}.`);
+  }
+
   render () {
     renderLog(__filename);
     if (!this.state) {
