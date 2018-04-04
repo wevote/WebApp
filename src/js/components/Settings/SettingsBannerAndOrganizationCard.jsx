@@ -45,10 +45,12 @@ export default class SettingsBannerAndOrganizationCard extends Component {
         {this.state.organization.organization_name && !this.state.organization.organization_name.startsWith("Voter-") ?
           <div className="container-fluid">
             <div className="row">
-              <div className="card">
-                <div className="card-main">
-                  <OrganizationCard organization={this.state.organization}
-                                    turnOffTwitterHandle />
+              <div className="col-md-12">
+                <div className="card">
+                  <div className="card-main">
+                    <OrganizationCard organization={this.state.organization}
+                                      turnOffTwitterHandle />
+                  </div>
                 </div>
               </div>
             </div>
