@@ -15,6 +15,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string,
     ballotItemWeVoteId: PropTypes.string.isRequired,
+    overlayTriggerOnClickOnly: PropTypes.bool,
     popoverBottom: PropTypes.bool,
   };
 
@@ -71,7 +72,8 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
   }
 
   closeIssuesLabelPopover () {
-    this.refs["issues-overlay"].hide();
+    console.log("closeIssuesLabelPopover");
+    this.refs[`issues-overlay-${this.props.ballotItemWeVoteId}`].hide();
   }
 
   onIssueStoreChange () {
@@ -150,15 +152,14 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
   render () {
     renderLog(__filename);
     let issues_under_this_ballot_item_voter_is_following_found = this.state.issues_under_this_ballot_item_voter_is_following && this.state.issues_under_this_ballot_item_voter_is_following.length;
-    let issues_under_this_ballot_item_voter_is_not_following = this.state.issues_under_this_ballot_item_voter_not_following && this.state.issues_under_this_ballot_item_voter_not_following.length;
+    let issues_under_this_ballot_item_voter_is_not_following_found = this.state.issues_under_this_ballot_item_voter_not_following && this.state.issues_under_this_ballot_item_voter_not_following.length;
+    // console.log("this.state.ballotItemWeVoteId: ", this.state.ballotItemWeVoteId);
+    // console.log("this.state.issues_under_this_ballot_item: ", this.state.issues_under_this_ballot_item);
     // console.log("this.state.issues_under_this_ballot_item_voter_is_following: ", this.state.issues_under_this_ballot_item_voter_is_following);
     // console.log("this.state.issues_under_this_ballot_item_voter_not_following: ", this.state.issues_under_this_ballot_item_voter_not_following);
-    if (!issues_under_this_ballot_item_voter_is_following_found && !issues_under_this_ballot_item_voter_is_not_following) {
+    if (!issues_under_this_ballot_item_voter_is_following_found && !issues_under_this_ballot_item_voter_is_not_following_found) {
       return null;
     }
-
-    // let issues_count = issues_under_this_ballot_item_voter_is_following_found + issues_under_this_ballot_item_voter_is_not_following;
-    // console.log(issues_count);
 
     const issuesLabelPopover =
       <Popover id="positions-popover-trigger-click-root-close"
@@ -170,7 +171,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
 
     const issuesLabel =
       <OverlayTrigger trigger="click"
-                      ref="issues-overlay"
+                      ref={`issues-overlay-${this.props.ballotItemWeVoteId}`}
                       onExit={this.closeIssuesLabelPopover}
                       rootClose
                       placement={this.props.popoverBottom ? "bottom" : "top"}
@@ -204,13 +205,13 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
                 <IssuesDisplayListWithOrganizationPopovers ballotItemWeVoteId={this.state.ballotItemWeVoteId}
                                                            issueImageSize={"MEDIUM"}
                                                            issueListToDisplay={this.state.issues_under_this_ballot_item_voter_is_following}
-                                                           visibility="desktop"
+                                                           overlayTriggerOnClickOnly={this.props.overlayTriggerOnClickOnly}
                                                            toFollow />
                 {/* Issues the voter is not following yet */}
                 <IssuesDisplayListWithOrganizationPopovers ballotItemWeVoteId={this.state.ballotItemWeVoteId}
                                                            issueImageSize={"MEDIUM"}
                                                            issueListToDisplay={this.state.issues_under_this_ballot_item_voter_not_following}
-                                                           visibility="desktop"
+                                                           overlayTriggerOnClickOnly={this.props.overlayTriggerOnClickOnly}
                                                            toFollow />
               </li>
             </ul>
@@ -224,13 +225,13 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
                 <IssuesDisplayListWithOrganizationPopovers ballotItemWeVoteId={this.state.ballotItemWeVoteId}
                                                            issueImageSize={"MEDIUM"}
                                                            issueListToDisplay={this.state.issues_under_this_ballot_item_voter_is_following}
-                                                           visibility="mobile"
+                                                           overlayTriggerOnClickOnly
                                                            toFollow />
                 {/* Issues the voter is not following yet */}
                 <IssuesDisplayListWithOrganizationPopovers ballotItemWeVoteId={this.state.ballotItemWeVoteId}
                                                            issueImageSize={"MEDIUM"}
                                                            issueListToDisplay={this.state.issues_under_this_ballot_item_voter_not_following}
-                                                           visibility="mobile"
+                                                           overlayTriggerOnClickOnly
                                                            toFollow />
               </li>
             </ul>

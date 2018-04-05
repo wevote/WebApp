@@ -154,6 +154,7 @@ export default class Ballot extends Component {
     // console.log("Ballot, google_civic_election_id: ", google_civic_election_id, ", ballot_location_shortcut: ", ballot_location_shortcut, "ballot_returned_we_vote_id: ", ballot_returned_we_vote_id);
     // console.log("VoterStore.election_id: ", VoterStore.election_id());
     if (google_civic_election_id || ballot_location_shortcut || ballot_returned_we_vote_id) {
+      // console.log("CALLING IssueActions.issuesRetrieveForElection");
       IssueActions.issuesRetrieveForElection(google_civic_election_id, ballot_location_shortcut, ballot_returned_we_vote_id);
       this.setState({
         issues_retrieved_from_google_civic_election_id: google_civic_election_id,
@@ -366,7 +367,7 @@ export default class Ballot extends Component {
       if (parseInt(BallotStore.ballot_properties.google_civic_election_id, 10) !== this.state.issues_retrieved_from_google_civic_election_id ||
           BallotStore.ballot_properties.ballot_returned_we_vote_id !== this.state.issues_retrieved_from_ballot_returned_we_vote_id ||
           BallotStore.ballot_properties.ballot_location_shortcut !== this.state.issues_retrieved_from_ballot_location_shortcut) {
-        // console.log("Calling issuesRetrieveForElection");
+        // console.log("onBallotStoreChange, Calling issuesRetrieveForElection");
         IssueActions.issuesRetrieveForElection(BallotStore.ballot_properties.google_civic_election_id, BallotStore.ballot_properties.ballot_location_shortcut, BallotStore.ballot_properties.ballot_returned_we_vote_id);
         this.setState({
           issues_retrieved_from_google_civic_election_id: parseInt(BallotStore.ballot_properties.google_civic_election_id, 10),

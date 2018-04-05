@@ -9,7 +9,7 @@ module.exports = {
   issuesRetrieve: function () {
     Dispatcher.loadEndpoint("issuesRetrieve", {
       include_voter_follow_status: true,
-      voter_issues_only: true,
+      voter_issues_only: false,
     });
   },
 
@@ -19,7 +19,7 @@ module.exports = {
       ballot_returned_we_vote_id: ballot_returned_we_vote_id,
       google_civic_election_id: google_civic_election_id,
       include_voter_follow_status: true,
-      voter_issues_only: true,
+      voter_issues_only: false,
     });
   },
 

@@ -30,7 +30,7 @@ module.exports = {
   voterBallotListRetrieve: function () {
     Dispatcher.loadEndpoint("voterBallotListRetrieve");
   },
-  
+
   voterBallotItemOpenOrClosedSave: (ballot_item_unfurled_tracker) => {
     Dispatcher.dispatch({
       type: "voterBallotItemOpenOrClosedSave",
