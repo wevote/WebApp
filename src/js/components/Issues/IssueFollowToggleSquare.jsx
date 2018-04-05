@@ -9,14 +9,16 @@ import { renderLog } from "../../utils/logging";
 
 export default class IssueFollowToggleSquare extends Component {
   static propTypes = {
+    edit_mode: PropTypes.bool,
+    grid: PropTypes.string,
+    is_following: PropTypes.bool,
     issue_we_vote_id: PropTypes.string.isRequired,
     issue_name: PropTypes.string.isRequired,
     issue_description: PropTypes.string,
     issue_image_url: PropTypes.string,
     on_issue_follow: PropTypes.func,
     on_issue_stop_following: PropTypes.func,
-    edit_mode: PropTypes.bool,
-    is_following: PropTypes.bool,
+    read_only: PropTypes.bool,
   };
 
   constructor (props) {

@@ -1,5 +1,6 @@
 import { ReduceStore } from "flux/utils";
 import Dispatcher from "../dispatcher/Dispatcher";
+import BallotStore from "../stores/BallotStore";
 import IssueActions from "../actions/IssueActions";
 import OrganizationStore from "../stores/OrganizationStore";
 import VoterGuideStore from "../stores/VoterGuideStore";
@@ -137,7 +138,9 @@ class IssueStore extends ReduceStore {
 
     let issues_list = [];
     uniq_list_of_issue_we_vote_ids.forEach(issue_we_vote_id => {
-      issues_list.push(all_cached_issues[issue_we_vote_id]);
+      if (all_cached_issues[issue_we_vote_id]) {
+        issues_list.push(all_cached_issues[issue_we_vote_id]);
+      }
     });
     // console.log("getIssuesFromListOfWeVoteIds issues_list: ", issues_list);
 
@@ -247,7 +250,7 @@ class IssueStore extends ReduceStore {
     // console.log("getIssuesUnderThisBallotItemVoterIsFollowing, ballot_item_we_vote_id:", ballot_item_we_vote_id);
     // console.log("getIssuesUnderThisBallotItemVoterIsFollowing, this.getState().issue_we_vote_ids_under_each_ballot_item:", this.getState().issue_we_vote_ids_under_each_ballot_item);
     let issues_under_this_ballot_item_voter_is_following = [];
-    if (ballot_item_we_vote_id && this.getState().issue_we_vote_ids_under_each_ballot_item) {
+    if (ballot_item_we_vote_id && this.getState().issue_we_vote_ids_under_each_ballot_item && this.getState().issue_we_vote_ids_voter_is_following) {
       let issues_for_this_ballot_item = this.getState().issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id] || [];
       // Remove issues the voter is not following
       issues_for_this_ballot_item.forEach( issue_we_vote_id => {
@@ -266,7 +269,7 @@ class IssueStore extends ReduceStore {
   getIssuesCountUnderThisBallotItemVoterIsFollowing (ballot_item_we_vote_id) {
     // What is the number of issues that have positions for this election under this ballot item?
     let issues_under_this_ballot_item_voter_is_following = [];
-    if (ballot_item_we_vote_id && this.getState().issue_we_vote_ids_under_each_ballot_item) {
+    if (ballot_item_we_vote_id && this.getState().issue_we_vote_ids_under_each_ballot_item && this.getState().issue_we_vote_ids_voter_is_following) {
       let issues_for_this_ballot_item = this.getState().issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id] || [];
       // Remove issues the voter is not following
       issues_for_this_ballot_item.forEach( issue_we_vote_id => {
@@ -282,10 +285,12 @@ class IssueStore extends ReduceStore {
 
   getIssuesUnderThisBallotItemVoterNotFollowing (ballot_item_we_vote_id) {
     // What are the issues that have positions for this election under this ballot item?
-    // console.log("getIssuesUnderThisBallotItemVoterNotFollowing, ballot_item_we_vote_id:", ballot_item_we_vote_id)
+    // console.log("getIssuesUnderThisBallotItemVoterNotFollowing, ballot_item_we_vote_id:", ballot_item_we_vote_id);
+    // console.log("this.getState().issue_we_vote_ids_voter_is_following:", this.getState().issue_we_vote_ids_voter_is_following);
     let issues_under_this_ballot_item_voter_not_following = [];
-    if (ballot_item_we_vote_id && this.getState().issue_we_vote_ids_under_each_ballot_item) {
+    if (ballot_item_we_vote_id && this.getState().issue_we_vote_ids_under_each_ballot_item && this.getState().issue_we_vote_ids_voter_is_following) {
       let issues_for_this_ballot_item = this.getState().issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id] || [];
+      // console.log("getIssuesUnderThisBallotItemVoterNotFollowing, issues_for_this_ballot_item:", issues_for_this_ballot_item);
       // Remove issues the voter is already following
       issues_for_this_ballot_item.forEach( issue_we_vote_id => {
         if (!arrayContains(issue_we_vote_id, this.getState().issue_we_vote_ids_voter_is_following)) {
@@ -307,6 +312,7 @@ class IssueStore extends ReduceStore {
     let issue_score_for_each_ballot_item;
     let issue_support_score_for_each_ballot_item;
     let issue_oppose_score_for_each_ballot_item;
+    let issues_under_ballot_items_list;
     let organization_we_vote_id_support_list_for_each_ballot_item;
     let organization_we_vote_id_oppose_list_for_each_ballot_item;
     let organization_name_support_list_for_each_ballot_item;
@@ -319,6 +325,7 @@ class IssueStore extends ReduceStore {
     let new_position_list;
     let organization_we_vote_id;
     let organization_we_vote_ids_linked_to_issue_dict;
+    let revisedState;
     let voter_guides;
 
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
@@ -337,18 +344,21 @@ class IssueStore extends ReduceStore {
         return state;
 
       case "issuesRetrieve":
+        let candidatesUnderThisOffice;
         issue_list = action.res.issue_list;
         let issue_we_vote_ids_voter_is_following = [];
+        let tempNewIssues;
+        revisedState = state;
         all_cached_issues = state.all_cached_issues;
         issue_support_score_for_each_ballot_item = state.issue_support_score_for_each_ballot_item;
         issue_oppose_score_for_each_ballot_item = state.issue_oppose_score_for_each_ballot_item;
+        issue_we_vote_ids_under_each_ballot_item = state.issue_we_vote_ids_under_each_ballot_item;
         organization_we_vote_id_support_list_for_each_ballot_item = state.organization_we_vote_id_support_list_for_each_ballot_item;
         organization_we_vote_id_oppose_list_for_each_ballot_item = state.organization_we_vote_id_oppose_list_for_each_ballot_item;
         organization_name_support_list_for_each_ballot_item = state.organization_name_support_list_for_each_ballot_item;
         organization_name_oppose_list_for_each_ballot_item = state.organization_name_oppose_list_for_each_ballot_item;
         issue_score_for_each_ballot_item = state.issue_score_for_each_ballot_item;
         if (action.res.issue_score_list) {
-          // console.log("IssueStore, issuesRetrieve, issue_score_list found");
           issue_score_list = action.res.issue_score_list;
           if (issue_score_list.length) {
             issue_score_list.forEach(issue_score_block => {
@@ -360,7 +370,7 @@ class IssueStore extends ReduceStore {
               organization_name_oppose_list_for_each_ballot_item[issue_score_block.ballot_item_we_vote_id] = issue_score_block.organization_name_oppose_list;
               issue_score_for_each_ballot_item[issue_score_block.ballot_item_we_vote_id] = issue_score_block.issue_support_score - issue_score_block.issue_oppose_score;
             });
-          } else if (action.res.voter_issues_only) {
+          } else {
             // Since there is an empty list and we retrieved this for the voter, reset all issue score dicts
             issue_support_score_for_each_ballot_item = {};
             issue_oppose_score_for_each_ballot_item = {};
@@ -371,40 +381,66 @@ class IssueStore extends ReduceStore {
             issue_score_for_each_ballot_item = {};
           }
         }
+        if (action.res.issues_under_ballot_items_list && action.res.voter_issues_only !== true && action.res.voter_issues_only !== "true") {
+          // console.log("IssueStore, issuesRetrieve, issue_score_list found");
+          issues_under_ballot_items_list = action.res.issues_under_ballot_items_list;
+          if (issues_under_ballot_items_list.length) {
+            issues_under_ballot_items_list.forEach(issue_block => {
+              issue_we_vote_ids_under_each_ballot_item[issue_block.ballot_item_we_vote_id] = issue_block.issue_we_vote_id_list;
+            });
+            // Now loop through the offices to populate them with issues assembled from the issues for every candidate under the office
+            let topLevelBallotItems = BallotStore.getTopLevelBallotItemWeVoteIds();
+            if (topLevelBallotItems) {
+              topLevelBallotItems.forEach(local_ballot_item_we_vote_id => {
+                // issue_we_vote_ids_under_each_ballot_item
+                if (!issue_we_vote_ids_under_each_ballot_item[local_ballot_item_we_vote_id]) {
+                  issue_we_vote_ids_under_each_ballot_item[local_ballot_item_we_vote_id] = [];
+                }
+                candidatesUnderThisOffice = BallotStore.getCandidateWeVoteIdsForOfficeWeVoteId(local_ballot_item_we_vote_id);
+                candidatesUnderThisOffice.forEach(candidateWeVoteId => {
+                  tempNewIssues = issue_we_vote_ids_under_each_ballot_item[candidateWeVoteId] || [];
+                  tempNewIssues.forEach(possibleNewIssueWeVoteId => {
+                    if (issue_we_vote_ids_under_each_ballot_item[local_ballot_item_we_vote_id].indexOf(possibleNewIssueWeVoteId) === -1) {
+                      issue_we_vote_ids_under_each_ballot_item[local_ballot_item_we_vote_id].push(possibleNewIssueWeVoteId);
+                    }
+                  });
+                });
+              });
+            }
+          }
+        }
         // Update issue_we_vote_ids_voter_is_following if voter_issues_only flag is set, else update the all_cached_issues
-        if (action.res.voter_issues_only) {
+        revisedState = Object.assign({}, revisedState, {
+          issue_support_score_for_each_ballot_item: issue_support_score_for_each_ballot_item,
+          issue_oppose_score_for_each_ballot_item: issue_oppose_score_for_each_ballot_item,
+          issue_we_vote_ids_under_each_ballot_item: issue_we_vote_ids_under_each_ballot_item,
+          organization_we_vote_id_support_list_for_each_ballot_item: organization_we_vote_id_support_list_for_each_ballot_item,
+          organization_we_vote_id_oppose_list_for_each_ballot_item: organization_we_vote_id_oppose_list_for_each_ballot_item,
+          organization_name_support_list_for_each_ballot_item: organization_name_support_list_for_each_ballot_item,
+          organization_name_oppose_list_for_each_ballot_item: organization_name_oppose_list_for_each_ballot_item,
+          issue_score_for_each_ballot_item: issue_score_for_each_ballot_item
+        });
+
+        // console.log("action.res.voter_issues_only:", action.res.voter_issues_only);
+        if (action.res.voter_issues_only === true || action.res.voter_issues_only === "true") {
           issue_list.forEach(issue => {
             all_cached_issues[issue.issue_we_vote_id] = issue;
             issue_we_vote_ids_voter_is_following.push(issue.issue_we_vote_id);
           });
-          return {
-            ...state,
-            all_cached_issues: all_cached_issues,
-            issue_we_vote_ids_voter_is_following: issue_we_vote_ids_voter_is_following,
-            issue_support_score_for_each_ballot_item: issue_support_score_for_each_ballot_item,
-            issue_oppose_score_for_each_ballot_item: issue_oppose_score_for_each_ballot_item,
-            organization_we_vote_id_support_list_for_each_ballot_item: organization_we_vote_id_support_list_for_each_ballot_item,
-            organization_we_vote_id_oppose_list_for_each_ballot_item: organization_we_vote_id_oppose_list_for_each_ballot_item,
-            organization_name_support_list_for_each_ballot_item: organization_name_support_list_for_each_ballot_item,
-            organization_name_oppose_list_for_each_ballot_item: organization_name_oppose_list_for_each_ballot_item,
-            issue_score_for_each_ballot_item: issue_score_for_each_ballot_item
-          };
         } else {
           issue_list.forEach(issue => {
             all_cached_issues[issue.issue_we_vote_id] = issue;
+            if (issue.is_issue_followed === true) {
+              issue_we_vote_ids_voter_is_following.push(issue.issue_we_vote_id);
+            }
           });
-          return {
-            ...state,
-            all_cached_issues: all_cached_issues,
-            issue_support_score_for_each_ballot_item: issue_support_score_for_each_ballot_item,
-            issue_oppose_score_for_each_ballot_item: issue_oppose_score_for_each_ballot_item,
-            organization_we_vote_id_support_list_for_each_ballot_item: organization_we_vote_id_support_list_for_each_ballot_item,
-            organization_we_vote_id_oppose_list_for_each_ballot_item: organization_we_vote_id_oppose_list_for_each_ballot_item,
-            organization_name_support_list_for_each_ballot_item: organization_name_support_list_for_each_ballot_item,
-            organization_name_oppose_list_for_each_ballot_item: organization_name_oppose_list_for_each_ballot_item,
-            issue_score_for_each_ballot_item: issue_score_for_each_ballot_item
-          };
         }
+        revisedState = Object.assign({}, revisedState, {
+          all_cached_issues: all_cached_issues,
+          issue_we_vote_ids_voter_is_following: issue_we_vote_ids_voter_is_following,
+        });
+        // console.log("IssueStore issuesRetrieve, issue_we_vote_ids_voter_is_following: ", issue_we_vote_ids_voter_is_following);
+        return revisedState;
 
       case "issuesToLinkToForOrganization":
         // console.log("IssueStore issuesToLinkToForOrganization");
