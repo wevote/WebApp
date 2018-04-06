@@ -101,3 +101,12 @@ export function deviceTypeString () {
 
   return deviceString;
 }
+
+export function isIOS () {
+  return isCordova() && window.device && device.platform === "iOS";
+}
+
+export function isAndroid () {
+  return isCordova() && window.device && device.platform === "Android";
+}
+

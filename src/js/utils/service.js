@@ -2,6 +2,7 @@ import assign from "object-assign";
 import url from "url";
 import cookies from "./cookies";
 import webAppConfig from "../config";
+import { httpLog } from "../utils/logging";
 
 // import { isCordova } from "../utils/cordovaUtils";
 
@@ -40,40 +41,7 @@ export function $ajax (options) {
   options.error = options.error || defaults.error;
   options.url = url.resolve(defaults.baseUrl, options.endpoint) + "/";
 
-  // if (isCordova()) {
-  //   console.log("AJAX URL: " + options.url);
-  // }
+  httpLog("AJAX URL: " + options.url);
 
   return $.ajax(options);
 }
-
-// Commented out March 2018, feel free to delete in a few months.  This seems to be abandoned.
-//const DEBUG = false;
-// export function get (options) {
-//   var opts = assign(defaults, options);
-//
-//   opts.url = url.resolve(opts.baseUrl, opts.endpoint);
-//   // We add voter_device_id to all endpoint calls
-//   opts.query.voter_device_id = cookies.getItem("voter_device_id");
-//
-//   return new Promise( (resolve, reject) => new request.Request("GET", opts.url)
-//     .accept(opts.dataType)
-//     .query(opts.query)
-//     .withCredentials()
-//     .end((err, res) => {
-//       if (err) {
-//         if (opts.error instanceof Function === true)
-//           opts.error(err || res.body);
-//
-//         reject(err);
-//       } else {
-//         if (opts.success instanceof Function === true)
-//           opts.success(res.body);
-//         else if (DEBUG)
-//           console.warn(res.body);
-//
-//         resolve(res.body);
-//       }
-//     })
-//   );
-// }

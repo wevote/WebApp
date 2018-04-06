@@ -19,14 +19,20 @@
           * Enable inline JS: add 'unsafe-inline' to default-src
     Steve 1/18/18:  I was working on making all the correct policies, and decided to just make it wide open for now.
   Wide open security policy for Apache Cordova. TODO: We should close this down
+        default-src 'self' data: http: https: localhost: wevotetwitterscheme: gap://* https://ssl.gstatic.com ;
   -->
   <meta http-equiv="Content-Security-Policy" content="
-      default-src * gap: ;
+      default-src * data: content: gap: https://ssl.gstatic.com;
+
+      img-src *;
       style-src * 'unsafe-inline';
       script-src * 'unsafe-inline';
+      frame-src http://*.facebook.com https://*.facebook.com https://*.twitter.com gap: ;
+      child-src gap://* ;
+      font-src *;
       media-src *;
-      img-src * data:;
     " />
+  <!--img-src https: data: file: android-webview-video-poster: https://api.wevoteusa.org;-->
   <meta name="format-detection" content="telephone=no">
   <meta name="msapplication-tap-highlight" content="no">
   <meta name="viewport"
@@ -67,9 +73,9 @@
               font-size: 32px;
               font-weight: normal;
               color: #fff;
-              ">Loading We Vote...
+              ">Loading We Vote CORDOVA2...
     </h1>
-    <div class="u-loading-spinner u-loading-spinner--light">Loading We Vote...</div>
+    <div class="u-loading-spinner u-loading-spinner--light">Loading We Vote CORDOVA...</div>
   </div>
 </div>
 <!--<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>-->
