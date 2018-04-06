@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { Button } from "react-bootstrap";
 import AnalyticsActions from "../../actions/AnalyticsActions";
-import { historyPush, isWebApp } from "../../utils/cordovaUtils";
+import { historyPush, isIOS, isWebApp } from "../../utils/cordovaUtils";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import HeaderBar from "../../components/Navigation/HeaderBar";
@@ -153,7 +153,12 @@ export default class OrganizationVoterGuide extends Component {
     let isVoterOwner = this.state.organization.organization_we_vote_id !== undefined &&
       this.state.organization.organization_we_vote_id === this.state.voter.linked_organization_we_vote_id;
 
-    let pageHeaderStyle = isWebApp() ? "page-header__container headroom" : "page-header__container headroom page-header-cordova";
+    let pageHeaderStyle = "page-header__container headroom";
+    if (isIOS()) {
+      pageHeaderStyle = "page-header__container page-header-cordova-ios";  // Note March 2018: no headroom.js for Cordova
+    } else if (isAndroid()) {
+      pageHeaderStyle = "page-header__container";
+    }
 
     if (!organizationId) {
       let floatRight = {

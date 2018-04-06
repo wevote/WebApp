@@ -1,3 +1,5 @@
+import { httpLog } from "../utils/logging";
+
 var Dispatcher = require("flux/lib/Dispatcher");
 
 Dispatcher.prototype.$ajax = require("../utils/service").$ajax;
@@ -10,7 +12,7 @@ Dispatcher.prototype.loadEndpoint = function (endpoint, data = {}) {
     endpoint,
     data: data,
     success: (res) => {
-      // console.log("Ajax response to endpoint: " + endpoint);
+      httpLog("AJAX Response to endpoint: " + endpoint);
       this.dispatch({ type: endpoint, res });
     },
 

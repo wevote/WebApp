@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
 import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
-import { historyPush, isCordova, cordovaOpenSafariView, isWebApp } from "./utils/cordovaUtils";
+import { historyPush, cordovaOpenSafariView, isAndroid, isCordova, isIOS,
+  isWebApp } from "./utils/cordovaUtils";
 import ElectionActions from "./actions/ElectionActions";
 import FooterBarCordova from "./components/Navigation/FooterBarCordova";
 import FriendActions from "./actions/FriendActions";
@@ -59,9 +60,10 @@ export default class Application extends Component {
 
   initCordova () {
     console.log("Application initCordova ------------ " + __filename);
+    console.log("------------------ device.platform = " + device.platform);
     if (isCordova()) {
       window.handleOpenURL = function (url) {
-        console.log("Application handleOpenUrl: " + url);
+        console.log("---------------xxxxxx-------- Application handleOpenUrl: " + url);
         if (url.startsWith("wevotetwitterscheme://")) {
           console.log("window.handleOpenURL received wevotetwitterscheme: " + url);
           let search = url.replace(new RegExp("&amp;", "g"), "&");
@@ -388,8 +390,10 @@ export default class Application extends Component {
       "headroom-getting-started__margin" : isWebApp() ? "headroom-wrapper" : "headroom-wrapper__cordova";
 
     let pageHeaderStyle = this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom";
-    if (isCordova()) {
-      pageHeaderStyle += " page-header-cordova";
+    if (isIOS()) {
+      pageHeaderStyle = "page-header__container headroom page-header-cordova-ios";   // Note March 2018: no headroom.js for Cordova
+    } else if (isAndroid()) {
+      pageHeaderStyle = "page-header__container headroom";
     }
 
     let footerStyle = this.state.showFooter ? "footroom-wrapper" : "footroom-wrapper__hide";
@@ -412,7 +416,7 @@ export default class Application extends Component {
 
       return <div className="app-base" id="app-base-id">
         <ToastContainer closeButton={false} />
-        { isCordova() && <div className={"ios7plus-spacer"} /> }
+        { isCordova() && isIOS() && <div className={"ios7plus-spacer"} /> }
         <div className={headRoomSize}>
           <div ref="pageHeader" className={pageHeaderStyle}>
             { showBackToHeader ?
@@ -440,7 +444,7 @@ export default class Application extends Component {
     } else if (settingsMode) {
       return <div className="app-base" id="app-base-id">
         <ToastContainer closeButton={false} />
-        { isCordova() && <div className={"ios7plus-spacer"} /> }
+        { isCordova() && isIOS() && <div className={"ios7plus-spacer"} /> }
         <div className={headRoomSize}>
           <div ref="pageHeader" className={pageHeaderStyle}>
             {/* March 2018: One of HeaderBackToBar OR HeaderBar is displayed, AND under some circumstances HeaderGettingStartedBar is
@@ -467,7 +471,7 @@ export default class Application extends Component {
     // This handles other pages, like Welcome and the Ballot display
     return <div className="app-base" id="app-base-id">
       <ToastContainer closeButton={false} />
-      { isCordova() && <div className={"ios7plus-spacer"} /> }
+      { isCordova() && isIOS() && <div className={"ios7plus-spacer"} /> }
       <div className={headRoomSize}>
         <div ref="pageHeader" className={pageHeaderStyle}>
           {/* March 2018: One of HeaderBackToBar OR HeaderBar is displayed, AND under some circumstances HeaderGettingStartedBar is
