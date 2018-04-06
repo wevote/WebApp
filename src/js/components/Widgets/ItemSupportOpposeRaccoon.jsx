@@ -394,7 +394,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
     // console.log("this.state.position_list_from_advisers_followed_by_voter: ", this.state.position_list_from_advisers_followed_by_voter);
     if (positions_count) {
-      // console.log("ItemSupportOpposeCheetah, this.state.ballot_item_we_vote_id: ", this.state.ballot_item_we_vote_id);
       let support_positions_list_count = 0;
       let oppose_positions_list_count = 0;
       // let info_only_positions_list_count = 0;

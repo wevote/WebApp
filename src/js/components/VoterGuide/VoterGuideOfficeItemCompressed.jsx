@@ -52,7 +52,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     this.goToOfficeLink = this.goToOfficeLink.bind(this);
     this.openCandidateModal = this.openCandidateModal.bind(this);
     this.toggleDisplayAllCandidates = this.toggleDisplayAllCandidates.bind(this);
-    this.toggleExpandCheetahDetails = this.toggleExpandCheetahDetails.bind(this);
+    this.toggleExpandDetails = this.toggleExpandDetails.bind(this);
   }
 
   componentDidMount () {
@@ -113,7 +113,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     this.setState({ display_all_candidates_flag: !this.state.display_all_candidates_flag });
   }
 
-  toggleExpandCheetahDetails () {
+  toggleExpandDetails () {
     this.setState({ display_raccoon_details_flag: !this.state.display_raccoon_details_flag });
   }
 
@@ -177,13 +177,13 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     }
 
     let ballot_item_display_name_raccoon = this.state.display_raccoon_details_flag ?
-            <Link onClick={this.toggleExpandCheetahDetails}>
+            <Link onClick={this.toggleExpandDetails}>
               <TextTruncate line={1}
                             truncateText="…"
                             text={ballot_item_display_name}
                             textTruncateChild={null} />
             </Link> :
-            <Link onClick={this.toggleExpandCheetahDetails}>
+            <Link onClick={this.toggleExpandDetails}>
               <TextTruncate line={1}
                             truncateText="…"
                             text={ballot_item_display_name}
@@ -276,7 +276,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
             let candidate_text = candidate_party_text + candidate_description_text;
 
             let candidate_photo_raccoon = this.state.display_raccoon_details_flag ?
-              <div className="hidden-xs" onClick={this.props.link_to_ballot_item_page ? this.toggleExpandCheetahDetails : null}>
+              <div className="hidden-xs" onClick={this.props.link_to_ballot_item_page ? this.toggleExpandDetails : null}>
                 <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
                               sizeClassName="icon-candidate-small u-push--sm "
                               imageUrl={one_candidate.candidate_photo_url_large}
@@ -451,11 +451,11 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                              onClick={this.toggleDisplayAllCandidates} /> : null
         }
         { this.state.display_raccoon_details_flag ?
-          <Link onClick={this.toggleExpandCheetahDetails}>
+          <Link onClick={this.toggleExpandDetails}>
             <div className="BallotItem__view-more u-items-center u-no-break hidden-print">
               Show less...</div>
           </Link> :
-          <Link onClick={this.toggleExpandCheetahDetails}>
+          <Link onClick={this.toggleExpandDetails}>
             <div className="BallotItem__view-more u-items-center u-no-break hidden-print">
               { total_number_of_candidates_to_display > 1 ?
                 <span>View all {total_number_of_candidates_to_display} candidates...</span> :
