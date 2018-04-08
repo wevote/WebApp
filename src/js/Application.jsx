@@ -17,7 +17,7 @@ import IssueStore from "././stores/IssueStore";
 import { renderLog, routingLog } from "./utils/logging";
 import OrganizationActions from "./actions/OrganizationActions";
 import { stringContains } from "./utils/textFormat";
-import TwitterActions from "./actions/TwitterActions";
+import TwitterSignIn from "./components/Twitter/TwitterSignIn";
 import VoterActions from "./actions/VoterActions";
 import VoterStore from "./stores/VoterStore";
 import webAppConfig from "./config";
@@ -60,43 +60,12 @@ export default class Application extends Component {
 
   initCordova () {
     console.log("Application initCordova ------------ " + __filename);
+
+    // eslint-disable-next-line no-undef
     console.log("------------------ device.platform = " + device.platform);
     if (isCordova()) {
       window.handleOpenURL = function (url) {
-        console.log("---------------xxxxxx-------- Application handleOpenUrl: " + url);
-        if (url.startsWith("wevotetwitterscheme://")) {
-          console.log("window.handleOpenURL received wevotetwitterscheme: " + url);
-          let search = url.replace(new RegExp("&amp;", "g"), "&");
-          let urlParams = new URLSearchParams(search);
-          if (urlParams.has("twitter_redirect_url")) {
-            let redirectURL = urlParams.get("twitter_redirect_url");
-            console.log("twitterSignIn cordova, redirecting to: " + redirectURL);
-
-            // eslint-disable-next-line no-undef
-            SafariViewController.hide();  // Hide the previous WKWebView
-            cordovaOpenSafariView(redirectURL, 500);
-          } else if (urlParams.has("access_token_and_secret_returned")) {
-            // SafariViewController.hide();
-            if (urlParams.get("success") === "True") {
-              console.log("twitterSignIn cordova, received secret -- push /ballot");
-              TwitterActions.twitterSignInRetrieve();
-              historyPush("/ballot");
-            } else {
-              console.log("twitterSignIn cordova, FAILED to receive secret -- push /twitter_sign_in");
-              historyPush("/twitter_sign_in");
-            }
-          } else if (urlParams.has("twitter_handle_found") && urlParams.get("twitter_handle_found") === "True") {
-            console.log("twitterSignIn cordova, twitter_handle_found -- push /twitter_sign_in -- received handle = " + urlParams.get("twitter_handle"));
-
-            // eslint-disable-next-line no-undef
-            SafariViewController.hide();  // Hide the previous WKWebView
-            historyPush("/twitter_sign_in");
-          } else {
-            console.log("ERROR in window.handleOpenURL, NO MATCH");
-          }
-        } else {
-          console.log("ERROR: window.handleOpenURL received invalid url: " + url);
-        }
+        TwitterSignIn.handleTwitterOpenURL(url);
       };
     }
   }

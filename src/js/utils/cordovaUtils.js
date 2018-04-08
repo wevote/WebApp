@@ -1,4 +1,5 @@
 import { browserHistory, hashHistory } from "react-router";
+import { oAuthLog } from "./logging";
 
 export function isWebApp () {
   return window.cordova === undefined;
@@ -29,23 +30,23 @@ export function cordovaDot (path) {
 function cordovaOpenSafariViewSub (requestURL) {
   // console.log("cordovaOpenSafariView -1- requestURL: " + requestURL);
   SafariViewController.isAvailable(function () {            // eslint-disable-line no-undef
-    // console.log("cordovaOpenSafariView -2- requestURL: " + requestURL);
+    oAuthLog("cordovaOpenSafariView requestURL: " + requestURL);
     SafariViewController.show({                                       // eslint-disable-line no-undef
         url: requestURL,
       },
 
       function (result) {
         if (result.event === "opened") {
-          console.log("cordovaOpenSafariView opened url " + requestURL);
+          oAuthLog("cordovaOpenSafariView opened url " + requestURL);
         } else if (result.event === "loaded") {
-          console.log("cordovaOpenSafariView loaded url " + JSON.stringify(result));
+          oAuthLog("cordovaOpenSafariView loaded url " + JSON.stringify(result));
         } else if (result.event === "closed") {
-          console.log("cordovaOpenSafariView closed" + JSON.stringify(result));
+          oAuthLog("cordovaOpenSafariView closed" + JSON.stringify(result));
         }
       },
 
       function (msg) {
-        console.log("cordovaOpenSafariView KO: " + JSON.stringify(msg));
+        oAuthLog("cordovaOpenSafariView KO: " + JSON.stringify(msg));
       }
     );
   });
