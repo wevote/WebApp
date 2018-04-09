@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import { Link } from "react-router";
 import TextTruncate from "react-text-truncate";
-import { capitalizeString } from "../../utils/textFormat";
+import { capitalizeString, toTitleCase } from "../../utils/textFormat";
 import BallotSideBarLink from "../Navigation/BallotSideBarLink";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import CandidateActions from "../../actions/CandidateActions";
-import CandidateStore from "../../stores/CandidateStore";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import ImageHandler from "../ImageHandler";
+import IssuesFollowedByBallotItemDisplayList from "../Issues/IssuesFollowedByBallotItemDisplayList";
 import IssueStore from "../../stores/IssueStore";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
 import LearnMore from "../Widgets/LearnMore";
@@ -57,11 +57,12 @@ export default class OfficeItemCompressedRaccoon extends Component {
     this.goToOfficeLink = this.goToOfficeLink.bind(this);
     this.openCandidateModal = this.openCandidateModal.bind(this);
     this.toggleDisplayAllCandidates = this.toggleDisplayAllCandidates.bind(this);
-    this.toggleExpandCheetahDetails = this.toggleExpandCheetahDetails.bind(this);
+    this.toggleExpandDetails = this.toggleExpandDetails.bind(this);
   }
 
   componentDidMount () {
-    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
@@ -69,15 +70,16 @@ export default class OfficeItemCompressedRaccoon extends Component {
     // console.log("this.props.candidate_list: ", this.props.candidate_list);
     if (this.props.candidate_list && this.props.candidate_list.length) {
       CandidateActions.candidatesRetrieve(this.props.we_vote_id);
-      this.props.candidate_list.forEach( function (candidate) {
-        // console.log("OfficeItemCompressed, candidate: ", candidate);
-        if (candidate && candidate.hasOwnProperty("we_vote_id") && !CandidateStore.isCandidateInStore(candidate.we_vote_id)) {
-          // console.log("OfficeItemCompressed, retrieving");
-          // CandidateActions.candidateRetrieve(candidate.we_vote_id); // Replaced by candidatesRetrieve on the office level
-          // Slows down the browser too much when run for all candidates
-          // VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidate.we_vote_id, "CANDIDATE");
-        }
-      });
+
+      // this.props.candidate_list.forEach( function (candidate) {
+      //   // console.log("OfficeItemCompressed, candidate: ", candidate);
+      //   if (candidate && candidate.hasOwnProperty("we_vote_id") && !CandidateStore.isCandidateInStore(candidate.we_vote_id)) {
+      //     // console.log("OfficeItemCompressed, retrieving");
+      //     // CandidateActions.candidateRetrieve(candidate.we_vote_id); // Replaced by candidatesRetrieve on the office level
+      //     // Slows down the browser too much when run for all candidates
+      //     // VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidate.we_vote_id, "CANDIDATE");
+      //   }
+      // });
     }
     if (this.props.organization && this.props.organization.organization_we_vote_id) {
       this.setState({
@@ -85,9 +87,6 @@ export default class OfficeItemCompressedRaccoon extends Component {
       });
     }
 
-    //read current raccon open/close status to BallotStore
-    // console.log("raccoon, compnentDidMount, setting state for we_vote_id", this.props.we_vote_id)
-    // console.log("setState", BallotStore.getBallotItemUnfurledStatus(this.props.we_vote_id))
     // If there three or fewer offices on this ballot, unfurl them
     if (this.props.allBallotItemsCount && this.props.allBallotItemsCount <= 3) {
       this.setState({
@@ -111,9 +110,16 @@ export default class OfficeItemCompressedRaccoon extends Component {
   }
 
   componentWillUnmount () {
+    this.issueStoreListener.remove();
     this.organizationStoreListener.remove();
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
+  }
+
+  onIssueStoreChange () {
+    this.setState({
+      transitioning: false,
+    });
   }
 
   onVoterGuideStoreChange () {
@@ -122,8 +128,8 @@ export default class OfficeItemCompressedRaccoon extends Component {
     });
   }
 
-  _onOrganizationStoreChange () {
-    // console.log("VoterGuideOfficeItemCompressed _onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
+  onOrganizationStoreChange () {
+    // console.log("VoterGuideOfficeItemCompressed onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
     });
@@ -142,7 +148,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
     this.setState({ display_all_candidates_flag: !this.state.display_all_candidates_flag });
   }
 
-  toggleExpandCheetahDetails () {
+  toggleExpandDetails () {
     const { we_vote_id, updateOfficeDisplayUnfurledTracker } = this.props;
     this.setState({ display_office_unfurled: !this.state.display_office_unfurled });
     if (this.props.allBallotItemsCount && this.props.allBallotItemsCount <= 3) {
@@ -206,7 +212,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
     renderLog(__filename);
     let { ballot_item_display_name, we_vote_id } = this.props;
 
-    ballot_item_display_name = capitalizeString(ballot_item_display_name);
+    ballot_item_display_name = toTitleCase(ballot_item_display_name);
 
     let candidate_list_to_display = this.props.candidate_list;
     let total_number_of_candidates_to_display = this.props.candidate_list.length;
@@ -216,20 +222,6 @@ export default class OfficeItemCompressedRaccoon extends Component {
       candidate_list_to_display = this.props.candidate_list.slice(0, NUMBER_OF_CANDIDATES_TO_DISPLAY);
       remaining_candidates_to_display_count = this.props.candidate_list.length - NUMBER_OF_CANDIDATES_TO_DISPLAY;
     }
-
-    let ballot_item_display_name_raccoon = this.state.display_office_unfurled ?
-            <Link onClick={this.toggleExpandCheetahDetails}>
-              <TextTruncate line={1}
-                            truncateText="…"
-                            text={ballot_item_display_name}
-                            textTruncateChild={null} />
-            </Link> :
-            <Link onClick={this.toggleExpandCheetahDetails}>
-              <TextTruncate line={1}
-                            truncateText="…"
-                            text={ballot_item_display_name}
-                            textTruncateChild={null} />
-            </Link>;
 
     // Ready to Vote code
     let array_of_candidates_voter_supports = [];
@@ -309,20 +301,62 @@ export default class OfficeItemCompressedRaccoon extends Component {
         <span className="hidden-xs">
           <BookmarkToggle we_vote_id={we_vote_id} type="OFFICE" />
           <span className="hidden-print pull-right u-push--lg">
-              <Link className="BallotItem__learn-more" onClick={this.goToOfficeLink}>learn more</Link>
+            { this.state.display_office_unfurled ?
+              <Link onClick={this.toggleExpandDetails}>
+                <span className="BallotItem__view-more u-items-center u-no-break hidden-print">
+                  show less</span>
+              </Link> :
+              <Link onClick={this.toggleExpandDetails}>
+                <span className="BallotItem__view-more u-items-center u-no-break hidden-print">
+                  show more
+                </span>
+              </Link>
+            }
           </span>
         </span>
         {/* Mobile */}
         <span className="visible-xs">
-          { this.state.display_office_unfurled ?
-            <span className="BallotItem__learn-more hidden-print pull-right">
-              <Link className="BallotItem__learn-more" onClick={this.goToOfficeLink}>learn more</Link>
-            </span> :
-            null
-          }
+          <span className="hidden-print pull-right u-push--xs">
+            { this.state.display_office_unfurled ?
+              <Link onClick={this.toggleExpandDetails}>
+                <span className="BallotItem__view-more u-items-center u-no-break hidden-print">
+                  show less</span>
+              </Link> :
+              <Link onClick={this.toggleExpandDetails}>
+                <span className="BallotItem__view-more u-items-center u-no-break hidden-print">
+                  show more
+                </span>
+              </Link>
+            }
+          </span>
         </span>
 
-        <h2 className="u-f3 card-main__ballot-name u-stack--sm">{ballot_item_display_name_raccoon}</h2>
+        <h2 className="u-f3 card-main__ballot-name u-gray-dark u-stack--sm">
+          {/* Desktop */}
+          <span className="hidden-xs" onClick={this.toggleExpandDetails}>
+            { this.state.display_office_unfurled ?
+              <span className="glyphicon glyphicon-triangle-bottom u-font-size6 hidden-print u-push--xs"/> :
+              <span className="glyphicon glyphicon-triangle-right u-font-size6 hidden-print u-push--xs"/>
+            }
+            {ballot_item_display_name}
+          </span>
+
+          {/* Mobile */}
+          <span className="visible-xs">
+            <span onClick={this.toggleExpandDetails}>
+              <TextTruncate line={1}
+                            truncateText="…"
+                            text={ballot_item_display_name}
+                            textTruncateChild={null} />
+            </span>
+          </span>
+
+          {/* Print */}
+          <span className="u-f3 visible-print">
+            {ballot_item_display_name}
+          </span>
+
+        </h2>
 
         {/* Only show the candidates if the Office is "unfurled" */}
         {/* TODO: Note that this next block of code could be replaced with CandidateItemCompressed */}
@@ -397,6 +431,13 @@ export default class OfficeItemCompressedRaccoon extends Component {
         {/* If the office is "rolled up", show some details */}
         { !this.state.display_office_unfurled ?
           <div>
+            <span className="hidden-print">
+              <IssuesFollowedByBallotItemDisplayList ballot_item_display_name={this.props.ballot_item_display_name}
+                                                     ballotItemWeVoteId={this.props.we_vote_id}
+                                                     overlayTriggerOnClickOnly
+                                                     placement={"bottom"}
+                                                     />
+            </span>
             { candidate_list_to_display.map( (one_candidate) => {
 
               const yourNetworkSupportsPopover =
@@ -418,7 +459,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                   under those issues. <strong>{one_candidate.ballot_item_display_name}</strong> has
                   the most support from these
                   organizations.<br />
-                  <Link onClick={this.toggleExpandCheetahDetails}> learn more</Link>
+                  <Link onClick={this.toggleExpandDetails}> learn more</Link>
                 </Popover>;
 
               const voter_supports_this_candidate = SupportStore.get(one_candidate.we_vote_id) && SupportStore.get(one_candidate.we_vote_id).is_support;
@@ -532,11 +573,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
                              onClick={this.toggleDisplayAllCandidates} /> : null
         }
         { this.state.display_office_unfurled ?
-          <Link onClick={this.toggleExpandCheetahDetails}>
+          <Link onClick={this.toggleExpandDetails}>
             <div className="BallotItem__view-more u-items-center u-no-break hidden-print">
               Show less...</div>
           </Link> :
-          <Link onClick={this.toggleExpandCheetahDetails}>
+          <Link onClick={this.toggleExpandDetails}>
             <div className="BallotItem__view-more u-items-center u-no-break hidden-print">
               { total_number_of_candidates_to_display > 1 ?
                 <span>View all {total_number_of_candidates_to_display} candidates...</span> :

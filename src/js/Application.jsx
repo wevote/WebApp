@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
 import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
-import { historyPush, isCordova, cordovaOpenSafariView, isWebApp } from "./utils/cordovaUtils";
+import { historyPush, cordovaOpenSafariView, isAndroid, isCordova, isIOS,
+  isWebApp } from "./utils/cordovaUtils";
 import ElectionActions from "./actions/ElectionActions";
 import FooterBarCordova from "./components/Navigation/FooterBarCordova";
 import FriendActions from "./actions/FriendActions";
@@ -16,7 +17,7 @@ import IssueStore from "././stores/IssueStore";
 import { renderLog, routingLog } from "./utils/logging";
 import OrganizationActions from "./actions/OrganizationActions";
 import { stringContains } from "./utils/textFormat";
-import TwitterActions from "./actions/TwitterActions";
+import TwitterSignIn from "./components/Twitter/TwitterSignIn";
 import VoterActions from "./actions/VoterActions";
 import VoterStore from "./stores/VoterStore";
 import webAppConfig from "./config";
@@ -59,42 +60,12 @@ export default class Application extends Component {
 
   initCordova () {
     console.log("Application initCordova ------------ " + __filename);
+
+    // eslint-disable-next-line no-undef
+    console.log("------------------ device.platform = " + device.platform);
     if (isCordova()) {
       window.handleOpenURL = function (url) {
-        console.log("Application handleOpenUrl: " + url);
-        if (url.startsWith("wevotetwitterscheme://")) {
-          console.log("window.handleOpenURL received wevotetwitterscheme: " + url);
-          let search = url.replace(new RegExp("&amp;", "g"), "&");
-          let urlParams = new URLSearchParams(search);
-          if (urlParams.has("twitter_redirect_url")) {
-            let redirectURL = urlParams.get("twitter_redirect_url");
-            console.log("twitterSignIn cordova, redirecting to: " + redirectURL);
-
-            // eslint-disable-next-line no-undef
-            SafariViewController.hide();  // Hide the previous WKWebView
-            cordovaOpenSafariView(redirectURL, 500);
-          } else if (urlParams.has("access_token_and_secret_returned")) {
-            // SafariViewController.hide();
-            if (urlParams.get("success") === "True") {
-              console.log("twitterSignIn cordova, received secret -- push /ballot");
-              TwitterActions.twitterSignInRetrieve();
-              historyPush("/ballot");
-            } else {
-              console.log("twitterSignIn cordova, FAILED to receive secret -- push /twitter_sign_in");
-              historyPush("/twitter_sign_in");
-            }
-          } else if (urlParams.has("twitter_handle_found") && urlParams.get("twitter_handle_found") === "True") {
-            console.log("twitterSignIn cordova, twitter_handle_found -- push /twitter_sign_in -- received handle = " + urlParams.get("twitter_handle"));
-
-            // eslint-disable-next-line no-undef
-            SafariViewController.hide();  // Hide the previous WKWebView
-            historyPush("/twitter_sign_in");
-          } else {
-            console.log("ERROR in window.handleOpenURL, NO MATCH");
-          }
-        } else {
-          console.log("ERROR: window.handleOpenURL received invalid url: " + url);
-        }
+        TwitterSignIn.handleTwitterOpenURL(url);
       };
     }
   }
@@ -388,8 +359,10 @@ export default class Application extends Component {
       "headroom-getting-started__margin" : isWebApp() ? "headroom-wrapper" : "headroom-wrapper__cordova";
 
     let pageHeaderStyle = this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom";
-    if (isCordova()) {
-      pageHeaderStyle += " page-header-cordova";
+    if (isIOS()) {
+      pageHeaderStyle = "page-header__container headroom page-header-cordova-ios";   // Note March 2018: no headroom.js for Cordova
+    } else if (isAndroid()) {
+      pageHeaderStyle = "page-header__container headroom";
     }
 
     let footerStyle = this.state.showFooter ? "footroom-wrapper" : "footroom-wrapper__hide";
@@ -412,7 +385,7 @@ export default class Application extends Component {
 
       return <div className="app-base" id="app-base-id">
         <ToastContainer closeButton={false} />
-        { isCordova() && <div className={"ios7plus-spacer"} /> }
+        { isCordova() && isIOS() && <div className={"ios7plus-spacer"} /> }
         <div className={headRoomSize}>
           <div ref="pageHeader" className={pageHeaderStyle}>
             { showBackToHeader ?
@@ -440,7 +413,7 @@ export default class Application extends Component {
     } else if (settingsMode) {
       return <div className="app-base" id="app-base-id">
         <ToastContainer closeButton={false} />
-        { isCordova() && <div className={"ios7plus-spacer"} /> }
+        { isCordova() && isIOS() && <div className={"ios7plus-spacer"} /> }
         <div className={headRoomSize}>
           <div ref="pageHeader" className={pageHeaderStyle}>
             {/* March 2018: One of HeaderBackToBar OR HeaderBar is displayed, AND under some circumstances HeaderGettingStartedBar is
@@ -467,7 +440,7 @@ export default class Application extends Component {
     // This handles other pages, like Welcome and the Ballot display
     return <div className="app-base" id="app-base-id">
       <ToastContainer closeButton={false} />
-      { isCordova() && <div className={"ios7plus-spacer"} /> }
+      { isCordova() && isIOS() && <div className={"ios7plus-spacer"} /> }
       <div className={headRoomSize}>
         <div ref="pageHeader" className={pageHeaderStyle}>
           {/* March 2018: One of HeaderBackToBar OR HeaderBar is displayed, AND under some circumstances HeaderGettingStartedBar is

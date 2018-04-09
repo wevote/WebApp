@@ -18,7 +18,7 @@ class VoterGuideStore extends ReduceStore {
       all_cached_voter_guides_by_voter_guide: {}, // Dictionary with voter_guide_we_vote_id as key and voter_guides as value
       ballot_has_guides: true,
       organization_we_vote_ids_to_follow_all: [],
-      organization_we_vote_ids_to_follow_ballot_items_dict: {}, // This is a dictionary with ballot_item_we_vote_id as key and list of organization we_vote_ids as value
+      organization_we_vote_ids_to_follow_ballot_items_dict: {}, // Dictionary with ballot_item_we_vote_id as key and list of organization we_vote_ids as value
       organization_we_vote_ids_to_follow_for_latest_ballot_item: [], // stores organization_we_vote_ids for latest ballot_item_we_vote_id
       organization_we_vote_ids_to_follow_by_issues_followed: [],
       organization_we_vote_ids_to_follow_organization_recommendation_dict: {}, // This is a dictionary with organization_we_vote_id as key and list of organization_we_vote_id's as value
@@ -249,7 +249,7 @@ class VoterGuideStore extends ReduceStore {
         return revisedState;
 
       case "voterBallotItemsRetrieve":
-        // console.log("BallotStore, voterBallotItemsRetrieve response received.");
+        // console.log("VoterGuideStore, voterBallotItemsRetrieve response received.");
         google_civic_election_id = action.res.google_civic_election_id || 0;
         google_civic_election_id = parseInt(google_civic_election_id, 10);
         revisedState = state;
@@ -264,6 +264,7 @@ class VoterGuideStore extends ReduceStore {
             revisedState = Object.assign({}, revisedState, { voterGuidesFollowedRetrieveStopped: true });
           }
         }
+
         return revisedState;
 
       case "voterFollowAllOrganizationsFollowedByOrganization":
@@ -287,9 +288,6 @@ class VoterGuideStore extends ReduceStore {
         return state;
 
       case "voterGuidesToFollowRetrieve":
-        // Allow additional voterGuidesToFollowRetrieve API calls
-        // VoterGuideActions.voterGuidesToFollowRetrieveStopStoppingNow();
-
         voter_guides = action.res.voter_guides;
         let is_empty = voter_guides.length === 0;
         let search_term_exists = action.res.search_string !== "";

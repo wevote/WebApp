@@ -30,11 +30,22 @@ export function renderLog (filePath, suffix) {
 
 //  Log http requests and cookie CHANGES
 export function httpLog (text, res) {
-  if (webAppConfig.LOG_NATIVE_HTTP_REQUESTS) {
+  if (webAppConfig.LOG_HTTP_REQUESTS) {
     if (res) {
       console.log(text, res);
     } else {
       console.log(text);
+    }
+  }
+}
+
+//  Log oAuth steps
+export function oAuthLog (text, res) {
+  if (webAppConfig.LOG_SIGNIN_STEPS) {
+    if (res) {
+      console.log(">> oAuth >> ", text, res);
+    } else {
+      console.log(">> oAuth >> ", text);
     }
   }
 }
