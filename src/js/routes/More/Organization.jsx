@@ -49,8 +49,8 @@ export default class Organization extends Component {
 
         <div className="Our-Story">
           <h3 className="h3">A Nonprofit Startup</h3>
-          We Vote is made of two 501(c)(3) and 501(c)(4) nonpartisan nonprofit organizations based in
-          Oakland, California. This site is managed by the 501(c)(4), We Vote USA. Our
+          We Vote is made of two nonpartisan nonprofit organizations (501(c)(3) and 501(c)(4)) based in
+          Oakland, California. Our
           software is open source, and our work is driven by the nearly 100 volunteers who have contributed so far.
           Inspired by groups like
           <OpenExternalWebSite url="http://codeforsanfrancisco.org/"

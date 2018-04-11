@@ -3,6 +3,7 @@ import Dispatcher from "../dispatcher/Dispatcher";
 import BallotStore from "../stores/BallotStore";
 import IssueActions from "../actions/IssueActions";
 import OrganizationStore from "../stores/OrganizationStore";
+import VoterStore from "../stores/VoterStore";
 import VoterGuideStore from "../stores/VoterGuideStore";
 import VoterGuideActions from "../actions/VoterGuideActions";
 import { arrayContains } from "../utils/textFormat";
@@ -326,6 +327,7 @@ class IssueStore extends ReduceStore {
     let organization_we_vote_id;
     let organization_we_vote_ids_linked_to_issue_dict;
     let revisedState;
+    let voterElectionId;
     let voter_guides;
 
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
@@ -336,10 +338,15 @@ class IssueStore extends ReduceStore {
       case "issueFollow":
         // When a voter follows or unfollows an issue on the ballot intro modal screen, update the voter guide list
         VoterGuideActions.voterGuidesToFollowRetrieveByIssuesFollowed();
-        if (action.res.google_civic_election_id) {
+        if (action.res.google_civic_election_id && action.res.google_civic_election_id > 0) {
           IssueActions.issuesRetrieveForElection(action.res.google_civic_election_id);
         } else {
-          IssueActions.issuesRetrieve();
+          voterElectionId = VoterStore.election_id();
+          if (voterElectionId && voterElectionId > 0) {
+            IssueActions.issuesRetrieveForElection(voterElectionId);
+          } else {
+            IssueActions.issuesRetrieve();
+          }
         }
         return state;
 
