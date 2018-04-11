@@ -102,12 +102,12 @@ export default class HeaderGettingStartedBar extends Component {
     VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
     if (this.state.showBallotIntroFollowIssues) {
       // When we close this modal, make it possible for the body to scroll again. Related to: body-scroll-lock
-      this.ballotIntroFollowIssuesElement = document.querySelector("#ballotIntroFollowIssuesId");
-      enableBodyScroll(this.ballotIntroFollowIssuesElement);
+      // this.ballotIntroFollowIssuesElement = document.querySelector("#ballotIntroFollowIssuesId");
+      // enableBodyScroll(this.ballotIntroFollowIssuesElement);
     } else {
       // When we show this modal, prevent the body from scrolling. Related to: body-scroll-lock
-      this.ballotIntroFollowIssuesElement = document.querySelector("#ballotIntroFollowIssuesId");
-      disableBodyScroll(this.ballotIntroFollowIssuesElement);
+      // this.ballotIntroFollowIssuesElement = document.querySelector("#root");
+      // disableBodyScroll(this.ballotIntroFollowIssuesElement);
       // Save action when going from off to on
       AnalyticsActions.saveActionModalIssues(VoterStore.election_id());
     }

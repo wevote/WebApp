@@ -14,3 +14,11 @@
 .pac-container {
   z-index: 1051 !important;
 }
+
+// Used to prevent scrolling underneath a modal(modal)
+// Reference: Issue #1415
+.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
