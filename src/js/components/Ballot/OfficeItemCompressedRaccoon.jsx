@@ -344,13 +344,12 @@ export default class OfficeItemCompressedRaccoon extends Component {
           {/* Mobile */}
           <span className="visible-xs">
             <span onClick={this.toggleExpandDetails}>
-              <TextTruncate line={1}
+              <TextTruncate line={2}
                             truncateText="…"
                             text={ballot_item_display_name}
                             textTruncateChild={null} />
             </span>
           </span>
-
           {/* Print */}
           <span className="u-f3 visible-print">
             {ballot_item_display_name}
@@ -469,7 +468,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                 networkOrIssueScoreSupport = candidate_with_most_support_from_network === one_candidate.ballot_item_display_name ?
                   <div className="u-flex u-items-center">
                     <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
-                      () => this.goToCandidateLink(one_candidate.we_vote_id) : null }>
+                      this.toggleExpandDetails : null }>
                       <h2 className="h5">
                         {one_candidate.ballot_item_display_name}
                       </h2>
@@ -493,7 +492,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                 networkOrIssueScoreSupport = candidateWithHighestIssueScore === one_candidate.ballot_item_display_name ?
                   <div className="u-flex u-items-center">
                     <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
-                      () => this.goToCandidateLink(one_candidate.we_vote_id) : null }>
+                      this.toggleExpandDetails : null }>
                       <h2 className="h5">
                         {one_candidate.ballot_item_display_name}
                       </h2>
@@ -520,7 +519,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                 { voter_supports_this_candidate ?
                   <div className="u-flex u-items-center">
                     <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
-                    () => this.goToCandidateLink(one_candidate.we_vote_id) : null }>
+                    this.toggleExpandDetails : null }>
                       <h2 className="h5">
                       {one_candidate.ballot_item_display_name}
                       </h2>
