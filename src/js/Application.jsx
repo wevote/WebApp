@@ -61,8 +61,6 @@ export default class Application extends Component {
   initCordova () {
     console.log("Application initCordova ------------ " + __filename);
 
-    // eslint-disable-next-line no-undef
-    // console.log("------------------ device.platform = " + device.platform);
     if (isCordova()) {
       window.handleOpenURL = function (url) {
         TwitterSignIn.handleTwitterOpenURL(url);

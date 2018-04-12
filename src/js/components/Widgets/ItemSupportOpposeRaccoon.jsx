@@ -606,6 +606,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       {/* Issues that have a score related to this ballot item */}
       <IssuesFollowedByBallotItemDisplayList ballot_item_display_name={this.state.ballot_item_display_name}
                                              ballotItemWeVoteId={this.props.ballotItemWeVoteId}
+                                             overlayTriggerOnClickOnly
                                              placement={this.props.popoverBottom ? "bottom" : "top"}
       />
 
