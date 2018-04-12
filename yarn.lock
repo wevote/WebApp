@@ -1417,12 +1417,6 @@ body-parser@1.18.2:
     raw-body "2.3.2"
     type-is "~1.6.15"
 
-body-scroll-lock@^2.3.3:
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/body-scroll-lock/-/body-scroll-lock-2.3.3.tgz#c1275d62c4298937200fb6c917f9b84a27a7f783"
-  dependencies:
-    ua-parser-js "^0.7.17"
-
 boolbase@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
@@ -2797,7 +2791,7 @@ debug@~2.2.0:
   dependencies:
     ms "0.7.1"
 
-debuglog@*, debuglog@^1.0.1:
+debuglog@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/debuglog/-/debuglog-1.0.1.tgz#aa24ffb9ac3df9a2351837cfb2d279360cd78492"
 
@@ -2833,6 +2827,10 @@ deep-extend@^0.4.1, deep-extend@~0.4.0:
 deep-is@~0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/deep-is/-/deep-is-0.1.3.tgz#b369d6fb5dbc13eecf524f91b070feedc357cf34"
+
+deepmerge@^2.0.1:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-2.1.0.tgz#511a54fff405fc346f0240bb270a3e9533a31102"
 
 defaults@^1.0.0, defaults@^1.0.3:
   version "1.0.3"
@@ -3816,10 +3814,6 @@ fbjs@^0.8.0, fbjs@^0.8.12, fbjs@^0.8.16, fbjs@^0.8.4, fbjs@^0.8.6, fbjs@^0.8.9:
     promise "^7.1.1"
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.9"
-
-fetch-jsonp@^1.0.2:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/fetch-jsonp/-/fetch-jsonp-1.1.3.tgz#9eb9e585ba08aaf700563538d17bbebbcd5a3db2"
 
 figures@^1.3.5:
   version "1.7.0"
@@ -5012,7 +5006,7 @@ import-lazy@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/import-lazy/-/import-lazy-2.1.0.tgz#05698e3d45c88e8d7e9d92cb0584e77f096f3e43"
 
-imurmurhash@*, imurmurhash@^0.1.4:
+imurmurhash@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
 
@@ -6057,10 +6051,6 @@ lodash._basecreate@^3.0.0:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/lodash._basecreate/-/lodash._basecreate-3.0.3.tgz#1bc661614daa7fc311b7d03bf16806a0213cf821"
 
-lodash._baseindexof@*:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/lodash._baseindexof/-/lodash._baseindexof-3.1.0.tgz#fe52b53a1c6761e42618d654e4a25789ed61822c"
-
 lodash._basetostring@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/lodash._basetostring/-/lodash._basetostring-3.0.1.tgz#d1861d877f824a52f669832dcaf3ee15566a07d5"
@@ -6076,20 +6066,6 @@ lodash._basevalues@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/lodash._basevalues/-/lodash._basevalues-3.0.0.tgz#5b775762802bde3d3297503e26300820fdf661b7"
 
-lodash._bindcallback@*:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/lodash._bindcallback/-/lodash._bindcallback-3.0.1.tgz#e531c27644cf8b57a99e17ed95b35c748789392e"
-
-lodash._cacheindexof@*:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/lodash._cacheindexof/-/lodash._cacheindexof-3.0.2.tgz#3dc69ac82498d2ee5e3ce56091bafd2adc7bde92"
-
-lodash._createcache@*:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/lodash._createcache/-/lodash._createcache-3.1.2.tgz#56d6a064017625e79ebca6b8018e17440bdcf093"
-  dependencies:
-    lodash._getnative "^3.0.0"
-
 lodash._createset@~4.0.0:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/lodash._createset/-/lodash._createset-4.0.3.tgz#0f4659fbb09d75194fa9e2b88a6644d363c9fe26"
@@ -6104,7 +6080,7 @@ lodash._escapestringchar@~2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/lodash._escapestringchar/-/lodash._escapestringchar-2.4.1.tgz#ecfe22618a2ade50bfeea43937e51df66f0edb72"
 
-lodash._getnative@*, lodash._getnative@^3.0.0:
+lodash._getnative@^3.0.0:
   version "3.9.1"
   resolved "https://registry.yarnpkg.com/lodash._getnative/-/lodash._getnative-3.9.1.tgz#570bc7dede46d61cdcde687d65d3eecbaa3aaff5"
 
@@ -6292,7 +6268,7 @@ lodash.reject@^4.4.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.reject/-/lodash.reject-4.6.0.tgz#80d6492dc1470864bbf583533b651f42a9f52415"
 
-lodash.restparam@*, lodash.restparam@^3.0.0:
+lodash.restparam@^3.0.0:
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/lodash.restparam/-/lodash.restparam-3.6.1.tgz#936a4e309ef330a7645ed4145986c85ae5b20805"
 
@@ -8396,7 +8372,7 @@ qs@~6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"
 
-query-string@^4.1.0, query-string@^4.2.2, query-string@^4.2.3:
+query-string@^4.1.0, query-string@^4.2.2:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/query-string/-/query-string-4.3.4.tgz#bbb693b9ca915c232515b228b1a02b609043dbeb"
   dependencies:
@@ -8614,13 +8590,13 @@ react-pikaday@^0.5.1:
   dependencies:
     pikaday "^1.2.0"
 
-react-player@^0.14.1:
-  version "0.14.3"
-  resolved "https://registry.yarnpkg.com/react-player/-/react-player-0.14.3.tgz#4b836092bdb527ac2926460905f4e953c6a127ce"
+react-player@^1.3.1:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-player/-/react-player-1.4.0.tgz#f22c108cbcbb402b7a570fe172a0df1d02c6e9ad"
   dependencies:
-    fetch-jsonp "^1.0.2"
+    deepmerge "^2.0.1"
     load-script "^1.0.0"
-    query-string "^4.2.3"
+    prop-types "^15.5.6"
 
 react-prop-types@^0.4.0:
   version "0.4.0"
@@ -8915,7 +8891,7 @@ readable-stream@~2.0.0:
     string_decoder "~0.10.x"
     util-deprecate "~1.0.1"
 
-readdir-scoped-modules@*, readdir-scoped-modules@^1.0.0:
+readdir-scoped-modules@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/readdir-scoped-modules/-/readdir-scoped-modules-1.0.2.tgz#9fafa37d286be5d92cbaebdee030dc9b5f406747"
   dependencies:
@@ -10827,7 +10803,7 @@ ua-parser-js@0.7.12:
   version "0.7.12"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.12.tgz#04c81a99bdd5dc52263ea29d24c6bf8d4818a4bb"
 
-ua-parser-js@^0.7.17, ua-parser-js@^0.7.9:
+ua-parser-js@^0.7.9:
   version "0.7.17"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.17.tgz#e9ec5f9498b9ec910e7ae3ac626a805c4d09ecac"
 
@@ -11129,7 +11105,7 @@ v8flags@^2.0.2, v8flags@^2.0.9:
   dependencies:
     user-home "^1.1.1"
 
-validate-npm-package-license@*, validate-npm-package-license@^3.0.1:
+validate-npm-package-license@^3.0.1:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/validate-npm-package-license/-/validate-npm-package-license-3.0.3.tgz#81643bcbef1bdfecd4623793dc4648948ba98338"
   dependencies:

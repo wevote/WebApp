@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Modal } from "react-bootstrap";
-import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from "body-scroll-lock";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
 import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
@@ -21,9 +20,6 @@ import VoterStore from "../../stores/VoterStore";
 import webAppConfig from "../../config";
 
 export default class HeaderGettingStartedBar extends Component {
-  // We store the element, so when we turn off scrolling for the body, we can exclude this element to allow scrolling
-  // Related to: body-scroll-lock
-  ballotIntroFollowIssuesElement = null;
 
   static propTypes = {
     hideGettingStartedIssuesButton: PropTypes.bool,
@@ -66,7 +62,6 @@ export default class HeaderGettingStartedBar extends Component {
   }
 
   componentWillUnmount () {
-    clearAllBodyScrollLocks(); // Related to: body-scroll-lock
     this.voterStoreListener.remove();
   }
 
@@ -100,15 +95,7 @@ export default class HeaderGettingStartedBar extends Component {
 
   _toggleBallotIntroFollowIssues () {
     VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
-    if (this.state.showBallotIntroFollowIssues) {
-      // When we close this modal, make it possible for the body to scroll again. Related to: body-scroll-lock
-      // this.ballotIntroFollowIssuesElement = document.querySelector("#ballotIntroFollowIssuesId");
-      // enableBodyScroll(this.ballotIntroFollowIssuesElement);
-    } else {
-      // When we show this modal, prevent the body from scrolling. Related to: body-scroll-lock
-      // this.ballotIntroFollowIssuesElement = document.querySelector("#root");
-      // disableBodyScroll(this.ballotIntroFollowIssuesElement);
-      // Save action when going from off to on
+    if (!this.state.showBallotIntroFollowIssues) {
       AnalyticsActions.saveActionModalIssues(VoterStore.election_id());
     }
 
@@ -166,7 +153,7 @@ export default class HeaderGettingStartedBar extends Component {
       speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
-      swipe: false,
+      swipe: true,
       accessibility: true,
       arrows: false,
     };
