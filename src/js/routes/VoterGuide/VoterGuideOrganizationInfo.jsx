@@ -218,14 +218,14 @@ export default class VoterGuideOrganizationInfo extends Component {
             Step 3 of 5
           </div>
           <div className="row">
-            <div className="col-sm-2 col-xs-1">&nbsp;</div>
-            <div className="col-sm-8 col-xs-10">
+            <div className="col-1 col-md-2">&nbsp;</div>
+            <div className="col-10 col-md-8">
               <p className="u-stack--md" />
               <SettingsWidgetFirstLastName voterHasMadeChangesFunction={this.voterHasMadeChangesSet.bind(this)} />
               <SettingsWidgetOrganizationWebsite voterHasMadeChangesFunction={this.voterHasMadeChangesSet.bind(this)} />
               <SettingsWidgetOrganizationDescription voterHasMadeChangesFunction={this.voterHasMadeChangesSet.bind(this)} />
             </div>
-            <div className="col-sm-2 col-xs-1">&nbsp;</div>
+            <div className="col-1 col-md-2">&nbsp;</div>
           </div>
           <footer className="create-voter-guide__footer">
             {actionButtonHtml}
