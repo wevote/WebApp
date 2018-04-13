@@ -40,7 +40,7 @@ export default class BallotIntroModal extends Component {
       speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
-      swipe: false,
+      swipe: true,
       accessibility: true,
       //react-slick default left & right nav arrows
       arrows: false,
