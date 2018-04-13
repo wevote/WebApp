@@ -64,7 +64,11 @@ export function toTitleCase (incomingString) {
   if (!incomingString) {
     return "";
   }
-  var i, j, str, lowers, uppers;
+  let count;
+  let array_length;
+  let str;
+  let lowers;
+  let uppers;
   str = incomingString.replace(/([^\W_]+[^\s-]*) */g, function (txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
@@ -73,8 +77,8 @@ export function toTitleCase (incomingString) {
   // they are the first or last words in the string
   lowers = ["A", "An", "The", "And", "But", "Or", "For", "Nor", "As", "At",
     "By", "For", "From", "In", "Into", "Near", "Of", "On", "Onto", "To", "With"];
-  for (i = 0, j = lowers.length; i < j; i++)
-    str = str.replace(new RegExp("\\s" + lowers[i] + "\\s", "g"),
+  for (count = 0, array_length = lowers.length; count < array_length; count++)
+    str = str.replace(new RegExp("\\s" + lowers[count] + "\\s", "g"),
       function (txt) {
         return txt.toLowerCase();
       });
@@ -86,9 +90,9 @@ export function toTitleCase (incomingString) {
     "Vt", "Wa", "Wi", "Wv", "Wy",
     "Aa", "Bb", "Cc", "Dd", "Ee", "Ff", "Gg", "Hh", "Ii", "Jj", "Kk", "Ll", "Mm", "Nn", "Oo", "Pp",
     "Qq", "Rr", "Ss", "Tt", "Uu", "Vv", "Ww", "Xx", "Yy", "Zz"];
-  for (i = 0, j = uppers.length; i < j; i++)
-    str = str.replace(new RegExp("\\b" + uppers[i] + "\\b", "g"),
-      uppers[i].toUpperCase());
+  for (count = 0, array_length = uppers.length; count < array_length; count++)
+    str = str.replace(new RegExp("\\b" + uppers[count] + "\\b", "g"),
+      uppers[count].toUpperCase());
 
   // Finally, search and replace for pesky abbreviations
   str = str.replace("U.s.", "U.S.");

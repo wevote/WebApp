@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { Button } from "react-bootstrap";
 import AnalyticsActions from "../../actions/AnalyticsActions";
-import { historyPush, isIOS, isWebApp } from "../../utils/cordovaUtils";
+import { historyPush, isIOS, isAndroid } from "../../utils/cordovaUtils";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import HeaderBar from "../../components/Navigation/HeaderBar";
