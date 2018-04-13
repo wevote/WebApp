@@ -95,11 +95,11 @@ export default class TwitterSignIn extends Component {
         } else {
           oAuthLog("redirectURL: ", redirectURL);
           let inAppBrowserRef = cordova.InAppBrowser.open(redirectURL, "_blank", "toolbar=no,location=yes,hardwareback=no");
-          inAppBrowserRef.addEventListener('exit', function () {
+          inAppBrowserRef.addEventListener("exit", function () {
             oAuthLog("inAppBrowserRef on exit: ", redirectURL);
           });
 
-          inAppBrowserRef.addEventListener('customscheme', function (event) {
+          inAppBrowserRef.addEventListener("customscheme", function (event) {
             oAuthLog("customscheme: ", event.url);
             TwitterSignIn.handleTwitterOpenURL(event.url);
             inAppBrowserRef.close();

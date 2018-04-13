@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import { Link } from "react-router";
 import TextTruncate from "react-text-truncate";
-import { capitalizeString, toTitleCase } from "../../utils/textFormat";
+import { toTitleCase } from "../../utils/textFormat";
 import BallotSideBarLink from "../Navigation/BallotSideBarLink";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import CandidateActions from "../../actions/CandidateActions";
