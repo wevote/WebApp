@@ -1,5 +1,6 @@
 $margin-around-textarea: .1em;
 $padding-within-textarea: .5rem .7em;
+$padding-left-radio-label: 10px;
 
 .voter-guide-get-started {
   &__wrapper {
@@ -90,5 +91,17 @@ $padding-within-textarea: .5rem .7em;
     @include breakpoints (mid-small) {
       bottom: 10%;
     }
+  }
+
+  &__organization-container {
+    display: inline-block;
+  }
+
+  &__radio {
+    text-align: left;
+  }
+
+  &__radio-label {
+    padding-left: $padding-left-radio-label;
   }
 }

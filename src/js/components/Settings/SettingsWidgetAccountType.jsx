@@ -144,7 +144,7 @@ export default class SettingsWidgetAccountType extends Component {
     let organizationTypeTrimmed = organizationType ? organizationType.trim() : "";
     let organizationTypeCurrentStateTrimmed = organizationTypeCurrentState ? organizationTypeCurrentState.trim() : "";
     let organizationTypeChecked = organizationTypeCurrentStateTrimmed === organizationTypeTrimmed;
-    return <div className="form-check">
+    return <div className="form-check create-voter-guide__radio">
             <input className="form-check-input"
                    checked={organizationTypeChecked}
                    id={organizationTypeId}
@@ -153,7 +153,7 @@ export default class SettingsWidgetAccountType extends Component {
                    type="radio"
                    value={organizationType}
             />
-            <label className="form-check-label" htmlFor={organizationTypeId}>
+            <label className="form-check-label create-voter-guide__radio-label" htmlFor={organizationTypeId} >
               {organizationTypeLabel}
             </label>
           </div>;
@@ -172,20 +172,22 @@ export default class SettingsWidgetAccountType extends Component {
         <h3 className="h3">Type of Profile</h3>
         { this.state.editFormOpen ?
           <span>
-            <div className="">
-              {this.state.showEditToggleOption ? <span className="pull-right">(<a className="" onClick={() => this.toggleEditForm()}>close</a>)</span> : null}
+            <div className="create-voter-guide__organization-container">
+              <div className="">
+                {this.state.showEditToggleOption ? <span className="pull-right">(<a className="" onClick={() => this.toggleEditForm()}>close</a>)</span> : null}
+              </div>
+              {this.renderOrganizationType("I", this.state.organizationType, "Individual", "organizationTypeIdIndividual")}
+              {this.renderOrganizationType("C3", this.state.organizationType, "Nonprofit 501(c)(3)", "organizationTypeIdC3")}
+              {this.renderOrganizationType("C4", this.state.organizationType, "Nonprofit 501(c)(4)", "organizationTypeIdC4")}
+              {this.renderOrganizationType("P", this.state.organizationType, "Political Action Committee", "organizationTypeIdPAC")}
+              {this.renderOrganizationType("NP", this.state.organizationType, "Other Nonprofit", "organizationTypeIdNonprofit")}
+              {this.renderOrganizationType("G", this.state.organizationType, "Other Group or Club (10+ people)", "organizationTypeIdGroup")}
+              {this.renderOrganizationType("PF", this.state.organizationType, "Politician", "organizationTypeIdPolitician")}
+              {this.renderOrganizationType("NW", this.state.organizationType, "News Organization", "organizationTypeIdNews")}
+              {this.renderOrganizationType("C", this.state.organizationType, "Company", "organizationTypeIdCompany")}
+              {this.renderOrganizationType("U", this.state.organizationType, "Other", "organizationTypeIdUnknown")}
             </div>
-            {this.renderOrganizationType("I", this.state.organizationType, "Individual", "organizationTypeIdIndividual")}
-            {this.renderOrganizationType("C3", this.state.organizationType, "Nonprofit 501(c)(3)", "organizationTypeIdC3")}
-            {this.renderOrganizationType("C4", this.state.organizationType, "Nonprofit 501(c)(4)", "organizationTypeIdC4")}
-            {this.renderOrganizationType("P", this.state.organizationType, "Political Action Committee", "organizationTypeIdPAC")}
-            {this.renderOrganizationType("NP", this.state.organizationType, "Other Nonprofit", "organizationTypeIdNonprofit")}
-            {this.renderOrganizationType("G", this.state.organizationType, "Other Group or Club (10+ people)", "organizationTypeIdGroup")}
-            {this.renderOrganizationType("PF", this.state.organizationType, "Politician", "organizationTypeIdPolitician")}
-            {this.renderOrganizationType("NW", this.state.organizationType, "News Organization", "organizationTypeIdNews")}
-            {this.renderOrganizationType("C", this.state.organizationType, "Company", "organizationTypeIdCompany")}
-            {this.renderOrganizationType("U", this.state.organizationType, "Other", "organizationTypeIdUnknown")}
-          </span> :
+          </span>:
           <div className="">
             <span className="pull-right u-gray-mid">{this.state.organizationTypeSavedStatus}</span>
             <span className="u-f4 u-bold">{this.displayOrganizationType(this.state.organizationType)}</span>
