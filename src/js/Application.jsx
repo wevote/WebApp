@@ -354,7 +354,7 @@ export default class Application extends Component {
     }
 
     const headRoomSize = voterGuideShowGettingStartedNavigation || stringContains("/ballot", pathname) || pathname === "/bookmarks" ?
-      "headroom-getting-started__margin" : isWebApp() ? "headroom-wrapper" : "headroom-wrapper__cordova";
+      "headroom-getting-started__margin" : isWebApp() ? "headroom-wrapper" :isIOS() ? "headroom-wrapper__cordova-ios" : "headroom-wrapper__cordova-android";
 
     let pageHeaderStyle = this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom";
     if (isIOS()) {
