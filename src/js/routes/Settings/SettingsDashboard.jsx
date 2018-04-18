@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Button } from "react-bootstrap";
 import { Link } from "react-router";
-import { isWebApp } from "../../utils/cordovaUtils";
+import { historyPush, isWebApp } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -168,7 +169,12 @@ export default class SettingsDashboard extends Component {
       </div>
 
       <div className="visible-xs u-padding-top--md">
-        <Link to={isWebApp() ? "/settings/menu" : "/more/hamburger"}>&lt; Back to Your Settings</Link>
+        <span className={"btn u-padding-left--sm u-padding-bottom--sm"}>
+          <Button className={"btn btn-sm btn-default u-link-color"}
+                onClick={ () => historyPush(isWebApp() ? "/settings/menu" : "/more/hamburger") }>
+            <span className="fa fa-arrow-left"/> {"Settings"}
+          </Button>
+        </span>
       </div>
 
       {/* Desktop left navigation + Settings content */}

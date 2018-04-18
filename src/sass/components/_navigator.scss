@@ -360,19 +360,24 @@ $container-margin: -15px;
     height: 50px;
     border-bottom: 1px solid #e7e7e7;
   }
-  &__td-left {
-    padding: $space-md !important;
-    width: 10%;
-  }
-  &__td-mid {
-    padding-right: $space-md !important;
-    padding-top: $space-xs !important;
+  &__td-0 {
+    padding-left: $space-md !important;
     vertical-align: middle !important;
-    width: 75%;
+  }
+  &__td-1 {
+    font-size: 1.3rem;
+    vertical-align: middle !important;
+  }
+  &__td-2 {
+    font-size: 1.3rem;
+    vertical-align: middle !important;
+  }
+  &__td-3 {
+    vertical-align: middle !important;
     font-size: 1.3rem;
   }
-  &__right {
-    padding: $space-md;
+  &__td-4 {
+    vertical-align: middle !important;
     width: 10%;
   }
 }
