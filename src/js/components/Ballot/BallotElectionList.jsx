@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import BallotActions from "../../actions/BallotActions";
 import BallotStore from "../../stores/BallotStore";
+import { browserHistory } from "react-router";
 import { cordovaDot } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
@@ -78,6 +79,8 @@ export default class BallotElectionList extends Component {
         prior_election_id: BallotStore.ballot_properties.google_civic_election_id || VoterStore.election_id() || 0,
         updated_election_id: 0
       });
+    } else {
+      browserHistory.push(destinationUrlForHistoryPush);
     }
   }
 
