@@ -47,21 +47,21 @@ export default class BallotElectionList extends Component {
     if (ballot_location_shortcut && ballot_location_shortcut !== "" && ballot_location_shortcut !== "none") {
       // console.log("goToDifferentElection, ballot_location_shortcut: ", ballot_location_shortcut);
       BallotActions.voterBallotItemsRetrieve(0, "", ballot_location_shortcut);
-      browserHistory.push(destinationUrlForHistoryPush = ballot_base_url + "/" + ballot_location_shortcut); // Used with historyPush once modal is closed
+      destinationUrlForHistoryPush = ballot_base_url + "/" + ballot_location_shortcut; // Used with historyPush once modal is closed
     } else if (ballot_returned_we_vote_id && ballot_returned_we_vote_id !== "" && ballot_returned_we_vote_id !== "none") {
       // console.log("goToDifferentElection, ballot_returned_we_vote_id: ", ballot_returned_we_vote_id);
       BallotActions.voterBallotItemsRetrieve(0, ballot_returned_we_vote_id, "");
-      browserHistory.push(destinationUrlForHistoryPush = ballot_base_url + "/id/" + ballot_returned_we_vote_id); // Used with historyPush once modal is closed
+      destinationUrlForHistoryPush = ballot_base_url + "/id/" + ballot_returned_we_vote_id; // Used with historyPush once modal is closed
     } else if (originalTextForMapSearch && originalTextForMapSearch !== "") {
       // Do we still want to be updating addresses? Maybe instead just update google_civic_election_id?
       // console.log("goToDifferentElection, originalTextForMapSearch: ", originalTextForMapSearch);
       let simple_save = false;
       VoterActions.voterAddressSave(originalTextForMapSearch, simple_save, googleCivicElectionId);
-      browserHistory.push(destinationUrlForHistoryPush = ballot_base_url); // Used with historyPush once modal is closed
+      destinationUrlForHistoryPush = ballot_base_url; // Used with historyPush once modal is closed
     } else if (googleCivicElectionId && googleCivicElectionId !== 0) {
       BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, "", "");
       // console.log("goToDifferentElection, googleCivicElectionId: ", googleCivicElectionId);
-      browserHistory.push(destinationUrlForHistoryPush = ballot_base_url + "/election/" + googleCivicElectionId); // Used with historyPush once modal is closed
+      destinationUrlForHistoryPush = ballot_base_url + "/election/" + googleCivicElectionId; // Used with historyPush once modal is closed
     }
 
     // Request positions for the different election
@@ -79,6 +79,8 @@ export default class BallotElectionList extends Component {
         prior_election_id: BallotStore.ballot_properties.google_civic_election_id || VoterStore.election_id() || 0,
         updated_election_id: 0
       });
+    } else {
+      browserHistory.push(destinationUrlForHistoryPush);
     }
   }
 
