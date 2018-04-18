@@ -78,12 +78,14 @@ export default class TwitterSignIn extends Component {
     }
   }
 
+  // TODO: April 17, 2018, this is used by Twitter and SignIn by Email, and should be refactored out of here.  It is really the handleOpenURL function.
   static handleTwitterOpenURL (url) {
     oAuthLog("---------------xxxxxx-------- Application handleTwitterOpenUrl: " + url);
     if (url.startsWith("wevotetwitterscheme://")) {
       oAuthLog("handleTwitterOpenURL received wevotetwitterscheme: " + url);
       let search = url.replace(new RegExp("&amp;", "g"), "&");
       let urlParams = new URLSearchParams(search);
+
       if (urlParams.has("twitter_redirect_url")) {
         let redirectURL = urlParams.get("twitter_redirect_url");
         oAuthLog("twitterSignIn cordova, redirecting to: " + redirectURL);
@@ -123,6 +125,13 @@ export default class TwitterSignIn extends Component {
         }
 
         historyPush("/twitter_sign_in");
+      } else if (url.startsWith("wevotetwitterscheme://sign_in_email")) {
+        oAuthLog("twitterSignIn by email cordova, (not really twitter) -- received url = " + url);
+
+        // Example url: wevotetwitterscheme://sign_in_email/1278821
+        let n = url.indexOf("/");
+        let payload = url.substring(n + 1);
+        historyPush(payload);               // Example payload: "/sign_in_email/1278821"
       } else {
         console.log("ERROR in window.handleOpenURL, NO MATCH");
       }

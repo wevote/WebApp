@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Alert, Button, FormGroup } from "react-bootstrap";
+import { isWebApp } from "../utils/cordovaUtils";
 import LoadingWheel from "../components/LoadingWheel";
 import { renderLog } from "../utils/logging";
 import VoterActions from "../actions/VoterActions";
@@ -14,17 +15,17 @@ export default class VoterEmailAddressEntry extends Component {
     this.state = {
       loading: true,
       email_address_status: {
-        email_address_already_owned_by_other_voter: false,
-        email_address_created: false,
-        email_address_deleted: false,
-        verification_email_sent: false,
-        link_to_sign_in_email_sent: false
+        emailAddressAlreadyOwnedByOtherVoter: false,
+        emailAddressCreated: false,
+        emailAddressDeleted: false,
+        verificationEmailSent: false,
+        linkToSignInEmailSent: false,
       },
-      edit_verified_emails_on: false,
-      edit_emails_to_verify_on: false,
+      editVerifiedEmailsOn: false,
+      editEmailsToVerifyOn: false,
       voter: VoterStore.getVoter(),
-      voter_email_address: "",
-      voter_email_address_list: []
+      voterEmailAddress: "",
+      voterEmailAddressList: [],
     };
   }
 
@@ -34,85 +35,85 @@ export default class VoterEmailAddressEntry extends Component {
     VoterActions.voterEmailAddressRetrieve();
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.voterStoreListener.remove();
   }
 
   _onVoterStoreChange () {
-      this.setState({
-        voter: VoterStore.getVoter(),
-        voter_email_address_list: VoterStore.getEmailAddressList(),
-        email_address_status: VoterStore.getEmailAddressStatus(),
-        loading: false });
+    this.setState({
+      voter: VoterStore.getVoter(),
+      voterEmailAddressList: VoterStore.getEmailAddressList(),
+      email_address_status: VoterStore.getEmailAddressStatus(),
+      loading: false, });
   }
 
-  _ballotLoaded (){
-    //historyPush(this.props.saveUrl);
-  }
+  // _ballotLoaded () {
+  //   //historyPush(this.props.saveUrl);
+  // }
 
   editVerifiedEmailsOn () {
-    this.setState({edit_verified_emails_on: true});
+    this.setState({ editVerifiedEmailsOn: true });
   }
 
   editVerifiedEmailsOff () {
-    this.setState({edit_verified_emails_on: false});
+    this.setState({ editVerifiedEmailsOn: false });
   }
 
   editEmailsToVerifyOn () {
-    this.setState({edit_emails_to_verify_on: true});
+    this.setState({ editEmailsToVerifyOn: true });
   }
 
   editEmailsToVerifyOff () {
-    this.setState({edit_emails_to_verify_on: false});
+    this.setState({ editEmailsToVerifyOn: false });
   }
 
-  removeVoterEmailAddress (email_we_vote_id) {
-    VoterActions.removeVoterEmailAddress(email_we_vote_id);
+  removeVoterEmailAddress (emailWeVoteId) {
+    VoterActions.removeVoterEmailAddress(emailWeVoteId);
   }
 
   resetEmailForm () {
     this.setState({
       email_address_status: {
-        email_address_already_owned_by_other_voter: false,
-        email_address_created: false,
-        email_address_deleted: false,
-        verification_email_sent: false,
-        link_to_sign_in_email_sent: false
+        emailAddressAlreadyOwnedByOtherVoter: false,
+        emailAddressCreated: false,
+        emailAddressDeleted: false,
+        verificationEmailSent: false,
+        linkToSignInEmailSent: false,
       },
-      loading: false
+      loading: false,
     });
   }
 
   sendSignInLinkEmail (event) {
     event.preventDefault();
-    VoterActions.sendSignInLinkEmail(this.state.voter_email_address);
+    VoterActions.sendSignInLinkEmail(this.state.voterEmailAddress);
     this.setState({
       email_address_status: {
-        email_address_already_owned_by_other_voter: false,
+        emailAddressAlreadyOwnedByOtherVoter: false,
       },
       loading: true,
     });
   }
 
-  sendVerificationEmail (email_we_vote_id) {
-    VoterActions.sendVerificationEmail(email_we_vote_id);
+  sendVerificationEmail (emailWeVoteId) {
+    VoterActions.sendVerificationEmail(emailWeVoteId);
     this.setState({ loading: true });
   }
 
-  setAsPrimaryEmailAddress (email_we_vote_id) {
-    VoterActions.setAsPrimaryEmailAddress(email_we_vote_id);
+  setAsPrimaryEmailAddress (emailWeVoteId) {
+    VoterActions.setAsPrimaryEmailAddress(emailWeVoteId);
   }
 
   updateVoterEmailAddress (e) {
     this.setState({
-      voter_email_address: e.target.value,
+      voterEmailAddress: e.target.value,
     });
   }
 
   voterEmailAddressSave (event) {
     event.preventDefault();
-    let send_link_to_sign_in = true;
-    VoterActions.voterEmailAddressSave(this.state.voter_email_address, send_link_to_sign_in);
+    let sendLinkToSignIn = true;
+    VoterActions.voterEmailAddressSave(this.state.voterEmailAddress, sendLinkToSignIn);
     this.setState({ loading: true });
   }
 
@@ -122,7 +123,7 @@ export default class VoterEmailAddressEntry extends Component {
       return LoadingWheel;
     }
 
-    const email_address_status_html = <span>
+    const emailAddressStatusHtml = <span>
       { this.state.email_address_status.email_address_already_owned_by_other_voter &&
         !this.state.email_address_status.link_to_sign_in_email_sent ?
         <Alert bsStyle="warning">
@@ -147,14 +148,17 @@ export default class VoterEmailAddressEntry extends Component {
         null }
       </span>;
 
-    let enter_email_title = "Or, sign in with email";
-    let enter_email_explanation = "You'll receive a magic link in your email. Click that link to be signed into your We Vote account.";
+    let enterEmailTitle = "Or, sign in with email";
+    let enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to be signed into your We Vote account." :
+      "You'll receive a magic link in the email on this phone. Click that link to be signed into your We Vote account.";
     if (this.state.voter && this.state.voter.is_signed_in) {
-      enter_email_title = "Add New Email";
-      enter_email_explanation = "You'll receive a magic link in your email. Click that link to verify this new email.";
+      enterEmailTitle = "Add New Email";
+      enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to verify this new email." :
+        "You'll receive a magic link in the email on this phone. Click that link to verify this new email.";
     }
-    const enter_email_html = <div>
-      <div><strong>{enter_email_title}.</strong> {enter_email_explanation}</div>
+
+    const enterEmailHtml = <div>
+      <div><strong>{enterEmailTitle}.</strong> {enterEmailExplanation}</div>
           <form className="form-inline" onSubmit={this.voterEmailAddressSave.bind(this)}>
             <FormGroup className="u-push--sm">
               <label className="sr-only" htmlFor="exampleEmail">Email</label>
@@ -174,48 +178,49 @@ export default class VoterEmailAddressEntry extends Component {
 
       </div>;
 
-    let allow_remove_email;
-    let email_ownership_is_verified;
-    let is_primary_email_address;
+    let allowRemoveEmail;
+    let emailOwnershipIsVerified;
+    let isPrimaryEmailAddress;
 
     // ///////////////////////////////////
     // LIST OF VERIFIED EMAILS
-    let verified_emails_found = false;
-    let verified_email_exists_that_is_not_primary = false;
-    const verified_email_list_html = this.state.voter_email_address_list.map( (voter_email_address_from_list) => {
-      email_ownership_is_verified = voter_email_address_from_list.email_ownership_is_verified ? true : false;
+    let verifiedEmailsFound = false;
+    let verifiedEmailExistsThatIsNotPrimary = false;
+    const verifiedEmailListHtml = this.state.voterEmailAddressList.map((voterEmailAddressFromList) => {
+      emailOwnershipIsVerified = voterEmailAddressFromList.email_ownership_is_verified ? true : false;
 
-      if (email_ownership_is_verified) {
-        verified_emails_found = true;
-        allow_remove_email = voter_email_address_from_list.primary_email_address !== true;
-        is_primary_email_address = voter_email_address_from_list.primary_email_address === true;
-        if (!is_primary_email_address) {
-          verified_email_exists_that_is_not_primary = true;
+      if (emailOwnershipIsVerified) {
+        verifiedEmailsFound = true;
+        allowRemoveEmail = voterEmailAddressFromList.primary_email_address !== true;
+        isPrimaryEmailAddress = voterEmailAddressFromList.primary_email_address === true;
+        if (!isPrimaryEmailAddress) {
+          verifiedEmailExistsThatIsNotPrimary = true;
         }
-        return <div key={voter_email_address_from_list.email_we_vote_id}>
-          <div className="position-item card-child" >
-            <span><strong>{voter_email_address_from_list.normalized_email_address}</strong></span>
 
-            {is_primary_email_address ?
+        return <div key={voterEmailAddressFromList.email_we_vote_id}>
+          <div className="position-item card-child" >
+            <span><strong>{voterEmailAddressFromList.normalized_email_address}</strong></span>
+
+            {isPrimaryEmailAddress ?
               <span>
                 <span>&nbsp;&nbsp;&nbsp;</span>
                 Primary email
               </span> :
               null }
           </div>
-          {this.state.edit_verified_emails_on && !is_primary_email_address ?
+          {this.state.edit_verified_emails_on && !isPrimaryEmailAddress ?
             <div className="position-item card-child" >
               <span>&nbsp;&nbsp;&nbsp;</span>
-              {is_primary_email_address ?
+              {isPrimaryEmailAddress ?
                 null :
                 <span>
-                  <a onClick={this.setAsPrimaryEmailAddress.bind(this, voter_email_address_from_list.email_we_vote_id)}>
+                  <a on_click={this.set_as_primary_email_address.bind(this, voterEmailAddressFromList.email_we_vote_id)}>
                       Make Primary</a>&nbsp;&nbsp;&nbsp;
                 </span>
               }
               <span>&nbsp;&nbsp;&nbsp;</span>
-              {allow_remove_email ?
-                <a onClick={this.removeVoterEmailAddress.bind(this, voter_email_address_from_list.email_we_vote_id)}>
+              {allowRemoveEmail ?
+                <a onClick={this.remove_voter_email_address.bind(this, voterEmailAddressFromList.email_we_vote_id)}>
                   Remove Email</a> :
                 null }
             </div> :
@@ -228,31 +233,31 @@ export default class VoterEmailAddressEntry extends Component {
 
     // ////////////////////////////////////
     // LIST OF EMAILS TO VERIFY
-    let unverified_emails_found = false;
-    const to_verify_email_list_html = this.state.voter_email_address_list.map( (voter_email_address_from_list) => {
-      email_ownership_is_verified = voter_email_address_from_list.email_ownership_is_verified ? true : false;
-      if (!email_ownership_is_verified) {
-        unverified_emails_found = true;
-        allow_remove_email = voter_email_address_from_list.primary_email_address ? false : true;
-        is_primary_email_address = voter_email_address_from_list.primary_email_address ? true : false;
-        return <div key={voter_email_address_from_list.email_we_vote_id}>
+    let unverifiedEmailsFound = false;
+    const toVerifyEmailListHtml = this.state.voterEmailAddressList.map((voterEmailAddressFromList) => {
+      emailOwnershipIsVerified = voterEmailAddressFromList.email_ownership_is_verified ? true : false;
+      if (!emailOwnershipIsVerified) {
+        unverifiedEmailsFound = true;
+        allowRemoveEmail = voterEmailAddressFromList.primary_email_address ? false : true;
+        isPrimaryEmailAddress = voterEmailAddressFromList.primary_email_address ? true : false;
+        return <div key={voterEmailAddressFromList.email_we_vote_id}>
           <div className="position-item card-child">
-            <span><strong>{voter_email_address_from_list.normalized_email_address}</strong></span>
+            <span><strong>{voterEmailAddressFromList.normalized_email_address}</strong></span>
             <span>&nbsp;&nbsp;&nbsp;</span>
             <span>To Be Verified</span>
           </div>
           {this.state.edit_emails_to_verify_on ?
             <div className="position-item card-child">
               <span>&nbsp;&nbsp;&nbsp;</span>
-              {voter_email_address_from_list.email_ownership_is_verified ?
+              {voterEmailAddressFromList.email_ownership_is_verified ?
                 null :
-                <a onClick={this.sendVerificationEmail.bind(this, voter_email_address_from_list.email_we_vote_id)} >
+                <a onClick={this.sendVerificationEmail.bind(this, voterEmailAddressFromList.email_we_vote_id)} >
                   Send Verification Again
                 </a>}
 
               <span>&nbsp;&nbsp;&nbsp;</span>
-              {allow_remove_email ?
-                <a onClick={this.removeVoterEmailAddress.bind(this, voter_email_address_from_list.email_we_vote_id)} >
+              {allowRemoveEmail ?
+                <a onClick={this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)} >
                   Remove Email
                 </a> :
                 null }
@@ -265,8 +270,8 @@ export default class VoterEmailAddressEntry extends Component {
     });
 
     return <div className="">
-      {email_address_status_html}
-      {verified_emails_found ?
+      {emailAddressStatusHtml}
+      {verifiedEmailsFound ?
         <div>
           <span className="h3">Your Emails</span>
           { this.state.edit_verified_emails_on ?
@@ -277,7 +282,7 @@ export default class VoterEmailAddressEntry extends Component {
               </span>
             </span> :
             <span>
-              { verified_email_exists_that_is_not_primary ? <span>
+              { verifiedEmailExistsThatIsNotPrimary ? <span>
                   <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                   <span className="pull-right" tabIndex="0" onClick={this.editVerifiedEmailsOn.bind(this)} >
                     edit
@@ -287,11 +292,11 @@ export default class VoterEmailAddressEntry extends Component {
             </span>
           }
           <br />
-          {verified_email_list_html}
+          {verifiedEmailListHtml}
         </div> :
         null }
 
-      {unverified_emails_found ?
+      {unverifiedEmailsFound ?
         <div>
           <span className="h3">Emails to Verify</span>
           { this.state.edit_emails_to_verify_on ?
@@ -308,10 +313,10 @@ export default class VoterEmailAddressEntry extends Component {
               </span>
             </span> }
           <br />
-          {to_verify_email_list_html}
+          {toVerifyEmailListHtml}
         </div> :
         null }
-      <span>{ enter_email_html }</span>
+      <span>{ enterEmailHtml }</span>
     </div>;
   }
 }
