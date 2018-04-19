@@ -39,9 +39,10 @@ export default class SettingsIssueLinks extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    console.log('nextProps>>>>');
     let default_active_tab = this.getDefaultActiveIssueTab();
     let active_tab = nextProps.params.active_tab || default_active_tab;
-    console.log("SettingsIssueLinks, nextProps.organization_we_vote_id: ", nextProps.organization_we_vote_id);
+    // console.log("SettingsIssueLinks, nextProps.organization_we_vote_id: ", nextProps.organization_we_vote_id);
     // console.log("SettingsIssueLinks, active_tab: ", active_tab, "default_active_tab: ", default_active_tab);
     this.setState({
       active_tab: active_tab,
@@ -53,9 +54,9 @@ export default class SettingsIssueLinks extends Component {
   }
 
   onIssueStoreChange () {
-    console.log("onIssueStoreChange, this.props.organization_we_vote_id: ", this.props.organization_we_vote_id);
-    console.log("getIssuesToLinkToByOrganization: ", IssueStore.getIssuesToLinkToByOrganization(this.props.organization_we_vote_id));
-    console.log("getIssuesLinkedToByOrganization: ", IssueStore.getIssuesLinkedToByOrganization(this.props.organization_we_vote_id));
+    // console.log("onIssueStoreChange, this.props.organization_we_vote_id: ", this.props.organization_we_vote_id);
+    // console.log("getIssuesToLinkToByOrganization: ", IssueStore.getIssuesToLinkToByOrganization(this.props.organization_we_vote_id));
+    // console.log("getIssuesLinkedToByOrganization: ", IssueStore.getIssuesLinkedToByOrganization(this.props.organization_we_vote_id));
     this.setState({
       issues_to_link_to: IssueStore.getIssuesToLinkToByOrganization(this.props.organization_we_vote_id),
       issues_linked_to: IssueStore.getIssuesLinkedToByOrganization(this.props.organization_we_vote_id),
@@ -85,14 +86,18 @@ export default class SettingsIssueLinks extends Component {
     let issues_to_display = [];
 
     let active_tab = this.props.params.active_tab || this.state.active_tab;
-    let issues_to_link_url = "/voterguideedit/" + this.props.organization_we_vote_id + "/issues/issues_to_link";
-    let issues_linked_url = "/voterguideedit/" + this.props.organization_we_vote_id + "/issues/issues_linked";
+    let issues_to_link_url = "/settings/issues/issues_to_link";
+    let issues_linked_url = "/settings/issues/issues_linked";
 
     const is_linked_false = false;
     const is_linked_true = true;
 
+    // console.log('this.state.active_tab ', this.state.active_tab);
+    // console.log('this.props.params.active_tab ', this.props.params.active_tab );
+    // console.log('-----------------------------------------------------')
     switch (active_tab) {
       case "issues_to_link":
+        console.log('>>issues_to_link')
         issues_to_display = this.state.issues_to_link_to.map((issue) => {
           return <IssueLinkToggle
             key={issue.issue_we_vote_id}
@@ -104,6 +109,7 @@ export default class SettingsIssueLinks extends Component {
         break;
       default:
       case "issues_linked":
+        console.log('>>issues_linked')
         issues_to_display = this.state.issues_linked_to.map((issue) => {
           return <IssueLinkToggle
             key={issue.issue_we_vote_id}

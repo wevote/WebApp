@@ -35,6 +35,7 @@ export default class Network extends Component {
     super(props);
     this.state = {
       edit_mode: "",
+      tab,
       friend_invitations_sent_by_me: [],
       friend_invitations_sent_to_me: [],
       friend_invitations_processed: [],
@@ -57,6 +58,7 @@ export default class Network extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    console.log('componentWillReceiveProps', nextProps);
     if (this.state.friend_invitations_sent_to_me.length > 0) {  //has invitations
       if (nextProps.location.pathname === "/more/network" || !nextProps.params.edit_mode) {
         this.setState({ edit_mode: "friends" });
@@ -109,6 +111,9 @@ export default class Network extends Component {
     }
 
     let networkComponentToDisplay = null;
+    console.log('this.state.edit_mode', this.state.edit_mode);
+    console.log('this.state.tab', this.state.tab);
+
     switch (this.state.edit_mode) {
       default:
       case "organizations":

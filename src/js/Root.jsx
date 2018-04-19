@@ -126,6 +126,7 @@ const routes = () =>
     <Route path="/settings/voterguidelist" component={VoterGuideListDashboard} />
     <Route path="/settings/voterguidesmenu" component={VoterGuidesMenuMobile} />
     <Route path="/settings/:edit_mode" component={SettingsDashboard} />
+    <Route path="/settings/issues/:edit_mode" component={SettingsDashboard} />
 
     {/* Ballot Off-shoot Pages */}
     <Route path="/opinions" component={Opinions} />
