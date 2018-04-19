@@ -1,6 +1,6 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
-module.exports = {
+export default {
   measureRetrieve: function (we_vote_id) {
     Dispatcher.loadEndpoint("measureRetrieve", { measure_we_vote_id: we_vote_id} );
   },

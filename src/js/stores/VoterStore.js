@@ -529,4 +529,4 @@ class VoterStore extends ReduceStore {
   }
 }
 
-module.exports = new VoterStore(Dispatcher);
+export default new VoterStore(Dispatcher);

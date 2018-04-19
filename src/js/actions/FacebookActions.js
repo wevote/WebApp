@@ -7,7 +7,7 @@ import webAppConfig from "../config";
 // Including FacebookStore causes problems in the WebApp, and again in the Native App
 
 
-module.exports = {
+export default {
   appLogout: function (){
     VoterSessionActions.voterSignOut();  // This deletes the device_id cookie
     VoterActions.voterRetrieve();

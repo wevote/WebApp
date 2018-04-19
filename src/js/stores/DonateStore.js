@@ -78,4 +78,4 @@ class DonateStore extends ReduceStore {
   }
 }
 
-module.exports = new DonateStore(Dispatcher);
+export default new DonateStore(Dispatcher);

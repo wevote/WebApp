@@ -188,4 +188,4 @@ class SupportStore extends ReduceStore {
   }
 }
 
-module.exports = new SupportStore(Dispatcher);
+export default new SupportStore(Dispatcher);

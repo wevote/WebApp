@@ -1,6 +1,6 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
-module.exports = {
+export default {
   candidateRetrieve: function (candidate_we_vote_id) {
     Dispatcher.loadEndpoint("candidateRetrieve", {candidate_we_vote_id: candidate_we_vote_id});
   },

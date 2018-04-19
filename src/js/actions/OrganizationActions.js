@@ -1,6 +1,6 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
-module.exports = {
+export default {
 
   organizationSearch: function (organization_search_term, organization_twitter_handle = "", exact_match = false) {
     // console.log("OrganizationActions.organizationSearch, organization_search_term: ", organization_search_term);

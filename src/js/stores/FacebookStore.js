@@ -248,4 +248,4 @@ class FacebookStore extends ReduceStore {
     }
   }
 
-module.exports = new FacebookStore(Dispatcher);
+export default new FacebookStore(Dispatcher);

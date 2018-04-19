@@ -1,6 +1,6 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
-module.exports = {
+export default {
 
   donationCancelSubscriptionAction: function (subscription_id) {
     Dispatcher.loadEndpoint("donationCancelSubscription", { subscription_id: subscription_id });

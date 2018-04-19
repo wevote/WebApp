@@ -215,4 +215,4 @@ class CandidateStore extends ReduceStore {
   }
 }
 
-module.exports = new CandidateStore(Dispatcher);
+export default new CandidateStore(Dispatcher);

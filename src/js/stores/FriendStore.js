@@ -268,4 +268,4 @@ class FriendStore extends ReduceStore {
   }
 }
 
-module.exports = new FriendStore(Dispatcher);
+export default new FriendStore(Dispatcher);

@@ -18,4 +18,4 @@ const VoterConstants = {
   NOTIFICATION_NEWSLETTER_OPT_IN: 1, // "I would like to receive the We Vote newsletter"
 };
 
-module.exports = VoterConstants;
+export default VoterConstants;

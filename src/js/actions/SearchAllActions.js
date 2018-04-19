@@ -1,6 +1,6 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
-module.exports = {
+export default {
   searchAll: function (text_from_search_field) {
     Dispatcher.loadEndpoint("searchAll",
       {
