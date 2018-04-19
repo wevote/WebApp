@@ -37,4 +37,4 @@ Dispatcher.prototype = assign({}, Dispatcher.prototype, {
   }
 });
 
-export default = Dispatcher;
+export default Dispatcher;
