@@ -639,4 +639,4 @@ class VoterGuideStore extends ReduceStore {
   }
 }
 
-module.exports = new VoterGuideStore(Dispatcher);
+export default new VoterGuideStore(Dispatcher);

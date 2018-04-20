@@ -159,4 +159,4 @@ class TwitterStore extends ReduceStore {
   }
 }
 
-module.exports = new TwitterStore(Dispatcher);
+export default new TwitterStore(Dispatcher);

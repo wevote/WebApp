@@ -1,6 +1,6 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
-module.exports = {
+export default {
   acceptFriendInvite: function (other_voter_we_vote_id) {
     Dispatcher.loadEndpoint("friendInviteResponse", {
       voter_we_vote_id: other_voter_we_vote_id,

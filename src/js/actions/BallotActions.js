@@ -1,6 +1,6 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
-module.exports = {
+export default {
   ballotItemOptionsClear: function () {
     Dispatcher.dispatch({
       type: "ballotItemOptionsClear",

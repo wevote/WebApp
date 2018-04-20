@@ -14,4 +14,4 @@ const FacebookConstants = {
     IMAGE_UPLOADED: null,
 };
 
-module.exports = keyMirror(FacebookConstants);
+export default keyMirror(FacebookConstants);

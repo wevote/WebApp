@@ -592,4 +592,4 @@ class OrganizationStore extends ReduceStore {
   }
 }
 
-module.exports = new OrganizationStore(Dispatcher);
+export default new OrganizationStore(Dispatcher);

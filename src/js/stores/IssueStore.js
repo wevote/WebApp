@@ -689,4 +689,4 @@ class IssueStore extends ReduceStore {
   }
 }
 
-module.exports = new IssueStore(Dispatcher);
+export default new IssueStore(Dispatcher);
