@@ -135,7 +135,6 @@ export default class SettingsDashboard extends Component {
   render () {
     renderLog(__filename);
     let settingsComponentToDisplay = null;
-    console.log('this.state.editMode>', this.state.editMode);
     switch (this.state.editMode) {
       case "account":
         settingsComponentToDisplay = <SettingsAccount />;
@@ -148,10 +147,10 @@ export default class SettingsDashboard extends Component {
         break;
       case "issues_linked":
       case "issues_to_link":
-        settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id="wv02voter118621" params={{active_tab : this.state.editMode}}/>;
+        settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id="wv02voter118621" params={{active_tab: this.state.editMode}}/>;
         break;
       case "issues":
-        settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id="wv02voter118621" params={{active_tab : "issues_linked"}}/>;  // TODO: To be implemented
+        settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id="wv02voter118621" params={{active_tab: "issues_linked"}}/>;  // TODO: To be implemented
         break;
       case "notifications":
         settingsComponentToDisplay = <SettingsNotifications />;
