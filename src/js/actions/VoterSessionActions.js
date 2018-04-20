@@ -1,7 +1,7 @@
 import Dispatcher from "../dispatcher/Dispatcher";
-const cookies = require("../utils/cookies");
+import cookies from "../utils/cookies";
 
-module.exports = {
+export default {
   voterSignOut: function () {
     Dispatcher.loadEndpoint("voterSignOut", { sign_out_all_devices: false });
     cookies.removeItem("voter_device_id");

@@ -2,7 +2,7 @@ import Dispatcher from "../dispatcher/Dispatcher";
 import VoterActions from "../actions/VoterActions";
 import VoterSessionActions from "../actions/VoterSessionActions";
 
-module.exports = {
+export default {
   // TODO Convert this to sign out of just Twitter
   appLogout: function (){
     VoterSessionActions.voterSignOut();

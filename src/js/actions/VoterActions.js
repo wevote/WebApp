@@ -1,7 +1,7 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 import { isCordova } from "../utils/cordovaUtils";
 
-module.exports = {
+export default {
   organizationSuggestionTasks: function (kind_of_suggestion_task, kind_of_follow_task) {
     Dispatcher.loadEndpoint("organizationSuggestionTasks",
       {

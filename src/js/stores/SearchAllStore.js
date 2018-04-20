@@ -87,4 +87,4 @@ class SearchAllStore extends ReduceStore {
 
 }
 
-module.exports = new SearchAllStore(Dispatcher);
+export default new SearchAllStore(Dispatcher);

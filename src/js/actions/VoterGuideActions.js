@@ -1,6 +1,6 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
-module.exports = {
+export default {
 
   pledgeToVoteWithVoterGuide: function (voter_guide_we_vote_id, delete_pledge = false) {
     Dispatcher.loadEndpoint("pledgeToVoteWithVoterGuide", {

@@ -1,6 +1,6 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
-module.exports = {
+export default {
 
   voterAllPositionsRetrieve: function (){
     Dispatcher.loadEndpoint("voterAllPositionsRetrieve");

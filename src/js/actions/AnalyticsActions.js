@@ -41,7 +41,7 @@ import Dispatcher from "../dispatcher/Dispatcher";
 // ACTION_ELECTIONS = 40
 
 
-module.exports = {
+export default {
 
   saveActionWrapper: function (action_constant, google_civic_election_id) {
     Dispatcher.loadEndpoint("saveAnalyticsAction",

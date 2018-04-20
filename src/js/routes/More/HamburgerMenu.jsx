@@ -59,7 +59,7 @@ export default class HamburgerMenu extends Component {
       return null;
     }
 
-    let bookmarks = BallotStore.bookmarks;
+    let hasBookmarks = BallotStore.bookmarks && BallotStore.bookmarks.length;
     let isSignedIn = this.state.voter && this.state.voter.is_signed_in;
     isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
 
@@ -116,15 +116,6 @@ export default class HamburgerMenu extends Component {
                             indented />
 
 
-          { bookmarks && bookmarks.length ?
-            <HamburgerMenuRow onClickAction={null}
-                              to={"/bookmarks"}
-                              icon={"fa fa-bookmark"}
-                              iconStyle={{ fontSize: 28, color: "#1c2f4b" }}
-                              linkText={"Bookmarks"}
-                              indented /> : null
-          }
-
           {isSignedIn &&
             <HamburgerMenuRow onClickAction={null}
                               to={"/settings/notifications"}
@@ -139,6 +130,14 @@ export default class HamburgerMenu extends Component {
                             icon={"fa fa-list"}
                             iconStyle={{ fontSize: 24, color: "#1c2f4b" }}
                             linkText={"Your Voter Guides"} />
+
+          { hasBookmarks ?
+            <HamburgerMenuRow onClickAction={null}
+                              to={"/bookmarks"}
+                              icon={"fa fa-bookmark"}
+                              iconStyle={{ fontSize: 28, color: "#1c2f4b" }}
+                              linkText={"Bookmarks"} /> : null
+          }
 
           <HamburgerMenuRow onClickAction={null}
                             to={"/more/about"}
