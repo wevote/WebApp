@@ -32,6 +32,11 @@ $space-search-right: 10%;
     position: relative;
     width: 100%;
   }
+
+  &__backToButton {
+    background-color: $page-header-color;
+    color: $white;
+  }
 }
 
 .page-header-cordova-ios {
