@@ -228,15 +228,15 @@ class BallotStore extends ReduceStore {
         // console.log("action.res", action.res)
         return {
           ...state,
-         ballotItemSearchResultsList: []
+          ballotItemSearchResultsList: []
         };
 
       case "ballotItemOptionsRetrieve":
         // console.log("BallotStore, voterBallotListRetrieve response received.");
         let ballotItemSearchResultsList = action.res.ballot_item_list;
         return {
-         ...state,
-         ballotItemSearchResultsList: ballotItemSearchResultsList
+          ...state,
+          ballotItemSearchResultsList: ballotItemSearchResultsList
         };
 
       case "voterAddressRetrieve":
@@ -268,7 +268,12 @@ class BallotStore extends ReduceStore {
         let tempBallotItemList = action.res.ballot_item_list;
         let officeWeVoteId;
         let ballotItemListCandidatesDict = state.ballotItemListCandidatesDict;
-        if (tempBallotItemList) {
+        if (ballotItemListCandidatesDict === undefined) {
+          // Do not remove the following line
+          console.log("ERROR: undefined ballotItemListCandidatesDict in BallotStore reduce");
+        }
+
+        if (tempBallotItemList  && ballotItemListCandidatesDict) {
           tempBallotItemList.forEach(oneBallotItem => {
             if (oneBallotItem.kind_of_ballot_item === "OFFICE" && oneBallotItem.candidate_list) {
               officeWeVoteId = oneBallotItem.we_vote_id;
@@ -281,7 +286,7 @@ class BallotStore extends ReduceStore {
             }
           });
           revisedState = Object.assign({}, revisedState, {
-            ballotItemListCandidatesDict: ballotItemListCandidatesDict
+             ballotItemListCandidatesDict: ballotItemListCandidatesDict,
           });
         }
         return revisedState;
@@ -290,12 +295,12 @@ class BallotStore extends ReduceStore {
         // console.log("BallotStore, voterBallotListRetrieve response received.");
         let ballot_election_list = action.res.voter_ballot_list;
         return {
-         ...state,
-         ballot_election_list: ballot_election_list
+           ...state,
+           ballot_election_list: ballot_election_list
         };
 
       case "voterAddressSave":
-      // console.log("BallotStore, voterAddressSave response received.");
+        // console.log("BallotStore, voterAddressSave response received.");
         if (action.res.status === "SIMPLE_ADDRESS_SAVE") {
           return state;
         } else {
