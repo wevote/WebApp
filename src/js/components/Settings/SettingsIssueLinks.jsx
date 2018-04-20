@@ -96,7 +96,6 @@ export default class SettingsIssueLinks extends Component {
     // console.log('-----------------------------------------------------')
     switch (active_tab) {
       case "issues_to_link":
-        console.log('>>issues_to_link')
         issues_to_display = this.state.issues_to_link_to.map((issue) => {
           return <IssueLinkToggle
             key={issue.issue_we_vote_id}
@@ -108,7 +107,6 @@ export default class SettingsIssueLinks extends Component {
         break;
       default:
       case "issues_linked":
-        console.log('>>issues_linked')
         issues_to_display = this.state.issues_linked_to.map((issue) => {
           return <IssueLinkToggle
             key={issue.issue_we_vote_id}
