@@ -28,9 +28,7 @@ export default class IssueLinkToggle extends Component {
     if (this.props.is_linked) {
       is_linked = this.props.is_linked;
     }
-    this.state = {
-      is_linked: is_linked,
-    };
+    this.setState({ is_linked: is_linked });
   }
 
   componentWillUnMount () {

@@ -55,7 +55,6 @@ export default class SettingsWidgetAccountType extends Component {
 
   onOrganizationStoreChange (){
     let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
-    console.log('---->>>>', organization, '<<<<----')
     if (organization && organization.organization_we_vote_id) {
       this.setState({
         organization: organization,
@@ -67,7 +66,6 @@ export default class SettingsWidgetAccountType extends Component {
   onVoterStoreChange () {
     if (VoterStore.isVoterFound()) {
       let voter = VoterStore.getVoter();
-      console.log('[VOTED]', voter);
       this.setState({
         voter: voter
       });

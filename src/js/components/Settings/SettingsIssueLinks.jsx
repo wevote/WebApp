@@ -39,10 +39,9 @@ export default class SettingsIssueLinks extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log('nextProps>>>>');
     let default_active_tab = this.getDefaultActiveIssueTab();
     let active_tab = nextProps.params.active_tab || default_active_tab;
-    // console.log("SettingsIssueLinks, nextProps.organization_we_vote_id: ", nextProps.organization_we_vote_id);
+    console.log("SettingsIssueLinks, nextProps.organization_we_vote_id: ", nextProps.organization_we_vote_id);
     // console.log("SettingsIssueLinks, active_tab: ", active_tab, "default_active_tab: ", default_active_tab);
     this.setState({
       active_tab: active_tab,

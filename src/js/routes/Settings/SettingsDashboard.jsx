@@ -29,7 +29,6 @@ export default class SettingsDashboard extends Component {
     super(props);
     this.state = {
       editMode: "",
-      tab: "",
       linkedOrganizationWeVoteId: "",
       organization: {},
       sliderOpen: false,
@@ -38,7 +37,6 @@ export default class SettingsDashboard extends Component {
   }
 
   componentDidMount () {
-    console.log('>>>>', this.props.params);
     if (this.props.params.edit_mode) {
       this.setState({ editMode: this.props.params.edit_mode });
     } else {
