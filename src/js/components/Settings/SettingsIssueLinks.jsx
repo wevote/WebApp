@@ -1,12 +1,14 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router";
+import Helmet from "react-helmet";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import { historyPush } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
+import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import IssueActions from "../../actions/IssueActions";
 import IssueLinkToggle from "../Issues/IssueLinkToggle";
 import IssueStore from "../../stores/IssueStore";
-import { renderLog } from "../../utils/logging";
 
 export default class SettingsIssueLinks extends Component {
   static propTypes = {
@@ -120,6 +122,9 @@ export default class SettingsIssueLinks extends Component {
     }
 
     return <div className="">
+      <Helmet title="Issues - We Vote" />
+      <BrowserPushMessage incomingProps={this.props} />
+
       <div className="card">
         <div className="card-main">
           <h1 className="h2 hidden-xs">Issues Related to Your Voter Guide</h1>
