@@ -7,7 +7,7 @@ import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import VoterStore from "../../stores/VoterStore";
 
-const delayBeforeApiSearchCall = 1200;
+const delayBeforeApiSearchCall = 500;
 
 
 export default class VoterGuideGetStarted extends Component {
@@ -129,10 +129,14 @@ export default class VoterGuideGetStarted extends Component {
   }
 
   saveAndGoToOrganizationInfo () {
-    if (this.state.linkedOrganizationWeVoteId) {
-      OrganizationActions.organizationGetStartedSave(this.state.linkedOrganizationWeVoteId, this.state.searchResultsOrganizationName, this.state.searchResultsWebsite);
+    if (this.state.isLoading) {
+      return false;
+    } else {
+      if (this.state.linkedOrganizationWeVoteId) {
+        OrganizationActions.organizationGetStartedSave(this.state.linkedOrganizationWeVoteId, this.state.searchResultsOrganizationName, this.state.searchResultsWebsite);
+      }
+      historyPush("/voterguideorgtype");
     }
-    historyPush("/voterguideorgtype");
   }
 
   hitEnterKey () {
@@ -201,7 +205,10 @@ export default class VoterGuideGetStarted extends Component {
     }
 
     let actionButtonHtml;
-    if (this.state.isTwitterHandleValid) {
+    if (this.state.isLoading) {
+      actionButtonHtml = <button type="button" className="btn btn-lg btn-success"
+                    disabled >One Moment...</button>;
+    } else if (this.state.isTwitterHandleValid) {
       actionButtonHtml = <button type="button" className="btn btn-lg btn-success"
                     onClick={this.saveAndGoToOrganizationInfo}>Use This Information&nbsp;&nbsp;&gt;</button>;
     } else {
@@ -221,7 +228,7 @@ export default class VoterGuideGetStarted extends Component {
           <div className="row">
             <div className="col-2">&nbsp;</div>
             <div className="col-8">
-              <form onSubmit={(e) => {this.hitEnterKey(); e.preventDefault();}}>
+              <form onSubmit={(e) => {this.saveAndGoToOrganizationInfo(); e.preventDefault();}}>
                 <div className="form-group">
                   { this.state.twitterSearchStatus.length ?
                     <p className={ !this.state.isLoading ?

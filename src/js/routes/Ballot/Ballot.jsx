@@ -196,7 +196,7 @@ export default class Ballot extends Component {
       AnalyticsActions.saveActionBallotVisit(VoterStore.election_id());
     }
     // console.log("End of componentDidMount");
-    //also read raccoon detail flag tracker!!
+
     this.setState({
       ballotElectionList: BallotStore.ballotElectionList(),
       ballot_returned_we_vote_id: ballot_returned_we_vote_id,
@@ -392,7 +392,7 @@ export default class Ballot extends Component {
     }
   }
 
-  onElectionStoreChange (){
+  onElectionStoreChange () {
     // console.log("Elections, onElectionStoreChange");
     let elections_list = ElectionStore.getElectionList();
     let elections_locations_list = [];
@@ -402,7 +402,7 @@ export default class Ballot extends Component {
     let ballot_location_shortcut;
     let ballot_returned_we_vote_id;
 
-    for (var i = 0; i < elections_list.length; i++){
+    for (var i = 0; i < elections_list.length; i++) {
       var election = elections_list[i];
       elections_locations_list.push(election);
       ballot_returned_we_vote_id = "";
@@ -452,7 +452,7 @@ export default class Ballot extends Component {
     }
   }
 
-  componentDidUpdate (){
+  componentDidUpdate () {
     this.hashLinkScroll();
   }
 
@@ -471,13 +471,13 @@ export default class Ballot extends Component {
     }
   }
 
-  getEmptyMessageByFilterType (filter_type){
+  getEmptyMessageByFilterType (filter_type) {
     switch (filter_type) {
       case "filterRemaining":
         return "You already chose a candidate or position for each ballot item";
       case "filterSupport":
         return "You haven't supported any candidates or measures yet.";
-      default :
+      default:
         return "";
     }
   }
