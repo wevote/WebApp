@@ -55,7 +55,7 @@ export default class IssueLinkToggle extends Component {
                         imageUrl={this.props.issue.issue_image_url}
           />
         </div>
-        <span className="intro-modal__span intro-modal__margin-right" onClick={this.onIssueUnlink}>
+        <span className="intro-modal__span intro-modal__margin-right minWidth" onClick={this.onIssueUnlink}>
           <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue.issue_name}</h4>
           <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.issue.issue_description}</p>
         </span>
@@ -72,7 +72,7 @@ export default class IssueLinkToggle extends Component {
                           imageUrl={this.props.issue.issue_image_url}
             />
           </div>
-          <span className="intro-modal__span intro-modal__margin-right" onClick={this.onIssueLink}>
+          <span className="intro-modal__span intro-modal__margin-right minWidth" onClick={this.onIssueLink}>
             <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue.issue_name}</h4>
             <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.issue.issue_description}</p>
         </span>

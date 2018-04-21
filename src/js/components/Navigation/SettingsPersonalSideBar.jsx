@@ -24,7 +24,7 @@ export default class SettingsPersonalSideBar extends Component {
 
   render () {
     renderLog(__filename);
-    console.log('this.props.editMode >>', this.props.editMode);
+    // console.log('this.props.editMode >>', this.props.editMode);
     return <div className="card">
       <div className="card-main">
         <div className="SettingsItem__summary__title" >Your Settings</div>

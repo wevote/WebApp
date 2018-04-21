@@ -15,7 +15,7 @@ import SettingsNotifications from "../../components/Settings/SettingsNotificatio
 import SettingsProfile from "../../components/Settings/SettingsProfile";
 import SettingsPersonalSideBar from "../../components/Navigation/SettingsPersonalSideBar";
 import VoterGuideActions from "../../actions/VoterGuideActions";
-import SettingsIssueLinks from "../../components/Settings/SettingsIssueLinks"; // TODO: To be updated
+import SettingsIssueLinks from "../../components/Settings/SettingsIssueLinks";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 
@@ -139,7 +139,7 @@ export default class SettingsDashboard extends Component {
 
   render () {
     renderLog(__filename);
-    console.log('>>>>>>', this.state.organization);
+    // console.log('>>>>>><<<<<<', this.state.voter);
     let settingsComponentToDisplay = null;
     switch (this.state.editMode) {
       case "account":
@@ -153,10 +153,11 @@ export default class SettingsDashboard extends Component {
         break;
       case "issues_linked":
       case "issues_to_link":
-        settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id="wv02voter118621" params={{active_tab: this.state.editMode}}/>;
+        //TODO: Ask Dale: organization_we_vote_id I am passing the voterid IS this the intended functionality? when I wass the org_id it does not work?.
+        settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id={this.state.voter.we_vote_id} params={{active_tab: this.state.editMode}}/>;
         break;
       case "issues":
-        settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id="wv02voter118621" params={{active_tab: "issues_linked"}}/>;  // TODO: To be implemented
+        settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id={this.state.voter.we_vote_id} params={{active_tab: "issues_linked"}}/>;
         break;
       case "notifications":
         settingsComponentToDisplay = <SettingsNotifications />;
