@@ -119,7 +119,7 @@ export default class SettingsIssueLinks extends Component {
         break;
     }
 
-    return <div className="col-md-8 col-sm-12">
+    return <div className="">
       <div className="card">
         <div className="card-main">
           <h1 className="h2 hidden-xs">Issues Related to Your Voter Guide</h1>
