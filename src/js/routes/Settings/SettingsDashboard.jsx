@@ -33,6 +33,7 @@ export default class SettingsDashboard extends Component {
       organization: {},
       sliderOpen: false,
       voter: {},
+      organizationType: ""
     };
   }
 
@@ -108,9 +109,13 @@ export default class SettingsDashboard extends Component {
 
   onOrganizationStoreChange () {
     // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
-    this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId),
-    });
+    let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
+    if (organization && organization.organization_we_vote_id) {
+      this.setState({
+        organization: organization,
+        organizationType: organization.organization_type,
+      });
+    }
   }
 
   onVoterGuideStoreChange () {
@@ -134,6 +139,7 @@ export default class SettingsDashboard extends Component {
 
   render () {
     renderLog(__filename);
+    console.log('>>>>>>', this.state.organization);
     let settingsComponentToDisplay = null;
     switch (this.state.editMode) {
       case "account":
@@ -187,7 +193,7 @@ export default class SettingsDashboard extends Component {
           <div className="row">
             {/* Desktop mode left navigation */}
             <div className="col-4 sidebar-menu">
-              <SettingsPersonalSideBar editMode={this.state.editMode} isSignedIn={this.state.voter.is_signed_in} />
+              <SettingsPersonalSideBar editMode={this.state.editMode} isSignedIn={this.state.voter.is_signed_in} isIndividual={this.state.organizationType === "I"}/>
 
               <SelectVoterGuidesSideBar />
 

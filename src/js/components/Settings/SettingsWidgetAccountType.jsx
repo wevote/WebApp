@@ -54,6 +54,7 @@ export default class SettingsWidgetAccountType extends Component {
   }
 
   onOrganizationStoreChange (){
+    //Ask Dale
     let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
     if (organization && organization.organization_we_vote_id) {
       this.setState({
