@@ -136,6 +136,7 @@ export default class VoterGuideGetStarted extends Component {
         OrganizationActions.organizationGetStartedSave(this.state.linkedOrganizationWeVoteId, this.state.searchResultsOrganizationName, this.state.searchResultsWebsite);
       }
       historyPush("/voterguideorgtype");
+      return true;
     }
   }
 

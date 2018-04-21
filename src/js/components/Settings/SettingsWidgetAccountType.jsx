@@ -187,7 +187,7 @@ export default class SettingsWidgetAccountType extends Component {
               {this.renderOrganizationType("C", this.state.organizationType, "Company", "organizationTypeIdCompany")}
               {this.renderOrganizationType("U", this.state.organizationType, "Other", "organizationTypeIdUnknown")}
             </div>
-          </span>:
+          </span> :
           <div className="">
             <span className="pull-right u-gray-mid">{this.state.organizationTypeSavedStatus}</span>
             <span className="u-f4 u-bold">{this.displayOrganizationType(this.state.organizationType)}</span>
