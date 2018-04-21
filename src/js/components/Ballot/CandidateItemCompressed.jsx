@@ -144,12 +144,19 @@ export default class CandidateItemCompressed extends Component {
       </div>;
 
     let candidate_name_raccoon = <h4 className="card-main__candidate-name u-f5">
-      <a onClick={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(this.state.oneCandidate.we_vote_id) : null}>
+      {this.props.link_to_ballot_item_page ?
+        <a onClick={() => this.goToCandidateLink(this.state.oneCandidate.we_vote_id)}>
+          <TextTruncate line={1}
+                        truncateText="…"
+                        text={this.state.oneCandidate.ballot_item_display_name}
+                        textTruncateChild={null}/>
+        </a> :
         <TextTruncate line={1}
                       truncateText="…"
                       text={this.state.oneCandidate.ballot_item_display_name}
                       textTruncateChild={null}/>
-      </a>
+      }
+
     </h4>;
 
     let positions_display_raccoon = <div>
@@ -177,7 +184,8 @@ export default class CandidateItemCompressed extends Component {
           {candidate_name_raccoon}
           {/* Description under candidate name */}
           <LearnMore text_to_display={candidate_text}
-                     on_click={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(this.state.oneCandidate.we_vote_id) : null} />
+                     on_click={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(this.state.oneCandidate.we_vote_id) : null}
+                     num_of_lines={3} />
           {/* DESKTOP: If voter has taken position, offer the comment bar */}
           {/* comment_display_raccoon_desktop */}
           {/* Organization's Followed AND to Follow Items */}

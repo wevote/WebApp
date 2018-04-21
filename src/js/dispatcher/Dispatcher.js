@@ -1,5 +1,5 @@
 import Dispatcher from "flux/lib/Dispatcher";
-import { $ajax } from "../utils/service"; 
+import { $ajax } from "../utils/service";
 import { httpLog } from "../utils/logging";
 
 

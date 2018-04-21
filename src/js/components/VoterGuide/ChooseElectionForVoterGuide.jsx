@@ -194,10 +194,12 @@ export default class ChooseElectionForVoterGuide extends Component {
     return <div>
       {upcomingElectionList}
 
+      {/*
       { priorElectionList && priorElectionList.length ?
         <h4 className="h4">Prior Election(s)</h4> :
         null }
       {priorElectionList}
+      */}
     </div>;
   }
 }

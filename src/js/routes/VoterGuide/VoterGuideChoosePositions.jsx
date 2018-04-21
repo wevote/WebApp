@@ -193,7 +193,7 @@ export default class VoterGuideChoosePositions extends Component {
   }
 
   goToVoterGuideDisplay () {
-    let voterGuideDisplay = "/voterguide/" + this.state.voterGuide.organization_we_vote_id + "/ballot/election/" + this.state.voterGuide.google_civic_election_id + "/positions";
+    let voterGuideDisplay = "/voterguide/" + this.state.voterGuide.organization_we_vote_id + "/ballot/election/" + this.state.voterGuide.google_civic_election_id + "/ballot";
 
     historyPush(voterGuideDisplay);
   }
@@ -214,10 +214,6 @@ export default class VoterGuideChoosePositions extends Component {
 
     const icon_size = 18;
     let icon_color = "#ccc"; // "#999";
-
-    let actionButtonHtml;
-    actionButtonHtml = <button type="button" className="btn btn-lg btn-success"
-                               onClick={this.goToVoterGuideDisplay}>Go to My Voter Guide&nbsp;&nbsp;&gt;</button>;
 
     return <div>
       <Helmet title="Choose Positions - We Vote" />
@@ -268,7 +264,8 @@ export default class VoterGuideChoosePositions extends Component {
               </div>
 
               <div className="fa-pull-right">
-                {actionButtonHtml}
+                <button type="button" className="btn btn-lg btn-success"
+                        onClick={this.goToVoterGuideDisplay}>See Full Ballot&nbsp;&nbsp;&gt;</button>
               </div>
 
               <div className="clearfix" />
@@ -277,9 +274,9 @@ export default class VoterGuideChoosePositions extends Component {
                 <div className="u-stack--xl" /> :
                 <div className="u-stack--md" /> }
 
-              { !this.state.searchIsUnderway ?
-                <VoterGuideSettingsSuggestedBallotItems maximumSuggestedItems={7} /> :
-                null }
+              {/* !this.state.searchIsUnderway ?
+                <VoterGuideSettingsSuggestedBallotItems maximumSuggestedItems={5} /> :
+                null */}
 
               {this.state.searchIsUnderway ?
                 <span>

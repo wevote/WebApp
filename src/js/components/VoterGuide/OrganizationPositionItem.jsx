@@ -216,15 +216,15 @@ export default class OrganizationPositionItem extends Component {
                     className="position-rating__candidate-name u-flex-auto">
                     {ballot_item_display_name}
               </Link>
-
+              {/* <PositionPublicToggle ballot_item_we_vote_id={position.ballot_item_we_vote_id}
+                  type={position.kind_of_ballot_item}
+                  supportProps={supportProps}
+                  className="organization-position-item-toggle"/> */}
               { (signed_in_with_this_twitter_account ||
                 signed_in_with_this_organization ||
                 signed_in_with_this_facebook_account) &&
                 this.props.editMode ?
-                <PositionPublicToggle ballot_item_we_vote_id={position.ballot_item_we_vote_id}
-                  type={position.kind_of_ballot_item}
-                  supportProps={supportProps}
-                  className="organization-position-item-toggle"/> :
+                  <FriendsOnlyIndicator isFriendsOnly={!is_public_position}/> :
                   <FriendsOnlyIndicator isFriendsOnly={!is_public_position}/>
               }
               <BookmarkToggle we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />

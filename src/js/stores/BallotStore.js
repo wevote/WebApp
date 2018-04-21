@@ -273,7 +273,7 @@ class BallotStore extends ReduceStore {
           console.log("ERROR: undefined ballotItemListCandidatesDict in BallotStore reduce");
         }
 
-        if (tempBallotItemList  && ballotItemListCandidatesDict) {
+        if (tempBallotItemList && ballotItemListCandidatesDict) {
           tempBallotItemList.forEach(oneBallotItem => {
             if (oneBallotItem.kind_of_ballot_item === "OFFICE" && oneBallotItem.candidate_list) {
               officeWeVoteId = oneBallotItem.we_vote_id;

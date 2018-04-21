@@ -16,6 +16,7 @@ export default class ItemActionBar extends Component {
   static propTypes = {
     ballot_item_we_vote_id: PropTypes.string.isRequired,
     commentButtonHide: PropTypes.bool,
+    commentButtonHideInMobile: PropTypes.bool,
     opposeHideInMobile: PropTypes.bool,
     shareButtonHide: PropTypes.bool,
     supportProps: PropTypes.object,
@@ -180,8 +181,11 @@ export default class ItemActionBar extends Component {
       <Modal.Body>
         <section className="card">
           <div className="text-center">
-            Your position is only visible to your We Vote friends. Change the privacy toggle to make your views public.
-            Test the toggle here:<br />
+            <div className="u-f2">Your position is only visible to your We Vote friends.</div>
+            <div className="u-f4">
+              Change the privacy toggle to make your views public.<br />
+              Test the toggle here:<br />
+            </div>
             <br />
             <PositionPublicToggle ballot_item_we_vote_id="null"
                                   className="null"
@@ -190,7 +194,8 @@ export default class ItemActionBar extends Component {
                                   inTestMode
             />
             <br />
-            We Vote helps you get ready to vote, <strong>but you cannot use We Vote to cast your vote</strong>. Make sure to return your official ballot to your polling place!<br />
+            We Vote helps you get ready to vote, <strong>but you cannot use We Vote to cast your vote</strong>.<br />
+            Make sure to return your official ballot to your polling place!<br />
             <br />
           </div>
         </section>
@@ -279,7 +284,8 @@ export default class ItemActionBar extends Component {
       </div>
       { this.props.commentButtonHide ?
         null :
-        <button className="item-actionbar__btn item-actionbar__btn--comment btn btn-default u-push--sm" onClick={this.props.toggleFunction}>
+        <button className={"item-actionbar__btn item-actionbar__btn--comment btn btn-default u-push--sm" + this.props.commentButtonHideInMobile ? " hidden-xs" : null}
+                onClick={this.props.toggleFunction}>
             <span className="btn__icon">
               <Icon name="comment-icon" width={icon_size} height={icon_size} color={icon_color} />
             </span>
