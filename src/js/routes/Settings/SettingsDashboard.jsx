@@ -139,7 +139,6 @@ export default class SettingsDashboard extends Component {
 
   render () {
     renderLog(__filename);
-    // console.log('>>>>>><<<<<<', this.state.voter);
     let settingsComponentToDisplay = null;
     switch (this.state.editMode) {
       case "account":

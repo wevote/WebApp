@@ -1,3 +1,7 @@
+.minWidth {
+  min-width: 437px;
+}
+
 .intro-modal {
   padding: $space-none;
   // min-height: 480px;
@@ -604,8 +608,4 @@
       height: calc(100vh - 50px);
     }
   }
-}
-
-.minWidth {
-  min-width: 437px;
 }
