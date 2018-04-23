@@ -38,7 +38,7 @@ export default class SettingsIssueLinks extends Component {
       );
       this.setState({
         organization_we_vote_id: this.props.organization_we_vote_id
-      })
+      });
     }
 
     let default_active_tab = this.getDefaultActiveIssueTab();
@@ -58,7 +58,7 @@ export default class SettingsIssueLinks extends Component {
       );
       this.setState({
         organization_we_vote_id: this.props.organization_we_vote_id
-      })
+      });
     }
     let default_active_tab = this.getDefaultActiveIssueTab();
     let active_tab = nextProps.params.active_tab || default_active_tab;
@@ -102,7 +102,7 @@ export default class SettingsIssueLinks extends Component {
     }
     return default_active_tab;
   }
-  
+
   render () {
     renderLog(__filename);
     let issues_to_display = [];
