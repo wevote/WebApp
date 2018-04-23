@@ -110,9 +110,9 @@ export default class SettingsDashboard extends Component {
   onOrganizationStoreChange () {
     // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
     let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
-    if (organization && organization.organization_we_vote_id) {
+    if (organization && organization.organization_type) {
       this.setState({
-        organization: organization,
+        organization,
         organizationType: organization.organization_type,
       });
     }
@@ -152,7 +152,6 @@ export default class SettingsDashboard extends Component {
         break;
       case "issues_linked":
       case "issues_to_link":
-        //TODO: Ask Dale: organization_we_vote_id I am passing the voterid IS this the intended functionality? when I wass the org_id it does not work?.
         settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id={this.state.voter.we_vote_id} params={{active_tab: this.state.editMode}}/>;
         break;
       case "issues":

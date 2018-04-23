@@ -9,7 +9,7 @@ export default class SettingsPersonalSideBar extends Component {
     editMode: PropTypes.string,
     isSignedIn: PropTypes.bool,
     onOwnPage: PropTypes.bool,
-    isIndividual: PropTypes.bool  //Boolean if the user is an individual and not an org.
+    isIndividual: PropTypes.bool.isRequired  // True if the user is an individual and not an org.
   };
 
   constructor (props) {
@@ -25,7 +25,6 @@ export default class SettingsPersonalSideBar extends Component {
 
   render () {
     renderLog(__filename);
-    // console.log('this.props.editMode >>', this.props.editMode);
     return <div className="card">
       <div className="card-main">
         <div className="SettingsItem__summary__title" >Your Settings</div>

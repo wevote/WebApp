@@ -1,12 +1,12 @@
-import { Link } from "react-router";
-import Helmet from "react-helmet";
-import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { renderLog } from "../../utils/logging";
+import PropTypes from "prop-types";
+import Helmet from "react-helmet";
+import { Link } from "react-router";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import IssueActions from "../../actions/IssueActions";
 import IssueLinkToggle from "../Issues/IssueLinkToggle";
 import IssueStore from "../../stores/IssueStore";
+import { renderLog } from "../../utils/logging";
 
 export default class SettingsIssueLinks extends Component {
   static propTypes = {
@@ -26,6 +26,7 @@ export default class SettingsIssueLinks extends Component {
   }
 
   componentDidMount () {
+    let newState = {};
     this.issueStoreListener = IssueStore.addListener(
       this.onIssueStoreChange.bind(this)
     );
@@ -36,19 +37,18 @@ export default class SettingsIssueLinks extends Component {
       IssueActions.retrieveIssuesLinkedForOrganization(
         this.props.organization_we_vote_id
       );
-      this.setState({
-        organization_we_vote_id: this.props.organization_we_vote_id
-      });
+      newState.organization_we_vote_id = this.props.organization_we_vote_id;
     }
 
     let default_active_tab = this.getDefaultActiveIssueTab();
     let active_tab = this.props.params.active_tab || default_active_tab;
-    this.setState({
-      active_tab: active_tab
-    });
+    newState.active_tab = active_tab;
+
+    this.setState(newState);
   }
 
   componentWillReceiveProps (nextProps) {
+    let newState = {};
     if (nextProps.organization_we_vote_id !== this.state.organization_we_vote_id){
       IssueActions.retrieveIssuesToLinkForOrganization(
         nextProps.organization_we_vote_id
@@ -56,17 +56,14 @@ export default class SettingsIssueLinks extends Component {
       IssueActions.retrieveIssuesLinkedForOrganization(
         nextProps.organization_we_vote_id
       );
-      this.setState({
-        organization_we_vote_id: this.props.organization_we_vote_id
-      });
+      newState.organization_we_vote_id = this.props.organization_we_vote_id;
     }
     let default_active_tab = this.getDefaultActiveIssueTab();
     let active_tab = nextProps.params.active_tab || default_active_tab;
+    newState.active_tab = active_tab;
     // console.log("SettingsIssueLinks, nextProps.organization_we_vote_id: ", nextProps.organization_we_vote_id);
     // console.log("SettingsIssueLinks, active_tab: ", active_tab, "default_active_tab: ", default_active_tab);
-    this.setState({
-      active_tab: active_tab
-    });
+    this.setState(newState);
   }
 
   componentWillUnmount () {
@@ -119,7 +116,7 @@ export default class SettingsIssueLinks extends Component {
     // console.log('-----------------------------------------------------')
     switch (active_tab) {
       case "issues_to_link":
-      issues_to_display = this.state.issues_to_link_to.map((issue) => {
+        issues_to_display = this.state.issues_to_link_to.map((issue) => {
         return <IssueLinkToggle
             key={issue.issue_we_vote_id}
             issue={issue}
@@ -130,7 +127,7 @@ export default class SettingsIssueLinks extends Component {
         break;
       default:
       case "issues_linked":
-      issues_to_display = this.state.issues_linked_to.map((issue) => {
+        issues_to_display = this.state.issues_linked_to.map((issue) => {
         return <IssueLinkToggle
           key={issue.issue_we_vote_id}
           issue={issue}
