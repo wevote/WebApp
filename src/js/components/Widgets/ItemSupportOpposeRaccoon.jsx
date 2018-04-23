@@ -47,6 +47,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       can_scroll_right_desktop: true,
       can_scroll_right_mobile: true,
       candidate: {},
+      showPositionStatement: false,
       maximum_organization_display: 0,
       organizations_to_follow_support: [],
       organizations_to_follow_oppose: [],
@@ -282,6 +283,10 @@ export default class ItemSupportOpposeRaccoon extends Component {
     });
   }
 
+  togglePositionStatement () {
+    this.setState({ showPositionStatement: !this.state.showPositionStatement });
+  }
+
   render () {
     renderLog(__filename);
     let candidateSupportStore = SupportStore.get(this.state.ballot_item_we_vote_id);
@@ -289,9 +294,10 @@ export default class ItemSupportOpposeRaccoon extends Component {
     let candidate_support_action_raccoon = <span>
         <ItemActionBar ballot_item_display_name={this.state.ballot_item_display_name}
                        ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
-                       commentButtonHide
+                       commentButtonHideInMobile
                        shareButtonHide
                        supportProps={candidateSupportStore}
+                       toggleFunction={this.togglePositionStatement.bind(this)}
                        transitioning={this.state.transitioning}
                        type="CANDIDATE" />
       </span>;
@@ -357,11 +363,12 @@ export default class ItemSupportOpposeRaccoon extends Component {
       voter_statement_text = candidateSupportStore.voter_statement_text;
     }
 
-    let comment_display_raccoon_desktop = this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text ?
+    let comment_display_raccoon_desktop = this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text || this.state.showPositionStatement ?
       <div className="hidden-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
           <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
                                           ballot_item_display_name={this.state.ballot_item_display_name}
+                                          comment_edit_mode_on={this.state.showPositionStatement}
                                           supportProps={candidateSupportStore}
                                           transitioning={this.state.transitioning}
                                           type="CANDIDATE"

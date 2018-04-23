@@ -56,6 +56,7 @@ export default class ItemPositionStatementActionBar extends Component {
     }
 
     this.setState({
+      showEditPositionStatementInput: this.props.comment_edit_mode_on,
       voter_full_name: VoterStore.getFullName(),
       voter_photo_url_medium: VoterStore.getVoterPhotoUrlMedium(),
     });
@@ -64,13 +65,16 @@ export default class ItemPositionStatementActionBar extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    this.setState({ transitioning: false });
     if (nextProps.supportProps !== undefined) {
       this.setState({
         statement_text_to_be_saved: nextProps.supportProps.voter_statement_text,
         is_public_position: nextProps.supportProps.is_public_position,
       });
     }
+    this.setState({
+      showEditPositionStatementInput: nextProps.comment_edit_mode_on,
+      transitioning: false,
+    });
   }
 
   componentWillUnmount () {
@@ -238,13 +242,13 @@ export default class ItemPositionStatementActionBar extends Component {
                   minRows={2}
                   placeholder={statementPlaceholderText}
                   defaultValue={statement_text_to_be_saved} />
-              <div className="u-flex u-flex-column u-justify-between u-items-end">
-                <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
-                                      type={this.props.type}
-                                      supportProps={this.props.supportProps}
-                                      className="u-flex-auto u-tr hidden-print" />
-                <button className="position-statement__post-button btn btn-default btn-sm" type="submit">{post_button_text}</button>
-              </div>
+                <div className="u-flex u-flex-column u-justify-between u-items-end">
+                  <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
+                                        type={this.props.type}
+                                        supportProps={this.props.supportProps}
+                                        className="u-flex-auto u-tr hidden-print" />
+                  <button className="position-statement__post-button btn btn-default btn-sm" type="submit">{post_button_text}</button>
+                </div>
               </span>
             </div>
           </form> :
@@ -257,28 +261,36 @@ export default class ItemPositionStatementActionBar extends Component {
                   width="34px"
             /> :
           image_placeholder }
-          <div className="position-statement__description">
+          <div className="position-statement__description u-flex u-items-start">
+            <div className="u-flex u-flex-column u-justify-between">
             { speaker_display_name ?
               <span className="u-bold">{speaker_display_name} <br /></span> :
               null }
-            { statement_text_no_url ?
-              <ReadMore text_to_display={statement_text_no_url} /> :
-              <ReadMore text_to_display={statement_text_to_be_saved} />
-            }
-            { video_url ?
-              <ReactPlayer url={`${video_url}`} width="300px" height="231px"/> :
-              null }
-            { short_version ?
-              <span tabIndex="0" onKeyDown={onKeyDown}
-                    className="position-statement__edit-position-pseudo"
-                    onClick={onSavePositionStatementClick}
-                    title="Edit this position"/> :
-              null
-            }
-            <div tabIndex="0" onKeyDown={onKeyDown}
-                 className="position-statement__edit-position-link"
-                 onClick={onSavePositionStatementClick}
-                 title="Edit this position">Edit</div>
+              { statement_text_no_url ?
+                <ReadMore text_to_display={statement_text_no_url} /> :
+                <ReadMore text_to_display={statement_text_to_be_saved} />
+              }
+              { video_url ?
+                <ReactPlayer url={`${video_url}`} width="300px" height="231px"/> :
+                null }
+              { short_version ?
+                <span tabIndex="0" onKeyDown={onKeyDown}
+                      className="position-statement__edit-position-pseudo"
+                      onClick={onSavePositionStatementClick}
+                      title="Edit this position"/> :
+                null
+              }
+              <div tabIndex="0" onKeyDown={onKeyDown}
+                   className="position-statement__edit-position-link"
+                   onClick={onSavePositionStatementClick}
+                   title="Edit this position">Edit</div>
+            </div>
+            <div className="u-flex u-flex-column u-justify-between u-items-end">
+              <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
+                                    type={this.props.type}
+                                    supportProps={this.props.supportProps}
+                                    className="u-flex-auto u-tr hidden-print" />
+            </div>
           </div>
         </div>
       }

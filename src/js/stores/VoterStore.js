@@ -308,7 +308,7 @@ class VoterStore extends ReduceStore {
           BallotActions.voterBallotItemsRetrieve();
           SupportActions.positionsCountForAllBallotItems(action.res.google_civic_election_id);
         }
-        
+
         let address;
         if (action.res.address) {
           address = action.res.address;
@@ -320,9 +320,9 @@ class VoterStore extends ReduceStore {
             ballot_location_display_name: "",
             voter_entered_address: "",
             voter_specific_ballot_from_google_civic: null
-          }
+          };
         }
-        
+
         return {
           ...state,
           address: {

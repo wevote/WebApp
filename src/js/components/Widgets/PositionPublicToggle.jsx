@@ -5,6 +5,7 @@ import ReactBootstrapToggle from "react-bootstrap-toggle";
 import Icon from "react-svg-icons";
 import { renderLog } from "../../utils/logging";
 import { showToastSuccess } from "../../utils/showToast";
+import SettingsAccount from "../../components/Settings/SettingsAccount";
 import SupportActions from "../../actions/SupportActions";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
@@ -71,6 +72,9 @@ export default class PositionPublicToggle extends Component {
 
   render () {
     renderLog(__filename);
+    if (!this.state.voter) {
+      return <div className="undefined-props" />;
+    }
     if (this.props.supportProps === undefined){
       return <div className="undefined-props" />;
     }
@@ -132,11 +136,15 @@ export default class PositionPublicToggle extends Component {
         <section className="card">
           <div className="text-center">
             {voter && voter.is_signed_in ?
-              "By clicking this toggle, you have just made your position visible to anyone on We Vote. " +
-              "If you do NOT want to share your position publicly, you may click the toggle again to restrict " +
-              "visibility to We Vote friends only." :
-              "Clicking this toggle will make your position visible to anyone on We Vote. " +
-              "In order to change this toggle, you need to sign in first."}<br />
+              <div>
+                <div className="u-f2">You have just made your position visible to anyone on We Vote.</div>
+                <div className="u-f4">If you do NOT want to share your position publicly, click the toggle again to restrict visibility to We Vote friends only.</div>
+              </div> :
+              <div>
+                { !this.state.voter.is_signed_in ?
+                  <SettingsAccount /> :
+                  null }
+              </div>}
             <br />
             We Vote makes it easy to share your views either publicly, or privately with your We Vote friends.<br />
             <br />
