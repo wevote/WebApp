@@ -83,4 +83,8 @@ $bottomPaddingCordova: 150px;
       padding-right: $space-none;
     }
   }
+
+  &__description {
+    white-space: normal;
+  }
 }

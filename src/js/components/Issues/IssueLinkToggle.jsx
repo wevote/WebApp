@@ -57,7 +57,7 @@ export default class IssueLinkToggle extends Component {
         </div>
           <span className="col-6 col-sm-8 intro-modal__span">
             <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue.issue_name}</h4>
-            <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.issue.issue_description}</p>
+            <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm settingsIssues__description">{this.props.issue.issue_description}</p>
           </span>
         <div className="col-3 col-sm-2">
           <Button bsStyle="warning" bsSize="small" onClick={this.onIssueUnlink}>
@@ -74,7 +74,7 @@ export default class IssueLinkToggle extends Component {
         </div>
         <span className="col-6 col-sm-8 intro-modal__span">
           <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue.issue_name}</h4>
-          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.issue.issue_description}</p>
+          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm settingsIssues__description">{this.props.issue.issue_description}</p>
         </span>
         <div className="col-3 col-sm-2">
           <Button bsStyle="info" bsSize="small" onClick={this.onIssueLink}>
