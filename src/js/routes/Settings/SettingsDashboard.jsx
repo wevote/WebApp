@@ -155,7 +155,7 @@ export default class SettingsDashboard extends Component {
         settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id={this.state.voter.we_vote_id} params={{active_tab: this.state.editMode}}/>;
         break;
       case "issues":
-        settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id={this.state.voter.we_vote_id} params={{active_tab: "issues_linked"}}/>;
+        settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id={this.state.voter.we_vote_id} params={{active_tab: ""}}/>;
         break;
       case "notifications":
         settingsComponentToDisplay = <SettingsNotifications />;
