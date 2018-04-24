@@ -48,16 +48,22 @@ export default class Network extends Component {
     FriendActions.friendInvitationsSentToMe();
     FriendActions.friendInvitationsProcessed();
     FriendActions.suggestedFriendList();
-    this._onFriendStoreChange();
-    this._onVoterStoreChange();
-    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.onFriendStoreChange();
+    this.onVoterStoreChange();
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.setState({ pathname: this.props.location.pathname });
     AnalyticsActions.saveActionNetwork(VoterStore.election_id());
   }
 
   componentWillReceiveProps (nextProps) {
-    if (this.state.friend_invitations_sent_to_me.length > 0) {  //has invitations
+    if (this.state.friend_invitations_sent_to_me.length > 0) {  // has invitations
+      if (nextProps.location.pathname === "/more/network" || !nextProps.params.edit_mode) {
+        this.setState({edit_mode: "friends"});
+      } else {
+        this.setState({edit_mode: nextProps.params.edit_mode});
+      }
+    } else if (this.state.suggested_friend_list.length > 0) {  // has suggested friends
       if (nextProps.location.pathname === "/more/network" || !nextProps.params.edit_mode) {
         this.setState({ edit_mode: "friends" });
       } else {
@@ -75,7 +81,7 @@ export default class Network extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onFriendStoreChange () {
+  onFriendStoreChange () {
     let newState = {
       friend_invitations_sent_by_me: FriendStore.friendInvitationsSentByMe(),
       friend_invitations_sent_to_me: FriendStore.friendInvitationsSentToMe(),
@@ -98,7 +104,7 @@ export default class Network extends Component {
     this.setState(newState);
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
