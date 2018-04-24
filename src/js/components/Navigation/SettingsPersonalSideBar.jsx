@@ -9,6 +9,7 @@ export default class SettingsPersonalSideBar extends Component {
     editMode: PropTypes.string,
     isSignedIn: PropTypes.bool,
     onOwnPage: PropTypes.bool,
+    isIndividual: PropTypes.bool.isRequired  // True if the user is an individual and not an org.
   };
 
   constructor (props) {
@@ -82,6 +83,20 @@ export default class SettingsPersonalSideBar extends Component {
             </Link>
           </div>
         </div>
+        {!this.props.isIndividual &&
+          <div className={this.props.editMode === "issues" || this.props.editMode === "issues_to_link" || this.props.editMode === "issues_linked" ?
+              "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
+              "SettingsItem__summary__item-container "} >
+            <div>
+              <Link to="/settings/issues" className="SettingsItem__summary__item" >
+                <span className={this.props.editMode === "issues" || this.props.editMode === "issues_to_link" || this.props.editMode === "issues_linked" ?
+                      "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
+                      "SettingsItem__summary__item__display-name"}>
+                  Issues</span>
+              </Link>
+            </div>
+          </div>
+        }
 
         {this.props.onOwnPage ?
           <div className={this.props.editMode === "voterguides" ?
