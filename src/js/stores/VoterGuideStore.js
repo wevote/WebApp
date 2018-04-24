@@ -297,7 +297,7 @@ class VoterGuideStore extends ReduceStore {
 
         // If no voter guides found , and it's not a search query, retrieve results for all elections
         if (is_empty && election_id_exists && !search_term_exists ) {
-          console.log("VoterGuideStore CALLING voterGuidesToFollowRetrieve again");
+          // console.log("VoterGuideStore CALLING voterGuidesToFollowRetrieve again");
           VoterGuideActions.voterGuidesToFollowRetrieve(0);
           return state;
         }
