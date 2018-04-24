@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { renderLog } from "../../utils/logging";
 
-
 export default class SettingsPersonalSideBar extends Component {
   static propTypes = {
     editMode: PropTypes.string,
@@ -15,12 +14,6 @@ export default class SettingsPersonalSideBar extends Component {
   constructor (props) {
     super(props);
     this.state = {};
-  }
-
-  componentDidMount () {
-  }
-
-  componentWillUnmount () {
   }
 
   render () {

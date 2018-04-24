@@ -363,10 +363,12 @@ $container-margin: -15px;
   &__td-0 {
     padding-left: $space-md !important;
     vertical-align: middle !important;
+    max-width: 1em;
   }
   &__td-1 {
     font-size: 1.3rem;
     vertical-align: middle !important;
+    max-width: 1em;
   }
   &__td-2 {
     font-size: 1.3rem;

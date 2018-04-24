@@ -202,7 +202,7 @@ export default class HeaderBar extends Component {
             </span>
           }
 
-          { showFullNavigation && !weVoteBrandingOff ? HeaderBar.donate(pathname === "/more/donate") : null }
+          { showFullNavigation && !weVoteBrandingOff && isWebApp() ? HeaderBar.donate(pathname === "/more/donate") : null }
 
           { !showFullNavigation && isWebApp() &&
             <button type="button" className="btn btn-sm btn-success"

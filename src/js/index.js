@@ -37,6 +37,7 @@ function startApp () {
 if (isCordova()) {
   document.addEventListener("deviceready", (id) => {
     console.log("Received Cordova Event: ", id.type);
+    navigator.splashscreen.hide();
     startApp();
   }, false);
 } else {  // browser

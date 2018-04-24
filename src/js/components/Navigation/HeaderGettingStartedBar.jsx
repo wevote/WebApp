@@ -270,9 +270,12 @@ export default class HeaderGettingStartedBar extends Component {
                                      title="Issues"
                                      completed={this.state.ballot_intro_issues_completed} /> :
               null }
-            <GettingStartedBarItem show={this._openPrintModal}
-                                   title="Print"
-                                   printIcon/>
+            {/* Print disabled in Cordova */}
+            { isWebApp() &&
+              <GettingStartedBarItem show={this._openPrintModal}
+                                     title="Print"
+                                     printIcon/>
+            }
             <GettingStartedBarItem show={this._openEmailModal}
                                    title="Email"
                                    emailIcon/>
