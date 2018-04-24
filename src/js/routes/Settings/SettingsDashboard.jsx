@@ -15,7 +15,7 @@ import SettingsNotifications from "../../components/Settings/SettingsNotificatio
 import SettingsProfile from "../../components/Settings/SettingsProfile";
 import SettingsPersonalSideBar from "../../components/Navigation/SettingsPersonalSideBar";
 import VoterGuideActions from "../../actions/VoterGuideActions";
-import SettingsIssueLinks from "../../components/Settings/SettingsIssueLinks"; // TODO: To be updated
+import SettingsIssueLinks from "../../components/Settings/SettingsIssueLinks";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 
@@ -33,6 +33,7 @@ export default class SettingsDashboard extends Component {
       organization: {},
       sliderOpen: false,
       voter: {},
+      organizationType: ""
     };
   }
 
@@ -108,9 +109,13 @@ export default class SettingsDashboard extends Component {
 
   onOrganizationStoreChange () {
     // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
-    this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId),
-    });
+    let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
+    if (organization && organization.organization_type) {
+      this.setState({
+        organization,
+        organizationType: organization.organization_type,
+      });
+    }
   }
 
   onVoterGuideStoreChange () {
@@ -145,8 +150,12 @@ export default class SettingsDashboard extends Component {
       case "election":
         settingsComponentToDisplay = <SettingsElection />;
         break;
+      case "issues_linked":
+      case "issues_to_link":
+        settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id={this.state.voter.we_vote_id} params={{active_tab: this.state.editMode}}/>;
+        break;
       case "issues":
-        settingsComponentToDisplay = <SettingsIssueLinks />;  // TODO: To be implemented
+        settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id={this.state.voter.we_vote_id} params={{active_tab: "issues_linked"}}/>;
         break;
       case "notifications":
         settingsComponentToDisplay = <SettingsNotifications />;

@@ -275,7 +275,6 @@ export default class FacebookBallotModal extends Component {
       return LoadingWheel;
     }
 
-    let floatRight = { float: "right" };
     let textGray = { color: "gray" };
 
     return (
@@ -297,25 +296,25 @@ export default class FacebookBallotModal extends Component {
                 {this.state.on_enter_email_addresses_step ? <div className="row invite-inputs">
                     <div className="text-center col-12">
                       <div className="hidden-xs">
-                        <span >Send this ballot to yourself through Facebook and your Facebook Email.</span>
+                        <span >Send a link to this ballot to the email address you use for Facebook.</span>
                         <div className="u-inset--xs"/>
                         <Button className="btn btn-social btn-facebook u-push--sm"
                                 bsStyle="danger"
                                 type="submit"
                                 onClick={this.sendDirectMessageToSelfFacebook.bind(this)}>
-                          <span className="fa fa-facebook" />Send Ballot Through Facebook
+                          <span className="fa fa-facebook" />Send to Your Facebook Email &gt;
                         </Button>
                       </div>
                       <div className="mobile-container">
                         {/* February 2018, Facebook and Magic Email disabled for Cordova */}
                         {isWebApp() && <div>
-                          <span>Share this ballot to your Facebook Timeline and Facebook Email.</span>
+                          <span>Send a link to this ballot to the email address you use for Facebook.</span>
                           <div className="u-inset--xs"/>
                           <Button className="btn btn-social btn-facebook u-push--sm"
                                   bsStyle="danger"
                                   type="submit"
                                   onClick={this.shareOnFacebook.bind(this)}>
-                            <span className="fa fa-facebook"/>Share Ballot on Facebook
+                            <span className="fa fa-facebook"/>Send to Your Email &gt;
                           </Button>
                         </div>
                         }
@@ -324,10 +323,11 @@ export default class FacebookBallotModal extends Component {
                   <div className="col-12 u-inset--md" />
                 </div> : null
                 }
-                <div className="col-12">
-                  <span style={floatRight} onClick={this.props.next}>
-                    Click here to send to friends &gt;
-                  </span>
+                <div className="text-center col-12 u-stack--md">
+                  <button type="button" className="btn btn-success"
+                          onClick={this.props.next}>Want to send to friends?&nbsp;&nbsp;&gt;</button>
+                </div>
+                <div className="text-center col-12 u-stack--sm">
                   <span className="u-no-break" style={textGray}>We will never sell your email.</span>
                 </div>
               </div>

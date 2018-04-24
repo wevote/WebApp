@@ -24,6 +24,7 @@ export default class SettingsMenuMobile extends Component {
       organization: {},
       sliderOpen: false,
       voter: {},
+      organizationType: "",
     };
     this.closeSlider = this.closeSlider.bind(this);
     this.openSlider = this.openSlider.bind(this);
@@ -95,10 +96,14 @@ export default class SettingsMenuMobile extends Component {
   }
 
   onOrganizationStoreChange (){
+    let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linked_organization_we_vote_id);//this.state.linkedOrganizationWeVoteId);
     // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linked_organization_we_vote_id);
-    this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.linked_organization_we_vote_id),
-    });
+    if (organization && organization.organization_type){
+      this.setState({
+        organization,
+        organizationType: organization.organization_type,
+      });
+    }
   }
 
   onVoterGuideStoreChange () {
@@ -143,8 +148,7 @@ export default class SettingsMenuMobile extends Component {
       <div className="container-fluid">
         <div className="row">
           <div className="col-12">
-            <SettingsPersonalSideBar onOwnPage isSignedIn={this.state.voter.is_signed_in} />
-
+            <SettingsPersonalSideBar onOwnPage isSignedIn={this.state.voter.is_signed_in} isIndividual={this.state.organizationType === "I"}/>
             <h4 className="text-left" />
             <div className="terms-and-privacy u-padding-top--md">
               <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy Policy</Link>

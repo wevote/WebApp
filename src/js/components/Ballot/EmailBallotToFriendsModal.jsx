@@ -466,7 +466,7 @@ export default class EmailBallotToFriendsModal extends Component {
                   </div> : null
                 }
                 <form onSubmit={this.prepareApiArraysFromForm.bind(this)}>
-                    <span>Email this ballot to your friends so they can get prepared to vote. These friends will see what you support or oppose.<br />&nbsp;<br /></span>
+                    <span>Email a link to this ballot to your friends to help them get prepared to vote. These friends will see what you support or oppose.<br />&nbsp;<br /></span>
                     <div className="row invite-inputs">
                       <div className="form-group col-12 col-sm-12 col-md-6">
                         <label>Email Address</label>
@@ -653,7 +653,7 @@ export default class EmailBallotToFriendsModal extends Component {
                           tabIndex="0"
                           onKeyDown={this.onKeyDown.bind(this)}
                           onClick={this.ballotEmailSendStepsManager.bind(this)}
-                          bsStyle="primary"
+                          bsStyle="success"
                         >
                           { this.hasValidEmail() ?
                             <span>Send &gt;</span> :
