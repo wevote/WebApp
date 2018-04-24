@@ -74,3 +74,13 @@ $bottomPaddingCordova: 150px;
 .SettingsCardBottomCordova {
   padding-bottom: $bottomPaddingCordova;
 }
+
+.settingsIssues {
+  &__image {
+    padding-left: $space-none;
+
+    @include breakpoints (max small) {
+      padding-right: $space-none;
+    }
+  }
+}

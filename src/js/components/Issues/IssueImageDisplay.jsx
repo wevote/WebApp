@@ -14,6 +14,7 @@ export default class IssueImageDisplay extends Component {
     showOppose: PropTypes.bool,
     showSupport: PropTypes.bool,
     isVoterFollowingThisIssue: PropTypes.bool,
+    turnOffIssueFade: PropTypes.bool,
   };
 
   render () {
@@ -38,7 +39,7 @@ export default class IssueImageDisplay extends Component {
     }
 
     let voterIsNotFollowingThisIssueClass = "";
-    if (!this.props.isVoterFollowingThisIssue) {
+    if (!this.props.isVoterFollowingThisIssue && !this.props.turnOffIssueFade) {
       voterIsNotFollowingThisIssueClass = "network-positions__to-follow-fade ";
     }
 
