@@ -12,7 +12,6 @@ import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
 import OrganizationStore from "../../stores/OrganizationStore";
 import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterGuideSettingsSuggestedBallotItems from "../../components/Settings/VoterGuideSettingsSuggestedBallotItems";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 import { isProperlyFormattedVoterGuideWeVoteId } from "../../utils/textFormat";
@@ -273,10 +272,6 @@ export default class VoterGuideChoosePositions extends Component {
               { this.state.searchIsUnderway ?
                 <div className="u-stack--xl" /> :
                 <div className="u-stack--md" /> }
-
-              {/* !this.state.searchIsUnderway ?
-                <VoterGuideSettingsSuggestedBallotItems maximumSuggestedItems={5} /> :
-                null */}
 
               {this.state.searchIsUnderway ?
                 <span>

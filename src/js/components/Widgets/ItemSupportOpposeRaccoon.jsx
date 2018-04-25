@@ -12,10 +12,12 @@ import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdownList";
 import { renderLog } from "../../utils/logging";
+import MeasureActions from "../../actions/MeasureActions";
+import MeasureStore from "../../stores/MeasureStore";
 import OrganizationCard from "../VoterGuide/OrganizationCard";
 import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
 import SupportStore from "../../stores/SupportStore";
-import { returnFirstXWords } from "../../utils/textFormat";
+import { returnFirstXWords, stringContains } from "../../utils/textFormat";
 
 export default class ItemSupportOpposeRaccoon extends Component {
   static propTypes = {
@@ -38,7 +40,9 @@ export default class ItemSupportOpposeRaccoon extends Component {
     this.mobile = "ontouchstart" in document.documentElement;
 
     this.state = {
+      ballotItem: {},
       ballot_item_display_name: "",
+      ballot_item_type: "",
       ballot_item_we_vote_id: "",
       can_scroll_desktop: false,
       can_scroll_mobile: false,
@@ -46,7 +50,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
       can_scroll_left_mobile: false,
       can_scroll_right_desktop: true,
       can_scroll_right_mobile: true,
-      candidate: {},
       showPositionStatement: false,
       maximum_organization_display: 0,
       organizations_to_follow_support: [],
@@ -63,30 +66,79 @@ export default class ItemSupportOpposeRaccoon extends Component {
   componentDidMount () {
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
-    CandidateActions.positionListForBallotItem(this.props.ballotItemWeVoteId);
+    this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
+    let ballot_item_type;
+    let is_candidate = false;
+    let is_measure = false;
+    if (stringContains("cand", this.props.ballotItemWeVoteId)) {
+      ballot_item_type = "CANDIDATE";
+      is_candidate = true;
+    } else if (stringContains("meas", this.props.ballotItemWeVoteId)) {
+      ballot_item_type = "MEASURE";
+      is_measure = true;
+    }
+
+    let ballotItem;
+    let position_list_from_advisers_followed_by_voter;
+    if (is_candidate) {
+      CandidateActions.positionListForBallotItem(this.props.ballotItemWeVoteId);
+      ballotItem = CandidateStore.getCandidate(this.props.ballotItemWeVoteId);
+      position_list_from_advisers_followed_by_voter = CandidateStore.getPositionList(this.props.ballotItemWeVoteId);
+    } else if (is_measure) {
+      MeasureActions.positionListForBallotItem(this.props.ballotItemWeVoteId);
+      ballotItem = MeasureStore.getMeasure(this.props.ballotItemWeVoteId);
+      position_list_from_advisers_followed_by_voter = MeasureStore.getPositionList(this.props.ballotItemWeVoteId);
+    }
     this.setScrollState();
     this.setState({
+      ballotItem: ballotItem,
       ballot_item_display_name: this.props.ballot_item_display_name,
+      ballot_item_type: ballot_item_type,
       ballot_item_we_vote_id: this.props.ballotItemWeVoteId,
-      candidate: CandidateStore.getCandidate(this.props.ballotItemWeVoteId),
+      is_candidate: is_candidate,
+      is_measure: is_measure,
       maximum_organization_display: this.props.maximumOrganizationDisplay,
       organizations_to_follow_support: this.props.organizationsToFollowSupport,
       organizations_to_follow_oppose: this.props.organizationsToFollowOppose,
-      position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(this.props.ballotItemWeVoteId),
+      position_list_from_advisers_followed_by_voter: position_list_from_advisers_followed_by_voter,
       supportProps: this.props.supportProps,
     });
   }
 
   componentWillReceiveProps (nextProps) {
+    let ballot_item_type;
+    let is_candidate = false;
+    let is_measure = false;
+    if (stringContains("cand", nextProps.ballotItemWeVoteId)) {
+      ballot_item_type = "CANDIDATE";
+      is_candidate = true;
+    } else if (stringContains("meas", nextProps.ballotItemWeVoteId)) {
+      ballot_item_type = "MEASURE";
+      is_measure = true;
+    }
+    let ballotItem;
+    let position_list_from_advisers_followed_by_voter;
+    if (is_candidate) {
+      // CandidateActions.positionListForBallotItem(nextProps.ballotItemWeVoteId);
+      ballotItem = CandidateStore.getCandidate(nextProps.ballotItemWeVoteId);
+      position_list_from_advisers_followed_by_voter = CandidateStore.getPositionList(nextProps.ballotItemWeVoteId);
+    } else if (is_measure) {
+      // MeasureActions.positionListForBallotItem(nextProps.ballotItemWeVoteId);
+      ballotItem = MeasureStore.getMeasure(nextProps.ballotItemWeVoteId);
+      position_list_from_advisers_followed_by_voter = MeasureStore.getPositionList(nextProps.ballotItemWeVoteId);
+    }
     this.setScrollState();
     this.setState({
+      ballotItem: ballotItem,
       ballot_item_display_name: nextProps.ballot_item_display_name,
+      ballot_item_type: ballot_item_type,
       ballot_item_we_vote_id: nextProps.ballotItemWeVoteId,
-      candidate: CandidateStore.getCandidate(nextProps.ballotItemWeVoteId),
+      is_candidate: is_candidate,
+      is_measure: is_measure,
       maximum_organization_display: nextProps.maximumOrganizationDisplay,
       organizations_to_follow_support: nextProps.organizationsToFollowSupport,
       organizations_to_follow_oppose: nextProps.organizationsToFollowOppose,
-      position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(nextProps.ballotItemWeVoteId),
+      position_list_from_advisers_followed_by_voter: position_list_from_advisers_followed_by_voter,
       supportProps: nextProps.supportProps,
     });
   }
@@ -94,6 +146,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.issueStoreListener.remove();
+    this.measureStoreListener.remove();
   }
 
   goToCandidateLinkLocal () {
@@ -105,10 +158,22 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
   onCandidateStoreChange () {
     this.setScrollState();
-    this.setState({
-      candidate: CandidateStore.getCandidate(this.state.ballot_item_we_vote_id),
-      position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(this.state.ballot_item_we_vote_id),
-    });
+    if (this.state.is_candidate) {
+      this.setState({
+        ballotItem: CandidateStore.getCandidate(this.state.ballot_item_we_vote_id),
+        position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(this.state.ballot_item_we_vote_id),
+      });
+    }
+  }
+
+  onMeasureStoreChange () {
+    this.setScrollState();
+    if (this.state.is_measure) {
+      this.setState({
+        ballotItem: MeasureStore.getMeasure(this.state.ballot_item_we_vote_id),
+        position_list_from_advisers_followed_by_voter: MeasureStore.getPositionList(this.state.ballot_item_we_vote_id),
+      });
+    }
   }
 
   onIssueStoreChange () {
@@ -227,7 +292,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   scrollLeft (visible_tag) {
-    const element = findDOMNode(this.refs[`${this.state.candidate.we_vote_id}-org-list-${visible_tag}`]);
+    const element = findDOMNode(this.refs[`${this.state.ballotItem.we_vote_id}-org-list-${visible_tag}`]);
     let position = $(element).scrollLeft();
     let width = Math.round($(element).width());
     $(element).animate({
@@ -249,7 +314,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   scrollRight (visible_tag) {
-    const element = findDOMNode(this.refs[`${this.state.candidate.we_vote_id}-org-list-${visible_tag}`]);
+    const element = findDOMNode(this.refs[`${this.state.ballotItem.we_vote_id}-org-list-${visible_tag}`]);
     let position = $(element).scrollLeft();
     let width = Math.round($(element).width());
     $(element).animate({
@@ -271,8 +336,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   setScrollState () {
-    const desktop_list = findDOMNode(this.refs[`${this.state.candidate.we_vote_id}-org-list-desktop`]);
-    const mobile_list = findDOMNode(this.refs[`${this.state.candidate.we_vote_id}-org-list-mobile`]);
+    const desktop_list = findDOMNode(this.refs[`${this.state.ballotItem.we_vote_id}-org-list-desktop`]);
+    const mobile_list = findDOMNode(this.refs[`${this.state.ballotItem.we_vote_id}-org-list-mobile`]);
     let desktop_list_visible_width = $(desktop_list).width();
     let desktop_list_width = $(desktop_list).children().eq(0).children().eq(0).width();
     let mobile_list_visible_width = $(mobile_list).width();
@@ -289,18 +354,32 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
   render () {
     renderLog(__filename);
-    let candidateSupportStore = SupportStore.get(this.state.ballot_item_we_vote_id);
+    let ballotItemSupportStore = SupportStore.get(this.state.ballot_item_we_vote_id);
     // Removed from ItemActionBar opposeHideInMobile
-    let candidate_support_action_raccoon = <span>
+    let item_action_bar;
+    if (this.state.is_candidate) {
+      item_action_bar = <span>
         <ItemActionBar ballot_item_display_name={this.state.ballot_item_display_name}
                        ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
                        commentButtonHideInMobile
                        shareButtonHide
-                       supportProps={candidateSupportStore}
+                       supportProps={ballotItemSupportStore}
                        toggleFunction={this.togglePositionStatement.bind(this)}
                        transitioning={this.state.transitioning}
-                       type="CANDIDATE" />
+                       type="CANDIDATE"/>
       </span>;
+    } else if (this.state.is_measure) {
+      item_action_bar = <span>
+        <ItemActionBar ballot_item_display_name={this.state.ballot_item_display_name}
+                       ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
+                       commentButtonHideInMobile
+                       shareButtonHide
+                       supportProps={ballotItemSupportStore}
+                       toggleFunction={this.togglePositionStatement.bind(this)}
+                       transitioning={this.state.transitioning}
+                       type="MEASURE"/>
+      </span>;
+    }
 
     // Issue Score
     let voterIssuesScore = IssueStore.getIssuesScoreByBallotItemWeVoteId(this.state.ballot_item_we_vote_id);
@@ -356,11 +435,11 @@ export default class ItemSupportOpposeRaccoon extends Component {
     let is_voter_support = false;
     let is_voter_oppose = false;
     let voter_statement_text = false;
-    if (candidateSupportStore !== undefined) {
-      // console.log("candidateSupportStore: ", candidateSupportStore);
-      is_voter_support = candidateSupportStore.is_support;
-      is_voter_oppose = candidateSupportStore.is_oppose;
-      voter_statement_text = candidateSupportStore.voter_statement_text;
+    if (ballotItemSupportStore !== undefined) {
+      // console.log("ballotItemSupportStore: ", ballotItemSupportStore);
+      is_voter_support = ballotItemSupportStore.is_support;
+      is_voter_oppose = ballotItemSupportStore.is_oppose;
+      voter_statement_text = ballotItemSupportStore.voter_statement_text;
     }
 
     let comment_display_raccoon_desktop = this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text || this.state.showPositionStatement ?
@@ -369,7 +448,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
           <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
                                           ballot_item_display_name={this.state.ballot_item_display_name}
                                           comment_edit_mode_on={this.state.showPositionStatement}
-                                          supportProps={candidateSupportStore}
+                                          supportProps={ballotItemSupportStore}
                                           transitioning={this.state.transitioning}
                                           type="CANDIDATE"
                                           shown_in_list />
@@ -382,7 +461,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
           <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
                                           ballot_item_display_name={this.state.ballot_item_display_name}
-                                          supportProps={candidateSupportStore}
+                                          supportProps={ballotItemSupportStore}
                                           transitioning={this.state.transitioning}
                                           type="CANDIDATE"
                                           shown_in_list />
@@ -556,7 +635,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     return <div className="network-positions-stacked">
       <div className="network-positions-stacked__support">
         {/* Support toggle here */}
-        {candidate_support_action_raccoon}
+        {item_action_bar}
 
         {/* Issue Score here */}
         { showIssueScore ?
@@ -631,7 +710,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
           }
           <div className="network-positions-stacked__support-list__container-wrap">
             {/* Show a break-down of the current positions in your network */}
-            <span ref={`${this.state.candidate.we_vote_id}-org-list-desktop`} className="network-positions-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs hidden-xs">
+            <span ref={`${this.state.ballotItem.we_vote_id}-org-list-desktop`} className="network-positions-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs hidden-xs">
               <ul className="network-positions-stacked__support-list__items">
                 <li className="network-positions-stacked__support-list__item">
                   { positionsLabel }
@@ -654,7 +733,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                 </li>
               </ul>
             </span>
-            <span ref={`${this.state.candidate.we_vote_id}-org-list-mobile`} className="network-positions-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs visible-xs">
+            <span ref={`${this.state.ballotItem.we_vote_id}-org-list-mobile`} className="network-positions-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs visible-xs">
               <ul className="network-positions-stacked__support-list__items">
                 <li className="network-positions-stacked__support-list__item">
                   { positionsLabel }
