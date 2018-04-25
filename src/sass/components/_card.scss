@@ -385,6 +385,9 @@ $candidate-font-size: .875rem;
 }
 
 .card-popover {
+  padding-top: $space-none;
+  padding-left: $space-none;
+  padding-right: $space-none;
   max-width: 350px;
   @include breakpoints (max mid-small) {
     max-width: 290px;
