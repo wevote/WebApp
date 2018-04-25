@@ -36,66 +36,68 @@
   &__welcome {
     padding: $space-none $space-md;
     align-items: center;
+  }
 
-    &-image {
-      position: relative;
-      padding: $space-xs;
-    }
+  &__welcome-image {
+    position: relative;
+    padding: $space-xs;
   }
 
   &__square {
     position: relative;
     text-align: left;
     padding: $space-xs;
+  }
 
-    &-image {
-      height: 100%;
-      width: 100%;
-      border: 1px solid $gray-border;
-      border-radius: $space-sm;
-      filter: brightness(90%) contrast(90%);
+  &__square-image {
+    height: 100%;
+    width: 100%;
+    border: 1px solid $gray-border;
+    border-radius: $space-sm;
+    filter: brightness(90%) contrast(90%);
+  }
+
+  &__square-following {
+    filter: brightness(60%);
+  }
+
+  &__square-check-mark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: scale(.5);
+  }
+
+  &__square-name {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+    font-size: .875rem;
+    color: $white;
+    text-shadow: 1px 1px 2px rgba($black, .6);
+
+    @include breakpoints (xsmall-bootstrap small-bootstrap) {
+      right: 10px;
+      bottom: 10px;
+      left: 10px;
+      font-size: .65rem;
     }
 
-    &-following {
-      filter: brightness(60%);
+    @include breakpoints (iphone5 mid-small) {
+      right: 10px;
+      bottom: 10px;
+      left: 10px;
+      font-size: .65rem;
+      hyphens: auto;
     }
 
-    &-check-mark {
-      position: absolute;
-      top: 0;
-      left: 0;
-      transform: scale(.5);
-    }
-
-    &-name {
-      position: absolute;
-      right: 12px;
-      bottom: 12px;
-      left: 12px;
-      font-size: .875rem;
-      color: $white;
-      text-shadow: 1px 1px 2px rgba($black, .6);
-
-      @include breakpoints (xsmall-bootstrap small-bootstrap) {
-        right: 10px;
-        bottom: 10px;
-        left: 10px;
-        font-size: .65rem;
-      }
-
-      @include breakpoints (iphone5 mid-small) {
-        right: 10px;
-        bottom: 10px;
-        left: 10px;
-        font-size: .65rem;
-      }
-
-      @include breakpoints (max iphone5) {
-        right: 8px;
-        bottom: 8px;
-        left: 8px;
-        font-size: .6rem;
-      }
+    @include breakpoints (max iphone5) {
+      right: 8px;
+      bottom: 8px;
+      left: 8px;
+      font-size: .6rem;
+      hyphens: auto;
     }
   }
 

@@ -18,7 +18,7 @@ import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateModal from "../../components/Ballot/CandidateModal";
 import cookies from "../../utils/cookies";
-import {cordovaDot, historyPush, isWebApp} from "../../utils/cordovaUtils";
+import { cordovaDot, historyPush, isCordova, isWebApp } from "../../utils/cordovaUtils";
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
 import Helmet from "react-helmet";
@@ -682,7 +682,7 @@ export default class Ballot extends Component {
               }
             </div>
 
-            { ballot_with_all_items.length === 0 ?
+            { ballot_with_all_items.length === 0 || isCordova() ?
               null :
               <div className="col-md-4 hidden-xs sidebar-menu">
                 <BallotSideBar displayTitle displaySubtitles />

@@ -169,15 +169,17 @@ export default class SettingsDashboard extends Component {
     // console.log("this.state.organization.organization_banner_url:", this.state.organization.organization_banner_url);
     return <div className={ isWebApp() ? "settings-dashboard" : "settings-dashboard SettingsCardBottomCordova" } >
       {/* Header Spacing for Desktop */}
-      <div className="col-md-12 hidden-xs hidden-print">
-        <SettingsBannerAndOrganizationCard organization={this.state.organization} />
-      </div>
+      { isWebApp() &&
+        <div className={isWebApp() ? "col-md-12 hidden-xs hidden-print" : "col-md-12 hidden-print"}>
+          <SettingsBannerAndOrganizationCard organization={this.state.organization}/>
+        </div>
+      }
       {/* Header Spacing for Mobile */}
-      <div className="visible-xs hidden-print">
+      <div className={ isWebApp() ? "visible-xs hidden-print" : "hidden-print" } >
         <SettingsBannerAndOrganizationCard organization={this.state.organization} />
       </div>
 
-      <div className="visible-xs u-padding-top--md">
+      <div className={ isWebApp() ? "visible-xs u-padding-top--md" : "u-padding-top--md"}>
         <span className={"btn u-padding-left--sm u-padding-bottom--sm"}>
           <Button className={"btn btn-sm btn-default u-link-color"}
                 onClick={ () => historyPush(isWebApp() ? "/settings/menu" : "/more/hamburger") }>
@@ -186,36 +188,45 @@ export default class SettingsDashboard extends Component {
         </span>
       </div>
 
-      {/* Desktop left navigation + Settings content */}
-      <div className="hidden-xs">
-        <div className="container-fluid">
-          <div className="row">
-            {/* Desktop mode left navigation */}
-            <div className="col-4 sidebar-menu">
-              <SettingsPersonalSideBar editMode={this.state.editMode} isSignedIn={this.state.voter.is_signed_in} isIndividual={this.state.organizationType === "I"}/>
+      {/* Desktop left navigation + Settings content.
+          WebApp only, since the dashboard doesn't go well with the HamburgerMenu on iPad */}
+      { isWebApp() &&
+        <div className="hidden-xs">
+          <div className="container-fluid">
+            <div className="row">
+              {/* Desktop mode left navigation */}
+              <div className="col-4 sidebar-menu">
+                <SettingsPersonalSideBar editMode={this.state.editMode} isSignedIn={this.state.voter.is_signed_in}/>
 
-              <SelectVoterGuidesSideBar />
+                <SelectVoterGuidesSideBar/>
 
-              <h4 className="text-left" />
-              <div className="terms-and-privacy u-padding-top--md">
-                <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy Policy</Link>
+                <h4 className="text-left"/>
+                <div className="terms-and-privacy u-padding-top--md">
+                  <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy
+                  Policy</Link>
+                </div>
               </div>
-            </div>
-            {/* Desktop mode content */}
-            <div className="col-8">
-              {settingsComponentToDisplay}
+              {/* Desktop mode content */}
+              <div className="col-8">
+                {settingsComponentToDisplay}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      }
 
       {/* Mobile Settings content */}
-      <div className="visible-xs">
-        {/* Mobile mode content */}
+      { isWebApp() ?
+        <div className="visible-xs">
+          {/* Mobile mode content */}
+          <div className="col-12">
+            {settingsComponentToDisplay}
+          </div>
+        </div> :
         <div className="col-12">
           {settingsComponentToDisplay}
         </div>
-      </div>
+      }
     </div>;
   }
 }

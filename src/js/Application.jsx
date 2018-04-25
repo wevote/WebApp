@@ -59,9 +59,8 @@ export default class Application extends Component {
   }
 
   initCordova () {
-    console.log("Application initCordova ------------ " + __filename);
-
     if (isCordova()) {
+      console.log("Application initCordova ------------ " + __filename);
       window.handleOpenURL = function (url) {
         TwitterSignIn.handleTwitterOpenURL(url);
       };

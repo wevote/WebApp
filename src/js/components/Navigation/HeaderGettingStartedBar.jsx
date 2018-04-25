@@ -206,12 +206,12 @@ export default class HeaderGettingStartedBar extends Component {
            </a>
          </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettingsWithSwipe}>
-            <div key={1} className="share-modal-calc-height">
+            <div key={1} className="share-modal__calc-height">
               <EmailBallotModal ballot_link={this.props.pathname}
                                 next={this._nextSliderPage}
                                 ballotEmailWasSent={this.ballotEmailWasSent} />
             </div>
-            <div key={2} className="share-modal-calc-height">
+            <div key={2} className="share-modal__calc-height">
               <EmailBallotToFriendsModal ballot_link={this.props.pathname}
                                          ballotEmailWasSent={this.ballotEmailWasSent}
                                          sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
@@ -233,12 +233,12 @@ export default class HeaderGettingStartedBar extends Component {
           </a>
         </div>
         <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettingsWithSwipe}>
-          <div key={1} className="share-modal-calc-height">
+          <div key={1} className="share-modal__calc-height">
             <FacebookBallotModal ballot_link={this.props.pathname}
                                  next={this._nextSliderPage}
                                  ballotFacebookEmailWasSent={this.ballotFacebookEmailWasSent}/>
           </div>
-          <div key={2} className="share-modal-calc-height">
+          <div key={2} className="share-modal__calc-height">
             <FacebookBallotToFriendsModal ballot_link={this.props.pathname}
                                           ballotFacebookEmailWasSent={this.ballotFacebookEmailWasSent}
                                           sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
@@ -270,9 +270,12 @@ export default class HeaderGettingStartedBar extends Component {
                                      title="Issues"
                                      completed={this.state.ballot_intro_issues_completed} /> :
               null }
-            <GettingStartedBarItem show={this._openPrintModal}
-                                   title="Print"
-                                   printIcon/>
+            {/* Print disabled in Cordova */}
+            { isWebApp() &&
+              <GettingStartedBarItem show={this._openPrintModal}
+                                     title="Print"
+                                     printIcon/>
+            }
             <GettingStartedBarItem show={this._openEmailModal}
                                    title="Email"
                                    emailIcon/>
