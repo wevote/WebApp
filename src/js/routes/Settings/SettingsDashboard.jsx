@@ -155,7 +155,7 @@ export default class SettingsDashboard extends Component {
         settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id={this.state.voter.we_vote_id} params={{active_tab: this.state.editMode}}/>;
         break;
       case "issues":
-        settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id={this.state.voter.we_vote_id} params={{active_tab: "issues_linked"}}/>;
+        settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id={this.state.voter.we_vote_id} params={{active_tab: ""}}/>;
         break;
       case "notifications":
         settingsComponentToDisplay = <SettingsNotifications />;
@@ -196,7 +196,7 @@ export default class SettingsDashboard extends Component {
             <div className="row">
               {/* Desktop mode left navigation */}
               <div className="col-4 sidebar-menu">
-                <SettingsPersonalSideBar editMode={this.state.editMode} isSignedIn={this.state.voter.is_signed_in}/>
+                <SettingsPersonalSideBar editMode={this.state.editMode} isSignedIn={this.state.voter.is_signed_in} isIndividual={this.state.organizationType === "I"}/>
 
                 <SelectVoterGuidesSideBar/>
 

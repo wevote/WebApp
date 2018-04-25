@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import {Button} from "react-bootstrap";
-import ImageHandler from "../ImageHandler";
 import IssueActions from "../../actions/IssueActions";
+import IssueImageDisplay from "../../components/Issues/IssueImageDisplay";
 import { renderLog } from "../../utils/logging";
 
 export default class IssueLinkToggle extends Component {
@@ -49,38 +49,34 @@ export default class IssueLinkToggle extends Component {
     renderLog(__filename);
     return this.state.is_linked ?
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
-        <div className="col-1 intro-modal__hide-sm intro-modal__margin-right">
-          <ImageHandler className="intro-modal__hide-sm hidden-sm card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
-                        sizeClassName="icon-candidate-small u-push--sm "
-                        alt="issue-photo"
-                        kind_of_image="ISSUE"
-                        imageUrl={this.props.issue.issue_image_url}
-          />
+        <div className="col-3 col-sm-2 settingsIssues__image">
+          <IssueImageDisplay issue={this.props.issue}
+                             issueImageSize="LARGE"
+                             showPlaceholderImage
+                             turnOffIssueFade/>
         </div>
-        <span className="col-9 intro-modal__span intro-modal__margin-right">
-          <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue.issue_name}</h4>
-          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.issue.issue_description}</p>
-        </span>
-        <div className="col-2">
+          <span className="col-6 col-sm-8 intro-modal__span">
+            <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue.issue_name}</h4>
+            <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm settingsIssues__description">{this.props.issue.issue_description}</p>
+          </span>
+        <div className="col-3 col-sm-2">
           <Button bsStyle="warning" bsSize="small" onClick={this.onIssueUnlink}>
             <span>Unlink</span>
           </Button>
         </div>
       </div> :
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
-        <div className="col-1 intro-modal__hide-sm intro-modal__margin-right">
-          <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
-                        sizeClassName="icon-candidate-small u-push--sm "
-                        alt="issue-photo"
-                        kind_of_image="ISSUE"
-                        imageUrl={this.props.issue.issue_image_url}
-          />
+        <div className="col-3 col-sm-2 settingsIssues__image">
+          <IssueImageDisplay issue={this.props.issue}
+                             issueImageSize="LARGE"
+                             showPlaceholderImage
+                             turnOffIssueFade/>
         </div>
-        <span className="col-9 intro-modal__span intro-modal__margin-right">
+        <span className="col-6 col-sm-8 intro-modal__span">
           <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue.issue_name}</h4>
-          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.issue.issue_description}</p>
+          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm settingsIssues__description">{this.props.issue.issue_description}</p>
         </span>
-        <div className="col-2">
+        <div className="col-3 col-sm-2">
           <Button bsStyle="info" bsSize="small" onClick={this.onIssueLink}>
             <span>Link</span>
           </Button>
