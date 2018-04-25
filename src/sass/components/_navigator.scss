@@ -236,6 +236,9 @@ $container-margin: -15px;
   &__avatar-wrapper {
     z-index: 3; //to float above the account/ProfilePopUp menu option grey div
   }
+  &__cordova {
+    margin-right: $space-md;
+  }
 }
 
 
@@ -365,7 +368,7 @@ $container-margin: -15px;
   &__td-0 {
     padding-left: $space-md !important;
     vertical-align: middle !important;
-    max-width: 1em;
+    max-width: 2.2em;
   }
   &__td-1 {
     font-size: 1.3rem;

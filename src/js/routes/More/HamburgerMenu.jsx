@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import Icon from "react-svg-icons";
 import { Table } from "react-bootstrap";
 
+import { isWebApp } from "../../utils/cordovaUtils";
 import VoterStore from "../../stores/VoterStore";
 import BallotStore from "../../stores/BallotStore";
 import HamburgerMenuRow from "../../components/Navigation/HamburgerMenuRow";
@@ -38,14 +39,14 @@ export default class HamburgerMenu extends Component {
       <span className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none"
             onClick={this.toggleProfilePopUp} >
         {voterPhotoUrlMedium ?
-          <div id="js-header-avatar" className="header-nav__avatar-container">
-            <img className="header-nav__avatar"
+          <div id="js-header-avatar" className="header-nav__avatar-container" >
+            <img className={isWebApp() ? "header-nav__avatar" : "header-nav__avatar "}
                  src={voterPhotoUrlMedium}
                  height={34}
                  width={34}
             />
           </div> :
-          <div id= "anonIcon" className="header-nav__avatar">
+          <div id= "anonIcon" className={isWebApp() ? "header-nav__avatar" : "header-nav__avatar header-nav__cordova"}>
             <Icon name="avatar-generic" width={34} height={34} />
           </div>
         }
