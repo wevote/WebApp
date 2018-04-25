@@ -62,7 +62,7 @@ export default class IntroNetwork extends Component {
              onClick={IntroNetwork.goToBallotLink}
              className={ isWebApp() ? "x-close" : "x-close x-close__cordova" }
              alt={"close"} />
-        <Slider ref="slider" {...settings}>
+        <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...settings}>
           <div key={1}><IntroNetworkSafety next={this.next}/></div>
           <div key={2}><IntroNetworkDefinition next={this.next}/></div>
           <div key={3}><IntroNetworkScore next={this.next}/></div>
