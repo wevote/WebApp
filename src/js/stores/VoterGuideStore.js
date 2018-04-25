@@ -420,7 +420,16 @@ class VoterGuideStore extends ReduceStore {
               voterGuidesToFollowRetrieveStopped: false,
             };
           } else {
-            // This is for when, there is a default voter guides to follow
+            let retrieveAnotherPageOfResults;
+            let maximum_number_to_retrieve = 75; // This needs to match the variable in VoterGuideActions
+            let start_retrieve_at_this_number = action.res.start_retrieve_at_this_number + maximum_number_to_retrieve;
+            let received_maximum_possible_voter_guides = action.res.number_retrieved && action.res.number_retrieved === maximum_number_to_retrieve;
+            if (action.res.google_civic_election_id && received_maximum_possible_voter_guides) {
+              retrieveAnotherPageOfResults = true;
+            }
+            if (retrieveAnotherPageOfResults) {
+              VoterGuideActions.voterGuidesToFollowRetrieve(action.res.google_civic_election_id, 0, false, start_retrieve_at_this_number);
+            }
             return {
               ...state,
               ballot_has_guides: search_term_exists || election_id_exists,

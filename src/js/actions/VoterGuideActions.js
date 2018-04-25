@@ -15,10 +15,12 @@ export default {
     });
   },
 
-  voterGuidesToFollowRetrieve: function (election_id, search_string, add_voter_guides_not_from_election) {
+  voterGuidesToFollowRetrieve: function (election_id, search_string, add_voter_guides_not_from_election, start_retrieve_at_this_number = 0) {
+    let maximum_number_to_retrieve = 75; // This needs to match the variable in VoterGuideStore
     Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", {
       google_civic_election_id: election_id,
-      maximum_number_to_retrieve: 75,
+      start_retrieve_at_this_number: start_retrieve_at_this_number,
+      maximum_number_to_retrieve: maximum_number_to_retrieve,
       search_string: search_string || "",
       add_voter_guides_not_from_election: add_voter_guides_not_from_election || false,
     });
