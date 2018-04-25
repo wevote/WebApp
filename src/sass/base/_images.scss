@@ -1,10 +1,9 @@
-.image {
-  &-person,
-  &-organization {
-    &-placeholder {
-      vertical-align: middle;
-    }
-  }
+.image-person-placeholder {
+  vertical-align: middle;
+}
+
+.image-organization-placeholder {
+  vertical-align: middle;
 }
 
 .image-lg {
