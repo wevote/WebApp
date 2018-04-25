@@ -1,3 +1,6 @@
+// April 2018: Something in our sass processing chain is messing up the utf-8 char in slick-theme.css within Cordova, so force it here.
+$slick-dot-character: '\2022' !default;
+
 .intro-modal {
   padding: $space-none;
   // min-height: 480px;
@@ -256,10 +259,12 @@
   &__gray-dots li button::before {
     color: $gray-pale;
     font-size: 12px;
+    content: $slick-dot-character;
   }
   &__gray-dots li.slick-active button::before {
     color: $white;
     opacity: 1;
+    content: $slick-dot-character;
   }
   /* stylelint-enable */
 
@@ -471,6 +476,7 @@
 
 .slick-dots {
   bottom: 0;
+  content: $slick-dot-character;
 }
 
 .facebook-intro-connect,
