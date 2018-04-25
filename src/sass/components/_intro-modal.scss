@@ -38,21 +38,6 @@
     }
   }
 
-  &-features {
-    padding: $space-lg $space-none;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    &__image {
-      display: inline-block !important;
-      margin-bottom: $space-md;
-    }
-    &__text {
-      font-size: 12px;
-      font-weight: 700;
-    }
-  }
-
   &__responsive-height {
     min-height: 100px;
     @include breakpoints (mid-small medium) {
@@ -299,76 +284,78 @@
     position: relative;
     text-align: left;
     padding: $space-xxs;
+  }
 
-    &-image {
-      height: 100%;
-      width: 100%;
-      border: 1px solid $gray-border;
-      border-radius: $space-sm;
-      filter: brightness(90%) contrast(90%);
+  &__square-image {
+    height: 100%;
+    width: 100%;
+    border: 1px solid $gray-border;
+    border-radius: $space-sm;
+    filter: brightness(90%) contrast(90%);
+  }
+
+  &__square-following {
+    filter: brightness(60%);
+  }
+
+  &__square-check-mark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: scale(.5);
+  }
+
+  &__square-name {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    font-size: 1rem;
+    word-wrap: break-word;
+    text-shadow: 1px 1px 2px rgba($black, .6);
+
+    @include breakpoints (xsmall-bootstrap small-bootstrap) {
+      right: 8px;
+      bottom: 8px;
+      left: 8px;
+      font-size: .9rem;
     }
 
-    &-following {
-      filter: brightness(60%);
-    }
-
-    &-check-mark {
-      position: absolute;
-      top: 0;
-      left: 0;
-      transform: scale(.5);
-    }
-
-    &-name {
-      position: absolute;
+    @include breakpoints (iphone5 mid-small) {
       right: 10px;
       bottom: 10px;
       left: 10px;
-      font-size: 1rem;
-      word-wrap: break-word;
-      text-shadow: 1px 1px 2px rgba($black, .6);
-
-      @include breakpoints (xsmall-bootstrap small-bootstrap) {
-        right: 8px;
-        bottom: 8px;
-        left: 8px;
-        font-size: .9rem;
-      }
-
-      @include breakpoints (iphone5 mid-small) {
-        right: 10px;
-        bottom: 10px;
-        left: 10px;
-        font-size: .9rem;
-      }
-
-      @include breakpoints (max iphone5) {
-        right: 8px;
-        bottom: 8px;
-        left: 8px;
-        font-size: .9rem;
-      }
+      font-size: .9rem;
+      hyphens: auto;
     }
 
-    &-details {
-      position: absolute;
-      top: 12px;
-      right: 12px;
+    @include breakpoints (max iphone5) {
+      right: 8px;
+      bottom: 8px;
+      left: 8px;
+      font-size: .85rem;
+      hyphens: auto;
+    }
+  }
 
-      @include breakpoints (xsmall-bootstrap small-bootstrap) {
-        top: 10px;
-        right: 10px;
-      }
+  &__details {
+    position: absolute;
+    top: 12px;
+    right: 12px;
 
-      @include breakpoints (iphone5 mid-small) {
-        top: 10px;
-        right: 10px;
-      }
+    @include breakpoints (xsmall-bootstrap small-bootstrap) {
+      top: 10px;
+      right: 10px;
+    }
 
-      @include breakpoints (max iphone5) {
-        top: 8px;
-        right: 8px;
-      }
+    @include breakpoints (iphone5 mid-small) {
+      top: 10px;
+      right: 10px;
+    }
+
+    @include breakpoints (max iphone5) {
+      top: 8px;
+      right: 8px;
     }
   }
 }
@@ -589,7 +576,7 @@
     text-align: right;
   }
 
-  &-vertical-scroll-contain {
+  &-vertical-scroll-contain { // There is also intro-modal-vertical-scroll-contain (CSS needs to be cleaned up)
     height: 300px;
     overflow-y: auto;
     -webkit-overflow-scrolling: auto;
@@ -598,7 +585,7 @@
       height: calc(90vh - 100px);
     }
   }
-  &-calc-height {
+  &__calc-height {
     height: 420px;
     @include breakpoints (small medium) {
       height: calc(100vh - 50px);

@@ -164,9 +164,10 @@ export default class BallotIntroFollowIssues extends Component {
         What do you care about?
       </div>
       <div className="intro-modal__top-description">
-        Pick{ remaining_issues ? " " + remaining_issues : null }
-        &nbsp;issue{ remaining_issues !== 1 ? "s" : null } or { remaining_issues !== 1 ? "categories" : "category" }
-        { remaining_issues ? " (or more!)" : null }
+        { remaining_issues ?
+          "Pick " + remaining_issues + " or more issues!" :
+          "Feel free to pick as many issues as you would like."
+        }
       </div>
       <div className="intro-modal-vertical-scroll-contain">
         <div className="intro-modal-vertical-scroll card">

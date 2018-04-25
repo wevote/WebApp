@@ -79,13 +79,15 @@ $network-card-margin-mobile: (-$space-md) (-$space-md) $space-none (-$space-md);
       bottom: 10px;
       left: 10px;
       font-size: .9rem;
+      hyphens: auto;
     }
 
     @include breakpoints (max iphone5) {
       right: 8px;
       bottom: 8px;
       left: 8px;
-      font-size: .9rem;
+      font-size: .85rem;
+      hyphens: auto;
     }
   }
 }
