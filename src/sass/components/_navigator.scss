@@ -10,6 +10,7 @@ $nav-item-getting-started-background-hover-color: darken($page-header-getting-st
 $nav-item-getting-started-background-active-color: darken($page-header-getting-started-background-color, 10%);
 $footer-menu-margin: 130px;
 $space-hamburger: 5px;
+$hamburger-table-menu-margin: 2em;
 $transparent-background: transparent;
 $container-margin: -15px;
 
@@ -354,6 +355,7 @@ $container-margin: -15px;
   background-color: $white;
   &__table {
     border-top: 40px;
+    margin-left: $hamburger-table-menu-margin;
     border-top-color: $white;
   }
   &__tr {
@@ -395,6 +397,7 @@ $container-margin: -15px;
     padding-left: $space-md !important;
     padding-bottom: $space-sm !important;
     padding-top: $terms-top !important;
+    margin-left: $hamburger-table-menu-margin;
   }
 
   &__text {
