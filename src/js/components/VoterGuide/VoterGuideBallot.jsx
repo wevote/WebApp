@@ -684,14 +684,16 @@ export default class VoterGuideBallot extends Component {
             <div className="col-xs-12 col-md-12">
               {/* The ballot items the organization wants to promote */}
               <div>
-                <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
-                  {ballot_with_organization_items.map( (item) => <VoterGuideBallotItemCompressed toggleCandidateModal={this.toggleCandidateModal}
-                                                               toggleMeasureModal={this.toggleMeasureModal}
-                                                               key={item.we_vote_id}
-                                                               organization={this.props.organization}
-                                                               organization_we_vote_id={this.props.organization.organization_we_vote_id}
-                                                               {...item} />)}
-                </div>
+                {ballot_with_organization_items.length > 0 &&
+                  <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
+                    {ballot_with_organization_items.map( (item) => <VoterGuideBallotItemCompressed toggleCandidateModal={this.toggleCandidateModal}
+                                                                toggleMeasureModal={this.toggleMeasureModal}
+                                                                key={item.we_vote_id}
+                                                                organization={this.props.organization}
+                                                                organization_we_vote_id={this.props.organization.organization_we_vote_id}
+                                                                {...item} />)}
+                  </div>
+                }
               </div>
 
               {ballot_with_organization_items.length && ballot_with_remaining_items.length ?
@@ -699,6 +701,7 @@ export default class VoterGuideBallot extends Component {
                 null }
               {/* The rest of the ballot items */}
               <div>
+              {ballot_with_remaining_items.length > 0 &&
                 <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
                   {ballot_with_remaining_items.map( (item) => <BallotItemCompressed toggleCandidateModal={this.toggleCandidateModal}
                                                                toggleMeasureModal={this.toggleMeasureModal}
@@ -708,6 +711,7 @@ export default class VoterGuideBallot extends Component {
                                                                organization_we_vote_id={this.props.organization.organization_we_vote_id}
                                                                {...item} />)}
                 </div>
+              }
               </div>
 
               {/* Show links to this candidate in the admin tools */}
