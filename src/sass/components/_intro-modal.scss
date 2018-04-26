@@ -331,6 +331,9 @@ $slick-dot-character: '\2022' !default;
       bottom: 10px;
       left: 10px;
       font-size: .9rem;
+      -webkit-hyphens: auto;
+      -moz-hyphens: auto;
+      -ms-hyphens: auto;
       hyphens: auto;
     }
 
@@ -339,6 +342,9 @@ $slick-dot-character: '\2022' !default;
       bottom: 8px;
       left: 8px;
       font-size: .85rem;
+      -webkit-hyphens: auto;
+      -moz-hyphens: auto;
+      -ms-hyphens: auto;
       hyphens: auto;
     }
   }

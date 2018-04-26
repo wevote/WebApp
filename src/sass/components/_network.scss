@@ -79,6 +79,9 @@ $network-card-margin-mobile: (-$space-md) (-$space-md) $space-none (-$space-md);
       bottom: 10px;
       left: 10px;
       font-size: .9rem;
+      -webkit-hyphens: auto;
+      -moz-hyphens: auto;
+      -ms-hyphens: auto;
       hyphens: auto;
     }
 
@@ -87,6 +90,9 @@ $network-card-margin-mobile: (-$space-md) (-$space-md) $space-none (-$space-md);
       bottom: 8px;
       left: 8px;
       font-size: .85rem;
+      -webkit-hyphens: auto;
+      -moz-hyphens: auto;
+      -ms-hyphens: auto;
       hyphens: auto;
     }
   }
