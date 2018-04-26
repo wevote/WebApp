@@ -596,10 +596,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         +1 to this <strong>Score</strong>.
         Each one that <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
                                                width="20" height="20" /> opposes</span> subtracts
-        1 from this <strong>Score</strong>. <Button bsStyle="success"
-                                                    bsSize="xsmall">
-                                              <span>Listen</span>
-                                            </Button> to an
+        1 from this <strong>Score</strong>. <strong>Listen</strong> to an
         organization to add their opinion to the <strong>Score in Your Network</strong>.
       </Popover>;
 
@@ -613,10 +610,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
                                                width="20" height="20" /> oppose</span>{this.state.ballot_item_display_name ? " " + this.state.ballot_item_display_name : ""}.
         Click on the logo
-        and <Button bsStyle="success"
-                    bsSize="xsmall">
-              <span>Listen</span>
-            </Button> to an organization to add their opinion to the <strong>Score in Your Network</strong>.
+        and <strong>Listen</strong> to an organization to add their opinion to the <strong>Score in Your Network</strong>.
       </Popover>;
 
     const positionsLabel =

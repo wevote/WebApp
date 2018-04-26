@@ -139,7 +139,8 @@ export default class BallotIntroFollowIssues extends Component {
 
     let edit_mode = true;
     let issues_shown_count = 0;
-    let maximum_number_of_issues_to_show = 24; // Only show the first 6 * 4 = 24 issues so as to not overwhelm voter
+    let maximum_number_of_issues_to_show = 36; // Only show the first 6 * 6 = 36 issues so as to not overwhelm voter
+    // NOTE: We might want to show political parties at the top
     const issue_list_for_display = issue_list.map((issue) => {
       if (issues_shown_count < maximum_number_of_issues_to_show) {
         issues_shown_count++;
