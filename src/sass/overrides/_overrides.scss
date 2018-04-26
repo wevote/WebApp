@@ -1,5 +1,5 @@
 // Overrides - for app-wide overrides. Isolated overrides can be left in contextually appropriate places.
-
+$white-text-color: $white;
 
 .h1 { // TODO: replace this custom hack with responsive set of typographic classes
   font-size: 22px;
@@ -21,4 +21,15 @@
   overflow: hidden;
   position: fixed;
   width: 100%;
+}
+
+// Used to change the bootstrap popover title background color to WeVote blue and the text to white.
+.popover-title {
+  background-color: $brand-blue;
+  color: $white-text-color;
+}
+
+//Used to change the bootstrap popover arrow background color to WeVote blue.
+.popover.bottom .arrow::after {
+  border-bottom-color: $brand-blue;
 }
