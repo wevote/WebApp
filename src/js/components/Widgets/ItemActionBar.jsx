@@ -276,6 +276,7 @@ export default class ItemActionBar extends Component {
           <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>{supportButton}</OverlayTrigger>
         </div>
         <div className="visible-xs">{supportButton}</div>
+
         {/* Start of Oppose Button */}
         <div className="hidden-xs">
           <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>{opposeButton}</OverlayTrigger>
