@@ -65,7 +65,7 @@ export default class IntroNetwork extends Component {
         <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...settings}>
           <div key={1}><IntroNetworkSafety next={this.next}/></div>
           <div key={2}><IntroNetworkDefinition next={this.next}/></div>
-          <div key={3}><IntroNetworkScore next={this.next}/></div>
+          {/* <div key={3}><IntroNetworkScore next={this.next}/></div> */}
           <div key={4}><IntroNetworkBallotIsNext next={this.next}/></div>
        </Slider>
       </div>

@@ -22,11 +22,7 @@ export default class IntroNetworkDefinition extends Component {
       <div className="intro-story__h1">We Vote Together</div>
       <div className="intro-story__h2">Your friends, and the <br />
         organizations
-        you <Button bsStyle="success"
-                    bsSize="xsmall"
-                    >
-              <span>Listen</span>
-            </Button> to, <br />
+        you <strong>Listen</strong> to, <br />
         are your <strong>We Vote</strong> network.</div>
         <div><br /></div>
       <div><img className="center-block intro-story__img-height--extra u-bg-white" src={cordovaDot("/img/global/intro-story/intro-listen-to-friends-graphic.svg")}/></div>
