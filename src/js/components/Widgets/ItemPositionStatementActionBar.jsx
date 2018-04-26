@@ -25,6 +25,7 @@ export default class ItemPositionStatementActionBar extends Component {
     supportProps: PropTypes.object,
     shown_in_list: PropTypes.bool,
     stance_display_off: PropTypes.bool,
+    shouldFocus: PropTypes.bool.isRequired
   };
 
   constructor (props) {
@@ -43,6 +44,7 @@ export default class ItemPositionStatementActionBar extends Component {
       statement_text_to_be_saved: statement_text_to_be_saved,
       is_public_position: is_public_position,
       transitioning: false,
+      shouldFocus: false,
       voter_photo_url_medium: "",
     };
   }
@@ -53,6 +55,10 @@ export default class ItemPositionStatementActionBar extends Component {
         statement_text_to_be_saved: this.props.supportProps.voter_statement_text,
         is_public_position: this.props.supportProps.is_public_position,
       });
+    }
+
+    if (this.props.shouldFocus){
+      this.textarea.focus();
     }
 
     this.setState({
@@ -241,7 +247,8 @@ export default class ItemPositionStatementActionBar extends Component {
                   className="position-statement__input u-push--sm form-control"
                   minRows={2}
                   placeholder={statementPlaceholderText}
-                  defaultValue={statement_text_to_be_saved} />
+                  defaultValue={statement_text_to_be_saved}
+                  inputRef={tag => {this.textarea = tag;}} />
                 <div className="u-flex u-flex-column u-justify-between u-items-end">
                   <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
                                         type={this.props.type}
