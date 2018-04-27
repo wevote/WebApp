@@ -6,7 +6,6 @@ $space-search-right: 10%;
 .page-header {
   // required overrides for Bootstrap :(
   border: none;
-  @include clearfix;
   padding-right: $half-gutter-width;
   padding-bottom: $space-none; // override to avoid Bootstrap collision
   padding-left: $half-gutter-width; // $grid-gutter-width/2
