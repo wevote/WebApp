@@ -1,18 +1,72 @@
 # Preparing the Environment on Your Machine
 [Go back to Readme Home](../../README.md)
 
+## Explanation
+
+In this section we are going to install or update three package managers -- software that downloads libraries and/or executable programs that we rely on to build
+the WebApp (npm, Homebrew, and PIP).  We are also going install or update two language interpreters (Node and Python):
+* [Node](https://nodejs.org/en/): &nbsp;&nbsp; "Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine."  Node allows you to run JavaScript outside of a browser, 
+at the command line, or on a server.  Many of our build processes run on Node.
+* [npm](https://www.npmjs.com/): &nbsp;&nbsp; NPM is the node package manager (installer of software modules), and is automatically installed with Node.  It can be updated separately and occasionally 
+this might be necessary.  NPM is used extensively in WebApp to update most of the opensource JavaScript libraries that we leverage.
+* [Python](https://www.python.org/): &nbsp;&nbsp; Python is a popular interpreted language that is used most often as a server side language for handling APIs or simple web '
+applications.  The [WeVoteServer](https://github.com/wevote/WeVoteServer),
+our API server, is written in Python.
+* [Homebrew](https://brew.sh/): &nbsp;&nbsp; Homebrew, or simply brew at the command line, is "the missing package manager for MacOS."  It is the package manager that is often the
+first one installed, and can be used to install other package managers and libraries.
+* [pip](https://pip.pypa.io/en/stable/installing/): &nbsp;&nbsp; "pip is [Python's] preferred installer program. Starting with Python 3.4, it is included by default with the Python binary installers." 
+The Mac's built-in Python distibution does not include pip, so we need to install it manually.
+* [nodeenv](https://github.com/ekalinin/nodeenv): &nbsp;&nbsp; "nodeenv (node.js virtual environment) is a tool to create isolated node.js environments.
+It creates an environment that has its own installation directories, that doesn't share libraries with other node.js virtual environments."
+* [node-sass](https://github.com/sass/node-sass): &nbsp;&nbsp; "Node-sass is a library that provides binding for Node.js to LibSass, the C version of the 
+popular stylesheet preprocessor, Sass."  We write styles in Sass (scss files), and the node-sass pre-processor compiles them to css on the fly, before the
+excution of the WebApp begins.
+* [Ruby](https://www.ruby-lang.org/en/): "A dynamic, open source programming language with a focus on simplicity and productivity."  Ruby is yet
+another interpreted language, that comes pre-installed on the Mac.  We use it to install Homebrew.
+
 ## Install nodeenv ("Node Env") - Macintosh (see below for Windows)
 
-Install nodeenv globally. For instructions installing it locally, see: https://github.com/ekalinin/nodeenv
+Install [Homebrew](https://brew.sh/), and then install Python:
+
+    $ cd ~
+    $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    $ brew install python
+
+<!-- This failed on 3 Macs in a row for me, including a new out of the box Mac, let's skip the easy_install option, Steve April 2018 
+</* First try to install PIP (a Python based package installer) with easy_install:
 
     $ cd ~
     $ curl https://bootstrap.pypa.io/ez_setup.py -o - | sudo python
     $ sudo easy_install pip
+    
+**Don't worry if easy_install fails, we can also install pip with Python:** 
+
+**ONLY do the following step if easy_install didn't work,** -->
+
+Next use Python to install pip:
+
+    $ curl https://bootstrap.pypa.io/get-pip.py | sudo python
+
+Now install nodeenv with pip. Install nodeenv globally. (For instructions installing it locally, see: https://github.com/ekalinin/nodeenv):
+
     $ sudo -H pip install nodeenv
     
-Tip: If `sudo easy_install pip` fails, you can try:
+If you are already using Node and npm, confirm that your installation is at least at these minimum
+versions:
 
-    $ brew install python
+    $ node -v
+    v7.9.0
+
+    $ npm -v
+    4.5.0
+    
+IF you find that your Mac, does not have Node installed, install it with brew. (If you want to have
+a fresh install of Node you can `brew unlink node` first.)  A fresh or initial install of Node,
+will automatically install the latest version of npm.
+
+    $ brew install node
+    $ node -v
+    $ npm -v
 
 Create a place for your WebApp virtual environment to live on your hard drive. We recommend installing it
 away from the WebApp source code:
@@ -29,23 +83,18 @@ Now activate this new virtual environment:
     $ cd /Users/<YOUR NAME HERE>/NodeEnvironments/WebAppEnv/
     $ . bin/activate
 
-Confirm the versions of your main packages are >= to these versions:
+Just to be safe, rebuild node-sass
 
-    (WebAppEnv) $ node -v
-    v7.9.0
-
-    (WebAppEnv) $ npm -v
-    4.5.0
-    
-IF you find that your node or npm versions are below that, run this command:
-
-    (WebAppEnv) $ sudo npm install -g npm
-    (WebAppEnv) $ brew unlink node
-    (WebAppEnv) $ brew install node
     (WebAppEnv) $ npm rebuild node-sass
     (WebAppEnv) $ /usr/local/bin/node -v
     v9.10.1
+    
+Export your path to the local environment (append the /usr/local/bin path segment to the path that is used when in the WebAppEnv):
+    
     (WebAppEnv) $ export PATH="/usr/local/bin:$PATH"
+
+
+**Mac users are now done with this page,** go on to the next section:  [Bringing Code to Your Machine](CLONING_CODE.md)
 
 
 ## Install node.js - Windows
