@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import Icon from "react-svg-icons";
 import { Table } from "react-bootstrap";
 
+import { isWebApp } from "../../utils/cordovaUtils";
 import VoterStore from "../../stores/VoterStore";
 import BallotStore from "../../stores/BallotStore";
 import HamburgerMenuRow from "../../components/Navigation/HamburgerMenuRow";
@@ -38,14 +39,14 @@ export default class HamburgerMenu extends Component {
       <span className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none"
             onClick={this.toggleProfilePopUp} >
         {voterPhotoUrlMedium ?
-          <div id="js-header-avatar" className="header-nav__avatar-container">
-            <img className="header-nav__avatar"
+          <div id="js-header-avatar" className="header-nav__avatar-container" >
+            <img className={isWebApp() ? "header-nav__avatar" : "header-nav__avatar "}
                  src={voterPhotoUrlMedium}
                  height={34}
                  width={34}
             />
           </div> :
-          <div id= "anonIcon" className="header-nav__avatar">
+          <div id= "anonIcon" className={isWebApp() ? "header-nav__avatar" : "header-nav__avatar header-nav__cordova"}>
             <Icon name="avatar-generic" width={34} height={34} />
           </div>
         }
@@ -59,7 +60,7 @@ export default class HamburgerMenu extends Component {
       return null;
     }
 
-    let bookmarks = BallotStore.bookmarks;
+    let hasBookmarks = BallotStore.bookmarks && BallotStore.bookmarks.length;
     let isSignedIn = this.state.voter && this.state.voter.is_signed_in;
     isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
 
@@ -116,15 +117,6 @@ export default class HamburgerMenu extends Component {
                             indented />
 
 
-          { bookmarks && bookmarks.length ?
-            <HamburgerMenuRow onClickAction={null}
-                              to={"/bookmarks"}
-                              icon={"fa fa-bookmark"}
-                              iconStyle={{ fontSize: 28, color: "#1c2f4b" }}
-                              linkText={"Bookmarks"}
-                              indented /> : null
-          }
-
           {isSignedIn &&
             <HamburgerMenuRow onClickAction={null}
                               to={"/settings/notifications"}
@@ -139,6 +131,14 @@ export default class HamburgerMenu extends Component {
                             icon={"fa fa-list"}
                             iconStyle={{ fontSize: 24, color: "#1c2f4b" }}
                             linkText={"Your Voter Guides"} />
+
+          { hasBookmarks ?
+            <HamburgerMenuRow onClickAction={null}
+                              to={"/bookmarks"}
+                              icon={"fa fa-bookmark"}
+                              iconStyle={{ fontSize: 28, color: "#1c2f4b" }}
+                              linkText={"Bookmarks"} /> : null
+          }
 
           <HamburgerMenuRow onClickAction={null}
                             to={"/more/about"}

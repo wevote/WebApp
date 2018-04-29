@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router";
+import { Button } from "react-bootstrap";
 import Icon from "react-svg-icons";
 import BallotStore from "../../stores/BallotStore";
 import BookmarkStore from "../../stores/BookmarkStore";
 import CandidateStore from "../../stores/CandidateStore";
 import cookies from "../../utils/cookies";
+import { historyPush, isWebApp } from "../../utils/cordovaUtils";
 import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -266,38 +267,43 @@ export default class HeaderBackToBar extends Component {
 
     return (
       <header className="page-header">
-        <Link to={backToLink} className="page-logo page-logo-full-size h4 hidden-xs">
-          &lt; {backToOrganizationLinkText}
-        </Link>
-        <Link to={backToLink} className="page-logo page-logo-full-size h4 visible-xs">
-          &lt; {backToOrganizationLinkTextMobile}
-        </Link>
+        <Button className={"btn btn-sm btn-default page-header__backToButton  hidden-xs"}
+                onClick={ () => historyPush(backToLink) }>
+          <span className="fa fa-arrow-left"/> {backToOrganizationLinkText}
+        </Button>
+        <Button className={"btn btn-sm btn-default page-header__backToButton visible-xs"}
+                onClick={ () => historyPush(backToLink) }>
+          <span className="fa fa-arrow-left"/> {backToOrganizationLinkTextMobile}
+        </Button>
 
         <span className="hidden-xs">
           <SearchAllBox />
         </span>
 
-        <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
-          {voterPhotoUrlMedium ?
-            <div id="js-header-avatar" className="header-nav__avatar-container">
-                <img className="header-nav__avatar"
-                      src={voterPhotoUrlMedium}
-                      height={34}
-                      width={34}
-                 />
-            </div> : this.imagePlaceholder(speakerType)}
-         </div>
         {this.state.profilePopUpOpen &&
-        <HeaderBarProfilePopUp {...this.props}
-                               onClick={this.toggleProfilePopUp}
-                               profilePopUpOpen={this.state.profilePopUpOpen}
-                               bookmarks={this.state.bookmarks}
-                               weVoteBrandingOff={this.state.we_vote_branding_off}
-                               toggleProfilePopUp={this.toggleProfilePopUp.bind(this)}
-                               hideProfilePopUp={this.hideProfilePopUp.bind(this)}
-                               transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
-                               signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)}
-        />
+          <HeaderBarProfilePopUp {...this.props}
+            onClick={this.toggleProfilePopUp}
+            profilePopUpOpen={this.state.profilePopUpOpen}
+            bookmarks={this.state.bookmarks}
+            weVoteBrandingOff={this.state.we_vote_branding_off}
+            toggleProfilePopUp={this.toggleProfilePopUp.bind(this)}
+            hideProfilePopUp={this.hideProfilePopUp.bind(this)}
+            transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
+            signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)}
+          />
+        }
+
+        {isWebApp() &&
+          <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
+            {voterPhotoUrlMedium ?
+              <div id="js-header-avatar" className="header-nav__avatar-container">
+                <img className="header-nav__avatar"
+                     src={voterPhotoUrlMedium}
+                     height={34}
+                     width={34}
+                />
+              </div> : this.imagePlaceholder(speakerType)}
+          </div>
         }
 
       </header>

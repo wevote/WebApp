@@ -99,7 +99,7 @@ export default class BallotSearchResults extends Component {
     const icon_size = 18;
     let icon_color = "#999";
 
-    let actionDescription = <div>
+    let actionDescription = <div className="u-stack--md">
         Click <span className="u-no-break"><span className="btn__icon"><Icon name="thumbs-up-icon"
                                                                              width={icon_size} height={icon_size} color={icon_color} /></span> Support</span> or&nbsp;
         <span className="u-no-break"><span className="btn__icon"><Icon name="thumbs-down-icon"
@@ -122,7 +122,7 @@ export default class BallotSearchResults extends Component {
                      placeholder="Search to add Candidates or Measures"
                      searchButton
                      searchFunction={this.searchFunction}
-                     searchUpdateDelayTime={1000} />
+                     searchUpdateDelayTime={500} />
 
         </div>
         <div className="ballot_search__results_list">

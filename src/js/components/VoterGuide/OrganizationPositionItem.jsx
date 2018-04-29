@@ -11,7 +11,6 @@ import OfficeNameText from "../Widgets/OfficeNameText";
 import OrganizationStore from "../../stores/OrganizationStore";
 import PositionInformationOnlySnippet from "../Widgets/PositionInformationOnlySnippet";
 import PositionRatingSnippet from "../Widgets/PositionRatingSnippet";
-import PositionPublicToggle from "../Widgets/PositionPublicToggle";
 import PositionSupportOpposeSnippet from "../Widgets/PositionSupportOpposeSnippet";
 import { capitalizeString } from "../../utils/textFormat";
 import SupportStore from "../../stores/SupportStore";
@@ -216,15 +215,11 @@ export default class OrganizationPositionItem extends Component {
                     className="position-rating__candidate-name u-flex-auto">
                     {ballot_item_display_name}
               </Link>
-
               { (signed_in_with_this_twitter_account ||
                 signed_in_with_this_organization ||
                 signed_in_with_this_facebook_account) &&
                 this.props.editMode ?
-                <PositionPublicToggle ballot_item_we_vote_id={position.ballot_item_we_vote_id}
-                  type={position.kind_of_ballot_item}
-                  supportProps={supportProps}
-                  className="organization-position-item-toggle"/> :
+                  <FriendsOnlyIndicator isFriendsOnly={!is_public_position}/> :
                   <FriendsOnlyIndicator isFriendsOnly={!is_public_position}/>
               }
               <BookmarkToggle we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />

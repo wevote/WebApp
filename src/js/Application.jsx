@@ -59,9 +59,8 @@ export default class Application extends Component {
   }
 
   initCordova () {
-    console.log("Application initCordova ------------ " + __filename);
-
     if (isCordova()) {
+      console.log("Application initCordova ------------ " + __filename);
       window.handleOpenURL = function (url) {
         TwitterSignIn.handleTwitterOpenURL(url);
       };
@@ -354,7 +353,7 @@ export default class Application extends Component {
     }
 
     const headRoomSize = voterGuideShowGettingStartedNavigation || stringContains("/ballot", pathname) || pathname === "/bookmarks" ?
-      "headroom-getting-started__margin" : isWebApp() ? "headroom-wrapper" :isIOS() ? "headroom-wrapper__cordova-ios" : "headroom-wrapper__cordova-android";
+      "headroom-getting-started__margin" : isWebApp() ? "headroom-wrapper" : isIOS() ? "headroom-wrapper__cordova-ios" : "headroom-wrapper__cordova-android";
 
     let pageHeaderStyle = this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom";
     if (isIOS()) {

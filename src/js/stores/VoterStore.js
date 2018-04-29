@@ -309,15 +309,29 @@ class VoterStore extends ReduceStore {
           SupportActions.positionsCountForAllBallotItems(action.res.google_civic_election_id);
         }
 
+        let address;
+        if (action.res.address) {
+          address = action.res.address;
+        } else {
+          address = {
+            text_for_map_search: "",
+            google_civic_election_id: 0,
+            ballot_returned_we_vote_id: "",
+            ballot_location_display_name: "",
+            voter_entered_address: "",
+            voter_specific_ballot_from_google_civic: null
+          };
+        }
+
         return {
           ...state,
           address: {
-            text_for_map_search: action.res.address.text_for_map_search,
-            google_civic_election_id: action.res.address.google_civic_election_id,
-            ballot_returned_we_vote_id: action.res.address.ballot_returned_we_vote_id,
-            ballot_location_display_name: action.res.address.ballot_location_display_name,
-            voter_entered_address: action.res.address.voter_entered_address,
-            voter_specific_ballot_from_google_civic: action.res.address.voter_specific_ballot_from_google_civic
+            text_for_map_search: address.text_for_map_search,
+            google_civic_election_id: address.google_civic_election_id,
+            ballot_returned_we_vote_id: address.ballot_returned_we_vote_id,
+            ballot_location_display_name: address.ballot_location_display_name,
+            voter_entered_address: address.voter_entered_address,
+            voter_specific_ballot_from_google_civic: address.voter_specific_ballot_from_google_civic
           }
         };
 

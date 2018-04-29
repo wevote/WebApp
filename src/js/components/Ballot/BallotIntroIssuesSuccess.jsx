@@ -55,11 +55,7 @@ export default class BallotIntroIssuesSuccess extends Component {
       <div className="intro-modal__h2">By clicking on an issue image,<br />
         you will find advisers<br />
         related to that issue<br />
-        that you can <Button bsStyle="success"
-                            bsSize="xsmall"
-                            >
-                      <span>Listen</span>
-                    </Button> to.</div>
+        that you can <strong>Listen</strong> to.</div>
       <div className="intro-modal__h2"><br /></div>
       <div className="intro-modal__button-wrap">
         <button type="button" className="btn btn-success intro-modal__button" onClick={this.props.next}>See Your Ballot&nbsp;&gt;</button>

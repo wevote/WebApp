@@ -161,43 +161,9 @@ export default class ChooseElectionForVoterGuide extends Component {
         return -1;
       return 0; //default return value (no sorting)
     });
-    let priorElectionList = ballotElectionListPastSorted.map((item, index) => {
-      // console.log("item.election_day_text: ", item.election_day_text);
-      electionDateTomorrowMoment = moment(item.election_day_text, "YYYY-MM-DD").add(1, "days");
-      electionDateTomorrow = electionDateTomorrowMoment.format("YYYY-MM-DD");
-      return electionDateTomorrow > currentDate ?
-        null :
-        <div key={index}>
-          <dl className="list-unstyled text-center">
-            <button type="button" className="btn btn-success ballot-election-list__button"
-                    onClick={this.saveVoterGuideForElection.bind(this, item.google_civic_election_id)}>
-              {/* Mobile */}
-              { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ?
-                <span className="visible-xs">{item.election_description_text}&nbsp;<img
-                  src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span> :
-                <span
-                  className="visible-xs">{item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}...&nbsp;
-                  <img src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span>
-              }
-              {/* Desktop */}
-              <span className="hidden-xs">{item.election_description_text}&nbsp;<img
-                src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span>
-
-              <div className="ballot-election-list__h2">{moment(item.election_day_text).format("MMMM Do, YYYY")}</div>
-            </button>
-          </dl>
-        </div>;
-    });
-    priorElectionList = cleanArray(priorElectionList);
-    // priorElectionList = []; // Delete once testing is fully complete
 
     return <div>
       {upcomingElectionList}
-
-      { priorElectionList && priorElectionList.length ?
-        <h4 className="h4">Prior Election(s)</h4> :
-        null }
-      {priorElectionList}
     </div>;
   }
 }

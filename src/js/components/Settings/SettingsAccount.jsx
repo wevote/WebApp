@@ -135,8 +135,9 @@ export default class SettingsAccount extends Component {
           }
           {this.state.voter.is_signed_in ?
             <span>{your_account_explanation}</span> :
-            <div>Before you can share, either publicly or with friends, please sign in. Don't worry, we won't post anything automatically.<br />
-            <br />
+            <div >
+              <div className="u-f3">Before you can share, either publicly or with friends, please sign in.</div>
+              <div className="u-stack--sm">Don't worry, we won't post anything automatically.</div>
             </div>
           }
           {!this.state.voter.signed_in_twitter || !this.state.voter.signed_in_facebook ?

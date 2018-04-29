@@ -201,7 +201,7 @@ export default class EmailBallotModal extends Component {
                 </div> :
                 null }
               {this.state.on_enter_email_addresses_step ? <div className="row invite-inputs">
-                  <span className="col-12 text-left">Email this ballot to yourself so you can print it, or come back to it later.&nbsp;<br />&nbsp;<br /></span>
+                  <span className="col-12 text-left">Email a link to this ballot to yourself so you can print it, or come back to it later.&nbsp;<br />&nbsp;<br /></span>
                 <div className="col-12 text-left">
                     { this.hasValidEmail() ? <label>Your Email Address</label> : <label>What is your email address?</label> }
                 </div>
@@ -246,13 +246,12 @@ export default class EmailBallotModal extends Component {
                   </span>
                 </div>
               </div>
-              <div className="col-12 u-inset--sm" />
-              {/* <span style="float: right;">Click here to send to friends &gt;</span> */}
-              <div className="col-12">
-                <span style={floatRight} onClick={this.props.next}>
-                {/* <span style={floatRight} onClick={this._openEmailToFriendsModal.bind(this)}> */}
-                  Click here to send to friends &gt;
-                </span>
+              <div className="col-12 u-inset--sm u-stack--lg" />
+              <div className="text-center col-12 u-stack--md">
+                <button type="button" className="btn btn-success"
+                        onClick={this.props.next}>Want to send to friends?&nbsp;&nbsp;&gt;</button>
+              </div>
+              <div className="text-center col-12 u-stack--sm">
                 <span className="u-no-break" style={textGray}>We will never sell your email.</span>
               </div>
               </div> : null

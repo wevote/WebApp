@@ -328,7 +328,7 @@ export default class SearchAllBox extends Component {
                        onClick={() => this.onSearchElectionResultClick(oneResult.google_civic_election_id)}>
             <div className={searchResultClasses}>
               <div className="search-container__election-title">{capitalizedTitle}</div>
-              <div className="search-container__election-details u-no-break">
+              <div className="search-container__election__details u-no-break">
                 <div className="search-container__election-date">{electionDay}</div>
                 <div className="search-container__election-type">{pastElection}</div>
               </div>

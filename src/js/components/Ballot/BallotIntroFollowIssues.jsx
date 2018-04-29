@@ -139,7 +139,8 @@ export default class BallotIntroFollowIssues extends Component {
 
     let edit_mode = true;
     let issues_shown_count = 0;
-    let maximum_number_of_issues_to_show = 24; // Only show the first 6 * 4 = 24 issues so as to not overwhelm voter
+    let maximum_number_of_issues_to_show = 36; // Only show the first 6 * 6 = 36 issues so as to not overwhelm voter
+    // NOTE: We might want to show political parties at the top
     const issue_list_for_display = issue_list.map((issue) => {
       if (issues_shown_count < maximum_number_of_issues_to_show) {
         issues_shown_count++;
@@ -164,9 +165,10 @@ export default class BallotIntroFollowIssues extends Component {
         What do you care about?
       </div>
       <div className="intro-modal__top-description">
-        Pick{ remaining_issues ? " " + remaining_issues : null }
-        &nbsp;issue{ remaining_issues !== 1 ? "s" : null } or { remaining_issues !== 1 ? "categories" : "category" }
-        { remaining_issues ? " (or more!)" : null }
+        { remaining_issues ?
+          "Pick " + remaining_issues + " or more issues!" :
+          "Feel free to pick as many issues as you would like."
+        }
       </div>
       <div className="intro-modal-vertical-scroll-contain">
         <div className="intro-modal-vertical-scroll card">
