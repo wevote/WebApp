@@ -14,17 +14,17 @@ export default class VoterGuideGetStarted extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      autoFocus: true,
       linkedOrganizationWeVoteId: "",
       searchResultsOrganizationName: "",
       twitterHandleEntered: "",
       twitterSearchStatus: "",
+      isLoadingTwitterData: false,
     };
-    this.hitEnterKey = this.hitEnterKey.bind(this);
     this.onOrganizationStoreChange = this.onOrganizationStoreChange.bind(this);
     this.resetState = this.resetState.bind(this);
     this.saveAndGoToOrganizationInfo = this.saveAndGoToOrganizationInfo.bind(this);
     this.validateTwitterHandle = this.validateTwitterHandle.bind(this);
+    this.buttonClickAndGoToOrganizationInfo = this.buttonClickAndGoToOrganizationInfo.bind(this);
   }
 
   componentWillMount () {
@@ -35,9 +35,6 @@ export default class VoterGuideGetStarted extends Component {
   componentDidMount () {
     AnalyticsActions.saveActionVoterGuideGetStarted(VoterStore.election_id());
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    this.setState({
-      autoFocus: true,
-    });
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // Get Voter and Voter's Organization
     let voter = VoterStore.getVoter();
@@ -85,7 +82,7 @@ export default class VoterGuideGetStarted extends Component {
     this.leaveThisComponentIfProfileComplete(voter, organization);
 
     this.setState({
-      isLoading: false,
+      isLoadingTwitterData: false,
       isTwitterHandleValid: twitterHandleFound.length,
       organization: organization,
       searchResultsOrganizationName: OrganizationStore.getOrganizationSearchResultsOrganizationName(),
@@ -111,8 +108,7 @@ export default class VoterGuideGetStarted extends Component {
 
   resetState () {
     this.setState({
-      autoFocus: true,
-      isLoading: false,
+      isLoadingTwitterData: false,
       isTwitterHandleValid: false,
       twitterSearchStatus: "",
       twitterHandle: "",
@@ -128,22 +124,32 @@ export default class VoterGuideGetStarted extends Component {
     historyPush("/voterguideorgtype");
   }
 
-  saveAndGoToOrganizationInfo () {
-    if (this.state.isLoading) {
+  formSubmitAndGoToOrganizationInfo (e) {
+    e.preventDefault();
+    //TODO: add some warning message
+    if (!this.state.isTwitterHandleValid) {
+      if (this.state.isLoadingTwitterData){
+        console.log("Please wait while we load Twitter data");
+      } else {
+        console.log("Please enter a valid Twitter handle");
+      }
       return false;
     } else {
       if (this.state.linkedOrganizationWeVoteId) {
         OrganizationActions.organizationGetStartedSave(this.state.linkedOrganizationWeVoteId, this.state.searchResultsOrganizationName, this.state.searchResultsWebsite);
       }
+      console.log("submit by clicking enter");
       historyPush("/voterguideorgtype");
       return true;
     }
   }
 
-  hitEnterKey () {
-    this.setState({
-      autoFocus: false,
-    });
+  buttonClickAndGoToOrganizationInfo () {
+    if (this.state.linkedOrganizationWeVoteId) {
+      OrganizationActions.organizationGetStartedSave(this.state.linkedOrganizationWeVoteId, this.state.searchResultsOrganizationName, this.state.searchResultsWebsite);
+    }
+    console.log("submit by clicking button");
+    historyPush("/voterguideorgtype");
   }
 
   leaveThisComponentIfProfileComplete (voter, organization) {
@@ -180,11 +186,12 @@ export default class VoterGuideGetStarted extends Component {
   }
 
   validateTwitterHandle (event) {
+    //TODO: check this
     clearTimeout(this.timer);
     if (event.target.value.length) {
       this.validateTwitterHandleAction(event.target.value);
       this.setState({
-        isLoading: true,
+        isLoadingTwitterData: true,
         twitterHandleEntered: event.target.value,
         twitterSearchStatus: "Searching...",
       });
@@ -206,12 +213,12 @@ export default class VoterGuideGetStarted extends Component {
     }
 
     let actionButtonHtml;
-    if (this.state.isLoading) {
+    if (this.state.isLoadingTwitterData) {
       actionButtonHtml = <button type="button" className="btn btn-lg btn-success"
                     disabled >One Moment...</button>;
     } else if (this.state.isTwitterHandleValid) {
       actionButtonHtml = <button type="button" className="btn btn-lg btn-success"
-                    onClick={this.saveAndGoToOrganizationInfo}>Use This Information&nbsp;&nbsp;&gt;</button>;
+                    onClick={this.buttonClickAndGoToOrganizationInfo}>Use This Information&nbsp;&nbsp;&gt;</button>;
     } else {
       actionButtonHtml = <button type="button" className="btn btn-lg btn-success"
                     onClick={this.goToOrganizationType}>Skip Twitter&nbsp;&nbsp;&gt;</button>;
@@ -229,10 +236,10 @@ export default class VoterGuideGetStarted extends Component {
           <div className="row">
             <div className="col-2">&nbsp;</div>
             <div className="col-8">
-              <form onSubmit={(e) => {this.saveAndGoToOrganizationInfo(); e.preventDefault();}}>
+              <form onSubmit={(e) => {this.formSubmitAndGoToOrganizationInfo(e);}}>
                 <div className="form-group">
                   { this.state.twitterSearchStatus.length ?
-                    <p className={ !this.state.isLoading ?
+                    <p className={ !this.state.isLoadingTwitterData ?
                                      this.state.isTwitterHandleValid ?
                                      "voter-guide-get-started__status-success" :
                                      "voter-guide-get-started__status-error" :
@@ -249,7 +256,7 @@ export default class VoterGuideGetStarted extends Component {
                          placeholder="Enter Twitter Handle"
                          onKeyDown={this.resetState}
                          onChange={this.validateTwitterHandle}
-                         autoFocus={this.state.autoFocus} />
+                         autoFocus />
                 </div>
               </form>
             </div>
