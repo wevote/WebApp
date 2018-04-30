@@ -43,5 +43,7 @@ export function $ajax (options) {
 
   httpLog("AJAX URL: " + options.url);
 
+  /* global $ */
+  /* eslint no-undef: ["error", { "typeof": true }] */
   return $.ajax(options);
 }
