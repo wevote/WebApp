@@ -11,12 +11,12 @@ import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
 
-
 export default class PositionPublicToggle extends Component {
   static propTypes = {
     ballot_item_we_vote_id: PropTypes.string.isRequired,
     className: PropTypes.string.isRequired,
     inTestMode: PropTypes.bool,
+
     // onToggleChangeFunction: PropTypes.func, // This was written for react-bootstrap-toggle version 2.3.1, but we are having some troubles upgrading
     supportProps: PropTypes.object,
     type: PropTypes.string.isRequired,
@@ -37,13 +37,13 @@ export default class PositionPublicToggle extends Component {
   componentDidMount () {
     this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    var { is_public_position } = this.props.supportProps;
+    let { is_public_position: isPublicOpinion } = this.props.supportProps;
     this.setState({
-      showToThePublicOn: is_public_position || false,
+      showToThePublicOn: isPublicOpinion || false,
     });
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.voterStoreListener.remove();
   }
 
@@ -60,14 +60,14 @@ export default class PositionPublicToggle extends Component {
   }
 
   showItemToPublic () {
-    var voter = this.state.voter;
+    let voter = this.state.voter;
     if (voter && voter.is_signed_in) {
       this.setState({
         showToThePublicOn: true,
       });
       SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, "SHOW_PUBLIC");
-      let position_public_toggle_modal_has_been_shown = VoterStore.getInterfaceFlagState(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
-      if (!position_public_toggle_modal_has_been_shown) {
+      let positionPublicToggleModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
+      if (!positionPublicToggleModalHasBeenShown) {
         this.togglePositionPublicHelpModal();
         VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
       } else {
@@ -85,16 +85,16 @@ export default class PositionPublicToggle extends Component {
     });
   }
 
-  onToggleChangeFunction (state, node, evt){
+  onToggleChangeFunction (state) {
     // This was written for react-bootstrap-toggle version 2.3.1, but we are having some troubles upgrading
     console.log("PositionPublicToggle onToggleChangeFunction, state:", state);
     if (state === "SHOW_PUBLIC") {
       this.setState({
-        positionPublicToggleCurrentState: "Show publicly"
+        positionPublicToggleCurrentState: "Show publicly",
       });
     } else {
       this.setState({
-        positionPublicToggleCurrentState: "Show to friends only"
+        positionPublicToggleCurrentState: "Show to friends only",
       });
     }
   }
@@ -104,40 +104,42 @@ export default class PositionPublicToggle extends Component {
     if (!this.state.voter) {
       return <div className="undefined-props" />;
     }
-    if (this.props.supportProps === undefined){
+
+    if (this.props.supportProps === undefined) {
       return <div className="undefined-props" />;
     }
-    let in_test_mode = false;
+
+    let inTestMode = false;
     if (this.props !== undefined && this.props.inTestMode !== undefined && this.props.inTestMode) {
-      in_test_mode = true;
+      inTestMode = true;
     }
 
-    var { is_public_position } = this.props.supportProps;
+    let { isPublicPosition } = this.props.supportProps;
     let visibilityPublic = "Currently visible to public";
     let visibilityFriendsOnly = "Currently only shared with We Vote friends";
     const publicIcon = <Icon alt="Visible to Public" name="public-icon" color="#fff" width={18} height={18} />;
     const friendsIcon = <Icon alt="Visible to Friends Only" name="group-icon" color="#555" width={18} height={18} />;
-    let tooltip = <Tooltip id="visibility-tooltip">{is_public_position ? visibilityPublic : visibilityFriendsOnly}</Tooltip>;
-    let no_tooltip = <span />;
+    let tooltip = <Tooltip id="visibility-tooltip">{isPublicPosition ? visibilityPublic : visibilityFriendsOnly}</Tooltip>;
+    let noTooltip = <span />;
 
-    var onChange;
-    var that = this;
-    if (is_public_position) {
+    let onChange;
+    let _this = this;
+    if (isPublicPosition) {
       onChange = function () {
-        is_public_position = false;
-        if (in_test_mode) {
-          // TODO Somehow cause the tooltip to update
-        } else {
-          that.showItemToFriendsOnly();
+        isPublicPosition = false;
+
+        // TODO Somehow cause the tooltip to update if inTestMode
+        if (!inTestMode) {
+          _this.showItemToFriendsOnly();
         }
       };
     } else {
       onChange = function () {
-        is_public_position = true;
-        if (in_test_mode) {
-          // TODO Somehow cause the tooltip to update
-        } else {
-          that.showItemToPublic();
+        isPublicPosition = true;
+
+        // TODO Somehow cause the tooltip to update if inTestMode
+        if (!inTestMode) {
+          _this.showItemToPublic();
         }
       };
     }
@@ -145,7 +147,7 @@ export default class PositionPublicToggle extends Component {
     // this onKeyDown function is for accessibility: the parent div of the toggle
     // has a tab index so that users can use tab key to select the toggle, and then
     // press either space or enter (key codes 32 and 13, respectively) to toggle
-    var onKeyDown = function (e) {
+    let onKeyDown = function (e) {
       let enterAndSpaceKeyCodes = [13, 32];
       if (enterAndSpaceKeyCodes.includes(e.keyCode)) {
         onChange();
@@ -154,11 +156,12 @@ export default class PositionPublicToggle extends Component {
 
     // This modal is shown when the user clicks on public position toggle either when not signed in
     // or for the first time after being signed in.
-    var voter = this.state.voter;
-    let modalSupportProps = { is_public_position: false };
+    let voter = this.state.voter;
+    let modalSupportProps = { isPublicPosition: false };
     const PositionPublicToggleHelpModal = <Modal show={this.state.showPositionPublicHelpModal}
                                                  enforceFocus={false}
-                                                 onHide={()=>{this.togglePositionPublicHelpModal();}}>
+                                                 onHide={()=> { this.togglePositionPublicHelpModal(); }} >
+
       <Modal.Header closeButton>
         <Modal.Title>
           <div className="text-center">Make Your Positions Public</div>
@@ -196,7 +199,7 @@ export default class PositionPublicToggle extends Component {
     </Modal>;
 
     return <div className={this.props.className}>
-      <div style={{display: "inline-block"}}>
+      <div style={{ display: "inline-block" }}>
         {/* Mobile Mode */}
         <span className="visible-xs">
           <div tabIndex="0" onKeyDown={onKeyDown}>{/* tabIndex and onKeyDown are for accessibility */}
@@ -216,7 +219,7 @@ export default class PositionPublicToggle extends Component {
           <OverlayTrigger className="trigger"
                           enforceFocus={false}
                           placement="top"
-                          overlay={in_test_mode ? no_tooltip : tooltip}>
+                          overlay={inTestMode ? noTooltip : tooltip}>
             <div tabIndex="0" onKeyDown={onKeyDown}>{/* tabIndex and onKeyDown are for accessibility */}
               <ReactBootstrapToggle on={publicIcon}
                                     off={friendsIcon}
