@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
 import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
-import { historyPush, cordovaOpenSafariView, isAndroid, isCordova, isIOS,
+import { historyPush, isAndroid, isCordova, isIOS,
   isWebApp } from "./utils/cordovaUtils";
 import ElectionActions from "./actions/ElectionActions";
 import FooterBarCordova from "./components/Navigation/FooterBarCordova";

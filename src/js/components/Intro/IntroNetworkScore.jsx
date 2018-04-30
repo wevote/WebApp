@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
 import { isCordova } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 

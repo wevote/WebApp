@@ -81,6 +81,7 @@ export function cordovaOpenSafariView (requestURL, timeout) {
 */
 export function enclosingRectangle (objectNameString, instance) {
   let rect = instance.getBoundingClientRect();
+
   // Please don't remove this console.log line
   console.log(objectNameString +
     " BoundingClientRect: left " + rect.left +
@@ -97,6 +98,8 @@ export function enclosingRectangle (objectNameString, instance) {
 export function deviceTypeString () {
   let deviceString = isWebApp() ? "webapp" : "cordova";
   if (isCordova() && window.device) {
+    /*global device*/
+    /*eslint no-undef: ["error", { "typeof": true }] */
     deviceString += ":" + device.platform;
   }
 
