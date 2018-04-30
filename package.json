@@ -29,7 +29,6 @@
   },
   "dependencies": {
     "font-awesome": "^4.7.0",
-    "fsevents": "^1.2.3",
     "gulp-uglify": "^2.0.0",
     "headroom.js": "^0.9.3",
     "history": "^3.2.1",
