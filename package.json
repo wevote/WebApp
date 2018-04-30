@@ -28,7 +28,7 @@
     "autoTest": " mocha --compilers js:babel-core/register --require tests/component/index.js \"./tests/component/tests.js\" && npm run lint"
   },
   "dependencies": {
-    "font-awesome": "^4.7.0",
+    "font-awesome":  "^4.7.0",
     "gulp-uglify": "^2.0.0",
     "headroom.js": "^0.9.3",
     "history": "^3.2.1",
