@@ -14,17 +14,19 @@ export default class VoterGuideGetStarted extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      autoFocus: true,
       linkedOrganizationWeVoteId: "",
       searchResultsOrganizationName: "",
       twitterHandleEntered: "",
       twitterSearchStatus: "",
+      isLoadingTwitterData: false,
+      didUserPressEnter: false,
+      isTwitterHandleValid: false,
     };
-    this.hitEnterKey = this.hitEnterKey.bind(this);
     this.onOrganizationStoreChange = this.onOrganizationStoreChange.bind(this);
     this.resetState = this.resetState.bind(this);
-    this.saveAndGoToOrganizationInfo = this.saveAndGoToOrganizationInfo.bind(this);
+    this.formSubmitHandler = this.formSubmitHandler.bind(this);
     this.validateTwitterHandle = this.validateTwitterHandle.bind(this);
+    this.goToOrganizationInfo = this.goToOrganizationInfo.bind(this);
   }
 
   componentWillMount () {
@@ -35,9 +37,6 @@ export default class VoterGuideGetStarted extends Component {
   componentDidMount () {
     AnalyticsActions.saveActionVoterGuideGetStarted(VoterStore.election_id());
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    this.setState({
-      autoFocus: true,
-    });
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // Get Voter and Voter's Organization
     let voter = VoterStore.getVoter();
@@ -71,7 +70,6 @@ export default class VoterGuideGetStarted extends Component {
 
   onOrganizationStoreChange () {
     let twitterHandleFound = OrganizationStore.getOrganizationSearchResultsTwitterHandle();
-
     let twitterSearchStatus = "";
     if (this.state.twitterHandleEntered.length) {
       if (twitterHandleFound.length) {
@@ -83,10 +81,9 @@ export default class VoterGuideGetStarted extends Component {
     let voter = VoterStore.getVoter();
     let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
     this.leaveThisComponentIfProfileComplete(voter, organization);
-
     this.setState({
-      isLoading: false,
-      isTwitterHandleValid: twitterHandleFound.length,
+      isLoadingTwitterData: false,
+      isTwitterHandleValid: twitterHandleFound ? true : false,
       organization: organization,
       searchResultsOrganizationName: OrganizationStore.getOrganizationSearchResultsOrganizationName(),
       searchResultsTwitterHandle: OrganizationStore.getOrganizationSearchResultsTwitterHandle(),
@@ -94,6 +91,11 @@ export default class VoterGuideGetStarted extends Component {
       twitterSearchStatus: twitterSearchStatus,
       twitterHandle: twitterHandleFound,
     });
+
+    if (twitterHandleFound.length && this.state.didUserPressEnter){
+      // console.log("okay to redirect");
+      setTimeout(this.goToOrganizationInfo.bind(this), 0);
+    }
   }
 
   onVoterStoreChange () {
@@ -105,14 +107,14 @@ export default class VoterGuideGetStarted extends Component {
     // console.log("VoterGuideGetStarted onVoterStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
       OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
-      this.setState({ linkedOrganizationWeVoteId: linkedOrganizationWeVoteId });
+      this.setState({ linkedOrganizationWeVoteId });
     }
   }
 
   resetState () {
     this.setState({
-      autoFocus: true,
-      isLoading: false,
+      didUserPressEnter: false,
+      isLoadingTwitterData: false,
       isTwitterHandleValid: false,
       twitterSearchStatus: "",
       twitterHandle: "",
@@ -128,22 +130,24 @@ export default class VoterGuideGetStarted extends Component {
     historyPush("/voterguideorgtype");
   }
 
-  saveAndGoToOrganizationInfo () {
-    if (this.state.isLoading) {
+  formSubmitHandler (e) {
+    e.preventDefault();
+    // console.log("submit by hitting enter");
+    if (!this.state.isTwitterHandleValid) {
+      this.setState({ didUserPressEnter: true });
       return false;
     } else {
-      if (this.state.linkedOrganizationWeVoteId) {
-        OrganizationActions.organizationGetStartedSave(this.state.linkedOrganizationWeVoteId, this.state.searchResultsOrganizationName, this.state.searchResultsWebsite);
-      }
-      historyPush("/voterguideorgtype");
+      this.goToOrganizationInfo();
       return true;
     }
   }
 
-  hitEnterKey () {
-    this.setState({
-      autoFocus: false,
-    });
+  goToOrganizationInfo () {
+    if (this.state.linkedOrganizationWeVoteId) {
+      OrganizationActions.organizationGetStartedSave(this.state.linkedOrganizationWeVoteId, this.state.searchResultsOrganizationName, this.state.searchResultsWebsite);
+    }
+    // console.log("submit by clicking button");
+    historyPush("/voterguideorgtype");
   }
 
   leaveThisComponentIfProfileComplete (voter, organization) {
@@ -180,11 +184,12 @@ export default class VoterGuideGetStarted extends Component {
   }
 
   validateTwitterHandle (event) {
+    // console.log("validateTwitterHandle", event.target.value);
     clearTimeout(this.timer);
     if (event.target.value.length) {
       this.validateTwitterHandleAction(event.target.value);
       this.setState({
-        isLoading: true,
+        isLoadingTwitterData: true,
         twitterHandleEntered: event.target.value,
         twitterSearchStatus: "Searching...",
       });
@@ -206,12 +211,12 @@ export default class VoterGuideGetStarted extends Component {
     }
 
     let actionButtonHtml;
-    if (this.state.isLoading) {
+    if (this.state.isLoadingTwitterData) {
       actionButtonHtml = <button type="button" className="btn btn-lg btn-success"
                     disabled >One Moment...</button>;
     } else if (this.state.isTwitterHandleValid) {
       actionButtonHtml = <button type="button" className="btn btn-lg btn-success"
-                    onClick={this.saveAndGoToOrganizationInfo}>Use This Information&nbsp;&nbsp;&gt;</button>;
+                    onClick={this.goToOrganizationInfo}>Use This Information&nbsp;&nbsp;&gt;</button>;
     } else {
       actionButtonHtml = <button type="button" className="btn btn-lg btn-success"
                     onClick={this.goToOrganizationType}>Skip Twitter&nbsp;&nbsp;&gt;</button>;
@@ -229,10 +234,10 @@ export default class VoterGuideGetStarted extends Component {
           <div className="row">
             <div className="col-2">&nbsp;</div>
             <div className="col-8">
-              <form onSubmit={(e) => {this.saveAndGoToOrganizationInfo(); e.preventDefault();}}>
+              <form onSubmit={(e) => {this.formSubmitHandler(e);}}>
                 <div className="form-group">
                   { this.state.twitterSearchStatus.length ?
-                    <p className={ !this.state.isLoading ?
+                    <p className={ !this.state.isLoadingTwitterData ?
                                      this.state.isTwitterHandleValid ?
                                      "voter-guide-get-started__status-success" :
                                      "voter-guide-get-started__status-error" :
@@ -247,9 +252,8 @@ export default class VoterGuideGetStarted extends Component {
                                      "form-control input-lg u-margin-top--sm" }
                          name="twitterHandle"
                          placeholder="Enter Twitter Handle"
-                         onKeyDown={this.resetState}
                          onChange={this.validateTwitterHandle}
-                         autoFocus={this.state.autoFocus} />
+                         autoFocus />
                 </div>
               </form>
             </div>
