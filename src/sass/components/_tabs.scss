@@ -53,7 +53,7 @@
 $tab-spacing-desktop: 24px;
 $tab-spacing-mobile: $space-md;
 $scrollbar-height: 20px;
-$tab-height: 47px;
+$tab-height: 52px;
 $tab-height-visible: $tab-height - $scrollbar-height;
 $tab-margin-mobile: (-$space-md);
 
@@ -87,6 +87,7 @@ $tab-margin-mobile: (-$space-md);
     }
 
     .tab {
+      font-size: 1.1rem; // Adjust $tab-height if you change this
       padding: $space-none $space-none $space-xs;
       margin-right: $tab-spacing-desktop;
       @include breakpoints (small mid-small) {

@@ -7,6 +7,7 @@
   padding-top: $space-sm;
 
   &__position-btn-label {
+    color: $gray-mid;
     @include breakpoints (max mid-small) {
       display: none; // Hide Support/Oppose button labels on small screens
     }

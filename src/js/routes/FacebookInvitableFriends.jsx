@@ -186,7 +186,7 @@ export default class FacebookInvitableFriends extends Component {
           // console.log("Final data for all invitations", data);
           FriendActions.friendInvitationByFacebookSend(data);
           historyPush({
-            pathname: "/more/network",
+            pathname: "/more/network/friends",
             state: {
               message: "You have successfully sent Invitation to your friends.",
               message_type: "success"
@@ -296,7 +296,7 @@ export default class FacebookInvitableFriends extends Component {
     // console.log("facebook friends not exist:", this.state.facebook_invitable_friends.facebook_friends_not_exist);
     if (this.state.facebook_invitable_friends.facebook_friends_not_exist) {
       historyPush({
-        pathname: "/more/network",
+        pathname: "/more/network/friends",
         state: {
           message: "There are no friends to invite from Facebook. Either there is an error, or you already invited all of your friends on Facebook!",
           message_type: "success"

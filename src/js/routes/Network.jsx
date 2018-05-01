@@ -204,7 +204,8 @@ export default class Network extends Component {
               <ul className="nav tabs__tabs">
                 <li className="tab-item">
                   <Link to={{ pathname: "/more/network/friends" }} className={this.state.edit_mode === "friends" ? "tab tab-active" : "tab tab-default"}>
-                    <span>Friend Requests</span>
+                    <span className="visible-xs">Requests</span>
+                    <span className="hidden-xs">Friend Requests</span>
                   </Link>
                 </li>
 
