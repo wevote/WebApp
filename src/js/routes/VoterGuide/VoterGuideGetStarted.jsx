@@ -20,6 +20,7 @@ export default class VoterGuideGetStarted extends Component {
       twitterSearchStatus: "",
       isLoadingTwitterData: false,
       didUserPressEnter: false,
+      isTwitterHandleValid: false,
     };
     this.onOrganizationStoreChange = this.onOrganizationStoreChange.bind(this);
     this.resetState = this.resetState.bind(this);
@@ -69,7 +70,6 @@ export default class VoterGuideGetStarted extends Component {
 
   onOrganizationStoreChange () {
     let twitterHandleFound = OrganizationStore.getOrganizationSearchResultsTwitterHandle();
-
     let twitterSearchStatus = "";
     if (this.state.twitterHandleEntered.length) {
       if (twitterHandleFound.length) {
@@ -81,10 +81,9 @@ export default class VoterGuideGetStarted extends Component {
     let voter = VoterStore.getVoter();
     let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
     this.leaveThisComponentIfProfileComplete(voter, organization);
-
     this.setState({
       isLoadingTwitterData: false,
-      isTwitterHandleValid: twitterHandleFound.length,
+      isTwitterHandleValid: twitterHandleFound ? true : false,
       organization: organization,
       searchResultsOrganizationName: OrganizationStore.getOrganizationSearchResultsOrganizationName(),
       searchResultsTwitterHandle: OrganizationStore.getOrganizationSearchResultsTwitterHandle(),
@@ -135,12 +134,6 @@ export default class VoterGuideGetStarted extends Component {
     e.preventDefault();
     // console.log("submit by hitting enter");
     if (!this.state.isTwitterHandleValid) {
-      // if (this.state.isLoadingTwitterData){
-      //   console.log("Please wait while we load Twitter data");
-
-      // } else {
-      //   console.log("Please enter a valid Twitter handle");
-      // }
       this.setState({ didUserPressEnter: true });
       return false;
     } else {
@@ -191,7 +184,7 @@ export default class VoterGuideGetStarted extends Component {
   }
 
   validateTwitterHandle (event) {
-    //TODO: check this
+    // console.log("validateTwitterHandle", event.target.value);
     clearTimeout(this.timer);
     if (event.target.value.length) {
       this.validateTwitterHandleAction(event.target.value);
@@ -259,7 +252,6 @@ export default class VoterGuideGetStarted extends Component {
                                      "form-control input-lg u-margin-top--sm" }
                          name="twitterHandle"
                          placeholder="Enter Twitter Handle"
-                         onKeyDown={this.resetState}
                          onChange={this.validateTwitterHandle}
                          autoFocus />
                 </div>
