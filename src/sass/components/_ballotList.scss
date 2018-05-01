@@ -119,7 +119,7 @@ $ballotBottomPaddingCordova: 300px;  //needed for editable comment on last propo
     display: inline;
   }
   // This img override is needed because the carousel (slick-slide img)
-  &__image-modal img { display: inline; } // stylelint-disable-line selector-no-type
+  &__image-modal img { display: inline; } // stylelint-disable-line selector-max-type
 }
 
 .BallotItemsSummary {
