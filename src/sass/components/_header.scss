@@ -1,4 +1,4 @@
-@import 'base/variables';
+@import '../base/variables';
 
 $space-header-height:  20px;
 $space-search-right: 10%;
@@ -57,7 +57,7 @@ $space-search-right: 10%;
   z-index: 3;
 }
 
-.page-getting-started-header {
+.page-secondary-nav-header {
   // required overrides for Bootstrap :(
   border: none;
   @include clearfix;
@@ -73,7 +73,7 @@ $space-search-right: 10%;
   justify-content: center;
 }
 
-.page-getting-started-header-background {
+.page-secondary-nav-header-background {
   margin-top: $space-md;
   &::before {
     content: '';
