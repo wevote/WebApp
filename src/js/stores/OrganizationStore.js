@@ -232,14 +232,18 @@ class OrganizationStore extends ReduceStore {
         // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
         VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
         // Update who the organization is followed by
-        VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
-        VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
+        // 2018-05-02 NOT calling this for optimization (not critical)
+        // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
+        // 2018-05-02 NOT calling this for optimization (not critical)
+        // VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
         // Update the guides the voter is following
-        VoterGuideActions.voterGuidesFollowedRetrieve();
+        // 2018-05-02 NOT calling this for optimization (not critical)
+        // VoterGuideActions.voterGuidesFollowedRetrieve();
         // Update the followers of the organization that was just followed: organization_we_vote_id
-        VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
+        // 2018-05-02 NOT calling this for optimization (not critical)
+        // VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
         // Following one org can change the support/oppose count for many ballot items for the voter
-        SupportActions.positionsCountForAllBallotItems();
+        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         // Retrieve the organizations followed by voter
         OrganizationActions.organizationsFollowedRetrieve();
         organization_we_vote_ids_voter_is_following = state.organization_we_vote_ids_voter_is_following;
@@ -275,18 +279,22 @@ class OrganizationStore extends ReduceStore {
         search_string = "";
         add_voter_guides_not_from_election = true;
         // Whenever a voter follows a new org, update list
-        VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voter_guides_not_from_election);
+        // 2018-05-02 NOT calling this for optimization (not critical)
+        // VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voter_guides_not_from_election);
         // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
-        VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
+        // 2018-05-02 NOT calling this for optimization (not critical)
+        // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
         // Update who the organization is followed by
-        VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
-        VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
+        // 2018-05-02 NOT calling this for optimization (not critical)
+        // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
+        // VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
         // Update the guides the voter is following
         VoterGuideActions.voterGuidesFollowedRetrieve();
         // Update the followers of the organization that was just un-followed: organization_we_vote_id
-        VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
+        // 2018-05-02 NOT calling this for optimization (not critical)
+        // VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
         // Un-Following one org can change the support/oppose count for many ballot items for the voter
-        SupportActions.positionsCountForAllBallotItems();
+        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         // Retrieve the organizations followed by voter
         OrganizationActions.organizationsFollowedRetrieve();
         return {
@@ -306,16 +314,20 @@ class OrganizationStore extends ReduceStore {
         // Whenever a voter follows a new org, update list
         VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voter_guides_not_from_election);
         // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
-        VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
+        // 2018-05-02 NOT calling this for optimization (not critical)
+        // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
         // Update who the organization is followed by
-        VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
-        VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
+        // 2018-05-02 NOT calling this for optimization (not critical)
+        // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
+        // VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
         // Update the guides the voter is following
-        VoterGuideActions.voterGuidesFollowedRetrieve();
+        // 2018-05-02 NOT calling this for optimization (not critical)
+        // VoterGuideActions.voterGuidesFollowedRetrieve();
         // Update the followers of the organization that was just ignored: organization_we_vote_id
-        VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
+        // 2018-05-02 NOT calling this for optimization (not critical)
+        // VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
         // Ignoring one org can change the support/oppose count for many ballot items for the voter
-        SupportActions.positionsCountForAllBallotItems();
+        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         // Go through all of the candidates currently on the ballot and update their positions
         candidate_we_vote_id = "wv01cand5887"; // TODO TEMP
         CandidateActions.positionListForBallotItem(candidate_we_vote_id);

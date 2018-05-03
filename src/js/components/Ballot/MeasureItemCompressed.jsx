@@ -1,14 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import { historyPush } from "../../utils/cordovaUtils";
-// import ItemActionBar from "../Widgets/ItemActionBar";
-// import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
-// import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
-// import ItemTinyOpinionsToFollow from "../VoterGuide/ItemTinyOpinionsToFollow";
 import { renderLog } from "../../utils/logging";
+import OrganizationStore from "../../stores/OrganizationStore";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 import VoterGuideStore from "../../stores/VoterGuideStore";
@@ -16,49 +12,94 @@ import VoterGuideStore from "../../stores/VoterGuideStore";
 
 export default class MeasureItemCompressed extends Component {
   static propTypes = {
-    we_vote_id: PropTypes.string.isRequired,
+    ballot_item_display_name: PropTypes.string.isRequired,
+    kind_of_ballot_item: PropTypes.string.isRequired,
+    link_to_ballot_item_page: PropTypes.bool,
     measure_subtitle: PropTypes.string,
     measure_text: PropTypes.string,
-    position_list: PropTypes.array,
-    kind_of_ballot_item: PropTypes.string.isRequired,
-    ballot_item_display_name: PropTypes.string.isRequired,
-    link_to_ballot_item_page: PropTypes.bool,
     measure_url: PropTypes.string,
+    organization: PropTypes.object,
+    position_list: PropTypes.array,
+    showPositionStatementActionBar: PropTypes.bool,
     toggleMeasureModal: PropTypes.func,
+    we_vote_id: PropTypes.string.isRequired,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      transitioning: false,
-      showModal: false,
       maximum_organization_display: 4,
+      organization: {},
+      showModal: false,
+      transitioning: false,
     };
+    this.getMeasureLink = this.getMeasureLink.bind(this);
+    this.goToMeasureLink = this.goToMeasureLink.bind(this);
   }
 
   componentDidMount () {
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
+    this.setState({
+      supportProps: SupportStore.get(this.props.we_vote_id)
+    });
+    if (this.props.organization && this.props.organization.organization_we_vote_id) {
+      this.setState({
+        organization: this.props.organization,
+      });
+    }
+  }
+
+  componentWillReceiveProps (nextProps){
+    if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
+      this.setState({
+        organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
+      });
+    }
   }
 
   componentWillUnmount () {
+    this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.supportStoreListener.remove();
+  }
+
+  onOrganizationStoreChange () {
+    this.setState({
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
+    });
   }
 
   onVoterGuideStoreChange () {
     // We just want to trigger a re-render
     this.setState({ transitioning: false });
-    // console.log("onVoterGuideStoreChange");
   }
 
   onSupportStoreChange () {
+    // Whenever positions change, we want to make sure to get the latest organization, because it has
+    //  position_list_for_one_election and position_list_for_all_except_one_election attached to it
     this.setState({
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
       supportProps: SupportStore.get(this.props.we_vote_id),
       transitioning: false,
     });
+  }
+
+  getMeasureLink (oneMeasureWeVoteId) {
+    if (this.state.organization && this.state.organization.organization_we_vote_id) {
+      // If there is an organization_we_vote_id, signal that we want to link back to voter_guide for that organization
+      return "/measure/" + oneMeasureWeVoteId + "/btvg/" + this.state.organization.organization_we_vote_id;
+    } else {
+      // If no organization_we_vote_id, signal that we want to link back to default ballot
+      return "/measure/" + oneMeasureWeVoteId + "/b/btdb/";
+    }
+  }
+
+  goToMeasureLink (oneMeasureWeVoteId) {
+    let measureLink = this.getMeasureLink(oneMeasureWeVoteId);
+    historyPush(measureLink);
   }
 
   render () {
@@ -93,14 +134,14 @@ export default class MeasureItemCompressed extends Component {
           { this.props.link_to_ballot_item_page ?
             <div className="card-main__ballot-name-group">
               <div className="card-main__ballot-name-item card-main__ballot-name">
-                <Link to={"/measure/" + measure_we_vote_id}>
+                <a onClick={() => this.goToMeasureLink(measure_we_vote_id)}>
                   {ballot_item_display_name}
-                </Link>
+                </a>
               </div>
               <div className="card-main__ballot-name-item">
-                <Link to={"/measure/" + measure_we_vote_id}>
+                <a onClick={() => this.goToMeasureLink(measure_we_vote_id)}>
                   <span className="card-main__ballot-read-more-link hidden-xs">learn&nbsp;more</span>
-                </Link>
+                </a>
               </div>
             </div> :
             ballot_item_display_name
@@ -109,7 +150,7 @@ export default class MeasureItemCompressed extends Component {
         <BookmarkToggle we_vote_id={measure_we_vote_id} type="MEASURE" />
         {/* Measure information */}
         <div className={ this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null }
-             onClick={ this.props.link_to_ballot_item_page ? () => historyPush("/measure/" + measure_we_vote_id) : null }>
+             onClick={ this.props.link_to_ballot_item_page ? () => this.goToMeasureLink(measure_we_vote_id) : null }>
           {measure_subtitle}
         </div>
         { measure_text ? <div className="measure_text">{measure_text}</div> : null }
@@ -121,6 +162,7 @@ export default class MeasureItemCompressed extends Component {
                                     maximumOrganizationDisplay={this.state.maximum_organization_display}
                                     organizationsToFollowSupport={organizationsToFollowSupport}
                                     organizationsToFollowOppose={organizationsToFollowOppose}
+                                    showPositionStatementActionBar={this.props.showPositionStatementActionBar}
                                     supportProps={measureSupportStore}
                                     type="MEASURE" />
         </div>

@@ -38,7 +38,7 @@ export default class CandidateItemCompressed extends Component {
   }
 
   componentDidMount () {
-    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
@@ -77,8 +77,8 @@ export default class CandidateItemCompressed extends Component {
     });
   }
 
-  _onOrganizationStoreChange () {
-    // console.log("VoterGuideOfficeItemCompressed _onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
+  onOrganizationStoreChange () {
+    // console.log("VoterGuideOfficeItemCompressed onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
     });

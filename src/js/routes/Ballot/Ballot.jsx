@@ -177,7 +177,7 @@ export default class Ballot extends Component {
     // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
     // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
     SupportActions.voterAllPositionsRetrieve();
-    SupportActions.positionsCountForAllBallotItems();
+    SupportActions.positionsCountForAllBallotItems(google_civic_election_id);
     BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onBallotStoreChange.bind(this));

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router";
 import { historyPush } from "../../utils/cordovaUtils";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
@@ -32,10 +31,12 @@ export default class MeasureItem extends Component {
   constructor (props) {
     super(props);
     this.state = { transitioning: false };
+    this.getMeasureLink = this.getMeasureLink.bind(this);
+    this.goToMeasureLink = this.goToMeasureLink.bind(this);
   }
 
   componentDidMount () {
-    this.supportStoreListener = SupportStore.addListener(this._onChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
   }
 
@@ -43,8 +44,23 @@ export default class MeasureItem extends Component {
     this.supportStoreListener.remove();
   }
 
-  _onChange () {
+  onSupportStoreChange () {
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id), transitioning: false });
+  }
+
+  getMeasureLink (oneMeasureWeVoteId) {
+    if (this.state.organization && this.state.organization.organization_we_vote_id) {
+      // If there is an organization_we_vote_id, signal that we want to link back to voter_guide for that organization
+      return "/measure/" + oneMeasureWeVoteId + "/btvg/" + this.state.organization.organization_we_vote_id;
+    } else {
+      // If no organization_we_vote_id, signal that we want to link back to default ballot
+      return "/measure/" + oneMeasureWeVoteId + "/b/btdb/";
+    }
+  }
+
+  goToMeasureLink (oneMeasureWeVoteId) {
+    let measureLink = this.getMeasureLink(oneMeasureWeVoteId);
+    historyPush(measureLink);
   }
 
   render () {
@@ -53,12 +69,10 @@ export default class MeasureItem extends Component {
     let { ballot_item_display_name, measure_subtitle,
           measure_text, we_vote_id, state_display_name,
           election_display_name, regional_display_name } = this.props;
-    if (state_display_name === undefined) {
+    if (state_display_name === undefined && this.props.state_code) {
       state_display_name = this.props.state_code.toUpperCase();
     }
 
-    let measureLink = "/measure/" + we_vote_id;
-    let goToMeasureLink = function () { historyPush(measureLink); };
     let num_of_lines = 2;
     measure_subtitle = capitalizeString(measure_subtitle);
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
@@ -67,17 +81,9 @@ export default class MeasureItem extends Component {
 
     return <div className="card-main">
       <div className="card-main__content">
-        {/* {
-          supportProps && supportProps.is_support ?
-          <img src={cordovaDot("/img/global/svg-icons/thumbs-up-color-icon.svg")} className="card-main__position-icon" width="24" height="24" /> : null
-        }
-        {
-          supportProps && supportProps.is_oppose ?
-          <img src={cordovaDot("/img/global/svg-icons/thumbs-down-color-icon.svg")} className="card-main__position-icon" width="24" height="24" /> : null
-        } */}
         <h2 className="card-main__display-name">
           { this.props.link_to_ballot_item_page ?
-            <Link to={measureLink}>{ballot_item_display_name}</Link> :
+            <a onClick={() => this.goToMeasureLink(this.props.we_vote_id)}>{ballot_item_display_name}</a> :
               ballot_item_display_name
           }
         </h2>
@@ -91,8 +97,7 @@ export default class MeasureItem extends Component {
         </p></div>
         <div className={ this.props.link_to_ballot_item_page ?
                 "u-cursor--pointer" : null }
-              onClick={ this.props.link_to_ballot_item_page ?
-                goToMeasureLink : null }>{measure_subtitle}</div>
+              onClick={ this.props.link_to_ballot_item_page ? () => this.goToMeasureLink(this.props.we_vote_id) : null }>{measure_subtitle}</div>
           { this.props.measure_text ?
             <div className="measure_text u-gray-mid">
               <ReadMore num_of_lines={num_of_lines}
@@ -107,9 +112,7 @@ export default class MeasureItem extends Component {
           <div className={ this.props.link_to_ballot_item_page ?
                   "u-cursor--pointer" :
                   null }
-                onClick={ this.props.link_to_ballot_item_page ?
-                  goToMeasureLink :
-                  null }
+                onClick={ this.props.link_to_ballot_item_page ? () => this.goToMeasureLink(this.props.we_vote_id) : null }
           >
             <div className="u-stack--md">
               <ItemSupportOpposeCounts we_vote_id={we_vote_id}

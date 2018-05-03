@@ -4,7 +4,7 @@ import Helmet from "react-helmet";
 import BallotSearchResults from "../Ballot/BallotSearchResults";
 import BallotStore from "../../stores/BallotStore";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
-import VoterGuideSettingsSuggestedBallotItems from "../../components/Settings/VoterGuideSettingsSuggestedBallotItems";
+import { historyPush } from "../../utils/cordovaUtils";
 import FooterDoneBar from "../Navigation/FooterDoneBar";
 import LoadingWheel from "../../components/LoadingWheel";
 import { renderLog } from "../../utils/logging";
@@ -42,6 +42,7 @@ export default class VoterGuideSettingsPositions extends Component {
     };
     this.clearSearch = this.clearSearch.bind(this);
     this.searchUnderway = this.searchUnderway.bind(this);
+    this.goToVoterGuideDisplay = this.goToVoterGuideDisplay.bind(this);
   }
 
   // Set up this component upon first entry
@@ -98,7 +99,6 @@ export default class VoterGuideSettingsPositions extends Component {
       }
     }
 
-    this.onVoterStoreChange();
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -171,11 +171,41 @@ export default class VoterGuideSettingsPositions extends Component {
   }
 
   onVoterStoreChange () {
-    this.setState({voter: VoterStore.getVoter()});
+    // Get Voter and Voter's Organization
+    let voter = VoterStore.getVoter();
+    let update_voter = true;
+    if (voter && voter.we_vote_id && this.state.voter && this.state.voter.we_vote_id && voter.we_vote_id === this.state.voter.we_vote_id) {
+      console.log("VoterGuideSettingsPositions, onVoterStoreChange, do NOT update_voter");
+      update_voter = false;
+    }
+    if (update_voter) {
+      this.setState({ voter: voter });
+      let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+      // console.log("VoterGuideSettingsPositions componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
+      if (linkedOrganizationWeVoteId) {
+        this.setState({
+          linkedOrganizationWeVoteId: linkedOrganizationWeVoteId,
+        });
+        let organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
+        if (organization && organization.organization_we_vote_id) {
+          this.setState({
+            organization: organization,
+          });
+          // Positions for this organization, for this election
+          // Might cause a loop
+          // OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, false, true, voterGuide.google_civic_election_id);
+        } else {
+          OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
+          // if (voterGuide && voterGuide.google_civic_election_id) {
+            OrganizationActions.positionListForOpinionMaker(linkedOrganizationWeVoteId, true, false); // , voterGuide.google_civic_election_id
+          // }
+        }
+      }
+    }
   }
 
   onVoterGuideStoreChange (){
-    console.log("VoterGuideSettingsPositions onVoterGuideStoreChange");
+    // console.log("VoterGuideSettingsPositions onVoterGuideStoreChange");
     if (this.state.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(this.state.voterGuideWeVoteId)) {
       let voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.state.voterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
@@ -194,6 +224,14 @@ export default class VoterGuideSettingsPositions extends Component {
       clearSearchTextNow: true,
       searchIsUnderway: false
     });
+  }
+
+  goToVoterGuideDisplay () {
+    let voterGuideDisplay = "/ballot";
+    if (this.state.voterGuide) {
+      voterGuideDisplay = "/voterguide/" + this.state.voterGuide.organization_we_vote_id + "/ballot/election/" + this.state.voterGuide.google_civic_election_id + "/ballot";
+    }
+    historyPush(voterGuideDisplay);
   }
 
   // This function is called by BallotSearchResults and SearchBar when an API search has been triggered
@@ -287,11 +325,19 @@ export default class VoterGuideSettingsPositions extends Component {
           }
         </div>
       </div>
-      { !this.state.searchIsUnderway ?
+      {/* !this.state.searchIsUnderway ?
         <div>
           <VoterGuideSettingsSuggestedBallotItems maximumSuggestedItems={5} />
         </div> :
-        null }
+        null */}
+      <div className="fa-pull-right">
+        <button type="button" className="btn btn-lg btn-success"
+                onClick={this.goToVoterGuideDisplay}>
+          <span className="hidden-xs">See Full Ballot to Enter More Positions&nbsp;&nbsp;&gt;</span>
+          <span className="visible-xs">Enter More Positions&nbsp;&nbsp;&gt;</span>
+        </button>
+      </div>
+
 
       {this.state.searchIsUnderway ?
         <span className="visible-xs">

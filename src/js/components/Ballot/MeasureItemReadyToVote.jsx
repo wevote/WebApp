@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router";
 import { cordovaDot } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import VoterGuideStore from "../../stores/VoterGuideStore";
@@ -65,7 +64,7 @@ export default class MeasureItemReadyToVote extends Component {
         <div className="u-flex-auto u-cursor--pointer">
           <h2 className="card-main__display-name">
             { this.props.link_to_ballot_item_page ?
-              <Link to={measureLink}>{ballot_item_display_name}</Link> :
+              <a onClick={measureLink}>{ballot_item_display_name}</a> :
                 ballot_item_display_name
             }
           </h2>

@@ -210,7 +210,7 @@ class VoterGuideStore extends ReduceStore {
           voter_guide_with_pledge_info.voter_has_pledged = action.res.voter_has_pledged;
           all_cached_voter_guides_by_election[action.res.organization_we_vote_id][action.res.google_civic_election_id] = voter_guide_with_pledge_info;
           OrganizationActions.organizationsFollowedRetrieve();
-          SupportActions.positionsCountForAllBallotItems();
+          SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
           SupportActions.voterAllPositionsRetrieve();
           VoterGuideActions.voterGuidesToFollowRetrieve(action.res.google_civic_election_id);
           VoterGuideActions.voterGuidesFollowedRetrieve(action.res.google_civic_election_id);
@@ -282,7 +282,7 @@ class VoterGuideStore extends ReduceStore {
         // Update the followers of the organization that was just followed: organization_we_vote_id
         VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
         // Following one org can change the support/oppose count for many ballot items for the voter
-        SupportActions.positionsCountForAllBallotItems();
+        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         // Retrieve the organizations followed by voter
         OrganizationActions.organizationsFollowedRetrieve();
         return state;

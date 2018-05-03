@@ -18,8 +18,8 @@ import VoterStore from "../../stores/VoterStore";
 import SearchAllActions from "../../actions/SearchAllActions";
 import webAppConfig from "../../config";
 
-// The component /routes/VoterGuide/OrganizationVoterGuideMeasure is based on this component
-export default class Measure extends Component {
+// This is based on routes/Ballot/Measure
+export default class OrganizationVoterGuideMeasure extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired,
   };
