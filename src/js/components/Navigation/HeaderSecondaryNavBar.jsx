@@ -6,7 +6,7 @@ import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIs
 import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
 import BallotIntroIssuesSuccess from "../../components/Ballot/BallotIntroIssuesSuccess";
 import { cordovaDot, isWebApp } from "../../utils/cordovaUtils";
-import GettingStartedBarItem from "./GettingStartedBarItem";
+import SecondaryNavBarItem from "./SecondaryNavBarItem";
 import EmailBallotModal from "../Ballot/EmailBallotModal";
 import EmailBallotToFriendsModal from "../Ballot/EmailBallotToFriendsModal";
 import FacebookBallotModal from "../Ballot/FacebookBallotModal";
@@ -19,7 +19,7 @@ import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
 import webAppConfig from "../../config";
 
-export default class HeaderGettingStartedBar extends Component {
+export default class HeaderSecondaryNavBar extends Component {
 
   static propTypes = {
     hideGettingStartedIssuesButton: PropTypes.bool,
@@ -49,10 +49,10 @@ export default class HeaderGettingStartedBar extends Component {
       showBallotIntroOrganizations: false,
       showEmailModal: false,
       showFacebookModal: false,
-      success_message: undefined,  //Used by EmailBallotModal and EmailBallotToFriendsModal
+      successMessage: undefined,  //Used by EmailBallotModal and EmailBallotToFriendsModal
       sender_email_address: "",   //Used by EmailBallotModal and EmailBallotToFriendsModal
       verification_email_sent: false, //Used by EmailBallotModal and EmailBallotToFriendsModal
-      sender_email_address_from_email_ballot_modal: "" //Used by FacebookBallotModal and FacebookBallotToFriendsModal
+      sender_email_address_from_email_ballot_modal: "", //Used by FacebookBallotModal and FacebookBallotToFriendsModal
     };
   }
 
@@ -120,13 +120,13 @@ export default class HeaderGettingStartedBar extends Component {
   /**
    * Method that passes data between EmailBallotModal to EmailBallotToFriendsModal
    */
-  ballotEmailWasSent (success_message, sender_email_address, verification_email_sent, shouldChangeSlide = true) {
+  ballotEmailWasSent (successMessage, senderEmailAddress, verificationEmailSent, shouldChangeSlide = true) {
     this.setState({
-      success_message,
-      sender_email_address,
-      verification_email_sent
+      successMessage,
+      senderEmailAddress,
+      verificationEmailSent,
     });
-    if (shouldChangeSlide){
+    if (shouldChangeSlide) {
       this.refs.slider.slickNext();
     }
   }
@@ -134,13 +134,13 @@ export default class HeaderGettingStartedBar extends Component {
   /**
    * Method that passes data between FacebookBallotModal to FacebookBallotToFriendsModal
    */
-  ballotFacebookEmailWasSent (success_message, sender_email_address, verification_email_sent, shouldChangeSlide = true) {
+  ballotFacebookEmailWasSent (successMessage, senderEmailAddress, verificationEmailSent, shouldChangeSlide = true) {
     this.setState({
-      success_message,
-      sender_email_address,
-      verification_email_sent
+      successMessage,
+      senderEmailAddress,
+      verificationEmailSent,
     });
-    if (shouldChangeSlide){
+    if (shouldChangeSlide) {
       this.refs.slider.slickNext();
     }
   }
@@ -157,7 +157,7 @@ export default class HeaderGettingStartedBar extends Component {
       accessibility: true,
       arrows: false,
     };
-    let sliderSettingsWithSwipe = {...sliderSettings, swipe: true};
+    let sliderSettingsWithSwipe = { ...sliderSettings, swipe: true };
 
     // Have all of the 6 major steps been taken?
     let voterThoroughOrientationComplete = false;
@@ -196,31 +196,31 @@ export default class HeaderGettingStartedBar extends Component {
         </Modal.Body>
       </Modal>;
 
-      const SendEmailModal = <Modal bsClass="background-brand-blue modal"
-                                    show={this.state.showEmailModal}
-                                    onHide={() => this._openEmailModal(this)}>
-        <Modal.Body>
-         <div className="intro-modal__close">
-           <a onClick={this._openEmailModal} className="intro-modal__close-anchor">
-             <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
-           </a>
-         </div>
-          <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettingsWithSwipe}>
-            <div key={1} className="share-modal__calc-height">
-              <EmailBallotModal ballot_link={this.props.pathname}
-                                next={this._nextSliderPage}
-                                ballotEmailWasSent={this.ballotEmailWasSent} />
-            </div>
-            <div key={2} className="share-modal__calc-height">
-              <EmailBallotToFriendsModal ballot_link={this.props.pathname}
-                                         ballotEmailWasSent={this.ballotEmailWasSent}
-                                         sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
-                                         success_message={this.state.success_message}
-                                         verification_email_sent={this.state.verification_email_sent}
-                                        />
-            </div>
-          </Slider>
-        </Modal.Body>
+    const SendEmailModal = <Modal bsClass="background-brand-blue modal"
+                                  show={this.state.showEmailModal}
+                                  onHide={() => this._openEmailModal(this)}>
+      <Modal.Body>
+       <div className="intro-modal__close">
+         <a onClick={this._openEmailModal} className="intro-modal__close-anchor">
+           <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
+         </a>
+       </div>
+        <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettingsWithSwipe}>
+          <div key={1} className="share-modal__calc-height">
+            <EmailBallotModal ballot_link={this.props.pathname}
+                              next={this._nextSliderPage}
+                              ballotEmailWasSent={this.ballotEmailWasSent} />
+          </div>
+          <div key={2} className="share-modal__calc-height">
+            <EmailBallotToFriendsModal ballot_link={this.props.pathname}
+                                       ballotEmailWasSent={this.ballotEmailWasSent}
+                                       sender_email_address_from_email_ballot_modal={this.state.senderEmailAddress}
+                                       success_message={this.state.successMessage}
+                                       verification_email_sent={this.state.verificationEmailSent}
+                                      />
+          </div>
+        </Slider>
+      </Modal.Body>
     </Modal>;
 
     const SendFacebookModal = <Modal bsClass="background-brand-blue modal"
@@ -241,9 +241,9 @@ export default class HeaderGettingStartedBar extends Component {
           <div key={2} className="share-modal__calc-height">
             <FacebookBallotToFriendsModal ballot_link={this.props.pathname}
                                           ballotFacebookEmailWasSent={this.ballotFacebookEmailWasSent}
-                                          sender_email_address_from_email_ballot_modal={this.state.sender_email_address}
-                                          success_message={this.state.success_message}
-                                          verification_email_sent={this.state.verification_email_sent} />
+                                          sender_email_address_from_email_ballot_modal={this.state.senderEmailAddress}
+                                          success_message={this.state.successMessage}
+                                          verification_email_sent={this.state.verificationEmailSent} />
 
           </div>
         </Slider>
@@ -256,54 +256,54 @@ export default class HeaderGettingStartedBar extends Component {
     // We want to add a tracking code here so we can count shares. Vote.org does it this way: https://www.vote.org/#.WpiRvFhU3V4.twitter
     let encodedMessage = encodeURIComponent("I am getting ready to vote @WeVote. Join me!");
     let twitterIntent = "https://twitter.com/intent/tweet?url=" + encodeURIComponent(ballotBaseUrl) + "&text=" + encodedMessage + "&hashtags=Vote,Voting,WeVote";
-    let searchStyle = isWebApp() ? "page-getting-started-header" : "page-getting-started-header page-header-cordova-getting-started";
+    let searchStyle = isWebApp() ? "page-secondary-nav-header" : "page-secondary-nav-header page-header-cordova-secondary-nav";
 
-    return <div className="page-getting-started-header-background">
+    return <div className="page-secondary-nav-header-background">
       { voterThoroughOrientationComplete ?
         null :
         <header className={searchStyle}>
-          <div className="header-getting-started-nav">
+          <div className="header-secondary-nav">
             {/* Issues Icon & Modal */}
             {!this.props.hideGettingStartedIssuesButton ?
-              <GettingStartedBarItem show={this._toggleBallotIntroFollowIssues}
-                                     source={cordovaDot("/img/global/svg-icons/issues-v1-64x42.svg")}
-                                     title="Issues"
-                                     completed={this.state.ballot_intro_issues_completed} /> :
+              <SecondaryNavBarItem show={this._toggleBallotIntroFollowIssues}
+                                   source={cordovaDot("/img/global/svg-icons/issues-v1-64x42.svg")}
+                                   title="Issues"
+                                   completed={this.state.ballot_intro_issues_completed} /> :
               null }
             {/* Print disabled in Cordova */}
             { isWebApp() &&
-              <GettingStartedBarItem show={this._openPrintModal}
-                                     title="Print"
-                                     printIcon/>
+              <SecondaryNavBarItem show={this._openPrintModal}
+                                   title="Print"
+                                   printIcon/>
             }
-            <GettingStartedBarItem show={this._openEmailModal}
-                                   title="Email"
-                                   emailIcon/>
+            <SecondaryNavBarItem show={this._openEmailModal}
+                                 title="Email"
+                                 emailIcon/>
             {/* February 2018, Facebook and Magic Email disabled for Cordova */}
             { isWebApp() && <div>
-            <GettingStartedBarItem show={this._openFacebookModal}
-                                   title="Share Ballot"
-                                   facebookIcon
+            <SecondaryNavBarItem show={this._openFacebookModal}
+                                 title="Share Ballot"
+                                 facebookIcon
                                     />
             </div>}
             <span className="visible-xs">
-              <GettingStartedBarItem url={twitterIntent}
-                                     title="Tweet"
-                                     twitterIcon
-                                     isExternal/>
+              <SecondaryNavBarItem url={twitterIntent}
+                                   title="Tweet"
+                                   twitterIcon
+                                   isExternal/>
             </span>
             <span className="hidden-xs">
-              <GettingStartedBarItem url={twitterIntent}
-                                     title="Tweet Ballot"
-                                     twitterIcon
-                                     isExternal/>
+              <SecondaryNavBarItem url={twitterIntent}
+                                   title="Tweet Ballot"
+                                   twitterIcon
+                                   isExternal/>
             </span>
             {/* February 2018, Facebook and Magic Email disabled for Cordova -- In this case it is the PollingLocator with the iFrame */}
             { isWebApp() && <div>
-              <GettingStartedBarItem show={this._openPollingLocatorModal}
-                                     titleDesktop="Polling Location"
-                                     titleMobile="Vote"
-                                     mapMarkerIcon/>
+              <SecondaryNavBarItem show={this._openPollingLocatorModal}
+                                   titleDesktop="Polling Location"
+                                   titleMobile="Vote"
+                                   mapMarkerIcon/>
               </div>
             }
             </div>
