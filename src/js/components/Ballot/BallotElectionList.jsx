@@ -5,6 +5,7 @@ import BallotActions from "../../actions/BallotActions";
 import BallotStore from "../../stores/BallotStore";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
+import LoadingWheel from "../../components/LoadingWheel";
 import OrganizationActions from "../../actions/OrganizationActions";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
@@ -125,7 +126,11 @@ export default class BallotElectionList extends Component {
   render () {
     renderLog(__filename);
     if (this.state.loading_new_ballot_items) {
-      return <h1 className="h1">Switching ballot data now...</h1>;
+      return <div>
+        <h1 className="h1">Switching ballot data now...</h1>
+        <br />
+        {LoadingWheel}
+      </div>;
     }
 
     let currentDate = moment().format("YYYY-MM-DD");

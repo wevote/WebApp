@@ -44,6 +44,7 @@ import Organization from "./routes/More/Organization";
 import OrganizationVoterGuide from "./routes/VoterGuide/OrganizationVoterGuide";
 import OrganizationVoterGuideCandidate from "./routes/VoterGuide/OrganizationVoterGuideCandidate";
 import OrganizationVoterGuideEdit from "./routes/VoterGuide/OrganizationVoterGuideEdit";
+import OrganizationVoterGuideMeasure from "./routes/VoterGuide/OrganizationVoterGuideMeasure";
 import OrganizationVoterGuideOffice from "./routes/VoterGuide/OrganizationVoterGuideOffice";
 import PollingPlaceLocatorModal from "./routes/Ballot/PollingPlaceLocatorModal";
 import Privacy from "./routes/More/Privacy";
@@ -100,6 +101,8 @@ const routes = () =>
       <Route path="/candidate/:candidate_we_vote_id/:back_to_variable/:organization_we_vote_id" component={OrganizationVoterGuideCandidate} />
       <Route path="/candidate/:candidate_we_vote_id/:organization_we_vote_id" component={OrganizationVoterGuideCandidate} />
       <Route path="/candidate/:candidate_we_vote_id" component={Candidate} />
+      <Route path="/measure/:measure_we_vote_id/b/:back_to_variable/" component={Measure} />
+      <Route path="/measure/:measure_we_vote_id/:back_to_variable/:organization_we_vote_id" component={OrganizationVoterGuideMeasure} />
       <Route path="/measure/:measure_we_vote_id" component={Measure} />
     </Route>
     <Route path="/ballot/empty" component={EmptyBallot} />

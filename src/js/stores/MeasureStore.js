@@ -55,6 +55,7 @@ class MeasureStore extends ReduceStore {
     let all_cached_positions_about_measures;
     let ballot_item_we_vote_id;
     let measure;
+    let measure_we_vote_id;
     let new_position_list;
     let one_position;
     let position_list_for_measure;
@@ -75,10 +76,10 @@ class MeasureStore extends ReduceStore {
       case "positionListForBallotItem":
         position_list_for_measure = action.res.kind_of_ballot_item === "MEASURE";
         if (position_list_for_measure) {
-          ballot_item_we_vote_id = action.res.ballot_item_we_vote_id;
+          measure_we_vote_id = action.res.ballot_item_we_vote_id;
           new_position_list = action.res.position_list;
           position_list_from_advisers_followed_by_voter = state.position_list_from_advisers_followed_by_voter;
-          position_list_from_advisers_followed_by_voter[ballot_item_we_vote_id] = new_position_list;
+          position_list_from_advisers_followed_by_voter[measure_we_vote_id] = new_position_list;
           return {
             ...state,
             position_list_from_advisers_followed_by_voter: position_list_from_advisers_followed_by_voter,

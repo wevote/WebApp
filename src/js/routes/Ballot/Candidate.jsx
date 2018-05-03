@@ -21,6 +21,7 @@ import VoterStore from "../../stores/VoterStore";
 import SearchAllActions from "../../actions/SearchAllActions";
 import webAppConfig from "../../config";
 
+// The component /routes/VoterGuide/OrganizationVoterGuideCandidate is based on this component
 export default class Candidate extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired,
