@@ -181,9 +181,6 @@ $container-margin: -15px;
     color: $white;
     opacity: .8;
     text-align: center;
-    // &--has-icon {
-    //   justify-content: space-between;
-    // }
 
     &:active,
     &.active-icon,
@@ -283,7 +280,6 @@ $container-margin: -15px;
     color: $glyph-icon-color;
     opacity: .8;
     text-align: center;
-    // temporary offsets for .page-header__container padding
 
     @include breakpoints(small mid-small) {
       width: 65px;
