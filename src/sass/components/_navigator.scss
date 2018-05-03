@@ -181,12 +181,6 @@ $container-margin: -15px;
     color: $white;
     opacity: .8;
     text-align: center;
-    // temporary offsets for .page-header__container padding
-    margin-top: -.5em; // stylelint-disable-line sh-waqar/declaration-use-variable
-    margin-bottom: -.5em; // stylelint-disable-line sh-waqar/declaration-use-variable
-    // &--has-icon {
-    //   justify-content: space-between;
-    // }
 
     &:active,
     &.active-icon,
@@ -286,8 +280,6 @@ $container-margin: -15px;
     color: $glyph-icon-color;
     opacity: .8;
     text-align: center;
-    // temporary offsets for .page-header__container padding
-    margin: -8px $space-none; // stylelint-disable-line sh-waqar/declaration-use-variable
 
     @include breakpoints(small mid-small) {
       width: 65px;

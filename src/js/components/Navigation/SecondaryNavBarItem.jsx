@@ -9,7 +9,7 @@ const SecondaryNavBarItem = props => {
   return props.isExternal ?
     <OpenExternalWebSite url={props.url}
                          target="_blank"
-                         className={ (props.printIcon || props.completed ? "hidden-xs " : "") + "header-secondary-nav-nav__item header-secondary-nav__item--has-icon"}
+                         className={ (props.printIcon || props.completed ? "hidden-xs " : "") + "header-secondary-nav__item header-secondary-nav__item--has-icon"}
                          body={
         <span>
           <span className="header-secondary-nav__item-image-wrapper" title={props.title}>
