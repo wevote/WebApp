@@ -655,8 +655,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
                 <span className="u-margin-left--xs">{ voterIssuesScoreWithSign }&nbsp;</span>
               }
               <span className="network-positions-stacked__support-score-label">
-                <span>Issue<br />
-                  Score <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
+                <span>Issue<br />Score</span>
+                <span>&nbsp;<i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" />&nbsp;</span>
               </span>
             </span>
           </OverlayTrigger> :
