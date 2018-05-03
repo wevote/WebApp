@@ -232,10 +232,10 @@ class FacebookStore extends ReduceStore {
 
       case FacebookConstants.FACEBOOK_RECEIVED_PICTURE:
         let facebook_user_id = this.userId;
-        FacebookActions.voterFacebookSignInPhoto(facebook_user_id, action.data.data);
         let facebook_profile_image_url_https = "";
-        if (action.data && action.data.data && action.data.data.url) {
-          facebook_profile_image_url_https = action.data.data.url;
+        if (action.data && action.data.picture && action.data.picture.data && action.data.picture.data.url) {
+          FacebookActions.voterFacebookSignInPhoto(facebook_user_id, action.data.picture.data);
+          facebook_profile_image_url_https = action.data.picture.data.url;
         }
         return {
           ...state,

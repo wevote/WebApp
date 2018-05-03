@@ -73,12 +73,14 @@ export default {
 
   getFacebookProfilePicture: function (userId) {
     if (window.FB) {
-      window.FB.api(`/${userId}/picture?type=large`, (response) => {
-        Dispatcher.dispatch({
-          type: FacebookConstants.FACEBOOK_RECEIVED_PICTURE,
-          data: response,
+      window.FB.api(
+        '/me?fields=picture.type(large)', 'GET', {},
+        function(response) {
+          Dispatcher.dispatch({
+            type: FacebookConstants.FACEBOOK_RECEIVED_PICTURE,
+            data: response,
+          });
         });
-      });
     }
   },
 
