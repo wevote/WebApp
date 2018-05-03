@@ -22,7 +22,7 @@ class FacebookDownloadPicture extends React.Component {
   }
 
   didClickDownloadPicture () {
-    FacebookActions.getFacebookProfilePicture(this.props.userId);
+    FacebookActions.getFacebookProfilePicture();
   }
 }
 

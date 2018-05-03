@@ -4,7 +4,6 @@ import BookmarkActions from "../actions/BookmarkActions";
 import cookies from "../utils/cookies";
 import Dispatcher from "../dispatcher/Dispatcher";
 import FacebookActions from "../actions/FacebookActions";
-import FacebookStore from "../stores/FacebookStore";
 import FriendActions from "../actions/FriendActions";
 import SupportActions from "../actions/SupportActions";
 import VoterActions from "../actions/VoterActions";
@@ -488,8 +487,7 @@ class VoterStore extends ReduceStore {
             // console.log("VoterStore, voterRetrieve, action.res: ", action.res);
 
             if (action.res.signed_in_facebook && (url === null || url === "") && facebook_photo_retrieve_loop_count < 10) {
-              let userId = FacebookStore.userId;
-              FacebookActions.getFacebookProfilePicture(userId);
+              FacebookActions.getFacebookProfilePicture();
             }
           } else {
             // console.log("voter_device_id not returned by voterRetrieve");

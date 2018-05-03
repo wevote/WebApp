@@ -71,11 +71,11 @@ export default {
     });
   },
 
-  getFacebookProfilePicture: function (userId) {
+  getFacebookProfilePicture: function () {
     if (window.FB) {
       window.FB.api(
-        '/me?fields=picture.type(large)', 'GET', {},
-        function(response) {
+        "/me?fields=picture.type(large)", "GET", {},
+        function (response) {
           Dispatcher.dispatch({
             type: FacebookConstants.FACEBOOK_RECEIVED_PICTURE,
             data: response,

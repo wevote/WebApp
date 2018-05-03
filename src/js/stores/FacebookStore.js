@@ -123,7 +123,7 @@ class FacebookStore extends ReduceStore {
         // Cache the data in the API server
         // console.log("FACEBOOK_RECEIVED_DATA action.data:", action.data);
         FacebookActions.voterFacebookSignInData(action.data);
-        FacebookActions.getFacebookProfilePicture(action.data.id);
+        FacebookActions.getFacebookProfilePicture();
         return {
           ...state,
           emailData: action.data
