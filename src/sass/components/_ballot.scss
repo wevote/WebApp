@@ -4,6 +4,7 @@ $tab-spacing-desktop: 24px;
 $tab-spacing-mobile: $space-md;
 $header-extension-top: 41%;
 $minus-header-extension-top: -40%;
+$minus-header-extension-top-cordova: -35%;
 $header-extension-top-voter-guide: 2%;
 $minus-header-extension-top-voter-guide: -1%;
 $scrollbar-height: 20px;
@@ -38,6 +39,10 @@ $bottom-spacing-cordova: 50px;
     overflow: hidden;
   }
 
+  &__heading-cordova {
+    margin-top: $minus-header-extension-top-cordova;
+  }
+
   &__header {
     &__title {
       display: inline-block;
@@ -63,6 +68,10 @@ $bottom-spacing-cordova: 50px;
     &__group {
       display: block;
       border-bottom: 0 solid $black;
+    }
+
+    &__top-cordova {
+      margin-top: $space-md;
     }
 
     &__cordova {
