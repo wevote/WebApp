@@ -84,6 +84,7 @@ $ballotBottomPaddingCordova: 300px;  //needed for editable comment on last propo
 // For display of tiny thumbnail images for organizational voter guides
 .organization__image--tiny {
   margin-left: $space-xxs;
+  margin-right: $space-xxs;
   width: 32px; // 32px is set in WeVoteServer environment_variables as PROFILE_IMAGE_TINY_WIDTH (formerly 24px)
   border-radius: $radius-xs;
   @include breakpoints(small) {
@@ -99,18 +100,21 @@ $ballotBottomPaddingCordova: 300px;  //needed for editable comment on last propo
 
     &--small {
       margin-left: $space-xxs;
+      margin-right: $space-xxs;
       width: 32px; // 32px is set in WeVoteServer environment_variables as PROFILE_IMAGE_TINY_WIDTH
       border-radius: $radius-xs;
     }
 
     &--medium {
       margin-left: $space-xxs;
+      margin-right: $space-xxs;
       width: 48px; // 48px is set in WeVoteServer environment_variables as PROFILE_IMAGE_MEDIUM_WIDTH
       border-radius: $radius-xs;
     }
 
     &--large {
       margin-left: $space-xxs;
+      margin-right: $space-xxs;
       width: 125px; // 48px is set in WeVoteServer environment_variables as PROFILE_IMAGE_MEDIUM_WIDTH
       border-radius: $radius-xs;
     }
@@ -133,4 +137,3 @@ $ballotBottomPaddingCordova: 300px;  //needed for editable comment on last propo
   text-decoration: underline;
   font-weight: bold;
 }
-
