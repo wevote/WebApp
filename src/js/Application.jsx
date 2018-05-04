@@ -278,7 +278,7 @@ export default class Application extends Component {
     // We have to do all this, because we allow urls like https://wevote.us/aclu
     // where "aclu" is a twitter account.
 
-    // Based on the path, decide if want theaterMode, contentFullWidthMode, or voterGuideMode
+    // Based on the path, decide if we want theaterMode, contentFullWidthMode, or voterGuideMode
     let inTheaterMode = false;
     let contentFullWidthMode = false;
     let settingsMode = false;
@@ -352,6 +352,10 @@ export default class Application extends Component {
       // "/btdo/" stands for "Back To Default Office Page"
       // "/btvg/" stands for "Back To Voter Guide Page"
       // "/bto/" stands for "Back To Voter Guide Office Page"
+      showBackToHeader = true;
+    }
+
+    if (pathname.startsWith("/measure") && isCordova()) {
       showBackToHeader = true;
     }
 
