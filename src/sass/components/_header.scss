@@ -35,6 +35,10 @@ $space-search-right: 10%;
     background-color: $page-header-color;
     color: $white;
   }
+
+  &__cordova {
+    padding-bottom: $space-xs;
+  }
 }
 
 .page-header-cordova-ios {
