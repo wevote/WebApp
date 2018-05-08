@@ -266,7 +266,7 @@ export default class HeaderBackToBar extends Component {
     let backToOrganizationLinkTextMobile = shortenText(backToOrganizationLinkText, 30);
 
     return (
-      <header className="page-header">
+      <header className={ isWebApp() ? "page-header" : "page-header page-header__cordova" }>
         <Button className={"btn btn-sm btn-default page-header__backToButton  hidden-xs"}
                 onClick={ () => historyPush(backToLink) }>
           <span className="fa fa-arrow-left"/> {backToOrganizationLinkText}
