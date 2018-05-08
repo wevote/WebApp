@@ -51,7 +51,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
       can_scroll_right_desktop: true,
       can_scroll_right_mobile: true,
       showPositionStatement: false,
-      shouldFocusCommentArea: false,
       maximum_organization_display: 0,
       organizations_to_follow_support: [],
       organizations_to_follow_oppose: [],
@@ -62,7 +61,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
     this.closeIssueScorePopover = this.closeIssueScorePopover.bind(this);
     this.closeNetworkScorePopover = this.closeNetworkScorePopover.bind(this);
     this.goToCandidateLinkLocal = this.goToCandidateLinkLocal.bind(this);
-    this.passDataBetweenItemActionToItemPosition = this.passDataBetweenItemActionToItemPosition.bind(this);
   }
 
   componentDidMount () {
@@ -211,12 +209,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
         }
       }
     }, 100);
-  }
-
-  passDataBetweenItemActionToItemPosition () {
-    this.setState({
-      shouldFocusCommentArea: true
-    });
   }
 
   organizationsToDisplay (organizations_to_follow, maximum_organization_display, ballot_item_we_vote_id, visible_tag, supports_this_ballot_item = false, opposes_this_ballot_item = false) {
@@ -461,12 +453,10 @@ export default class ItemSupportOpposeRaccoon extends Component {
     let comment_display_raccoon_desktop = this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text || this.state.showPositionStatement ?
       <div className="hidden-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-
           <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
                                           ballot_item_display_name={this.state.ballot_item_display_name}
                                           comment_edit_mode_on={this.state.showPositionStatement}
                                           supportProps={ballotItemSupportStore}
-                                          shouldFocus={this.state.shouldFocusCommentArea}
                                           transitioning={this.state.transitioning}
                                           type="CANDIDATE"
                                           shown_in_list />
@@ -480,7 +470,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
           <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
                                           ballot_item_display_name={this.state.ballot_item_display_name}
                                           supportProps={ballotItemSupportStore}
-                                          shouldFocus={this.state.shouldFocusCommentArea}
                                           transitioning={this.state.transitioning}
                                           type="CANDIDATE"
                                           shown_in_list />
@@ -615,10 +604,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         +1 to this <strong>Score</strong>.
         Each one that <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
                                                width="20" height="20" /> opposes</span> subtracts
-        1 from this <strong>Score</strong>. <Button bsStyle="success"
-                                                    bsSize="xsmall">
-                                              <span>Listen</span>
-                                            </Button> to an
+        1 from this <strong>Score</strong>. <strong>Listen</strong> to an
         organization to add their opinion to the <strong>Score in Your Network</strong>.
       </Popover>;
 
@@ -632,10 +618,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
                                                width="20" height="20" /> oppose</span>{this.state.ballot_item_display_name ? " " + this.state.ballot_item_display_name : ""}.
         Click on the logo
-        and <Button bsStyle="success"
-                    bsSize="xsmall">
-              <span>Listen</span>
-            </Button> to an organization to add their opinion to the <strong>Score in Your Network</strong>.
+        and <strong>Listen</strong> to an organization to add their opinion to the <strong>Score in Your Network</strong>.
       </Popover>;
 
     const positionsLabel =
