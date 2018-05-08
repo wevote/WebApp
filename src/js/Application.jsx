@@ -3,14 +3,14 @@ import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
 import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
-import { historyPush, cordovaOpenSafariView, isAndroid, isCordova, isIOS,
+import { historyPush, isAndroid, isCordova, isIOS,
   isWebApp } from "./utils/cordovaUtils";
 import ElectionActions from "./actions/ElectionActions";
 import FooterBarCordova from "./components/Navigation/FooterBarCordova";
 import FriendActions from "./actions/FriendActions";
 import HeaderBackToBar from "./components/Navigation/HeaderBackToBar";
 import HeaderBar from "./components/Navigation/HeaderBar";
-import HeaderGettingStartedBar from "./components/Navigation/HeaderGettingStartedBar";
+import HeaderSecondaryNavBar from "./components/Navigation/HeaderSecondaryNavBar";
 import Headroom from "headroom.js";
 import IssueActions from "./actions/IssueActions";
 import IssueStore from "././stores/IssueStore";
@@ -275,7 +275,10 @@ export default class Application extends Component {
 
     routingLog(pathname);
 
-    // If looking at these paths, we want to enter theater mode
+    // We have to do all this, because we allow urls like https://wevote.us/aclu
+    // where "aclu" is a twitter account.
+
+    // Based on the path, decide if we want theaterMode, contentFullWidthMode, or voterGuideMode
     let inTheaterMode = false;
     let contentFullWidthMode = false;
     let settingsMode = false;
@@ -337,7 +340,7 @@ export default class Application extends Component {
     } else {
       voterGuideMode = true;
 
-      // Consider limiting "HeaderGettingStartedBar" to ballot tab only
+      // Consider limiting "HeaderSecondaryNavBar" to ballot tab only
       voterGuideShowGettingStartedNavigation = true;
     }
 
@@ -352,8 +355,12 @@ export default class Application extends Component {
       showBackToHeader = true;
     }
 
+    if (pathname.startsWith("/measure") && isCordova()) {
+      showBackToHeader = true;
+    }
+
     const headRoomSize = voterGuideShowGettingStartedNavigation || stringContains("/ballot", pathname) || pathname === "/bookmarks" ?
-      "headroom-getting-started__margin" : isWebApp() ? "headroom-wrapper" : isIOS() ? "headroom-wrapper__cordova-ios" : "headroom-wrapper__cordova-android";
+      "headroom-secondary-nav__margin" : isWebApp() ? "headroom-wrapper" : isIOS() ? "headroom-wrapper__cordova-ios" : "headroom-wrapper__cordova-android";
 
     let pageHeaderStyle = this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom";
     if (isIOS()) {
@@ -389,7 +396,7 @@ export default class Application extends Component {
               <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
               <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/> }
             { voterGuideShowGettingStartedNavigation || stringContains("/ballot", pathname) ?
-              <HeaderGettingStartedBar hideGettingStartedOrganizationsButton={hideGettingStartedButtons}
+              <HeaderSecondaryNavBar hideGettingStartedOrganizationsButton={hideGettingStartedButtons}
                                        hideGettingStartedIssuesButton={hideGettingStartedButtons}
                                        pathname={pathname}
                                        voter={this.state.voter}/> :
@@ -413,8 +420,6 @@ export default class Application extends Component {
         { isCordova() && isIOS() && <div className={"ios7plus-spacer"} /> }
         <div className={headRoomSize}>
           <div ref="pageHeader" className={pageHeaderStyle}>
-            {/* March 2018: One of HeaderBackToBar OR HeaderBar is displayed, AND under some circumstances HeaderGettingStartedBar is
-             displayed on top.  As long as they are in the same location it works, but ideally we would get this sorted out someday */}
             { showBackToHeader ?
               <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
               <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
@@ -440,14 +445,12 @@ export default class Application extends Component {
       { isCordova() && isIOS() && <div className={"ios7plus-spacer"} /> }
       <div className={headRoomSize}>
         <div ref="pageHeader" className={pageHeaderStyle}>
-          {/* March 2018: One of HeaderBackToBar OR HeaderBar is displayed, AND under some circumstances HeaderGettingStartedBar is
-           displayed on top.  As long as they are in the same location it works, but ideally we would get this sorted out someday */}
           { showBackToHeader ?
             <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
             <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
           }
           { stringContains("/ballot", pathname) || pathname === "/bookmarks" ?
-            <HeaderGettingStartedBar pathname={pathname} voter={this.state.voter}/> :
+            <HeaderSecondaryNavBar pathname={pathname} voter={this.state.voter}/> :
             null }
         </div>
       </div>

@@ -64,6 +64,8 @@ export default class TwitterSignIn extends Component {
     } else if (isAndroid()) {
       // April 6, 2018: Needs Steve's PR to handle customscheme
       // https://github.com/apache/cordova-plugin-inappbrowser/pull/263
+      /*global cordova*/
+      /*eslint no-undef: ["error", { "typeof": true }] */
       let inAppBrowserRef = cordova.InAppBrowser.open(requestURL, "_blank", "toolbar=no,location=yes,hardwareback=no");
       inAppBrowserRef.addEventListener("exit", function () {
         oAuthLog("inAppBrowserRef on exit: ", requestURL);

@@ -177,7 +177,7 @@ export default class Ballot extends Component {
     // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
     // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
     SupportActions.voterAllPositionsRetrieve();
-    SupportActions.positionsCountForAllBallotItems();
+    SupportActions.positionsCountForAllBallotItems(google_civic_election_id);
     BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onBallotStoreChange.bind(this));
@@ -502,7 +502,7 @@ export default class Ballot extends Component {
       return <div className="ballot container-fluid well u-stack--md u-inset--md">
         { this.state.showBallotIntroModal && issues_voter_can_follow.length !== 0 ?
           <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
-        <div className="ballot__header">
+        <div className={ isWebApp() ? "ballot__header" : "ballot__header ballot__header__top-cordova"} >
           <BrowserPushMessage incomingProps={this.props} />
           <p className="ballot__date_location">
             If your ballot does not appear momentarily, please <Link to="/settings/location">change your address</Link>.
@@ -580,7 +580,7 @@ export default class Ballot extends Component {
       { this.state.showSelectBallotModal ? <SelectBallotModal show={this.state.showSelectBallotModal} toggleFunction={this.toggleSelectBallotModal} ballotElectionList={this.state.ballotElectionList} pathname={this.state.pathname} ballotBaseUrl="/ballot" google_civic_election_id={this.state.google_civic_election_id} location={this.state.location} /> : null }
       { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this.toggleBallotSummaryModal} /> : null }
 
-      <div className="ballot__heading">
+      <div className={ isWebApp() ? "ballot__heading" : "ballot__heading ballot__heading-cordova" } >
         <div className="page-content-container">
           <div className="container-fluid">
             <div className="row">

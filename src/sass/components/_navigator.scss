@@ -5,9 +5,9 @@ $glyph-icon-color: #51708e;
 $header-height: 54px;
 $header-height-cordova-ios: 70px;
 $header-height-cordova-android: 50px;
-$header-height-getting-started: 104px;
-$nav-item-getting-started-background-hover-color: darken($page-header-getting-started-background-color, 5%);
-$nav-item-getting-started-background-active-color: darken($page-header-getting-started-background-color, 10%);
+$header-height-secondary-nav: 104px;
+$nav-item-secondary-nav-background-hover-color: darken($page-header-secondary-nav-background-color, 5%);
+$nav-item-secondary-nav-background-active-color: darken($page-header-secondary-nav-background-color, 10%);
 $footer-menu-margin: 130px;
 $space-hamburger: 5px;
 $hamburger-table-menu-margin: 2em;
@@ -128,17 +128,17 @@ $container-margin: -15px;
   }
 }
 
-.headroom-getting-started__margin {
+.headroom-secondary-nav__margin {
   @include print {
     margin-top: $space-none;
   }
-  margin-top: $header-height-getting-started;
+  margin-top: $header-height-secondary-nav;
 }
 
-.nav-getting-started__image {
+.nav-secondary-nav__image {
   height: 26px;
   &--fade {
-    @extend .nav-getting-started__image;
+    @extend .nav-secondary-nav__image;
     opacity: .3;
   }
   &--checked {
@@ -181,12 +181,6 @@ $container-margin: -15px;
     color: $white;
     opacity: .8;
     text-align: center;
-    // temporary offsets for .page-header__container padding
-    margin-top: -.5em; // stylelint-disable-line sh-waqar/declaration-use-variable
-    margin-bottom: -.5em; // stylelint-disable-line sh-waqar/declaration-use-variable
-    // &--has-icon {
-    //   justify-content: space-between;
-    // }
 
     &:active,
     &.active-icon,
@@ -257,9 +251,9 @@ $container-margin: -15px;
   }
 }
 
-.header-getting-started-nav {
-  $nav-item-getting-started-background-hover-color: darken($page-header-getting-started-background-color, 5%);
-  $nav-item-getting-started-background-active-color: darken($page-header-getting-started-background-color, 10%);
+.header-secondary-nav {
+  $nav-item-secondary-nav-background-hover-color: darken($page-header-secondary-nav-background-color, 5%);
+  $nav-item-secondary-nav-background-active-color: darken($page-header-secondary-nav-background-color, 10%);
   display: flex;
   align-items: center;
   width: 100%;
@@ -270,7 +264,7 @@ $container-margin: -15px;
     color: $gray-dark;
     font-size: 10px;
     &--fade {
-      @extend .header-getting-started-nav__label;
+      @extend .header-secondary-nav__label;
       opacity: .3;
     }
   }
@@ -286,8 +280,6 @@ $container-margin: -15px;
     color: $glyph-icon-color;
     opacity: .8;
     text-align: center;
-    // temporary offsets for .page-header__container padding
-    margin: -8px $space-none; // stylelint-disable-line sh-waqar/declaration-use-variable
 
     @include breakpoints(small mid-small) {
       width: 65px;
@@ -304,11 +296,11 @@ $container-margin: -15px;
 
     &:active,
     &.active-icon {
-      background-color: $nav-item-getting-started-background-active-color;
+      background-color: $nav-item-secondary-nav-background-active-color;
     }
 
     &:hover {
-      background-color: $nav-item-getting-started-background-hover-color;
+      background-color: $nav-item-secondary-nav-background-hover-color;
     }
   }
 

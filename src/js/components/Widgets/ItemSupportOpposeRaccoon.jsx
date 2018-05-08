@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, OverlayTrigger, Popover } from "react-bootstrap";
+import { OverlayTrigger, Popover } from "react-bootstrap";
 import { findDOMNode } from "react-dom";
 import $ from "jquery";
 import CandidateActions from "../../actions/CandidateActions";
@@ -252,11 +252,12 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
         this.popover_state[org_id] = {show: false, timer: null};
 
+        // Removed "visible-xs" from the title
         let organizationPopover = <Popover className="card-popover"
                                            id={`organization-popover-${org_id}-${visible_tag}`}
                                            onMouseOver={() => this.onTriggerEnter(org_id, visible_tag)}
                                            onMouseOut={() => this.onTriggerLeave(org_id, visible_tag)}
-                                           title={<span className="visible-xs" onClick={() => this.onTriggerLeave(org_id, visible_tag)}>&nbsp;<span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /> </span>}
+                                           title={<span className="" onClick={() => this.onTriggerLeave(org_id, visible_tag)}>&nbsp;<span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /> </span>}
                                            >
             <OrganizationCard organization={one_organization_for_organization_card}
                               ballotItemWeVoteId={ballot_item_we_vote_id}
@@ -363,34 +364,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
   render () {
     renderLog(__filename);
     let ballotItemSupportStore = SupportStore.get(this.state.ballot_item_we_vote_id);
-    // Removed from ItemActionBar opposeHideInMobile
-    let item_action_bar;
-    if (this.state.is_candidate) {
-      item_action_bar = <span>
-
-        <ItemActionBar ballot_item_display_name={this.state.ballot_item_display_name}
-                       ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
-                       commentButtonHideInMobile
-                       supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
-                       shareButtonHide
-                       supportProps={ballotItemSupportStore}
-                       toggleFunction={this.togglePositionStatement.bind(this)}
-                       transitioning={this.state.transitioning}
-                       type="CANDIDATE"/>
-      </span>;
-    } else if (this.state.is_measure) {
-      item_action_bar = <span>
-        <ItemActionBar ballot_item_display_name={this.state.ballot_item_display_name}
-                       ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
-                       commentButtonHideInMobile
-                       supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
-                       shareButtonHide
-                       supportProps={ballotItemSupportStore}
-                       toggleFunction={this.togglePositionStatement.bind(this)}
-                       transitioning={this.state.transitioning}
-                       type="MEASURE"/>
-      </span>;
-    }
 
     // Issue Score
     let voterIssuesScore = IssueStore.getIssuesScoreByBallotItemWeVoteId(this.state.ballot_item_we_vote_id);
@@ -452,6 +425,38 @@ export default class ItemSupportOpposeRaccoon extends Component {
       is_voter_oppose = ballotItemSupportStore.is_oppose;
       voter_statement_text = ballotItemSupportStore.voter_statement_text;
     }
+
+    let commentBoxIsVisible = false;
+    if (this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text || this.state.showPositionStatement) {
+      commentBoxIsVisible = true;
+    }
+    let item_action_bar;
+    if (this.state.is_candidate) {
+      item_action_bar = <span>
+        <ItemActionBar ballot_item_display_name={this.state.ballot_item_display_name}
+                       ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
+                       commentButtonHide={commentBoxIsVisible}
+                       commentButtonHideInMobile
+                       shareButtonHide
+                       supportProps={ballotItemSupportStore}
+                       toggleFunction={this.togglePositionStatement.bind(this)}
+                       transitioning={this.state.transitioning}
+                       type="CANDIDATE"/>
+      </span>;
+    } else if (this.state.is_measure) {
+      item_action_bar = <span>
+        <ItemActionBar ballot_item_display_name={this.state.ballot_item_display_name}
+                       ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
+                       commentButtonHide={commentBoxIsVisible}
+                       commentButtonHideInMobile
+                       shareButtonHide
+                       supportProps={ballotItemSupportStore}
+                       toggleFunction={this.togglePositionStatement.bind(this)}
+                       transitioning={this.state.transitioning}
+                       type="MEASURE"/>
+      </span>;
+    }
+
 
     let comment_display_raccoon_desktop = this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text || this.state.showPositionStatement ?
       <div className="hidden-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
@@ -667,7 +672,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
                 <span className="u-margin-left--xs">{ voterIssuesScoreWithSign }&nbsp;</span>
               }
               <span className="network-positions-stacked__support-score-label">
-                <span>Issue Score <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
+                <span>Issue<br />Score</span>
+                <span>&nbsp;<i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" />&nbsp;</span>
               </span>
             </span>
           </OverlayTrigger> :
@@ -688,8 +694,10 @@ export default class ItemSupportOpposeRaccoon extends Component {
                 <span className="u-margin-left--xs">{ total_network_score_with_sign }&nbsp;</span>
               }
               <span className="network-positions-stacked__support-score-label">
-                <span className="visible-xs">Network Score <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
-                <span className="hidden-xs">Score in Your Network <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
+                <span className="visible-xs">Network<br />
+                  Score <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
+                <span className="hidden-xs">Score in<br />
+                  Your Network <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
               </span>
             </span>
           </OverlayTrigger> :

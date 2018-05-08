@@ -4,6 +4,8 @@ import Icon from "react-svg-icons";
 import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
 import { renderLog } from "../../utils/logging";
 import { showToastError, showToastSuccess } from "../../utils/showToast";
+import { stringContains } from "../../utils/textFormat";
+import MeasureStore from "../../stores/MeasureStore";
 import ShareButtonDropdown from "./ShareButtonDropdown";
 import SupportActions from "../../actions/SupportActions";
 import VoterActions from "../../actions/VoterActions";
@@ -29,6 +31,7 @@ export default class ItemActionBar extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      ballotItemWeVoteId: "",
       is_oppose_local_state: undefined,
       is_support_local_state: undefined,
       showSupportOrOpposeHelpModal: false,
@@ -46,6 +49,7 @@ export default class ItemActionBar extends Component {
       is_support_local_state = this.props.supportProps.is_support;
     }
     this.setState({
+      ballotItemWeVoteId: this.props.ballot_item_we_vote_id,
       is_oppose_local_state: is_oppose_local_state,
       is_support_local_state: is_support_local_state,
     });
@@ -59,11 +63,16 @@ export default class ItemActionBar extends Component {
       is_support_local_state = nextProps.supportProps.is_support;
     }
     this.setState({
+      ballotItemWeVoteId: nextProps.ballot_item_we_vote_id,
       is_oppose_local_state: is_oppose_local_state,
       is_support_local_state: is_support_local_state,
       supportProps: nextProps.supportProps,
       transitioning: false,
     });
+  }
+
+  isMeasure () {
+    return stringContains("meas", this.state.ballotItemWeVoteId);
   }
 
   supportItem (is_support) {
@@ -79,7 +88,7 @@ export default class ItemActionBar extends Component {
       this.toggleSupportOrOpposeHelpModal();
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
     }
-    SupportActions.voterSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
+    SupportActions.voterSupportingSave(this.state.ballotItemWeVoteId, this.props.type);
     this.setState({
       transitioning: true,
     });
@@ -92,7 +101,7 @@ export default class ItemActionBar extends Component {
       is_support_local_state: false,
     });
     if (this.state.transitioning){ return; }
-    SupportActions.voterStopSupportingSave(this.props.ballot_item_we_vote_id, this.props.type);
+    SupportActions.voterStopSupportingSave(this.state.ballotItemWeVoteId, this.props.type);
     this.setState({
       transitioning: true,
     });
@@ -112,7 +121,7 @@ export default class ItemActionBar extends Component {
       this.toggleSupportOrOpposeHelpModal();
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
     }
-    SupportActions.voterOpposingSave(this.props.ballot_item_we_vote_id, this.props.type);
+    SupportActions.voterOpposingSave(this.state.ballotItemWeVoteId, this.props.type);
     this.setState({
       transitioning: true,
     });
@@ -128,7 +137,7 @@ export default class ItemActionBar extends Component {
       return;
     }
 
-    SupportActions.voterStopOpposingSave(this.props.ballot_item_we_vote_id, this.props.type);
+    SupportActions.voterStopOpposingSave(this.state.ballotItemWeVoteId, this.props.type);
     this.setState({
       transitioning: true,
     });
@@ -167,9 +176,9 @@ export default class ItemActionBar extends Component {
     let oppose_icon_color = this.state.is_oppose_local_state ? "white" : "#999";
     let url_being_shared;
     if (this.props.type === "CANDIDATE") {
-      url_being_shared = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + "/candidate/" + this.props.ballot_item_we_vote_id;
+      url_being_shared = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + "/candidate/" + this.state.ballotItemWeVoteId;
     } else {
-      url_being_shared = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + "/measure/" + this.props.ballot_item_we_vote_id;
+      url_being_shared = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + "/measure/" + this.state.ballotItemWeVoteId;
     }
     const share_icon = <span className="btn__icon"><Icon name="share-icon" width={icon_size} height={icon_size} color={icon_color} /></span>;
 
@@ -247,6 +256,24 @@ export default class ItemActionBar extends Component {
     const supportButtonPopoverTooltip = <Tooltip id="supportButtonTooltip">{this.state.is_support_local_state ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }</Tooltip>;
     const opposeButtonPopoverTooltip = <Tooltip id="opposeButtonTooltip">{this.state.is_oppose_local_state ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}</Tooltip>;
 
+    let yes_vote_description_exists = false;
+    let yes_vote_description = "";
+    if (this.isMeasure()) {
+      yes_vote_description = MeasureStore.getYesVoteDescription(this.state.ballotItemWeVoteId);
+      if (yes_vote_description && yes_vote_description.length) {
+        yes_vote_description_exists = true;
+      }
+    }
+
+    let no_vote_description_exists = false;
+    let no_vote_description = "";
+    if (this.isMeasure()) {
+      no_vote_description = MeasureStore.getNoVoteDescription(this.state.ballotItemWeVoteId);
+      if (no_vote_description && no_vote_description.length) {
+        no_vote_description_exists = true;
+      }
+    }
+
     const supportButton = <button className={"item-actionbar__btn item-actionbar__btn--support btn btn-default" + (this.state.is_support_local_state ? " support-at-state" : "")} onClick={this.supportItem.bind(this, this.state.is_support_local_state)}>
       <span className="btn__icon">
         <Icon name="thumbs-up-icon" width={icon_size} height={icon_size} color={support_icon_color} />
@@ -272,28 +299,38 @@ export default class ItemActionBar extends Component {
     </button>;
 
     return <div className={ this.props.shareButtonHide ? "item-actionbar--inline hidden-print" : "item-actionbar hidden-print" }>
-      <div className={"btn-group" + (!this.props.shareButtonHide ? " u-push--sm" : "")}>
+      <div className={(yes_vote_description_exists || no_vote_description_exists ? "" : "btn-group") + (!this.props.shareButtonHide ? " u-push--sm" : "")}>
 
         {/* Start of Support Button */}
         <div className="hidden-xs">
           <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>{supportButton}</OverlayTrigger>
+          {yes_vote_description_exists ? <span>{yes_vote_description}</span> : null}
         </div>
-        <div className="visible-xs">{supportButton}</div>
+        <div className="visible-xs">
+          {supportButton}
+          {yes_vote_description_exists ? <span>{yes_vote_description}</span> : null}
+        </div>
         {/* Start of Oppose Button */}
         <div className="hidden-xs">
           <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>{opposeButton}</OverlayTrigger>
+          {no_vote_description_exists ? <span>{no_vote_description}</span> : null}
         </div>
-        <div className="visible-xs">{opposeButton}</div>
-      </div>
+        <div className="visible-xs">
+          {opposeButton}
+          {no_vote_description_exists ? <span>{no_vote_description}</span> : null}
+        </div>
       { this.props.commentButtonHide ?
         null :
-        <button className={"item-actionbar__btn item-actionbar__btn--comment btn btn-default u-push--sm" + this.props.commentButtonHideInMobile ? " hidden-xs" : null}
-                onClick={this.props.toggleFunction}>
+        <div>
+          <button className={"item-actionbar__btn item-actionbar__btn--comment btn btn-default u-push--sm" + (this.props.commentButtonHideInMobile ? " hidden-xs" : null)}
+                  onClick={this.props.toggleFunction}>
             <span className="btn__icon">
               <Icon name="comment-icon" width={icon_size} height={icon_size} color={icon_color} />
             </span>
-          <span className="item-actionbar__position-btn-label">Comment</span>
-        </button> }
+            <span className="item-actionbar__position-btn-label">Comment</span>
+          </button>
+        </div> }
+      </div>
 
       { this.props.shareButtonHide ?
         null :

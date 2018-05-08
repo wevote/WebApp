@@ -85,7 +85,7 @@ export default class FacebookSignInProcess extends Component {
     // console.log("In voterFacebookSaveToCurrentAccount");
     VoterActions.voterFacebookSaveToCurrentAccount();
     historyPush({
-      pathname: "/more/network",
+      pathname: "/more/network/friends",
       state: {
         message: "You have successfully signed in with Facebook.",
         message_type: "success"

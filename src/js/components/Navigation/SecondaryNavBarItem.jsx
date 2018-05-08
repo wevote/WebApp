@@ -4,32 +4,33 @@ import { Link } from "react-router";
 import { cordovaDot } from "../../utils/cordovaUtils";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 
-const GettingStartedBarItem = props => {
+// jscs:disable requireShorthandArrowFunctions
+const SecondaryNavBarItem = props => {
   return props.isExternal ?
     <OpenExternalWebSite url={props.url}
                          target="_blank"
-                         className={ (props.printIcon || props.completed ? "hidden-xs " : "") + "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}
+                         className={ (props.printIcon || props.completed ? "hidden-xs " : "") + "header-secondary-nav__item header-secondary-nav__item--has-icon"}
                          body={
         <span>
-          <span className="header-getting-started-nav__item-image-wrapper" title={props.title}>
+          <span className="header-secondary-nav__item-image-wrapper" title={props.title}>
             {props.twitterIcon ? <i className="fa fa-twitter fa-2x"/> : null}
             {!props.printIcon && !props.emailIcon && !props.mapMarkerIcon && !props.twitterIcon ?
-              <img className={`glyphicon nav-getting-started__image${props.completed ? "--fade" : ""}`}
+              <img className={`glyphicon nav-secondary-nav__image${props.completed ? "--fade" : ""}`}
                    src={props.source}/> : null}
           </span>
-          <span className={`visible-xs header-getting-started-nav__label${props.completed ? "--fade" : ""}`}>
+          <span className={`visible-xs header-secondary-nav__label${props.completed ? "--fade" : ""}`}>
              {props.titleMobile ? props.titleMobile : props.title}
           </span>
-          <span className={`hidden-xs header-getting-started-nav__label${props.completed ? "--fade" : ""}`}>
+          <span className={`hidden-xs header-secondary-nav__label${props.completed ? "--fade" : ""}`}>
              {props.titleDesktop ? props.titleDesktop : props.title}
           </span>
         </span>
       }
       /> :
-    <Link onClick={props.show} className={ (props.printIcon || props.completed ? "hidden-xs " : "") + "header-getting-started-nav__item header-getting-started-nav__item--has-icon"}>
-      <span className="header-getting-started-nav__item-image-wrapper" title={props.title}>
+    <Link onClick={props.show} className={ (props.printIcon || props.completed ? "hidden-xs " : "") + "header-secondary-nav__item header-secondary-nav__item--has-icon"}>
+      <span className="header-secondary-nav__item-image-wrapper" title={props.title}>
         { props.completed ?
-          <img className="glyphicon nav-getting-started__image--checked"
+          <img className="glyphicon nav-secondary-nav__image--checked"
             src={cordovaDot("/img/global/svg-icons/check-mark-v2-21x21.svg")} /> :
           null
         }
@@ -37,18 +38,18 @@ const GettingStartedBarItem = props => {
         { props.emailIcon ? <span className="glyphicon glyphicon-envelope fa-2x"/> : null }
         { props.facebookIcon ? <i className="fa fa-facebook-square fa-2x"/> : null }
         { props.mapMarkerIcon ? <span className="glyphicon glyphicon-map-marker fa-2x"/> : null }
-        { !props.printIcon && !props.emailIcon && !props.mapMarkerIcon ? <img className={`glyphicon nav-getting-started__image${props.completed ? "--fade" : ""}`} src={props.source} /> : null }
+        { !props.printIcon && !props.emailIcon && !props.mapMarkerIcon ? <img className={`glyphicon nav-secondary-nav__image${props.completed ? "--fade" : ""}`} src={props.source} /> : null }
       </span>
-      <span className={`visible-xs header-getting-started-nav__label${props.completed ? "--fade" : ""}`}>
+      <span className={`visible-xs header-secondary-nav__label${props.completed ? "--fade" : ""}`}>
          {props.titleMobile ? props.titleMobile : props.title}
       </span>
-      <span className={`hidden-xs header-getting-started-nav__label${props.completed ? "--fade" : ""}`}>
+      <span className={`hidden-xs header-secondary-nav__label${props.completed ? "--fade" : ""}`}>
          {props.titleDesktop ? props.titleDesktop : props.title}
       </span>
     </Link>;
 };
 
-GettingStartedBarItem.propTypes = {
+SecondaryNavBarItem.propTypes = {
   show: PropTypes.func,
   completed: PropTypes.number,
   source: PropTypes.string,
@@ -64,4 +65,4 @@ GettingStartedBarItem.propTypes = {
   url: PropTypes.string,
 };
 
-export default GettingStartedBarItem;
+export default SecondaryNavBarItem;

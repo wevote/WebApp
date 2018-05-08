@@ -255,7 +255,7 @@ $slick-dot-character: '\2022' !default;
 
   // Modifies slick default selector type dot styles
   // We need to disable stylelint type selector rule because we need to override existing slick package styles.
-  /* stylelint-disable selector-no-type  */
+  /* stylelint-disable selector-max-type  */
   &__gray-dots li button::before {
     color: $gray-pale;
     font-size: 12px;
@@ -297,6 +297,12 @@ $slick-dot-character: '\2022' !default;
     border: 1px solid $gray-border;
     border-radius: $space-sm;
     filter: brightness(90%) contrast(90%);
+  }
+
+  &__square-details {
+    position: absolute;
+    top: 10px;
+    right: 10px;
   }
 
   &__square-following {

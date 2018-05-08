@@ -3,10 +3,9 @@ import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { Button } from "react-bootstrap";
 import AnalyticsActions from "../../actions/AnalyticsActions";
-import { historyPush, isIOS, isAndroid } from "../../utils/cordovaUtils";
+import { historyPush } from "../../utils/cordovaUtils";
 import FollowToggle from "../../components/Widgets/FollowToggle";
 import VoterGuideStore from "../../stores/VoterGuideStore";
-import HeaderBar from "../../components/Navigation/HeaderBar";
 import LoadingWheel from "../../components/LoadingWheel";
 import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
@@ -106,6 +105,7 @@ export default class OrganizationVoterGuide extends Component {
 
       // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
     }
+
     // console.log("OrganizationVoterGuide, componentWillReceiveProps, nextProps.active_route: ", nextProps.active_route);
     if (nextProps.active_route && nextProps.active_route !== "") {
       this.setState({
@@ -148,17 +148,11 @@ export default class OrganizationVoterGuide extends Component {
     if (!this.state.organization || !this.state.voter || this.state.auto_follow_redirect_happening) {
       return <div>{LoadingWheel}</div>;
     }
+
     // console.log("OrganizationVoterGuide render, this.state.active_route: ", this.state.active_route);
     const organizationId = this.state.organization.organization_id;
     let isVoterOwner = this.state.organization.organization_we_vote_id !== undefined &&
       this.state.organization.organization_we_vote_id === this.state.voter.linked_organization_we_vote_id;
-
-    let pageHeaderStyle = "page-header__container headroom";
-    if (isIOS()) {
-      pageHeaderStyle = "page-header__container page-header-cordova-ios";  // Note March 2018: no headroom.js for Cordova
-    } else if (isAndroid()) {
-      pageHeaderStyle = "page-header__container";
-    }
 
     if (!organizationId) {
       let floatRight = {
@@ -176,11 +170,6 @@ export default class OrganizationVoterGuide extends Component {
     }
 
     return <div>
-      <div className="headroom-wrapper">
-        <div ref="pageHeader" className={pageHeaderStyle}>
-          <HeaderBar location={this.props.location} pathname={this.props.location.pathname} voter={this.state.voter} />
-        </div>
-      </div>
       {/* Header Banner Spacing for Desktop */}
       <div className="col-md-12 hidden-xs hidden-print">
         { this.state.organization.organization_banner_url !== "" ?

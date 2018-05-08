@@ -280,19 +280,6 @@ export default class HeaderBackToBar extends Component {
           <SearchAllBox />
         </span>
 
-        {isWebApp() &&
-          <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
-            {voterPhotoUrlMedium ?
-              <div id="js-header-avatar" className="header-nav__avatar-container">
-                <img className="header-nav__avatar"
-                     src={voterPhotoUrlMedium}
-                     height={34}
-                     width={34}
-                />
-              </div> : this.imagePlaceholder(speakerType)}
-          </div>
-        }
-
         {this.state.profilePopUpOpen &&
           <HeaderBarProfilePopUp {...this.props}
             onClick={this.toggleProfilePopUp}
@@ -304,6 +291,19 @@ export default class HeaderBackToBar extends Component {
             transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
             signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)}
           />
+        }
+
+        {isWebApp() &&
+          <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
+            {voterPhotoUrlMedium ?
+              <div id="js-header-avatar" className="header-nav__avatar-container">
+                <img className="header-nav__avatar"
+                     src={voterPhotoUrlMedium}
+                     height={34}
+                     width={34}
+                />
+              </div> : this.imagePlaceholder(speakerType)}
+          </div>
         }
 
       </header>

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
 import IssuesFollowedDisplayList from "../Issues/IssuesFollowedDisplayList";
 import IssueStore from "../../stores/IssueStore";
 import { renderLog } from "../../utils/logging";
@@ -35,7 +34,7 @@ export default class BallotIntroIssuesSuccess extends Component {
   }
 
   followedIssuesCount () {
-    var followedIssuesCount = this.state.followedIssues.length;
+    let followedIssuesCount = this.state.followedIssues.length;
 
     return followedIssuesCount >= 0 ? followedIssuesCount : 0;
   }

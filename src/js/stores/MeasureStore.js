@@ -16,6 +16,26 @@ class MeasureStore extends ReduceStore {
     return this.getState().all_cached_measures[measure_we_vote_id] || [];
   }
 
+  getYesVoteDescription (measure_we_vote_id) {
+    if (measure_we_vote_id) {
+      let measure = this.getMeasure(measure_we_vote_id);
+      if (measure && measure.yes_vote_description) {
+        return measure.yes_vote_description;
+      }
+    }
+    return "";
+  }
+
+  getNoVoteDescription (measure_we_vote_id) {
+    if (measure_we_vote_id) {
+      let measure = this.getMeasure(measure_we_vote_id);
+      if (measure && measure.no_vote_description) {
+        return measure.no_vote_description;
+      }
+    }
+    return "";
+  }
+
   getPositionList (measure_we_vote_id) {
     return this.getState().position_list_from_advisers_followed_by_voter[measure_we_vote_id] || [];
   }
@@ -35,6 +55,7 @@ class MeasureStore extends ReduceStore {
     let all_cached_positions_about_measures;
     let ballot_item_we_vote_id;
     let measure;
+    let measure_we_vote_id;
     let new_position_list;
     let one_position;
     let position_list_for_measure;
@@ -55,10 +76,10 @@ class MeasureStore extends ReduceStore {
       case "positionListForBallotItem":
         position_list_for_measure = action.res.kind_of_ballot_item === "MEASURE";
         if (position_list_for_measure) {
-          ballot_item_we_vote_id = action.res.ballot_item_we_vote_id;
+          measure_we_vote_id = action.res.ballot_item_we_vote_id;
           new_position_list = action.res.position_list;
           position_list_from_advisers_followed_by_voter = state.position_list_from_advisers_followed_by_voter;
-          position_list_from_advisers_followed_by_voter[ballot_item_we_vote_id] = new_position_list;
+          position_list_from_advisers_followed_by_voter[measure_we_vote_id] = new_position_list;
           return {
             ...state,
             position_list_from_advisers_followed_by_voter: position_list_from_advisers_followed_by_voter,
@@ -66,6 +87,21 @@ class MeasureStore extends ReduceStore {
         } else {
           return state;
         }
+
+      case "voterBallotItemsRetrieve":
+        all_cached_measures = state.all_cached_measures;
+        let tempBallotItemList = action.res.ballot_item_list;
+        if (tempBallotItemList) {
+          tempBallotItemList.forEach(oneBallotItem => {
+            if (oneBallotItem.kind_of_ballot_item === "MEASURE" && oneBallotItem.we_vote_id) {
+              all_cached_measures[oneBallotItem.we_vote_id] = oneBallotItem;
+            }
+          });
+        }
+        return {
+          ...state,
+          all_cached_measures: all_cached_measures
+        };
 
       case "voterGuidesToFollowRetrieve":
         // This code harvests the positions that are passed in along with voter guides,

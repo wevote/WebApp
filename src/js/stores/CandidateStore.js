@@ -1,5 +1,5 @@
 import { ReduceStore } from "flux/utils";
-import CandidateActions from "../actions/CandidateActions";
+import BallotStore from "../stores/BallotStore";
 import Dispatcher from "../dispatcher/Dispatcher";
 import OfficeActions from "../actions/OfficeActions";
 import OfficeStore from "../stores/OfficeStore";
@@ -50,8 +50,8 @@ class CandidateStore extends ReduceStore {
     let candidate_list;
     let candidate_we_vote_id;
     let new_position_list;
+    let office_position_list;
     let one_position;
-    let position_list_for_candidate;
     let position_list_from_advisers_followed_by_voter;
     let voter_guides;
 
@@ -91,42 +91,35 @@ class CandidateStore extends ReduceStore {
           all_cached_candidates: all_cached_candidates
         };
 
-      case "organizationFollow":
-        // Go through all of the candidates currently on the ballot and update their positions
-        if (state.all_cached_candidates) {
-          for (candidate_we_vote_id in state.all_cached_candidates) {
-            CandidateActions.positionListForBallotItem(candidate_we_vote_id);
-          }
-        }
-        return state;
-
-      case "organizationStopFollowing":
-        // Go through all of the candidates currently on the ballot and update their positions
-        if (state.all_cached_candidates) {
-          for (candidate_we_vote_id in state.all_cached_candidates) {
-            CandidateActions.positionListForBallotItem(candidate_we_vote_id);
-          }
-        }
-        return state;
-
-      case "organizationFollowIgnore":
-        // Go through all of the candidates currently on the ballot and update their positions
-        if (state.all_cached_candidates) {
-          for (candidate_we_vote_id in state.all_cached_candidates) {
-            CandidateActions.positionListForBallotItem(candidate_we_vote_id);
-          }
-        }
-        return state;
-
       case "positionListForBallotItem":
-        position_list_for_candidate = action.res.kind_of_ballot_item === "CANDIDATE";
         // console.log("positionListForBallotItem action.res:", action.res);
-        if (position_list_for_candidate) {
-          ballot_item_we_vote_id = action.res.ballot_item_we_vote_id;
+        if (action.res.kind_of_ballot_item === "CANDIDATE") {
+          candidate_we_vote_id = action.res.ballot_item_we_vote_id;
           new_position_list = action.res.position_list;
           position_list_from_advisers_followed_by_voter = state.position_list_from_advisers_followed_by_voter;
-          position_list_from_advisers_followed_by_voter[ballot_item_we_vote_id] = new_position_list;
-          // console.log("positionListForBallotItem position_list_from_advisers_followed_by_voter[ballot_item_we_vote_id]:", position_list_from_advisers_followed_by_voter[ballot_item_we_vote_id]);
+          position_list_from_advisers_followed_by_voter[candidate_we_vote_id] = new_position_list;
+          // console.log("positionListForBallotItem position_list_from_advisers_followed_by_voter[ballot_item_we_vote_id]:", position_list_from_advisers_followed_by_voter[candidate_we_vote_id]);
+          return {
+            ...state,
+            position_list_from_advisers_followed_by_voter: position_list_from_advisers_followed_by_voter,
+          };
+        } else if (action.res.kind_of_ballot_item === "OFFICE") {
+          office_position_list = action.res.position_list;
+          let office_we_vote_id = action.res.ballot_item_we_vote_id;
+          position_list_from_advisers_followed_by_voter = state.position_list_from_advisers_followed_by_voter;
+          // Now reset the lists for all candidates under this office
+          let candidate_we_vote_ids_under_this_office = BallotStore.getCandidateWeVoteIdsForOfficeWeVoteId(office_we_vote_id);
+          // console.log("candidate_we_vote_ids_under_this_office: ", candidate_we_vote_ids_under_this_office);
+          if (candidate_we_vote_ids_under_this_office) {
+            candidate_we_vote_ids_under_this_office.forEach( candidate_we_vote_id_temp => {
+              position_list_from_advisers_followed_by_voter[candidate_we_vote_id_temp] = []; // Reset list
+            });
+          }
+          office_position_list.forEach( one_position_temp => {
+            candidate_we_vote_id = one_position_temp.ballot_item_we_vote_id;
+            position_list_from_advisers_followed_by_voter[candidate_we_vote_id].push(one_position_temp);
+          });
+          // console.log("positionListForBallotItem OFFICE position_list_from_advisers_followed_by_voter[ballot_item_we_vote_id]:", position_list_from_advisers_followed_by_voter[candidate_we_vote_id]);
           return {
             ...state,
             position_list_from_advisers_followed_by_voter: position_list_from_advisers_followed_by_voter,
