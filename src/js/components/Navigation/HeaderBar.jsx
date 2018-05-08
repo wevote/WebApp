@@ -12,7 +12,7 @@ import HeaderBarAboutMenu from "./HeaderBarAboutMenu";
 import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
-import SearchAllBox from "../SearchAllBox";
+import SearchAllBox from "../Search/SearchAllBox";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 

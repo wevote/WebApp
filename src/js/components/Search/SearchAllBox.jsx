@@ -1,16 +1,17 @@
 /* global $ */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import BallotActions from "../actions/BallotActions";
+import BallotActions from "../../actions/BallotActions";
 import classNames from "classnames";
 import { Link } from "react-router";
-import { historyPush, isCordova, isWebApp } from "../utils/cordovaUtils";
-import ImageHandler from "../components/ImageHandler";
-import { renderLog } from "../utils/logging";
-import SearchAllActions from "../actions/SearchAllActions";
-import SearchAllStore from "../stores/SearchAllStore";
-import { makeSearchLink } from "../utils/search-functions";
-import { capitalizeString } from "../utils/textFormat";
+import { historyPush, isCordova, isWebApp } from "../../utils/cordovaUtils";
+import ImageHandler from "../../components/ImageHandler";
+import { renderLog } from "../../utils/logging";
+import SearchAllActions from "../../actions/SearchAllActions";
+import SearchAllStore from "../../stores/SearchAllStore";
+import { makeSearchLink } from "../../utils/search-functions";
+import { capitalizeString } from "../../utils/textFormat";
+import SearchResultsDisplay from "./SearchResultsDisplay";
 
 export default class SearchAllBox extends Component {
   static propTypes = {
@@ -307,63 +308,6 @@ export default class SearchAllBox extends Component {
       "site-search__clear__hidden": !this.state.textFromSearchField.length,
     });
 
-    let searchResultsDisplay = null;
-    if (this.searchHasContent()) {
-      searchResultsDisplay = searchResults.map((oneResult, idx) => {
-        let capitalizedTitle = capitalizeString(oneResult.result_title);
-        if (oneResult.kind_of_owner === "ELECTION") {
-          let searchResultClasses = classNames({
-            "search-container__election_results": true,
-            "search-container__election_results--highlighted": idx === this.state.selectedIndex,
-            "u-flex u-align-start u-justify-between": true,
-          });
-          let electionDay = oneResult.result_summary.split(" ").splice(-1);
-          let today = new Date();
-          let electionDate = new Date(electionDay + " 0:00:00");
-          let pastElection = today > electionDate ? " In Past" : "Upcoming Election";
-          return <Link key={oneResult.local_id}
-                       data-idx={idx}
-                       onMouseOver={this.onSearchResultMouseOver}
-                       className="search-container__links"
-                       onClick={() => this.onSearchElectionResultClick(oneResult.google_civic_election_id)}>
-            <div className={searchResultClasses}>
-              <div className="search-container__election-title">{capitalizedTitle}</div>
-              <div className="search-container__election__details u-no-break">
-                <div className="search-container__election-date">{electionDay}</div>
-                <div className="search-container__election-type">{pastElection}</div>
-              </div>
-            </div>
-          </Link>;
-        } else {
-          let searchResultClasses = classNames({
-            "search-container__results": true,
-            "search-container__results--highlighted": idx === this.state.selectedIndex,
-          });
-
-          return <Link key={oneResult.we_vote_id}
-                       data-idx={idx}
-                       to={this.links[idx]}
-                       onMouseOver={this.onSearchResultMouseOver}
-                       className="search-container__links"
-                       onClick={this.onSearchResultClick}>
-            <div className={searchResultClasses}>
-              <span>
-                <ImageHandler imageUrl={oneResult.result_image}
-                              kind_of_ballot_item={oneResult.kind_of_owner}
-                              sizeClassName="search-image "
-                              className={oneResult.kind_of_owner} />
-              </span>
-              {capitalizedTitle}
-            </div>
-          </Link>;
-        }
-      });
-    } else if (this.state.textFromSearchField.length) {
-      searchResultsDisplay = <div className="search-container__results">
-        <div className="search-container__election-title">Nothing found for "{this.state.textFromSearchField}".</div>
-      </div>;
-    }
-
     let searchStyle = isWebApp() ? "page-header__search" : "page-header__search search-cordova";
 
     return <div className={searchStyle}>
@@ -392,7 +336,14 @@ export default class SearchAllBox extends Component {
         </div>
       </form>
       <div className={searchContainerClasses} ref="searchContainer">
-        {searchResultsDisplay}
+        <SearchResultsDisplay
+          searchResults={this.state.searchResults} 
+          selectedIndex={this.state.selectedIndex}
+          textFromSearchField={this.state.textFromSearchField}
+          onSearchElectionResultClick={this.onSearchElectionResultClick}
+          onSearchResultMouseOver={this.onSearchResultMouseOver}
+          onSearchResultClick={this.onSearchResultClick}
+          links={this.links} />
       </div>
     </div>;
   }

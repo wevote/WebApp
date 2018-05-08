@@ -12,7 +12,7 @@ import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
 import { renderLog } from "../../utils/logging";
-import SearchAllBox from "../SearchAllBox";
+import SearchAllBox from "../Search/SearchAllBox";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import { shortenText } from "../../utils/textFormat";
