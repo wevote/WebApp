@@ -136,11 +136,10 @@ export default class ItemTinyOpinionsToFollow extends Component {
         if (local_counter === this.state.maximum_organization_display + 1) {
           // If here, we want to show how many organizations there are to follow
           this.popover_state[orgs_not_shown_count] = {show: false, timer: null};
-          let organizationPopover = <Popover
-              id={`organization-popover-${orgs_not_shown_count}`}
-              onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
-              onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
-              className="card-popover">
+          let organizationPopover = <Popover id={`organization-popover-${orgs_not_shown_count}`}
+                                             onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
+                                             onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
+                                             className="card-popover">
               <OrganizationsNotShownList orgs_not_shown_list={orgs_not_shown_list} />
             </Popover>;
 
@@ -179,11 +178,10 @@ export default class ItemTinyOpinionsToFollow extends Component {
                                   "/" + one_organization.organization_twitter_handle :
                                   "/voterguide/" + one_organization.organization_we_vote_id;
 
-        let organizationPopover = <Popover
-            id={`organization-popover-${org_id}`}
-            onMouseOver={() => this.onTriggerEnter(org_id)}
-            onMouseOut={() => this.onTriggerLeave(org_id)}
-            className="card-popover">
+        let organizationPopover = <Popover id={`organization-popover-${org_id}`}
+                                           onMouseOver={() => this.onTriggerEnter(org_id)}
+                                           onMouseOut={() => this.onTriggerLeave(org_id)}
+                                           className="card-popover">
             <OrganizationCard organization={one_organization_for_organization_card}
                               ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
                               followToggleOn />
