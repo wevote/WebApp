@@ -160,7 +160,7 @@ export default class HeaderBar extends Component {
     let inNetworkSection = pathname === "/more/network" || pathname === "/more/network/organizations" || pathname === "/more/network/issues" || pathname === "/more/network/friends";
 
     return (
-      <header className="page-header">
+      <header className={ isWebApp() ? "page-header" : "page-header page-header__cordova" }>
         {!weVoteBrandingOff && isWebApp() &&
           <span>
             <Link to="/welcome" className="page-logo page-logo-full-size h4 hidden-xs">

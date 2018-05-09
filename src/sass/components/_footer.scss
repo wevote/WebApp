@@ -15,10 +15,11 @@ $space-footer-top: 10px;
 
 
 .footerNav {
-  padding: $space-footer-top $space-md $space-footer-bottom $space-md;
   display: flex;
   align-items: flex-start;
   position: relative;
   flex-direction: row;
   justify-content: space-between;
+  margin-right: $space-md;
+  margin-left: $space-md;
 }

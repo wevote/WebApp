@@ -324,19 +324,14 @@ $container-margin: -15px;
   $nav-item-active-color: darken($page-header-color, 10%);
   $hamburger-space: 20px;
   font-size: 20px;
-
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
   position: relative;
   width: 60px;
   height: $header-height;
-  padding: $space-sm;
-  padding-left: $hamburger-space;
   color: $white !important;
   opacity: .8;
-  // temporary offsets for .page-header__container padding
-  margin-top: -.5em; // stylelint-disable-line sh-waqar/declaration-use-variable
   margin-bottom: -.5em; // stylelint-disable-line sh-waqar/declaration-use-variable
 
   &.active-icon {
@@ -351,6 +346,7 @@ $container-margin: -15px;
   background-color: $white;
   &__table {
     border-top: 40px;
+    width: 90%;
     margin-left: $hamburger-table-menu-margin;
     border-top-color: $white;
   }
@@ -366,7 +362,7 @@ $container-margin: -15px;
   &__td-1 {
     font-size: 1.3rem;
     vertical-align: middle !important;
-    max-width: 1em;
+    max-width: 1.3em;
   }
   &__td-2 {
     font-size: 1.3rem;
