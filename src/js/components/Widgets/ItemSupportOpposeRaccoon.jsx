@@ -51,6 +51,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       can_scroll_right_desktop: true,
       can_scroll_right_mobile: true,
       showPositionStatement: false,
+      shouldFocusCommentArea: false,
       maximum_organization_display: 0,
       organizations_to_follow_support: [],
       organizations_to_follow_oppose: [],
@@ -61,6 +62,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     this.closeIssueScorePopover = this.closeIssueScorePopover.bind(this);
     this.closeNetworkScorePopover = this.closeNetworkScorePopover.bind(this);
     this.goToCandidateLinkLocal = this.goToCandidateLinkLocal.bind(this);
+    this.passDataBetweenItemActionToItemPosition = this.passDataBetweenItemActionToItemPosition.bind(this);
   }
 
   componentDidMount () {
@@ -211,6 +213,10 @@ export default class ItemSupportOpposeRaccoon extends Component {
     }, 100);
   }
 
+  passDataBetweenItemActionToItemPosition () {
+    this.setState({ shouldFocusCommentArea: true});
+  }
+
   organizationsToDisplay (organizations_to_follow, maximum_organization_display, ballot_item_we_vote_id, visible_tag, supports_this_ballot_item = false, opposes_this_ballot_item = false) {
     if (!maximum_organization_display || maximum_organization_display === 0) {
       return [];
@@ -350,7 +356,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   togglePositionStatement () {
-    this.setState({ showPositionStatement: !this.state.showPositionStatement });
+    this.setState({ showPositionStatement: !this.state.showPositionStatement, shouldFocusCommentArea: true });
   }
 
   render () {
@@ -431,6 +437,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                        commentButtonHideInMobile
                        shareButtonHide
                        supportProps={ballotItemSupportStore}
+                       supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
                        toggleFunction={this.togglePositionStatement.bind(this)}
                        transitioning={this.state.transitioning}
                        type="CANDIDATE"/>
@@ -443,6 +450,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                        commentButtonHideInMobile
                        shareButtonHide
                        supportProps={ballotItemSupportStore}
+                       supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
                        toggleFunction={this.togglePositionStatement.bind(this)}
                        transitioning={this.state.transitioning}
                        type="MEASURE"/>
@@ -457,6 +465,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                                           ballot_item_display_name={this.state.ballot_item_display_name}
                                           comment_edit_mode_on={this.state.showPositionStatement}
                                           supportProps={ballotItemSupportStore}
+                                          shouldFocus={this.state.shouldFocusCommentArea}
                                           transitioning={this.state.transitioning}
                                           type="CANDIDATE"
                                           shown_in_list />
@@ -470,6 +479,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
           <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
                                           ballot_item_display_name={this.state.ballot_item_display_name}
                                           supportProps={ballotItemSupportStore}
+                                          shouldFocus={this.state.shouldFocusCommentArea}
                                           transitioning={this.state.transitioning}
                                           type="CANDIDATE"
                                           shown_in_list />
