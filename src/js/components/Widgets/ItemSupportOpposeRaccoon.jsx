@@ -244,12 +244,11 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
         this.popover_state[org_id] = {show: false, timer: null};
 
-        // Removed "visible-xs" from the title
         let organizationPopover = <Popover className="card-popover"
                                            id={`organization-popover-${org_id}-${visible_tag}`}
                                            onMouseOver={() => this.onTriggerEnter(org_id, visible_tag)}
                                            onMouseOut={() => this.onTriggerLeave(org_id, visible_tag)}
-                                           title={<span className="" onClick={() => this.onTriggerLeave(org_id, visible_tag)}>&nbsp;<span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /> </span>}
+                                           title={<span onClick={() => this.onTriggerLeave(org_id, visible_tag)}>&nbsp;<span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /> </span>}
                                            >
             <OrganizationCard organization={one_organization_for_organization_card}
                               ballotItemWeVoteId={ballot_item_we_vote_id}
