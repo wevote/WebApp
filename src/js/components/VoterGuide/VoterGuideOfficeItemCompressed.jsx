@@ -91,7 +91,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     // }
 
     // Only update organization if it is a different organization
-    if (nextProps.organization && nextProps.organization.organization_we_vote_id && (this.state.organization.organization_we_vote_id !== nextProps.organization.organization_we_vote_id)) {
+    if (nextProps.organization && nextProps.organization.organization_we_vote_id && this.state.organization.organization_we_vote_id !== nextProps.organization.organization_we_vote_id) {
       this.setState({
         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
       });
@@ -197,17 +197,17 @@ export default class VoterGuideOfficeItemCompressed extends Component {
       remaining_candidates_to_display_count = this.state.candidateList.length - NUMBER_OF_CANDIDATES_TO_DISPLAY;
     }
 
-    let advisorsThatMakeVoterIssuesScoreDisplay;
-    let advisorsThatMakeVoterIssuesScoreCount = 0;
-    let advisorsThatMakeVoterNetworkScoreCount = 0;
-    let advisorsThatMakeVoterNetworkScoreDisplay = null;
+    // let advisorsThatMakeVoterIssuesScoreDisplay;
+    // let advisorsThatMakeVoterIssuesScoreCount = 0;
+    // let advisorsThatMakeVoterNetworkScoreCount = 0;
+    // let advisorsThatMakeVoterNetworkScoreDisplay = null;
     let arrayOfCandidatesVoterSupports = [];
     let atLeastOneCandidateChosenByNetwork = false;
-    let atLeastOneCandidateChosenByIssueScore = false;
-    let candidateWithMostSupportFromNetwork = null;
-    let candidateWeVoteWithMostSupportFromNetwork = null;
-    let candidateWithHighestIssueScore = null;
-    let candidateWeVoteIdWithHighestIssueScore = null;
+    // let atLeastOneCandidateChosenByIssueScore = false;
+    // let candidateWithMostSupportFromNetwork = null;
+    // let candidateWeVoteWithMostSupportFromNetwork = null;
+    // let candidateWithHighestIssueScore = null;
+    // let candidateWeVoteIdWithHighestIssueScore = null;
     let voterSupportsAtLeastOneCandidate = false;
     let supportProps;
     let candidate_has_voter_support;
@@ -243,8 +243,8 @@ export default class VoterGuideOfficeItemCompressed extends Component {
           if (network_support_count > network_oppose_count) {
             if (network_support_count > largestNetworkSupportCount) {
               largestNetworkSupportCount = network_support_count;
-              candidateWithMostSupportFromNetwork = candidate.ballot_item_display_name;
-              candidateWeVoteWithMostSupportFromNetwork = candidate.we_vote_id;
+              // candidateWithMostSupportFromNetwork = candidate.ballot_item_display_name;
+              // candidateWeVoteWithMostSupportFromNetwork = candidate.we_vote_id;
               atLeastOneCandidateChosenByNetwork = true;
             }
           }
@@ -297,8 +297,8 @@ export default class VoterGuideOfficeItemCompressed extends Component {
         ************************* */}
         { this.state.display_office_unfurled ?
           <span>{filteredCandidateList.map((one_candidate) => {
-            let candidate_we_vote_id = one_candidate.we_vote_id;
-            let candidateSupportStore = SupportStore.get(candidate_we_vote_id);
+            candidate_we_vote_id = one_candidate.we_vote_id;
+            candidateSupportStore = SupportStore.get(candidate_we_vote_id);
             let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidate_we_vote_id);
             let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidate_we_vote_id);
 

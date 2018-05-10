@@ -1,6 +1,5 @@
 import { ReduceStore } from "flux/utils";
 import Dispatcher from "../dispatcher/Dispatcher";
-import CandidateActions from "../actions/CandidateActions";
 import OrganizationActions from "../actions/OrganizationActions";
 import SupportActions from "../actions/SupportActions";
 import VoterGuideActions from "../actions/VoterGuideActions";
@@ -203,7 +202,6 @@ class OrganizationStore extends ReduceStore {
   reduce (state, action) {
     let add_voter_guides_not_from_election;
     let all_cached_organizations_dict;
-    let candidate_we_vote_id;
     let organization_we_vote_id;
     let organization;
     let prior_copy_of_organization;

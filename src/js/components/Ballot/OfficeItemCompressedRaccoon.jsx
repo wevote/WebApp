@@ -109,7 +109,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
     // }
 
     // Only update organization if it is a different organization
-    if (nextProps.organization && nextProps.organization.organization_we_vote_id && (this.state.organization.organization_we_vote_id !== nextProps.organization.organization_we_vote_id)) {
+    if (nextProps.organization && nextProps.organization.organization_we_vote_id && this.state.organization.organization_we_vote_id !== nextProps.organization.organization_we_vote_id) {
       this.setState({
         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
       });
@@ -232,7 +232,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
     }
 
     let advisorsThatMakeVoterIssuesScoreDisplay;
-    let advisorsThatMakeVoterIssuesScoreCount = 0;
+    // let advisorsThatMakeVoterIssuesScoreCount = 0;
     let advisorsThatMakeVoterNetworkScoreCount = 0;
     let advisorsThatMakeVoterNetworkScoreDisplay = null;
     let arrayOfCandidatesVoterSupports = [];
@@ -308,7 +308,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
           { organizationNameIssueSupportList.length ? <span>{organizationNameIssueSupportListDisplay}</span> : null}
           { organizationNameIssueOpposeList.length ? <span>{organizationNameIssueOpposeListDisplay}</span> : null}
         </span>;
-        advisorsThatMakeVoterIssuesScoreCount = organizationNameIssueSupportList.length + organizationNameIssueOpposeList.length;
+        // advisorsThatMakeVoterIssuesScoreCount = organizationNameIssueSupportList.length + organizationNameIssueOpposeList.length;
       }
       if (candidateWeVoteWithMostSupportFromNetwork) {
         // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
