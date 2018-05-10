@@ -37,8 +37,13 @@ $ballotBottomPaddingCordova: 300px;  //needed for editable comment on last propo
   }
 
   &__view-more {
-    font-size: .8rem;
+    font-size: .9rem;
     font-weight: 200;
+  }
+
+  &__view-more-plus {
+    font-size: .8rem;
+    font-weight: 100;
   }
 
   // //////////////////////////////////////////////

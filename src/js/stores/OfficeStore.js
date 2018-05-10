@@ -42,8 +42,8 @@ class OfficeStore extends ReduceStore {
 
       case "organizationFollow":
         // Go through all of the offices currently on this voter's ballot and update their positions
-        if (state.offices) {
-          console.log("OfficeStore organizationFollow, state.offices.length:", state.offices.length);
+        if (state.offices && state.offices.length) {
+          // console.log("OfficeStore organizationFollow, state.offices.length:", state.offices.length);
           for (office_we_vote_id in state.offices) {
             OfficeActions.positionListForBallotItem(office_we_vote_id);
           }

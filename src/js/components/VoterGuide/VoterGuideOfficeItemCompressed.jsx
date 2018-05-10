@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { OverlayTrigger, Popover } from "react-bootstrap";
 import { Link } from "react-router";
-import { historyPush } from "../../utils/cordovaUtils";
+import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import TextTruncate from "react-text-truncate";
-import { capitalizeString } from "../../utils/textFormat";
-import BallotSideBarLink from "../Navigation/BallotSideBarLink";
+import { toTitleCase } from "../../utils/textFormat";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import CandidateActions from "../../actions/CandidateActions";
-import CandidateStore from "../../stores/CandidateStore";
 import ImageHandler from "../ImageHandler";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
@@ -19,7 +18,7 @@ import OrganizationStore from "../../stores/OrganizationStore";
 import SupportStore from "../../stores/SupportStore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 
-const NUMBER_OF_CANDIDATES_TO_DISPLAY = 5; // Set to 5 in raccoon, and 3 in walrus
+const NUMBER_OF_CANDIDATES_TO_DISPLAY = 30; // On voter guide pages, we want to show all
 
 // This is based on components/Ballot/OfficeItemCompressed
 export default class VoterGuideOfficeItemCompressed extends Component {
@@ -37,6 +36,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      candidateList: [],
       display_all_candidates_flag: false,
       display_office_unfurled: false,
       editMode: false,
@@ -56,31 +56,46 @@ export default class VoterGuideOfficeItemCompressed extends Component {
   }
 
   componentDidMount () {
-    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
 
-    // console.log("this.props.candidate_list: ", this.props.candidate_list);
     if (this.props.candidate_list && this.props.candidate_list.length) {
-      this.props.candidate_list.forEach(function (candidate) {
-        // console.log("OfficeItemCompressed, candidate: ", candidate);
-        if (candidate && candidate.hasOwnProperty("we_vote_id") && !CandidateStore.isCandidateInStore(candidate.we_vote_id)) {
-          // console.log("OfficeItemCompressed, retrieving");
-          CandidateActions.candidateRetrieve(candidate.we_vote_id);
-        }
+      CandidateActions.candidatesRetrieve(this.props.we_vote_id);
+
+      // this.props.candidate_list.forEach( function (candidate) {
+      //   if (candidate && candidate.hasOwnProperty("we_vote_id") && !CandidateStore.isCandidateInStore(candidate.we_vote_id)) {
+      //     // Slows down the browser too much when run for all candidates
+      //     // VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidate.we_vote_id, "CANDIDATE");
+      //   }
+      // });
+      this.setState({
+        candidateList: this.props.candidate_list,
       });
     }
-    this.setState({
-      organization: this.props.organization,
-    });
+    if (this.props.organization && this.props.organization.organization_we_vote_id) {
+      this.setState({
+        organization: this.props.organization,
+      });
+    }
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log("VoterGuideOfficeItemCompressed componentWillReceiveProps, nextProps: ", nextProps);
-    this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
-    });
+    // console.log("officeItemCompressed componentWillReceiveProps, nextProps.candidate_list:", nextProps.candidate_list);
+    // 2018-05-10 I don't think we need to trigger a new render because the incoming candidate_list should be the same
+    // if (nextProps.candidate_list && nextProps.candidate_list.length) {
+    //   this.setState({
+    //     candidateList: nextProps.candidate_list,
+    //   });
+    // }
+
+    // Only update organization if it is a different organization
+    if (nextProps.organization && nextProps.organization.organization_we_vote_id && (this.state.organization.organization_we_vote_id !== nextProps.organization.organization_we_vote_id)) {
+      this.setState({
+        organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
+      });
+    }
   }
 
   componentWillUnmount () {
@@ -93,8 +108,8 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     this.setState({ transitioning: false });
   }
 
-  _onOrganizationStoreChange (){
-    // console.log("VoterGuideOfficeItemCompressed _onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
+  onOrganizationStoreChange (){
+    // console.log("VoterGuideOfficeItemCompressed onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
     });
@@ -133,11 +148,13 @@ export default class VoterGuideOfficeItemCompressed extends Component {
   }
 
   goToCandidateLink (candidate_we_vote_id) {
-    historyPush("/candidate/" + candidate_we_vote_id + "/btvg/" + this.state.organization.organization_we_vote_id);
+    let candidate_link = this.getCandidateLink(candidate_we_vote_id);
+    historyPush(candidate_link);
   }
 
   goToOfficeLink () {
-    historyPush("/office/" + this.props.we_vote_id + "/btvg/" + this.state.organization.organization_we_vote_id);
+    let office_link = this.getOfficeLink();
+    historyPush(office_link);
   }
 
   doesOrganizationHavePositionOnCandidate (candidate_we_vote_id) {
@@ -161,59 +178,74 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     return one_position_to_return;
   }
 
+  closeYourNetworkIsUndecidedPopover () {
+    this.refs["undecided-overlay"].hide();
+  }
+
   render () {
     renderLog(__filename);
     let { ballot_item_display_name, we_vote_id } = this.props;
 
-    ballot_item_display_name = capitalizeString(ballot_item_display_name);
+    ballot_item_display_name = toTitleCase(ballot_item_display_name);
 
-    let candidate_list_to_display = this.props.candidate_list;
-    let total_number_of_candidates_to_display = this.props.candidate_list.length;
+    let filteredCandidateList = this.state.candidateList;
+    let total_number_of_candidates_to_display = this.state.candidateList.length;
     let remaining_candidates_to_display_count = 0;
 
-    if (!this.state.display_all_candidates_flag && this.props.candidate_list.length > NUMBER_OF_CANDIDATES_TO_DISPLAY) {
-      candidate_list_to_display = this.props.candidate_list.slice(0, NUMBER_OF_CANDIDATES_TO_DISPLAY);
-      remaining_candidates_to_display_count = this.props.candidate_list.length - NUMBER_OF_CANDIDATES_TO_DISPLAY;
+    if (!this.state.display_all_candidates_flag && this.state.candidateList.length > NUMBER_OF_CANDIDATES_TO_DISPLAY) {
+      filteredCandidateList = this.state.candidateList.slice(0, NUMBER_OF_CANDIDATES_TO_DISPLAY);
+      remaining_candidates_to_display_count = this.state.candidateList.length - NUMBER_OF_CANDIDATES_TO_DISPLAY;
     }
 
-    let is_support_array = [];
-    let voter_supports_at_least_one_candidate = false;
+    let advisorsThatMakeVoterIssuesScoreDisplay;
+    let advisorsThatMakeVoterIssuesScoreCount = 0;
+    let advisorsThatMakeVoterNetworkScoreCount = 0;
+    let advisorsThatMakeVoterNetworkScoreDisplay = null;
+    let arrayOfCandidatesVoterSupports = [];
+    let atLeastOneCandidateChosenByNetwork = false;
+    let atLeastOneCandidateChosenByIssueScore = false;
+    let candidateWithMostSupportFromNetwork = null;
+    let candidateWeVoteWithMostSupportFromNetwork = null;
+    let candidateWithHighestIssueScore = null;
+    let candidateWeVoteIdWithHighestIssueScore = null;
+    let voterSupportsAtLeastOneCandidate = false;
     let supportProps;
     let candidate_has_voter_support;
 
     // Prepare an array of candidate names that are supported by voter
-    this.props.candidate_list.forEach((candidate) => {
+    this.state.candidateList.forEach((candidate) => {
       supportProps = SupportStore.get(candidate.we_vote_id);
       if (supportProps) {
         candidate_has_voter_support = supportProps.is_support;
 
         if (candidate_has_voter_support) {
-          is_support_array.push(candidate.ballot_item_display_name);
-          voter_supports_at_least_one_candidate = true;
+          arrayOfCandidatesVoterSupports.push(candidate.ballot_item_display_name);
+          voterSupportsAtLeastOneCandidate = true;
         }
       }
     });
 
-    // This function finds the highest support count for each office but does not handle ties. If two candidates have
-    // the same network support count, only the first candidate will be displayed.
-    let largest_support_count = 0;
-    let at_least_one_candidate_chosen = false;
-
     // If the voter isn't supporting any candidates, then figure out which candidate the voter's network likes the best
-    if (is_support_array.length === 0){
+    if (arrayOfCandidatesVoterSupports.length === 0){
+      // This function finds the highest support count for each office but does not handle ties. If two candidates have
+      // the same network support count, only the first candidate will be displayed.
+      let largestNetworkSupportCount = 0;
       let network_support_count;
       let network_oppose_count;
 
-      this.props.candidate_list.forEach((candidate) => {
+      this.state.candidateList.forEach((candidate) => {
+        // Support in voter's network
         supportProps = SupportStore.get(candidate.we_vote_id);
         if (supportProps) {
           network_support_count = supportProps.support_count;
           network_oppose_count = supportProps.oppose_count;
 
           if (network_support_count > network_oppose_count) {
-            if (network_support_count > largest_support_count) {
-              largest_support_count = network_support_count;
-              at_least_one_candidate_chosen = true;
+            if (network_support_count > largestNetworkSupportCount) {
+              largestNetworkSupportCount = network_support_count;
+              candidateWithMostSupportFromNetwork = candidate.ballot_item_display_name;
+              candidateWeVoteWithMostSupportFromNetwork = candidate.we_vote_id;
+              atLeastOneCandidateChosenByNetwork = true;
             }
           }
         }
@@ -223,6 +255,17 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     let organization_position_for_this_candidate;
     let candidate_we_vote_id;
     let candidateSupportStore;
+    const yourNetworkIsUndecidedPopover =
+      <Popover id="popover-trigger-click-root-close"
+               title={<span>Your Network is Undecided <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+               onClick={this.closeYourNetworkIsUndecidedPopover}>
+        Your friends, and the organizations you listen to, are <strong>Your Network</strong>.
+        Everyone in your network
+        that <span className="u-no-break"> <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /> supports</span> a
+        candidate adds
+        +1 to that candidate's <strong>Score in Your Network</strong>. None of the candidates running
+        for {ballot_item_display_name} have more support in your network than the other candidates.
+      </Popover>;
 
     return <div className="card-main office-item">
       <a name={we_vote_id} />
@@ -230,42 +273,32 @@ export default class VoterGuideOfficeItemCompressed extends Component {
         {/* Desktop */}
         <span className="hidden-xs">
           <BookmarkToggle we_vote_id={we_vote_id} type="OFFICE" />
-          {/*<span className="hidden-print pull-right u-push--lg">
-              <Link className="BallotItem__learn-more" onClick={this.goToOfficeLink}>learn more</Link>
-          </span>*/}
         </span>
-        {/* Mobile */}
-        <span className="visible-xs">
-          {/* this.state.display_office_unfurled ?
-            <span className="BallotItem__learn-more hidden-print pull-right">
-              <Link className="BallotItem__learn-more" onClick={this.goToOfficeLink}>learn more</Link>
-            </span> :
-            null
-          */}
-        </span>
+        {/* Mobile - "show more" and "show less" not used */}
 
         {/* On the voter guide, we bring the size of the office name down so we can emphasize the candidate being supported */}
-        <h2 className="h4 u-f5 card-main__ballot-name u-stack--sm">{this.state.display_office_unfurled ?
-            <Link onClick={this.toggleExpandDetails}>
-              <TextTruncate line={1}
-                            truncateText="…"
-                            text={ballot_item_display_name}
-                            textTruncateChild={null} />
-            </Link> :
-            <Link onClick={this.toggleExpandDetails}>
-              <TextTruncate line={1}
-                            truncateText="…"
-                            text={ballot_item_display_name}
-                            textTruncateChild={null} />
-            </Link>}</h2>
+        <h2 className="h4 u-f5 card-main__ballot-name u-gray-dark u-stack--sm">
+          <span className="hidden-print" onClick={this.toggleExpandDetails}>
+            { this.state.display_office_unfurled ?
+              <span className="glyphicon glyphicon-triangle-bottom u-font-size6 hidden-print u-push--xs"/> :
+              null
+            }
+            {ballot_item_display_name}
+          </span>
+
+          {/* Print */}
+          <span className="u-f3 visible-print">
+            {ballot_item_display_name}
+          </span>
+        </h2>
 
         {/* *************************
         Only show the candidates if the Office is "unfurled"
         ************************* */}
         { this.state.display_office_unfurled ?
-          <span>{candidate_list_to_display.map((one_candidate) => {
-            candidate_we_vote_id = one_candidate.we_vote_id;
-            candidateSupportStore = SupportStore.get(one_candidate.we_vote_id);
+          <span>{filteredCandidateList.map((one_candidate) => {
+            let candidate_we_vote_id = one_candidate.we_vote_id;
+            let candidateSupportStore = SupportStore.get(candidate_we_vote_id);
             let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidate_we_vote_id);
             let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidate_we_vote_id);
 
@@ -286,7 +319,8 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                                   alt="candidate-photo"
                                   kind_of_ballot_item="CANDIDATE" />
                   </div> :
-                  null}
+                  null
+                }
                 <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
                   {/* Candidate Name */}
                   <h4 className={"card-main__candidate-name" + (this.doesOrganizationHavePositionOnCandidate(candidate_we_vote_id) ? " u-f2" : " u-f6")}>
@@ -297,7 +331,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                                     textTruncateChild={null}/>
                     </a>
                   </h4>
-
                   {/* Description under candidate name */}
                   <LearnMore text_to_display={candidate_text}
                              on_click={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(one_candidate.we_vote_id) : null} />
@@ -342,7 +375,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
         ************************* */}
         { !this.state.display_office_unfurled ?
           <div>
-            { candidate_list_to_display.map( (one_candidate) => {
+            { this.state.candidateList.map( (one_candidate) => {
                 if (this.doesOrganizationHavePositionOnCandidate(one_candidate.we_vote_id) ) {
                   organization_position_for_this_candidate = this.getOrganizationPositionForThisCandidate(one_candidate.we_vote_id, this.state.organization.position_list_for_one_election);
 
@@ -359,40 +392,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                       voter_statement_text = candidateSupportStore.voter_statement_text;
                     }
 
-                    let comment_display_raccoon_desktop = is_support || is_oppose || voter_statement_text ?
-                      <div className="hidden-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-                        <div
-                          className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
-                        </div>
-                        <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-                          <ItemPositionStatementActionBar ballot_item_display_name={one_candidate.ballot_item_display_name}
-                                                          ballot_item_we_vote_id={candidate_we_vote_id}
-                                                          supportProps={candidateSupportStore}
-                                                          transitioning={this.state.transitioning}
-                                                          type="CANDIDATE"
-                                                          shown_in_list/>
-                        </div>
-                      </div> :
-                      null;
-
-                    let comment_display_raccoon_mobile = is_support || is_oppose || voter_statement_text ?
-                      <div className="visible-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-                        <div
-                          className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
-                        </div>
-                        <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-                          <ItemPositionStatementActionBar ballot_item_display_name={one_candidate.ballot_item_display_name}
-                                                          ballot_item_we_vote_id={candidate_we_vote_id}
-                                                          supportProps={candidateSupportStore}
-                                                          transitioning={this.state.transitioning}
-                                                          type="CANDIDATE"
-                                                          shown_in_list/>
-                        </div>
-                      </div> :
-                      null;
-
-                    // console.log("Rolled up, one_candidate:", one_candidate);
-                    // Removed from ItemActionBar  opposeHideInMobile
                     return <div key={candidate_we_vote_id}>
                       {/* Organization Endorsement */}
                       <OrganizationPositionItem ballotItemLink={this.getCandidateLink(candidate_we_vote_id)}
@@ -411,21 +410,60 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                                          type="CANDIDATE"/>
                       </div>
                       {/* DESKTOP: If voter has taken position, offer the comment bar */}
-                      {comment_display_raccoon_desktop}
+                      {is_support || is_oppose || voter_statement_text ?
+                        <div className="hidden-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+                          <div
+                            className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
+                          </div>
+                          <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
+                            <ItemPositionStatementActionBar ballot_item_display_name={one_candidate.ballot_item_display_name}
+                                                            ballot_item_we_vote_id={candidate_we_vote_id}
+                                                            supportProps={candidateSupportStore}
+                                                            transitioning={this.state.transitioning}
+                                                            type="CANDIDATE"
+                                                            shown_in_list/>
+                          </div>
+                        </div> :
+                        null }
                       {/* MOBILE: If voter has taken position, offer the comment bar */}
-                      {comment_display_raccoon_mobile}
+                      {is_support || is_oppose || voter_statement_text ?
+                        <div className="visible-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+                          <div
+                            className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
+                          </div>
+                          <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
+                            <ItemPositionStatementActionBar ballot_item_display_name={one_candidate.ballot_item_display_name}
+                                                            ballot_item_we_vote_id={candidate_we_vote_id}
+                                                            supportProps={candidateSupportStore}
+                                                            transitioning={this.state.transitioning}
+                                                            type="CANDIDATE"
+                                                            shown_in_list/>
+                          </div>
+                        </div> :
+                        null }
                     </div>;
                   }
                 }
                 return null;
               })
             }
-            { voter_supports_at_least_one_candidate ?
+            {/* Now that we are out of the candidate loop... */}
+            { voterSupportsAtLeastOneCandidate ?
               null :
               <span>
-                { at_least_one_candidate_chosen ?
+                { atLeastOneCandidateChosenByNetwork ?
                   null :
-                  <div className="u-tr">Your network is undecided</div> }
+                  <div className="u-tr">
+                    <OverlayTrigger trigger="click"
+                                  ref="undecided-overlay"
+                                  onExit={this.closeYourNetworkIsUndecidedPopover}
+                                  rootClose
+                                  placement="top"
+                                  overlay={yourNetworkIsUndecidedPopover}>
+                      <span className=" u-cursor--pointer">Your network is undecided</span>
+                    </OverlayTrigger>
+                  </div>
+                }
               </span>
             }
           </div> :
@@ -438,12 +476,12 @@ export default class VoterGuideOfficeItemCompressed extends Component {
               Click to show {remaining_candidates_to_display_count} more candidate{ remaining_candidates_to_display_count !== 1 ? "s" : null }...</span>
           </Link> : null
         }
-        { this.state.display_all_candidates_flag && this.props.candidate_list.length > NUMBER_OF_CANDIDATES_TO_DISPLAY ?
+        {/* this.state.display_all_candidates_flag && this.state.candidateList.length > NUMBER_OF_CANDIDATES_TO_DISPLAY ?
           <BallotSideBarLink url={"#" + this.props.we_vote_id}
                              label={"Click to show fewer candidates..."}
                              displaySubtitles={false}
                              onClick={this.toggleDisplayAllCandidates} /> : null
-        }
+        */}
         { this.state.display_office_unfurled ?
           <Link onClick={this.toggleExpandDetails}>
             <div className="BallotItem__view-more u-items-center u-no-break hidden-print">
@@ -451,9 +489,11 @@ export default class VoterGuideOfficeItemCompressed extends Component {
           </Link> :
           <Link onClick={this.toggleExpandDetails}>
             <div className="BallotItem__view-more u-items-center u-no-break hidden-print">
+              <i className="fa fa-plus BallotItem__view-more-plus" aria-hidden="true" />
               { total_number_of_candidates_to_display > 1 ?
-                <span>View all {total_number_of_candidates_to_display} candidates...</span> :
-                <span>View candidate...</span> }
+                <span> View all {total_number_of_candidates_to_display} candidates...</span> :
+                <span> View candidate...</span>
+              }
             </div>
           </Link>
         }
