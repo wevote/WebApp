@@ -193,6 +193,7 @@ class VoterGuideStore extends ReduceStore {
       case "pledgeToVoteWithVoterGuide":
         if (action.res.pledge_statistics_found) {
           // console.log("VoterGuideStore pledgeToVoteWithVoterGuide, action.res: ", action.res);
+          SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
           all_cached_voter_guides = state.all_cached_voter_guides;
           voter_guide_with_pledge_info = all_cached_voter_guides[action.res.organization_we_vote_id] || {};
           voter_guide_with_pledge_info.pledge_goal = action.res.pledge_goal;
@@ -210,7 +211,6 @@ class VoterGuideStore extends ReduceStore {
           voter_guide_with_pledge_info.voter_has_pledged = action.res.voter_has_pledged;
           all_cached_voter_guides_by_election[action.res.organization_we_vote_id][action.res.google_civic_election_id] = voter_guide_with_pledge_info;
           OrganizationActions.organizationsFollowedRetrieve();
-          SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
           SupportActions.voterAllPositionsRetrieve();
           VoterGuideActions.voterGuidesToFollowRetrieve(action.res.google_civic_election_id);
           VoterGuideActions.voterGuidesFollowedRetrieve(action.res.google_civic_election_id);
@@ -268,6 +268,8 @@ class VoterGuideStore extends ReduceStore {
         return revisedState;
 
       case "voterFollowAllOrganizationsFollowedByOrganization":
+        // Following one org can change the support/oppose count for many ballot items for the voter
+        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         voter_linked_organization_we_vote_id = VoterStore.getVoter().linked_organization_we_vote_id;
         // organization_we_vote_id is the organization that was just followed
         organization_we_vote_id = action.res.organization_we_vote_id;
@@ -281,8 +283,6 @@ class VoterGuideStore extends ReduceStore {
         VoterGuideActions.voterGuidesFollowedRetrieve();
         // Update the followers of the organization that was just followed: organization_we_vote_id
         VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
-        // Following one org can change the support/oppose count for many ballot items for the voter
-        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         // Retrieve the organizations followed by voter
         OrganizationActions.organizationsFollowedRetrieve();
         return state;
@@ -421,7 +421,7 @@ class VoterGuideStore extends ReduceStore {
             };
           } else {
             let retrieveAnotherPageOfResults;
-            let maximum_number_to_retrieve = 75; // This needs to match the variable in VoterGuideActions
+            let maximum_number_to_retrieve = 150; // This needs to match the variable in VoterGuideActions
             let start_retrieve_at_this_number = action.res.start_retrieve_at_this_number + maximum_number_to_retrieve;
             let received_maximum_possible_voter_guides = action.res.number_retrieved && action.res.number_retrieved === maximum_number_to_retrieve;
             if (action.res.google_civic_election_id && received_maximum_possible_voter_guides) {

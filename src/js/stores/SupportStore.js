@@ -8,6 +8,22 @@ class SupportStore extends ReduceStore {
 
   getInitialState () {
     return {
+      we_vote_id_support_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
+      we_vote_id_oppose_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
+      name_support_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
+      name_oppose_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
+    };
+  }
+
+  resetState () {
+    // Reset this
+    let state = this.getState();
+    return {
+      ...state,
+      // LEAVE DATA: we_vote_id_support_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
+      // LEAVE DATA: we_vote_id_oppose_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
+      // LEAVE DATA: name_support_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
+      // LEAVE DATA: name_oppose_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
     };
   }
 
@@ -49,10 +65,6 @@ class SupportStore extends ReduceStore {
     return this.getState().oppose_counts;
   }
 
-  resetState () {
-    return {};
-  }
-
   listWithChangedCount (list, ballot_item_we_vote_id, amount) {
     return assign({}, list, { [ballot_item_we_vote_id]: list[ballot_item_we_vote_id] + amount });
   }
@@ -63,6 +75,32 @@ class SupportStore extends ReduceStore {
 
   isForPublicListWithChanges (is_public_position_list, ballot_item_we_vote_id, is_public_position) {
     return assign({}, is_public_position_list, { [ballot_item_we_vote_id]: is_public_position });
+  }
+
+  getWeVoteIdSupportListUnderThisBallotItem (ballot_item_we_vote_id) {
+    // What are the issues that have positions for this election under this ballot item?
+    // console.log("getIssuesUnderThisBallotItem, ballot_item_we_vote_id:", ballot_item_we_vote_id);
+    if (ballot_item_we_vote_id && this.getState().we_vote_id_support_list_for_each_ballot_item) {
+      return this.getState().we_vote_id_support_list_for_each_ballot_item[ballot_item_we_vote_id] || [];
+    } else {
+      return [];
+    }
+  }
+
+  getNameSupportListUnderThisBallotItem (ballot_item_we_vote_id) {
+    if (ballot_item_we_vote_id && this.getState().name_support_list_for_each_ballot_item) {
+      return this.getState().name_support_list_for_each_ballot_item[ballot_item_we_vote_id] || [];
+    } else {
+      return [];
+    }
+  }
+
+  getNameOpposeListUnderThisBallotItem (ballot_item_we_vote_id) {
+    if (ballot_item_we_vote_id && this.getState().name_oppose_list_for_each_ballot_item) {
+      return this.getState().name_oppose_list_for_each_ballot_item[ballot_item_we_vote_id] || [];
+    } else {
+      return [];
+    }
   }
 
   // Turn action into a dictionary/object format with we_vote_id as key for fast lookup
@@ -83,6 +121,11 @@ class SupportStore extends ReduceStore {
     if (action.res.ballot_item_we_vote_id) {
       ballot_item_we_vote_id = action.res.ballot_item_we_vote_id;
     }
+    let we_vote_id_support_list_for_each_ballot_item;
+    let we_vote_id_oppose_list_for_each_ballot_item;
+    let name_support_list_for_each_ballot_item;
+    let name_oppose_list_for_each_ballot_item;
+    let position_counts_list;
 
     switch (action.type) {
 
@@ -108,11 +151,31 @@ class SupportStore extends ReduceStore {
         var existing_oppose_counts = state.oppose_counts !== undefined ? state.oppose_counts : [];
         var existing_support_counts = state.support_counts !== undefined ? state.support_counts : [];
 
+        we_vote_id_support_list_for_each_ballot_item = state.we_vote_id_support_list_for_each_ballot_item;
+        we_vote_id_oppose_list_for_each_ballot_item = state.we_vote_id_oppose_list_for_each_ballot_item;
+        name_support_list_for_each_ballot_item = state.name_support_list_for_each_ballot_item;
+        name_oppose_list_for_each_ballot_item = state.name_oppose_list_for_each_ballot_item;
+
+        if (action.res.position_counts_list) {
+          position_counts_list = action.res.position_counts_list;
+          if (position_counts_list.length) {
+            position_counts_list.forEach(positions_count_block => {
+              we_vote_id_support_list_for_each_ballot_item[positions_count_block.ballot_item_we_vote_id] = positions_count_block.support_we_vote_id_list;
+              we_vote_id_oppose_list_for_each_ballot_item[positions_count_block.ballot_item_we_vote_id] = positions_count_block.oppose_we_vote_id_list;
+              name_support_list_for_each_ballot_item[positions_count_block.ballot_item_we_vote_id] = positions_count_block.support_name_list;
+              name_oppose_list_for_each_ballot_item[positions_count_block.ballot_item_we_vote_id] = positions_count_block.oppose_name_list;
+            });
+          }
+        }
         // Duplicate values in the second array will overwrite those in the first
         return {
           ...state,
           oppose_counts: mergeTwoObjectLists(existing_oppose_counts, new_oppose_counts),
-          support_counts: mergeTwoObjectLists(existing_support_counts, new_support_counts)
+          support_counts: mergeTwoObjectLists(existing_support_counts, new_support_counts),
+          we_vote_id_support_list_for_each_ballot_item: we_vote_id_support_list_for_each_ballot_item,
+          we_vote_id_oppose_list_for_each_ballot_item: we_vote_id_oppose_list_for_each_ballot_item,
+          name_support_list_for_each_ballot_item: name_support_list_for_each_ballot_item,
+          name_oppose_list_for_each_ballot_item: name_oppose_list_for_each_ballot_item,
         };
 
       case "positionsCountForOneBallotItem":
