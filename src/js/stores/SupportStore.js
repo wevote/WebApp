@@ -3,6 +3,7 @@ import assign from "object-assign";
 import Dispatcher from "../dispatcher/Dispatcher";
 import { mergeTwoObjectLists } from "../utils/textFormat";
 import SupportActions from "../actions/SupportActions";
+import VoterStore from "../stores/VoterStore";
 
 class SupportStore extends ReduceStore {
 
@@ -20,10 +21,10 @@ class SupportStore extends ReduceStore {
     let state = this.getState();
     return {
       ...state,
-      // LEAVE DATA: we_vote_id_support_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
-      // LEAVE DATA: we_vote_id_oppose_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
-      // LEAVE DATA: name_support_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
-      // LEAVE DATA: name_oppose_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
+      we_vote_id_support_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
+      we_vote_id_oppose_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
+      name_support_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
+      name_oppose_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
     };
   }
 
@@ -131,7 +132,7 @@ class SupportStore extends ReduceStore {
 
       case "voterAddressRetrieve":
         SupportActions.voterAllPositionsRetrieve();
-        SupportActions.positionsCountForAllBallotItems();
+        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         return state;
 
       case "voterAllPositionsRetrieve":
@@ -192,6 +193,7 @@ class SupportStore extends ReduceStore {
         };
 
       case "voterOpposingSave":
+        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         return {
           ...state,
           voter_supports: assign({}, state.voter_supports, { [ballot_item_we_vote_id]: false }),
@@ -203,6 +205,7 @@ class SupportStore extends ReduceStore {
         };
 
       case "voterStopOpposingSave":
+        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         return {
           ...state,
           voter_opposes: assign({}, state.voter_opposes, { [ballot_item_we_vote_id]: false }),
@@ -210,6 +213,7 @@ class SupportStore extends ReduceStore {
         };
 
       case "voterSupportingSave":
+        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         return {
           ...state,
           voter_supports: assign({}, state.voter_supports, { [ballot_item_we_vote_id]: true }),
@@ -221,6 +225,7 @@ class SupportStore extends ReduceStore {
         };
 
       case "voterStopSupportingSave":
+        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         return {
           ...state,
           voter_supports: assign({}, state.voter_supports, { [ballot_item_we_vote_id]: false }),

@@ -97,7 +97,7 @@ export default class NetworkFriendRequests extends Component {
           { this.state.friend_invitations_sent_by_me.length ?
             <div>
               <h3 className="card__additional-heading">Invitations From You</h3>
-              <p>These are invitations you have sent. Your friends have not replied to them yet.</p>
+              <div className="card__additional-text">These are invitations you have sent. Your friends have not replied to them yet.</div>
               <FriendInvitationList friendList={this.state.friend_invitations_sent_by_me}
                                     invitationsSentByMe />
             </div> :
@@ -108,7 +108,7 @@ export default class NetworkFriendRequests extends Component {
           { this.state.friend_invitations_processed.length ?
             <div>
               <h3 className="card__additional-heading">Prior Invitations</h3>
-              <p>These are invitations that have been accepted.</p>
+              <div className="card__additional-text">These are invitations that have been accepted.</div>
               <FriendInvitationProcessedList friendList={this.state.friend_invitations_processed} />
             </div> :
             null

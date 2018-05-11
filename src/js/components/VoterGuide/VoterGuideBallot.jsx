@@ -102,6 +102,16 @@ export default class VoterGuideBallot extends Component {
       });
     }
 
+    let filter_type = this.props.location && this.props.location.query ? this.props.location.query.type : "all";
+    let ballot_with_all_items = BallotStore.getBallotByFilterType(filter_type);
+    if (ballot_with_all_items !== undefined) {
+      // console.log("ballot_with_all_items !== undefined");
+      this.setState({
+        ballot_with_all_items: ballot_with_all_items,
+        filter_type: filter_type,
+      });
+    }
+
     let google_civic_election_id_from_url = this.props.params.google_civic_election_id || 0;
     // console.log("google_civic_election_id_from_url: ", google_civic_election_id_from_url);
     let ballot_returned_we_vote_id = this.props.params.ballot_returned_we_vote_id || "";
@@ -154,6 +164,9 @@ export default class VoterGuideBallot extends Component {
         }
         historyPush(ballotElectionUrl2);
       }
+    } else if (ballot_with_all_items === undefined) {
+      // console.log("WebApp doesn't know the election or have ballot data, so ask the API server to return best guess");
+      BallotActions.voterBallotItemsRetrieve(0, "", "");
     }
     // DALE NOTE 2018-1-18 Commented this out because it will take voter away from voter guide. Needs further testing.
     // else if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
@@ -161,15 +174,6 @@ export default class VoterGuideBallot extends Component {
     //   historyPush("/settings/location");
     // }
 
-    let filter_type = this.props.location && this.props.location.query ? this.props.location.query.type : "all";
-    let ballot_with_all_items = BallotStore.getBallotByFilterType(filter_type);
-    if (ballot_with_all_items !== undefined) {
-      // console.log("ballot_with_all_items !== undefined");
-      this.setState({
-        ballot_with_all_items: ballot_with_all_items,
-        filter_type: filter_type,
-      });
-    }
     // We need a ballotStoreListener here because we want the ballot to display before positions are received
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,

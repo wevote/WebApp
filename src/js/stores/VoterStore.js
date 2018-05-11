@@ -421,6 +421,7 @@ class VoterStore extends ReduceStore {
         FriendActions.friendInvitationsSentToMe();
         FriendActions.friendInvitationsProcessed();
         BallotActions.voterBallotItemsRetrieve();
+        SupportActions.positionsCountForAllBallotItems();
         return {
           ...state,
           email_sign_in_status: {

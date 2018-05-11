@@ -401,8 +401,10 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
     let showNetworkScore = true;
     if (voterIssuesScore !== 0 && total_network_score === 0) {
+      // There is an issue score, and the total Network Score is 0, so don't show Network score
       showNetworkScore = false;
-    } else if (voterIssuesScore === 0 && total_network_score === 0) {
+    } else if (voterIssuesScore === 0 && network_support_count === 0 && network_oppose_count === 0) {
+      // There is NOT an issue score, and BOTH network_support and network_oppose must be zero to hide Network Score
       showNetworkScore = false;
     }
 
@@ -602,19 +604,19 @@ export default class ItemSupportOpposeRaccoon extends Component {
     let nameNetworkOpposeListDisplay = nameNetworkOpposeList.map( speaker_display_name => {
       return <span key={speaker_display_name} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{speaker_display_name} <strong>-1</strong></span></span>;
     });
-    let displayAdvisorsThatMakeVoterNetworkScore = <span>
+    let advisorsThatMakeVoterNetworkScoreDisplay = <span>
       { nameNetworkSupportList.length ? <span>{nameNetworkSupportListDisplay}</span> : null}
       { nameNetworkOpposeList.length ? <span>{nameNetworkOpposeListDisplay}</span> : null}
     </span>;
-    let advisorsThatMakeVoterNetworkScore = nameNetworkSupportList.length + nameNetworkOpposeList.length;
+    let advisorsThatMakeVoterNetworkScoreCount = nameNetworkSupportList.length + nameNetworkOpposeList.length;
 
-    if (advisorsThatMakeVoterNetworkScore > 0) {
+    if (advisorsThatMakeVoterNetworkScoreCount > 0) {
       scoreInYourNetworkPopover =
         <Popover id="score-popover-trigger-click-root-close"
                  title={<span>Score in Your Network <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                  onClick={this.closeNetworkScorePopover}>
           These friends or organizations support or oppose <strong>{this.state.ballot_item_display_name}</strong>:<br />
-          {displayAdvisorsThatMakeVoterNetworkScore}
+          {advisorsThatMakeVoterNetworkScoreDisplay}
         </Popover>;
 
     } else {
