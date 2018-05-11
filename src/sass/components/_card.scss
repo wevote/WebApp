@@ -379,6 +379,10 @@ $candidate-font-size: .875rem;
     margin: $space-md $item-padding;
   }
 
+  &__additional-text {
+    margin: $space-md $item-padding;
+  }
+
   &__no-additional {
     margin: $space-md $item-padding;
   }

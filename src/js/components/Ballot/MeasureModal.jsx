@@ -175,10 +175,10 @@ export default class MeasureModal extends Component {
                 <p className="card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
                 <div>
                   <h3 className="card__additional-heading">{"More opinions about " + this.props.measure.ballot_item_display_name}</h3>
-                  <p className="card__no-additional">
+                  <div className="card__additional-text">
                       <strong>Listen</strong> to the voter guides of organizations and people you trust.<br />
                       <strong>Ignore</strong> voter guides that don't share your values.
-                  </p>
+                  </div>
                   <GuideList ballotItemWeVoteId={this.props.measure.we_vote_id}
                              organizationsToFollow={this.state.voter_guides_to_follow_for_latest_ballot_item}/>
                 </div>

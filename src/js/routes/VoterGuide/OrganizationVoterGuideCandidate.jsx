@@ -159,7 +159,7 @@ export default class OrganizationVoterGuideCandidate extends Component {
             null
           }
           {this.state.voter_guides_to_follow_for_latest_ballot_item.length === 0 ?
-            <p className="card__no-additional">{NO_VOTER_GUIDES_TEXT}</p> :
+            <div className="card__additional-text">{NO_VOTER_GUIDES_TEXT}</div> :
             <div><h3 className="card__additional-heading">{"More opinions about " + this.state.candidate.ballot_item_display_name}</h3>
             <GuideList id={electionId}
                        ballotItemWeVoteId={this.state.candidate_we_vote_id}
