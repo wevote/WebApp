@@ -5,7 +5,7 @@ import { findDOMNode } from "react-dom";
 import $ from "jquery";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
-import { cordovaDot } from "../../utils/cordovaUtils";
+import {cordovaDot, isCordova} from "../../utils/cordovaUtils";
 import IssuesFollowedByBallotItemDisplayList from "../Issues/IssuesFollowedByBallotItemDisplayList";
 import IssueStore from "../../stores/IssueStore";
 import ItemActionBar from "../Widgets/ItemActionBar";
@@ -248,7 +248,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
                                            id={`organization-popover-${org_id}-${visible_tag}`}
                                            onMouseOver={() => this.onTriggerEnter(org_id, visible_tag)}
                                            onMouseOut={() => this.onTriggerLeave(org_id, visible_tag)}
-                                           title={<span onClick={() => this.onTriggerLeave(org_id, visible_tag)}>&nbsp;<span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /> </span>}
+                                           title={<span onClick={() => this.onTriggerLeave(org_id, visible_tag)}>&nbsp;
+                                             <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" /> </span>}
                                            >
             <OrganizationCard organization={one_organization_for_organization_card}
                               ballotItemWeVoteId={ballot_item_we_vote_id}
