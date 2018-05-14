@@ -62,7 +62,7 @@ export default class FriendInvitationToggle extends Component {
     const unFriend = FriendActions.unFriend.bind(this, other_voter_we_vote_id);
     const floatRight = { float: "right"};
 
-    return <span style={floatRight}>
+    return <span className="u-margin-left-right--xs" style={floatRight}>
       {is_friend ?
         <Button bsStyle="warning"
                 bsSize="small"

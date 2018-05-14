@@ -456,7 +456,7 @@ $slick-dot-character: '\2022' !default;
   color: $white;
 
   &__cordova {
-    top: 20px;
+    top: 30px;
     right: 14px;
   }
   @include breakpoints (small mid-small) {
@@ -528,7 +528,7 @@ $slick-dot-character: '\2022' !default;
     height: inherit;
 
     .intro-modal__button-wrap {
-      justify-content: auto;
+      // justify-content: auto;  May 7, 2018, auto is not a valid choice
     }
 
     .calc-height {

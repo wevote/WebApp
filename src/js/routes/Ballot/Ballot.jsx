@@ -102,6 +102,16 @@ export default class Ballot extends Component {
       });
     }
 
+    let filter_type = this.props.location && this.props.location.query ? this.props.location.query.type : "all";
+    let ballot_with_all_items = BallotStore.getBallotByFilterType(filter_type);
+    if (ballot_with_all_items !== undefined) {
+      // console.log("ballot_with_all_items !== undefined");
+      this.setState({
+        ballot_with_all_items: ballot_with_all_items,
+        filter_type: filter_type
+      });
+    }
+
     let google_civic_election_id_from_url = this.props.params.google_civic_election_id || 0;
     // console.log("google_civic_election_id_from_url: ", google_civic_election_id_from_url);
     let ballot_returned_we_vote_id = this.props.params.ballot_returned_we_vote_id || "";
@@ -149,6 +159,9 @@ export default class Ballot extends Component {
     } else if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
       // console.log("if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false");
       historyPush("/settings/location");
+    } else if (ballot_with_all_items === undefined) {
+      // console.log("WebApp doesn't know the election or have ballot data, so ask the API server to return best guess");
+      BallotActions.voterBallotItemsRetrieve(0, "", "");
     }
 
     // console.log("Ballot, google_civic_election_id: ", google_civic_election_id, ", ballot_location_shortcut: ", ballot_location_shortcut, "ballot_returned_we_vote_id: ", ballot_returned_we_vote_id);
@@ -160,16 +173,6 @@ export default class Ballot extends Component {
         issues_retrieved_from_google_civic_election_id: google_civic_election_id,
         issues_retrieved_from_ballot_returned_we_vote_id: ballot_returned_we_vote_id,
         issues_retrieved_from_ballot_location_shortcut: ballot_location_shortcut,
-      });
-   }
-
-    let filter_type = this.props.location && this.props.location.query ? this.props.location.query.type : "all";
-    let ballot_with_all_items = BallotStore.getBallotByFilterType(filter_type);
-    if (ballot_with_all_items !== undefined) {
-      // console.log("ballot_with_all_items !== undefined");
-      this.setState({
-        ballot_with_all_items: ballot_with_all_items,
-        filter_type: filter_type
       });
     }
     // We need a ballotStoreListener here because we want the ballot to display before positions are received

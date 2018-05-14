@@ -37,10 +37,10 @@ class IssueStore extends ReduceStore {
       ...state,
       issue_support_score_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: support_score
       issue_oppose_score_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: oppose_score
-      // LEAVE DATA: organization_we_vote_id_support_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
-      // LEAVE DATA: organization_we_vote_id_oppose_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
-      // LEAVE DATA: organization_name_support_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
-      // LEAVE DATA: organization_name_oppose_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
+      organization_we_vote_id_support_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
+      organization_we_vote_id_oppose_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
+      organization_name_support_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
+      organization_name_oppose_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
       issue_score_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: calculated score
       issue_we_vote_ids_voter_is_following: [], // These are issues a particular voter is following
       issue_we_vote_ids_voter_can_follow: issue_we_vote_ids_voter_can_follow, // These are issues a particular voter can follow

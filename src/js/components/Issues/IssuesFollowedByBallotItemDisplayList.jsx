@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import { findDOMNode } from "react-dom";
 import $ from "jquery";
+import { isCordova } from "../../utils/cordovaUtils";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import IssuesDisplayListWithOrganizationPopovers from "../Issues/IssuesDisplayListWithOrganizationPopovers";
 import IssueStore from "../../stores/IssueStore";
 import { renderLog } from "../../utils/logging";
-
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item,
 //  with a dropdown under each one that has all of the organizations they can follow underneath.
@@ -89,81 +89,84 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
   onVoterGuideStoreChange () {
     // We just want to trigger a re-render
     this.setState({ transitioning: false });
+
     // console.log("onVoterGuideStoreChange");
   }
 
-  scrollLeft (visible_tag) {
-    const element = findDOMNode(this.refs[`${this.props.ballotItemWeVoteId}-issue-list-${visible_tag}`]);
+  scrollLeft (visibleTag) {
+    const element = findDOMNode(this.refs[`${this.props.ballotItemWeVoteId}-issue-list-${visibleTag}`]);
     let position = $(element).scrollLeft();
     let width = Math.round($(element).width());
     $(element).animate({
       scrollLeft: position - width,
     }, 350, () => {
-      let new_position = $(element).scrollLeft();
-      if (visible_tag === "desktop") {
+      let newPosition = $(element).scrollLeft();
+      if (visibleTag === "desktop") {
         this.setState({
-          can_scroll_left_desktop: new_position > 0,
+          can_scroll_left_desktop: newPosition > 0,
           can_scroll_right_desktop: true,
         });
       } else {
         this.setState({
-          can_scroll_left_mobile: new_position > 0,
+          can_scroll_left_mobile: newPosition > 0,
           can_scroll_right_mobile: true,
         });
       }
     });
   }
 
-  scrollRight (visible_tag) {
-    const element = findDOMNode(this.refs[`${this.props.ballotItemWeVoteId}-issue-list-${visible_tag}`]);
+  scrollRight (visibleTag) {
+    const element = findDOMNode(this.refs[`${this.props.ballotItemWeVoteId}-issue-list-${visibleTag}`]);
     let position = $(element).scrollLeft();
     let width = Math.round($(element).width());
     $(element).animate({
       scrollLeft: position + width,
     }, 350, () => {
-      let new_position = $(element).scrollLeft();
-      if (visible_tag === "desktop") {
+      let newPosition = $(element).scrollLeft();
+      if (visibleTag === "desktop") {
         this.setState({
-          can_scroll_left_desktop: new_position > 0,
-          can_scroll_right_desktop: position + width === new_position,
+          can_scroll_left_desktop: newPosition > 0,
+          can_scroll_right_desktop: position + width === newPosition,
         });
       } else {
         this.setState({
-          can_scroll_left_mobile: new_position > 0,
-          can_scroll_right_mobile: position + width === new_position,
+          can_scroll_left_mobile: newPosition > 0,
+          can_scroll_right_mobile: position + width === newPosition,
         });
       }
     });
   }
 
   setScrollState () {
-    const desktop_list = findDOMNode(this.refs[`${this.props.ballotItemWeVoteId}-issue-list-desktop`]);
-    const mobile_list = findDOMNode(this.refs[`${this.props.ballotItemWeVoteId}-issue-list-mobile`]);
-    let desktop_list_visible_width = $(desktop_list).width();
-    let desktop_list_width = $(desktop_list).children().eq(0).children().eq(0).width();
-    let mobile_list_visible_width = $(mobile_list).width();
-    let mobile_list_width = $(mobile_list).children().eq(0).children().eq(0).width();
+    const desktopList = findDOMNode(this.refs[`${this.props.ballotItemWeVoteId}-issue-list-desktop`]);
+    const mobileList = findDOMNode(this.refs[`${this.props.ballotItemWeVoteId}-issue-list-mobile`]);
+    let desktopListVisibleWidth = $(desktopList).width();
+    let desktopListWidth = $(desktopList).children().eq(0).children().eq(0).width();
+    let mobileListVisibleWidth = $(mobileList).width();
+    let mobileListWidth = $(mobileList).children().eq(0).children().eq(0).width();
     this.setState({
-      can_scroll_desktop: desktop_list_visible_width <= desktop_list_width,
-      can_scroll_mobile: mobile_list_visible_width <= mobile_list_width,
+      can_scroll_desktop: desktopListVisibleWidth <= desktopListWidth,
+      can_scroll_mobile: mobileListVisibleWidth <= mobileListWidth,
     });
   }
 
   render () {
     renderLog(__filename);
-    let issues_under_this_ballot_item_voter_is_following_found = this.state.issues_under_this_ballot_item_voter_is_following && this.state.issues_under_this_ballot_item_voter_is_following.length;
-    let issues_under_this_ballot_item_voter_is_not_following_found = this.state.issues_under_this_ballot_item_voter_not_following && this.state.issues_under_this_ballot_item_voter_not_following.length;
+    let issuesUnderThisBallotItemVoterIsFollowingFound = this.state.issues_under_this_ballot_item_voter_is_following && this.state.issues_under_this_ballot_item_voter_is_following.length;
+    let issuesUnderThisBallotItemVoterIsNotFollowingFound = this.state.issues_under_this_ballot_item_voter_not_following && this.state.issues_under_this_ballot_item_voter_not_following.length;
+
     // console.log("this.state.ballotItemWeVoteId: ", this.state.ballotItemWeVoteId);
     // console.log("this.state.issues_under_this_ballot_item: ", this.state.issues_under_this_ballot_item);
     // console.log("this.state.issues_under_this_ballot_item_voter_is_following: ", this.state.issues_under_this_ballot_item_voter_is_following);
     // console.log("this.state.issues_under_this_ballot_item_voter_not_following: ", this.state.issues_under_this_ballot_item_voter_not_following);
-    if (!issues_under_this_ballot_item_voter_is_following_found && !issues_under_this_ballot_item_voter_is_not_following_found) {
+    if (!issuesUnderThisBallotItemVoterIsFollowingFound && !issuesUnderThisBallotItemVoterIsNotFollowingFound) {
       return null;
     }
 
     const issuesLabelPopover =
       <Popover id="positions-popover-trigger-click-root-close"
-               title={<span>Issues related to {this.state.ballot_item_display_name} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+               title={<span>Issues related to {this.state.ballot_item_display_name}
+                  <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" /></span>}
                onClick={this.closeIssuesLabelPopover}
                className="card-popover">
         See opinions about {this.state.ballot_item_display_name}, organized by issues you care about.

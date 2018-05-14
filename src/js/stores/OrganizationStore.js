@@ -1,6 +1,5 @@
 import { ReduceStore } from "flux/utils";
 import Dispatcher from "../dispatcher/Dispatcher";
-import CandidateActions from "../actions/CandidateActions";
 import OrganizationActions from "../actions/OrganizationActions";
 import SupportActions from "../actions/SupportActions";
 import VoterGuideActions from "../actions/VoterGuideActions";
@@ -203,7 +202,6 @@ class OrganizationStore extends ReduceStore {
   reduce (state, action) {
     let add_voter_guides_not_from_election;
     let all_cached_organizations_dict;
-    let candidate_we_vote_id;
     let organization_we_vote_id;
     let organization;
     let prior_copy_of_organization;
@@ -216,6 +214,8 @@ class OrganizationStore extends ReduceStore {
 
     switch (action.type) {
       case "organizationFollow":
+        // Following one org can change the support/oppose count for many ballot items for the voter
+        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         // We also listen to "organizationFollow" in VoterGuideStore so we can alter organization_we_vote_ids_to_follow_all and organization_we_vote_ids_to_follow_for_latest_ballot_item
         // voter_linked_organization_we_vote_id is the voter who clicked the Follow button
         voter_linked_organization_we_vote_id = action.res.voter_linked_organization_we_vote_id;
@@ -242,8 +242,6 @@ class OrganizationStore extends ReduceStore {
         // Update the followers of the organization that was just followed: organization_we_vote_id
         // 2018-05-02 NOT calling this for optimization (not critical)
         // VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
-        // Following one org can change the support/oppose count for many ballot items for the voter
-        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         // Retrieve the organizations followed by voter
         OrganizationActions.organizationsFollowedRetrieve();
         organization_we_vote_ids_voter_is_following = state.organization_we_vote_ids_voter_is_following;
@@ -272,6 +270,8 @@ class OrganizationStore extends ReduceStore {
       case "organizationStopFollowing":
         // We also listen to "organizationStopFollowing" in VoterGuideStore so we can alter organization_we_vote_ids_to_follow_all
 
+        // Un-Following one org can change the support/oppose count for many ballot items for the voter
+        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         // voter_linked_organization_we_vote_id is the voter who clicked the Follow button
         voter_linked_organization_we_vote_id = action.res.voter_linked_organization_we_vote_id;
         // organization_we_vote_id is the organization that was just followed
@@ -293,8 +293,6 @@ class OrganizationStore extends ReduceStore {
         // Update the followers of the organization that was just un-followed: organization_we_vote_id
         // 2018-05-02 NOT calling this for optimization (not critical)
         // VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
-        // Un-Following one org can change the support/oppose count for many ballot items for the voter
-        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         // Retrieve the organizations followed by voter
         OrganizationActions.organizationsFollowedRetrieve();
         return {
@@ -305,6 +303,8 @@ class OrganizationStore extends ReduceStore {
       case "organizationFollowIgnore":
         // We also listen to "organizationFollowIgnore" in VoterGuideStore so we can alter organization_we_vote_ids_to_follow_all and organization_we_vote_ids_to_follow_for_latest_ballot_item
 
+        // Ignoring one org can change the support/oppose count for many ballot items for the voter
+        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         // voter_linked_organization_we_vote_id is the voter who clicked the Follow button
         voter_linked_organization_we_vote_id = action.res.voter_linked_organization_we_vote_id;
         // organization_we_vote_id is the organization that was just followed
@@ -326,11 +326,9 @@ class OrganizationStore extends ReduceStore {
         // Update the followers of the organization that was just ignored: organization_we_vote_id
         // 2018-05-02 NOT calling this for optimization (not critical)
         // VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
-        // Ignoring one org can change the support/oppose count for many ballot items for the voter
-        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         // Go through all of the candidates currently on the ballot and update their positions
-        candidate_we_vote_id = "wv01cand5887"; // TODO TEMP
-        CandidateActions.positionListForBallotItem(candidate_we_vote_id);
+            // candidate_we_vote_id = "wv01cand5887"; // TODO TEMP
+            // CandidateActions.positionListForBallotItem(candidate_we_vote_id);
         // Retrieve the organizations followed by voter
         OrganizationActions.organizationsFollowedRetrieve();
         organization_we_vote_ids_voter_is_ignoring = state.organization_we_vote_ids_voter_is_ignoring;

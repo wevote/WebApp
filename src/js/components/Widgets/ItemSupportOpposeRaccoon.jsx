@@ -5,7 +5,7 @@ import { findDOMNode } from "react-dom";
 import $ from "jquery";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
-import { cordovaDot } from "../../utils/cordovaUtils";
+import {cordovaDot, isCordova} from "../../utils/cordovaUtils";
 import IssuesFollowedByBallotItemDisplayList from "../Issues/IssuesFollowedByBallotItemDisplayList";
 import IssueStore from "../../stores/IssueStore";
 import ItemActionBar from "../Widgets/ItemActionBar";
@@ -250,12 +250,12 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
         this.popover_state[org_id] = {show: false, timer: null};
 
-        // Removed "visible-xs" from the title
         let organizationPopover = <Popover className="card-popover"
                                            id={`organization-popover-${org_id}-${visible_tag}`}
                                            onMouseOver={() => this.onTriggerEnter(org_id, visible_tag)}
                                            onMouseOut={() => this.onTriggerLeave(org_id, visible_tag)}
-                                           title={<span className="" onClick={() => this.onTriggerLeave(org_id, visible_tag)}>&nbsp;<span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /> </span>}
+                                           title={<span onClick={() => this.onTriggerLeave(org_id, visible_tag)}>&nbsp;
+                                             <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" /> </span>}
                                            >
             <OrganizationCard organization={one_organization_for_organization_card}
                               ballotItemWeVoteId={ballot_item_we_vote_id}
@@ -408,8 +408,10 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
     let showNetworkScore = true;
     if (voterIssuesScore !== 0 && total_network_score === 0) {
+      // There is an issue score, and the total Network Score is 0, so don't show Network score
       showNetworkScore = false;
-    } else if (voterIssuesScore === 0 && total_network_score === 0) {
+    } else if (voterIssuesScore === 0 && network_support_count === 0 && network_oppose_count === 0) {
+      // There is NOT an issue score, and BOTH network_support and network_oppose must be zero to hide Network Score
       showNetworkScore = false;
     }
 
@@ -534,28 +536,29 @@ export default class ItemSupportOpposeRaccoon extends Component {
     }
 
     let scoreFromYourIssuesPopover;
+    let scoreInYourNetworkPopover;
     let issuesPopoverPlacement = "top";
-    let displayAdvisorsThatMakeVoterIssuesScore;
-    let advisorsThatMakeVoterIssuesScore = 0;
+    let advisorsThatMakeVoterIssuesScoreDisplay;
+    let advisorsThatMakeVoterIssuesScoreCount = 0;
     if (issueCountUnderThisBallotItemVoterIsFollowing) {
       // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
-      let organizationNameSupportList = IssueStore.getOrganizationNameSupportListUnderThisBallotItem(this.state.ballot_item_we_vote_id);
-      let organizationNameSupportListDisplay = organizationNameSupportList.map( organization_name => {
+      let organizationNameIssueSupportList = IssueStore.getOrganizationNameSupportListUnderThisBallotItem(this.state.ballot_item_we_vote_id);
+      let organizationNameIssueSupportListDisplay = organizationNameIssueSupportList.map( organization_name => {
         return <span key={organization_name} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{organization_name} <strong>+1</strong></span></span>;
       });
-      let organizationNameOpposeList = IssueStore.getOrganizationNameOpposeListUnderThisBallotItem(this.state.ballot_item_we_vote_id);
-      let organizationNameOpposeListDisplay = organizationNameOpposeList.map( organization_name => {
+      let organizationNameIssueOpposeList = IssueStore.getOrganizationNameOpposeListUnderThisBallotItem(this.state.ballot_item_we_vote_id);
+      let organizationNameIssueOpposeListDisplay = organizationNameIssueOpposeList.map( organization_name => {
         return <span key={organization_name} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{organization_name} <strong>-1</strong></span></span>;
       });
-      displayAdvisorsThatMakeVoterIssuesScore = <span>
-        { organizationNameSupportList.length ? <span>{organizationNameSupportListDisplay}</span> : null}
-        { organizationNameOpposeList.length ? <span>{organizationNameOpposeListDisplay}</span> : null}
+      advisorsThatMakeVoterIssuesScoreDisplay = <span>
+        { organizationNameIssueSupportList.length ? <span>{organizationNameIssueSupportListDisplay}</span> : null}
+        { organizationNameIssueOpposeList.length ? <span>{organizationNameIssueOpposeListDisplay}</span> : null}
       </span>;
-      advisorsThatMakeVoterIssuesScore = organizationNameSupportList.length + organizationNameOpposeList.length;
+      advisorsThatMakeVoterIssuesScoreCount = organizationNameIssueSupportList.length + organizationNameIssueOpposeList.length;
     }
     if (showIssueScore) {
       // If here, we know this Ballot item has at least one related issue
-      if (advisorsThatMakeVoterIssuesScore > 0) {
+      if (advisorsThatMakeVoterIssuesScoreCount > 0) {
         // There is a voterIssuesScore, and we have some advisers to display
         scoreFromYourIssuesPopover =
           <Popover id="score-popover-trigger-click-root-close"
@@ -563,7 +566,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                    title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                    onClick={this.closeIssueScorePopover}>
             We've added up the opinions about {this.state.ballot_item_display_name} from all the organizations tagged with your issues:
-            {displayAdvisorsThatMakeVoterIssuesScore}
+            {advisorsThatMakeVoterIssuesScoreDisplay}
           </Popover>;
         issuesPopoverPlacement = "bottom";
       } else if (!issueCountUnderThisBallotItem ) {
@@ -597,26 +600,55 @@ export default class ItemSupportOpposeRaccoon extends Component {
                    title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                    onClick={this.closeIssueScorePopover}>
             We've added up the opinions about {this.state.ballot_item_display_name} from all the organizations tagged with your issues:
-            {displayAdvisorsThatMakeVoterIssuesScore}
+            {advisorsThatMakeVoterIssuesScoreDisplay}
           </Popover>;
         issuesPopoverPlacement = "bottom";
       }
     }
 
-    const scoreInYourNetworkPopover =
-      <Popover id="score-popover-trigger-click-root-close"
-               title={<span>Score in Your Network <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-               onClick={this.closeNetworkScorePopover}>
-        Your friends, and the organizations you listen to, are <strong>Your Network</strong>.
-        Everyone in your network
-        that <span className="u-no-break"> <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")}
-                                                width="20" height="20" /> supports</span> {this.state.ballot_item_display_name} adds
-        +1 to this <strong>Score</strong>.
-        Each one that <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
-                                               width="20" height="20" /> opposes</span> subtracts
-        1 from this <strong>Score</strong>. <strong>Listen</strong> to an
-        organization to add their opinion to the <strong>Score in Your Network</strong>.
-      </Popover>;
+    // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
+    let nameNetworkSupportList = SupportStore.getNameSupportListUnderThisBallotItem(this.state.ballot_item_we_vote_id);
+    let nameNetworkSupportListDisplay = nameNetworkSupportList.map( speaker_display_name => {
+      return <span key={speaker_display_name} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{speaker_display_name} <strong>+1</strong></span></span>;
+    });
+    let nameNetworkOpposeList = SupportStore.getNameOpposeListUnderThisBallotItem(this.state.ballot_item_we_vote_id);
+    let nameNetworkOpposeListDisplay = nameNetworkOpposeList.map( speaker_display_name => {
+      return <span key={speaker_display_name} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{speaker_display_name} <strong>-1</strong></span></span>;
+    });
+    let advisorsThatMakeVoterNetworkScoreDisplay = <span>
+      { nameNetworkSupportList.length ? <span>{nameNetworkSupportListDisplay}</span> : null}
+      { nameNetworkOpposeList.length ? <span>{nameNetworkOpposeListDisplay}</span> : null}
+    </span>;
+    let advisorsThatMakeVoterNetworkScoreCount = nameNetworkSupportList.length + nameNetworkOpposeList.length;
+
+    if (advisorsThatMakeVoterNetworkScoreCount > 0) {
+      scoreInYourNetworkPopover =
+        <Popover id="score-popover-trigger-click-root-close"
+                 title={<span>Score in Your Network <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+                 onClick={this.closeNetworkScorePopover}>
+          These friends or organizations support or oppose <strong>{this.state.ballot_item_display_name}</strong>:<br />
+          {advisorsThatMakeVoterNetworkScoreDisplay}
+        </Popover>;
+
+    } else {
+      scoreInYourNetworkPopover =
+        <Popover id="score-popover-trigger-click-root-close"
+                 title={<span>Score in Your Network <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+                 onClick={this.closeNetworkScorePopover}>
+          Your friends, and the organizations you listen to, are <strong>Your Network</strong>.
+          Everyone in your network
+          that <span className="u-no-break"> <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")}
+                                                  width="20"
+                                                  height="20"/> supports</span> {this.state.ballot_item_display_name}
+          adds
+          +1 to this <strong>Score</strong>.
+          Each one that <span className="u-no-break"><img
+          src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
+          width="20" height="20"/> opposes</span> subtracts
+          1 from this <strong>Score</strong>. <strong>Listen</strong> to an
+          organization to add their opinion to the <strong>Score in Your Network</strong>.
+        </Popover>;
+    }
 
     const positionsPopover =
       <Popover id="positions-popover-trigger-click-root-close"
