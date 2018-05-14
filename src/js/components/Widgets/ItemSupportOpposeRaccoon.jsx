@@ -356,7 +356,10 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   togglePositionStatement () {
-    this.setState({ showPositionStatement: !this.state.showPositionStatement, shouldFocusCommentArea: true });
+    this.setState({
+      showPositionStatement: !this.state.showPositionStatement,
+      shouldFocusCommentArea: true,
+    });
   }
 
   render () {

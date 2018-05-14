@@ -44,7 +44,6 @@ export default class ItemPositionStatementActionBar extends Component {
       statement_text_to_be_saved: statement_text_to_be_saved,
       is_public_position: is_public_position,
       transitioning: false,
-      shouldFocus: false,
       voter_photo_url_medium: "",
     };
   }
@@ -83,9 +82,13 @@ export default class ItemPositionStatementActionBar extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    if (prevProps.supportProps.is_oppose === true && this.props.supportProps.is_oppose === false){  //oppose to support
+    if (prevProps.supportProps.is_oppose === true && this.props.supportProps.is_support === true){  //oppose to support
       this.textarea.focus();
-    } else if (prevProps.supportProps.is_oppose === false && this.props.supportProps.is_oppose === true){ //support to oppose
+    } else if (prevProps.supportProps.is_support === true && this.props.supportProps.is_oppose === true){ //support to oppose
+      this.textarea.focus();
+    } else if (prevProps.supportProps.is_oppose === false && prevProps.supportProps.is_support === false && this.props.supportProps.is_support === true){ //comment to support
+      this.textarea.focus();
+    } else if (prevProps.supportProps.is_oppose === false && prevProps.supportProps.is_support === false && this.props.supportProps.is_oppose === true){ //comment to oppose
       this.textarea.focus();
     }
   }
