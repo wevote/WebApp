@@ -78,6 +78,7 @@ export default class ItemActionBar extends Component {
   }
 
   supportItem (isSupport) {
+    this.props.supportOrOpposeHasBeenClicked();
     if (isSupport) {
       this.stopSupportingItem();
       return;
@@ -121,6 +122,7 @@ export default class ItemActionBar extends Component {
   }
 
   opposeItem (isOppose) {
+    this.props.supportOrOpposeHasBeenClicked();
     if (isOppose) {
       this.stopOpposingItem();
       return;
