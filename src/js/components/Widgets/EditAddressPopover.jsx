@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { isCordova } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import { shortenText } from "../../utils/textFormat";
@@ -111,7 +112,7 @@ export default class EditAddressPopover extends Component {
         <p>
           <span style={{ color: "#ef1e26" }}>{messageTitle}</span>
           {/* This is the "x" to close the popover */}
-          <i className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" />
+          <i className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" />
         </p>
         <p>{messageString}</p>
         { addressPopoverEnterAddressOn ?
