@@ -9,6 +9,8 @@ import ElectionActions from "./actions/ElectionActions";
 import FooterBarCordova from "./components/Navigation/FooterBarCordova";
 import FriendActions from "./actions/FriendActions";
 import HeaderBackToBar from "./components/Navigation/HeaderBackToBar";
+import HeaderBackToSettings from "./components/Navigation/HeaderBackToSettings";
+import HeaderBackToVoterGuides from "./components/Navigation/HeaderBackToVoterGuides";
 import HeaderBar from "./components/Navigation/HeaderBar";
 import HeaderSecondaryNavBar from "./components/Navigation/HeaderSecondaryNavBar";
 import Headroom from "headroom.js";
@@ -345,14 +347,31 @@ export default class Application extends Component {
     }
 
     let showBackToHeader = false;
-    if (stringContains("/btdb/", pathname) || stringContains("/btdo/", pathname) || stringContains("/bto/", pathname) || stringContains("/btvg/", pathname)) {
-
+    let showBackToSettings = false;
+    let showBackToVoterGuides = false;
+    if (stringContains("/btdb/", pathname) ||
+        stringContains("/btdo/", pathname) ||
+        stringContains("/bto/", pathname) ||
+        stringContains("/btvg/", pathname)) {
       // If here, we want the top header to be "Back To..."
       // "/btdb/" stands for "Back To Default Ballot Page"
       // "/btdo/" stands for "Back To Default Office Page"
       // "/btvg/" stands for "Back To Voter Guide Page"
       // "/bto/" stands for "Back To Voter Guide Office Page"
       showBackToHeader = true;
+    } else if (pathname === "/settings/account" ||
+        pathname === "/settings/address" ||
+        pathname === "/settings/election" ||
+        pathname === "/settings/issues" ||
+        pathname === "/settings/notifications" ||
+        pathname === "/settings/profile" ||
+        pathname === "/settings/voterguidesmenu" ||
+        pathname === "/settings/voterguidelist") {
+      console.log("showBackToSettings = true");
+      showBackToSettings = true;
+    } else if (stringContains("/vg/", pathname)) {
+      console.log("showBackToVoterGuides = true");
+      showBackToVoterGuides = true;
     }
 
     if (pathname.startsWith("/measure") && isCordova()) {
@@ -372,6 +391,7 @@ export default class Application extends Component {
     let footerStyle = this.state.showFooter ? "footroom-wrapper" : "footroom-wrapper__hide";
 
     if (inTheaterMode) {
+      console.log("inTheaterMode", inTheaterMode);
       return <div className="app-base" id="app-base-id">
         <div className="page-content-container">
           <div className="container-fluid">
@@ -384,7 +404,7 @@ export default class Application extends Component {
         </div>
       </div>;
     } else if (voterGuideMode) {
-      // console.log("voterGuideMode", voterGuideMode);
+      console.log("voterGuideMode", voterGuideMode);
       let hideGettingStartedButtons = voterGuideShowGettingStartedNavigation;
 
       return <div className="app-base" id="app-base-id">
@@ -394,7 +414,17 @@ export default class Application extends Component {
           <div ref="pageHeader" className={pageHeaderStyle}>
             { showBackToHeader ?
               <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
-              <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/> }
+              <span>
+                  <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
+                {/* FERNANDO - Remove HeaderBar immediately above when you uncomment this:
+                 showBackToVoterGuides ?
+                  <span>
+                    <HeaderBackToVoterGuides location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/>
+                  </span> :
+                  <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
+                */}
+              </span>
+             }
             { voterGuideShowGettingStartedNavigation || stringContains("/ballot", pathname) ?
               <HeaderSecondaryNavBar hideGettingStartedOrganizationsButton={hideGettingStartedButtons}
                                        hideGettingStartedIssuesButton={hideGettingStartedButtons}
@@ -415,6 +445,7 @@ export default class Application extends Component {
         }
       </div>;
     } else if (settingsMode) {
+      console.log("settingsMode", settingsMode);
       return <div className="app-base" id="app-base-id">
         <ToastContainer closeButton={false} />
         { isCordova() && isIOS() && <div className={"ios7plus-spacer"} /> }
@@ -424,6 +455,25 @@ export default class Application extends Component {
               <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
               <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
             }
+            {/* FERNANDO remove showBackToHeader block immediately above when you uncomment this
+            showBackToSettings ?
+              <span>
+                <span className="visible-xs">
+                  <HeaderBackToSettings location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/>
+                </span>
+                <span className="hidden-xs">
+                  <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
+                </span>
+              </span> :
+              <span>
+                { showBackToVoterGuides ?
+                  <div>
+                    <HeaderBackToVoterGuides location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/>
+                  </div> :
+                  <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
+                }
+              </span>
+            */}
           </div>
         </div>
         <div className="page-content-container">
