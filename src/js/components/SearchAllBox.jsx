@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import BallotActions from "../actions/BallotActions";
 import classNames from "classnames";
 import { Link } from "react-router";
-import { historyPush, isCordova, isWebApp } from "../utils/cordovaUtils";
+import { historyPush, isCordova } from "../utils/cordovaUtils";
 import ImageHandler from "../components/ImageHandler";
 import { renderLog } from "../utils/logging";
 import SearchAllActions from "../actions/SearchAllActions";
@@ -364,7 +364,7 @@ export default class SearchAllBox extends Component {
       </div>;
     }
 
-    let searchStyle = isWebApp() ? "page-header__search" : "page-header__search search-cordova";
+    let searchStyle = `page-header__search ${isCordova() && " page-header__cordova"}`;
 
     return <div className={searchStyle}>
       <form onSubmit={this.onSearchFormSubmit} role="search">
