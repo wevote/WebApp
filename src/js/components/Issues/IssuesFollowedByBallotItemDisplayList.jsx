@@ -72,8 +72,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
   }
 
   closeIssuesLabelPopover () {
-    console.log("closeIssuesLabelPopover");
-    this.refs[`issues-overlay-${this.props.ballotItemWeVoteId}`].hide();
+    document.body.click();
   }
 
   onIssueStoreChange () {
@@ -174,8 +173,6 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
 
     const issuesLabel =
       <OverlayTrigger trigger="click"
-                      ref={`issues-overlay-${this.props.ballotItemWeVoteId}`}
-                      onExit={this.closeIssuesLabelPopover}
                       rootClose
                       placement={this.props.popoverBottom ? "bottom" : "top"}
                       overlay={issuesLabelPopover}>
