@@ -25,6 +25,7 @@ export default class ItemActionBar extends Component {
     toggleFunction: PropTypes.func,
     type: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string,
+    supportOrOpposeHasBeenClicked: PropTypes.func.isRequired,
   };
 
   constructor (props) {
@@ -77,6 +78,7 @@ export default class ItemActionBar extends Component {
   }
 
   supportItem (isSupport) {
+    this.props.supportOrOpposeHasBeenClicked();
     if (isSupport) {
       this.stopSupportingItem();
       return;
@@ -120,6 +122,7 @@ export default class ItemActionBar extends Component {
   }
 
   opposeItem (isOppose) {
+    this.props.supportOrOpposeHasBeenClicked();
     if (isOppose) {
       this.stopOpposingItem();
       return;

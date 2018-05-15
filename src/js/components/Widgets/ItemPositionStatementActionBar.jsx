@@ -25,6 +25,7 @@ export default class ItemPositionStatementActionBar extends Component {
     supportProps: PropTypes.object,
     shown_in_list: PropTypes.bool,
     stance_display_off: PropTypes.bool,
+    shouldFocus: PropTypes.bool,
   };
 
   constructor (props) {
@@ -54,6 +55,9 @@ export default class ItemPositionStatementActionBar extends Component {
         is_public_position: this.props.supportProps.is_public_position,
       });
     }
+    if (this.props.shouldFocus){
+      this.textarea.focus();
+    }
 
     this.setState({
       showEditPositionStatementInput: this.props.comment_edit_mode_on,
@@ -75,6 +79,18 @@ export default class ItemPositionStatementActionBar extends Component {
       showEditPositionStatementInput: nextProps.comment_edit_mode_on,
       transitioning: false,
     });
+  }
+
+  componentDidUpdate (prevProps) {
+    if (prevProps.supportProps.is_oppose === true && this.props.supportProps.is_support === true){  //oppose to support
+      this.textarea.focus();
+    } else if (prevProps.supportProps.is_support === true && this.props.supportProps.is_oppose === true){ //support to oppose
+      this.textarea.focus();
+    } else if (prevProps.supportProps.is_oppose === false && prevProps.supportProps.is_support === false && this.props.supportProps.is_support === true){ //comment to support
+      this.textarea.focus();
+    } else if (prevProps.supportProps.is_oppose === false && prevProps.supportProps.is_support === false && this.props.supportProps.is_oppose === true){ //comment to oppose
+      this.textarea.focus();
+    }
   }
 
   componentWillUnmount () {
@@ -241,7 +257,8 @@ export default class ItemPositionStatementActionBar extends Component {
                   className="position-statement__input u-push--sm form-control"
                   minRows={2}
                   placeholder={statementPlaceholderText}
-                  defaultValue={statement_text_to_be_saved} />
+                  defaultValue={statement_text_to_be_saved}
+                  inputRef={tag => {this.textarea = tag;}} />
                 <div className="u-flex u-flex-column u-justify-between u-items-end">
                   <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
                                         type={this.props.type}
