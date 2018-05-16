@@ -38,6 +38,14 @@
 @include media-object('.position-rating', '.position-rating__icon', '.position-rating__text', $margin: 5px);
 
 .position-rating {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-end !important;
+
+  &__icon {
+    margin: $space-xs;
+  }
 
   &__percentage {
     font-family: $heading-font-stack;
