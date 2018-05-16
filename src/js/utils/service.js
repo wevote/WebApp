@@ -42,6 +42,9 @@ export function $ajax (options) {
   options.url = url.resolve(defaults.baseUrl, options.endpoint) + "/";
 
   httpLog("AJAX URL: " + options.url);
+  if (options.endpoint === "voterRetrieve") {
+    httpLog("AJAX voter_device_id: ", cookies.getItem("voter_device_id"));
+  }
 
   /* global $ */
   /* eslint no-undef: ["error", { "typeof": true }] */

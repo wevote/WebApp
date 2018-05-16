@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import AddressBox from "../AddressBox";
+import { historyPush, isWebApp } from "../../utils/cordovaUtils";
 import { calculateBallotBaseUrl, shortenText } from "../../utils/textFormat";
 import { renderLog } from "../../utils/logging";
 
@@ -37,9 +38,18 @@ export default class EditAddressInPlace extends Component {
   }
 
   toggleEditingAddress () {
-    this.setState({
-      editingAddress: !this.state.editingAddress,
-    });
+    if (isWebApp()) {
+      this.setState({
+        editingAddress: !this.state.editingAddress,
+      });
+    } else {
+      // The scrolling pane within the Modal causes an "[LayoutConstraints] Unable to simultaneously satisfy constraints."
+      // error in Cordova, when you try to expand it to fit for entering text in the address box, and Cordova messes up
+      // the display as in https://github.com/wevote/WeVoteCordova/issues/52  So instead use the non modal version in
+      // the settings/location route.
+      this.props.toggleFunction();
+      historyPush("/settings/address");
+    }
   }
 
   render () {
@@ -60,7 +70,7 @@ export default class EditAddressInPlace extends Component {
       return <span>
           <h4 className="h4">Your Address</h4>
           <span className="ballot__edit-address-preview">{ this.state.text_for_map_search.length ? shortenText(this.state.text_for_map_search, maximumAddressDisplayLength) : noAddressMessage }</span>
-          <span className="hidden-print"> (<a onClick={this.toggleEditingAddress}>Edit</a>)</span>
+          <span className="hidden-print ballot__edit-address-preview u-padding-left--sm"> (<a onClick={this.toggleEditingAddress}>Edit</a>)</span>
         </span>;
     }
   }
