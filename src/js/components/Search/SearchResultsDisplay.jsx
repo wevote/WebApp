@@ -1,21 +1,16 @@
 import React, { Component } from "react";
-import { Link } from "react-router";
 import PropTypes from "prop-types";
-import ImageHandler from "../ImageHandler";
 import { capitalizeString } from "../../utils/textFormat";
 import classNames from "classnames";
-
-
-// ****** TO DO ******
-// See More Results only displays when there ARE more results
-//Debug search page, why are params not being accessed? 
+import ImageHandler from "../ImageHandler";
+import { Link } from "react-router";
 
 export default class SearchResultsDisplay extends Component {
   static propTypes = {
     fullPageDisplay: PropTypes.bool,
-    searchResults: PropTypes.array,
+    searchResults: PropTypes.array.isRequired,
     selectedIndex: PropTypes.number,
-    textFromSearchField: PropTypes.string,
+    textFromSearchField: PropTypes.string.isRequired,
     onSearchElectionResultClick: PropTypes.func,
     onSearchResultMouseOver: PropTypes.func,
     onSearchResultClick: PropTypes.func,
@@ -39,9 +34,13 @@ export default class SearchResultsDisplay extends Component {
           onSearchElectionResultClick,
           onSearchResultMouseOver,
           onSearchResultClick } = this.props;
-    let seeAllResultsUrlString = encodeURIComponent(textFromSearchField);
-    let seeMoreLink = <Link to={`/more/search_page/${seeAllResultsUrlString}`} className="search-container__links"> See more results </Link>;
-    
+    let seeAllResultsUrlString = encodeURIComponent(textFromSearchField);  
+    let seeMoreLink = null;
+
+    if (textFromSearchField.length > 0) {
+      seeMoreLink = <Link to={`/more/search_page/${seeAllResultsUrlString}`} className="search-container__links search-container__election-title"> See all results </Link>;     
+    }
+
     if (this.searchHasContent()) {
       searchResultsDisplay = searchResults.map((oneResult, idx) => {
         let capitalizedTitle = capitalizeString(oneResult.result_title);

@@ -23,7 +23,6 @@ export default class SearchAllBox extends Component {
 
   constructor (props) {
     super(props);
-
     this.state = {
       open: false,
       searchResults: [],
@@ -56,6 +55,9 @@ export default class SearchAllBox extends Component {
 
     // When we first enter we want to retrieve values to have for a click in the search box
     let textFromSearchField = this.props.text_from_search_field;
+    if (this.props.text_from_search_field) {
+      this.setState({ textFromSearchField: textFromSearchField });
+    }
 
     // Search type one - Recent searches
     if (SearchAllStore.isRecentSearch()) {
