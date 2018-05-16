@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { renderLog } from "../../utils/logging";
-import RatingPopover from "../../components/Widgets/RatingPopover";
 import { cordovaDot } from "../../utils/cordovaUtils";
 
 export default class PositionRatingSnippet extends Component {
   static propTypes = {
+    ballot_item_display_name: PropTypes.string,
     vote_smart_rating: PropTypes.string.isRequired,
     vote_smart_time_span: PropTypes.string.isRequired,
     popover_off: PropTypes.bool,
@@ -14,20 +14,12 @@ export default class PositionRatingSnippet extends Component {
 
   render () {
     renderLog(__filename);
+    const display_name = this.props.ballot_item_display_name;
     const rating = this.props.vote_smart_rating;
     const rating_time_span = this.props.vote_smart_time_span;
     let src;
     let className;
     let alt;
-    let popover_off = false;
-    if (this.props.popover_off !== undefined) {
-      popover_off = this.props.popover_off ? true : false;
-    }
-
-    let placement = "top";
-    if (this.props.placement !== undefined) {
-      placement = this.props.placement;
-    }
 
     if (rating >= 65) {
       src = cordovaDot("/img/global/icons/up-arrow-color-icon.svg");
@@ -46,13 +38,11 @@ export default class PositionRatingSnippet extends Component {
     return <div className="position-rating">
         <img src={src} width="20" height="20" className={className} alt={alt} />
         <div className="position-rating__text">
+          <span className="position-rating__name">Gave {display_name}</span>
+          <br />
           <span className="position-rating__percentage" data-percentage={rating}>{rating}% </span> rating
           { rating_time_span ? <span className="position-rating__timestamp"> in {rating_time_span}</span> :
             null }
-          { rating ?
-            <RatingPopover popover_off={popover_off} placement={placement} /> :
-            null
-          }
         </div>
       </div>;
   }
