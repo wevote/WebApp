@@ -47,6 +47,10 @@
     margin: $space-xs;
   }
 
+  &__rating {
+    color: $popover-link-color;
+  }
+
   &__percentage {
     font-family: $heading-font-stack;
     font-size: 18px;

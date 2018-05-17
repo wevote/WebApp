@@ -34,7 +34,10 @@ export default class OrganizationCard extends Component {
       organization_position: {},
       organization_positions_requested: false,
       organization_we_vote_id: "",
+      show_rating_description: false,
     };
+
+    this.toggleRatingDescription = this.toggleRatingDescription.bind(this);
   }
 
   componentDidMount () {
@@ -92,17 +95,23 @@ export default class OrganizationCard extends Component {
     }
   }
 
-  onOrganizationStoreChange (){
+  onOrganizationStoreChange () {
     this.setState({ organization_position: OrganizationStore.getOrganizationPositionByWeVoteId(this.state.organization_we_vote_id, this.state.ballot_item_we_vote_id)});
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.organizationStoreListener.remove();
+  }
+
+  toggleRatingDescription () {
+    this.setState({
+      show_rating_description: !this.state.show_rating_description,
+    });
   }
 
   render () {
     renderLog(__filename);
-    if (!this.state.organization_we_vote_id.length){
+    if (!this.state.organization_we_vote_id.length) {
       return <div className="card-popover__width--minimum">{LoadingWheel}</div>;
     }
 
@@ -123,7 +132,8 @@ export default class OrganizationCard extends Component {
       // console.log("this.state.organization_position: ", this.state.organization_position);
       if (this.state.organization_position.vote_smart_rating) {
         position_description =
-          <PositionRatingSnippet {...this.state.organization_position} />;
+          <PositionRatingSnippet {...this.state.organization_position}
+          show_rating_description={this.toggleRatingDescription} />;
       } else if (this.state.organization_position.is_support || this.state.organization_position.is_oppose) {
         position_description =
           <PositionSupportOpposeSnippet {...this.state.organization_position} is_on_ballot_item_page={is_on_ballot_item_page}/>;
@@ -188,7 +198,7 @@ export default class OrganizationCard extends Component {
           </div> : null
         }
         { this.state.organization_position.vote_smart_rating ?
-          <RatingPopover /> :
+          <RatingPopover show_description={this.state.show_rating_description} /> :
           null
         }
       </div>
