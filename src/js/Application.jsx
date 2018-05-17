@@ -367,10 +367,10 @@ export default class Application extends Component {
         pathname === "/settings/profile" ||
         pathname === "/settings/voterguidesmenu" ||
         pathname === "/settings/voterguidelist") {
-      console.log("showBackToSettings = true");
+      // console.log("showBackToSettings = true");
       showBackToSettings = true;
     } else if (stringContains("/vg/", pathname)) {
-      console.log("showBackToVoterGuides = true");
+      // console.log("showBackToVoterGuides = true");
       showBackToVoterGuides = true;
     }
 
@@ -415,14 +415,12 @@ export default class Application extends Component {
             { showBackToHeader ?
               <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
               <span>
-                  <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
-                {/* FERNANDO - Remove HeaderBar immediately above when you uncomment this:
-                 showBackToVoterGuides ?
+                {showBackToVoterGuides ?
                   <span>
                     <HeaderBackToVoterGuides location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/>
                   </span> :
                   <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
-                */}
+                }
               </span>
              }
             { voterGuideShowGettingStartedNavigation || stringContains("/ballot", pathname) ?
@@ -445,18 +443,14 @@ export default class Application extends Component {
         }
       </div>;
     } else if (settingsMode) {
-      console.log("settingsMode", settingsMode);
+      // console.log("settingsMode", settingsMode);
+
       return <div className="app-base" id="app-base-id">
         <ToastContainer closeButton={false} />
         { isCordova() && isIOS() && <div className={"ios7plus-spacer"} /> }
         <div className={headRoomSize}>
           <div ref="pageHeader" className={pageHeaderStyle}>
-            { showBackToHeader ?
-              <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
-              <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
-            }
-            {/* FERNANDO remove showBackToHeader block immediately above when you uncomment this
-            showBackToSettings ?
+            { showBackToSettings ?
               <span>
                 <span className="visible-xs">
                   <HeaderBackToSettings location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/>
@@ -473,7 +467,7 @@ export default class Application extends Component {
                   <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
                 }
               </span>
-            */}
+            }
           </div>
         </div>
         <div className="page-content-container">

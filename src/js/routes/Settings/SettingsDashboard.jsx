@@ -179,6 +179,7 @@ export default class SettingsDashboard extends Component {
         <SettingsBannerAndOrganizationCard organization={this.state.organization} />
       </div>
 
+      {/* Back Button which is know replaced by the header back button       */}
       <div className={ isWebApp() ? "visible-xs u-padding-top--md" : "u-padding-top--md"}>
         <span className={"btn u-padding-left--sm u-padding-bottom--sm"}>
           <Button className={"btn btn-sm btn-default u-link-color"}
