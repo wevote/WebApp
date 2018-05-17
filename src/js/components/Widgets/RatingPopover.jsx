@@ -6,32 +6,13 @@ import { renderLog } from "../../utils/logging";
 export default class RatingPopover extends Component {
   static propTypes = {
     show_description: PropTypes.bool,
+    toggle_description: PropTypes.func,
   };
-
-  constructor (props) {
-    super(props);
-
-    this.state = {
-      show_description: this.props.show_description !== undefined ? this.props.show_description : false,
-    };
-  }
-
-  componentWillReceiveProps (nextProps) {
-    this.setState({
-      show_description: nextProps.show_description,
-    });
-  }
-
-  toggleDescription () {
-    this.setState({
-      show_description: !this.state.show_description,
-    });
-  }
 
   render () {
     renderLog(__filename);
 
-    let { show_description } = this.state;
+    let { show_description, toggle_description } = this.props;
 
     let ratingDescription = <div className="u-margin-top--xs">
       Ratings are given by the organization, and collected by the
@@ -52,7 +33,7 @@ export default class RatingPopover extends Component {
     </div>;
 
     return <div className="card-main__description card-main__rating-description u-margin-top--xs">
-      <div onClick={this.toggleDescription.bind(this)} className="card-main__rating-description__header u-cursor--pointer">
+      <div onClick={toggle_description} className="card-main__rating-description__header u-cursor--pointer">
         (rating source: VoteSmart.org) { show_description ? <span className="glyphicon glyphicon-triangle-bottom hidden-print" /> : null }
       </div>
       { show_description ? ratingDescription : null }
