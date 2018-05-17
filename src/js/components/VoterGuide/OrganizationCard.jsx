@@ -9,6 +9,7 @@ import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
 import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
 import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
+import RatingPopover from "../../components/Widgets/RatingPopover";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -185,6 +186,10 @@ export default class OrganizationCard extends Component {
             }
             {/*5 of your friends follow Organization Name<br />*/}
           </div> : null
+        }
+        { this.state.organization_position.vote_smart_rating ?
+          <RatingPopover /> :
+          null
         }
       </div>
     </div>;
