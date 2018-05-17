@@ -52,7 +52,7 @@ import ProcessingDonation from "./routes/More/ProcessingDonation";
 import RegisterToVote from "./routes/More/RegisterToVote";
 import SampleBallot from "./routes/Intro/SampleBallot";
 import ScratchPad from "./routes/ScratchPad";
-import SearchPage from "./routes/more/SearchPage";
+import SearchPage from "./routes/More/SearchPage";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
 import SettingsMenuMobile from "./routes/Settings/SettingsMenuMobile";
 import SignIn from "./routes/SignIn/SignIn";
