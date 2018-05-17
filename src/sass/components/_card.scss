@@ -136,6 +136,13 @@ $candidate-font-size: .875rem;
       color: $gray-dark;
     }
 
+    &__rating-description {
+      font-size: .875em;
+
+      &__header {
+        color: $popover-link-color;
+      }
+    }
 
     &__description-container {
 
