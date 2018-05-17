@@ -287,7 +287,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   closePositionsPopover () {
-    this.refs["positions-overlay"].hide();
+    document.body.click();
   }
 
   closeIssueScorePopover () {
@@ -668,8 +668,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
     const positionsLabel =
       <OverlayTrigger trigger="click"
-                      ref="positions-overlay"
-                      onExit={this.closePositionsPopover}
                       rootClose
                       placement={this.props.popoverBottom ? "bottom" : "top"}
                       overlay={positionsPopover}>
