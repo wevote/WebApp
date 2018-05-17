@@ -52,6 +52,7 @@ import ProcessingDonation from "./routes/More/ProcessingDonation";
 import RegisterToVote from "./routes/More/RegisterToVote";
 import SampleBallot from "./routes/Intro/SampleBallot";
 import ScratchPad from "./routes/ScratchPad";
+import SearchPage from "./routes/more/SearchPage";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
 import SettingsMenuMobile from "./routes/Settings/SettingsMenuMobile";
 import SignIn from "./routes/SignIn/SignIn";
@@ -172,6 +173,8 @@ const routes = () =>
     <Route path="/more/processing_donation" component={ProcessingDonation} />
     <Route path="/more/register" component={RegisterToVote} />
     <Route path="/more/sign_in" component={SignIn} />
+    <Route path="/more/search_page" component={SearchPage} />
+    <Route path="/more/search_page/:encoded_search_string" component={SearchPage} />
     <Route path="/more/team" component={Team} />
     <Route path="/more/tools" component={ToolsToShareOnOtherWebsites} />
     <Route path="/more/terms" component={TermsOfService} />
