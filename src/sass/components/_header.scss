@@ -26,7 +26,7 @@ $space-search-right: 10%;
   }
 
   &__search {
-    margin: $space-sm;
+    margin: $space-xs;
     position: relative;
     width: 100%;
   }
@@ -37,6 +37,7 @@ $space-search-right: 10%;
   }
 
   &__cordova {
+    margin: $space-none;
     padding-bottom: $space-xs;
   }
 }

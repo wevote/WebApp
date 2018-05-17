@@ -17,7 +17,7 @@ import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import { shortenText } from "../../utils/textFormat";
 
-export default class HeaderBackToBar extends Component {
+export default class HeaderBackToSettings extends Component {
   static propTypes = {
     location: PropTypes.object,
     params: PropTypes.object.isRequired,
@@ -236,21 +236,13 @@ export default class HeaderBackToBar extends Component {
     let speakerType = "V";  // TODO DALE make this dynamic
 
     let backToLink;
-    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
-      backToLink = this.getVoterGuideLink(); // Default to this when there is an organizationWeVoteId
-    } else {
-      backToLink = "/ballot"; // Default to this
-    }
-
-    if (this.props.params.back_to_variable === "bto" || this.props.params.back_to_variable === "btdo") {
-      backToLink = this.getOfficeLink();
-    }
+    backToLink = "/settings/menu"; // Default to this
 
     let backToOrganizationLinkText;
     if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
-      backToOrganizationLinkText = "Back to Voter Guide";
+      backToOrganizationLinkText = "Back to Voter Guide22";
     } else {
-      backToOrganizationLinkText = "Back to Ballot";
+      backToOrganizationLinkText = "Back to Settings";
     }
 
     if (this.props.params.back_to_variable === "bto" || this.props.params.back_to_variable === "btdo") {
