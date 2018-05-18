@@ -17,6 +17,7 @@
     bottom: 0;
     left: 0;
     overflow: auto;
+    z-index: 1050;
 
     &-mobile {
       @include breakpoints(small mid-small) {
@@ -51,4 +52,8 @@
   &__modal {
     top: 0;
   }
+}
+
+.modal-backdrop {
+  z-index: 1000;
 }
