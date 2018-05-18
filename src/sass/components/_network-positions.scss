@@ -162,7 +162,7 @@
     $list-height: 76px;
     $list-height-visible: $list-height - $scrollbar-height;
     $scroll-icon-margin: $space-none $space-sm;
-    $scroll-icon-small-margin: $space-none 13px;
+    $scroll-icon-margin-small: $space-none 13px;
     $support-list-margin-left: -36px;
     $support-list-margin-right: -16px;
     margin-left: $support-list-margin-left;
@@ -215,7 +215,7 @@
 
       &--disabled-small {
         color: $transparent;
-        margin: $scroll-icon-small-margin;
+        margin: $scroll-icon-margin-small;
       }
     }
   }
