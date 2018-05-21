@@ -1,14 +1,30 @@
+import { isWebApp } from "../utils/cordovaUtils";
 import Dispatcher from "../dispatcher/Dispatcher";
 import FacebookConstants from "../constants/FacebookConstants";
 import FriendActions from "../actions/FriendActions";
+import { oAuthLog } from "../utils/logging";
 import VoterActions from "../actions/VoterActions";
 import VoterSessionActions from "../actions/VoterSessionActions";
 import webAppConfig from "../config";
+
 // Including FacebookStore causes problems in the WebApp, and again in the Native App
 
+/*
+For the WebApp, see initFacebook() in Application.jsx
+For Cordova we rely on the FacebookConnectPlugin4
+   from https://www.npmjs.com/package/cordova-plugin-facebook4
+this is the "Jeduan" fork from https://github.com/jeduan/cordova-plugin-facebook4
+The "Jeduan" fork is forked from the VERY OUT OF DATE https://github.com/Wizcorp/phonegap-facebook-plugin
+As of May 2018, the "Wizcorp" fork has not been maintained for 3 years, even though it
+displays the (WRONG) note "This is the official plugin for Facebook in Apache Cordova/PhoneGap!"
+ */
 
 export default {
-  appLogout: function (){
+  facebookApi: function () {
+    return isWebApp() ? window.FB : window.facebookConnectPlugin;  // eslint-disable-line no-undef
+  },
+
+  appLogout: function () {
     VoterSessionActions.voterSignOut();  // This deletes the device_id cookie
     VoterActions.voterRetrieve();
     VoterActions.voterEmailAddressRetrieve();
@@ -22,7 +38,7 @@ export default {
     });
   },
 
-  facebookDisconnect: function (){
+  facebookDisconnect: function () {
     Dispatcher.loadEndpoint("facebookDisconnect");
   },
 
@@ -34,8 +50,10 @@ export default {
   },
 
   // https://developers.facebook.com/docs/graph-api/reference/v2.6/user
-  getFacebookData: function (){
-    window.FB.api("/me?fields=id,email,first_name,middle_name,last_name,cover", (response) => {
+  getFacebookData: function () {
+    this.facebookApi().api(
+      "/me?fields=id,email,first_name,middle_name,last_name,cover", (response) => {
+      oAuthLog("getFacebookData response", response);
       Dispatcher.dispatch({
         type: FacebookConstants.FACEBOOK_RECEIVED_DATA,
         data: response,
@@ -48,12 +66,12 @@ export default {
   voterFacebookSignInData: function (data) {
     // console.log("FacebookActions voterFacebookSignInData, data:", data);
     let background = false;
-    let offset_x = false;
-    let offset_y = false;
+    let offsetX = false;
+    let offsetY = false;
     if (data.cover && data.cover.source) {
       background = data.cover.source;
-      offset_x = data.cover.offset_x;  // zero is a valid value so can't use the short-circuit operation " || false"
-      offset_y = data.cover.offset_y;  // zero is a valid value so can't use the short-circuit operation " || false"
+      offsetX = data.cover.offset_x;  // zero is a valid value so can't use the short-circuit operation " || false"
+      offsetY = data.cover.offset_y;  // zero is a valid value so can't use the short-circuit operation " || false"
     }
 
     Dispatcher.loadEndpoint("voterFacebookSignInSave", {
@@ -64,97 +82,127 @@ export default {
       facebook_last_name: data.last_name || false,
       facebook_profile_image_url_https: data.url || false,
       facebook_background_image_url_https: background,
-      facebook_background_image_offset_x: offset_x,
-      facebook_background_image_offset_y: offset_y,
+      facebook_background_image_offset_x: offsetX,
+      facebook_background_image_offset_y: offsetY,
       save_auth_data: false,
       save_profile_data: true,
     });
   },
 
   getFacebookProfilePicture: function () {
-    if (window.FB) {
-      window.FB.api(
+    if (this.facebookApi()) {
+      this.facebookApi().api(
         "/me?fields=picture.type(large)", "GET", {},
         function (response) {
+          oAuthLog("getFacebookProfilePicture response", response);
           Dispatcher.dispatch({
             type: FacebookConstants.FACEBOOK_RECEIVED_PICTURE,
             data: response,
           });
-        });
+        }
+      );
     }
   },
 
-  getFacebookInvitableFriendsList: function (picture_width, picture_height) {
-    let fb_api_for_invitable_friends = `/me?fields=invitable_friends.limit(1000){name,id,picture.width(${picture_width}).height(${picture_height})}`;
-    window.FB.api(fb_api_for_invitable_friends, (response) => {
-      // console.log("getFacebookInvitableFriendsList", response);
-      Dispatcher.dispatch({
-        type: FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS,
-        data: response,
-      });
-    });
+  getFacebookInvitableFriendsList: function (pictureWidth, pictureHeight) {
+    let fbApiForInvitableFriends = `/me?fields=invitable_friends.limit(1000){name,id,picture.width(${pictureWidth}).height(${pictureHeight})}`;
+    //console.log("getFacebookInvitableFriendsList");
+    this.facebookApi().api(
+      fbApiForInvitableFriends,
+      (response) => {
+        oAuthLog("getFacebookInvitableFriendsList", response);
+        Dispatcher.dispatch({
+          type: FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS,
+          data: response,
+        });
+      }
+    );
   },
 
   readFacebookAppRequests: function () {
-    let fb_api_for_reading_app_requests = "me?fields=apprequests.limit(10){from,to,created_time,id}";
-    window.FB.api(fb_api_for_reading_app_requests, (response) => {
-      console.log("readFacebookAppRequests", response);
-      Dispatcher.dispatch({
-        type: FacebookConstants.FACEBOOK_READ_APP_REQUESTS,
-        data: response,
-      });
-    });
+    let fbApiForReadingAppRequests = "me?fields=apprequests.limit(10){from,to,created_time,id}";
+    this.facebookApi().api(
+      fbApiForReadingAppRequests,
+      (response) => {
+        oAuthLog("readFacebookAppRequests", response);
+        Dispatcher.dispatch({
+          type: FacebookConstants.FACEBOOK_READ_APP_REQUESTS,
+          data: response,
+        });
+      }
+    );
   },
 
   deleteFacebookAppRequest: function (requestId) {
     console.log("deleteFacebookAppRequest requestId: ", requestId);
-    window.FB.api(requestId, "delete", (response) => {
-      console.log("deleteFacebookAppRequest response", response);
-      Dispatcher.dispatch({
-        type: FacebookConstants.FACEBOOK_DELETE_APP_REQUEST,
-        data: response,
-      });
-    });
+    this.facebookApi().api(
+      requestId,
+      "delete",
+      (response) => {
+        oAuthLog("deleteFacebookAppRequest response", response);
+        Dispatcher.dispatch({
+          type: FacebookConstants.FACEBOOK_DELETE_APP_REQUEST,
+          data: response,
+        });
+      }
+    );
   },
 
   login: function () {
     if (!webAppConfig.FACEBOOK_APP_ID) {
-      console.log("Missing FACEBOOK_APP_ID from src/js/config.js");
+      console.log("ERROR: Missing FACEBOOK_APP_ID from src/js/config.js");
     }
+
     // FB.getLoginStatus does an ajax call and when you call FB.login on it's response, the popup that would open
     // as a result of this call is blocked. A solution to this problem would be to to specify status: true in the
     // options object of FB.init and you need to be confident that login status has already loaded.
-    if (window.FB) {
-      window.FB.getLoginStatus(function (response) {
-        if (response.status === "connected") {
-          Dispatcher.dispatch({
-            type: FacebookConstants.FACEBOOK_LOGGED_IN,
-            data: response,
-          });
-        } else {
-          window.FB.login((res) => {
+    oAuthLog("this.facebookApi().login");
+
+    if (this.facebookApi()) {
+      this.facebookApi().getLoginStatus(
+        function (response) {
+          if (response.status === "connected") {
             Dispatcher.dispatch({
               type: FacebookConstants.FACEBOOK_LOGGED_IN,
-              data: res,
+              data: response,
             });
-          }, { scope: "public_profile,email,user_friends" });
+          } else {
+            let api = isWebApp() ? window.FB : window.facebookConnectPlugin;  // eslint-disable-line no-undef
+            api.login(
+              ["public_profile", "email", "user_friends"],
+              (res) => {
+                oAuthLog("FacebookActions loginSuccess userData: ", res);
+                Dispatcher.dispatch({
+                  type: FacebookConstants.FACEBOOK_LOGGED_IN,
+                  data: res,
+                });
+              },
+
+              function (error) {
+                oAuthLog("FacebookActions loginFailure error response: ", error);
+              }
+            );
+          }
         }
-      });
+      );
     }
   },
 
   logout: function () {
-    window.FB.logout((response) => {
-      Dispatcher.dispatch({
-        type: FacebookConstants.FACEBOOK_LOGGED_OUT,
-        data: response,
-      });
-    });
+    this.facebookApi().logout(
+      (response) => {
+        oAuthLog("FacebookActions logout response: ", response);
+        Dispatcher.dispatch({
+          type: FacebookConstants.FACEBOOK_LOGGED_OUT,
+          data: response,
+        });
+      }
+    );
   },
 
   // July 2017: Not called from anywhere
-  savePhoto: function (url){
-    Dispatcher.loadEndpoint("voterPhotoSave", { facebook_profile_image_url_https: url } );
+  savePhoto: function (url) {
+    Dispatcher.loadEndpoint("voterPhotoSave", { facebook_profile_image_url_https: url });
   },
 
   // Save incoming auth data from Facebook
@@ -162,7 +210,7 @@ export default {
     // console.log("FacebookActions voterFacebookSignInAuth");
     Dispatcher.loadEndpoint("voterFacebookSignInSave", {
       facebook_access_token: data.accessToken || false,
-      facebook_user_id: data.userId || false,
+      facebook_user_id: data.userID || false,
       facebook_expires_in: data.expiresIn || false,
       facebook_signed_request: data.signedRequest || false,
       save_auth_data: true,
@@ -170,23 +218,23 @@ export default {
     });
   },
 
-  voterFacebookSignInPhoto: function (facebook_user_id, data) {
+  voterFacebookSignInPhoto: function (facebookUserId, data) {
     // console.log("FacebookActions voterFacebookSignInPhoto, data:", data);
     if (data) {
       Dispatcher.loadEndpoint("voterFacebookSignInSave", {
-        facebook_user_id: facebook_user_id || false,
+        facebook_user_id: facebookUserId || false,
         facebook_profile_image_url_https: data.url || false,
         save_photo_data: true,
       });
     }
   },
 
-  voterFacebookSignInRetrieve: function (){
+  voterFacebookSignInRetrieve: function () {
     Dispatcher.loadEndpoint("voterFacebookSignInRetrieve", {
     });
   },
 
-  voterFacebookSignInConfirm: function (){
+  voterFacebookSignInConfirm: function () {
     Dispatcher.loadEndpoint("voterFacebookSignInRetrieve", {
     });
   },

@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import CopyLinkModal from "../../components/Widgets/CopyLinkModal";
 import { renderLog } from "../../utils/logging";
+import { isWebApp } from "../../utils/cordovaUtils";
 
 export default class ShareButtonDropdown extends Component {
   static propTypes = {
     params: PropTypes.object,
     shareIcon: PropTypes.object,
     shareText: PropTypes.string,
-    urlBeingShared: PropTypes.string
+    urlBeingShared: PropTypes.string,
   };
 
   constructor (props) {
@@ -19,7 +20,7 @@ export default class ShareButtonDropdown extends Component {
   componentWillMount () {
     this.setState({
       showCopyLinkModal: false,
-      transitioning: false
+      transitioning: false,
     });
   }
 
@@ -33,15 +34,18 @@ export default class ShareButtonDropdown extends Component {
 
   shareFacebookComment (event) {
     event.stopPropagation();
-    window.FB.ui({
+    let api = isWebApp() ? window.FB : window.facebookConnectPlugin;  // eslint-disable-line no-undef
+    api.ui({
       display: "popup",
       method: "share",
+
       // Sharing this href link to facebook(href must be a valid url else facebook share popup will be having issues)
       href: this.props.urlBeingShared,
-      redirect_uri: this.props.urlBeingShared   // redirecting to the same url after sharing on facebook
-    }, function (){});
+      redirect_uri: this.props.urlBeingShared,   // redirecting to the same url after sharing on facebook
+    }, function () {}
+    );
     this.closeDropdown();
- }
+  }
 
   closeCopyLinkModal () {
     this.setState({ showCopyLinkModal: false });
@@ -55,10 +59,9 @@ export default class ShareButtonDropdown extends Component {
 
   onButtonBlur () {
     // Delay closing the drop down so that onClick has time to work
-    let temp_this = this;
     setTimeout(function () {
-      temp_this.closeDropdown();
-      }, 250);
+      this.closeDropdown();
+    }, 250);
   }
 
   render () {
@@ -66,6 +69,7 @@ export default class ShareButtonDropdown extends Component {
     const { shareIcon, shareText, urlBeingShared } = this.props;
     const onClick = this.state.open ? this.closeDropdown.bind(this) : this.openDropdown.bind(this);
     const onCopyLinkClick = this.state.showCopyLinkModal ? this.closeCopyLinkModal.bind(this) : this.openCopyLinkModal.bind(this);
+
     // const onButtonBlur = ;
     const dropdownClass = this.state.open ? " open" : "";
 
