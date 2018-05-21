@@ -11,7 +11,7 @@ import FacebookActions from "../actions/FacebookActions";
 import FriendActions from "../actions/FriendActions";
 import FacebookStore from "../stores/FacebookStore";
 import LoadingWheel from "../components/LoadingWheel";
-import { renderLog } from "../utils/logging";
+import { oAuthLog, renderLog } from "../utils/logging";
 import VoterStore from "../stores/VoterStore";
 import VoterActions from "../actions/VoterActions";
 import WouldYouLikeToMergeAccounts from "../components/WouldYouLikeToMergeAccounts";
@@ -39,10 +39,10 @@ import WouldYouLikeToMergeAccounts from "../components/WouldYouLikeToMergeAccoun
 export default class FacebookInvitableFriends extends Component {
   static propTypes = {
     history: PropTypes.object,
-    children: PropTypes.object
+    children: PropTypes.object,
   };
 
-  constructor (props){
+  constructor (props) {
     super(props);
     this.state = {
       isChecked: false,
@@ -57,7 +57,7 @@ export default class FacebookInvitableFriends extends Component {
       search_term: "",
       facebook_invitable_friends_filtered_by_search: [],
       yes_please_merge_accounts: false,
-      merging_two_accounts: false
+      merging_two_accounts: false,
     };
   }
 
@@ -73,7 +73,7 @@ export default class FacebookInvitableFriends extends Component {
     this.selectedCheckBoxes = [];
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.facebookStoreListener.remove();
     this.voterStoreListener.remove();
   }
@@ -91,24 +91,24 @@ export default class FacebookInvitableFriends extends Component {
       facebook_logged_in: FacebookStore.loggedIn,
       facebook_auth_response: FacebookStore.getFacebookAuthResponse(),
       facebook_invitable_friends: FacebookStore.facebookInvitableFriends(),
-      saving: false
+      saving: false,
     });
   }
 
   cancelMergeFunction () {
     historyPush({
       pathname: "/more/network",
-      state: {
-      }
+      state: {},
     });
   }
 
-  voterMergeTwoAccountsByFacebookKey (facebook_secret_key, voter_has_data_to_preserve = false) {
+  voterMergeTwoAccountsByFacebookKey (facebookSecretKey, voterHasDataToPreserve = false) {
     if (!this.state.merging_two_accounts) {
-      VoterActions.voterMergeTwoAccountsByFacebookKey(facebook_secret_key);
+      VoterActions.voterMergeTwoAccountsByFacebookKey(facebookSecretKey);
+
       // Prevent voterMergeTwoAccountsByFacebookKey from being called multiple times
-      console.log("voter_has_data_to_preserve: ", voter_has_data_to_preserve);
-      this.setState({merging_two_accounts: true});
+      console.log("voter_has_data_to_preserve: ", voterHasDataToPreserve);
+      this.setState({ merging_two_accounts: true });
     }
   }
 
@@ -117,7 +117,7 @@ export default class FacebookInvitableFriends extends Component {
   }
 
   yesPleaseMergeAccounts () {
-    this.setState({yes_please_merge_accounts: true});
+    this.setState({ yes_please_merge_accounts: true });
   }
 
   facebookLogin () {
@@ -128,17 +128,20 @@ export default class FacebookInvitableFriends extends Component {
     // If you are not receiving a list of friends in your local environment, see the not at the top of this file.
     FacebookActions.getFacebookInvitableFriendsList(this.state.facebook_invitable_friends_image_width,
       this.state.facebook_invitable_friends_image_height);
-    this.setState({saving: true});
+
+    // May 20, 2018: The following line "this.setState" has no effect if called from render, and throws an error:
+    // [Error] Warning: setState(...): Cannot update during an existing state transition (such as within `render` or another component's constructor). Render methods should be a pure function of props and state; constructor side-effects are an anti-pattern, but can be moved to `componentWillMount`.
+    //this.setState({ saving: true });
   }
 
-  toggleCheckBox (facebook_invitable_friend_id, facebook_invitable_friend_name) {
-    const friend_selected_checkbox = {id: facebook_invitable_friend_id, name: facebook_invitable_friend_name};
+  toggleCheckBox (facebookInvitableFriendId, facebookInvitableFriendName) {
+    const friendSelectedCheckbox = { id: facebookInvitableFriendId, name: facebookInvitableFriendName };
     if (this.selectedCheckBoxes.length === 0) {
-      this.selectedCheckBoxes.push(friend_selected_checkbox);
+      this.selectedCheckBoxes.push(friendSelectedCheckbox);
     } else {
+      let checkBoxNotAdded = false;
       for (const checkBox of this.selectedCheckBoxes) {
-        var checkBoxNotAdded = false;
-        if ( checkBox.id === facebook_invitable_friend_id ) {
+        if (checkBox.id === facebookInvitableFriendId) {
           const index = this.selectedCheckBoxes.indexOf(checkBox);
           this.selectedCheckBoxes.splice(index, 1);
           break;
@@ -146,77 +149,83 @@ export default class FacebookInvitableFriends extends Component {
           checkBoxNotAdded = true;
         }
       }
+
       if (checkBoxNotAdded) {
-        this.selectedCheckBoxes.push(friend_selected_checkbox);
+        this.selectedCheckBoxes.push(friendSelectedCheckbox);
       }
     }
+
     // console.log("Selected Check Boxes: ", this.selectedCheckBoxes);
   }
 
   sendInviteRequestToFacebookFriends = formSubmitEvent => {
     formSubmitEvent.preventDefault();
-    let selected_facebook_friends_ids = [];
-    let selected_facebook_friends_names = [];
+    let selectedFacebookFriendsIds = [];
+    let selectedFacebookFriendsNames = [];
     for (const checkbox of this.selectedCheckBoxes) {
-      selected_facebook_friends_ids.push(checkbox.id);
-      selected_facebook_friends_names.push(checkbox.name);
+      selectedFacebookFriendsIds.push(checkbox.id);
+      selectedFacebookFriendsNames.push(checkbox.name);
     }
-     this.sendFacebookAppRequest(selected_facebook_friends_ids, selected_facebook_friends_names);
-  }
+
+    this.sendFacebookAppRequest(selectedFacebookFriendsIds, selectedFacebookFriendsNames);
+  };
 
   cacheAddFriendsByFacebookMessage (e) {
     this.setState({
-      add_friends_message: e.target.value
+      add_friends_message: e.target.value,
     });
   }
 
-  sendFacebookAppRequest (selected_facebook_friends_ids, selected_facebook_friends_names) {
-      window.FB.ui({
-        title: "We Vote USA",
-        redirect_uri: webAppConfig.WE_VOTE_HOSTNAME + "/more/network",
-        method: "apprequests",
-        message: this.state.add_friends_message,
-        to: selected_facebook_friends_ids,
-      }, function (response) {
-        if ( response.error_code === 4201 ) {
-          // console.log("User Canceled the request");
-        } else if ( response ) {
-          // console.log("Successfully Invited", response, selected_facebook_friends_names);
-          const data = {request_id: response.request, recipients_facebook_id_array: response.to, recipients_facebook_name_array: selected_facebook_friends_names};
-          // console.log("Final data for all invitations", data);
-          FriendActions.friendInvitationByFacebookSend(data);
-          historyPush({
-            pathname: "/more/network/friends",
-            state: {
-              message: "You have successfully sent Invitation to your friends.",
-              message_type: "success"
-            }
-          });
-        } else {
-          // console.log("Failed To Invite");
-        }
-      });
+  sendFacebookAppRequest (selectedFacebookFriendsIds, selectedFacebookFriendsNames) {
+    let api = isWebApp() ? window.FB : window.facebookConnectPlugin;  // eslint-disable-line no-undef
+    api.ui({
+      title: "We Vote USA",
+      redirect_uri: webAppConfig.WE_VOTE_HOSTNAME + "/more/network",
+      method: "apprequests",
+      message: this.state.add_friends_message,
+      to: selectedFacebookFriendsIds,
+    }, function (response) {
+      if (response.error_code === 4201) {
+        oAuthLog("User Canceled the request");
+      } else if (response) {
+        oAuthLog("Successfully Invited", response, selectedFacebookFriendsNames);
+        const data = { request_id: response.request, recipients_facebook_id_array: response.to, recipients_facebook_name_array: selectedFacebookFriendsNames };
+
+        oAuthLog("Final data for all invitations", data);
+        FriendActions.friendInvitationByFacebookSend(data);
+        historyPush({
+          pathname: "/more/network/friends",
+          state: {
+            message: "You have successfully sent Invitation to your friends.",
+            message_type: "success",
+          },
+        });
+
+      } else {
+        oAuthLog("Failed To Invite");
+      }
+    });
   }
 
   searchFacebookFriends (event) {
-    let search_term = event.target.value;
-    if (search_term.length === 0) {
+    let searchTerm = event.target.value;
+    if (searchTerm.length === 0) {
       this.setState({
         search_filter: false,
         search_term: "",
         facebook_invitable_friends_filtered_by_search: [],
       });
     } else {
-      let search_term_lowercase = search_term.toLowerCase();
-      var searched_friends_list = _.filter(this.state.facebook_invitable_friends.facebook_invitable_friends_list,
+      let searchTermLowercase = searchTerm.toLowerCase();
+      let searchedFriendsList = _.filter(this.state.facebook_invitable_friends.facebook_invitable_friends_list,
         function (user) {
-            return user.name.toLowerCase().includes(search_term_lowercase);
+            return user.name.toLowerCase().includes(searchTermLowercase);
           });
 
       this.setState({
         search_filter: true,
-        search_term: search_term,
-        facebook_invitable_friends_filtered_by_search: searched_friends_list,
+        search_term: searchTerm,
+        facebook_invitable_friends_filtered_by_search: searchedFriendsList,
       });
     }
   }
@@ -231,7 +240,7 @@ export default class FacebookInvitableFriends extends Component {
     }
 
     // console.log("facebook logged in: ", this.state.facebook_logged_in);
-    if (!this.state.facebook_logged_in ) {
+    if (!this.state.facebook_logged_in) {
       // console.log("Voter is not logged in through facebook");
       this.facebookLogin();
       return LoadingWheel;
@@ -243,21 +252,19 @@ export default class FacebookInvitableFriends extends Component {
         pathname: "/more/network",
         state: {
           message: "Facebook sign in failed. Please try again.",
-          message_type: "success"
-        }
+          message_type: "success",
+        },
       });
       return LoadingWheel;
     }
 
     // console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
     if (!this.state.voter.signed_in_facebook && this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
-      // console.log("SignIn.jsx facebook_retrieve_attempted");
-      let { facebook_secret_key } = this.state.facebook_auth_response;
+      let { facebook_secret_key: facebookSecretKey } = this.state.facebook_auth_response;
 
       if (this.state.yes_please_merge_accounts) {
-        // Go ahead and merge this voter record with the voter record that the facebook_secret_key belongs to
-        // console.log("this.voterMergeTwoAccountsByFacebookKey -- yes please merge accounts");
-        this.voterMergeTwoAccountsByFacebookKey(facebook_secret_key);
+        // Go ahead and merge this voter record with the voter record that the facebookSecretKey belongs to
+        this.voterMergeTwoAccountsByFacebookKey(facebookSecretKey);
         return LoadingWheel;
       }
 
@@ -266,15 +273,16 @@ export default class FacebookInvitableFriends extends Component {
         // Is there anything to save from this voter account?
         if (this.state.facebook_auth_response.voter_has_data_to_preserve) {
           // console.log("FacebookSignInProcess voter_has_data_to_preserve is TRUE");
-          const cancel_merge_function = this.cancelMergeFunction.bind(this);
-          const please_merge_accounts_function = this.yesPleaseMergeAccounts.bind(this);
+          const cancelMergeFunction = this.cancelMergeFunction.bind(this);
+          const pleaseMergeAccountsFunction = this.yesPleaseMergeAccounts.bind(this);
+
           // Display the question of whether to merge accounts or not
-          return <WouldYouLikeToMergeAccounts cancelMergeFunction={cancel_merge_function}
-                                            pleaseMergeAccountsFunction={please_merge_accounts_function} />;
+          return <WouldYouLikeToMergeAccounts cancelMergeFunction={cancelMergeFunction}
+                                              pleaseMergeAccountsFunction={pleaseMergeAccountsFunction} />;
         } else {
           // Go ahead and merge the accounts, which means deleting the current voter and switching to the facebook-linked account
           // console.log("FacebookSignInProcess this.voterMergeTwoAccountsByFacebookKey - No data to merge");
-          this.voterMergeTwoAccountsByFacebookKey(facebook_secret_key, this.state.facebook_auth_response.voter_has_data_to_preserve);
+          this.voterMergeTwoAccountsByFacebookKey(facebookSecretKey, this.state.facebook_auth_response.voter_has_data_to_preserve);
           return LoadingWheel;
         }
       } else {
@@ -299,21 +307,20 @@ export default class FacebookInvitableFriends extends Component {
         pathname: "/more/network/friends",
         state: {
           message: "There are no friends to invite from Facebook. Either there is an error, or you already invited all of your friends on Facebook!",
-          message_type: "success"
-        }
+          message_type: "success",
+        },
       });
       return LoadingWheel;
     }
 
-
-    let facebook_invitable_friends_list = [];
+    let facebookInvitableFriendsList = [];
     if (!this.state.search_filter) {
-      facebook_invitable_friends_list = this.state.facebook_invitable_friends.facebook_invitable_friends_list;
+      facebookInvitableFriendsList = this.state.facebook_invitable_friends.facebook_invitable_friends_list;
     } else {
-      facebook_invitable_friends_list = this.state.facebook_invitable_friends_filtered_by_search;
+      facebookInvitableFriendsList = this.state.facebook_invitable_friends_filtered_by_search;
     }
 
-    const facebook_friend_list_for_display = facebook_invitable_friends_list.map( (friend) =>
+    const facebookFriendListForDisplay = facebookInvitableFriendsList.map((friend) =>
       <CheckBox key={friend.id}
                 friendId={friend.id}
                 friendName={friend.name}
@@ -341,8 +348,8 @@ export default class FacebookInvitableFriends extends Component {
               <div className="display-in-column-with-vertical-scroll-contain">
                 <div className="display-in-column-with-vertical-scroll card">
                   <div className="row friends-list__grid">
-                    { facebook_invitable_friends_list.length ?
-                      facebook_friend_list_for_display :
+                    { facebookInvitableFriendsList.length ?
+                      facebookFriendListForDisplay :
                       <h4 className="friends-list__default-text">No friends found with the search string '{this.state.search_term}'.</h4>
                     }
                   </div>

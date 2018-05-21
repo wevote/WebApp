@@ -9,7 +9,7 @@ import AnalyticsActions from "../actions/AnalyticsActions";
 import { validateEmail } from "../utils/email-functions";
 import FacebookStore from "../stores/FacebookStore";
 import FacebookActions from "../actions/FacebookActions";
-import { renderLog } from "../utils/logging";
+import { oAuthLog, renderLog } from "../utils/logging";
 import OpenExternalWebSite from "../utils/OpenExternalWebSite";
 import VoterActions from "../actions/VoterActions";
 import VoterConstants from "../constants/VoterConstants";
@@ -150,7 +150,8 @@ export default class Intro extends Component {
   }
 
   shareToFacebookButton () {
-    window.FB.ui({
+    let api = isWebApp() ? window.FB : window.facebookConnectPlugin;  // eslint-disable-line no-undef
+    api.ui({
       display: "popup",
       redirect_uri: webAppConfig.WE_VOTE_HOSTNAME + "/welcome",
       method: "share",
@@ -161,7 +162,7 @@ export default class Intro extends Component {
       if (response === undefined || response.error_code === 4201) {
         console.log("Voter Canceled the share request");
       } else if (response) {
-        // console.log("Successfully Shared", response);
+        oAuthLog("Successfully Shared", response);
       }
     });
   }
@@ -429,15 +430,12 @@ export default class Intro extends Component {
             <span>
               <h3 className="u-f3 u-stack--lg">{pleaseShareString}</h3>
               <div className="u-stack--lg">
-                {/* February 2018, Facebook and Magic Email disabled for Cordova */}
-                {isWebApp() &&
                 <Button className="btn btn-social btn-facebook u-push--sm"
                         bsStyle="danger"
                         type="submit"
                         onClick={this.shareToFacebookButton}>
                   <span className="fa fa-facebook"/> Facebook
                 </Button>
-                }
                 <OpenExternalWebSite url={twitterIntent}
                                      target="_blank"
                                      title="Share to Twitter"
@@ -446,16 +444,13 @@ export default class Intro extends Component {
                                               <span className="fa fa-twitter" /><span> Twitter</span>
                                            </Button>}
                 />
-                {/* February 2018, Facebook and Magic Email disabled for Cordova */}
-                {isWebApp() &&
-                  <OpenExternalWebSite url={mailToUrl}
-                                       target="_blank"
-                                       title="Submit this to Email"
-                                       body={<button className="btn btn-social btn--email u-push--sm">
-                                              <span className="fa fa-envelope"/>Email
-                                             </button>}
-                  />
-                }
+               <OpenExternalWebSite url={mailToUrl}
+                                     target="_blank"
+                                     title="Submit this to Email"
+                                     body={<button className="btn btn-social btn--email u-push--sm">
+                                            <span className="fa fa-envelope"/>Email
+                                           </button>}
+                />
                 <Link to="/more/donate">
                   <button className="btn btn-social btn-danger u-push--sm">
                     <span className="fa fa-heart" /> Donate

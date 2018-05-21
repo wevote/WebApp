@@ -9,8 +9,6 @@ import ElectionActions from "./actions/ElectionActions";
 import FooterBarCordova from "./components/Navigation/FooterBarCordova";
 import FriendActions from "./actions/FriendActions";
 import HeaderBackToBar from "./components/Navigation/HeaderBackToBar";
-import HeaderBackToSettings from "./components/Navigation/HeaderBackToSettings";
-import HeaderBackToVoterGuides from "./components/Navigation/HeaderBackToVoterGuides";
 import HeaderBar from "./components/Navigation/HeaderBar";
 import HeaderSecondaryNavBar from "./components/Navigation/HeaderSecondaryNavBar";
 import Headroom from "headroom.js";
@@ -347,8 +345,9 @@ export default class Application extends Component {
     }
 
     let showBackToHeader = false;
-    let showBackToSettings = false;
-    let showBackToVoterGuides = false;
+
+    // let showBackToSettings = false;
+    // let showBackToVoterGuides = false;
     if (stringContains("/btdb/", pathname) ||
         stringContains("/btdo/", pathname) ||
         stringContains("/bto/", pathname) ||
@@ -368,10 +367,12 @@ export default class Application extends Component {
         pathname === "/settings/voterguidesmenu" ||
         pathname === "/settings/voterguidelist") {
       console.log("showBackToSettings = true");
-      showBackToSettings = true;
+
+      // showBackToSettings = true;
     } else if (stringContains("/vg/", pathname)) {
       console.log("showBackToVoterGuides = true");
-      showBackToVoterGuides = true;
+
+      // showBackToVoterGuides = true;
     }
 
     if (pathname.startsWith("/measure") && isCordova()) {
