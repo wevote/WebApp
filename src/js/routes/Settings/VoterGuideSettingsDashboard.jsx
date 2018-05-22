@@ -176,18 +176,6 @@ export default class VoterGuideSettingsDashboard extends Component {
         <SettingsBannerAndOrganizationCard organization={this.state.organization} />
       </div>
 
-      {/* Desktop mode */}
-      <div className="hidden-xs col-md-12  u-padding-top--md">
-        <Link to="/settings/voterguidelist">&lt; Back to Your Voter Guides</Link>
-      </div>
-      {/* Mobile mode */}
-      <div className="col-12 visible-xs">
-        {this.state.voterGuideWeVoteId && this.state.voterGuideWeVoteId !== "" ?
-          <Link to={"/vg/" + this.state.voterGuideWeVoteId + "/settings/menu"}>&lt; Voter Guide</Link> :
-          <Link to={"/settings/voterguidesmenu"}>&lt; Voter Guide</Link>
-        }
-      </div>
-
       {/* Desktop left navigation + Settings content */}
       <div className="hidden-xs">
         <div className="container-fluid">

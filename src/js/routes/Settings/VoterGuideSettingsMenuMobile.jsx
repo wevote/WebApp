@@ -152,22 +152,6 @@ export default class VoterGuideSettingsMenuMobile extends Component {
         <SettingsBannerAndOrganizationCard organization={this.state.organization} />
       </div>
 
-      <div className="container-fluid">
-        <div className="row">
-          {isWebApp() ?
-            <div className="col-md-12">
-              {/* Desktop mode */}
-              <Link to="/settings/voterguidelist" className="hidden-xs">&lt; Back to Your Voter Guides</Link>
-              {/* Mobile mode */}
-              <Link to="/settings/voterguidesmenu" className="visible-xs">&lt; Back to Your Voter Guides</Link>
-            </div> :
-            <div className="col-md-12">
-              <Link to="/settings/voterguidesmenu">&lt; Back to Your Voter Guides</Link>
-            </div>
-          }
-        </div>
-      </div>
-
       {/* Mobile WebApp navigation */}
       <div className="container-fluid">
         <div className="row">

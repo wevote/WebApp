@@ -250,7 +250,7 @@ export default class HeaderBackToVoterGuides extends Component {
     } else if (stringContains("/settings/general", this.props.pathname) || stringContains("/settings/positions", this.props.pathname)){
       let voterGuideWeVoteId = this.props.params.voter_guide_we_vote_id;
       if (isMobile()) {
-        backToOrganizationLinkText = "Voter Guide";
+        backToOrganizationLinkText = "Back to Your Voter Guides";
 
         backToLink = voterGuideWeVoteId && voterGuideWeVoteId !== "" ?
                       "/vg/" + voterGuideWeVoteId + "/settings/menu" :
