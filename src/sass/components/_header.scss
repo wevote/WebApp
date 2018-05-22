@@ -37,9 +37,11 @@ $space-search-right: 10%;
 
     &:focus {
       background-color: $page-header-color !important;
+      color: $white;
     }
     &:hover {
       background-color: $page-header-color !important;
+      color: $white;
     }
   }
 
