@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Link } from "react-router";
 import AnalyticsActions from "../actions/AnalyticsActions";
 import BrowserPushMessage from "../components/Widgets/BrowserPushMessage";
-import { isWebApp } from "../utils/cordovaUtils";
 import FriendActions from "../actions/FriendActions";
 import FriendStore from "../stores/FriendStore";
 import Helmet from "react-helmet";
@@ -59,9 +58,9 @@ export default class Network extends Component {
   componentWillReceiveProps (nextProps) {
     if (this.state.friend_invitations_sent_to_me.length > 0) {  // has invitations
       if (nextProps.location.pathname === "/more/network" || !nextProps.params.edit_mode) {
-        this.setState({edit_mode: "friends"});
+        this.setState({ edit_mode: "friends" });
       } else {
-        this.setState({edit_mode: nextProps.params.edit_mode});
+        this.setState({ edit_mode: nextProps.params.edit_mode });
       }
     } else if (this.state.suggested_friend_list.length > 0) {  // has suggested friends
       if (nextProps.location.pathname === "/more/network" || !nextProps.params.edit_mode) {
@@ -148,8 +147,6 @@ export default class Network extends Component {
                 />
               </div>
             }
-            {/* February 2018, Facebook and Magic Email disabled for Cordova */}
-            {isWebApp() &&
             <div className="network-btn">
               <Link to="/facebook_invitable_friends" className="btn btn-social btn-lg btn-facebook text-center">
                 <i className="fa fa-facebook"/>Choose Friends
@@ -160,7 +157,6 @@ export default class Network extends Component {
                 num_of_lines={2}
               />
             </div>
-            }
             <div className="network-btn">
             <Link to="/friends/invitebyemail" className="btn btn-social btn-lg btn--email text-center">
               <i className="fa fa-envelope" />Invite Friends
@@ -181,14 +177,11 @@ export default class Network extends Component {
                 <TwitterSignIn buttonText="Find" className="btn btn-social btn-md btn-twitter" />
               </div>
             }
-            {/* February 2018, Facebook and Magic Email disabled for Cordova */}
-            {isWebApp() &&
-              <div className="network-btn">
-                <Link to="/facebook_invitable_friends" className="btn btn-social btn-md btn-facebook">
-                  <i className="fa fa-facebook"/>Choose
-                </Link>
-              </div>
-            }
+            <div className="network-btn">
+              <Link to="/facebook_invitable_friends" className="btn btn-social btn-md btn-facebook">
+                <i className="fa fa-facebook"/>Choose
+              </Link>
+            </div>
             <div className="network-btn">
               <Link to="/friends/invitebyemail" className="btn btn-social btn-md btn--email">
                 <i className="fa fa-envelope" />Invite

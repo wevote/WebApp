@@ -1,68 +1,42 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { OverlayTrigger, Popover } from "react-bootstrap";
 import { cordovaDot } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 
 export default class RatingPopover extends Component {
   static propTypes = {
-    params: PropTypes.object,
-    id: PropTypes.string,
-    placement: PropTypes.string,
-    popover_off: PropTypes.bool
+    show_description: PropTypes.bool,
+    toggle_description: PropTypes.func,
   };
-
-  constructor (props, context) {
-    super(props, context);
-
-    this.closePopover = this.closePopover.bind(this);
-  }
-
-  closePopover () {
-    this.refs.overlay.hide();
-  }
 
   render () {
     renderLog(__filename);
-    const voteSmartPopover =
-      <Popover id="popover-trigger-click-root-close"
-        title={<span>Ratings from Vote Smart <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-        onClick={this.closePopover}>
-        Ratings are given by the organization, and collected by the
-        nonprofit Vote Smart.
-        <span className="u-no-break">
-          <img src={cordovaDot("/img/global/icons/down-arrow-color-icon.svg")} width="20" height="20" /> 0%
-        </span> is a low score, and
-        <span className="u-no-break">
-          <img src={cordovaDot("/img/global/icons/up-arrow-color-icon.svg")} width="20" height="20" /> 100%
-        </span> is a high score.
-        Ratings can be invaluable in showing where an incumbent has stood
-        on a series of votes. Some groups select votes that tend to favor
-        members of one political party over another, rather than choosing
-        votes based solely on issues. Please call 1-888-VOTESMART for
-        more specific information.
-      </Popover>;
 
-    let popover_off = false;
-    if (this.props.popover_off !== undefined) {
-      popover_off = this.props.popover_off ? true : false;
-    }
-    let placement = "top";
-    if (this.props.placement !== undefined) {
-      placement = this.props.placement;
-    }
+    let { show_description, toggle_description } = this.props;
 
-    return <span> { popover_off ? <span className="position-rating__source">&nbsp;(source: VoteSmart.org)</span> :
-        <OverlayTrigger
-          trigger="click"
-          ref="overlay"
-          onExit={this.closePopover}
-          rootClose
-          placement={placement}
-          overlay={voteSmartPopover}>
-          <span className="position-rating__source with-popover">&nbsp;(source: VoteSmart.org)</span>
-        </OverlayTrigger> }
-      </span>
-      ;
-    }
+    let ratingDescription = <div className="u-margin-top--xs">
+      Ratings are given by the organization, and collected by the
+      nonprofit Vote Smart.
+      <br />
+      <span className="u-no-break">
+        <img src={cordovaDot("/img/global/icons/down-arrow-color-icon.svg")} width="20" height="20" /> 0%
+      </span> is a low score, and
+      <br />
+      <span className="u-no-break">
+        <img src={cordovaDot("/img/global/icons/up-arrow-color-icon.svg")} width="20" height="20" /> 100%
+      </span> is a high score.
+      Ratings can be invaluable in showing where an incumbent has stood
+      on a series of votes. Some groups select votes that tend to favor
+      members of one political party over another, rather than choosing
+      votes based solely on issues. Please call 1-888-VOTESMART for
+      more specific information.
+    </div>;
+
+    return <div className="card-main__description card-main__rating-description u-margin-top--xs">
+      <div onClick={toggle_description} className="card-main__rating-description__header u-cursor--pointer">
+        (rating source: VoteSmart.org) { show_description ? <span className="glyphicon glyphicon-triangle-bottom hidden-print" /> : null }
+      </div>
+      { show_description ? ratingDescription : null }
+    </div>;
   }
+}

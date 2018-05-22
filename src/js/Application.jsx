@@ -347,6 +347,7 @@ export default class Application extends Component {
     }
 
     let showBackToHeader = false;
+
     let showBackToSettings = false;
     let showBackToVoterGuides = false;
     if (stringContains("/btdb/", pathname) ||

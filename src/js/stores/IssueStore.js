@@ -6,7 +6,7 @@ import OrganizationStore from "../stores/OrganizationStore";
 import VoterStore from "../stores/VoterStore";
 import VoterGuideStore from "../stores/VoterGuideStore";
 import VoterGuideActions from "../actions/VoterGuideActions";
-import { arrayContains } from "../utils/textFormat";
+import { arrayContains, removeValueFromArray } from "../utils/textFormat";
 
 class IssueStore extends ReduceStore {
 
@@ -321,6 +321,7 @@ class IssueStore extends ReduceStore {
     let issue_we_vote_ids_linked_to_by_organization_dict;
     let issue_we_vote_ids_to_link_to_by_organization_dict;
     let issue_we_vote_ids_under_each_ballot_item;
+    let issue_we_vote_ids_voter_can_follow = [];
     let linked_issue_list_for_one_organization = [];
     let list_of_issues_for_this_org;
     let new_position_list;
@@ -348,7 +349,15 @@ class IssueStore extends ReduceStore {
             IssueActions.issuesRetrieve();
           }
         }
-        return state;
+        // Update quickly the list of issues we want to offer to the voter to follow
+        issue_we_vote_ids_voter_can_follow = state.issue_we_vote_ids_voter_can_follow;
+        if (action.res.issue_we_vote_id) {
+          issue_we_vote_ids_voter_can_follow = removeValueFromArray(issue_we_vote_ids_voter_can_follow, action.res.issue_we_vote_id);
+        }
+        return {
+          ...state,
+          issue_we_vote_ids_voter_can_follow: issue_we_vote_ids_voter_can_follow,
+        };
 
       case "issuesRetrieve":
         let candidatesUnderThisOffice;
@@ -561,7 +570,7 @@ class IssueStore extends ReduceStore {
       case "retrieveIssuesToFollow":
         issue_list = action.res.issue_list;
         all_cached_issues = state.all_cached_issues;
-        let issue_we_vote_ids_voter_can_follow = [];
+        issue_we_vote_ids_voter_can_follow = [];
         issue_list.forEach( issue => {
           all_cached_issues[issue.issue_we_vote_id] = issue;
           issue_we_vote_ids_voter_can_follow.push(issue.issue_we_vote_id);

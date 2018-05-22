@@ -52,6 +52,7 @@ export default class Ballot extends Component {
     super(props);
     this.state = {
       ballotElectionList: [],
+      ballotWithAllItemsByFilterType: [],
       ballot_returned_we_vote_id: "",
       ballot_location_shortcut: "",
       candidate_for_modal: {
@@ -103,11 +104,11 @@ export default class Ballot extends Component {
     }
 
     let filter_type = this.props.location && this.props.location.query ? this.props.location.query.type : "all";
-    let ballot_with_all_items = BallotStore.getBallotByFilterType(filter_type);
-    if (ballot_with_all_items !== undefined) {
-      // console.log("ballot_with_all_items !== undefined");
+    let ballotWithAllItemsByFilterType = BallotStore.getBallotByFilterType(filter_type);
+    if (ballotWithAllItemsByFilterType !== undefined) {
+      // console.log("ballotWithAllItemsByFilterType !== undefined");
       this.setState({
-        ballot_with_all_items: ballot_with_all_items,
+        ballotWithAllItemsByFilterType: ballotWithAllItemsByFilterType,
         filter_type: filter_type
       });
     }
@@ -159,7 +160,7 @@ export default class Ballot extends Component {
     } else if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
       // console.log("if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false");
       historyPush("/settings/location");
-    } else if (ballot_with_all_items === undefined) {
+    } else if (ballotWithAllItemsByFilterType === undefined) {
       // console.log("WebApp doesn't know the election or have ballot data, so ask the API server to return best guess");
       BallotActions.voterBallotItemsRetrieve(0, "", "");
     }
@@ -228,7 +229,7 @@ export default class Ballot extends Component {
     // Were there any actual changes?
     if (ballot_returned_we_vote_id !== this.state.ballot_returned_we_vote_id || ballot_location_shortcut !== this.state.ballot_location_shortcut || google_civic_election_id !== this.state.google_civic_election_id || filter_type !== this.state.filter_type) {
       this.setState({
-        ballot_with_all_items: BallotStore.getBallotByFilterType(filter_type),
+        ballotWithAllItemsByFilterType: BallotStore.getBallotByFilterType(filter_type),
         ballot_returned_we_vote_id: ballot_returned_we_vote_id,
         ballot_location_shortcut: ballot_location_shortcut,
         filter_type: filter_type,
@@ -355,12 +356,12 @@ export default class Ballot extends Component {
     if (this.state.mounted) {
       if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) {
         // Ballot is found but ballot is empty. We want to stay put.
-        // console.log("onBallotStoreChange: ballot_with_all_items is empty");
+        // console.log("onBallotStoreChange: ballotWithAllItemsByFilterType is empty");
       } else {
         let prior_filter_type = this.state.filter_type || "all";
         let new_filter_type = this.state.location && this.state.location.query && this.state.location.query.type !== "" ? this.state.location.query.type : prior_filter_type;
         this.setState({
-          ballot_with_all_items: BallotStore.getBallotByFilterType(new_filter_type),
+          ballotWithAllItemsByFilterType: BallotStore.getBallotByFilterType(new_filter_type),
           filter_type: new_filter_type,
         });
       }
@@ -496,12 +497,10 @@ export default class Ballot extends Component {
   render () {
     renderLog(__filename);
     // console.log("Ballot render");
-
-    let ballot_with_all_items = this.state.ballot_with_all_items;
     let text_for_map_search = VoterStore.getTextForMapSearch();
     let issues_voter_can_follow = IssueStore.getIssuesVoterCanFollow(); // Don't auto-open intro until Issues are loaded
 
-    if (!ballot_with_all_items) {
+    if (!this.state.ballotWithAllItemsByFilterType) {
       return <div className="ballot container-fluid well u-stack--md u-inset--md">
         { this.state.showBallotIntroModal && issues_voter_can_follow.length !== 0 ?
           <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
@@ -538,8 +537,8 @@ export default class Ballot extends Component {
           </div>
         </div>;
 
-    // console.log("ballot_with_all_items: ", ballot_with_all_items);
-    const emptyBallot = ballot_with_all_items.length === 0 ?
+    // console.log("ballotWithAllItemsByFilterType: ", this.state.ballotWithAllItemsByFilterType);
+    const emptyBallot = this.state.ballotWithAllItemsByFilterType.length === 0 ?
       <div>
         <h3 className="text-center">{this.getEmptyMessageByFilterType(this.state.filter_type)}</h3>
         {emptyBallotButton}
@@ -571,7 +570,7 @@ export default class Ballot extends Component {
       ballot_location_display_name = voter_ballot_location.ballot_location_display_name;
     }
 
-    if (ballot_with_all_items.length === 0 && in_remaining_decisions_mode) {
+    if (this.state.ballotWithAllItemsByFilterType.length === 0 && in_remaining_decisions_mode) {
       historyPush(this.state.pathname);
     }
     // console.log("Ballot.jsx, this.state.google_civic_election_id: ", this.state.google_civic_election_id);
@@ -610,7 +609,7 @@ export default class Ballot extends Component {
                   </h1>
                 </header>
 
-                {this.state.ballot_with_all_items.length > 0 ?
+                {this.state.ballotWithAllItemsByFilterType.length > 0 ?
                   <div>
                     <BallotStatusMessage ballot_location_chosen
                                          ballot_location_display_name={ballot_location_display_name}
@@ -659,16 +658,17 @@ export default class Ballot extends Component {
                                          body={"See more information about casting your official vote."} />
                   </div>
                   <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
-                    {ballot_with_all_items.map( (item) => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
+                    {this.state.ballotWithAllItemsByFilterType.map( (item) => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
                   </div>
                 </div> :
                 <div>
                   <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
-                    {ballot_with_all_items.map( (item) => <BallotItemCompressed toggleCandidateModal={this.toggleCandidateModal}
+                    {this.state.ballotWithAllItemsByFilterType.map( (item) => <BallotItemCompressed toggleCandidateModal={this.toggleCandidateModal}
                                                                  toggleMeasureModal={this.toggleMeasureModal}
                                                                  key={item.we_vote_id}
                                                                  updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
-                                                                 allBallotItemsCount={ballot_with_all_items.length}
+                                                                 allBallotItemsCount={this.state.ballotWithAllItemsByFilterType.length}
+                                                                 urlWithoutHash={this.props.location.pathname + this.props.location.search}
                                                                  {...item} />)}
                   </div>
                 </div>
@@ -685,10 +685,12 @@ export default class Ballot extends Component {
               }
             </div>
 
-            { ballot_with_all_items.length === 0 || isCordova() ?
+            { this.state.ballotWithAllItemsByFilterType.length === 0 || isCordova() ?
               null :
               <div className="col-md-4 hidden-xs sidebar-menu">
-                <BallotSideBar displayTitle displaySubtitles />
+                <BallotSideBar displayTitle displaySubtitles
+                               rawUrlVariablesString={this.props.location.search}
+                               ballotWithAllItemsByFilterType={this.state.ballotWithAllItemsByFilterType} />
               </div> }
           </div>
         </div>

@@ -5,7 +5,7 @@ import AnalyticsActions from "../../actions/AnalyticsActions";
 import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
-import { historyPush, isCordova, isWebApp } from "../../utils/cordovaUtils";
+import { historyPush } from "../../utils/cordovaUtils";
 import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 import LoadingWheel from "../../components/LoadingWheel";
 import { renderLog } from "../../utils/logging";
@@ -16,8 +16,7 @@ import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import VoterStore from "../../stores/VoterStore";
 
-const debug_mode = false;
-
+const debugMode = false;
 
 export default class SettingsAccount extends Component {
 
@@ -58,7 +57,7 @@ export default class SettingsAccount extends Component {
         voter: VoterStore.getVoter(),
       });
     } else {
-      this.setState({voter: VoterStore.getVoter()});
+      this.setState({ voter: VoterStore.getVoter() });
     }
   }
 
@@ -83,16 +82,16 @@ export default class SettingsAccount extends Component {
   }
 
   toggleTwitterDisconnectOpen () {
-    this.setState({show_twitter_disconnect: true});
+    this.setState({ show_twitter_disconnect: true });
   }
 
   toggleTwitterDisconnectClose () {
-    this.setState({show_twitter_disconnect: false});
+    this.setState({ show_twitter_disconnect: false });
   }
 
   voterSplitIntoTwoAccounts () {
     VoterActions.voterSplitIntoTwoAccounts();
-    this.setState({show_twitter_disconnect: false});
+    this.setState({ show_twitter_disconnect: false });
   }
 
   render () {
@@ -101,40 +100,42 @@ export default class SettingsAccount extends Component {
       return LoadingWheel;
     }
 
+    // TODO: This class has lots of code (including unaltered console.log lines) that are in common with SignIn.jsx -- can they be refactored back to a single file?
+
     // console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
     if (!this.state.voter.signed_in_facebook && this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
       console.log("SignIn.jsx facebook_retrieve_attempted");
       historyPush("/facebook_sign_in");
+
       // return <span>SignIn.jsx facebook_retrieve_attempted</span>;
       return LoadingWheel;
     }
 
-    let page_title = "Sign In - We Vote";
-    let your_account_title = "Your Account";
-    let your_account_explanation = "";
+    let pageTitle = "Sign In - We Vote";
+    let yourAccountTitle = "Your Account";
+    let yourAccountExplanation = "";
     if (this.state.voter.is_signed_in) {
-      page_title = "Your Account - We Vote";
+      pageTitle = "Your Account - We Vote";
       if (this.state.voter.signed_in_facebook && !this.state.voter.signed_in_twitter) {
-        your_account_title = "Have Twitter Too?";
-        your_account_explanation = "By adding your Twitter account to your We Vote profile, you get access to the voter guides of everyone you follow.";
-      } else if (this.state.voter.signed_in_twitter && isWebApp() && !this.state.voter.signed_in_facebook) {
-        /* February 2018, Facebook and Magic Email disabled for Cordova */
-        your_account_title = "Have Facebook Too?";
-        your_account_explanation = "By adding Facebook to your We Vote profile, it is easier to invite friends.";
+        yourAccountTitle = "Have Twitter Too?";
+        yourAccountExplanation = "By adding your Twitter account to your We Vote profile, you get access to the voter guides of everyone you follow.";
+      } else if (this.state.voter.signed_in_twitter && !this.state.voter.signed_in_facebook) {
+        yourAccountTitle = "Have Facebook Too?";
+        yourAccountExplanation = "By adding Facebook to your We Vote profile, it is easier to invite friends.";
       }
     }
 
     return <div className="">
-      <Helmet title={page_title} />
+      <Helmet title={pageTitle} />
       <BrowserPushMessage incomingProps={this.props} />
       <div className="card">
         <div className="card-main">
           {this.state.voter.signed_in_twitter && this.state.voter.signed_in_facebook ?
             null :
-            <h1 className="h3">{this.state.voter.is_signed_in ? <span>{your_account_title}</span> : null}</h1>
+            <h1 className="h3">{this.state.voter.is_signed_in ? <span>{yourAccountTitle}</span> : null}</h1>
           }
           {this.state.voter.is_signed_in ?
-            <span>{your_account_explanation}</span> :
+            <span>{yourAccountExplanation}</span> :
             <div >
               <div className="u-f3">Before you can share, either publicly or with friends, please sign in.</div>
               <div className="u-stack--sm">Don't worry, we won't post anything automatically.</div>
@@ -147,9 +148,7 @@ export default class SettingsAccount extends Component {
                 <TwitterSignIn className="btn btn-social btn-lg btn-twitter"/>
               }
               <span>&nbsp;</span>
-              {/* February 2018, Facebook and Magic Email disabled for Cordova */}
-              {this.state.voter.signed_in_facebook || isCordova() ?
-                null :
+              { !this.state.voter.signed_in_facebook &&
                 <FacebookSignIn />
               }
               <br />
@@ -175,23 +174,19 @@ export default class SettingsAccount extends Component {
                     </span> :
                     null
                   }
-                  {/* February 2018, Facebook and Magic Email disabled for Cordova */}
-                  {this.state.voter.signed_in_facebook && isWebApp() ?
+                  {this.state.voter.signed_in_facebook &&
                     <span>
                       <span className="btn btn-social-icon btn-lg btn-facebook">
                         <span className="fa fa-facebook" />
                       </span>
                       <span>&nbsp;</span>
-                    </span> :
-                    null
+                    </span>
                   }
-                  {/* February 2018, Facebook and Magic Email disabled for Cordova */}
-                  {this.state.voter.signed_in_with_email && isWebApp() ?
+                  {this.state.voter.signed_in_with_email &&
                     <span>
                       <span className="btn btn-warning btn-lg">
                       <span className="glyphicon glyphicon-envelope" /></span>
-                    </span> :
-                    null
+                    </span>
                   }
                 </div>
                 {this.state.voter.signed_in_twitter && (this.state.voter.signed_in_facebook || this.state.voter.signed_in_with_email) ?
@@ -215,7 +210,7 @@ export default class SettingsAccount extends Component {
 
           <VoterEmailAddressEntry />
 
-          {debug_mode &&
+          {debugMode &&
           <div className="text-center">
             is_signed_in: {this.state.voter.is_signed_in ? <span>True</span> : null}<br />
             signed_in_facebook: {this.state.voter.signed_in_facebook ? <span>True</span> : null}<br />

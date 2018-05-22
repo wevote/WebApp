@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
-import { deviceTypeString } from "../../utils/cordovaUtils";
+import { deviceTypeString, isWebApp } from "../../utils/cordovaUtils";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
 import LoadingWheel from "../LoadingWheel";
+import { oAuthLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 import { validateEmail } from "../../utils/email-functions";
 import webAppConfig from "../../config";
@@ -18,7 +19,7 @@ export default class FacebookBallotToFriendsModal extends Component {
     success_message: PropTypes.object,
     sender_email_address_from_email_ballot_modal: PropTypes.string,
     verification_email_sent: PropTypes.bool,
-    ballotFacebookEmailWasSent: PropTypes.func.isRequired //Used to transition from FacebookBallotModal when ballot was sent.
+    ballotFacebookEmailWasSent: PropTypes.func.isRequired, //Used to transition from FacebookBallotModal when ballot was sent.
   };
 
   constructor (props) {
@@ -29,6 +30,7 @@ export default class FacebookBallotToFriendsModal extends Component {
     } else {
       ballotLink = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + "/ballot";
     }
+
     this.state = {
       email_ballot_message: "This is a ballot on We Vote for the upcoming election.",
       voter: VoterStore.getVoter(),
@@ -64,7 +66,7 @@ export default class FacebookBallotToFriendsModal extends Component {
       success_message: this.props.success_message,
       verification_pending: false,
       on_mobile: false,
-      ballot_link: ballotLink
+      ballot_link: ballotLink,
     };
     this.email_address_array = [];
     this.sent_email_address_array = [];
@@ -97,13 +99,14 @@ export default class FacebookBallotToFriendsModal extends Component {
   _onFacebookStoreChange () {
     let facebookAuthResponse = FacebookStore.getFacebookAuthResponse();
     let emailData = FacebookStore.getFacebookData();
+
     // console.log("_onFacebookStoreChange", facebookAuthResponse, emailData);
-    if ( facebookAuthResponse.facebookIsLoggedIn && emailData.userId && !this.state.facebook_login_started ) {
+    if (facebookAuthResponse.facebookIsLoggedIn && emailData.userId && !this.state.facebook_login_started) {
       this.setState({
         facebook_login_started: true,
         on_facebook_login_step: true,
       });
-      if ( this.state.on_mobile ) {
+      if (this.state.on_mobile) {
         this.shareOnFacebook();
       } else {
         this.sendDirectMessageToFacebookFriends();
@@ -112,22 +115,23 @@ export default class FacebookBallotToFriendsModal extends Component {
   }
 
   _onFriendStoreChange () {
-    let email_ballot_data_step = FriendStore.switchToEmailBallotDataStep();
-    let error_message_to_show_voter = FriendStore.getErrorMessageToShowVoter();
+    let emailBallotDataStep = FriendStore.switchToEmailBallotDataStep();
+    let errorMessageToShowVoter = FriendStore.getErrorMessageToShowVoter();
+
     // console.log("EmailBallotToFriendsModal, _onFriendStoreChange, email_ballot_data_step:", email_ballot_data_step);
-    if (email_ballot_data_step === "on_collect_email_step") {
+    if (emailBallotDataStep === "on_collect_email_step") {
       // Switch to "on_collect_email_step"
       this.setState({
         loading: false,
         on_enter_email_addresses_step: false,
         on_collect_email_step: true,
         on_ballot_email_sent_step: false,
-        error_message_to_show_voter: error_message_to_show_voter
+        error_message_to_show_voter: errorMessageToShowVoter,
       });
     } else {
       this.setState({
         loading: false,
-        error_message_to_show_voter: ""
+        error_message_to_show_voter: "",
       });
 
     }
@@ -140,38 +144,38 @@ export default class FacebookBallotToFriendsModal extends Component {
   }
 
   cacheFriendData (event) {
-    this.setState({[event.target.name]: event.target.value});
+    this.setState({ [event.target.name]: event.target.value });
   }
 
   cacheEmailMessage (e) {
     this.setState({
-      email_ballot_message: e.target.value
+      email_ballot_message: e.target.value,
     });
   }
 
   ballotEmailSend (e) {
     e.preventDefault();
-    let sender_email_address = "";
-    let success_message = "";
+    let senderEmailAddress = "";
+    let successMessage = "";
     if (this.props.sender_email_address_from_email_ballot_modal &&
         this.props.sender_email_address_from_email_ballot_modal !== this.state.sender_email_address) {
-      sender_email_address = this.props.sender_email_address_from_email_ballot_modal;
+      senderEmailAddress = this.props.sender_email_address_from_email_ballot_modal;
     } else {
-      sender_email_address = this.state.sender_email_address;
+      senderEmailAddress = this.state.sender_email_address;
     }
 
     if (!this.hasValidEmail() || this.props.verification_email_sent) {
-      success_message = "Success! Verification email has been sent to " + sender_email_address +
+      successMessage = "Success! Verification email has been sent to " + senderEmailAddress +
         ". Once you verify your email, this ballot will be automatically sent to your friend's email address(es) " +
         this.sent_email_address_array.join(", ") + ".";
     } else {
-      success_message = "Success! This ballot has been sent to the email address(es) " + this.sent_email_address_array.join(", ") +
+      successMessage = "Success! This ballot has been sent to the email address(es) " + this.sent_email_address_array.join(", ") +
         ". Would you like to send this ballot to anyone else?";
     }
 
     FriendActions.emailBallotData(this.email_address_array, this.first_name_array,
       this.last_name_array, "", this.state.email_ballot_message, this.state.ballot_link,
-      sender_email_address, this.props.verification_email_sent, deviceTypeString());
+      senderEmailAddress, this.props.verification_email_sent, deviceTypeString());
 
     // After calling the API, reset the form
     this.setState({
@@ -204,7 +208,7 @@ export default class FacebookBallotToFriendsModal extends Component {
       on_enter_email_addresses_step: true,
       on_collect_email_step: false,
       on_ballot_email_sent_step: true,
-      success_message: success_message,
+      success_message: successMessage,
     });
     this.setEmailAddressArray([]);
     this.setFirstNameArray([]);
@@ -222,20 +226,19 @@ export default class FacebookBallotToFriendsModal extends Component {
 
   onKeyDown (event) {
     let enterAndSpaceKeyCodes = [13, 32];
-    let scope = this;
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      scope.ballotEmailSendStepsManager(event).bind(scope);
+      this.ballotEmailSendStepsManager(event).bind(this);
     }
   }
 
   ballotEmailSendStepsManager (event) {
     // This function is called when the form is submitted
     // console.log("Entering function ballotEmailSendStepsManager");
-    let error_message = "";
+    let errorMessage = "";
 
     if (this.state.on_enter_email_addresses_step) {
       // Validate friends' email addresses
-      let email_addresses_error = false;
+      let emailAddressesError = false;
 
       if (!this.prepareApiArraysFromForm()) {
         //TBD error handling
@@ -246,25 +249,26 @@ export default class FacebookBallotToFriendsModal extends Component {
           email_addresses_error: true,
         });
       }
-      if (this.email_address_array.length === 0 ) {
+
+      if (this.email_address_array.length === 0) {
         // console.log("ballotEmailSendStepsManager: this.state.email_add is ", this.state.email_address_array);
-        email_addresses_error = true;
-        error_message += "Please enter at least one valid email address.";
+        emailAddressesError = true;
+        errorMessage += "Please enter at least one valid email address.";
       } else {
-        this.email_address_array.map((email_address) => {
-          if (!validateEmail(email_address)) {
-            email_addresses_error = true;
-            error_message += "Please enter a valid email address for " + email_address;
+        this.email_address_array.map((emailAddress) => {
+          if (!validateEmail(emailAddress)) {
+            emailAddressesError = true;
+            errorMessage += "Please enter a valid email address for " + emailAddress;
           }
         });
       }
 
-      if (email_addresses_error) {
+      if (emailAddressesError) {
         // console.log("ballotEmailSendStepsManager, email_addresses_error");
         this.setState({
           loading: false,
           email_addresses_error: true,
-          error_message: error_message
+          error_message: errorMessage,
         });
       } else if (!this.hasValidEmail()) {
         // console.log("ballotEmailSendStepsManager, NOT hasValidEmail");
@@ -285,20 +289,20 @@ export default class FacebookBallotToFriendsModal extends Component {
       }
     } else if (this.state.on_collect_email_step) {
       // Validate sender's email addresses
-      let sender_email_address_error = false;
-      if ( !this.state.sender_email_address ) {
-        sender_email_address_error = true;
-        error_message += "Please enter a valid email address for yourself. ";
+      let senderEmailAddressError = false;
+      if (!this.state.sender_email_address) {
+        senderEmailAddressError = true;
+        errorMessage += "Please enter a valid email address for yourself. ";
       } else if (!this.senderEmailAddressVerified()) {
-        sender_email_address_error = true;
-        error_message += "This is not a valid email address. ";
+        senderEmailAddressError = true;
+        errorMessage += "This is not a valid email address. ";
       }
 
-      if (sender_email_address_error) {
+      if (senderEmailAddressError) {
         this.setState({
           loading: false,
           sender_email_address_error: true,
-          error_message: error_message
+          error_message: errorMessage,
         });
       } else {
         // console.log("ballotEmailSendStepsManager, calling emailBallotData");
@@ -333,6 +337,7 @@ export default class FacebookBallotToFriendsModal extends Component {
 
     if (_state.friend1_email_address) {
       result = validateEmail(_state.friend1_email_address);
+
       // console.log("prepareApiArraysFromForm", result);
       if (result) {
         //console.log("prepareApiArraysFromForm: validated email", _state.friend1_email_address);
@@ -344,6 +349,7 @@ export default class FacebookBallotToFriendsModal extends Component {
         return false;
       }
     }
+
     if (_state.friend2_email_address) {
       result = validateEmail(_state.friend2_email_address);
       if (result) {
@@ -356,6 +362,7 @@ export default class FacebookBallotToFriendsModal extends Component {
         return false;
       }
     }
+
     if (_state.friend3_email_address) {
       result = validateEmail(_state.friend3_email_address);
       if (result) {
@@ -368,6 +375,7 @@ export default class FacebookBallotToFriendsModal extends Component {
         return false;
       }
     }
+
     if (_state.friend4_email_address) {
       result = validateEmail(_state.friend4_email_address);
       if (result) {
@@ -379,6 +387,7 @@ export default class FacebookBallotToFriendsModal extends Component {
         return false;
       }
     }
+
     if (_state.friend5_email_address) {
       result = validateEmail(_state.friend5_email_address);
       if (result) {
@@ -391,6 +400,7 @@ export default class FacebookBallotToFriendsModal extends Component {
         return false;
       }
     }
+
     this.setEmailAddressArray(tmpEmailArray);
     this.setFirstNameArray(tmpFirstNameArray);
     this.setLastNameArray(tmpLastNameArray);
@@ -456,7 +466,8 @@ export default class FacebookBallotToFriendsModal extends Component {
     let facebookAuthResponse = FacebookStore.getFacebookAuthResponse();
     if (facebookAuthResponse.facebookIsLoggedIn) {
       if (emailData.userId) {
-        window.FB.ui({
+        let api = isWebApp() ? window.FB : window.facebookConnectPlugin;  // eslint-disable-line no-undef
+        api.ui({
           title: "We Vote USA",
           method: "send",
           mobile_iframe: true,
@@ -465,7 +476,7 @@ export default class FacebookBallotToFriendsModal extends Component {
         }, function (response) {
           if (response) {
             if (response.success) {
-              // console.log("Successfully send", response);
+              oAuthLog("Successfully send", response);
               this.setState({
                 success_message: "Success! This ballot has been sent to your Facebook friends. Would you like to " +
                 "send this ballot to anyone else?",
@@ -487,7 +498,8 @@ export default class FacebookBallotToFriendsModal extends Component {
   }
 
   // If we want to send invite through app requests
-  // window.FB.ui({
+  // let api = isWebApp() ? window.FB : window.facebookConnectPlugin;  // eslint-disable-line no-undef
+  // api.ui({
   //   title: "We Vote USA",
   //   redirect_uri: webAppConfig.WE_VOTE_HOSTNAME + "/more/network",
   //   method: "apprequests",
@@ -495,7 +507,7 @@ export default class FacebookBallotToFriendsModal extends Component {
   //   display: "popup",
   //   mobile_iframe: true,
   // }, function (response) {
-  //   if ( response ) {
+  //   if (response) {
   //       console.log("Successfully send", response);
   //       historyPush({
   //         pathname: "/ballot",
@@ -512,24 +524,25 @@ export default class FacebookBallotToFriendsModal extends Component {
   shareOnFacebook () {
     let emailData = FacebookStore.getFacebookData();
     let facebookAuthResponse = FacebookStore.getFacebookAuthResponse();
-    // console.log("shareOnFacebook", emailData, facebookAuthResponse);
-    if ( facebookAuthResponse.facebookIsLoggedIn ) {
-      if ( emailData.userId ) {
-        window.FB.ui({
+    oAuthLog("shareOnFacebook", emailData, facebookAuthResponse);
+    if (facebookAuthResponse.facebookIsLoggedIn) {
+      if (emailData.userId) {
+        let api = isWebApp() ? window.FB : window.facebookConnectPlugin;  // eslint-disable-line no-undef
+        api.ui({
           title: "We Vote USA",
           method: "share",
           href: this.state.ballot_link,
           redirect_uri: webAppConfig.WE_VOTE_HOSTNAME + "/ballot",
         }, function (response) {
           if (response) {
-            // console.log("Successfully send", response);
+            oAuthLog("Successfully send", response);
             this.setState({
               success_message: "Success! This ballot has been shared. Would you like to send this " +
               "ballot to anyone else?",
               on_ballot_email_sent_step: false,
             });
           } else {
-            console.log("Failed to send", response);
+            oAuthLog("Failed to send", response);
             this.setState({
               success_message: "",
               on_ballot_email_sent_step: false,
