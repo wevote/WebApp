@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router";
-import { isWebApp } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
