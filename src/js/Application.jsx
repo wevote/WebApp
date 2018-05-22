@@ -367,10 +367,8 @@ export default class Application extends Component {
         pathname === "/settings/profile" ||
         pathname === "/settings/voterguidesmenu" ||
         pathname === "/settings/voterguidelist") {
-      // console.log("showBackToSettings = true");
       showBackToSettings = true;
     } else if (stringContains("/vg/", pathname)) {
-      // console.log("showBackToVoterGuides = true");
       showBackToVoterGuides = true;
     }
 
@@ -416,9 +414,7 @@ export default class Application extends Component {
               <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
               <span>
                 {showBackToVoterGuides ?
-                  <span>
-                    <HeaderBackToVoterGuides location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/>
-                  </span> :
+                  <HeaderBackToVoterGuides location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
                   <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
                 }
               </span>
@@ -461,9 +457,7 @@ export default class Application extends Component {
               </span> :
               <span>
                 { showBackToVoterGuides ?
-                  <div>
-                    <HeaderBackToVoterGuides location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/>
-                  </div> :
+                  <HeaderBackToVoterGuides location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
                   <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
                 }
               </span>

@@ -13,7 +13,7 @@ import OrganizationStore from "../../stores/OrganizationStore";
 import isMobile from "../../utils/isMobile";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
 import { renderLog } from "../../utils/logging";
-import SearchAllBox from "../SearchAllBox";
+import SearchAllBox from "../../components/Search/SearchAllBox";
 import { stringContains } from "../../utils/textFormat";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
@@ -263,23 +263,6 @@ export default class HeaderBackToVoterGuides extends Component {
       backToLink = "/settings/voterguidelist";
       backToOrganizationLinkText = "Back to Your Voter Guides";
     }
-
-
-    // if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
-    //   backToOrganizationLinkText = "Back to Voter Guide1";
-    // } else {
-    //   backToOrganizationLinkText = "Back to Voter Guides2";
-    // }
-
-    // if (this.props.params.back_to_variable === "bto" || this.props.params.back_to_variable === "btdo") {
-    //   if (this.state.officeName) {
-    //     backToOrganizationLinkText = "Back to " + this.state.officeName;
-    //   } else {
-    //     backToOrganizationLinkText = "Back";
-    //   }
-    // } else if (this.state.organization && this.state.organization.organization_name) {
-    //   backToOrganizationLinkText = "Back to " + this.state.organization.organization_name;
-    // }
 
     let backToOrganizationLinkTextMobile = shortenText(backToOrganizationLinkText, 30);
 
