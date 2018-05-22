@@ -33,6 +33,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
     organization_we_vote_id: PropTypes.string,
     toggleCandidateModal: PropTypes.func,
     updateOfficeDisplayUnfurledTracker: PropTypes.func,
+    urlWithoutHash: PropTypes.string
   };
 
   constructor (props) {
@@ -157,7 +158,8 @@ export default class OfficeItemCompressedRaccoon extends Component {
   }
 
   toggleExpandDetails () {
-    const { we_vote_id, updateOfficeDisplayUnfurledTracker } = this.props;
+    const { we_vote_id, updateOfficeDisplayUnfurledTracker, urlWithoutHash } = this.props;
+    historyPush(urlWithoutHash + "#" + we_vote_id);
     this.setState({ display_office_unfurled: !this.state.display_office_unfurled });
     if (this.props.allBallotItemsCount && this.props.allBallotItemsCount <= 3) {
       //only update tracker if there are more than 3 offices
