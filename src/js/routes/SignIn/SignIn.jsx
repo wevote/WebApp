@@ -180,7 +180,7 @@ export default class SignIn extends Component {
           }
           {this.state.voter.is_signed_in ?
             <span>{yourAccountExplanation}</span> :
-            <div>Before you can share, either publicly or with friends, please sign in. Don't worry, we won't post anything automatically.<br />
+            <div>Please sign in so you can share. Don't worry, we won't post anything automatically.<br />
             <br />
             </div>
           }
@@ -248,7 +248,7 @@ export default class SignIn extends Component {
           */}
           {/*this.state.voter.is_signed_in ?
             <span>{yourAccountExplanation}</span> :
-            <div>Before you can share, either publicly or with friends, please sign in. Don't worry, we won't post anything automatically.<br />
+            <div>Please sign in so you can share. Don't worry, we won't post anything automatically.<br />
             <br />
             </div>
           */}

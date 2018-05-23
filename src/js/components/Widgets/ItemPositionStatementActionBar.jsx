@@ -82,14 +82,16 @@ export default class ItemPositionStatementActionBar extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    if (prevProps.supportProps.is_oppose === true && this.props.supportProps.is_support === true){  //oppose to support
-      this.textarea.focus();
-    } else if (prevProps.supportProps.is_support === true && this.props.supportProps.is_oppose === true){ //support to oppose
-      this.textarea.focus();
-    } else if (prevProps.supportProps.is_oppose === false && prevProps.supportProps.is_support === false && this.props.supportProps.is_support === true){ //comment to support
-      this.textarea.focus();
-    } else if (prevProps.supportProps.is_oppose === false && prevProps.supportProps.is_support === false && this.props.supportProps.is_oppose === true){ //comment to oppose
-      this.textarea.focus();
+    if (this.textarea && prevProps.supportProps && this.props.supportProps) {
+      if (prevProps.supportProps.is_oppose === true && this.props.supportProps.is_support === true){  //oppose to support
+        this.textarea.focus();
+      } else if (prevProps.supportProps.is_support === true && this.props.supportProps.is_oppose === true){ //support to oppose
+        this.textarea.focus();
+      } else if (prevProps.supportProps.is_oppose === false && prevProps.supportProps.is_support === false && this.props.supportProps.is_support === true){ //comment to support
+        this.textarea.focus();
+      } else if (prevProps.supportProps.is_oppose === false && prevProps.supportProps.is_support === false && this.props.supportProps.is_oppose === true){ //comment to oppose
+        this.textarea.focus();
+      }
     }
   }
 
