@@ -250,18 +250,20 @@ export default class HeaderBackToVoterGuides extends Component {
     } else if (stringContains("/settings/general", this.props.pathname) || stringContains("/settings/positions", this.props.pathname)){
       let voterGuideWeVoteId = this.props.params.voter_guide_we_vote_id;
       if (isMobile()) {
-        backToOrganizationLinkText = "Back to Your Voter Guides";
+        backToOrganizationLinkText = "Voter Guide Options";
 
         backToLink = voterGuideWeVoteId && voterGuideWeVoteId !== "" ?
                       "/vg/" + voterGuideWeVoteId + "/settings/menu" :
                       "/settings/voterguidesmenu";
       } else {
-        backToLink = "/settings/voterguidelist";
         backToOrganizationLinkText = "Back to Your Voter Guides";
+
+        backToLink = "/settings/voterguidelist";
       }
     } else if (stringContains("/vg/", this.props.pathname) && stringContains("/settings", this.props.pathname)){
-      backToLink = "/settings/voterguidelist";
       backToOrganizationLinkText = "Back to Your Voter Guides";
+
+      backToLink = "/settings/voterguidelist";
     }
 
     let backToOrganizationLinkTextMobile = shortenText(backToOrganizationLinkText, 30);
