@@ -45,7 +45,11 @@ export default class AddressBox extends Component {
   componentWillUnmount () {
     this.voterStoreListener.remove();
     this.ballotStoreListener.remove();
-    this.googleAutocompleteListener.remove();
+    if (this.googleAutocompleteListener !== undefined){  // Temporary fix until google maps key is fixed.
+      this.googleAutocompleteListener.remove();
+    } else {
+      console.log("Google Maps Error: DeletedApiProjectMapError");
+    }
   }
 
   onVoterStoreChange () {

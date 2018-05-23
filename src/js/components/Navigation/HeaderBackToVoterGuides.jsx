@@ -10,9 +10,11 @@ import { historyPush, isWebApp } from "../../utils/cordovaUtils";
 import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
+import isMobile from "../../utils/isMobile";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
 import { renderLog } from "../../utils/logging";
 import SearchAllBox from "../../components/Search/SearchAllBox";
+import { stringContains } from "../../utils/textFormat";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import { shortenText } from "../../utils/textFormat";
@@ -235,31 +237,38 @@ export default class HeaderBackToVoterGuides extends Component {
     let voterPhotoUrlMedium = this.state.voter.voter_photo_url_medium;
     let speakerType = "V";  // TODO DALE make this dynamic
 
-    let backToLink;
-    backToLink = "/settings/voterguidelist"; // NOTE: This is the Desktop destination
-    // This is the Mobile destination: backToLink = "/settings/voterguidesmenu";
+    let backToLink = "/settings/voterguidelist"; //default
+    let backToOrganizationLinkText = "Back to Voter Guides";
 
-    let backToOrganizationLinkText;
-    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
-      backToOrganizationLinkText = "Back to Voter Guide";
-    } else {
-      backToOrganizationLinkText = "Back to Voter Guides2";
-    }
-
-    if (this.props.params.back_to_variable === "bto" || this.props.params.back_to_variable === "btdo") {
-      if (this.state.officeName) {
-        backToOrganizationLinkText = "Back to " + this.state.officeName;
+    if (stringContains("/settings/menu", this.props.pathname)){
+      backToOrganizationLinkText = "Back to Your Voter Guides";
+      if (isWebApp()) {
+        backToLink = isMobile() ? "/settings/voterguidesmenu" : "/settings/voterguidelist";
       } else {
-        backToOrganizationLinkText = "Back";
+        backToLink = "/settings/voterguidesmenu";
       }
-    } else if (this.state.organization && this.state.organization.organization_name) {
-      backToOrganizationLinkText = "Back to " + this.state.organization.organization_name;
+    } else if (stringContains("/settings/general", this.props.pathname) || stringContains("/settings/positions", this.props.pathname)){
+      let voterGuideWeVoteId = this.props.params.voter_guide_we_vote_id;
+      if (isMobile()) {
+        backToOrganizationLinkText = "Back to Your Voter Guides";
+
+        backToLink = voterGuideWeVoteId && voterGuideWeVoteId !== "" ?
+                      "/vg/" + voterGuideWeVoteId + "/settings/menu" :
+                      "/settings/voterguidesmenu";
+      } else {
+        backToLink = "/settings/voterguidelist";
+        backToOrganizationLinkText = "Back to Your Voter Guides";
+      }
+    } else if (stringContains("/vg/", this.props.pathname) && stringContains("/settings", this.props.pathname)){
+      backToLink = "/settings/voterguidelist";
+      backToOrganizationLinkText = "Back to Your Voter Guides";
     }
 
     let backToOrganizationLinkTextMobile = shortenText(backToOrganizationLinkText, 30);
 
     return (
       <header className={ isWebApp() ? "page-header" : "page-header page-header__cordova" }>
+
         <Button className={"btn btn-sm btn-default page-header__backToButton  hidden-xs"}
                 onClick={ () => historyPush(backToLink) }>
           <span className="fa fa-arrow-left"/> {backToOrganizationLinkText}

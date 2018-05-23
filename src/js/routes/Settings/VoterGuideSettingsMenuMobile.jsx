@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router";
-import { isWebApp } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -150,22 +148,6 @@ export default class VoterGuideSettingsMenuMobile extends Component {
       {/* Header Spacing for Mobile */}
       <div className="visible-xs hidden-print">
         <SettingsBannerAndOrganizationCard organization={this.state.organization} />
-      </div>
-
-      <div className="container-fluid">
-        <div className="row">
-          {isWebApp() ?
-            <div className="col-md-12">
-              {/* Desktop mode */}
-              <Link to="/settings/voterguidelist" className="hidden-xs">&lt; Back to Your Voter Guides</Link>
-              {/* Mobile mode */}
-              <Link to="/settings/voterguidesmenu" className="visible-xs">&lt; Back to Your Voter Guides</Link>
-            </div> :
-            <div className="col-md-12">
-              <Link to="/settings/voterguidesmenu">&lt; Back to Your Voter Guides</Link>
-            </div>
-          }
-        </div>
       </div>
 
       {/* Mobile WebApp navigation */}
