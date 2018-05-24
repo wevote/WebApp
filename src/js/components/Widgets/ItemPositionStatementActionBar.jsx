@@ -55,7 +55,7 @@ export default class ItemPositionStatementActionBar extends Component {
         is_public_position: this.props.supportProps.is_public_position,
       });
     }
-    if (this.props.shouldFocus){
+    if (this.props.shouldFocus && this.textarea){
       this.textarea.focus();
     }
 
