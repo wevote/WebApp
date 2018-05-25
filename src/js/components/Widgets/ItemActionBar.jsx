@@ -13,12 +13,14 @@ import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
 import webAppConfig from "../../config";
+import { historyPush } from "../../utils/cordovaUtils";
 
 export default class ItemActionBar extends Component {
   static propTypes = {
     ballot_item_we_vote_id: PropTypes.string.isRequired,
     commentButtonHide: PropTypes.bool,
     commentButtonHideInMobile: PropTypes.bool,
+    currentBallotIdInUrl: PropTypes.string,
     opposeHideInMobile: PropTypes.bool,
     shareButtonHide: PropTypes.bool,
     supportProps: PropTypes.object,
@@ -26,6 +28,8 @@ export default class ItemActionBar extends Component {
     type: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string,
     supportOrOpposeHasBeenClicked: PropTypes.func.isRequired,
+    urlWithoutHash: PropTypes.string,
+    we_vote_id: PropTypes.string
   };
 
   constructor (props) {
@@ -78,6 +82,11 @@ export default class ItemActionBar extends Component {
   }
 
   supportItem (isSupport) {
+    let { currentBallotIdInUrl, urlWithoutHash, we_vote_id } = this.props;
+    if (currentBallotIdInUrl !== we_vote_id) {
+      historyPush(urlWithoutHash + "#" + this.props.we_vote_id);
+    }
+
     this.props.supportOrOpposeHasBeenClicked();
     if (isSupport) {
       this.stopSupportingItem();
@@ -122,6 +131,10 @@ export default class ItemActionBar extends Component {
   }
 
   opposeItem (isOppose) {
+    let { currentBallotIdInUrl, urlWithoutHash, we_vote_id } = this.props;
+    if (currentBallotIdInUrl !== we_vote_id) {
+      historyPush(urlWithoutHash + "#" + this.props.we_vote_id);
+    }
     this.props.supportOrOpposeHasBeenClicked();
     if (isOppose) {
       this.stopOpposingItem();

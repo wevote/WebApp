@@ -6,17 +6,20 @@ import IssueStore from "../../stores/IssueStore";
 import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 import { showToastError, showToastSuccess } from "../../utils/showToast";
-
+import { historyPush } from "../../utils/cordovaUtils";
 
 export default class IssueFollowToggleButton extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
+    currentBallotIdInUrl: PropTypes.string,
     issue_we_vote_id: PropTypes.string.isRequired,
     issue_name: PropTypes.string.isRequired,
     issue_description: PropTypes.string,
     issue_image_url: PropTypes.string,
     on_issue_follow: PropTypes.func,
     on_issue_stop_following: PropTypes.func,
+    urlWithoutHash: PropTypes.string,
+    we_vote_id: PropTypes.string
   };
 
   constructor (props) {
@@ -43,9 +46,14 @@ export default class IssueFollowToggleButton extends Component {
       }
       showToastSuccess(`Now following ${this.props.issue_name}!`);
     }
+    let { currentBallotIdInUrl, urlWithoutHash, we_vote_id } = this.props;
+    if (currentBallotIdInUrl !== we_vote_id) {
+      historyPush(urlWithoutHash + "#" + this.props.we_vote_id);
+    }
   }
 
   onIssueStopFollowing () {
+
     this.setState({ is_following: false });
     IssueActions.issueStopFollowing(this.props.issue_we_vote_id, VoterStore.election_id());
     // console.log("IssueFollowToggleButton, this.props.ballotItemWeVoteId:", this.props.ballotItemWeVoteId);
@@ -56,6 +64,10 @@ export default class IssueFollowToggleButton extends Component {
       this.props.on_issue_stop_following(this.props.issue_we_vote_id);
     }
     showToastError(`You've stopped following ${this.props.issue_name}.`);
+    let { currentBallotIdInUrl, urlWithoutHash, we_vote_id } = this.props;
+    if (currentBallotIdInUrl !== we_vote_id) {
+      historyPush(urlWithoutHash + "#" + this.props.we_vote_id);
+    }
   }
 
   render () {
