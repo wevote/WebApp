@@ -34,6 +34,15 @@ $space-search-right: 10%;
   &__backToButton {
     background-color: $page-header-color;
     color: $white;
+
+    &:focus {
+      background-color: $page-header-color !important;
+      color: $white;
+    }
+    &:hover {
+      background-color: $page-header-color !important;
+      color: $white;
+    }
   }
 
   &__cordova {

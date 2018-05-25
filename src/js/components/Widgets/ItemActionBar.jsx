@@ -27,7 +27,7 @@ export default class ItemActionBar extends Component {
     toggleFunction: PropTypes.func,
     type: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string,
-    supportOrOpposeHasBeenClicked: PropTypes.func.isRequired,
+    supportOrOpposeHasBeenClicked: PropTypes.func,
     urlWithoutHash: PropTypes.string,
     we_vote_id: PropTypes.string
   };
@@ -87,7 +87,9 @@ export default class ItemActionBar extends Component {
       historyPush(urlWithoutHash + "#" + this.props.we_vote_id);
     }
 
-    this.props.supportOrOpposeHasBeenClicked();
+    if (this.props.supportOrOpposeHasBeenClicked) {
+      this.props.supportOrOpposeHasBeenClicked();
+    }
     if (isSupport) {
       this.stopSupportingItem();
       return;
@@ -135,7 +137,10 @@ export default class ItemActionBar extends Component {
     if (currentBallotIdInUrl !== we_vote_id) {
       historyPush(urlWithoutHash + "#" + this.props.we_vote_id);
     }
-    this.props.supportOrOpposeHasBeenClicked();
+    if (this.props.supportOrOpposeHasBeenClicked) {
+      this.props.supportOrOpposeHasBeenClicked();
+    }
+
     if (isOppose) {
       this.stopOpposingItem();
       return;

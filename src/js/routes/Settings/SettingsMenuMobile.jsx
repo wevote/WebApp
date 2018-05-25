@@ -56,6 +56,7 @@ export default class SettingsMenuMobile extends Component {
       if (organization && organization.organization_we_vote_id) {
         this.setState({
           organization: organization,
+          organizationType: organization.organization_type,
         });
       } else {
         OrganizationActions.organizationRetrieve(linked_organization_we_vote_id);
@@ -148,7 +149,7 @@ export default class SettingsMenuMobile extends Component {
       <div className="container-fluid">
         <div className="row">
           <div className="col-12">
-            <SettingsPersonalSideBar onOwnPage isSignedIn={this.state.voter.is_signed_in} isIndividual={this.state.organizationType === "I"}/>
+            <SettingsPersonalSideBar onOwnPage isSignedIn={this.state.voter.is_signed_in} organizationType={this.state.organizationType}/>
             <h4 className="text-left" />
             <div className="terms-and-privacy u-padding-top--md">
               <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy Policy</Link>

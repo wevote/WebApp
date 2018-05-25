@@ -161,7 +161,7 @@ export default class VoterGuideSettingsPositions extends Component {
   }
 
   onOrganizationStoreChange (){
-    console.log("VoterGuideSettingsPositions onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
+    // console.log("VoterGuideSettingsPositions onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
     let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
     this.setState({
       organization: organization,
@@ -175,7 +175,7 @@ export default class VoterGuideSettingsPositions extends Component {
     let voter = VoterStore.getVoter();
     let update_voter = true;
     if (voter && voter.we_vote_id && this.state.voter && this.state.voter.we_vote_id && voter.we_vote_id === this.state.voter.we_vote_id) {
-      console.log("VoterGuideSettingsPositions, onVoterStoreChange, do NOT update_voter");
+      // console.log("VoterGuideSettingsPositions, onVoterStoreChange, do NOT update_voter");
       update_voter = false;
     }
     if (update_voter) {

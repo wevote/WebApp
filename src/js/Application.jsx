@@ -9,6 +9,8 @@ import ElectionActions from "./actions/ElectionActions";
 import FooterBarCordova from "./components/Navigation/FooterBarCordova";
 import FriendActions from "./actions/FriendActions";
 import HeaderBackToBar from "./components/Navigation/HeaderBackToBar";
+import HeaderBackToSettings from "./components/Navigation/HeaderBackToSettings";
+import HeaderBackToVoterGuides from "./components/Navigation/HeaderBackToVoterGuides";
 import HeaderBar from "./components/Navigation/HeaderBar";
 import HeaderSecondaryNavBar from "./components/Navigation/HeaderSecondaryNavBar";
 import Headroom from "headroom.js";
@@ -346,8 +348,8 @@ export default class Application extends Component {
 
     let showBackToHeader = false;
 
-    // let showBackToSettings = false;
-    // let showBackToVoterGuides = false;
+    let showBackToSettings = false;
+    let showBackToVoterGuides = false;
     if (stringContains("/btdb/", pathname) ||
         stringContains("/btdo/", pathname) ||
         stringContains("/bto/", pathname) ||
@@ -366,13 +368,9 @@ export default class Application extends Component {
         pathname === "/settings/profile" ||
         pathname === "/settings/voterguidesmenu" ||
         pathname === "/settings/voterguidelist") {
-      console.log("showBackToSettings = true");
-
-      // showBackToSettings = true;
+      showBackToSettings = true;
     } else if (stringContains("/vg/", pathname)) {
-      console.log("showBackToVoterGuides = true");
-
-      // showBackToVoterGuides = true;
+      showBackToVoterGuides = true;
     }
 
     if (pathname.startsWith("/measure") && isCordova()) {
@@ -416,14 +414,10 @@ export default class Application extends Component {
             { showBackToHeader ?
               <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
               <span>
+                {showBackToVoterGuides ?
+                  <HeaderBackToVoterGuides location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
                   <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
-                {/* FERNANDO - Remove HeaderBar immediately above when you uncomment this:
-                 showBackToVoterGuides ?
-                  <span>
-                    <HeaderBackToVoterGuides location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/>
-                  </span> :
-                  <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
-                */}
+                }
               </span>
              }
             { voterGuideShowGettingStartedNavigation || stringContains("/ballot", pathname) ?
@@ -446,18 +440,14 @@ export default class Application extends Component {
         }
       </div>;
     } else if (settingsMode) {
-      console.log("settingsMode", settingsMode);
+      // console.log("settingsMode", settingsMode);
+
       return <div className="app-base" id="app-base-id">
         <ToastContainer closeButton={false} />
         { isCordova() && isIOS() && <div className={"ios7plus-spacer"} /> }
         <div className={headRoomSize}>
           <div ref="pageHeader" className={pageHeaderStyle}>
-            { showBackToHeader ?
-              <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
-              <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
-            }
-            {/* FERNANDO remove showBackToHeader block immediately above when you uncomment this
-            showBackToSettings ?
+            { showBackToSettings ?
               <span>
                 <span className="visible-xs">
                   <HeaderBackToSettings location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/>
@@ -468,13 +458,11 @@ export default class Application extends Component {
               </span> :
               <span>
                 { showBackToVoterGuides ?
-                  <div>
-                    <HeaderBackToVoterGuides location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/>
-                  </div> :
+                  <HeaderBackToVoterGuides location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
                   <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
                 }
               </span>
-            */}
+            }
           </div>
         </div>
         <div className="page-content-container">

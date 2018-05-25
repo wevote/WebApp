@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
 import { Link } from "react-router";
-import { historyPush, isWebApp } from "../../utils/cordovaUtils";
+import { isWebApp } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -179,15 +178,6 @@ export default class SettingsDashboard extends Component {
         <SettingsBannerAndOrganizationCard organization={this.state.organization} />
       </div>
 
-      <div className={ isWebApp() ? "visible-xs u-padding-top--md" : "u-padding-top--md"}>
-        <span className={"btn u-padding-left--sm u-padding-bottom--sm"}>
-          <Button className={"btn btn-sm btn-default u-link-color"}
-                onClick={ () => historyPush(isWebApp() ? "/settings/menu" : "/more/hamburger") }>
-            <span className="fa fa-arrow-left"/> {"Settings"}
-          </Button>
-        </span>
-      </div>
-
       {/* Desktop left navigation + Settings content.
           WebApp only, since the dashboard doesn't go well with the HamburgerMenu on iPad */}
       { isWebApp() &&
@@ -196,7 +186,7 @@ export default class SettingsDashboard extends Component {
             <div className="row">
               {/* Desktop mode left navigation */}
               <div className="col-4 sidebar-menu">
-                <SettingsPersonalSideBar editMode={this.state.editMode} isSignedIn={this.state.voter.is_signed_in} isIndividual={this.state.organizationType === "I"}/>
+                <SettingsPersonalSideBar editMode={this.state.editMode} isSignedIn={this.state.voter.is_signed_in} organizationType={this.state.organizationType}/>
 
                 <SelectVoterGuidesSideBar/>
 

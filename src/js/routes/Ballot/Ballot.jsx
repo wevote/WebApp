@@ -624,7 +624,7 @@ export default class Ballot extends Component {
                   </div> :
                   null }
 
-                { text_for_map_search ?
+                { text_for_map_search || this.state.ballotWithAllItemsByFilterType.length > 0 ?
                   <div className="ballot__filter__container">
                     <div className="ballot__filter hidden-print">
                       <BallotTabsRaccoon pathname={this.state.pathname}
