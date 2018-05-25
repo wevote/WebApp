@@ -11,11 +11,14 @@ import ReadMore from "../../components/Widgets/ReadMore";
 export default class IssueCard extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
+    currentBallotIdInUrl: PropTypes.string,
     followToggleOn: PropTypes.bool,
     issue: PropTypes.object.isRequired,
     issueImageSize: PropTypes.string,
     turnOffDescription: PropTypes.bool,
     turnOffIssueImage: PropTypes.bool,
+    urlWithoutHash: PropTypes.string,
+    we_vote_id: PropTypes.string
   };
 
   constructor (props) {
@@ -134,9 +137,12 @@ export default class IssueCard extends Component {
         {this.props.followToggleOn && this.state.issue_we_vote_id ?
           <div className="">
             <IssueFollowToggleButton ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+                                     classNameOverride="pull-left"
+                                     currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                                      issue_name={this.state.issue.issue_name}
                                      issue_we_vote_id={this.state.issue_we_vote_id}
-                                     classNameOverride="pull-left"
+                                     urlWithoutHash={this.props.urlWithoutHash}
+                                     we_vote_id={this.props.we_vote_id}
                                      />
           </div> :
           null}

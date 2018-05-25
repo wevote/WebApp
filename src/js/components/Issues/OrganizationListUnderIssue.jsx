@@ -10,7 +10,10 @@ import { renderLog } from "../../utils/logging";
 
 export default class OrganizationListUnderIssue extends Component {
   static propTypes = {
+    currentBallotIdInUrl: PropTypes.string,
     issue_we_vote_id: PropTypes.string.isRequired,
+    urlWithoutHash: PropTypes.string,
+    we_vote_id: PropTypes.string
   };
 
   constructor (props) {
@@ -56,7 +59,6 @@ export default class OrganizationListUnderIssue extends Component {
 
   render () {
     renderLog(__filename);
-
     // console.log("OrganizationListUnderIssue render, issue_we_vote_id: ", this.state.issue_we_vote_id, ", this.state.voter_guides_for_this_issue: ", this.state.voter_guides_for_this_issue);
     if (!this.state.voter_guides_for_this_issue || !this.state.voter_guides_for_this_issue.length){
       return null;
@@ -89,7 +91,11 @@ export default class OrganizationListUnderIssue extends Component {
         </div>
         <div className="card-child__additional">
           <div className="card-child__follow-buttons">
-            <FollowToggle we_vote_id={organization_we_vote_id} />
+            <FollowToggle currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                          office_we_vote_id={this.props.we_vote_id}
+                          we_vote_id={organization_we_vote_id}
+                          urlWithoutHash={this.props.urlWithoutHash}
+             />
           </div>
         </div>
       </div>;

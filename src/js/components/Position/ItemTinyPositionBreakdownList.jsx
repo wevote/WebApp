@@ -15,12 +15,15 @@ export default class ItemTinyPositionBreakdownList extends Component {
   static propTypes = {
     // ballot_item_display_name: PropTypes.string.isRequired,  // We have removed this, so we can remove it from all places that call this component
     ballotItemWeVoteId: PropTypes.string.isRequired,
+    currentBallotIdInUrl: PropTypes.string,
     position_list: PropTypes.array,
     showInfoOnly: PropTypes.bool,
     showOppose: PropTypes.bool,
     showSupport: PropTypes.bool,
     supportProps: PropTypes.object,
     visibility: PropTypes.string,
+    urlWithoutHash: PropTypes.string,
+    we_vote_id: PropTypes.string
   };
 
   constructor (props) {
@@ -219,9 +222,12 @@ export default class ItemTinyPositionBreakdownList extends Component {
                                              title={<span onClick={() => this.onTriggerLeave(organization_we_vote_id)}>&nbsp;
                                                <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" /> </span>}
                                              >
-              <OrganizationCard organization={one_organization}
-                                ballotItemWeVoteId={this.props.ballotItemWeVoteId}
-                                followToggleOn />
+              <OrganizationCard ballotItemWeVoteId={this.props.ballotItemWeVoteId}
+                                currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                                followToggleOn
+                                organization={one_organization}
+                                urlWithoutHash={this.props.urlWithoutHash}
+                                we_vote_id={this.props.we_vote_id} />
             </Popover>;
 
           return <OverlayTrigger

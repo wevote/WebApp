@@ -85,8 +85,7 @@ export default class BallotSideBar extends Component {
     renderLog(__filename);
     let click = this.handleClick;
     let ballot = this.state.ballot;
-    let displaySubtitles = this.props.displaySubtitles;
-    let { ballotWithAllItemsByFilterType } = this.props;
+    let { ballotWithAllItemsByFilterType, displaySubtitles } = this.props;
     if (ballot && ballot.length) {
       let ballotWithAllItemIdsByFilterType = [];
       ballotWithAllItemsByFilterType.forEach((itemByFilterType)=>{
