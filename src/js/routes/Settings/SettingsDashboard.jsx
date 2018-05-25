@@ -186,7 +186,7 @@ export default class SettingsDashboard extends Component {
             <div className="row">
               {/* Desktop mode left navigation */}
               <div className="col-4 sidebar-menu">
-                <SettingsPersonalSideBar editMode={this.state.editMode} isSignedIn={this.state.voter.is_signed_in} isIndividual={this.state.organizationType === "I"}/>
+                <SettingsPersonalSideBar editMode={this.state.editMode} isSignedIn={this.state.voter.is_signed_in} organizationType={this.state.organizationType}/>
 
                 <SelectVoterGuidesSideBar/>
 
