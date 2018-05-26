@@ -268,7 +268,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
       </Popover>;
 
     return <div className="card-main office-item">
-      <a name={we_vote_id} />
+      <a className="anchor-under-header" name={we_vote_id} />
       <div className="card-main__content">
         {/* Desktop */}
         <span className="hidden-xs">
