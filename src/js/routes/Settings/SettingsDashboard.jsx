@@ -32,7 +32,7 @@ export default class SettingsDashboard extends Component {
       organization: {},
       sliderOpen: false,
       voter: {},
-      organizationType: ""
+      organizationType: "",
     };
   }
 

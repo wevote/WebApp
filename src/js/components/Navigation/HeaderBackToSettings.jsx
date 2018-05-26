@@ -203,9 +203,6 @@ export default class HeaderBackToSettings extends Component {
   }
 
   getVoterGuideLink () {
-    // Steve 2/16/18, the following messed up code -- replaced below
-    // let organization_twitter_handle;
-    // return organization_twitter_handle ? "/" + organization_twitter_handle : "/voterguide/" + this.state.organizationWeVoteId;
     return "/voterguide/" + this.state.organizationWeVoteId;
   }
 
@@ -235,8 +232,7 @@ export default class HeaderBackToSettings extends Component {
     let voterPhotoUrlMedium = this.state.voter.voter_photo_url_medium;
     let speakerType = "V";  // TODO DALE make this dynamic
 
-    let backToLink;
-    backToLink = "/settings/menu"; // Default to this
+    let backToLink = isWebApp() ? "/settings/menu" : "/more/hamburger";
 
     let backToOrganizationLinkText;
     if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
