@@ -130,7 +130,7 @@ export default class MeasureItemCompressed extends Component {
     let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(measure_we_vote_id);
 
     return <div className="card-main measure-card">
-      <a name={measure_we_vote_id} />
+      <a className="anchor-under-header" name={measure_we_vote_id} />
       <div className="card-main__content">
         <h2 className="card-main__display-name">
           { this.props.link_to_ballot_item_page ?
