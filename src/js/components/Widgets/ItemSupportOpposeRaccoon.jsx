@@ -280,10 +280,13 @@ export default class ItemSupportOpposeRaccoon extends Component {
             overlay={organizationPopover}>
           <span className="position-rating__source with-popover">
             <OrganizationTinyDisplay {...one_organization}
+                                     currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                                      showPlaceholderImage
-                                     toFollow
                                      showSupport={supports_this_ballot_item}
-                                     showOppose={opposes_this_ballot_item} />
+                                     showOppose={opposes_this_ballot_item}
+                                     toFollow
+                                     urlWithoutHash={this.props.urlWithoutHash}
+                                     we_vote_id={this.props.we_vote_id} />
           </span>
         </OverlayTrigger>;
       } else {
