@@ -58,7 +58,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
   }
 
   componentDidMount () {
-    // this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
@@ -106,6 +106,12 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     this.organizationStoreListener.remove();
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
+  }
+
+  onIssueStoreChange () {
+    this.setState({
+      transitioning: false,
+    });
   }
 
   onVoterGuideStoreChange () {

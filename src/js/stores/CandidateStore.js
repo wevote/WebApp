@@ -92,7 +92,7 @@ class CandidateStore extends ReduceStore {
         };
 
       case "positionListForBallotItem":
-        console.log("positionListForBallotItem action.res:", action.res);
+        // console.log("positionListForBallotItem action.res:", action.res);
         if (action.res.kind_of_ballot_item === "CANDIDATE") {
           candidate_we_vote_id = action.res.ballot_item_we_vote_id;
           new_position_list = action.res.position_list;
