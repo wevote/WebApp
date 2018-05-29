@@ -8,10 +8,32 @@ import IssueLinkToggle from "../Issues/IssueLinkToggle";
 import IssueStore from "../../stores/IssueStore";
 import { renderLog } from "../../utils/logging";
 
+const prochoice = "wv02issue63";
+const prolife = "wv02issue64";
+const democraticClubs = "wv02issue25";
+const republicClubs = "wv02issue68";
+const greenClubs = "wv02issue35";
+const libertarianClubs = "wv02issue53";
+const secondAmendment = "wv02issue36";
+const commonSenseGunReform = "wv02issue37";
+
+const incompatibleIssues = {
+  [prochoice]: [prolife],
+  [prolife]: [prochoice],
+  [democraticClubs]: [republicClubs, greenClubs, libertarianClubs],
+  [republicClubs]: [democraticClubs, greenClubs, libertarianClubs],
+  [greenClubs]: [democraticClubs, republicClubs, libertarianClubs],
+  [libertarianClubs]: [democraticClubs, republicClubs, greenClubs],
+  [secondAmendment]: [commonSenseGunReform],
+  [commonSenseGunReform]: [secondAmendment]
+};
+
+
 export default class SettingsIssueLinks extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired,
-    organization_we_vote_id: PropTypes.string
+    organization_we_vote_id: PropTypes.string,
+    organization_we_vote_id_support_list_for_each_ballot_item: PropTypes.object
   };
 
   constructor (props) {
@@ -71,6 +93,8 @@ export default class SettingsIssueLinks extends Component {
   }
 
   onIssueStoreChange () {
+
+
     // console.log("onIssueStoreChange, this.props.organization_we_vote_id: ", this.props.organization_we_vote_id);
     // console.log("getIssuesToLinkToByOrganization: ", IssueStore.getIssuesToLinkToByOrganization(this.props.organization_we_vote_id));
     // console.log("getIssuesLinkedToByOrganization: ", IssueStore.getIssuesLinkedToByOrganization(this.props.organization_we_vote_id));
@@ -110,18 +134,28 @@ export default class SettingsIssueLinks extends Component {
 
     const is_linked_false = false;
     const is_linked_true = true;
-
     // console.log('this.state.active_tab ', this.state.active_tab);
     // console.log('this.props.params.active_tab ', this.props.params.active_tab );
     // console.log('-----------------------------------------------------')
     switch (active_tab) {
       case "issues_to_link":
+        let currentIncompatibleIssues = {};
+        this.state.issues_linked_to.map(linkedIssue => {
+          if (incompatibleIssues[linkedIssue.issue_we_vote_id]){
+            incompatibleIssues[linkedIssue.issue_we_vote_id].map(incompatibleIssue => {
+              currentIncompatibleIssues[incompatibleIssue] = [linkedIssue];
+            });
+          }
+        });
+
         issues_to_display = this.state.issues_to_link_to.map((issue) => {
+
         return <IssueLinkToggle
             key={issue.issue_we_vote_id}
             issue={issue}
             organization_we_vote_id={this.props.organization_we_vote_id}
             is_linked={is_linked_false}
+            incompatibleIssues={currentIncompatibleIssues[issue.issue_we_vote_id]}
           />;
         });
         break;
