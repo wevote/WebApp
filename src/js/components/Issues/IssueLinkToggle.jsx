@@ -93,7 +93,7 @@ export default class IssueLinkToggle extends Component {
               <span>Link</span>
             </Button> :
             <OverlayTrigger
-                  key={this.props.issue.issue_we_vote_id}                
+                  key={this.props.issue.issue_we_vote_id}
                   trigger={["focus", "hover", "click"]}
                   placement="bottom"
                   overlay={supportButtonPopoverTooltip}>
