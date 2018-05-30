@@ -3,21 +3,54 @@ import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { renderLog } from "../../utils/logging";
 
+//https://stackoverflow.com/questions/32647215/declaring-static-constants-in-es6-classes
+const CORPORATION = "C";
+const GROUP = "G";
+const NONPROFIT = "NP";
+const NONPROFIT_501C3 = "C3";
+const NONPROFIT_501C4 = "C4";
+const NEWS_ORGANIZATION = "NW";
+const POLITICAL_ACTION_COMMITTEE = "P";
+const PUBLIC_FIGURE = "PF";
 export default class SettingsPersonalSideBar extends Component {
   static propTypes = {
     editMode: PropTypes.string,
     isSignedIn: PropTypes.bool,
     onOwnPage: PropTypes.bool,
-    isIndividual: PropTypes.bool.isRequired  // True if the user is an individual and not an org.
+    organizationType: PropTypes.string.isRequired
   };
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isOrganization: false
+    };
   }
 
+  componentDidMount () {
+    if (this.props.organizationType) {
+      let isOrganization = this.props.organizationType === NONPROFIT_501C3 || this.props.organizationType === NONPROFIT_501C4 ||
+                           this.props.organizationType === POLITICAL_ACTION_COMMITTEE || this.props.organizationType === NONPROFIT ||
+                           this.props.organizationType === GROUP || this.props.organizationType === PUBLIC_FIGURE ||
+                           this.props.organizationType === NEWS_ORGANIZATION || this.props.organizationType === CORPORATION;
+
+      this.setState({ isOrganization });
+    }
+  }
+
+  componentDidUpdate (prevProps) {
+    if (prevProps.organizationType !== this.props.organizationType) {
+      let isOrganization = this.props.organizationType === NONPROFIT_501C3 || this.props.organizationType === NONPROFIT_501C4 ||
+                           this.props.organizationType === POLITICAL_ACTION_COMMITTEE || this.props.organizationType === NONPROFIT ||
+                           this.props.organizationType === GROUP || this.props.organizationType === PUBLIC_FIGURE ||
+                           this.props.organizationType === NEWS_ORGANIZATION || this.props.organizationType === CORPORATION;
+
+      this.setState({ isOrganization });
+    }
+  }
   render () {
     renderLog(__filename);
+
     return <div className="card">
       <div className="card-main">
         <div className="SettingsItem__summary__title" >Your Settings</div>
@@ -76,7 +109,8 @@ export default class SettingsPersonalSideBar extends Component {
             </Link>
           </div>
         </div>
-        {!this.props.isIndividual &&
+
+        {this.state.isOrganization &&
           <div className={this.props.editMode === "issues" || this.props.editMode === "issues_to_link" || this.props.editMode === "issues_linked" ?
               "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
               "SettingsItem__summary__item-container "} >

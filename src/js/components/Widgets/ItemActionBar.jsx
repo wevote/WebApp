@@ -13,19 +13,23 @@ import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
 import webAppConfig from "../../config";
+import { historyPush } from "../../utils/cordovaUtils";
 
 export default class ItemActionBar extends Component {
   static propTypes = {
     ballot_item_we_vote_id: PropTypes.string.isRequired,
     commentButtonHide: PropTypes.bool,
     commentButtonHideInMobile: PropTypes.bool,
+    currentBallotIdInUrl: PropTypes.string,
     opposeHideInMobile: PropTypes.bool,
     shareButtonHide: PropTypes.bool,
     supportProps: PropTypes.object,
     toggleFunction: PropTypes.func,
     type: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string,
-    supportOrOpposeHasBeenClicked: PropTypes.func.isRequired,
+    supportOrOpposeHasBeenClicked: PropTypes.func,
+    urlWithoutHash: PropTypes.string,
+    we_vote_id: PropTypes.string
   };
 
   constructor (props) {
@@ -78,7 +82,14 @@ export default class ItemActionBar extends Component {
   }
 
   supportItem (isSupport) {
-    this.props.supportOrOpposeHasBeenClicked();
+    let { currentBallotIdInUrl, urlWithoutHash, we_vote_id } = this.props;
+    if (currentBallotIdInUrl !== we_vote_id) {
+      historyPush(urlWithoutHash + "#" + this.props.we_vote_id);
+    }
+
+    if (this.props.supportOrOpposeHasBeenClicked) {
+      this.props.supportOrOpposeHasBeenClicked();
+    }
     if (isSupport) {
       this.stopSupportingItem();
       return;
@@ -122,7 +133,14 @@ export default class ItemActionBar extends Component {
   }
 
   opposeItem (isOppose) {
-    this.props.supportOrOpposeHasBeenClicked();
+    let { currentBallotIdInUrl, urlWithoutHash, we_vote_id } = this.props;
+    if (currentBallotIdInUrl !== we_vote_id) {
+      historyPush(urlWithoutHash + "#" + this.props.we_vote_id);
+    }
+    if (this.props.supportOrOpposeHasBeenClicked) {
+      this.props.supportOrOpposeHasBeenClicked();
+    }
+
     if (isOppose) {
       this.stopOpposingItem();
       return;

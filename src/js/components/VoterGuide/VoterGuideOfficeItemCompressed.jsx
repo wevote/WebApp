@@ -8,6 +8,7 @@ import { toTitleCase } from "../../utils/textFormat";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import CandidateActions from "../../actions/CandidateActions";
 import ImageHandler from "../ImageHandler";
+import IssueStore from "../../stores/IssueStore";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
@@ -28,6 +29,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     candidate_list: PropTypes.array,
     kind_of_ballot_item: PropTypes.string.isRequired,
     link_to_ballot_item_page: PropTypes.bool,
+    location: PropTypes.object,
     organization: PropTypes.object.isRequired,
     organization_we_vote_id: PropTypes.string.isRequired,
     toggleCandidateModal: PropTypes.func,
@@ -56,6 +58,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
   }
 
   componentDidMount () {
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
@@ -99,9 +102,16 @@ export default class VoterGuideOfficeItemCompressed extends Component {
   }
 
   componentWillUnmount () {
+    this.issueStoreListener.remove();
     this.organizationStoreListener.remove();
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
+  }
+
+  onIssueStoreChange () {
+    this.setState({
+      transitioning: false,
+    });
   }
 
   onVoterGuideStoreChange () {
@@ -129,6 +139,12 @@ export default class VoterGuideOfficeItemCompressed extends Component {
   }
 
   toggleExpandDetails () {
+    let { location: { pathname, search, hash }, we_vote_id } = this.props;
+    let currentUrlWithoutHash = pathname + search;
+    let currentBallotIdInUrl = hash.slice(1);
+    if (currentBallotIdInUrl !== we_vote_id) {
+      historyPush(currentUrlWithoutHash + "#" + we_vote_id);
+    }
     this.setState({ display_office_unfurled: !this.state.display_office_unfurled });
   }
 
@@ -185,18 +201,10 @@ export default class VoterGuideOfficeItemCompressed extends Component {
   render () {
     renderLog(__filename);
     let { ballot_item_display_name, we_vote_id } = this.props;
-
     ballot_item_display_name = toTitleCase(ballot_item_display_name);
-
-    let filteredCandidateList = this.state.candidateList;
+    let unsortedCandidateList = this.state.candidateList.slice(0);
     let total_number_of_candidates_to_display = this.state.candidateList.length;
     let remaining_candidates_to_display_count = 0;
-
-    if (!this.state.display_all_candidates_flag && this.state.candidateList.length > NUMBER_OF_CANDIDATES_TO_DISPLAY) {
-      filteredCandidateList = this.state.candidateList.slice(0, NUMBER_OF_CANDIDATES_TO_DISPLAY);
-      remaining_candidates_to_display_count = this.state.candidateList.length - NUMBER_OF_CANDIDATES_TO_DISPLAY;
-    }
-
     // let advisorsThatMakeVoterIssuesScoreDisplay;
     // let advisorsThatMakeVoterIssuesScoreCount = 0;
     // let advisorsThatMakeVoterNetworkScoreCount = 0;
@@ -211,13 +219,19 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     let voterSupportsAtLeastOneCandidate = false;
     let supportProps;
     let candidate_has_voter_support;
+    let voterIssuesScoreForCandidate;
+    let sortedCandidateList;
+    let limitedCandidateList;
 
     // Prepare an array of candidate names that are supported by voter
-    this.state.candidateList.forEach((candidate) => {
+    unsortedCandidateList.forEach((candidate) => {
       supportProps = SupportStore.get(candidate.we_vote_id);
       if (supportProps) {
         candidate_has_voter_support = supportProps.is_support;
-
+        voterIssuesScoreForCandidate = IssueStore.getIssuesScoreByBallotItemWeVoteId(candidate.we_vote_id);
+        candidate.voterNetworkScoreForCandidate = Math.abs(supportProps.support_count - supportProps.oppose_count);
+        candidate.voterIssuesScoreForCandidate = Math.abs(voterIssuesScoreForCandidate);
+        candidate.is_support = supportProps.is_support;
         if (candidate_has_voter_support) {
           arrayOfCandidatesVoterSupports.push(candidate.ballot_item_display_name);
           voterSupportsAtLeastOneCandidate = true;
@@ -225,6 +239,15 @@ export default class VoterGuideOfficeItemCompressed extends Component {
       }
     });
 
+    unsortedCandidateList.sort((optionA, optionB)=>optionB.voterNetworkScoreForCandidate - optionA.voterNetworkScoreForCandidate ||
+                                                   (optionA.is_support === optionB.is_support ? 0 : optionA.is_support ? -1 : 1) ||
+                                                   optionB.voterIssuesScoreForCandidate - optionA.voterIssuesScoreForCandidate);
+    limitedCandidateList = unsortedCandidateList;
+    sortedCandidateList = unsortedCandidateList;
+    if (!this.state.display_all_candidates_flag && this.state.candidateList.length > NUMBER_OF_CANDIDATES_TO_DISPLAY) {
+      limitedCandidateList = sortedCandidateList.slice(0, NUMBER_OF_CANDIDATES_TO_DISPLAY);
+      remaining_candidates_to_display_count = this.state.candidateList.length - NUMBER_OF_CANDIDATES_TO_DISPLAY;
+    }
     // If the voter isn't supporting any candidates, then figure out which candidate the voter's network likes the best
     if (arrayOfCandidatesVoterSupports.length === 0){
       // This function finds the highest support count for each office but does not handle ties. If two candidates have
@@ -233,7 +256,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
       let network_support_count;
       let network_oppose_count;
 
-      this.state.candidateList.forEach((candidate) => {
+      sortedCandidateList.forEach((candidate) => {
         // Support in voter's network
         supportProps = SupportStore.get(candidate.we_vote_id);
         if (supportProps) {
@@ -268,7 +291,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
       </Popover>;
 
     return <div className="card-main office-item">
-      <a name={we_vote_id} />
+      <a className="anchor-under-header" name={we_vote_id} />
       <div className="card-main__content">
         {/* Desktop */}
         <span className="hidden-xs">
@@ -296,7 +319,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
         Only show the candidates if the Office is "unfurled"
         ************************* */}
         { this.state.display_office_unfurled ?
-          <span>{filteredCandidateList.map((one_candidate) => {
+          <span>{limitedCandidateList.map((one_candidate) => {
             candidate_we_vote_id = one_candidate.we_vote_id;
             candidateSupportStore = SupportStore.get(candidate_we_vote_id);
             let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidate_we_vote_id);
@@ -353,13 +376,16 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                         {/* Positions in Your Network and Possible Voter Guides to Follow */}
                         <ItemSupportOpposeRaccoon ballotItemWeVoteId={candidate_we_vote_id}
                                                   ballot_item_display_name={one_candidate.ballot_item_display_name}
+                                                  currentBallotIdInUrl={this.props.location.hash.slice(1)}
                                                   display_raccoon_details_flag={this.state.display_office_unfurled}
                                                   goToCandidate={() => this.goToCandidateLink(one_candidate.we_vote_id)}
                                                   maximumOrganizationDisplay={this.state.maximum_organization_display}
                                                   organizationsToFollowSupport={organizationsToFollowSupport}
                                                   organizationsToFollowOppose={organizationsToFollowOppose}
                                                   supportProps={candidateSupportStore}
-                                                  type="CANDIDATE"/>
+                                                  type="CANDIDATE"
+                                                  urlWithoutHash={this.props.location.pathname + this.props.location.search}
+                                                  we_vote_id={this.props.we_vote_id} />
                       </div>
                     </div> :
                     null}
@@ -404,10 +430,14 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                           <ItemActionBar ballot_item_display_name={one_candidate.ballot_item_display_name}
                                          ballot_item_we_vote_id={candidate_we_vote_id}
                                          commentButtonHide
+                                         currentBallotIdInUrl={this.props.location.hash.slice(1)}
                                          shareButtonHide
                                          supportProps={candidateSupportStore}
                                          transitioning={this.state.transitioning}
-                                         type="CANDIDATE"/>
+                                         type="CANDIDATE"
+                                         urlWithoutHash={this.props.location.pathname + this.props.location.search}
+                                         we_vote_id={this.props.we_vote_id}
+                                         />
                       </div>
                       {/* DESKTOP: If voter has taken position, offer the comment bar */}
                       {is_support || is_oppose || voter_statement_text ?

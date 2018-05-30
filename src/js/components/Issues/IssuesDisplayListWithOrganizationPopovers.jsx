@@ -14,12 +14,15 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
 
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
+    currentBallotIdInUrl: PropTypes.string,
     issueImageSize: PropTypes.string,
     issueListToDisplay: PropTypes.array,
     instantRefreshOn: PropTypes.bool,
     maximumIssuesToDisplay: PropTypes.number,
     toFollow: PropTypes.bool,
     overlayTriggerOnClickOnly: PropTypes.bool,
+    urlWithoutHash: PropTypes.string,
+    we_vote_id: PropTypes.string
   };
 
   constructor (props) {
@@ -147,11 +150,17 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
                                       <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" /> </span>}
                                     >
             <IssueCard ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+                       currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                        followToggleOn={this.props.toFollow}
                        issue={oneIssue}
                        issueImageSize={"MEDIUM"}
+                       urlWithoutHash={this.props.urlWithoutHash}
+                       we_vote_id={this.props.we_vote_id}
             />
-            <OrganizationListUnderIssue issue_we_vote_id={issueWeVoteId} />
+            <OrganizationListUnderIssue currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                                        issue_we_vote_id={issueWeVoteId}
+                                        urlWithoutHash={this.props.urlWithoutHash}
+                                        we_vote_id={this.props.we_vote_id} />
           </Popover>;
 
         // onClick={(e) => this.onTriggerToggle(e, issueWeVoteId)}

@@ -15,8 +15,11 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string,
     ballotItemWeVoteId: PropTypes.string.isRequired,
+    currentBallotIdInUrl: PropTypes.string,
     overlayTriggerOnClickOnly: PropTypes.bool,
     popoverBottom: PropTypes.bool,
+    urlWithoutHash: PropTypes.string,
+    we_vote_id: PropTypes.string
   };
 
   constructor (props) {
@@ -203,16 +206,22 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
 
                 {/* Issues the voter is already following */}
                 <IssuesDisplayListWithOrganizationPopovers ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+                                                           currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                                                            issueImageSize={"MEDIUM"}
                                                            issueListToDisplay={this.state.issues_under_this_ballot_item_voter_is_following}
                                                            overlayTriggerOnClickOnly={this.props.overlayTriggerOnClickOnly}
-                                                           toFollow />
+                                                           toFollow
+                                                           urlWithoutHash={this.props.urlWithoutHash}
+                                                           we_vote_id={this.props.we_vote_id} />
                 {/* Issues the voter is not following yet */}
                 <IssuesDisplayListWithOrganizationPopovers ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+                                                           currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                                                            issueImageSize={"MEDIUM"}
                                                            issueListToDisplay={this.state.issues_under_this_ballot_item_voter_not_following}
                                                            overlayTriggerOnClickOnly={this.props.overlayTriggerOnClickOnly}
-                                                           toFollow />
+                                                           toFollow
+                                                           urlWithoutHash={this.props.urlWithoutHash}
+                                                           we_vote_id={this.props.we_vote_id} />
               </li>
             </ul>
           </span>
@@ -223,16 +232,22 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
 
                 {/* Issues the voter is already following */}
                 <IssuesDisplayListWithOrganizationPopovers ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+                                                           currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                                                            issueImageSize={"MEDIUM"}
                                                            issueListToDisplay={this.state.issues_under_this_ballot_item_voter_is_following}
                                                            overlayTriggerOnClickOnly
-                                                           toFollow />
+                                                           toFollow
+                                                           urlWithoutHash={this.props.urlWithoutHash}
+                                                           we_vote_id={this.props.we_vote_id} />
                 {/* Issues the voter is not following yet */}
                 <IssuesDisplayListWithOrganizationPopovers ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+                                                           currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                                                            issueImageSize={"MEDIUM"}
                                                            issueListToDisplay={this.state.issues_under_this_ballot_item_voter_not_following}
                                                            overlayTriggerOnClickOnly
-                                                           toFollow />
+                                                           toFollow
+                                                           urlWithoutHash={this.props.urlWithoutHash}
+                                                           we_vote_id={this.props.we_vote_id} />
               </li>
             </ul>
           </span>

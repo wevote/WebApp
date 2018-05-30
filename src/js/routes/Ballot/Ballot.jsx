@@ -624,7 +624,7 @@ export default class Ballot extends Component {
                   </div> :
                   null }
 
-                { text_for_map_search ?
+                { text_for_map_search || this.state.ballotWithAllItemsByFilterType.length > 0 ?
                   <div className="ballot__filter__container">
                     <div className="ballot__filter hidden-print">
                       <BallotTabsRaccoon pathname={this.state.pathname}
@@ -664,12 +664,14 @@ export default class Ballot extends Component {
                 <div>
                   <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
                     {this.state.ballotWithAllItemsByFilterType.map( (item) => <BallotItemCompressed toggleCandidateModal={this.toggleCandidateModal}
-                                                                 toggleMeasureModal={this.toggleMeasureModal}
-                                                                 key={item.we_vote_id}
-                                                                 updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
-                                                                 allBallotItemsCount={this.state.ballotWithAllItemsByFilterType.length}
-                                                                 urlWithoutHash={this.props.location.pathname + this.props.location.search}
-                                                                 {...item} />)}
+                                                                                                    toggleMeasureModal={this.toggleMeasureModal}
+                                                                                                    key={item.we_vote_id}
+                                                                                                    updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
+                                                                                                    allBallotItemsCount={this.state.ballotWithAllItemsByFilterType.length}
+                                                                                                    urlWithoutHash={this.props.location.pathname + this.props.location.search}
+                                                                                                    currentBallotIdInUrl={this.props.location.hash.slice(1)}
+                                                                                                    {...item} />)
+                    }
                   </div>
                 </div>
               }

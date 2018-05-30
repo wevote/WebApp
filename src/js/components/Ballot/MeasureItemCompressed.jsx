@@ -13,6 +13,7 @@ import VoterGuideStore from "../../stores/VoterGuideStore";
 export default class MeasureItemCompressed extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string.isRequired,
+    currentBallotIdInUrl: PropTypes.string,
     kind_of_ballot_item: PropTypes.string.isRequired,
     link_to_ballot_item_page: PropTypes.bool,
     measure_subtitle: PropTypes.string,
@@ -23,6 +24,7 @@ export default class MeasureItemCompressed extends Component {
     showPositionStatementActionBar: PropTypes.bool,
     toggleMeasureModal: PropTypes.func,
     we_vote_id: PropTypes.string.isRequired,
+    urlWithoutHash: PropTypes.string
   };
 
   constructor (props) {
@@ -128,7 +130,7 @@ export default class MeasureItemCompressed extends Component {
     let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(measure_we_vote_id);
 
     return <div className="card-main measure-card">
-      <a name={measure_we_vote_id} />
+      <a className="anchor-under-header" name={measure_we_vote_id} />
       <div className="card-main__content">
         <h2 className="card-main__display-name">
           { this.props.link_to_ballot_item_page ?
@@ -159,12 +161,14 @@ export default class MeasureItemCompressed extends Component {
         <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
           <ItemSupportOpposeRaccoon ballotItemWeVoteId={measure_we_vote_id}
                                     ballot_item_display_name={ballot_item_display_name}
+                                    currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                                     maximumOrganizationDisplay={this.state.maximum_organization_display}
                                     organizationsToFollowSupport={organizationsToFollowSupport}
                                     organizationsToFollowOppose={organizationsToFollowOppose}
                                     showPositionStatementActionBar={this.props.showPositionStatementActionBar}
                                     supportProps={measureSupportStore}
-                                    type="MEASURE" />
+                                    urlWithoutHash={this.props.urlWithoutHash}
+                                    we_vote_id={this.props.we_vote_id}/>
         </div>
       </div> {/* END .card-main__content */}
     </div>;

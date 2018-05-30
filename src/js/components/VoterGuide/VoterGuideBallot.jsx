@@ -691,11 +691,12 @@ export default class VoterGuideBallot extends Component {
                 {ballot_with_organization_items.length > 0 &&
                   <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
                     {ballot_with_organization_items.map( (item) => <VoterGuideBallotItemCompressed toggleCandidateModal={this.toggleCandidateModal}
-                                                                toggleMeasureModal={this.toggleMeasureModal}
-                                                                key={item.we_vote_id}
-                                                                organization={this.props.organization}
-                                                                organization_we_vote_id={this.props.organization.organization_we_vote_id}
-                                                                {...item} />)}
+                                                                                                   toggleMeasureModal={this.toggleMeasureModal}
+                                                                                                   key={item.we_vote_id}
+                                                                                                   organization={this.props.organization}
+                                                                                                   organization_we_vote_id={this.props.organization.organization_we_vote_id}
+                                                                                                   location={this.props.location}
+                                                                                                   {...item} />)}
                   </div>
                 }
               </div>
@@ -707,13 +708,15 @@ export default class VoterGuideBallot extends Component {
               <div>
               {ballot_with_remaining_items.length > 0 &&
                 <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
-                  {ballot_with_remaining_items.map( (item) => <BallotItemCompressed toggleCandidateModal={this.toggleCandidateModal}
-                                                               toggleMeasureModal={this.toggleMeasureModal}
-                                                               key={item.we_vote_id}
-                                                               updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
-                                                               organization={this.props.organization}
-                                                               organization_we_vote_id={this.props.organization.organization_we_vote_id}
-                                                               {...item} />)}
+                  {ballot_with_remaining_items.map( (item) => <BallotItemCompressed currentBallotIdInUrl={this.props.location.hash.slice(1)}
+                                                                                    key={item.we_vote_id}
+                                                                                    organization={this.props.organization}
+                                                                                    organization_we_vote_id={this.props.organization.organization_we_vote_id}
+                                                                                    toggleCandidateModal={this.toggleCandidateModal}
+                                                                                    toggleMeasureModal={this.toggleMeasureModal}
+                                                                                    updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
+                                                                                    urlWithoutHash={this.props.location.pathname + this.props.location.search}
+                                                                                    {...item} />)}
                 </div>
               }
               </div>

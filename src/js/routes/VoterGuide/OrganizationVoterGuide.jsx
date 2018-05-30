@@ -220,7 +220,8 @@ export default class OrganizationVoterGuide extends Component {
               <OrganizationVoterGuideTabs organization={this.state.organization}
                                           location={this.props.location}
                                           params={this.props.params}
-                                          active_route={this.state.active_route} />
+                                          active_route={this.state.active_route}
+                                           />
             </div>
           </div>
         </div>

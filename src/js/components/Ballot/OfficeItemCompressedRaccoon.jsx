@@ -27,6 +27,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
     we_vote_id: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string.isRequired,
     candidate_list: PropTypes.array,
+    currentBallotIdInUrl: PropTypes.string,
     kind_of_ballot_item: PropTypes.string.isRequired,
     link_to_ballot_item_page: PropTypes.bool,
     organization: PropTypes.object,
@@ -67,10 +68,8 @@ export default class OfficeItemCompressedRaccoon extends Component {
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
-
     if (this.props.candidate_list && this.props.candidate_list.length) {
       CandidateActions.candidatesRetrieve(this.props.we_vote_id);
-
       // this.props.candidate_list.forEach( function (candidate) {
       //   if (candidate && candidate.hasOwnProperty("we_vote_id") && !CandidateStore.isCandidateInStore(candidate.we_vote_id)) {
       //     // Slows down the browser too much when run for all candidates
@@ -158,8 +157,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
   }
 
   toggleExpandDetails () {
-    const { we_vote_id, updateOfficeDisplayUnfurledTracker, urlWithoutHash } = this.props;
-    historyPush(urlWithoutHash + "#" + we_vote_id);
+    const { we_vote_id, updateOfficeDisplayUnfurledTracker, urlWithoutHash, currentBallotIdInUrl } = this.props;
+    // historyPush should be called only when current office Id (we_vote_id) is not currentBallotIdBeingShown in url.
+    if (currentBallotIdInUrl !== we_vote_id) {
+      historyPush(urlWithoutHash + "#" + we_vote_id);
+    }
     this.setState({ display_office_unfurled: !this.state.display_office_unfurled });
     if (this.props.allBallotItemsCount && this.props.allBallotItemsCount <= 3) {
       //only update tracker if there are more than 3 offices
@@ -223,16 +225,9 @@ export default class OfficeItemCompressedRaccoon extends Component {
     let { ballot_item_display_name, we_vote_id } = this.props;
 
     ballot_item_display_name = toTitleCase(ballot_item_display_name);
-
-    let filteredCandidateList = this.state.candidateList;
+    let unsortedCandidateList = this.state.candidateList.slice(0);
     let total_number_of_candidates_to_display = this.state.candidateList.length;
     let remaining_candidates_to_display_count = 0;
-
-    if (!this.state.display_all_candidates_flag && this.state.candidateList.length > NUMBER_OF_CANDIDATES_TO_DISPLAY) {
-      filteredCandidateList = this.state.candidateList.slice(0, NUMBER_OF_CANDIDATES_TO_DISPLAY);
-      remaining_candidates_to_display_count = this.state.candidateList.length - NUMBER_OF_CANDIDATES_TO_DISPLAY;
-    }
-
     let advisorsThatMakeVoterIssuesScoreDisplay;
     // let advisorsThatMakeVoterIssuesScoreCount = 0;
     let advisorsThatMakeVoterNetworkScoreCount = 0;
@@ -247,19 +242,35 @@ export default class OfficeItemCompressedRaccoon extends Component {
     let voterSupportsAtLeastOneCandidate = false;
     let supportProps;
     let candidate_has_voter_support;
+    let voterIssuesScoreForCandidate;
+    let sortedCandidateList;
+    let limitedCandidateList;
 
     // Prepare an array of candidate names that are supported by voter
-    this.state.candidateList.forEach((candidate) => {
+    unsortedCandidateList.forEach((candidate) => {
       supportProps = SupportStore.get(candidate.we_vote_id);
       if (supportProps) {
         candidate_has_voter_support = supportProps.is_support;
-
+        voterIssuesScoreForCandidate = IssueStore.getIssuesScoreByBallotItemWeVoteId(candidate.we_vote_id);
+        candidate.voterNetworkScoreForCandidate = Math.abs(supportProps.support_count - supportProps.oppose_count);
+        candidate.voterIssuesScoreForCandidate = Math.abs(voterIssuesScoreForCandidate);
+        candidate.is_support = supportProps.is_support;
         if (candidate_has_voter_support) {
           arrayOfCandidatesVoterSupports.push(candidate.ballot_item_display_name);
           voterSupportsAtLeastOneCandidate = true;
         }
       }
     });
+
+    unsortedCandidateList.sort((optionA, optionB)=>optionB.voterNetworkScoreForCandidate - optionA.voterNetworkScoreForCandidate ||
+                                                   (optionA.is_support === optionB.is_support ? 0 : optionA.is_support ? -1 : 1) ||
+                                                   optionB.voterIssuesScoreForCandidate - optionA.voterIssuesScoreForCandidate);
+    limitedCandidateList = unsortedCandidateList;
+    sortedCandidateList = unsortedCandidateList;
+    if (!this.state.display_all_candidates_flag && this.state.candidateList.length > NUMBER_OF_CANDIDATES_TO_DISPLAY) {
+      limitedCandidateList = sortedCandidateList.slice(0, NUMBER_OF_CANDIDATES_TO_DISPLAY);
+      remaining_candidates_to_display_count = this.state.candidateList.length - NUMBER_OF_CANDIDATES_TO_DISPLAY;
+    }
 
     // If the voter isn't supporting any candidates, then figure out which candidate the voter's network likes the best
     if (arrayOfCandidatesVoterSupports.length === 0){
@@ -269,9 +280,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
       let network_support_count;
       let network_oppose_count;
       let largestIssueScore = 0;
-      let voterIssuesScoreForCandidate;
-
-      this.state.candidateList.forEach((candidate) => {
+      sortedCandidateList.forEach((candidate) => {
         // Support in voter's network
         supportProps = SupportStore.get(candidate.we_vote_id);
         if (supportProps) {
@@ -288,7 +297,6 @@ export default class OfficeItemCompressedRaccoon extends Component {
           }
         }
         // Support based on Issue score
-        voterIssuesScoreForCandidate = IssueStore.getIssuesScoreByBallotItemWeVoteId(candidate.we_vote_id);
         if (voterIssuesScoreForCandidate > largestIssueScore) {
           largestIssueScore = voterIssuesScoreForCandidate;
           candidateWithHighestIssueScore = candidate.ballot_item_display_name;
@@ -343,7 +351,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
       </Popover>;
 
     return <div className="card-main office-item">
-      <a name={we_vote_id} />
+      <a className="anchor-under-header" name={we_vote_id} />
       <div className="card-main__content">
         {/* Desktop */}
         <span className="hidden-xs">
@@ -383,7 +391,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
         Only show the candidates if the Office is "unfurled"
         ************************* */}
         { this.state.display_office_unfurled ?
-          <span>{filteredCandidateList.map((one_candidate) => {
+          <span>{limitedCandidateList.map((one_candidate) => {
             let candidate_we_vote_id = one_candidate.we_vote_id;
             let candidateSupportStore = SupportStore.get(candidate_we_vote_id);
             let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidate_we_vote_id);
@@ -397,13 +405,17 @@ export default class OfficeItemCompressedRaccoon extends Component {
                 {/* Positions in Your Network and Possible Voter Guides to Follow */}
                 <ItemSupportOpposeRaccoon ballotItemWeVoteId={candidate_we_vote_id}
                                           ballot_item_display_name={one_candidate.ballot_item_display_name}
+                                          currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                                           display_raccoon_details_flag={this.state.display_office_unfurled}
                                           goToCandidate={() => this.goToCandidateLink(one_candidate.we_vote_id)}
                                           maximumOrganizationDisplay={this.state.maximum_organization_display}
                                           organizationsToFollowSupport={organizationsToFollowSupport}
                                           organizationsToFollowOppose={organizationsToFollowOppose}
                                           supportProps={candidateSupportStore}
-                                          type="CANDIDATE"/>
+                                          type="CANDIDATE"
+                                          urlWithoutHash={this.props.urlWithoutHash}
+                                          we_vote_id={this.props.we_vote_id}
+                                          />
               </div>
             </div>;
 
@@ -458,7 +470,9 @@ export default class OfficeItemCompressedRaccoon extends Component {
                                                      ballotItemWeVoteId={this.props.we_vote_id}
                                                      overlayTriggerOnClickOnly
                                                      placement={"bottom"}
-                                                     />
+                                                     urlWithoutHash={this.props.urlWithoutHash}
+                                                     currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                                                     we_vote_id={this.props.we_vote_id} />
             </span>
             { this.state.candidateList.map( (one_candidate) => {
               const voter_supports_this_candidate = SupportStore.get(one_candidate.we_vote_id) && SupportStore.get(one_candidate.we_vote_id).is_support;

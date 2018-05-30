@@ -20,11 +20,14 @@ import { removeTwitterNameFromDescription } from "../../utils/textFormat";
 export default class OrganizationCard extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
+    currentBallotIdInUrl: PropTypes.string,
     followToggleOn: PropTypes.bool,
     organization: PropTypes.object.isRequired,
     turnOffDescription: PropTypes.bool,
     turnOffLogo: PropTypes.bool,
     turnOffTwitterHandle: PropTypes.bool,
+    urlWithoutHash: PropTypes.string,
+    we_vote_id: PropTypes.string
   };
 
   constructor (props) {
@@ -155,8 +158,12 @@ export default class OrganizationCard extends Component {
           </Link> }
         {this.props.followToggleOn ?
           <div className="u-margin-top--md">
-            <FollowToggle we_vote_id={this.state.organization_we_vote_id}
-                          classNameOverride="pull-left" />
+            <FollowToggle classNameOverride="pull-left"
+                          currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                          office_we_vote_id={this.props.we_vote_id}
+                          urlWithoutHash={this.props.urlWithoutHash}
+                          we_vote_id={this.state.organization_we_vote_id}
+            />
           </div> :
           null }
       </div>

@@ -23,6 +23,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string,
     ballotItemWeVoteId: PropTypes.string,
+    currentBallotIdInUrl: PropTypes.string,
     goToCandidate: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
     maximumOrganizationDisplay: PropTypes.number,
     organizationsToFollowSupport: PropTypes.array,
@@ -31,6 +32,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
     positionBarIsClickable: PropTypes.bool,
     showPositionStatementActionBar: PropTypes.bool,
     supportProps: PropTypes.object,
+    urlWithoutHash: PropTypes.string,
+    we_vote_id: PropTypes.string
   };
 
   constructor (props) {
@@ -257,9 +260,12 @@ export default class ItemSupportOpposeRaccoon extends Component {
                                            title={<span onClick={() => this.onTriggerLeave(org_id, visible_tag)}>&nbsp;
                                              <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" /> </span>}
                                            >
-            <OrganizationCard organization={one_organization_for_organization_card}
-                              ballotItemWeVoteId={ballot_item_we_vote_id}
-                              followToggleOn />
+            <OrganizationCard ballotItemWeVoteId={ballot_item_we_vote_id}
+                              currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                              followToggleOn
+                              organization={one_organization_for_organization_card}
+                              urlWithoutHash={this.props.urlWithoutHash}
+                              we_vote_id={this.props.we_vote_id} />
           </Popover>;
 
         return <OverlayTrigger
@@ -274,10 +280,13 @@ export default class ItemSupportOpposeRaccoon extends Component {
             overlay={organizationPopover}>
           <span className="position-rating__source with-popover">
             <OrganizationTinyDisplay {...one_organization}
+                                     currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                                      showPlaceholderImage
-                                     toFollow
                                      showSupport={supports_this_ballot_item}
-                                     showOppose={opposes_this_ballot_item} />
+                                     showOppose={opposes_this_ballot_item}
+                                     toFollow
+                                     urlWithoutHash={this.props.urlWithoutHash}
+                                     we_vote_id={this.props.we_vote_id} />
           </span>
         </OverlayTrigger>;
       } else {
@@ -365,7 +374,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
   render () {
     renderLog(__filename);
     let ballotItemSupportStore = SupportStore.get(this.state.ballot_item_we_vote_id);
-
     // Issue Score
     let voterIssuesScore = IssueStore.getIssuesScoreByBallotItemWeVoteId(this.state.ballot_item_we_vote_id);
     let voterIssuesScoreWithSign;
@@ -440,12 +448,15 @@ export default class ItemSupportOpposeRaccoon extends Component {
                        ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
                        commentButtonHide={commentBoxIsVisible}
                        commentButtonHideInMobile
+                       currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                        shareButtonHide
                        supportProps={ballotItemSupportStore}
                        supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
                        toggleFunction={this.togglePositionStatement.bind(this)}
                        transitioning={this.state.transitioning}
-                       type="CANDIDATE"/>
+                       type="CANDIDATE"
+                       urlWithoutHash={this.props.urlWithoutHash}
+                       we_vote_id={this.props.we_vote_id} />
       </span>;
     } else if (this.state.is_measure) {
       item_action_bar = <span>
@@ -453,12 +464,15 @@ export default class ItemSupportOpposeRaccoon extends Component {
                        ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
                        commentButtonHide={commentBoxIsVisible}
                        commentButtonHideInMobile
+                       currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                        shareButtonHide
                        supportProps={ballotItemSupportStore}
                        supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
                        toggleFunction={this.togglePositionStatement.bind(this)}
                        transitioning={this.state.transitioning}
-                       type="MEASURE"/>
+                       type="MEASURE"
+                       urlWithoutHash={this.props.urlWithoutHash}
+                       we_vote_id={this.props.we_vote_id}/>
       </span>;
     }
 
@@ -740,8 +754,11 @@ export default class ItemSupportOpposeRaccoon extends Component {
       {/* Issues that have a score related to this ballot item */}
       <IssuesFollowedByBallotItemDisplayList ballot_item_display_name={this.state.ballot_item_display_name}
                                              ballotItemWeVoteId={this.props.ballotItemWeVoteId}
+                                             currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                                              overlayTriggerOnClickOnly
                                              placement={this.props.popoverBottom ? "bottom" : "top"}
+                                             urlWithoutHash={this.props.urlWithoutHash}
+                                             we_vote_id={this.props.we_vote_id}
       />
 
       { positions_count ?
@@ -764,16 +781,24 @@ export default class ItemSupportOpposeRaccoon extends Component {
                   { positionsLabel }
                   <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
                                                  ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
+                                                 currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                                                  position_list={this.state.position_list_from_advisers_followed_by_voter}
                                                  showSupport
                                                  supportProps={this.state.supportProps}
-                                                 visibility="desktop" />
+                                                 visibility="desktop"
+                                                 urlWithoutHash={this.props.urlWithoutHash}
+                                                 we_vote_id={this.props.we_vote_id}
+                                                  />
                   <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
                                                  ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
+                                                 currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                                                  position_list={this.state.position_list_from_advisers_followed_by_voter}
                                                  showOppose
                                                  supportProps={this.state.supportProps}
-                                                 visibility="desktop" />
+                                                 visibility="desktop"
+                                                 urlWithoutHash={this.props.urlWithoutHash}
+                                                 we_vote_id={this.props.we_vote_id}
+                                                  />
                   {/* Show support positions the voter can follow Desktop */}
                   { organizations_to_follow_support_desktop.length ? organizations_to_follow_support_desktop : null }
                   {/* Show oppose positions the voter can follow Desktop */}
@@ -787,16 +812,24 @@ export default class ItemSupportOpposeRaccoon extends Component {
                   { positionsLabel }
                   <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
                                                  ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
+                                                 currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                                                  position_list={this.state.position_list_from_advisers_followed_by_voter}
                                                  showSupport
                                                  supportProps={this.state.supportProps}
-                                                 visibility="mobile" />
+                                                 visibility="mobile"
+                                                 urlWithoutHash={this.props.urlWithoutHash}
+                                                 we_vote_id={this.props.we_vote_id}
+                                                  />
                   <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
                                                  ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
+                                                 currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                                                  position_list={this.state.position_list_from_advisers_followed_by_voter}
                                                  showOppose
                                                  supportProps={this.state.supportProps}
-                                                 visibility="mobile" />
+                                                 visibility="mobile"
+                                                 urlWithoutHash={this.props.urlWithoutHash}
+                                                 we_vote_id={this.props.we_vote_id}
+                                                  />
                   {/* Show support positions the voter can follow Mobile */}
                   { organizations_to_follow_support_mobile.length ? organizations_to_follow_support_mobile : null }
                   {/* Show oppose positions the voter can follow Mobile */}
