@@ -243,6 +243,10 @@ $candidate-font-size: .875rem;
       text-indent: -9999px;
       z-index: 5;
     }
+
+    &__button-linked {
+      pointer-events: none !important;
+    }
   } // end .card-main
 
   // ----------------------------------------

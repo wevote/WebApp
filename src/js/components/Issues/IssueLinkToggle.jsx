@@ -94,8 +94,9 @@ export default class IssueLinkToggle extends Component {
             </Button> :
             <OverlayTrigger placement="bottom" overlay={supportButtonPopoverTooltip}>
               <div style={{display: "inline-block"}}>
-                <Button className="temporaryClassname" bsStyle="info" bsSize="small" onClick={this.onIssueLink} disabled>
-                  <span>Incompatible</span>
+                <Button className="card-main__button-linked" bsStyle="info" bsSize="small" onClick={this.onIssueLink} disabled>
+                  <span className="hidden-xs">Incompatible</span>
+                  <span className="visible-xs">Link</span>
                 </Button>
               </div>
             </OverlayTrigger>

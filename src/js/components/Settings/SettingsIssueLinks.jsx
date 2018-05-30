@@ -8,24 +8,24 @@ import IssueLinkToggle from "../Issues/IssueLinkToggle";
 import IssueStore from "../../stores/IssueStore";
 import { renderLog } from "../../utils/logging";
 
-const prochoice = "wv02issue63";
-const prolife = "wv02issue64";
-const democraticClubs = "wv02issue25";
-const republicClubs = "wv02issue68";
-const greenClubs = "wv02issue35";
-const libertarianClubs = "wv02issue53";
-const secondAmendment = "wv02issue36";
-const commonSenseGunReform = "wv02issue37";
+const PROCHOICE = "wv02issue63";
+const PROLIFE = "wv02issue64";
+const DEMOCRATIC_CLUBS = "wv02issue25";
+const REPUBLIC_CLUBS = "wv02issue68";
+const GREEN_CLUBS = "wv02issue35";
+const LIBERTARIAN_CLUBS = "wv02issue53";
+const SECOND_AMENDMENT = "wv02issue36";
+const COMMON_SENSE_GUN_REFORM = "wv02issue37";
 
-const incompatibleIssues = {
-  [prochoice]: [prolife],
-  [prolife]: [prochoice],
-  [democraticClubs]: [republicClubs, greenClubs, libertarianClubs],
-  [republicClubs]: [democraticClubs, greenClubs, libertarianClubs],
-  [greenClubs]: [democraticClubs, republicClubs, libertarianClubs],
-  [libertarianClubs]: [democraticClubs, republicClubs, greenClubs],
-  [secondAmendment]: [commonSenseGunReform],
-  [commonSenseGunReform]: [secondAmendment]
+const INCOMPATIBLE_ISSUES = {
+  [PROCHOICE]: [PROLIFE],
+  [PROLIFE]: [PROCHOICE],
+  [DEMOCRATIC_CLUBS]: [REPUBLIC_CLUBS, GREEN_CLUBS, LIBERTARIAN_CLUBS],
+  [REPUBLIC_CLUBS]: [DEMOCRATIC_CLUBS, GREEN_CLUBS, LIBERTARIAN_CLUBS],
+  [GREEN_CLUBS]: [DEMOCRATIC_CLUBS, REPUBLIC_CLUBS, LIBERTARIAN_CLUBS],
+  [LIBERTARIAN_CLUBS]: [DEMOCRATIC_CLUBS, REPUBLIC_CLUBS, GREEN_CLUBS],
+  [SECOND_AMENDMENT]: [COMMON_SENSE_GUN_REFORM],
+  [COMMON_SENSE_GUN_REFORM]: [SECOND_AMENDMENT]
 };
 
 
@@ -43,7 +43,8 @@ export default class SettingsIssueLinks extends Component {
       active_tab: "",
       issues_to_link_to: [],
       issues_linked_to: [],
-      organization_we_vote_id: ""
+      organization_we_vote_id: "",
+      currentIncompatibleIssues: {}
     };
   }
 
@@ -93,7 +94,18 @@ export default class SettingsIssueLinks extends Component {
   }
 
   onIssueStoreChange () {
+    const issues_linked_to = IssueStore.getIssuesLinkedToByOrganization( this.props.organization_we_vote_id );
+      let currentIncompatibleIssues = {}; // issue -> issue that it is causing the incompatibility
 
+      issues_linked_to.map(linkedIssue => {
+        if (INCOMPATIBLE_ISSUES[linkedIssue.issue_we_vote_id]){ //We only want the issues that been linked.
+
+          //Iterate over incompatible issues caused by the linkedIssue.
+          INCOMPATIBLE_ISSUES[linkedIssue.issue_we_vote_id].map(incompatibleIssue => {
+            currentIncompatibleIssues[incompatibleIssue] = [linkedIssue];
+          });
+        }
+      });
 
     // console.log("onIssueStoreChange, this.props.organization_we_vote_id: ", this.props.organization_we_vote_id);
     // console.log("getIssuesToLinkToByOrganization: ", IssueStore.getIssuesToLinkToByOrganization(this.props.organization_we_vote_id));
@@ -102,9 +114,8 @@ export default class SettingsIssueLinks extends Component {
       issues_to_link_to: IssueStore.getIssuesToLinkToByOrganization(
         this.props.organization_we_vote_id
       ),
-      issues_linked_to: IssueStore.getIssuesLinkedToByOrganization(
-        this.props.organization_we_vote_id
-      )
+      issues_linked_to,
+      currentIncompatibleIssues
     });
   }
 
@@ -139,15 +150,6 @@ export default class SettingsIssueLinks extends Component {
     // console.log('-----------------------------------------------------')
     switch (active_tab) {
       case "issues_to_link":
-        let currentIncompatibleIssues = {};
-        this.state.issues_linked_to.map(linkedIssue => {
-          if (incompatibleIssues[linkedIssue.issue_we_vote_id]){
-            incompatibleIssues[linkedIssue.issue_we_vote_id].map(incompatibleIssue => {
-              currentIncompatibleIssues[incompatibleIssue] = [linkedIssue];
-            });
-          }
-        });
-
         issues_to_display = this.state.issues_to_link_to.map((issue) => {
 
         return <IssueLinkToggle
@@ -155,8 +157,8 @@ export default class SettingsIssueLinks extends Component {
             issue={issue}
             organization_we_vote_id={this.props.organization_we_vote_id}
             is_linked={is_linked_false}
-            incompatibleIssues={currentIncompatibleIssues[issue.issue_we_vote_id]}
-          />;
+            incompatibleIssues={this.state.currentIncompatibleIssues[issue.issue_we_vote_id]}
+        />;
         });
         break;
       default:
