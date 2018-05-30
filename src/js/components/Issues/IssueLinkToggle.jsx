@@ -92,7 +92,11 @@ export default class IssueLinkToggle extends Component {
             <Button bsStyle="info" bsSize="small" onClick={this.onIssueLink}>
               <span>Link</span>
             </Button> :
-            <OverlayTrigger placement="bottom" overlay={supportButtonPopoverTooltip}>
+            <OverlayTrigger
+                  key={this.props.issue.issue_we_vote_id}                
+                  trigger={["focus", "hover", "click"]}
+                  placement="bottom"
+                  overlay={supportButtonPopoverTooltip}>
               <div style={{display: "inline-block"}}>
                 <Button className="card-main__button-linked" bsStyle="info" bsSize="small" onClick={this.onIssueLink} disabled>
                   <span className="hidden-xs">Incompatible</span>
