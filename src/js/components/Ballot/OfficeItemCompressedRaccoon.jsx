@@ -419,7 +419,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
               </div>
             </div>;
 
-            return <div key={candidate_we_vote_id} className="u-stack--md">
+            return <div key={candidate_we_vote_id} className="u-stack--md u-gray-border-bottom">
               <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
                 {/* Candidate Photo, only shown in Desktop */}
                 {this.state.display_office_unfurled ?
