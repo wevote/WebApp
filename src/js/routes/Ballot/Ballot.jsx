@@ -85,7 +85,7 @@ export default class Ballot extends Component {
   }
 
   componentDidMount () {
-    // console.log("Ballot componentDidMount");
+    console.log("Ballot componentDidMount");
     let hide_intro_modal_from_url = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
     let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal") || 0;
     let wait_until_voter_sign_in_completes = this.props.location.query ? this.props.location.query.wait_until_voter_sign_in_completes : 0;
@@ -199,7 +199,6 @@ export default class Ballot extends Component {
     } else {
       AnalyticsActions.saveActionBallotVisit(VoterStore.election_id());
     }
-    // console.log("End of componentDidMount");
 
     this.setState({
       ballotElectionList: BallotStore.ballotElectionList(),
@@ -470,7 +469,11 @@ export default class Ballot extends Component {
       setTimeout(() => {
         let id = hash.replace("#", "");
         const element = document.getElementById(id);
-        if (element) element.scrollIntoView();
+
+        if (element) {
+          let positionY = element.offsetTop;
+          window.scrollTo(0, positionY + 196);
+        }
       }, 0);
     }
   }
