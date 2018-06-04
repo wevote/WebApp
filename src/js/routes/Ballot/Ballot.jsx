@@ -61,6 +61,7 @@ export default class Ballot extends Component {
       },
       hide_intro_modal_from_url: 0,
       hide_intro_modal_from_cookie: 0,
+      lastHashUsedInLinkScroll: "",
       measure_for_modal: {
         voter_guides_to_follow_for_latest_ballot_item: [],
         position_list: []
@@ -85,7 +86,7 @@ export default class Ballot extends Component {
   }
 
   componentDidMount () {
-    console.log("Ballot componentDidMount");
+    // console.log("Ballot componentDidMount");
     let hide_intro_modal_from_url = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
     let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal") || 0;
     let wait_until_voter_sign_in_completes = this.props.location.query ? this.props.location.query.wait_until_voter_sign_in_completes : 0;
@@ -211,9 +212,15 @@ export default class Ballot extends Component {
       pathname: this.props.location.pathname,
       wait_until_voter_sign_in_completes: wait_until_voter_sign_in_completes,
     });
+
+    if (this.props.location && this.props.location.hash){
+      // this.hashLinkScroll();
+      this.setState({lastHashUsedInLinkScroll: this.props.location.hash});
+    }
   }
 
   componentWillReceiveProps (nextProps){
+    // console.log('Ballot componentWillReceiveProps()');
     // console.log("Ballot componentWillReceiveProps, nextProps: ", nextProps);
     // console.log("Ballot this.state: ", this.state);
     let filter_type = nextProps.location && nextProps.location.query ? nextProps.location.query.type : "all";
@@ -242,6 +249,18 @@ export default class Ballot extends Component {
       } else {
         AnalyticsActions.saveActionBallotVisit(VoterStore.election_id());
       }
+    }
+    if (nextProps.location && nextProps.location.hash){
+      // this.hashLinkScroll();
+      this.setState({lastHashUsedInLinkScroll: nextProps.location.hash});
+    }
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    // console.log('Ballot componentDidUpdate()', 'prevState.lastHashUsedInLinkScroll:', prevState.lastHashUsedInLinkScroll,'this.state.lastHashUsedInLinkScroll:', this.state.lastHashUsedInLinkScroll);
+    if (this.state.lastHashUsedInLinkScroll && this.state.lastHashUsedInLinkScroll !== prevState.lastHashUsedInLinkScroll){
+      this.hashLinkScroll();
+      // this.setState({lastHashUsedInLinkScroll: this.state.location.hash});
     }
   }
 
@@ -455,12 +474,9 @@ export default class Ballot extends Component {
     }
   }
 
-  componentDidUpdate () {
-    this.hashLinkScroll();
-  }
-
   // Needed to scroll to anchor tags based on hash in url (as done for bookmarks)
   hashLinkScroll () {
+    console.log('Ballot hashLinkScroll()');
     const { hash } = window.location;
     if (hash !== "") {
       // Push onto callback queue so it runs after the DOM is updated,
