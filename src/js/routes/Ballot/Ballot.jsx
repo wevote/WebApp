@@ -320,7 +320,7 @@ export default class Ballot extends Component {
   toggleSelectBallotModal (destinationUrlForHistoryPush = "") {
     // console.log("Ballot toggleSelectBallotModal destinationUrlForHistoryPush: ", destinationUrlForHistoryPush, ", this.state.pathname : ", this.state.pathname);
     if (this.state.showSelectBallotModal) {
-      if (destinationUrlForHistoryPush && destinationUrlForHistoryPush !== "" && destinationUrlForHistoryPush !== this.state.pathname) {
+      if (destinationUrlForHistoryPush && destinationUrlForHistoryPush !== "") {
         historyPush(destinationUrlForHistoryPush);
       }
     } else {
