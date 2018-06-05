@@ -477,7 +477,6 @@ export default class Ballot extends Component {
 
   // Needed to scroll to anchor tags based on hash in url (as done for bookmarks)
   hashLinkScroll () {
-    console.log('Ballot hashLinkScroll()');
     const { hash } = window.location;
     if (hash !== "") {
       // Push onto callback queue so it runs after the DOM is updated,
