@@ -76,7 +76,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
     }
     // console.log("ItemTinyPositionBreakdownList got past return null");
 
-    const MAXIMUM_ORGANIZATION_DISPLAY = 5;
+    const MAXIMUM_ORGANIZATION_DISPLAY = 50;
     let local_counter = 0;
     let orgs_not_shown_count = 0;
     let positions_not_shown_list = [];
