@@ -22,6 +22,7 @@ import { cordovaDot, historyPush, isCordova, isWebApp } from "../../utils/cordov
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
 import Helmet from "react-helmet";
+import isMobile from "../../utils/isMobile";
 import IssueActions from "../../actions/IssueActions";
 import IssueStore from "../../stores/IssueStore";
 import { renderLog } from "../../utils/logging";
@@ -488,7 +489,11 @@ export default class Ballot extends Component {
 
         if (element) {
           let positionY = element.offsetTop;
-          window.scrollTo(0, positionY + 196);
+          if (isMobile() ){
+            window.scrollTo(0, positionY + 250);
+          } else {
+            window.scrollTo(0, positionY + 196);
+          }
         }
       }, 0);
     }
