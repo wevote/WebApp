@@ -66,7 +66,7 @@ class ElectionStore extends ReduceStore {
       // console.log("ElectionStore, isElectionUpcoming, google_civic_election_id:", google_civic_election_id);
       let one_election = this.getState().election_list_by_google_civic_election_id[google_civic_election_id_int];
       if (one_election) {
-        return one_election.election_is_upcoming;
+        return one_election.election_is_upcoming || false;
       }
     }
     return false;

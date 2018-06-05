@@ -411,6 +411,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                                           maximumOrganizationDisplay={this.state.maximum_organization_display}
                                           organizationsToFollowSupport={organizationsToFollowSupport}
                                           organizationsToFollowOppose={organizationsToFollowOppose}
+                                          popoverBottom
                                           supportProps={candidateSupportStore}
                                           type="CANDIDATE"
                                           urlWithoutHash={this.props.urlWithoutHash}
