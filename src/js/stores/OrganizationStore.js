@@ -425,6 +425,7 @@ class OrganizationStore extends ReduceStore {
 
       case "positionListForOpinionMaker":  // ...and positionListForOpinionMakerForFriends
         // console.log("OrganizationStore, positionListForOpinionMaker response");
+        // TODO: position_list *might* include positions from multiple elections
         organization_we_vote_id = action.res.opinion_maker_we_vote_id;
         if (action.res.friends_vs_public === "FRIENDS_ONLY") {  // positionListForOpinionMakerForFriends
           if (action.res.filter_for_voter) {
