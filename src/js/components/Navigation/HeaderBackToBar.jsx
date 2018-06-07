@@ -238,6 +238,10 @@ export default class HeaderBackToBar extends Component {
     let backToLink;
     if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
       backToLink = this.getVoterGuideLink(); // Default to this when there is an organizationWeVoteId
+    } else if (this.state.officeWeVoteId) {
+      backToLink = `/ballot#${this.state.officeWeVoteId}`;
+    } else if (this.props.params.measure_we_vote_id) {
+      backToLink = `/ballot#${this.props.params.measure_we_vote_id}`;
     } else {
       backToLink = "/ballot"; // Default to this
     }
