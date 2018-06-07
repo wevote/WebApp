@@ -13,6 +13,7 @@ class BallotStore extends ReduceStore {
       ballot_item_search_results_list: [],
       ballot_item_unfurled_tracker: {},
       ballotItemListCandidatesDict: {}, // Dictionary with ballot_item_we_vote_id as key and list of candidate we_vote_ids as value
+      position_list_has_been_retrieved_once_by_ballot_item: {}, // Dictionary with ballot_item_we_vote_id as key and true/false as value
     };
   }
 
@@ -20,6 +21,7 @@ class BallotStore extends ReduceStore {
     return {
       ballot_item_search_results_list: [],
       ballot_item_unfurled_tracker: {},
+      position_list_has_been_retrieved_once_by_ballot_item: {},
     };
   }
 
@@ -213,6 +215,10 @@ class BallotStore extends ReduceStore {
     return this.getState().ballotItemListCandidatesDict[officeWeVoteId] || [];
   }
 
+  positionListHasBeenRetrievedOnce (ballotItemWeVoteId) {
+    return this.getState().position_list_has_been_retrieved_once_by_ballot_item[ballotItemWeVoteId] || false;
+  }
+
   reduce (state, action) {
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success)
@@ -237,6 +243,16 @@ class BallotStore extends ReduceStore {
         return {
           ...state,
           ballotItemSearchResultsList: ballotItemSearchResultsList
+        };
+
+      case "positionListForBallotItem":
+        // console.log("BallotStore, positionListForBallotItem response received.");
+        let position_list_has_been_retrieved_once_by_ballot_item = state.position_list_has_been_retrieved_once_by_ballot_item;
+        position_list_has_been_retrieved_once_by_ballot_item[action.res.ballot_item_we_vote_id] = true;
+
+        return {
+          ...state,
+          position_list_has_been_retrieved_once_by_ballot_item: position_list_has_been_retrieved_once_by_ballot_item
         };
 
       case "voterAddressRetrieve":
