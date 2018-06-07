@@ -586,27 +586,38 @@ class IssueStore extends ReduceStore {
         // Collect all of the issues an organization is tagged with
         // console.log("IssueStore, case voterGuidesToFollowRetrieve");
         voter_guides = action.res.voter_guides;
+        if (!voter_guides || voter_guides.length === 0) {
+          // If no voter_guides returned, exit
+          return {
+            ...state,
+          };
+        }
+
         let issue_we_vote_ids_linked;
         let organization_we_vote_ids_for_issue;
         // Dictionary with key: issue_we_vote_id, list: organization_we_vote_id that is linked to this issue
         organization_we_vote_ids_linked_to_issue_dict = state.organization_we_vote_ids_linked_to_issue_dict || {};
         // Dictionary with key: organization_we_vote_id, list: issue_we_vote_id that the organization is linked to
         issue_we_vote_ids_linked_to_by_organization_dict = state.issue_we_vote_ids_linked_to_by_organization_dict || {};
-        voter_guides.forEach( voter_guide => {
-          issue_we_vote_ids_linked = voter_guide.issue_we_vote_ids_linked;
-          linked_issue_list_for_one_organization = issue_we_vote_ids_linked_to_by_organization_dict[voter_guide.organization_we_vote_id] || [];
-          // console.log("IssueStore, case voterGuidesToFollowRetrieve, issue_we_vote_ids_linked:", issue_we_vote_ids_linked);
-          issue_we_vote_ids_linked.forEach( issue_we_vote_id => {
-            organization_we_vote_ids_for_issue = organization_we_vote_ids_linked_to_issue_dict[issue_we_vote_id] || [];
-            organization_we_vote_ids_for_issue.push(voter_guide.organization_we_vote_id);
-            organization_we_vote_ids_linked_to_issue_dict[issue_we_vote_id] = organization_we_vote_ids_for_issue;
-            if (!arrayContains(issue_we_vote_id, linked_issue_list_for_one_organization)) {
-              linked_issue_list_for_one_organization.push(issue_we_vote_id);
+        if (voter_guides) {
+          voter_guides.forEach(voter_guide => {
+            issue_we_vote_ids_linked = voter_guide.issue_we_vote_ids_linked;
+            linked_issue_list_for_one_organization = issue_we_vote_ids_linked_to_by_organization_dict[voter_guide.organization_we_vote_id] || [];
+            // console.log("IssueStore, case voterGuidesToFollowRetrieve, issue_we_vote_ids_linked:", issue_we_vote_ids_linked);
+            if (issue_we_vote_ids_linked) {
+              issue_we_vote_ids_linked.forEach(issue_we_vote_id => {
+                organization_we_vote_ids_for_issue = organization_we_vote_ids_linked_to_issue_dict[issue_we_vote_id] || [];
+                organization_we_vote_ids_for_issue.push(voter_guide.organization_we_vote_id);
+                organization_we_vote_ids_linked_to_issue_dict[issue_we_vote_id] = organization_we_vote_ids_for_issue;
+                if (!arrayContains(issue_we_vote_id, linked_issue_list_for_one_organization)) {
+                  linked_issue_list_for_one_organization.push(issue_we_vote_id);
+                }
+              });
             }
+            // Add the "issues linked to orgs" to the master dict, with the organization_we_vote_id as the key
+            issue_we_vote_ids_linked_to_by_organization_dict[voter_guide.organization_we_vote_id] = linked_issue_list_for_one_organization;
           });
-          // Add the "issues linked to orgs" to the master dict, with the organization_we_vote_id as the key
-          issue_we_vote_ids_linked_to_by_organization_dict[voter_guide.organization_we_vote_id] = linked_issue_list_for_one_organization;
-        });
+        }
         // console.log("IssueStore, case voterGuidesToFollowRetrieve, organization_we_vote_ids_linked_to_issue_dict:", organization_we_vote_ids_linked_to_issue_dict);
 
         // We want to start a fresh loop after issue_we_vote_ids_linked_to_by_organization_dict has been updated
@@ -625,24 +636,26 @@ class IssueStore extends ReduceStore {
           if (!issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id]) {
             issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id] = [];
           }
-          voter_guides.forEach(one_voter_guide => {
-            // console.log("one_voter_guide.organization_we_vote_id: ", one_voter_guide.organization_we_vote_id);
-            if (one_voter_guide.organization_we_vote_id) {
-              // Loop through the issues associated with this organization
-              if (issue_we_vote_ids_linked_to_by_organization_dict[one_voter_guide.organization_we_vote_id]) {
-                // console.log("issue_we_vote_ids_linked_to_by_organization_dict[one_voter_guide.organization_we_vote_id] FOUND");
-                list_of_issues_for_this_org = issue_we_vote_ids_linked_to_by_organization_dict[one_voter_guide.organization_we_vote_id];
-                // console.log("list_of_issues_for_this_org:", list_of_issues_for_this_org);
-                if (list_of_issues_for_this_org) {
-                  list_of_issues_for_this_org.forEach(one_issue => {
-                    if (!arrayContains(one_issue, issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id])) {
-                      issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id].push(one_issue);
-                    }
-                  });
+          if (voter_guides) {
+            voter_guides.forEach(one_voter_guide => {
+              // console.log("one_voter_guide.organization_we_vote_id: ", one_voter_guide.organization_we_vote_id);
+              if (one_voter_guide.organization_we_vote_id) {
+                // Loop through the issues associated with this organization
+                if (issue_we_vote_ids_linked_to_by_organization_dict[one_voter_guide.organization_we_vote_id]) {
+                  // console.log("issue_we_vote_ids_linked_to_by_organization_dict[one_voter_guide.organization_we_vote_id] FOUND");
+                  list_of_issues_for_this_org = issue_we_vote_ids_linked_to_by_organization_dict[one_voter_guide.organization_we_vote_id];
+                  // console.log("list_of_issues_for_this_org:", list_of_issues_for_this_org);
+                  if (list_of_issues_for_this_org) {
+                    list_of_issues_for_this_org.forEach(one_issue => {
+                      if (!arrayContains(one_issue, issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id])) {
+                        issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id].push(one_issue);
+                      }
+                    });
+                  }
                 }
               }
-            }
-          });
+            });
+          }
         } else if (voter_guides && issue_we_vote_ids_linked_to_by_organization_dict) {
           // This captures the issues under each ballot item from any voterGuidesToFollowRetrieve response
           // console.log("IssueStore voterGuidesToFollowRetrieve, voterGuides for multiple ballot_item_we_vote_ids.");
@@ -650,34 +663,38 @@ class IssueStore extends ReduceStore {
             issue_we_vote_ids_under_each_ballot_item = {};
           }
           let ballot_item_we_vote_ids_this_org_supports;
-          voter_guides.forEach(one_voter_guide => {
-            // console.log("one_voter_guide.organization_we_vote_id: ", one_voter_guide.organization_we_vote_id);
-            if (one_voter_guide.organization_we_vote_id) {
-              // Loop through the issues associated with this organization
-              if (issue_we_vote_ids_linked_to_by_organization_dict[one_voter_guide.organization_we_vote_id]) {
-                // console.log("issue_we_vote_ids_linked_to_by_organization_dict[one_voter_guide.organization_we_vote_id] FOUND");
-                list_of_issues_for_this_org = issue_we_vote_ids_linked_to_by_organization_dict[one_voter_guide.organization_we_vote_id];
-                // console.log("list_of_issues_for_this_org:", list_of_issues_for_this_org);
-                if (list_of_issues_for_this_org) {
-                  ballot_item_we_vote_ids_this_org_supports = one_voter_guide.ballot_item_we_vote_ids_this_org_supports;
-                  if (ballot_item_we_vote_ids_this_org_supports) {
-                    // Cycle through the ballot_items this org supports
-                    ballot_item_we_vote_ids_this_org_supports.forEach(ballot_item_we_vote_id_from_list => {
-                      // Cycle through the issues this voter_guide is tagged with
-                      list_of_issues_for_this_org.forEach(one_issue => {
-                        if (!issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id_from_list]) {
-                          issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id_from_list] = [];
-                        }
-                        if (!arrayContains(one_issue, issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id_from_list])) {
-                          issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id_from_list].push(one_issue);
+          if (voter_guides) {
+            voter_guides.forEach(one_voter_guide => {
+              // console.log("one_voter_guide.organization_we_vote_id: ", one_voter_guide.organization_we_vote_id);
+              if (one_voter_guide.organization_we_vote_id) {
+                // Loop through the issues associated with this organization
+                if (issue_we_vote_ids_linked_to_by_organization_dict[one_voter_guide.organization_we_vote_id]) {
+                  // console.log("issue_we_vote_ids_linked_to_by_organization_dict[one_voter_guide.organization_we_vote_id] FOUND");
+                  list_of_issues_for_this_org = issue_we_vote_ids_linked_to_by_organization_dict[one_voter_guide.organization_we_vote_id];
+                  // console.log("list_of_issues_for_this_org:", list_of_issues_for_this_org);
+                  if (list_of_issues_for_this_org) {
+                    ballot_item_we_vote_ids_this_org_supports = one_voter_guide.ballot_item_we_vote_ids_this_org_supports;
+                    if (ballot_item_we_vote_ids_this_org_supports) {
+                      // Cycle through the ballot_items this org supports
+                      ballot_item_we_vote_ids_this_org_supports.forEach(ballot_item_we_vote_id_from_list => {
+                        // Cycle through the issues this voter_guide is tagged with
+                        if (list_of_issues_for_this_org) {
+                          list_of_issues_for_this_org.forEach(one_issue => {
+                            if (!issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id_from_list]) {
+                              issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id_from_list] = [];
+                            }
+                            if (!arrayContains(one_issue, issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id_from_list])) {
+                              issue_we_vote_ids_under_each_ballot_item[ballot_item_we_vote_id_from_list].push(one_issue);
+                            }
+                          });
                         }
                       });
-                    });
+                    }
                   }
                 }
               }
-            }
-          });
+            });
+          }
         }
         // console.log("voterGuidesToFollowRetrieve issue_we_vote_ids_under_each_ballot_item:", issue_we_vote_ids_under_each_ballot_item);
 

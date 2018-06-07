@@ -11,12 +11,17 @@ class CandidateStore extends ReduceStore {
     return {
       all_cached_candidates: {}, // Dictionary with candidate_we_vote_id as key and the candidate as value
       all_cached_positions_about_candidates: {}, // Dictionary with candidate_we_vote_id as one key, organization_we_vote_id as the second key, and the position as value
+      number_of_candidates_retrieved_by_office: {}, // Dictionary with office_we_vote_id as key and number of candidates as value
       position_list_from_advisers_followed_by_voter: {}, // Dictionary with candidate_we_vote_id as key and list of positions as value
     };
   }
 
   getCandidate (candidate_we_vote_id) {
     return this.getState().all_cached_candidates[candidate_we_vote_id] || {};
+  }
+
+  getNumberOfCandidatesRetrievedByOffice (officeWeVoteId) {
+    return this.getState().number_of_candidates_retrieved_by_office[officeWeVoteId] || 0;
   }
 
   getPositionList (candidate_we_vote_id) {
@@ -74,21 +79,30 @@ class CandidateStore extends ReduceStore {
         };
 
       case "candidatesRetrieve":
+        let contest_office_we_vote_id = '';
+        let number_of_candidates_retrieved_by_office = state.number_of_candidates_retrieved_by_office;
         // Make sure we have information for the office the candidate is running for
         if (action.res.contest_office_we_vote_id) {
+          contest_office_we_vote_id = action.res.contest_office_we_vote_id;
           let office = OfficeStore.getOffice(action.res.contest_office_we_vote_id);
           if (!office || !office.ballot_item_display_name) {
             OfficeActions.officeRetrieve(action.res.contest_office_we_vote_id);
           }
         }
+        let incoming_candidate_count = 0;
         candidate_list = action.res.candidate_list;
         all_cached_candidates = state.all_cached_candidates;
         candidate_list.forEach( one_candidate => {
           all_cached_candidates[one_candidate.we_vote_id] = one_candidate;
+          incoming_candidate_count += 1;
         });
+        if (contest_office_we_vote_id.length) {
+          number_of_candidates_retrieved_by_office[contest_office_we_vote_id] = incoming_candidate_count;
+        }
         return {
           ...state,
-          all_cached_candidates: all_cached_candidates
+          all_cached_candidates: all_cached_candidates,
+          number_of_candidates_retrieved_by_office: number_of_candidates_retrieved_by_office,
         };
 
       case "positionListForBallotItem":

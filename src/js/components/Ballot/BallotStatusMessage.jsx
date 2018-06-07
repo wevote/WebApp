@@ -34,11 +34,12 @@ export default class BallotStatusMessage extends Component {
 
   componentDidMount () {
     // console.log("In BallotStatusMessage componentDidMount");
-    let elections_with_ballot_status_message_closed_value_from_cookie = cookies.getItem("elections_with_ballot_status_message_closed");
-    let elections_with_ballot_status_message_closed = [];
-    if (elections_with_ballot_status_message_closed_value_from_cookie) {
-      elections_with_ballot_status_message_closed = JSON.parse(elections_with_ballot_status_message_closed_value_from_cookie) || [];
+    let electionsWithBallotStatusMessageClosedValueFromCookie = cookies.getItem("elections_with_ballot_status_message_closed");
+    let electionsWithBallotStatusMessageClosed = [];
+    if (electionsWithBallotStatusMessageClosedValueFromCookie) {
+      electionsWithBallotStatusMessageClosed = JSON.parse(electionsWithBallotStatusMessageClosedValueFromCookie) || [];
     }
+
     this.setState({
       ballot_location_chosen: this.props.ballot_location_chosen,
       ballot_location_display_name: this.props.ballot_location_display_name,
@@ -48,9 +49,10 @@ export default class BallotStatusMessage extends Component {
       show_ballot_status: true,
       voter_entered_address: this.props.voter_entered_address,
       voter_specific_ballot_from_google_civic: this.props.voter_specific_ballot_from_google_civic,
-      elections_with_ballot_status_message_closed
+      electionsWithBallotStatusMessageClosed,
     });
   }
+
   componentWillReceiveProps (nextProps) {
     // console.log("BallotStatusMessage componentWillReceiveProps");
     this.setState({
@@ -68,77 +70,82 @@ export default class BallotStatusMessage extends Component {
   handleMessageClose () {
     //setting cookie to track the elections where user has closed the warning messages for them
     if (this.props.google_civic_election_id) {
-      let elections_with_ballot_status_message_closed_updated = [...this.state.elections_with_ballot_status_message_closed, this.props.google_civic_election_id];
-      let elections_with_ballot_status_message_closed_for_cookie = JSON.stringify(elections_with_ballot_status_message_closed_updated);
-      cookies.setItem("elections_with_ballot_status_message_closed", elections_with_ballot_status_message_closed_for_cookie, Infinity, "/");
+      let electionsWithBallotStatusMessageClosedUpdated = [...this.state.elections_with_ballot_status_message_closed, this.props.google_civic_election_id];
+      let electionsWithBallotStatusMessageClosedForCookie = JSON.stringify(electionsWithBallotStatusMessageClosedUpdated);
+      cookies.setItem("elections_with_ballot_status_message_closed", electionsWithBallotStatusMessageClosedForCookie, Infinity, "/");
       this.setState({
-        elections_with_ballot_status_message_closed: elections_with_ballot_status_message_closed_updated
+        elections_with_ballot_status_message_closed: electionsWithBallotStatusMessageClosedUpdated,
       });
     }
   }
 
   render () {
     renderLog(__filename);
-    let message_string = "";
-    let ballot_status_style;
-    // this.state.google_civic_data_exists
-    if (this.state.election_is_upcoming) {
-      ballot_status_style = "alert-info";
+    let messageString = "";
+    let ballotStatusStyle;
+    let today = moment(new Date());
+    let isVotingDay = today.isSame(this.state.election_day_text, 'day');
+
+    if (isVotingDay) {
+      ballotStatusStyle = "alert-info";
+      messageString = "It is Voting Day,  " +
+        moment(this.state.election_day_text).format("MMM Do, YYYY") +
+        ".  If you haven't already voted, please go vote!";
+      messageString += (!this.state.voter_specific_ballot_from_google_civic && this.state.ballot_location_chosen && this.state.ballot_location_display_name) ?
+        "  Some items shown below may not have been on your official ballot." : "  Some items below may not have been on your official ballot.";
+    } else if (this.state.election_is_upcoming) {
+      ballotStatusStyle = "alert-info";
       if (this.state.voter_specific_ballot_from_google_civic) {
-        message_string += ""; // No additional text
-      // } else if (this.state.voter_entered_address) {
-      //   message_string += ""; // No additional text
+        messageString += ""; // No additional text
       } else if (this.state.ballot_location_chosen && this.state.ballot_location_display_name) {
-        message_string += "You are looking at the ballot for " + this.state.ballot_location_display_name + ". Some items below may not be on your official ballot.";
+        messageString += "You are looking at the ballot for " + this.state.ballot_location_display_name + ". Some items below may not be on your official ballot.";
       } else {
         if (this.state.voter_entered_address) {
-          message_string += "This is our best guess for what's on your ballot. ";
+          messageString += "This is our best guess for what's on your ballot. ";
         }
-        message_string += "Some items below may not be on your official ballot.";
+
+        messageString += "Some items below may not be on your official ballot.";
       }
     } else {
-      ballot_status_style = "alert-info";
-      let message_in_past_string;
+      ballotStatusStyle = "alert-info";
+      let messageInPastString;
       if (this.state.election_day_text) {
-        message_in_past_string = "This election was held on " + moment(this.state.election_day_text).format("MMM Do, YYYY") + ".";
+        messageInPastString = "This election was held on " + moment(this.state.election_day_text).format("MMM Do, YYYY") + ".";
       } else {
-        message_in_past_string = "This election has passed.";
+        messageInPastString = "This election has passed.";
       }
+
       if (this.state.voter_specific_ballot_from_google_civic) {
-        message_string += message_in_past_string; // No additional text
-      // } else if (this.state.voter_entered_address) {
-      //   message_string += message_in_past_string; // No additional text
+        messageString += messageInPastString; // No additional text
       } else if (this.state.ballot_location_chosen && this.state.ballot_location_display_name) {
-        message_string += message_in_past_string;
-        // message_string += " You are looking at the ballot for " + this.state.ballot_location_display_name + ".";
-        message_string += " Some items shown below may not have been on your official ballot.";
+        messageString += messageInPastString;
+        messageString += " Some items shown below may not have been on your official ballot.";
       } else {
-        // if (this.state.voter_entered_address) {
-        //   message_string += " This was a ballot near you. ";
-        // }
-        message_string += message_in_past_string + " Some items below may not have been on your official ballot.";
+        messageString += messageInPastString + " Some items below may not have been on your official ballot.";
       }
     }
 
-    let message_string_length = 0;
-    if (message_string) {
-      message_string_length = message_string.length;
+    let messageStringLength = 0;
+    if (messageString) {
+      messageStringLength = messageString.length;
     }
-    let election_ballot_status_message_should_be_closed = false;
+
+    let electionBallotStatusMessageShouldBeClosed = false;
     if (this.props.google_civic_election_id) {
-      election_ballot_status_message_should_be_closed = this.state.elections_with_ballot_status_message_closed.includes(this.props.google_civic_election_id);
+      electionBallotStatusMessageShouldBeClosed = this.state.elections_with_ballot_status_message_closed.includes(this.props.google_civic_election_id);
     }
-    if (election_ballot_status_message_should_be_closed) {
+
+    if (electionBallotStatusMessageShouldBeClosed) {
       return null;
-    } else if (this.state.show_ballot_status && message_string_length > 0) {
+    } else if (this.state.show_ballot_status && messageStringLength > 0) {
       return <div className="u-stack--sm hidden-print">
-        <div className={"alert " + ballot_status_style}>
+        <div className={"alert " + ballotStatusStyle}>
           <a href="#" className="close" data-dismiss="alert">
             <div id="ballot-status-message-close-container" onClick={this.handleMessageClose.bind(this)}>
               &times;
             </div>
           </a>
-          {message_string}
+          {messageString}
         </div>
       </div>;
     } else {

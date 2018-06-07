@@ -7,6 +7,7 @@ import TextTruncate from "react-text-truncate";
 import { toTitleCase } from "../../utils/textFormat";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import CandidateActions from "../../actions/CandidateActions";
+import CandidateStore from "../../stores/CandidateStore";
 import ImageHandler from "../ImageHandler";
 import IssuesFollowedByBallotItemDisplayList from "../Issues/IssuesFollowedByBallotItemDisplayList";
 import IssueStore from "../../stores/IssueStore";
@@ -69,7 +70,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
     if (this.props.candidate_list && this.props.candidate_list.length) {
-      CandidateActions.candidatesRetrieve(this.props.we_vote_id);
+      // console.log("getNumberOfCandidatesRetrievedByOffice:", CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id));
+      if (!CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id)) {
+        // console.log("Calling candidatesRetrieve: ", this.props.we_vote_id);
+        CandidateActions.candidatesRetrieve(this.props.we_vote_id);
+      }
       // this.props.candidate_list.forEach( function (candidate) {
       //   if (candidate && candidate.hasOwnProperty("we_vote_id") && !CandidateStore.isCandidateInStore(candidate.we_vote_id)) {
       //     // Slows down the browser too much when run for all candidates
@@ -411,6 +416,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                                           maximumOrganizationDisplay={this.state.maximum_organization_display}
                                           organizationsToFollowSupport={organizationsToFollowSupport}
                                           organizationsToFollowOppose={organizationsToFollowOppose}
+                                          popoverBottom
                                           supportProps={candidateSupportStore}
                                           type="CANDIDATE"
                                           urlWithoutHash={this.props.urlWithoutHash}

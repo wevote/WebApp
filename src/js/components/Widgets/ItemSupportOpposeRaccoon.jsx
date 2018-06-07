@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import { findDOMNode } from "react-dom";
+import BallotStore from "../../stores/BallotStore";
 import $ from "jquery";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
@@ -86,11 +87,15 @@ export default class ItemSupportOpposeRaccoon extends Component {
     let ballotItem;
     let position_list_from_advisers_followed_by_voter;
     if (is_candidate) {
-      CandidateActions.positionListForBallotItem(this.props.ballotItemWeVoteId);
+      if (!BallotStore.positionListHasBeenRetrievedOnce(this.props.ballotItemWeVoteId)) {
+        CandidateActions.positionListForBallotItem(this.props.ballotItemWeVoteId);
+      }
       ballotItem = CandidateStore.getCandidate(this.props.ballotItemWeVoteId);
       position_list_from_advisers_followed_by_voter = CandidateStore.getPositionList(this.props.ballotItemWeVoteId);
     } else if (is_measure) {
-      MeasureActions.positionListForBallotItem(this.props.ballotItemWeVoteId);
+      if (!BallotStore.positionListHasBeenRetrievedOnce(this.props.ballotItemWeVoteId)) {
+        MeasureActions.positionListForBallotItem(this.props.ballotItemWeVoteId);
+      }
       ballotItem = MeasureStore.getMeasure(this.props.ballotItemWeVoteId);
       position_list_from_advisers_followed_by_voter = MeasureStore.getPositionList(this.props.ballotItemWeVoteId);
     }
