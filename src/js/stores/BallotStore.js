@@ -170,12 +170,18 @@ class BallotStore extends ReduceStore {
     });
   }
 
-  //Filters out the unsupported candidates from a ballot_item where type is OFFICE
+  //Filters out the unsupported candidates if the user has either not decided or does not support
+  //all the candidates in the ballot_item.
   filtered_ballot_item (ballot_item) {
-    let filtered_list = ballot_item.candidate_list.filter(candidate => {
-      return SupportStore.supportList[candidate.we_vote_id] ? true : false;
-    });
-    return assign({}, ballot_item, {candidate_list: filtered_list });
+    for (let i = 0; i < ballot_item.candidate_list.length; i++){
+      let candidate = ballot_item.candidate_list[i];
+      //If the user supports one candidate in the ballot_item then return all ballot_item candidates
+      if (SupportStore.supportList[candidate.we_vote_id]){
+        return ballot_item;
+      }
+    }
+    //Code will reach this point if the user has either not decided or does not support all the candidates in the ballot_item.
+    return assign({}, ballot_item, {candidate_list: [] });
   }
 
   getBallotByFilterType (filter_type){
