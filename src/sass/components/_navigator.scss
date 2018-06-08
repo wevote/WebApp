@@ -187,6 +187,7 @@ $container-margin: -15px;
     &:focus,
     &:hover {
       color: $white;
+      cursor: pointer;
       opacity: 1;
       text-decoration: none;
     }
