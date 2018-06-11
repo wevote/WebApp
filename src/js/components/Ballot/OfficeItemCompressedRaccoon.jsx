@@ -102,6 +102,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
         display_office_unfurled: BallotStore.getBallotItemUnfurledStatus(this.props.we_vote_id)
       });
     }
+    if (this.props.currentBallotIdInUrl &&
+        this.props.we_vote_id &&
+        this.props.currentBallotIdInUrl === this.props.we_vote_id) {
+      this.toggleExpandDetails(true);
+    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -118,6 +123,14 @@ export default class OfficeItemCompressedRaccoon extends Component {
       this.setState({
         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
       });
+    }
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (prevProps.currentBallotIdInUrl !== this.props.currentBallotIdInUrl &&
+        this.props.we_vote_id === this.props.currentBallotIdInUrl &&
+        prevState.display_office_unfurled === false){
+      this.toggleExpandDetails(true);
     }
   }
 
@@ -161,13 +174,17 @@ export default class OfficeItemCompressedRaccoon extends Component {
     this.setState({ display_all_candidates_flag: !this.state.display_all_candidates_flag });
   }
 
-  toggleExpandDetails () {
+  toggleExpandDetails (display_office_unfurled) {
     const { we_vote_id, updateOfficeDisplayUnfurledTracker, urlWithoutHash, currentBallotIdInUrl } = this.props;
     // historyPush should be called only when current office Id (we_vote_id) is not currentBallotIdBeingShown in url.
     if (currentBallotIdInUrl !== we_vote_id) {
       historyPush(urlWithoutHash + "#" + we_vote_id);
     }
-    this.setState({ display_office_unfurled: !this.state.display_office_unfurled });
+    if (typeof display_office_unfurled === "boolean"){
+      this.setState({ display_office_unfurled: display_office_unfurled });
+    } else {
+      this.setState({ display_office_unfurled: !this.state.display_office_unfurled });
+    }
     if (this.props.allBallotItemsCount && this.props.allBallotItemsCount <= 3) {
       //only update tracker if there are more than 3 offices
     } else {
