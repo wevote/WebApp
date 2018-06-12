@@ -169,18 +169,20 @@ export default {
           } else {
             let api = isWebApp() ? window.FB : window.facebookConnectPlugin;  // eslint-disable-line no-undef
             api.login(
-              ["public_profile", "email", "user_friends"],
               (res) => {
+                // Check if res.authResponse is null indicating cancelled login attempt
+                if (! res.authResponse) {
+                  oAuthLog("FacebookActions loginFailure error response: ", res);
+                  return;
+                }
+
                 oAuthLog("FacebookActions loginSuccess userData: ", res);
                 Dispatcher.dispatch({
                   type: FacebookConstants.FACEBOOK_LOGGED_IN,
                   data: res,
                 });
               },
-
-              function (error) {
-                oAuthLog("FacebookActions loginFailure error response: ", error);
-              }
+              {scope: "public_profile,email,user_friends"}
             );
           }
         }
