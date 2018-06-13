@@ -9,6 +9,7 @@ import { arrayContains } from "../../utils/textFormat";
 export default class BallotSideBar extends Component {
   static propTypes = {
     ballotWithAllItemsByFilterType: PropTypes.array,
+    ballotItemLinkHasBeenClicked: PropTypes.func,
     displayTitle: PropTypes.bool,
     displaySubtitles: PropTypes.bool,
     onClick: PropTypes.func,
@@ -105,6 +106,7 @@ export default class BallotSideBar extends Component {
               return (
                 <div key={key}>
                   <BallotSideBarLink url={this.renderUrl(item.we_vote_id, ballotWithAllItemIdsByFilterType)}
+                                     ballotItemLinkHasBeenClicked={this.props.ballotItemLinkHasBeenClicked}
                                      label={item.ballot_item_display_name}
                                      subtitle={item.measure_subtitle}
                                      displaySubtitles={displaySubtitles}

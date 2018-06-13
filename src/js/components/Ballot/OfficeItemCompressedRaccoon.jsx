@@ -102,11 +102,6 @@ export default class OfficeItemCompressedRaccoon extends Component {
         display_office_unfurled: BallotStore.getBallotItemUnfurledStatus(this.props.we_vote_id)
       });
     }
-    if (this.props.currentBallotIdInUrl &&
-        this.props.we_vote_id &&
-        this.props.currentBallotIdInUrl === this.props.we_vote_id) {
-      this.toggleExpandDetails(true);
-    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -123,14 +118,6 @@ export default class OfficeItemCompressedRaccoon extends Component {
       this.setState({
         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
       });
-    }
-  }
-
-  componentDidUpdate (prevProps, prevState) {
-    if (prevProps.currentBallotIdInUrl !== this.props.currentBallotIdInUrl &&
-        this.props.we_vote_id === this.props.currentBallotIdInUrl &&
-        prevState.display_office_unfurled === false){
-      this.toggleExpandDetails(true);
     }
   }
 
