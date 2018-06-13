@@ -703,10 +703,7 @@ export default class Ballot extends Component {
                                                                                                     allBallotItemsCount={this.state.ballotWithAllItemsByFilterType.length}
                                                                                                     urlWithoutHash={this.props.location.pathname + this.props.location.search}
                                                                                                     currentBallotIdInUrl={this.props.location.hash.slice(1)}
-                                                                                                    ref={ref => {
-                                                                                                      // console.log(this.ballotItems);
-                                                                                                      this.ballotItems[item.we_vote_id] = ref;
-                                                                                                    }}
+                                                                                                    ref={ref => { this.ballotItems[item.we_vote_id] = ref; }}
                                                                                                     {...item} />)
                     }
                   </div>
