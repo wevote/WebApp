@@ -43,14 +43,6 @@ $candidate-font-size: .875rem;
       }
     }
 
-    //Dale: It seems like this classname is not used.
-    &__media_object {
-      // additional styling set with 'media-object' mixin
-      width: 50px;
-      display: flex;
-      flex-direction: column;
-    }
-
     &__media-object {
       // additional styling set with 'media-object' mixin
       @include breakpoints (mid-small) {
