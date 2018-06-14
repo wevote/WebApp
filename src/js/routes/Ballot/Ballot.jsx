@@ -78,6 +78,8 @@ export default class Ballot extends Component {
       ballot_item_unfurled_tracker: {},
     };
 
+    this.ballotItems = {};
+    this.ballotItemLinkHasBeenClicked = this.ballotItemLinkHasBeenClicked.bind(this);
     this.toggleBallotIntroModal = this.toggleBallotIntroModal.bind(this);
     this.toggleCandidateModal = this.toggleCandidateModal.bind(this);
     this.toggleMeasureModal = this.toggleMeasureModal.bind(this);
@@ -498,6 +500,14 @@ export default class Ballot extends Component {
     }
   }
 
+  ballotItemLinkHasBeenClicked (selectedBallotItemId){
+    if (this.ballotItems[selectedBallotItemId] &&
+        this.ballotItems[selectedBallotItemId].ballotItem &&
+        this.ballotItems[selectedBallotItemId].ballotItem.toggleExpandDetails){
+      this.ballotItems[selectedBallotItemId].ballotItem.toggleExpandDetails(true);
+    }
+  }
+
   getEmptyMessageByFilterType (filter_type) {
     switch (filter_type) {
       case "filterRemaining":
@@ -693,6 +703,7 @@ export default class Ballot extends Component {
                                                                                                     allBallotItemsCount={this.state.ballotWithAllItemsByFilterType.length}
                                                                                                     urlWithoutHash={this.props.location.pathname + this.props.location.search}
                                                                                                     currentBallotIdInUrl={this.props.location.hash.slice(1)}
+                                                                                                    ref={ref => { this.ballotItems[item.we_vote_id] = ref; }}
                                                                                                     {...item} />)
                     }
                   </div>
@@ -704,7 +715,6 @@ export default class Ballot extends Component {
                   <OpenExternalWebSite url={ballot_returned_admin_edit_url}
                                        target="_blank"
                                        body={<span>Ballot copied from polling location "{polling_location_we_vote_id_source}"</span>} />
-
                 </span> :
                 null
               }
@@ -715,7 +725,8 @@ export default class Ballot extends Component {
               <div className="col-md-4 hidden-xs sidebar-menu">
                 <BallotSideBar displayTitle displaySubtitles
                                rawUrlVariablesString={this.props.location.search}
-                               ballotWithAllItemsByFilterType={this.state.ballotWithAllItemsByFilterType} />
+                               ballotWithAllItemsByFilterType={this.state.ballotWithAllItemsByFilterType}
+                               ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}/>
               </div> }
           </div>
         </div>

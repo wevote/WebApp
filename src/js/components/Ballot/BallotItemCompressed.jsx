@@ -34,7 +34,8 @@ export default class BallotItemCompressed extends Component {
           <MeasureItemCompressed {...this.props}
                    link_to_ballot_item_page /> :
           <OfficeItemCompressedRaccoon {...this.props}
-                   link_to_ballot_item_page />
+                   link_to_ballot_item_page
+                   ref={(ref) => {this.ballotItem = ref;}}/>
         }
       </div>;
   }
