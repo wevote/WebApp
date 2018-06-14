@@ -35,6 +35,15 @@ body {
   padding-bottom: $space-xl;
 }
 
+// Disable cut and paste in Cordova, if not in an input field.  Otherwise it is a giveaway that this is a hybrid app (a wrapper).
+.cordova-base {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 *,
 *::before,
 *::after {
