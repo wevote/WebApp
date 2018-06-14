@@ -52,7 +52,7 @@ export default class Candidate extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
 
     // June 2018: Avoid hitting this same api multiple times, if we already have the data
-    let voterGuidesForId =  VoterGuideStore.getVoterGuideForOrganizationId(this.props.params.candidate_we_vote_id);
+    let voterGuidesForId = VoterGuideStore.getVoterGuideForOrganizationId(this.props.params.candidate_we_vote_id);
     if (voterGuidesForId && Object.keys(voterGuidesForId).length > 0) {
       VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(this.props.params.candidate_we_vote_id, "CANDIDATE");
     }
