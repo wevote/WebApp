@@ -43,11 +43,11 @@ $candidate-font-size: .875rem;
       }
     }
 
-    &__media_object {
+    &__media-object {
       // additional styling set with 'media-object' mixin
-      width: 50px;
-      display: flex;
-      flex-direction: column;
+      @include breakpoints (mid-small) {
+        min-width: 320px;
+      }
     }
 
     &__media-object-anchor {
