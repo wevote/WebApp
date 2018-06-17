@@ -161,13 +161,17 @@ export default class OfficeItemCompressedRaccoon extends Component {
     this.setState({ display_all_candidates_flag: !this.state.display_all_candidates_flag });
   }
 
-  toggleExpandDetails () {
+  toggleExpandDetails (display_office_unfurled) {
     const { we_vote_id, updateOfficeDisplayUnfurledTracker, urlWithoutHash, currentBallotIdInUrl } = this.props;
     // historyPush should be called only when current office Id (we_vote_id) is not currentBallotIdBeingShown in url.
     if (currentBallotIdInUrl !== we_vote_id) {
       historyPush(urlWithoutHash + "#" + we_vote_id);
     }
-    this.setState({ display_office_unfurled: !this.state.display_office_unfurled });
+    if (typeof display_office_unfurled === "boolean"){
+      this.setState({ display_office_unfurled: display_office_unfurled });
+    } else {
+      this.setState({ display_office_unfurled: !this.state.display_office_unfurled });
+    }
     if (this.props.allBallotItemsCount && this.props.allBallotItemsCount <= 3) {
       //only update tracker if there are more than 3 offices
     } else {

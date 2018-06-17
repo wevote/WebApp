@@ -5,6 +5,7 @@ import { renderLog } from "../../utils/logging";
 import { Link } from "react-router";
 export default class BallotSideBarLink extends Component {
   static propTypes = {
+    ballotItemLinkHasBeenClicked: PropTypes.func,
     url: PropTypes.string,
     label: PropTypes.string,
     subtitle: PropTypes.string,
@@ -22,7 +23,13 @@ export default class BallotSideBarLink extends Component {
     let labelInSentenceCase = capitalizeString(this.props.label);
     let subtitleInSentenceCase = sentenceCaseString(this.props.subtitle);
 
-    return <div className="BallotItem__summary__item-container" onClick={this.props.onClick.bind(this) }>
+    return <div className="BallotItem__summary__item-container" onClick={() => {
+      this.props.onClick.bind(this);
+      if (this.props.ballotItemLinkHasBeenClicked && this.props.url){
+        const selectedBallotItemId = this.props.url.split("#")[1];
+        this.props.ballotItemLinkHasBeenClicked(selectedBallotItemId);
+      }
+    }}>
       <div>
         <Link to={this.props.url} className="BallotItem__summary__item__display-name" >
           <span className="BallotItem__summary__display-name">{labelInSentenceCase}</span>

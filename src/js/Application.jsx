@@ -406,7 +406,7 @@ export default class Application extends Component {
       console.log("voterGuideMode", voterGuideMode);
       let hideGettingStartedButtons = voterGuideShowGettingStartedNavigation;
 
-      return <div className="app-base" id="app-base-id">
+      return <div className={`app-base ${isCordova() && "cordova-base"}`} id="app-base-id">
         <ToastContainer closeButton={false} />
         { isCordova() && isIOS() && <div className={"ios7plus-spacer"} /> }
         <div className={headRoomSize}>
@@ -442,7 +442,7 @@ export default class Application extends Component {
     } else if (settingsMode) {
       // console.log("settingsMode", settingsMode);
 
-      return <div className="app-base" id="app-base-id">
+      return <div className={`app-base ${isCordova() && "cordova-base"}`} id="app-base-id">
         <ToastContainer closeButton={false} />
         { isCordova() && isIOS() && <div className={"ios7plus-spacer"} /> }
         <div className={headRoomSize}>
@@ -479,7 +479,7 @@ export default class Application extends Component {
     }
 
     // This handles other pages, like Welcome and the Ballot display
-    return <div className="app-base" id="app-base-id">
+    return <div className={`app-base ${isCordova() && "cordova-base"}`} id="app-base-id">
       <ToastContainer closeButton={false} />
       { isCordova() && isIOS() && <div className={"ios7plus-spacer"} /> }
       <div className={headRoomSize}>

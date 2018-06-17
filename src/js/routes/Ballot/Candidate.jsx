@@ -54,7 +54,12 @@ export default class Candidate extends Component {
 
     // Get the latest guides to follow for this candidate
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(this.props.params.candidate_we_vote_id, "CANDIDATE");
+
+    // June 2018: Avoid hitting this same api multiple times, if we already have the data
+    let voterGuidesForId = VoterGuideStore.getVoterGuideForOrganizationId(this.props.params.candidate_we_vote_id);
+    if (voterGuidesForId && Object.keys(voterGuidesForId).length > 0) {
+      VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(this.props.params.candidate_we_vote_id, "CANDIDATE");
+    }
 
     // Make sure supportProps exist for this Candidate when browser comes straight to candidate page
     SupportActions.retrievePositionsCountsForOneBallotItem(this.props.params.candidate_we_vote_id);
