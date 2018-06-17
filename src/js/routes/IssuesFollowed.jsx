@@ -28,7 +28,10 @@ export default class IssuesFollowed extends Component {
   }
 
   componentDidMount () {
-    IssueActions.issuesRetrieve();
+    if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
+      IssueActions.issuesRetrieve();
+    }
+
     this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange.bind(this));
   }
 
@@ -43,19 +46,17 @@ export default class IssuesFollowed extends Component {
   }
 
   getCurrentRoute () {
-    var current_route = "/issues_followed";
-    return current_route;
+    return "/issues_followed";
   }
 
   toggleEditMode () {
-    this.setState({edit_mode: !this.state.edit_mode});
+    this.setState({ edit_mode: !this.state.edit_mode });
   }
 
   onKeyDownEditMode (event) {
     let enterAndSpaceKeyCodes = [13, 32];
-    let scope = this;
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      scope.setState({edit_mode: !this.state.edit_mode});
+      this.setState({ edit_mode: !this.state.edit_mode });
     }
   }
 
@@ -69,7 +70,7 @@ export default class IssuesFollowed extends Component {
 
   render () {
     renderLog(__filename);
-    var issue_list = [];
+    let issue_list = [];
     if (this.state.issues_followed) {
       issue_list = this.state.issues_followed;
     }

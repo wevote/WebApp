@@ -8,6 +8,7 @@ import { capitalizeString } from "../../utils/textFormat";
 import GuideList from "../../components/VoterGuide/GuideList";
 import Helmet from "react-helmet";
 import IssueActions from "../../actions/IssueActions";
+import IssueStore from "../../stores/IssueStore";
 import LoadingWheel from "../../components/LoadingWheel";
 import { renderLog } from "../../utils/logging";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
@@ -33,6 +34,7 @@ export default class Candidate extends Component {
       candidate: {},
       candidate_we_vote_id: "",
       position_list_from_advisers_followed_by_voter: [],
+
       // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidate_we_vote_id, but we can't now
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
       // guidesToFollowList: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.candidate_we_vote_id)
@@ -40,13 +42,15 @@ export default class Candidate extends Component {
     };
   }
 
-  componentDidMount (){
+  componentDidMount () {
     // console.log("Candidate componentDidMount");
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     CandidateActions.candidateRetrieve(this.props.params.candidate_we_vote_id);
     CandidateActions.positionListForBallotItem(this.props.params.candidate_we_vote_id);
 
-    IssueActions.issuesRetrieveForElection(VoterStore.election_id());
+    if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
+      IssueActions.issuesRetrieveForElection(VoterStore.election_id());
+    }
 
     // Get the latest guides to follow for this candidate
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
@@ -57,7 +61,7 @@ export default class Candidate extends Component {
     OrganizationActions.organizationsFollowedRetrieve();
 
     // Display the candidate's name in the search box
-    var searchBoxText = this.state.candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
+    let searchBoxText = this.state.candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
     SearchAllActions.exitSearch(searchBoxText); // TODO: still not used :)
     AnalyticsActions.saveActionCandidate(VoterStore.election_id(), this.props.params.candidate_we_vote_id);
     this.setState({
@@ -93,7 +97,7 @@ export default class Candidate extends Component {
     this.voterGuideStoreListener.remove();
   }
 
-  onCandidateStoreChange (){
+  onCandidateStoreChange () {
     // console.log("Candidate onCandidateStoreChange");
     this.setState({
       candidate: CandidateStore.getCandidate(this.state.candidate_we_vote_id),
@@ -101,17 +105,20 @@ export default class Candidate extends Component {
     });
   }
 
-  onVoterGuideStoreChange (){
+  onVoterGuideStoreChange () {
     // console.log("Candidate onVoterGuideStoreChange");
     // When the voter_guides_to_follow_for_latest_ballot_item changes, trigger an update of the candidate so we can get an updated position_list
     // CandidateActions.candidateRetrieve(this.state.candidate_we_vote_id);
     CandidateActions.positionListForBallotItem(this.state.candidate_we_vote_id);
+
     // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
     SupportActions.retrievePositionsCountsForOneBallotItem(this.state.candidate_we_vote_id);
+
     // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidate_we_vote_id, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
     this.setState({
       voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
+
       // voter_guides_to_follow_for_this_ballot_item: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.state.candidate_we_vote_id),
     });
   }
@@ -120,9 +127,10 @@ export default class Candidate extends Component {
     renderLog(__filename);
     const electionId = VoterStore.election_id();
     const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to listen to related to this candidate.";
+
     // console.log("Candidate render, this.state.position_list_from_advisers_followed_by_voter: ", this.state.position_list_from_advisers_followed_by_voter);
 
-    if (!this.state.candidate || !this.state.candidate.ballot_item_display_name){
+    if (!this.state.candidate || !this.state.candidate.ballot_item_display_name) {
       // TODO DALE If the candidate we_vote_id is not valid, we need to update this with a notice
       return <div className="container-fluid well u-stack--md u-inset--md">
                 <div>{LoadingWheel}</div>
@@ -138,7 +146,7 @@ export default class Candidate extends Component {
 
     return <span>
       <Helmet title={titleText}
-              meta={[{"name": "description", "content": descriptionText}]}
+              meta={[{ "name": "description", "content": descriptionText }]}
               />
       <section className="card">
         <CandidateItem {...this.state.candidate}

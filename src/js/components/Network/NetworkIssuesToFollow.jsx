@@ -30,7 +30,10 @@ export default class NetworkIssuesToFollow extends Component {
 
   componentDidMount () {
     IssueActions.retrieveIssuesToFollow();
-    IssueActions.issuesRetrieve();
+    if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
+      IssueActions.issuesRetrieve();
+    }
+
     this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange.bind(this));
   }
 
@@ -84,8 +87,8 @@ export default class NetworkIssuesToFollow extends Component {
         grid="col-4 col-sm-3"
       />;
     });
-    var floatRight = {
-        float: "right"
+    let floatRight = {
+      float: "right",
     };
 
     return <div className="opinions-followed__container">

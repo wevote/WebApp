@@ -26,6 +26,7 @@ class IssueStore extends ReduceStore {
       issue_we_vote_ids_under_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, list: issue_we_vote_id. An org with that issue has a position in this election
       organization_we_vote_ids_linked_to_issue_dict: {}, // Dictionary with key: issue_we_vote_id, list: organization_we_vote_id that is linked to this issue
       all_cached_issues: {}, // Dictionary with key: issue_we_vote_id, and value: complete issue object
+      googleCivicElectionId: 0,
     };
   }
 
@@ -49,6 +50,7 @@ class IssueStore extends ReduceStore {
       // LEAVE DATA: issue_we_vote_ids_under_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, list: issue_we_vote_id. An org with that issue has a position in this election
       // LEAVE DATA: organization_we_vote_ids_linked_to_issue_dict: {}, // Dictionary with key: issue_we_vote_id, list: organization_we_vote_id that is linked to this issue
       // LEAVE DATA: all_cached_issues: {}, // Dictionary with key: issue_we_vote_id, and value: complete issue object
+      googleCivicElectionId: 0,
     };
   }
 
@@ -305,6 +307,10 @@ class IssueStore extends ReduceStore {
     }
   }
 
+  getPreviousGoogleCivicElectionId () {
+    return this.getState().googleCivicElectionId;
+  }
+
   reduce (state, action) {
     let all_cached_issues;
     let ballot_item_we_vote_id;
@@ -330,6 +336,7 @@ class IssueStore extends ReduceStore {
     let revisedState;
     let voterElectionId;
     let voter_guides;
+    let googleCivicElectionId;
 
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success)
@@ -374,6 +381,8 @@ class IssueStore extends ReduceStore {
         organization_name_support_list_for_each_ballot_item = state.organization_name_support_list_for_each_ballot_item;
         organization_name_oppose_list_for_each_ballot_item = state.organization_name_oppose_list_for_each_ballot_item;
         issue_score_for_each_ballot_item = state.issue_score_for_each_ballot_item;
+        googleCivicElectionId = action.res.google_civic_election_id === false ? state.googleCivicElectionId : action.res.google_civic_election_id;
+
         if (action.res.issue_score_list) {
           issue_score_list = action.res.issue_score_list;
           if (issue_score_list.length) {
@@ -434,7 +443,8 @@ class IssueStore extends ReduceStore {
           organization_we_vote_id_oppose_list_for_each_ballot_item: organization_we_vote_id_oppose_list_for_each_ballot_item,
           organization_name_support_list_for_each_ballot_item: organization_name_support_list_for_each_ballot_item,
           organization_name_oppose_list_for_each_ballot_item: organization_name_oppose_list_for_each_ballot_item,
-          issue_score_for_each_ballot_item: issue_score_for_each_ballot_item
+          issue_score_for_each_ballot_item: issue_score_for_each_ballot_item,
+          googleCivicElectionId: googleCivicElectionId,
         });
 
         // console.log("action.res.voter_issues_only:", action.res.voter_issues_only);

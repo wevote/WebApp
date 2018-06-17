@@ -6,23 +6,25 @@ import IssueFollowToggleSquare from "../Issues/IssueFollowToggleSquare";
 import IssueStore from "../../stores/IssueStore";
 import { renderLog } from "../../utils/logging";
 
-
 export default class NetworkIssuesFollowed extends Component {
   static propTypes = {
     children: PropTypes.object,
-    history: PropTypes.object
+    history: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
       edit_mode: false,
-      issues_followed: []
+      issues_followed: [],
     };
   }
 
   componentDidMount () {
-    IssueActions.issuesRetrieve();
+    if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
+      IssueActions.issuesRetrieve();
+    }
+
     this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange.bind(this));
   }
 
@@ -37,36 +39,34 @@ export default class NetworkIssuesFollowed extends Component {
   }
 
   getCurrentRoute () {
-    var current_route = "/issues_followed";
-    return current_route;
+    return "/issues_followed";
   }
 
   toggleEditMode () {
-    this.setState({edit_mode: !this.state.edit_mode});
+    this.setState({ edit_mode: !this.state.edit_mode });
   }
 
   onKeyDownEditMode (event) {
     let enterAndSpaceKeyCodes = [13, 32];
-    let scope = this;
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      scope.setState({edit_mode: !this.state.edit_mode});
+      this.setState({ edit_mode: !this.state.edit_mode });
     }
   }
 
   render () {
     renderLog(__filename);
-    let issue_list = [];
+    let issueList = [];
     if (this.state.issues_followed) {
-      issue_list = this.state.issues_followed;
+      issueList = this.state.issues_followed;
     }
 
     const ISSUES_TO_SHOW = 6;
 
-    let is_following = true;
-    let issue_count = 0;
-    const issue_list_for_display = issue_list.map((issue) => {
-      issue_count++;
-      if (issue_count > ISSUES_TO_SHOW) {
+    let isFollowing = true;
+    let issueCount = 0;
+    const issueListForDisplay = issueList.map((issue) => {
+      issueCount++;
+      if (issueCount > ISSUES_TO_SHOW) {
         return null;
       } else {
         return <IssueFollowToggleSquare
@@ -76,7 +76,7 @@ export default class NetworkIssuesFollowed extends Component {
           issue_description={issue.issue_description}
           issue_image_url={issue.issue_image_url}
           edit_mode={this.state.edit_mode}
-          is_following={is_following}
+          is_following={isFollowing}
           grid="col-sm-6"
           read_only />;
       }
@@ -88,7 +88,7 @@ export default class NetworkIssuesFollowed extends Component {
           <h1 className="h4">Issues You Are Following</h1>
           <div className="network-issues-list voter-guide-list card">
             <div className="card-child__list-group clearfix">
-              { issue_list_for_display }
+              { issueListForDisplay }
             </div>
             <div>
             {

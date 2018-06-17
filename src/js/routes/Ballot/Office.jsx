@@ -5,6 +5,7 @@ import { capitalizeString } from "../../utils/textFormat";
 import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import IssueActions from "../../actions/IssueActions";
+import IssueStore from "../../stores/IssueStore";
 import LoadingWheel from "../../components/LoadingWheel";
 import { renderLog } from "../../utils/logging";
 import OfficeActions from "../../actions/OfficeActions";
@@ -16,7 +17,7 @@ import VoterStore from "../../stores/VoterStore";
 // This is related to routes/VoterGuide/OrganizationVoterGuideOffice
 export default class Office extends Component {
   static propTypes = {
-    params: PropTypes.object.isRequired
+    params: PropTypes.object.isRequired,
   };
 
   constructor (props) {
@@ -27,16 +28,20 @@ export default class Office extends Component {
     };
   }
 
-  componentDidMount (){
-    IssueActions.issuesRetrieveForElection(VoterStore.election_id());
+  componentDidMount () {
+    if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
+      IssueActions.issuesRetrieveForElection(VoterStore.election_id());
+    }
 
     this.officeStoreListener = OfficeStore.addListener(this._onOfficeStoreChange.bind(this));
     let office = OfficeStore.getOffice(this.props.params.office_we_vote_id);
-		if ( !office || !office.ballot_item_display_name ) {
+
+    if (!office || !office.ballot_item_display_name) {
       OfficeActions.officeRetrieve(this.props.params.office_we_vote_id);
     } else {
-      this.setState({office: office});
+      this.setState({ office: office });
     }
+
     this.setState({
       office_we_vote_id: this.props.params.office_we_vote_id,
     });
@@ -48,11 +53,12 @@ export default class Office extends Component {
   componentWillReceiveProps (nextProps) {
     // When a new office is passed in, update this component to show the new data
     let office = OfficeStore.getOffice(nextProps.params.office_we_vote_id);
-		if ( !office || !office.ballot_item_display_name ) {
-      this.setState({office_we_vote_id: nextProps.params.office_we_vote_id});
+
+    if (!office || !office.ballot_item_display_name) {
+      this.setState({ office_we_vote_id: nextProps.params.office_we_vote_id });
       OfficeActions.officeRetrieve(nextProps.params.office_we_vote_id);
     } else {
-      this.setState({office: office, office_we_vote_id: nextProps.params.office_we_vote_id});
+      this.setState({ office: office, office_we_vote_id: nextProps.params.office_we_vote_id });
     }
 
     // Display the office name in the search box
@@ -65,8 +71,8 @@ export default class Office extends Component {
     this.officeStoreListener.remove();
   }
 
-  _onOfficeStoreChange (){
-    var office = OfficeStore.getOffice(this.state.office_we_vote_id);
+  _onOfficeStoreChange () {
+    let office = OfficeStore.getOffice(this.state.office_we_vote_id);
     this.setState({ office: office });
   }
 
@@ -81,13 +87,14 @@ export default class Office extends Component {
           <br />
         </div>;
     }
-    let office_name = capitalizeString(office.ballot_item_display_name);
-    let title_text = office_name + " - We Vote";
-    let description_text = "Choose who you support for " + office_name + "in the November Election";
+
+    let officeName = capitalizeString(office.ballot_item_display_name);
+    let titleText = officeName + " - We Vote";
+    let descriptionText = "Choose who you support for " + officeName + "in the November Election";
 
     return <div>
-      <Helmet title={title_text}
-              meta={[{"name": "description", "content": description_text}]}
+      <Helmet title={titleText}
+              meta={[{ "name": "description", "content": descriptionText }]}
               />
       <OfficeItem we_vote_id={office.we_vote_id}
                   kind_of_ballot_item="OFFICE"
