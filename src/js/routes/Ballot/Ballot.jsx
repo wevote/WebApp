@@ -230,7 +230,7 @@ export default class Ballot extends Component {
       wait_until_voter_sign_in_completes: wait_until_voter_sign_in_completes,
     });
 
-    if (this.props.location && this.props.location.hashvoterGuidesForId) {
+    if (this.props.location && this.props.location.hash) {
       // this.hashLinkScroll();
       this.setState({ lastHashUsedInLinkScroll: this.props.location.hash });
     }
