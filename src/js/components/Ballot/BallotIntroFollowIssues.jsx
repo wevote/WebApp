@@ -32,8 +32,9 @@ export default class BallotIntroFollowIssues extends Component {
   }
 
   componentWillMount () {
-    IssueActions.issuesRetrieve();
-    // IssueActions.retrieveIssuesToFollow();
+    if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
+      IssueActions.issuesRetrieve();
+    }
   }
 
   componentDidMount () {

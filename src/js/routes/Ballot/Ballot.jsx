@@ -184,7 +184,11 @@ export default class Ballot extends Component {
     // console.log("VoterStore.election_id: ", VoterStore.election_id());
     if (google_civic_election_id || ballot_location_shortcut || ballot_returned_we_vote_id) {
       // console.log("CALLING IssueActions.issuesRetrieveForElection");
-      IssueActions.issuesRetrieveForElection(google_civic_election_id, ballot_location_shortcut, ballot_returned_we_vote_id);
+
+      if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
+        IssueActions.issuesRetrieveForElection(google_civic_election_id, ballot_location_shortcut, ballot_returned_we_vote_id);
+      }
+
       this.setState({
         issues_retrieved_from_google_civic_election_id: google_civic_election_id,
         issues_retrieved_from_ballot_returned_we_vote_id: ballot_returned_we_vote_id,
@@ -196,6 +200,7 @@ export default class Ballot extends Component {
     // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
     // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
     SupportActions.voterAllPositionsRetrieve();
+
     // June 2018: Avoid hitting this same api multiple times, if we already have the data
     if (!SupportStore.isSupportAlreadyInCache()) {
       SupportActions.positionsCountForAllBallotItems(google_civic_election_id);
@@ -272,7 +277,7 @@ export default class Ballot extends Component {
 
     if (nextProps.location && nextProps.location.hash) {
       // this.hashLinkScroll();
-      this.setState({lastHashUsedInLinkScroll: nextProps.location.hash});
+      this.setState({ lastHashUsedInLinkScroll: nextProps.location.hash });
     }
   }
 
@@ -416,7 +421,11 @@ export default class Ballot extends Component {
           BallotStore.ballot_properties.ballot_returned_we_vote_id !== this.state.issues_retrieved_from_ballot_returned_we_vote_id ||
           BallotStore.ballot_properties.ballot_location_shortcut !== this.state.issues_retrieved_from_ballot_location_shortcut) {
         // console.log("onBallotStoreChange, Calling issuesRetrieveForElection");
-        IssueActions.issuesRetrieveForElection(BallotStore.ballot_properties.google_civic_election_id, BallotStore.ballot_properties.ballot_location_shortcut, BallotStore.ballot_properties.ballot_returned_we_vote_id);
+
+        if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
+          IssueActions.issuesRetrieveForElection(BallotStore.ballot_properties.google_civic_election_id, BallotStore.ballot_properties.ballot_location_shortcut, BallotStore.ballot_properties.ballot_returned_we_vote_id);
+        }
+
         this.setState({
           issues_retrieved_from_google_civic_election_id: parseInt(BallotStore.ballot_properties.google_civic_election_id, 10),
           issues_retrieved_from_ballot_returned_we_vote_id: BallotStore.ballot_properties.ballot_returned_we_vote_id,

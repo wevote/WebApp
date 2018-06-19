@@ -13,6 +13,8 @@ export default {
     });
   },
 
+  // June 15, 2018:  There is no functional difference in the JSON retured with this API, than with issuesRetrieve, and before today's change, we called the two API's 11 times
+  // in 3 seconds when navigating between Ballot and Candidate (and each time receiving the exact same return)
   issuesRetrieveForElection: function (google_civic_election_id, ballot_location_shortcut = "", ballot_returned_we_vote_id = "") {
     Dispatcher.loadEndpoint("issuesRetrieve", {
       ballot_location_shortcut: ballot_location_shortcut,
