@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
+import { cordovaDot, cordovaOpenSafariView, historyPush, isWebApp } from "../../utils/cordovaUtils";
 import { Modal } from "react-bootstrap";
 import { renderLog } from "../../utils/logging";
 import PollingPlaceLocator from "../../components/Ballot/PollingPlaceLocator";
@@ -22,19 +22,28 @@ export default class PollingPlaceLocatorModal extends Component {
 
   render () {
     renderLog(__filename);
-    return (
-      <Modal bsClass="background-brand-blue modal"
-             show={this.state.showPollingLocatorModal}
-             onHide={() => this._openPollingLocatorModal(this)}>
-        <Modal.Body>
-          <div className="intro-modal__close">
-            <a onClick={this._openPollingLocatorModal} className="intro-modal__close-anchor">
-              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
-            </a>
-          </div>
-          <div key={1}><PollingPlaceLocator /></div>
-        </Modal.Body>
-      </Modal>
-    );
+
+    if (isWebApp()) {
+      return (
+        <Modal bsClass="background-brand-blue modal"
+               show={this.state.showPollingLocatorModal}
+               onHide={() => this._openPollingLocatorModal(this)}>
+          <Modal.Body>
+            <div className="intro-modal__close">
+              <a onClick={this._openPollingLocatorModal} className="intro-modal__close-anchor">
+                <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close"/>
+              </a>
+            </div>
+            <div key={1}><PollingPlaceLocator/></div>
+          </Modal.Body>
+        </Modal>
+      );
+    } else {
+      return (
+        <div>
+          { cordovaOpenSafariView("https://s3-us-west-1.amazonaws.com/wevote/vip.html", 50) }
+        </div>
+      );
+    }
   }
 }
