@@ -298,15 +298,13 @@ export default class HeaderSecondaryNavBar extends Component {
                                    twitterIcon
                                    isExternal/>
             </span>
-            {/* February 2018, Facebook and Magic Email disabled for Cordova -- In this case it is the PollingLocator with the iFrame */}
-            { isWebApp() && <div>
+            <div>
               <SecondaryNavBarItem show={this._openPollingLocatorModal}
                                    titleDesktop="Polling Location"
                                    titleMobile="Vote"
                                    mapMarkerIcon/>
-              </div>
-            }
             </div>
+          </div>
         </header>
       }
       { BallotIntroFollowIssuesModal }

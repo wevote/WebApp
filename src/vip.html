@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!-- Used for the Voting Information Project in Cordova, without iFrames.
+  This file needs to be served from a webserver like https://s3-us-west-1.amazonaws.com/wevote/vip.html -->
+<html lang="en">
+<head>
+  <title>We Vote, Voting Information Project</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta charset="utf-8">
+  <script type="text/javascript" src="https://tool.votinginfoproject.org/app.js"></script>
+</head>
+<body>
+<div id="_vit"></div>
+<script type="text/javascript">
+  vit.load({
+    modal: true,
+    officialOnly: true,
+    language: 'en',
+    logo: 'https://wevote.us/img/global/logos/we-vote-button-235x235.png',
+    smallLogo: 'https://wevote.us/img/global/logos/we-vote-button-32x32.png',
+    colors: {
+      'text': '#012345',
+      'header': '#543210',
+    }
+  });
+</script>
+</body>
+</html>
