@@ -143,7 +143,7 @@ class BallotStore extends ReduceStore {
       if (ballot_item.kind_of_ballot_item === "OFFICE"){ //Offices
         return ballot_item.candidate_list.length > 0;
       } else { //MEASURES
-        return SupportStore.supportList[ballot_item.we_vote_id];
+        return SupportStore.supportList[ballot_item.we_vote_id] || SupportStore.opposeList[ballot_item.we_vote_id];
       }
     });
   }
