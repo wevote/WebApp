@@ -524,7 +524,7 @@ export default class FacebookBallotToFriendsModal extends Component {
   shareOnFacebook () {
     let emailData = FacebookStore.getFacebookData();
     let facebookAuthResponse = FacebookStore.getFacebookAuthResponse();
-    oAuthLog("shareOnFacebook", emailData, facebookAuthResponse);
+    oAuthLog("shareOnFacebook FacebookBallotToFriendsModal", emailData, facebookAuthResponse);
     if (facebookAuthResponse.facebookIsLoggedIn) {
       if (emailData.userId) {
         let api = isWebApp() ? window.FB : window.facebookConnectPlugin;  // eslint-disable-line no-undef
