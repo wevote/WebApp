@@ -108,7 +108,8 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
   }
 
   getOfficeLink () {
-    return "/office/" + this.state.office_we_vote_id + "/btvg/" + this.state.organization_we_vote_id;
+    if (this.state.office_we_vote_id) return "/office/" + this.state.office_we_vote_id + "/btvg/" + this.state.organization_we_vote_id;
+    else return "";
   }
 
   goToCandidateLink () {

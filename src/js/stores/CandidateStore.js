@@ -79,7 +79,7 @@ class CandidateStore extends ReduceStore {
         };
 
       case "candidatesRetrieve":
-        let contest_office_we_vote_id = '';
+        let contest_office_we_vote_id = "";
         let number_of_candidates_retrieved_by_office = state.number_of_candidates_retrieved_by_office;
         // Make sure we have information for the office the candidate is running for
         if (action.res.contest_office_we_vote_id) {

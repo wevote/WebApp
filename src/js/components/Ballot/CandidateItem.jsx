@@ -100,7 +100,8 @@ export default class CandidateItem extends Component {
   }
 
   getOfficeLink () {
-    return "/office/" + this.state.office_we_vote_id + "/b/btvg/";
+    if (this.state.office_we_vote_id) return "/office/" + this.state.office_we_vote_id + "/b/btvg/";
+    else return "";
   }
 
   goToCandidateLink () {

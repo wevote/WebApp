@@ -84,14 +84,14 @@ export default class BallotStatusMessage extends Component {
     let messageString = "";
     let ballotStatusStyle;
     let today = moment(new Date());
-    let isVotingDay = today.isSame(this.state.election_day_text, 'day');
+    let isVotingDay = today.isSame(this.state.election_day_text, "day");
 
     if (isVotingDay) {
       ballotStatusStyle = "alert-info";
       messageString = "It is Voting Day,  " +
         moment(this.state.election_day_text).format("MMM Do, YYYY") +
         ".  If you haven't already voted, please go vote!";
-      messageString += (!this.state.voter_specific_ballot_from_google_civic && this.state.ballot_location_chosen && this.state.ballot_location_display_name) ?
+      messageString += !this.state.voter_specific_ballot_from_google_civic && this.state.ballot_location_chosen && this.state.ballot_location_display_name ?
         "  Some items shown below may not have been on your official ballot." : "  Some items below may not have been on your official ballot.";
     } else if (this.state.election_is_upcoming) {
       ballotStatusStyle = "alert-info";
