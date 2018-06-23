@@ -15,6 +15,7 @@ import PositionSupportOpposeSnippet from "../Widgets/PositionSupportOpposeSnippe
 import { capitalizeString } from "../../utils/textFormat";
 import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
+import CandidateStore from "../../stores/CandidateStore";
 
 export default class OrganizationPositionItem extends Component {
   static propTypes = {
@@ -183,12 +184,14 @@ export default class OrganizationPositionItem extends Component {
     }
 
     // const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
-    var contest_office_name;
-    var political_party;
+    let contest_office_name;
+    let political_party;
     if (position.kind_of_ballot_item === "CANDIDATE") {
       contest_office_name = position.contest_office_name;
       political_party = position.ballot_item_political_party;
     }
+    //CHICHI
+    let { office_we_vote_id } = CandidateStore.getCandidate(position.ballot_item_we_vote_id);
     return <li className="position-item card-child">
 
       { is_candidate && !this.props.turnOffLogo ?
@@ -226,7 +229,11 @@ export default class OrganizationPositionItem extends Component {
             </div> :
             null }
           { position.kind_of_ballot_item === "CANDIDATE" && contest_office_name !== undefined ?
-            <OfficeNameText political_party={political_party} contest_office_name={contest_office_name} /> :
+            <OfficeNameText
+              political_party={political_party}
+              contest_office_name={contest_office_name}
+              office_link={"/office/" + office_we_vote_id}
+            /> :
             null
           }
           {/* show explicit position, if available, otherwise show rating */}

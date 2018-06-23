@@ -11,6 +11,7 @@ import PositionRatingSnippet from "../Widgets/PositionRatingSnippet";
 import PositionPublicToggle from "../Widgets/PositionPublicToggle";
 import PositionSupportOpposeSnippet from "../Widgets/PositionSupportOpposeSnippet";
 import SupportStore from "../../stores/SupportStore";
+import CandidateStore from "../../stores/CandidateStore";
 import { capitalizeString } from "../../utils/textFormat";
 
 export default class VoterPositionItem extends Component {
@@ -70,9 +71,8 @@ export default class VoterPositionItem extends Component {
 
   render () {
     renderLog(__filename);
-    let position = this.props.position;
 
-    let { stance_display_off, comment_text_off, popover_off, placement } = this.props;
+    let { position, stance_display_off, comment_text_off, popover_off, placement } = this.props;
     const { supportProps } = this.state;
 
     let statement_text;
@@ -124,6 +124,8 @@ export default class VoterPositionItem extends Component {
       contest_office_name = position.contest_office_name;
       political_party = position.ballot_item_political_party;
     }
+    //CHICHI
+    let { office_we_vote_id } = CandidateStore.getCandidate(position.ballot_item_we_vote_id);
     return <li className="position-item card-child">
       <BookmarkToggle we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
       <div className="card-child__media-object-anchor">
@@ -150,7 +152,11 @@ export default class VoterPositionItem extends Component {
           </Link>
           <br />
             { position.kind_of_ballot_item === "CANDIDATE" && contest_office_name !== undefined ?
-            <OfficeNameText political_party={political_party} contest_office_name={contest_office_name} /> :
+            <OfficeNameText
+              political_party={political_party}
+              contest_office_name={contest_office_name}
+              office_link={"/office/" + office_we_vote_id}
+            /> :
               null
             }
           {/* show explicit position, if available, otherwise show rating */}
