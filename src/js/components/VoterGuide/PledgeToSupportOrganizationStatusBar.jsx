@@ -46,10 +46,7 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
 
   render () {
     renderLog(__filename);
-    let turned_off = true; // We don't want to use the status bar yet
-    if (turned_off) {
-      return null;
-    }
+
     let number_of_supporters_goal = 0;
     let number_of_supporters = 0;
     let percent_complete = 0;
@@ -74,17 +71,18 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
         }
       }
       voter_has_pledged = this.state.voter_guide.voter_has_pledged;
-      //console.log("PledgeToSupportOrganizationStatusBar voter_has_pledged:", voter_has_pledged, ", voter_guide_we_vote_id: ", this.state.voter_guide.we_vote_id);
+      // console.log("PledgeToSupportOrganizationStatusBar voter_has_pledged:", voter_has_pledged, ", voter_guide_we_vote_id: ", this.state.voter_guide.we_vote_id);
     }
-    let show_progress_bar = number_of_supporters_goal > 1 && number_of_supporters > 1;
-
-    const progress_bar = <ProgressBar bsStyle={"danger"}
-                                      className="u-stack--xs"
-                                      striped
-                                      now={percent_complete}
-                                      label={`${number_of_supporters} supporters`} />;
+    // let show_progress_bar = number_of_supporters_goal > 1 && number_of_supporters > 1;
+    //
+    // const progress_bar = <ProgressBar bsStyle={"danger"}
+    //                                   className="u-stack--xs"
+    //                                   striped
+    //                                   now={percent_complete}
+    //                                   label={`${number_of_supporters} supporters`} />;
 
     return <span>
+      {/* 2018-5-31 turning off progress bar for now
       {show_progress_bar ? progress_bar : null}
       {number_of_supporters > 1 ? <div className="voter-guide__pledge-to-support__current-supporters u-stack--md">
           {number_of_supporters > 1 ? <span>{number_of_supporters} have pledged to stand with {this.props.organization.organization_name}. </span> : null }
@@ -94,12 +92,13 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
             null }
         </div> :
         null }
+        */}
       {voter_has_pledged ?
         <div className="voter-guide__pledge-to-support__thank-you-for-supporting u-stack--md">
           Thank you for standing with {this.props.organization.organization_name}!
-          {number_of_supporters === 1 && number_of_supporters_goal && voter_has_pledged && percent_complete < 100 ?
+          {/* number_of_supporters === 1 && number_of_supporters_goal && voter_has_pledged && percent_complete < 100 ?
             <span> Share with friends so we can get to {number_of_supporters_goal}.</span> :
-            null }
+            null */}
         </div> :
         null }
     </span>;
