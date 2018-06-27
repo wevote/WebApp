@@ -106,7 +106,6 @@ export default {
 
   getFacebookInvitableFriendsList: function (pictureWidth, pictureHeight) {
     let fbApiForInvitableFriends = `/me?fields=invitable_friends.limit(1000){name,id,picture.width(${pictureWidth}).height(${pictureHeight})}`;
-    //console.log("getFacebookInvitableFriendsList");
     this.facebookApi().api(
       fbApiForInvitableFriends,
       (response) => {
@@ -170,19 +169,22 @@ export default {
             let api = isWebApp() ? window.FB : window.facebookConnectPlugin;  // eslint-disable-line no-undef
             api.login(
               (res) => {
-                // Check if res.authResponse is null indicating cancelled login attempt
-                if (! res.authResponse) {
+                if (res.authResponse) {
+                  oAuthLog("FacebookActions loginSuccess userData: ", res);
+                  Dispatcher.dispatch({
+                    type: FacebookConstants.FACEBOOK_LOGGED_IN,
+                    data: res,
+                  });
+                } else {
+                  // Check if res.authResponse is null indicating cancelled login attempt
                   oAuthLog("FacebookActions loginFailure error response: ", res);
                   return;
                 }
-
-                oAuthLog("FacebookActions loginSuccess userData: ", res);
-                Dispatcher.dispatch({
-                  type: FacebookConstants.FACEBOOK_LOGGED_IN,
-                  data: res,
-                });
               },
-              {scope: "public_profile,email,user_friends"}
+
+              {
+                scope: "public_profile,email,user_friends",
+              }
             );
           }
         }
