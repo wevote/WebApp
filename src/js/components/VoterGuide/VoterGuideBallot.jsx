@@ -18,7 +18,9 @@ import cookies from "../../utils/cookies";
 import EditAddressInPlace from "../../components/Widgets/EditAddressInPlace";
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
+import getElementPosition from "../../utils/getElementPosition";
 import Helmet from "react-helmet";
+import isMobile from "../../utils/isMobile";
 import MeasureActions from "../../actions/MeasureActions";
 import MeasureModal from "../../components/Ballot/MeasureModal";
 import moment from "moment";
@@ -63,6 +65,7 @@ export default class VoterGuideBallot extends Component {
       },
       hide_intro_modal_from_url: 0,
       hide_intro_modal_from_cookie: 0,
+      lastHashUsedInLinkScroll: "",
       measure_for_modal: {
         voter_guides_to_follow_for_latest_ballot_item: [],
         position_list: [],
@@ -77,6 +80,7 @@ export default class VoterGuideBallot extends Component {
       waiting_for_new_ballot_items: false,
     };
 
+    this.ballotItemsCompressedReference = {};
     this.nullFunction = this.nullFunction.bind(this);
     this.pledgeToVoteWithVoterGuide = this.pledgeToVoteWithVoterGuide.bind(this);
     this.toggleCandidateModal = this.toggleCandidateModal.bind(this);
@@ -214,6 +218,10 @@ export default class VoterGuideBallot extends Component {
       voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.props.organization.organization_we_vote_id, VoterStore.election_id()),
       wait_until_voter_sign_in_completes: wait_until_voter_sign_in_completes,
     });
+
+    if (this.props.location && this.props.location.hash) {
+      this.setState({ lastHashUsedInLinkScroll: this.props.location.hash });
+    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -253,6 +261,10 @@ export default class VoterGuideBallot extends Component {
         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
         voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(nextProps.organization.organization_we_vote_id, VoterStore.election_id()),
       });
+    }
+
+    if (nextProps.location && nextProps.location.hash){
+      this.setState({lastHashUsedInLinkScroll: nextProps.location.hash});
     }
   }
 
@@ -461,8 +473,10 @@ export default class VoterGuideBallot extends Component {
     }
   }
 
-  componentDidUpdate () {
+  componentDidUpdate (prevProps, prevState) {
+    if (this.state.lastHashUsedInLinkScroll && this.state.lastHashUsedInLinkScroll !== prevState.lastHashUsedInLinkScroll) {
     this.hashLinkScroll();
+  }
   }
 
   // Needed to scroll to anchor tags based on hash in url (as done for bookmarks)
@@ -475,7 +489,14 @@ export default class VoterGuideBallot extends Component {
       setTimeout(() => {
         let id = hash.replace("#", "");
         const element = document.getElementById(id);
-        if (element) element.scrollIntoView();
+        if (element) {
+          const topPosition = getElementPosition(element).top;
+          if (isMobile()) {
+            window.scrollTo(0, topPosition - 104);
+          } else {
+            window.scrollTo(0, topPosition - 104);
+          }
+        }
       }, 0);
     }
   }
@@ -721,6 +742,7 @@ export default class VoterGuideBallot extends Component {
                                                                                     toggleMeasureModal={this.toggleMeasureModal}
                                                                                     updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
                                                                                     urlWithoutHash={this.props.location.pathname + this.props.location.search}
+                                                                                    ref={(ref) => {this.ballotItemsCompressedReference[item.we_vote_id] = ref;}}
                                                                                     {...item} />)}
                 </div>
               }

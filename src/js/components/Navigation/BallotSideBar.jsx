@@ -13,7 +13,12 @@ export default class BallotSideBar extends Component {
     displayTitle: PropTypes.bool,
     displaySubtitles: PropTypes.bool,
     onClick: PropTypes.func,
+    pathname: PropTypes.string,
     rawUrlVariablesString: PropTypes.string
+  };
+
+  static defaultProps = {
+    pathname: "/ballot",
   };
 
   constructor (props) {
@@ -39,31 +44,34 @@ export default class BallotSideBar extends Component {
   }
 
   _sortBallots (unsorted) {
-    // temporary array holds objects with position and sort-value
-    let mapped = unsorted.map((item, i) => {
-      return { index: i, value: item };
-    });
+    if (unsorted) {
+      // temporary array holds objects with position and sort-value
+      let mapped = unsorted.map((item, i) => {
+        return { index: i, value: item };
+      });
 
-    // sorting the mapped array based on local_ballot_order which came from the server
-    mapped.sort((a, b) => {
-      return (
-        +(
-          parseInt(a.value.local_ballot_order, 10) >
-          parseInt(b.value.local_ballot_order, 10)
-        ) ||
-        +(
-          parseInt(a.value.local_ballot_order, 10) ===
-          parseInt(b.value.local_ballot_order, 10)
-        ) - 1
-      );
-    });
+      // sorting the mapped array based on local_ballot_order which came from the server
+      mapped.sort((a, b) => {
+        return (
+          +(
+            parseInt(a.value.local_ballot_order, 10) >
+            parseInt(b.value.local_ballot_order, 10)
+          ) ||
+          +(
+            parseInt(a.value.local_ballot_order, 10) ===
+            parseInt(b.value.local_ballot_order, 10)
+          ) - 1
+        );
+      });
 
-    let orderedArray = [];
-    for (let element of mapped) {
-      orderedArray.push(element.value);
+      let orderedArray = [];
+      for (let element of mapped) {
+        orderedArray.push(element.value);
+      }
+      return orderedArray;
+    } else {
+      return {};
     }
-
-    return orderedArray;
   }
 
   handleClick () {
@@ -77,10 +85,10 @@ export default class BallotSideBar extends Component {
     let { rawUrlVariablesString } = this.props;
     if (rawUrlVariablesString && ballotWithAllItemIdsByFilterType && ballotWithAllItemIdsByFilterType.length > 0) {
       if (arrayContains(ballotItemWeVoteId, ballotWithAllItemIdsByFilterType)) {
-         return `/ballot${rawUrlVariablesString}#${ballotItemWeVoteId}`;
+         return `${this.props.pathname}${rawUrlVariablesString}#${ballotItemWeVoteId}`;
        }
     }
-    return `/ballot#${ballotItemWeVoteId}`;
+    return `${this.props.pathname}#${ballotItemWeVoteId}`;
   }
   render () {
     renderLog(__filename);

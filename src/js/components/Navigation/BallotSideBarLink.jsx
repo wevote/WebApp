@@ -27,7 +27,9 @@ export default class BallotSideBarLink extends Component {
       this.props.onClick.bind(this);
       if (this.props.ballotItemLinkHasBeenClicked && this.props.url){
         const selectedBallotItemId = this.props.url.split("#")[1];
-        this.props.ballotItemLinkHasBeenClicked(selectedBallotItemId);
+        if (selectedBallotItemId){
+          this.props.ballotItemLinkHasBeenClicked(selectedBallotItemId);
+        }
       }
     }}>
       <div>
