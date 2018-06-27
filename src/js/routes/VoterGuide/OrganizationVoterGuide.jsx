@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import BallotSideBar from "../../components/Navigation/BallotSideBar";
+import BallotStore from "../../stores/BallotStore";
 import { Button } from "react-bootstrap";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import { historyPush } from "../../utils/cordovaUtils";
@@ -27,13 +29,16 @@ export default class OrganizationVoterGuide extends Component {
     super(props);
     this.state = {
       active_route: "",
+      ballotWithAllItemsByFilterType: [],
       organization_we_vote_id: "",
       organization: {},
       voter: {},
       voterGuideWeVoteId: "",
       auto_follow_redirect_happening: false,
     };
+    this.organizationVoterGuideTabsReference = {};
     this.onEdit = this.onEdit.bind(this);
+    this.ballotItemLinkHasBeenClicked = this.ballotItemLinkHasBeenClicked.bind(this);
   }
 
   componentDidMount () {
@@ -78,6 +83,11 @@ export default class OrganizationVoterGuide extends Component {
     this.setState({
       active_route: this.props.active_route,
     });
+
+    let ballotWithAllItemsByFilterType = BallotStore.getBallotByFilterType();
+    if (ballotWithAllItemsByFilterType !== undefined) {
+      this.setState({ ballotWithAllItemsByFilterType });
+    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -105,7 +115,6 @@ export default class OrganizationVoterGuide extends Component {
 
       // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
     }
-
     // console.log("OrganizationVoterGuide, componentWillReceiveProps, nextProps.active_route: ", nextProps.active_route);
     if (nextProps.active_route && nextProps.active_route !== "") {
       this.setState({
@@ -141,6 +150,16 @@ export default class OrganizationVoterGuide extends Component {
     this.setState({
       voter: VoterStore.getVoter(),
     });
+  }
+
+  ballotItemLinkHasBeenClicked (selectedBallotItemId){
+    if (this.organizationVoterGuideTabsReference &&
+        this.organizationVoterGuideTabsReference.voterGuideBallotReference &&
+        this.organizationVoterGuideTabsReference.voterGuideBallotReference.ballotItemsCompressedReference &&
+        this.organizationVoterGuideTabsReference.voterGuideBallotReference.ballotItemsCompressedReference[selectedBallotItemId] &&
+        this.organizationVoterGuideTabsReference.voterGuideBallotReference.ballotItemsCompressedReference[selectedBallotItemId].ballotItem){
+          this.organizationVoterGuideTabsReference.voterGuideBallotReference.ballotItemsCompressedReference[selectedBallotItemId].ballotItem.toggleExpandDetails(true);
+    }
   }
 
   render () {
@@ -214,6 +233,12 @@ export default class OrganizationVoterGuide extends Component {
                 </div>
                 <br />
               </div>
+              {this.state.active_route === "ballot" || this.state.active_route === "" ?
+                <BallotSideBar displayTitle displaySubtitles
+                              rawUrlVariablesString={""}
+                              ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
+                              ballotWithAllItemsByFilterType={this.state.ballotWithAllItemsByFilterType}
+                              pathname={this.props.location.pathname}/> : null}
             </div>
 
             <div className="col-12 col-md-8">
@@ -221,7 +246,8 @@ export default class OrganizationVoterGuide extends Component {
                                           location={this.props.location}
                                           params={this.props.params}
                                           active_route={this.state.active_route}
-                                           />
+                                          ref={(ref) => { this.organizationVoterGuideTabsReference = ref; }}
+                                          />
             </div>
           </div>
         </div>

@@ -32,6 +32,8 @@ export default class OrganizationVoterGuideTabs extends Component {
       voter_guide_followed_list: [],
       voter_guide_followers_list: [],
     };
+
+  this.voterGuideBallotReference = {};
   }
 
   componentDidMount () {
@@ -185,7 +187,8 @@ export default class OrganizationVoterGuideTabs extends Component {
         voter_guide_component_to_display = <VoterGuideBallot organization={this.state.organization}
                                                              active_route={this.state.active_route}
                                                              location={this.props.location}
-                                                             params={this.props.params} />;
+                                                             params={this.props.params}
+                                                             ref={(ref) => {this.voterGuideBallotReference = ref; }} />;
         break;
       case "positions":
         voter_guide_component_to_display =
