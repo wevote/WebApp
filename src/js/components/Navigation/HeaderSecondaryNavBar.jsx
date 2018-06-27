@@ -270,43 +270,38 @@ export default class HeaderSecondaryNavBar extends Component {
                                    title="Issues"
                                    completed={this.state.ballot_intro_issues_completed} /> :
               null }
-            {/* Print disabled in Cordova */}
-            { isWebApp() &&
-              <SecondaryNavBarItem show={this._openPrintModal}
-                                   title="Print"
-                                   printIcon/>
-            }
+
+            <SecondaryNavBarItem show={this._openPrintModal}
+                                 title="Print"
+                                 iconPrint/>
+
             <SecondaryNavBarItem show={this._openEmailModal}
                                  title="Email"
-                                 emailIcon/>
-            {/* February 2018, Facebook and Magic Email disabled for Cordova */}
-            { isWebApp() && <div>
+                                 iconEmail/>
+
             <SecondaryNavBarItem show={this._openFacebookModal}
                                  title="Share Ballot"
-                                 facebookIcon
-                                    />
-            </div>}
+                                 iconFacebook/>
+
             <span className="visible-xs">
               <SecondaryNavBarItem url={twitterIntent}
                                    title="Tweet"
-                                   twitterIcon
+                                   iconTwitter
                                    isExternal/>
             </span>
             <span className="hidden-xs">
               <SecondaryNavBarItem url={twitterIntent}
                                    title="Tweet Ballot"
-                                   twitterIcon
+                                   iconTwitter
                                    isExternal/>
             </span>
-            {/* February 2018, Facebook and Magic Email disabled for Cordova -- In this case it is the PollingLocator with the iFrame */}
-            { isWebApp() && <div>
+            <div>
               <SecondaryNavBarItem show={this._openPollingLocatorModal}
                                    titleDesktop="Polling Location"
                                    titleMobile="Vote"
-                                   mapMarkerIcon/>
-              </div>
-            }
+                                   iconMapMarker/>
             </div>
+          </div>
         </header>
       }
       { BallotIntroFollowIssuesModal }

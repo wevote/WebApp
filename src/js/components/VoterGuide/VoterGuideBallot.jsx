@@ -38,6 +38,7 @@ import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 import { calculateBallotBaseUrl } from "../../utils/textFormat";
 import { renderLog } from "../../utils/logging";
+import { showToastSuccess } from "../../utils/showToast";
 
 import webAppConfig from "../../config";
 
@@ -517,7 +518,11 @@ export default class VoterGuideBallot extends Component {
 
   pledgeToVoteWithVoterGuide () {
     // console.log("VoterGuideBallot pledgeToVoteWithVoterGuide, this.state.voter_guide:", this.state.voter_guide);
+    console.log("VoterGuideBallot pledgeToVoteWithVoterGuide, this.state.voter_guide:", this.state.voter_guide);
+    let toast_message = `Now you match what ${this.state.organization.organization_name} supports or opposes`;
     VoterGuideActions.pledgeToVoteWithVoterGuide(this.state.voter_guide.we_vote_id);
+    // console.log("voter_guide we_vote_id ", VoterGuideActions.pledgeToVoteWithVoterGuide(voter_guide_we_vote_id)); //undefined
+    showToastSuccess(toast_message);
   }
 
   updateOfficeDisplayUnfurledTracker = (we_vote_id, status) => {
