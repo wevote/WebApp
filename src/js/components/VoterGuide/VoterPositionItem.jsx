@@ -70,9 +70,8 @@ export default class VoterPositionItem extends Component {
 
   render () {
     renderLog(__filename);
-    let position = this.props.position;
 
-    let { stance_display_off, comment_text_off, popover_off, placement } = this.props;
+    let { position, stance_display_off, comment_text_off, popover_off, placement } = this.props;
     const { supportProps } = this.state;
 
     let statement_text;
