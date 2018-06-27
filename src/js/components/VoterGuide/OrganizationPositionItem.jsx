@@ -183,8 +183,8 @@ export default class OrganizationPositionItem extends Component {
     }
 
     // const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
-    var contest_office_name;
-    var political_party;
+    let contest_office_name;
+    let political_party;
     if (position.kind_of_ballot_item === "CANDIDATE") {
       contest_office_name = position.contest_office_name;
       political_party = position.ballot_item_political_party;

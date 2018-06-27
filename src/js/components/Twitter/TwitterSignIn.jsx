@@ -10,12 +10,7 @@ import TwitterActions from "../../actions/TwitterActions";
 
 const returnURL = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + "/twitter_sign_in";
 
-export default class TwitterSignIn extends Component {
-  static propTypes = {
-    buttonText: PropTypes.string,
-    className: PropTypes.string,
-  };
-
+class TwitterSignIn extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -150,3 +145,11 @@ export default class TwitterSignIn extends Component {
     </Button>;
   }
 }
+
+TwitterSignIn.propTypes = {
+  buttonText: PropTypes.string,
+  className: PropTypes.string,
+};
+
+export default TwitterSignIn;
+
