@@ -114,7 +114,7 @@ export default class PositionPublicToggle extends Component {
       inTestMode = true;
     }
 
-    let { isPublicPosition } = this.props.supportProps;
+    let { is_public_position: isPublicPosition } = this.props.supportProps;
     let visibilityPublic = "Currently visible to public";
     let visibilityFriendsOnly = "Currently only shared with We Vote friends";
     const publicIcon = <Icon alt="Visible to Public" name="public-icon" color="#fff" width={18} height={18} />;
