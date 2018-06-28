@@ -563,7 +563,8 @@ export default class VoterGuideBallot extends Component {
     const election_name = BallotStore.currentBallotElectionName;
     const election_day_text = BallotStore.currentBallotElectionDate;
     const polling_location_we_vote_id_source = BallotStore.currentBallotPollingLocationSource;
-    let ballot_returned_admin_edit_url = webAppConfig.WE_VOTE_SERVER_ROOT_URL + "b/" + polling_location_we_vote_id_source + "/list_edit_by_polling_location/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
+    let organization_admin_url = webAppConfig.WE_VOTE_SERVER_ROOT_URL + "org/" + this.state.organization.organization_we_vote_id + "/pos/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
+    let ballot_returned_admin_edit_url = webAppConfig.WE_VOTE_SERVER_ROOT_URL + "pl/" + polling_location_we_vote_id_source + "/summary/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
 
     const emptyBallotButton = this.state.filter_type !== "none" && !missing_address ?
         <span>
@@ -748,13 +749,23 @@ export default class VoterGuideBallot extends Component {
               }
               </div>
 
-              {/* Show links to this candidate in the admin tools */}
+              {/* Show link to this organization in the admin tools */}
+              { this.state.voter && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer)
+                && this.props.organization && this.props.organization.organization_we_vote_id ?
+                <div className="u-wrap-links hidden-print">Admin link:
+                  <OpenExternalWebSite url={organization_admin_url}
+                                       target="_blank"
+                                       body={<span>Open this organization in Admin interface ("{this.props.organization.organization_we_vote_id}")</span>} />
+                </div> : null
+              }
+
+              {/* Show links to the polling location this was copied from in the admin tools */}
               { this.state.voter && polling_location_we_vote_id_source && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ?
-                <span className="u-wrap-links hidden-print">Admin:
+                <div className="u-wrap-links hidden-print">Admin link:
                   <OpenExternalWebSite url={ballot_returned_admin_edit_url}
                                        target="_blank"
-                                       body={<span>Ballot copied from polling location "{polling_location_we_vote_id_source}"</span>} />
-                </span> : null
+                                       body={<span>This ballot copied from polling location "{polling_location_we_vote_id_source}"</span>} />
+                </div> : null
               }
             </div>
           </div>

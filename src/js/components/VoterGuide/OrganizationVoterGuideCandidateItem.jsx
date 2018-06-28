@@ -24,6 +24,8 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     commentButtonHide: PropTypes.bool,
     hideOpinionsToFollow: PropTypes.bool,
     hidePositionStatement: PropTypes.bool,
+    link_to_ballot_item_page: PropTypes.bool,
+    linkToOfficePage: PropTypes.bool,
     organization_we_vote_id: PropTypes.string.isRequired,
     party: PropTypes.string,
     position_list: PropTypes.array,
@@ -32,18 +34,17 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     twitter_description: PropTypes.string,
     twitter_followers_count: PropTypes.number,
     twitter_handle: PropTypes.string,
-    we_vote_id: PropTypes.string.isRequired, // This is the candidate_we_vote_id
-    link_to_ballot_item_page: PropTypes.bool,
+    we_vote_id: PropTypes.string.isRequired, // This is the candidateWeVoteId
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      candidate_we_vote_id: "",
+      candidateWeVoteId: "",
       hide_position_statement: this.props.hidePositionStatement,
       maximum_organization_display: 5,
-      office_we_vote_id: "",
-      organization_we_vote_id: "",
+      officeWeVoteId: "",
+      organizationWeVoteId: "",
       transitioning: false,
     };
     this.getCandidateLink = this.getCandidateLink.bind(this);
@@ -66,17 +67,17 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
 
     // console.log("OrganizationVoterGuideCandidateItem, this.props:", this.props);
     if (this.props.we_vote_id) {
-      // If here we want to get the candidate so we can get the office_we_vote_id
+      // If here we want to get the candidate so we can get the officeWeVoteId
       let candidate = CandidateStore.getCandidate(this.props.we_vote_id);
       this.setState({
-        candidate_we_vote_id: this.props.we_vote_id,
-        office_we_vote_id: candidate.office_we_vote_id,
+        candidateWeVoteId: this.props.we_vote_id,
+        officeWeVoteId: candidate.contest_office_we_vote_id,
       });
     }
 
     if (this.props.organization_we_vote_id) {
       this.setState({
-        organization_we_vote_id: this.props.organization_we_vote_id,
+        organizationWeVoteId: this.props.organization_we_vote_id,
       });
     }
   }
@@ -92,7 +93,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
   }
 
   onSupportStoreChange () {
-    var supportProps = SupportStore.get(this.state.candidate_we_vote_id);
+    let supportProps = SupportStore.get(this.state.candidateWeVoteId);
     if (supportProps !== undefined) {
       this.setState({ supportProps: supportProps, transitioning: false });
     }
@@ -104,21 +105,24 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
 
   getCandidateLink () {
     // If here, we assume the voter is on the Office page
-    return "/candidate/" + this.state.candidate_we_vote_id + "/bto/" + this.state.organization_we_vote_id;
+    return "/candidate/" + this.state.candidateWeVoteId + "/bto/" + this.state.organizationWeVoteId;
   }
 
   getOfficeLink () {
-    if (this.state.office_we_vote_id) return "/office/" + this.state.office_we_vote_id + "/btvg/" + this.state.organization_we_vote_id;
-    else return "";
+    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
+      return "/office/" + this.state.officeWeVoteId + "/btvg/" + this.state.organizationWeVoteId;
+    } else {
+      return "/office/" + this.state.officeWeVoteId + "/b/btdb/";
+    }
   }
 
   goToCandidateLink () {
     // If here, we assume the voter is on the Office page
-    historyPush("/candidate/" + this.state.candidate_we_vote_id + "/bto/" + this.state.organization_we_vote_id);
+    historyPush(this.getCandidateLink());
   }
 
   goToOfficeLink () {
-    historyPush("/office/" + this.state.office_we_vote_id + "/btvg/" + this.state.organization_we_vote_id);
+    historyPush(this.getOfficeLink());
   }
 
   render () {
@@ -133,7 +137,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
       // twitter_handle,
     } = this.props;
 
-    let candidate_we_vote_id = this.props.we_vote_id;
+    let candidateWeVoteId = this.props.we_vote_id;
 
     let candidate_photo_url;
     if (this.props.showLargeImage) {
@@ -153,18 +157,17 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     } else {
       candidate_photo_url_html = <i className="card-main__avatar icon-office-child icon-main icon-icon-person-placeholder-6-1" />;
     }
-
     // let positions_in_your_network = SupportStore.get(we_vote_id) && ( SupportStore.get(we_vote_id).oppose_count || SupportStore.get(we_vote_id).support_count);
 
-    let one_candidate = CandidateStore.getCandidate(candidate_we_vote_id);
-    let candidateSupportStore = SupportStore.get(candidate_we_vote_id);
-    let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidate_we_vote_id);
-    let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidate_we_vote_id);
+    let one_candidate = CandidateStore.getCandidate(candidateWeVoteId);
+    let candidateSupportStore = SupportStore.get(candidateWeVoteId);
+    let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidateWeVoteId);
+    let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidateWeVoteId);
 
     let positions_display_raccoon = <div>
       <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
         {/* Positions in Your Network and Possible Voter Guides to Follow */}
-        <ItemSupportOpposeRaccoon ballotItemWeVoteId={candidate_we_vote_id}
+        <ItemSupportOpposeRaccoon ballotItemWeVoteId={candidateWeVoteId}
                                   ballot_item_display_name={one_candidate.ballot_item_display_name}
                                   goToCandidate={this.goToCandidateLink}
                                   maximumOrganizationDisplay={8}
@@ -213,11 +216,10 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
               this.goToCandidateLink : null }
           >
           { contest_office_name ?
-          <OfficeNameText
-            political_party={party}
-            contest_office_name={contest_office_name}
-            office_link={this.getOfficeLink()}
-          /> :
+            <OfficeNameText political_party={party}
+                            contest_office_name={contest_office_name}
+                            office_link={ this.props.linkToOfficePage ? this.getOfficeLink() : ""}
+            /> :
             null
           }
           </p>

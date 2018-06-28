@@ -44,7 +44,7 @@ export default class PledgeToSupportOrganizationButton extends Component {
     this.setState({
       voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id())
     });
-    console.log("voter_guide object ", this.state.voter_guide.we_vote_id);
+    // console.log("voter_guide object ", this.state.voter_guide.we_vote_id);
   }
 
   render () {
