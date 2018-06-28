@@ -226,7 +226,9 @@ export default class OrganizationPositionItem extends Component {
             </div> :
             null }
           { position.kind_of_ballot_item === "CANDIDATE" && contest_office_name !== undefined ?
-            <OfficeNameText political_party={political_party} contest_office_name={contest_office_name} /> :
+            <OfficeNameText political_party={political_party}
+                            contest_office_name={contest_office_name}
+            /> :
             null
           }
           {/* show explicit position, if available, otherwise show rating */}

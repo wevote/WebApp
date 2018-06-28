@@ -33,6 +33,7 @@ export default class Candidate extends Component {
     this.state = {
       candidate: {},
       candidate_we_vote_id: "",
+      organizationWeVoteId: "",
       position_list_from_advisers_followed_by_voter: [],
 
       // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidate_we_vote_id, but we can't now
@@ -45,8 +46,20 @@ export default class Candidate extends Component {
   componentDidMount () {
     // console.log("Candidate componentDidMount");
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
-    CandidateActions.candidateRetrieve(this.props.params.candidate_we_vote_id);
-    CandidateActions.positionListForBallotItem(this.props.params.candidate_we_vote_id);
+
+    let organizationWeVoteId = "";
+    if (this.props.params) {
+      CandidateActions.candidateRetrieve(this.props.params.candidate_we_vote_id);
+      CandidateActions.positionListForBallotItem(this.props.params.candidate_we_vote_id);
+
+      organizationWeVoteId = this.props.params.organization_we_vote_id || "";
+      // If needed, activate this
+      // organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      // if (organizationWeVoteId && organizationWeVoteId !== "" && !organization.organization_we_vote_id) {
+      //   // Retrieve the organization object
+      //   OrganizationActions.organizationRetrieve(organizationWeVoteId);
+      // }
+    }
 
     if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
       IssueActions.issuesRetrieveForElection(VoterStore.election_id());
@@ -71,6 +84,7 @@ export default class Candidate extends Component {
     AnalyticsActions.saveActionCandidate(VoterStore.election_id(), this.props.params.candidate_we_vote_id);
     this.setState({
       candidate_we_vote_id: this.props.params.candidate_we_vote_id,
+      organizationWeVoteId: organizationWeVoteId,
       position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(this.props.params.candidate_we_vote_id),
       voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
     });
@@ -157,7 +171,9 @@ export default class Candidate extends Component {
         <CandidateItem {...this.state.candidate}
                        commentButtonHide
                        contest_office_name={this.state.candidate.contest_office_name}
+                       organizationWeVoteId={this.state.organizationWeVoteId}
                        hideOpinionsToFollow
+                       linkToOfficePage
                        position_list={this.state.position_list_from_advisers_followed_by_voter}
                        showLargeImage
                        showPositionsInYourNetworkBreakdown
