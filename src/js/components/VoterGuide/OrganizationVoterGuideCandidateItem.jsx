@@ -105,15 +105,19 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
 
   getCandidateLink () {
     // If here, we assume the voter is on the Office page
-    return "/candidate/" + this.state.candidateWeVoteId + "/bto/" + this.state.organizationWeVoteId;
+    if (this.state.organizationWeVoteId) {
+      return "/candidate/" + this.state.candidateWeVoteId + "/bto/" + this.state.organizationWeVoteId; // back-to-office
+    } else {
+      return "/candidate/" + this.state.candidateWeVoteId + "/b/btdb/"; // back-to-default-ballot
+    }
   }
 
   getOfficeLink () {
     if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
-      return "/office/" + this.state.officeWeVoteId + "/btvg/" + this.state.organizationWeVoteId;
-    } else {
-      return "/office/" + this.state.officeWeVoteId + "/b/btdb/";
-    }
+      return "/office/" + this.state.officeWeVoteId + "/btvg/" + this.state.organizationWeVoteId; // back-to-voter-guide
+    } else if (this.state.officeWeVoteId) {
+      return "/office/" + this.state.officeWeVoteId + "/b/btdb/"; // back-to-default-ballot
+    } else return "";
   }
 
   goToCandidateLink () {

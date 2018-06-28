@@ -750,8 +750,8 @@ export default class VoterGuideBallot extends Component {
               </div>
 
               {/* Show link to this organization in the admin tools */}
-              { this.state.voter && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer)
-                && this.props.organization && this.props.organization.organization_we_vote_id ?
+              { this.state.voter && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) &&
+                this.props.organization && this.props.organization.organization_we_vote_id ?
                 <div className="u-wrap-links hidden-print">Admin link:
                   <OpenExternalWebSite url={organization_admin_url}
                                        target="_blank"
