@@ -64,27 +64,13 @@ export default class OfficeItemCompressedRaccoon extends Component {
   }
 
   componentDidMount () {
+    this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
-    if (this.props.candidate_list && this.props.candidate_list.length) {
-      // console.log("getNumberOfCandidatesRetrievedByOffice:", CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id));
-      if (!CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id)) {
-        // console.log("Calling candidatesRetrieve: ", this.props.we_vote_id);
-        CandidateActions.candidatesRetrieve(this.props.we_vote_id);
-      }
-      // this.props.candidate_list.forEach( function (candidate) {
-      //   if (candidate && candidate.hasOwnProperty("we_vote_id") && !CandidateStore.isCandidateInStore(candidate.we_vote_id)) {
-      //     // Slows down the browser too much when run for all candidates
-      //     // VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidate.we_vote_id, "CANDIDATE");
-      //   }
-      // });
-      this.setState({
-        candidateList: this.props.candidate_list,
-      });
-    }
+    this.onCandidateStoreChange();
     if (this.props.organization && this.props.organization.organization_we_vote_id) {
       this.setState({
         organization: this.props.organization,
@@ -122,10 +108,30 @@ export default class OfficeItemCompressedRaccoon extends Component {
   }
 
   componentWillUnmount () {
+    this.candidateStoreListener.remove();
     this.issueStoreListener.remove();
     this.organizationStoreListener.remove();
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
+  }
+
+  onCandidateStoreChange () {
+    if (this.props.candidate_list && this.props.candidate_list.length) {
+      // console.log("onCandidateStoreChange");
+      // console.log("getNumberOfCandidatesRetrievedByOffice:", CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id));
+      if (!CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id)) {
+        // console.log("Calling candidatesRetrieve: ", this.props.we_vote_id);
+        CandidateActions.candidatesRetrieve(this.props.we_vote_id);
+      }
+      let new_candidate_list = [];
+      this.props.candidate_list.forEach( candidate => {
+        new_candidate_list.push(CandidateStore.getCandidate(candidate.we_vote_id));
+      });
+      this.setState({
+        candidateList: new_candidate_list,
+      });
+      // console.log(this.props.candidate_list);
+    }
   }
 
   onIssueStoreChange () {
@@ -406,8 +412,9 @@ export default class OfficeItemCompressedRaccoon extends Component {
             let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidate_we_vote_id);
             let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidate_we_vote_id);
             let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + ". " : "";
-            let candidate_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
-            let candidate_text = candidate_party_text + candidate_description_text;
+            let candidate_twitter_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
+            let ballotpediaCandidateSummary = one_candidate.ballotpedia_candidate_summary && one_candidate.ballotpedia_candidate_summary.length ? " " + one_candidate.ballotpedia_candidate_summary : "";
+            let candidate_text = candidate_party_text + candidate_twitter_description_text + ballotpediaCandidateSummary;
 
             let positions_display_raccoon = <div>
               <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
