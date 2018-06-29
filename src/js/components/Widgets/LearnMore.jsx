@@ -7,6 +7,7 @@ export default class LearnMore extends Component {
   static propTypes = {
     text_to_display: PropTypes.node.isRequired,
     show_more_text: PropTypes.node,
+    learn_more_link: PropTypes.string,
     learn_more_text: PropTypes.node,
     num_of_lines: PropTypes.number,
     on_click: PropTypes.func,
@@ -40,7 +41,7 @@ export default class LearnMore extends Component {
 
   render () {
     renderLog(__filename);
-    let { text_to_display, show_more_text, num_of_lines, learn_more_text, on_click } = this.props;
+    let { text_to_display, show_more_text, num_of_lines, learn_more_link, learn_more_text, on_click } = this.props;
     // default prop valuess
     if (num_of_lines === undefined) {
       num_of_lines = 1;
@@ -113,11 +114,19 @@ export default class LearnMore extends Component {
       </span>;
     } else {
       return <span tabIndex="0"> {expanded_text_to_display}&nbsp;&nbsp;
-        <a tabIndex="0"
-          onClick={on_click}
-          onKeyDown={this.onKeyDown.bind(this)}>
-          {learn_more_text}
-        </a>
+        { learn_more_link ?
+          <a href={learn_more_link}
+            target="_blank"
+            onKeyDown={this.onKeyDown.bind(this)}>
+            {learn_more_text}&nbsp;
+            <i className="fa fa-external-link" />
+          </a> :
+          <a tabIndex="0"
+            onClick={on_click}
+            onKeyDown={this.onKeyDown.bind(this)}>
+            {learn_more_text}
+          </a>
+        }
       </span>;
     }
   }
