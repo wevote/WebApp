@@ -313,7 +313,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   scrollLeft (visible_tag) {
-    const element = findDOMNode(this.refs[`${this.state.ballotItem.we_vote_id}-org-list-${visible_tag}`]);
+    const element = findDOMNode(this.refs[`${this.state.ballot_item_we_vote_id}-org-list-${visible_tag}`]);
     let position = $(element).scrollLeft();
     let width = Math.round($(element).width());
     $(element).animate({
@@ -335,7 +335,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   scrollRight (visible_tag) {
-    const element = findDOMNode(this.refs[`${this.state.ballotItem.we_vote_id}-org-list-${visible_tag}`]);
+    const element = findDOMNode(this.refs[`${this.state.ballot_item_we_vote_id}-org-list-${visible_tag}`]);
     let position = $(element).scrollLeft();
     let width = Math.round($(element).width());
     $(element).animate({
@@ -357,8 +357,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   setScrollState () {
-    const desktop_list = findDOMNode(this.refs[`${this.state.ballotItem.we_vote_id}-org-list-desktop`]);
-    const mobile_list = findDOMNode(this.refs[`${this.state.ballotItem.we_vote_id}-org-list-mobile`]);
+    const desktop_list = findDOMNode(this.refs[`${this.state.ballot_item_we_vote_id}-org-list-desktop`]);
+    const mobile_list = findDOMNode(this.refs[`${this.state.ballot_item_we_vote_id}-org-list-mobile`]);
     let desktop_list_visible_width = $(desktop_list).width();
     let desktop_list_width = $(desktop_list).children().eq(0).children().eq(0).width();
     let mobile_list_visible_width = $(mobile_list).width();
@@ -780,7 +780,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
           }
           <div className="network-positions-stacked__support-list__container-wrap">
             {/* Show a break-down of the current positions in your network */}
-            <span ref={`${this.state.ballotItem.we_vote_id}-org-list-desktop`} className="network-positions-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs hidden-xs">
+            <span ref={`${this.state.ballot_item_we_vote_id}-org-list-desktop`} className="network-positions-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs hidden-xs">
               <ul className="network-positions-stacked__support-list__items">
                 <li className="network-positions-stacked__support-list__item">
                   { positionsLabel }
@@ -811,7 +811,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                 </li>
               </ul>
             </span>
-            <span ref={`${this.state.ballotItem.we_vote_id}-org-list-mobile`} className="network-positions-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs visible-xs">
+            <span ref={`${this.state.ballot_item_we_vote_id}-org-list-mobile`} className="network-positions-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs visible-xs">
               <ul className="network-positions-stacked__support-list__items">
                 <li className="network-positions-stacked__support-list__item">
                   { positionsLabel }
