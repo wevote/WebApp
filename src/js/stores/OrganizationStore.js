@@ -192,7 +192,8 @@ class OrganizationStore extends ReduceStore {
     new_organization.friends_position_list_for_one_election = prior_copy_of_organization.friends_position_list_for_one_election;
     new_organization.friends_position_list_for_all_except_one_election = prior_copy_of_organization.friends_position_list_for_all_except_one_election;
     new_organization.friends_position_list = prior_copy_of_organization.friends_position_list;
-    new_organization.organization_banner_url = prior_copy_of_organization.organization_banner_url;
+    // The following line was removed because it prevented the rendering of an organization's banner. Issue #1582
+    // new_organization.organization_banner_url = prior_copy_of_organization.organization_banner_url;
     new_organization.position_list_for_one_election = prior_copy_of_organization.position_list_for_one_election;
     new_organization.position_list_for_all_except_one_election = prior_copy_of_organization.position_list_for_all_except_one_election;
     new_organization.position_list = prior_copy_of_organization.position_list;
