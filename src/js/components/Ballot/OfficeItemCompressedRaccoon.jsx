@@ -408,6 +408,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
         { this.state.display_office_unfurled ?
           <span>{limitedCandidateList.map((one_candidate) => {
             let candidate_we_vote_id = one_candidate.we_vote_id;
+            if (!candidate_we_vote_id) { return null; }
             let candidateSupportStore = SupportStore.get(candidate_we_vote_id);
             let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidate_we_vote_id);
             let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidate_we_vote_id);
