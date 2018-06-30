@@ -6,9 +6,10 @@ import CandidateStore from "../../stores/CandidateStore";
 import { historyPush } from "../../utils/cordovaUtils";
 import ImageHandler from "../ImageHandler";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
+import LearnMore from "../Widgets/LearnMore";
 import { renderLog } from "../../utils/logging";
 import OfficeNameText from "../Widgets/OfficeNameText";
-import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
+// import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
 import SupportStore from "../../stores/SupportStore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import { abbreviateNumber, numberWithCommas } from "../../utils/textFormat";
@@ -218,15 +219,20 @@ export default class CandidateItem extends Component {
           </p>
           { twitter_description || ballotpedia_candidate_summary ?
             <div className={ "u-stack--sm" + (this.props.link_to_ballot_item_page ? " card-main__description-container--truncated" : " card-main__description-container")}>
-              <div>
-                <ParsedTwitterDescription twitter_description={twitter_description} />
+              <div className="card-main__description">
+                <LearnMore
+                  learn_more_text="Read more on Ballotpedia"
+                  num_of_lines={3}
+                  learn_more_link={ballotpedia_candidate_url}
+                  text_to_display={ twitter_description && ballotpedia_candidate_summary ? twitter_description + " " + ballotpedia_candidate_summary : twitter_description + ballotpedia_candidate_summary } />
+                {/* <ParsedTwitterDescription twitter_description={twitter_description} />
                 <span className="card-main__description">
                   { ballotpedia_candidate_summary }
                   { ballotpedia_candidate_url ?
                     <Link to={ballotpedia_candidate_url}>&nbsp;Read more</Link> :
                     null
                   }
-                </span>
+                </span> */}
               </div>
               <Link to={this.getCandidateLink}>
                 { this.props.link_to_ballot_item_page ? <span className="card-main__read-more-pseudo" /> : null }
