@@ -92,37 +92,16 @@ $space-search-right: 10%;
 }
 
 .page-logo {
-  white-space: nowrap;
-  margin: $space-none $space-md $space-none $space-none; // zeros to override Bootstrap h4
-  margin-top: -$space-sm; // stylelint-disable-line sh-waqar/declaration-use-variable
-  margin-bottom: -$space-sm; // stylelint-disable-line sh-waqar/declaration-use-variable
-  padding: $space-sm;
-  &,
-  &:hover,
-  &:focus,
-  &:active {
-    color: $white;
-    text-decoration: none;
-  }
-  &:hover {
-    text-shadow: 0 0 3px rgba($white, .3);
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 120px;
 
-  &__version {
-    color: $white;
-    opacity: .5;
-    font-size: .7em;
-    margin-left: $space-xs;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-
-  @include breakpoints(max mid-small) {
+  @include breakpoints(max medium) {
     display: none;
-  }
-
-  @include breakpoints(mid-small) {
-    display: block;
+    width: 45px;
+    padding: $space-none;
+    margin: $space-none $space-none $space-xs $space-none;
   }
 }
 

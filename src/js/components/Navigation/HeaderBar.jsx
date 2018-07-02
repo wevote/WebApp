@@ -163,17 +163,16 @@ export default class HeaderBar extends Component {
       <header className={ isWebApp() ? "page-header" : "page-header page-header__cordova" }>
         {!weVoteBrandingOff && isWebApp() &&
           <span>
-            <Link to="/welcome" className="page-logo page-logo-full-size h4 hidden-xs">
-              We Vote
-              <span className="page-logo__version"> alpha</span>
+            <Link to="/welcome" className={ "page-logo page-logo-full-size hidden-xs"}>
+              <img src={cordovaDot("/img/global/svg-icons/we-vote-logo-horizontal-color.svg")} />
             </Link>
             <span>
               { showFullNavigation && isWebApp() ?
-                <Link to="/welcome" className="page-logo page-logo-short h4 visible-xs">
-                  WV
+                <Link to="/welcome" className="page-logo page-logo-short h4 visible-xs wikiki">
+                  <img className="glyphicon" src={cordovaDot("/img/global/svg-icons/we-vote-icon-square-color.svg")} />
                 </Link> :
-                <Link to="/welcome" className="page-logo page-logo-short h4 visible-xs">
-                  We Vote
+                <Link to="/welcome" className="page-logo page-logo-short h4 visible-xs WAKAKA">
+                  <img className="glyphicon" src={cordovaDot("/img/global/svg-icons/we-vote-icon-square-color.svg")} />
                 </Link>
               }
             </span>

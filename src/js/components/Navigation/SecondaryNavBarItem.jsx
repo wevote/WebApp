@@ -44,7 +44,7 @@ export default class SecondaryNavBarItem extends Component {
     } else {
       icon = <img className={`glyphicon nav-secondary-nav__image${this.props.completed ? "--fade" : ""}`} src={this.props.source}/>;
     }
-    
+
     return this.props.isExternal ?
       <OpenExternalWebSite url={this.props.url}
                            target="_blank"

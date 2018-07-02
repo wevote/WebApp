@@ -390,7 +390,7 @@ export default class Application extends Component {
     let footerStyle = this.state.showFooter ? "footroom-wrapper" : "footroom-wrapper__hide";
 
     if (inTheaterMode) {
-      console.log("inTheaterMode", inTheaterMode);
+      // console.log("inTheaterMode", inTheaterMode);
       return <div className="app-base" id="app-base-id">
         <div className="page-content-container">
           <div className="container-fluid">
@@ -403,7 +403,7 @@ export default class Application extends Component {
         </div>
       </div>;
     } else if (voterGuideMode) {
-      console.log("voterGuideMode", voterGuideMode);
+      // console.log("voterGuideMode", voterGuideMode);
       let hideGettingStartedButtons = voterGuideShowGettingStartedNavigation;
 
       return <div className={`app-base ${isCordova() && "cordova-base"}`} id="app-base-id">
