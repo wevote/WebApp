@@ -182,12 +182,12 @@ const routes = () =>
     <Route path="/more/vision" component={Organization} />
 
     {/* Voter Guide Pages - By Organization */}
-    <Route path="/voterguide/:organization_we_vote_id" component={OrganizationVoterGuide} />
-    <Route path="/voterguide/:organization_we_vote_id/ballot" component={OrganizationVoterGuide} />
-    <Route path="/voterguide/:organization_we_vote_id/ballot/empty" component={OrganizationVoterGuide} />
-    <Route path="/voterguide/:organization_we_vote_id/ballot/:ballot_location_shortcut" component={OrganizationVoterGuide} />
-    <Route path="/voterguide/:organization_we_vote_id/ballot/id/:ballot_returned_we_vote_id" component={OrganizationVoterGuide} />
-    <Route path="/voterguide/:organization_we_vote_id/ballot/election/:google_civic_election_id" component={OrganizationVoterGuide} />
+    <Route path="/voterguide/:organization_we_vote_id" component={props => <OrganizationVoterGuide {...props} active_route="ballot" />}/>
+    <Route path="/voterguide/:organization_we_vote_id/ballot" component={props => <OrganizationVoterGuide {...props} active_route="ballot" />} />
+    <Route path="/voterguide/:organization_we_vote_id/ballot/empty" component={props => <OrganizationVoterGuide {...props} active_route="ballot" />} />
+    <Route path="/voterguide/:organization_we_vote_id/ballot/:ballot_location_shortcut" component={props => <OrganizationVoterGuide {...props} active_route="ballot" />} />
+    <Route path="/voterguide/:organization_we_vote_id/ballot/id/:ballot_returned_we_vote_id" component={props => <OrganizationVoterGuide {...props} active_route="ballot" />} />
+    <Route path="/voterguide/:organization_we_vote_id/ballot/election/:google_civic_election_id" component={props => <OrganizationVoterGuide {...props} active_route="ballot" />} />
     <Route path="/voterguide/:organization_we_vote_id/ballot/election/:google_civic_election_id/ballot" component={props => <OrganizationVoterGuide {...props} active_route="ballot" />} />
     <Route path="/voterguide/:organization_we_vote_id/ballot/election/:google_civic_election_id/following" component={props => <OrganizationVoterGuide {...props} active_route="following" />} />
     <Route path="/voterguide/:organization_we_vote_id/ballot/election/:google_civic_election_id/followers" component={props => <OrganizationVoterGuide {...props} active_route="followers" />} />
