@@ -77,6 +77,14 @@ export default class OfficeItemCompressedRaccoon extends Component {
       });
     }
 
+    if (this.props.we_vote_id) {
+      // console.log("OfficeItemCompressedRaccoon componentDidMount getNumberOfCandidatesRetrievedByOffice:", CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id));
+      if (CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id) === 0) {
+        // console.log("Calling candidatesRetrieve: ", this.props.we_vote_id);
+        CandidateActions.candidatesRetrieve(this.props.we_vote_id);
+      }
+    }
+
     // If there three or fewer offices on this ballot, unfurl them
     if (this.props.allBallotItemsCount && this.props.allBallotItemsCount <= 3) {
       this.setState({
@@ -116,16 +124,13 @@ export default class OfficeItemCompressedRaccoon extends Component {
   }
 
   onCandidateStoreChange () {
-    if (this.props.candidate_list && this.props.candidate_list.length) {
+    if (this.props.candidate_list && this.props.candidate_list.length && this.props.we_vote_id) {
       // console.log("onCandidateStoreChange");
-      // console.log("getNumberOfCandidatesRetrievedByOffice:", CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id));
-      if (!CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id)) {
-        // console.log("Calling candidatesRetrieve: ", this.props.we_vote_id);
-        CandidateActions.candidatesRetrieve(this.props.we_vote_id);
-      }
       let new_candidate_list = [];
       this.props.candidate_list.forEach( candidate => {
-        new_candidate_list.push(CandidateStore.getCandidate(candidate.we_vote_id));
+        if (candidate && candidate.we_vote_id) {
+          new_candidate_list.push(CandidateStore.getCandidate(candidate.we_vote_id));
+        }
       });
       this.setState({
         candidateList: new_candidate_list,
@@ -407,8 +412,10 @@ export default class OfficeItemCompressedRaccoon extends Component {
         ************************* */}
         { this.state.display_office_unfurled ?
           <span>{limitedCandidateList.map((one_candidate) => {
+
+            if (!one_candidate || !one_candidate.we_vote_id) { return null; }
+
             let candidate_we_vote_id = one_candidate.we_vote_id;
-            if (!candidate_we_vote_id) { return null; }
             let candidateSupportStore = SupportStore.get(candidate_we_vote_id);
             let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidate_we_vote_id);
             let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidate_we_vote_id);
@@ -493,6 +500,9 @@ export default class OfficeItemCompressedRaccoon extends Component {
                                                      we_vote_id={this.props.we_vote_id} />
             </span>
             { this.state.candidateList.map( (one_candidate) => {
+
+              if (!one_candidate || !one_candidate.we_vote_id) { return null; }
+
               const voter_supports_this_candidate = SupportStore.get(one_candidate.we_vote_id) && SupportStore.get(one_candidate.we_vote_id).is_support;
 
               let networkOrIssueScoreSupport;

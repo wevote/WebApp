@@ -94,7 +94,7 @@ export default class BallotElectionList extends Component {
     // console.log("BallotStore.ballot_properties: ", BallotStore.ballot_properties);
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) {
       // Ballot is found but ballot is empty. We want to stay put.
-      console.log("onBallotStoreChange: ballot_with_all_items is empty");
+      // console.log("onBallotStoreChange: ballot_with_all_items is empty");
     }
     if (this.state.prior_election_id !== this.state.updated_election_id && this.state.loading_new_ballot_items && this.props.toggleFunction) {
       // console.log("onBallotStoreChange--------- loading_new_ballot_items:", this.state.loading_new_ballot_items);
