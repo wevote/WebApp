@@ -626,6 +626,7 @@ export default class Ballot extends Component {
     let voter_entered_address = false;
     let voter_specific_ballot_from_google_civic = false;
     let ballot_location_display_name = "";
+    let substituted_address_nearby = "";
     if (voter_ballot_location && voter_ballot_location.voter_entered_address) {
       voter_entered_address = true;
     }
@@ -635,11 +636,19 @@ export default class Ballot extends Component {
     }
 
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_location_display_name) {
+      console.log("BallotStore.ballot_properties:", BallotStore.ballot_properties);
       ballot_location_display_name = BallotStore.ballot_properties.ballot_location_display_name;
     } else if (voter_ballot_location && voter_ballot_location.ballot_location_display_name) {
-
       // Get the location name from the VoterStore address object
+      console.log("voter_ballot_location:", voter_ballot_location);
       ballot_location_display_name = voter_ballot_location.ballot_location_display_name;
+    }
+
+    if (BallotStore.ballot_properties && BallotStore.ballot_properties.substituted_address_nearby) {
+      substituted_address_nearby = BallotStore.ballot_properties.substituted_address_nearby;
+    } else if (voter_ballot_location && voter_ballot_location.text_for_map_search) {
+      // Get the location from the VoterStore address object
+      substituted_address_nearby = voter_ballot_location.text_for_map_search;
     }
 
     if (this.state.ballotWithAllItemsByFilterType.length === 0 && in_remaining_decisions_mode) {
@@ -691,6 +700,7 @@ export default class Ballot extends Component {
                                          voter_entered_address={voter_entered_address}
                                          google_civic_data_exists={ElectionStore.googleCivicDataExists(this.state.google_civic_election_id)}
                                          voter_specific_ballot_from_google_civic={voter_specific_ballot_from_google_civic}
+                                         substituted_address_nearby={substituted_address_nearby}
                                          toggleSelectBallotModal={this.toggleSelectBallotModal}
                                          google_civic_election_id={this.state.google_civic_election_id}
                     />
