@@ -636,11 +636,11 @@ export default class Ballot extends Component {
     }
 
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_location_display_name) {
-      console.log("BallotStore.ballot_properties:", BallotStore.ballot_properties);
+      // console.log("BallotStore.ballot_properties:", BallotStore.ballot_properties);
       ballot_location_display_name = BallotStore.ballot_properties.ballot_location_display_name;
     } else if (voter_ballot_location && voter_ballot_location.ballot_location_display_name) {
       // Get the location name from the VoterStore address object
-      console.log("voter_ballot_location:", voter_ballot_location);
+      // console.log("voter_ballot_location:", voter_ballot_location);
       ballot_location_display_name = voter_ballot_location.ballot_location_display_name;
     }
 
