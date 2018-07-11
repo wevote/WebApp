@@ -1,7 +1,7 @@
 // Note that we import these values where needed as "webAppConfig"
 module.exports = {
-  WE_VOTE_URL_PROTOCOL: "http://",  // "http://" for local dev or "https://" for live server
-  WE_VOTE_HOSTNAME: "localhost:3000",  // This should be without "http...". This is "WeVote.US" on live server.
+  WE_VOTE_URL_PROTOCOL: "https://",  // "http://" for local dev or "https://" for live server
+  WE_VOTE_HOSTNAME: "wevote.us",  // This should be without "http...". This is "WeVote.US" on live server.
 
   WE_VOTE_SERVER_ROOT_URL: "https://api.wevoteusa.org/",
   WE_VOTE_SERVER_ADMIN_ROOT_URL: "https://api.wevoteusa.org/admin/",
@@ -23,9 +23,10 @@ module.exports = {
   location: {
     text_for_map_search: "",
   },
+
   // We currently store the Google Places API key in /src/index.html
 
-  FACEBOOK_APP_ID: "",
+  FACEBOOK_APP_ID: "1097389196952441",
 
-  STRIPE_API_KEY: "",
+  STRIPE_API_KEY: "pk_live_zpl7eSkLnySR2i4vtJQ1lJmi",
 };

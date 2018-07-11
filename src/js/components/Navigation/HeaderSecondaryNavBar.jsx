@@ -279,9 +279,12 @@ export default class HeaderSecondaryNavBar extends Component {
                                  title="Email"
                                  iconEmail/>
 
-            <SecondaryNavBarItem show={this._openFacebookModal}
-                                 title="Share Ballot"
-                                 iconFacebook/>
+            {/* July 10, 2018 Steve:  Disable Share Ballot via Facebook, in Cordova, until it is fixed for the Webapp */}
+            {isWebApp() &&
+              <SecondaryNavBarItem show={this._openFacebookModal}
+                                   title="Share Ballot"
+                                   iconFacebook/>
+            }
 
             <span className="visible-xs">
               <SecondaryNavBarItem url={twitterIntent}

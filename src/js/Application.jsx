@@ -31,7 +31,7 @@ const loadingScreenStyles = {
   display: "flex",
   top: 0,
   left: 0,
-  backgroundColor: "#337ec9",
+  backgroundColor: "#25536D",
   justifyContent: "center",
   alignItems: "center",
   fontSize: "30px",

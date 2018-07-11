@@ -602,18 +602,22 @@ export default class FacebookBallotToFriendsModal extends Component {
                           <span className="fa fa-facebook" />Send Ballot Through Facebook
                         </Button>
                       </div>
+
+                      {/* July 10, 2018 Steve:  Disable Share Ballot via Facebook, in Cordova, until it is fixed for the Webapp */}
+                      {isWebApp() &&
                       <div className="mobile-container">
                         <div>
                           <span>Share this ballot to your (or a friend's) Facebook Timeline, or as a private message through Facebook.</span>
                           <div className="u-inset--xs"/>
                           <Button className="btn btn-social btn-facebook u-push--sm"
-                                bsStyle="danger"
-                                type="submit"
-                                onClick={this.shareOnFacebook.bind(this)}>
-                            <span className="fa fa-facebook" />Share Ballot on Facebook
+                                  bsStyle="danger"
+                                  type="submit"
+                                  onClick={this.shareOnFacebook.bind(this)}>
+                            <span className="fa fa-facebook"/>Share Ballot on Facebook
                           </Button>
                         </div>
                       </div>
+                      }
                     </div>
 
                     <div className="row invite-inputs col-12 u-inset--md" />
