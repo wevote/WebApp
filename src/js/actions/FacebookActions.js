@@ -149,7 +149,7 @@ export default {
 
   login: function () {
     if (!webAppConfig.FACEBOOK_APP_ID) {
-      console.log("ERROR: Missing FACEBOOK_APP_ID from src/js/config.js");  // DO NOT REMOVE THIS!
+      console.log("ERROR: Missing FACEBOOK_APP_ID from src/js/config.js");   // DO NOT REMOVE THIS!
     }
 
     // FB.getLoginStatus does an ajax call and when you call FB.login on it's response, the popup that would open
