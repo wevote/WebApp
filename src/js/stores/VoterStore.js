@@ -448,7 +448,8 @@ class VoterStore extends ReduceStore {
         };
 
       case "voterRetrieve":
-        // console.log("VoterStore, voterRetrieve");
+        // console.log("VoterStore, voterRetrieve state on entry: ",  state);
+        // console.log("VoterStore, voterRetrieve state on entry: ",  state.voter);
         let facebook_photo_retrieve_loop_count = state.facebook_photo_retrieve_loop_count;
 
         // Preserve address within voter

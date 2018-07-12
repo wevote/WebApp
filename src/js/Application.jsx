@@ -180,6 +180,9 @@ export default class Application extends Component {
         });
       }
     }
+
+    // console.log("Application _onVoterStoreChange voter: ", VoterStore.getVoter());
+    // console.log("SignedIn Voter in Application _onVoterStoreChange voter: ", VoterStore.getVoter().full_name);
   }
 
   incomingVariableManagement () {
