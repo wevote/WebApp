@@ -37,7 +37,7 @@ export default class PositionPublicToggle extends Component {
   componentDidMount () {
     this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    let { is_public_position: isPublicOpinion } = this.props.supportProps;
+    let isPublicOpinion = this.props.supportProps && this.props.supportProps.is_public_position;
     this.setState({
       showToThePublicOn: isPublicOpinion || false,
     });

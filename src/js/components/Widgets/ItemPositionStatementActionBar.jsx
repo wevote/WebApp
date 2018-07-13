@@ -70,15 +70,16 @@ export default class ItemPositionStatementActionBar extends Component {
     }
     if (this.state.showEditPositionStatementInput) {
       //we don't want to do anything
-    } else if (nextProps.supportProps.voter_statement_text) {
+    } else if (nextProps.supportProps && nextProps.supportProps.voter_statement_text) {
       this.setState({
         statement_text_to_be_saved: nextProps.supportProps.voter_statement_text,
         showEditPositionStatementInput: false,
         transitioning: false,
       });
     } else {
+      let voter_statement_text = nextProps.supportProps && nextProps.supportProps.voter_statement_text || "";
       this.setState({
-        statement_text_to_be_saved: nextProps.supportProps.voter_statement_text,
+        statement_text_to_be_saved: voter_statement_text,
         showEditPositionStatementInput: nextProps.comment_edit_mode_on,
         transitioning: false,
       });
