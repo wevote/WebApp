@@ -422,6 +422,8 @@ export default class OfficeItemCompressedRaccoon extends Component {
             let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + ". " : "";
             let candidate_twitter_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
             let ballotpediaCandidateSummary = one_candidate.ballotpedia_candidate_summary && one_candidate.ballotpedia_candidate_summary.length ? " " + one_candidate.ballotpedia_candidate_summary : "";
+            // Strip away any HTML tags
+            ballotpediaCandidateSummary = ballotpediaCandidateSummary.split(/<[^<>]*>/).join("");
             let candidate_text = candidate_party_text + candidate_twitter_description_text + ballotpediaCandidateSummary;
 
             let positions_display_raccoon = <div>

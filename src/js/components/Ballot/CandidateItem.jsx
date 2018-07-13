@@ -166,6 +166,13 @@ export default class CandidateItem extends Component {
     } else {
       candidate_photo_url_html = <i className="card-main__avatar icon-office-child icon-main icon-icon-person-placeholder-6-1" />;
     }
+
+    let twitter_description_text = twitter_description && twitter_description.length ? twitter_description + " " : "";
+    let ballotpedia_candidate_summary_text = ballotpedia_candidate_summary && ballotpedia_candidate_summary.length ? ballotpedia_candidate_summary : "";
+    // Strip away any HTML tags
+    ballotpedia_candidate_summary_text = ballotpedia_candidate_summary_text.split(/<[^<>]*>/).join("");
+    let candidate_text = twitter_description_text + ballotpedia_candidate_summary_text;
+
     // let positions_in_your_network = SupportStore.get(we_vote_id) && ( SupportStore.get(we_vote_id).oppose_count || SupportStore.get(we_vote_id).support_count);
 
     let one_candidate = CandidateStore.getCandidate(candidateWeVoteId);
@@ -232,14 +239,14 @@ export default class CandidateItem extends Component {
             null
           }
           </p>
-          { twitter_description || ballotpedia_candidate_summary ?
+          { candidate_text.length ?
             <div className={ "u-stack--sm" + (this.props.link_to_ballot_item_page ? " card-main__description-container--truncated" : " card-main__description-container")}>
               <div className="card-main__description">
                 <LearnMore
                   learn_more_text="Read more on Ballotpedia"
                   num_of_lines={3}
                   learn_more_link={ballotpedia_candidate_url}
-                  text_to_display={ twitter_description && ballotpedia_candidate_summary ? twitter_description + " " + ballotpedia_candidate_summary : twitter_description + ballotpedia_candidate_summary } />
+                  text_to_display={candidate_text} />
                 {/* <ParsedTwitterDescription twitter_description={twitter_description} />
                 <span className="card-main__description">
                   { ballotpedia_candidate_summary }
