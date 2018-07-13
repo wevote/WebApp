@@ -149,7 +149,7 @@ export default {
 
   login: function () {
     if (!webAppConfig.FACEBOOK_APP_ID) {
-      console.log("ERROR: Missing FACEBOOK_APP_ID from src/js/config.js");
+      console.log("ERROR: Missing FACEBOOK_APP_ID from src/js/config.js");   // DO NOT REMOVE THIS!
     }
 
     // FB.getLoginStatus does an ajax call and when you call FB.login on it's response, the popup that would open
@@ -168,22 +168,23 @@ export default {
           } else {
             let api = isWebApp() ? window.FB : window.facebookConnectPlugin;  // eslint-disable-line no-undef
             api.login(
-              (res) => {
-                if (res.authResponse) {
-                  oAuthLog("FacebookActions loginSuccess userData: ", res);
+              ["public_profile", "email", "user_friends"],
+              (successResponse) => {
+                if (successResponse.authResponse) {
+                  oAuthLog("FacebookActions loginSuccess userData: ", successResponse);
                   Dispatcher.dispatch({
                     type: FacebookConstants.FACEBOOK_LOGGED_IN,
-                    data: res,
+                    data: successResponse,
                   });
                 } else {
-                  // Check if res.authResponse is null indicating cancelled login attempt
-                  oAuthLog("FacebookActions loginFailure error response: ", res);
+                  // Check if successResponse.authResponse is null indicating cancelled login attempt
+                  oAuthLog("FacebookActions null authResponse indicating cancelled login attempt: ", res);
                   return;
                 }
               },
 
-              {
-                scope: "public_profile,email,user_friends",
+              (errorResponse) => {
+                oAuthLog("FacebookActions loginFailure error response: ", errorResponse);
               }
             );
           }
