@@ -22,4 +22,15 @@ $space-footer-top: 10px;
   justify-content: space-between;
   margin-right: $space-md;
   margin-left: $space-md;
+  .badge-total {
+    $badge-color: #db4437;
+    position: absolute;
+    font-family: $body-font-stack;
+    background-color: $badge-color; // Override for Bootstrap class .badge
+    top: $space-none;
+    right: $space-none;
+    &--overLimit {
+      right: -.5em;
+    }
+  }
 }
