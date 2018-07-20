@@ -23,7 +23,7 @@ export default class BallotIntroFollowIssues extends Component {
       followed_issues: [],
       issues: [],
       next_button_text: NEXT_BUTTON_TEXT,
-      number_of_required_issues: 5,
+      number_of_required_issues: 3,
     };
     this.onIssueFollow = this.onIssueFollow.bind(this);
     this.onIssueStopFollowing = this.onIssueStopFollowing.bind(this);
@@ -49,15 +49,19 @@ export default class BallotIntroFollowIssues extends Component {
   onIssueStoreChange () {
     // update followed_issues only for first time, subsequent updates will be made locally
     if (this.state.followed_issues.length) {
-      this.setState({ issues: IssueStore.getIssuesVoterCanFollow() });
+      this.setState({
+        issues: IssueStore.getIssuesVoterCanFollow()
+      },
+      this.updateNextState
+      );
     } else {
       this.setState({
         issues: IssueStore.getIssuesVoterCanFollow(),
         followed_issues: IssueStore.getIssuesVoterIsFollowing(),
-      });
+      },
+      this.updateNextState
+      );
     }
-
-    this.updateNextState();
   }
 
   remainingIssues () {
