@@ -83,7 +83,7 @@ export default class HeaderBar extends Component {
         <img className="glyphicon" src={cordovaDot("/img/global/svg-icons/network-icon.svg")} />
         {numberOfIncomingFriendRequests ?
           numberOfIncomingFriendRequests < 9 ?
-            <span className="badge-total badge-total badge">{numberOfIncomingFriendRequests}</span> :
+            <span className="badge-total badge footerNav.badge-total">{numberOfIncomingFriendRequests}</span> :
             <span className="badge-total badge-total--overLimit badge">9+</span> :
           null }
       </span>
