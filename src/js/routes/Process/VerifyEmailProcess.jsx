@@ -35,7 +35,7 @@ export default class VerifyEmailProcess extends Component {
 
   cancelMergeFunction () {
     historyPush({
-      pathname: "/more/sign_in",
+      pathname: "/settings/account",
       state: {
       },
     });
@@ -55,8 +55,9 @@ export default class VerifyEmailProcess extends Component {
   voterMergeTwoAccountsByEmailKey (email_secret_key, voter_has_data_to_preserve = true) {
     VoterActions.voterMergeTwoAccountsByEmailKey(email_secret_key);
     if (voter_has_data_to_preserve) {
+      console.log(voter_has_data_to_preserve);
       historyPush({
-        pathname: "/more/sign_in",
+        pathname: "/settings/account",
         state: {
           message: "Your accounts have been merged.",
           message_type: "success",
@@ -96,9 +97,9 @@ export default class VerifyEmailProcess extends Component {
 
     // This process starts when we return from attempting voterEmailAddressVerify
     if (!this.state.email_sign_in_status.email_address_found) {
-      console.log("Could not find secret_key - push to /more/sign_in");
+      console.log("Could not find secret_key - push to /settings/account");
       historyPush({
-        pathname: "/more/sign_in",
+        pathname: "/settings/account",
         state: {
           message: "Email verification did not work. Please try 'Send Verification Email' again.",
           message_type: "danger",
@@ -116,9 +117,9 @@ export default class VerifyEmailProcess extends Component {
     }
 
     if (!this.state.email_sign_in_status.email_ownership_is_verified) {
-      console.log("email_ownership_is_verified not true - push to /more/sign_in");
+      console.log("email_ownership_is_verified not true - push to /settings/account");
       historyPush({
-        pathname: "/more/sign_in",
+        pathname: "/settings/account",
       });
       return LoadingWheel;
     }

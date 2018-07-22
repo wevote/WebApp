@@ -114,9 +114,9 @@ export default class TwitterSignInProcess extends Component {
     let { twitter_secret_key } = twitter_auth_response;
 
     if (twitter_auth_response.twitter_sign_in_failed) {
-      // console.log("Twitter sign in failed - push to /more/sign_in");
+      // console.log("Twitter sign in failed - push to /settings/account");
       historyPush({
-        pathname: "/more/sign_in",
+        pathname: "/settings/account",
         state: {
           message: "Twitter sign in failed. Please try again.",
           message_type: "success",
@@ -138,7 +138,7 @@ export default class TwitterSignInProcess extends Component {
     if (!twitter_auth_response.twitter_sign_in_found) {
       // console.log("twitter_auth_response.twitter_sign_in_found", twitter_auth_response.twitter_sign_in_found);
       historyPush({
-        pathname: "/more/sign_in",
+        pathname: "/settings/account",
         state: {
           message: "Twitter authentication not found. Please try again.",
           message_type: "warning",

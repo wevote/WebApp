@@ -15,7 +15,7 @@ export default class WouldYouLikeToMergeAccounts extends Component {
   }
 
   cancelMerge () {
-    historyPush("/more/sign_in");
+    historyPush("/settings/account");
   }
 
   render () {

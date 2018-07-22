@@ -76,7 +76,7 @@ export default class HamburgerMenu extends Component {
 
           {!isSignedIn &&
             <HamburgerMenuRow onClickAction={null}
-                              to={"/more/sign_in"}
+                              to={"/settings/account"}
                               fullIcon={this.yourAccountIcon(this.state.voter.voter_photo_url_medium)}
                               linkText={"Sign In"}/>
           }
@@ -148,7 +148,7 @@ export default class HamburgerMenu extends Component {
 
           {isSignedIn &&
             <HamburgerMenuRow onClickAction={() => VoterSessionActions.voterSignOut()}
-                              to={"/more/sign_in"}
+                              to={"/settings/account"}
                               icon={isSignedIn ? "fa fa-sign-out" : "fa fa-sign-in"}
                               iconStyle={{ fontSize: 28, color: "#1c2f4b" }}
                               linkText={"Sign Out"}/>

@@ -50,7 +50,7 @@ export default class HowToUse extends Component {
         />
 
         <h3 className="h3">Step 3: Sign In</h3>
-        <Link to="/more/sign_in">Sign in with Twitter, Facebook, or your email
+        <Link to="/settings/account">Sign in with Twitter, Facebook, or your email
         address</Link>. <strong>Why?</strong> Signing in with Twitter makes it
         easier to find groups you already trust. Signing in with Facebook makes it easier to find friends
         to ask for advice.<br />

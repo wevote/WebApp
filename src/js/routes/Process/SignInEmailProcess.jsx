@@ -64,7 +64,7 @@ export default class SignInEmailProcess extends Component {
 
     // We redirect after voterMergeTwoAccountsByEmailKey comes back
     if (this.state.email_sign_in_status.voter_merge_two_accounts_attempted) {
-      // console.log("voterMergeTwoAccountsByEmailKey attempted - push to /more/sign_in");
+      // console.log("voterMergeTwoAccountsByEmailKey attempted - push to /settings/account");
       historyPush({
         pathname: "/ballot",
         state: {
@@ -77,8 +77,8 @@ export default class SignInEmailProcess extends Component {
 
     // This process starts when we return from attempting voterEmailAddressSignIn
     if (!this.state.email_sign_in_status.email_address_found) {
-      // console.log("Could not find secret_key in database - push to /more/sign_in");
-      historyPush("/more/sign_in");
+      // console.log("Could not find secret_key in database - push to /settings/account");
+      historyPush("/settings/account");
       return LoadingWheel;
     }
 
@@ -86,7 +86,7 @@ export default class SignInEmailProcess extends Component {
       // If here we know that the secret key was valid
       if (this.state.email_sign_in_status.email_secret_key_belongs_to_this_voter) {
         // We don't need to do anything more except redirect to the email management page
-        // console.log("secret key owned by this voter - push to /more/sign_in");
+        // console.log("secret key owned by this voter - push to /settings/account");
         historyPush({
           pathname: "/ballot",
           state: {

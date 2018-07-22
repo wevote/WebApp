@@ -103,14 +103,14 @@ export default class HeaderBarProfileSlideIn extends Component {
 
             {this.props.voter && isSignedIn &&
               <HamburgerMenuRow onClickAction={this.hideProfilePopUp}
-                                          to={"/more/sign_in"}
+                                          to={"/settings/account"}
                                           fullIcon={this.yourAccountIcon(voterPhotoUrlMedium)}
                                           linkText={"Your Account"} />
             }
 
             {this.props.voter &&
               <HamburgerMenuRow onClickAction={this.signOutAndHideProfilePopUp}
-                                          to={"/more/sign_in"}
+                                          to={"/settings/account"}
                                           icon={isSignedIn ? "fa fa-sign-out" : "fa fa-sign-in"}
                                           iconStyle={signInColor}
                                           linkText={isSignedIn ? "Sign Out" : "Sign In"} />
@@ -159,4 +159,3 @@ export default class HeaderBarProfileSlideIn extends Component {
     );
   }
 }
-
