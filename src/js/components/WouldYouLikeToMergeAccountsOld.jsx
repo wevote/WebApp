@@ -67,7 +67,7 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
   }
 
   cancelMerge () {
-    historyPush("/more/sign_in");
+    historyPush("/settings/account");
   }
 
   voterEmailAddressSignInConfirm (email_secret_key) {

@@ -136,7 +136,7 @@ export default class FooterBarCordova extends Component {
           }
 
           {!showFullNavigation && isWebApp() &&
-            <Link to="/more/sign_in" className="sign_in header-nav__item">
+            <Link to="/settings/account" className="sign_in header-nav__item">
               Sign In
             </Link>
           }

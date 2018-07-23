@@ -467,7 +467,7 @@ export default class Intro extends Component {
                   <Link to={"/wevoteintro/network"}>Get Started</Link>
                 </li>
                 <li className="u-push--md u-stack--sm">
-                  <Link to={"/more/sign_in"}>Sign In</Link>
+                  <Link to={"/settings/account"}>Sign In</Link>
                 </li>
                 <li className="u-push--md u-stack--sm">
                   <Link to={"/more/tools"}>Tools For Your Website</Link>

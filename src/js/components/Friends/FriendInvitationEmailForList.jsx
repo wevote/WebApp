@@ -94,7 +94,7 @@ export default class FriendInvitationEmailForList extends Component {
             </button>
             */}
             {invitation_status === "PENDING_EMAIL_VERIFICATION" && !voter.signed_in_with_email ?
-              <Link to="/more/sign_in">
+              <Link to="/settings/account">
                 <Button bsSize="small" bsStyle="warning">
                   Verify Your Email
                 </Button>

@@ -121,9 +121,9 @@ export default class FacebookSignInProcess extends Component {
     let { facebook_secret_key } = facebook_auth_response;
 
     if (facebook_auth_response.facebook_sign_in_failed) {
-      // console.log("Facebook sign in failed - push to /more/sign_in");
+      // console.log("Facebook sign in failed - push to /settings/account");
       historyPush({
-        pathname: "/more/sign_in",
+        pathname: "/settings/account",
         state: {
           message: "Facebook sign in failed. Please try again.",
           message_type: "success"
@@ -145,7 +145,7 @@ export default class FacebookSignInProcess extends Component {
     if (!facebook_auth_response.facebook_sign_in_found) {
       // console.log("facebook_auth_response.facebook_sign_in_found", facebook_auth_response.facebook_sign_in_found);
       historyPush({
-        pathname: "/more/sign_in",
+        pathname: "/settings/account",
         state: {
           message: "Facebook authentication not found. Please try again.",
           message_type: "warning"

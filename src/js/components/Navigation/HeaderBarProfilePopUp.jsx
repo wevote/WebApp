@@ -80,7 +80,7 @@ export default class HeaderBarProfilePopUp extends Component {
             {this.props.voter && isSignedIn ?
               null :
               <li>
-                <Link onClick={this.hideProfilePopUp} to="/more/sign_in">
+                <Link onClick={this.hideProfilePopUp} to="/settings/account">
                   <div>
                     <span className="header-slide-out-menu-text-left">Sign In</span>
                   </div>
@@ -127,7 +127,7 @@ export default class HeaderBarProfilePopUp extends Component {
             {/* Desktop or Mobile */}
             {this.props.voter && isSignedIn ?
               <li>
-                <Link onClick={this.signOutAndHideProfilePopUp} to="/more/sign_in">
+                <Link onClick={this.signOutAndHideProfilePopUp} to="/settings/account">
                   <div>
                     <span className="header-slide-out-menu-text-left">Sign Out</span>
                   </div>
