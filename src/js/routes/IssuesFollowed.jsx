@@ -28,9 +28,9 @@ export default class IssuesFollowed extends Component {
   }
 
   componentDidMount () {
-    let currentElectionSpecified = IssueStore.getPreviousGoogleCivicElectionId() === 0 ? true : false;
+    let currentElectionNotSpecified = IssueStore.getPreviousGoogleCivicElectionId() === 0 ? true : false;
     let getIssuesVoterIsFollowingFound = IssueStore.getIssuesVoterIsFollowing().count === 0 ? false : true;
-    if (currentElectionSpecified || !getIssuesVoterIsFollowingFound) {
+    if (currentElectionNotSpecified || !getIssuesVoterIsFollowingFound) {
       IssueActions.issuesRetrieve();
     }
 
