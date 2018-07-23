@@ -28,9 +28,15 @@ export default class IssuesFollowed extends Component {
   }
 
   componentDidMount () {
-    if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
+    let currentElectionSpecified = IssueStore.getPreviousGoogleCivicElectionId() === 0 ? true : false;
+    let getIssuesVoterIsFollowingFound = IssueStore.getIssuesVoterIsFollowing().count === 0 ? false : true;
+    if (currentElectionSpecified || !getIssuesVoterIsFollowingFound) {
       IssueActions.issuesRetrieve();
     }
+
+    this.setState({
+      issues_followed: IssueStore.getIssuesVoterIsFollowing(),
+    });
 
     this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange.bind(this));
   }
