@@ -218,6 +218,7 @@ export default class Ballot extends Component {
     this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
     ElectionActions.electionsRetrieve();
     OrganizationActions.organizationsFollowedRetrieve();
+    VoterActions.voterRetrieve();  // This is needed to update the interface status settings
 
     if (google_civic_election_id && google_civic_election_id !== 0) {
       AnalyticsActions.saveActionBallotVisit(google_civic_election_id);
@@ -585,7 +586,7 @@ export default class Ballot extends Component {
     const missing_address = this.state.location === null;
 
     // const ballot_caveat = BallotStore.ballot_properties.ballot_caveat; // ballot_properties might be undefined
-    const election_name = BallotStore.currentBallotElectionName;
+    const electionName = BallotStore.currentBallotElectionName;
     const election_day_text = BallotStore.currentBallotElectionDate;
     const polling_location_we_vote_id_source = BallotStore.currentBallotPollingLocationSource;
     let ballot_returned_admin_edit_url = webAppConfig.WE_VOTE_SERVER_ROOT_URL + "b/" + polling_location_we_vote_id_source + "/list_edit_by_polling_location/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
@@ -617,7 +618,7 @@ export default class Ballot extends Component {
      </div> :
       null;
 
-    const electionTooltip = election_day_text ? <Tooltip id="tooltip">Election day {moment(election_day_text).format("MMM Do, YYYY")}</Tooltip> : <span />;
+    const electionDayText = election_day_text ? <span>{moment(election_day_text).format("MMM Do, YYYY")}</span> : <span />;
 
     let in_remaining_decisions_mode = this.state.filter_type === "filterRemaining";
     let in_ready_to_vote_mode = this.state.filter_type === "filterReadyToVote";
@@ -673,10 +674,11 @@ export default class Ballot extends Component {
                 <BrowserPushMessage incomingProps={this.props} />
                 <header className="ballot__header__group">
                   <h1 className="h1 ballot__header__title">
-                    { election_name ?
-                      <OverlayTrigger placement="top" overlay={electionTooltip} >
-                       <span className="u-push--sm">{election_name}</span>
-                      </OverlayTrigger> :
+                    { electionName ?
+                       <span className="u-push--sm">
+                         {electionName} <span className="hidden-xs">&mdash;
+                          </span><span className="u-gray-mid u-no-break">{electionDayText}</span>
+                       </span> :
                       null }
                     {/* We always show the change election option */}
                     <span className="u-no-break hidden-print u-cursor--pointer"

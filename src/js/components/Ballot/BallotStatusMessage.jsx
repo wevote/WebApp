@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
+import { showCityStateZip } from "../../utils/address-functions";
 import cookies from "../../utils/cookies";
 import { renderLog } from "../../utils/logging";
 
@@ -49,7 +50,7 @@ export default class BallotStatusMessage extends Component {
       election_is_upcoming: this.props.election_is_upcoming,
       google_civic_data_exists: this.props.google_civic_data_exists,
       show_ballot_status: true,
-      substituted_address_nearby: this.props.substituted_address_nearby,
+      substituted_address_nearby: showCityStateZip(this.props.substituted_address_nearby),
       voter_entered_address: this.props.voter_entered_address,
       voter_specific_ballot_from_google_civic: this.props.voter_specific_ballot_from_google_civic,
       electionsWithBallotStatusMessageClosed,
@@ -65,7 +66,7 @@ export default class BallotStatusMessage extends Component {
       election_is_upcoming: nextProps.election_is_upcoming,
       google_civic_data_exists: nextProps.google_civic_data_exists,
       show_ballot_status: true,
-      substituted_address_nearby: nextProps.substituted_address_nearby,
+      substituted_address_nearby: showCityStateZip(nextProps.substituted_address_nearby),
       voter_entered_address: nextProps.voter_entered_address,
       voter_specific_ballot_from_google_civic: nextProps.voter_specific_ballot_from_google_civic,
     });
@@ -102,7 +103,7 @@ export default class BallotStatusMessage extends Component {
       if (this.state.voter_specific_ballot_from_google_civic) {
         messageString += ""; // No additional text
       } else if (this.state.ballot_location_chosen && this.state.substituted_address_nearby) {
-        messageString += "You are looking at the nearby ballot for " + this.state.substituted_address_nearby + ". Please enter your address to see all items on your official ballot.";
+        messageString += "This is a ballot in " + this.state.substituted_address_nearby + ". Please enter your full address to see all items on your official ballot.";
       } else {
         if (this.state.voter_entered_address) {
           messageString += "This is our best guess for what's on your ballot. ";
