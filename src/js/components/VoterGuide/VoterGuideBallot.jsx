@@ -560,8 +560,8 @@ export default class VoterGuideBallot extends Component {
 
     const missing_address = this.state.location === null;
     // const ballot_caveat = BallotStore.ballot_properties.ballot_caveat; // ballot_properties might be undefined
-    const election_name = BallotStore.currentBallotElectionName;
-    const election_day_text = BallotStore.currentBallotElectionDate;
+    const electionName = BallotStore.currentBallotElectionName;
+    const electionDayText = BallotStore.currentBallotElectionDate;
     const polling_location_we_vote_id_source = BallotStore.currentBallotPollingLocationSource;
     let organization_admin_url = webAppConfig.WE_VOTE_SERVER_ROOT_URL + "org/" + this.state.organization.organization_we_vote_id + "/pos/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
     let ballot_returned_admin_edit_url = webAppConfig.WE_VOTE_SERVER_ROOT_URL + "pl/" + polling_location_we_vote_id_source + "/summary/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
@@ -595,7 +595,7 @@ export default class VoterGuideBallot extends Component {
      </div> :
       null;
 
-    const electionTooltip = election_day_text ? <Tooltip id="tooltip">Election day {moment(election_day_text).format("MMM Do, YYYY")}</Tooltip> : <span />;
+    const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format("MMM Do, YYYY")}</span> : <span />;
 
     let in_remaining_decisions_mode = this.state.filter_type === "filterRemaining";
 
@@ -661,12 +661,12 @@ export default class VoterGuideBallot extends Component {
           <BrowserPushMessage incomingProps={this.props} />
           <header className="ballot__header__group">
             <h1 className="h3 ballot__header__title-voter-guide">
-              { election_name ?
-                <OverlayTrigger placement="top" overlay={electionTooltip} >
-                 <span className="u-push--sm">{election_name}</span>
-                </OverlayTrigger> :
-                null
-              }
+                  { electionName ?
+                       <span className="u-push--sm">
+                         {electionName} <span className="hidden-xs">&mdash; </span>
+                         <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
+                       </span> :
+                      null }
               {/* We always show the change election option */}
               <span className="u-no-break hidden-print u-f8 u-cursor--pointer"
                     onClick={this.toggleSelectBallotModal}>

@@ -5,6 +5,7 @@ import BallotLocationButton from "./BallotLocationButton";
 import BallotStore from "../../stores/BallotStore";
 import ElectionStore from "../../stores/ElectionStore";
 import { historyPush } from "../../utils/cordovaUtils";
+import moment from "moment";
 import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 import { calculateBallotBaseUrl } from "../../utils/textFormat";
@@ -137,12 +138,19 @@ export default class BallotLocationChoices extends Component {
     renderLog(__filename);
     const default_number_of_ballot_locations_mobile = 5;
     const default_number_of_ballot_locations_desktop = 5;
-    const election_name = BallotStore.currentBallotElectionName;
+    const electionName = BallotStore.currentBallotElectionName;
+    const electionDayText = BallotStore.currentBallotElectionDate;
+    const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format("MMM Do, YYYY")}</span> : <span />;
     // console.log("In BallotLocationChoices render, ballot_location_list: ", this.state.ballot_location_list);
     if (this.state.ballot_location_list && this.state.ballot_location_list.length) {
       //  className="container-fluid card"
       return <div className="u-stack--sm ballot-locations hidden-print">
-        { this.props.showElectionName ? <h4 className="h4">{election_name}</h4> : null }
+        { this.props.showElectionName ?
+          <h4 className="h4">
+            {electionName} <span className="hidden-xs">&mdash; </span>
+            <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
+          </h4> :
+          null }
         <div className="btn-group">
           {/* Mobile display of buttons */}
           <div className="visible-xs">
