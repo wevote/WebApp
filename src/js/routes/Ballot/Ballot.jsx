@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { Link } from "react-router";
 import AddressBox from "../../components/AddressBox";
 import AnalyticsActions from "../../actions/AnalyticsActions";
@@ -587,7 +587,7 @@ export default class Ballot extends Component {
 
     // const ballot_caveat = BallotStore.ballot_properties.ballot_caveat; // ballot_properties might be undefined
     const electionName = BallotStore.currentBallotElectionName;
-    const election_day_text = BallotStore.currentBallotElectionDate;
+    const electionDayText = BallotStore.currentBallotElectionDate;
     const polling_location_we_vote_id_source = BallotStore.currentBallotPollingLocationSource;
     let ballot_returned_admin_edit_url = webAppConfig.WE_VOTE_SERVER_ROOT_URL + "b/" + polling_location_we_vote_id_source + "/list_edit_by_polling_location/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
 
@@ -618,7 +618,7 @@ export default class Ballot extends Component {
      </div> :
       null;
 
-    const electionDayText = election_day_text ? <span>{moment(election_day_text).format("MMM Do, YYYY")}</span> : <span />;
+    const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format("MMM Do, YYYY")}</span> : <span />;
 
     let in_remaining_decisions_mode = this.state.filter_type === "filterRemaining";
     let in_ready_to_vote_mode = this.state.filter_type === "filterReadyToVote";
@@ -676,8 +676,8 @@ export default class Ballot extends Component {
                   <h1 className="h1 ballot__header__title">
                     { electionName ?
                        <span className="u-push--sm">
-                         {electionName} <span className="hidden-xs">&mdash;
-                          </span><span className="u-gray-mid u-no-break">{electionDayText}</span>
+                         {electionName} <span className="hidden-xs">&mdash; </span>
+                         <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
                        </span> :
                       null }
                     {/* We always show the change election option */}

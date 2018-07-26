@@ -103,7 +103,7 @@ export default class BallotStatusMessage extends Component {
       if (this.state.voter_specific_ballot_from_google_civic) {
         messageString += ""; // No additional text
       } else if (this.state.ballot_location_chosen && this.state.substituted_address_nearby) {
-        messageString += "This is a ballot in " + this.state.substituted_address_nearby + ". Please enter your full address to see all items on your official ballot.";
+        messageString += "This is a ballot for " + this.state.substituted_address_nearby + ". Enter your full address to see your official ballot.";
       } else {
         if (this.state.voter_entered_address) {
           messageString += "This is our best guess for what's on your ballot. ";
