@@ -39,7 +39,7 @@ export default class OrganizationVoterGuideCard extends Component {
     const {organization_twitter_handle, twitter_description,
       organization_photo_url_large, organization_website,
       organization_name, organization_we_vote_id} = this.props.organization; // , twitter_followers_count
-    let organizationWebsite = organization_website;
+    let organizationWebsite = organization_website && organization_website.slice(0, 4) !== "http" ? "http://" + organization_website : organization_website;
 
     // If the displayName is in the twitterDescription, remove it from twitterDescription
     let displayName = organization_name ? organization_name : "";
