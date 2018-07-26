@@ -107,17 +107,12 @@ export default class LearnMore extends Component {
       return <span>{expandedTextToDisplay}</span>;
     }
 
-    let openExternal = learnMoreLink &&
-      <OpenExternalWebSite url={learnMoreLink}
-                           target="_blank"
-                           body={<span>{learnMoreText}&nbsp;<i className="fa fa-external-link" /></span>} />;
-
     if (this.state.readMore) {
       return <span>
         <TextTruncate
           line={numOfLines}
           truncateText="..."
-          text={textToDisplay + openExternal}
+          text={textToDisplay}
           textTruncateChild={<a tabIndex="0"
             onClick={this.showMore}
             onKeyDown={this.onKeyDown.bind(this)}>
@@ -129,7 +124,9 @@ export default class LearnMore extends Component {
     } else {
       return <span tabIndex="0"> {expandedTextToDisplay}&nbsp;&nbsp;
         { learnMoreLink ?
-          openExternal :
+          <OpenExternalWebSite url={learnMoreLink}
+                               target="_blank"
+                               body={<span>{learnMoreText}&nbsp;<i className="fa fa-external-link" /></span>} /> :
           <a tabIndex="0"
             onClick={onClick}
             onKeyDown={this.onKeyDown.bind(this)}>
