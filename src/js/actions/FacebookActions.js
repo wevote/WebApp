@@ -178,7 +178,7 @@ export default {
                   });
                 } else {
                   // Check if successResponse.authResponse is null indicating cancelled login attempt
-                  oAuthLog("FacebookActions null authResponse indicating cancelled login attempt: ", response);
+                  oAuthLog("FacebookActions null authResponse indicating cancelled login attempt: ", successResponse);
                   return;
                 }
               },

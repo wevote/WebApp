@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { ProgressBar } from "react-bootstrap";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 import { renderLog } from "../../utils/logging";
@@ -34,11 +33,11 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
     });
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.voterGuideStoreListener.remove();
   }
 
-  onVoterGuideStoreChange (){
+  onVoterGuideStoreChange () {
     this.setState({
       voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id())
     });
@@ -70,9 +69,11 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
           percent_complete = 30;
         }
       }
+
       voter_has_pledged = this.state.voter_guide.voter_has_pledged;
       // console.log("PledgeToSupportOrganizationStatusBar voter_has_pledged:", voter_has_pledged, ", voter_guide_we_vote_id: ", this.state.voter_guide.we_vote_id);
     }
+
     // let show_progress_bar = number_of_supporters_goal > 1 && number_of_supporters > 1;
     //
     // const progress_bar = <ProgressBar bsStyle={"danger"}
@@ -93,7 +94,7 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
         </div> :
         null }
         */}
-      {voter_has_pledged ?
+      { voter_has_pledged ?
         <div className="voter-guide__pledge-to-support__thank-you-for-supporting u-stack--md">
           Thank you for standing with {this.props.organization.organization_name}!
           {/* number_of_supporters === 1 && number_of_supporters_goal && voter_has_pledged && percent_complete < 100 ?
