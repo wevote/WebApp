@@ -378,10 +378,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
           <BookmarkToggle we_vote_id={we_vote_id} type="OFFICE" />
           <span className="hidden-print pull-right u-push--lg">
             { this.state.display_office_unfurled ?
-              <Link onClick={this.toggleExpandDetails}>
-                <span className="BallotItem__view-more u-items-center u-no-break hidden-print">
-                  show less</span>
-              </Link> :
+              null :
               <Link onClick={this.toggleExpandDetails}>
                 <span className="BallotItem__view-more u-items-center u-no-break hidden-print">
                   show more
