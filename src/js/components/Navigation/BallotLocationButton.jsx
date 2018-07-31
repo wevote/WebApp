@@ -42,9 +42,13 @@ export default class BallotLocationButton extends Component {
         }
       }
       // console.log("ballot_location");
-      if (ballot_location.ballot_location_display_name && ballot_location.ballot_location_display_name !== "") {
-        ballot_location_display_name = ballot_location.ballot_location_display_name;
-      } else if (ballot_location.text_for_map_search !== "") {
+      // DALE 2018-07-31 The ballot_location_display_name isn't very clear. Ideally we would
+      //   show only the city, state zip (instead of the full text_for_map_search), but this will require more
+      //   work on the API server side to make this data available.
+      // if (ballot_location.ballot_location_display_name && ballot_location.ballot_location_display_name !== "") {
+      //   ballot_location_display_name = ballot_location.ballot_location_display_name;
+      // } else
+      if (ballot_location.text_for_map_search !== "") {
         const maximum_address_display_length = 25;
         ballot_location_display_name = shortenText(ballot_location.text_for_map_search, maximum_address_display_length);
       } else {

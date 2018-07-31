@@ -6,7 +6,6 @@ import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import TextTruncate from "react-text-truncate";
 import { toTitleCase } from "../../utils/textFormat";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
-import CandidateActions from "../../actions/CandidateActions";
 import ImageHandler from "../ImageHandler";
 import IssueStore from "../../stores/IssueStore";
 import ItemActionBar from "../Widgets/ItemActionBar";
@@ -65,7 +64,11 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     this.onVoterGuideStoreChange();
 
     if (this.props.candidate_list && this.props.candidate_list.length) {
-      CandidateActions.candidatesRetrieve(this.props.we_vote_id);
+      // DALE 2018-07-31 We now retrieve the full candidate data in voterBallotItemsRetrieve
+      // if (CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id) === 0) {
+      //   // console.log("Calling candidatesRetrieve: ", this.props.we_vote_id);
+      //   CandidateActions.candidatesRetrieve(this.props.we_vote_id);
+      // }
 
       // this.props.candidate_list.forEach( function (candidate) {
       //   if (candidate && candidate.hasOwnProperty("we_vote_id") && !CandidateStore.isCandidateInStore(candidate.we_vote_id)) {
@@ -491,7 +494,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                                   rootClose
                                   placement="top"
                                   overlay={yourNetworkIsUndecidedPopover}>
-                      <span className=" u-cursor--pointer">Your network is undecided</span>
+                      <span className=" u-cursor--pointer">Your network is undecided <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
                     </OverlayTrigger>
                   </div>
                 }

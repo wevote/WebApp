@@ -56,6 +56,8 @@ class CandidateStore extends ReduceStore {
     let candidate;
     let candidate_list;
     let candidate_we_vote_id;
+    let google_civic_election_id;
+    let incoming_candidate_count = 0;
     let new_position_list;
     let office_position_list;
     let one_position;
@@ -95,7 +97,7 @@ class CandidateStore extends ReduceStore {
           }
         }
 
-        let incoming_candidate_count = 0;
+        incoming_candidate_count = 0;
         candidate_list = action.res.candidate_list;
         all_cached_candidates = state.all_cached_candidates;
         candidate_list.forEach(one_candidate => {
@@ -111,6 +113,26 @@ class CandidateStore extends ReduceStore {
           all_cached_candidates: all_cached_candidates,
           number_of_candidates_retrieved_by_office: number_of_candidates_retrieved_by_office,
         };
+
+      case "voterBallotItemsRetrieve":
+        google_civic_election_id = action.res.google_civic_election_id || 0;
+        if (google_civic_election_id !== 0) {
+          all_cached_candidates = state.all_cached_candidates;
+          action.res.ballot_item_list.forEach(one_ballot_item => {
+            if (one_ballot_item.kind_of_ballot_item === "OFFICE" && one_ballot_item.candidate_list) {
+              candidate_list = one_ballot_item.candidate_list;
+              candidate_list.forEach(one_candidate => {
+                all_cached_candidates[one_candidate.we_vote_id] = one_candidate;
+              });
+            }
+          });
+
+          return {
+            ...state,
+            all_cached_candidates: all_cached_candidates,
+          };
+        }
+        return state;
 
       case "positionListForBallotItem":
 

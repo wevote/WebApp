@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { showCityStateZip } from "../../utils/address-functions";
 import cookies from "../../utils/cookies";
 import { renderLog } from "../../utils/logging";
 
@@ -50,7 +49,7 @@ export default class BallotStatusMessage extends Component {
       election_is_upcoming: this.props.election_is_upcoming,
       google_civic_data_exists: this.props.google_civic_data_exists,
       show_ballot_status: true,
-      substituted_address_nearby: showCityStateZip(this.props.substituted_address_nearby),
+      substituted_address_nearby: this.props.substituted_address_nearby,
       voter_entered_address: this.props.voter_entered_address,
       voter_specific_ballot_from_google_civic: this.props.voter_specific_ballot_from_google_civic,
       electionsWithBallotStatusMessageClosed,
@@ -66,7 +65,7 @@ export default class BallotStatusMessage extends Component {
       election_is_upcoming: nextProps.election_is_upcoming,
       google_civic_data_exists: nextProps.google_civic_data_exists,
       show_ballot_status: true,
-      substituted_address_nearby: showCityStateZip(nextProps.substituted_address_nearby),
+      substituted_address_nearby: nextProps.substituted_address_nearby,
       voter_entered_address: nextProps.voter_entered_address,
       voter_specific_ballot_from_google_civic: nextProps.voter_specific_ballot_from_google_civic,
     });

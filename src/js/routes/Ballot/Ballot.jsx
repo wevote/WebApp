@@ -646,7 +646,13 @@ export default class Ballot extends Component {
     }
 
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.substituted_address_nearby) {
-      substituted_address_nearby = BallotStore.ballot_properties.substituted_address_nearby;
+      if (BallotStore.ballot_properties.substituted_address_city && BallotStore.ballot_properties.substituted_address_state && BallotStore.ballot_properties.substituted_address_zip) {
+        substituted_address_nearby = BallotStore.ballot_properties.substituted_address_city + ", ";
+        substituted_address_nearby += BallotStore.ballot_properties.substituted_address_state + " ";
+        substituted_address_nearby += BallotStore.ballot_properties.substituted_address_zip;
+      } else {
+        substituted_address_nearby = BallotStore.ballot_properties.substituted_address_nearby;
+      }
     } else if (voter_ballot_location && voter_ballot_location.text_for_map_search) {
       // Get the location from the VoterStore address object
       substituted_address_nearby = voter_ballot_location.text_for_map_search;
