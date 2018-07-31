@@ -6,7 +6,6 @@ import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import TextTruncate from "react-text-truncate";
 import { toTitleCase } from "../../utils/textFormat";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
-import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
 import ImageHandler from "../ImageHandler";
 import IssuesFollowedByBallotItemDisplayList from "../Issues/IssuesFollowedByBallotItemDisplayList";
@@ -79,10 +78,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
     if (this.props.we_vote_id) {
       // console.log("OfficeItemCompressedRaccoon componentDidMount getNumberOfCandidatesRetrievedByOffice:", CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id));
-      if (CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id) === 0) {
-        // console.log("Calling candidatesRetrieve: ", this.props.we_vote_id);
-        CandidateActions.candidatesRetrieve(this.props.we_vote_id);
-      }
+      // DALE 2018-07-31 We now retrieve the full candidate data in voterBallotItemsRetrieve
+      // if (CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id) === 0) {
+      //   // console.log("Calling candidatesRetrieve: ", this.props.we_vote_id);
+      //   CandidateActions.candidatesRetrieve(this.props.we_vote_id);
+      // }
     }
 
     // If there three or fewer offices on this ballot, unfurl them
@@ -624,7 +624,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                                   rootClose
                                   placement="top"
                                   overlay={yourNetworkIsUndecidedPopover}>
-                      <span className=" u-cursor--pointer">Your network is undecided</span>
+                      <span className=" u-cursor--pointer">Your network is undecided <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
                     </OverlayTrigger>
                   </div>
                 }
