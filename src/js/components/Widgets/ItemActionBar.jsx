@@ -348,21 +348,21 @@ export default class ItemActionBar extends Component {
       <div className={(yesVoteDescriptionExists || noVoteDescriptionExists ? "" : "btn-group") + (!this.props.shareButtonHide ? " u-push--sm" : "")}>
 
         {/* Start of Support Button */}
-        <div className="hidden-xs">
+        <div className="hidden-xs item-actionbar__position-bar">
           <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>{supportButton}</OverlayTrigger>
           {yesVoteDescriptionExists ? <span className="item-actionbar__following-text">{yesVoteDescription}</span> : null}
         </div>
-        <div className="visible-xs">
+        <div className="visible-xs item-actionbar__position-bar item-actionbar__position-bar--mobile">
           {supportButton}
           {yesVoteDescriptionExists ? <span className="item-actionbar__following-text">{yesVoteDescription}</span> : null}
         </div>
 
         {/* Start of Oppose Button */}
-        <div className="hidden-xs">
+        <div className="hidden-xs item-actionbar__position-bar">
           <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>{opposeButton}</OverlayTrigger>
           {noVoteDescriptionExists ? <span className="item-actionbar__following-text">{noVoteDescription}</span> : null}
         </div>
-        <div className="visible-xs">
+        <div className="visible-xs item-actionbar__position-bar item-actionbar__position-bar--mobile">
           {opposeButton}
           {noVoteDescriptionExists ? <span className="item-actionbar__following-text">{noVoteDescription}</span> : null}
         </div>
