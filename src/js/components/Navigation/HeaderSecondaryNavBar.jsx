@@ -4,7 +4,7 @@ import { Modal } from "react-bootstrap";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
 import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
-import BallotIntroIssuesSuccess from "../../components/Ballot/BallotIntroIssuesSuccess";
+import BallotIntroVerifyAddress from "../../components/Ballot/BallotIntroVerifyAddress";
 import { cordovaDot, isWebApp } from "../../utils/cordovaUtils";
 import SecondaryNavBarItem from "./SecondaryNavBarItem";
 import EmailBallotModal from "../Ballot/EmailBallotModal";
@@ -173,25 +173,8 @@ export default class HeaderSecondaryNavBar extends Component {
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...sliderSettings}>
             <div key={1}><BallotIntroFollowIssues next={this._nextSliderPage}/></div>
-            {/* <div key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div> */}
-            <div key={3}><BallotIntroIssuesSuccess next={this._toggleBallotIntroFollowIssues}/></div>
-          </Slider>
-        </Modal.Body>
-      </Modal>;
-
-    // Consider using /components/Ballot/BallotIntroOrganizations instead of BallotIntroFollowAdvisers
-    const BallotIntroOrganizationsModal = <Modal bsClass="background-brand-blue modal"
-                                    show={this.state.showBallotIntroOrganizations}
-                                    onHide={() => this._toggleBallotIntroOrganizations(this)}>
-        <Modal.Body>
-          <div className="intro-modal__close">
-            <a onClick={this._toggleBallotIntroOrganizations} className="intro-modal__close-anchor">
-              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
-            </a>
-          </div>
-          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...sliderSettings}>
-            <div key={1}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div>
-            <div key={2}><BallotIntroIssuesSuccess next={this._toggleBallotIntroOrganizations}/></div>
+            <div key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div>
+            <div key={3}><BallotIntroVerifyAddress next={this._toggleBallotIntroFollowIssues} /></div>
           </Slider>
         </Modal.Body>
       </Modal>;
@@ -264,19 +247,18 @@ export default class HeaderSecondaryNavBar extends Component {
         <header className={searchStyle}>
           <div className="header-secondary-nav">
             {/* Issues Icon & Modal */}
-            {!this.props.hideGettingStartedIssuesButton ?
-              <SecondaryNavBarItem show={this._toggleBallotIntroFollowIssues}
-                                   source={cordovaDot("/img/global/svg-icons/issues-v1-64x42.svg")}
-                                   title="Issues"
-                                   completed={this.state.ballot_intro_issues_completed} /> :
-              null }
+            {/* {!this.props.hideGettingStartedIssuesButton ? null : null } No longer hiding Issue Button */}
+            <SecondaryNavBarItem show={this._toggleBallotIntroFollowIssues}
+                                 source={cordovaDot("/img/global/svg-icons/issues-v1-64x42.svg")}
+                                 title="Issues"
+                                 completed={this.state.ballot_intro_issues_completed} />
 
             <SecondaryNavBarItem show={this._openPrintModal}
                                  title="Print"
                                  iconPrint/>
 
             <SecondaryNavBarItem show={this._openEmailModal}
-                                 title="Email"
+                                 title="Email Ballot"
                                  iconEmail/>
 
             {/* July 10, 2018 Steve:  Disable Share Ballot via Facebook, in Cordova, until it is fixed for the Webapp */}
@@ -308,7 +290,7 @@ export default class HeaderSecondaryNavBar extends Component {
         </header>
       }
       { BallotIntroFollowIssuesModal }
-      { this.state.showBallotIntroOrganizations ? BallotIntroOrganizationsModal : null }
+      {/* this.state.showBallotIntroOrganizations ? BallotIntroOrganizationsModal : null */}
       { this.state.showEmailModal ? SendEmailModal : null }
       { this.state.showFacebookModal ? SendFacebookModal : null }
       { this.state.showPollingLocatorModal &&

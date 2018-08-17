@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
 import { cordovaDot } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
 import ImageHandler from "../ImageHandler";
+import OrganizationActions from "../../actions/OrganizationActions";
+import { showToastError, showToastSuccess } from "../../utils/showToast";
+import { renderLog } from "../../utils/logging";
 
 export default class OrganizationFollowToggle extends Component {
   static propTypes = {
+    is_following: PropTypes.bool,
     organization_we_vote_id: PropTypes.string.isRequired,
     organization_name: PropTypes.string.isRequired,
     organization_description: PropTypes.string,
@@ -19,14 +21,19 @@ export default class OrganizationFollowToggle extends Component {
 
   constructor (props) {
     super(props);
+
+    let is_following = false;
+    if (this.props.is_following) {
+      is_following = this.props.is_following;
+    }
     this.state = {
-      is_following: false,
+      is_following: is_following,
     };
+    this.onOrganizationFollow = this.onOrganizationFollow.bind(this);
+    this.onOrganizationStopFollowing = this.onOrganizationStopFollowing.bind(this);
   }
 
   componentDidMount () {
-    this.onOrganizationFollow = this.onOrganizationFollow.bind(this);
-    this.onOrganizationStopFollowing = this.onOrganizationStopFollowing.bind(this);
   }
 
   onOrganizationFollow () {
@@ -35,14 +42,20 @@ export default class OrganizationFollowToggle extends Component {
       this.setState({is_following: true});
       let organization_follow_based_on_issue = true;
       OrganizationActions.organizationFollow(this.props.organization_we_vote_id, organization_follow_based_on_issue);
-      this.props.on_organization_follow(this.props.organization_we_vote_id);
+      if (this.props.on_organization_follow) {
+        this.props.on_organization_follow(this.props.organization_we_vote_id);
+      }
+      showToastSuccess(`Now following ${this.props.organization_name}!`);
     }
   }
 
   onOrganizationStopFollowing () {
     this.setState({is_following: false});
     OrganizationActions.organizationStopFollowing(this.props.organization_we_vote_id);
-    this.props.on_organization_stop_following(this.props.organization_we_vote_id);
+    if (this.props.on_organization_stop_following) {
+      this.props.on_organization_stop_following(this.props.organization_we_vote_id);
+    }
+    showToastError(`You've stopped following ${this.props.organization_name}.`);
   }
 
   render () {

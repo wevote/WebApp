@@ -230,6 +230,7 @@ export default class Intro extends Component {
                       null
                     }
                     <section className="quick-links__section--mobile u-flex">
+                      {/* Change to this link to skip onboarding sequence?: /ballot */}
                       <a className="quick-links__button quick-links__button--left" onClick={() => historyPush("/wevoteintro/network")}>Get Started</a>
                     </section>
 

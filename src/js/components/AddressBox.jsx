@@ -15,6 +15,7 @@ export default class AddressBox extends Component {
     cancelEditAddress: PropTypes.func,
     toggleSelectAddressModal: PropTypes.func,
     saveUrl: PropTypes.string.isRequired,
+    waitingMessage: PropTypes.string,
   };
 
   constructor (props) {
@@ -69,7 +70,10 @@ export default class AddressBox extends Component {
   }
 
   onBallotStoreChange () {
-    this.setState({ ballotCaveat: BallotStore.getBallotCaveat() });
+    // console.log("AddressBox, onBallotStoreChange, this.state:", this.state);
+    this.setState({
+      ballotCaveat: BallotStore.getBallotCaveat()
+    });
   }
 
   _placeChanged (addressAutocomplete) {
@@ -109,8 +113,12 @@ export default class AddressBox extends Component {
   render () {
     renderLog(__filename);
     if (this.state.loading) {
+      let waitingMessage = "Please wait a moment while we find your ballot...";
+      if (this.props.waitingMessage) {
+        waitingMessage = this.props.waitingMessage;
+      }
       return <div>
-            <h2>Please wait a moment while we adjust your ballot options to the new location...</h2>
+            <h2>{waitingMessage}</h2>
             {LoadingWheel}
           </div>;
     }

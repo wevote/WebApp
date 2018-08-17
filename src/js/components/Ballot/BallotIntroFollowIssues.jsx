@@ -8,7 +8,6 @@ import { renderLog } from "../../utils/logging";
 
 const NEXT_BUTTON_TEXT = "Next >";
 const SKIP_BUTTON_TEXT = "Skip >";
-// const NEXT_SCREEN_PROMPT_TEXT = "On the next screen, we'll help you find organizations that share your values.";
 
 export default class BallotIntroFollowIssues extends Component {
   static propTypes = {
@@ -19,12 +18,13 @@ export default class BallotIntroFollowIssues extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      // description_text: null,
+      all_issues: [],
       followed_issues: [],
-      issues: [],
+      issues_voter_can_follow: [],
       next_button_text: NEXT_BUTTON_TEXT,
       number_of_required_issues: 3,
     };
+    this.isVoterFollowingThisIssueLocal = this.isVoterFollowingThisIssueLocal.bind(this);
     this.onIssueFollow = this.onIssueFollow.bind(this);
     this.onIssueStopFollowing = this.onIssueStopFollowing.bind(this);
     this.onNext = this.onNext.bind(this);
@@ -38,7 +38,12 @@ export default class BallotIntroFollowIssues extends Component {
   }
 
   componentDidMount () {
-    this.onIssueStoreChange();
+    this.setState({
+      all_issues: IssueStore.getAllIssues(),
+      issues_voter_can_follow: IssueStore.getIssuesVoterCanFollow(),
+      followed_issues: IssueStore.getIssuesVoterIsFollowing(),
+    });
+    this.updateNextState();
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange);
   }
 
@@ -50,13 +55,14 @@ export default class BallotIntroFollowIssues extends Component {
     // update followed_issues only for first time, subsequent updates will be made locally
     if (this.state.followed_issues.length) {
       this.setState({
-        issues: IssueStore.getIssuesVoterCanFollow()
+        issues_voter_can_follow: IssueStore.getIssuesVoterCanFollow()
       },
       this.updateNextState
       );
     } else {
       this.setState({
-        issues: IssueStore.getIssuesVoterCanFollow(),
+        all_issues: IssueStore.getAllIssues(),
+        issues_voter_can_follow: IssueStore.getIssuesVoterCanFollow(),
         followed_issues: IssueStore.getIssuesVoterIsFollowing(),
       },
       this.updateNextState
@@ -84,11 +90,6 @@ export default class BallotIntroFollowIssues extends Component {
     if (index === -1) {
       var new_followed_issues = this.state.followed_issues;
       new_followed_issues.push(issue_we_vote_id);
-      // if (this.state.followed_issues.length >= this.state.number_of_required_issues) {
-      //   description_text = NEXT_SCREEN_PROMPT_TEXT;
-      // } else {
-      //   description_text = null;
-      // }
       this.setState({
         // description_text: description_text,
         followed_issues: new_followed_issues,
@@ -105,11 +106,6 @@ export default class BallotIntroFollowIssues extends Component {
     if (index > -1) {
       var new_followed_issues = this.state.followed_issues;
       new_followed_issues.splice(index, 1);
-      // if (this.state.followed_issues.length >= this.state.number_of_required_issues) {
-      //   description_text = NEXT_SCREEN_PROMPT_TEXT;
-      // } else {
-      //   description_text = null;
-      // }
       if (new_followed_issues.length) {
         this.setState({
           followed_issues: new_followed_issues,
@@ -122,7 +118,21 @@ export default class BallotIntroFollowIssues extends Component {
         });
       }
 
-      this.updateNextState();
+      this.updateNextState(issue_we_vote_id);
+    }
+  }
+
+  isVoterFollowingThisIssueLocal (issue_we_vote_id) {
+    let voter_is_following = false;
+    if (this.state.followed_issues) {
+      this.state.followed_issues.map((followed_issue) => {
+        if (followed_issue.issue_we_vote_id === issue_we_vote_id) {
+          voter_is_following = true;
+        }
+      });
+      return voter_is_following;
+    } else {
+      return false;
     }
   }
 
@@ -139,18 +149,18 @@ export default class BallotIntroFollowIssues extends Component {
 
   render () {
     renderLog(__filename);
-    let issue_list = this.state.issues;
+    let issue_list = this.state.all_issues;
     let remaining_issues = this.remainingIssues();
 
     let edit_mode = true;
     let issues_shown_count = 0;
     let maximum_number_of_issues_to_show = 36; // Only show the first 6 * 6 = 36 issues so as to not overwhelm voter
-    // NOTE: We might want to show political parties at the top
     const issue_list_for_display = issue_list.map((issue) => {
       if (issues_shown_count < maximum_number_of_issues_to_show) {
         issues_shown_count++;
         return <IssueFollowToggleSquare
           key={issue.issue_we_vote_id}
+          is_following={this.isVoterFollowingThisIssueLocal(issue.issue_we_vote_id)}
           issue_we_vote_id={issue.issue_we_vote_id}
           issue_name={issue.issue_name}
           issue_description={issue.issue_description}
@@ -185,11 +195,6 @@ export default class BallotIntroFollowIssues extends Component {
       <div className="intro-modal-shadow-wrap">
         <div className="intro-modal-shadow" />
       </div>
-      {/* {this.state.description_text ?
-        <div className="intro-modal__description-text">
-          {this.state.description_text}
-        </div> :
-        null } */}
       <div className="intro-modal__button-wrap">
         <Button type="submit"
           className={ this.remainingIssues() ? "btn intro-modal__button disabled btn-secondary" : "btn btn-success intro-modal__button"}
