@@ -6,6 +6,18 @@
   margin: $space-md $space-none;
   padding-top: $space-sm;
 
+  &__position-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: $space-sm;
+
+    &--mobile {
+      @include breakpoints (max small-bootstrap) {
+        display: flex !important;
+      }
+    }
+  }
+
   &__position-btn-label {
     color: $gray-mid;
     @include breakpoints (max mid-small) {
