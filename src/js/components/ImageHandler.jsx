@@ -48,6 +48,7 @@ export default class ImageHandler extends Component {
         place_holder_image_url = cordovaDot("/img/global/svg-icons/issue-generic.svg");
         break;
       case "ISSUE-PHOTO":
+        replacementClass = "image-issue-photo-placeholder";
         place_holder_image_url = cordovaDot("/img/global/svg-icons/issue-photo-generic.svg");
         break;
       default:

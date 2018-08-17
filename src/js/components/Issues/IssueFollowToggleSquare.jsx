@@ -63,7 +63,8 @@ export default class IssueFollowToggleSquare extends Component {
     }
     let issue_image_url;
     if (this.props.issue_image_url) {
-      issue_image_url = this.props.issue_image_url;
+      // 2018-08-17 We are turning off issue images
+      // issue_image_url = this.props.issue_image_url;
     } else {
       // let issue_name_base = this.props.issue_name.toLowerCase().replace(/[^a-z0-9_\']/g, "-").replace(/-+/g, "-");
       // issue_image_url = "/img/global/issues/" + issue_name_base + "-110x110.jpg";
@@ -116,8 +117,7 @@ export default class IssueFollowToggleSquare extends Component {
             </OverlayTrigger> :
             null
           }
-        </div>
-      ;
+        </div>;
     }
   }
 }

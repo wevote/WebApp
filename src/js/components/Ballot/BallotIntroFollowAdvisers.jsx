@@ -117,17 +117,23 @@ export default class BallotIntroFollowAdvisers extends Component {
       organization_we_vote_ids_displayed.push(voter_guides_to_follow_by_issues_followed[index].organization_we_vote_id);
     }
 
-    const voter_guides_to_follow_by_issues_for_display = voter_guides_to_follow_by_issues_followed.map((voter_guide) =>
-      <OrganizationFollowToggle
-        key={voter_guide.organization_we_vote_id}
-        organization_we_vote_id={voter_guide.organization_we_vote_id}
-        organization_name={voter_guide.voter_guide_display_name}
-        organization_description={voter_guide.twitter_description}
-        organization_image_url={voter_guide.voter_guide_image_url_large}
-        on_organization_follow={this.onOrganizationFollow}
-        on_organization_stop_following={this.onOrganizationStopFollowing}
-        grid="col-4 col-sm-2" />
-    );
+    let organizations_shown_count = 0;
+    let maximum_number_of_organizations_to_show = 9;  // Please reset to 24 once we have this fixed: https://github.com/wevote/WebApp/issues/1636
+    const voter_guides_to_follow_by_issues_for_display = voter_guides_to_follow_by_issues_followed.map((voter_guide) => {
+      if (organizations_shown_count < maximum_number_of_organizations_to_show) {
+        organizations_shown_count++;
+        return <OrganizationFollowToggle
+          key={voter_guide.organization_we_vote_id}
+          organization_we_vote_id={voter_guide.organization_we_vote_id}
+          organization_name={voter_guide.voter_guide_display_name}
+          organization_description={voter_guide.twitter_description}
+          organization_image_url={voter_guide.voter_guide_image_url_large}
+          on_organization_follow={this.onOrganizationFollow}
+          on_organization_stop_following={this.onOrganizationStopFollowing}
+          grid="col-4 col-sm-2"/>;
+      }
+      return null;
+    });
 
     // These are organizations based on the upcoming election
     let voter_guides_to_follow_all = [];
@@ -138,7 +144,6 @@ export default class BallotIntroFollowAdvisers extends Component {
     // We want to remove the organizations we've already displayed and limit the total displayed
     let voter_guides_to_follow_all_filtered = [];
     let number_added_to_all_filtered_list = 0;
-    let total_number_of_voter_guides_to_show = 36;
     let already_seen;
     let exceeded_voter_guides_to_show;
     let is_individual;
@@ -146,7 +151,7 @@ export default class BallotIntroFollowAdvisers extends Component {
       // console.log("voter guide to follow, owner type:", voter_guides_to_follow_all[index].voter_guide_owner_type);
       // Filter out some voter guides
       already_seen = organization_we_vote_ids_displayed.includes(voter_guides_to_follow_all[index].organization_we_vote_id);
-      exceeded_voter_guides_to_show = number_added_to_all_filtered_list >= total_number_of_voter_guides_to_show;
+      exceeded_voter_guides_to_show = number_added_to_all_filtered_list >= maximum_number_of_organizations_to_show;
       is_individual = isSpeakerTypeIndividual(voter_guides_to_follow_all[index].voter_guide_owner_type);
       if (!already_seen && !exceeded_voter_guides_to_show && !is_individual) {
         voter_guides_to_follow_all_filtered.push(voter_guides_to_follow_all[index]);
@@ -155,25 +160,29 @@ export default class BallotIntroFollowAdvisers extends Component {
       }
     }
 
-    const voter_guides_to_follow_all_for_display = voter_guides_to_follow_all_filtered.map((voter_guide) =>
-      <OrganizationFollowToggle
-        key={voter_guide.organization_we_vote_id}
-        organization_we_vote_id={voter_guide.organization_we_vote_id}
-        organization_name={voter_guide.voter_guide_display_name}
-        organization_description={voter_guide.twitter_description}
-        organization_image_url={voter_guide.voter_guide_image_url_large}
-        on_organization_follow={this.onOrganizationFollow}
-        on_organization_stop_following={this.onOrganizationStopFollowing}
-        grid="col-4 col-sm-2" />
-    );
+    const voter_guides_to_follow_all_for_display = voter_guides_to_follow_all_filtered.map((voter_guide) => {
+      if (organizations_shown_count < maximum_number_of_organizations_to_show) {
+        organizations_shown_count++;
+        return <OrganizationFollowToggle
+          key={voter_guide.organization_we_vote_id}
+          organization_we_vote_id={voter_guide.organization_we_vote_id}
+          organization_name={voter_guide.voter_guide_display_name}
+          organization_description={voter_guide.twitter_description}
+          organization_image_url={voter_guide.voter_guide_image_url_large}
+          on_organization_follow={this.onOrganizationFollow}
+          on_organization_stop_following={this.onOrganizationStopFollowing}
+          grid="col-4 col-sm-2"/>;
+        }
+        return null;
+      });
 
     return <div className="intro-modal">
-      <div className="intro-modal__h1">Listen to organizations</div>
+      <div className="intro-modal__h1">Organizations You Trust?</div>
         <div>
           <div className="intro-modal__top-description">
             { this.state.description_text ?
               this.state.description_text :
-              <span>Great work! Next, click to listen to any of these organizations to see their opinions on your ballot.</span>
+              <span>Click organizations you trust. Their opinions will be added to your ballot.</span>
             }
           </div>
           <div className="intro-modal-vertical-scroll-contain">

@@ -66,7 +66,7 @@ export default class SecondaryNavBarItem extends Component {
           </span>}
       /> :
       <Link onClick={this.props.show}
-            className={(this.props.iconPrint || this.props.completed ? "hidden-xs " : "") + "header-secondary-nav__item header-secondary-nav__item--has-icon"}>
+            className={(this.props.iconPrint ? "hidden-xs " : "") + "header-secondary-nav__item header-secondary-nav__item--has-icon"}>
         <span className="header-secondary-nav__item-image-wrapper" title={this.props.title}>
           {this.props.completed ?
             <img className="glyphicon nav-secondary-nav__image--checked"

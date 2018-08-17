@@ -421,7 +421,7 @@ class VoterGuideStore extends ReduceStore {
             };
           } else {
             let retrieveAnotherPageOfResults;
-            let maximum_number_to_retrieve = 150; // This needs to match the variable in VoterGuideActions
+            let maximum_number_to_retrieve = 350; // This needs to match the variable in VoterGuideActions
             let start_retrieve_at_this_number = action.res.start_retrieve_at_this_number + maximum_number_to_retrieve;
             let received_maximum_possible_voter_guides = action.res.number_retrieved && action.res.number_retrieved === maximum_number_to_retrieve;
             if (action.res.google_civic_election_id && received_maximum_possible_voter_guides) {

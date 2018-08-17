@@ -56,7 +56,8 @@ class IssueStore extends ReduceStore {
 
   getAllIssues () {
     // List of all issue objects
-    return this.getState().all_cached_issues;
+    let all_issue_keys = Object.keys(this.getState().all_cached_issues);
+    return this.getIssuesFromListOfWeVoteIds(all_issue_keys);
   }
 
   getIssuesVoterIsFollowing () {

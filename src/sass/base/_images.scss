@@ -1,11 +1,19 @@
-.image-person-placeholder {
-  vertical-align: middle;
+.image-lg {
+  width: 50px;
+}
+
+.image-issue-photo-placeholder {
+  background-color: $gray-mid;
+  // Prevents display of Issues as block of scrunched up words
+  min-height: 80px;
+  min-width: 80px;
 }
 
 .image-organization-placeholder {
   vertical-align: middle;
 }
 
-.image-lg {
-  width: 50px;
+.image-person-placeholder {
+  vertical-align: middle;
 }
+
