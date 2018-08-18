@@ -37,7 +37,7 @@ export default class BallotIntroFollowAdvisers extends Component {
   componentDidMount () {
     VoterGuideActions.voterGuidesToFollowRetrieveByIssuesFollowed();
     let search_string = "";
-    let add_voter_guides_not_from_election = true;
+    let add_voter_guides_not_from_election = false;
     VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voter_guides_not_from_election);
     this.onVoterGuideStoreChange();
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
@@ -182,7 +182,7 @@ export default class BallotIntroFollowAdvisers extends Component {
           <div className="intro-modal__top-description">
             { this.state.description_text ?
               this.state.description_text :
-              <span>Click organizations you trust. Their opinions will be added to your ballot.</span>
+              <span>Click the organizations you trust, to see who they endorse. Or skip ahead!</span>
             }
           </div>
           <div className="intro-modal-vertical-scroll-contain">
