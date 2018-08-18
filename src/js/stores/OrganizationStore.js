@@ -226,7 +226,7 @@ class OrganizationStore extends ReduceStore {
           VoterGuideActions.voterGuidesToFollowRetrieveByIssuesFollowed();  // Whenever a voter follows a new org, update list
         } else {
           search_string = "";
-          add_voter_guides_not_from_election = true;
+          add_voter_guides_not_from_election = false;
           // Whenever a voter follows a new org, update list
           VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voter_guides_not_from_election);
         }
@@ -278,7 +278,7 @@ class OrganizationStore extends ReduceStore {
         // organization_we_vote_id is the organization that was just followed
         organization_we_vote_id = action.res.organization_we_vote_id;
         search_string = "";
-        add_voter_guides_not_from_election = true;
+        add_voter_guides_not_from_election = false;
         // Whenever a voter follows a new org, update list
         // 2018-05-02 NOT calling this for optimization (not critical)
         // VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voter_guides_not_from_election);
@@ -311,7 +311,7 @@ class OrganizationStore extends ReduceStore {
         // organization_we_vote_id is the organization that was just followed
         organization_we_vote_id = action.res.organization_we_vote_id;
         search_string = "";
-        add_voter_guides_not_from_election = true;
+        add_voter_guides_not_from_election = false;
         // Whenever a voter follows a new org, update list
         VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voter_guides_not_from_election);
         // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
