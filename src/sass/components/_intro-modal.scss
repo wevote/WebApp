@@ -512,7 +512,18 @@ $slick-dot-character: '\2022' !default;
 .modal-dialog {
   position: relative;
   // top: 20%;
-  transform: translateY(-50%);
+  // transform: translateY(-50%);
+
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  -webkit-transition: none !important;
+  transition: none !important;
+
+  -moz-transform: none !important;
+  -ms-transform: none !important;
+  -o-transform: none !important;
+  -webkit-transform: none !important;
+  transform: none !important;
 
   @include breakpoints(medium large) {
     width: 750px;
