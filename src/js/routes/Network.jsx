@@ -11,7 +11,6 @@ import { renderLog } from "../utils/logging";
 import NetworkFriendRequests from "../components/Network/NetworkFriendRequests";
 import NetworkFriends from "../components/Network/NetworkFriends";
 import NetworkIssuesFollowed from "../components/Network/NetworkIssuesFollowed";
-import NetworkIssuesToFollow from "../components/Network/NetworkIssuesToFollow";
 import NetworkOpinions from "../components/Network/NetworkOpinions";
 import NetworkOpinionsFollowed from "../components/Network/NetworkOpinionsFollowed";
 import TwitterSignIn from "../components/Twitter/TwitterSignIn";
@@ -68,8 +67,6 @@ export default class Network extends Component {
       } else {
         this.setState({ edit_mode: nextProps.params.edit_mode });
       }
-    } else if (nextProps.location.pathname === "/more/network" || !nextProps.params.edit_mode) {
-      this.setState({ edit_mode: "issues" });
     } else {
       this.setState({ edit_mode: nextProps.params.edit_mode });
     }
@@ -94,10 +91,8 @@ export default class Network extends Component {
       } else {
         newState.edit_mode = this.props.params.edit_mode || "friends";
       }
-    } else if (this.state.pathname === "/more/network") {  //no invitations
-      newState.edit_mode = "issues";
     } else {
-      newState.edit_mode = this.props.params.edit_mode || "issues";
+      newState.edit_mode = this.props.params.edit_mode || "organizations";
     }
 
     this.setState(newState);
@@ -121,9 +116,6 @@ export default class Network extends Component {
         break;
       case "friends":
         networkComponentToDisplay = <NetworkFriendRequests />;
-        break;
-      case "issues":
-        networkComponentToDisplay = <NetworkIssuesToFollow />;
         break;
     }
 
@@ -199,13 +191,6 @@ export default class Network extends Component {
                   <Link to={{ pathname: "/more/network/friends" }} className={this.state.edit_mode === "friends" ? "tab tab-active" : "tab tab-default"}>
                     <span className="visible-xs">Requests</span>
                     <span className="hidden-xs">Friend Requests</span>
-                  </Link>
-                </li>
-
-                <li className="tab-item">
-                  <Link to={{ pathname: "/more/network/issues" }} className={this.state.edit_mode === "issues" ? "tab tab-active" : "tab tab-default"}>
-                    <span className="visible-xs">Issues</span>
-                    <span className="hidden-xs">Issues to Follow</span>
                   </Link>
                 </li>
 
