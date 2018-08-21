@@ -4,7 +4,7 @@ import { Button } from "react-bootstrap";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import { renderLog } from "../../utils/logging";
 import OrganizationFollowToggle from "./OrganizationFollowToggle";
-import { isSpeakerTypeIndividual } from "../../utils/organization-functions";
+import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from "../../utils/organization-functions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 
@@ -146,14 +146,16 @@ export default class BallotIntroFollowAdvisers extends Component {
     let number_added_to_all_filtered_list = 0;
     let already_seen;
     let exceeded_voter_guides_to_show;
-    let is_individual;
+    let is_organization;
+    let is_public_figure;
     for (index = 0; index < voter_guides_to_follow_all.length; ++index) {
       // console.log("voter guide to follow, owner type:", voter_guides_to_follow_all[index].voter_guide_owner_type);
       // Filter out some voter guides
       already_seen = organization_we_vote_ids_displayed.includes(voter_guides_to_follow_all[index].organization_we_vote_id);
       exceeded_voter_guides_to_show = number_added_to_all_filtered_list >= maximum_number_of_organizations_to_show;
-      is_individual = isSpeakerTypeIndividual(voter_guides_to_follow_all[index].voter_guide_owner_type);
-      if (!already_seen && !exceeded_voter_guides_to_show && !is_individual) {
+      is_organization = isSpeakerTypeOrganization(voter_guides_to_follow_all[index].voter_guide_owner_type);
+      is_public_figure = isSpeakerTypePublicFigure(voter_guides_to_follow_all[index].voter_guide_owner_type);
+      if (!already_seen && !exceeded_voter_guides_to_show && (is_organization || is_public_figure)) {
         voter_guides_to_follow_all_filtered.push(voter_guides_to_follow_all[index]);
         organization_we_vote_ids_displayed.push(voter_guides_to_follow_all[index].organization_we_vote_id);
         number_added_to_all_filtered_list++;
@@ -177,12 +179,12 @@ export default class BallotIntroFollowAdvisers extends Component {
       });
 
     return <div className="intro-modal">
-      <div className="intro-modal__h1">Organizations You Trust?</div>
+      <div className="intro-modal__h1">Opinions You Trust?</div>
         <div>
           <div className="intro-modal__top-description">
             { this.state.description_text ?
               this.state.description_text :
-              <span>Click the organizations you trust, to see who they endorse. Or skip ahead!</span>
+              <span>Click to see who they endorse on your ballot. Or skip ahead!</span>
             }
           </div>
           <div className="intro-modal-vertical-scroll-contain">
