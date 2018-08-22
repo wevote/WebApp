@@ -191,6 +191,7 @@ export default class CandidateItem extends Component {
                                   organizationsToFollowSupport={organizationsToFollowSupport}
                                   organizationsToFollowOppose={organizationsToFollowOppose}
                                   popoverBottom
+                                  showIssueList
                                   showPositionStatementActionBar={this.props.showPositionStatementActionBar}
                                   supportProps={candidateSupportStore}
                                   type="CANDIDATE"/>
