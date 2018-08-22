@@ -31,6 +31,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     organizationsToFollowOppose: PropTypes.array,
     popoverBottom: PropTypes.bool,
     positionBarIsClickable: PropTypes.bool,
+    showIssueList: PropTypes.bool,
     showPositionStatementActionBar: PropTypes.bool,
     supportProps: PropTypes.object,
     urlWithoutHash: PropTypes.string,
@@ -698,14 +699,17 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
     return <div className="network-positions-stacked">
       {/* Issues that have a score related to this ballot item */}
-      <IssuesFollowedByBallotItemDisplayList ballot_item_display_name={this.state.ballot_item_display_name}
-                                             ballotItemWeVoteId={this.props.ballotItemWeVoteId}
-                                             currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                             overlayTriggerOnClickOnly
-                                             placement={this.props.popoverBottom ? "bottom" : "top"}
-                                             urlWithoutHash={this.props.urlWithoutHash}
-                                             we_vote_id={this.props.we_vote_id}
-      />
+      { this.props.showIssueList ?
+        <IssuesFollowedByBallotItemDisplayList ballot_item_display_name={this.state.ballot_item_display_name}
+                                               ballotItemWeVoteId={this.props.ballotItemWeVoteId}
+                                               currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                                               overlayTriggerOnClickOnly
+                                               placement={this.props.popoverBottom ? "bottom" : "top"}
+                                               urlWithoutHash={this.props.urlWithoutHash}
+                                               we_vote_id={this.props.we_vote_id}
+        /> :
+        null
+      }
 
       { positions_count ?
         <div className="network-positions-stacked__support-list u-flex u-justify-between u-items-center">
