@@ -93,8 +93,10 @@ export default class Ballot extends Component {
     let hide_intro_modal_from_cookie = cookies.getItem("hide_intro_modal") || 0;
     let wait_until_voter_sign_in_completes = this.props.location.query ? this.props.location.query.wait_until_voter_sign_in_completes : 0;
     let issues_voter_can_follow = IssueStore.getIssuesVoterCanFollow(); // Check to see if the issues have been retrieved yet
+    let issues_voter_can_follow_exist = issues_voter_can_follow && issues_voter_can_follow.length;
+    // console.log("Ballot componentDidMount issues_voter_can_follow_exist: ", issues_voter_can_follow_exist);
 
-    if (wait_until_voter_sign_in_completes !== undefined || hide_intro_modal_from_cookie || hide_intro_modal_from_url || !issues_voter_can_follow) {
+    if (wait_until_voter_sign_in_completes !== undefined || hide_intro_modal_from_cookie || hide_intro_modal_from_url || !issues_voter_can_follow_exist) {
       this.setState({
         mounted: true,
         showBallotIntroModal: false,
@@ -380,7 +382,11 @@ export default class Ballot extends Component {
         }
       }
 
-      if (this.state.hide_intro_modal_from_cookie || this.state.hide_intro_modal_from_url) {
+      let issues_voter_can_follow = IssueStore.getIssuesVoterCanFollow(); // Check to see if the issues have been retrieved yet
+      let issues_voter_can_follow_exist = issues_voter_can_follow && issues_voter_can_follow.length;
+      // console.log("Ballot onVoterStoreChange issues_voter_can_follow_exist: ", issues_voter_can_follow_exist);
+
+      if (this.state.hide_intro_modal_from_cookie || this.state.hide_intro_modal_from_url || !issues_voter_can_follow_exist) {
         consider_opening_ballot_intro_modal = false;
       }
 
@@ -568,10 +574,12 @@ export default class Ballot extends Component {
 
     let text_for_map_search = VoterStore.getTextForMapSearch();
     let issues_voter_can_follow = IssueStore.getIssuesVoterCanFollow(); // Don't auto-open intro until Issues are loaded
+    let issues_voter_can_follow_exist = issues_voter_can_follow && issues_voter_can_follow.length;
+    // console.log("Ballot render issues_voter_can_follow_exist: ", issues_voter_can_follow_exist);
 
     if (!this.state.ballotWithAllItemsByFilterType) {
       return <div className="ballot container-fluid well u-stack--md u-inset--md">
-        { this.state.showBallotIntroModal && issues_voter_can_follow.length !== 0 ?
+        { this.state.showBallotIntroModal && issues_voter_can_follow_exist ?
           <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
         <div className={ isWebApp() ? "ballot__header" : "ballot__header ballot__header__top-cordova"} >
           <BrowserPushMessage incomingProps={this.props} />
@@ -593,9 +601,9 @@ export default class Ballot extends Component {
 
     const emptyBallotButton = this.state.filter_type !== "none" && !missing_address ?
         <span>
-          <Link to="/ballot">
+          {/* <Link to="/ballot">
               <Button bsStyle="primary">View Full Ballot</Button>
-          </Link>
+          </Link> */}
         </span> :
         <div className="container-fluid well u-stack--md u-inset--md">
           <Helmet title="Enter Your Address - We Vote" />
@@ -685,7 +693,9 @@ export default class Ballot extends Component {
                          {electionName} <span className="hidden-xs">&mdash; </span>
                          <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
                        </span> :
-                      null }
+                       <span className="u-push--sm">
+                         Loading Election...
+                       </span> }
                     {/* We always show the change election option */}
                     <span className="u-no-break hidden-print u-cursor--pointer"
                           onClick={this.toggleSelectBallotModal} >
