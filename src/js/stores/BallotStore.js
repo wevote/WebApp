@@ -218,7 +218,10 @@ class BallotStore extends ReduceStore {
   }
 
   getCandidateWeVoteIdsForOfficeWeVoteId (officeWeVoteId) {
-    return this.getState().ballotItemListCandidatesDict[officeWeVoteId] || [];
+    if (this.getState().ballotItemListCandidatesDict) {
+      return this.getState().ballotItemListCandidatesDict[officeWeVoteId] || [];
+    }
+    return [];
   }
 
   positionListHasBeenRetrievedOnce (ballotItemWeVoteId) {

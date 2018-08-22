@@ -248,10 +248,10 @@ export default class HeaderSecondaryNavBar extends Component {
           <div className="header-secondary-nav">
             {/* Issues Icon & Modal */}
             {/* {!this.props.hideGettingStartedIssuesButton ? null : null } No longer hiding Issue Button */}
+            {/* completed={this.state.ballot_intro_issues_completed} No longer using completed state */}
             <SecondaryNavBarItem show={this._toggleBallotIntroFollowIssues}
                                  source={cordovaDot("/img/global/svg-icons/issues-v1-64x42.svg")}
-                                 title="Issues"
-                                 completed={this.state.ballot_intro_issues_completed} />
+                                 title="Issues" />
 
             <SecondaryNavBarItem show={this._openPrintModal}
                                  title="Print"
