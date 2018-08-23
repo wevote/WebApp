@@ -19,6 +19,7 @@ export default class BallotElectionList extends Component {
     ballotElectionList: PropTypes.array.isRequired,
     ballotBaseUrl: PropTypes.string,
     organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
+    showRelevantElections: PropTypes.bool,
     toggleFunction: PropTypes.func,
   };
 
@@ -34,6 +35,7 @@ export default class BallotElectionList extends Component {
     this.state = {
       loading_new_ballot_items: false,
       prior_election_id: prior_election_id,
+      state_code: VoterStore.getStateCodeFromIPAddress(),
       updated_election_id: ""
     };
 
@@ -115,6 +117,7 @@ export default class BallotElectionList extends Component {
         // console.log("onVoterStoreChange--------- loading_new_ballot_items:", this.state.loading_new_ballot_items);
         this.setState({
           loading_new_ballot_items: false,
+          state_code: VoterStore.getStateCodeFromIPAddress(),
           updated_election_id: VoterStore.election_id()
         });
         // console.log("onVoterStoreChange--------- this.props.toggleFunction()");
@@ -221,16 +224,31 @@ export default class BallotElectionList extends Component {
     });
     let priorElectionList = this.renderPriorElectionList(ballotElectionListPastSorted, currentDate);
 
-    return <div>
-      { upcomingElectionList && upcomingElectionList.length ?
-        <h4 className="h4">Upcoming Election(s)</h4> :
-        null }
-      {upcomingElectionList}
+    if (this.props.showRelevantElections) {
+      // TODO show filtered lists here
+      return <div>
+        { upcomingElectionList && upcomingElectionList.length ?
+          <h4 className="h4">Upcoming Election(s)</h4> :
+          null }
+        {upcomingElectionList}
 
-      { priorElectionList && priorElectionList.length ?
-        <h4 className="h4">Prior Election(s)</h4> :
-        null }
-      {priorElectionList}
-    </div>;
+        { priorElectionList && priorElectionList.length ?
+          <h4 className="h4">Prior Election(s)</h4> :
+          null }
+        {priorElectionList}
+      </div>;
+    } else {
+      return <div>
+        { upcomingElectionList && upcomingElectionList.length ?
+          <h4 className="h4">Upcoming Election(s)</h4> :
+          null }
+        {upcomingElectionList}
+
+        { priorElectionList && priorElectionList.length ?
+          <h4 className="h4">Prior Election(s)</h4> :
+          null }
+        {priorElectionList}
+      </div>;
+    }
   }
 }
