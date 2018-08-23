@@ -61,10 +61,13 @@ $slick-dot-character: '\2022' !default;
     position: absolute;
     top: $space-none;
     right: $space-none;
-    width: $space-md * 1.25;
+    width: $space-md * 3;
     z-index: 9999;
     @include breakpoints (max mid-small) {
       width: $space-md;
+    }
+    img {
+      padding: 0 $space-md $space-md $space-md;
     }
   }
 
