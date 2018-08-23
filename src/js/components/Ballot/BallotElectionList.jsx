@@ -123,36 +123,11 @@ export default class BallotElectionList extends Component {
     }
   }
 
-  render () {
-    renderLog(__filename);
-    if (this.state.loading_new_ballot_items) {
-      return <div>
-        <h1 className="h1">Switching ballot data now...</h1>
-        <br />
-        {LoadingWheel}
-      </div>;
-    }
-
-    let currentDate = moment().format("YYYY-MM-DD");
-    //console.log("currentDate: ", currentDate);
-    let electionDateTomorrow;
-    let electionDateTomorrowMoment;
-    let ballotElectionListUpcomingSorted = this.props.ballotElectionList;
-    // We want to sort ascending so the next upcoming election is first
-    ballotElectionListUpcomingSorted.sort(function (a, b) {
-      let election_day_text_A = a.election_day_text.toLowerCase();
-      let election_day_text_B = b.election_day_text.toLowerCase();
-      if (election_day_text_A < election_day_text_B) //sort string ascending
-        return -1;
-      if (election_day_text_A > election_day_text_B)
-        return 1;
-      return 0; //default return value (no sorting)
-    });
-    let upcomingElectionList = ballotElectionListUpcomingSorted.map((item, index) => {
-      electionDateTomorrowMoment = moment(item.election_day_text, "YYYY-MM-DD").add(1, "days");
-      electionDateTomorrow = electionDateTomorrowMoment.format("YYYY-MM-DD");
-      // console.log("electionDateTomorrow: ", electionDateTomorrow);
-      return electionDateTomorrow > currentDate ?
+  renderUpcomingElectionList (list, current_date) {
+    let rendered_list = list.map((item, index) => {
+      let electionDateTomorrowMoment = moment(item.election_day_text, "YYYY-MM-DD").add(1, "days");
+      let electionDateTomorrow = electionDateTomorrowMoment.format("YYYY-MM-DD");
+      return electionDateTomorrow > current_date ?
         <div key={index}>
           <dl className="list-unstyled text-center">
             <button type="button" className="btn btn-success ballot-election-list__button"
@@ -175,24 +150,14 @@ export default class BallotElectionList extends Component {
         </div> :
         null;
     });
-    upcomingElectionList = cleanArray(upcomingElectionList);
+    return cleanArray(rendered_list);
+  }
 
-    let ballotElectionListPastSorted = this.props.ballotElectionList;
-    // We want to sort descending so the most recent election is first
-    ballotElectionListPastSorted.sort(function (a, b) {
-      let election_day_text_A = a.election_day_text.toLowerCase();
-      let election_day_text_B = b.election_day_text.toLowerCase();
-      if (election_day_text_A < election_day_text_B) //sort string descending
-        return 1;
-      if (election_day_text_A > election_day_text_B)
-        return -1;
-      return 0; //default return value (no sorting)
-    });
-    let priorElectionList = ballotElectionListPastSorted.map((item, index) => {
-      // console.log("item.election_day_text: ", item.election_day_text);
-      electionDateTomorrowMoment = moment(item.election_day_text, "YYYY-MM-DD").add(1, "days");
-      electionDateTomorrow = electionDateTomorrowMoment.format("YYYY-MM-DD");
-      return electionDateTomorrow > currentDate ?
+  renderPriorElectionList (list, current_date) {
+    let rendered_list = list.map((item, index) => {
+      let electionDateTomorrowMoment = moment(item.election_day_text, "YYYY-MM-DD").add(1, "days");
+      let electionDateTomorrow = electionDateTomorrowMoment.format("YYYY-MM-DD");
+      return electionDateTomorrow > current_date ?
         null :
         <div key={index}>
           <dl className="list-unstyled text-center">
@@ -215,7 +180,46 @@ export default class BallotElectionList extends Component {
           </dl>
         </div>;
     });
-    priorElectionList = cleanArray(priorElectionList);
+    return cleanArray(rendered_list);
+  }
+
+  render () {
+    renderLog(__filename);
+    if (this.state.loading_new_ballot_items) {
+      return <div>
+        <h1 className="h1">Switching ballot data now...</h1>
+        <br />
+        {LoadingWheel}
+      </div>;
+    }
+
+    let currentDate = moment().format("YYYY-MM-DD");
+
+    let ballotElectionListUpcomingSorted = this.props.ballotElectionList;
+    // We want to sort ascending so the next upcoming election is first
+    ballotElectionListUpcomingSorted.sort(function (a, b) {
+      let election_day_text_A = a.election_day_text.toLowerCase();
+      let election_day_text_B = b.election_day_text.toLowerCase();
+      if (election_day_text_A < election_day_text_B) //sort string ascending
+        return -1;
+      if (election_day_text_A > election_day_text_B)
+        return 1;
+      return 0; //default return value (no sorting)
+    });
+    let upcomingElectionList = this.renderUpcomingElectionList(ballotElectionListUpcomingSorted, currentDate);
+
+    let ballotElectionListPastSorted = this.props.ballotElectionList;
+    // We want to sort descending so the most recent election is first
+    ballotElectionListPastSorted.sort(function (a, b) {
+      let election_day_text_A = a.election_day_text.toLowerCase();
+      let election_day_text_B = b.election_day_text.toLowerCase();
+      if (election_day_text_A < election_day_text_B) //sort string descending
+        return 1;
+      if (election_day_text_A > election_day_text_B)
+        return -1;
+      return 0; //default return value (no sorting)
+    });
+    let priorElectionList = this.renderPriorElectionList(ballotElectionListPastSorted, currentDate);
 
     return <div>
       { upcomingElectionList && upcomingElectionList.length ?
