@@ -8,7 +8,7 @@ import { toTitleCase } from "../../utils/textFormat";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import CandidateStore from "../../stores/CandidateStore";
 import ImageHandler from "../ImageHandler";
-import IssuesFollowedByBallotItemDisplayList from "../Issues/IssuesFollowedByBallotItemDisplayList";
+// import IssuesFollowedByBallotItemDisplayList from "../Issues/IssuesFollowedByBallotItemDisplayList";
 import IssueStore from "../../stores/IssueStore";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
 import LearnMore from "../Widgets/LearnMore";
@@ -489,7 +489,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
         ************************* */}
         { !this.state.display_office_unfurled ?
           <div>
-            <span className="hidden-print">
+            {/* <span className="hidden-print">
               <IssuesFollowedByBallotItemDisplayList ballot_item_display_name={this.props.ballot_item_display_name}
                                                      ballotItemWeVoteId={this.props.we_vote_id}
                                                      overlayTriggerOnClickOnly
@@ -497,7 +497,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                                                      urlWithoutHash={this.props.urlWithoutHash}
                                                      currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                                                      we_vote_id={this.props.we_vote_id} />
-            </span>
+            </span> */}
             { this.state.candidateList.map( (one_candidate) => {
 
               if (!one_candidate || !one_candidate.we_vote_id) { return null; }
