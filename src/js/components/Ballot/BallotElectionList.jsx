@@ -222,7 +222,7 @@ export default class BallotElectionList extends Component {
 
     let currentDate = moment().format("YYYY-MM-DD");
 
-    let ballotElectionListUpcomingSorted = this.props.ballotElectionList;
+    let ballotElectionListUpcomingSorted = this.props.ballotElectionList.concat();
     // We want to sort ascending so the next upcoming election is first
     ballotElectionListUpcomingSorted.sort(function (a, b) {
       let election_day_text_A = a.election_day_text.toLowerCase();
@@ -234,7 +234,7 @@ export default class BallotElectionList extends Component {
       return 0; //default return value (no sorting)
     });
 
-    let ballotElectionListPastSorted = this.props.ballotElectionList;
+    let ballotElectionListPastSorted = this.props.ballotElectionList.concat();
     // We want to sort descending so the most recent election is first
     ballotElectionListPastSorted.sort(function (a, b) {
       let election_day_text_A = a.election_day_text.toLowerCase();
