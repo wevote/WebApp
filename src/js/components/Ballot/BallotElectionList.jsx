@@ -275,55 +275,81 @@ export default class BallotElectionList extends Component {
       let priorElectionListOutsideState = this.renderPriorElectionList(priorBallotElectionListOutsideState, currentDate);
 
       return <div>
-        { upcomingElectionList && upcomingElectionList.length ?
-          <h4 className="h4">
-            Upcoming Election
-            { !this.state.show_more_upcoming_elections && upcomingElectionListInsideState.length !== 1 ||
-              this.state.show_more_upcoming_elections && upcomingElectionList.length !== 1 ?
-              "s" :
-              null
-            }
-            { !this.state.show_more_upcoming_elections && this.state.state_name.length ?
-              " in " + this.state.state_name :
-              null
-            }
-          </h4> :
-          null
+        <h4 className="h4">
+          Upcoming Election
+          { upcomingElectionListInsideState && upcomingElectionListInsideState.length !== 1 &&
+            !this.state.show_more_upcoming_elections ||
+            upcomingElectionList && upcomingElectionList.length !== 1 &&
+            this.state.show_more_upcoming_elections ?
+            "s" :
+            null
+          }
+          { this.state.state_name && this.state.state_name.length &&
+            !this.state.show_more_upcoming_elections ?
+            " in " + this.state.state_name :
+            null
+          }
+        </h4>
+        { upcomingElectionListInsideState && upcomingElectionListInsideState.length ?
+          upcomingElectionListInsideState :
+          "There are no upcoming elections at this time."
         }
-        { upcomingElectionListInsideState }
-        { this.state.show_more_upcoming_elections ? upcomingElectionListOutsideState : null }
+        { upcomingElectionListOutsideState && upcomingElectionListOutsideState.length &&
+          this.state.show_more_upcoming_elections ?
+          upcomingElectionListOutsideState :
+          upcomingElectionListInsideState && upcomingElectionListInsideState.length ?
+            null :
+            "There are no upcoming elections at this time."
+        }
         <a onClick={this.toggleShowMoreUpcomingElections.bind(this)}>Show { this.state.show_more_upcoming_elections ? "Fewer" : "All" } States</a>
 
-        { priorElectionList && priorElectionList.length ?
-          <h4 className="h4">
-            Prior Election
-            { !this.state.show_more_prior_elections && priorElectionListInsideState.length !== 1 ||
-              this.state.show_more_prior_elections && priorElectionList.length !== 1 ?
-              "s" :
-              null
-            }
-            { !this.state.show_more_prior_elections && this.state.state_name.length ?
-              " in " + this.state.state_name :
-              null
-            }
-          </h4> :
-          null
+        <h4 className="h4">
+          Prior Election
+          { priorElectionListInsideState && priorElectionListInsideState.length !== 1 &&
+            !this.state.show_more_prior_elections ||
+            priorElectionList && priorElectionList.length !== 1 &&
+            this.state.show_more_prior_elections ?
+            "s" :
+            null
+          }
+          { this.state.state_name && this.state.state_name.length &&
+            !this.state.show_more_prior_elections ?
+            " in " + this.state.state_name :
+            null
+          }
+        </h4>
+        { priorElectionListInsideState && priorElectionListInsideState.length ?
+          priorElectionListInsideState :
+          "There are no prior elections at this time."
         }
-        { priorElectionListInsideState }
-        { this.state.show_more_prior_elections ? priorElectionListOutsideState : null }
+        { priorElectionListOutsideState && priorElectionListOutsideState.length &&
+          this.state.show_more_prior_elections ?
+          priorElectionListOutsideState :
+          priorElectionListInsideState && priorElectionListInsideState.length ?
+            null :
+            "There are no prior elections at this time."
+        }
         <a onClick={this.toggleShowMorePriorElections.bind(this)}>Show { this.state.show_more_prior_elections ? "Fewer" : "All" } States</a>
       </div>;
     } else {
       return <div>
+        <h4 className="h4">
+          Upcoming Election
+          { upcomingElectionList && upcomingElectionList.length !== 1 ? "s" : null }
+        </h4>
         { upcomingElectionList && upcomingElectionList.length ?
-          <h4 className="h4">Upcoming Election(s)</h4> :
-          null }
-        { upcomingElectionList }
+          upcomingElectionList :
+          "There are no upcoming elections at this time."
+        }
 
+        <h4 className="h4">
+          Upcoming Election
+          { priorElectionList && priorElectionList.length !== 1 ? "s" : null }
+        </h4>
         { priorElectionList && priorElectionList.length ?
-          <h4 className="h4">Prior Election(s)</h4> :
-          null }
-        { priorElectionList }
+          priorElectionList :
+          "There are no prior elections at this time."
+        }
       </div>;
     }
   }
