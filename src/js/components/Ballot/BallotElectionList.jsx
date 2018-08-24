@@ -276,15 +276,39 @@ export default class BallotElectionList extends Component {
 
       return <div>
         { upcomingElectionList && upcomingElectionList.length ?
-          <h4 className="h4">Upcoming Election(s)</h4> :
-          null }
+          <h4 className="h4">
+            Upcoming Election
+            { !this.state.show_more_upcoming_elections && upcomingElectionListInsideState.length !== 1 ||
+              this.state.show_more_upcoming_elections && upcomingElectionList.length !== 1 ?
+              "s" :
+              null
+            }
+            { !this.state.show_more_upcoming_elections && this.state.state_name.length ?
+              " in " + this.state.state_name :
+              null
+            }
+          </h4> :
+          null
+        }
         { upcomingElectionListInsideState }
         { this.state.show_more_upcoming_elections ? upcomingElectionListOutsideState : null }
         <a onClick={this.toggleShowMoreUpcomingElections.bind(this)}>Show { this.state.show_more_upcoming_elections ? "Fewer" : "All" } States</a>
 
         { priorElectionList && priorElectionList.length ?
-          <h4 className="h4">Prior Election(s)</h4> :
-          null }
+          <h4 className="h4">
+            Prior Election
+            { !this.state.show_more_prior_elections && priorElectionListInsideState.length !== 1 ||
+              this.state.show_more_prior_elections && priorElectionList.length !== 1 ?
+              "s" :
+              null
+            }
+            { !this.state.show_more_prior_elections && this.state.state_name.length ?
+              " in " + this.state.state_name :
+              null
+            }
+          </h4> :
+          null
+        }
         { priorElectionListInsideState }
         { this.state.show_more_prior_elections ? priorElectionListOutsideState : null }
         <a onClick={this.toggleShowMorePriorElections.bind(this)}>Show { this.state.show_more_prior_elections ? "Fewer" : "All" } States</a>
