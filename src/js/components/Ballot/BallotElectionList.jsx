@@ -142,13 +142,14 @@ export default class BallotElectionList extends Component {
 
   isElectionInState (election) {
     let election_name = election.election_description_text;
-    if (this.state.state_name.length) {
-      return election_name.includes(this.state.state_name);
-    } else { // state not found, show national election(s)
-      return election_name.includes("U.S.") ||
-             election_name.includes("US") ||
-             election_name.includes("United States");
+    if (this.state.state_name.length && election_name.includes(this.state.state_name)) {
+      return true;
     }
+    // show all national elections regardless of state
+    // return election.is_national;
+    return election_name.includes("U.S.") ||
+           election_name.includes("US") ||
+           election_name.includes("United States");
   }
 
   renderUpcomingElectionList (list, current_date) {
