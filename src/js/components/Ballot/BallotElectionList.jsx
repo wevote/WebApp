@@ -15,7 +15,6 @@ import { convertStateCodeToStateText } from "../../utils/address-functions";
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 36;
 
 export default class BallotElectionList extends Component {
-
   static propTypes = {
     ballotElectionList: PropTypes.array.isRequired,
     ballotBaseUrl: PropTypes.string,
@@ -39,7 +38,7 @@ export default class BallotElectionList extends Component {
       prior_election_id: prior_election_id,
       state_code: state_code,
       state_name: convertStateCodeToStateText(state_code),
-      updated_election_id: ""
+      updated_election_id: "",
     };
 
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
@@ -123,7 +122,7 @@ export default class BallotElectionList extends Component {
           loading_new_ballot_items: false,
           state_code: state_code,
           state_name: convertStateCodeToStateText(state_code),
-          updated_election_id: VoterStore.election_id()
+          updated_election_id: VoterStore.election_id(),
         });
         // console.log("onVoterStoreChange--------- this.props.toggleFunction()");
         this.props.toggleFunction(this.state.destinationUrlForHistoryPush);
@@ -224,7 +223,7 @@ export default class BallotElectionList extends Component {
 
     let ballotElectionListUpcomingSorted = this.props.ballotElectionList.concat();
     // We want to sort ascending so the next upcoming election is first
-    ballotElectionListUpcomingSorted.sort(function (a, b) {
+    ballotElectionListUpcomingSorted.sort((a, b) => {
       let election_day_text_A = a.election_day_text.toLowerCase();
       let election_day_text_B = b.election_day_text.toLowerCase();
       if (election_day_text_A < election_day_text_B) //sort string ascending
@@ -236,7 +235,7 @@ export default class BallotElectionList extends Component {
 
     let ballotElectionListPastSorted = this.props.ballotElectionList.concat();
     // We want to sort descending so the most recent election is first
-    ballotElectionListPastSorted.sort(function (a, b) {
+    ballotElectionListPastSorted.sort((a, b) => {
       let election_day_text_A = a.election_day_text.toLowerCase();
       let election_day_text_B = b.election_day_text.toLowerCase();
       if (election_day_text_A < election_day_text_B) //sort string descending
