@@ -10,6 +10,7 @@ import OrganizationActions from "../../actions/OrganizationActions";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
 import { cleanArray } from "../../utils/textFormat";
+import { convertStateCodeToStateText } from "../../utils/address-functions";
 
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 36;
 
@@ -31,11 +32,13 @@ export default class BallotElectionList extends Component {
     } else if (VoterStore.election_id()) {
       prior_election_id = VoterStore.election_id();
     }
+    let state_code = VoterStore.getStateCodeFromIPAddress();
 
     this.state = {
       loading_new_ballot_items: false,
       prior_election_id: prior_election_id,
-      state_code: VoterStore.getStateCodeFromIPAddress(),
+      state_code: state_code,
+      state_name: convertStateCodeToStateText(state_code),
       updated_election_id: ""
     };
 
@@ -115,14 +118,35 @@ export default class BallotElectionList extends Component {
     if (VoterStore.election_id() && VoterStore.election_id() !== this.state.prior_election_id) {
       if (this.state.loading_new_ballot_items && this.props.toggleFunction) {
         // console.log("onVoterStoreChange--------- loading_new_ballot_items:", this.state.loading_new_ballot_items);
+        let state_code = VoterStore.getStateCodeFromIPAddress();
         this.setState({
           loading_new_ballot_items: false,
-          state_code: VoterStore.getStateCodeFromIPAddress(),
+          state_code: state_code,
+          state_name: convertStateCodeToStateText(state_code),
           updated_election_id: VoterStore.election_id()
         });
         // console.log("onVoterStoreChange--------- this.props.toggleFunction()");
         this.props.toggleFunction(this.state.destinationUrlForHistoryPush);
       }
+    }
+  }
+
+  filterElectionsInsideState (election_list) {
+    return election_list.filter(election => this.isElectionInState(election));
+  }
+
+  filterElectionsOutsideState (election_list) {
+    return election_list.filter(election => !this.isElectionInState(election));
+  }
+
+  isElectionInState (election) {
+    let election_name = election.election_description_text;
+    if (this.state.state_name.length) {
+      return election_name.includes(this.state.state_name);
+    } else { // state not found, show national election(s)
+      return election_name.includes("U.S.") ||
+             election_name.includes("US") ||
+             election_name.includes("United States");
     }
   }
 
@@ -209,7 +233,6 @@ export default class BallotElectionList extends Component {
         return 1;
       return 0; //default return value (no sorting)
     });
-    let upcomingElectionList = this.renderUpcomingElectionList(ballotElectionListUpcomingSorted, currentDate);
 
     let ballotElectionListPastSorted = this.props.ballotElectionList;
     // We want to sort descending so the most recent election is first
@@ -222,20 +245,33 @@ export default class BallotElectionList extends Component {
         return -1;
       return 0; //default return value (no sorting)
     });
+
+    let upcomingElectionList = this.renderUpcomingElectionList(ballotElectionListUpcomingSorted, currentDate);
     let priorElectionList = this.renderPriorElectionList(ballotElectionListPastSorted, currentDate);
 
     if (this.props.showRelevantElections) {
-      // TODO show filtered lists here
+      let upcomingBallotElectionListInsideState = this.filterElectionsInsideState(ballotElectionListUpcomingSorted);
+      let upcomingBallotElectionListOutsideState = this.filterElectionsOutsideState(ballotElectionListUpcomingSorted);
+      let priorBallotElectionListInsideState = this.filterElectionsInsideState(ballotElectionListPastSorted);
+      let priorBallotElectionListOutsideState = this.filterElectionsOutsideState(ballotElectionListPastSorted);
+
+      let upcomingElectionListInsideState = this.renderUpcomingElectionList(upcomingBallotElectionListInsideState, currentDate);
+      let upcomingElectionListOutsideState = this.renderUpcomingElectionList(upcomingBallotElectionListOutsideState, currentDate);
+      let priorElectionListInsideState = this.renderPriorElectionList(priorBallotElectionListInsideState, currentDate);
+      let priorElectionListOutsideState = this.renderPriorElectionList(priorBallotElectionListOutsideState, currentDate);
+
       return <div>
         { upcomingElectionList && upcomingElectionList.length ?
           <h4 className="h4">Upcoming Election(s)</h4> :
           null }
-        {upcomingElectionList}
+        {upcomingElectionListInsideState}
+        {upcomingElectionListOutsideState}
 
         { priorElectionList && priorElectionList.length ?
           <h4 className="h4">Prior Election(s)</h4> :
           null }
-        {priorElectionList}
+        {priorElectionListInsideState}
+        {priorElectionListOutsideState}
       </div>;
     } else {
       return <div>
