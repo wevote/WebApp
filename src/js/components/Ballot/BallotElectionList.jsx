@@ -36,6 +36,8 @@ export default class BallotElectionList extends Component {
     this.state = {
       loading_new_ballot_items: false,
       prior_election_id: prior_election_id,
+      show_more_upcoming_elections: false,
+      show_more_prior_elections: false,
       state_code: state_code,
       state_name: convertStateCodeToStateText(state_code),
       updated_election_id: "",
@@ -209,6 +211,18 @@ export default class BallotElectionList extends Component {
     return cleanArray(rendered_list);
   }
 
+  toggleShowMoreUpcomingElections () {
+    this.setState({
+      show_more_upcoming_elections: !this.state.show_more_upcoming_elections,
+    });
+  }
+
+  toggleShowMorePriorElections () {
+    this.setState({
+      show_more_prior_elections: !this.state.show_more_prior_elections,
+    });
+  }
+
   render () {
     renderLog(__filename);
     if (this.state.loading_new_ballot_items) {
@@ -263,26 +277,28 @@ export default class BallotElectionList extends Component {
         { upcomingElectionList && upcomingElectionList.length ?
           <h4 className="h4">Upcoming Election(s)</h4> :
           null }
-        {upcomingElectionListInsideState}
-        {upcomingElectionListOutsideState}
+        { upcomingElectionListInsideState }
+        { this.state.show_more_upcoming_elections ? upcomingElectionListOutsideState : null }
+        <a onClick={this.toggleShowMoreUpcomingElections.bind(this)}>Show { this.state.show_more_upcoming_elections ? "Fewer" : "All" } States</a>
 
         { priorElectionList && priorElectionList.length ?
           <h4 className="h4">Prior Election(s)</h4> :
           null }
-        {priorElectionListInsideState}
-        {priorElectionListOutsideState}
+        { priorElectionListInsideState }
+        { this.state.show_more_prior_elections ? priorElectionListOutsideState : null }
+        <a onClick={this.toggleShowMorePriorElections.bind(this)}>Show { this.state.show_more_prior_elections ? "Fewer" : "All" } States</a>
       </div>;
     } else {
       return <div>
         { upcomingElectionList && upcomingElectionList.length ?
           <h4 className="h4">Upcoming Election(s)</h4> :
           null }
-        {upcomingElectionList}
+        { upcomingElectionList }
 
         { priorElectionList && priorElectionList.length ?
           <h4 className="h4">Prior Election(s)</h4> :
           null }
-        {priorElectionList}
+        { priorElectionList }
       </div>;
     }
   }
