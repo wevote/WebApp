@@ -311,13 +311,13 @@ export default class BallotElectionList extends Component {
           }
           { upcomingElectionListOutsideState && upcomingElectionListOutsideState.length ?
             this.state.show_more_upcoming_elections ?
-            <a onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
+            <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
               { this.state.state_name && this.state.state_name.length ?
                 "Only show elections in " + this.state.state_name :
                 "Hide state elections"
               }
             </a> :
-            <a onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
+            <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
               Show all states - { upcomingElectionListOutsideState.length } more election{ upcomingElectionListOutsideState.length !== 1 ? "s" : null }
             </a> :
             null
@@ -354,19 +354,19 @@ export default class BallotElectionList extends Component {
             }
             { priorElectionListOutsideState && priorElectionListOutsideState.length ?
               this.state.show_more_prior_elections ?
-              <a onClick={this.toggleShowMorePriorElections.bind(this)}>
+              <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMorePriorElections.bind(this)}>
                 { this.state.state_name && this.state.state_name.length ?
                   "Only show elections in " + this.state.state_name :
                   "Hide state elections"
                 }
               </a> :
-              <a onClick={this.toggleShowMorePriorElections.bind(this)}>
+              <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMorePriorElections.bind(this)}>
                 Show all states - { priorElectionListOutsideState.length } more election{ priorElectionListOutsideState.length !== 1 ? "s" : null }
               </a> :
               null
             }
           </div> :
-          <a onClick={this.toggleShowPriorElectionsList.bind(this)}>
+          <a className="ballot-election-list__toggle-link" onClick={this.toggleShowPriorElectionsList.bind(this)}>
             Show prior elections
           </a>
         }
