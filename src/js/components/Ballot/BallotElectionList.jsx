@@ -38,6 +38,7 @@ export default class BallotElectionList extends Component {
       prior_election_id: prior_election_id,
       show_more_upcoming_elections: false,
       show_more_prior_elections: false,
+      show_prior_elections_list: false,
       state_code: state_code,
       state_name: convertStateCodeToStateText(state_code),
       updated_election_id: "",
@@ -224,6 +225,12 @@ export default class BallotElectionList extends Component {
     });
   }
 
+  toggleShowPriorElectionsList () {
+    this.setState({
+      show_prior_elections_list: !this.state.show_prior_elections_list,
+    });
+  }
+
   render () {
     renderLog(__filename);
     if (this.state.loading_new_ballot_items) {
@@ -317,47 +324,52 @@ export default class BallotElectionList extends Component {
           }
         </div>
 
-        <div className="ballot-election-list__prior">
-          <h4 className="h4">
-            Prior Election
-            { priorElectionListInsideState && priorElectionListInsideState.length !== 1 &&
-              !this.state.show_more_prior_elections ||
-              priorElectionList && priorElectionList.length !== 1 &&
-              this.state.show_more_prior_elections ?
-              "s" :
-              null
-            }
-            { this.state.state_name && this.state.state_name.length &&
-              !this.state.show_more_prior_elections ?
-              " in " + this.state.state_name :
-              null
-            }
-          </h4>
-          { priorElectionListInsideState && priorElectionListInsideState.length ?
-            priorElectionListInsideState :
-            "There are no prior elections at this time."
-          }
-          { priorElectionListOutsideState && priorElectionListOutsideState.length &&
-            this.state.show_more_prior_elections ?
-            priorElectionListOutsideState :
-            priorElectionListInsideState && priorElectionListInsideState.length ?
-            null :
-            "There are no prior elections at this time."
-          }
-          { priorElectionListOutsideState && priorElectionListOutsideState.length ?
-            this.state.show_more_prior_elections ?
-            <a onClick={this.toggleShowMorePriorElections.bind(this)}>
-              { this.state.state_name && this.state.state_name.length ?
-                "Only show elections in " + this.state.state_name :
-                "Hide state elections"
+        { this.state.show_prior_elections_list ?
+          <div className="ballot-election-list__prior">
+            <h4 className="h4">
+              Prior Election
+              { priorElectionListInsideState && priorElectionListInsideState.length !== 1 &&
+                !this.state.show_more_prior_elections ||
+                priorElectionList && priorElectionList.length !== 1 &&
+                this.state.show_more_prior_elections ?
+                "s" :
+                null
               }
-            </a> :
-            <a onClick={this.toggleShowMorePriorElections.bind(this)}>
-              Show all states - { priorElectionListOutsideState.length } more election{ priorElectionListOutsideState.length !== 1 ? "s" : null }
-            </a> :
-            null
-          }
-        </div>
+              { this.state.state_name && this.state.state_name.length &&
+                !this.state.show_more_prior_elections ?
+                " in " + this.state.state_name :
+                null
+              }
+            </h4>
+            { priorElectionListInsideState && priorElectionListInsideState.length ?
+              priorElectionListInsideState :
+              "There are no prior elections at this time."
+            }
+            { priorElectionListOutsideState && priorElectionListOutsideState.length &&
+              this.state.show_more_prior_elections ?
+              priorElectionListOutsideState :
+              priorElectionListInsideState && priorElectionListInsideState.length ?
+              null :
+              "There are no prior elections at this time."
+            }
+            { priorElectionListOutsideState && priorElectionListOutsideState.length ?
+              this.state.show_more_prior_elections ?
+              <a onClick={this.toggleShowMorePriorElections.bind(this)}>
+                { this.state.state_name && this.state.state_name.length ?
+                  "Only show elections in " + this.state.state_name :
+                  "Hide state elections"
+                }
+              </a> :
+              <a onClick={this.toggleShowMorePriorElections.bind(this)}>
+                Show all states - { priorElectionListOutsideState.length } more election{ priorElectionListOutsideState.length !== 1 ? "s" : null }
+              </a> :
+              null
+            }
+          </div> :
+          <a onClick={this.toggleShowPriorElectionsList.bind(this)}>
+            Show prior elections
+          </a>
+        }
       </div>;
     } else {
       return <div className="ballot-election-list__list">
