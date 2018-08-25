@@ -284,7 +284,7 @@ export default class Intro extends Component {
                 { this.state.we_vote_branding_off ? null :
                   <span>
                     { this.state.newsletter_opt_in_true ?
-                      <h1 className="u-f1 u-bold u-stack--lg">Please check your email for a verification link.</h1> :
+                      <h1 className="form__email-verfication u-f1 u-bold u-stack--lg">Please check your email for a verification link.</h1> :
                       <div className="form__container">
                         <h2 className="form__header">Sign up to get updates about We Vote.</h2>
 

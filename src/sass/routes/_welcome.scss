@@ -67,6 +67,10 @@ $opaque-grey: rgba($gray-dark, .5);
       background-color: $brand-blue;
     }
 
+    &__email-verfication {
+      color: $white;
+    }
+
     &__container {
       padding: $space-lg $space-none;
     }
