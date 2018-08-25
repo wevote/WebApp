@@ -374,7 +374,7 @@ export default class BallotElectionList extends Component {
 
         <div className="ballot-election-list__prior">
           <h4 className="h4">
-            Upcoming Election
+            Prior Election
             { priorElectionList && priorElectionList.length !== 1 ? "s" : null }
           </h4>
           { priorElectionList && priorElectionList.length ?
