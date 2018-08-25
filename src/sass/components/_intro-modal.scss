@@ -64,11 +64,14 @@ $slick-dot-character: '\2022' !default;
     width: $space-md * 3;
     z-index: 9999;
     @include breakpoints (max mid-small) {
-      width: $space-md;
+      width: $space-md * 1.75;
     }
     /* stylelint-disable selector-max-type */
     img {
-      padding: $space-none $space-md $space-md $space-md;
+      padding: $space-none $space-none $space-md $space-md * 1.7;
+      @include breakpoints (max mid-small) {
+        padding: $space-none $space-none $space-md * .5 $space-md * .75;
+      }
     }
     /* stylelint-enable */
   }
