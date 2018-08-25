@@ -67,9 +67,9 @@ $slick-dot-character: '\2022' !default;
       width: $space-md * 1.75;
     }
     img {
-      padding: 0 0 $space-md $space-md * 1.7;
+      padding: $space-none $space-none $space-md $space-md * 1.7;
       @include breakpoints (max mid-small) {
-        padding: 0 0 $space-md * .5 $space-md * .75;
+        padding: $space-none $space-none $space-md * .5 $space-md * .75;
       }
     }
   }
