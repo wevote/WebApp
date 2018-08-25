@@ -19,7 +19,7 @@ import ReadMore from "../components/Widgets/ReadMore";
 
 const twitterInfoText = "Signing into Twitter is the fastest way to find voter guides related to the issues you care about. When you sign into Twitter, We Vote will find the voter guides for everyone you are following.";
 
-const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
+// const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 
 const EmailInfoText = "Send email invitations to your friends. Share your vision, and get help from your friends as you make decisions about how to vote.";
 
@@ -139,7 +139,8 @@ export default class Network extends Component {
                 />
               </div>
             }
-            <div className="network-btn">
+            {/* Commented out since choose Friends via Facebook is currently broken */}
+            {/* <div className="network-btn">
               <Link to="/facebook_invitable_friends" className="btn btn-social btn-lg btn-facebook text-center">
                 <i className="fa fa-facebook"/>Choose Friends
               </Link>
@@ -148,7 +149,7 @@ export default class Network extends Component {
                 text_to_display={facebookInfoText}
                 num_of_lines={2}
               />
-            </div>
+            </div> */}
             <div className="network-btn">
             <Link to="/friends/invitebyemail" className="btn btn-social btn-lg btn--email text-center">
               <i className="fa fa-envelope" />Invite Friends
@@ -169,11 +170,12 @@ export default class Network extends Component {
                 <TwitterSignIn buttonText="Find" className="btn btn-social btn-md btn-twitter" />
               </div>
             }
-            <div className="network-btn">
+            {/* Commented out since choose Friends via Facebook is currently broken */}
+            {/* <div className="network-btn">
               <Link to="/facebook_invitable_friends" className="btn btn-social btn-md btn-facebook">
                 <i className="fa fa-facebook"/>Choose
               </Link>
-            </div>
+            </div> */}
             <div className="network-btn">
               <Link to="/friends/invitebyemail" className="btn btn-social btn-md btn--email">
                 <i className="fa fa-envelope" />Invite
