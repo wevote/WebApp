@@ -77,6 +77,7 @@ export default class SelectBallotModal extends Component {
         <BallotElectionList ballotBaseUrl={ballotBaseUrl}
                             ballotElectionList={ballotElectionList}
                             organization_we_vote_id={this.props.organization_we_vote_id}
+                            showRelevantElections
                             toggleFunction={this.props.toggleFunction}
                              />
       </Modal.Body>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
+// import { Button } from "react-bootstrap";
 import { Link } from "react-router";
 import AddressBox from "../../components/AddressBox";
 import AnalyticsActions from "../../actions/AnalyticsActions";
@@ -587,7 +587,9 @@ export default class Ballot extends Component {
             If your ballot does not appear momentarily, please <Link to="/settings/location">change your address</Link>.
           </p>
         </div>
-        <BallotElectionList ballotElectionList={this.state.voter_ballot_list} ballotBaseUrl="/ballot" />
+        <BallotElectionList ballotElectionList={this.state.voter_ballot_list}
+                            ballotBaseUrl="/ballot"
+                            showRelevantElections />
       </div>;
     }
 

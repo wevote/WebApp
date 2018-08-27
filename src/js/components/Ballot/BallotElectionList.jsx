@@ -10,15 +10,16 @@ import OrganizationActions from "../../actions/OrganizationActions";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
 import { cleanArray } from "../../utils/textFormat";
+import { convertStateCodeToStateText } from "../../utils/address-functions";
 
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 36;
 
 export default class BallotElectionList extends Component {
-
   static propTypes = {
     ballotElectionList: PropTypes.array.isRequired,
     ballotBaseUrl: PropTypes.string,
     organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
+    showRelevantElections: PropTypes.bool,
     toggleFunction: PropTypes.func,
   };
 
@@ -30,11 +31,17 @@ export default class BallotElectionList extends Component {
     } else if (VoterStore.election_id()) {
       prior_election_id = VoterStore.election_id();
     }
+    let state_code = VoterStore.getStateCodeFromIPAddress();
 
     this.state = {
       loading_new_ballot_items: false,
       prior_election_id: prior_election_id,
-      updated_election_id: ""
+      show_more_upcoming_elections: false,
+      show_more_prior_elections: false,
+      show_prior_elections_list: false,
+      state_code: state_code,
+      state_name: convertStateCodeToStateText(state_code),
+      updated_election_id: "",
     };
 
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
@@ -113,9 +120,12 @@ export default class BallotElectionList extends Component {
     if (VoterStore.election_id() && VoterStore.election_id() !== this.state.prior_election_id) {
       if (this.state.loading_new_ballot_items && this.props.toggleFunction) {
         // console.log("onVoterStoreChange--------- loading_new_ballot_items:", this.state.loading_new_ballot_items);
+        let state_code = VoterStore.getStateCodeFromIPAddress();
         this.setState({
           loading_new_ballot_items: false,
-          updated_election_id: VoterStore.election_id()
+          state_code: state_code,
+          state_name: convertStateCodeToStateText(state_code),
+          updated_election_id: VoterStore.election_id(),
         });
         // console.log("onVoterStoreChange--------- this.props.toggleFunction()");
         this.props.toggleFunction(this.state.destinationUrlForHistoryPush);
@@ -123,36 +133,31 @@ export default class BallotElectionList extends Component {
     }
   }
 
-  render () {
-    renderLog(__filename);
-    if (this.state.loading_new_ballot_items) {
-      return <div>
-        <h1 className="h1">Switching ballot data now...</h1>
-        <br />
-        {LoadingWheel}
-      </div>;
-    }
+  filterElectionsInState (election_list) {
+    return election_list.filter(election => this.isElectionInState(election));
+  }
 
-    let currentDate = moment().format("YYYY-MM-DD");
-    //console.log("currentDate: ", currentDate);
-    let electionDateTomorrow;
-    let electionDateTomorrowMoment;
-    let ballotElectionListUpcomingSorted = this.props.ballotElectionList;
-    // We want to sort ascending so the next upcoming election is first
-    ballotElectionListUpcomingSorted.sort(function (a, b) {
-      let election_day_text_A = a.election_day_text.toLowerCase();
-      let election_day_text_B = b.election_day_text.toLowerCase();
-      if (election_day_text_A < election_day_text_B) //sort string ascending
-        return -1;
-      if (election_day_text_A > election_day_text_B)
-        return 1;
-      return 0; //default return value (no sorting)
-    });
-    let upcomingElectionList = ballotElectionListUpcomingSorted.map((item, index) => {
-      electionDateTomorrowMoment = moment(item.election_day_text, "YYYY-MM-DD").add(1, "days");
-      electionDateTomorrow = electionDateTomorrowMoment.format("YYYY-MM-DD");
-      // console.log("electionDateTomorrow: ", electionDateTomorrow);
-      return electionDateTomorrow > currentDate ?
+  // filterElectionsOutsideState (election_list) {
+  //   return election_list.filter(election => !this.isElectionInState(election));
+  // }
+
+  isElectionInState (election) {
+    let election_name = election.election_description_text;
+    if (this.state.state_name.length && election_name.includes(this.state.state_name)) {
+      return true;
+    }
+    // show all national elections regardless of state
+    // return election.is_national;
+    return election_name.includes("U.S.") ||
+           election_name.includes("US") ||
+           election_name.includes("United States");
+  }
+
+  renderUpcomingElectionList (list, current_date) {
+    let rendered_list = list.map((item, index) => {
+      let electionDateTomorrowMoment = moment(item.election_day_text, "YYYY-MM-DD").add(1, "days");
+      let electionDateTomorrow = electionDateTomorrowMoment.format("YYYY-MM-DD");
+      return electionDateTomorrow > current_date ?
         <div key={index}>
           <dl className="list-unstyled text-center">
             <button type="button" className="btn btn-success ballot-election-list__button"
@@ -175,24 +180,14 @@ export default class BallotElectionList extends Component {
         </div> :
         null;
     });
-    upcomingElectionList = cleanArray(upcomingElectionList);
+    return cleanArray(rendered_list);
+  }
 
-    let ballotElectionListPastSorted = this.props.ballotElectionList;
-    // We want to sort descending so the most recent election is first
-    ballotElectionListPastSorted.sort(function (a, b) {
-      let election_day_text_A = a.election_day_text.toLowerCase();
-      let election_day_text_B = b.election_day_text.toLowerCase();
-      if (election_day_text_A < election_day_text_B) //sort string descending
-        return 1;
-      if (election_day_text_A > election_day_text_B)
-        return -1;
-      return 0; //default return value (no sorting)
-    });
-    let priorElectionList = ballotElectionListPastSorted.map((item, index) => {
-      // console.log("item.election_day_text: ", item.election_day_text);
-      electionDateTomorrowMoment = moment(item.election_day_text, "YYYY-MM-DD").add(1, "days");
-      electionDateTomorrow = electionDateTomorrowMoment.format("YYYY-MM-DD");
-      return electionDateTomorrow > currentDate ?
+  renderPriorElectionList (list, current_date) {
+    let rendered_list = list.map((item, index) => {
+      let electionDateTomorrowMoment = moment(item.election_day_text, "YYYY-MM-DD").add(1, "days");
+      let electionDateTomorrow = electionDateTomorrowMoment.format("YYYY-MM-DD");
+      return electionDateTomorrow > current_date ?
         null :
         <div key={index}>
           <dl className="list-unstyled text-center">
@@ -215,18 +210,184 @@ export default class BallotElectionList extends Component {
           </dl>
         </div>;
     });
-    priorElectionList = cleanArray(priorElectionList);
+    return cleanArray(rendered_list);
+  }
 
-    return <div>
-      { upcomingElectionList && upcomingElectionList.length ?
-        <h4 className="h4">Upcoming Election(s)</h4> :
-        null }
-      {upcomingElectionList}
+  toggleShowMoreUpcomingElections () {
+    this.setState({
+      show_more_upcoming_elections: !this.state.show_more_upcoming_elections,
+    });
+  }
 
-      { priorElectionList && priorElectionList.length ?
-        <h4 className="h4">Prior Election(s)</h4> :
-        null }
-      {priorElectionList}
-    </div>;
+  toggleShowMorePriorElections () {
+    this.setState({
+      show_more_prior_elections: !this.state.show_more_prior_elections,
+    });
+  }
+
+  toggleShowPriorElectionsList () {
+    this.setState({
+      show_prior_elections_list: !this.state.show_prior_elections_list,
+    });
+  }
+
+  render () {
+    renderLog(__filename);
+    if (this.state.loading_new_ballot_items) {
+      return <div>
+        <h1 className="h1">Switching ballot data now...</h1>
+        <br />
+        {LoadingWheel}
+      </div>;
+    }
+
+    let currentDate = moment().format("YYYY-MM-DD");
+
+    let ballotElectionListUpcomingSorted = this.props.ballotElectionList.concat();
+    // We want to sort ascending so the next upcoming election is first
+    ballotElectionListUpcomingSorted.sort((a, b) => {
+      let election_day_text_A = a.election_day_text.toLowerCase();
+      let election_day_text_B = b.election_day_text.toLowerCase();
+      if (election_day_text_A < election_day_text_B) //sort string ascending
+        return -1;
+      if (election_day_text_A > election_day_text_B)
+        return 1;
+      return 0; //default return value (no sorting)
+    });
+
+    let ballotElectionListPastSorted = this.props.ballotElectionList.concat();
+    // We want to sort descending so the most recent election is first
+    ballotElectionListPastSorted.sort((a, b) => {
+      let election_day_text_A = a.election_day_text.toLowerCase();
+      let election_day_text_B = b.election_day_text.toLowerCase();
+      if (election_day_text_A < election_day_text_B) //sort string descending
+        return 1;
+      if (election_day_text_A > election_day_text_B)
+        return -1;
+      return 0; //default return value (no sorting)
+    });
+
+    let upcomingElectionList = this.renderUpcomingElectionList(ballotElectionListUpcomingSorted, currentDate);
+    let priorElectionList = this.renderPriorElectionList(ballotElectionListPastSorted, currentDate);
+
+    if (this.props.showRelevantElections) {
+      let upcomingBallotElectionListInState = this.filterElectionsInState(ballotElectionListUpcomingSorted);
+      let priorBallotElectionListInState = this.filterElectionsInState(ballotElectionListPastSorted);
+
+      let upcomingElectionListInState = this.renderUpcomingElectionList(upcomingBallotElectionListInState, currentDate);
+      let priorElectionListInState = this.renderPriorElectionList(priorBallotElectionListInState, currentDate);
+
+      let upcomingElectionListOutsideCount = upcomingElectionList.length - upcomingElectionListInState.length;
+      let priorElectionListOutsideCount = priorElectionList.length - priorElectionListInState.length;
+
+      return <div className="ballot-election-list__list">
+        <div className="ballot-election-list__upcoming">
+          <h4 className="h4">
+            Upcoming Election
+            { upcomingElectionListInState && upcomingElectionListInState.length !== 1 &&
+              !this.state.show_more_upcoming_elections ||
+              upcomingElectionList && upcomingElectionList.length !== 1 &&
+              this.state.show_more_upcoming_elections ?
+              "s" :
+              null
+            }
+            { this.state.state_name && this.state.state_name.length &&
+              !this.state.show_more_upcoming_elections ?
+              " in " + this.state.state_name :
+              null
+            }
+          </h4>
+          { this.state.show_more_upcoming_elections ?
+            upcomingElectionList && upcomingElectionList.length ?
+            upcomingElectionList :
+            "There are no upcoming elections at this time." :
+            upcomingElectionListInState && upcomingElectionListInState.length ?
+            upcomingElectionListInState :
+            "There are no upcoming elections at this time."
+          }
+          { upcomingElectionListOutsideCount ?
+            this.state.show_more_upcoming_elections ?
+            <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
+              { this.state.state_name && this.state.state_name.length ?
+                "Only show elections in " + this.state.state_name :
+                "Hide state elections"
+              }
+            </a> :
+            <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
+              Show all states - { upcomingElectionListOutsideCount } more election{ upcomingElectionListOutsideCount !== 1 ? "s" : null }
+            </a> :
+            null
+          }
+        </div>
+
+        { this.state.show_prior_elections_list ?
+          <div className="ballot-election-list__prior">
+            <h4 className="h4">
+              Prior Election
+              { priorElectionListInState && priorElectionListInState.length !== 1 &&
+                !this.state.show_more_prior_elections ||
+                priorElectionList && priorElectionList.length !== 1 &&
+                this.state.show_more_prior_elections ?
+                "s" :
+                null
+              }
+              { this.state.state_name && this.state.state_name.length &&
+                !this.state.show_more_prior_elections ?
+                " in " + this.state.state_name :
+                null
+              }
+            </h4>
+            { this.state.show_more_prior_elections ?
+              priorElectionList && priorElectionList.length ?
+              priorElectionList :
+              "There are no prior elections at this time." :
+              priorElectionListInState && priorElectionListInState.length ?
+              priorElectionListInState :
+              "There are no prior elections at this time."
+            }
+            { priorElectionListOutsideCount ?
+              this.state.show_more_prior_elections ?
+              <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMorePriorElections.bind(this)}>
+                { this.state.state_name && this.state.state_name.length ?
+                  "Only show elections in " + this.state.state_name :
+                  "Hide state elections"
+                }
+              </a> :
+              <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMorePriorElections.bind(this)}>
+                Show all states - { priorElectionListOutsideCount } more election{ priorElectionListOutsideCount !== 1 ? "s" : null }
+              </a> :
+              null
+            }
+          </div> :
+          <a className="ballot-election-list__toggle-link" onClick={this.toggleShowPriorElectionsList.bind(this)}>
+            Show prior elections
+          </a>
+        }
+      </div>;
+    } else {
+      return <div className="ballot-election-list__list">
+        <div className="ballot-election-list__upcoming">
+          <h4 className="h4">
+            Upcoming Election
+            { upcomingElectionList && upcomingElectionList.length !== 1 ? "s" : null }
+          </h4>
+          { upcomingElectionList && upcomingElectionList.length ?
+            upcomingElectionList :
+            "There are no upcoming elections at this time."
+          }
+        </div>
+
+        <div className="ballot-election-list__prior">
+          <h4 className="h4">
+            Prior Election
+            { priorElectionList && priorElectionList.length !== 1 ? "s" : null }
+          </h4>
+          { priorElectionList && priorElectionList.length ?
+            priorElectionList :
+            "There are no prior elections at this time."
+          }
+        </div>
+      </div>;
+    }
   }
 }

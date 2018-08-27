@@ -66,12 +66,14 @@ $slick-dot-character: '\2022' !default;
     @include breakpoints (max mid-small) {
       width: $space-md * 1.75;
     }
+    /* stylelint-disable selector-max-type */
     img {
       padding: $space-none $space-none $space-md $space-md * 1.7;
       @include breakpoints (max mid-small) {
         padding: $space-none $space-none $space-md * .5 $space-md * .75;
       }
     }
+    /* stylelint-enable */
   }
 
   &__small {
@@ -261,7 +263,7 @@ $slick-dot-character: '\2022' !default;
 
   // Modifies slick default selector type dot styles
   // We need to disable stylelint type selector rule because we need to override existing slick package styles.
-  /* stylelint-disable selector-max-type  */
+  /* stylelint-disable selector-max-type */
   &__gray-dots li button::before {
     color: $gray-pale;
     font-size: 12px;
