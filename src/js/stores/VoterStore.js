@@ -303,7 +303,6 @@ class VoterStore extends ReduceStore {
         };
 
       case "voterAddressSave":
-
         // console.log("VoterStore, voterAddressSave, action.res:", action.res);
         if (action.res.status === "SIMPLE_ADDRESS_SAVE") {
           // Don't do any other refreshing
