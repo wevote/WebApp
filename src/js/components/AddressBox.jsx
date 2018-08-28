@@ -13,6 +13,7 @@ import VoterStore from "../stores/VoterStore";
 export default class AddressBox extends Component {
   static propTypes = {
     cancelEditAddress: PropTypes.func,
+    disableAutoFocus: PropTypes.bool,
     toggleSelectAddressModal: PropTypes.func,
     saveUrl: PropTypes.string.isRequired,
     waitingMessage: PropTypes.string,
@@ -134,7 +135,7 @@ export default class AddressBox extends Component {
             className="form-control"
             ref="autocomplete"
             placeholder="Enter address where you are registered to vote"
-            autoFocus={!isCordova()}
+            autoFocus={!isCordova() && !this.props.disableAutoFocus}
           />
         </form>
         <div>
