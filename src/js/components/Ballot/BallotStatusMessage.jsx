@@ -100,9 +100,11 @@ export default class BallotStatusMessage extends Component {
     } else if (this.state.election_is_upcoming) {
       ballotStatusStyle = "alert-info";
       if (this.state.voter_specific_ballot_from_google_civic) {
+        // We do not have an equivalent flag when we retrieve a ballot from Ballotpedia
         messageString += ""; // No additional text
       } else if (this.state.ballot_location_chosen && this.state.substituted_address_nearby) {
-        messageString += "This is a ballot for " + this.state.substituted_address_nearby + ". Enter your full address to see your official ballot.";
+        messageString += "This is a ballot for " + this.state.substituted_address_nearby + ".";
+        // This does not make sense when using Ballotpedia, since we don't know if voter entered a full address:  Enter your full address to see your official ballot.
       } else {
         if (this.state.voter_entered_address) {
           messageString += "This is our best guess for what's on your ballot. ";

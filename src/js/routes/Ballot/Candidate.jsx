@@ -40,6 +40,7 @@ export default class Candidate extends Component {
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
       // guidesToFollowList: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.candidate_we_vote_id)
       voter_guides_to_follow_for_latest_ballot_item: [],
+      voter_guides_to_follow_for_this_ballot_item: [],
     };
   }
 
@@ -87,6 +88,7 @@ export default class Candidate extends Component {
       organizationWeVoteId: organizationWeVoteId,
       position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(this.props.params.candidate_we_vote_id),
       voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
+      voter_guides_to_follow_for_this_ballot_item: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.candidate_we_vote_id),
     });
   }
 
@@ -101,6 +103,7 @@ export default class Candidate extends Component {
         candidate_we_vote_id: nextProps.params.candidate_we_vote_id,
         position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(nextProps.params.candidate_we_vote_id),
         voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
+        voter_guides_to_follow_for_this_ballot_item: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(nextProps.params.candidate_we_vote_id),
       });
     }
 
@@ -138,7 +141,7 @@ export default class Candidate extends Component {
     this.setState({
       voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
 
-      // voter_guides_to_follow_for_this_ballot_item: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.state.candidate_we_vote_id),
+      voter_guides_to_follow_for_this_ballot_item: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.state.candidate_we_vote_id),
     });
   }
 
@@ -188,12 +191,12 @@ export default class Candidate extends Component {
             </div> :
             null
           }
-          {this.state.voter_guides_to_follow_for_latest_ballot_item.length === 0 ?
+          {this.state.voter_guides_to_follow_for_this_ballot_item.length === 0 ?
             <div className="card__additional-text">{NO_VOTER_GUIDES_TEXT}</div> :
             <div><h3 className="card__additional-heading">{"More opinions about " + this.state.candidate.ballot_item_display_name}</h3>
             <GuideList id={electionId}
                        ballotItemWeVoteId={this.state.candidate_we_vote_id}
-                       organizationsToFollow={this.state.voter_guides_to_follow_for_latest_ballot_item}/></div>
+                       organizationsToFollow={this.state.voter_guides_to_follow_for_this_ballot_item}/></div>
           }
         </div>
       </section>
