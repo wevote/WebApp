@@ -36,52 +36,195 @@ export default class ItemActionBar extends Component {
     super(props);
     this.state = {
       ballotItemWeVoteId: "",
-      is_oppose_local_state: undefined,
-      is_support_local_state: undefined,
+      componentDidMountFinished: false,
+      isOpposeAPIState: undefined,
+      isOpposeLocalState: undefined,
+      isPublicPosition: undefined,
+      isSupportAPIState: undefined,
+      isSupportLocalState: undefined,
       showSupportOrOpposeHelpModal: false,
-      supportProps: this.props.supportProps,
+      supportCount: 0,
+      opposeCount: 0,
+      // supportProps: this.props.supportProps,
       transitioning: false,
     };
+    this.isOpposeCalculated = this.isOpposeCalculated.bind(this);
+    this.isSupportCalculated = this.isSupportCalculated.bind(this);
+    this.opposeItem = this.opposeItem.bind(this);
+    this.supportItem = this.supportItem.bind(this);
     this.toggleSupportOrOpposeHelpModal = this.toggleSupportOrOpposeHelpModal.bind(this);
   }
 
   componentDidMount () {
-    let isOpposeLocalState;
-    let isSupportLocalState;
+    // console.log("itemActionBar, NEW componentDidMount");
+    let isOpposeAPIState = false;
+    let isPublicPosition = false;
+    let isSupportAPIState = false;
+    let supportCount = 0;
+    let opposeCount = 0;
     if (this.props.supportProps) {
-      isOpposeLocalState = this.props.supportProps.is_oppose;
-      isSupportLocalState = this.props.supportProps.is_support;
+      isPublicPosition = this.props.supportProps.is_public_position || false;
+      isOpposeAPIState = this.props.supportProps.is_oppose || false;
+      isSupportAPIState = this.props.supportProps.is_support || false;
+      supportCount = this.props.supportProps.support_count || 0;
+      opposeCount = this.props.supportProps.oppose_count || 0;
     }
 
     this.setState({
       ballotItemWeVoteId: this.props.ballot_item_we_vote_id,
-      is_oppose_local_state: isOpposeLocalState,
-      is_support_local_state: isSupportLocalState,
+      componentDidMountFinished: true,
+      isOpposeAPIState: isOpposeAPIState,
+      isPublicPosition: isPublicPosition,
+      isSupportAPIState: isSupportAPIState,
+      supportCount: supportCount,
+      opposeCount: opposeCount,
     });
   }
 
   componentWillReceiveProps (nextProps) {
-    let isOpposeLocalState;
-    let isSupportLocalState;
-    if (nextProps.supportProps) {
-      isOpposeLocalState = nextProps.supportProps.is_oppose;
-      isSupportLocalState = nextProps.supportProps.is_support;
+    // console.log("itemActionBar, RELOAD componentWillReceiveProps");
+    if (nextProps.ballot_item_we_vote_id !== undefined && nextProps.ballot_item_we_vote_id && nextProps.ballot_item_we_vote_id !== this.state.ballotItemWeVoteId) {
+      // console.log("itemActionBar, ballotItemWeVoteId setState");
+      this.setState({
+        ballotItemWeVoteId: nextProps.ballot_item_we_vote_id,
+      });
+    }
+    // Only proceed if we have valid supportProps
+    if (nextProps.supportProps !== undefined && nextProps.supportProps) {
+      if (nextProps.supportProps.support_count !== undefined && nextProps.supportProps.support_count !== this.state.supportCount) {
+        // console.log("itemActionBar, support_count setState");
+        this.setState({
+          supportCount: nextProps.supportProps.support_count,
+        });
+      }
+      if (nextProps.supportProps.oppose_count !== undefined && nextProps.supportProps.oppose_count !== this.state.opposeCount) {
+        // console.log("itemActionBar, oppose_count setState");
+        this.setState({
+          opposeCount: nextProps.supportProps.oppose_count,
+        });
+      }
+      // We only want to update the state when the API is_support and is_oppose "catches up" withe local state
+
+      // Are we "locking" the isSupport or isOppose state currently?
+      let localOpposeStateLocked = false;
+      let localSupportStateLocked = false;
+      if (this.state.isOpposeLocalState !== undefined) {
+        localOpposeStateLocked = true;
+      }
+      if (this.state.isSupportLocalState !== undefined) {
+        localSupportStateLocked = true;
+      }
+      if (localOpposeStateLocked) {
+        // Don't make a change until the API state matches the local state
+        if (nextProps.supportProps.is_oppose !== undefined && nextProps.supportProps.is_oppose === this.state.isOpposeLocalState) {
+          // console.log("itemActionBar, isOpposeAPIState CATCHUP setState");
+          this.setState({
+            isOpposeAPIState: nextProps.supportProps.is_oppose,
+            isOpposeLocalState: undefined,
+            transitioning: false,
+          });
+        }
+      } else if (nextProps.supportProps.is_oppose !== undefined && nextProps.supportProps.is_oppose !== this.state.isOpposeAPIState) {
+        // Don't make a change if the value from the API server already matches isOpposeAPIState
+        // console.log("itemActionBar, isOpposeAPIState FRESH setState");
+        this.setState({
+          isOpposeAPIState: nextProps.supportProps.is_oppose,
+          isOpposeLocalState: undefined,
+          transitioning: false,
+        });
+      }
+      if (localSupportStateLocked) {
+        // Don't make a change until the API state matches the local state
+        if (nextProps.supportProps.is_support !== undefined && nextProps.supportProps.is_support === this.state.isSupportLocalState) {
+          // console.log("itemActionBar, isSupportLocalState CATCHUP setState");
+          this.setState({
+            isSupportAPIState: nextProps.supportProps.is_support,
+            isSupportLocalState: undefined,
+            transitioning: false,
+          });
+        }
+      } else if (nextProps.supportProps.is_support !== undefined && nextProps.supportProps.is_support !== this.state.isSupportAPIState) {
+        // Don't make a change if the value from the API server already matches isSupportAPIState
+        // console.log("itemActionBar, isSupportAPIState FRESH setState");
+        this.setState({
+          isSupportAPIState: nextProps.supportProps.is_support,
+          isSupportLocalState: undefined,
+          transitioning: false,
+        });
+      }
+    }
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    // We added this because ItemActionBar was rendering with practically every API response received
+    // console.log("itemActionBar, shouldComponentUpdate");
+    if (this.state.transitioning || nextState.transitioning) {
+      // console.log("shouldComponentUpdate: transitioning YES");
+      return true;
+    }
+    if (this.state.componentDidMountFinished === false) {
+      // console.log("shouldComponentUpdate: componentDidMountFinished === false");
+      return true;
     }
 
-    this.setState({
-      ballotItemWeVoteId: nextProps.ballot_item_we_vote_id,
-      is_oppose_local_state: isOpposeLocalState,
-      is_support_local_state: isSupportLocalState,
-      supportProps: nextProps.supportProps,
-      transitioning: false,
-    });
+    if (nextProps.ballot_item_we_vote_id !== undefined && nextProps.ballot_item_we_vote_id && nextProps.ballot_item_we_vote_id !== this.state.ballotItemWeVoteId) {
+      // console.log("shouldComponentUpdate: itemActionBar, ballotItemWeVoteId");
+      return true;
+    }
+    // Only proceed if we have valid supportProps
+    if (nextProps.supportProps !== undefined && nextProps.supportProps) {
+      if (nextProps.supportProps.support_count !== undefined && nextProps.supportProps.support_count !== this.state.supportCount) {
+        // console.log("shouldComponentUpdate: itemActionBar, support_count");
+        return true;
+      }
+      if (nextProps.supportProps.oppose_count !== undefined && nextProps.supportProps.oppose_count !== this.state.opposeCount) {
+        // console.log("shouldComponentUpdate: itemActionBar, oppose_count");
+        return true;
+      }
+      // We only want to update the state when the API is_support and is_oppose "catches up" withe local state
+
+      // Are we "locking" the isSupport or isOppose state currently?
+      let localOpposeStateLocked = false;
+      let localSupportStateLocked = false;
+      if (this.state.isOpposeLocalState !== undefined) {
+        localOpposeStateLocked = true;
+      }
+      if (this.state.isSupportLocalState !== undefined) {
+        localSupportStateLocked = true;
+      }
+      if (localOpposeStateLocked) {
+        // Don't make a change until the API state matches the local state
+        if (nextProps.supportProps.is_oppose !== undefined && nextProps.supportProps.is_oppose === this.state.isOpposeLocalState) {
+          // console.log("shouldComponentUpdate: itemActionBar, isOpposeAPIState CATCHUP");
+          return true;
+        }
+      } else if (nextProps.supportProps.is_oppose !== undefined && nextProps.supportProps.is_oppose !== this.state.isOpposeAPIState) {
+        // Don't make a change if the value from the API server already matches isOpposeAPIState
+        // console.log("shouldComponentUpdate: itemActionBar, isOpposeAPIState FRESH");
+        return true;
+      }
+      if (localSupportStateLocked) {
+        // Don't make a change until the API state matches the local state
+        if (nextProps.supportProps.is_support !== undefined && nextProps.supportProps.is_support === this.state.isSupportLocalState) {
+          // console.log("shouldComponentUpdate: itemActionBar, isSupportLocalState CATCHUP");
+          return true;
+        }
+      } else if (nextProps.supportProps.is_support !== undefined && nextProps.supportProps.is_support !== this.state.isSupportAPIState) {
+        // Don't make a change if the value from the API server already matches isSupportAPIState
+        // console.log("shouldComponentUpdate: itemActionBar, isSupportAPIState FRESH");
+        return true;
+      }
+    }
+    return false;
   }
 
   isMeasure () {
     return stringContains("meas", this.state.ballotItemWeVoteId);
   }
 
-  supportItem (isSupport) {
+  supportItem () {
+    // Button to support this item was clicked
     let { currentBallotIdInUrl, urlWithoutHash, we_vote_id } = this.props;
     if (currentBallotIdInUrl !== we_vote_id) {
       historyPush(urlWithoutHash + "#" + this.props.we_vote_id);
@@ -90,14 +233,16 @@ export default class ItemActionBar extends Component {
     if (this.props.supportOrOpposeHasBeenClicked) {
       this.props.supportOrOpposeHasBeenClicked();
     }
-    if (isSupport) {
+    if (this.isSupportCalculated()) {
+      // console.log("supportItem about to call stopSupportingItem after isSupportCalculated");
       this.stopSupportingItem();
       return;
     }
 
+    // console.log("supportItem setState");
     this.setState({
-      is_oppose_local_state: false,
-      is_support_local_state: true,
+      isOpposeLocalState: false,
+      isSupportLocalState: true,
     });
     if (this.state.transitioning) {
       return;
@@ -118,8 +263,8 @@ export default class ItemActionBar extends Component {
 
   stopSupportingItem () {
     this.setState({
-      is_oppose_local_state: false,
-      is_support_local_state: false,
+      isOpposeLocalState: false,
+      isSupportLocalState: false,
     });
     if (this.state.transitioning) {
       return;
@@ -132,7 +277,7 @@ export default class ItemActionBar extends Component {
     showToastSuccess("Support removed!");
   }
 
-  opposeItem (isOppose) {
+  opposeItem () {
     let { currentBallotIdInUrl, urlWithoutHash, we_vote_id } = this.props;
     if (currentBallotIdInUrl !== we_vote_id) {
       historyPush(urlWithoutHash + "#" + this.props.we_vote_id);
@@ -141,14 +286,16 @@ export default class ItemActionBar extends Component {
       this.props.supportOrOpposeHasBeenClicked();
     }
 
-    if (isOppose) {
+    if (this.isOpposeCalculated()) {
+      // console.log("opposeItem about to call stopOpposingItem after isOpposeCalculated");
       this.stopOpposingItem();
       return;
     }
 
+    // console.log("opposeItem setState");
     this.setState({
-      is_oppose_local_state: true,
-      is_support_local_state: false,
+      isOpposeLocalState: true,
+      isSupportLocalState: false,
     });
     if (this.state.transitioning) {
       return;
@@ -169,8 +316,8 @@ export default class ItemActionBar extends Component {
 
   stopOpposingItem () {
     this.setState({
-      is_oppose_local_state: false,
-      is_support_local_state: false,
+      isOpposeLocalState: false,
+      isSupportLocalState: false,
     });
     if (this.state.transitioning) {
       return;
@@ -189,33 +336,49 @@ export default class ItemActionBar extends Component {
     });
   }
 
+  isOpposeCalculated () {
+    // Whenever the value in isOpposeLocalState is NOT undefined, then we ALWAYS listen to that
+    if (this.state.isOpposeLocalState !== undefined) {
+      return this.state.isOpposeLocalState;
+    } else {
+      return this.state.isOpposeAPIState;
+    }
+  }
+
+  isSupportCalculated () {
+    // Whenever the value in isSupportLocalState is NOT undefined, then we ALWAYS listen to that
+    if (this.state.isSupportLocalState !== undefined) {
+      return this.state.isSupportLocalState;
+    } else {
+      return this.state.isSupportAPIState;
+    }
+  }
+
   render () {
     renderLog(__filename);
 
-    if (this.props.supportProps === undefined) {
-      // console.log("ItemActionBar, supportProps undefined");
+    // // let { support_count: supportCount, oppose_count: opposeCount } = this.props.supportProps;
+    if (this.state.supportCount === undefined ||
+      this.state.opposeCount === undefined ||
+      this.state.isOpposeAPIState === undefined ||
+      this.state.isPublicPosition === undefined ||
+      this.state.isSupportAPIState === undefined ) {
+      // Do not render until componentDidMount has set the initial states
       return null;
     }
+    // console.log("ItemActionBar render");
 
-    let { support_count: supportCount, oppose_count: opposeCount } = this.props.supportProps;
-    if (supportCount === undefined ||
-      opposeCount === undefined ||
-      this.state.is_support_local_state === undefined ||
-      this.state.is_oppose_local_state === undefined) {
-      return null;
-    }
-
-    let isPublicPosition = false;
-    if (this.props.supportProps !== undefined && this.props.supportProps.is_public_position !== undefined) {
-      isPublicPosition = this.props.supportProps.is_public_position;
-    }
+    // let isPublicPosition = false;
+    // if (this.props.supportProps !== undefined && this.props.supportProps.is_public_position !== undefined) {
+    //   isPublicPosition = this.props.supportProps.is_public_position;
+    // }
 
     const iconSize = 18;
     let iconColor = "#999";
 
     // TODO Refactor the way we color the icons
-    let supportIconColor = this.state.is_support_local_state ? "white" : "#999";
-    let opposeIconColor = this.state.is_oppose_local_state ? "white" : "#999";
+    let supportIconColor = this.isSupportCalculated() ? "white" : "#999";
+    let opposeIconColor = this.isOpposeCalculated() ? "white" : "#999";
     let urlBeingShared;
     if (this.props.type === "CANDIDATE") {
       urlBeingShared = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + "/candidate/" + this.state.ballotItemWeVoteId;
@@ -266,7 +429,7 @@ export default class ItemActionBar extends Component {
       supportButtonSelectedPopOverText += ".";
     }
 
-    if (isPublicPosition) {
+    if (this.state.isPublicPosition) {
       supportButtonSelectedPopOverText += " Your support will be visible to the public.";
     } else {
       supportButtonSelectedPopOverText += " Only your We Vote friends will see your support.";
@@ -286,7 +449,7 @@ export default class ItemActionBar extends Component {
       opposeButtonSelectedPopOverText += ".";
     }
 
-    if (isPublicPosition) {
+    if (this.state.isPublicPosition) {
       opposeButtonSelectedPopOverText += " Your opposition will be visible to the public.";
     } else {
       opposeButtonSelectedPopOverText += " Only your We Vote friends will see your opposition.";
@@ -299,8 +462,8 @@ export default class ItemActionBar extends Component {
       opposeButtonUnselectedPopOverText += ".";
     }
 
-    const supportButtonPopoverTooltip = <Tooltip id="supportButtonTooltip">{this.state.is_support_local_state ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }</Tooltip>;
-    const opposeButtonPopoverTooltip = <Tooltip id="opposeButtonTooltip">{this.state.is_oppose_local_state ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}</Tooltip>;
+    const supportButtonPopoverTooltip = <Tooltip id="supportButtonTooltip">{this.isSupportCalculated() ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }</Tooltip>;
+    const opposeButtonPopoverTooltip = <Tooltip id="opposeButtonTooltip">{this.isOpposeCalculated() ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}</Tooltip>;
 
     let yesVoteDescriptionExists = false;
     let yesVoteDescription = "";
@@ -320,11 +483,11 @@ export default class ItemActionBar extends Component {
       }
     }
 
-    const supportButton = <button className={"item-actionbar__btn item-actionbar__btn--support btn btn-default" + (this.state.is_support_local_state ? " support-at-state" : "")} onClick={this.supportItem.bind(this, this.state.is_support_local_state)}>
+    const supportButton = <button className={"item-actionbar__btn item-actionbar__btn--support btn btn-default" + (this.isSupportCalculated() ? " support-at-state" : "")} onClick={() => this.supportItem()}>
       <span className="btn__icon">
         <Icon name="thumbs-up-icon" width={iconSize} height={iconSize} color={supportIconColor} />
       </span>
-      { this.state.is_support_local_state ?
+      { this.isSupportCalculated() ?
         <span
           className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label item-actionbar__position-at-state" }>Support</span> :
         <span
@@ -332,11 +495,11 @@ export default class ItemActionBar extends Component {
       }
     </button>;
 
-    const opposeButton = <button className={(this.props.opposeHideInMobile ? "hidden-xs " : "") + "item-actionbar__btn item-actionbar__btn--oppose btn btn-default" + (this.state.is_oppose_local_state ? " oppose-at-state" : "")} onClick={this.opposeItem.bind(this, this.state.is_oppose_local_state)}>
+    const opposeButton = <button className={(this.props.opposeHideInMobile ? "hidden-xs " : "") + "item-actionbar__btn item-actionbar__btn--oppose btn btn-default" + (this.isOpposeCalculated() ? " oppose-at-state" : "")} onClick={() => this.opposeItem()}>
       <span className="btn__icon">
         <Icon name="thumbs-down-icon" width={iconSize} height={iconSize} color={opposeIconColor} />
       </span>
-      { this.state.is_oppose_local_state ?
+      { this.isOpposeCalculated() ?
         <span
           className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label item-actionbar__position-at-state" }>Oppose</span> :
         <span
