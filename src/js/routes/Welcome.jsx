@@ -114,7 +114,8 @@ export default class Intro extends Component {
   }
 
   goToGetStarted () {
-    const getStartedNow = "/wevoteintro/network";
+    // Link to onboarding sequence: /wevoteintro/network
+    const getStartedNow = "/ballot";
     historyPush(getStartedNow);
   }
 
@@ -230,15 +231,17 @@ export default class Intro extends Component {
                       null
                     }
                     <section className="quick-links__section--mobile u-flex">
-                      {/* Change to this link to skip onboarding sequence?: /ballot */}
-                      <a className="quick-links__button quick-links__button--left" onClick={() => historyPush("/wevoteintro/network")}>Get Started</a>
+                      {/* Link to onboarding sequence: /wevoteintro/network */}
+                      <a className="quick-links__button quick-links__button--left" onClick={() => historyPush("/ballot")}>Get Started</a>
                     </section>
 
                     <div className="share-your-vision__h1">
                       Share your vision.
 
                       <section className="quick-links__section--mobile u-flex">
-                        <a className="quick-links__button quick-links__button--right" onClick={() => historyPush("/voterguidegetstarted")}>Create Voter Guide</a>
+                        {/* When we want to bring this link back to internal:
+                        <a className="quick-links__button quick-links__button--right" onClick={() => historyPush("/voterguidegetstarted")}>Enter Voter Guide</a> */}
+                        <a className="quick-links__button quick-links__button--right" href="https://api.wevoteusa.org/vg/create/" target="_blank">Enter Voter Guide</a>
                       </section>
                     </div>
                   </h1>
@@ -255,7 +258,8 @@ export default class Intro extends Component {
                       null
                     }
                     <section className="quick-links__section--desktop u-flex">
-                      <a className="quick-links__button quick-links__button--left" onClick={() => historyPush("/wevoteintro/network")}>Get Started</a>
+                      {/* Link to onboarding sequence: /wevoteintro/network */}
+                      <a className="quick-links__button quick-links__button--left" onClick={() => historyPush("/ballot")}>Get Started</a>
                     </section>
                   </h1>
 
@@ -263,7 +267,9 @@ export default class Intro extends Component {
                     Share your vision.
                      <br /> <br />
                     <section className="quick-links__section--desktop u-flex">
-                      <a className="quick-links__button quick-links__button--right" onClick={() => historyPush("/voterguidegetstarted")}>Create Voter Guide</a>
+                      {/* When we want to bring this link back to internal:
+                      <a className="quick-links__button quick-links__button--right" onClick={() => historyPush("/voterguidegetstarted")}>Enter Voter Guide</a> */}
+                      <a className="quick-links__button quick-links__button--right" href="https://api.wevoteusa.org/vg/create/" target="_blank">Enter Voter Guide</a>
                     </section>
                   </h1>
                 </Row>
@@ -284,7 +290,7 @@ export default class Intro extends Component {
                 { this.state.we_vote_branding_off ? null :
                   <span>
                     { this.state.newsletter_opt_in_true ?
-                      <h1 className="form__email-verfication u-f1 u-bold u-stack--lg">Please check your email for a verification link.</h1> :
+                      <h1 className="form__email-verfication u-f1 u-bold u-tc u-stack--lg">Please check your email for a verification link.</h1> :
                       <div className="form__container">
                         <h2 className="form__header">Sign up to get updates about We Vote.</h2>
 
@@ -465,7 +471,8 @@ export default class Intro extends Component {
                   <Link to={"/more/about"}>About</Link>
                 </li>
                 <li className="u-push--md u-stack--sm">
-                  <Link to={"/wevoteintro/network"}>Get Started</Link>
+                  {/* Link to onboarding sequence: /wevoteintro/network */}
+                  <Link to={"/ballot"}>Get Started</Link>
                 </li>
                 <li className="u-push--md u-stack--sm">
                   <Link to={"/settings/account"}>Sign In</Link>
