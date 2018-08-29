@@ -241,7 +241,12 @@ export default class Intro extends Component {
                       <section className="quick-links__section--mobile u-flex">
                         {/* When we want to bring this link back to internal:
                         <a className="quick-links__button quick-links__button--right" onClick={() => historyPush("/voterguidegetstarted")}>Enter Voter Guide</a> */}
-                        <a className="quick-links__button quick-links__button--right" href="https://api.wevoteusa.org/vg/create/" target="_blank">Enter Voter Guide</a>
+                        <OpenExternalWebSite url="https://api.wevoteusa.org/vg/create/"
+                                             className="quick-links__button quick-links__button--right"
+                                             target="_blank"
+                                             title="Enter Voter Guide"
+                                             body={<span>Enter Voter Guide</span>}
+                        />
                       </section>
                     </div>
                   </h1>
@@ -269,7 +274,12 @@ export default class Intro extends Component {
                     <section className="quick-links__section--desktop u-flex">
                       {/* When we want to bring this link back to internal:
                       <a className="quick-links__button quick-links__button--right" onClick={() => historyPush("/voterguidegetstarted")}>Enter Voter Guide</a> */}
-                      <a className="quick-links__button quick-links__button--right" href="https://api.wevoteusa.org/vg/create/" target="_blank">Enter Voter Guide</a>
+                      <OpenExternalWebSite url="https://api.wevoteusa.org/vg/create/"
+                                           className="quick-links__button quick-links__button--right"
+                                           target="_blank"
+                                           title="Enter Voter Guide"
+                                           body={<span>Enter Voter Guide</span>}
+                      />
                     </section>
                   </h1>
                 </Row>
