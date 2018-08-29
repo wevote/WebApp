@@ -36,6 +36,7 @@ export default class HeaderSecondaryNavBar extends Component {
     this._openFacebookModal = this._openFacebookModal.bind(this);
     this._openPollingLocatorModal = this._openPollingLocatorModal.bind(this);
     this._nextSliderPage = this._nextSliderPage.bind(this);
+    this.afterChangeHandler = this.afterChangeHandler.bind(this);
     this.ballotEmailWasSent = this.ballotEmailWasSent.bind(this);
     this.ballotFacebookEmailWasSent = this.ballotFacebookEmailWasSent.bind(this);
     this.state = {
@@ -45,6 +46,7 @@ export default class HeaderSecondaryNavBar extends Component {
       ballot_intro_friends_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_FRIENDS_COMPLETED),
       ballot_intro_share_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_SHARE_COMPLETED),
       ballot_intro_vote_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_VOTE_COMPLETED),
+      current_page_index: 0,
       showBallotIntroFollowIssues: false,
       showBallotIntroOrganizations: false,
       showEmailModal: false,
@@ -117,6 +119,12 @@ export default class HeaderSecondaryNavBar extends Component {
     this.refs.slider.slickNext();
   }
 
+  afterChangeHandler (index) {
+    this.setState({
+      current_page_index: index,
+    });
+  }
+
   /**
    * Method that passes data between EmailBallotModal to EmailBallotToFriendsModal
    */
@@ -155,6 +163,7 @@ export default class HeaderSecondaryNavBar extends Component {
       slidesToScroll: 1,
       swipe: true,
       accessibility: true,
+      afterChange: this.afterChangeHandler,
       arrows: false,
     };
     let sliderSettingsWithSwipe = { ...sliderSettings, swipe: true };
@@ -174,7 +183,7 @@ export default class HeaderSecondaryNavBar extends Component {
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...sliderSettings}>
             <div key={1}><BallotIntroFollowIssues next={this._nextSliderPage}/></div>
             <div key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div>
-            <div key={3}><BallotIntroVerifyAddress next={this._toggleBallotIntroFollowIssues} /></div>
+            <div key={3}><BallotIntroVerifyAddress next={this._toggleBallotIntroFollowIssues} manualFocus={this.state.current_page_index === 2} /></div>
           </Slider>
         </Modal.Body>
       </Modal>;

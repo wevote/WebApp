@@ -13,6 +13,8 @@ import VoterStore from "../stores/VoterStore";
 export default class AddressBox extends Component {
   static propTypes = {
     cancelEditAddress: PropTypes.func,
+    disableAutoFocus: PropTypes.bool,
+    manualFocus: PropTypes.bool,
     toggleSelectAddressModal: PropTypes.func,
     saveUrl: PropTypes.string.isRequired,
     waitingMessage: PropTypes.string,
@@ -50,6 +52,19 @@ export default class AddressBox extends Component {
       this.googleAutocompleteListener.remove();
     } else {
       console.log("Google Maps Error: DeletedApiProjectMapError");
+    }
+  }
+
+  componentDidUpdate () {
+    // If we're in the slide with this component, autofocus the address box, otherwise defocus.
+    let { manualFocus } = this.props;
+    if (manualFocus !== undefined) {
+      let address_box = this.refs.autocomplete;
+      if (address_box && manualFocus) {
+        address_box.focus();
+      } else {
+        address_box.blur();
+      }
     }
   }
 
@@ -134,7 +149,7 @@ export default class AddressBox extends Component {
             className="form-control"
             ref="autocomplete"
             placeholder="Enter address where you are registered to vote"
-            autoFocus={!isCordova()}
+            autoFocus={!isCordova() && !this.props.disableAutoFocus}
           />
         </form>
         <div>
