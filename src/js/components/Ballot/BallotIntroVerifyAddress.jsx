@@ -6,6 +6,7 @@ import { renderLog } from "../../utils/logging";
 
 export default class BallotIntroVerifyAddress extends Component {
   static propTypes = {
+    manualFocus: PropTypes.bool,
     next: PropTypes.func.isRequired,
     toggleSelectAddressModal: PropTypes.func,
   };

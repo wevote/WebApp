@@ -20,8 +20,11 @@ export default class BallotIntroModal extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      current_page_index: 0,
+    };
     this._nextSliderPage = this._nextSliderPage.bind(this);
+    this.afterChangeHandler = this.afterChangeHandler.bind(this);
   }
 
   // componentDidMount () {
@@ -30,6 +33,12 @@ export default class BallotIntroModal extends Component {
   _nextSliderPage () {
     VoterActions.voterUpdateRefresh();
     this.refs.slider.slickNext();
+  }
+
+  afterChangeHandler (index) {
+    this.setState({
+      current_page_index: index,
+    });
   }
 
   render () {
@@ -42,6 +51,7 @@ export default class BallotIntroModal extends Component {
       slidesToScroll: 1,
       swipe: true,
       accessibility: true,
+      afterChange: this.afterChangeHandler,
       //react-slick default left & right nav arrows
       arrows: false,
     };
@@ -58,9 +68,9 @@ export default class BallotIntroModal extends Component {
         <Slider dotsClass="slick-dots intro-modal__gray-dots"
                 className="calc-height intro-modal__height-full"
                 ref="slider" {...slider_settings}>
-          <div className="intro-modal__height-full" key={1}><BallotIntroFollowIssues next={this._nextSliderPage}/></div>
-          <div className="intro-modal__height-full" key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div>
-          <div className="intro-modal__height-full" key={3}><BallotIntroVerifyAddress next={this.props.toggleFunction}/></div>
+          <div className="intro-modal__height-full" key={1}><BallotIntroFollowIssues next={this._nextSliderPage} /></div>
+          <div className="intro-modal__height-full" key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage} /></div>
+          <div className="intro-modal__height-full" key={3}><BallotIntroVerifyAddress next={this.props.toggleFunction} manualFocus={this.state.current_page_index === 2} /></div>
         </Slider>
       </Modal.Body>
     </Modal>;
