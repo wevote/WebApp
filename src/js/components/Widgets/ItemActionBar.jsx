@@ -216,6 +216,10 @@ export default class ItemActionBar extends Component {
         return true;
       }
     }
+    if (this.state.showSupportOrOpposeHelpModal !== nextState.showSupportOrOpposeHelpModal) {
+      // console.log("shouldComponentUpdate: itemActionBar, showSupportOrOpposeHelpModal different");
+      return true;
+    }
     return false;
   }
 
@@ -391,7 +395,6 @@ export default class ItemActionBar extends Component {
     // This modal is shown when user clicks on support or oppose button for the first time only.
     let modalSupportProps = { is_public_position: false };
     const SupportOrOpposeHelpModal = <Modal show={this.state.showSupportOrOpposeHelpModal} onHide={ ()=> { this.toggleSupportOrOpposeHelpModal(); } } >
-
       <Modal.Header closeButton>
         <Modal.Title>
           <div className="text-center">Support or Oppose</div>
